@@ -24,14 +24,21 @@ export default function NarrativeCallout({ label, tone = 'muted', children }) {
   if (tone === 'accent') {
     // `.produces` capstone — dashed top divider, inline kicker on the
     // left, paragraph wrapping to the right. No box, no bg.
+    //
+    // Important: the kicker and the sentence use very different font
+    // metrics (10px uppercase sans vs 17px serif). Aligning the parent
+    // row is not enough; each text run needs its own equal-height lane so
+    // the visible center of the glyphs is centered, not just the DOM box.
     return (
-      <div className="mt-5 flex flex-col gap-3 border-t border-dashed border-gray-200 pt-5 sm:flex-row sm:items-start sm:gap-5">
+      <div className="mt-5 flex flex-col gap-3 border-t border-dashed border-gray-200 pt-5 sm:grid sm:grid-cols-[180px_minmax(0,1fr)] sm:items-center sm:gap-x-5 sm:gap-y-3">
         {label ? (
-          <div className="shrink-0 pt-1 font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400 sm:min-w-[130px]">
-            {label}
+          <div className="shrink-0 sm:flex sm:h-[32px] sm:items-center">
+            <span className="block whitespace-nowrap font-sans text-[10px] font-semibold uppercase leading-none tracking-[0.2em] text-gray-400">
+              {label}
+            </span>
           </div>
         ) : null}
-        <p className="m-0 font-serif text-[17px] leading-[1.75] text-gray-700">
+        <p className="m-0 font-serif text-[17px] leading-[1.45] text-gray-700 sm:flex sm:h-[32px] sm:items-center">
           <InlineMathText>{children}</InlineMathText>
         </p>
       </div>

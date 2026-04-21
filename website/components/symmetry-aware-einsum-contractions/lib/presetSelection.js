@@ -1,5 +1,20 @@
 export const CUSTOM_IDX = -1;
 
+const PRESET_GLYPHS_BY_CLASSIFICATION = {
+  trivial: '·',
+  allVisible: '◌',
+  allSummed: '∑',
+  mixed: '⟡',
+  singleton: '①',
+  directProduct: '⊗',
+  young: 'Y',
+  bruteForceOrbit: '◎',
+};
+
+function presetGlyphForClassification(leafId) {
+  return PRESET_GLYPHS_BY_CLASSIFICATION[leafId] ?? '◆';
+}
+
 export function getPresetControlSelection(exampleIdx, isDirty) {
   return isDirty ? CUSTOM_IDX : exampleIdx;
 }
@@ -32,6 +47,7 @@ export function getPresetSummary(ex) {
     name: ex.name,
     formula: ex.formula,
     description: ex.description ?? '',
+    glyph: presetGlyphForClassification(leafId),
     caseIds,
     regimeId: leafId,
     expectedGroup: ex.expectedGroup ?? '',

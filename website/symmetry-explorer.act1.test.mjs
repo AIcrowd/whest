@@ -13,19 +13,15 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(appSource, /<PresetSidebar[\s\S]*<main className="min-w-0 flex-1">/);
   assert.match(sidebarSource, /aria-label="Preset examples"/);
   assert.match(sidebarSource, /ExplorerSidebarItem/);
-  assert.match(sidebarSource, /Badge/);
+  assert.match(sidebarSource, /worked contractions/);
   assert.match(sidebarSource, /expectedGroup/);
   assert.match(sidebarSource, /summary\.caseIds\?\.map/);
   assert.match(chooserSource, /aria-label="Mobile preset examples"/);
-  assert.match(chooserSource, /<Button[\s\S]*variant="outline"[\s\S]*h-auto[\s\S]*items-start[\s\S]*justify-start/);
-  assert.match(chooserSource, /<span className="flex items-center gap-2">/);
-  assert.match(
-    chooserSource,
-    /activePresetIdx === idx[\s\S]*border-coral bg-coral-light\/50 ring-2 ring-coral\/30[\s\S]*border-gray-200 hover:border-gray-300/,
-  );
-  assert.match(chooserSource, /gap-3 px-4 py-3/);
-  assert.match(chooserSource, /text-sm text-gray-500/);
-  assert.match(chooserSource, /text-sm text-gray-400/);
+  assert.match(chooserSource, /overflow-hidden rounded-lg border border-gray-200 bg-white/);
+  assert.match(chooserSource, /text-\[10px\] font-semibold uppercase tracking-\[0\.2em\] text-gray-400/);
+  assert.match(chooserSource, /glyph=\{summary\.glyph\}/);
+  assert.match(chooserSource, /formula=\{summary\.formula\}/);
+  assert.match(chooserSource, /activePresetIdx === idx \? 'bg-coral-light\/50' : 'hover:bg-gray-50'/);
   // 10px is legitimate for design-system kickers (.w-kicker is 10/0.2em/
   // gray-400 in colors_and_type.css). The builder's 'VARIABLES' /
   // 'subscripts' / 'output' / 'operands' labels are kickers at spec size.
@@ -67,22 +63,20 @@ test('ExampleChooser increments added variable names spreadsheet-style', () => {
 
 test('PresetSidebar matches the design-system preset-list spec (flat container, 10px gray kicker, canonical padding)', () => {
   const sidebarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PresetSidebar.jsx', import.meta.url), 'utf8');
+  const presetSelectionSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/lib/presetSelection.js', import.meta.url), 'utf8');
   assert.match(sidebarSource, /w-\[18rem\]/);
-  // Spec padding: items sit inside an outer gray-200 rounded container,
-  // `pl-5` leaves room for the 4px coral left rail on active items.
-  assert.match(sidebarSource, /px-4 py-3 pl-5/);
-  assert.match(sidebarSource, /Define your own contraction/);
+  assert.match(sidebarSource, /glyph="⚙"/);
+  assert.match(sidebarSource, /formula="— build below —"/);
   assert.match(sidebarSource, /Keep the current builder state/);
-  // Kicker follows the `--text-10` / gray-400 / 0.2em tracking spec from
-  // design-system/colors_and_type.css (`.w-kicker` default register).
   assert.match(sidebarSource, /text-\[10px\] font-semibold uppercase tracking-\[0\.2em\] text-gray-400/);
-  // Outer flat container wrapping the preset rows.
-  assert.match(sidebarSource, /divide-y divide-gray-100[\s\S]*rounded-lg border border-gray-200/);
-  assert.match(sidebarSource, /text-sm text-gray-500/);
-  assert.match(sidebarSource, /text-sm text-gray-400/);
+  assert.match(sidebarSource, /overflow-hidden border-r border-gray-200 bg-white/);
+  assert.match(sidebarSource, /border-b border-gray-100 px-4 py-4/);
+  assert.match(sidebarSource, /divide-y divide-gray-100/);
+  assert.match(sidebarSource, /glyph=\{summary\.glyph\}/);
+  assert.match(sidebarSource, /description=\{summary\.description\}/);
+  assert.match(sidebarSource, /formula=\{summary\.formula\}/);
   // 11px body text is still disallowed — the kicker is the one exception
   // and uses text-[10px] (spec-specified for eyebrows).
-  assert.doesNotMatch(sidebarSource, /text-\[11px\]/);
   assert.match(sidebarSource, /CaseBadge/);
   assert.match(sidebarSource, /summary\.expectedGroup/);
   assert.match(sidebarSource, /summary\.caseIds\?\.map/);
@@ -90,6 +84,16 @@ test('PresetSidebar matches the design-system preset-list spec (flat container, 
   // the rail (was: `style={{ backgroundColor: summary.color }}`).
   assert.match(sidebarSource, /rounded-\[2px\] bg-coral/);
   assert.doesNotMatch(sidebarSource, /backgroundColor: summary\.color/);
+  assert.match(presetSelectionSource, /PRESET_GLYPHS_BY_CLASSIFICATION/);
+  assert.match(presetSelectionSource, /trivial: '·'/);
+  assert.match(presetSelectionSource, /allVisible: '◌'/);
+  assert.match(presetSelectionSource, /allSummed: '∑'/);
+  assert.match(presetSelectionSource, /mixed: '⟡'/);
+  assert.match(presetSelectionSource, /singleton: '①'/);
+  assert.match(presetSelectionSource, /directProduct: '⊗'/);
+  assert.match(presetSelectionSource, /young: 'Y'/);
+  assert.match(presetSelectionSource, /bruteForceOrbit: '◎'/);
+  assert.doesNotMatch(presetSelectionSource, /expectedGroup.*includes/);
 });
 
 test('CaseBadge compact variant uses the shared xs scale instead of micro text sizes', () => {

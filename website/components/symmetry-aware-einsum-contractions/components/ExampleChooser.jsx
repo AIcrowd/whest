@@ -11,6 +11,7 @@ import { CUSTOM_IDX, getPresetSummary, presetToState, resolvePresetSelection } f
 import { variableSymmetryLabel } from '../lib/symmetryLabel.js';
 import CaseBadge from './CaseBadge.jsx';
 import ExplorerField from './ExplorerField.jsx';
+import ExplorerSidebarItem from './ExplorerSidebarItem.jsx';
 import PythonCodeBlock from './PythonCodeBlock.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
 
@@ -655,58 +656,63 @@ export default function ExampleChooser({
   return (
     <div className="space-y-6">
       <div className="md:hidden" aria-label="Mobile preset examples">
-        <div className="grid gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            className={cn(
-              'h-auto flex-col items-start justify-start rounded-xl border px-4 py-3 text-left transition-colors',
-              activePresetIdx === CUSTOM_IDX
-                ? 'border-coral bg-coral-light/50'
-                : 'border-gray-200 hover:border-gray-300',
-            )}
-            onClick={() => {
-              setActivePresetIdx(CUSTOM_IDX);
-              onCustom?.();
-            }}
-          >
-            <span className="flex items-center gap-2">
-              <span className="text-sm font-medium text-gray-900">Custom</span>
-              <span className="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-gray-500">
+        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+          <div className="border-b border-gray-100 px-4 py-4">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
+              Presets
+            </div>
+            <div className="mt-1 text-sm font-semibold text-gray-900">
+              {examples.length} worked contractions
+            </div>
+          </div>
+
+          <div className="divide-y divide-gray-100">
+            <ExplorerSidebarItem
+              as="button"
+              active={activePresetIdx === CUSTOM_IDX}
+              title="Custom"
+              glyph="⚙"
+              description="Keep the current builder state and switch into custom mode."
+              formula="— build below —"
+              className={activePresetIdx === CUSTOM_IDX ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
+              onClick={() => {
+                setActivePresetIdx(CUSTOM_IDX);
+                onCustom?.();
+              }}
+            >
+              {activePresetIdx === CUSTOM_IDX && (
+                <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
+              )}
+              <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-gray-500">
                 Freeform
               </span>
-            </span>
-            <code className="mt-1 block text-sm text-gray-500">Define your own contraction</code>
-            <span className="mt-1 text-sm text-gray-600">Keep the current builder state and switch into custom mode.</span>
-          </Button>
+            </ExplorerSidebarItem>
 
-          {presetSummaries.map((summary, idx) => (
-            <Button
-              key={summary.id}
-              type="button"
-              variant="outline"
-              onClick={() => loadPreset(idx)}
-              className={cn(
-                'flex h-auto w-full items-start justify-start gap-3 px-4 py-3 text-left transition-colors',
-                activePresetIdx === idx
-                  ? 'border-coral bg-coral-light/50 ring-2 ring-coral/30'
-                  : 'border-gray-200 hover:border-gray-300',
-              )}
-            >
-              <span className="mt-0.5 h-full min-h-10 w-1 shrink-0 rounded-full" style={{ backgroundColor: summary.color }} />
-              <span className="min-w-0 flex-1">
-                <span className="flex flex-wrap items-center gap-2">
-                  <span className="truncate text-sm font-medium text-gray-900">{summary.name}</span>
-                  {summary.caseIds?.map((caseId) => (
-                    <CaseBadge key={caseId} regimeId={caseId} size="sm" variant="pill" />
-                  ))}
-                  <SymmetryBadge value={summary.expectedGroup} className="shrink-0" />
-                </span>
-                <code className="mt-1 block truncate text-sm text-gray-500">{summary.formula}</code>
-                <span className="mt-1 block text-sm text-gray-400">{summary.description}</span>
-              </span>
-            </Button>
-          ))}
+            {presetSummaries.map((summary, idx) => (
+              <ExplorerSidebarItem
+                key={summary.id}
+                as="button"
+                active={activePresetIdx === idx}
+                title={summary.name}
+                glyph={summary.glyph}
+                description={summary.description}
+                formula={summary.formula}
+                className={activePresetIdx === idx ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
+                onClick={() => loadPreset(idx)}
+              >
+                {activePresetIdx === idx && (
+                  <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
+                )}
+                {summary.caseIds?.map((caseId) => (
+                  <CaseBadge key={caseId} regimeId={caseId} size="xs" variant="pill" />
+                ))}
+                <SymmetryBadge
+                  value={summary.expectedGroup}
+                  className="h-5 rounded-full border-gray-200 bg-white px-2 py-0 text-[10px] font-semibold text-gray-600"
+                />
+              </ExplorerSidebarItem>
+            ))}
+          </div>
         </div>
       </div>
 
