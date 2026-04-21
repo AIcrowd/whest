@@ -42,6 +42,16 @@ test('explorer theme registry exposes the approved presets', () => {
       'whestbench-verdict',
       'whestbench-scorecard',
       'whestbench-sage',
+      'coral-slate-contrast',
+      'coral-slate-split',
+      'coral-slate-hardline',
+      'ink-authority',
+      'editorial-noir',
+      'mean-prop-led',
+      'cool-proof',
+      'blue-ledger',
+      'warm-margin',
+      'cov-prop-editorial',
     ],
   );
   assert.equal(EXPLORER_THEME_RECOMMENDED_ID, 'editorial-balance');
@@ -55,6 +65,13 @@ test('explorer theme registry exposes the approved presets', () => {
   const whestbenchVerdict = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-verdict');
   const whestbenchSage = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-sage');
   const whestbenchAxisBlue = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-axis-blue');
+  const coralSlateContrast = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'coral-slate-contrast');
+  const coralSlateHardline = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'coral-slate-hardline');
+  const inkAuthority = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'ink-authority');
+  const meanPropLed = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'mean-prop-led');
+  const blueLedger = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'blue-ledger');
+  const warmMargin = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'warm-margin');
+  const covPropEditorial = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'cov-prop-editorial');
   assert.ok(editorialBalance);
   assert.ok(editorialBalanceSlate);
   assert.ok(editorialBalanceWarm);
@@ -64,6 +81,13 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.ok(whestbenchVerdict);
   assert.ok(whestbenchSage);
   assert.ok(whestbenchAxisBlue);
+  assert.ok(coralSlateContrast);
+  assert.ok(coralSlateHardline);
+  assert.ok(inkAuthority);
+  assert.ok(meanPropLed);
+  assert.ok(blueLedger);
+  assert.ok(warmMargin);
+  assert.ok(covPropEditorial);
   assert.equal(editorialBalance.roles.freeSide, '#F0524D');
   assert.equal(editorialBalance.roles.ink, '#292C2D');
   assert.equal(editorialBalance.roles.quantity, '#0B6D7A');
@@ -81,6 +105,13 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.equal(whestbenchVerdict.roles.quantity, '#B29F9E');
   assert.equal(whestbenchSage.roles.quantity, '#94A3B8');
   assert.equal(whestbenchVerdict.roles.statusSuccess, '#B29F9E');
+  assert.equal(coralSlateContrast.roles.quantity, '#334155');
+  assert.equal(coralSlateHardline.roles.quantity, '#292C2D');
+  assert.equal(inkAuthority.roles.symmetryObject, '#292C2D');
+  assert.equal(meanPropLed.roles.action, '#2959C4');
+  assert.equal(blueLedger.roles.quantity, '#2959C4');
+  assert.equal(warmMargin.roles.quantity, '#B29F9E');
+  assert.equal(covPropEditorial.roles.statusSuccess, '#B29F9E');
   assert.equal(getExplorerThemePreset('missing-id').id, 'editorial-balance');
 });
 

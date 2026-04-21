@@ -120,6 +120,16 @@ test('explorer themes expose the approved page-wide alternatives with a stable r
       'whestbench-verdict',
       'whestbench-scorecard',
       'whestbench-sage',
+      'coral-slate-contrast',
+      'coral-slate-split',
+      'coral-slate-hardline',
+      'ink-authority',
+      'editorial-noir',
+      'mean-prop-led',
+      'cool-proof',
+      'blue-ledger',
+      'warm-margin',
+      'cov-prop-editorial',
     ],
   );
   assert.equal(EXPLORER_THEME_RECOMMENDED_ID, 'editorial-balance');
@@ -154,6 +164,22 @@ test('explorer themes expose the approved page-wide alternatives with a stable r
   assert.equal(
     EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-sage').roles.statusSuccess,
     '#94A3B8',
+  );
+  assert.equal(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'coral-slate-contrast').roles.symmetryObject,
+    '#334155',
+  );
+  assert.equal(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-noir').roles.quantity,
+    '#292C2D',
+  );
+  assert.equal(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'cool-proof').roles.symmetryObject,
+    '#2959C4',
+  );
+  assert.equal(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'blue-ledger').roles.statusSuccess,
+    '#2959C4',
   );
 });
 
