@@ -3,10 +3,11 @@ import Latex from './Latex.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import NarrativeCallout from './NarrativeCallout.jsx';
 import VSubSwConstruction from './VSubSwConstruction.jsx';
+import AppendixSection from './AppendixSection.jsx';
+import AppendixTheoremBlock from './AppendixTheoremBlock.jsx';
 import { computeExpressionAlphaTotal } from '../engine/comparisonAlpha.js';
 import { EXAMPLES } from '../data/examples.js';
 import { variableSymmetryLabel } from '../lib/symmetryLabel.js';
-import { SectionEyebrow } from './ExplorerSectionCard.jsx';
 import { notationColor } from '../lib/notationSystem.js';
 
 // Lookup map keyed by preset id so §7's savings table can pull the raw
@@ -242,11 +243,6 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
   // Small-caps caption, used for the top "Appendix" label on the modal header
   // and for the section-label descriptor appearing alongside the § number.
   const sectionCaption = 'text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground';
-  // Matches the main-page `ExplorerSectionCard` title — same size (text-lg),
-  // same weight and colour — so an appendix §-header reads with the same
-  // visual weight as a top-level "Section N: Set Up" on the explorer page.
-  const sectionTitle = 'font-heading text-lg font-semibold leading-tight text-gray-900';
-
   return (
     <div
       className="fixed inset-0 z-[9998] flex items-start justify-center overflow-y-auto bg-black/40 px-4 py-10"
@@ -297,11 +293,12 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
         {/* Body */}
         <div className="space-y-10 px-6 py-6">
           {/* §1 — Definitions */}
-          <section>
-            <div className="mb-2">
-              <SectionEyebrow n={1} label="Preliminaries" />
-              <h3 className={`${sectionTitle} mt-1`}>Definitions</h3>
-            </div>
+          <AppendixSection
+            n={1}
+            label="The distinction"
+            title="The distinction"
+            deck="The main page reports the detected symmetry group used for cost compression; this appendix separates that pointwise group from the larger formal symmetry group."
+          >
 
             <div className="grid gap-4 md:grid-cols-2">
               <NarrativeCallout label="Compression">
@@ -320,16 +317,14 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 {`$G_{\\text{pt}}$ and $G_{\\text{f}}$ live in different ambient groups. $G_{\\text{pt}} \\subseteq \\mathrm{Sym}(L)$ may include cross-$V_{\\mathrm{free}}$/$W_{\\mathrm{summed}}$ elements — permutations that send a $V_{\\mathrm{free}}$-label to a $W_{\\mathrm{summed}}$-label — whereas $G_{\\text{f}} \\subseteq \\mathrm{Sym}(V_{\\mathrm{free}}) \\times \\mathrm{Sym}(W_{\\mathrm{summed}})$ is $V_{\\mathrm{free}}$-preserving by design. They are connected through $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$, the $V_{\\mathrm{free}}$-action that $G_{\\text{pt}}$'s $V_{\\mathrm{free}}$/$W_{\\mathrm{summed}}$-preserving elements induce on $V_{\\mathrm{free}}$-labels; Section 5 shows that $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ is exactly the $V_{\\mathrm{free}}$-factor of $G_{\\text{f}}$. The strictly-formal elements of $G_{\\text{f}}$ outside that factor are **row-unwitnessed** — dummy-variable renamings of the summed labels ($\\{e\\} \\times S(W_{\\mathrm{summed}})$) that hold only after aggregation and never appear as induced $\\pi$'s of any wreath element. For bilinear-trace (Section 3 below) $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ has 2 elements, $S(W_{\\mathrm{summed}})$ has 2 elements, and $G_{\\text{f}}$ has 4.`}
               </NarrativeCallout>
             </div>
-          </section>
+          </AppendixSection>
 
           {/* §2 — 4-preset gallery + detection boundary */}
-          <section>
-            <div className="mb-2">
-              <SectionEyebrow n={2} label="The row-level detection boundary" />
-              <h3 className={`${sectionTitle} mt-1`}>
-                When can the σ-loop see a symmetry, and when can't it?
-              </h3>
-            </div>
+          <AppendixSection
+            n={2}
+            label="The row-level detection boundary"
+            title="When can the σ-loop see a symmetry, and when can't it?"
+          >
 
             <div className="mb-4 text-sm leading-7 text-foreground">
               <InlineMathText>
@@ -422,30 +417,23 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             </div>
 
             <div className="mb-4 rounded-md border border-primary/40 bg-primary/5 px-5 py-4 text-[13px] leading-7 text-foreground">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-2">
-                Proposition + Theorem (verbatim, audit-verified)
-              </div>
-              <p className="mb-3">
-                <strong>Proposition (Frobenius-class presets).</strong>{' '}
-                <em>
-                  <InlineMathText>
-                    {`Let an einsum satisfy: (1) No operand has declared axis symmetry ($H_i = \\{e\\}$ for every identical-operand group i); (2) Every identical-operand group of size $\\geq 2$ consists of copies with identical subscript strings. Then for generic operands, $G_{\\text{pt}} = \\{e\\}$ and $G_{\\text{f}} = S(W_{\\mathrm{summed}})$ — every formal symmetry beyond identity is row-unwitnessed and lives in the $S(W_{\\mathrm{summed}})$ factor of the §5 construction.`}
-                  </InlineMathText>
-                </em>
-              </p>
+              <AppendixTheoremBlock
+                kind="Proposition"
+                lead="Frobenius-class presets."
+              >
+                {`Let an einsum satisfy: (1) No operand has declared axis symmetry ($H_i = \\{e\\}$ for every identical-operand group i); (2) Every identical-operand group of size $\\geq 2$ consists of copies with identical subscript strings. Then for generic operands, $G_{\\text{pt}} = \\{e\\}$ and $G_{\\text{f}} = S(W_{\\mathrm{summed}})$ — every formal symmetry beyond identity is row-unwitnessed and lives in the $S(W_{\\mathrm{summed}})$ factor of the §5 construction.`}
+              </AppendixTheoremBlock>
               <p className="mb-3">
                 <InlineMathText>
                   {`*Proof.* The wreath $\\prod_i (H_i \\wr S_{m_i})$ reduces under (1) to $\\prod_i S_{m_i}$ (pure copy-permutations). A copy-permutation $\\sigma$ within group $i$ sends U-vertex $(i, j, \\text{axis } k)$ to $(i, \\sigma_i(j), k)$. Under (2), every copy in group $i$ has the same axis-to-label mapping, so the permuted U-vertex carries the same label as the original. Hence $M_\\sigma = M$ elementwise. By Theorem (b) below, $\\texttt{derivePi}(\\sigma) = \\text{identity}$. No non-identity $\\pi$ contributions exist, so $G_{\\text{pt}} = \\{e\\}$. Then $G_{\\text{f}} = G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}} \\times S(W_{\\mathrm{summed}}) = \\{e\\} \\times S(W_{\\mathrm{summed}}) = S(W_{\\mathrm{summed}})$. ∎`}
                 </InlineMathText>
               </p>
-              <p className="mb-3">
-                <strong>Theorem (row-level detection boundary).</strong>{' '}
-                <em>
-                  <InlineMathText>
-                    {`Let $G_{\\text{wreath}}$ denote the σ-loop's row-permutation group — namely $\\prod_i (H_i \\wr S_{m_i})$ per the wreath-equivalence result.`}
-                  </InlineMathText>
-                </em>
-              </p>
+              <AppendixTheoremBlock
+                kind="Theorem"
+                lead="Row-level detection boundary."
+              >
+                {`Let $G_{\\text{wreath}}$ denote the σ-loop's row-permutation group — namely $\\prod_i (H_i \\wr S_{m_i})$ per the wreath-equivalence result.`}
+              </AppendixTheoremBlock>
               <p className="mb-2 pl-4">
                 <em>
                   <InlineMathText>
@@ -467,28 +455,21 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   </InlineMathText>
                 </em>
               </p>
-              <p className="mb-0">
-                <strong>Corollary.</strong>{' '}
-                <em>
-                  <InlineMathText>
-                    {`If every $\\sigma \\in G_{\\text{wreath}}$ preserves $M$ elementwise, then $G_{\\text{pt}} = \\{e\\}$.`}
-                  </InlineMathText>
-                </em>
-              </p>
+              <AppendixTheoremBlock kind="Corollary">
+                {`If every $\\sigma \\in G_{\\text{wreath}}$ preserves $M$ elementwise, then $G_{\\text{pt}} = \\{e\\}$.`}
+              </AppendixTheoremBlock>
               <div className="mt-3 text-[11px] text-muted-foreground">
                 Source: <code className="font-mono">REVIEW_RESPONSE.md §5</code> — the theorem is empirically verified on 22 presets + 543 σ-checks. See <code className="font-mono">AUDIT.md</code> Appendix A for the wreath-equivalence proof.
               </div>
             </div>
-          </section>
+          </AppendixSection>
 
           {/* §3 — Induced permutation group on V */}
-          <section>
-            <div className="mb-2">
-              <SectionEyebrow n={3} label="First component" />
-              <h3 className={`${sectionTitle} mt-1`}>
-                The induced permutation group <Latex math="G_{\text{pt}}\big|_{V_{\mathrm{free}}}" />
-              </h3>
-            </div>
+          <AppendixSection
+            n={3}
+            label="First component"
+            title={`The induced permutation group G_pt|V_free`}
+          >
 
             <p className="mb-3 text-sm leading-7 text-foreground">
               <InlineMathText>
@@ -586,16 +567,14 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 {`Algebraically, $R[i,j] = (\\sum_k A[i,k])(\\sum_l A[j,l]) = v_i\\,v_j$ with $v = \\mathrm{rowsum}(A)$; the outer product $v\\,v^\\top$ is symmetric by construction, so $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}} = \\{e,(i\\;j)\\}$ acts trivially on $R$ for every $A$.`}
               </InlineMathText>
             </div>
-          </section>
+          </AppendixSection>
 
           {/* §4 — S(W_summed) */}
-          <section>
-            <div className="mb-2">
-              <SectionEyebrow n={4} label="Second component" />
-              <h3 className={`${sectionTitle} mt-1`}>
-                The symmetric group on summed labels <Latex math="S(W_{\mathrm{summed}})" />
-              </h3>
-            </div>
+          <AppendixSection
+            n={4}
+            label="Second component"
+            title="The symmetric group on summed labels"
+          >
 
             <p className="mb-3 text-sm leading-7 text-foreground">
               <InlineMathText>
@@ -625,19 +604,16 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 </InlineMathText>
               </p>
             </div>
-          </section>
+          </AppendixSection>
 
           {/* §5 — Assemble G_f */}
-          <section>
-            <div className="mb-2">
-              <SectionEyebrow n={5} label="Construction of G_f" />
-              <h3 className={`${sectionTitle} mt-1`}>
-                The formal symmetry group:{' '}
-                <Latex math="G_{\text{f}} = G_{\text{pt}}\big|_{V_{\mathrm{free}}} \times S(W_{\mathrm{summed}})" />
-              </h3>
-              <div className="mb-2 text-sm text-muted-foreground">
+          <AppendixSection
+            n={5}
+            label="How the formal group is built"
+            title="How the formal group is built"
+          >
+            <div className="mb-2 text-sm text-muted-foreground">
                 <Latex math="= (\text{row-witnessed V-action}) \times (\text{row-unwitnessed W-permutation})" />
-              </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
@@ -661,16 +637,14 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 wLabels={wLabels}
               />
             </div>
-          </section>
+          </AppendixSection>
 
           {/* §6 — Why G_f is not used for compression */}
-          <section>
-            <div className="mb-2">
-              <SectionEyebrow n={6} label="Consequences for compression" />
-              <h3 className={`${sectionTitle} mt-1`}>
-                The accumulation count <Latex math="\alpha" /> under <Latex math="G_{\text{f}}" />
-              </h3>
-            </div>
+          <AppendixSection
+            n={6}
+            label="Why Burnside on the formal group overcounts"
+            title="Why Burnside on the formal group overcounts"
+          >
 
             {exprAlpha !== null ? (
               <>
@@ -700,16 +674,14 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 </InlineMathText>
               </div>
             )}
-          </section>
+          </AppendixSection>
 
           {/* §7 — Leftover savings via G_pt|_V-aware storage */}
-          <section>
-            <div className="mb-2">
-              <SectionEyebrow n={7} label="Remark on output-tensor symmetry" />
-              <h3 className={`${sectionTitle} mt-1`}>
-                Savings accessible under <Latex math="G_{\text{pt}}\big|_{V_{\mathrm{free}}}" />-aware storage
-              </h3>
-            </div>
+          <AppendixSection
+            n={7}
+            label="Storage-aware savings"
+            title="Storage-aware savings"
+          >
 
             {/*
               Bridging paragraph. Without this the reader hits
@@ -845,7 +817,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 {`The $\\alpha$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model, with $G_{\\text{pt}}$ as the equivalence relation on summand values. Three optimization axes lie outside this scope: $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$-level output-tensor storage (discussed above), algebraic restructuring such as factoring $R = v\\,v^\\top$, and contraction re-ordering. Each can reduce the total operation count further than $\\alpha$ reports, and each requires algorithmic machinery distinct from the pointwise orbit compression this page measures.`}
               </NarrativeCallout>
             </div>
-          </section>
+          </AppendixSection>
         </div>
       </div>
     </div>
