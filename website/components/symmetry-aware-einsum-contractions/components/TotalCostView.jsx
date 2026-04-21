@@ -403,7 +403,28 @@ function SectionFiveIntroBlock() {
   );
 }
 
-function ComparisonMetric({ label, value, valueClassName, valueStyle }) {
+function MetricSupport({ formula, detail }) {
+  if (!formula && !detail) return null;
+
+  return (
+    <div className="mt-2 space-y-1">
+      {formula ? (
+        <div className="flex justify-center text-[10.5px] leading-[1.35] text-gray-400">
+          <div className="max-w-[24rem] overflow-x-auto overflow-y-hidden">
+            <Latex math={formula} colorize={false} />
+          </div>
+        </div>
+      ) : null}
+      {detail ? (
+        <div className="text-[10.5px] leading-[1.4] text-gray-400">
+          <code className="font-mono">{detail}</code>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function ComparisonMetric({ label, value, valueClassName, valueStyle, formula, detail }) {
   return (
     <div className="flex min-h-[160px] flex-col items-center justify-center px-4 py-[28px] text-center sm:px-6">
       <div
@@ -418,11 +439,12 @@ function ComparisonMetric({ label, value, valueClassName, valueStyle }) {
       <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-600">
         {label}
       </div>
+      <MetricSupport formula={formula} detail={detail} />
     </div>
   );
 }
 
-function SupportingMetric({ label, value, valueClassName, valueStyle }) {
+function SupportingMetric({ label, value, valueClassName, valueStyle, formula, detail }) {
   return (
     <div className="flex min-h-[126px] flex-col items-center justify-center px-4 py-[22px] text-center sm:px-5">
       <div
@@ -437,6 +459,7 @@ function SupportingMetric({ label, value, valueClassName, valueStyle }) {
       <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-600">
         {label}
       </div>
+      <MetricSupport formula={formula} detail={detail} />
     </div>
   );
 }
@@ -462,6 +485,8 @@ function EditorialComparisonSpread({ topMetrics, supportingMetrics }) {
             value={metric.value}
             valueClassName={metric.valueClassName}
             valueStyle={metric.valueStyle}
+            formula={metric.formula}
+            detail={metric.detail}
           />
         ))}
       </div>
@@ -491,6 +516,8 @@ function EditorialComparisonSpread({ topMetrics, supportingMetrics }) {
               value={metric.value}
               valueClassName={metric.valueClassName}
               valueStyle={metric.valueStyle}
+              formula={metric.formula}
+              detail={metric.detail}
             />
           ))}
         </div>
@@ -508,34 +535,49 @@ export default function TotalCostView({
 }) {
   if (!componentCosts || !componentData) return null;
 
-  const { mu = 0, alpha = 0 } = componentCosts;
+  const { mu = 0, alpha = 0, mTotal = 0, perComponent = [] } = componentCosts;
   const totalCost = mu + alpha;
   const allLabelCount = componentData?.components?.reduce((sum, comp) => sum + comp.labels.length, 0) ?? 0;
   const denseTuples = Math.pow(dimensionN, allLabelCount);
-  const denseTotalCost = Math.max(numTerms - 1, 0) * denseTuples + denseTuples;
+  const multiplicationFactor = Math.max(numTerms - 1, 0);
+  const denseTotalCost = multiplicationFactor * denseTuples + denseTuples;
   const totalSpeedup = totalCost > 0 ? (denseTotalCost / totalCost).toFixed(1) : '1.0';
   const savingsPct = denseTotalCost > 0 ? (((denseTotalCost - totalCost) / denseTotalCost) * 100).toFixed(1) : '0';
   const savingsPositive = Number(savingsPct) > 0;
   const { components = [] } = componentData;
+  const denseExpansion = `(${numTerms} - 1) × ${denseTuples.toLocaleString()} + ${denseTuples.toLocaleString()} = ${denseTotalCost.toLocaleString()}`;
+  const multiplicationExpansion = `(${numTerms} - 1) × ${mTotal.toLocaleString()} = ${mu.toLocaleString()}`;
+  const alphaFactors = perComponent.map((comp) => comp.alpha_a.toLocaleString());
+  const accumulationExpansion = alphaFactors.length > 1
+    ? `${alphaFactors.join(' × ')} = ${alpha.toLocaleString()}`
+    : alpha.toLocaleString();
   const TOP_COMPARISON_METRICS = [
     {
       label: 'Dense Cost',
       value: denseTotalCost.toLocaleString(),
+      formula: String.raw`(k-1)\cdot n^{|L|} + n^{|L|}`,
+      detail: denseExpansion,
     },
     {
       label: 'Symmetry-Aware Cost',
       value: totalCost.toLocaleString(),
       valueClassName: 'text-coral',
+      formula: String.raw`\mu + \alpha`,
+      detail: `${mu.toLocaleString()} + ${alpha.toLocaleString()} = ${totalCost.toLocaleString()}`,
     },
   ];
   const SUPPORTING_METRICS = [
     {
       label: 'Multiplication Cost (μ)',
       value: mu.toLocaleString(),
+      formula: String.raw`\mu = (k-1)\prod_a M_a`,
+      detail: multiplicationExpansion,
     },
     {
       label: 'Accumulation Cost (α)',
       value: alpha.toLocaleString(),
+      formula: String.raw`\alpha = \prod_a \alpha_a`,
+      detail: accumulationExpansion,
     },
     {
       label: 'Speedup',

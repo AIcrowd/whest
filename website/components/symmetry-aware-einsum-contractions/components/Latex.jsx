@@ -21,12 +21,13 @@ const MATH_WRAPPER_STYLE = { textTransform: 'none' };
  * Renders a LaTeX expression using KaTeX.
  * @param {string} math - LaTeX expression
  * @param {boolean} display - true for display mode (centered block), false for inline
+ * @param {boolean} colorize - true to apply shared notation colors, false for neutral math
  */
-export default function Latex({ math, display = false }) {
+export default function Latex({ math, display = false, colorize = true }) {
   const activeExplorerThemeId = getActiveExplorerThemeId();
   const html = useMemo(() => {
     try {
-      return katex.renderToString(colorizeNotationLatex(math), {
+      return katex.renderToString(colorize ? colorizeNotationLatex(math) : math, {
         displayMode: display,
         throwOnError: false,
         trust: true,
@@ -34,7 +35,7 @@ export default function Latex({ math, display = false }) {
     } catch {
       return math;
     }
-  }, [math, display, activeExplorerThemeId]);
+  }, [math, display, colorize, activeExplorerThemeId]);
 
   return display
     ? <div style={MATH_WRAPPER_STYLE} dangerouslySetInnerHTML={{ __html: html }} />
