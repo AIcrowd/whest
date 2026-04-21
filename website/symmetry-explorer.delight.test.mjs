@@ -129,3 +129,10 @@ test('Shared support prose utility uses serif 15px editorial body styling', () =
   assert.match(block, /color: var\(--gray-700\);/);
   assert.match(block, /text-align: justify;/);
 });
+
+test('Explorer editorial accent is scoped and consumed by NarrativeCallout', () => {
+  const stylesSrc = read('components/symmetry-aware-einsum-contractions/styles.css');
+  const calloutSrc = read('components/symmetry-aware-einsum-contractions/components/NarrativeCallout.jsx');
+  assert.match(stylesSrc, /--explorer-editorial-accent: var\(--editorial-accent\);/);
+  assert.match(calloutSrc, /var\(--explorer-editorial-accent\)/);
+});

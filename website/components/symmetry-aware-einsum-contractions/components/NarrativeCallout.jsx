@@ -58,14 +58,14 @@ export default function NarrativeCallout({ label, tone = 'muted', children }) {
         'h-full rounded-[var(--radius-xl)] border px-5 py-4',
         isCoral
           ? 'border-[color:color-mix(in_oklab,var(--coral)_25%,transparent)] bg-[var(--coral-light)]'
-          : 'border-gray-200 bg-gray-50',
+          : 'border-[color:color-mix(in_oklab,var(--explorer-editorial-accent)_28%,var(--explorer-border))] bg-[color:color-mix(in_oklab,var(--explorer-editorial-accent)_10%,var(--explorer-surface))]',
       ].join(' ')}
     >
       {label ? (
         <div
           className={[
             'mb-2 font-sans text-[10px] font-semibold uppercase tracking-[0.2em]',
-            isCoral ? 'text-coral' : 'text-gray-400',
+            isCoral ? 'text-coral' : 'text-[var(--explorer-editorial-accent)]',
           ].join(' ')}
         >
           {label}
