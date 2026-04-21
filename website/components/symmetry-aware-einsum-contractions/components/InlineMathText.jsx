@@ -52,7 +52,7 @@ export function renderTooltipInlineText(text, keyPrefix) {
  * - Non-string children pass through unchanged, so callers can interleave
  *   JSX nodes with strings without special-casing.
  */
-export default function InlineMathText({ children }) {
+export default function InlineMathText({ children, themeOverride = null }) {
   if (children == null) return null;
   if (typeof children !== 'string') return children;
 
@@ -63,7 +63,7 @@ export default function InlineMathText({ children }) {
     <>
       {parts.flatMap((part, i) => {
         if (part.startsWith('$') && part.endsWith('$') && part.length >= 3) {
-          return [<Latex key={`math-${i}`} math={part.slice(1, -1)} />];
+          return [<Latex key={`math-${i}`} math={part.slice(1, -1)} themeOverride={themeOverride} />];
         }
         return renderTooltipInlineText(part, `segment-${i}`);
       })}

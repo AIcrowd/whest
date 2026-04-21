@@ -22,12 +22,13 @@ const MATH_WRAPPER_STYLE = { textTransform: 'none' };
  * @param {string} math - LaTeX expression
  * @param {boolean} display - true for display mode (centered block), false for inline
  * @param {boolean} colorize - true to apply shared notation colors, false for neutral math
+ * @param {object|string|null} themeOverride - optional explorer theme override for notation colors
  */
-export default function Latex({ math, display = false, colorize = true }) {
+export default function Latex({ math, display = false, colorize = true, themeOverride = null }) {
   const activeExplorerThemeId = getActiveExplorerThemeId();
   const html = useMemo(() => {
     try {
-      return katex.renderToString(colorize ? colorizeNotationLatex(math) : math, {
+      return katex.renderToString(colorize ? colorizeNotationLatex(math, themeOverride) : math, {
         displayMode: display,
         throwOnError: false,
         trust: true,
@@ -35,7 +36,7 @@ export default function Latex({ math, display = false, colorize = true }) {
     } catch {
       return math;
     }
-  }, [math, display, colorize, activeExplorerThemeId]);
+  }, [math, display, colorize, activeExplorerThemeId, themeOverride]);
 
   return display
     ? <div style={MATH_WRAPPER_STYLE} dangerouslySetInnerHTML={{ __html: html }} />
