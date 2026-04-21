@@ -30,3 +30,13 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.why/);
   assert.doesNotMatch(appSource, /onOpenModalSection=\{/);
 });
+
+test('article route still wires the appendix modal while the main page stays appendix-free', () => {
+  const appSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(appSource, /<ExpressionLevelModal/);
+  assert.doesNotMatch(appSource, /VERBATIM, AUDIT-VERIFIED/);
+});
