@@ -47,6 +47,7 @@ test('explorer theme registry exposes the approved presets', () => {
       'coral-slate-hardline',
       'ink-authority',
       'editorial-noir',
+      'editorial-noir-math',
       'mean-prop-led',
       'cool-proof',
       'blue-ledger',
@@ -70,6 +71,8 @@ test('explorer theme registry exposes the approved presets', () => {
   const coralSlateHardline = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'coral-slate-hardline');
   const inkAuthority = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'ink-authority');
   const meanPropLed = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'mean-prop-led');
+  const editorialNoir = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-noir');
+  const editorialNoirMath = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-noir-math');
   const blueLedger = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'blue-ledger');
   const blueMargin = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'blue-margin');
   const warmMargin = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'warm-margin');
@@ -87,6 +90,8 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.ok(coralSlateHardline);
   assert.ok(inkAuthority);
   assert.ok(meanPropLed);
+  assert.ok(editorialNoir);
+  assert.ok(editorialNoirMath);
   assert.ok(blueLedger);
   assert.ok(blueMargin);
   assert.ok(warmMargin);
@@ -112,6 +117,10 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.equal(coralSlateHardline.roles.quantity, '#292C2D');
   assert.equal(inkAuthority.roles.symmetryObject, '#292C2D');
   assert.equal(meanPropLed.roles.action, '#2959C4');
+  assert.equal(editorialNoirMath.roles.ink, editorialNoir.roles.ink);
+  assert.equal(editorialNoirMath.roles.freeSide, editorialNoir.roles.freeSide);
+  assert.equal(editorialNoirMath.roles.summedSide, editorialNoir.roles.summedSide);
+  assert.equal(editorialNoirMath.mathPaletteId, 'editorial-noir-rich-15');
   assert.equal(blueLedger.roles.quantity, '#2959C4');
   assert.equal(blueMargin.roles.symmetryObject, '#2959C4');
   assert.equal(blueMargin.roles.quantity, '#334155');
@@ -119,6 +128,14 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.equal(warmMargin.roles.quantity, '#B29F9E');
   assert.equal(covPropEditorial.roles.statusSuccess, '#B29F9E');
   assert.equal(getExplorerThemePreset('missing-id').id, 'editorial-balance');
+});
+
+test('editorial-noir-math exposes the approved 15-color operand palette', () => {
+  assert.deepEqual(getExplorerThemePreset('editorial-noir-math').operandPalette, [
+    '#A45F44', '#4A7E9A', '#8C7B44', '#6B5C92', '#4D8A78',
+    '#B07C5F', '#557048', '#8F647F', '#326B79', '#A8904E',
+    '#4A6288', '#975B4C', '#6D8770', '#7F5F78', '#3C8D86',
+  ]);
 });
 
 test('explorerThemeColor resolves shared role colors from ids or theme objects', () => {

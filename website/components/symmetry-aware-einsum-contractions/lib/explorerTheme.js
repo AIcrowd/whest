@@ -1,3 +1,8 @@
+import {
+  EDITORIAL_NOIR_RICH_MATH_PALETTE_ID,
+  EDITORIAL_NOIR_RICH_MATH_OPERAND_PALETTE,
+} from './editorialNoirMathPalette.js';
+
 const HERO = '#F0524D';
 const HERO_MUTED = '#D23934';
 const INK = '#292C2D';
@@ -41,12 +46,13 @@ const BASE_THEME_ROLES = {
   statusWarning: STATUS_WARNING,
 };
 
-function createExplorerTheme(id, label, summary, roles) {
+function createExplorerTheme(id, label, summary, roles, extras = {}) {
   return {
     id,
     label,
     summary,
     roles,
+    ...extras,
   };
 }
 
@@ -376,6 +382,24 @@ export const EXPLORER_THEME_PRESETS = [
     }),
   ),
   createExplorerTheme(
+    'editorial-noir-math',
+    'Editorial noir - math',
+    'Keeps the noir page chrome but applies the approved rich math palette to notation and operand coloring.',
+    createThemeRoles({
+      summedSide: DEEP_SLATE,
+      symmetryObject: INK,
+      action: MID_SLATE,
+      quantity: INK,
+      muted: DEEP_SLATE,
+      statusSuccess: HERO_MUTED,
+      statusWarning: WARM_EXCEPTION,
+    }),
+    {
+      mathPaletteId: EDITORIAL_NOIR_RICH_MATH_PALETTE_ID,
+      operandPalette: EDITORIAL_NOIR_RICH_MATH_OPERAND_PALETTE,
+    },
+  ),
+  createExplorerTheme(
     'mean-prop-led',
     'Mean-prop led',
     'Lets the mean-prop slate own the structural lane while coral stays the hero accent and black remains the authority anchor.',
@@ -485,7 +509,9 @@ export function explorerThemeTint(themeOrId, role, alpha) {
 }
 
 export function getExplorerThemeOperandPalette(themeOrId) {
-  const roles = getExplorerThemeRoles(themeOrId);
+  const theme = getExplorerThemePreset(themeOrId);
+  if (theme.operandPalette?.length) return [...theme.operandPalette];
+  const roles = getExplorerThemeRoles(theme);
   return [...new Set([
     roles.quantity,
     roles.symmetryObject,

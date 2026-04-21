@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
+import { buildVariableColors } from './components/symmetry-aware-einsum-contractions/engine/colorPalette.js';
+
 test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
   const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
@@ -71,6 +73,25 @@ test('ExampleChooser rebuilds variable colors from the active explorer theme', (
   assert.match(chooserSource, /explorerThemeId/);
   assert.match(chooserSource, /const varColors = useMemo\(\s*\(\) => buildVariableColors\(variables,\s*explorerThemeId\),/);
   assert.match(chooserSource, /\[variables,\s*explorerThemeId\]/);
+});
+
+test('buildVariableColors exposes fifteen distinct operand colors for editorial-noir-math before cycling', () => {
+  const variables = Array.from({ length: 15 }, (_, idx) => ({
+    name: `V${idx}`,
+    rank: 2,
+    symmetry: 'none',
+    symAxes: [],
+  }));
+
+  const colors = Object.values(buildVariableColors(variables, 'editorial-noir-math')).map((entry) => entry.color);
+
+  assert.equal(colors.length, 15);
+  assert.equal(new Set(colors).size, 15);
+  assert.deepEqual(colors, [
+    '#A45F44', '#4A7E9A', '#8C7B44', '#6B5C92', '#4D8A78',
+    '#B07C5F', '#557048', '#8F647F', '#326B79', '#A8904E',
+    '#4A6288', '#975B4C', '#6D8770', '#7F5F78', '#3C8D86',
+  ]);
 });
 
 test('PresetSidebar matches the design-system preset-list spec (flat container, 10px gray kicker, canonical padding)', () => {
