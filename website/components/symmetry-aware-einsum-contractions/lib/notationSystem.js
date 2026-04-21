@@ -67,24 +67,28 @@ const NOTATION_THEME_ROLE_BY_ID = {
 };
 
 const NOTATION_MATH_ROLE_BY_ID = {
+  l_labels: 'shapeSet',
+  l_component: 'shapeSet',
+  u_axis_classes: 'shapeSet',
+  m_incidence: 'incidenceStructure',
   v_free: 'freeSide',
   v_free_component: 'freeSide',
   g_pointwise_restricted_v: 'freeSide',
   g_v_factor: 'freeSide',
-  projection_pi_v_free: 'freeSide',
+  projection_pi_v_free: 'projection',
   w_summed: 'summedSide',
   w_summed_component: 'summedSide',
   s_w_summed: 'summedSide',
-  g_w_factor: 'summedSide',
   x_w_summed: 'summedSide',
-  g_detected: 'symmetryObject',
-  g_component: 'symmetryObject',
-  g_pointwise: 'symmetryObject',
+  g_detected: 'localGroup',
+  g_component: 'localGroup',
+  g_pointwise: 'localGroup',
+  g_w_factor: 'summedGroup',
   x_space: 'ambientSpace',
   x_component: 'ambientSpace',
   orbit_space_component: 'ambientSpace',
-  orbit_o: 'ambientSpace',
-  omega_orbit: 'ambientSpace',
+  orbit_o: 'orbitObject',
+  omega_orbit: 'orbitObject',
   g_wreath: 'subgroup',
   h_family: 'subgroup',
   g_formal: 'subgroup',
@@ -97,12 +101,13 @@ const NOTATION_MATH_ROLE_BY_ID = {
   m_component: 'mFamily',
   alpha_total: 'alphaFamily',
   alpha_component: 'alphaFamily',
-  k_operands: 'countFamily',
-  n_label: 'countFamily',
-  n_cycle: 'countFamily',
-  n_l: 'countFamily',
-  n_omega: 'countFamily',
-  c_omega_cycles: 'countFamily',
+  k_operands: 'arity',
+  n_label: 'labelCount',
+  n_cycle: 'cycleCount',
+  n_l: 'youngCount',
+  n_omega: 'omegaSize',
+  c_omega_cycles: 'omegaExponent',
+  r_complement: 'shapeSet',
 };
 
 export const NOTATION_REGISTRY = {
@@ -209,6 +214,7 @@ const AUTO_COLORED_NOTATION_IDS = [
   'omega_orbit',
   'n_omega',
   'c_omega_cycles',
+  'r_complement',
 ];
 
 function escapeRegex(value) {
@@ -292,8 +298,16 @@ function notationEntry(id) {
   return entry;
 }
 
-function resolveColor(id) {
-  const activeTheme = getExplorerThemePreset(getThemeStoreActiveExplorerThemeId());
+function resolveThemePreset(themeOverride = null) {
+  return getExplorerThemePreset(themeOverride ?? getThemeStoreActiveExplorerThemeId());
+}
+
+function resolveThemeRoles(themeOverride = null) {
+  return resolveThemePreset(themeOverride).roles;
+}
+
+function resolveColor(id, themeOverride = null) {
+  const activeTheme = resolveThemePreset(themeOverride);
   if (activeTheme.mathPaletteId === EDITORIAL_NOIR_RICH_MATH_PALETTE_ID) {
     const mathRole = NOTATION_MATH_ROLE_BY_ID[id];
     if (mathRole && Object.prototype.hasOwnProperty.call(EDITORIAL_NOIR_RICH_MATH_ROLES, mathRole)) {
@@ -301,7 +315,7 @@ function resolveColor(id) {
     }
   }
   const themeRole = NOTATION_THEME_ROLE_BY_ID[id];
-  const activeExplorerThemeRoles = getThemeStoreActiveExplorerThemeRoles();
+  const activeExplorerThemeRoles = resolveThemeRoles(themeOverride);
   if (themeRole && Object.prototype.hasOwnProperty.call(activeExplorerThemeRoles, themeRole)) {
     return activeExplorerThemeRoles[themeRole];
   }
@@ -346,20 +360,21 @@ export function notationLatex(id) {
   return notationEntry(id).latex;
 }
 
-export function notationColor(id) {
-  return resolveColor(id);
+export function notationColor(id, themeOverride = null) {
+  return resolveColor(id, themeOverride);
 }
 
 export function notationColoredLatex(
   id,
   latexOverride = notationLatex(id),
   wrapInGroup = false,
+  themeOverride = null,
 ) {
-  const colored = String.raw`\textcolor{${notationColor(id)}}{${latexOverride}}`;
+  const colored = String.raw`\textcolor{${notationColor(id, themeOverride)}}{${latexOverride}}`;
   return wrapInGroup ? `{${colored}}` : colored;
 }
 
-export function colorizeNotationLatex(math) {
+export function colorizeNotationLatex(math, themeOverride = null) {
   if (typeof math !== 'string' || math.length === 0) return math;
 
   const { masked, protectedSegments } = protectExistingTextColor(math);
@@ -370,7 +385,7 @@ export function colorizeNotationLatex(math) {
     colorized = colorized.replace(regex, (match, offset) => {
       const precedingChar = colorized[offset - 1];
       const superscriptOrSubscript = precedingChar === '^' || precedingChar === '_';
-      const replacement = notationColoredLatex(id, match, superscriptOrSubscript);
+      const replacement = notationColoredLatex(id, match, superscriptOrSubscript, themeOverride);
       const key = `@@NOTATION_${placeholders.length}@@`;
       placeholders.push(replacement);
       return key;

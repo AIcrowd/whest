@@ -244,12 +244,94 @@ test('editorial-noir-math remaps approved notation families through the rich mat
   setActiveExplorerTheme('editorial-noir-math');
 
   assert.equal(notationColor('v_free'), '#A45F44');
-  assert.equal(notationColor('w_summed'), '#4A7E9A');
+  assert.equal(notationColor('w_summed'), '#334155');
   assert.equal(notationColor('g_detected'), '#4A6288');
+  assert.equal(notationColor('g_w_factor'), '#4A7E9A');
+  assert.equal(notationColor('g_wreath'), '#557048');
+  assert.equal(notationColor('x_space'), '#6B5C92');
+  assert.equal(notationColor('orbit_o'), '#7F5F78');
+  assert.equal(notationColor('projection_pi_v_free'), '#3C8D86');
+  assert.equal(notationColor('pi_relabeling'), '#3C8D86');
+  assert.equal(notationColor('sigma_row_move'), '#975B4C');
+  assert.equal(notationColor('g_element'), '#6D8770');
   assert.equal(notationColor('mu_total'), '#326B79');
   assert.equal(notationColor('m_component'), '#3C8D86');
   assert.equal(notationColor('alpha_total'), '#8F647F');
+  assert.equal(notationColor('k_operands'), '#B07C5F');
   assert.equal(notationColor('n_label'), '#A8904E');
+  assert.equal(notationColor('n_cycle'), '#4D8A78');
+  assert.equal(notationColor('n_l'), '#8C7B44');
+  assert.equal(notationColor('n_omega'), '#4A7E9A');
+  assert.equal(notationColor('c_omega_cycles'), '#975B4C');
+  assert.equal(notationColor('l_labels'), '#557048');
+  assert.equal(notationColor('u_axis_classes'), '#557048');
+  assert.equal(notationColor('r_complement'), '#557048');
+  assert.equal(notationColor('m_incidence'), '#6D8770');
+
+  resetActiveExplorerTheme();
+});
+
+test('notationColor accepts an explicit theme override without changing global state', () => {
+  resetActiveExplorerTheme();
+  setActiveExplorerTheme('editorial-noir');
+
+  const globalAlpha = notationColor('alpha_total');
+  const overriddenAlpha = notationColor('alpha_total', 'editorial-noir-math');
+
+  assert.equal(globalAlpha, '#292C2D');
+  assert.equal(overriddenAlpha, '#8F647F');
+  assert.equal(getActiveExplorerThemeId(), 'editorial-noir');
+  assert.equal(notationColor('alpha_total'), '#292C2D');
+});
+
+test('colorizeNotationLatex accepts an explicit theme override without changing global state', () => {
+  resetActiveExplorerTheme();
+  setActiveExplorerTheme('editorial-noir');
+
+  const colored = colorizeNotationLatex(String.raw`\mu + \alpha_a`, 'editorial-noir-math');
+
+  assert.match(colored, /#326B79/);
+  assert.match(colored, /#8F647F/);
+  assert.equal(getActiveExplorerThemeId(), 'editorial-noir');
+});
+
+test('section five formulas route visible noir-math symbols through distinct notation lanes', () => {
+  resetActiveExplorerTheme();
+  setActiveExplorerTheme('editorial-noir-math');
+
+  const totalCostSource = fs.readFileSync(
+    path.join(WEBSITE_ROOT, 'components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx'),
+    'utf8',
+  );
+  assert.match(totalCostSource, /sumOver\(inSet\(tc\(SYM\.element, notationLatex\('g_element'\)\), tc\(SYM\.localGroup, notationLatex\('g_component'\)\)\)\)/);
+  assert.match(totalCostSource, /tc\(SYM\.ambient, notationLatex\('x_space'\)\)/);
+  assert.match(totalCostSource, /tc\(SYM\.ambient, notationLatex\('orbit_space_component'\)\)/);
+  assert.match(totalCostSource, /tc\(SYM\.projection, notationLatex\('projection_pi_v_free'\)\)/);
+  assert.match(totalCostSource, /notationLatex\('r_complement'\)/);
+  assert.match(totalCostSource, /notationLatex\('l_labels'\)/);
+  assert.match(totalCostSource, /notationLatex\('g_w_factor'\)/);
+  assert.match(totalCostSource, /notationLatex\('n_omega'\)/);
+  assert.match(totalCostSource, /notationLatex\('c_omega_cycles'\)/);
+
+  const singletonColored = colorizeNotationLatex(
+    String.raw`\frac{n_\Omega}{|G_a|} \sum_g \Bigl(\prod_{c \in R} n_c\Bigr)\Bigl(n_\Omega^{c_\Omega(g)} - (n_\Omega - 1)^{c_\Omega(g)}\Bigr)`,
+  );
+
+  assert.match(totalCostSource, /tc\(SYM\.ambient, 'X'\)/);
+  assert.match(totalCostSource, /tc\(SYM\.wlabel, notationLatex\('w_summed'\)\)/);
+  assert.match(totalCostSource, /tc\(SYM\.summedGroup, notationLatex\('g_w_factor'\)\)/);
+
+  assert.match(singletonColored, /#4A7E9A/);
+  assert.match(singletonColored, /#4A6288/);
+  assert.match(singletonColored, /#557048/);
+  assert.match(singletonColored, /#4D8A78/);
+  assert.match(singletonColored, /#975B4C/);
+
+  assert.match(totalCostSource, /tc\(SYM\.orbitObject, notationLatex\('orbit_o'\)\)/);
+  assert.match(totalCostSource, /tc\(SYM\.ambient, notationLatex\('x_space'\)\)/);
+  assert.match(totalCostSource, /tc\(SYM\.localGroup, notationLatex\('g_component'\)\)/);
+  assert.match(totalCostSource, /tc\(SYM\.projection, notationLatex\('pi_relabeling'\)\)/);
+  assert.match(totalCostSource, /tc\(SYM\.vlabel, notationLatex\('v_free'\)\)/);
 
   resetActiveExplorerTheme();
 });
