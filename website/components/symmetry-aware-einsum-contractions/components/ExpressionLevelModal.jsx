@@ -415,14 +415,14 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               </p>
             </div>
 
-            <div className="mb-4 rounded-md border border-primary/40 bg-primary/5 px-5 py-4 text-[13px] leading-7 text-foreground">
+            <div className="max-w-[74ch] font-serif text-[17px] leading-[1.75] text-gray-700">
               <AppendixTheoremBlock
                 kind="Proposition"
                 lead="Frobenius-class presets."
               >
                 {`Let an einsum satisfy: (1) No operand has declared axis symmetry ($H_i = \\{e\\}$ for every identical-operand group i); (2) Every identical-operand group of size $\\geq 2$ consists of copies with identical subscript strings. Then for generic operands, $G_{\\text{pt}} = \\{e\\}$ and $G_{\\text{f}} = S(W_{\\mathrm{summed}})$ — every formal symmetry beyond identity is row-unwitnessed and lives in the $S(W_{\\mathrm{summed}})$ factor of the §5 construction.`}
               </AppendixTheoremBlock>
-              <p className="mb-3">
+              <p className="mb-5">
                 <InlineMathText>
                   {`*Proof.* The wreath $\\prod_i (H_i \\wr S_{m_i})$ reduces under (1) to $\\prod_i S_{m_i}$ (pure copy-permutations). A copy-permutation $\\sigma$ within group $i$ sends U-vertex $(i, j, \\text{axis } k)$ to $(i, \\sigma_i(j), k)$. Under (2), every copy in group $i$ has the same axis-to-label mapping, so the permuted U-vertex carries the same label as the original. Hence $M_\\sigma = M$ elementwise. By Theorem (b) below, $\\texttt{derivePi}(\\sigma) = \\text{identity}$. No non-identity $\\pi$ contributions exist, so $G_{\\text{pt}} = \\{e\\}$. Then $G_{\\text{f}} = G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}} \\times S(W_{\\mathrm{summed}}) = \\{e\\} \\times S(W_{\\mathrm{summed}}) = S(W_{\\mathrm{summed}})$. ∎`}
                 </InlineMathText>
@@ -433,21 +433,21 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               >
                 {`Let $G_{\\text{wreath}}$ denote the σ-loop's row-permutation group — namely $\\prod_i (H_i \\wr S_{m_i})$ per the wreath-equivalence result.`}
               </AppendixTheoremBlock>
-              <p className="mb-2 pl-4">
+              <p className="mb-2">
                 <em>
                   <InlineMathText>
                     {`(a) The σ-loop iterates over every $\\sigma \\in G_{\\text{wreath}}$ and applies $\\texttt{derivePi}$. A given $\\sigma$ yields a valid label permutation iff $\\sigma$'s column fingerprints bijectively match the original's; some wreath elements pass (e.g. triangle's two 3-cycles), others fail (e.g. triangle's three adjacent transpositions) and are rejected.`}
                   </InlineMathText>
                 </em>
               </p>
-              <p className="mb-2 pl-4">
+              <p className="mb-2">
                 <em>
                   <InlineMathText>
                     {`(b) For any $\\sigma \\in G_{\\text{wreath}}$ that passes $\\texttt{derivePi}$, the derived $\\pi$ is the identity iff $M_\\sigma = M$ elementwise — i.e. $\\sigma$ preserves the incidence matrix row-by-row with no column relabelling needed.`}
                   </InlineMathText>
                 </em>
               </p>
-              <p className="mb-3 pl-4">
+              <p className="mb-5">
                 <em>
                   <InlineMathText>
                     {`(c) The non-identity valid $\\pi$'s — $\\{ \\texttt{derivePi}(\\sigma) : \\sigma \\in G_{\\text{wreath}}, \\texttt{derivePi}(\\sigma) \\neq \\texttt{null}, \\texttt{derivePi}(\\sigma) \\neq e \\}$ — form a subgroup of $\\mathrm{Sym}(L)$ which is exactly $G_{\\text{pt}}$. (The engine closes them via Dimino for robustness, but the set is already composition-closed.)`}
@@ -457,6 +457,11 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               <AppendixTheoremBlock kind="Corollary">
                 {`If every $\\sigma \\in G_{\\text{wreath}}$ preserves $M$ elementwise, then $G_{\\text{pt}} = \\{e\\}$.`}
               </AppendixTheoremBlock>
+              <p className="mt-5 max-w-[72ch] font-serif text-[17px] leading-[1.75] text-gray-700">
+                <InlineMathText>
+                  {`This is why the main explorer prices accumulation with the detected pointwise group rather than the larger formal symmetry group: only $G_{\\text{pt}}$ witnesses equality at the level of individual summands.`}
+                </InlineMathText>
+              </p>
             </div>
           </AppendixSection>
 
