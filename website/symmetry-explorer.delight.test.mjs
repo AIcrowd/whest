@@ -134,5 +134,13 @@ test('Explorer editorial accent is scoped and consumed by NarrativeCallout', () 
   const stylesSrc = read('components/symmetry-aware-einsum-contractions/styles.css');
   const calloutSrc = read('components/symmetry-aware-einsum-contractions/components/NarrativeCallout.jsx');
   assert.match(stylesSrc, /--explorer-editorial-accent: var\(--editorial-accent\);/);
-  assert.match(calloutSrc, /var\(--explorer-editorial-accent\)/);
+  assert.match(
+    calloutSrc,
+    /border-\[color:color-mix\(in_oklab,var\(--explorer-editorial-accent\)_28%,var\(--explorer-border\)\)\]/,
+  );
+  assert.match(
+    calloutSrc,
+    /bg-\[color:color-mix\(in_oklab,var\(--explorer-editorial-accent\)_10%,var\(--explorer-surface\)\)\]/,
+  );
+  assert.match(calloutSrc, /text-\[var\(--explorer-editorial-accent\)\]/);
 });

@@ -7,7 +7,7 @@ import InlineMathText from './InlineMathText.jsx';
 // bg + CardHeader), which made short editorial observations read as
 // UI panels rather than as part of the essay.
 //
-//   muted      → `.callout` default — light gray-50 callout box
+//   muted      → `.callout` default — warm editorial-accent framed/tinted box
 //   algorithm  → `.callout--accent` — coral-light callout box
 //                (the Approach side of an Interpretation/Approach pair,
 //                per the reference template's §2/§3 markup)
@@ -47,11 +47,12 @@ export default function NarrativeCallout({ label, tone = 'muted', children }) {
 
   const isCoral = tone === 'algorithm';
 
-  // `.callout` box — 1px hairline, 11.2px radius, gray-50 (or coral-
-  // light), quiet inline kicker. Height stretches in its grid row so
-  // sibling callouts line up; the body floats at the top (no more
-  // vertical centering which made short paragraphs feel adrift inside
-  // oversized cards).
+  // `.callout` box — 1px hairline, 11.2px radius, with non-coral
+  // tones framed/tinted in warm editorial-accent hues and coral tones
+  // staying coral-light. Height stretches in its grid row so sibling
+  // callouts line up; the body floats at the top (no more vertical
+  // centering which made short paragraphs feel adrift inside oversized
+  // cards).
   return (
     <div
       className={[
