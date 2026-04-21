@@ -202,7 +202,6 @@ function AppendixWorkedExample({
   preset,
   groupLabel,
   title,
-  continuation = false,
   intro = null,
   children,
 }) {
@@ -217,7 +216,6 @@ function AppendixWorkedExample({
         >
           {title ?? preset?.label ?? preset?.name ?? preset?.id ?? 'preset'}
         </AppendixPresetHoverLabel>
-        {continuation ? ' (continued)' : null}
       </p>
       {intro ? (
         <div className={APPENDIX_PROSE_CLASS}>
@@ -892,26 +890,20 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
             label="Second component"
             title="The symmetric group on summed labels"
           >
-
             <AppendixTwoColBlock
               left={
                 <div className="space-y-4">
-                  <p className={`mb-3 ${APPENDIX_APP_TEXT_CLASS}`}>
+                  <p className={APPENDIX_APP_TEXT_CLASS}>
                     <InlineMathText>
-                      {`Section 3 isolated the visible-label action that remains pointwise on the output tensor. The complementary factor comes from the summed labels alone. Unlike $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$, the $S(W_{\\mathrm{summed}})$ factor is **row-unwitnessed**: no $\\sigma$ in the wreath produces these $W_{\\mathrm{summed}}$-permutations as its induced $\\pi$. They are formal symmetries by virtue of being permutations of bound summation indices — renaming dummies leaves any sum invariant. This is the only factor of $G_{\\text{f}}$ that is strictly non-row-visible.`}
+                      {`Section 3 isolated the visible-label action that remains pointwise on the output tensor. The complementary factor comes from the summed labels alone. Once the visible $V_{\\mathrm{free}}$ action is extracted, permutations of $W_{\\mathrm{summed}}$ act only after aggregation. They preserve the full sum after aggregation but do not give pointwise equal summands.`}
                     </InlineMathText>
                   </p>
-                  <div className={`space-y-4 ${APPENDIX_PROSE_CLASS}`}>
-                    <p>
-                      <InlineMathText>
-                          {`$S(W_{\\mathrm{summed}})$ is the full symmetric group on the summed labels $W_{\\mathrm{summed}}$. Its size is $|W_{\\mathrm{summed}}|!$, and unlike $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ it depends only on how many summed labels there are, not on operand structure or declared symmetries.`}
-                      </InlineMathText>
-                    </p>
-                    <p>
-                      <InlineMathText>
-                        {`Every permutation of $W_{\\mathrm{summed}}$ is a formal symmetry because summed labels are dummy variables: relabelling them consistently across all operands yields the same total sum. That invariance is syntactic rather than pointwise, since individual summands at two permuted tuples need not agree.`}
-                      </InlineMathText>
-                    </p>
+                  <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-4">
+                    <p className={APPENDIX_KICKER_CLASS}>Formal takeaway</p>
+                    <div className="space-y-3">
+                      <p className={APPENDIX_APP_TEXT_CLASS}>S(W_{\mathrm{summed}}) is the full symmetric group on the summed labels; its elements rename bound summation variables and preserve the formal expression after summation.</p>
+                      <p className={APPENDIX_APP_TEXT_CLASS}>That invariance is weaker than pointwise symmetry: it preserves the total sum but does not force equality of individual summands at permuted tuples.</p>
+                    </div>
                   </div>
                 </div>
               }
@@ -920,15 +912,12 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   preset={EXAMPLES_BY_ID.get('bilinear-trace')}
                   title="bilinear trace"
                   groupLabel={EXAMPLES_BY_ID.get('bilinear-trace')?.expectedGroup}
-                  continuation
+                  intro={
+                    <InlineMathText>
+                      {`dummy swap (k l) preserves the double sum but sends individual summands to different products`}
+                    </InlineMathText>
+                  }
                 >
-                  <div className={`space-y-4 ${APPENDIX_PROSE_CLASS}`}>
-                    <p>
-                      <InlineMathText>
-                        {`With $W_{\\mathrm{summed}} = \\{k,l\\}$, $S(W_{\\mathrm{summed}}) = \\{e,\\;(k\\;l)\\}$. The permutation $(k\\;l)$ is a formal symmetry because $\\sum_{k,l} A[i,k]\\,A[j,l] = \\sum_{k,l} A[i,l]\\,A[j,k]$ — the two double sums iterate over the same set of index pairs and differ only in which variable is named $k$.`}
-                      </InlineMathText>
-                    </p>
-                  </div>
                   <WorkedExampleEquationLedger>
                     <WorkedExampleEquation
                       assignment={
@@ -959,7 +948,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   </WorkedExampleEquationLedger>
                   <WorkedExampleNote>
                     <InlineMathText>
-                      {`However, $(k\\;l)$ is not pointwise. Fix $(i,j) = (0,1)$ and compare the individual summands at $(k,l) = (0,1)$ and its image $(1,0)$: one is $A[0,0] \\cdot A[1,1]$ and the other is $A[0,1] \\cdot A[1,0]$. These expressions differ for a generic $A$, so applying $(k\\;l)$ to Burnside's orbit formula would yield a compression claim that does not match the true output.`}
+                      {`The whole double sum is unchanged by renaming dummy variables, but the products are not equal term-by-term; formal symmetry does not imply pointwise equality.`}
                     </InlineMathText>
                   </WorkedExampleNote>
                 </AppendixWorkedExample>

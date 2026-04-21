@@ -146,15 +146,20 @@ test('appendix typography is organized around explicit shared editorial register
   assert.match(source, /const APPENDIX_FOOTNOTE_CLASS = 'text-\[11px\] italic text-muted-foreground';/);
 });
 
-test('appendix sections 3 and 4 share a worked-example shell with stacked derivation rows in the right column', () => {
+test('appendix section 4 is rewritten as a formal-only contrast chapter with a two-row dummy-swap example', () => {
   assert.match(source, /function AppendixWorkedExample\(/);
   assert.match(source, /function WorkedExampleEquation\(/);
   assert.match(source, /function WorkedExampleEquationLedger\(/);
-  assert.match(source, /<AppendixWorkedExample[\s\S]*title="bilinear trace"[\s\S]*<WorkedExampleEquationLedger>/);
-  assert.match(source, /Worked example —\{' '\}/);
-  assert.match(source, /pl-\[5\.5ch\] text-gray-700/);
-  assert.match(source, /R\[\s*<span style=\{vStyle\}>0<\/span>,<span style=\{vStyle\}>1<\/span>\]\s*=/);
-  assert.match(source, /= 3 \+ 4 \+ 6 \+ 8 = <strong>21<\/strong>/);
+  assert.match(source, /Section 3 isolated the visible-label action that remains pointwise on the output tensor\./);
+  assert.match(source, /The complementary factor comes from the summed labels alone\./);
+  assert.match(source, /Formal takeaway/);
+  assert.match(source, /S\(W_\{\\mathrm\{summed\}\}\) is the full symmetric group on the summed labels/);
+  assert.match(source, /preserve the full sum after aggregation but do not give pointwise equal summands/);
+  assert.match(source, /dummy swap \(k l\) preserves the double sum but sends individual summands to different products/);
   assert.match(source, /\(k,l\) = \(\s*<span style=\{wStyle\}>0<\/span>,<span style=\{wStyle\}>1<\/span>\)\s*:/);
+  assert.match(source, /\(k,l\) = \(\s*<span style=\{wStyle\}>1<\/span>,<span style=\{wStyle\}>0<\/span>\)\s*:/);
   assert.match(source, /= 1 · 4 = <strong>4<\/strong>/);
+  assert.match(source, /= 2 · 3 = <strong>6<\/strong>/);
+  assert.match(source, /formal symmetry does not imply pointwise equality/);
+  assert.doesNotMatch(source, /\(continued\)/);
 });
