@@ -19,7 +19,7 @@ export default function PresetSidebar({
       aria-label="Preset examples"
       className="sticky top-20 hidden max-h-[calc(100vh-5rem)] w-[18rem] shrink-0 self-start overflow-y-auto border-b border-gray-100 md:block xl:w-[20rem]"
     >
-      <div className="overflow-hidden border-r border-gray-200 bg-white">
+      <div className="overflow-hidden border-x border-gray-200 bg-white">
         <div className="border-b border-gray-100 px-4 py-4">
           <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
             Presets

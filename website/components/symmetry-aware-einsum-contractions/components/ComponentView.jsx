@@ -302,16 +302,32 @@ export function LabelInteractionGraph({
           {presentation?.tooltip?.body ? (
             <div className="text-[11px] text-stone-700"><InlineMathText>{presentation.tooltip.body}</InlineMathText></div>
           ) : null}
-          <div className="mt-2 text-[11px] text-stone-700">
-            <span className="text-stone-500">Labels:</span>{' '}
-            <span className="font-mono text-stone-900">{comp.labels?.join(', ') ?? '—'}</span>
-          </div>
-          {comp.groupName && comp.groupName !== 'trivial' ? (
-            <div className="text-[11px] text-stone-700">
-              <span className="text-stone-500">Symmetry:</span>{' '}
-              <span className="font-mono text-stone-900">{comp.groupName}</span>
+          <div className="mt-2 space-y-1.5 text-[11px] text-stone-700">
+            <span className="text-stone-500">Labels:</span>
+            <div className="flex flex-wrap items-center gap-1.5">
+              {(comp.labels?.length ? comp.labels : ['∅']).map((label) => {
+                if (label === '∅') {
+                  return (
+                    <span key={`empty-${hovered.idx}`} className="font-mono text-stone-500">
+                      ∅
+                    </span>
+                  );
+                }
+                const role = (comp.va ?? []).includes(label) ? 'v' : 'w';
+                return (
+                  <RoleBadge key={`tooltip-${hovered.idx}-${label}`} role={role}>
+                    {label}
+                  </RoleBadge>
+                );
+              })}
             </div>
-          ) : null}
+          </div>
+          <div className="mt-1 space-y-1.5 text-[11px] text-stone-700">
+            <span className="text-stone-500">Symmetry:</span>
+            <div className="flex items-center">
+              <SymmetryBadge value={comp.groupName || 'trivial'} />
+            </div>
+          </div>
         </>
       );
     }

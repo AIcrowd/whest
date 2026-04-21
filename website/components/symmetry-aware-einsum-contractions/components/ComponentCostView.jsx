@@ -318,7 +318,7 @@ function InteractionGraphMetricStrip({ labelCount, edgeCount, componentCount }) 
     { label: 'components', value: componentCount },
   ];
   return (
-    <div className="flex shrink-0 items-stretch gap-1.5">
+    <div className="mt-3 flex flex-wrap items-stretch gap-1.5">
       {cells.map((cell) => (
         <div
           key={cell.label}
@@ -389,16 +389,14 @@ export default function ComponentCostView({
     <div className="min-w-0 space-y-6">
       <div className="editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2">
         <div id="interaction-graph" className="bg-white p-4 scroll-mt-24">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <ExplorerSubsectionHeader anchorId="interaction-graph" labelText="Interaction Graph">
-                Interaction Graph
-              </ExplorerSubsectionHeader>
-              <p className="explorer-support-prose mt-2">
-                Nodes are <strong className="font-semibold text-foreground">labels</strong>; an edge marks labels that a generator of&nbsp;
-                <Latex math="G" />&nbsp;moves together. Disjoint components factor the cost into independent sub-problems — each one lands on a case in the decision tree below.
-              </p>
-            </div>
+          <div className="min-w-0">
+            <ExplorerSubsectionHeader anchorId="interaction-graph" labelText="Interaction Graph">
+              Interaction Graph
+            </ExplorerSubsectionHeader>
+            <p className="explorer-support-prose mt-2">
+              Nodes are <strong className="font-semibold text-foreground">labels</strong>; an edge marks labels that a generator of&nbsp;
+              <Latex math="G" />&nbsp;moves together. Disjoint components factor the cost into independent sub-problems — each one lands on a case in the decision tree below.
+            </p>
             <InteractionGraphMetricStrip
               labelCount={allLabels.length}
               edgeCount={componentData.interactionGraph?.edges?.length ?? 0}

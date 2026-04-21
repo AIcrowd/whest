@@ -71,7 +71,7 @@ test('PresetSidebar matches the design-system preset-list spec (flat container, 
   assert.match(sidebarSource, /formula="— build below —"/);
   assert.match(sidebarSource, /Keep the current builder state/);
   assert.match(sidebarSource, /text-\[10px\] font-semibold uppercase tracking-\[0\.2em\] text-gray-400/);
-  assert.match(sidebarSource, /overflow-hidden border-r border-gray-200 bg-white/);
+  assert.match(sidebarSource, /overflow-hidden border-x border-gray-200 bg-white/);
   assert.match(sidebarSource, /border-b border-gray-100 px-4 py-4/);
   assert.match(sidebarSource, /divide-y divide-gray-100/);
   assert.match(sidebarSource, /glyph=\{summary\.glyph\}/);

@@ -2,9 +2,11 @@
 
 .explorer-support-prose {
   font-family: var(--font-paper-serif);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.72;
   color: var(--gray-700);
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .explorer-inline-code {

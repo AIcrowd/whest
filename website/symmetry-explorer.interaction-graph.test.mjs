@@ -150,6 +150,8 @@ test('LabelInteractionGraph card surface is interactive (Stage 2)', () => {
   // Hull tooltip surfaces the regime/shape presentation body (the whole
   // point of unifying hull color with the ladder via getRegimePresentation).
   assert.match(source, /presentation\?\.tooltip\?\.body/);
+  assert.match(source, /<RoleBadge key=\{`tooltip-\$\{hovered\.idx\}-\$\{label\}`\} role=\{role\}>/);
+  assert.match(source, /<SymmetryBadge value=\{comp\.groupName \|\| 'trivial'\} \/>/);
 });
 
 test('StickyBar selected section pill keeps a visible coral inner marker and aligned geometry', () => {

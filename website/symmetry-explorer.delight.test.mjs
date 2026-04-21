@@ -114,11 +114,12 @@ test('ExplorerSubsectionHeader uses the shared 12px coral kicker register', () =
   assert.doesNotMatch(src, /text-\[11px\]/);
 });
 
-test('Shared support prose utility uses serif 14px editorial body styling', () => {
+test('Shared support prose utility uses serif 15px editorial body styling', () => {
   const src = read('components/symmetry-aware-einsum-contractions/styles.css');
   const block = src.match(/\.explorer-support-prose\s*\{[^}]*\}/)?.[0] ?? '';
   assert.match(block, /font-family: var\(--font-paper-serif\);/);
-  assert.match(block, /font-size: 14px;/);
+  assert.match(block, /font-size: 15px;/);
   assert.match(block, /line-height: 1\.72;/);
   assert.match(block, /color: var\(--gray-700\);/);
+  assert.match(block, /text-align: justify;/);
 });
