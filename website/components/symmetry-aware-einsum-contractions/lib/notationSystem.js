@@ -1,15 +1,15 @@
+import {
+  getActiveExplorerThemeId as getThemeStoreActiveExplorerThemeId,
+  getActiveExplorerThemeRoles as getThemeStoreActiveExplorerThemeRoles,
+  resetActiveExplorerTheme as resetThemeStoreActiveExplorerTheme,
+  setActiveExplorerTheme as setThemeStoreActiveExplorerTheme,
+} from './explorerTheme.js';
+
 const makeEntry = (text, latex, color) => ({ text, latex, color });
 
-// Semantic grammar for notation color:
-// - Free / output side stays coral.
-// - Summed / contracted side stays slate.
-// - Ambient mathematical objects (groups, spaces, orbits) use info blue.
-// - Acting elements / relabelings use warning amber.
-// - Counts / costs use success green.
-// - Structural scaffolding (L, U, R, incidence matrix M, binders, operators)
-//   stays neutral ink/slate.
-// Side-refined compound objects inherit the V/W anchor when their meaning is
-// explicitly "the V-side factor" or "the W-side factor".
+// Baseline notation colors retained for structural tokens and as fallbacks when
+// a symbol is not mapped onto an explorer-theme role. Explorer themes own the
+// active page-wide color grammar.
 const NOTATION_COLORS = {
   free: '#F0524D',
   summed: '#64748B',
@@ -18,6 +18,47 @@ const NOTATION_COLORS = {
   quantity: '#23B761',
   structure: '#292C2D',
   structureMuted: '#5D5F60',
+};
+
+let activeNotationGrammarId = 'current';
+
+const NOTATION_THEME_ROLE_BY_ID = {
+  v_free: 'freeSide',
+  v_free_component: 'freeSide',
+  g_pointwise_restricted_v: 'freeSide',
+  g_v_factor: 'freeSide',
+  projection_pi_v_free: 'freeSide',
+  w_summed: 'summedSide',
+  w_summed_component: 'summedSide',
+  s_w_summed: 'summedSide',
+  g_w_factor: 'summedSide',
+  x_w_summed: 'summedSide',
+  g_wreath: 'symmetryObject',
+  h_family: 'symmetryObject',
+  sym_l: 'symmetryObject',
+  g_detected: 'symmetryObject',
+  g_component: 'symmetryObject',
+  g_formal: 'symmetryObject',
+  g_pointwise: 'symmetryObject',
+  x_space: 'symmetryObject',
+  x_component: 'symmetryObject',
+  orbit_space_component: 'symmetryObject',
+  orbit_o: 'symmetryObject',
+  omega_orbit: 'symmetryObject',
+  sigma_row_move: 'action',
+  pi_relabeling: 'action',
+  g_element: 'action',
+  mu_total: 'quantity',
+  alpha_total: 'quantity',
+  alpha_component: 'quantity',
+  m_total: 'quantity',
+  m_component: 'quantity',
+  k_operands: 'quantity',
+  n_label: 'quantity',
+  n_cycle: 'quantity',
+  n_l: 'quantity',
+  n_omega: 'quantity',
+  c_omega_cycles: 'quantity',
 };
 
 export const NOTATION_REGISTRY = {
@@ -206,11 +247,43 @@ function notationEntry(id) {
   return entry;
 }
 
-function resolveColor(id, paletteOverride = null) {
-  if (paletteOverride && Object.prototype.hasOwnProperty.call(paletteOverride, id)) {
-    return paletteOverride[id];
+function resolveColor(id) {
+  const themeRole = NOTATION_THEME_ROLE_BY_ID[id];
+  const activeExplorerThemeRoles = getThemeStoreActiveExplorerThemeRoles();
+  if (themeRole && Object.prototype.hasOwnProperty.call(activeExplorerThemeRoles, themeRole)) {
+    return activeExplorerThemeRoles[themeRole];
   }
   return notationEntry(id).color;
+}
+
+export function setActiveExplorerTheme(themeOrId) {
+  setThemeStoreActiveExplorerTheme(themeOrId);
+}
+
+export function resetActiveExplorerTheme() {
+  resetThemeStoreActiveExplorerTheme();
+}
+
+export function getActiveExplorerThemeId() {
+  return getThemeStoreActiveExplorerThemeId();
+}
+
+export function getActiveExplorerThemeRoles() {
+  return getThemeStoreActiveExplorerThemeRoles();
+}
+
+// Legacy compatibility only. Explorer themes own notation colors.
+export function setActiveNotationGrammar(grammarId, paletteOverride = null) {
+  void paletteOverride;
+  activeNotationGrammarId = grammarId ?? 'current';
+}
+
+export function resetActiveNotationPalette() {
+  activeNotationGrammarId = 'current';
+}
+
+export function getActiveNotationGrammarId() {
+  return activeNotationGrammarId;
 }
 
 export function notationText(id) {
@@ -222,11 +295,7 @@ export function notationLatex(id) {
 }
 
 export function notationColor(id) {
-  return notationEntry(id).color;
-}
-
-export function notationColorWithPalette(id, paletteOverride = null) {
-  return resolveColor(id, paletteOverride);
+  return resolveColor(id);
 }
 
 export function notationColoredLatex(
@@ -236,10 +305,6 @@ export function notationColoredLatex(
 ) {
   const colored = String.raw`\textcolor{${notationColor(id)}}{${latexOverride}}`;
   return wrapInGroup ? `{${colored}}` : colored;
-}
-
-export function notationColoredLatexWithPalette(id, paletteOverride = null, latexOverride = notationLatex(id)) {
-  return String.raw`\textcolor{${resolveColor(id, paletteOverride)}}{${latexOverride}}`;
 }
 
 export function colorizeNotationLatex(math) {
@@ -256,32 +321,6 @@ export function colorizeNotationLatex(math) {
       const replacement = notationColoredLatex(id, match, superscriptOrSubscript);
       const key = `@@NOTATION_${placeholders.length}@@`;
       placeholders.push(replacement);
-      return key;
-    });
-  }
-
-  placeholders.forEach((replacement, idx) => {
-    colorized = colorized.replace(`@@NOTATION_${idx}@@`, replacement);
-  });
-
-  protectedSegments.forEach((replacement, idx) => {
-    colorized = colorized.replace(`@@TEXTCOLOR_${idx}@@`, replacement);
-  });
-
-  return colorized;
-}
-
-export function colorizeNotationLatexWithPalette(math, paletteOverride = null) {
-  if (typeof math !== 'string' || math.length === 0) return math;
-
-  const { masked, protectedSegments } = protectExistingTextColor(math);
-  let colorized = masked;
-  const placeholders = [];
-
-  for (const { id, regex } of AUTO_COLOR_RULES) {
-    colorized = colorized.replace(regex, (match) => {
-      const key = `@@NOTATION_${placeholders.length}@@`;
-      placeholders.push(notationColoredLatexWithPalette(id, paletteOverride, match));
       return key;
     });
   }

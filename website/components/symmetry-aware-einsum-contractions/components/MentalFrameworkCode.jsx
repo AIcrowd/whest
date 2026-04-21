@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import { tokenizePseudocodeLine } from '../engine/teachingModel.js';
+import { notationColor } from '../lib/notationSystem.js';
 
 /**
  * Editorial-light rendering of the symmetry-aware contraction pseudocode.
@@ -242,13 +243,17 @@ export default function MentalFrameworkCode({ example }) {
           cost one multiply per line, three-operand einsums cost two,
           four-operand einsums cost three. Summing across all lines gives what
           we call the{' '}
-          <strong className="font-semibold text-primary">Multiplication Cost (μ)</strong>.
+          <strong className="font-semibold" style={{ color: notationColor('mu_total') }}>
+            Multiplication Cost (μ)
+          </strong>.
           Every{' '}
           <code className="rounded bg-stone-200/60 px-1 font-mono text-[12px] text-stone-800">
             R[out] += coeff · base_val
           </code>{' '}
           is one fused multiply-add; the sum of those is the{' '}
-          <strong className="font-semibold text-amber-700">Accumulation Cost (α)</strong>.
+          <strong className="font-semibold" style={{ color: notationColor('alpha_total') }}>
+            Accumulation Cost (α)
+          </strong>.
         </p>
       </div>
     </figure>

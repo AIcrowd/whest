@@ -6,17 +6,26 @@
 import PanZoomCanvas from './PanZoomCanvas.jsx';
 import Latex from './Latex.jsx';
 import {
+  explorerThemeColor,
+  explorerThemeTint,
+  getExplorerThemeOperandPalette,
+} from '../lib/explorerTheme.js';
+import {
+  getActiveExplorerThemeId,
   notationColor,
   notationLatex,
   notationText,
   notationTint,
 } from '../lib/notationSystem.js';
 
-const V_COLOR = notationColor('v_free');
-const W_COLOR = notationColor('w_summed');
-const U_FALLBACK_COLOR = notationColor('sigma_row_move');
-
 export default function BipartiteGraph({ graph, example, variableColors, highlightedLabels = new Set() }) {
+  const explorerThemeId = getActiveExplorerThemeId();
+  const V_COLOR = notationColor('v_free');
+  const W_COLOR = notationColor('w_summed');
+  const U_FALLBACK_COLOR = notationColor('sigma_row_move');
+  const HIGHLIGHT_COLOR = notationColor('sigma_row_move');
+  const MUTED_COLOR = explorerThemeColor(explorerThemeId, 'muted');
+  const BORDER_COLOR = explorerThemeColor(explorerThemeId, 'border');
   const isHighlighted = (label) =>
     highlightedLabels instanceof Set
       ? highlightedLabels.has(label)
@@ -66,8 +75,11 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
     const colors = vc
       ? { fill: `${vc.color}08`, stroke: `${vc.color}4D` }
       : identicalGroups.length > 0
-        ? getGroupColor(opIdx, identicalGroups)
-        : { fill: 'rgba(250,158,51,0.04)', stroke: 'rgba(250,158,51,0.25)' };
+        ? getGroupColor(opIdx, identicalGroups, explorerThemeId)
+        : {
+            fill: explorerThemeTint(explorerThemeId, 'action', 0.04),
+            stroke: explorerThemeTint(explorerThemeId, 'action', 0.25),
+          };
 
     const boxTop = leftY;
     indices.forEach((uIdx, j) => {
@@ -197,7 +209,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               width={122}
             />
             <text x={rightX} y={wBoxTop + wBoxH / 2 + 4}
-              textAnchor="middle" fontSize={11} fill="#AAACAD"
+              textAnchor="middle" fontSize={11} fill={MUTED_COLOR}
               fontFamily="'Inter', sans-serif" fontStyle="italic">
               (empty)
             </text>
@@ -212,7 +224,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
           const edgeStartX = leftX + pillW / 2 + 2;
           const eOpName = example.operandNames?.[u.opIdx];
           const eVc = variableColors?.[eOpName];
-          const edgeColor = eVc?.color || '#D9DCDC';
+          const edgeColor = eVc?.color || BORDER_COLOR;
           return [...vLabels, ...wLabels].map((lbl) => {
             const mult = incidence[uIdx][lbl] || 0;
             if (mult === 0) return null;
@@ -262,11 +274,10 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
           return (
             <g key={`v-${lbl}`}>
               <circle cx={rightX} cy={y} r={nodeR}
-                fill="white" stroke={hl ? '#F59E0B' : V_COLOR} strokeWidth={hl ? 3 : 1.5}
-                filter="url(#node-shadow)"
-                className={hl ? 'stroke-amber-400 stroke-[3px]' : ''} />
+                fill="white" stroke={hl ? HIGHLIGHT_COLOR : V_COLOR} strokeWidth={hl ? 3 : 1.5}
+                filter="url(#node-shadow)" />
               <text x={rightX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill={hl ? '#F59E0B' : V_COLOR} fontSize={11} fontWeight={600}
+                fill={hl ? HIGHLIGHT_COLOR : V_COLOR} fontSize={11} fontWeight={600}
                 fontFamily="'IBM Plex Mono', monospace">
                 {lbl}
               </text>
@@ -281,11 +292,10 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
           return (
             <g key={`w-${lbl}`}>
               <circle cx={rightX} cy={y} r={nodeR}
-                fill="white" stroke={hl ? '#F59E0B' : W_COLOR} strokeWidth={hl ? 3 : 1.5}
-                filter="url(#node-shadow)"
-                className={hl ? 'stroke-amber-400 stroke-[3px]' : ''} />
+                fill="white" stroke={hl ? HIGHLIGHT_COLOR : W_COLOR} strokeWidth={hl ? 3 : 1.5}
+                filter="url(#node-shadow)" />
               <text x={rightX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill={hl ? '#F59E0B' : W_COLOR} fontSize={11} fontWeight={600}
+                fill={hl ? HIGHLIGHT_COLOR : W_COLOR} fontSize={11} fontWeight={600}
                 fontFamily="'IBM Plex Mono', monospace">
                 {lbl}
               </text>
@@ -305,7 +315,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               fontSize: '10px',
               fontWeight: 600,
               letterSpacing: '0.06em',
-              color: '#AAACAD',
+              color: MUTED_COLOR,
               textTransform: 'uppercase',
               fontFamily: 'Inter, sans-serif',
             }}
@@ -327,7 +337,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               fontSize: '10px',
               fontWeight: 600,
               letterSpacing: '0.06em',
-              color: '#AAACAD',
+              color: MUTED_COLOR,
               textTransform: 'uppercase',
               fontFamily: 'Inter, sans-serif',
             }}
@@ -380,19 +390,23 @@ function MathLabelBadge({ x, y, math, color, width }) {
   );
 }
 
-function getGroupColor(opIdx, identicalGroups) {
-  const fills = [
-    'rgba(74,124,255,0.06)', 'rgba(35,183,97,0.06)',
-    'rgba(250,158,51,0.06)', 'rgba(124,58,237,0.06)',
-  ];
-  const strokes = [
-    'rgba(74,124,255,0.3)', 'rgba(35,183,97,0.3)',
-    'rgba(250,158,51,0.3)', 'rgba(124,58,237,0.3)',
-  ];
+function getGroupColor(opIdx, identicalGroups, explorerThemeId) {
+  const palette = getExplorerThemeOperandPalette(explorerThemeId);
   for (let gi = 0; gi < identicalGroups.length; gi++) {
     if (identicalGroups[gi].includes(Number(opIdx))) {
-      return { fill: fills[gi % fills.length], stroke: strokes[gi % strokes.length] };
+      const color = palette[gi % palette.length];
+      return {
+        fill: colorWithAlpha(color, '0F'),
+        stroke: colorWithAlpha(color, '4D'),
+      };
     }
   }
-  return { fill: 'rgba(250,158,51,0.04)', stroke: 'rgba(250,158,51,0.25)' };
+  return {
+    fill: explorerThemeTint(explorerThemeId, 'action', 0.04),
+    stroke: explorerThemeTint(explorerThemeId, 'action', 0.25),
+  };
+}
+
+function colorWithAlpha(color, alphaHex) {
+  return /^#[0-9a-f]{6}$/i.test(color) ? `${color}${alphaHex}` : color;
 }

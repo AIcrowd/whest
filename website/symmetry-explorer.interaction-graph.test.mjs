@@ -167,7 +167,7 @@ test('StickyBar selected section pill keeps a visible coral inner marker and ali
   assert.doesNotMatch(source, /isActive\s*\?\s*'bg-primary\/20 text-primary'/);
 });
 
-test('StickyBar keeps the einsum pill as trigger and moves symmetry metadata into a popover', () => {
+test('StickyBar shows the current n in the leading pill and keeps the einsum formula as trigger', () => {
   const source = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/components/StickyBar.jsx', import.meta.url),
     'utf8',
@@ -177,6 +177,8 @@ test('StickyBar keeps the einsum pill as trigger and moves symmetry metadata int
   assert.match(source, /createPortal\(/);
   assert.match(source, /showMetadataPopover/);
   assert.match(source, /bg-white/);
+  assert.match(source, /dimensionN = null/);
+  assert.match(source, /`\{?n=\$\{dimensionN \?\? '—'\}\}?`/);
   assert.match(source, /import SymmetryBadge from '\.\/SymmetryBadge\.jsx'/);
   assert.match(source, /function SymmetryChip/);
   assert.match(source, /buildMetadataItems/);

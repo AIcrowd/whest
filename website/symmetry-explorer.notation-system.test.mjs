@@ -8,11 +8,27 @@ import {
   NOTATION_HOST_FILES,
   NOTATION_REGISTRY,
   colorizeNotationLatex,
+  getActiveExplorerThemeId,
+  getActiveExplorerThemeRoles,
+  getActiveNotationGrammarId,
+  resetActiveExplorerTheme,
+  resetActiveNotationPalette,
+  setActiveNotationGrammar,
+  setActiveExplorerTheme,
   notationColor,
   notationColoredLatex,
   notationLatex,
   notationText,
 } from './components/symmetry-aware-einsum-contractions/lib/notationSystem.js';
+import {
+  EXPLORER_THEME_PRESETS,
+  EXPLORER_THEME_RECOMMENDED_ID,
+} from './components/symmetry-aware-einsum-contractions/lib/explorerTheme.js';
+import {
+  NOTATION_GRAMMAR_PRESETS,
+  NOTATION_GRAMMAR_RECOMMENDED_ID,
+  getNotationGrammarPreset,
+} from './components/symmetry-aware-einsum-contractions/lib/notationGrammar.js';
 import { EXPLORER_ACTS } from './components/symmetry-aware-einsum-contractions/components/explorerNarrative.js';
 
 const WEBSITE_ROOT = path.resolve(
@@ -45,6 +61,9 @@ const LEGACY_NOTATION_PATTERNS = [
 
 test('notation registry defines text, latex, and the semantic grammar anchors', () => {
   const entries = Object.entries(NOTATION_REGISTRY);
+  const recommendedTheme = EXPLORER_THEME_PRESETS.find(
+    (preset) => preset.id === EXPLORER_THEME_RECOMMENDED_ID,
+  );
   assert.ok(entries.length > 12, 'expected a real notation inventory');
 
   for (const [id, entry] of entries) {
@@ -55,25 +74,155 @@ test('notation registry defines text, latex, and the semantic grammar anchors', 
 
   assert.equal(notationText('v_free'), 'V_free');
   assert.equal(notationLatex('v_free'), 'V_{\\mathrm{free}}');
-  assert.equal(notationColor('v_free'), '#F0524D');
+  assert.equal(notationColor('v_free'), recommendedTheme.roles.freeSide);
   assert.equal(notationText('w_summed'), 'W_summed');
   assert.equal(notationLatex('w_summed'), 'W_{\\mathrm{summed}}');
-  assert.equal(notationColor('w_summed'), '#64748B');
-  assert.equal(notationColor('g_detected'), '#4A7CFF');
-  assert.equal(notationColor('sigma_row_move'), '#FA9E33');
-  assert.equal(notationColor('alpha_total'), '#23B761');
+  assert.equal(notationColor('w_summed'), recommendedTheme.roles.summedSide);
+  assert.equal(notationColor('g_detected'), recommendedTheme.roles.symmetryObject);
+  assert.equal(notationColor('sigma_row_move'), recommendedTheme.roles.action);
+  assert.equal(notationColor('alpha_total'), recommendedTheme.roles.quantity);
   assert.equal(notationColor('m_incidence'), '#292C2D');
   assert.equal(notationColor('l_labels'), '#5D5F60');
   assert.equal(notationColor('g_v_factor'), notationColor('v_free'));
   assert.equal(notationColor('g_w_factor'), notationColor('w_summed'));
   assert.equal(notationColor('projection_pi_v_free'), notationColor('v_free'));
-  assert.equal(notationColor('c_omega_cycles'), notationColor('alpha_total'));
+  assert.equal(notationColor('c_omega_cycles'), recommendedTheme.roles.quantity);
   assert.equal(notationText('c_omega_cycles'), 'c_Ω(g)');
   assert.equal(notationLatex('c_omega_cycles'), 'c_\\Omega(g)');
   assert.equal(
     notationColoredLatex('g_wreath'),
     `\\textcolor{${notationColor('g_wreath')}}{${notationLatex('g_wreath')}}`,
   );
+});
+
+test('explorer themes expose the approved page-wide alternatives with a stable recommendation', () => {
+  const presetIds = EXPLORER_THEME_PRESETS.map((preset) => preset.id);
+
+  assert.deepEqual(
+    presetIds,
+    [
+      'strict-editorial',
+      'editorial-balance',
+      'editorial-balance-slate',
+      'editorial-balance-warm',
+      'teaching-calm',
+      'quiet-ledger',
+      'soft-coral',
+      'quiet-info',
+      'deep-info-ledger',
+      'warm-exception',
+      'muted-amber',
+      'whestbench-axis',
+      'whestbench-axis-blue',
+      'whestbench-sampling',
+      'whestbench-cov-prop',
+      'whestbench-diverging',
+      'whestbench-verdict',
+      'whestbench-scorecard',
+      'whestbench-sage',
+    ],
+  );
+  assert.equal(EXPLORER_THEME_RECOMMENDED_ID, 'editorial-balance');
+  assert.match(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-balance').summary,
+    /recommended balance/i,
+  );
+  assert.equal(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-balance-slate').roles.quantity,
+    '#334155',
+  );
+  assert.equal(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-balance-warm').roles.quantity,
+    '#B29F9E',
+  );
+  assert.match(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-axis').summary,
+    /whestbench coral↔slate axis/i,
+  );
+  assert.equal(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-axis-blue').roles.action,
+    '#B29F9E',
+  );
+  assert.equal(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-cov-prop').roles.quantity,
+    '#B29F9E',
+  );
+  assert.equal(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-scorecard').roles.quantity,
+    '#D23934',
+  );
+  assert.equal(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-sage').roles.statusSuccess,
+    '#94A3B8',
+  );
+});
+
+test('legacy notation grammar presets are a compatibility shim over explorer themes', () => {
+  assert.equal(NOTATION_GRAMMAR_RECOMMENDED_ID, 'split-cost');
+  assert.ok(NOTATION_GRAMMAR_PRESETS.length > 0);
+
+  for (const preset of NOTATION_GRAMMAR_PRESETS) {
+    assert.equal(typeof preset.explorerThemeId, 'string');
+    assert.ok(
+      EXPLORER_THEME_PRESETS.some((theme) => theme.id === preset.explorerThemeId),
+      `${preset.id} should map to a live explorer theme`,
+    );
+    assert.deepEqual(
+      preset.palette ?? {},
+      {},
+      `${preset.id} should not carry authority palettes anymore`,
+    );
+  }
+
+  assert.equal(getNotationGrammarPreset('missing-id').id, 'current');
+});
+
+test('active explorer theme overrides notation colors globally until reset', () => {
+  const teachingCalm = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'teaching-calm');
+  const recommendedTheme = EXPLORER_THEME_PRESETS.find(
+    (preset) => preset.id === EXPLORER_THEME_RECOMMENDED_ID,
+  );
+
+  resetActiveExplorerTheme();
+  assert.equal(getActiveExplorerThemeId(), EXPLORER_THEME_RECOMMENDED_ID);
+  assert.equal(getActiveExplorerThemeRoles().hero, recommendedTheme.roles.hero);
+  assert.equal(notationColor('alpha_total'), recommendedTheme.roles.quantity);
+
+  setActiveExplorerTheme(teachingCalm.id, teachingCalm.roles);
+  assert.equal(getActiveExplorerThemeId(), 'teaching-calm');
+  assert.equal(getActiveExplorerThemeRoles().symmetryObject, teachingCalm.roles.symmetryObject);
+  assert.equal(notationColor('v_free'), teachingCalm.roles.freeSide);
+  assert.equal(notationColor('w_summed'), teachingCalm.roles.summedSide);
+  assert.equal(notationColor('g_component'), teachingCalm.roles.symmetryObject);
+  assert.equal(notationColor('g_element'), teachingCalm.roles.action);
+  assert.equal(notationColor('m_component'), teachingCalm.roles.quantity);
+  assert.equal(notationColor('alpha_total'), teachingCalm.roles.quantity);
+  assert.equal(
+    colorizeNotationLatex(String.raw`\mu = (k-1)\prod_a M_a`).includes(teachingCalm.roles.quantity),
+    true,
+  );
+
+  resetActiveExplorerTheme();
+  assert.equal(getActiveExplorerThemeId(), EXPLORER_THEME_RECOMMENDED_ID);
+  assert.equal(notationColor('alpha_total'), recommendedTheme.roles.quantity);
+});
+
+test('legacy notation grammar setters are compatibility-only and do not override explorer theme colors', () => {
+  const teachingCalm = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'teaching-calm');
+
+  resetActiveExplorerTheme();
+  resetActiveNotationPalette();
+  setActiveExplorerTheme(teachingCalm.id, teachingCalm.roles);
+
+  const before = notationColor('alpha_total');
+  setActiveNotationGrammar('split-cost', { alpha_total: '#111111' });
+
+  assert.equal(getActiveNotationGrammarId(), 'split-cost');
+  assert.equal(notationColor('alpha_total'), before);
+
+  resetActiveNotationPalette();
+  assert.equal(getActiveNotationGrammarId(), 'current');
+  assert.equal(notationColor('alpha_total'), before);
 });
 
 test('shared latex colorizer colors representative raw formulas before render', () => {
@@ -141,6 +290,24 @@ test('notation host inventory covers the main notation-bearing explorer surfaces
     const absolutePath = path.join(WEBSITE_ROOT, relativePath);
     assert.equal(fs.existsSync(absolutePath), true, `${relativePath} missing from inventory`);
   }
+});
+
+test('notation system no longer imports the legacy notation grammar registry', () => {
+  const notationSystemSource = fs.readFileSync(
+    path.join(
+      WEBSITE_ROOT,
+      'components/symmetry-aware-einsum-contractions/lib/notationSystem.js',
+    ),
+    'utf8',
+  );
+
+  assert.doesNotMatch(notationSystemSource, /from '\.\/notationGrammar\.js'/);
+  assert.doesNotMatch(notationSystemSource, /getNotationGrammarPreset/);
+  assert.doesNotMatch(notationSystemSource, /let activeExplorerThemeId =/);
+  assert.doesNotMatch(notationSystemSource, /let activeExplorerThemeRoles =/);
+  assert.doesNotMatch(notationSystemSource, /notationColorWithPalette/);
+  assert.doesNotMatch(notationSystemSource, /notationColoredLatexWithPalette/);
+  assert.doesNotMatch(notationSystemSource, /colorizeNotationLatexWithPalette/);
 });
 
 test('notation host files do not use legacy V/W shorthand or raw notation colors', () => {
@@ -214,11 +381,21 @@ test('shared render paths colorize formulas and notation-bearing descriptions', 
     path.join(WEBSITE_ROOT, 'components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx'),
     'utf8',
   );
+  const decisionLadderSource = fs.readFileSync(
+    path.join(WEBSITE_ROOT, 'components/symmetry-aware-einsum-contractions/components/DecisionLadder.jsx'),
+    'utf8',
+  );
 
   assert.match(latexSource, /colorizeNotationLatex/);
+  assert.match(latexSource, /getActiveExplorerThemeId/);
   assert.match(caseBadgeSource, /InlineMathText/);
   assert.match(caseBadgeSource, /tooltip\.body/);
   assert.match(componentCostSource, /<InlineMathText>\{text\}<\/InlineMathText>/);
+  assert.match(decisionLadderSource, /notationTint\('g_detected',\s*0\.42\)/);
+  assert.match(decisionLadderSource, /notationTint\('g_detected',\s*0\.1\)/);
+  assert.doesNotMatch(decisionLadderSource, /border-violet-400/);
+  assert.doesNotMatch(decisionLadderSource, /bg-violet-50/);
+  assert.doesNotMatch(decisionLadderSource, /text-violet-700/);
 });
 
 test('editorial math copy leaves operators neutral and lets Latex auto-color individual symbols', () => {

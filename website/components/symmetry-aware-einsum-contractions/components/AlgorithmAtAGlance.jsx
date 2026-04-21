@@ -3,7 +3,7 @@ import Latex from './Latex.jsx';
 import MentalFrameworkCode from './MentalFrameworkCode.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import { notationColor, notationLatex } from '../lib/notationSystem.js';
-import { buildSection1ExampleView, LANDING_FREE_LABEL_COLOR } from '../lib/section1ExampleView.js';
+import { buildSection1ExampleView } from '../lib/section1ExampleView.js';
 
 /**
  * Distill-style preamble for the symmetry-aware einsum explorer.
@@ -28,6 +28,7 @@ import { buildSection1ExampleView, LANDING_FREE_LABEL_COLOR } from '../lib/secti
 const DENSE_SCALING = String.raw`\mathcal{O}(n^{5})`;
 
 function ColorLegend() {
+  const landingFreeLabelColor = notationColor('v_free');
   return (
     <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-stone-700">
       <span className="inline-flex items-center gap-2">
@@ -37,7 +38,7 @@ function ColorLegend() {
         </span>
       </span>
       <span className="inline-flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: LANDING_FREE_LABEL_COLOR }} />
+        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: landingFreeLabelColor }} />
         <span>
           <strong className="font-semibold text-stone-900">free</strong> labels (stay on output)
         </span>
@@ -51,7 +52,7 @@ const JUSTIFIED_PROSE_STYLE = { textAlign: 'justify' };
 function EinsumIntroColumn({ example }) {
   const view = buildSection1ExampleView(example);
   if (!view) return null;
-  const coloredVFreeNotation = String.raw`\textcolor{${LANDING_FREE_LABEL_COLOR}}{${notationLatex('v_free')}}`;
+  const coloredVFreeNotation = String.raw`\textcolor{${notationColor('v_free')}}{${notationLatex('v_free')}}`;
 
   return (
     <div id="einsum-contraction" className="flex h-full flex-col scroll-mt-24">

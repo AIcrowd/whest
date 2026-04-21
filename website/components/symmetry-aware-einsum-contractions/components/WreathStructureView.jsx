@@ -2,11 +2,13 @@ import { useMemo, useState } from 'react';
 import ExplorerModal from './ExplorerModal.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
-import { notationColor, notationLatex } from '../lib/notationSystem.js';
+import { explorerThemeColor, explorerThemeTint } from '../lib/explorerTheme.js';
+import { getActiveExplorerThemeId, notationColor, notationLatex } from '../lib/notationSystem.js';
 
 const INITIAL_ROW_LIMIT = 10;
 
 export default function WreathStructureView({ analysis, example }) {
+  const explorerThemeId = getActiveExplorerThemeId();
   const symmetry = analysis?.symmetry;
   const wreathElements = symmetry?.wreathElements;
   const [showAllRows, setShowAllRows] = useState(false);
@@ -96,9 +98,9 @@ export default function WreathStructureView({ analysis, example }) {
           <Latex math={`|${notationLatex('g_wreath')}| = ${wreathElements.length}`} />
         </span>
         <span className="text-gray-300">/</span>
-        <span className="font-medium text-emerald-700">kept in G: {validCount}</span>
+        <span className="font-medium" style={{ color: explorerThemeColor(explorerThemeId, 'quantity') }}>kept in G: {validCount}</span>
         <span className="text-gray-300">/</span>
-        <span className="font-medium text-slate-500">identity only: {identityOnlyCount}</span>
+        <span className="font-medium" style={{ color: explorerThemeColor(explorerThemeId, 'muted') }}>identity only: {identityOnlyCount}</span>
         <span className="text-gray-300">/</span>
         <span className="font-medium" style={{ color: notationColor('v_free') }}>
           no matching relabeling: {rejectedCount}
@@ -147,6 +149,7 @@ function WreathElementTable({ elements }) {
 }
 
 function WreathElementRow({ element, index }) {
+  const explorerThemeId = getActiveExplorerThemeId();
   const classLabel = {
     valid: '✓ kept in G',
     'matrix-preserving': 'identity only',
@@ -155,19 +158,22 @@ function WreathElementRow({ element, index }) {
 
   const rowTone = {
     valid: {
-      row: 'bg-white text-gray-900',
-      pill: 'border-emerald-200 bg-emerald-100 text-emerald-800',
-      outcome: 'text-emerald-700',
+      pillBorder: explorerThemeTint(explorerThemeId, 'quantity', 0.24),
+      pillBg: explorerThemeTint(explorerThemeId, 'quantity', 0.12),
+      pillText: explorerThemeColor(explorerThemeId, 'quantity'),
+      outcome: explorerThemeColor(explorerThemeId, 'quantity'),
     },
     'matrix-preserving': {
-      row: 'bg-white text-gray-900',
-      pill: 'border-slate-200 bg-slate-100 text-slate-600',
-      outcome: 'text-slate-500',
+      pillBorder: explorerThemeTint(explorerThemeId, 'muted', 0.22),
+      pillBg: explorerThemeTint(explorerThemeId, 'muted', 0.12),
+      pillText: explorerThemeColor(explorerThemeId, 'muted'),
+      outcome: explorerThemeColor(explorerThemeId, 'muted'),
     },
     rejected: {
-      row: 'bg-white text-gray-900',
-      pill: 'border-rose-200 bg-rose-100 text-rose-800',
-      outcome: 'text-rose-700',
+      pillBorder: explorerThemeTint(explorerThemeId, 'freeSide', 0.24),
+      pillBg: explorerThemeTint(explorerThemeId, 'freeSide', 0.12),
+      pillText: explorerThemeColor(explorerThemeId, 'freeSide'),
+      outcome: explorerThemeColor(explorerThemeId, 'freeSide'),
     },
   }[element.classification];
 
@@ -187,9 +193,16 @@ function WreathElementRow({ element, index }) {
     : '';
 
   return (
-    <tr className={`border-b border-gray-200 last:border-b-0 ${rowTone.row}`}>
+    <tr className="border-b border-gray-200 last:border-b-0 bg-white text-gray-900">
       <td className="px-3 py-2">
-        <span className={`inline-flex items-center rounded-full border px-2 py-1 font-mono text-[11px] ${rowTone.pill}`}>
+        <span
+          className="inline-flex items-center rounded-full border px-2 py-1 font-mono text-[11px]"
+          style={{
+            borderColor: rowTone.pillBorder,
+            background: rowTone.pillBg,
+            color: rowTone.pillText,
+          }}
+        >
           <Latex math={`${notationLatex('sigma_row_move')}_{${index}}`} />
         </span>
       </td>
@@ -200,7 +213,7 @@ function WreathElementRow({ element, index }) {
         </span>
       </td>
       <td className="px-3 py-2 font-mono text-[11px]">{piStr}</td>
-      <td className={`px-3 py-2 font-medium ${rowTone.outcome}`}>{classLabel}</td>
+      <td className="px-3 py-2 font-medium" style={{ color: rowTone.outcome }}>{classLabel}</td>
     </tr>
   );
 }

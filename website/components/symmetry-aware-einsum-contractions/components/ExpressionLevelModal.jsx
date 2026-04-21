@@ -160,13 +160,13 @@ function EinsumConstructionTooltip({ preset, groupLabel }) {
   );
 }
 
-// V/W color palette — same hexes the rest of the page uses so the worked
-// examples inside the modal read against the same colour convention.
-const COLOR_V = notationColor('v_free');
-const COLOR_W = notationColor('w_summed');
+function vStyle() {
+  return { color: notationColor('v_free'), fontWeight: 600 };
+}
 
-const vStyle = { color: COLOR_V, fontWeight: 600 };
-const wStyle = { color: COLOR_W, fontWeight: 600 };
+function wStyle() {
+  return { color: notationColor('w_summed'), fontWeight: 600 };
+}
 
 const APPENDIX_PROSE_CLASS = 'font-serif text-[17px] leading-[1.75] text-gray-700';
 const APPENDIX_PROSE_JUSTIFIED_CLASS = `${APPENDIX_PROSE_CLASS} text-justify`;
@@ -781,54 +781,54 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   </p>
                   <div className="rounded-md border border-border/60 bg-muted/20 px-5 py-4 font-mono text-[13px] leading-relaxed text-foreground">
                     <div>
-                      R[<span style={vStyle}>0</span>,<span style={vStyle}>0</span>]
+                      R[<span style={vStyle()}>0</span>,<span style={vStyle()}>0</span>]
                       {' = '}
-                      A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]
+                      A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]
                       {' + '}
-                      A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]
+                      A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]
                       {' + '}
-                      A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]
+                      A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]
                       {' + '}
-                      A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]
+                      A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]
                       {' = '}
                       1 + 2 + 2 + 4 = <strong>9</strong>
                     </div>
                     <div className="mt-1">
-                      R[<span style={vStyle}>0</span>,<span style={vStyle}>1</span>]
+                      R[<span style={vStyle()}>0</span>,<span style={vStyle()}>1</span>]
                       {' = '}
-                      A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]
+                      A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]
                       {' + '}
-                      A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]
+                      A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]
                       {' + '}
-                      A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]
+                      A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]
                       {' + '}
-                      A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]
+                      A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]
                       {' = '}
                       3 + 4 + 6 + 8 = <strong>21</strong>
                     </div>
                     <div className="mt-1">
-                      R[<span style={vStyle}>1</span>,<span style={vStyle}>0</span>]
+                      R[<span style={vStyle()}>1</span>,<span style={vStyle()}>0</span>]
                       {' = '}
-                      A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]
+                      A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]
                       {' + '}
-                      A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]
+                      A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]
                       {' + '}
-                      A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]
+                      A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]
                       {' + '}
-                      A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]
+                      A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]
                       {' = '}
                       3 + 6 + 4 + 8 = <strong>21</strong>
                     </div>
                     <div className="mt-1">
-                      R[<span style={vStyle}>1</span>,<span style={vStyle}>1</span>]
+                      R[<span style={vStyle()}>1</span>,<span style={vStyle()}>1</span>]
                       {' = '}
-                      A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]
+                      A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]
                       {' + '}
-                      A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]
+                      A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]
                       {' + '}
-                      A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]
+                      A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]
                       {' + '}
-                      A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]
+                      A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]
                       {' = '}
                       9 + 12 + 12 + 16 = <strong>49</strong>
                     </div>

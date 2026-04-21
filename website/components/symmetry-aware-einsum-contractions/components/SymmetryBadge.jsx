@@ -3,9 +3,8 @@ import { Badge } from '@/components/ui/badge';
 import { notationColor } from '../lib/notationSystem.js';
 import { cn } from '../lib/utils.js';
 
-const COLOR_V = notationColor('v_free');
-
 function ColoredGroupTail({ text }) {
+  const COLOR_V = notationColor('v_free');
   const chars = Array.from(String(text ?? ''));
   return chars.map((ch, idx) => {
     if (/[A-Za-z]/.test(ch)) {

@@ -7,7 +7,7 @@ import InlineMathText from './InlineMathText.jsx';
 import GlossaryList from './GlossaryList.jsx';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
-import { notationColor } from '../lib/notationSystem.js';
+import { notationColor, notationTint } from '../lib/notationSystem.js';
 
 // ─── DecisionLadder (two-stage hybrid) ─────────────────────────────────
 //
@@ -64,8 +64,12 @@ const Q_CROSSVW_Y = Q_DIRECT_Y + ROW_GAP;            // q_crossVW
 const Q_FULLSYM_Y = Q_CROSSVW_Y + ROW_GAP;           // q_fullSym
 const STAGE_2_BOTTOM_Y = Q_FULLSYM_Y + ROW_GAP + LEAF_H + BAND_PAD_Y; // bottom pad
 
-const EDGE_YES = { color: notationColor('alpha_total'), label: 'yes' };
-const EDGE_NO = { color: notationColor('v_free'), label: 'no' };
+const EDGE_YES = new Proxy({}, {
+  get: (_, prop) => ({ color: notationColor('alpha_total'), label: 'yes' })[prop],
+});
+const EDGE_NO = new Proxy({}, {
+  get: (_, prop) => ({ color: notationColor('v_free'), label: 'no' })[prop],
+});
 
 // Edge-label offsets. Once the label background went transparent (so the
 // dashed stage bands read through), the naturally centered label text
@@ -296,10 +300,16 @@ function StageBandNode({ data }) {
 
 // "Enumerate G" divider — the moment dimino is paid.
 function EnumerateNode({ data }) {
+  const accent = notationColor('g_detected');
   return (
     <div
-      className="box-border flex h-full w-full cursor-help items-center gap-2 rounded-md border-2 border-dashed border-violet-400 bg-violet-50 px-3 py-1.5 text-center text-[13px] font-semibold leading-tight text-violet-700 shadow-sm"
+      className="box-border flex h-full w-full cursor-help items-center gap-2 rounded-md border-2 border-dashed px-3 py-1.5 text-center text-[13px] font-semibold leading-tight shadow-sm"
       data-tree-node={data.nodeId}
+      style={{
+        color: accent,
+        borderColor: notationTint('g_detected', 0.42),
+        background: notationTint('g_detected', 0.1),
+      }}
     >
       <Handle id="top" type="target" position={Position.Top} className="pointer-events-none opacity-0" />
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -365,7 +375,7 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
       body: spec.description,
       latex: spec.latex,
       glossary: spec.glossary,
-      color: spec.color,
+      color: spec.colorId ? notationColor(spec.colorId) : spec.color,
       liveReasons,
     };
   }
@@ -405,7 +415,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
       style: { width: LEAF_W, height: LEAF_H },
       data: {
         text: spec.label,
-        color: spec.color,
+        color: spec.colorId ? notationColor(spec.colorId) : spec.color,
         active: active.has(leafId),
         spotlight: spotlight.has(leafId),
         nodeId: leafId, // keep the canonical id for active/spotlight testing

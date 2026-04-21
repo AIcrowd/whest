@@ -1,17 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { COMPONENT_COLORS as COMP_COLORS } from '../engine/componentPalette.js';
+import { explorerThemeColor } from '../lib/explorerTheme.js';
 import { getRegimePresentation } from './regimePresentation.js';
-import { notationColor, notationText } from '../lib/notationSystem.js';
+import { getActiveExplorerThemeId, notationColor, notationText } from '../lib/notationSystem.js';
 import InlineMathText from './InlineMathText.jsx';
 
 const GRAPH_SIZE = 220;
 const CENTER = GRAPH_SIZE / 2;
 const ORBIT_R = 80;
 const NODE_R = 14;
-const COLOR_V = notationColor('v_free');
-const COLOR_W = notationColor('w_summed');
-
 function compLeafId(comp) {
   return comp?.accumulation?.regimeId ?? comp?.shape ?? null;
 }
@@ -60,6 +58,11 @@ export function LabelInteractionGraph({
   fullGenerators = null,
   onHover = null,
 }) {
+  const explorerThemeId = getActiveExplorerThemeId();
+  const COLOR_V = notationColor('v_free');
+  const COLOR_W = notationColor('w_summed');
+  const EDGE_COLOR = explorerThemeColor(explorerThemeId, 'muted');
+  const NODE_BORDER_COLOR = explorerThemeColor(explorerThemeId, 'surface');
   const n = allLabels.length;
 
   const vSet = useMemo(() => new Set(vLabels), [vLabels]);
@@ -394,7 +397,7 @@ export function LabelInteractionGraph({
                 y1={pa.y}
                 x2={pb.x}
                 y2={pb.y}
-                stroke="#6B7280"
+                stroke={EDGE_COLOR}
                 strokeWidth={1}
                 strokeOpacity={0.45}
                 pointerEvents="none"
@@ -415,7 +418,7 @@ export function LabelInteractionGraph({
               }
               onMouseLeave={hideTooltip}
             >
-              <circle cx={x} cy={y} r={NODE_R} fill={isV ? COLOR_V : COLOR_W} stroke="#F9FAFB" strokeWidth={2} />
+              <circle cx={x} cy={y} r={NODE_R} fill={isV ? COLOR_V : COLOR_W} stroke={NODE_BORDER_COLOR} strokeWidth={2} />
               <text
                 x={x}
                 y={y}
@@ -424,7 +427,7 @@ export function LabelInteractionGraph({
                 fontSize={12}
                 fontFamily="ui-monospace, monospace"
                 fontWeight={600}
-                fill="#FFFFFF"
+                fill={NODE_BORDER_COLOR}
                 pointerEvents="none"
               >
                 {label}

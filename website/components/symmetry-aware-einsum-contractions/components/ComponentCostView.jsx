@@ -16,6 +16,11 @@ import AccumulationHardCard from './AccumulationHardCard.jsx';
 import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 import {
+  explorerThemeColor,
+  explorerThemeTint,
+} from '../lib/explorerTheme.js';
+import {
+  getActiveExplorerThemeId,
   notationColor,
   notationColoredLatex,
 } from '../lib/notationSystem.js';
@@ -98,6 +103,7 @@ function ComponentSummaryTable({
   orbitRows,
   onOpenOrbitModal,
 }) {
+  const explorerThemeId = getActiveExplorerThemeId();
   // Shared column template so every component card's middle-row lines up
   // column-wise with the global header at the top.
   const MIDDLE_COLS = 'grid-cols-[1.2fr_2.5fr_0.9fr_0.9fr_1.4fr]';
@@ -264,11 +270,15 @@ function ComponentSummaryTable({
                         Total
                       </span>
                       <span
-                        className={`rounded-full px-2 py-0.5 font-mono text-xs font-semibold ${
-                          totalSavingsPct > 0
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-rose-100 text-rose-800'
-                        }`}
+                        className="rounded-full px-2 py-0.5 font-mono text-xs font-semibold"
+                        style={{
+                          background: totalSavingsPct > 0
+                            ? explorerThemeTint(explorerThemeId, 'quantity', 0.12)
+                            : explorerThemeTint(explorerThemeId, 'freeSide', 0.12),
+                          color: totalSavingsPct > 0
+                            ? explorerThemeColor(explorerThemeId, 'quantity')
+                            : explorerThemeColor(explorerThemeId, 'freeSide'),
+                        }}
                         title={`Per-component combined savings: 1 − (Mₐ + αₐ) / (2 · n^${labelCount}) = 1 − (${(M_a ?? 0).toLocaleString()} + ${(actualAcc ?? 0).toLocaleString()}) / ${(2 * denseCell).toLocaleString()}.`}
                       >
                         {totalSavingsPct}%
@@ -277,7 +287,8 @@ function ComponentSummaryTable({
                     <div className="flex flex-wrap items-center gap-x-1.5 font-mono text-[10px] leading-tight">
                       {multSavingsPct !== null ? (
                         <span
-                          className="font-semibold text-primary"
+                          className="font-semibold"
+                          style={{ color: notationColor('m_component') }}
                           title={`Mult savings: dense Mₐ would be ${denseCell.toLocaleString()}; symmetry gives ${M_a?.toLocaleString?.()}.`}
                         >
                           Mult {multSavingsPct}%
@@ -288,7 +299,8 @@ function ComponentSummaryTable({
                       ) : null}
                       {accSavingsPct !== null ? (
                         <span
-                          className="font-semibold text-amber-700"
+                          className="font-semibold"
+                          style={{ color: notationColor('alpha_component') }}
                           title={`Acc savings: dense αₐ would be ${denseCell.toLocaleString()}; symmetry gives ${actualAcc?.toLocaleString?.()}.`}
                         >
                           Acc {accSavingsPct}%

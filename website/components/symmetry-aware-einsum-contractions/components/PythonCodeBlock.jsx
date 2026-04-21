@@ -2,6 +2,8 @@ import { useCallback, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check, Copy } from 'lucide-react';
 import ExplorerSectionCard from './ExplorerSectionCard.jsx';
+import { explorerThemeColor } from '../lib/explorerTheme.js';
+import { getActiveExplorerThemeId } from '../lib/notationSystem.js';
 
 function highlightPython(code) {
   const tokens = [];
@@ -92,11 +94,24 @@ function highlightPython(code) {
 }
 
 function PythonHighlight({ code }) {
+  const explorerThemeId = getActiveExplorerThemeId();
   const html = useMemo(() => highlightPython(code), [code]);
+  const tokenVars = useMemo(
+    () => ({
+      '--python-comment': explorerThemeColor(explorerThemeId, 'muted'),
+      '--python-function': explorerThemeColor(explorerThemeId, 'symmetryObject'),
+      '--python-function-primary': explorerThemeColor(explorerThemeId, 'heroMuted'),
+      '--python-keyword': explorerThemeColor(explorerThemeId, 'heroMuted'),
+      '--python-number': explorerThemeColor(explorerThemeId, 'action'),
+      '--python-string': explorerThemeColor(explorerThemeId, 'quantity'),
+    }),
+    [explorerThemeId],
+  );
   return (
     <pre className="min-h-0 h-full overflow-auto whitespace-pre-wrap rounded-xl border border-stone-200 bg-white p-5 font-mono text-sm leading-7 text-stone-800">
       <code
-        className="[&_.hl-cmt]:text-stone-500 [&_.hl-fn]:font-semibold [&_.hl-fn]:text-slate-700 [&_.hl-fn-primary]:font-semibold [&_.hl-fn-primary]:text-[#ef5a4c] [&_.hl-kw]:font-semibold [&_.hl-kw]:text-[#ef5a4c] [&_.hl-num]:text-amber-700 [&_.hl-str]:text-emerald-700"
+        style={tokenVars}
+        className="[&_.hl-cmt]:text-[var(--python-comment)] [&_.hl-fn]:font-semibold [&_.hl-fn]:text-[var(--python-function)] [&_.hl-fn-primary]:font-semibold [&_.hl-fn-primary]:text-[var(--python-function-primary)] [&_.hl-kw]:font-semibold [&_.hl-kw]:text-[var(--python-keyword)] [&_.hl-num]:text-[var(--python-number)] [&_.hl-str]:text-[var(--python-string)]"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </pre>

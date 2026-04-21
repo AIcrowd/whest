@@ -91,7 +91,10 @@ test('Section 5 renders the exact Option B-style Cost Savings spread', () => {
   assert.match(totalCostSource, /font-serif text-\[54px\] leading-\[0\.95\] tracking-\[-0\.03em\]/);
   assert.match(totalCostSource, /font-serif text-\[24px\] leading-none tracking-\[-0\.02em\]/);
   assert.match(totalCostSource, /text-coral/);
-  assert.match(totalCostSource, /text-green-700/);
+  assert.match(totalCostSource, /explorerThemeColor\(explorerThemeId, 'quantity'\)/);
+  assert.doesNotMatch(totalCostSource, /explorerThemeColor\(explorerThemeId, 'statusSuccess'\)/);
+  assert.doesNotMatch(totalCostSource, /explorerThemeTint\(explorerThemeId, 'statusSuccess', 0\.08\)/);
+  assert.match(totalCostSource, /valueStyle/);
 });
 
 test('ComponentCostView renders the decision ladder and component table', () => {
@@ -114,6 +117,10 @@ test('ComponentCostView renders the decision ladder and component table', () => 
   assert.match(componentCostSource, /className="space-y-2\.5"/);
   assert.match(componentCostSource, /<span className="text-\[10px\] font-semibold uppercase tracking-\[0\.16em\] text-muted-foreground">\s*Case/);
   assert.match(componentCostSource, /<span className="block text-\[10px\] font-semibold uppercase tracking-\[0\.16em\] text-muted-foreground">\s*Symmetry/);
+  assert.match(componentCostSource, /explorerThemeTint\(explorerThemeId,\s*'quantity',\s*0\.12\)/);
+  assert.match(componentCostSource, /explorerThemeColor\(explorerThemeId,\s*'quantity'\)/);
+  assert.doesNotMatch(componentCostSource, /explorerThemeTint\(explorerThemeId,\s*'statusSuccess',\s*0\.12\)/);
+  assert.doesNotMatch(componentCostSource, /explorerThemeColor\(explorerThemeId,\s*'statusSuccess'\)/);
   assert.doesNotMatch(componentCostSource, /Global column header — only labels the 5 middle-row columns\.\s*\*\/[\s\S]*<span>Labels<\/span>/);
   assert.match(componentCostSource, /function denseTupleCount\(comp, dimensionN\)/);
   assert.match(componentCostSource, /const denseCell = denseTupleCount\(comp, dimensionN\);/);
@@ -220,6 +227,59 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.ok(recapIndex !== -1 && introIndex !== -1 && aggregationIndex !== -1 && spreadIndex !== -1);
   assert.ok(recapIndex < introIndex && introIndex < aggregationIndex && aggregationIndex < spreadIndex);
   assert.doesNotMatch(totalCostSource, /Seven paths through Section 5/);
+});
+
+test('app owns the active explorer theme and passes it into TotalCostView', () => {
+  const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
+  const dockSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExplorerThemeDock.jsx', import.meta.url), 'utf8');
+  const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
+  const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
+  const notationSystemSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/lib/notationSystem.js', import.meta.url), 'utf8');
+
+  assert.match(appSource, /EXPLORER_THEME_RECOMMENDED_ID/);
+  assert.match(appSource, /getExplorerThemePreset/);
+  assert.match(appSource, /getActiveExplorerThemeId/);
+  assert.match(appSource, /subscribeActiveExplorerTheme/);
+  assert.match(appSource, /setActiveExplorerTheme/);
+  assert.match(appSource, /resetActiveExplorerTheme/);
+  assert.match(appSource, /useSyncExternalStore/);
+  assert.match(appSource, /const explorerThemeId = useSyncExternalStore\(/);
+  assert.match(appSource, /const handleExplorerThemeChange = useCallback\(\(nextThemeId\) =>/);
+  assert.match(appSource, /const theme = useMemo\(\(\) => getExplorerThemePreset\(explorerThemeId\), \[explorerThemeId\]\)/);
+  assert.match(appSource, /setActiveExplorerTheme\(nextThemeId\)/);
+  assert.match(appSource, /resetActiveExplorerTheme\(\);/);
+  assert.match(appSource, /return \(\) => resetActiveExplorerTheme/);
+  assert.match(appSource, /buildVariableColors\(example\.variables,\s*theme\.id\)/);
+  assert.match(appSource, /explorerThemeId=\{explorerThemeId\}/);
+  assert.match(appSource, /import ExplorerThemeDock/);
+  assert.match(appSource, /<ExplorerThemeDock[\s\S]*explorerThemeId=\{explorerThemeId\}[\s\S]*onChange=\{handleExplorerThemeChange\}/);
+  assert.doesNotMatch(appSource, /const \[explorerThemeId,\s*setExplorerThemeId\] = useState\(/);
+  assert.doesNotMatch(appSource, /notationGrammarId/);
+  assert.doesNotMatch(appSource, /setActiveNotationGrammar/);
+  assert.doesNotMatch(appSource, /resetActiveNotationPalette/);
+
+  assert.match(dockSource, /fixed bottom-6 right-6 z-50/);
+  assert.match(dockSource, /Explorer Theme/);
+  assert.match(dockSource, /aria-label="Explorer theme picker"/);
+  assert.match(dockSource, /EXPLORER_THEME_PRESETS\.map/);
+
+  assert.match(chooserSource, /explorerThemeId/);
+  assert.match(chooserSource, /buildVariableColors\(variables,\s*explorerThemeId\)/);
+
+  assert.match(totalCostSource, /explorerThemeId/);
+  assert.doesNotMatch(totalCostSource, /CompanionFormulaBlock/);
+  assert.doesNotMatch(totalCostSource, /Visual companion/);
+  assert.doesNotMatch(totalCostSource, />Explorer Theme<\/span>/);
+  assert.doesNotMatch(totalCostSource, /onExplorerThemeChange/);
+  assert.doesNotMatch(totalCostSource, /Notation grammar/);
+  assert.doesNotMatch(totalCostSource, /NOTATION_GRAMMAR_PRESETS/);
+  assert.doesNotMatch(totalCostSource, /notationGrammarId/);
+  assert.doesNotMatch(totalCostSource, /onNotationGrammarChange/);
+  assert.doesNotMatch(notationSystemSource, /from '\.\/notationGrammar\.js'/);
+  assert.doesNotMatch(notationSystemSource, /getNotationGrammarPreset/);
+  assert.doesNotMatch(notationSystemSource, /notationColorWithPalette/);
+  assert.doesNotMatch(notationSystemSource, /notationColoredLatexWithPalette/);
+  assert.doesNotMatch(notationSystemSource, /colorizeNotationLatexWithPalette/);
 });
 
 test('triple-outer component baselines stay size-aware', () => {

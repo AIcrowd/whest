@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { useState, useMemo, useCallback, useEffect, useRef, useSyncExternalStore } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { EXAMPLES } from './data/examples.js';
 import { parseCycleNotation } from './engine/cycleParser.js';
@@ -9,6 +9,7 @@ import StickyBar from './components/StickyBar.jsx';
 import ExpressionLevelModal from './components/ExpressionLevelModal.jsx';
 import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './components/ExplorerSectionCard.jsx';
 import ExplorerSubsectionHeader from './components/ExplorerSubsectionHeader.jsx';
+import ExplorerThemeDock from './components/ExplorerThemeDock.jsx';
 import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
 import SectionIntroProse from './components/SectionIntroProse.jsx';
@@ -25,14 +26,34 @@ import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
+import {
+  getExplorerThemeCssVariables,
+  EXPLORER_THEME_RECOMMENDED_ID,
+  getActiveExplorerThemeId,
+  getExplorerThemePreset,
+  resetActiveExplorerTheme,
+  setActiveExplorerTheme,
+  subscribeActiveExplorerTheme,
+} from './lib/explorerTheme.js';
 import { getPresetControlSelection } from './lib/presetSelection.js';
-import { notationLatex } from './lib/notationSystem.js';
+import {
+  notationLatex,
+} from './lib/notationSystem.js';
 import { useKeyboardShortcuts } from './lib/useKeyboardShortcuts.js';
 import './styles.css';
 
 const CUSTOM_IDX = -1;
 const DEFAULT_EXAMPLE_ID = 'triple-outer';
 const DEFAULT_EXAMPLE_IDX = Math.max(0, EXAMPLES.findIndex((example) => example.id === DEFAULT_EXAMPLE_ID));
+const DEFAULT_DIMENSION_N = 5;
+
+function presetDefaultSize(example) {
+  const sizes = Object.values(example?.labelSizes ?? {}).filter(
+    (value) => Number.isFinite(value) && value > 0,
+  );
+  if (sizes.length === 0) return DEFAULT_DIMENSION_N;
+  return Math.max(...sizes);
+}
 
 /**
  * Convert the new preset format (with `variables` and `expression` fields)
@@ -72,7 +93,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const [exampleIdx, setExampleIdx] = useState(DEFAULT_EXAMPLE_IDX);
   const [customExample, setCustomExample] = useState(null);
   const [previewExample, setPreviewExample] = useState(EXAMPLES[DEFAULT_EXAMPLE_IDX]);
-  const [defaultSize, setDefaultSize] = useState(5);
+  const [defaultSize, setDefaultSize] = useState(() => presetDefaultSize(EXAMPLES[DEFAULT_EXAMPLE_IDX]));
   const [clusterSizes, setClusterSizes] = useState({}); // { [clusterId]: size }
   // Back-compat alias — many child components still take a single `dimensionN` prop.
   const dimensionN = defaultSize;
@@ -85,7 +106,15 @@ export default function SymmetryAwareEinsumContractionsApp() {
   // `leafKeys` → spotlight matching leaves in the DecisionLadder.
   const [graphHover, setGraphHover] = useState(null);
   const [exprModalOpen, setExprModalOpen] = useState(false);
+  const explorerThemeId = useSyncExternalStore(
+    subscribeActiveExplorerTheme,
+    getActiveExplorerThemeId,
+    () => EXPLORER_THEME_RECOMMENDED_ID,
+  );
   const handleGraphHover = useCallback((payload) => setGraphHover(payload), []);
+  const handleExplorerThemeChange = useCallback((nextThemeId) => {
+    setActiveExplorerTheme(nextThemeId);
+  }, []);
   const hoveredLabelSet = useMemo(
     () => (graphHover?.labels?.length ? new Set(graphHover.labels) : null),
     [graphHover],
@@ -100,12 +129,14 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const isCustom = exampleIdx === CUSTOM_IDX;
   const example = isCustom ? customExample : EXAMPLES[exampleIdx];
   const selectedPresetIdx = getPresetControlSelection(exampleIdx, isDirty);
+  const theme = useMemo(() => getExplorerThemePreset(explorerThemeId), [explorerThemeId]);
+  const themeCssVars = useMemo(() => getExplorerThemeCssVariables(theme), [theme]);
 
   // Derive variable colors from the example's variables (works for both presets and custom)
   const variableColors = useMemo(() => {
-    if (example?.variables) return buildVariableColors(example.variables);
+    if (example?.variables) return buildVariableColors(example.variables, theme.id);
     return {};
-  }, [example]);
+  }, [example, theme.id]);
 
   // Normalize the example for algorithm consumption
   const normalizedExample = useMemo(() => example ? normalizeExample(example) : null, [example]);
@@ -114,6 +145,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const handleSelect = useCallback((idx) => {
     setExampleIdx(idx);
     setPreviewExample(EXAMPLES[idx] ?? null);
+    if (EXAMPLES[idx]) setDefaultSize(presetDefaultSize(EXAMPLES[idx]));
     setIsDirty(false);
     setSelectedOrbitIdx(-1);
     setSelectedSigmaPairIndex(null);
@@ -182,6 +214,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
   }, [cost, selectedOrbitIdx]);
 
   useEffect(() => {
+    resetActiveExplorerTheme();
+    return () => resetActiveExplorerTheme();
+  }, []);
+
+  useEffect(() => {
     const sections = EXPLORER_ACTS
       .map(({ id }) => document.getElementById(id))
       .filter(Boolean);
@@ -217,12 +254,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="symmetry-aware-einsum-explorer min-h-screen bg-background" style={themeCssVars}>
       <StickyBar
         example={previewExample ?? example}
         group={group}
         activeActId={activeActId}
         hoveredLabels={hoveredLabelSet}
+        dimensionN={dimensionN}
       />
 
       <div className="w-full pb-20 pt-10">
@@ -298,6 +336,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     onSelect={handleSelect}
                     selectedPresetIdx={selectedPresetIdx}
                     dimensionN={dimensionN}
+                    explorerThemeId={explorerThemeId}
                     onDimensionChange={setDefaultSize}
                     onCustom={handleCustomMode}
                     onCustomExample={handleCustomExample}
@@ -441,6 +480,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       componentData={componentData}
                       dimensionN={dimensionN}
                       numTerms={normalizedExample?.subscripts?.length ?? 1}
+                      explorerThemeId={explorerThemeId}
                     />
 
                     <button
@@ -481,6 +521,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
         onClose={() => setExprModalOpen(false)}
         analysis={analysis}
         group={group}
+      />
+      <ExplorerThemeDock
+        explorerThemeId={explorerThemeId}
+        onChange={handleExplorerThemeChange}
       />
     </div>
   );

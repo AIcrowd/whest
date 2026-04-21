@@ -1,8 +1,6 @@
 import { notationColor, notationLatex } from './notationSystem.js';
 import { variableSymmetryLabel } from './symmetryLabel.js';
 
-export const LANDING_FREE_LABEL_COLOR = '#E8555A';
-
 function normalizeSection1Example(example) {
   if (!example) return null;
   const variables = Array.isArray(example.variables) ? example.variables : [];
@@ -49,7 +47,7 @@ function uniqueChars(text) {
 }
 
 function roleColor(label, freeSet) {
-  return freeSet.has(label) ? LANDING_FREE_LABEL_COLOR : notationColor('w_summed');
+  return freeSet.has(label) ? notationColor('v_free') : notationColor('w_summed');
 }
 
 function coloredLabel(label, freeSet) {

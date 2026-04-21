@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-import { colorizeNotationLatex } from '../lib/notationSystem.js';
+import { colorizeNotationLatex, getActiveExplorerThemeId } from '../lib/notationSystem.js';
 
 // KaTeX renders mathematical glyphs (including Greek letters like α, U+03B1)
 // as regular HTML text nodes. If an ancestor element sets
@@ -23,6 +23,7 @@ const MATH_WRAPPER_STYLE = { textTransform: 'none' };
  * @param {boolean} display - true for display mode (centered block), false for inline
  */
 export default function Latex({ math, display = false }) {
+  const activeExplorerThemeId = getActiveExplorerThemeId();
   const html = useMemo(() => {
     try {
       return katex.renderToString(colorizeNotationLatex(math), {
@@ -33,7 +34,7 @@ export default function Latex({ math, display = false }) {
     } catch {
       return math;
     }
-  }, [math, display]);
+  }, [math, display, activeExplorerThemeId]);
 
   return display
     ? <div style={MATH_WRAPPER_STYLE} dangerouslySetInnerHTML={{ __html: html }} />

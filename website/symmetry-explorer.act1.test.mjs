@@ -49,8 +49,11 @@ test('ExampleChooser uses the shared Python code block and current builder primi
   assert.match(codeBlockSource, /hl-fn-primary/);
   assert.match(codeBlockSource, /\[&_\.hl-kw\]:font-semibold/);
   assert.match(codeBlockSource, /bg-white/);
-  assert.match(codeBlockSource, /\[&_\.hl-str\]:text-emerald-700/);
-  assert.match(codeBlockSource, /text-\[#ef5a4c\]/);
+  assert.match(codeBlockSource, /getActiveExplorerThemeId/);
+  assert.match(codeBlockSource, /explorerThemeColor/);
+  assert.match(codeBlockSource, /--python-string/);
+  assert.match(codeBlockSource, /\[&_\.hl-str\]:text-\[var\(--python-string\)\]/);
+  assert.match(codeBlockSource, /\[&_\.hl-fn-primary\]:text-\[var\(--python-function-primary\)\]/);
 });
 
 test('ExampleChooser increments added variable names spreadsheet-style', () => {
@@ -60,6 +63,14 @@ test('ExampleChooser increments added variable names spreadsheet-style', () => {
   assert.match(chooserSource, /while \(idx >= 0 && chars\[idx\] === 'Z'\)/);
   assert.match(chooserSource, /chars\.unshift\('A'\)/);
   assert.match(chooserSource, /name: nextVariableName\(lastName\)/);
+});
+
+test('ExampleChooser rebuilds variable colors from the active explorer theme', () => {
+  const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
+
+  assert.match(chooserSource, /explorerThemeId/);
+  assert.match(chooserSource, /const varColors = useMemo\(\s*\(\) => buildVariableColors\(variables,\s*explorerThemeId\),/);
+  assert.match(chooserSource, /\[variables,\s*explorerThemeId\]/);
 });
 
 test('PresetSidebar matches the design-system preset-list spec (flat container, 10px gray kicker, canonical padding)', () => {

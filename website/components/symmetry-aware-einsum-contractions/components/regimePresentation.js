@@ -1,6 +1,7 @@
 // website/components/symmetry-aware-einsum-contractions/components/regimePresentation.js
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
+import { notationColor } from '../lib/notationSystem.js';
 
 /**
  * Rendering metadata for each regime or shape id.
@@ -16,7 +17,7 @@ function regimePresentationFromSpec(id) {
     id,
     label: spec.label,
     shortLabel: spec.shortLabel,
-    color: spec.color ?? '#94A3B8',
+    color: spec.colorId ? notationColor(spec.colorId) : (spec.color ?? '#94A3B8'),
     tooltip: {
       title: spec.label,
       body: spec.description,

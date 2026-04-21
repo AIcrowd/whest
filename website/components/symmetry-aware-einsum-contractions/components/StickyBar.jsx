@@ -187,7 +187,7 @@ function StickyMetadataPopover({ anchorRect, operands, groupLabel }) {
   );
 }
 
-export default function StickyBar({ example, group, activeActId, hoveredLabels = null }) {
+export default function StickyBar({ example, group, activeActId, hoveredLabels = null, dimensionN = null }) {
   const [showMetadataPopover, setShowMetadataPopover] = useState(false);
   const [metadataAnchorRect, setMetadataAnchorRect] = useState(null);
   const metadataTriggerRef = useRef(null);
@@ -299,7 +299,7 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
                 variant="outline"
                 className="shrink-0 border-gray-200 bg-white text-gray-500 shadow-none"
               >
-                einsum
+                {`n=${dimensionN ?? '—'}`}
               </Badge>
               {/* Neutral stadium pill per design-system `.formula-live`:
                   gray-100 ground, gray-600 ink, 1px gray-200 border,

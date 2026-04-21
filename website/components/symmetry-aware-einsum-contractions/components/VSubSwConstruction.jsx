@@ -1,15 +1,12 @@
 import { Fragment, useMemo, useState } from 'react';
 import Latex from './Latex.jsx';
+import { explorerThemeColor, explorerThemeTint } from '../lib/explorerTheme.js';
 import {
+  getActiveExplorerThemeId,
   notationColor,
   notationLatex,
   notationText,
 } from '../lib/notationSystem.js';
-
-// V/W color palette — same hexes the rest of the page uses (DiminoView,
-// TotalCostView, InteractionGraph legend, IncidenceMatrix v/w columns).
-const COLOR_V = notationColor('v_free');
-const COLOR_W = notationColor('w_summed');
 
 /**
  * Format a Permutation in standard disjoint cycle notation. Fixed points
@@ -46,6 +43,8 @@ function toCycleString(perm, labels) {
  * (no flex container) so the inter-label spaces render verbatim.
  */
 function ColoredLabels({ text, vSet, wSet }) {
+  const COLOR_V = notationColor('v_free');
+  const COLOR_W = notationColor('w_summed');
   if (!text) return null;
   if (text === 'id') {
     return <span className="italic text-muted-foreground">id</span>;
@@ -96,6 +95,10 @@ function ColoredLabels({ text, vSet, wSet }) {
  * to highlight its counterparts in the other two.
  */
 export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLabels = [] }) {
+  const explorerThemeId = getActiveExplorerThemeId();
+  const COLOR_V = notationColor('v_free');
+  const COLOR_W = notationColor('w_summed');
+  const PRODUCT_ACCENT = explorerThemeColor(explorerThemeId, 'quantity');
   const [hoveredVIdx, setHoveredVIdx] = useState(null);
   const [hoveredWIdx, setHoveredWIdx] = useState(null);
   const [hoveredProductIdx, setHoveredProductIdx] = useState(null);
@@ -150,8 +153,8 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
     borderColor: `${COLOR_W}80`,
   };
   const activeProductStyle = {
-    background: '#ECFDF5',
-    borderColor: '#6EE7B7',
+    background: explorerThemeTint(explorerThemeId, 'quantity', 0.1),
+    borderColor: explorerThemeTint(explorerThemeId, 'quantity', 0.32),
   };
 
   return (

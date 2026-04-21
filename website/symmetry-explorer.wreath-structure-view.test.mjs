@@ -52,6 +52,9 @@ test('WreathStructureView caps the initial table at 10 rows, opens a modal for t
   assert.match(WIDGET_SRC, /INITIAL_ROW_LIMIT\s*=\s*10/);
   assert.match(WIDGET_SRC, /Click to see/);
   assert.match(WIDGET_SRC, /ExplorerModal/);
+  assert.match(WIDGET_SRC, /explorerThemeColor/);
+  assert.match(WIDGET_SRC, /explorerThemeTint/);
+  assert.match(WIDGET_SRC, /getActiveExplorerThemeId/);
   assert.doesNotMatch(WIDGET_SRC, /Aggregated Summary/);
   assert.doesNotMatch(WIDGET_SRC, /bg-emerald-50/);
   assert.doesNotMatch(WIDGET_SRC, /bg-rose-50/);

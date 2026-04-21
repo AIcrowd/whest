@@ -46,7 +46,7 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
   assert.match(src, /view\.exactEinsumText/);
   assert.match(src, /Latex display math=\{view\.expandedEquationLatex\}/);
   assert.match(src, /mt-2\.5 flex justify-center text-\[19px\]/);
-  assert.match(src, /LANDING_FREE_LABEL_COLOR/);
+  assert.match(src, /notationColor\('v_free'\)/);
   assert.match(src, /operandCount/);
   assert.match(src, /labelCount/);
   assert.match(src, /The summed labels/);

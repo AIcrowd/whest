@@ -1,5 +1,22 @@
 /* Visualization-only styles for the symmetry explorer. */
 
+.symmetry-aware-einsum-explorer {
+  --explorer-hero: var(--coral);
+  --explorer-hero-muted: var(--coral-hover);
+  --explorer-ink: var(--foreground);
+  --explorer-muted: var(--muted-foreground);
+  --explorer-border: var(--border);
+  --explorer-surface: var(--card);
+  --explorer-surface-inset: var(--muted);
+  --explorer-free-side: var(--ein-v);
+  --explorer-summed-side: var(--ein-w);
+  --explorer-symmetry-object: var(--info);
+  --explorer-action: var(--warning);
+  --explorer-quantity: var(--success);
+  --explorer-status-success: var(--status-success);
+  --explorer-status-warning: var(--status-warning);
+}
+
 .explorer-support-prose {
   font-family: var(--font-paper-serif);
   font-size: 15px;
@@ -294,8 +311,8 @@
 }
 
 .cell-active {
-  background: color-mix(in oklab, var(--color-success-alt) 10%, transparent);
-  color: var(--color-success-alt);
+  background: color-mix(in oklab, var(--explorer-quantity) 10%, transparent);
+  color: var(--explorer-quantity);
   font-weight: 600;
 }
 
@@ -782,8 +799,8 @@
   background: var(--white);
 }
 .inc-cell.inc-cell-active {
-  background: color-mix(in oklab, var(--color-success-alt) 10%, transparent);
-  color: var(--color-success-alt); font-weight: 600;
+  background: color-mix(in oklab, var(--success) 10%, transparent);
+  color: var(--success); font-weight: 600;
 }
 .inc-cell.inc-cell-col-moved {
   background: color-mix(in oklab, var(--ein-v) 6%, transparent);
@@ -1033,8 +1050,8 @@
 }
 
 .card-cell-abs.cell-active {
-  background: color-mix(in oklab, var(--color-success-alt) 10%, transparent);
-  color: var(--color-success-alt);
+  background: color-mix(in oklab, var(--explorer-quantity) 10%, transparent);
+  color: var(--explorer-quantity);
   font-weight: 600;
 }
 

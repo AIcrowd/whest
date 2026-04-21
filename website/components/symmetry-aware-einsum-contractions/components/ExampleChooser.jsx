@@ -120,6 +120,7 @@ export default function ExampleChooser({
   onSelect,
   selectedPresetIdx = 0,
   dimensionN,
+  explorerThemeId,
   onDimensionChange,
   onCustom,
   onCustomExample,
@@ -271,7 +272,10 @@ export default function ExampleChooser({
     markCustom();
   }, [markCustom]);
 
-  const varColors = useMemo(() => buildVariableColors(variables), [variables]);
+  const varColors = useMemo(
+    () => buildVariableColors(variables, explorerThemeId),
+    [variables, explorerThemeId],
+  );
   const validation = useMemo(
     () => validateAll(variables, subscriptsStr, outputStr, operandNamesStr),
     [variables, subscriptsStr, outputStr, operandNamesStr],

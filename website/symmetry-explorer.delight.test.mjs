@@ -31,6 +31,9 @@ test('FormulaPopover exports a default function and reads REGIME_SPEC', () => {
 test('BipartiteGraph accepts a highlightedLabels prop', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BipartiteGraph.jsx');
   assert.match(src, /highlightedLabels/);
+  assert.match(src, /getActiveExplorerThemeId/);
+  assert.match(src, /explorerThemeColor/);
+  assert.match(src, /getExplorerThemeOperandPalette/);
 });
 
 test('BipartiteGraph renders notation headers as math, not plain text pills', () => {
@@ -70,6 +73,9 @@ test('IncidenceMatrix exposes notation-aware row and column legends', () => {
   assert.match(src, /notationLatex\('u_axis_classes'\)/);
   assert.match(src, /notationLatex\('v_free'\)/);
   assert.match(src, /notationLatex\('w_summed'\)/);
+  assert.match(src, /getActiveExplorerThemeId/);
+  assert.match(src, /getExplorerThemeFingerprintPalette/);
+  assert.match(src, /defaultLabelColor = explorerThemeColor\(explorerThemeId,\s*'muted'\)/);
   assert.match(src, /rows:/i);
   assert.match(src, /columns:/i);
 });

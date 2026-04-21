@@ -1,17 +1,17 @@
 import { Fragment, useMemo } from 'react';
-import { notationColor } from '../lib/notationSystem.js';
+import { explorerThemeColor, explorerThemeTint } from '../lib/explorerTheme.js';
+import { getActiveExplorerThemeId, notationColor } from '../lib/notationSystem.js';
 import Latex from './Latex.jsx';
 
 // V/W color palette — same hexes the rest of Act 4 uses (Interaction Graph
 // legend, IncidenceMatrix v/w columns, TotalCostView hero glossary).
-const COLOR_V = notationColor('v_free');
-const COLOR_W = notationColor('w_summed');
-
 // Tokenize a cycle-notation / mapping / label-list string and recolor every
 // label that matches the component's V or W role. Pass-through for parens,
 // whitespace, commas, arrows, and any non-label punctuation. Identity 'e' is
 // left uncolored on purpose — it's a group element, not a label.
 function ColoredLabels({ text, vSet, wSet }) {
+  const COLOR_V = notationColor('v_free');
+  const COLOR_W = notationColor('w_summed');
   if (!text || typeof text !== 'string') return text ?? null;
   const tokens = text.split(/([(),\s→·\u27e8\u27e9])/);
   return (
@@ -89,6 +89,7 @@ function ProofSection({ title, children }) {
 }
 
 export default function DiminoView({ group, sigmaResults = [], selectedPairIndex = null }) {
+  const explorerThemeId = getActiveExplorerThemeId();
   const orderedLabels = group?.allLabels || [];
   const vSet = useMemo(() => new Set(group?.vLabels ?? []), [group?.vLabels]);
   const wSet = useMemo(() => new Set(group?.wLabels ?? []), [group?.wLabels]);
@@ -108,6 +109,15 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
   const candidate = matchedCandidate ?? candidatePermutations[0] ?? null;
   const closureNewElements = useMemo(() => newElementsFromClosure(candidate), [candidate]);
   const decisionKeepsCandidate = Boolean(candidate?.kept);
+  const decisionTone = decisionKeepsCandidate
+    ? {
+        background: explorerThemeTint(explorerThemeId, 'quantity', 0.12),
+        color: explorerThemeColor(explorerThemeId, 'quantity'),
+      }
+    : {
+        background: explorerThemeTint(explorerThemeId, 'action', 0.12),
+        color: explorerThemeColor(explorerThemeId, 'action'),
+      };
   const hasMergedProvenance = (candidate?.sourcePiIds?.length || 0) > 1;
   const usingPairFallback = selectedPairIndex === null || selectedPairIndex < 0 || selectedPairIndex >= validPairs.length;
   const usingCandidateFallback = Boolean(selectedPair && !matchedCandidate && candidate && candidate === candidatePermutations[0]);
@@ -264,7 +274,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
           </ProofSection>
 
           <ProofSection title="Decision">
-            <div className={`rounded-lg px-3 py-3 text-sm leading-6 ${decisionKeepsCandidate ? 'bg-emerald-50 text-emerald-900' : 'bg-amber-50 text-amber-900'}`}>
+            <div className="rounded-lg px-3 py-3 text-sm leading-6" style={decisionTone}>
               {decisionKeepsCandidate ? 'Keep ' : 'Discard '}
               <ColoredLabels text={candidate.cycleNotation} vSet={vSet} wSet={wSet} />
               {decisionKeepsCandidate
