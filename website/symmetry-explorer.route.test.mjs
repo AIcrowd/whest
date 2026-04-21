@@ -39,4 +39,7 @@ test('article route still wires the appendix modal while the main page stays app
 
   assert.match(appSource, /<ExpressionLevelModal/);
   assert.doesNotMatch(appSource, /VERBATIM, AUDIT-VERIFIED/);
+  assert.doesNotMatch(appSource, /REVIEW_RESPONSE\.md §5/);
+  assert.doesNotMatch(appSource, /AUDIT\.md/);
+  assert.doesNotMatch(appSource, /empirically verified on 22 presets \+ 543 σ-checks/);
 });
