@@ -10,14 +10,14 @@ import { notationColor } from '../lib/notationSystem.js';
  * Entries for shapes (trivial, allVisible, allSummed, mixed) come from SHAPE_SPEC.
  */
 
-function regimePresentationFromSpec(id) {
+function regimePresentationFromSpec(id, themeOverride = null) {
   const spec = REGIME_SPEC[id] || SHAPE_SPEC[id];
   if (!spec) return null;
   return {
     id,
     label: spec.label,
     shortLabel: spec.shortLabel,
-    color: spec.colorId ? notationColor(spec.colorId) : (spec.color ?? '#94A3B8'),
+    color: spec.colorId ? notationColor(spec.colorId, themeOverride) : (spec.color ?? '#94A3B8'),
     tooltip: {
       title: spec.label,
       body: spec.description,
@@ -28,10 +28,10 @@ function regimePresentationFromSpec(id) {
   };
 }
 
-export function getRegimePresentation(id) {
+export function getRegimePresentation(id, themeOverride = null) {
   const key = String(id ?? '?');
   return (
-    regimePresentationFromSpec(key)
+    regimePresentationFromSpec(key, themeOverride)
     || {
       id: key,
       label: `Regime ${key}`,

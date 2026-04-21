@@ -62,6 +62,7 @@ export default function CaseBadge({
   variant = 'pill',
   interactive = true,
   active = false,
+  themeOverride = null,
   className,
   children = null,
 }) {
@@ -81,7 +82,7 @@ export default function CaseBadge({
     return () => { tooltipSubscribers.delete(notify); };
   }, []);
 
-  const presentation = getRegimePresentation(regimeId);
+  const presentation = getRegimePresentation(regimeId, themeOverride);
   const colors = colorsFor(presentation.color ?? '#94A3B8');
   const tooltip = interactive ? presentation.tooltip : null;
 
@@ -198,27 +199,27 @@ export default function CaseBadge({
           }}
         >
           <div className="mb-1 whitespace-normal break-words text-sm font-semibold leading-6">
-            <InlineMathText>{tooltip.title}</InlineMathText>
+            <InlineMathText themeOverride={themeOverride}>{tooltip.title}</InlineMathText>
           </div>
           {tooltip.whenText && (
             <div className="mb-2 text-[11px] uppercase tracking-wider text-stone-500">
-              When: <InlineMathText>{tooltip.whenText}</InlineMathText>
+              When: <InlineMathText themeOverride={themeOverride}>{tooltip.whenText}</InlineMathText>
             </div>
           )}
           <div className="max-w-full whitespace-normal break-words text-sm leading-6 text-stone-700">
-            <InlineMathText>{tooltip.body}</InlineMathText>
+            <InlineMathText themeOverride={themeOverride}>{tooltip.body}</InlineMathText>
           </div>
           {tooltip.latex && (
             <div className="mt-3 overflow-x-auto border-t border-stone-200 pt-3 text-sm text-stone-900">
               <div className="min-w-0">
-                <Latex math={tooltip.latex} display />
+                <Latex math={tooltip.latex} display themeOverride={themeOverride} />
               </div>
             </div>
           )}
           {tooltip.glossary && (
             <div className="mt-3 whitespace-normal break-words border-t border-stone-200 pt-3 text-xs leading-relaxed text-stone-700">
               <div className="mb-1.5 text-[10px] uppercase tracking-wider text-stone-500">Where</div>
-              <GlossaryList entries={tooltip.glossary} />
+              <GlossaryList entries={tooltip.glossary} themeOverride={themeOverride} />
             </div>
           )}
           <div
