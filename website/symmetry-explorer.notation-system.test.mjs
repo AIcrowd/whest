@@ -163,6 +163,10 @@ test('representative surfaces render long-form notation across narrative, price 
     path.join(WEBSITE_ROOT, 'components/symmetry-aware-einsum-contractions/components/ExpressionLevelModal.jsx'),
     'utf8',
   );
+  const constructionSource = fs.readFileSync(
+    path.join(WEBSITE_ROOT, 'components/symmetry-aware-einsum-contractions/components/VSubSwConstruction.jsx'),
+    'utf8',
+  );
   const regimeSpecSource = fs.readFileSync(
     path.join(WEBSITE_ROOT, 'components/symmetry-aware-einsum-contractions/engine/regimeSpec.js'),
     'utf8',
@@ -175,8 +179,13 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(priceSavingsSource, /notationLatex\('v_free'\)/);
   assert.match(priceSavingsSource, /notationLatex\('w_summed'\)/);
   assert.match(priceSavingsSource, /notationLatex\('g_component'\)/);
-  assert.match(appendixSource, /G_\{\\text\{f\}\}\s*=\s*G_\{\\text\{pt\}\}\\big\|_\{V_\{\\mathrm\{free\}\}\}/);
-  assert.match(appendixSource, /S\(W_\{\\mathrm\{summed\}\}\)/);
+  assert.match(constructionSource, /Formal-group construction/);
+  assert.match(constructionSource, /notationLatex\('g_formal'\)/);
+  assert.match(constructionSource, /notationLatex\('g_pointwise_restricted_v'\)/);
+  assert.match(constructionSource, /notationLatex\('s_w_summed'\)/);
+  assert.match(constructionSource, /is trivial for this einsum\./);
+  assert.match(appendixSource, /The table below records the additional savings available when output storage also respects the visible-label symmetry induced by /);
+  assert.match(appendixSource, /G_\{\\\\text\{pt\}\}\\\\big\|_\{V_\{\\\\mathrm\{free\}\}\}/);
   assert.match(regimeSpecSource, /\$\$\{notationLatex\('v_free'\)\}\$/);
   assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('w_summed'\)\}\)/);
   assert.match(regimeSpecSource, /notationLatex\('c_omega_cycles'\)/);

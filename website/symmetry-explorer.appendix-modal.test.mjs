@@ -30,3 +30,12 @@ test('appendix modal uses paper-appendix section titles and removes audit proven
   assert.doesNotMatch(source, /AUDIT\.md/);
   assert.doesNotMatch(source, /empirically verified on 22 presets \+ 543 σ-checks/);
 });
+
+test('appendix modal frames storage savings as prose-led paper table rather than inset card', () => {
+  assert.match(source, /The table below records the additional savings available when output storage also respects the visible-label symmetry induced by /);
+  assert.match(source, /G_\{\\\\text\{pt\}\}\\\\big\|_\{V_\{\\\\mathrm\{free\}\}\}/);
+  assert.match(source, /<div className="mt-5 overflow-x-auto">/);
+  assert.match(source, /<thead className="border-b border-gray-200">/);
+  assert.match(source, /<tbody className="\[\&_tr\]:border-b \[\&_tr\]:border-gray-100">/);
+  assert.doesNotMatch(source, /Magnitude of the gap, across every preset in the explorer\./);
+});

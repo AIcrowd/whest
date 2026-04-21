@@ -742,104 +742,106 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
               </p>
             </div>
 
-            <div className="mt-4 rounded-md border border-border/60 bg-muted/20 px-5 py-4 text-sm leading-7 text-foreground">
-              <p className="font-semibold">Magnitude of the gap, across every preset in the explorer.</p>
-              <p className="mt-2">
+            <div className="mt-5 max-w-[74ch] space-y-4 font-serif text-[17px] leading-[1.75] text-gray-700">
+              <p>
+                <InlineMathText>
+                  {`The table below records the additional savings available when output storage also respects the visible-label symmetry induced by $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$.`}
+                </InlineMathText>
+              </p>
+              <p>
                 <InlineMathText>
                   {`Per $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$-orbit of size $s$, the savings are $(s-1) \\cdot (\\text{accumulations per bin})$ operations, so the total gap scales with the order and orbit structure of $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$. Presets with trivial $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ carry no output-tensor mirroring — there is nothing to collapse, and $\\alpha_{\\text{storage}} = \\alpha_{\\text{engine}}$.`}
                 </InlineMathText>
               </p>
-              <div className="mt-3 overflow-x-auto">
-                <table className="w-full text-[12px] border-collapse">
-                  <thead>
-                    <tr className="border-b border-border/60 text-left text-[12px] text-muted-foreground">
-                      <th className="px-2 py-2 font-semibold">Preset</th>
-                      <th className="px-2 py-2 font-semibold">Einsum</th>
-                      <th className="px-2 py-2 font-semibold">Operand sym.</th>
-                      <th className="px-2 py-2 font-semibold">V</th>
-                      <th className="px-2 py-2 font-semibold"><Latex math="G_{\text{pt}}\big|_{V_{\mathrm{free}}}" /></th>
-                      <th className="px-2 py-2 font-semibold text-right"><Latex math="\alpha_{\text{engine}}" /></th>
-                      <th className="px-2 py-2 font-semibold text-right"><Latex math="\alpha_{\text{storage}}" /></th>
-                      <th className="px-2 py-2 font-semibold text-right">Saving</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {SAVINGS_TABLE_ROWS.map((r, idx) => {
-                      const isLast = idx === SAVINGS_TABLE_ROWS.length - 1;
-                      const hasSaving = r.saving > 0;
-                      const preset = EXAMPLES_BY_ID.get(r.id);
-                      const subs = preset?.expression?.subscripts ?? '';
-                      const output = preset?.expression?.output ?? '';
-                      const operands = describeOperands(preset);
-                      return (
-                        <tr
-                          key={r.id}
-                          className={`${isLast ? '' : 'border-b border-border/40'} ${hasSaving ? '' : 'text-muted-foreground'}`}
-                        >
-                          <td className="px-2 py-2 font-mono whitespace-nowrap">{r.id}</td>
-                          <td className="px-2 py-2 font-mono whitespace-nowrap">
-                            {/*
-                              Pure-CSS hover reveal: the inner `group` wraps both
-                              the cell's visible einsum text and an absolutely
-                              positioned tooltip. `group-hover:block` flips the
-                              tooltip in when the cursor enters the wrapper; a
-                              dotted underline on the einsum surface signals the
-                              affordance. z-50 keeps it above sibling rows, and
-                              `pointer-events-none` prevents the panel from
-                              trapping the cursor inside the cell (important so
-                              moving to the next row dismisses the current
-                              tooltip cleanly).
-                            */}
-                            <div className="group relative inline-block">
-                              <span className="cursor-help border-b border-dotted border-gray-300">
-                                {subs.replace(/,/g, ', ')}
-                                <span className="mx-1">→</span>
-                                {output || <Latex math="\varnothing" />}
-                              </span>
-                              <div className="pointer-events-none absolute left-0 top-full z-50 mt-1.5 hidden w-[380px] whitespace-normal rounded-lg border border-gray-300 bg-white p-3 text-[12px] leading-5 text-gray-700 shadow-xl group-hover:block">
-                                <EinsumConstructionTooltip preset={preset} />
-                              </div>
+            </div>
+
+            <div className="mt-5 overflow-x-auto">
+              <table className="w-full border-collapse text-[12px]">
+                <thead className="border-b border-gray-200">
+                  <tr className="text-left text-[12px] text-muted-foreground">
+                    <th className="px-2 py-2 font-semibold">Preset</th>
+                    <th className="px-2 py-2 font-semibold">Einsum</th>
+                    <th className="px-2 py-2 font-semibold">Operand sym.</th>
+                    <th className="px-2 py-2 font-semibold">V</th>
+                    <th className="px-2 py-2 font-semibold"><Latex math="G_{\text{pt}}\big|_{V_{\mathrm{free}}}" /></th>
+                    <th className="px-2 py-2 font-semibold text-right"><Latex math="\alpha_{\text{engine}}" /></th>
+                    <th className="px-2 py-2 font-semibold text-right"><Latex math="\alpha_{\text{storage}}" /></th>
+                    <th className="px-2 py-2 font-semibold text-right">Saving</th>
+                  </tr>
+                </thead>
+                <tbody className="[&_tr]:border-b [&_tr]:border-gray-100">
+                  {SAVINGS_TABLE_ROWS.map((r) => {
+                    const hasSaving = r.saving > 0;
+                    const preset = EXAMPLES_BY_ID.get(r.id);
+                    const subs = preset?.expression?.subscripts ?? '';
+                    const output = preset?.expression?.output ?? '';
+                    const operands = describeOperands(preset);
+                    return (
+                      <tr key={r.id} className={hasSaving ? '' : 'text-muted-foreground'}>
+                        <td className="px-2 py-2 font-mono whitespace-nowrap">{r.id}</td>
+                        <td className="px-2 py-2 font-mono whitespace-nowrap">
+                          {/*
+                            Pure-CSS hover reveal: the inner `group` wraps both
+                            the cell's visible einsum text and an absolutely
+                            positioned tooltip. `group-hover:block` flips the
+                            tooltip in when the cursor enters the wrapper; a
+                            dotted underline on the einsum surface signals the
+                            affordance. z-50 keeps it above sibling rows, and
+                            `pointer-events-none` prevents the panel from
+                            trapping the cursor inside the cell (important so
+                            moving to the next row dismisses the current
+                            tooltip cleanly).
+                          */}
+                          <div className="group relative inline-block">
+                            <span className="cursor-help border-b border-dotted border-gray-300">
+                              {subs.replace(/,/g, ', ')}
+                              <span className="mx-1">→</span>
+                              {output || <Latex math="\varnothing" />}
+                            </span>
+                            <div className="pointer-events-none absolute left-0 top-full z-50 mt-1.5 hidden w-[380px] whitespace-normal rounded-lg border border-gray-300 bg-white p-3 text-[12px] leading-5 text-gray-700 shadow-xl group-hover:block">
+                              <EinsumConstructionTooltip preset={preset} />
                             </div>
-                          </td>
-                          <td className="px-2 py-2 whitespace-nowrap">
-                            {operands.map((o, i) => (
-                              <span key={o.name}>
-                                {i > 0 && <span className="text-muted-foreground">; </span>}
-                                <span className="font-mono font-semibold">{o.name}</span>
-                                {o.count > 1 && (
-                                  <span className="font-mono text-muted-foreground">×{o.count}</span>
-                                )}
-                                <span className="text-muted-foreground">: </span>
-                                <span className={o.sym === 'dense' ? 'text-muted-foreground italic' : 'font-mono'}>
-                                  {o.sym}
-                                </span>
+                          </div>
+                        </td>
+                        <td className="px-2 py-2 whitespace-nowrap">
+                          {operands.map((o, i) => (
+                            <span key={o.name}>
+                              {i > 0 && <span className="text-muted-foreground">; </span>}
+                              <span className="font-mono font-semibold">{o.name}</span>
+                              {o.count > 1 && (
+                                <span className="font-mono text-muted-foreground">×{o.count}</span>
+                              )}
+                              <span className="text-muted-foreground">: </span>
+                              <span className={o.sym === 'dense' ? 'text-muted-foreground italic' : 'font-mono'}>
+                                {o.sym}
                               </span>
-                            ))}
-                          </td>
-                          <td className="px-2 py-2 whitespace-nowrap">
-                            <Latex math={r.v === '\\varnothing' ? '\\varnothing' : `\\{${r.v}\\}`} />
-                          </td>
-                          <td className="px-2 py-2 whitespace-nowrap"><Latex math={r.vSub} /></td>
-                          <td className="px-2 py-2 text-right font-mono">{r.ae}</td>
-                          <td className="px-2 py-2 text-right font-mono">{r.as}</td>
-                          <td className={`px-2 py-2 text-right font-mono whitespace-nowrap ${hasSaving ? 'text-emerald-700' : ''}`}>
-                            {hasSaving ? `${r.saving} (${r.pct}%)` : '—'}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-                <p className="mt-2 text-[11px] italic text-muted-foreground">
-                  All entries computed at <Latex math="n = 3" />; sorted by % saving, descending. <span className="font-mono not-italic">×k</span> on an operand indicates it appears <Latex math="k" /> times in the expression (driving top-group transpositions in the wreath σ-loop). Hover any einsum to see the full construction with per-operand ranks, declared axes, and generators.
-                </p>
-              </div>
-              <p className="mt-3 text-[13px] text-muted-foreground">
-                <InlineMathText>
-                  {`The $S(W_{\\mathrm{summed}})$ factor of $G_{\\text{f}}$ contributes nothing at the storage level because $S(W_{\\mathrm{summed}})$ acts on summation variables rather than output cells; there is no output-tensor symmetry to exploit on the $W_{\\mathrm{summed}}$-side beyond what $G_{\\text{pt}}$ already captures through its orbit structure on tuples.`}
-                </InlineMathText>
+                            </span>
+                          ))}
+                        </td>
+                        <td className="px-2 py-2 whitespace-nowrap">
+                          <Latex math={r.v === '\\varnothing' ? '\\varnothing' : `\\{${r.v}\\}`} />
+                        </td>
+                        <td className="px-2 py-2 whitespace-nowrap"><Latex math={r.vSub} /></td>
+                        <td className="px-2 py-2 text-right font-mono">{r.ae}</td>
+                        <td className="px-2 py-2 text-right font-mono">{r.as}</td>
+                        <td className={`px-2 py-2 text-right font-mono whitespace-nowrap ${hasSaving ? 'text-emerald-700' : ''}`}>
+                          {hasSaving ? `${r.saving} (${r.pct}%)` : '—'}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <p className="mt-2 text-[11px] italic text-muted-foreground">
+                All entries computed at <Latex math="n = 3" />; sorted by % saving, descending. <span className="font-mono not-italic">×k</span> on an operand indicates it appears <Latex math="k" /> times in the expression (driving top-group transpositions in the wreath σ-loop). Hover any einsum to see the full construction with per-operand ranks, declared axes, and generators.
               </p>
             </div>
+
+            <p className="mt-3 text-[13px] text-muted-foreground">
+              <InlineMathText>
+                {`The $S(W_{\\mathrm{summed}})$ factor of $G_{\\text{f}}$ contributes nothing at the storage level because $S(W_{\\mathrm{summed}})$ acts on summation variables rather than output cells; there is no output-tensor symmetry to exploit on the $W_{\\mathrm{summed}}$-side beyond what $G_{\\text{pt}}$ already captures through its orbit structure on tuples.`}
+              </InlineMathText>
+            </p>
 
             <div className="mt-4 max-w-[74ch] font-serif text-[17px] leading-[1.75] text-gray-700">
               <p>
