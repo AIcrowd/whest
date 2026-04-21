@@ -810,19 +810,17 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   </p>
                   <div className="border-y border-gray-200 py-5">
                     <p className={APPENDIX_KICKER_CLASS}>Formal takeaway</p>
-                    <div className="mt-4 space-y-4">
-                      <p className={APPENDIX_FORMAL_PROSE_CLASS}>
-                        <InlineMathText>
-                          {`$${notationLatex('g_pointwise_restricted_v')}$ is obtained by restricting the $${notationLatex('v_free')}$-preserving part of $G_{\\text{pt}}$ to the free labels alone.`}
-                        </InlineMathText>
-                      </p>
-                      <p className={APPENDIX_FORMAL_PROSE_CLASS}>
-                        <InlineMathText>
-                          {`This is the part of $G_{\\text{pt}}$ that still acts on the computed output tensor: for every $\\sigma \\in $${notationLatex('g_pointwise_restricted_v')}$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on output cells themselves.`}
-                        </InlineMathText>
-                      </p>
-                    </div>
+                    <p className={`mt-4 ${APPENDIX_FORMAL_PROSE_CLASS}`}>
+                      <InlineMathText>
+                        {`$${notationLatex('g_pointwise_restricted_v')}$ is obtained by restricting the $${notationLatex('v_free')}$-preserving part of $G_{\\text{pt}}$ to the free labels alone.`}
+                      </InlineMathText>
+                    </p>
                   </div>
+                  <p className={APPENDIX_PROSE_CLASS}>
+                    <InlineMathText>
+                      {`This is the part of $G_{\\text{pt}}$ that still acts on the computed output tensor: for every $\\sigma \\in $${notationLatex('g_pointwise_restricted_v')}$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on output cells themselves.`}
+                    </InlineMathText>
+                  </p>
                 </div>
               }
               right={
