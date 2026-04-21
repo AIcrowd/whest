@@ -229,8 +229,13 @@ export function notationColorWithPalette(id, paletteOverride = null) {
   return resolveColor(id, paletteOverride);
 }
 
-export function notationColoredLatex(id, latexOverride = notationLatex(id)) {
-  return String.raw`\textcolor{${notationColor(id)}}{${latexOverride}}`;
+export function notationColoredLatex(
+  id,
+  latexOverride = notationLatex(id),
+  wrapInGroup = false,
+) {
+  const colored = String.raw`\textcolor{${notationColor(id)}}{${latexOverride}}`;
+  return wrapInGroup ? `{${colored}}` : colored;
 }
 
 export function notationColoredLatexWithPalette(id, paletteOverride = null, latexOverride = notationLatex(id)) {
@@ -245,9 +250,12 @@ export function colorizeNotationLatex(math) {
   const placeholders = [];
 
   for (const { id, regex } of AUTO_COLOR_RULES) {
-    colorized = colorized.replace(regex, (match) => {
+    colorized = colorized.replace(regex, (match, offset) => {
+      const precedingChar = colorized[offset - 1];
+      const superscriptOrSubscript = precedingChar === '^' || precedingChar === '_';
+      const replacement = notationColoredLatex(id, match, superscriptOrSubscript);
       const key = `@@NOTATION_${placeholders.length}@@`;
-      placeholders.push(notationColoredLatex(id, match));
+      placeholders.push(replacement);
       return key;
     });
   }

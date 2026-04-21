@@ -2,18 +2,19 @@ import InlineMathText from './InlineMathText.jsx';
 
 export default function AppendixTheoremBlock({ kind, children, lead = null }) {
   return (
-    <div className="my-6 border-l border-gray-200 pl-5">
-      <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500">
-        {kind}
-      </div>
+    <p className="font-serif text-[17px] leading-[1.85] text-gray-800">
+      <span className="font-semibold text-gray-900">
+        {kind}.
+      </span>
       {lead ? (
-        <p className="mb-3 font-serif text-[16px] leading-[1.7] text-gray-700">
+        <span className="ml-1 font-semibold text-gray-900">
           <InlineMathText>{lead}</InlineMathText>
-        </p>
+        </span>
       ) : null}
-      <div className="font-serif text-[17px] leading-[1.8] text-gray-800">
+      {' '}
+      <span className="italic">
         <InlineMathText>{children}</InlineMathText>
-      </div>
-    </div>
+      </span>
+    </p>
   );
 }

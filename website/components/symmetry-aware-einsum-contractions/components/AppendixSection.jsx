@@ -1,6 +1,6 @@
 import { SectionEyebrow } from './ExplorerSectionCard.jsx';
 
-export default function AppendixSection({ n, label, title, deck = null, children, className = '' }) {
+export default function AppendixSection({ n, label, title, deck = null, children, className = '', contentClassName = '' }) {
   return (
     <section className={['pt-8 first:pt-0', className].join(' ')}>
       {n > 1 ? <div className="mb-8 border-t border-gray-100" /> : null}
@@ -15,7 +15,9 @@ export default function AppendixSection({ n, label, title, deck = null, children
           </p>
         ) : null}
       </div>
-      {children}
+      <div className={contentClassName}>
+        {children}
+      </div>
     </section>
   );
 }

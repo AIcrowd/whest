@@ -44,7 +44,7 @@ function SubscriptTokens({ text, hoveredLabels }) {
 // label like `i` no longer lights up the `i` in "einsum". We rebuild from
 // `example.expression` (structured) rather than walking the display string,
 // so the visible formula always matches the authoritative subscripts.
-function FormulaHighlighted({ example, hoveredLabels }) {
+export function FormulaHighlighted({ example, hoveredLabels }) {
   const expr = example?.expression;
   if (!expr || typeof expr.subscripts !== 'string') {
     // Pre-normalized or malformed example — fall back to the raw string
@@ -130,7 +130,7 @@ function buildMetadataItems({ example, group }) {
   };
 }
 
-function SymmetryChip({ name, symmetry }) {
+export function SymmetryChip({ name, symmetry }) {
   return (
     <span className="inline-flex h-6 items-center gap-1 rounded-full border border-primary/18 bg-white px-2.5 text-xs font-mono text-foreground shadow-sm">
       <span className="font-semibold text-primary">{name}</span>

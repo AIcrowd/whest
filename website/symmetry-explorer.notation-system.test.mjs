@@ -84,6 +84,7 @@ test('shared latex colorizer colors representative raw formulas before render', 
   const matrixWitnessFormula = String.raw`M_\sigma = M`;
   const wreathMembership = String.raw`\sigma \in G_{\mathrm{wreath}}`;
   const wreathEquation = String.raw`G_{\mathrm{wreath}} = \prod_i (H_i \wr S_{m_i})`;
+  const appendixExponentIssue = String.raw`t \in [n]^L`;
 
   const colorizedAppendix = colorizeNotationLatex(appendixFormula);
   const colorizedYoung = colorizeNotationLatex(youngFormula);
@@ -92,6 +93,7 @@ test('shared latex colorizer colors representative raw formulas before render', 
   const colorizedMatrixWitness = colorizeNotationLatex(matrixWitnessFormula);
   const colorizedWreathMembership = colorizeNotationLatex(wreathMembership);
   const colorizedWreathEquation = colorizeNotationLatex(wreathEquation);
+  const colorizedAppendixExponentIssue = colorizeNotationLatex(appendixExponentIssue);
 
   assert.equal(colorizedAppendix.includes(notationColoredLatex('g_formal')), true);
   assert.equal(colorizedAppendix.includes(notationColoredLatex('g_pointwise_restricted_v')), true);
@@ -111,6 +113,14 @@ test('shared latex colorizer colors representative raw formulas before render', 
   assert.equal(colorizedWreathEquation.includes(notationColoredLatex('g_wreath')), true);
   assert.equal(colorizedWreathEquation.includes(notationColoredLatex('h_family')), true);
   assert.doesNotMatch(colorizedWreathEquation, /\\textcolor\{#[0-9A-Fa-f]{6}\}\{G_\{\\mathrm\{wreath\}\}\s*=/);
+  assert.equal(
+    colorizedAppendixExponentIssue,
+    `t \\in [n]^{\\textcolor{${notationColor('l_labels')}}{L}}`,
+  );
+  assert.equal(
+    katex.renderToString(colorizedAppendixExponentIssue, { throwOnError: false, trust: true }).includes('katex-error'),
+    false,
+  );
   assert.equal(
     katex.renderToString(colorizedSingleton, { throwOnError: false, trust: true }).includes('katex-error'),
     false,
