@@ -12,6 +12,7 @@ import PanZoomCanvas from './PanZoomCanvas.jsx';
 import ExplorerModal from './ExplorerModal.jsx';
 import MultiplicationCostCard from './MultiplicationCostCard.jsx';
 import AccumulationHardCard from './AccumulationHardCard.jsx';
+import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 import {
   notationColor,
@@ -94,10 +95,10 @@ function ComponentSummaryTable({
   const MIDDLE_COLS = 'grid-cols-[1.2fr_2.5fr_0.9fr_0.9fr_1.4fr]';
 
   return (
-    <div className="max-w-full overflow-x-auto rounded-xl border border-border bg-white shadow-sm">
+    <div className="max-w-full overflow-x-auto bg-white">
       {/* Global column header — only labels the 5 middle-row columns. */}
       <div
-        className={`grid ${MIDDLE_COLS} items-center gap-x-4 bg-surface-raised px-5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400`}
+        className={`grid ${MIDDLE_COLS} items-center gap-x-4 bg-surface-raised px-5 py-2.5 text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-900`}
       >
         <span>Labels</span>
         <span>Method</span>
@@ -151,8 +152,17 @@ function ComponentSummaryTable({
             {/* Band 2 — the 5-column middle row */}
             <div className={`grid ${MIDDLE_COLS} items-start gap-x-4 py-3`}>
               {/* Labels */}
-              <div>
+              <div className="space-y-3">
                 <LabelsCell comp={comp} />
+                <div className="w-full border-t border-border/30" aria-hidden="true" />
+                <div className="space-y-1.5">
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                    Symmetry
+                  </span>
+                  <div>
+                    <SymmetryBadge value={comp.groupName || 'trivial'} />
+                  </div>
+                </div>
               </div>
 
               {/* Method: description + α formula, wrapped in a CaseBadge
@@ -288,16 +298,6 @@ function ComponentSummaryTable({
                 )}
               </div>
             </div>
-
-            <div className="border-t border-border/40" aria-hidden="true" />
-
-            {/* Band 3 — Symmetry (full-width footer band) */}
-            <div className="flex items-center gap-2 py-3">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                Symmetry
-              </span>
-              <SymmetryBadge value={comp.groupName || 'trivial'} />
-            </div>
           </div>
         );
       })}
@@ -384,16 +384,14 @@ export default function ComponentCostView({
 
   return (
     <div className="min-w-0 space-y-6">
-      <div className="grid gap-6 lg:grid-cols-2">
-        <div id="interaction-graph" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
+      <div className="editorial-two-col-divider-lg border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2">
+        <div id="interaction-graph" className="bg-white p-4 scroll-mt-24">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
-                <AnchorLink anchorId="interaction-graph" labelText="Interaction Graph">
-                  Interaction Graph
-                </AnchorLink>
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              <ExplorerSubsectionHeader anchorId="interaction-graph" labelText="Interaction Graph">
+                Interaction Graph
+              </ExplorerSubsectionHeader>
+              <p className="explorer-support-prose mt-2">
                 Nodes are <strong className="font-semibold text-foreground">labels</strong>; an edge marks labels that a generator of&nbsp;
                 <Latex math="G" />&nbsp;moves together. Disjoint components factor the cost into independent sub-problems — each one lands on a case in the decision tree below.
               </p>
@@ -424,7 +422,7 @@ export default function ComponentCostView({
             shorter than the interaction-graph column on the left) equally
             between the top and bottom, so the two cost cards sit centred
             rather than huddled at the top with dead space beneath. */}
-        <div className="flex flex-col justify-center gap-6">
+        <div className="flex flex-col justify-center divide-y divide-gray-100">
           <MultiplicationCostCard
             components={components.map((comp) => ({
               ...comp,
@@ -435,13 +433,11 @@ export default function ComponentCostView({
         </div>
       </div>
 
-      <div id="classification-tree" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
-        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
-          <AnchorLink anchorId="classification-tree" labelText="Classification Tree">
-            Classification Tree
-          </AnchorLink>
-        </h3>
-        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+      <div id="classification-tree" className="bg-white p-4 scroll-mt-24">
+        <ExplorerSubsectionHeader anchorId="classification-tree" labelText="Classification Tree">
+          Classification Tree
+        </ExplorerSubsectionHeader>
+        <p className="explorer-support-prose mt-2">
           Each component is routed through a yes/no spine that dispatches to the
           cheapest applicable closed form, or to brute-force orbit projection
           when nothing else fits. The highlighted leaf on the left is where the

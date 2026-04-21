@@ -48,7 +48,7 @@ export default function WreathStructureView({ analysis, example }) {
     : `${notationLatex('g_wreath')} = ${factors.map((factor) => `(${factor.symmetryLabel} \\wr S_{${factor.m}})`).join(' \\times ')}`;
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4">
+    <div className="bg-white p-4">
       <p className="font-serif text-[16px] leading-[1.75] text-gray-700">
         <InlineMathText>
           {`We build $${notationLatex('g_wreath')} = \\prod_i (${notationLatex('h_family')} \\wr S_{m_i})$ because it is the search space of row moves worth testing: declared axis symmetries inside each repeated-operand family together with permutations of identical copies. For each $${notationLatex('sigma_row_move')}$, we then ask whether there is a matching relabeling $${notationLatex('pi_relabeling')}$ of the labels.`}
@@ -123,17 +123,17 @@ export default function WreathStructureView({ analysis, example }) {
 
 function WreathElementTable({ elements }) {
   return (
-    <div className="mt-4 overflow-x-auto rounded-lg border border-gray-200 bg-white">
+    <div className="mt-4 overflow-x-auto bg-white">
       <table className="min-w-full border-collapse text-[12px]">
         <thead>
-          <tr className="border-b border-gray-200 bg-gray-50 text-left text-gray-500">
-            <th className="px-3 py-2 font-semibold">
+          <tr className="border-b border-gray-200 bg-gray-50 text-gray-900">
+            <th className="px-3 py-2 text-center font-semibold">
               <Latex math={`${notationLatex('sigma_row_move')}\\text{ row move}`} />
             </th>
-            <th className="px-3 py-2 font-semibold">Factor decomposition</th>
-            <th className="px-3 py-2 font-semibold">Row action on M</th>
-            <th className="px-3 py-2 font-semibold">matching relabeling <Latex math={String.raw`\pi`} /></th>
-            <th className="px-3 py-2 font-semibold">Outcome</th>
+            <th className="px-3 py-2 text-center font-semibold">Factor decomposition</th>
+            <th className="px-3 py-2 text-center font-semibold">Row action on M</th>
+            <th className="px-3 py-2 text-center font-semibold">matching relabeling <Latex math={String.raw`\pi`} /></th>
+            <th className="px-3 py-2 text-center font-semibold">Outcome</th>
           </tr>
         </thead>
         <tbody>

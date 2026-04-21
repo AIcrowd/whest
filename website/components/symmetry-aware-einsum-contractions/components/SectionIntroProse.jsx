@@ -7,7 +7,7 @@ export default function SectionIntroProse({
 }) {
   const gridClassName = columns === 'one'
     ? 'grid gap-y-4'
-    : 'grid gap-x-8 gap-y-4 md:grid-cols-2';
+    : 'editorial-two-col-divider-md grid gap-x-8 gap-y-4 md:grid-cols-2';
 
   return (
     <div className={[gridClassName, className].filter(Boolean).join(' ')}>

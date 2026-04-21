@@ -81,7 +81,7 @@ function PermCards({ elements, labels, vSet, wSet, highlight = false, emptyText 
 
 function ProofSection({ title, children }) {
   return (
-    <div className="rounded-lg border border-border bg-surface-raised p-3">
+    <div className="py-4">
       <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">{title}</div>
       <div className="mt-3">{children}</div>
     </div>
@@ -131,8 +131,8 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
     // they can click that would change the outcome.
     const isTrivialGroup = !group?.fullOrder || group.fullOrder <= 1;
     return (
-      <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-        <div className="text-[11px] text-muted-foreground mb-2">
+      <div className="bg-white p-4">
+        <div className="explorer-support-prose mb-2">
           Dimino&apos;s algorithm, closing the valid <Latex math={String.raw`\pi`} />&apos;s into the detected group G — a verification step,
           since the valid-π set is already composition-closed.
         </div>
@@ -160,27 +160,27 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <div className="text-[11px] text-muted-foreground mb-2">
+    <div className="bg-white p-4">
+      <div className="explorer-support-prose mb-2">
         Dimino&apos;s algorithm, closing the valid <Latex math={String.raw`\pi`} />&apos;s into the detected group G — a verification step,
         since the valid-π set is already composition-closed.
       </div>
       <div>
         {usingPairFallback ? (
-          <div className="rounded-lg border border-dashed border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
+          <div className="px-3 py-2 text-xs leading-5 text-muted-foreground">
             No exact pair is selected yet, so this panel is showing the first valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pair as a stable fallback.
           </div>
         ) : null}
         {usingCandidateFallback ? (
-          <div className="mt-3 rounded-lg border border-dashed border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
+          <div className="mt-3 px-3 py-2 text-xs leading-5 text-muted-foreground">
             The selected pair does not map to a unique induced label permutation, so this panel is showing the first one as a stable fallback.
           </div>
         ) : null}
-        <p className="mt-2 max-w-[62ch] text-sm leading-6 text-muted-foreground">
+        <p className="explorer-support-prose mt-2 max-w-[62ch]">
           Each valid <Latex math={String.raw`\pi`} /> induces a label permutation on the active labels. We keep it only if adding it enlarges the subgroup generated so far.
         </p>
         {group ? (
-          <div className="mt-3 rounded-lg border border-border bg-surface-raised px-3 py-2 text-xs leading-5 text-muted-foreground">
+          <div className="mt-3 px-3 py-2 text-xs leading-5 text-muted-foreground">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-foreground">
               <code className="rounded bg-stone-100 px-1.5 py-0.5 font-mono text-[12px] font-semibold tracking-wide text-foreground">
                 <ColoredLabels text={group.fullGroupName} vSet={vSet} wSet={wSet} />
@@ -199,15 +199,15 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
       </div>
 
       {!selectedPair ? (
-        <div className="mt-4 rounded-lg border border-dashed border-border bg-surface-raised p-4 text-sm leading-6 text-muted-foreground">
+        <div className="mt-4 p-4 text-sm leading-6 text-muted-foreground">
           Select a valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pair on the left to inspect the single candidate-construction step it induces.
         </div>
       ) : !candidate ? (
-        <div className="mt-4 rounded-lg border border-dashed border-border bg-surface-raised p-4 text-sm leading-6 text-muted-foreground">
+        <div className="mt-4 p-4 text-sm leading-6 text-muted-foreground">
           This selection does not produce a non-identity induced label permutation for generator construction.
         </div>
       ) : (
-        <div className="mt-4 space-y-4">
+        <div className="mt-4 divide-y divide-gray-100">
           <ProofSection title={<>Current candidate from <Latex math={String.raw`\pi`} /></>}>
             <div className="space-y-3">
               <div className="perm-card generator dimino-new">
@@ -264,7 +264,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
           </ProofSection>
 
           <ProofSection title="Decision">
-            <div className={`rounded-lg border px-3 py-3 text-sm leading-6 ${decisionKeepsCandidate ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : 'border-amber-200 bg-amber-50 text-amber-900'}`}>
+            <div className={`rounded-lg px-3 py-3 text-sm leading-6 ${decisionKeepsCandidate ? 'bg-emerald-50 text-emerald-900' : 'bg-amber-50 text-amber-900'}`}>
               {decisionKeepsCandidate ? 'Keep ' : 'Discard '}
               <ColoredLabels text={candidate.cycleNotation} vSet={vSet} wSet={wSet} />
               {decisionKeepsCandidate
@@ -290,7 +290,7 @@ export default function DiminoView({ group, sigmaResults = [], selectedPairIndex
           </ProofSection>
 
           {hasMergedProvenance ? (
-            <div className="rounded-lg border border-border bg-white p-3 text-xs leading-6 text-muted-foreground">
+            <div className="py-4 text-xs leading-6 text-muted-foreground">
               <>Provenance note: {candidate.sourcePiIds.length} valid <Latex math={String.raw`\pi`} /> mappings collapse to this same induced label permutation, so they share this closure decision.</>
             </div>
           ) : null}

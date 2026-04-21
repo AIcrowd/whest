@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
-import { AnchorLink } from './ExplorerSectionCard.jsx';
+import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
 
 /**
  * Teaching card: "Why Accumulation Cost (α) is Hard".
@@ -139,13 +139,11 @@ export default function AccumulationHardCard() {
   }, []);
 
   return (
-    <div id="accumulation-cost" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
-      <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
-        <AnchorLink anchorId="accumulation-cost" labelText="Why Accumulation Cost (α) is Hard">
-          Why Accumulation Cost <span>(<Latex math={String.raw`\alpha`} />)</span> is Hard
-        </AnchorLink>
-      </h3>
-      <p className="mt-2 text-sm leading-6 text-foreground">
+    <div id="accumulation-cost" className="bg-white p-4 scroll-mt-24">
+      <ExplorerSubsectionHeader anchorId="accumulation-cost" labelText="Why Accumulation Cost (α) is Hard">
+        <InlineMathText>{`Why Accumulation Cost ($${String.raw`\alpha`}$) is Hard`}</InlineMathText>
+      </ExplorerSubsectionHeader>
+      <p className="explorer-support-prose mt-2">
         <InlineMathText>{String.raw`Unlike $M_a$, the per-component accumulation cost $\alpha_a$ depends on how each orbit projects onto the free labels $V_{\mathrm{free},a}$. That projection is not a simple Burnside sum, and the global total is $\prod_a \alpha_a$.`}</InlineMathText>
       </p>
 
@@ -165,10 +163,10 @@ export default function AccumulationHardCard() {
         <Latex math={String.raw`\alpha_a \;=\; \sum_{O \in X_a/G_a} |\pi_{V_{\mathrm{free}}}(O)|`} display />
       </div>
 
-      <p className="mt-3 text-sm leading-6 text-foreground">
+      <p className="explorer-support-prose mt-3">
         <InlineMathText>{String.raw`The generic formula requires enumerating every orbit and counting its distinct $V_{\mathrm{free}}$-projection, which is $O\!\left(\prod_{\ell} n_\ell \cdot |G|\right)$ work in the worst case.`}</InlineMathText>
       </p>
-      <p className="mt-2 text-sm leading-6 text-foreground">
+      <p className="explorer-support-prose mt-2">
         <InlineMathText>{`We dodge that cost when the group has a recognizable structure. The classification tree below routes each component to its cheapest applicable closed form, or falls back to brute-force enumeration only when nothing else fits.`}</InlineMathText>
       </p>
       <div className="mt-3 border-t border-gray-100 pt-3 text-xs italic text-muted-foreground">

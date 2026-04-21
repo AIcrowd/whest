@@ -178,6 +178,14 @@ test('StickyBar keeps the einsum pill as trigger and moves symmetry metadata int
   assert.match(source, /import SymmetryBadge from '\.\/SymmetryBadge\.jsx'/);
   assert.match(source, /function SymmetryChip/);
   assert.match(source, /buildMetadataItems/);
+  assert.match(source, /const operandNames = Array\.isArray\(example\?\.operandNames\)/);
+  assert.match(source, /function symmetryLabelFromPerOp/);
+  assert.match(source, /const perOpSymmetry = Array\.isArray\(example\?\.perOpSymmetry\) \? example\.perOpSymmetry : \[\]/);
+  assert.match(source, /const variablesByName = new Map/);
+  assert.match(source, /const operands = operandNames\.map\(\(name, idx\) => \(\{/);
+  assert.match(source, /idx < perOpSymmetry\.length && perOpSymmetry\[idx\] !== undefined/);
+  assert.match(source, /symmetryLabelFromPerOp\(perOpSymmetry\[idx\]\)/);
+  assert.match(source, /symmetryLabel\(variablesByName\.get\(name\)\)/);
   assert.match(source, /<SymmetryBadge value=\{groupLabel\}/);
   assert.match(source, /inline-flex h-6 items-center gap-1 rounded-full/);
   assert.match(source, /className="h-6 px-2\.5 text-\[11px\] leading-5 shadow-none"/);

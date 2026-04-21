@@ -1,5 +1,23 @@
 /* Visualization-only styles for the symmetry explorer. */
 
+.explorer-support-prose {
+  font-family: var(--font-paper-serif);
+  font-size: 14px;
+  line-height: 1.72;
+  color: var(--gray-700);
+}
+
+.explorer-inline-code {
+  display: inline-block;
+  border-radius: 4px;
+  background: var(--gray-100);
+  padding: 1.5px 6px;
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  color: var(--gray-900);
+  vertical-align: baseline;
+}
+
 /* ─── Orbit Inspector ─────────────────── */
 
 .orbit-inspector-kicker {
@@ -212,8 +230,6 @@
 
 .graph-container {
   background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-radius: 8px;
   padding: 16px;
   overflow: hidden;
 }
@@ -232,8 +248,6 @@
 .matrix-wrapper {
   overflow-x: auto;
   background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-radius: 8px;
   padding: 16px;
   margin-bottom: 14px;
 }
@@ -287,8 +301,6 @@
 
 .fingerprints {
   background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-radius: 8px;
   padding: 16px;
 }
 
@@ -818,8 +830,6 @@
 
 .anim-panel {
   background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-radius: 8px;
   padding: 20px;
 }
 
@@ -1792,6 +1802,41 @@
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--gray-400);
+}
+
+.editorial-two-col-divider-md,
+.editorial-two-col-divider-lg {
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .editorial-two-col-divider-md::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-0.5px);
+    background: var(--gray-100);
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .editorial-two-col-divider-lg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-0.5px);
+    background: var(--gray-100);
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
 /* ─── Responsive ─────────────────────── */

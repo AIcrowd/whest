@@ -114,12 +114,15 @@ function buildMetadataItems({ example, group }) {
       ? example.expression.operandNames.split(',').map((part) => part.trim()).filter(Boolean)
       : [];
   const perOpSymmetry = Array.isArray(example?.perOpSymmetry) ? example.perOpSymmetry : [];
-  const variablesByName = new Map((example?.variables ?? []).map((variable) => [variable.name, variable]));
+  const variablesByName = new Map(
+    (example?.variables ?? []).map((variable) => [variable.name, variable]),
+  );
   const operands = operandNames.map((name, idx) => ({
     name,
-    symmetry: idx < perOpSymmetry.length && perOpSymmetry[idx] !== undefined
-      ? symmetryLabelFromPerOp(perOpSymmetry[idx])
-      : symmetryLabel(variablesByName.get(name)),
+    symmetry:
+      idx < perOpSymmetry.length && perOpSymmetry[idx] !== undefined
+        ? symmetryLabelFromPerOp(perOpSymmetry[idx])
+        : symmetryLabel(variablesByName.get(name)),
   }));
   return {
     operands,

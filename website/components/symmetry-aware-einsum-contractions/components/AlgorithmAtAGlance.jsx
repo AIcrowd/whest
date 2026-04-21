@@ -157,8 +157,8 @@ function MentalFrameworkColumn({ example }) {
         style={JUSTIFIED_PROSE_STYLE}
       >
         Every contraction has the same shape. Symmetry only changes the content of three things:{' '}
-        <code className="font-mono">RepSet</code>, <code className="font-mono">Outs(rep)</code>, and{' '}
-        <code className="font-mono">coeff(rep, out)</code>. The rest of the explorer is about
+        <code className="explorer-inline-code">RepSet</code>, <code className="explorer-inline-code">Outs(rep)</code>, and{' '}
+        <code className="explorer-inline-code">coeff(rep, out)</code>. The rest of the explorer is about
         counting them without enumerating the full grid.
       </p>
 
@@ -191,7 +191,7 @@ export default function AlgorithmAtAGlance({ example }) {
             left the "Where symmetry enters" callout sticks to the bottom; on
             the right the MentalFrameworkCode figure stretches so its Counting
             Convention band anchors to the bottom. */}
-        <div className="grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
+        <div className="editorial-two-col-divider-lg grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
           <EinsumIntroColumn example={example} />
           <MentalFrameworkColumn example={example} />
         </div>

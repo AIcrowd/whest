@@ -186,6 +186,14 @@ test('MentalFrameworkCode uses Feynman-friendly comments for RepSet, Outs(rep) a
   assert.doesNotMatch(src, /representatives we walk/);
 });
 
+test('MentalFramework column renders RepSet, Outs(rep), and coeff(rep, out) as soft inline-code chips', () => {
+  const src = readComponent('AlgorithmAtAGlance.jsx');
+  assert.match(src, /className="explorer-inline-code">RepSet<\/code>/);
+  assert.match(src, /className="explorer-inline-code">Outs\(rep\)<\/code>/);
+  assert.match(src, /className="explorer-inline-code">coeff\(rep, out\)<\/code>/);
+  assert.doesNotMatch(src, /<code className="font-mono">RepSet<\/code>/);
+});
+
 test('MentalFrameworkCode parameterizes inline comments from the active example', () => {
   const src = readComponent('MentalFrameworkCode.jsx');
   assert.match(src, /function normalizeExampleForPseudocode/);

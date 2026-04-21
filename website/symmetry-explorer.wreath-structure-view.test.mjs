@@ -41,9 +41,11 @@ test('WreathStructureView uses the cleaned editorial labels and no stale modal-s
 });
 
 test('WreathStructureView uses the same card styling language as the rest of the explorer', () => {
-  assert.match(WIDGET_SRC, /rounded-xl border border-gray-200 bg-white/);
-  assert.match(WIDGET_SRC, /rounded-lg border border-gray-200 bg-white/);
+  assert.match(WIDGET_SRC, /<div className="bg-white p-4">/);
+  assert.match(WIDGET_SRC, /<div className="mt-4 overflow-x-auto bg-white">/);
   assert.match(WIDGET_SRC, /rounded-full border border-gray-200 bg-gray-50/);
+  assert.doesNotMatch(WIDGET_SRC, /rounded-xl border border-gray-200 bg-white p-4/);
+  assert.doesNotMatch(WIDGET_SRC, /mt-4 overflow-x-auto rounded-lg border border-gray-200 bg-white/);
 });
 
 test('WreathStructureView caps the initial table at 10 rows, opens a modal for the rest, and uses neutral rows with outcome-only status cues', () => {

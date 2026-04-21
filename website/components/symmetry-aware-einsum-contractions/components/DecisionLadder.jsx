@@ -269,15 +269,13 @@ function LeafNode({ data }) {
 // bottom of the band (where the "no" label crosses into the enumerate node).
 function StageBandNode({ data }) {
   const isStage1 = data.stage === 1;
-  const accent = isStage1 ? '#16A34A' : '#6D28D9';
+  const accent = isStage1 ? '#5D5F60' : '#F0524D';
   return (
     <div
       className="pointer-events-none box-border h-full w-full rounded-xl"
       style={{
-        background: isStage1
-          ? 'linear-gradient(180deg, rgba(34,197,94,0.07) 0%, rgba(34,197,94,0.03) 100%)'
-          : 'linear-gradient(180deg, rgba(139,92,246,0.08) 0%, rgba(139,92,246,0.03) 100%)',
-        border: `1.5px dashed ${accent}`,
+        background: isStage1 ? '#FFFFFF' : '#FEF2F1',
+        border: `1.5px solid ${isStage1 ? '#D9DCDC' : 'rgba(240,82,77,0.22)'}`,
       }}
     >
       <div
@@ -421,7 +419,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     position: { x: BAND_X, y: STAGE_1_TOP_Y },
     type: 'stageBand',
     style: { width: BAND_WIDTH, height: STAGE_1_BOTTOM_Y - STAGE_1_TOP_Y },
-    data: { stage: 1, label: 'Stage 1 · Structural', caption: 'No dimino needed to decide' },
+    data: { stage: 1, label: 'Stage 1 · Structure', caption: 'No dimino needed to decide' },
     draggable: false,
     selectable: false,
     zIndex: -1,
@@ -937,7 +935,7 @@ export default function DecisionLadder({
 
   return (
     <div ref={wrapRef} className="relative">
-      <div className="h-[800px] w-full rounded-lg border border-gray-200 bg-white">
+      <div className="h-[800px] w-full bg-white">
         <DecisionLadderGraph
           nodes={nodes}
           edges={edges}

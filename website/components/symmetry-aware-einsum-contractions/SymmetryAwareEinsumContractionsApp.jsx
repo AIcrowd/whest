@@ -8,6 +8,7 @@ import { pickDefaultOrbitRow } from './engine/teachingModel.js';
 import StickyBar from './components/StickyBar.jsx';
 import ExpressionLevelModal from './components/ExpressionLevelModal.jsx';
 import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './components/ExplorerSectionCard.jsx';
+import ExplorerSubsectionHeader from './components/ExplorerSubsectionHeader.jsx';
 import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
 import SectionIntroProse from './components/SectionIntroProse.jsx';
@@ -321,21 +322,17 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     contentClassName="pt-5"
                   >
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[1].introParagraphs} />
-                    <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div className="editorial-two-col-divider-md mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
                       <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
-                          <AnchorLink anchorId="bipartite-graph" labelText="Bipartite Graph">
-                            Bipartite Graph
-                          </AnchorLink>
-                        </h3>
+                        <ExplorerSubsectionHeader anchorId="bipartite-graph" labelText="Bipartite Graph">
+                          Bipartite Graph
+                        </ExplorerSubsectionHeader>
                         <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
                       <div id="incidence-matrix" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
-                          <AnchorLink anchorId="incidence-matrix" labelText="Incidence Matrix">
-                            Incidence Matrix M
-                          </AnchorLink>
-                        </h3>
+                        <ExplorerSubsectionHeader anchorId="incidence-matrix" labelText="Incidence Matrix">
+                          Incidence Matrix M
+                        </ExplorerSubsectionHeader>
                         <MatrixView matrixData={matrixData} graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
                     </div>
@@ -356,26 +353,22 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[2].introParagraphs} />
                     {/* Wreath structure renders full-width — the enumeration target the σ-loop walks over. */}
                     <div id="wreath-structure" className="mt-6 flex flex-col gap-2 scroll-mt-24">
-                      <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
-                        <AnchorLink anchorId="wreath-structure" labelText="Wreath structure">
-                          Wreath structure
-                        </AnchorLink>
-                      </h3>
+                      <ExplorerSubsectionHeader anchorId="wreath-structure" labelText="Wreath structure">
+                        Wreath structure
+                      </ExplorerSubsectionHeader>
                       <WreathStructureView
                         analysis={analysis}
                         example={normalizedExample}
                       />
                     </div>
                     {/* σ-Loop (enumerates the wreath) + Generator Construction (closes valid π's). */}
-                    <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    <div className="editorial-two-col-divider-lg mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
                       <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
-                          <AnchorLink anchorId="sigma-loop" labelText="σ-Loop & π Detection">
-                            <InlineMathText>
-                              {`$${notationLatex('sigma_row_move')}$-Loop & $${notationLatex('pi_relabeling')}$ Detection`}
-                            </InlineMathText>
-                          </AnchorLink>
-                        </h3>
+                        <ExplorerSubsectionHeader anchorId="sigma-loop" labelText="σ-Loop & π Detection">
+                          <InlineMathText>
+                            {`$${notationLatex('sigma_row_move')}$-Loop & $${notationLatex('pi_relabeling')}$ Detection`}
+                          </InlineMathText>
+                        </ExplorerSubsectionHeader>
                         <SigmaLoop
                           results={sigmaResults}
                           graph={graph}
@@ -387,11 +380,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         />
                       </div>
                       <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
-                        <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
-                          <AnchorLink anchorId="generator-construction" labelText="Generator Construction">
-                            Generator Construction
-                          </AnchorLink>
-                        </h3>
+                        <ExplorerSubsectionHeader anchorId="generator-construction" labelText="Generator Construction">
+                          Generator Construction
+                        </ExplorerSubsectionHeader>
                         <DiminoView
                           group={group}
                           sigmaResults={sigmaResults}

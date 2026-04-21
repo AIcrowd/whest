@@ -140,12 +140,12 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               <rect
                 x={lbLeft} y={top}
                 width={lbFullW} height={bottom - top}
-                rx={14} fill={colors.fill} stroke={colors.stroke} strokeWidth={1.5}
+                rx={14} fill={colors.fill}
               />
               <LabelBadge
                 x={lbLeft + 12} y={top}
                 text={label}
-                color={vc?.color || U_FALLBACK_COLOR} bg="#F8F9F9"
+                color={vc?.color || U_FALLBACK_COLOR}
               />
             </g>
           );
@@ -162,7 +162,6 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
           y={vBoxTop}
           math={notationLatex('v_free')}
           color={V_COLOR}
-          bg="#F8F9F9"
           width={92}
         />
 
@@ -179,7 +178,6 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               y={wBoxTop}
               math={notationLatex('w_summed')}
               color={W_COLOR}
-              bg="#F8F9F9"
               width={122}
             />
           </g>
@@ -196,7 +194,6 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               y={wBoxTop}
               math={notationLatex('w_summed')}
               color={W_COLOR}
-              bg="#F8F9F9"
               width={122}
             />
             <text x={rightX} y={wBoxTop + wBoxH / 2 + 4}
@@ -319,23 +316,38 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
             <span>axis classes</span>
           </div>
         </foreignObject>
-        <text x={rightX} y={H - 8} textAnchor="middle" fill="#AAACAD" fontSize={10}
-          fontFamily="'Inter', sans-serif" fontWeight={600} letterSpacing="0.06em">
-          INDEX LABELS
-        </text>
+        <foreignObject x={rightX - 72} y={H - 30} width={144} height={28}>
+          <div
+            xmlns="http://www.w3.org/1999/xhtml"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              fontSize: '10px',
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              color: '#AAACAD',
+              textTransform: 'uppercase',
+              fontFamily: 'Inter, sans-serif',
+            }}
+          >
+            <span style={{ color: notationColor('l_labels'), textTransform: 'none' }}>
+              <Latex math={notationLatex('l_labels')} />
+            </span>
+            <span>index labels</span>
+          </div>
+        </foreignObject>
       </svg>
     </PanZoomCanvas>
   );
 }
 
 /** Small label badge that sits on the top edge of a group box */
-function LabelBadge({ x, y, text, color, bg }) {
-  // Measure approximate width (10px per char is close enough for SVG)
-  const w = text.length * 7.5 + 16;
+function LabelBadge({ x, y, text, color }) {
   return (
     <g>
-      <rect x={x} y={y - 10} width={w} height={18} rx={4} fill={bg} />
-      <text x={x + 8} y={y + 3}
+      <text x={x} y={y - 4}
         fontSize={10} fontWeight={600} fill={color}
         fontFamily="'Inter', sans-serif" letterSpacing="0.06em">
         {text}
@@ -344,17 +356,16 @@ function LabelBadge({ x, y, text, color, bg }) {
   );
 }
 
-function MathLabelBadge({ x, y, math, color, bg, width }) {
+function MathLabelBadge({ x, y, math, color, width }) {
   return (
     <g>
-      <rect x={x} y={y - 10} width={width} height={22} rx={5} fill={bg} />
-      <foreignObject x={x + 8} y={y - 7} width={width - 16} height={18}>
+      <foreignObject x={x} y={y - 18} width={width} height={18}>
         <div
           xmlns="http://www.w3.org/1999/xhtml"
           style={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             height: '18px',
             color,
             fontSize: '11px',

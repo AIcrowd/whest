@@ -43,8 +43,25 @@ test('BipartiteGraph renders notation headers as math, not plain text pills', ()
   assert.match(src, /notationLatex\('v_free'\)/);
   assert.match(src, /notationLatex\('w_summed'\)/);
   assert.match(src, /notationLatex\('u_axis_classes'\)/);
+  assert.match(src, /notationLatex\('l_labels'\)/);
   assert.doesNotMatch(src, /text=\{notationText\('v_free'\)\}/);
   assert.doesNotMatch(src, /text=\{notationText\('w_summed'\)\}/);
+});
+
+test('BipartiteGraph leaves the three operand-group boxes borderless', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BipartiteGraph.jsx');
+  assert.match(src, /width=\{lbFullW\} height=\{bottom - top\}\s*rx=\{14\} fill=\{colors\.fill\}/);
+  assert.doesNotMatch(src, /width=\{lbFullW\} height=\{bottom - top\}[\s\S]*stroke=\{colors\.stroke\}/);
+});
+
+test('BipartiteGraph group labels render without gray badge backgrounds', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BipartiteGraph.jsx');
+  assert.match(src, /function LabelBadge\(\{ x, y, text, color \}\)/);
+  assert.match(src, /<text x=\{x\} y=\{y - 4\}/);
+  assert.match(src, /function MathLabelBadge\(\{ x, y, math, color, width \}\)/);
+  assert.match(src, /<foreignObject x=\{x\} y=\{y - 18\} width=\{width\} height=\{18\}>/);
+  assert.doesNotMatch(src, /fill="#F8F9F9"/);
+  assert.doesNotMatch(src, /<rect x=\{x\} y=\{y - 10\} width=\{w\} height=\{18\} rx=\{4\} fill=\{bg\}/);
 });
 
 test('IncidenceMatrix exposes notation-aware row and column legends', () => {
@@ -55,4 +72,52 @@ test('IncidenceMatrix exposes notation-aware row and column legends', () => {
   assert.match(src, /notationLatex\('w_summed'\)/);
   assert.match(src, /rows:/i);
   assert.match(src, /columns:/i);
+});
+
+test('Section 2 graph and matrix wrappers no longer draw outer card borders', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/styles.css');
+  const graphBlock = src.match(/\.graph-container\s*\{[^}]*\}/)?.[0] ?? '';
+  const matrixBlock = src.match(/\.matrix-wrapper\s*\{[^}]*\}/)?.[0] ?? '';
+  const fingerprintsBlock = src.match(/\.fingerprints\s*\{[^}]*\}/)?.[0] ?? '';
+  assert.match(graphBlock, /background: var\(--white\);/);
+  assert.match(graphBlock, /padding: 16px;/);
+  assert.doesNotMatch(graphBlock, /border:/);
+  assert.match(matrixBlock, /background: var\(--white\);/);
+  assert.match(matrixBlock, /padding: 16px;/);
+  assert.doesNotMatch(matrixBlock, /border:/);
+  assert.match(fingerprintsBlock, /background: var\(--white\);/);
+  assert.match(fingerprintsBlock, /padding: 16px;/);
+  assert.doesNotMatch(fingerprintsBlock, /border:/);
+});
+
+test('Major two-column explorer layouts use the shared faint center divider treatment', () => {
+  const proseSrc = read('components/symmetry-aware-einsum-contractions/components/SectionIntroProse.jsx');
+  const appSrc = read('components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
+  const atAGlanceSrc = read('components/symmetry-aware-einsum-contractions/components/AlgorithmAtAGlance.jsx');
+  const componentCostSrc = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
+  const stylesSrc = read('components/symmetry-aware-einsum-contractions/styles.css');
+  assert.match(proseSrc, /editorial-two-col-divider-md grid gap-x-8 gap-y-4 md:grid-cols-2/);
+  assert.match(appSrc, /editorial-two-col-divider-md mt-6 grid grid-cols-1 gap-6 md:grid-cols-2/);
+  assert.match(appSrc, /editorial-two-col-divider-lg mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2/);
+  assert.match(atAGlanceSrc, /editorial-two-col-divider-lg grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10/);
+  assert.match(componentCostSrc, /editorial-two-col-divider-lg border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2/);
+  assert.match(stylesSrc, /\.editorial-two-col-divider-md::before/);
+  assert.match(stylesSrc, /\.editorial-two-col-divider-lg::before/);
+  assert.match(stylesSrc, /background: var\(--gray-100\);/);
+});
+
+test('ExplorerSubsectionHeader uses the shared 12px coral kicker register', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/ExplorerSubsectionHeader.jsx');
+  assert.match(src, /text-\[12px\]/);
+  assert.match(src, /tracking-\[0\.14em\]/);
+  assert.doesNotMatch(src, /text-\[11px\]/);
+});
+
+test('Shared support prose utility uses serif 14px editorial body styling', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/styles.css');
+  const block = src.match(/\.explorer-support-prose\s*\{[^}]*\}/)?.[0] ?? '';
+  assert.match(block, /font-family: var\(--font-paper-serif\);/);
+  assert.match(block, /font-size: 14px;/);
+  assert.match(block, /line-height: 1\.72;/);
+  assert.match(block, /color: var\(--gray-700\);/);
 });

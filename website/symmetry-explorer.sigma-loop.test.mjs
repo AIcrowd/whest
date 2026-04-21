@@ -15,6 +15,7 @@ test('SigmaLoop renders its intro through the shared inline-math path so sigma a
   assert.match(SIGMA_LOOP_SRC, /InlineMathText/);
   assert.match(SIGMA_LOOP_SRC, /notationLatex\('sigma_row_move'\)/);
   assert.match(SIGMA_LOOP_SRC, /notationLatex\('pi_relabeling'\)/);
+  assert.match(SIGMA_LOOP_SRC, /className="explorer-support-prose mb-2"/);
   assert.doesNotMatch(SIGMA_LOOP_SRC, /Each σ is a wreath element; each accepted pair shows a row move together with its matching relabeling π\./);
 });
 

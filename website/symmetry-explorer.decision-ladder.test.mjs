@@ -51,3 +51,13 @@ test('DecisionLadder intuition copy uses editorial italic example names instead 
   assert.doesNotMatch(source, /\\texttt\{bilinear-trace\}/);
   assert.doesNotMatch(source, /\\texttt\{four-A-grid\}/);
 });
+
+test('DecisionLadder stage bands use the editorial white/coral-light surface treatment', () => {
+  assert.match(source, /const accent = isStage1 \? '#5D5F60' : '#F0524D'/);
+  assert.match(source, /background:\s*isStage1\s*\?\s*'#FFFFFF'\s*:\s*'#FEF2F1'/);
+  assert.match(source, /border:\s*`1\.5px solid \$\{isStage1 \? '#D9DCDC' : 'rgba\(240,82,77,0\.22\)'\}`/);
+  assert.match(source, /label: 'Stage 1 · Structure'/);
+  assert.match(source, /label: 'Stage 2 · Symmetry'/);
+  assert.doesNotMatch(source, /linear-gradient\(180deg, rgba\(34,197,94,0\.07\)/);
+  assert.doesNotMatch(source, /linear-gradient\(180deg, rgba\(139,92,246,0\.08\)/);
+});

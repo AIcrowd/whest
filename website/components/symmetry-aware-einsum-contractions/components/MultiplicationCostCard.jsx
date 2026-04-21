@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
+import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
 import CaseBadge from './CaseBadge.jsx';
 import RoleBadge from './RoleBadge.jsx';
-import { AnchorLink } from './ExplorerSectionCard.jsx';
 
 /**
  * Teaching card: "Calculating Multiplication Cost (μ)".
@@ -144,13 +144,11 @@ export default function MultiplicationCostCard({ components = [] }) {
   }, []);
 
   return (
-    <div id="multiplication-cost" className="rounded-xl border border-gray-200 bg-white p-4 scroll-mt-24">
-      <h3 className="font-sans text-[15px] font-semibold leading-tight tracking-[-0.01em] text-gray-900">
-        <AnchorLink anchorId="multiplication-cost" labelText="Calculating Multiplication Cost (μ)">
-          Calculating Multiplication Cost <span>(<Latex math={String.raw`\mu`} />)</span>
-        </AnchorLink>
-      </h3>
-      <p className="mt-2 text-sm leading-6 text-foreground">
+    <div id="multiplication-cost" className="bg-white p-4 scroll-mt-24">
+      <ExplorerSubsectionHeader anchorId="multiplication-cost" labelText="Calculating Multiplication Cost (μ)">
+        <InlineMathText>{`Calculating Multiplication Cost ($${String.raw`\mu`}$)`}</InlineMathText>
+      </ExplorerSubsectionHeader>
+      <p className="explorer-support-prose mt-2">
         <InlineMathText>{String.raw`Every component gets the same treatment. Size-aware Burnside counts the per-component orbit count $M_a$ once each; the multiplication cost is then $\mu = (\texttt{num\_terms} - 1)\cdot \prod_a M_a$, one product per global orbit representative, where forming that product costs num_terms - 1 binary multiplies. No regime dispatch is needed because the formula ignores the $V_{\mathrm{free}} / W_{\mathrm{summed}}$ split.`}</InlineMathText>
       </p>
 

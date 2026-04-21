@@ -108,8 +108,9 @@ test('ComponentCostView renders the decision ladder and component table', () => 
   assert.match(componentCostSource, /Orbits \(Mₐ\)/);
   assert.match(componentCostSource, /Accumulation \(αₐ\)/);
   // The per-component table must be able to horizontally scroll on narrow
-  // viewports instead of silently overflowing the page.
-  assert.match(componentCostSource, /overflow-x-auto rounded-xl/);
+  // viewports instead of silently overflowing the page, even after the
+  // editorial shell was flattened.
+  assert.match(componentCostSource, /overflow-x-auto bg-white/);
   assert.match(componentCostSource, /min-w-0 space-y-6/);
   assert.match(componentCostSource, /<RoleBadge key=\{/);
   assert.match(roleBadgeSource, /notationIdForRole/);
