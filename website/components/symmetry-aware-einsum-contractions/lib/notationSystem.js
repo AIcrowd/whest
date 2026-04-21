@@ -1,9 +1,14 @@
 import {
   getActiveExplorerThemeId as getThemeStoreActiveExplorerThemeId,
   getActiveExplorerThemeRoles as getThemeStoreActiveExplorerThemeRoles,
+  getExplorerThemePreset,
   resetActiveExplorerTheme as resetThemeStoreActiveExplorerTheme,
   setActiveExplorerTheme as setThemeStoreActiveExplorerTheme,
 } from './explorerTheme.js';
+import {
+  EDITORIAL_NOIR_RICH_MATH_PALETTE_ID,
+  EDITORIAL_NOIR_RICH_MATH_ROLES,
+} from './editorialNoirMathPalette.js';
 
 const makeEntry = (text, latex, color) => ({ text, latex, color });
 
@@ -59,6 +64,45 @@ const NOTATION_THEME_ROLE_BY_ID = {
   n_l: 'quantity',
   n_omega: 'quantity',
   c_omega_cycles: 'quantity',
+};
+
+const NOTATION_MATH_ROLE_BY_ID = {
+  v_free: 'freeSide',
+  v_free_component: 'freeSide',
+  g_pointwise_restricted_v: 'freeSide',
+  g_v_factor: 'freeSide',
+  projection_pi_v_free: 'freeSide',
+  w_summed: 'summedSide',
+  w_summed_component: 'summedSide',
+  s_w_summed: 'summedSide',
+  g_w_factor: 'summedSide',
+  x_w_summed: 'summedSide',
+  g_detected: 'symmetryObject',
+  g_component: 'symmetryObject',
+  g_pointwise: 'symmetryObject',
+  x_space: 'ambientSpace',
+  x_component: 'ambientSpace',
+  orbit_space_component: 'ambientSpace',
+  orbit_o: 'ambientSpace',
+  omega_orbit: 'ambientSpace',
+  g_wreath: 'subgroup',
+  h_family: 'subgroup',
+  g_formal: 'subgroup',
+  sym_l: 'subgroup',
+  sigma_row_move: 'actionSigma',
+  pi_relabeling: 'projection',
+  g_element: 'actionElement',
+  mu_total: 'muFamily',
+  m_total: 'muFamily',
+  m_component: 'mFamily',
+  alpha_total: 'alphaFamily',
+  alpha_component: 'alphaFamily',
+  k_operands: 'countFamily',
+  n_label: 'countFamily',
+  n_cycle: 'countFamily',
+  n_l: 'countFamily',
+  n_omega: 'countFamily',
+  c_omega_cycles: 'countFamily',
 };
 
 export const NOTATION_REGISTRY = {
@@ -156,6 +200,7 @@ const AUTO_COLORED_NOTATION_IDS = [
   'mu_total',
   'alpha_total',
   'alpha_component',
+  'm_total',
   'm_component',
   'k_operands',
   'n_label',
@@ -248,6 +293,13 @@ function notationEntry(id) {
 }
 
 function resolveColor(id) {
+  const activeTheme = getExplorerThemePreset(getThemeStoreActiveExplorerThemeId());
+  if (activeTheme.mathPaletteId === EDITORIAL_NOIR_RICH_MATH_PALETTE_ID) {
+    const mathRole = NOTATION_MATH_ROLE_BY_ID[id];
+    if (mathRole && Object.prototype.hasOwnProperty.call(EDITORIAL_NOIR_RICH_MATH_ROLES, mathRole)) {
+      return EDITORIAL_NOIR_RICH_MATH_ROLES[mathRole];
+    }
+  }
   const themeRole = NOTATION_THEME_ROLE_BY_ID[id];
   const activeExplorerThemeRoles = getThemeStoreActiveExplorerThemeRoles();
   if (themeRole && Object.prototype.hasOwnProperty.call(activeExplorerThemeRoles, themeRole)) {

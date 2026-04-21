@@ -125,6 +125,7 @@ test('explorer themes expose the approved page-wide alternatives with a stable r
       'coral-slate-hardline',
       'ink-authority',
       'editorial-noir',
+      'editorial-noir-math',
       'mean-prop-led',
       'cool-proof',
       'blue-ledger',
@@ -173,6 +174,10 @@ test('explorer themes expose the approved page-wide alternatives with a stable r
   assert.equal(
     EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-noir').roles.quantity,
     '#292C2D',
+  );
+  assert.match(
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-noir-math').summary,
+    /rich math palette/i,
   );
   assert.equal(
     EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'cool-proof').roles.symmetryObject,
@@ -232,6 +237,35 @@ test('active explorer theme overrides notation colors globally until reset', () 
   resetActiveExplorerTheme();
   assert.equal(getActiveExplorerThemeId(), EXPLORER_THEME_RECOMMENDED_ID);
   assert.equal(notationColor('alpha_total'), recommendedTheme.roles.quantity);
+});
+
+test('editorial-noir-math remaps approved notation families through the rich math palette', () => {
+  resetActiveExplorerTheme();
+  setActiveExplorerTheme('editorial-noir-math');
+
+  assert.equal(notationColor('v_free'), '#A45F44');
+  assert.equal(notationColor('w_summed'), '#4A7E9A');
+  assert.equal(notationColor('g_detected'), '#4A6288');
+  assert.equal(notationColor('mu_total'), '#326B79');
+  assert.equal(notationColor('m_component'), '#3C8D86');
+  assert.equal(notationColor('alpha_total'), '#8F647F');
+  assert.equal(notationColor('n_label'), '#A8904E');
+
+  resetActiveExplorerTheme();
+});
+
+test('editorial-noir-math keeps operator scaffolding neutral when auto-colorizing latex', () => {
+  resetActiveExplorerTheme();
+  setActiveExplorerTheme('editorial-noir-math');
+
+  const colored = colorizeNotationLatex(String.raw`\mu = (k - 1) \prod_a M_a + \prod_a \alpha_a`);
+
+  assert.match(colored, /\\textcolor\{#326B79\}\{\\mu\}/);
+  assert.match(colored, /\\textcolor\{#3C8D86\}\{M_a\}/);
+  assert.match(colored, /\\textcolor\{#8F647F\}\{\\alpha_a\}/);
+  assert.doesNotMatch(colored, /\\textcolor\{[^}]+\}\{=\}/);
+
+  resetActiveExplorerTheme();
 });
 
 test('legacy notation grammar setters are compatibility-only and do not override explorer theme colors', () => {
