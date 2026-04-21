@@ -55,7 +55,7 @@ test('explorer theme registry exposes the approved presets', () => {
       'cov-prop-editorial',
     ],
   );
-  assert.equal(EXPLORER_THEME_RECOMMENDED_ID, 'editorial-balance');
+  assert.equal(EXPLORER_THEME_RECOMMENDED_ID, 'editorial-noir');
 
   const editorialBalance = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-balance');
   const editorialBalanceSlate = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-balance-slate');

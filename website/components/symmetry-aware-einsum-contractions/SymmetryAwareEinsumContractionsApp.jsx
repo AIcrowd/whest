@@ -9,7 +9,6 @@ import StickyBar from './components/StickyBar.jsx';
 import ExpressionLevelModal from './components/ExpressionLevelModal.jsx';
 import ExplorerSectionCard, { SectionEyebrow, AnchorLink } from './components/ExplorerSectionCard.jsx';
 import ExplorerSubsectionHeader from './components/ExplorerSubsectionHeader.jsx';
-import ExplorerThemeDock from './components/ExplorerThemeDock.jsx';
 import { EXPLORER_ACTS } from './components/explorerNarrative.js';
 import NarrativeCallout from './components/NarrativeCallout.jsx';
 import SectionIntroProse from './components/SectionIntroProse.jsx';
@@ -32,7 +31,6 @@ import {
   getActiveExplorerThemeId,
   getExplorerThemePreset,
   resetActiveExplorerTheme,
-  setActiveExplorerTheme,
   subscribeActiveExplorerTheme,
 } from './lib/explorerTheme.js';
 import { getPresetControlSelection } from './lib/presetSelection.js';
@@ -112,9 +110,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
     () => EXPLORER_THEME_RECOMMENDED_ID,
   );
   const handleGraphHover = useCallback((payload) => setGraphHover(payload), []);
-  const handleExplorerThemeChange = useCallback((nextThemeId) => {
-    setActiveExplorerTheme(nextThemeId);
-  }, []);
   const hoveredLabelSet = useMemo(
     () => (graphHover?.labels?.length ? new Set(graphHover.labels) : null),
     [graphHover],
@@ -523,10 +518,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
         group={group}
         example={example}
         onSelectPreset={handleSelect}
-      />
-      <ExplorerThemeDock
-        explorerThemeId={explorerThemeId}
-        onChange={handleExplorerThemeChange}
       />
     </div>
   );

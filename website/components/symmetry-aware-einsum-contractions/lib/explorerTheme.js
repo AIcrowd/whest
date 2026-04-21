@@ -77,7 +77,7 @@ function rgba(hex, alpha) {
   return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${clampAlpha(alpha)})`;
 }
 
-export const EXPLORER_THEME_RECOMMENDED_ID = 'editorial-balance';
+export const EXPLORER_THEME_RECOMMENDED_ID = 'editorial-noir';
 
 export const EXPLORER_THEME_PRESETS = [
   createExplorerTheme(

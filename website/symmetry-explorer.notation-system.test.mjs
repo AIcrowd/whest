@@ -133,10 +133,10 @@ test('explorer themes expose the approved page-wide alternatives with a stable r
       'cov-prop-editorial',
     ],
   );
-  assert.equal(EXPLORER_THEME_RECOMMENDED_ID, 'editorial-balance');
+  assert.equal(EXPLORER_THEME_RECOMMENDED_ID, 'editorial-noir');
   assert.match(
-    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-balance').summary,
-    /recommended balance/i,
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-noir').summary,
+    /darker editorial/i,
   );
   assert.equal(
     EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-balance-slate').roles.quantity,

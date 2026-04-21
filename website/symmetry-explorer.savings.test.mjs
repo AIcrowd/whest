@@ -229,9 +229,8 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.doesNotMatch(totalCostSource, /Seven paths through Section 5/);
 });
 
-test('app owns the active explorer theme and passes it into TotalCostView', () => {
+test('app owns the active explorer theme and passes it into TotalCostView without exposing the theme dock', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
-  const dockSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExplorerThemeDock.jsx', import.meta.url), 'utf8');
   const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
   const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
   const notationSystemSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/lib/notationSystem.js', import.meta.url), 'utf8');
@@ -240,28 +239,20 @@ test('app owns the active explorer theme and passes it into TotalCostView', () =
   assert.match(appSource, /getExplorerThemePreset/);
   assert.match(appSource, /getActiveExplorerThemeId/);
   assert.match(appSource, /subscribeActiveExplorerTheme/);
-  assert.match(appSource, /setActiveExplorerTheme/);
   assert.match(appSource, /resetActiveExplorerTheme/);
   assert.match(appSource, /useSyncExternalStore/);
   assert.match(appSource, /const explorerThemeId = useSyncExternalStore\(/);
-  assert.match(appSource, /const handleExplorerThemeChange = useCallback\(\(nextThemeId\) =>/);
   assert.match(appSource, /const theme = useMemo\(\(\) => getExplorerThemePreset\(explorerThemeId\), \[explorerThemeId\]\)/);
-  assert.match(appSource, /setActiveExplorerTheme\(nextThemeId\)/);
   assert.match(appSource, /resetActiveExplorerTheme\(\);/);
   assert.match(appSource, /return \(\) => resetActiveExplorerTheme/);
   assert.match(appSource, /buildVariableColors\(example\.variables,\s*theme\.id\)/);
   assert.match(appSource, /explorerThemeId=\{explorerThemeId\}/);
-  assert.match(appSource, /import ExplorerThemeDock/);
-  assert.match(appSource, /<ExplorerThemeDock[\s\S]*explorerThemeId=\{explorerThemeId\}[\s\S]*onChange=\{handleExplorerThemeChange\}/);
+  assert.doesNotMatch(appSource, /import ExplorerThemeDock/);
+  assert.doesNotMatch(appSource, /<ExplorerThemeDock/);
   assert.doesNotMatch(appSource, /const \[explorerThemeId,\s*setExplorerThemeId\] = useState\(/);
   assert.doesNotMatch(appSource, /notationGrammarId/);
   assert.doesNotMatch(appSource, /setActiveNotationGrammar/);
   assert.doesNotMatch(appSource, /resetActiveNotationPalette/);
-
-  assert.match(dockSource, /fixed bottom-6 right-6 z-50/);
-  assert.match(dockSource, /Explorer Theme/);
-  assert.match(dockSource, /aria-label="Explorer theme picker"/);
-  assert.match(dockSource, /EXPLORER_THEME_PRESETS\.map/);
 
   assert.match(chooserSource, /explorerThemeId/);
   assert.match(chooserSource, /buildVariableColors\(variables,\s*explorerThemeId\)/);
