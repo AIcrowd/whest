@@ -128,6 +128,7 @@ test('explorer themes expose the approved page-wide alternatives with a stable r
       'mean-prop-led',
       'cool-proof',
       'blue-ledger',
+      'blue-margin',
       'warm-margin',
       'cov-prop-editorial',
     ],
