@@ -8,27 +8,34 @@ function isTextInput(el) {
   return false;
 }
 
+const modifierKeys = ['metaKey', 'ctrlKey', 'shiftKey', 'altKey'];
+
+function normalizeBindings(bindings) {
+  if (Array.isArray(bindings)) return bindings;
+  return Object.entries(bindings ?? {}).map(([key, handler]) => ({ key, handler }));
+}
+
+function modifiersMatch(entry, event) {
+  return modifierKeys.every((modifier) => event[modifier] === (entry.modifiers?.[modifier] ?? false));
+}
+
 /**
- * Bind a map of single-key → handler for keyboard shortcuts. Skips dispatch
- * when the active element is a text input so users can type freely.
+ * Bind keyboard shortcuts. Supports either:
+ * - an object map of single-key → handler
+ * - an array of { key, handler, modifiers } entries
  *
- * Usage:
- *   useKeyboardShortcuts({
- *     ArrowLeft: () => prev(),
- *     ArrowRight: () => next(),
- *     r: () => randomize(),
- *     '/': () => focusSearch(),
- *   });
+ * Skips dispatch when the active element is a text input so users can type freely.
  */
 export function useKeyboardShortcuts(bindings) {
   useEffect(() => {
     if (typeof window === 'undefined') return undefined;
+    const normalizedBindings = normalizeBindings(bindings);
     function onKey(e) {
       if (isTextInput(document.activeElement)) return;
-      const handler = bindings[e.key];
-      if (handler) {
+      const entry = normalizedBindings.find((candidate) => candidate.key === e.key && modifiersMatch(candidate, e));
+      if (entry?.handler) {
         e.preventDefault();
-        handler(e);
+        entry.handler(e);
       }
     }
     window.addEventListener('keydown', onKey);

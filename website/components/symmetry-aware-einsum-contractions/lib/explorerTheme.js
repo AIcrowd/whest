@@ -372,9 +372,10 @@ export const EXPLORER_THEME_PRESETS = [
     'Editorial noir',
     'A darker editorial variant that strengthens black/slate blocks while keeping coral as a precise accent rather than a field color.',
     createThemeRoles({
+      freeSide: INK,
       summedSide: DEEP_SLATE,
       symmetryObject: INK,
-      action: MID_SLATE,
+      action: INK,
       quantity: INK,
       muted: DEEP_SLATE,
       statusSuccess: HERO_MUTED,
@@ -386,9 +387,10 @@ export const EXPLORER_THEME_PRESETS = [
     'Editorial noir - math',
     'Keeps the noir page chrome but applies the approved rich math palette to notation and operand coloring.',
     createThemeRoles({
+      freeSide: INK,
       summedSide: DEEP_SLATE,
       symmetryObject: INK,
-      action: MID_SLATE,
+      action: INK,
       quantity: INK,
       muted: DEEP_SLATE,
       statusSuccess: HERO_MUTED,
@@ -416,7 +418,7 @@ export const EXPLORER_THEME_PRESETS = [
   createExplorerTheme(
     'cool-proof',
     'Cool proof',
-    'A cooler analytical paper mode that gives formulas and structure a stronger blue-slate spine without losing the editorial feel.',
+    'A cooler analytical paper mode that gives equations and structure a stronger blue-slate spine without losing the editorial feel.',
     createThemeRoles({
       summedSide: DEEP_SLATE,
       symmetryObject: INFO_DEEP,
@@ -530,21 +532,23 @@ export function getExplorerThemeOperandPalette(themeOrId) {
 
 export function getExplorerThemeFingerprintPalette(themeOrId) {
   const roles = getExplorerThemeRoles(themeOrId);
-  return [
+  return [...new Set([
+    roles.hero,
+    roles.summedSide,
+    roles.heroMuted,
+    roles.editorialAccent,
     roles.symmetryObject,
     roles.quantity,
     roles.action,
-    roles.summedSide,
-    roles.heroMuted,
-  ];
+  ])];
 }
 
 export function getExplorerThemeCssVariables(themeOrId) {
   const roles = getExplorerThemeRoles(themeOrId);
   return {
-    '--coral': roles.freeSide,
+    '--coral': roles.hero,
     '--coral-hover': roles.heroMuted,
-    '--coral-light': rgba(roles.freeSide, 0.14),
+    '--coral-light': rgba(roles.hero, 0.14),
     '--success': roles.quantity,
     '--warning': roles.action,
     '--info': roles.symmetryObject,

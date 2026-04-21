@@ -34,6 +34,10 @@ test('BipartiteGraph accepts a highlightedLabels prop', () => {
   assert.match(src, /getActiveExplorerThemeId/);
   assert.match(src, /explorerThemeColor/);
   assert.match(src, /getExplorerThemeOperandPalette/);
+  assert.match(src, /const V_COLOR = explorerThemeColor\(explorerThemeId, 'hero'\)/);
+  assert.match(src, /const W_COLOR = explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
+  assert.match(src, /const U_FALLBACK_COLOR = explorerThemeColor\(explorerThemeId, 'heroMuted'\)/);
+  assert.match(src, /const HIGHLIGHT_COLOR = explorerThemeColor\(explorerThemeId, 'heroMuted'\)/);
 });
 
 test('BipartiteGraph renders notation headers as math, not plain text pills', () => {
@@ -78,6 +82,15 @@ test('IncidenceMatrix exposes notation-aware row and column legends', () => {
   assert.match(src, /defaultLabelColor = explorerThemeColor\(explorerThemeId,\s*'muted'\)/);
   assert.match(src, /rows:/i);
   assert.match(src, /columns:/i);
+});
+
+test('IncidenceMatrix visual accents use coral/slate chrome instead of noir math ink roles', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/styles.css');
+  assert.match(src, /\.inc-col-header\.inc-col-v \{ color: var\(--coral\); \}/);
+  assert.match(src, /\.inc-row-label\.inc-col-v \{ color: var\(--coral\); \}/);
+  assert.match(src, /\.inc-fp-label\.inc-col-v \{ color: var\(--coral\); \}/);
+  assert.match(src, /\.inc-cell\.inc-cell-active \{\s*background: color-mix\(in oklab, var\(--coral-hover\) 10%, transparent\);\s*color: var\(--coral-hover\);/);
+  assert.match(src, /\.inc-fp-item:has\(\.inc-col-v\) \{ border-color: color-mix\(in oklab, var\(--coral\) 30%, transparent\); \}/);
 });
 
 test('Section 2 graph and matrix wrappers no longer draw outer card borders', () => {

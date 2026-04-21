@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
 import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
+import { notationColor } from '../lib/notationSystem.js';
 
 /**
  * Teaching card: "Why Accumulation Cost (α) is Hard".
@@ -28,6 +29,7 @@ import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
 function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
   const TOOLTIP_W = 440;
   const TOOLTIP_MIN_H = 340;
+  const alphaAccent = notationColor('alpha_total');
 
   const [pos, setPos] = useState(null);
 
@@ -67,7 +69,7 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
       role="tooltip"
     >
       <div className="mb-2 flex items-center gap-2">
-        <span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-400" />
+        <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ backgroundColor: alphaAccent }} />
         <span className="text-sm font-semibold">Why <Latex math="\alpha" /> is structure-sensitive</span>
       </div>
 
@@ -87,7 +89,7 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
           No universal Burnside shortcut
         </div>
         <p>
-          <InlineMathText>{String.raw`The generic formula $\sum_{O \in X_a/G_a} |\pi_{V_{\mathrm{free}}}(O)|$ still works, but reading it costs $O(|X_a| \cdot |G_a|)$ because you walk every orbit and measure its $V_{\mathrm{free}}$-projection size. Specialized regimes short-circuit this when $G_a$ has recognizable structure on $V_{\mathrm{free},a}$ and $W_{\mathrm{summed},a}$.`}</InlineMathText>
+          <InlineMathText>{String.raw`The generic equation $\sum_{O \in X_a/G_a} |\pi_{V_{\mathrm{free}}}(O)|$ still works, but reading it costs $O(|X_a| \cdot |G_a|)$ because you walk every orbit and measure its $V_{\mathrm{free}}$-projection size. Specialized regimes short-circuit this when $G_a$ has recognizable structure on $V_{\mathrm{free},a}$ and $W_{\mathrm{summed},a}$.`}</InlineMathText>
         </p>
       </div>
 
@@ -164,7 +166,7 @@ export default function AccumulationHardCard() {
       </div>
 
       <p className="explorer-support-prose mt-3">
-        <InlineMathText>{String.raw`The generic formula requires enumerating every orbit and counting its distinct $V_{\mathrm{free}}$-projection, which is $O\!\left(\prod_{\ell} n_\ell \cdot |G|\right)$ work in the worst case.`}</InlineMathText>
+        <InlineMathText>{String.raw`The generic equation requires enumerating every orbit and counting its distinct $V_{\mathrm{free}}$-projection, which is $O\!\left(\prod_{\ell} n_\ell \cdot |G|\right)$ work in the worst case.`}</InlineMathText>
       </p>
       <p className="explorer-support-prose mt-2">
         <InlineMathText>{`We dodge that cost when the group has a recognizable structure. The classification tree below routes each component to its cheapest applicable closed form, or falls back to brute-force enumeration only when nothing else fits.`}</InlineMathText>

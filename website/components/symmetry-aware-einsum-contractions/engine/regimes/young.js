@@ -71,7 +71,7 @@ export const youngRegime = {
     if (!sizes.every((s) => s === nL)) {
       return { fired: false, reason: 'mixed label sizes' };
     }
-    return { fired: true, reason: 'G = Sym(L_c); Young formula applies' };
+    return { fired: true, reason: 'G = Sym(L_c); Young equation applies' };
   },
   compute({ va, wa, sizes }) {
     const nL = sizes[0];

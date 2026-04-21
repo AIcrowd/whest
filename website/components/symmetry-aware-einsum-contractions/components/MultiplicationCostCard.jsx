@@ -73,7 +73,7 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
     >
       <div className="mb-2 flex items-center gap-2">
         <span className="inline-block h-2.5 w-2.5 rounded-full bg-primary" />
-        <span className="text-sm font-semibold">Why this formula is universal</span>
+        <span className="text-sm font-semibold">Why this equation is universal</span>
       </div>
 
       {/* Property 1 — structure-agnostic. */}
@@ -82,7 +82,7 @@ function FormulaIntuitionTooltip({ anchorRect, onDismiss }) {
           <InlineMathText>{String.raw`$M_a$ doesn't see the $V_{\mathrm{free}} / W_{\mathrm{summed}}$ split`}</InlineMathText>
         </div>
         <p>
-          <InlineMathText>{String.raw`The Burnside sum only knows about $G_a$ acting on the component's label set $L_a$. It does not read the $V_{\mathrm{free}} / W_{\mathrm{summed}}$ split at all, so the same formula applies to every regime: trivial, all-visible, all-summed, and every mixed case. Contraction structure never enters $M_a$.`}</InlineMathText>
+          <InlineMathText>{String.raw`The Burnside sum only knows about $G_a$ acting on the component's label set $L_a$. It does not read the $V_{\mathrm{free}} / W_{\mathrm{summed}}$ split at all, so the same equation applies to every regime: trivial, all-visible, all-summed, and every mixed case. Contraction structure never enters $M_a$.`}</InlineMathText>
         </p>
       </div>
 
@@ -149,7 +149,7 @@ export default function MultiplicationCostCard({ components = [] }) {
         <InlineMathText>{`Calculating Multiplication Cost ($${String.raw`\mu`}$)`}</InlineMathText>
       </ExplorerSubsectionHeader>
       <p className="explorer-support-prose mt-2">
-        <InlineMathText>{String.raw`Every component gets the same treatment. Size-aware Burnside counts the per-component orbit count $M_a$ once each; the multiplication cost is then $\mu = (\texttt{num\_terms} - 1)\cdot \prod_a M_a$, one product per global orbit representative, where forming that product costs num_terms - 1 binary multiplies. No regime dispatch is needed because the formula ignores the $V_{\mathrm{free}} / W_{\mathrm{summed}}$ split.`}</InlineMathText>
+        <InlineMathText>{String.raw`Every component gets the same treatment. Size-aware Burnside counts the per-component orbit count $M_a$ once each; the multiplication cost is then $\mu = (\texttt{num\_terms} - 1)\cdot \prod_a M_a$, one product per global orbit representative, where forming that product costs num_terms - 1 binary multiplies. No regime dispatch is needed because the equation ignores the $V_{\mathrm{free}} / W_{\mathrm{summed}}$ split.`}</InlineMathText>
       </p>
 
       {/* Hover-wrapped formula — shows μ on top, the per-component

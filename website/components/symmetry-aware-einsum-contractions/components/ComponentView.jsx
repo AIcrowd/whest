@@ -61,8 +61,8 @@ export function LabelInteractionGraph({
   onHover = null,
 }) {
   const explorerThemeId = getActiveExplorerThemeId();
-  const COLOR_V = notationColor('v_free');
-  const COLOR_W = notationColor('w_summed');
+  const COLOR_V = explorerThemeColor(explorerThemeId, 'hero');
+  const COLOR_W = explorerThemeColor(explorerThemeId, 'summedSide');
   const EDGE_COLOR = explorerThemeColor(explorerThemeId, 'muted');
   const NODE_BORDER_COLOR = explorerThemeColor(explorerThemeId, 'surface');
   const n = allLabels.length;

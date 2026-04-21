@@ -106,6 +106,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   // `leafKeys` → spotlight matching leaves in the DecisionLadder.
   const [graphHover, setGraphHover] = useState(null);
   const [exprModalOpen, setExprModalOpen] = useState(false);
+  const [isThemeDockVisible, setIsThemeDockVisible] = useState(false);
   const explorerThemeId = useSyncExternalStore(
     subscribeActiveExplorerTheme,
     getActiveExplorerThemeId,
@@ -236,19 +237,33 @@ export default function SymmetryAwareEinsumContractionsApp() {
     return () => observer.disconnect();
   }, [analysis, example]);
 
-  useKeyboardShortcuts({
-    ArrowLeft: () => {
-      if (selectedPresetIdx == null) return;
-      const target = Math.max(0, (selectedPresetIdx ?? 0) - 1);
-      handleSelect(target);
+  useKeyboardShortcuts([
+    {
+      key: 'ArrowLeft',
+      handler: () => {
+        if (selectedPresetIdx == null) return;
+        const target = Math.max(0, (selectedPresetIdx ?? 0) - 1);
+        handleSelect(target);
+      },
     },
-    ArrowRight: () => {
-      if (selectedPresetIdx == null) return;
-      const target = Math.min(EXAMPLES.length - 1, (selectedPresetIdx ?? 0) + 1);
-      handleSelect(target);
+    {
+      key: 'ArrowRight',
+      handler: () => {
+        if (selectedPresetIdx == null) return;
+        const target = Math.min(EXAMPLES.length - 1, (selectedPresetIdx ?? 0) + 1);
+        handleSelect(target);
+      },
     },
-    r: () => handleSelect(Math.floor(Math.random() * EXAMPLES.length)),
-  });
+    {
+      key: 'r',
+      handler: () => handleSelect(Math.floor(Math.random() * EXAMPLES.length)),
+    },
+    {
+      key: 'E',
+      modifiers: { ctrlKey: true, shiftKey: true },
+      handler: () => setIsThemeDockVisible((visible) => !visible),
+    },
+  ]);
 
   return (
     <div className="symmetry-aware-einsum-explorer min-h-screen bg-background" style={themeCssVars}>
@@ -259,7 +274,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
         hoveredLabels={hoveredLabelSet}
         dimensionN={dimensionN}
       />
-      <ExplorerThemeDock explorerThemeId={explorerThemeId} onChange={setActiveExplorerTheme} />
+      {isThemeDockVisible ? (
+        <ExplorerThemeDock explorerThemeId={explorerThemeId} onChange={setActiveExplorerTheme} />
+      ) : null}
 
       <div className="w-full pb-20 pt-10">
         {/* Editorial masthead — matches the docs home page register

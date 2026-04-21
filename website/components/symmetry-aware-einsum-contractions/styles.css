@@ -772,7 +772,7 @@
   font-weight: 500; font-size: 12px;
   color: var(--gray-400);
 }
-.inc-col-header.inc-col-v { color: var(--ein-v); }
+.inc-col-header.inc-col-v { color: var(--coral); }
 .inc-col-header.inc-col-w { color: var(--ein-w); }
 .inc-col-header.inc-moved { color: var(--coral); font-weight: 600; }
 
@@ -789,7 +789,7 @@
   font-size: 11px; color: var(--gray-400); white-space: nowrap;
   font-family: var(--font-mono);
 }
-.inc-row-label.inc-col-v { color: var(--ein-v); }
+.inc-row-label.inc-col-v { color: var(--coral); }
 .inc-row-label.inc-col-w { color: var(--ein-w); }
 
 .inc-cell {
@@ -800,8 +800,8 @@
   background: var(--white);
 }
 .inc-cell.inc-cell-active {
-  background: color-mix(in oklab, var(--success) 10%, transparent);
-  color: var(--success); font-weight: 600;
+  background: color-mix(in oklab, var(--coral-hover) 10%, transparent);
+  color: var(--coral-hover); font-weight: 600;
 }
 .inc-cell.inc-cell-col-moved {
   background: color-mix(in oklab, var(--ein-v) 6%, transparent);
@@ -831,12 +831,12 @@
   font-family: var(--font-mono);
 }
 .inc-fp-label { font-weight: 600; }
-.inc-fp-label.inc-col-v { color: var(--ein-v); }
+.inc-fp-label.inc-col-v { color: var(--coral); }
 .inc-fp-label.inc-col-w { color: var(--ein-w); }
 .inc-fp-value { color: var(--gray-600); font-size: 10px; }
 
 /* Color the fingerprint pill border to match V/W */
-.inc-fp-item:has(.inc-col-v) { border-color: color-mix(in oklab, var(--ein-v) 30%, transparent); }
+.inc-fp-item:has(.inc-col-v) { border-color: color-mix(in oklab, var(--coral) 30%, transparent); }
 .inc-fp-item:has(.inc-col-w) { border-color: color-mix(in oklab, var(--ein-w) 30%, transparent); }
 .inc-fp-eq {
   width: 16px; height: 16px; border-radius: 50%;

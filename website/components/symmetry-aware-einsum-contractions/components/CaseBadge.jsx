@@ -63,6 +63,7 @@ export default function CaseBadge({
   interactive = true,
   active = false,
   themeOverride = null,
+  presentationThemeOverride = themeOverride,
   className,
   children = null,
 }) {
@@ -82,7 +83,7 @@ export default function CaseBadge({
     return () => { tooltipSubscribers.delete(notify); };
   }, []);
 
-  const presentation = getRegimePresentation(regimeId, themeOverride);
+  const presentation = getRegimePresentation(regimeId, presentationThemeOverride);
   const colors = colorsFor(presentation.color ?? '#94A3B8');
   const tooltip = interactive ? presentation.tooltip : null;
 

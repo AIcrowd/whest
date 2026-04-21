@@ -39,9 +39,11 @@ test('AccumulationHardCard exports a default React component with shared support
   assert.match(src, /export default function AccumulationHardCard/);
   // Title now uses α to match the Counting Convention band.
   assert.match(src, /Why Accumulation Cost \(α\) is Hard/);
+  assert.match(src, /notationColor\('alpha_total'\)/);
   assert.match(src, /InlineMathText/);
   assert.match(src, /className="explorer-support-prose mt-2"/);
   assert.match(src, /className="explorer-support-prose mt-3"/);
+  assert.doesNotMatch(src, /bg-amber-400/);
   assert.doesNotMatch(src, /See the Classification Tree below/);
   assert.match(src, /V_\{\\mathrm\{free\}\}/);
   assert.match(src, /W_\{\\mathrm\{summed\}\}/);

@@ -60,11 +60,25 @@ test('WreathStructureView caps the initial table at 10 rows, opens a modal for t
   assert.doesNotMatch(WIDGET_SRC, /bg-rose-50/);
   assert.match(WIDGET_SRC, /✓ kept in G/);
   assert.match(WIDGET_SRC, /✗ no matching relabeling/);
-  assert.match(WIDGET_SRC, /style=\{\{ color: notationColor\('sigma_row_move'\) \}\}/);
+  assert.match(WIDGET_SRC, /style=\{\{ color: explorerThemeColor\(explorerThemeId, 'heroMuted'\) \}\}/);
+  assert.match(WIDGET_SRC, /pillText: explorerThemeColor\(explorerThemeId, 'hero'\)/);
+  assert.match(WIDGET_SRC, /pillText: explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
+  assert.match(WIDGET_SRC, /pillText: explorerThemeColor\(explorerThemeId, 'editorialAccent'\)/);
   assert.match(WIDGET_SRC, /const matrixEffect = element\.matrixPreserving\s*\?\s*String\.raw`\\sigma\(M\) = M`/);
   assert.match(WIDGET_SRC, /Latex math=\{matrixEffect\}/);
   assert.doesNotMatch(WIDGET_SRC, /const matrixEffect = element\.matrixPreserving\s*\?\s*<Latex/);
   assert.match(WIDGET_SRC, /sigma_row_move/);
+});
+
+test('WreathStructureView summary counts render as compact sans pills instead of editorial body text', () => {
+  assert.match(
+    WIDGET_SRC,
+    /inline-flex items-center rounded-full border px-3 py-1 text-\[11px\] font-semibold uppercase tracking-\[0\.18em\] font-sans/,
+  );
+  assert.doesNotMatch(
+    WIDGET_SRC,
+    /<div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-\[13px\] leading-6 text-gray-700">/,
+  );
 });
 
 test('wreathElements is present and non-empty on every preset at n=3', () => {

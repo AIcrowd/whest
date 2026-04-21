@@ -22,3 +22,9 @@ test('useKeyboardShortcuts adds and removes keydown listener', () => {
   assert.match(source, /addEventListener\(['"]keydown/);
   assert.match(source, /removeEventListener\(['"]keydown/);
 });
+
+test('useKeyboardShortcuts supports declarative modifier-gated bindings', () => {
+  assert.match(source, /Array\.isArray\(bindings\)/);
+  assert.match(source, /modifierKeys = \['metaKey', 'ctrlKey', 'shiftKey', 'altKey'\]/);
+  assert.match(source, /entry\.modifiers\?\.\[modifier\] \?\? false/);
+});

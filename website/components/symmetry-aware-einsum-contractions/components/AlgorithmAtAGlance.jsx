@@ -62,7 +62,7 @@ function EinsumIntroColumn({ example }) {
         </AnchorLink>
       </span>
       <h3 className="mt-1 font-heading text-lg font-semibold text-foreground">
-        A tensor operation, written as one formula
+        A tensor operation, written as one equation
       </h3>
 
       <p
@@ -121,7 +121,7 @@ function EinsumIntroColumn({ example }) {
           style={JUSTIFIED_PROSE_STYLE}
         >
           If several operands are identical or individually symmetric
-          (e.g. <Latex math={String.raw`A_{ij} = A_{ji}`} />), the formula is invariant under certain
+          (e.g. <Latex math={String.raw`A_{ij} = A_{ji}`} />), the equation is invariant under certain
           permutations of the labels. Those permutations form a{' '}
           <strong className="font-semibold">group G</strong>, and whole{' '}
           <em>orbits</em> of products collapse to a single distinct computation — the dense{' '}

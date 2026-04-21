@@ -3,7 +3,7 @@ import ExplorerModal from './ExplorerModal.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
 import { explorerThemeColor, explorerThemeTint } from '../lib/explorerTheme.js';
-import { getActiveExplorerThemeId, notationColor, notationLatex } from '../lib/notationSystem.js';
+import { getActiveExplorerThemeId, notationLatex } from '../lib/notationSystem.js';
 
 const INITIAL_ROW_LIMIT = 10;
 
@@ -44,6 +44,7 @@ export default function WreathStructureView({ analysis, example }) {
   const rejectedCount = wreathElements.filter((element) => element.classification === 'rejected').length;
   const hiddenCount = Math.max(0, wreathElements.length - INITIAL_ROW_LIMIT);
   const visibleElements = wreathElements.slice(0, INITIAL_ROW_LIMIT);
+  const summaryPillClass = 'inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] font-sans';
 
   const formulaLatex = factors.length === 0
     ? `${notationLatex('g_wreath')} = \\{e\\}`
@@ -93,16 +94,41 @@ export default function WreathStructureView({ analysis, example }) {
         </div>
       ) : null}
 
-      <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] leading-6 text-gray-700">
-        <span className="font-mono text-gray-900">
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <span
+          className={`${summaryPillClass} border-gray-200 bg-white text-gray-700`}
+          style={{ letterSpacing: '0.14em' }}
+        >
           <Latex math={`|${notationLatex('g_wreath')}| = ${wreathElements.length}`} />
         </span>
-        <span className="text-gray-300">/</span>
-        <span className="font-medium" style={{ color: explorerThemeColor(explorerThemeId, 'quantity') }}>kept in G: {validCount}</span>
-        <span className="text-gray-300">/</span>
-        <span className="font-medium" style={{ color: explorerThemeColor(explorerThemeId, 'muted') }}>identity only: {identityOnlyCount}</span>
-        <span className="text-gray-300">/</span>
-        <span className="font-medium" style={{ color: notationColor('v_free') }}>
+        <span
+          className={summaryPillClass}
+          style={{
+            borderColor: explorerThemeTint(explorerThemeId, 'hero', 0.24),
+            background: explorerThemeTint(explorerThemeId, 'hero', 0.12),
+            color: explorerThemeColor(explorerThemeId, 'hero'),
+          }}
+        >
+          kept in G: {validCount}
+        </span>
+        <span
+          className={summaryPillClass}
+          style={{
+            borderColor: explorerThemeTint(explorerThemeId, 'summedSide', 0.22),
+            background: explorerThemeTint(explorerThemeId, 'summedSide', 0.12),
+            color: explorerThemeColor(explorerThemeId, 'summedSide'),
+          }}
+        >
+          identity only: {identityOnlyCount}
+        </span>
+        <span
+          className={summaryPillClass}
+          style={{
+            borderColor: explorerThemeTint(explorerThemeId, 'editorialAccent', 0.24),
+            background: explorerThemeTint(explorerThemeId, 'editorialAccent', 0.12),
+            color: explorerThemeColor(explorerThemeId, 'editorialAccent'),
+          }}
+        >
           no matching relabeling: {rejectedCount}
         </span>
       </div>
@@ -158,22 +184,22 @@ function WreathElementRow({ element, index }) {
 
   const rowTone = {
     valid: {
-      pillBorder: explorerThemeTint(explorerThemeId, 'quantity', 0.24),
-      pillBg: explorerThemeTint(explorerThemeId, 'quantity', 0.12),
-      pillText: explorerThemeColor(explorerThemeId, 'quantity'),
-      outcome: explorerThemeColor(explorerThemeId, 'quantity'),
+      pillBorder: explorerThemeTint(explorerThemeId, 'hero', 0.24),
+      pillBg: explorerThemeTint(explorerThemeId, 'hero', 0.12),
+      pillText: explorerThemeColor(explorerThemeId, 'hero'),
+      outcome: explorerThemeColor(explorerThemeId, 'hero'),
     },
     'matrix-preserving': {
-      pillBorder: explorerThemeTint(explorerThemeId, 'muted', 0.22),
-      pillBg: explorerThemeTint(explorerThemeId, 'muted', 0.12),
-      pillText: explorerThemeColor(explorerThemeId, 'muted'),
-      outcome: explorerThemeColor(explorerThemeId, 'muted'),
+      pillBorder: explorerThemeTint(explorerThemeId, 'summedSide', 0.22),
+      pillBg: explorerThemeTint(explorerThemeId, 'summedSide', 0.12),
+      pillText: explorerThemeColor(explorerThemeId, 'summedSide'),
+      outcome: explorerThemeColor(explorerThemeId, 'summedSide'),
     },
     rejected: {
-      pillBorder: explorerThemeTint(explorerThemeId, 'freeSide', 0.24),
-      pillBg: explorerThemeTint(explorerThemeId, 'freeSide', 0.12),
-      pillText: explorerThemeColor(explorerThemeId, 'freeSide'),
-      outcome: explorerThemeColor(explorerThemeId, 'freeSide'),
+      pillBorder: explorerThemeTint(explorerThemeId, 'editorialAccent', 0.24),
+      pillBg: explorerThemeTint(explorerThemeId, 'editorialAccent', 0.12),
+      pillText: explorerThemeColor(explorerThemeId, 'editorialAccent'),
+      outcome: explorerThemeColor(explorerThemeId, 'editorialAccent'),
     },
   }[element.classification];
 
@@ -208,7 +234,7 @@ function WreathElementRow({ element, index }) {
       </td>
       <td className="px-3 py-2 font-mono text-[11px]">{factorStr}</td>
       <td className="px-3 py-2 font-mono text-[11px]">
-        <span style={{ color: notationColor('sigma_row_move') }}>
+        <span style={{ color: explorerThemeColor(explorerThemeId, 'heroMuted') }}>
           <Latex math={matrixEffect} />
         </span>
       </td>

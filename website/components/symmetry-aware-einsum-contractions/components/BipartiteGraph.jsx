@@ -12,18 +12,15 @@ import {
 } from '../lib/explorerTheme.js';
 import {
   getActiveExplorerThemeId,
-  notationColor,
   notationLatex,
-  notationText,
-  notationTint,
 } from '../lib/notationSystem.js';
 
 export default function BipartiteGraph({ graph, example, variableColors, highlightedLabels = new Set() }) {
   const explorerThemeId = getActiveExplorerThemeId();
-  const V_COLOR = notationColor('v_free');
-  const W_COLOR = notationColor('w_summed');
-  const U_FALLBACK_COLOR = notationColor('sigma_row_move');
-  const HIGHLIGHT_COLOR = notationColor('sigma_row_move');
+  const V_COLOR = explorerThemeColor(explorerThemeId, 'hero');
+  const W_COLOR = explorerThemeColor(explorerThemeId, 'summedSide');
+  const U_FALLBACK_COLOR = explorerThemeColor(explorerThemeId, 'heroMuted');
+  const HIGHLIGHT_COLOR = explorerThemeColor(explorerThemeId, 'heroMuted');
   const MUTED_COLOR = explorerThemeColor(explorerThemeId, 'muted');
   const BORDER_COLOR = explorerThemeColor(explorerThemeId, 'border');
   const isHighlighted = (label) =>
@@ -77,8 +74,8 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
       : identicalGroups.length > 0
         ? getGroupColor(opIdx, identicalGroups, explorerThemeId)
         : {
-            fill: explorerThemeTint(explorerThemeId, 'action', 0.04),
-            stroke: explorerThemeTint(explorerThemeId, 'action', 0.25),
+            fill: explorerThemeTint(explorerThemeId, 'heroMuted', 0.04),
+            stroke: explorerThemeTint(explorerThemeId, 'heroMuted', 0.25),
           };
 
     const boxTop = leftY;
@@ -167,7 +164,10 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
         <rect
           x={rbLeft} y={vBoxTop}
           width={rbFullW} height={vBoxH}
-          rx={14} fill={notationTint('v_free', 0.03)} stroke={notationTint('v_free', 0.2)} strokeWidth={1.5}
+          rx={14}
+          fill={explorerThemeTint(explorerThemeId, 'hero', 0.03)}
+          stroke={explorerThemeTint(explorerThemeId, 'hero', 0.2)}
+          strokeWidth={1.5}
         />
         <MathLabelBadge
           x={rbLeft + 12}
@@ -183,7 +183,10 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
             <rect
               x={rbLeft} y={wBoxTop}
               width={rbFullW} height={wBoxH}
-              rx={14} fill={notationTint('w_summed', 0.03)} stroke={notationTint('w_summed', 0.2)} strokeWidth={1.5}
+              rx={14}
+              fill={explorerThemeTint(explorerThemeId, 'summedSide', 0.03)}
+              stroke={explorerThemeTint(explorerThemeId, 'summedSide', 0.2)}
+              strokeWidth={1.5}
             />
             <MathLabelBadge
               x={rbLeft + 12}
@@ -198,8 +201,11 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
             <rect
               x={rbLeft} y={wBoxTop}
               width={rbFullW} height={wBoxH}
-              rx={14} fill={notationTint('w_summed', 0.02)}
-              stroke={notationTint('w_summed', 0.15)} strokeWidth={1.5} strokeDasharray="6,4"
+              rx={14}
+              fill={explorerThemeTint(explorerThemeId, 'summedSide', 0.02)}
+              stroke={explorerThemeTint(explorerThemeId, 'summedSide', 0.15)}
+              strokeWidth={1.5}
+              strokeDasharray="6,4"
             />
             <MathLabelBadge
               x={rbLeft + 12}
@@ -320,7 +326,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               fontFamily: 'Inter, sans-serif',
             }}
           >
-            <span style={{ color: notationColor('u_axis_classes'), textTransform: 'none' }}>
+            <span style={{ color: explorerThemeColor(explorerThemeId, 'heroMuted'), textTransform: 'none' }}>
               <Latex math={notationLatex('u_axis_classes')} />
             </span>
             <span>axis classes</span>
@@ -342,7 +348,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               fontFamily: 'Inter, sans-serif',
             }}
           >
-            <span style={{ color: notationColor('l_labels'), textTransform: 'none' }}>
+            <span style={{ color: explorerThemeColor(explorerThemeId, 'summedSide'), textTransform: 'none' }}>
               <Latex math={notationLatex('l_labels')} />
             </span>
             <span>index labels</span>
@@ -402,8 +408,8 @@ function getGroupColor(opIdx, identicalGroups, explorerThemeId) {
     }
   }
   return {
-    fill: explorerThemeTint(explorerThemeId, 'action', 0.04),
-    stroke: explorerThemeTint(explorerThemeId, 'action', 0.25),
+    fill: explorerThemeTint(explorerThemeId, 'heroMuted', 0.04),
+    stroke: explorerThemeTint(explorerThemeId, 'heroMuted', 0.25),
   };
 }
 
