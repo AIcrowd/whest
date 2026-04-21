@@ -222,6 +222,10 @@ test('ExplorerThemeDock warms its secondary chrome with the editorial accent', (
     'utf8',
   );
 
+  assert.match(source, /EXPLORER_THEME_PRESETS/);
+  assert.match(source, /getExplorerThemePreset/);
+  assert.match(source, /Explorer Theme/);
+  assert.match(source, /activeTheme\.summary/);
   assert.match(source, /border border-\[color:color-mix\(in_oklab,var\(--explorer-editorial-accent\)_28%,var\(--explorer-border\)\)\]/);
   assert.match(source, /border border-\[color:color-mix\(in_oklab,var\(--explorer-editorial-accent\)_24%,var\(--explorer-border\)\)\]/);
   assert.match(source, /text-\[color:color-mix\(in_oklab,var\(--explorer-editorial-accent\)_45%,var\(--explorer-ink\)\)\]/);

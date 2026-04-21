@@ -16,6 +16,7 @@ import InlineMathText from './components/InlineMathText.jsx';
 import Latex from './components/Latex.jsx';
 import AlgorithmAtAGlance from './components/AlgorithmAtAGlance.jsx';
 import ExampleChooser from './components/ExampleChooser.jsx';
+import ExplorerThemeDock from './components/ExplorerThemeDock.jsx';
 import PresetSidebar from './components/PresetSidebar.jsx';
 import BipartiteGraph from './components/BipartiteGraph.jsx';
 import MatrixView from './components/MatrixView.jsx';
@@ -31,6 +32,7 @@ import {
   getActiveExplorerThemeId,
   getExplorerThemePreset,
   resetActiveExplorerTheme,
+  setActiveExplorerTheme,
   subscribeActiveExplorerTheme,
 } from './lib/explorerTheme.js';
 import { getPresetControlSelection } from './lib/presetSelection.js';
@@ -257,6 +259,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
         hoveredLabels={hoveredLabelSet}
         dimensionN={dimensionN}
       />
+      <ExplorerThemeDock explorerThemeId={explorerThemeId} onChange={setActiveExplorerTheme} />
 
       <div className="w-full pb-20 pt-10">
         {/* Editorial masthead — matches the docs home page register

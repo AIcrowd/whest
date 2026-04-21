@@ -229,7 +229,7 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.doesNotMatch(totalCostSource, /Seven paths through Section 5/);
 });
 
-test('app owns the active explorer theme and passes it into TotalCostView without exposing the theme dock', () => {
+test('app owns the active explorer theme and passes it into TotalCostView while exposing the theme dock', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
   const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
   const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
@@ -247,8 +247,8 @@ test('app owns the active explorer theme and passes it into TotalCostView withou
   assert.match(appSource, /return \(\) => resetActiveExplorerTheme/);
   assert.match(appSource, /buildVariableColors\(example\.variables,\s*theme\.id\)/);
   assert.match(appSource, /explorerThemeId=\{explorerThemeId\}/);
-  assert.doesNotMatch(appSource, /import ExplorerThemeDock/);
-  assert.doesNotMatch(appSource, /<ExplorerThemeDock/);
+  assert.match(appSource, /import ExplorerThemeDock/);
+  assert.match(appSource, /<ExplorerThemeDock/);
   assert.doesNotMatch(appSource, /const \[explorerThemeId,\s*setExplorerThemeId\] = useState\(/);
   assert.doesNotMatch(appSource, /notationGrammarId/);
   assert.doesNotMatch(appSource, /setActiveNotationGrammar/);
