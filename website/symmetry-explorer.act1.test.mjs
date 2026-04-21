@@ -10,6 +10,7 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(appSource, /PresetSidebar/);
   assert.match(appSource, /selectedPresetIdx=\{selectedPresetIdx\}/);
   assert.match(appSource, /getPresetControlSelection\(exampleIdx, isDirty\)/);
+  assert.match(appSource, /mx-auto mt-8 w-full max-w-\[1460px\] px-6 md:px-8 lg:px-10/);
   assert.match(appSource, /<PresetSidebar[\s\S]*<main className="min-w-0 flex-1">/);
   assert.match(sidebarSource, /aria-label="Preset examples"/);
   assert.match(sidebarSource, /ExplorerSidebarItem/);
@@ -64,7 +65,8 @@ test('ExampleChooser increments added variable names spreadsheet-style', () => {
 test('PresetSidebar matches the design-system preset-list spec (flat container, 10px gray kicker, canonical padding)', () => {
   const sidebarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/PresetSidebar.jsx', import.meta.url), 'utf8');
   const presetSelectionSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/lib/presetSelection.js', import.meta.url), 'utf8');
-  assert.match(sidebarSource, /w-\[18rem\]/);
+  assert.match(sidebarSource, /w-\[18rem\][\s\S]*xl:w-\[20rem\]/);
+  assert.match(sidebarSource, /border-b border-gray-100/);
   assert.match(sidebarSource, /glyph="⚙"/);
   assert.match(sidebarSource, /formula="— build below —"/);
   assert.match(sidebarSource, /Keep the current builder state/);

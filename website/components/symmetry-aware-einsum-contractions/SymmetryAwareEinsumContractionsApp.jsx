@@ -273,15 +273,16 @@ export default function SymmetryAwareEinsumContractionsApp() {
           <AlgorithmAtAGlance example={previewExample ?? example} />
         </div>
 
-        <div className="mt-8 flex items-start gap-8">
-          <PresetSidebar
-            examples={EXAMPLES}
-            selectedPresetIdx={selectedPresetIdx}
-            onSelect={handleSelect}
-            onCustom={handleCustomMode}
-          />
-          <main className="min-w-0 flex-1">
-            <div className="mx-auto flex max-w-[1460px] flex-col px-6 md:px-8 lg:px-10">
+        <div className="mx-auto mt-8 w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
+          <div className="flex items-start gap-8">
+            <PresetSidebar
+              examples={EXAMPLES}
+              selectedPresetIdx={selectedPresetIdx}
+              onSelect={handleSelect}
+              onCustom={handleCustomMode}
+            />
+            <main className="min-w-0 flex-1">
+              <div className="flex flex-col">
             <section id={EXPLORER_ACTS[0].id} className="mb-12 scroll-mt-24">
               <ExplorerSectionCard
                 eyebrow={<SectionEyebrow n={1} anchorId={EXPLORER_ACTS[0].id} />}
@@ -476,8 +477,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 Define your variables and einsum expression above, then click <strong className="font-semibold text-coral">Analyze</strong> to explore the symmetry detection algorithm.
               </div>
             )}
-            </div>
-          </main>
+              </div>
+            </main>
+          </div>
         </div>
       </div>
 
