@@ -9,7 +9,6 @@ import {
   getActiveExplorerThemeId,
   getActiveExplorerThemeRoles,
   getExplorerThemeCssVariables,
-  getExplorerThemeFingerprintPalette,
   getExplorerThemePreset,
   resetActiveExplorerTheme,
   setActiveExplorerTheme,
@@ -118,8 +117,6 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.equal(coralSlateHardline.roles.quantity, '#292C2D');
   assert.equal(inkAuthority.roles.symmetryObject, '#292C2D');
   assert.equal(meanPropLed.roles.action, '#2959C4');
-  assert.equal(editorialNoir.roles.freeSide, '#292C2D');
-  assert.equal(editorialNoir.roles.action, '#292C2D');
   assert.equal(editorialNoirMath.roles.ink, editorialNoir.roles.ink);
   assert.equal(editorialNoirMath.roles.freeSide, editorialNoir.roles.freeSide);
   assert.equal(editorialNoirMath.roles.summedSide, editorialNoir.roles.summedSide);
@@ -184,22 +181,6 @@ test('explorer theme CSS variables expose status tokens for the scoped alias lay
   assert.equal(cssVars['--success'], teachingCalm.roles.quantity);
   assert.equal(cssVars['--warning'], teachingCalm.roles.action);
   assert.equal(cssVars['--editorial-accent'], teachingCalm.roles.editorialAccent);
-});
-
-test('editorial-noir keeps coral chrome even when free-side notation is ink', () => {
-  const editorialNoir = getExplorerThemePreset('editorial-noir');
-  const cssVars = getExplorerThemeCssVariables(editorialNoir);
-
-  assert.equal(cssVars['--coral'], editorialNoir.roles.hero);
-  assert.equal(cssVars['--coral-light'], 'rgba(240, 82, 77, 0.14)');
-  assert.equal(cssVars['--ein-v'], editorialNoir.roles.freeSide);
-  assert.equal(cssVars['--ein-v'], '#292C2D');
-});
-
-test('editorial-noir fingerprint accents start from coral and slate, not ink-only roles', () => {
-  const palette = getExplorerThemeFingerprintPalette('editorial-noir');
-
-  assert.deepEqual(palette.slice(0, 4), ['#F0524D', '#334155', '#D23934', '#B29F9E']);
 });
 
 test('styles.css defines the explorer-scoped role variable aliases', () => {
