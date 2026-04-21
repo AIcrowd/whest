@@ -274,12 +274,15 @@ test('editorial-noir-math remaps approved notation families through the rich mat
 test('notationColor accepts an explicit theme override without changing global state', () => {
   resetActiveExplorerTheme();
   setActiveExplorerTheme('editorial-noir');
+  const noirMath = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-noir-math');
 
   const globalAlpha = notationColor('alpha_total');
   const overriddenAlpha = notationColor('alpha_total', 'editorial-noir-math');
+  const overriddenAlphaFromPreset = notationColor('alpha_total', noirMath);
 
   assert.equal(globalAlpha, '#292C2D');
   assert.equal(overriddenAlpha, '#8F647F');
+  assert.equal(overriddenAlphaFromPreset, '#8F647F');
   assert.equal(getActiveExplorerThemeId(), 'editorial-noir');
   assert.equal(notationColor('alpha_total'), '#292C2D');
 });
@@ -287,11 +290,15 @@ test('notationColor accepts an explicit theme override without changing global s
 test('colorizeNotationLatex accepts an explicit theme override without changing global state', () => {
   resetActiveExplorerTheme();
   setActiveExplorerTheme('editorial-noir');
+  const noirMath = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-noir-math');
 
   const colored = colorizeNotationLatex(String.raw`\mu + \alpha_a`, 'editorial-noir-math');
+  const coloredFromPreset = colorizeNotationLatex(String.raw`\mu + \alpha_a`, noirMath);
 
   assert.match(colored, /#326B79/);
   assert.match(colored, /#8F647F/);
+  assert.match(coloredFromPreset, /#326B79/);
+  assert.match(coloredFromPreset, /#8F647F/);
   assert.equal(getActiveExplorerThemeId(), 'editorial-noir');
 });
 

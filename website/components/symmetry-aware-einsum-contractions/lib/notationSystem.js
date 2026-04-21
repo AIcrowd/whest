@@ -299,10 +299,15 @@ function notationEntry(id) {
 }
 
 function resolveThemePreset(themeOverride = null) {
+  if (themeOverride && typeof themeOverride === 'object') {
+    if (themeOverride.roles) return themeOverride;
+    if (themeOverride.id) return getExplorerThemePreset(themeOverride.id);
+  }
   return getExplorerThemePreset(themeOverride ?? getThemeStoreActiveExplorerThemeId());
 }
 
 function resolveThemeRoles(themeOverride = null) {
+  if (themeOverride == null) return getThemeStoreActiveExplorerThemeRoles();
   return resolveThemePreset(themeOverride).roles;
 }
 
