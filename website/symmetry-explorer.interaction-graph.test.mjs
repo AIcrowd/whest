@@ -215,3 +215,12 @@ test('SymmetryBadge renders output symmetry in the same black-outline pill langu
   assert.match(source, /const permGroupMatch = text\.match\(\/\^\(PermGroup\)\(\.\*\)\$\/\);/);
   assert.ok(source.includes(String.raw`const generatedCyclesMatch = text.match(/^(\u27e8)(.*)(\u27e9)$/);`));
 });
+
+test('ExplorerThemeDock warms its secondary chrome with the editorial accent', () => {
+  const source = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/ExplorerThemeDock.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(source, /var\(--explorer-editorial-accent\)/);
+});
