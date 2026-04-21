@@ -171,8 +171,6 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /\\sum_\{g\s*\\in\s*G_a\}/);
   assert.match(totalCostSource, /inSet\('g', tc\(SYM\.group, notationLatex\('g_component'\)\)\)/);
   assert.match(totalCostSource, /\\prod_\{c\}\s*n_c/);
-  assert.match(totalCostSource, /PIECEWISE_LABEL/);
-  assert.match(totalCostSource, /Per-component accumulation formula/);
   assert.match(totalCostSource, /PIECEWISE_SCOPE_NOTE/);
   assert.match(totalCostSource, /defines only the per-component accumulation term/);
   assert.match(totalCostSource, /\\prod_\{a\}\s*\\alpha_a/);
@@ -197,7 +195,6 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /omega_orbit/);
   assert.match(totalCostSource, /orbit of the single free label/);
   assert.match(totalCostSource, /notationLatex\('c_omega_cycles'\)/);
-  assert.match(totalCostSource, /cue: 'hardest case'/);
   assert.match(totalCostSource, /accumulation cost/);
   assert.match(totalCostSource, /<dl/);
   assert.match(totalCostSource, /<dt/);

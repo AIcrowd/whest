@@ -5,6 +5,8 @@ import { explorerThemeColor } from '../lib/explorerTheme.js';
 import { getRegimePresentation } from './regimePresentation.js';
 import { getActiveExplorerThemeId, notationColor, notationText } from '../lib/notationSystem.js';
 import InlineMathText from './InlineMathText.jsx';
+import RoleBadge from './RoleBadge.jsx';
+import SymmetryBadge from './SymmetryBadge.jsx';
 
 const GRAPH_SIZE = 220;
 const CENTER = GRAPH_SIZE / 2;

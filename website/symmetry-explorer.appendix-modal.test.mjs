@@ -38,7 +38,7 @@ test('chapter 1 keeps the row-level ledger and decision logic but drops the old 
   assert.match(source, /n=\{1\}[\s\S]*G_\{\\text\{wreath\}\}/);
   assert.match(source, /n=\{1\}[\s\S]*Frobenius\./);
   assert.match(source, /n=\{1\}[\s\S]*Triangle\./);
-  assert.match(source, /n=\{1\}[\s\S]*Formal takeaway/);
+  assert.match(source, /n=\{1\}[\s\S]*is admissible when the column fingerprints of/);
   assert.match(source, /n=\{1\}[\s\S]*Record every admissible/);
   assert.match(source, /n=\{1\}[\s\S]*Treat admissible moves with/);
   assert.match(source, /n=\{1\}[\s\S]*Reject every non-admissible/);
@@ -78,12 +78,24 @@ test('chapter 3 merges formal-group assembly with the Burnside overcount warning
   assert.match(source, /n=\{3\}[\s\S]*direct product/);
   assert.match(source, /n=\{3\}[\s\S]*<VSubSwConstruction/);
   assert.match(source, /Selected einsum/);
-  assert.match(source, /<p className=\{APPENDIX_KICKER_CLASS\}>Burnside on <Latex math="G_\{\\text\{f\}\}" \/>/);
-  assert.match(source, /<p className=\{APPENDIX_KICKER_CLASS\}>true <Latex math="\\alpha" \/> under <Latex math="G_\{\\text\{pt\}\}" \/>/);
-  assert.match(source, /same formal orbit that causes the mistake/);
+  assert.match(source, /function buildExpandedEinsumEquation\(/);
+  assert.match(source, /If one naively applies Burnside to /);
+  assert.match(source, /The true count under /);
+  assert.match(source, /The mismatch comes from terms that are only formally related, not genuinely equal/);
+  assert.match(source, /Let \$A = /);
+  assert.match(source, /selected einsum expands to:/i);
+  assert.match(source, /<Latex math=\{expandedEinsumEquation\} \/>/);
+  assert.match(source, /Now set \$i = 0\$ and \$j = 1\$/);
+  assert.match(source, /Then:/);
+  assert.match(source, /<Latex math=\{'R\[0,1\] = \\\\sum_\{k,l\} A\[0,k\]A\[1,l\]'\} \/>/);
+  assert.match(source, /Swapping the two summed labels \$k\$ and \$l\$ sends \$\(0,1\)\$ to \$\(1,0\)\$/);
+  assert.match(source, /If <Latex math="k = 0" \/> and <Latex math="l = 1" \/>, the summand is/);
+  assert.match(source, /If <Latex math="k = 1" \/> and <Latex math="l = 0" \/>, the summand is/);
+  assert.match(source, /must still accumulate both contributions separately/);
   assert.match(source, /That closes the expression-level story\. Part II turns to storage/);
   assert.doesNotMatch(source, /Applying Burnside to \$G_\{\\text\{f\}\}\$ would yield \$\\alpha =\$/);
   assert.doesNotMatch(source, /That value is not a faithful compression count\./);
+  assert.doesNotMatch(source, /accumulation bins/);
 });
 
 test('chapter 3 comparison branches always show the selected einsum and only suggest real mismatch presets', () => {

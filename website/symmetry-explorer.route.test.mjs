@@ -31,6 +31,17 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
   assert.doesNotMatch(appSource, /onOpenModalSection=\{/);
 });
 
+test('"What this produces" callout uses shared vertical centering on desktop', () => {
+  const calloutSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/NarrativeCallout.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(calloutSource, /sm:items-center/);
+  assert.match(calloutSource, /sm:flex sm:items-center/);
+  assert.doesNotMatch(calloutSource, /sm:items-start/);
+});
+
 test('article route still wires the appendix modal while the main page stays appendix-free', () => {
   const appSource = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),

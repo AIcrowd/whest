@@ -26,7 +26,6 @@ const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total\ Cost} = \mu + \alph
 const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
 const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
 const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\\x\end{matrix}}\right.`;
-const PIECEWISE_LABEL = `Per-component accumulation formula $${notationLatex('alpha_component')}$`;
 const PIECEWISE_SCOPE_NOTE = `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$; the top line remains the global total cost.`;
 
 
@@ -145,7 +144,6 @@ function getAggregationLeaves() {
     {
       id: 'singleton',
       layer: 'regime',
-      cue: 'hardest case',
       formula: String.raw`\tfrac{${tc(SYM.cycle, notationLatex('n_omega'))}}{|${tc(SYM.group, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, 'g'))} \Bigl(${productOver(`c \\in ${notationLatex('r_complement')}`, tc(SYM.cycle, notationLatex('n_cycle')))}\Bigr)\!\Bigl(${tc(SYM.cycle, notationLatex('n_omega'))}^{\,${tc(SYM.cycle, notationLatex('c_omega_cycles'))}} - (${tc(SYM.cycle, notationLatex('n_omega'))} - 1)^{\,${tc(SYM.cycle, notationLatex('c_omega_cycles'))}}\Bigr)`,
     },
     {
@@ -198,9 +196,6 @@ function HeroFormulaBlock() {
 
       {/* Piecewise — α_a defined by six leaves of the shape × regime ladder */}
       <div className="space-y-1 text-center">
-        <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
-          <InlineMathText>{PIECEWISE_LABEL}</InlineMathText>
-        </div>
         <div className="mx-auto max-w-2xl font-serif text-[14px] leading-[1.7] text-gray-700">
           <InlineMathText>{PIECEWISE_SCOPE_NOTE}</InlineMathText>
         </div>

@@ -124,6 +124,7 @@ test('LabelInteractionGraph card surface is interactive (Stage 2)', () => {
   );
 
   assert.match(source, /import \{ createPortal \} from 'react-dom'/);
+  assert.match(source, /import RoleBadge from '\.\/RoleBadge\.jsx'/);
   // The graph body must render a role=tooltip via portal so it escapes
   // ancestor CSS transforms (PanZoomCanvas).
   assert.match(source, /role="tooltip"/);

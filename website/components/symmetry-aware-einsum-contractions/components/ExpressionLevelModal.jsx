@@ -190,6 +190,39 @@ function formatWitnessTuple(tuple) {
   return `(${tuple.join(', ')})`;
 }
 
+function buildExpandedEinsumEquation(example) {
+  const subscripts = example?.expression?.subscripts ?? '';
+  if (!subscripts.includes('->')) return null;
+  const [lhs = '', output = ''] = subscripts.split('->');
+  const operandSubs = lhs
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (!operandSubs.length) return null;
+
+  const operandNames = (example?.expression?.operandNames ?? '')
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  const outputLabels = output.trim().split('').filter(Boolean);
+  const freeSet = new Set(outputLabels);
+  const summedLabels = [];
+  for (const subs of operandSubs) {
+    for (const label of subs) {
+      if (!freeSet.has(label) && !summedLabels.includes(label)) summedLabels.push(label);
+    }
+  }
+
+  const lhsLatex = outputLabels.length ? `R[${outputLabels.join(',')}]` : 'R';
+  const sumLatex = summedLabels.length ? `\\sum_{${summedLabels.join(',')}} ` : '';
+  const factors = operandSubs.map((subs, index) => {
+    const name = operandNames[index] || `T_{${index + 1}}`;
+    return `${name}[${subs.split('').join(',')}]`;
+  });
+  return `${lhsLatex} = ${sumLatex}${factors.join(' \\, ')}`;
+}
+
 function AppendixTwoColBlock({
   left,
   right,
@@ -498,6 +531,14 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
     () => computeExpressionAlphaComparison({ analysis, example }),
     [analysis, example],
   );
+  const expandedEinsumEquation = useMemo(
+    () => buildExpandedEinsumEquation(example),
+    [example],
+  );
+  const showBilinearFormalOrbitExample =
+    example?.id === 'bilinear-trace' &&
+    alphaComparison.state === 'mismatch' &&
+    Boolean(alphaComparison.witness);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -705,14 +746,11 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                 }
                 right={
                   <div className="space-y-5">
-                    <div className="border-y border-gray-200 py-5">
-                      <p className={APPENDIX_KICKER_CLASS}>Formal takeaway</p>
-                      <p className={`mt-4 ${APPENDIX_FORMAL_PROSE_CLASS}`}>
-                        <InlineMathText>
-                          {`A row move $${notationLatex('sigma_row_move')} \\in ${notationLatex('g_wreath')}$ is admissible when the column fingerprints of $M_{\\sigma}$ determine a bijection back to the columns of $${notationLatex('m_incidence')}$. That bijection induces the label permutation $\\pi_{\\sigma}$.`}
-                        </InlineMathText>
-                      </p>
-                    </div>
+                    <p className={APPENDIX_FORMAL_PROSE_CLASS}>
+                      <InlineMathText>
+                        {`A row move $${notationLatex('sigma_row_move')} \\in ${notationLatex('g_wreath')}$ is admissible when the column fingerprints of $M_{\\sigma}$ determine a bijection back to the columns of $${notationLatex('m_incidence')}$. That bijection induces the label permutation $\\pi_{\\sigma}$.`}
+                      </InlineMathText>
+                    </p>
 
                     <p className={APPENDIX_PROSE_CLASS}>
                       <InlineMathText>
@@ -1008,53 +1046,106 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
 
                   {alphaComparison.state === 'mismatch' ? (
                     <>
-                      <div className="grid gap-3 sm:grid-cols-2">
-                        <div className="rounded-md border border-amber-200 bg-amber-50/80 px-4 py-3">
-                          <p className={APPENDIX_KICKER_CLASS}>Burnside on <Latex math="G_{\text{f}}" /></p>
-                          <p className="mt-2 text-[26px] font-semibold leading-none text-[var(--status-warning)]">
-                            {alphaComparison.exprAlpha}
-                          </p>
-                        </div>
-                        <div className="rounded-md border border-stone-200 bg-stone-50 px-4 py-3">
-                          <p className={APPENDIX_KICKER_CLASS}>true <Latex math="\alpha" /> under <Latex math="G_{\text{pt}}" /></p>
-                          <p className="mt-2 text-[26px] font-semibold leading-none text-stone-900">
-                            {alphaComparison.correctAlpha}
-                          </p>
-                        </div>
-                      </div>
-
-                      <p className={APPENDIX_APP_TEXT_CLASS}>
+                      <p className={APPENDIX_PROSE_CLASS}>
                         <InlineMathText>
-                          {`Burnside on $G_{\\text{f}}$ would claim fewer accumulation bins than the true $\\alpha$; here is one same formal orbit that causes the mistake.`}
+                          {`If one naively applies Burnside to $G_{\\text{f}}$, one gets $\\alpha = ${alphaComparison.exprAlpha}$. The true count under $G_{\\text{pt}}$ is $\\alpha = ${alphaComparison.correctAlpha}$. The mismatch comes from terms that are only formally related, not genuinely equal.`}
                         </InlineMathText>
                       </p>
 
                       {alphaComparison.witness ? (
-                        <div className="rounded-md border border-amber-200 bg-amber-50/80 px-5 py-4">
-                          <p className={APPENDIX_KICKER_CLASS}>A bad formal orbit</p>
-                          <p className={`mt-2 ${APPENDIX_APP_TEXT_CLASS.replace('text-gray-700', 'text-[var(--status-warning)]')}`}>
-                            These two full assignments lie in the same formal orbit and hit the same output bin, but they produce different summands:
-                          </p>
-                          <div className="mt-3 space-y-3 font-mono text-[12px] leading-6 text-stone-900">
-                            <div>
-                              <span className="font-semibold text-[var(--status-warning)]">{formatWitnessTuple(alphaComparison.witness.tupleA)}</span>
-                              <span className="mx-2 text-stone-400">→</span>
-                              <span>{alphaComparison.witness.summandA}</span>
+                        showBilinearFormalOrbitExample ? (
+                          <div className="space-y-4 border-y border-gray-200 py-5">
+                            <p className="text-[15px] font-semibold leading-7 text-gray-900">
+                              Worked example — bilinear trace
+                            </p>
+                            <p className={APPENDIX_PROSE_CLASS}>
+                              <InlineMathText>
+                                {`Let $A = \\begin{pmatrix}1 & 2 \\\\ 3 & 4\\end{pmatrix}$. Then the selected einsum expands to:`}
+                              </InlineMathText>
+                            </p>
+                            {expandedEinsumEquation ? (
+                              <div className="pl-0 sm:pl-4">
+                                <div className={APPENDIX_PROSE_CLASS}>
+                                  <Latex math={expandedEinsumEquation} />
+                                </div>
+                              </div>
+                            ) : null}
+                            <p className={APPENDIX_PROSE_CLASS}>
+                              <InlineMathText>
+                                {`Now set $i = 0$ and $j = 1$. Then:`}
+                              </InlineMathText>
+                            </p>
+                            <div className="pl-0 sm:pl-4">
+                              <div className={APPENDIX_PROSE_CLASS}>
+                                <Latex math={'R[0,1] = \\sum_{k,l} A[0,k]A[1,l]'} />
+                              </div>
                             </div>
-                            <div>
-                              <span className="font-semibold text-[var(--status-warning)]">{formatWitnessTuple(alphaComparison.witness.tupleB)}</span>
-                              <span className="mx-2 text-stone-400">→</span>
-                              <span>{alphaComparison.witness.summandB}</span>
-                            </div>
+                            <p className={APPENDIX_PROSE_CLASS}>
+                              <InlineMathText>
+                                {`Swapping the two summed labels $k$ and $l$ sends $(0,1)$ to $(1,0)$, so $G_{\\text{f}}$ places these two terms in the same formal orbit:`}
+                              </InlineMathText>
+                            </p>
+                            <WorkedExampleEquationLedger>
+                              <WorkedExampleEquation
+                                assignment={
+                                  <>
+                                    If <Latex math="k = 0" /> and <Latex math="l = 1" />, the summand is
+                                  </>
+                                }
+                                numeric={
+                                  <>
+                                    A[0,0] · A[1,1] = 1 · 4 = <strong>4</strong>
+                                  </>
+                                }
+                              />
+                              <WorkedExampleEquation
+                                assignment={
+                                  <>
+                                    If <Latex math="k = 1" /> and <Latex math="l = 0" />, the summand is
+                                  </>
+                                }
+                                numeric={
+                                  <>
+                                    A[0,1] · A[1,0] = 2 · 3 = <strong>6</strong>
+                                  </>
+                                }
+                              />
+                            </WorkedExampleEquationLedger>
+                            <WorkedExampleNote>
+                              <InlineMathText>
+                                {`Both terms contribute to the same output entry $R[0,1]$, but $4 \\neq 6$. So $R[0,1]$ must still accumulate both contributions separately. A Burnside count on $G_{\\text{f}}$ misses that distinction.`}
+                              </InlineMathText>
+                            </WorkedExampleNote>
                           </div>
-                          <p className={`mt-3 ${APPENDIX_APP_TEXT_CLASS.replace('text-gray-700', 'text-[var(--status-warning)]')}`}>
-                            Same output bin:{' '}
-                            <span className="font-mono font-semibold text-stone-900">
-                              {formatWitnessTuple(alphaComparison.witness.outputA)}
-                            </span>
-                            {' '}— so a formal-orbit count would collapse them together even though the tuple-level summands differ.
-                          </p>
-                        </div>
+                        ) : (
+                          <div className="space-y-4 border-y border-gray-200 py-5">
+                            <p className="text-[15px] font-semibold leading-7 text-gray-900">
+                              Worked example — a bad formal orbit
+                            </p>
+                            <p className={APPENDIX_PROSE_CLASS}>
+                              These two full assignments lie in the same formal orbit and contribute to the same output entry, but they produce different symbolic summands:
+                            </p>
+                            <div className="space-y-3 font-mono text-[12px] leading-6 text-[var(--gray-900)]">
+                              <div>
+                                <span className="font-semibold text-[var(--status-warning)]">{formatWitnessTuple(alphaComparison.witness.tupleA)}</span>
+                                <span className="mx-2 text-[var(--gray-400)]">→</span>
+                                <span>{alphaComparison.witness.summandA}</span>
+                              </div>
+                              <div>
+                                <span className="font-semibold text-[var(--status-warning)]">{formatWitnessTuple(alphaComparison.witness.tupleB)}</span>
+                                <span className="mx-2 text-[var(--gray-400)]">→</span>
+                                <span>{alphaComparison.witness.summandB}</span>
+                              </div>
+                            </div>
+                            <p className={APPENDIX_APP_TEXT_CLASS}>
+                              Same output entry:{' '}
+                              <span className="font-mono font-semibold text-[var(--gray-900)]">
+                                {formatWitnessTuple(alphaComparison.witness.outputA)}
+                              </span>
+                              {' '}— so that output entry still needs both contributions even though the formal symmetry relates them.
+                            </p>
+                          </div>
+                        )
                       ) : null}
 
                       <p className={APPENDIX_PROSE_CLASS}>
@@ -1067,35 +1158,20 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     <div className="rounded-md border border-gray-200 bg-gray-50 px-5 py-4">
                       <div className="space-y-3">
                         {alphaComparison.state === 'coincident' ? (
-                          <p className={APPENDIX_APP_TEXT_CLASS}>
+                          <p className={APPENDIX_PROSE_CLASS}>
                             <InlineMathText>
-                              {`For this einsum $G_{\\text{f}}$ is conceptually larger, but at the current $n$ it happens to produce the same numeric $\\alpha$.`}
+                              {alphaComparison.exprAlpha == null
+                                ? `For this einsum $G_{\\text{f}}$ is conceptually larger, but at the current $n$ it happens to produce the same numeric $\\alpha$.`
+                                : `For this einsum $G_{\\text{f}}$ is conceptually larger, but at the current $n$ both counts happen to agree: $\\alpha = ${alphaComparison.exprAlpha}$.`}
                             </InlineMathText>
                           </p>
                         ) : (
-                          <p className={APPENDIX_APP_TEXT_CLASS}>
+                          <p className={APPENDIX_PROSE_CLASS}>
                             <InlineMathText>
                               {`For this einsum $G_{\\text{f}}$ and $G_{\\text{pt}}$ do not produce a different accumulation count here.`}
                             </InlineMathText>
                           </p>
                         )}
-
-                        {alphaComparison.exprAlpha !== null ? (
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            <div className="rounded-md border border-stone-200 bg-white px-4 py-3">
-                              <p className={APPENDIX_KICKER_CLASS}>Burnside on <Latex math="G_{\text{f}}" /></p>
-                              <p className="mt-2 text-[22px] font-semibold leading-none text-stone-900">
-                                {alphaComparison.exprAlpha}
-                              </p>
-                            </div>
-                            <div className="rounded-md border border-stone-200 bg-white px-4 py-3">
-                              <p className={APPENDIX_KICKER_CLASS}>true <Latex math="\alpha" /> under <Latex math="G_{\text{pt}}" /></p>
-                              <p className="mt-2 text-[22px] font-semibold leading-none text-stone-900">
-                                {alphaComparison.correctAlpha}
-                              </p>
-                            </div>
-                          </div>
-                        ) : null}
 
                         {onSelectPreset && BURNSIDE_GAP_PRESETS.length ? (
                           <div className="border-t border-gray-200 pt-3">
