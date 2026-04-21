@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { EXAMPLES } from './components/symmetry-aware-einsum-contractions/data/examples.js';
 import { analyzeExample } from './components/symmetry-aware-einsum-contractions/engine/pipeline.js';
+import { EXPLORER_THEME_RECOMMENDED_ID } from './components/symmetry-aware-einsum-contractions/lib/explorerTheme.js';
 
 test('Acts 2-4 are sequenced around the inline savings narrative', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
@@ -226,12 +227,13 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.doesNotMatch(totalCostSource, /Seven paths through Section 5/);
 });
 
-test('app owns the active explorer theme and passes it into TotalCostView while exposing the theme dock', () => {
+test('app owns the active explorer theme, defaults to editorial-noir, and toggles the dock with Ctrl+Shift+E', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
   const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
   const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
   const notationSystemSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/lib/notationSystem.js', import.meta.url), 'utf8');
 
+  assert.equal(EXPLORER_THEME_RECOMMENDED_ID, 'editorial-noir');
   assert.match(appSource, /EXPLORER_THEME_RECOMMENDED_ID/);
   assert.match(appSource, /getExplorerThemePreset/);
   assert.match(appSource, /getActiveExplorerThemeId/);
