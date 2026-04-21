@@ -315,15 +315,38 @@ export default function SymmetryAwareEinsumContractionsApp() {
               lineHeight: 1.6,
             }}
           >
-            Given a tensor contraction written in einsum notation, when is the
-            computation invariant under a group of operand permutations — and
-            how much work can we save by exploiting it? Walk through the
-            algorithm in five sections; the visualizations update live.
+            Given a tensor contraction written in einsum notation, this explorer constructs
+            candidate relabelings, accepts the lifted relabelings used by the cost model, and
+            then counts the product orbits and output-bin updates required by the resulting
+            symmetry-aware direct computation. After analysis, the visualizations update as
+            the contraction, declared symmetries, and label sizes change.
           </p>
         </header>
 
         <div className="mx-auto w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
           <AlgorithmAtAGlance example={previewExample ?? example} />
+        </div>
+
+        <div className="mx-auto mb-8 mt-[-0.25rem] w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
+          <div className="border-y border-stone-200 bg-white px-5 py-4">
+            <div className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-coral">
+              Scope of the calculation
+            </div>
+            <p
+              className="mt-2 font-serif text-[15px] leading-7 text-stone-700"
+              style={{ textAlign: 'justify' }}
+            >
+              <InlineMathText>
+                {`This page counts the direct indexed computation under the detected pointwise permutation symmetries used by the model. A detected symmetry may move free labels; when it does, it can reduce the number of distinct products while still requiring separate updates to each output component touched by the orbit. For that reason the cost model uses orbit projections, not a naive division by the group order.`}
+              </InlineMathText>
+            </p>
+            <p className="mt-2 text-[12.5px] leading-6 text-stone-600">
+              Assumptions: scalar commutative exact arithmetic; declared equality
+              symmetries only; shared sizes along permuted label orbits; operand identity
+              determined by the selected expression. Contraction-path optimizations are outside this
+              calculation.
+            </p>
+          </div>
         </div>
 
         <div className="mx-auto mt-8 w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
@@ -392,6 +415,15 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       </div>
                     </div>
                     <div className="mt-4">
+                      <NarrativeCallout label="Candidate, not proof" tone="preamble">
+                        <p className="text-[14px] leading-7 text-foreground" style={{ textAlign: 'justify' }}>
+                          <InlineMathText>
+                            {`The graph and incidence matrix describe which relabelings are structurally plausible. A relabeling becomes a detected symmetry only in the next section, after it is lifted through operand identity and declared slot symmetries and accepted by the $${notationLatex('sigma_row_move')}$-loop used by this model.`}
+                          </InlineMathText>
+                        </p>
+                      </NarrativeCallout>
+                    </div>
+                    <div className="mt-4">
                       <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[1].produces}</NarrativeCallout>
                     </div>
                   </ExplorerSectionCard>
@@ -444,6 +476,15 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           selectedPairIndex={selectedSigmaPairIndex}
                         />
                       </div>
+                    </div>
+                    <div className="mt-4">
+                      <NarrativeCallout label="What the model accepts" tone="preamble">
+                        <p className="text-[14px] leading-7 text-foreground" style={{ textAlign: 'justify' }}>
+                          <InlineMathText>
+                            {`The accepted objects are lifted pairs: a row move $${notationLatex('sigma_row_move')}$ together with a label relabeling $${notationLatex('pi_relabeling')}$. The generated group is built from those accepted relabelings. The expression-level formal group discussed in the appendix is deliberately kept separate from this pointwise group and is not used for multiplication compression.`}
+                          </InlineMathText>
+                        </p>
+                      </NarrativeCallout>
                     </div>
                     <div className="mt-4">
                       <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[2].produces}</NarrativeCallout>
@@ -510,8 +551,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         Is the detected group the full symmetry of this expression?
                       </span>
                       <span className="mt-1.5 block text-[12.5px] leading-6 text-stone-700">
-                        No — the approach described above detects the symmetry of the indexed computation, but the fully summed expression can admit additional symmetry. An appendix on the distinction, on{' '}
-                        <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_pointwise_restricted_v')} \\times ${notationLatex('s_w_summed')}`} />, and on the per-preset output-tensor storage savings it still leaves on the table.
+                        No — the main calculation uses the pointwise group of the indexed summand. The
+                        fully summed expression can admit a larger formal symmetry group. The appendix
+                        explains that distinction, the relation{' '}
+                        <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_pointwise_restricted_v')} \\times ${notationLatex('s_w_summed')}`} />,
+                        and why the larger formal group is not fed back into multiplication-orbit
+                        compression.
                       </span>
                     </button>
                   </ExplorerSectionCard>

@@ -46,13 +46,15 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
   assert.match(src, /view\.exactEinsumText/);
   assert.match(src, /Latex display math=\{view\.expandedEquationLatex\}/);
   assert.match(src, /mt-2\.5 flex justify-center text-\[19px\]/);
-  assert.match(src, /notationColor\('v_free'\)/);
+  assert.match(src, /explorerThemeColor\(explorerThemeId, 'hero'\)/);
+  assert.match(src, /explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
   assert.match(src, /operandCount/);
   assert.match(src, /labelCount/);
   assert.match(src, /The summed labels/);
   assert.match(src, /survive as the axes of \$R\$/);
   assert.match(src, /Declared symmetries:/);
   assert.match(src, /Dense cost scales as \$\$\{DENSE_SCALING\}\$/);
+  assert.doesNotMatch(src, /notationColor\('/);
   assert.doesNotMatch(src, /What this fixes/);
   assert.doesNotMatch(src, /CHAIN_FORMULA/);
   assert.doesNotMatch(src, /Exact einsum/);
@@ -70,12 +72,14 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
 
 test('Einsum column transitions to symmetry at the bottom', () => {
   const src = readComponent('AlgorithmAtAGlance.jsx');
+  assert.match(src, /import NarrativeCallout/);
   assert.match(src, /Where symmetry enters/);
-  // The transition introduces G, orbits, and ties back to μ and α.
-  assert.match(src, /group G/i);
-  assert.match(src, /orbit/i);
-  assert.match(src, /\\mu/);
-  assert.match(src, /\\alpha/);
+  assert.match(src, /tone="preamble"/);
+  assert.match(src, /title="Not every product is distinct"/);
+  assert.match(src, /detected pointwise group/i);
+  assert.match(src, /orbit of full label\s+assignments/i);
+  assert.match(src, /not reduced by simply dividing by/);
+  assert.match(src, /Burnside formulas or exact orbit enumeration/);
 });
 
 test('μ / α definitions live in the code step headers — no separate callouts in the preamble', () => {
@@ -85,7 +89,7 @@ test('μ / α definitions live in the code step headers — no separate callouts
   assert.match(src, /\\alpha/);
   // But the old standalone "Two kinds of work" NarrativeCallout pair must be gone.
   assert.doesNotMatch(src, /Two kinds of work/);
-  assert.doesNotMatch(src, /NarrativeCallout/);
+  assert.match(src, /NarrativeCallout/);
 });
 
 test('MentalFrameworkCode renders a short, natural-reading pseudocode (not the 20-line teaching model)', () => {

@@ -155,7 +155,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
       <div className="sigma-summary">
         <div className="sigma-stat">
           <span className="stat-num">{results.length}</span>
-          <span className="stat-label">total <Latex math={String.raw`\sigma`} />&apos;s</span>
+          <span className="stat-label">total <Latex math={String.raw`\sigma`} inheritColor />&apos;s</span>
         </div>
         <div className="sigma-stat">
           <span className="stat-num">{results.filter(r => r.skipped).length}</span>
@@ -163,7 +163,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
         <div className="sigma-stat accepted">
           <span className="stat-num">{allPairs.filter(r => r.isValid).length}</span>
-          <span className="stat-label">valid <Latex math={String.raw`\pi`} /> found</span>
+          <span className="stat-label">valid <Latex math={String.raw`\pi`} inheritColor /> found</span>
         </div>
         <div className="sigma-stat rejected">
           <span className="stat-num">{allPairs.filter(r => !r.isValid).length}</span>
@@ -182,8 +182,8 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 <button key={origIdx}
                   className="pair-chip pair-valid"
                   onClick={() => handleSelectPair(origIdx)}>
-                  <span className="pair-sigma"><Latex math={String.raw`\sigma`} /> = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
-                  <span className="pair-pi"><Latex math={String.raw`\pi`} /> = {fmtPi(r.pi)}</span>
+                  <span className="pair-sigma"><Latex math={String.raw`\sigma`} inheritColor /> = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
+                  <span className="pair-pi"><Latex math={String.raw`\pi`} inheritColor /> = {fmtPi(r.pi)}</span>
                   <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
                     {kindLabel(r.piKind)}
                   </span>
@@ -202,14 +202,14 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
               className="valid-toggle"
               onClick={() => setShowMoreValid(true)}
             >
-              ▸ {remainingValidPairs.length} more (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pair{remainingValidPairs.length !== 1 ? 's' : ''}
+              ▸ {remainingValidPairs.length} more (<Latex math={String.raw`\sigma`} inheritColor />, <Latex math={String.raw`\pi`} inheritColor />) pair{remainingValidPairs.length !== 1 ? 's' : ''}
             </button>
           )}
           {rejectedPairs.length > 0 && (
             <button
               className="rejected-toggle"
               onClick={() => setShowRejected(true)}>
-              ▸ {rejectedPairs.length} rejected <Latex math={String.raw`\sigma`} />{rejectedPairs.length !== 1 ? "'s" : ''}
+              ▸ {rejectedPairs.length} rejected <Latex math={String.raw`\sigma`} inheritColor />{rejectedPairs.length !== 1 ? "'s" : ''}
             </button>
           )}
         </div>
@@ -226,7 +226,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 <div key={i} className="stage-step-wrapper">
                   {i > 0 && (
                     <div className={`stage-connector ${stage >= i ? 'stage-connector-done' : ''} ${!reachable ? 'stage-connector-disabled' : ''}`}>
-                      <span className="stage-connector-label">{i === 1 ? <>apply <Latex math={String.raw`\sigma`} /></> : <>apply <Latex math={String.raw`\pi`} /></>}</span>
+                      <span className="stage-connector-label">{i === 1 ? <>apply <Latex math={String.raw`\sigma`} inheritColor /></> : <>apply <Latex math={String.raw`\pi`} inheritColor /></>}</span>
                     </div>
                   )}
                   <button
@@ -277,7 +277,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
               )}
               {stage >= 1 && !selected.isValid && (
                 <div className="recovery-badge-below recovery-fail">
-                  <Latex math={String.raw`\pi`} /> not found — {selected.reason}
+                  <Latex math={String.raw`\pi`} inheritColor /> not found — {selected.reason}
                 </div>
               )}
             </div>
@@ -428,10 +428,10 @@ function RejectedModal({
                 <button key={origIdx} className="rejected-list-item"
                   onClick={() => onSelectDetail(origIdx)}>
                   <span className="rejected-list-sigma">
-                    <Latex math={String.raw`\sigma`} /> = {fmtSigma(r.sigmaRowPerm, uLabels)}
+                    <Latex math={String.raw`\sigma`} inheritColor /> = {fmtSigma(r.sigmaRowPerm, uLabels)}
                   </span>
                   <span className="rejected-list-reason">
-                    {r.reason || <>no valid <Latex math={String.raw`\pi`} /></>}
+                    {r.reason || <>no valid <Latex math={String.raw`\pi`} inheritColor /></>}
                   </span>
                   <span className="rejected-list-arrow">→</span>
                 </button>
@@ -484,10 +484,10 @@ function ValidPairsModal({
             return (
               <button key={origIdx} className="rejected-list-item" onClick={() => onSelectPair(origIdx)}>
                 <span className="rejected-list-sigma">
-                  <Latex math={String.raw`\sigma`} /> = {fmtSigma(r.sigmaRowPerm, uLabels)}
+                  <Latex math={String.raw`\sigma`} inheritColor /> = {fmtSigma(r.sigmaRowPerm, uLabels)}
                 </span>
                 <span className="pair-pi">
-                  <Latex math={String.raw`\pi`} /> = {fmtPi(r.pi)}
+                  <Latex math={String.raw`\pi`} inheritColor /> = {fmtPi(r.pi)}
                 </span>
                 <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
                   {kindLabel(r.piKind)}

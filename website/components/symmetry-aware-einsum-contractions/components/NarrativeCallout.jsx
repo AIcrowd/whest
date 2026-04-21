@@ -1,12 +1,15 @@
 import InlineMathText from './InlineMathText.jsx';
 
-// NarrativeCallout — three tones, three distinct patterns from the
+// NarrativeCallout — four tones, four distinct patterns from the
 // design-system reference (preview/components.html + Whest Einsum
 // Explorer.html). The previous implementation wrapped all three in
 // the same shadcn Card shell (ExplorerSectionCard: ring-1 + border +
 // bg + CardHeader), which made short editorial observations read as
 // UI panels rather than as part of the essay.
 //
+//   preamble   → matches the "Where symmetry enters" editorial note
+//                in the top preamble: rounded card, coral eyebrow,
+//                optional title, essay-body copy
 //   muted      → `.callout` default — warm editorial-accent framed/tinted box
 //   algorithm  → `.callout--accent` — coral-light callout box
 //                (the Approach side of an Interpretation/Approach pair,
@@ -20,7 +23,7 @@ import InlineMathText from './InlineMathText.jsx';
 // the observations read as part of the surrounding essay, not as
 // dense-UI captions inside a panel.
 
-export default function NarrativeCallout({ label, tone = 'muted', children }) {
+export default function NarrativeCallout({ label, title = null, tone = 'muted', children }) {
   if (tone === 'accent') {
     // `.produces` capstone — dashed top divider, inline kicker on the
     // left, paragraph wrapping to the right. On wider screens it becomes
@@ -38,6 +41,26 @@ export default function NarrativeCallout({ label, tone = 'muted', children }) {
         <p className="m-0 font-serif text-[17px] leading-[1.45] text-gray-700">
           <InlineMathText>{children}</InlineMathText>
         </p>
+      </div>
+    );
+  }
+
+  if (tone === 'preamble') {
+    return (
+      <div className="rounded-2xl border border-primary/20 bg-accent/40 px-5 py-5">
+        {label ? (
+          <div className="font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">
+            {label}
+          </div>
+        ) : null}
+        {title ? (
+          <h4 className="mt-1 font-heading text-base font-semibold text-foreground">
+            {title}
+          </h4>
+        ) : null}
+        <div className="mt-2 space-y-3">
+          {children}
+        </div>
       </div>
     );
   }

@@ -27,6 +27,10 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
   assert.equal(countMatches(appSource, /label="Interpretation"/g), 0);
   assert.equal(countMatches(appSource, /label="Approach"/g), 0);
   assert.equal(countMatches(appSource, /label="What this produces"/g), 4);
+  assert.match(appSource, /Scope of the calculation/);
+  assert.match(appSource, /Candidate, not proof/);
+  assert.match(appSource, /What the model accepts/);
+  assert.equal(countMatches(appSource, /tone="preamble"/g), 2);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.why/);
   assert.doesNotMatch(appSource, /onOpenModalSection=\{/);
 });

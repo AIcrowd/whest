@@ -116,8 +116,8 @@ function ComponentSummaryTable({
       >
         <span>Component</span>
         <span>Method</span>
-        <span>Orbits <NotationSymbol id="m_component" mode="math" /></span>
-        <span>Accumulations <NotationSymbol id="alpha_component" mode="math" /></span>
+        <span>Product orbits <NotationSymbol id="m_component" mode="math" /></span>
+        <span>Output updates <NotationSymbol id="alpha_component" mode="math" /></span>
         <span>Savings vs dense</span>
       </div>
 
@@ -231,7 +231,7 @@ function ComponentSummaryTable({
                     </code>
                     <span
                       className="font-mono text-[11px] text-muted-foreground/60"
-                      title={`Dense baseline: one write per tuple (${denseCell.toLocaleString()} total assignments before symmetry).`}
+                      title={`Dense baseline: one update per full assignment before quotienting by the pointwise group (${denseCell.toLocaleString()} total assignments).`}
                     >
                       / {denseCell.toLocaleString()}
                     </span>
@@ -279,7 +279,7 @@ function ComponentSummaryTable({
                             ? explorerThemeColor(explorerThemeId, 'quantity')
                             : explorerThemeColor(explorerThemeId, 'freeSide'),
                         }}
-                        title={`Per-component combined savings: 1 − (Mₐ + αₐ) / (2 · n^${labelCount}) = 1 − (${(M_a ?? 0).toLocaleString()} + ${(actualAcc ?? 0).toLocaleString()}) / ${(2 * denseCell).toLocaleString()}.`}
+                        title={`Per-component direct savings: multiplication uses ${M_a?.toLocaleString?.() ?? '—'} product orbits and accumulation uses ${actualAcc?.toLocaleString?.() ?? '—'} output-projection updates, compared with ${denseCell.toLocaleString()} dense assignments.`}
                       >
                         {totalSavingsPct}%
                       </span>
@@ -406,8 +406,11 @@ export default function ComponentCostView({
               Interaction Graph
             </ExplorerSubsectionHeader>
             <p className="explorer-support-prose mt-2">
-              Nodes are <strong className="font-semibold text-foreground">labels</strong>; an edge marks labels that a generator of&nbsp;
-              <Latex math="G" />&nbsp;moves together. Disjoint components factor the cost into independent sub-problems — each one lands on a case in the decision tree below.
+              Nodes are <strong className="font-semibold text-foreground">labels</strong>;
+              an edge marks labels that a generator of&nbsp;<Latex math="G" />&nbsp;moves
+              together. Disjoint components factor the assignment space into independent
+              sub-problems. For each component, the cost model counts representative product
+              orbits and then counts how many visible output projections those orbits touch.
             </p>
             <InteractionGraphMetricStrip
               labelCount={allLabels.length}

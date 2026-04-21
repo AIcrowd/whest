@@ -337,7 +337,7 @@ test('section five formulas route visible noir-math symbols through distinct not
   assert.match(totalCostSource, /tc\(SYM\.orbitObject, notationLatex\('orbit_o'\)\)/);
   assert.match(totalCostSource, /tc\(SYM\.ambient, notationLatex\('x_space'\)\)/);
   assert.match(totalCostSource, /tc\(SYM\.localGroup, notationLatex\('g_component'\)\)/);
-  assert.match(totalCostSource, /tc\(SYM\.projection, notationLatex\('pi_relabeling'\)\)/);
+  assert.match(totalCostSource, /tc\(SYM\.projection, notationLatex\('projection_pi_v_free'\)\)/);
   assert.match(totalCostSource, /tc\(SYM\.vlabel, notationLatex\('v_free'\)\)/);
 
   resetActiveExplorerTheme();

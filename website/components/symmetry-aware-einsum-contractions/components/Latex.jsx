@@ -23,12 +23,19 @@ const MATH_WRAPPER_STYLE = { textTransform: 'none' };
  * @param {boolean} display - true for display mode (centered block), false for inline
  * @param {boolean} colorize - true to apply shared notation colors, false for neutral math
  * @param {object|string|null} themeOverride - optional explorer theme override for notation colors
+ * @param {boolean} inheritColor - true to inherit surrounding text color for compact chrome
  */
-export default function Latex({ math, display = false, colorize = true, themeOverride = null }) {
+export default function Latex({
+  math,
+  display = false,
+  colorize = true,
+  themeOverride = null,
+  inheritColor = false,
+}) {
   const activeExplorerThemeId = getActiveExplorerThemeId();
   const html = useMemo(() => {
     try {
-      return katex.renderToString(colorize ? colorizeNotationLatex(math, themeOverride) : math, {
+      return katex.renderToString(colorize && !inheritColor ? colorizeNotationLatex(math, themeOverride) : math, {
         displayMode: display,
         throwOnError: false,
         trust: true,
@@ -36,9 +43,13 @@ export default function Latex({ math, display = false, colorize = true, themeOve
     } catch {
       return math;
     }
-  }, [math, display, colorize, activeExplorerThemeId, themeOverride]);
+  }, [math, display, colorize, inheritColor, activeExplorerThemeId, themeOverride]);
+
+  const wrapperStyle = inheritColor
+    ? { ...MATH_WRAPPER_STYLE, color: 'inherit' }
+    : MATH_WRAPPER_STYLE;
 
   return display
-    ? <div style={MATH_WRAPPER_STYLE} dangerouslySetInnerHTML={{ __html: html }} />
-    : <span className="mx-[0.08em]" style={MATH_WRAPPER_STYLE} dangerouslySetInnerHTML={{ __html: html }} />;
+    ? <div style={wrapperStyle} dangerouslySetInnerHTML={{ __html: html }} />
+    : <span className="mx-[0.08em]" style={wrapperStyle} dangerouslySetInnerHTML={{ __html: html }} />;
 }

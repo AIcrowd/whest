@@ -23,9 +23,9 @@ test('Acts 2-4 are sequenced around the inline savings narrative', () => {
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[[1-4]\]\.bridge/);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.why/);
   // Interaction Graph card caption must name the math (edge = co-permuted)
-  // AND the consequence (components factor the cost). See fizzy-nibbling-turtle plan.
-  assert.match(componentCostSource, /moves together/);
-  assert.match(componentCostSource, /factor the cost into independent sub-problems/);
+  // AND the consequence (components factor the assignment space/product orbits).
+  assert.match(componentCostSource, /moves\s+together/);
+  assert.match(componentCostSource, /factor the assignment space into independent[\s\S]*sub-problems/);
   assert.doesNotMatch(totalCostSource, /payoff of the previous acts/);
 });
 
@@ -114,8 +114,8 @@ test('ComponentCostView renders the decision ladder and component table', () => 
   assert.match(componentCostSource, /accumulationCount\(comp\)/);
   assert.match(componentCostSource, /NotationSymbol/);
   assert.match(componentCostSource, /<span>Component<\/span>/);
-  assert.match(componentCostSource, /Orbits\s*<NotationSymbol id="m_component" mode="math" \/>/);
-  assert.match(componentCostSource, /Accumulations\s*<NotationSymbol id="alpha_component" mode="math" \/>/);
+  assert.match(componentCostSource, /Product orbits\s*<NotationSymbol id="m_component" mode="math" \/>/);
+  assert.match(componentCostSource, /Output updates\s*<NotationSymbol id="alpha_component" mode="math" \/>/);
   assert.match(componentCostSource, /className="space-y-2\.5"/);
   assert.match(componentCostSource, /<span className="text-\[10px\] font-semibold uppercase tracking-\[0\.16em\] text-muted-foreground">\s*Case/);
   assert.match(componentCostSource, /<span className="block text-\[10px\] font-semibold uppercase tracking-\[0\.16em\] text-muted-foreground">\s*Symmetry/);
@@ -126,6 +126,10 @@ test('ComponentCostView renders the decision ladder and component table', () => 
   assert.doesNotMatch(componentCostSource, /Global column header — only labels the 5 middle-row columns\.\s*\*\/[\s\S]*<span>Labels<\/span>/);
   assert.match(componentCostSource, /function denseTupleCount\(comp, dimensionN\)/);
   assert.match(componentCostSource, /const denseCell = denseTupleCount\(comp, dimensionN\);/);
+  assert.match(componentCostSource, /representative product[\s\S]*orbits/);
+  assert.match(componentCostSource, /visible output[\s\S]*projections/);
+  assert.match(componentCostSource, /Dense baseline: one update per full assignment before quotienting by the pointwise group/);
+  assert.match(componentCostSource, /Per-component direct savings: multiplication uses/);
   // The per-component table must be able to horizontally scroll on narrow
   // viewports instead of silently overflowing the page, even after the
   // editorial shell was flattened.
@@ -149,12 +153,13 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   // Helpers the explainer block depends on.
   assert.match(totalCostSource, /import GlossaryProse from '\.\/GlossaryProse\.jsx'/);
   assert.match(totalCostSource, /import Latex from '\.\/Latex\.jsx'/);
-  assert.match(totalCostSource, /The earlier sections identified the symmetry group, decomposed its action into components, and computed the local quantities that govern work\./);
-  assert.match(totalCostSource, /We do that by combining the multiplication cost and the accumulation cost/);
+  assert.match(totalCostSource, /The preceding sections have produced a detected pointwise group and decomposed its label action into independent components\./);
+  assert.match(totalCostSource, /not to divide the dense computation by the group order/);
   assert.match(totalCostSource, /SECTION_FIVE_TOTAL_FORMULA = String\.raw`\\mathrm\{Total\\ Cost\} = \\mu \+ \\alpha`/);
   assert.match(totalCostSource, /SECTION_FIVE_MU_FORMULA = String\.raw`\\mu = \(k-1\)\\prod_a M_a`/);
   assert.match(totalCostSource, /SECTION_FIVE_ALPHA_FORMULA = String\.raw`\\alpha = \\prod_a \\alpha_a`/);
-  assert.match(totalCostSource, /The full equation below makes that assembly explicit, and the summary that follows shows how the resulting symmetry-aware total compares with the naive dense baseline\./);
+  assert.match(totalCostSource, /representative products and the output updates induced by those representatives/);
+  assert.match(totalCostSource, /The expanded equation below shows how M_a is computed by Burnside when a closed form applies/);
   assert.match(totalCostSource, /<ComponentRecap components=\{components\} \/>/);
   assert.match(totalCostSource, /SectionFiveIntroBlock/);
 
@@ -177,6 +182,7 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /Per-component accumulation equation/);
   assert.match(totalCostSource, /PIECEWISE_SCOPE_NOTE/);
   assert.match(totalCostSource, /defines only the per-component accumulation term/);
+  assert.match(totalCostSource, /output projections of product orbits/);
   assert.match(totalCostSource, /\\prod_\{a\}\s*\\alpha_a/);
   assert.doesNotMatch(totalCostSource, /\\textcolor\{\$\{SYM\.element\}\}\{\\sum_\{g \\in \$\{notationLatex\('g_component'\)\}\}\}/);
   assert.doesNotMatch(totalCostSource, /\\textcolor\{\$\{SYM\.cycle\}\}\{\\prod_c \$\{notationLatex\('n_cycle'\)\}\}/);
@@ -188,19 +194,23 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   // more rows. One-off symbols live in leaf-badge tooltips.
   assert.match(totalCostSource, /AGGREGATION_LEGEND/);
   assert.match(totalCostSource, /number of operand tensors/);
-  assert.match(totalCostSource, /symmetry group acting on component/);
+  assert.match(totalCostSource, /detected pointwise symmetry group restricted to component/);
+  assert.match(totalCostSource, /accepted by the .*sigma.*loop|accepted by the .*σ.*loop/);
   // V and W — phrases wrapped in JSX spans so each can carry its own color
   // (the V/W coloring matches the Interaction Graph legend).
   assert.match(totalCostSource, /component index/);
   assert.match(totalCostSource, /free \(output\) labels/);
   assert.match(totalCostSource, /summed \(contracted\) labels/);
-  assert.match(totalCostSource, /set of .*g_component.*-orbits in/);
+  assert.match(totalCostSource, /assignment space/);
+  assert.match(totalCostSource, /one product orbit/);
+  assert.match(totalCostSource, /projection/);
   assert.match(totalCostSource, /singleton-regime symbols/);
   assert.match(totalCostSource, /omega_orbit/);
   assert.match(totalCostSource, /orbit of the single free label/);
   assert.match(totalCostSource, /notationLatex\('c_omega_cycles'\)/);
   assert.match(totalCostSource, /cue: 'hardest case'/);
-  assert.match(totalCostSource, /accumulation cost/);
+  assert.match(totalCostSource, /accumulation\/output-update cost/);
+  assert.match(totalCostSource, /product-orbit count/);
   assert.match(totalCostSource, /<dl/);
   assert.match(totalCostSource, /<dt/);
   assert.match(totalCostSource, /<dd/);
@@ -275,6 +285,33 @@ test('Section 5 keeps the explorer on editorial-noir but overrides the cost-mode
   assert.match(regimePresentationSource, /export function getRegimePresentation\(id,\s*themeOverride = null\)/);
   assert.match(appSource, /const themeCssVars = useMemo\(\(\) => getExplorerThemeCssVariables\(theme\), \[theme\]\)/);
   assert.doesNotMatch(appSource, /editorial-noir-math/);
+});
+
+test('main page copy distinguishes candidates, accepted relabelings, and output-projection updates', () => {
+  const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
+  const narrativeSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/explorerNarrative.js', import.meta.url), 'utf8');
+  const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
+
+  assert.match(appSource, /Scope of the calculation/);
+  assert.match(appSource, /candidate relabelings, accepts the lifted relabelings used by the cost model/);
+  assert.match(appSource, /Candidate, not proof/);
+  assert.match(appSource, /What the model accepts/);
+  assert.match(appSource, /The accepted objects are lifted pairs/);
+  assert.match(appSource, /After analysis, the visualizations update/);
+  assert.match(appSource, /larger formal symmetry group/);
+  assert.match(appSource, /not fed back into multiplication-orbit[\s\S]*compression/);
+
+  assert.match(narrativeSource, /candidate filter, not a proof of symmetry/);
+  assert.match(narrativeSource, /detected pointwise group/);
+  assert.match(narrativeSource, /preserve the summand itself/);
+  assert.match(narrativeSource, /lifted witness used by this model/);
+  assert.doesNotMatch(narrativeSource, /incidence matrix reveals the symmetry group/i);
+
+  assert.match(totalCostSource, /not to divide the dense computation by the group order/);
+  assert.match(totalCostSource, /representative products and the output updates/);
+  assert.match(totalCostSource, /output projections of product orbits/);
+  assert.match(totalCostSource, /accumulation\/output-update cost/);
+  assert.match(totalCostSource, /projection_pi_v_free/);
 });
 
 test('app owns the active explorer theme, defaults to editorial-noir, and toggles the dock with Ctrl+Shift+E', () => {

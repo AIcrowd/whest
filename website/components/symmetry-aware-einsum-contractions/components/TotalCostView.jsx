@@ -15,21 +15,27 @@ import {
 } from '../lib/explorerTheme.js';
 
 // Canonical formula string — exported for tests and for readers who want the
-// raw LaTeX without the color decorations. Intentionally spells out the full
-// Burnside expansion (not just `\mu = (k-1)\prod_a M_a`) because the hero now
-// renders the Burnside sum inline, and this constant is the single source of
-// truth for "what the hero says".
+// raw LaTeX without color decorations. The multiplication side expands M_a by
+// Burnside; the accumulation side remains α_a because α_a is an
+// orbit-projection count over product orbits, not generally a simple quotient
+// of the visible labels alone.
 const AGGREGATION_FORMULA = String.raw`\text{Total Cost} \;=\; (k-1) \cdot \prod_{a} \tfrac{1}{|G_a|} \sum_{g \in G_a} \prod_{c} n_c \;+\; \prod_{a} \alpha_a`;
-const SECTION_FIVE_INTRO_PARAGRAPH = 'The earlier sections identified the symmetry group, decomposed its action into components, and computed the local quantities that govern work. This section gathers those local counts back into one runtime model for the full contraction.';
-const SECTION_FIVE_INTRO_LEAD = 'We do that by combining the multiplication cost and the accumulation cost. Writing these as $\\mu$ and $\\alpha$, the total symmetry-aware cost is';
-const SECTION_FIVE_INTRO_CLOSE = 'The full equation below makes that assembly explicit, and the summary that follows shows how the resulting symmetry-aware total compares with the naive dense baseline.';
+const SECTION_FIVE_INTRO_PARAGRAPH =
+  'The preceding sections have produced a detected pointwise group and decomposed its label action into independent components. The final step is not to divide the dense computation by the group order, but to combine two exact orbit counts: representative products and the output updates induced by those representatives.';
+
+const SECTION_FIVE_INTRO_LEAD =
+  'For each component, let M_a be the number of product orbits and let α_a be the number of output-bin updates induced by those orbits. With k operand tensors, the direct symmetry-aware cost is';
+
+const SECTION_FIVE_INTRO_CLOSE =
+  'The expanded equation below shows how M_a is computed by Burnside when a closed form applies, while α_a is selected from the shape and regime ladder. The numerical spread then compares this direct symmetry-aware count with the naive dense baseline.';
 const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total\ Cost} = \mu + \alpha`;
 const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
 const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
 const SECTION_FIVE_THEME_OVERRIDE = 'editorial-noir-math';
 const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\\x\end{matrix}}\right.`;
 const PIECEWISE_LABEL = `Per-component accumulation equation $${notationLatex('alpha_component')}$`;
-const PIECEWISE_SCOPE_NOTE = `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$; the top line remains the global total cost.`;
+const PIECEWISE_SCOPE_NOTE =
+  `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$. It counts output projections of product orbits: an orbit that touches several output bins contributes once to each such bin.`;
 
 
 // Helper: \textcolor wrapper for composing LaTeX with a role color. The
@@ -88,7 +94,7 @@ function getAggregationLegend(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
     {
       symbol: notationLatex('g_component'),
       color: SYM.localGroup,
-      definition: `symmetry group acting on component $a$; $|${tc(SYM.localGroup, notationLatex('g_component'))}|$ is its order (number of group elements averaged over).`,
+      definition: `detected pointwise symmetry group restricted to component $a$. Its elements act on full label assignments and are the relabelings accepted by the $${tc(notationColor('sigma_row_move', themeOverride), notationLatex('sigma_row_move'))}$-loop under the declared equality symmetries; $|${tc(SYM.localGroup, notationLatex('g_component'))}|$ is the order averaged over in Burnside counts.`,
     },
     {
       symbol: notationLatex('g_element'),
@@ -98,7 +104,7 @@ function getAggregationLegend(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
     {
       symbol: notationLatex('n_cycle'),
       color: SYM.cycleCount,
-      definition: `the common label-size inside cycle $${tc(SYM.cycleCount, 'c')}$ of $${tc(SYM.element, notationLatex('g_element'))}$ — forced equal by the action, since $${tc(SYM.element, notationLatex('g_element'))}$ permutes labels of equal size. The product $${productOver('c', tc(SYM.cycleCount, notationLatex('n_cycle')))}$ equals $|\\mathrm{Fix}(${tc(SYM.element, notationLatex('g_element'))})| = |${tc(SYM.ambient, notationLatex('x_space'))}^{${tc(SYM.element, notationLatex('g_element'))}}|$ — the standard Burnside fixed-point set, written here as a product of cycle sizes. Cycles of the identity degenerate to singleton labels, so $${productOver('\\ell', tc(SYM.labelCount, notationLatex('n_label')))}$ collapses to $${productOver('\\ell', tc(SYM.labelCount, notationLatex('n_label')))}$ on the trivial / all-visible rows.`,
+      definition: `the common label-size inside cycle $${tc(SYM.cycleCount, 'c')}$ of $${tc(SYM.element, notationLatex('g_element'))}$. The product $${productOver('c', tc(SYM.cycleCount, notationLatex('n_cycle')))}$ equals the fixed-assignment count $|\\mathrm{Fix}(${tc(SYM.element, notationLatex('g_element'))})|$, which is the Burnside ingredient for the product-orbit count $${notationLatex('m_component')}.`,
     },
     {
       symbol: `${tc(SYM.vlabel, notationLatex('v_free'))},\\ ${tc(SYM.wlabel, notationLatex('w_summed'))}`,
@@ -115,7 +121,7 @@ function getAggregationLegend(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
     {
       symbol: `${tc(SYM.ambient, notationLatex('x_space'))},\\ ${tc(SYM.ambient, notationLatex('orbit_space_component'))},\\ ${tc(SYM.orbitObject, notationLatex('orbit_o'))},\\ ${tc(SYM.projection, notationLatex('projection_pi_v_free'))}`,
       color: SYM.ambient,
-      definition: `assignment space $${tc(SYM.ambient, notationLatex('x_space'))} = [n]^{${tc(SYM.shapeSet, notationLatex('l_labels'))}}$; $${tc(SYM.ambient, notationLatex('orbit_space_component'))}$, the set of $${tc(SYM.localGroup, notationLatex('g_component'))}$-orbits in $${tc(SYM.ambient, notationLatex('x_space'))}$; a single orbit $${tc(SYM.orbitObject, notationLatex('orbit_o'))}$; and its projection onto the free labels $${tc(SYM.projection, notationLatex('projection_pi_v_free'))}$ — the distinct output bins that orbit touches.`,
+      definition: `assignment space $${tc(SYM.ambient, notationLatex('x_space'))}$; quotient $${tc(SYM.ambient, notationLatex('orbit_space_component'))}$ of full assignments by the pointwise component group; one product orbit $${tc(SYM.orbitObject, notationLatex('orbit_o'))}$; and the projection $${tc(SYM.projection, notationLatex('projection_pi_v_free'))}$ that records which output bins that orbit touches.`,
     },
     {
       symbol: `${tc(SYM.orbitObject, notationLatex('omega_orbit'))},\\ ${tc(SYM.omegaSize, notationLatex('n_omega'))},\\ ${tc(SYM.omegaExponent, notationLatex('c_omega_cycles'))}`,
@@ -125,7 +131,7 @@ function getAggregationLegend(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
     {
       symbol: `${tc(SYM.alpha, notationLatex('alpha_total'))},\\ ${tc(SYM.alpha, notationLatex('alpha_component'))}`,
       color: SYM.alpha,
-      definition: `accumulation cost. Per-component accumulation is $${tc(SYM.alpha, notationLatex('alpha_component'))}$ — one of the shape- and regime-specific equations above. Global total is $${tc(SYM.alpha, notationLatex('alpha_total'))} = ${productOver('a', tc(SYM.alpha, notationLatex('alpha_component')))}$.`,
+      definition: `accumulation/output-update cost. Per component, $${tc(SYM.alpha, notationLatex('alpha_component'))}$ counts one update for each output bin touched by each product orbit. Equivalently, it is the sum over product orbits of the number of distinct free-label projections they touch. Globally, independent components multiply to $${tc(SYM.alpha, notationLatex('alpha_total'))} = ${productOver('a', tc(SYM.alpha, notationLatex('alpha_component')))}$.`,
     },
   ];
 }
@@ -171,7 +177,7 @@ function getAggregationLeaves(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
     {
       id: 'bruteForceOrbit',
       layer: 'regime',
-      formula: String.raw`${sumOver(`${tc(SYM.orbitObject, notationLatex('orbit_o'))} \\in ${tc(SYM.ambient, notationLatex('x_space'))}/${tc(SYM.localGroup, notationLatex('g_component'))}`)} |${tc(SYM.projection, notationLatex('pi_relabeling'))}_{${tc(SYM.vlabel, notationLatex('v_free'))}}(${tc(SYM.orbitObject, notationLatex('orbit_o'))})|`,
+      formula: String.raw`${sumOver(`${tc(SYM.orbitObject, notationLatex('orbit_o'))} \\in ${tc(SYM.ambient, notationLatex('x_space'))}/${tc(SYM.localGroup, notationLatex('g_component'))}`)} |${tc(SYM.projection, notationLatex('projection_pi_v_free'))}_{${tc(SYM.vlabel, notationLatex('v_free'))}}(${tc(SYM.orbitObject, notationLatex('orbit_o'))})|`,
     },
   ];
 }
@@ -580,7 +586,7 @@ export default function TotalCostView({
     {
       label: 'Dense Cost',
       value: denseTotalCost.toLocaleString(),
-      formula: String.raw`(k-1)\cdot n^{|L|} + n^{|L|}`,
+      formula: String.raw`(k-1)\cdot |X| + |X|`,
       detail: denseExpansion,
     },
     {

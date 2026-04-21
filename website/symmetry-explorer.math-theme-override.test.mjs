@@ -22,9 +22,12 @@ function read(rel) {
 test('Latex threads themeOverride into notation colorization and memoization', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/Latex.jsx');
 
-  assert.match(src, /export default function Latex\(\{ math, display = false, colorize = true, themeOverride = null \}\)/);
-  assert.match(src, /colorize \? colorizeNotationLatex\(math, themeOverride\) : math/);
-  assert.match(src, /\[math, display, colorize, activeExplorerThemeId, themeOverride\]/);
+  assert.match(src, /export default function Latex\(\{/);
+  assert.match(src, /themeOverride = null/);
+  assert.match(src, /inheritColor = false/);
+  assert.match(src, /colorize && !inheritColor \? colorizeNotationLatex\(math, themeOverride\) : math/);
+  assert.match(src, /\[math, display, colorize, inheritColor, activeExplorerThemeId, themeOverride\]/);
+  assert.match(src, /color: 'inherit'/);
 });
 
 test('InlineMathText accepts themeOverride and forwards it to nested Latex', () => {

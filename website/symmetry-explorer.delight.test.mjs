@@ -147,6 +147,9 @@ test('Explorer editorial accent is scoped and consumed by NarrativeCallout', () 
   const stylesSrc = read('components/symmetry-aware-einsum-contractions/styles.css');
   const calloutSrc = read('components/symmetry-aware-einsum-contractions/components/NarrativeCallout.jsx');
   assert.match(stylesSrc, /--explorer-editorial-accent: var\(--editorial-accent\);/);
+  assert.match(calloutSrc, /if \(tone === 'preamble'\)/);
+  assert.match(calloutSrc, /rounded-2xl border border-primary\/20 bg-accent\/40 px-5 py-5/);
+  assert.match(calloutSrc, /font-heading text-base font-semibold text-foreground/);
   assert.match(
     calloutSrc,
     /border-\[color:color-mix\(in_oklab,var\(--explorer-editorial-accent\)_28%,var\(--explorer-border\)\)\]/,

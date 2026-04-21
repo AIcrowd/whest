@@ -25,3 +25,11 @@ test('sigma-loop panel title uses the shared inline-math path so sigma and pi co
   assert.match(APP_SRC, /notationLatex\('pi_relabeling'\)/);
   assert.doesNotMatch(APP_SRC, />\s*σ-Loop &amp; π Detection\s*</);
 });
+
+test('sigma-loop compact chips and toggles render latex in inherited control color', () => {
+  assert.match(SIGMA_LOOP_SRC, /<Latex math=\{String\.raw`\\sigma`\} inheritColor \/>/);
+  assert.match(SIGMA_LOOP_SRC, /<Latex math=\{String\.raw`\\pi`\} inheritColor \/>/);
+  assert.match(SIGMA_LOOP_SRC, /valid-toggle/);
+  assert.match(SIGMA_LOOP_SRC, /rejected-toggle/);
+  assert.match(SIGMA_LOOP_SRC, /pair-chip pair-valid/);
+});
