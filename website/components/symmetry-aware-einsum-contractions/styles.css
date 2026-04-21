@@ -1837,6 +1837,11 @@
     pointer-events: none;
     z-index: 0;
   }
+
+  .editorial-two-col-divider-lg-inset::before {
+    top: 24px;
+    bottom: 24px;
+  }
 }
 
 /* ─── Responsive ─────────────────────── */

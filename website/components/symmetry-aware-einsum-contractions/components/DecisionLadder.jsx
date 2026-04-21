@@ -64,8 +64,8 @@ const Q_CROSSVW_Y = Q_DIRECT_Y + ROW_GAP;            // q_crossVW
 const Q_FULLSYM_Y = Q_CROSSVW_Y + ROW_GAP;           // q_fullSym
 const STAGE_2_BOTTOM_Y = Q_FULLSYM_Y + ROW_GAP + LEAF_H + BAND_PAD_Y; // bottom pad
 
-const EDGE_YES = { color: '#23B761', label: 'yes' };
-const EDGE_NO = { color: '#F0524D', label: 'no' };
+const EDGE_YES = { color: notationColor('alpha_total'), label: 'yes' };
+const EDGE_NO = { color: notationColor('v_free'), label: 'no' };
 
 // Edge-label offsets. Once the label background went transparent (so the
 // dashed stage bands read through), the naturally centered label text
@@ -230,7 +230,7 @@ function SourceNode({ data }) {
 
 function LeafNode({ data }) {
   const bg = data.active ? mixWithWhite(data.color, 0.72) : mixWithWhite(data.color, 0.88);
-  const SPOTLIGHT_RING = '#F0524D';
+  const SPOTLIGHT_RING = notationColor('v_free');
   const shadow = data.spotlight
     ? `0 0 0 10px ${SPOTLIGHT_RING}33, 0 0 0 6px ${mixWithWhite(data.color, 0.6)}`
     : data.active
@@ -269,7 +269,7 @@ function LeafNode({ data }) {
 // bottom of the band (where the "no" label crosses into the enumerate node).
 function StageBandNode({ data }) {
   const isStage1 = data.stage === 1;
-  const accent = isStage1 ? '#5D5F60' : '#F0524D';
+  const accent = isStage1 ? notationColor('l_labels') : notationColor('v_free');
   return (
     <div
       className="pointer-events-none box-border h-full w-full rounded-xl"
@@ -353,7 +353,7 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
       why: q.why,
       intuition: q.intuition,
       latex: null,
-      color: q.stage === 1 ? '#16A34A' : notationColor('g_detected'),
+      color: q.stage === 1 ? notationColor('alpha_total') : notationColor('g_detected'),
     };
   }
   const spec = specFor(nodeId);

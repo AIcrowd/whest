@@ -145,7 +145,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   }
 
   return (
-    <div className="sigma-loop">
+    <div className="sigma-loop bg-white p-4">
       <div className="explorer-support-prose mb-2">
         <InlineMathText>
           {`Each $${notationLatex('sigma_row_move')}$ is a wreath element; each accepted pair shows a row move together with its matching relabeling $${notationLatex('pi_relabeling')}$.`}

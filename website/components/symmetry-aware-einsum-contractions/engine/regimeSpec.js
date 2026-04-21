@@ -21,7 +21,7 @@ export const REGIME_SPEC = {
     label: 'Singleton (|V|=1)',
     shortLabel: '|V|=1',
     when: 'Exactly one free label.',
-    latex: String.raw`\alpha = \frac{${notationLatex('n_omega')}}{|${notationLatex('g_detected')}|}\sum_{g}\left(\prod_{c \in ${notationLatex('r_complement')}} ${notationLatex('n_cycle')}\right)\left(${notationLatex('n_omega')}^{c_\Omega(g)} - (${notationLatex('n_omega')}-1)^{c_\Omega(g)}\right)`,
+    latex: String.raw`\alpha = \frac{${notationLatex('n_omega')}}{|${notationLatex('g_detected')}|}\sum_{g}\left(\prod_{c \in ${notationLatex('r_complement')}} ${notationLatex('n_cycle')}\right)\left(${notationLatex('n_omega')}^{${notationLatex('c_omega_cycles')}} - (${notationLatex('n_omega')}-1)^{${notationLatex('c_omega_cycles')}}\right)`,
     description: 'Weighted inclusion–exclusion — one free label lets Burnside close in a product-minus-product form.',
     glossary: [
       { term: '\\alpha', definition: 'the accumulation count — distinct output-bin updates.' },
@@ -30,7 +30,7 @@ export const REGIME_SPEC = {
       { term: notationLatex('n_omega'), definition: 'the common size of labels in $\\Omega$ (forced equal by the action).' },
       { term: `${notationLatex('r_complement')} = ${notationLatex('l_labels')} \\setminus \\Omega`, definition: 'the other labels; $g$ acts on $R$ independently.' },
       { term: 'g', definition: 'an element of $G$; we sum over all of them.' },
-      { term: 'c_\\Omega(g)', definition: 'the number of cycles of $g$ restricted to $\\Omega$.' },
+      { term: notationLatex('c_omega_cycles'), definition: 'the number of cycles of $g$ restricted to $\\Omega$.' },
       { term: '\\prod_{c \\in R} n_c', definition: 'multiply one factor $n_c$ for each cycle $c$ of $g$ inside $R$.' },
       { term: notationLatex('n_cycle'), definition: 'the common size of labels in cycle $c$.' },
     ],
@@ -74,7 +74,7 @@ export const REGIME_SPEC = {
         definition: `the pointwise $${notationLatex('v_free')}$-stabilizer — elements that fix every $${notationLatex('v_free')}$-label individually. When $G = \\mathrm{Sym}(L)$, this is the Young subgroup $\\mathrm{Sym}(${notationLatex('w_summed')})$.`,
       },
     ],
-    color: '#23B761',
+    color: notationColor('alpha_total'),
   },
   bruteForceOrbit: {
     id: 'bruteForceOrbit',

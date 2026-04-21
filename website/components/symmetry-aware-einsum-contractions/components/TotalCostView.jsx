@@ -3,10 +3,12 @@ import { AnchorLink } from './ExplorerSectionCard.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
+import { useState } from 'react';
 import { getRegimePresentation } from './regimePresentation.js';
 import { componentColor } from '../engine/componentPalette.js';
 import {
   notationColor,
+  colorizeNotationLatexWithPalette,
   notationLatex,
 } from '../lib/notationSystem.js';
 
@@ -30,21 +32,177 @@ const SYM = {
 // Burnside expansion (not just `\mu = (k-1)\prod_a M_a`) because the hero now
 // renders the Burnside sum inline, and this constant is the single source of
 // truth for "what the hero says".
-const AGGREGATION_FORMULA = String.raw`\text{Total} \;=\; (k-1) \cdot \prod_{a} \tfrac{1}{|G_a|} \sum_{g \in G_a} \prod_{c} n_c \;+\; \prod_{a} \alpha_a`;
+const AGGREGATION_FORMULA = String.raw`\text{Total Cost} \;=\; (k-1) \cdot \prod_{a} \tfrac{1}{|G_a|} \sum_{g \in G_a} \prod_{c} n_c \;+\; \prod_{a} \alpha_a`;
 const SECTION_FIVE_INTRO_PARAGRAPH = 'The earlier sections identified the symmetry group, decomposed its action into components, and computed the local quantities that govern work. This section gathers those local counts back into one runtime model for the full contraction.';
 const SECTION_FIVE_INTRO_LEAD = 'We do that by combining the multiplication cost and the accumulation cost. Writing these as $\\mu$ and $\\alpha$, the total symmetry-aware cost is';
 const SECTION_FIVE_INTRO_CLOSE = 'The full equation below makes that assembly explicit, and the summary that follows shows how the resulting symmetry-aware total compares with the naive dense baseline.';
-const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total} = \mu + \alpha`;
+const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total\ Cost} = \mu + \alpha`;
 const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
 const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
 const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\\x\end{matrix}}\right.`;
-const PIECEWISE_PREFIX = String.raw`\textcolor{${notationColor('alpha_component')}}{${notationLatex('alpha_component')}} \, = \, \textcolor{#ef5a4c}{${PIECEWISE_BRACE}}`;
+const PIECEWISE_PREFIX = String.raw`\textcolor{${notationColor('alpha_component')}}{${notationLatex('alpha_component')}} \, = \, ${PIECEWISE_BRACE}`;
+const PIECEWISE_LABEL = `Per-component accumulation formula $${notationLatex('alpha_component')}$`;
+const PIECEWISE_SCOPE_NOTE = `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$; the top line remains the global total cost.`;
+const PIECEWISE_PREFIX_RAW = String.raw`\alpha_a \, = \, ${PIECEWISE_BRACE}`;
+
+const VISUAL_COMPANION_FORMULA_SET = [
+  {
+    id: 'trivial',
+    layer: 'shape',
+    formula: String.raw`\prod_{\ell \in ${notationLatex('l_labels')}} ${notationLatex('n_cycle')}`,
+  },
+  {
+    id: 'allVisible',
+    layer: 'shape',
+    formula: String.raw`\prod_{\ell \in ${notationLatex('v_free')}} ${notationLatex('n_cycle')}`,
+  },
+  {
+    id: 'allSummed',
+    layer: 'shape',
+    formula: String.raw`|${notationLatex('orbit_space_component')}| = \tfrac{1}{|${notationLatex('g_component')}|} \sum_{g \in ${notationLatex('g_component')}} \prod_c ${notationLatex('n_cycle')}`,
+  },
+  {
+    id: 'singleton',
+    layer: 'regime',
+    cue: 'hardest case',
+    formula: String.raw`\frac{${notationLatex('n_omega')}}{|${notationLatex('g_component')}|} \sum_{g \in ${notationLatex('g_component')}} \Bigl(\prod_{c \in ${notationLatex('r_complement')}} ${notationLatex('n_cycle')}\Bigr)\!\Bigl(${notationLatex('n_omega')}^{${notationLatex('c_omega_cycles')}} - (${notationLatex('n_omega')} - 1)^{${notationLatex('c_omega_cycles')}}\Bigr)`,
+  },
+  {
+    id: 'directProduct',
+    layer: 'regime',
+    formula: String.raw`\Bigl(\prod_{\ell \in ${notationLatex('v_free')}} ${notationLatex('n_cycle')}\Bigr) \cdot |${notationLatex('x_space')}_{${notationLatex('w_summed')}} / ${notationLatex('g_w_factor')}|`,
+  },
+  {
+    id: 'young',
+    layer: 'regime',
+    formula: String.raw`${notationLatex('n_l')}^{|${notationLatex('v_free')}} \cdot \binom{${notationLatex('n_l')} + |${notationLatex('w_summed')}| - 1}{|${notationLatex('w_summed')}}`,
+  },
+  {
+    id: 'bruteForceOrbit',
+    layer: 'regime',
+    formula: String.raw`\sum_{O \in ${notationLatex('orbit_space_component')}} |${notationLatex('projection_pi_v_free')}(O)|`,
+  },
+];
+
+const VISUAL_COMPANION_TOP_LINE = String.raw`\text{Total Cost} \;=\; (${notationLatex('k_operands')}-1) \cdot \prod_a \tfrac{1}{|${notationLatex('g_component')}|} \sum_{g \in ${notationLatex('g_component')}} \prod_c ${notationLatex('n_cycle')} \;+\; \prod_a ${notationLatex('alpha_component')}`;
+const VISUAL_COMPANION_TOTAL_FORMULA = String.raw`\mathrm{Total\ Cost} = \mu + \alpha`;
+const VISUAL_COMPANION_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
+const VISUAL_COMPANION_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
+
+const VISUAL_COMPANION_PRESETS = [
+  {
+    id: 'nested-current',
+    label: 'Current grammar',
+    palette: {},
+    summary: 'Current palette from the notation system.',
+  },
+  {
+    id: 'nested-cost-split',
+    label: 'Split cost families',
+    palette: {
+      l_labels: '#94A3B8',
+      v_free: '#0EA5E9',
+      w_summed: '#647E87',
+      projection_pi_v_free: '#0EA5E9',
+      g_component: '#7C3AED',
+      g_w_factor: '#8B5CF6',
+      g_element: '#A21CAF',
+      x_space: '#0B84FF',
+      orbit_space_component: '#0EA5E9',
+      orbit_o: '#0EA5E9',
+      n_cycle: '#15803D',
+      n_label: '#0F766E',
+      n_omega: '#F97316',
+      c_omega_cycles: '#EA580C',
+      n_l: '#22C55E',
+      k_operands: '#D97706',
+      mu_total: '#F59E0B',
+      m_total: '#D97706',
+      m_component: '#D97706',
+      alpha_total: '#10B981',
+      alpha_component: '#84CC16',
+      omega_orbit: '#7E22CE',
+      r_complement: '#334155',
+    },
+    summary: 'Palette that separates structural, symmetry, and cost families.',
+  },
+  {
+    id: 'nested-roles',
+    label: 'Role-focused',
+    palette: {
+      l_labels: '#647E87',
+      v_free: '#F97316',
+      projection_pi_v_free: '#F97316',
+      w_summed: '#0EA5E9',
+      g_component: '#14B8A6',
+      g_w_factor: '#0D9488',
+      g_element: '#EA580C',
+      x_space: '#8B5CF6',
+      x_w_summed: '#8B5CF6',
+      x_component: '#8B5CF6',
+      orbit_space_component: '#8B5CF6',
+      orbit_o: '#8B5CF6',
+      n_cycle: '#22C55E',
+      n_label: '#16A34A',
+      n_omega: '#DB2777',
+      c_omega_cycles: '#E11D48',
+      n_l: '#BE123C',
+      k_operands: '#F43F5E',
+      alpha_total: '#7C3AED',
+      alpha_component: '#A855F7',
+      mu_total: '#0284C7',
+      m_total: '#0369A1',
+      m_component: '#0369A1',
+      omega_orbit: '#F59E0B',
+      r_complement: '#0B7285',
+    },
+    summary: 'Role emphasis: V/W, group-actions, and accumulation terms each get distinct families.',
+  },
+  {
+    id: 'nested-contrast',
+    label: 'High contrast',
+    palette: {
+      l_labels: '#94A3B8',
+      v_free: '#06B6D4',
+      projection_pi_v_free: '#06B6D4',
+      w_summed: '#334155',
+      g_component: '#0F766E',
+      g_w_factor: '#0B7285',
+      g_element: '#DB2777',
+      g_detected: '#0F766E',
+      g_formal: '#0F766E',
+      x_space: '#8B5CF6',
+      x_component: '#8B5CF6',
+      x_w_summed: '#8B5CF6',
+      orbit_space_component: '#7C3AED',
+      orbit_o: '#7C3AED',
+      g_pointwise_restricted_v: '#F97316',
+      k_operands: '#6366F1',
+      n_cycle: '#EA580C',
+      n_label: '#F97316',
+      n_omega: '#3B82F6',
+      c_omega_cycles: '#4ADE80',
+      n_l: '#0EA5E9',
+      mu_total: '#EF4444',
+      m_total: '#DC2626',
+      m_component: '#DC2626',
+      alpha_total: '#0F766E',
+      alpha_component: '#0284C7',
+      omega_orbit: '#A78BFA',
+      r_complement: '#1E293B',
+    },
+    summary: 'Maximum contrast: clear separation between size, group, and cost symbols.',
+  },
+];
 
 // Helper: \textcolor wrapper for composing LaTeX with a role color. The
 // legend definitions below use these so that every math token inside a
 // definition wears the same color as its dt symbol — and the same color as
 // the token appears in the hero formula above.
 const tc = (color, tex) => `\\textcolor{${color}}{${tex}}`;
+const sumOver = (binder) => String.raw`\sum_{${binder}}`;
+const productOver = (binder, body) => String.raw`\prod_{${binder}} ${body}`;
+const inSet = (lhs, rhs) => `${lhs}\\,\\in\\,${rhs}`;
 
 // Glossary — "hybrid" policy: covers every symbol in the top line plus any
 // piecewise symbol that appears in two or more rows. One-off symbols (Ω, R,
@@ -53,6 +211,11 @@ const tc = (color, tex) => `\\textcolor{${color}}{${tex}}`;
 // color for each symbol, so the reader's eye binds symbol ↔ definition ↔
 // hero appearance by color.
 const AGGREGATION_LEGEND = [
+  {
+    symbol: 'a',
+    color: notationColor('l_labels'),
+    definition: `component index. Products over $a$ run across the independent components, and subscripts like $${notationLatex('g_component')}$ or $${tc(SYM.alpha, notationLatex('alpha_component'))}$ mean “restricted to component $a$.”`,
+  },
   {
     symbol: 'k',
     color: SYM.k,
@@ -71,7 +234,7 @@ const AGGREGATION_LEGEND = [
   {
     symbol: notationLatex('n_cycle'),
     color: SYM.cycle,
-    definition: `the common label-size inside cycle $${tc(SYM.cycle, 'c')}$ of $${tc(SYM.element, notationLatex('g_element'))}$ — forced equal by the action, since $${tc(SYM.element, notationLatex('g_element'))}$ permutes labels of equal size. The product $${tc(SYM.cycle, `\\prod_c ${notationLatex('n_cycle')}`)}$ equals $|\\mathrm{Fix}(${tc(SYM.element, notationLatex('g_element'))})| = |${tc(SYM.orbit, notationLatex('x_space'))}^{${tc(SYM.element, notationLatex('g_element'))}}|$ — the standard Burnside fixed-point set, written here as a product of cycle sizes. Cycles of the identity degenerate to singleton labels, so $${tc(SYM.cycle, `\\prod_\\ell ${notationLatex('n_label')}`)}$ collapses to $${tc(SYM.cycle, `\\prod_\\ell ${notationLatex('n_label')}`)}$ on the trivial / all-visible rows.`,
+    definition: `the common label-size inside cycle $${tc(SYM.cycle, 'c')}$ of $${tc(SYM.element, notationLatex('g_element'))}$ — forced equal by the action, since $${tc(SYM.element, notationLatex('g_element'))}$ permutes labels of equal size. The product $${productOver('c', tc(SYM.cycle, notationLatex('n_cycle')))}$ equals $|\\mathrm{Fix}(${tc(SYM.element, notationLatex('g_element'))})| = |${tc(SYM.orbit, notationLatex('x_space'))}^{${tc(SYM.element, notationLatex('g_element'))}}|$ — the standard Burnside fixed-point set, written here as a product of cycle sizes. Cycles of the identity degenerate to singleton labels, so $${productOver('\\ell', tc(SYM.cycle, notationLatex('n_label')))}$ collapses to $${productOver('\\ell', tc(SYM.cycle, notationLatex('n_label')))}$ on the trivial / all-visible rows.`,
   },
   {
     // V and W carry their canonical page colors (blue / slate) — the same
@@ -94,12 +257,17 @@ const AGGREGATION_LEGEND = [
   {
     symbol: `${notationLatex('x_space')},\\ ${notationLatex('orbit_space_component')},\\ ${notationLatex('orbit_o')},\\ ${notationLatex('projection_pi_v_free')}`,
     color: SYM.orbit,
-    definition: `assignment space $${notationLatex('x_space')} = [n]^{${notationLatex('l_labels')}}$; its $${notationLatex('orbit_space_component')}$-orbit decomposition; a single orbit $${notationLatex('orbit_o')}$; and its projection onto the free labels $${notationLatex('projection_pi_v_free')}$ — the distinct output bins that orbit touches.`,
+    definition: `assignment space $${notationLatex('x_space')} = [n]^{${notationLatex('l_labels')}}$; $${notationLatex('orbit_space_component')}$, the set of $${notationLatex('g_component')}$-orbits in $${notationLatex('x_space')}$; a single orbit $${notationLatex('orbit_o')}$; and its projection onto the free labels $${notationLatex('projection_pi_v_free')}$ — the distinct output bins that orbit touches.`,
+  },
+  {
+    symbol: `${notationLatex('omega_orbit')},\\ ${tc(SYM.cycle, notationLatex('n_omega'))},\\ ${tc(SYM.cycle, notationLatex('c_omega_cycles'))}`,
+    color: SYM.cycle,
+    definition: `singleton-regime symbols: $${notationLatex('omega_orbit')} = ${notationLatex('g_component')} \\cdot v$ is the orbit of the single free label $v$ under the component symmetry group. $${tc(SYM.cycle, notationLatex('n_omega'))}$ is the size shared by the labels in $${notationLatex('omega_orbit')}$, and $${tc(SYM.cycle, notationLatex('c_omega_cycles'))}$ counts how many cycles of the group element $${tc(SYM.element, notationLatex('g_element'))}$ lie inside that distinguished class.`,
   },
   {
     symbol: `${tc(SYM.alpha, notationLatex('alpha_total'))},\\ ${tc(SYM.alpha, notationLatex('alpha_component'))}`,
     color: SYM.alpha,
-    definition: `accumulation cost. Per-component accumulation is $${tc(SYM.alpha, notationLatex('alpha_component'))}$ — one of the shape- and regime-specific formulas above. Global total is $${tc(SYM.alpha, notationLatex('alpha_total'))} = ${tc(SYM.alpha, `\\prod_a ${notationLatex('alpha_component')}`)}$.`,
+    definition: `accumulation cost. Per-component accumulation is $${tc(SYM.alpha, notationLatex('alpha_component'))}$ — one of the shape- and regime-specific formulas above. Global total is $${tc(SYM.alpha, notationLatex('alpha_total'))} = ${productOver('a', tc(SYM.alpha, notationLatex('alpha_component')))}$.`,
   },
 ];
 
@@ -111,45 +279,48 @@ const AGGREGATION_LEAVES = [
   {
     id: 'trivial',
     layer: 'shape',
-    formula: String.raw`\textcolor{${SYM.cycle}}{\prod_{\ell \in ${notationLatex('l_labels')}} ${notationLatex('n_label')}}`,
+    formula: String.raw`\prod_{\ell \in ${notationLatex('l_labels')}} ${tc(SYM.cycle, notationLatex('n_label'))}`,
   },
   {
     id: 'allVisible',
     layer: 'shape',
-    formula: String.raw`\textcolor{${SYM.cycle}}{\prod_{\ell \in \textcolor{${SYM.vlabel}}{${notationLatex('v_free')}}} ${notationLatex('n_label')}}`,
+    formula: String.raw`\prod_{\ell \in ${tc(SYM.vlabel, notationLatex('v_free'))}} ${tc(SYM.cycle, notationLatex('n_label'))}`,
   },
   {
     id: 'allSummed',
     layer: 'shape',
-    formula: String.raw`|\textcolor{${SYM.orbit}}{X}/\textcolor{${SYM.group}}{${notationLatex('g_component')}}| = \tfrac{1}{|\textcolor{${SYM.group}}{${notationLatex('g_component')}}|} \textcolor{${SYM.element}}{\sum_{g}} \textcolor{${SYM.cycle}}{\prod_c ${notationLatex('n_cycle')}}`,
+    formula: String.raw`|${tc(SYM.orbit, 'X')}/${tc(SYM.group, notationLatex('g_component'))}| = \tfrac{1}{|${tc(SYM.group, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, 'g'))} ${productOver('c', tc(SYM.cycle, notationLatex('n_cycle')))}`,
   },
   {
     id: 'singleton',
     layer: 'regime',
-    formula: String.raw`\tfrac{\textcolor{${SYM.cycle}}{${notationLatex('n_omega')}}}{|\textcolor{${SYM.group}}{${notationLatex('g_component')}}|} \textcolor{${SYM.element}}{\sum_{g}} \Bigl(\textcolor{${SYM.cycle}}{\prod_{c \in ${notationLatex('r_complement')}} ${notationLatex('n_cycle')}}\Bigr)\!\Bigl(\textcolor{${SYM.cycle}}{${notationLatex('n_omega')}^{\,c_\Omega(g)}} - (\textcolor{${SYM.cycle}}{${notationLatex('n_omega')}} - 1)^{\,c_\Omega(g)}\Bigr)`,
+    cue: 'hardest case',
+    formula: String.raw`\tfrac{${tc(SYM.cycle, notationLatex('n_omega'))}}{|${tc(SYM.group, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, 'g'))} \Bigl(${productOver(`c \\in ${notationLatex('r_complement')}`, tc(SYM.cycle, notationLatex('n_cycle')))}\Bigr)\!\Bigl(${tc(SYM.cycle, notationLatex('n_omega'))}^{\,${tc(SYM.cycle, notationLatex('c_omega_cycles'))}} - (${tc(SYM.cycle, notationLatex('n_omega'))} - 1)^{\,${tc(SYM.cycle, notationLatex('c_omega_cycles'))}}\Bigr)`,
   },
   {
     id: 'directProduct',
     layer: 'regime',
-    formula: String.raw`\Bigl(\textcolor{${SYM.cycle}}{\prod_{\ell \in \textcolor{${SYM.vlabel}}{${notationLatex('v_free')}}} ${notationLatex('n_label')}}\Bigr) \cdot |\textcolor{${SYM.orbit}}{X}_{\textcolor{${SYM.wlabel}}{${notationLatex('w_summed')}}} / \textcolor{${SYM.group}}{${notationLatex('g_w_factor')}}|`,
+    formula: String.raw`\Bigl(${productOver(`\\ell \\in ${tc(SYM.vlabel, notationLatex('v_free'))}`, tc(SYM.cycle, notationLatex('n_label')))}\Bigr) \cdot |${tc(SYM.orbit, 'X')}_{${tc(SYM.wlabel, notationLatex('w_summed'))}} / ${tc(SYM.group, notationLatex('g_w_factor'))}|`,
   },
   {
     id: 'young',
     layer: 'regime',
-    formula: String.raw`\textcolor{${SYM.cycle}}{n_L^{|\textcolor{${SYM.vlabel}}{${notationLatex('v_free')}}|}} \cdot \binom{\textcolor{${SYM.cycle}}{n_L} + |\textcolor{${SYM.wlabel}}{${notationLatex('w_summed')}}| - 1}{|\textcolor{${SYM.wlabel}}{${notationLatex('w_summed')}}|}`,
+    formula: String.raw`${tc(SYM.cycle, 'n_L')}^{|${tc(SYM.vlabel, notationLatex('v_free'))}|} \cdot \binom{${tc(SYM.cycle, 'n_L')} + |${tc(SYM.wlabel, notationLatex('w_summed'))}| - 1}{|${tc(SYM.wlabel, notationLatex('w_summed'))}|}`,
   },
   {
     id: 'bruteForceOrbit',
     layer: 'regime',
-    formula: String.raw`\textcolor{${SYM.orbit}}{\sum_{${notationLatex('orbit_o')} \in X/G_a}} |\textcolor{${SYM.orbit}}{\pi}_{\textcolor{${SYM.vlabel}}{${notationLatex('v_free')}}}(\textcolor{${SYM.orbit}}{${notationLatex('orbit_o')}})|`,
+    formula: String.raw`${sumOver(`${tc(SYM.orbit, notationLatex('orbit_o'))} \\in X/G_a`)} |${tc(SYM.orbit, '\\pi')}_{${tc(SYM.vlabel, notationLatex('v_free'))}}(${tc(SYM.orbit, notationLatex('orbit_o'))})|`,
   },
 ];
+
+const PIECEWISE_ROW_SPAN = Math.max(AGGREGATION_LEAVES.length, VISUAL_COMPANION_FORMULA_SET.length);
 
 // ---------------------------------------------------------------------------
 // Hero formula — top line + piecewise definition of α_a.
 // ---------------------------------------------------------------------------
 
-const TOP_LINE = String.raw`\text{Total} \;=\; (\textcolor{${SYM.k}}{${notationLatex('k_operands')}}-1) \cdot \prod_a \tfrac{1}{|\textcolor{${SYM.group}}{${notationLatex('g_component')}}|} \textcolor{${SYM.element}}{\sum_{g \in ${notationLatex('g_component')}}} \textcolor{${SYM.cycle}}{\prod_c ${notationLatex('n_cycle')}} \;+\; \prod_a \textcolor{${SYM.alpha}}{${notationLatex('alpha_component')}}`;
+const TOP_LINE = String.raw`\text{Total Cost} \;=\; (${tc(SYM.k, notationLatex('k_operands'))}-1) \cdot \prod_a \tfrac{1}{|${tc(SYM.group, notationLatex('g_component'))}|} ${sumOver(inSet('g', tc(SYM.group, notationLatex('g_component'))))} ${productOver('c', tc(SYM.cycle, notationLatex('n_cycle')))} \;+\; \prod_a ${tc(SYM.alpha, notationLatex('alpha_component'))}`;
 // The `g \in G_a` subscript above is fully orange; G_a in the subscript is
 // close enough to the rest of the sum that unified orange reads better than
 // splitting the colors inside a 7-point subscript.
@@ -165,6 +336,14 @@ function HeroFormulaBlock() {
       </div>
 
       {/* Piecewise — α_a defined by six leaves of the shape × regime ladder */}
+      <div className="space-y-1 text-center">
+        <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
+          <InlineMathText>{PIECEWISE_LABEL}</InlineMathText>
+        </div>
+        <div className="mx-auto max-w-2xl font-serif text-[14px] leading-[1.7] text-gray-700">
+          <InlineMathText>{PIECEWISE_SCOPE_NOTE}</InlineMathText>
+        </div>
+      </div>
       <div className="flex justify-center overflow-x-auto overflow-y-visible">
         <div
           className="grid items-center gap-x-5 gap-y-2 text-[14px]"
@@ -175,7 +354,7 @@ function HeroFormulaBlock() {
             className="flex items-center justify-center self-stretch overflow-visible pr-1"
             style={{
               gridColumn: '1 / span 2',
-              gridRow: '1 / span 6',
+              gridRow: `1 / span ${PIECEWISE_ROW_SPAN}`,
             }}
           >
             <Latex math={PIECEWISE_PREFIX} />
@@ -187,6 +366,117 @@ function HeroFormulaBlock() {
         </div>
       </div>
     </div>
+  );
+}
+
+function CompanionFormulaBlock() {
+  const [grammarId, setGrammarId] = useState(VISUAL_COMPANION_PRESETS[0].id);
+  const activeGrammar = VISUAL_COMPANION_PRESETS.find((item) => item.id === grammarId) ?? VISUAL_COMPANION_PRESETS[0];
+
+  const topLine = colorizeNotationLatexWithPalette(VISUAL_COMPANION_TOP_LINE, activeGrammar.palette);
+  const totalFormula = colorizeNotationLatexWithPalette(VISUAL_COMPANION_TOTAL_FORMULA, activeGrammar.palette);
+  const muFormula = colorizeNotationLatexWithPalette(VISUAL_COMPANION_MU_FORMULA, activeGrammar.palette);
+  const alphaFormula = colorizeNotationLatexWithPalette(VISUAL_COMPANION_ALPHA_FORMULA, activeGrammar.palette);
+  const piecewisePrefix = colorizeNotationLatexWithPalette(PIECEWISE_PREFIX_RAW, activeGrammar.palette);
+
+  return (
+    <section className="mt-10 border border-gray-100 bg-surface-raised px-4 py-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h4 className="text-[13px] font-semibold uppercase tracking-[0.16em] text-gray-600">
+            Visual companion
+          </h4>
+          <p className="mt-1 max-w-xl text-[12px] text-gray-500">{activeGrammar.summary}</p>
+        </div>
+        <label className="text-[12px] text-gray-600">
+          <span className="mr-2 text-xs uppercase tracking-[0.14em] text-gray-500">Notation grammar</span>
+          <select
+            value={grammarId}
+            onChange={(event) => setGrammarId(event.target.value)}
+            className="rounded border border-border bg-white px-2 py-1 text-[13px]"
+          >
+            {VISUAL_COMPANION_PRESETS.map((preset) => (
+              <option key={preset.id} value={preset.id}>
+                {preset.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div className="space-y-7 border-t border-gray-100 pt-4">
+        <div className="flex justify-center overflow-x-auto overflow-y-visible">
+          <div className="min-w-0 text-[17px] sm:text-[19px]">
+            <Latex display math={topLine} />
+          </div>
+        </div>
+        <div className="space-y-1 text-center">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
+            Per-component accumulation
+          </div>
+          <div className="mx-auto max-w-2xl font-serif text-[14px] leading-[1.7] text-gray-700">
+            <InlineMathText>{PIECEWISE_LABEL}</InlineMathText>
+          </div>
+        </div>
+        <div className="flex justify-center overflow-x-auto overflow-y-visible">
+          <div
+            className="grid items-center gap-x-5 gap-y-2 text-[14px]"
+            style={{ gridTemplateColumns: 'auto auto 1fr auto' }}
+          >
+            <div
+              className="flex items-center justify-center self-stretch overflow-visible pr-1"
+              style={{
+                gridColumn: '1 / span 2',
+                gridRow: `1 / span ${PIECEWISE_ROW_SPAN}`,
+              }}
+            >
+              <Latex math={piecewisePrefix} />
+            </div>
+
+            {VISUAL_COMPANION_FORMULA_SET.map((leaf) => (
+              <div key={`companion-${leaf.id}`} className="contents">
+                <div className="py-1 pr-4" style={{ gridColumn: 3 }}>
+                  <CaseBadge regimeId={leaf.id} className="whitespace-nowrap">
+                    <Latex math={colorizeNotationLatexWithPalette(leaf.formula, activeGrammar.palette)} />
+                  </CaseBadge>
+                </div>
+                <div className="flex items-center gap-2 whitespace-nowrap pl-2 text-[12px] text-muted-foreground" style={{ gridColumn: 4 }}>
+                  <span className="italic">if</span>
+                  <span className="rounded border border-border bg-surface px-1.5 py-[1px] text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                    {leaf.layer}
+                  </span>
+                  <CaseBadge regimeId={leaf.id} size="xs" />
+                  {leaf.cue ? (
+                    <span className="text-[11px] italic text-gray-500">
+                      {leaf.cue}
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="relative mx-auto grid max-w-[30rem] grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-2">
+            <div
+              aria-hidden="true"
+              className="absolute bottom-[18%] left-1/2 top-[18%] hidden w-px -translate-x-1/2 bg-gray-100 sm:block"
+            />
+            <div className="flex justify-center overflow-x-auto overflow-y-visible sm:justify-end sm:pr-5">
+              <div className="min-w-0 text-[17px] sm:text-[19px]">
+                <Latex display math={muFormula} />
+              </div>
+            </div>
+            <div className="flex justify-center overflow-x-auto overflow-y-visible sm:justify-start sm:pl-5">
+              <div className="min-w-0 text-[17px] sm:text-[19px]">
+                <Latex display math={alphaFormula} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -206,6 +496,11 @@ function FormulaRow({ leaf }) {
           {leaf.layer}
         </span>
         <CaseBadge regimeId={leaf.id} size="xs" />
+        {leaf.cue ? (
+          <span className="text-[11px] italic text-gray-500">
+            {leaf.cue}
+          </span>
+        ) : null}
       </div>
     </>
   );
@@ -233,6 +528,7 @@ function AggregationExplainer() {
       <div className="py-4">
         <HeroFormulaBlock />
       </div>
+      <CompanionFormulaBlock />
 
       <div className="mx-auto mt-10 max-w-2xl border-t border-gray-100 pt-6">
         <dl className="grid grid-cols-[auto_1fr] items-baseline gap-x-5 gap-y-3 text-[12.5px] leading-relaxed text-muted-foreground">

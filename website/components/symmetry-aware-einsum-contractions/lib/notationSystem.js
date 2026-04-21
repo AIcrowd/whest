@@ -1,45 +1,67 @@
 const makeEntry = (text, latex, color) => ({ text, latex, color });
 
+// Semantic grammar for notation color:
+// - Free / output side stays coral.
+// - Summed / contracted side stays slate.
+// - Ambient mathematical objects (groups, spaces, orbits) use info blue.
+// - Acting elements / relabelings use warning amber.
+// - Counts / costs use success green.
+// - Structural scaffolding (L, U, R, incidence matrix M, binders, operators)
+//   stays neutral ink/slate.
+// Side-refined compound objects inherit the V/W anchor when their meaning is
+// explicitly "the V-side factor" or "the W-side factor".
+const NOTATION_COLORS = {
+  free: '#F0524D',
+  summed: '#64748B',
+  object: '#4A7CFF',
+  action: '#FA9E33',
+  quantity: '#23B761',
+  structure: '#292C2D',
+  structureMuted: '#5D5F60',
+};
+
 export const NOTATION_REGISTRY = {
-  v_free: makeEntry('V_free', String.raw`V_{\mathrm{free}}`, '#E8555A'),
-  w_summed: makeEntry('W_summed', String.raw`W_{\mathrm{summed}}`, '#64748B'),
-  v_free_component: makeEntry('V_free,a', String.raw`V_{\mathrm{free},a}`, '#3B82F6'),
-  w_summed_component: makeEntry('W_summed,a', String.raw`W_{\mathrm{summed},a}`, '#7C8FA3'),
-  l_labels: makeEntry('L', 'L', '#52606D'),
-  l_component: makeEntry('L_a', 'L_a', '#685C8E'),
-  u_axis_classes: makeEntry('U', 'U', '#9A3412'),
-  m_incidence: makeEntry('M', 'M', '#292C2D'),
-  g_wreath: makeEntry('G_wreath', String.raw`G_{\mathrm{wreath}}`, '#9F67D2'),
-  h_family: makeEntry('H_i', 'H_i', '#C2410C'),
-  sigma_row_move: makeEntry('σ', String.raw`\sigma`, '#D23934'),
-  pi_relabeling: makeEntry('π', String.raw`\pi`, '#0F766E'),
-  sym_l: makeEntry('Sym(L)', String.raw`\mathrm{Sym}(L)`, '#0D9488'),
-  g_detected: makeEntry('G', 'G', '#8B5CF6'),
-  g_component: makeEntry('G_a', 'G_a', '#7E57C2'),
-  g_formal: makeEntry('G_f', String.raw`G_{\text{f}}`, '#A855F7'),
-  g_pointwise: makeEntry('G_pt', String.raw`G_{\text{pt}}`, '#9333EA'),
-  g_pointwise_restricted_v: makeEntry('G_pt|_V_free', String.raw`G_{\text{pt}}\big|_{V_{\mathrm{free}}}`, '#6366F1'),
-  s_w_summed: makeEntry('S(W_summed)', String.raw`S(W_{\mathrm{summed}})`, '#334155'),
-  g_v_factor: makeEntry('G_V_free', String.raw`G_{V_{\mathrm{free}}}`, '#2952CC'),
-  g_w_factor: makeEntry('G_W_summed', String.raw`G_{W_{\mathrm{summed}}}`, '#5B6B7A'),
-  x_space: makeEntry('X', 'X', '#0E7490'),
-  x_component: makeEntry('X_a', 'X_a', '#0284C7'),
-  x_w_summed: makeEntry('X_W_summed', String.raw`X_{W_{\mathrm{summed}}}`, '#0369A1'),
-  orbit_space_component: makeEntry('X/G_a', String.raw`X / G_a`, '#1D4ED8'),
-  orbit_o: makeEntry('O', 'O', '#0891B2'),
-  projection_pi_v_free: makeEntry('π_V_free(O)', String.raw`\pi_{V_{\mathrm{free}}}(O)`, '#1B7FDB'),
-  mu_total: makeEntry('μ', String.raw`\mu`, '#0F9D58'),
-  alpha_total: makeEntry('α', String.raw`\alpha`, '#B45309'),
-  alpha_component: makeEntry('α_a', String.raw`\alpha_a`, '#A16207'),
-  m_total: makeEntry('M', 'M', '#059669'),
-  m_component: makeEntry('M_a', 'M_a', '#047857'),
-  k_operands: makeEntry('k', 'k', '#475569'),
-  g_element: makeEntry('g', 'g', '#DD6B20'),
-  n_label: makeEntry('n_ℓ', String.raw`n_\ell`, '#7E22CE'),
-  n_cycle: makeEntry('n_c', 'n_c', '#2F855A'),
-  omega_orbit: makeEntry('Ω', String.raw`\Omega`, '#C05621'),
-  n_omega: makeEntry('n_Ω', String.raw`n_\Omega`, '#7C2D12'),
-  r_complement: makeEntry('R', 'R', '#5B5B5B'),
+  v_free: makeEntry('V_free', String.raw`V_{\mathrm{free}}`, NOTATION_COLORS.free),
+  w_summed: makeEntry('W_summed', String.raw`W_{\mathrm{summed}}`, NOTATION_COLORS.summed),
+  v_free_component: makeEntry('V_free,a', String.raw`V_{\mathrm{free},a}`, NOTATION_COLORS.free),
+  w_summed_component: makeEntry('W_summed,a', String.raw`W_{\mathrm{summed},a}`, NOTATION_COLORS.summed),
+  l_labels: makeEntry('L', 'L', NOTATION_COLORS.structureMuted),
+  l_component: makeEntry('L_a', 'L_a', NOTATION_COLORS.structureMuted),
+  u_axis_classes: makeEntry('U', 'U', NOTATION_COLORS.structureMuted),
+  m_incidence: makeEntry('M', 'M', NOTATION_COLORS.structure),
+  g_wreath: makeEntry('G_wreath', String.raw`G_{\mathrm{wreath}}`, NOTATION_COLORS.object),
+  h_family: makeEntry('H_i', 'H_i', NOTATION_COLORS.object),
+  sigma_row_move: makeEntry('σ', String.raw`\sigma`, NOTATION_COLORS.action),
+  pi_relabeling: makeEntry('π', String.raw`\pi`, NOTATION_COLORS.action),
+  sym_l: makeEntry('Sym(L)', String.raw`\mathrm{Sym}(L)`, NOTATION_COLORS.object),
+  g_detected: makeEntry('G', 'G', NOTATION_COLORS.object),
+  g_component: makeEntry('G_a', 'G_a', NOTATION_COLORS.object),
+  g_formal: makeEntry('G_f', String.raw`G_{\text{f}}`, NOTATION_COLORS.object),
+  g_pointwise: makeEntry('G_pt', String.raw`G_{\text{pt}}`, NOTATION_COLORS.object),
+  g_pointwise_restricted_v: makeEntry('G_pt|_V_free', String.raw`G_{\text{pt}}\big|_{V_{\mathrm{free}}}`, NOTATION_COLORS.free),
+  s_w_summed: makeEntry('S(W_summed)', String.raw`S(W_{\mathrm{summed}})`, NOTATION_COLORS.summed),
+  g_v_factor: makeEntry('G_V_free', String.raw`G_{V_{\mathrm{free}}}`, NOTATION_COLORS.free),
+  g_w_factor: makeEntry('G_W_summed', String.raw`G_{W_{\mathrm{summed}}}`, NOTATION_COLORS.summed),
+  x_space: makeEntry('X', 'X', NOTATION_COLORS.object),
+  x_component: makeEntry('X_a', 'X_a', NOTATION_COLORS.object),
+  x_w_summed: makeEntry('X_W_summed', String.raw`X_{W_{\mathrm{summed}}}`, NOTATION_COLORS.summed),
+  orbit_space_component: makeEntry('X/G_a', String.raw`X / G_a`, NOTATION_COLORS.object),
+  orbit_o: makeEntry('O', 'O', NOTATION_COLORS.object),
+  projection_pi_v_free: makeEntry('π_V_free(O)', String.raw`\pi_{V_{\mathrm{free}}}(O)`, NOTATION_COLORS.free),
+  mu_total: makeEntry('μ', String.raw`\mu`, NOTATION_COLORS.quantity),
+  alpha_total: makeEntry('α', String.raw`\alpha`, NOTATION_COLORS.quantity),
+  alpha_component: makeEntry('α_a', String.raw`\alpha_a`, NOTATION_COLORS.quantity),
+  m_total: makeEntry('M', 'M', NOTATION_COLORS.quantity),
+  m_component: makeEntry('M_a', 'M_a', NOTATION_COLORS.quantity),
+  k_operands: makeEntry('k', 'k', NOTATION_COLORS.quantity),
+  g_element: makeEntry('g', 'g', NOTATION_COLORS.action),
+  n_label: makeEntry('n_ℓ', String.raw`n_\ell`, NOTATION_COLORS.quantity),
+  n_cycle: makeEntry('n_c', 'n_c', NOTATION_COLORS.quantity),
+  n_l: makeEntry('n_L', 'n_L', NOTATION_COLORS.quantity),
+  omega_orbit: makeEntry('Ω', String.raw`\Omega`, NOTATION_COLORS.object),
+  n_omega: makeEntry('n_Ω', String.raw`n_\Omega`, NOTATION_COLORS.quantity),
+  c_omega_cycles: makeEntry('c_Ω(g)', String.raw`c_\Omega(g)`, NOTATION_COLORS.quantity),
+  r_complement: makeEntry('R', 'R', NOTATION_COLORS.structureMuted),
 };
 
 export const NOTATION_HOST_FILES = [
@@ -96,9 +118,11 @@ const AUTO_COLORED_NOTATION_IDS = [
   'm_component',
   'k_operands',
   'n_label',
+  'n_l',
   'n_cycle',
   'omega_orbit',
   'n_omega',
+  'c_omega_cycles',
 ];
 
 function escapeRegex(value) {
@@ -182,6 +206,13 @@ function notationEntry(id) {
   return entry;
 }
 
+function resolveColor(id, paletteOverride = null) {
+  if (paletteOverride && Object.prototype.hasOwnProperty.call(paletteOverride, id)) {
+    return paletteOverride[id];
+  }
+  return notationEntry(id).color;
+}
+
 export function notationText(id) {
   return notationEntry(id).text;
 }
@@ -194,8 +225,16 @@ export function notationColor(id) {
   return notationEntry(id).color;
 }
 
+export function notationColorWithPalette(id, paletteOverride = null) {
+  return resolveColor(id, paletteOverride);
+}
+
 export function notationColoredLatex(id, latexOverride = notationLatex(id)) {
   return String.raw`\textcolor{${notationColor(id)}}{${latexOverride}}`;
+}
+
+export function notationColoredLatexWithPalette(id, paletteOverride = null, latexOverride = notationLatex(id)) {
+  return String.raw`\textcolor{${resolveColor(id, paletteOverride)}}{${latexOverride}}`;
 }
 
 export function colorizeNotationLatex(math) {
@@ -209,6 +248,32 @@ export function colorizeNotationLatex(math) {
     colorized = colorized.replace(regex, (match) => {
       const key = `@@NOTATION_${placeholders.length}@@`;
       placeholders.push(notationColoredLatex(id, match));
+      return key;
+    });
+  }
+
+  placeholders.forEach((replacement, idx) => {
+    colorized = colorized.replace(`@@NOTATION_${idx}@@`, replacement);
+  });
+
+  protectedSegments.forEach((replacement, idx) => {
+    colorized = colorized.replace(`@@TEXTCOLOR_${idx}@@`, replacement);
+  });
+
+  return colorized;
+}
+
+export function colorizeNotationLatexWithPalette(math, paletteOverride = null) {
+  if (typeof math !== 'string' || math.length === 0) return math;
+
+  const { masked, protectedSegments } = protectExistingTextColor(math);
+  let colorized = masked;
+  const placeholders = [];
+
+  for (const { id, regex } of AUTO_COLOR_RULES) {
+    colorized = colorized.replace(regex, (match) => {
+      const key = `@@NOTATION_${placeholders.length}@@`;
+      placeholders.push(notationColoredLatexWithPalette(id, paletteOverride, match));
       return key;
     });
   }

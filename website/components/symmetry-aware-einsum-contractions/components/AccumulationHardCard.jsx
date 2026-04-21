@@ -8,7 +8,7 @@ import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
  *
  * Static prose explaining why αₐ (per-component accumulation cost) resists
  * the uniform Burnside treatment that Mₐ (per-component orbit count) enjoys —
- * and points the reader to the Classification Tree below, which routes each
+ * and explains why the Classification Tree below exists to route each
  * component to its cheapest applicable closed form.
  *
  * Symbols follow the canonical page vocabulary set by the Counting
@@ -169,10 +169,6 @@ export default function AccumulationHardCard() {
       <p className="explorer-support-prose mt-2">
         <InlineMathText>{`We dodge that cost when the group has a recognizable structure. The classification tree below routes each component to its cheapest applicable closed form, or falls back to brute-force enumeration only when nothing else fits.`}</InlineMathText>
       </p>
-      <div className="mt-3 border-t border-gray-100 pt-3 text-xs italic text-muted-foreground">
-        → See the Classification Tree below.
-      </div>
-
       <FormulaIntuitionTooltip
         anchorRect={anchorRect}
         onDismiss={() => setAnchorRect(null)}

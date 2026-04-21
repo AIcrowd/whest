@@ -43,3 +43,8 @@ test('mixed shape spec uses notation-aware inline math in its prose fields', () 
 test('directProduct uses the shorter preset-facing label', () => {
   assert.equal(REGIME_SPEC.directProduct.label, 'Direct Product');
 });
+
+test('singleton spec routes c_Ω(g) through the shared notation registry', () => {
+  assert.ok(REGIME_SPEC.singleton.latex.includes(notationLatex('c_omega_cycles')));
+  assert.equal(REGIME_SPEC.singleton.glossary.some((entry) => entry.term === notationLatex('c_omega_cycles')), true);
+});

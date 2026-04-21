@@ -34,15 +34,15 @@ test('MultiplicationCostCard shows both μ and M formulas + live rows', () => {
   assert.match(src, /W_\{\\mathrm\{summed\}\}/);
 });
 
-test('AccumulationHardCard exports a default React component with pointer text', () => {
+test('AccumulationHardCard exports a default React component with shared support prose and no extra pointer footer', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/AccumulationHardCard.jsx');
   assert.match(src, /export default function AccumulationHardCard/);
   // Title now uses α to match the Counting Convention band.
   assert.match(src, /Why Accumulation Cost \(α\) is Hard/);
-  assert.match(src, /See the Classification Tree below/);
   assert.match(src, /InlineMathText/);
   assert.match(src, /className="explorer-support-prose mt-2"/);
   assert.match(src, /className="explorer-support-prose mt-3"/);
+  assert.doesNotMatch(src, /See the Classification Tree below/);
   assert.match(src, /V_\{\\mathrm\{free\}\}/);
   assert.match(src, /W_\{\\mathrm\{summed\}\}/);
 });
@@ -50,7 +50,7 @@ test('AccumulationHardCard exports a default React component with pointer text',
 test('ComponentCostView uses the shared support prose tier under subsection headers', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
   assert.match(src, /className="explorer-support-prose mt-2"/);
-  assert.match(src, /editorial-two-col-divider-lg border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2/);
+  assert.match(src, /editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2/);
 });
 
 test('ComponentCostView imports the two new cards + renders the CLASSIFICATION TREE section', () => {

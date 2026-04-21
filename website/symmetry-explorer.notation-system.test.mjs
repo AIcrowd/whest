@@ -43,25 +43,33 @@ const LEGACY_NOTATION_PATTERNS = [
   /\\pi_V\(O\)/,
 ];
 
-test('notation registry defines text, latex, and unique colors for every visible symbol', () => {
+test('notation registry defines text, latex, and the semantic grammar anchors', () => {
   const entries = Object.entries(NOTATION_REGISTRY);
   assert.ok(entries.length > 12, 'expected a real notation inventory');
 
-  const seenColors = new Set();
   for (const [id, entry] of entries) {
     assert.equal(typeof entry.text, 'string', `${id} needs text`);
     assert.equal(typeof entry.latex, 'string', `${id} needs latex`);
     assert.match(entry.color, /^#[0-9A-F]{6}$/i, `${id} needs hex color`);
-    assert.equal(seenColors.has(entry.color), false, `${id} reuses notation color ${entry.color}`);
-    seenColors.add(entry.color);
   }
 
   assert.equal(notationText('v_free'), 'V_free');
   assert.equal(notationLatex('v_free'), 'V_{\\mathrm{free}}');
-  assert.equal(notationColor('v_free'), '#E8555A');
+  assert.equal(notationColor('v_free'), '#F0524D');
   assert.equal(notationText('w_summed'), 'W_summed');
   assert.equal(notationLatex('w_summed'), 'W_{\\mathrm{summed}}');
   assert.equal(notationColor('w_summed'), '#64748B');
+  assert.equal(notationColor('g_detected'), '#4A7CFF');
+  assert.equal(notationColor('sigma_row_move'), '#FA9E33');
+  assert.equal(notationColor('alpha_total'), '#23B761');
+  assert.equal(notationColor('m_incidence'), '#292C2D');
+  assert.equal(notationColor('l_labels'), '#5D5F60');
+  assert.equal(notationColor('g_v_factor'), notationColor('v_free'));
+  assert.equal(notationColor('g_w_factor'), notationColor('w_summed'));
+  assert.equal(notationColor('projection_pi_v_free'), notationColor('v_free'));
+  assert.equal(notationColor('c_omega_cycles'), notationColor('alpha_total'));
+  assert.equal(notationText('c_omega_cycles'), 'c_Ω(g)');
+  assert.equal(notationLatex('c_omega_cycles'), 'c_\\Omega(g)');
   assert.equal(
     notationColoredLatex('g_wreath'),
     `\\textcolor{${notationColor('g_wreath')}}{${notationLatex('g_wreath')}}`,
@@ -92,6 +100,7 @@ test('shared latex colorizer colors representative raw formulas before render', 
   assert.equal(colorizedYoung.includes(notationColoredLatex('alpha_total')), true);
   assert.equal(colorizedYoung.includes(notationColoredLatex('v_free')), true);
   assert.equal(colorizedYoung.includes(notationColoredLatex('w_summed')), true);
+  assert.equal(colorizedSingleton.includes(notationColoredLatex('c_omega_cycles')), true);
   assert.equal(preservedPrecolored, precoloredFormula);
   assert.doesNotMatch(colorizedSingleton, /c_\\textcolor/);
   assert.doesNotMatch(colorizedMatrixWitness, /M_\\textcolor/);
@@ -170,6 +179,7 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(appendixSource, /S\(W_\{\\mathrm\{summed\}\}\)/);
   assert.match(regimeSpecSource, /\$\$\{notationLatex\('v_free'\)\}\$/);
   assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('w_summed'\)\}\)/);
+  assert.match(regimeSpecSource, /notationLatex\('c_omega_cycles'\)/);
 });
 
 test('shared render paths colorize formulas and notation-bearing descriptions', () => {

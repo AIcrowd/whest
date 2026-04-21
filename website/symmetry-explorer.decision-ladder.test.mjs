@@ -53,7 +53,7 @@ test('DecisionLadder intuition copy uses editorial italic example names instead 
 });
 
 test('DecisionLadder stage bands use the editorial white/coral-light surface treatment', () => {
-  assert.match(source, /const accent = isStage1 \? '#5D5F60' : '#F0524D'/);
+  assert.match(source, /const accent = isStage1 \? notationColor\('l_labels'\) : notationColor\('v_free'\)/);
   assert.match(source, /background:\s*isStage1\s*\?\s*'#FFFFFF'\s*:\s*'#FEF2F1'/);
   assert.match(source, /border:\s*`1\.5px solid \$\{isStage1 \? '#D9DCDC' : 'rgba\(240,82,77,0\.22\)'\}`/);
   assert.match(source, /label: 'Stage 1 · Structure'/);

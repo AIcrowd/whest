@@ -142,7 +142,7 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /import Latex from '\.\/Latex\.jsx'/);
   assert.match(totalCostSource, /The earlier sections identified the symmetry group, decomposed its action into components, and computed the local quantities that govern work\./);
   assert.match(totalCostSource, /We do that by combining the multiplication cost and the accumulation cost/);
-  assert.match(totalCostSource, /SECTION_FIVE_TOTAL_FORMULA = String\.raw`\\mathrm\{Total\} = \\mu \+ \\alpha`/);
+  assert.match(totalCostSource, /SECTION_FIVE_TOTAL_FORMULA = String\.raw`\\mathrm\{Total\\ Cost\} = \\mu \+ \\alpha`/);
   assert.match(totalCostSource, /SECTION_FIVE_MU_FORMULA = String\.raw`\\mu = \(k-1\)\\prod_a M_a`/);
   assert.match(totalCostSource, /SECTION_FIVE_ALPHA_FORMULA = String\.raw`\\alpha = \\prod_a \\alpha_a`/);
   assert.match(totalCostSource, /The full equation below makes that assembly explicit, and the summary that follows shows how the resulting symmetry-aware total compares with the naive dense baseline\./);
@@ -158,12 +158,21 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   // Top-line formula: Burnside unrolled on the μ arm, ∏_a α_a on the α arm.
   // The hero renders the real machinery now, not a three-term shorthand.
   assert.match(totalCostSource, /AGGREGATION_FORMULA/);
-  assert.match(totalCostSource, /\\text\{Total\}\s*\\;=\\;/);
+  assert.match(totalCostSource, /\\text\{Total Cost\}\s*\\;=\\;/);
   assert.match(totalCostSource, /\(k-1\)\s*\\cdot\s*\\prod_\{a\}/);
   assert.match(totalCostSource, /\\tfrac\{1\}\{\|G_a\|\}/);
   assert.match(totalCostSource, /\\sum_\{g\s*\\in\s*G_a\}/);
+  assert.match(totalCostSource, /inSet\('g', tc\(SYM\.group, notationLatex\('g_component'\)\)\)/);
   assert.match(totalCostSource, /\\prod_\{c\}\s*n_c/);
+  assert.match(totalCostSource, /PIECEWISE_LABEL/);
+  assert.match(totalCostSource, /Per-component accumulation formula/);
+  assert.match(totalCostSource, /PIECEWISE_SCOPE_NOTE/);
+  assert.match(totalCostSource, /defines only the per-component accumulation term/);
   assert.match(totalCostSource, /\\prod_\{a\}\s*\\alpha_a/);
+  assert.doesNotMatch(totalCostSource, /\\textcolor\{\$\{SYM\.element\}\}\{\\sum_\{g \\in \$\{notationLatex\('g_component'\)\}\}\}/);
+  assert.doesNotMatch(totalCostSource, /\\textcolor\{\$\{SYM\.cycle\}\}\{\\prod_c \$\{notationLatex\('n_cycle'\)\}\}/);
+  assert.doesNotMatch(totalCostSource, /\\textcolor\{\$\{SYM\.cycle\}\}\{\\prod_\{\\ell/);
+  assert.doesNotMatch(totalCostSource, /\\textcolor\{\$\{SYM\.orbit\}\}\{\\sum_\{\$\{notationLatex\('orbit_o'\)\} \\in X\/G_a\}\}/);
 
   // Glossary — rendered as a definition list. Hybrid policy: covers every
   // symbol in the top line plus any piecewise symbol that appears in two or
@@ -173,9 +182,15 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /symmetry group acting on component/);
   // V and W — phrases wrapped in JSX spans so each can carry its own color
   // (the V/W coloring matches the Interaction Graph legend).
+  assert.match(totalCostSource, /component index/);
   assert.match(totalCostSource, /free \(output\) labels/);
   assert.match(totalCostSource, /summed \(contracted\) labels/);
-  assert.match(totalCostSource, /orbit decomposition/);
+  assert.match(totalCostSource, /set of .*g_component.*-orbits in/);
+  assert.match(totalCostSource, /singleton-regime symbols/);
+  assert.match(totalCostSource, /omega_orbit/);
+  assert.match(totalCostSource, /orbit of the single free label/);
+  assert.match(totalCostSource, /notationLatex\('c_omega_cycles'\)/);
+  assert.match(totalCostSource, /cue: 'hardest case'/);
   assert.match(totalCostSource, /accumulation cost/);
   assert.match(totalCostSource, /<dl/);
   assert.match(totalCostSource, /<dt/);

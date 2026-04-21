@@ -443,26 +443,19 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       numTerms={normalizedExample?.subscripts?.length ?? 1}
                     />
 
-                    {/*
-                      Entire bordered box is the click target. `cursor-pointer`
-                      is set explicitly because Tailwind's Preflight resets
-                      <button> to `cursor: default`, which otherwise leaves
-                      users without the standard link affordance. The hover
-                      state brightens the border + background so the reader
-                      sees this as one coherent clickable surface rather than
-                      a decorative callout with an underlined word somewhere
-                      inside it.
-                    */}
                     <button
                       type="button"
                       onClick={() => setExprModalOpen(true)}
-                      className="mt-6 block w-full cursor-pointer rounded-md border border-gray-200 bg-gray-50 px-4 py-3 text-left text-sm text-gray-700 transition-colors hover:border-gray-300 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
+                      className="-mx-4 -mb-4 mt-8 block w-auto cursor-pointer border-t border-stone-200/70 bg-gray-50 px-4 py-4 text-left transition-colors hover:bg-stone-100/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
                     >
-                      <span className="block font-semibold text-gray-900 underline decoration-dotted underline-offset-4">
+                      <span className="block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
+                        Appendix note
+                      </span>
+                      <span className="mt-1.5 block font-serif text-[15px] leading-7 text-stone-900">
                         Is the detected group the full symmetry of this expression?
                       </span>
-                      <span className="mt-1.5 block text-[13px] leading-6 text-gray-700">
-                        No — the total sum admits a strictly larger formal symmetry group. An appendix on the distinction, on{' '}
+                      <span className="mt-1.5 block text-[12.5px] leading-6 text-stone-700">
+                        No — the approach described above detects the symmetry of the indexed computation, but the fully summed expression can admit additional symmetry. An appendix on the distinction, on{' '}
                         <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_pointwise_restricted_v')} \\times ${notationLatex('s_w_summed')}`} />, and on the per-preset output-tensor storage savings it still leaves on the table.
                       </span>
                     </button>

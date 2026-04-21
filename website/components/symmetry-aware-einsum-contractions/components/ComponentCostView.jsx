@@ -387,7 +387,7 @@ export default function ComponentCostView({
 
   return (
     <div className="min-w-0 space-y-6">
-      <div className="editorial-two-col-divider-lg border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2">
+      <div className="editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2">
         <div id="interaction-graph" className="bg-white p-4 scroll-mt-24">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
