@@ -153,7 +153,7 @@ test('appendix section 4 is rewritten as a formal-only contrast chapter with a t
   assert.match(source, /Section 3 isolated the visible-label action that remains pointwise on the output tensor\./);
   assert.match(source, /The complementary factor comes from the summed labels alone\./);
   assert.match(source, /Formal takeaway/);
-  assert.match(source, /S\(W_\{\\mathrm\{summed\}\}\) is the full symmetric group on the summed labels/);
+  assert.match(source, /<InlineMathText>\s*\{`\$\$\{notationLatex\('s_w_summed'\)\}\$ is the full symmetric group on the summed labels;/);
   assert.match(source, /preserve the full sum after aggregation but do not give pointwise equal summands/);
   assert.match(source, /dummy swap \(k l\) preserves the double sum but sends individual summands to different products/);
   assert.match(source, /\(k,l\) = \(\s*<span style=\{wStyle\}>0<\/span>,<span style=\{wStyle\}>1<\/span>\)\s*:/);

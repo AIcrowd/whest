@@ -901,7 +901,11 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                   <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-4">
                     <p className={APPENDIX_KICKER_CLASS}>Formal takeaway</p>
                     <div className="space-y-3">
-                      <p className={APPENDIX_APP_TEXT_CLASS}>S(W_{\mathrm{summed}}) is the full symmetric group on the summed labels; its elements rename bound summation variables and preserve the formal expression after summation.</p>
+                      <p className={APPENDIX_APP_TEXT_CLASS}>
+                        <InlineMathText>
+                          {`$${notationLatex('s_w_summed')}$ is the full symmetric group on the summed labels; its elements rename bound summation variables and preserve the formal expression after summation.`}
+                        </InlineMathText>
+                      </p>
                       <p className={APPENDIX_APP_TEXT_CLASS}>That invariance is weaker than pointwise symmetry: it preserves the total sum but does not force equality of individual summands at permuted tuples.</p>
                     </div>
                   </div>
