@@ -23,12 +23,9 @@ import InlineMathText from './InlineMathText.jsx';
 export default function NarrativeCallout({ label, tone = 'muted', children }) {
   if (tone === 'accent') {
     // `.produces` capstone — dashed top divider, inline kicker on the
-    // left, paragraph wrapping to the right. No box, no bg.
-    //
-    // Important: the kicker and the sentence use very different font
-    // metrics (10px uppercase sans vs 17px serif). Aligning the parent
-    // row is not enough; each text run needs its own equal-height lane so
-    // the visible center of the glyphs is centered, not just the DOM box.
+    // left, paragraph wrapping to the right. On wider screens it becomes
+    // a top-aligned two-column grid so the kicker stays in its own lane
+    // while the sentence reads as one continuous sign-off.
     return (
       <div className="mt-5 flex flex-col gap-3 border-t border-dashed border-gray-200 pt-5 sm:grid sm:grid-cols-[180px_minmax(0,1fr)] sm:items-start sm:gap-x-5 sm:gap-y-3">
         {label ? (
