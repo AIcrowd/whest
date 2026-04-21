@@ -36,6 +36,7 @@ const BASE_THEME_ROLES = {
   symmetryObject: DEEP_SLATE,
   action: DEEP_SLATE,
   quantity: QUANTITY_TEAL,
+  editorialAccent: WARM_EXCEPTION,
   statusSuccess: STATUS_SUCCESS,
   statusWarning: STATUS_WARNING,
 };
@@ -417,6 +418,21 @@ export const EXPLORER_THEME_PRESETS = [
     }),
   ),
   createExplorerTheme(
+    'blue-margin',
+    'Blue margin',
+    'A midpoint between Blue ledger and Warm margin: blue equations and structure, with warm accents reserved for narrative framing and quiet UI chrome.',
+    createThemeRoles({
+      summedSide: DEEP_SLATE,
+      symmetryObject: INFO_DEEP,
+      action: DEEP_SLATE,
+      quantity: DEEP_SLATE,
+      muted: MID_SLATE,
+      editorialAccent: WARM_EXCEPTION,
+      statusSuccess: DEEP_SLATE,
+      statusWarning: HERO_MUTED,
+    }),
+  ),
+  createExplorerTheme(
     'warm-margin',
     'Warm margin',
     'A bookish high-contrast mode that keeps coral, black, and slate dominant while surfacing the warm exception more visibly.',
@@ -523,6 +539,7 @@ export function getExplorerThemeCssVariables(themeOrId) {
     '--border': roles.border,
     '--status-success': roles.statusSuccess,
     '--status-warning': roles.statusWarning,
+    '--editorial-accent': roles.editorialAccent,
   };
 }
 

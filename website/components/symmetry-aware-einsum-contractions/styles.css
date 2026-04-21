@@ -15,6 +15,7 @@
   --explorer-quantity: var(--success);
   --explorer-status-success: var(--status-success);
   --explorer-status-warning: var(--status-warning);
+  --explorer-editorial-accent: var(--editorial-accent);
 }
 
 .explorer-support-prose {

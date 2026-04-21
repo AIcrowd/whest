@@ -50,6 +50,7 @@ test('explorer theme registry exposes the approved presets', () => {
       'mean-prop-led',
       'cool-proof',
       'blue-ledger',
+      'blue-margin',
       'warm-margin',
       'cov-prop-editorial',
     ],
@@ -70,6 +71,7 @@ test('explorer theme registry exposes the approved presets', () => {
   const inkAuthority = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'ink-authority');
   const meanPropLed = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'mean-prop-led');
   const blueLedger = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'blue-ledger');
+  const blueMargin = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'blue-margin');
   const warmMargin = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'warm-margin');
   const covPropEditorial = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'cov-prop-editorial');
   assert.ok(editorialBalance);
@@ -86,6 +88,7 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.ok(inkAuthority);
   assert.ok(meanPropLed);
   assert.ok(blueLedger);
+  assert.ok(blueMargin);
   assert.ok(warmMargin);
   assert.ok(covPropEditorial);
   assert.equal(editorialBalance.roles.freeSide, '#F0524D');
@@ -110,6 +113,9 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.equal(inkAuthority.roles.symmetryObject, '#292C2D');
   assert.equal(meanPropLed.roles.action, '#2959C4');
   assert.equal(blueLedger.roles.quantity, '#2959C4');
+  assert.equal(blueMargin.roles.symmetryObject, '#2959C4');
+  assert.equal(blueMargin.roles.quantity, '#334155');
+  assert.equal(blueMargin.roles.editorialAccent, '#B29F9E');
   assert.equal(warmMargin.roles.quantity, '#B29F9E');
   assert.equal(covPropEditorial.roles.statusSuccess, '#B29F9E');
   assert.equal(getExplorerThemePreset('missing-id').id, 'editorial-balance');
@@ -157,6 +163,7 @@ test('explorer theme CSS variables expose status tokens for the scoped alias lay
   assert.equal(cssVars['--status-warning'], teachingCalm.roles.statusWarning);
   assert.equal(cssVars['--success'], teachingCalm.roles.quantity);
   assert.equal(cssVars['--warning'], teachingCalm.roles.action);
+  assert.equal(cssVars['--editorial-accent'], teachingCalm.roles.editorialAccent);
 });
 
 test('styles.css defines the explorer-scoped role variable aliases', () => {
@@ -179,4 +186,5 @@ test('styles.css defines the explorer-scoped role variable aliases', () => {
   assert.match(aliasBlock, /--explorer-quantity:\s*var\(--success\);/);
   assert.match(aliasBlock, /--explorer-status-success:\s*var\(--status-success\);/);
   assert.match(aliasBlock, /--explorer-status-warning:\s*var\(--status-warning\);/);
+  assert.match(aliasBlock, /--explorer-editorial-accent:\s*var\(--editorial-accent\);/);
 });
