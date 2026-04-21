@@ -43,6 +43,8 @@ test('chapter 1 keeps the row-level ledger and decision logic but drops the old 
   assert.match(source, /n=\{1\}[\s\S]*Treat admissible moves with/);
   assert.match(source, /n=\{1\}[\s\S]*Reject every non-admissible/);
   assert.match(source, /Chapter 2 places the visible-label action/);
+  assert.match(source, /text-\[var\(--status-success\)\]/);
+  assert.match(source, /text-\[var\(--status-warning\)\]/);
 
   assert.doesNotMatch(source, /<p className=\{APPENDIX_KICKER_CLASS\}>Pointwise symmetry<\/p>/);
   assert.doesNotMatch(source, /<p className=\{APPENDIX_KICKER_CLASS\}>Formal symmetry<\/p>/);
@@ -53,6 +55,10 @@ test('chapter 1 keeps the row-level ledger and decision logic but drops the old 
   assert.doesNotMatch(source, /<p className=\{APPENDIX_KICKER_CLASS\}>Frobenius consequence<\/p>/);
   assert.doesNotMatch(source, /<p className=\{APPENDIX_KICKER_CLASS\}>Decision rule<\/p>/);
   assert.doesNotMatch(source, /<p className=\{APPENDIX_KICKER_CLASS\}>Why this matters<\/p>/);
+  assert.doesNotMatch(source, /text-emerald-700/);
+  assert.doesNotMatch(source, /text-amber-700/);
+  assert.doesNotMatch(source, /text-amber-600/);
+  assert.doesNotMatch(source, /text-amber-900/);
 });
 
 test('chapter 2 remains the contrast chapter with aligned takeaways and both worked examples', () => {
@@ -71,20 +77,24 @@ test('chapter 3 merges formal-group assembly with the Burnside overcount warning
   assert.match(source, /n=\{3\}[\s\S]*Putting them together yields the larger formal symmetry group/);
   assert.match(source, /n=\{3\}[\s\S]*direct product/);
   assert.match(source, /n=\{3\}[\s\S]*<VSubSwConstruction/);
-  assert.match(source, /Applying Burnside to/);
-  assert.match(source, /would yield/);
-  assert.match(source, /too optimistic/);
-  assert.match(source, /only preserves the post-summation expression/);
+  assert.match(source, /Selected einsum/);
+  assert.match(source, /<p className=\{APPENDIX_KICKER_CLASS\}>Burnside on <Latex math="G_\{\\text\{f\}\}" \/>/);
+  assert.match(source, /<p className=\{APPENDIX_KICKER_CLASS\}>true <Latex math="\\alpha" \/> under <Latex math="G_\{\\text\{pt\}\}" \/>/);
+  assert.match(source, /same formal orbit that causes the mistake/);
   assert.match(source, /That closes the expression-level story\. Part II turns to storage/);
+  assert.doesNotMatch(source, /Applying Burnside to \$G_\{\\text\{f\}\}\$ would yield \$\\alpha =\$/);
+  assert.doesNotMatch(source, /That value is not a faithful compression count\./);
 });
 
-test('chapter 3 no-overcount branch shows the selected einsum and page-wide preset suggestions', () => {
+test('chapter 3 comparison branches always show the selected einsum and only suggest real mismatch presets', () => {
   assert.match(source, /export default function ExpressionLevelModal\(\{ isOpen, onClose, analysis, group, example = null, onSelectPreset = null \}\)/);
-  assert.match(source, /const BURNSIDE_GAP_PRESET_IDS = \['bilinear-trace', 'young-s3', 'young-s4-v2w2'\];/);
+  assert.match(source, /const BURNSIDE_GAP_PRESET_IDS = \['bilinear-trace', 'direct-s2-c3', 'mixed-chain'\];/);
   assert.match(source, /Selected einsum/);
   assert.match(source, /<FormulaHighlighted example=\{example\} hoveredLabels=\{null\} \/>/);
-  assert.match(source, /To see the impact, jump to one of these presets:/);
+  assert.match(source, /examples that make the mismatch visible/);
   assert.match(source, /onClick=\{\(\) => onSelectPreset\?\.\(suggestedPreset\.idx\)\}/);
+  assert.doesNotMatch(source, /const BURNSIDE_GAP_PRESET_IDS = \[[^\]]*young-s3/);
+  assert.doesNotMatch(source, /const BURNSIDE_GAP_PRESET_IDS = \[[^\]]*young-s4-v2w2/);
 });
 
 test('storage-aware savings is now a separate unnumbered part-II item', () => {
@@ -98,6 +108,8 @@ test('storage-aware savings is now a separate unnumbered part-II item', () => {
   assert.match(source, /<th className="px-2 py-2 font-semibold text-right">Saving<\/th>/);
   assert.match(source, /The formal-only factor \$\$\{notationLatex\('s_w_summed'\)\}\$ contributes nothing at the storage level/);
   assert.match(source, /Scope/);
+  assert.match(source, /className="border-t border-stone-200\/70 bg-gray-50 px-5 py-4 md:px-6"/);
+  assert.doesNotMatch(source, /className="mt-6 border-t border-stone-200\/70 bg-gray-50 px-5 py-4 md:px-6"/);
   assert.doesNotMatch(source, /Section 5 closed the accumulation-count story/);
   assert.doesNotMatch(source, /appeared in Section 4 as the \$V_\{\\mathrm\{free\}\}\$-factor/);
 });

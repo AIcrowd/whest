@@ -2,7 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EXAMPLES } from './components/symmetry-aware-einsum-contractions/data/examples.js';
 import { analyzeExample } from './components/symmetry-aware-einsum-contractions/engine/pipeline.js';
-import { computeExpressionAlphaTotal } from './components/symmetry-aware-einsum-contractions/engine/comparisonAlpha.js';
+import {
+  computeExpressionAlphaComparison,
+  computeExpressionAlphaTotal,
+} from './components/symmetry-aware-einsum-contractions/engine/comparisonAlpha.js';
 
 test('comparison α for Frobenius at n=2 = 3 (G_expr over-compresses)', () => {
   const ex = EXAMPLES.find((e) => e.id === 'frobenius');
@@ -37,4 +40,44 @@ test('comparison α for bilinear-trace at n=2 is less than the correct α', () =
   // G_expr applied via orbit compression under-counts distinct accumulations.
   assert.ok(exprAlpha !== null, 'expected non-null comparison alpha');
   assert.ok(exprAlpha < correctAlpha, `expected exprAlpha (${exprAlpha}) < correctAlpha (${correctAlpha})`);
+});
+
+test('comparison helper reports none state when there is no meaningful G_f vs G_pt count difference to show', () => {
+  const ex = EXAMPLES.find((e) => e.id === 'matrix-chain');
+  assert.ok(ex, 'matrix-chain example not found');
+  const analysis = analyzeExample(ex, 3);
+  const comparison = computeExpressionAlphaComparison({ analysis, example: ex });
+
+  assert.equal(comparison.state, 'none');
+  assert.equal(comparison.exprAlpha, null);
+  assert.equal(comparison.witness, null);
+});
+
+test('comparison helper reports coincident state when G_f is larger but α happens to match numerically', () => {
+  const ex = EXAMPLES.find((e) => e.id === 'young-s3');
+  assert.ok(ex, 'young-s3 example not found');
+  const analysis = analyzeExample(ex, 5);
+  const comparison = computeExpressionAlphaComparison({ analysis, example: ex });
+
+  assert.equal(comparison.state, 'coincident');
+  assert.equal(comparison.exprAlpha, comparison.correctAlpha);
+  assert.equal(comparison.exprAlpha, 125);
+  assert.equal(comparison.witness, null);
+});
+
+test('comparison helper reports mismatch state and exposes a structural witness for bilinear-trace', () => {
+  const ex = EXAMPLES.find((e) => e.id === 'bilinear-trace');
+  assert.ok(ex, 'bilinear-trace example not found');
+  const analysis = analyzeExample(ex, 2);
+  const comparison = computeExpressionAlphaComparison({ analysis, example: ex });
+
+  assert.equal(comparison.state, 'mismatch');
+  assert.ok(comparison.exprAlpha !== null, 'expected non-null expression alpha');
+  assert.ok(comparison.exprAlpha < comparison.correctAlpha);
+  assert.ok(comparison.witness, 'expected a structural witness');
+  assert.notEqual(comparison.witness.tupleA.join('|'), comparison.witness.tupleB.join('|'));
+  assert.equal(comparison.witness.outputA.join('|'), comparison.witness.outputB.join('|'));
+  assert.notEqual(comparison.witness.summandA, comparison.witness.summandB);
+  assert.match(comparison.witness.summandA, /^A\[/);
+  assert.match(comparison.witness.summandB, /^A\[/);
 });

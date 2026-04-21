@@ -6,7 +6,7 @@ import VSubSwConstruction from './VSubSwConstruction.jsx';
 import AppendixSection from './AppendixSection.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
 import { FormulaHighlighted, SymmetryChip } from './StickyBar.jsx';
-import { computeExpressionAlphaTotal } from '../engine/comparisonAlpha.js';
+import { computeExpressionAlphaComparison } from '../engine/comparisonAlpha.js';
 import { EXAMPLES } from '../data/examples.js';
 import { variableSymmetryLabel } from '../lib/symmetryLabel.js';
 import { notationColor, notationLatex } from '../lib/notationSystem.js';
@@ -15,7 +15,7 @@ import { notationColor, notationLatex } from '../lib/notationSystem.js';
 // einsum and per-operand symmetry declarations straight from the source
 // of truth, rather than duplicating that data into the row array below.
 const EXAMPLES_BY_ID = new Map(EXAMPLES.map((ex) => [ex.id, ex]));
-const BURNSIDE_GAP_PRESET_IDS = ['bilinear-trace', 'young-s3', 'young-s4-v2w2'];
+const BURNSIDE_GAP_PRESET_IDS = ['bilinear-trace', 'direct-s2-c3', 'mixed-chain'];
 const BURNSIDE_GAP_PRESETS = BURNSIDE_GAP_PRESET_IDS
   .map((id) => {
     const preset = EXAMPLES_BY_ID.get(id);
@@ -184,6 +184,11 @@ const APPENDIX_SMALL_TEXT_CLASS = 'text-[12px] leading-5 text-gray-600';
 const APPENDIX_MONO_LEDGER_CLASS = 'font-mono text-[13px] leading-relaxed text-gray-900';
 const APPENDIX_KICKER_CLASS = 'text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400';
 const APPENDIX_FOOTNOTE_CLASS = 'text-[11px] italic text-muted-foreground';
+
+function formatWitnessTuple(tuple) {
+  if (!Array.isArray(tuple) || tuple.length === 0) return '∅';
+  return `(${tuple.join(', ')})`;
+}
 
 function AppendixTwoColBlock({
   left,
@@ -489,9 +494,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
   const vLabels = group?.vLabels ?? [];
   const wLabels = group?.wLabels ?? [];
   const expressionGroup = analysis?.expressionGroup ?? null;
-  const exprAlpha = useMemo(
-    () => computeExpressionAlphaTotal({ analysis }),
-    [analysis],
+  const alphaComparison = useMemo(
+    () => computeExpressionAlphaComparison({ analysis, example }),
+    [analysis, example],
   );
 
   useEffect(() => {
@@ -637,7 +642,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                             <td className="px-2 py-2"><Latex math="\{i,j\}, \varnothing, \{i,j\}" /></td>
                             <td className="px-2 py-2"><Latex math="\{e\}, 2" /></td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-800">2</td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-emerald-700">0</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-[var(--status-success)]">0</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">2</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">0</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-800">1</td>
@@ -649,7 +654,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                             <td className="px-2 py-2"><Latex math="\{i,j\}, \varnothing, \{i,j\}" /></td>
                             <td className="px-2 py-2"><Latex math="\{e\}, 2" /></td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-800">2</td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-emerald-700">1</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-[var(--status-success)]">1</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">1</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">0</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-800">2</td>
@@ -661,9 +666,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                             <td className="px-2 py-2"><Latex math="\{i,j,k\}, \{i,j,k\}, \varnothing" /></td>
                             <td className="px-2 py-2"><Latex math="\{e\}, 3" /></td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-800">6</td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-emerald-700">2</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-[var(--status-success)]">2</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">1</td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-amber-600">3</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-[var(--status-warning)]">3</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-800">3</td>
                           </tr>
                           <tr>
@@ -673,7 +678,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                             <td className="px-2 py-2"><Latex math="\{a,b,c\}, \{a,b\}, \{c\}" /></td>
                             <td className="px-2 py-2"><Latex math="S_3, 1" /></td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-800">6</td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-emerald-700">5</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-[var(--status-success)]">5</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">1</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">0</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-800">6</td>
@@ -717,7 +722,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
 
                     <div className="border-y border-gray-200">
                       <div className="grid gap-x-5 gap-y-1 py-3 sm:grid-cols-[112px_minmax(0,1fr)]">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-700">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--status-success)]">
                           Record
                         </p>
                         <p className={APPENDIX_APP_TEXT_CLASS}>
@@ -737,7 +742,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                         </p>
                       </div>
                       <div className="grid gap-x-5 gap-y-1 border-t border-gray-200 py-3 sm:grid-cols-[112px_minmax(0,1fr)]">
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-700">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--status-warning)]">
                           Reject
                         </p>
                         <p className={APPENDIX_APP_TEXT_CLASS}>
@@ -984,26 +989,74 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
               }
               right={
                 <div className="space-y-4">
-                  {exprAlpha !== null ? (
+                  {example ? (
+                    <div className="space-y-2">
+                      <p className={APPENDIX_KICKER_CLASS}>Selected einsum</p>
+                      <div className="inline-flex max-w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-sm">
+                        <div className="font-mono text-[12px] leading-6 text-stone-900">
+                          <FormulaHighlighted example={example} hoveredLabels={null} />
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <p className={APPENDIX_PROSE_CLASS}>
+                    <InlineMathText>
+                      {`This panel asks what the accumulation story would look like if one naively counted orbits under the larger formal group $${notationLatex('g_formal')}$ instead of the genuine tuple-level symmetry group $${notationLatex('g_pointwise')}$.`}
+                    </InlineMathText>
+                  </p>
+
+                  {alphaComparison.state === 'mismatch' ? (
                     <>
-                      <p className={APPENDIX_PROSE_CLASS}>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <div className="rounded-md border border-amber-200 bg-amber-50/80 px-4 py-3">
+                          <p className={APPENDIX_KICKER_CLASS}>Burnside on <Latex math="G_{\text{f}}" /></p>
+                          <p className="mt-2 text-[26px] font-semibold leading-none text-[var(--status-warning)]">
+                            {alphaComparison.exprAlpha}
+                          </p>
+                        </div>
+                        <div className="rounded-md border border-stone-200 bg-stone-50 px-4 py-3">
+                          <p className={APPENDIX_KICKER_CLASS}>true <Latex math="\alpha" /> under <Latex math="G_{\text{pt}}" /></p>
+                          <p className="mt-2 text-[26px] font-semibold leading-none text-stone-900">
+                            {alphaComparison.correctAlpha}
+                          </p>
+                        </div>
+                      </div>
+
+                      <p className={APPENDIX_APP_TEXT_CLASS}>
                         <InlineMathText>
-                          {`If Burnside's orbit-counting formula is applied to $G_{\\text{f}}$ instead of $G_{\\text{pt}}$, it counts formal orbits rather than genuine equal-summand orbits. The resulting compression claim is therefore too optimistic.`}
+                          {`Burnside on $G_{\\text{f}}$ would claim fewer accumulation bins than the true $\\alpha$; here is one same formal orbit that causes the mistake.`}
                         </InlineMathText>
                       </p>
-                      <div className="rounded-md border border-amber-200 bg-amber-50/80 px-5 py-4">
-                        <p className={APPENDIX_APP_TEXT_STRONG_CLASS.replace('text-gray-900', 'text-amber-900')}>
-                          <InlineMathText>
-                            {`Applying Burnside to $G_{\\text{f}}$ would yield $\\alpha =$`}
-                          </InlineMathText>{' '}
-                          <strong>{exprAlpha}</strong>.
-                        </p>
-                        <p className={`mt-2 ${APPENDIX_APP_TEXT_CLASS.replace('text-gray-700', 'text-amber-800')}`}>
-                          <InlineMathText>
-                            {`That value is not a faithful compression count. Orbits under $S(W_{\\mathrm{summed}})$ contain tuples whose summand values differ, because the $W_{\\mathrm{summed}}$ factor only preserves the post-summation expression, not the tuple-level summands themselves.`}
-                          </InlineMathText>
-                        </p>
-                      </div>
+
+                      {alphaComparison.witness ? (
+                        <div className="rounded-md border border-amber-200 bg-amber-50/80 px-5 py-4">
+                          <p className={APPENDIX_KICKER_CLASS}>A bad formal orbit</p>
+                          <p className={`mt-2 ${APPENDIX_APP_TEXT_CLASS.replace('text-gray-700', 'text-[var(--status-warning)]')}`}>
+                            These two full assignments lie in the same formal orbit and hit the same output bin, but they produce different summands:
+                          </p>
+                          <div className="mt-3 space-y-3 font-mono text-[12px] leading-6 text-stone-900">
+                            <div>
+                              <span className="font-semibold text-[var(--status-warning)]">{formatWitnessTuple(alphaComparison.witness.tupleA)}</span>
+                              <span className="mx-2 text-stone-400">→</span>
+                              <span>{alphaComparison.witness.summandA}</span>
+                            </div>
+                            <div>
+                              <span className="font-semibold text-[var(--status-warning)]">{formatWitnessTuple(alphaComparison.witness.tupleB)}</span>
+                              <span className="mx-2 text-stone-400">→</span>
+                              <span>{alphaComparison.witness.summandB}</span>
+                            </div>
+                          </div>
+                          <p className={`mt-3 ${APPENDIX_APP_TEXT_CLASS.replace('text-gray-700', 'text-[var(--status-warning)]')}`}>
+                            Same output bin:{' '}
+                            <span className="font-mono font-semibold text-stone-900">
+                              {formatWitnessTuple(alphaComparison.witness.outputA)}
+                            </span>
+                            {' '}— so a formal-orbit count would collapse them together even though the tuple-level summands differ.
+                          </p>
+                        </div>
+                      ) : null}
+
                       <p className={APPENDIX_PROSE_CLASS}>
                         <InlineMathText>
                           {`$G_{\\text{pt}}$ is the largest group under which every orbit's summand values are genuinely equal, so Burnside's "one representative per orbit" principle is faithful there and only there.`}
@@ -1013,25 +1066,41 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                   ) : (
                     <div className="rounded-md border border-gray-200 bg-gray-50 px-5 py-4">
                       <div className="space-y-3">
-                        {example ? (
-                          <div className="space-y-2">
-                            <p className={APPENDIX_KICKER_CLASS}>Selected einsum</p>
-                            <div className="inline-flex max-w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-sm">
-                              <div className="font-mono text-[12px] leading-6 text-stone-900">
-                                <FormulaHighlighted example={example} hoveredLabels={null} />
-                              </div>
+                        {alphaComparison.state === 'coincident' ? (
+                          <p className={APPENDIX_APP_TEXT_CLASS}>
+                            <InlineMathText>
+                              {`For this einsum $G_{\\text{f}}$ is conceptually larger, but at the current $n$ it happens to produce the same numeric $\\alpha$.`}
+                            </InlineMathText>
+                          </p>
+                        ) : (
+                          <p className={APPENDIX_APP_TEXT_CLASS}>
+                            <InlineMathText>
+                              {`For this einsum $G_{\\text{f}}$ and $G_{\\text{pt}}$ do not produce a different accumulation count here.`}
+                            </InlineMathText>
+                          </p>
+                        )}
+
+                        {alphaComparison.exprAlpha !== null ? (
+                          <div className="grid gap-3 sm:grid-cols-2">
+                            <div className="rounded-md border border-stone-200 bg-white px-4 py-3">
+                              <p className={APPENDIX_KICKER_CLASS}>Burnside on <Latex math="G_{\text{f}}" /></p>
+                              <p className="mt-2 text-[22px] font-semibold leading-none text-stone-900">
+                                {alphaComparison.exprAlpha}
+                              </p>
+                            </div>
+                            <div className="rounded-md border border-stone-200 bg-white px-4 py-3">
+                              <p className={APPENDIX_KICKER_CLASS}>true <Latex math="\alpha" /> under <Latex math="G_{\text{pt}}" /></p>
+                              <p className="mt-2 text-[22px] font-semibold leading-none text-stone-900">
+                                {alphaComparison.correctAlpha}
+                              </p>
                             </div>
                           </div>
                         ) : null}
-                        <p className={APPENDIX_APP_TEXT_CLASS}>
-                          <InlineMathText>
-                            {`For this einsum $G_{\\text{f}}$ coincides with $G_{\\text{pt}}$ — either $|W_{\\mathrm{summed}}| \\leq 1$ or the induced permutation group on $V_{\\mathrm{free}}$ is trivial — so there is no Burnside overcount to display.`}
-                          </InlineMathText>
-                        </p>
+
                         {onSelectPreset && BURNSIDE_GAP_PRESETS.length ? (
                           <div className="border-t border-gray-200 pt-3">
                             <p className={APPENDIX_SMALL_TEXT_CLASS}>
-                              To see the impact, jump to one of these presets:
+                              To see examples that make the mismatch visible numerically, jump to:
                             </p>
                             <div className="mt-2 flex flex-wrap gap-2">
                               {BURNSIDE_GAP_PRESETS.map((suggestedPreset) => (
@@ -1139,7 +1208,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                           <td className="px-2 py-2 whitespace-nowrap"><Latex math={r.vSub} /></td>
                           <td className="px-2 py-2 text-right font-mono">{r.ae}</td>
                           <td className="px-2 py-2 text-right font-mono">{r.as}</td>
-                          <td className={`px-2 py-2 text-right font-mono whitespace-nowrap ${hasSaving ? 'text-emerald-700' : ''}`}>
+                          <td className={`px-2 py-2 text-right font-mono whitespace-nowrap ${hasSaving ? 'text-[var(--status-success)]' : ''}`}>
                             {hasSaving ? `${r.saving} (${r.pct}%)` : '—'}
                           </td>
                         </tr>
@@ -1165,7 +1234,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                 </p>
               </div>
 
-              <div className="mt-6 border-t border-stone-200/70 bg-gray-50 px-5 py-4 md:px-6">
+              <div className="border-t border-stone-200/70 bg-gray-50 px-5 py-4 md:px-6">
                 <div className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
                   Scope
                 </div>
