@@ -74,19 +74,19 @@ test('notation registry defines text, latex, and the semantic grammar anchors', 
 
   assert.equal(notationText('v_free'), 'V_free');
   assert.equal(notationLatex('v_free'), 'V_{\\mathrm{free}}');
-  assert.equal(notationColor('v_free'), recommendedTheme.roles.freeSide);
+  assert.equal(notationColor('v_free'), '#292C2D');
   assert.equal(notationText('w_summed'), 'W_summed');
   assert.equal(notationLatex('w_summed'), 'W_{\\mathrm{summed}}');
-  assert.equal(notationColor('w_summed'), recommendedTheme.roles.summedSide);
-  assert.equal(notationColor('g_detected'), recommendedTheme.roles.symmetryObject);
-  assert.equal(notationColor('sigma_row_move'), recommendedTheme.roles.action);
-  assert.equal(notationColor('alpha_total'), recommendedTheme.roles.quantity);
+  assert.equal(notationColor('w_summed'), '#334155');
+  assert.equal(notationColor('g_detected'), '#292C2D');
+  assert.equal(notationColor('sigma_row_move'), '#292C2D');
+  assert.equal(notationColor('alpha_total'), '#292C2D');
   assert.equal(notationColor('m_incidence'), '#292C2D');
   assert.equal(notationColor('l_labels'), '#5D5F60');
   assert.equal(notationColor('g_v_factor'), notationColor('v_free'));
-  assert.equal(notationColor('g_w_factor'), notationColor('w_summed'));
-  assert.equal(notationColor('projection_pi_v_free'), notationColor('v_free'));
-  assert.equal(notationColor('c_omega_cycles'), recommendedTheme.roles.quantity);
+  assert.equal(notationColor('g_w_factor'), '#334155');
+  assert.equal(notationColor('projection_pi_v_free'), '#292C2D');
+  assert.equal(notationColor('c_omega_cycles'), '#292C2D');
   assert.equal(notationText('c_omega_cycles'), 'c_Ω(g)');
   assert.equal(notationLatex('c_omega_cycles'), 'c_\\Omega(g)');
   assert.equal(
@@ -218,7 +218,7 @@ test('active explorer theme overrides notation colors globally until reset', () 
   resetActiveExplorerTheme();
   assert.equal(getActiveExplorerThemeId(), EXPLORER_THEME_RECOMMENDED_ID);
   assert.equal(getActiveExplorerThemeRoles().hero, recommendedTheme.roles.hero);
-  assert.equal(notationColor('alpha_total'), recommendedTheme.roles.quantity);
+  assert.equal(notationColor('alpha_total'), '#292C2D');
 
   setActiveExplorerTheme(teachingCalm.id, teachingCalm.roles);
   assert.equal(getActiveExplorerThemeId(), 'teaching-calm');
@@ -236,7 +236,7 @@ test('active explorer theme overrides notation colors globally until reset', () 
 
   resetActiveExplorerTheme();
   assert.equal(getActiveExplorerThemeId(), EXPLORER_THEME_RECOMMENDED_ID);
-  assert.equal(notationColor('alpha_total'), recommendedTheme.roles.quantity);
+  assert.equal(notationColor('alpha_total'), '#292C2D');
 });
 
 test('editorial-noir-math remaps approved notation families through the rich math palette', () => {
