@@ -59,7 +59,7 @@ const ENUMERATE_Y = STAGE_1_BOTTOM_Y + 12;
 const ENUMERATE_H = 44;
 const STAGE_2_TOP_Y = ENUMERATE_Y + ENUMERATE_H + 32;
 const Q_SINGLETON_Y = STAGE_2_TOP_Y + BAND_PAD_Y;    // top pad
-const Q_DIRECT_Y = Q_SINGLETON_Y + ROW_GAP;          // q_direct (F-check) — post-dimino
+const Q_DIRECT_Y = Q_SINGLETON_Y + ROW_GAP;          // q_direct (Factorization check) — post-dimino
 const Q_CROSSVW_Y = Q_DIRECT_Y + ROW_GAP;            // q_crossVW
 const Q_FULLSYM_Y = Q_CROSSVW_Y + ROW_GAP;           // q_fullSym
 const STAGE_2_BOTTOM_Y = Q_FULLSYM_Y + ROW_GAP + LEAF_H + BAND_PAD_Y; // bottom pad
@@ -160,7 +160,7 @@ const QUESTIONS = [
   },
   {
     id: 'q_direct',
-    short: 'F-check passes ?',
+    short: 'Factorization check passes ?',
     checks: 'Three post-dimino conditions, all required: (1) no element of $G$ maps a $V$-label to a $W$-label (no cross), (2) $|G| = |G_V| \\cdot |G_W|$ where $G_V$, $G_W$ are the projections onto $V$ and $W$, and (3) both $|G_V| > 1$ and $|G_W| > 1$ (meaningfulness guard).',
     why: 'All three together say $G$ is exactly the direct product of its $V$-action and its $W$-action, with no coupling. $\\alpha$ then decomposes: for each $V$-tuple, Burnside runs independently on the $W$-side. Closed form: $\\alpha = (\\prod_{\\ell \\in V} n_\\ell) \\cdot |[n]^W / G_W|$.',
     intuition: '"No cross" alone is not enough — *bilinear-trace* has no cross elements but $|G|=2 \\neq |G_V| \\cdot |G_W| = 4$ because its single non-identity element $(i\\;j)(k\\;l)$ is a *coupled* $\\mathbb{Z}_2$ (swapping $V$ forces swapping $W$). Passing examples: *four-A-grid*, *direct-s2-s2*, *direct-s2-c3*, *direct-s3-s2*.',
@@ -172,7 +172,7 @@ const QUESTIONS = [
     short: 'Cross-V/W element ?',
     checks: 'Does any element $g \\in G$ move at least one $V$-label to a $W$-label (or vice versa)? An element-level scan: for each $g$, does there exist $\\ell \\in V$ with $g(\\ell) \\in W$?',
     why: 'The Young regime (the leaf reached via "yes" → "G = Sym(L_c)" → "yes") requires at least one cross element — its multinomial closed form assumes $G$ genuinely mixes $V$ and $W$. Without cross, the Young regime cannot fire and brute-force orbit is the only remaining option.',
-    intuition: 'Reaching this node with answer "no" happens when the F-check above refused for a *numeric* reason, not because of cross. Examples: *four-A-grid*\'s $S_2\\{a,b\\} \\times S_2\\{i,j\\}$ has zero cross elements, but it already fired the direct-product regime at the F-check and never reaches here. *bilinear-trace*\'s coupled $\\mathbb{Z}_2$ also has zero cross elements, but the F-check refused on $|G| = 2 \\neq |G_V| \\cdot |G_W| = 4$ — that is a "no-cross but reach here" case, and it falls straight to brute-force orbit. Cross elements themselves arise from base-group generators — declared axis symmetries on an operand that span $V$ and $W$ — or from top-group transpositions in the wreath — identical-operand swaps that pair a $V$-label with a $W$-label.',
+    intuition: 'Reaching this node with answer "no" happens when the factorization check above refused for a *numeric* reason, not because of cross. Examples: *four-A-grid*\'s $S_2\\{a,b\\} \\times S_2\\{i,j\\}$ has zero cross elements, but it already fired the direct-product regime at the factorization check and never reaches here. *bilinear-trace*\'s coupled $\\mathbb{Z}_2$ also has zero cross elements, but the factorization check refused on $|G| = 2 \\neq |G_V| \\cdot |G_W| = 4$ — that is a "no-cross but reach here" case, and it falls straight to brute-force orbit. Cross elements themselves arise from base-group generators — declared axis symmetries on an operand that span $V$ and $W$ — or from top-group transpositions in the wreath — identical-operand swaps that pair a $V$-label with a $W$-label.',
     onTrue: 'q_fullSym',
     onFalse: 'bruteForceOrbit',
     stage: 2,
@@ -550,7 +550,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: lastPlan.spineEdge.color, strokeWidth: 1.5 },
   });
 
-  // Stage 2 — q_singleton → q_direct (F-check) → q_crossVW → q_fullSym.
+  // Stage 2 — q_singleton → q_direct (Factorization check) → q_crossVW → q_fullSym.
   // All four questions need post-Dimino group elements.
   const singletonQ = QUESTIONS.find((q) => q.id === 'q_singleton');
   nodes.push({
@@ -578,7 +578,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
-  // q_singleton no → q_direct (F-check) on the spine.
+  // q_singleton no → q_direct (Factorization check) on the spine.
   const directQ = QUESTIONS.find((q) => q.id === 'q_direct');
   nodes.push({
     id: directQ.id,

@@ -175,14 +175,14 @@ export default function AlgorithmAtAGlance({ example }) {
     <section id="algorithm-at-a-glance" aria-labelledby="algorithm-at-a-glance-title" className="mb-10 scroll-mt-24">
       <ExplorerSectionCard
         eyebrow={
-          <AnchorLink anchorId="algorithm-at-a-glance" labelText="Algorithm at a Glance">
+          <AnchorLink anchorId="algorithm-at-a-glance" labelText="Einsum at a Glance">
             <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">
-              Algorithm at a Glance
+              Einsum at a Glance
             </span>
           </AnchorLink>
         }
         title={<span id="algorithm-at-a-glance-title">What this explorer is counting</span>}
-        description="The whole algorithm in ten lines, paired with the notation it operates on."
+        description="The contraction, its notation, and the computation it encodes."
         className="border-gray-200 bg-white"
         contentClassName="pt-6"
       >

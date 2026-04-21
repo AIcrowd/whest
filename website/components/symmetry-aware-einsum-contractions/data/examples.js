@@ -127,7 +127,7 @@ export const EXAMPLES = [
     id: 'bilinear-trace-3',
     name: 'Trilinear trace',
     formula: "einsum('ik,jl,mn→ijm', A, A, A)",
-    description: 'Three identical ops → S₃ acting diagonally on V and W; no cross, F-check fails (|G|=6 ≠ 9).',
+    description: 'Three identical ops → S₃ acting diagonally on V and W; no cross, but the factorization check fails (|G|=6 ≠ 9).',
     expectedGroup: 'S3 diagonal',
     regimeId: 'bruteForceOrbit',
     color: '#B45309',

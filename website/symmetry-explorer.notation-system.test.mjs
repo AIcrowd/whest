@@ -361,7 +361,7 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(constructionSource, /notationLatex\('g_pointwise_restricted_v'\)/);
   assert.match(constructionSource, /notationLatex\('s_w_summed'\)/);
   assert.match(constructionSource, /is trivial for this einsum\./);
-  assert.match(appendixSource, /The table below records the additional savings available when output storage also respects the visible-label symmetry induced by /);
+  assert.match(appendixSource, /The table below records the additional savings available when output storage respects those/);
   assert.match(appendixSource, /G_\{\\\\text\{pt\}\}\\\\big\|_\{V_\{\\\\mathrm\{free\}\}\}/);
   assert.match(regimeSpecSource, /\$\$\{notationLatex\('v_free'\)\}\$/);
   assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('w_summed'\)\}\)/);

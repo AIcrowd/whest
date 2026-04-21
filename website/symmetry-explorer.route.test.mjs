@@ -38,6 +38,8 @@ test('article route still wires the appendix modal while the main page stays app
   );
 
   assert.match(appSource, /<ExpressionLevelModal/);
+  assert.match(appSource, /<ExpressionLevelModal[\s\S]*example=\{example\}/);
+  assert.match(appSource, /<ExpressionLevelModal[\s\S]*onSelectPreset=\{handleSelect\}/);
   assert.doesNotMatch(appSource, /VERBATIM, AUDIT-VERIFIED/);
   assert.doesNotMatch(appSource, /REVIEW_RESPONSE\.md §5/);
   assert.doesNotMatch(appSource, /AUDIT\.md/);

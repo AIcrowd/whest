@@ -15,6 +15,14 @@ import { notationColor, notationLatex } from '../lib/notationSystem.js';
 // einsum and per-operand symmetry declarations straight from the source
 // of truth, rather than duplicating that data into the row array below.
 const EXAMPLES_BY_ID = new Map(EXAMPLES.map((ex) => [ex.id, ex]));
+const BURNSIDE_GAP_PRESET_IDS = ['bilinear-trace', 'young-s3', 'young-s4-v2w2'];
+const BURNSIDE_GAP_PRESETS = BURNSIDE_GAP_PRESET_IDS
+  .map((id) => {
+    const preset = EXAMPLES_BY_ID.get(id);
+    const idx = EXAMPLES.findIndex((example) => example.id === id);
+    return preset && idx >= 0 ? { id, idx, preset } : null;
+  })
+  .filter(Boolean);
 
 /**
  * Per-preset operand listing: distinct operand names in first-appearance
@@ -256,28 +264,18 @@ function WorkedExampleNote({ tone = 'neutral', children }) {
   );
 }
 
-function AppendixDetectionCase({
-  kicker,
-  preset,
-  groupLabel,
-  title,
-  borderTop = false,
-  children,
-}) {
+function AppendixPartHeader({ part, title, deck = null, className = '' }) {
   return (
-    <div className={borderTop ? 'border-t border-gray-200 pt-5' : ''}>
-      <p className={APPENDIX_KICKER_CLASS}>{kicker}</p>
-      <div className={`mt-2 ${APPENDIX_PROSE_CLASS}`}>
-        <AppendixPresetHoverLabel
-          preset={preset}
-          groupLabel={groupLabel}
-          className="font-semibold cursor-help border-b border-dotted border-gray-300 text-left"
-        >
-          {title}
-        </AppendixPresetHoverLabel>
-        {' — '}
-        <InlineMathText>{children}</InlineMathText>
-      </div>
+    <div className={['space-y-3', className].join(' ')}>
+      <p className={APPENDIX_KICKER_CLASS}>{part}</p>
+      <h3 className="font-heading text-[28px] font-semibold leading-tight text-gray-900">
+        {title}
+      </h3>
+      {deck ? (
+        <p className="max-w-[78ch] font-serif text-[17px] leading-[1.75] text-gray-700">
+          {deck}
+        </p>
+      ) : null}
     </div>
   );
 }
@@ -487,7 +485,7 @@ const SAVINGS_TABLE_ROWS = [
  * and discloses the output-tensor savings still available via
  * G_pt|_V-aware storage.
  */
-export default function ExpressionLevelModal({ isOpen, onClose, analysis, group }) {
+export default function ExpressionLevelModal({ isOpen, onClose, analysis, group, example = null, onSelectPreset = null }) {
   const vLabels = group?.vLabels ?? [];
   const wLabels = group?.wLabels ?? [];
   const expressionGroup = analysis?.expressionGroup ?? null;
@@ -541,7 +539,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 lineHeight: 1.05,
               }}
             >
-              Expression-level symmetry and symmetry aware storage
+              Expression-level symmetry and Symmetry-aware storage
               <span style={{ color: 'var(--coral)' }}>.</span>
             </h2>
 
@@ -553,11 +551,11 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                 lineHeight: 1.6,
               }}
             >
-              The main page reports the detected pointwise symmetry group that
-              licenses orbit compression. This appendix distinguishes that group
-              from the larger formal symmetry group, explains why Burnside on
-              the formal group overcounts, and shows the storage-aware savings
-              still left on the table.
+              This appendix has two parts. The first follows the
+              expression-level symmetry story from the row-level boundary to
+              the assembled formal group. The second turns to symmetry-aware
+              storage, which sits outside the main page&apos;s accumulation
+              count and exploits a different optimization axis.
             </p>
           </div>
           <button
@@ -582,75 +580,44 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
         </div>
 
         <div className={`pb-10 ${appendixRailClass}`}>
-          {/* §1 — Definitions */}
+          <AppendixPartHeader
+            part="Part I"
+            title="Expression-level symmetry"
+            deck="This first part follows the expression-level argument from the row-level admissibility test to the larger formal symmetry group built after summation."
+          />
+
           <AppendixSection
             n={1}
-            label="The distinction"
-            title="The distinction"
+            label="Where the boundary appears"
+            title="Where does the boundary appear?"
+            className="pt-10"
           >
-            <AppendixTwoColBlock
-              left={
-                <div className={`space-y-4 ${APPENDIX_PROSE_JUSTIFIED_CLASS}`} style={{ textAlign: 'justify' }}>
-                  <p>
-                    <InlineMathText>
-                      {`The main page reports the detected pointwise symmetry group that licenses orbit compression. This appendix asks why that group is the right one for accumulation, and why a larger formal symmetry group appears once the full expression is viewed after summation.`
-}
-                    </InlineMathText>
-                  </p>
-                  <p>
-                    <InlineMathText>
-                      {`The main page's goal is operational: given an einsum $\\sum_t \\text{summand}(t)$, it reports the minimum number of distinct scalar multiplications $\\mu$ and accumulations $\\alpha$ needed to produce the output tensor by reusing work across tuples.`}
-                    </InlineMathText>
-                  </p>
-                  <p>
-                    <InlineMathText>
-                      {`Concretely, $${notationLatex('g_pointwise')} \\subseteq \\mathrm{Sym}(L)$ consists of label permutations $\\pi$ for which $\\text{summand}(t) = \\text{summand}(\\pi^{-1} t)$ for every tuple $t \\in [n]^L$. It is the largest group that genuinely licenses Burnside-style orbit compression in the enumerate-and-accumulate model, and every main-page cost is computed with respect to it.`}
-                    </InlineMathText>
-                  </p>
-                </div>
-              }
-              right={
-                <div className={`space-y-4 ${APPENDIX_PROSE_JUSTIFIED_CLASS}`} style={{ textAlign: 'justify' }}>
-                  <p>
-                    <InlineMathText>
-                      {`By contrast, $${notationLatex('g_formal')} \\subseteq \\mathrm{Sym}(V_{\\mathrm{free}}) \\times \\mathrm{Sym}(W_{\\mathrm{summed}})$ captures invariance of the output tensor viewed as a formal polynomial after the summed labels have been aggregated out.`}
-                    </InlineMathText>
-                  </p>
-                  <p>
-                    <InlineMathText>
-                      {`The two groups need not agree. Formal dummy-index renamings preserve the total expression after summation, but they do not identify equal summands tuple-by-tuple and therefore do not automatically license pointwise compression.`}
-                    </InlineMathText>
-                  </p>
-                  <p>
-                    <InlineMathText>
-                      {`The appendix question is therefore where that boundary appears in the structure of the contraction itself. Section 2 answers it at the row level, by showing which candidate row moves induce genuine relabelings of the contraction and which do not.`}
-                    </InlineMathText>
-                  </p>
-                </div>
-              }
-            />
-          </AppendixSection>
+            <div className="space-y-8">
+              <div className={`space-y-4 ${APPENDIX_PROSE_JUSTIFIED_CLASS}`} style={{ textAlign: 'justify' }}>
+                <p>
+                  <InlineMathText>
+                    {`The main page works with $${notationLatex('g_pointwise')}$ because that is the group under which summands are genuinely equal tuple by tuple. A larger group, $${notationLatex('g_formal')}$, appears only after the full expression is viewed post-summation: it preserves the resulting formal polynomial, but not necessarily the individual summands that produced it.`}
+                  </InlineMathText>
+                </p>
+                <p>
+                  <InlineMathText>
+                    {`The distinction first becomes visible at the row level. Candidate row moves either induce genuine relabelings of the contraction or fail that test altogether, and that boundary determines what can later act on the output tensor and what survives only formally after summation.`}
+                  </InlineMathText>
+                </p>
+              </div>
 
-          {/* §2 — 4-preset gallery + detection boundary */}
-          <AppendixSection
-            n={2}
-            label="The row-level detection boundary"
-            title="When can the σ-loop see a symmetry, and when can't it?"
-          >
-            <AppendixTwoColBlock
-              left={
-                <div className="space-y-4">
-                  <div className={APPENDIX_PROSE_CLASS}>
-                    <InlineMathText>
-                      {`At the row level, the question is whether a candidate row move $${notationLatex('sigma_row_move')} \\in ${notationLatex('g_wreath')}$ still describes the same contraction after the rows of $${notationLatex('m_incidence')}$ are permuted. Writing $M_{\\sigma}$ for the row-permuted incidence matrix, we call $${notationLatex('sigma_row_move')}$ admissible when the column fingerprints of $M_{\\sigma}$ match those of $${notationLatex('m_incidence')}$ bijectively; that matching induces a label permutation $\\pi_{\\sigma}$. The four presets below summarize the possible outcomes: identity after matching, a genuine non-identity relabeling, or rejection.`}
-                    </InlineMathText>
-                  </div>
+              <AppendixTwoColBlock
+                left={
+                  <div className="space-y-5">
+                    <p className={APPENDIX_PROSE_CLASS}>
+                      <InlineMathText>
+                        {`The $\\sigma$-loop tests a candidate row move $${notationLatex('sigma_row_move')} \\in ${notationLatex('g_wreath')}$ by permuting the rows of $${notationLatex('m_incidence')}$. Writing $M_{\\sigma}$ for the row-permuted incidence matrix, we call $${notationLatex('sigma_row_move')}$ admissible when the column fingerprints of $M_{\\sigma}$ match those of $${notationLatex('m_incidence')}$ bijectively; that matching induces the label permutation $\\pi_{\\sigma}$. The ledger below records the outcome for four representative presets.`}
+                      </InlineMathText>
+                    </p>
 
-                  <div className="space-y-2">
-                    <p className={APPENDIX_KICKER_CLASS}>Outcome summary</p>
                     <div className="overflow-x-auto">
-                      <table className={`w-full border-collapse ${APPENDIX_SMALL_TEXT_CLASS}`}>
-                        <thead className="border-y border-gray-200">
+                      <table className={`w-full border-collapse ${APPENDIX_SMALL_TEXT_CLASS} text-gray-600`}>
+                        <thead className="border-y border-gray-200/90">
                           <tr className="text-left text-gray-500">
                             <th className="px-2 py-2 font-semibold text-gray-600">Preset</th>
                             <th className="px-2 py-2 font-semibold text-gray-600"><Latex math="L, V, W" /></th>
@@ -662,18 +629,18 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                             <th className="px-2 py-2 font-semibold text-gray-600"><Latex math="|G_{\text{pt}}|" /></th>
                           </tr>
                         </thead>
-                        <tbody className="[&_tr]:border-b [&_tr]:border-gray-100">
+                        <tbody className="[&_tr]:border-b [&_tr]:border-gray-100/90">
                           <tr>
                             <td className="px-2 py-2">
                               <AppendixPresetHoverLabel preset={EXAMPLES_BY_ID.get('frobenius')} groupLabel="trivial" />
                             </td>
                             <td className="px-2 py-2"><Latex math="\{i,j\}, \varnothing, \{i,j\}" /></td>
                             <td className="px-2 py-2"><Latex math="\{e\}, 2" /></td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-gray-900">2</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-gray-800">2</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-emerald-700">0</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">2</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">0</td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-gray-900">1</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-gray-800">1</td>
                           </tr>
                           <tr>
                             <td className="px-2 py-2">
@@ -681,11 +648,11 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                             </td>
                             <td className="px-2 py-2"><Latex math="\{i,j\}, \varnothing, \{i,j\}" /></td>
                             <td className="px-2 py-2"><Latex math="\{e\}, 2" /></td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-gray-900">2</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-gray-800">2</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-emerald-700">1</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">1</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">0</td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-gray-900">2</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-gray-800">2</td>
                           </tr>
                           <tr>
                             <td className="px-2 py-2">
@@ -693,11 +660,11 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                             </td>
                             <td className="px-2 py-2"><Latex math="\{i,j,k\}, \{i,j,k\}, \varnothing" /></td>
                             <td className="px-2 py-2"><Latex math="\{e\}, 3" /></td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-gray-900">6</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-gray-800">6</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-emerald-700">2</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">1</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-amber-600">3</td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-gray-900">3</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-gray-800">3</td>
                           </tr>
                           <tr>
                             <td className="px-2 py-2">
@@ -705,123 +672,157 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                             </td>
                             <td className="px-2 py-2"><Latex math="\{a,b,c\}, \{a,b\}, \{c\}" /></td>
                             <td className="px-2 py-2"><Latex math="S_3, 1" /></td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-gray-900">6</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-gray-800">6</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-emerald-700">5</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">1</td>
                             <td className="px-2 py-2 font-mono tabular-nums text-gray-500">0</td>
-                            <td className="px-2 py-2 font-mono tabular-nums text-gray-900">6</td>
+                            <td className="px-2 py-2 font-mono tabular-nums text-gray-800">6</td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                  </div>
-                </div>
-              }
-              right={
-                <div className="space-y-5">
-                  <p className={APPENDIX_KICKER_CLASS}>Featured outcomes</p>
-                  <AppendixDetectionCase
-                    kicker="Frobenius outcome"
-                    preset={EXAMPLES_BY_ID.get('frobenius')}
-                    groupLabel="trivial"
-                    title="Frobenius"
-                  >
-                    {`$${notationLatex('m_incidence')}$ is preserved elementwise under the operand swap because both copies of $A$ carry the same subscript string $(i,j)$. Every admissible induced relabeling $\\pi_{\\sigma}$ is therefore the identity, so no non-identity pointwise symmetry is detected; the remaining dummy renaming $(i\\;j)$ survives only as a row-unwitnessed element of $${notationLatex('s_w_summed')}$.`}
-                  </AppendixDetectionCase>
-                  <AppendixDetectionCase
-                    kicker="Triangle outcome"
-                    preset={EXAMPLES_BY_ID.get('triangle')}
-                    groupLabel="C3{i,j,k}"
-                    title="Triangle"
-                    borderTop
-                  >
-                    {`The triangle preset shows the full boundary. The two 3-cycles admit a fingerprint-preserving column matching and therefore induce non-identity relabelings $\\pi_{\\sigma}$, but each adjacent copy-transposition fails that matching test and is rejected. The detected pointwise group is consequently $G_{\\text{pt}} = C_3$, with both successful relabelings and genuine rejections visible in the same table.`}
-                  </AppendixDetectionCase>
-                </div>
-              }
-            >
-            </AppendixTwoColBlock>
 
-            <div className="mt-8">
-              <div className={`space-y-5 ${APPENDIX_PROSE_CLASS}`}>
-                <div className="border-y border-gray-200 py-5">
-                  <p className={APPENDIX_KICKER_CLASS}>Formal takeaway</p>
-                  <div className="mt-4 space-y-4">
-                    <p className={APPENDIX_FORMAL_PROSE_CLASS}>
-                      <InlineMathText>
-                        {`A row move $${notationLatex('sigma_row_move')} \\in ${notationLatex('g_wreath')}$ is admissible when the column fingerprints of $M_{\\sigma}$ determine a bijection back to the columns of $${notationLatex('m_incidence')}$. That bijection induces the label permutation $\\pi_{\\sigma}$.`}
-                      </InlineMathText>
-                    </p>
-                    <p className={APPENDIX_FORMAL_PROSE_CLASS}>
+                    <div className="space-y-3 border-t border-gray-200 pt-4">
+                      <p className={APPENDIX_APP_TEXT_CLASS}>
+                        <span className="font-semibold text-gray-900">Frobenius.</span>{' '}
+                        <InlineMathText>
+                          {`The operand swap is admissible because both copies of $A$ carry the same subscript string $(i,j)$, but the induced relabeling remains $\\pi_{\\sigma} = \\mathrm{id}$. No non-identity pointwise symmetry is detected, and the leftover dummy renaming survives only in $${notationLatex('s_w_summed')}$.`}
+                        </InlineMathText>
+                      </p>
+                      <p className={APPENDIX_APP_TEXT_CLASS}>
+                        <span className="font-semibold text-gray-900">Triangle.</span>{' '}
+                        <InlineMathText>
+                          {`The two 3-cycles are admissible and induce non-identity relabelings $\\pi_{\\sigma}$, while the adjacent copy-transpositions fail the fingerprint match and are rejected. The same preset therefore shows both sides of the boundary at once.`}
+                        </InlineMathText>
+                      </p>
+                    </div>
+                  </div>
+                }
+                right={
+                  <div className="space-y-5">
+                    <div className="border-y border-gray-200 py-5">
+                      <p className={APPENDIX_KICKER_CLASS}>Formal takeaway</p>
+                      <p className={`mt-4 ${APPENDIX_FORMAL_PROSE_CLASS}`}>
+                        <InlineMathText>
+                          {`A row move $${notationLatex('sigma_row_move')} \\in ${notationLatex('g_wreath')}$ is admissible when the column fingerprints of $M_{\\sigma}$ determine a bijection back to the columns of $${notationLatex('m_incidence')}$. That bijection induces the label permutation $\\pi_{\\sigma}$.`}
+                        </InlineMathText>
+                      </p>
+                    </div>
+
+                    <p className={APPENDIX_PROSE_CLASS}>
                       <InlineMathText>
                         {`If every admissible $\\pi_{\\sigma}$ is the identity, as in Frobenius-class presets, then $G_{\\text{pt}} = \\{e\\}$ even though the dummy-label factor $${notationLatex('s_w_summed')}$ may still survive as a larger formal symmetry.`}
                       </InlineMathText>
                     </p>
-                    <ol className={`space-y-3 pl-5 ${APPENDIX_FORMAL_PROSE_CLASS} marker:font-semibold marker:text-gray-500`}>
-                      <li>
-                        <InlineMathText>
-                          {`Record every admissible $\\pi_{\\sigma} \\neq \\mathrm{id}$ in $G_{\\text{pt}}$.`}
-                        </InlineMathText>
-                      </li>
-                      <li>
-                        <InlineMathText>
-                          {`Treat admissible moves with $\\pi_{\\sigma} = \\mathrm{id}$ as identity-only witnesses of the incidence pattern.`}
-                        </InlineMathText>
-                      </li>
-                      <li>
-                        <InlineMathText>
-                          {`Reject every non-admissible $${notationLatex('sigma_row_move')}$, since no relabeling of the contraction realizes it.`}
-                        </InlineMathText>
-                      </li>
-                    </ol>
-                  </div>
-                </div>
-                <p className={`mt-5 ${APPENDIX_PROSE_CLASS}`}>
-                  <InlineMathText>
-                    {`This is the boundary used by the rest of the appendix. Section 3 extracts the visible-label action $${notationLatex('g_pointwise_restricted_v')}$ from the admissible relabelings $\\pi_{\\sigma}$, Section 4 isolates the row-unwitnessed dummy renamings $${notationLatex('s_w_summed')}$, and Section 5 combines the two into the formal symmetry group $${notationLatex('g_formal')}$.`}
-                  </InlineMathText>
-                </p>
-              </div>
-            </div>
-          </AppendixSection>
 
-          {/* §3 — Induced permutation group on V */}
-          <AppendixSection
-            n={3}
-            label="First component"
-            title={
-              <span>
-                The induced permutation group{' '}
-                <InlineMathText>{`$${notationLatex('g_pointwise_restricted_v')}$`}</InlineMathText>
-              </span>
-            }
-          >
+                    <div className="border-y border-gray-200">
+                      <div className="grid gap-x-5 gap-y-1 py-3 sm:grid-cols-[112px_minmax(0,1fr)]">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-emerald-700">
+                          Record
+                        </p>
+                        <p className={APPENDIX_APP_TEXT_CLASS}>
+                          <InlineMathText>
+                            {`Record every admissible $\\pi_{\\sigma} \\neq \\mathrm{id}$ in $G_{\\text{pt}}$.`}
+                          </InlineMathText>
+                        </p>
+                      </div>
+                      <div className="grid gap-x-5 gap-y-1 border-t border-gray-200 py-3 sm:grid-cols-[112px_minmax(0,1fr)]">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-500">
+                          Identity-only
+                        </p>
+                        <p className={APPENDIX_APP_TEXT_CLASS}>
+                          <InlineMathText>
+                            {`Treat admissible moves with $\\pi_{\\sigma} = \\mathrm{id}$ as identity-only witnesses of the incidence pattern.`}
+                          </InlineMathText>
+                        </p>
+                      </div>
+                      <div className="grid gap-x-5 gap-y-1 border-t border-gray-200 py-3 sm:grid-cols-[112px_minmax(0,1fr)]">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-700">
+                          Reject
+                        </p>
+                        <p className={APPENDIX_APP_TEXT_CLASS}>
+                          <InlineMathText>
+                            {`Reject every non-admissible $${notationLatex('sigma_row_move')}$, since no relabeling of the contraction realizes it.`}
+                          </InlineMathText>
+                        </p>
+                      </div>
+                    </div>
 
-            <AppendixTwoColBlock
-              useLg
-              left={
-                <div className="space-y-4">
-                  <p className={APPENDIX_PROSE_CLASS}>
-                    <InlineMathText>
-                      {`Among the admissible induced relabelings $\\pi_{\\sigma}$ from Section 2, some preserve $${notationLatex('v_free')}$ setwise. Restricting them to $${notationLatex('v_free')}$ produces $${notationLatex('g_pointwise_restricted_v')}$, the visible action inherited from the detected pointwise symmetry group.`}
-                    </InlineMathText>
-                  </p>
-                  <div className="border-y border-gray-200 py-5">
-                    <p className={APPENDIX_KICKER_CLASS}>Formal takeaway</p>
-                    <p className={`mt-4 ${APPENDIX_FORMAL_PROSE_CLASS}`}>
+                    <p className={`${APPENDIX_APP_TEXT_CLASS} text-gray-600`}>
                       <InlineMathText>
-                        {`$${notationLatex('g_pointwise_restricted_v')}$ is obtained by restricting the $${notationLatex('v_free')}$-preserving part of $G_{\\text{pt}}$ to the free labels alone.`}
+                        {`This boundary drives the rest of Part I. Chapter 2 places the visible-label action $${notationLatex('g_pointwise_restricted_v')}$ beside the row-unwitnessed dummy renamings $${notationLatex('s_w_summed')}$, and Chapter 3 combines the two into the formal symmetry group $${notationLatex('g_formal')}$.`}
                       </InlineMathText>
                     </p>
                   </div>
-                  <p className={APPENDIX_PROSE_CLASS}>
-                    <InlineMathText>
-                      {`This is the part of $G_{\\text{pt}}$ that still acts on the computed output tensor: for every $\\sigma \\in $${notationLatex('g_pointwise_restricted_v')}$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on output cells themselves.`}
-                    </InlineMathText>
-                  </p>
-                </div>
-              }
-              right={
+                }
+              />
+            </div>
+          </AppendixSection>
+
+          <AppendixSection
+            n={2}
+            label="Pointwise versus formal symmetry"
+            title="Pointwise symmetry versus formal symmetry"
+          >
+            <div className={`space-y-4 ${APPENDIX_PROSE_CLASS}`}>
+              <p>
+                <InlineMathText>
+                  {`Chapter 1 isolates the row moves that genuinely relabel the contraction. What remains now splits in two: a visible action that still moves output cells, and a formal-only action that survives only after the summed labels have been aggregated away.`}
+                </InlineMathText>
+              </p>
+            </div>
+
+            <div className="editorial-two-col-divider-lg mt-2 grid gap-y-4 gap-x-8 lg:grid-cols-2">
+              <div className="order-1 space-y-4 lg:col-start-1 lg:row-start-1">
+                <p className={APPENDIX_PROSE_CLASS}>
+                  <span className="font-semibold text-gray-900">Visible action on the output tensor.</span>{' '}
+                  <InlineMathText>
+                    {`Among the admissible induced relabelings $\\pi_{\\sigma}$ from Chapter 1, some preserve $${notationLatex('v_free')}$ setwise. Restricting them to $${notationLatex('v_free')}$ produces $${notationLatex('g_pointwise_restricted_v')}$, the action inherited from the detected pointwise symmetry group.`}
+                  </InlineMathText>
+                </p>
+              </div>
+              <div className="order-5 space-y-4 lg:col-start-2 lg:row-start-1">
+                <p className={APPENDIX_PROSE_CLASS}>
+                  <span className="font-semibold text-gray-900">Formal symmetry on the summed labels.</span>{' '}
+                  <InlineMathText>
+                    {`The complementary factor comes from the summed labels alone. Once the visible $V_{\\mathrm{free}}$ action is separated, permutations of $W_{\\mathrm{summed}}$ act only after aggregation. They preserve the full sum after aggregation but do not give pointwise equal summands.`}
+                  </InlineMathText>
+                </p>
+              </div>
+
+              <div className="order-2 border-y border-gray-200 py-5 lg:col-start-1 lg:row-start-2">
+                <p className={APPENDIX_KICKER_CLASS}>Formal takeaway</p>
+                <p className={`mt-4 ${APPENDIX_FORMAL_PROSE_CLASS}`}>
+                  <InlineMathText>
+                    {`$${notationLatex('g_pointwise_restricted_v')}$ is obtained by restricting the $${notationLatex('v_free')}$-preserving part of $G_{\\text{pt}}$ to the free labels alone.`}
+                  </InlineMathText>
+                </p>
+              </div>
+              <div className="order-6 border-y border-gray-200 py-5 lg:col-start-2 lg:row-start-2">
+                <p className={APPENDIX_KICKER_CLASS}>Formal takeaway</p>
+                <p className={`mt-4 ${APPENDIX_FORMAL_PROSE_CLASS}`}>
+                  <InlineMathText>
+                    {`$${notationLatex('s_w_summed')}$ is the full symmetric group on the summed labels; its elements rename bound summation variables and preserve the formal expression after summation.`}
+                  </InlineMathText>
+                </p>
+              </div>
+
+              <div className="order-3 lg:col-start-1 lg:row-start-3">
+                <p className={APPENDIX_PROSE_CLASS}>
+                  <InlineMathText>
+                    {`This is the part of $G_{\\text{pt}}$ that still acts on the computed output tensor: for every $\\sigma \\in ${notationLatex('g_pointwise_restricted_v')}$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on output cells themselves.`}
+                  </InlineMathText>
+                </p>
+              </div>
+              <div className="order-7 lg:col-start-2 lg:row-start-3">
+                <p className={APPENDIX_PROSE_CLASS}>
+                  <InlineMathText>
+                    {`That invariance is weaker than pointwise symmetry: it preserves the total sum but does not force equality of individual summands at permuted tuples.`}
+                  </InlineMathText>
+                </p>
+              </div>
+
+              <div className="order-4 lg:col-start-1 lg:row-start-4">
                 <AppendixWorkedExample
                   preset={EXAMPLES_BY_ID.get('bilinear-trace')}
                   title="bilinear trace"
@@ -880,46 +881,25 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                     </InlineMathText>
                   </WorkedExampleNote>
                 </AppendixWorkedExample>
-              }
-            />
-          </AppendixSection>
-
-          {/* §4 — S(W_summed) */}
-          <AppendixSection
-            n={4}
-            label="Second component"
-            title="The symmetric group on summed labels"
-          >
-            <AppendixTwoColBlock
-              left={
-                <div className="space-y-4">
-                  <p className={APPENDIX_APP_TEXT_CLASS}>
-                    <InlineMathText>
-                      {`Section 3 isolated the visible-label action that remains pointwise on the output tensor. The complementary factor comes from the summed labels alone. Once the visible $V_{\\mathrm{free}}$ action is extracted, permutations of $W_{\\mathrm{summed}}$ act only after aggregation. They preserve the full sum after aggregation but do not give pointwise equal summands.`}
-                    </InlineMathText>
-                  </p>
-                  <div className="space-y-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-4">
-                    <p className={APPENDIX_KICKER_CLASS}>Formal takeaway</p>
-                    <div className="space-y-3">
-                      <p className={APPENDIX_APP_TEXT_CLASS}>
-                        <InlineMathText>
-                          {`$${notationLatex('s_w_summed')}$ is the full symmetric group on the summed labels; its elements rename bound summation variables and preserve the formal expression after summation.`}
-                        </InlineMathText>
-                      </p>
-                      <p className={APPENDIX_APP_TEXT_CLASS}>That invariance is weaker than pointwise symmetry: it preserves the total sum but does not force equality of individual summands at permuted tuples.</p>
-                    </div>
-                  </div>
-                </div>
-              }
-              right={
+              </div>
+              <div className="order-8 lg:col-start-2 lg:row-start-4">
                 <AppendixWorkedExample
                   preset={EXAMPLES_BY_ID.get('bilinear-trace')}
                   title="bilinear trace"
                   groupLabel={EXAMPLES_BY_ID.get('bilinear-trace')?.expectedGroup}
                   intro={
-                    <InlineMathText>
-                      {`dummy swap (k l) preserves the double sum but sends individual summands to different products`}
-                    </InlineMathText>
+                    <>
+                      <p>
+                        <InlineMathText>
+                          {`With $W_{\\mathrm{summed}} = \\{k,l\\}$, the dummy swap $(k\\;l)$ preserves the double sum but sends individual summands to different products.`}
+                        </InlineMathText>
+                      </p>
+                      <p>
+                        <InlineMathText>
+                          {`Compare one pair of permuted summands:`}
+                        </InlineMathText>
+                      </p>
+                    </>
                   }
                 >
                   <WorkedExampleEquationLedger>
@@ -956,278 +936,252 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group 
                     </InlineMathText>
                   </WorkedExampleNote>
                 </AppendixWorkedExample>
-              }
-            />
+              </div>
+            </div>
           </AppendixSection>
 
-          {/* §5 — Assemble G_f */}
           <AppendixSection
-            n={5}
-            label="How the formal group is built"
-            title="How the formal group is built"
+            n={3}
+            label="Assembling the formal group"
+            title="Assembling the formal group"
           >
-            <div className={APPENDIX_APP_TEXT_CLASS}>
-              <Latex math="= (\text{row-witnessed V-action}) \times (\text{row-unwitnessed W-permutation})" />
+            <div className={`space-y-4 ${APPENDIX_PROSE_CLASS}`}>
+              <p>
+                <InlineMathText>
+                  {`Chapter 2 isolates the two surviving ingredients: the visible action on $V_{\\mathrm{free}}$ and the formal-only permutations of $W_{\\mathrm{summed}}$. Putting them together yields the larger formal symmetry group $${notationLatex('g_formal')}$ — but the same larger group does not license pointwise compression of the accumulation count.`}
+                </InlineMathText>
+              </p>
             </div>
 
             <AppendixTwoColBlock
               useLg
+              className="mt-2"
               left={
-                <div className={`space-y-4 ${APPENDIX_PROSE_CLASS}`}>
-                  <p>
-                    <InlineMathText>
-                      {`Sections 3 and 4 have now isolated the two ingredients of the formal symmetry story: the row-witnessed action on $V_{\\mathrm{free}}$ and the row-unwitnessed permutations of $W_{\\mathrm{summed}}$. We now combine them.`}
-                    </InlineMathText>
+                <div className="space-y-4">
+                  <div className={APPENDIX_PROSE_CLASS}>
+                    <p>
+                      <InlineMathText>
+                        {`Each pair $(\\sigma_{V_{\\mathrm{free}}},\\;\\sigma_{W_{\\mathrm{summed}}})$ with $\\sigma_{V_{\\mathrm{free}}} \\in G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ and $\\sigma_{W_{\\mathrm{summed}}} \\in S(W_{\\mathrm{summed}})$ lifts to a single label permutation on $V_{\\mathrm{free}} \\cup W_{\\mathrm{summed}}$ that acts separately on the free and summed positions. The set of all such lifts is $G_{\\text{f}}$, with order $|G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}| \\cdot |W_{\\mathrm{summed}}|!$.`}
+                      </InlineMathText>
+                    </p>
+                    <p className="mt-4">
+                      <InlineMathText>
+                        {`No extra closure step is needed here. $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ has already been determined from the detected pointwise group, $S(W_{\\mathrm{summed}})$ depends only on the number of summed labels, and $G_{\\text{f}}$ is their direct product.`}
+                      </InlineMathText>
+                    </p>
+                  </div>
+                  <p className={APPENDIX_SMALL_TEXT_CLASS}>
+                    The widget below enumerates these direct-product pairings for
+                    the selected preset. Hover in any column to highlight the
+                    corresponding rows.
                   </p>
-                  <p>
-                    <InlineMathText>
-                      {`Each pair $(\\sigma_{V_{\\mathrm{free}}},\\;\\sigma_{W_{\\mathrm{summed}}})$ with $\\sigma_{V_{\\mathrm{free}}} \\in G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ and $\\sigma_{W_{\\mathrm{summed}}} \\in S(W_{\\mathrm{summed}})$ lifts to a single label permutation on $V_{\\mathrm{free}} \\cup W_{\\mathrm{summed}}$ that acts separately on the free and summed positions.`}
-                    </InlineMathText>
-                  </p>
-                  <p>
-                    <InlineMathText>
-                      {`The set of all such lifts is $G_{\\text{f}}$, with order $|G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}| \\cdot |W_{\\mathrm{summed}}|!$. This is the decomposition promised by the appendix: every $V_{\\mathrm{free}}$-preserving polynomial symmetry splits into a row-witnessed action on output labels and a row-unwitnessed permutation of dummy labels.`}
-                    </InlineMathText>
-                  </p>
-                  <p>
-                    <InlineMathText>
-                      {`No additional closure step is needed at this stage. $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ has already been determined from the detected pointwise group, $S(W_{\\mathrm{summed}})$ depends only on how many summed labels there are, and $G_{\\text{f}}$ is their direct product.`}
-                    </InlineMathText>
-                  </p>
+                  <VSubSwConstruction
+                    expressionGroup={expressionGroup}
+                    vLabels={vLabels}
+                    wLabels={wLabels}
+                  />
                 </div>
               }
               right={
                 <div className="space-y-4">
-                  <div className={`rounded-md border border-gray-100 bg-muted/20 px-4 py-3 ${APPENDIX_APP_TEXT_CLASS}`}>
-                    <p>
-                      The widget below enumerates the direct-product pairings for the selected preset.
-                    </p>
-                    <p className={`mt-2 ${APPENDIX_SMALL_TEXT_CLASS}`}>
-                      Rightmost-column rows pair one <InlineMathText>{`$G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$`}</InlineMathText>{' '}
-                      orbit and one <InlineMathText>{`$S(W_{\\mathrm{summed}})$`}</InlineMathText>{' '}
-                      orbit.
-                      Hover in any column to highlight corresponding rows.
-                    </p>
-                  </div>
-                  <div className="rounded-md border border-gray-200 bg-white p-2">
-                    <VSubSwConstruction
-                      expressionGroup={expressionGroup}
-                      vLabels={vLabels}
-                      wLabels={wLabels}
-                    />
-                  </div>
+                  {exprAlpha !== null ? (
+                    <>
+                      <p className={APPENDIX_PROSE_CLASS}>
+                        <InlineMathText>
+                          {`If Burnside's orbit-counting formula is applied to $G_{\\text{f}}$ instead of $G_{\\text{pt}}$, it counts formal orbits rather than genuine equal-summand orbits. The resulting compression claim is therefore too optimistic.`}
+                        </InlineMathText>
+                      </p>
+                      <div className="rounded-md border border-amber-200 bg-amber-50/80 px-5 py-4">
+                        <p className={APPENDIX_APP_TEXT_STRONG_CLASS.replace('text-gray-900', 'text-amber-900')}>
+                          <InlineMathText>
+                            {`Applying Burnside to $G_{\\text{f}}$ would yield $\\alpha =$`}
+                          </InlineMathText>{' '}
+                          <strong>{exprAlpha}</strong>.
+                        </p>
+                        <p className={`mt-2 ${APPENDIX_APP_TEXT_CLASS.replace('text-gray-700', 'text-amber-800')}`}>
+                          <InlineMathText>
+                            {`That value is not a faithful compression count. Orbits under $S(W_{\\mathrm{summed}})$ contain tuples whose summand values differ, because the $W_{\\mathrm{summed}}$ factor only preserves the post-summation expression, not the tuple-level summands themselves.`}
+                          </InlineMathText>
+                        </p>
+                      </div>
+                      <p className={APPENDIX_PROSE_CLASS}>
+                        <InlineMathText>
+                          {`$G_{\\text{pt}}$ is the largest group under which every orbit's summand values are genuinely equal, so Burnside's "one representative per orbit" principle is faithful there and only there.`}
+                        </InlineMathText>
+                      </p>
+                    </>
+                  ) : (
+                    <div className="rounded-md border border-gray-200 bg-gray-50 px-5 py-4">
+                      <div className="space-y-3">
+                        {example ? (
+                          <div className="space-y-2">
+                            <p className={APPENDIX_KICKER_CLASS}>Selected einsum</p>
+                            <div className="inline-flex max-w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-sm">
+                              <div className="font-mono text-[12px] leading-6 text-stone-900">
+                                <FormulaHighlighted example={example} hoveredLabels={null} />
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+                        <p className={APPENDIX_APP_TEXT_CLASS}>
+                          <InlineMathText>
+                            {`For this einsum $G_{\\text{f}}$ coincides with $G_{\\text{pt}}$ — either $|W_{\\mathrm{summed}}| \\leq 1$ or the induced permutation group on $V_{\\mathrm{free}}$ is trivial — so there is no Burnside overcount to display.`}
+                          </InlineMathText>
+                        </p>
+                        {onSelectPreset && BURNSIDE_GAP_PRESETS.length ? (
+                          <div className="border-t border-gray-200 pt-3">
+                            <p className={APPENDIX_SMALL_TEXT_CLASS}>
+                              To see the impact, jump to one of these presets:
+                            </p>
+                            <div className="mt-2 flex flex-wrap gap-2">
+                              {BURNSIDE_GAP_PRESETS.map((suggestedPreset) => (
+                                <button
+                                  key={suggestedPreset.id}
+                                  type="button"
+                                  onClick={() => onSelectPreset?.(suggestedPreset.idx)}
+                                  className="inline-flex items-center rounded-full border border-stone-200 bg-white px-3 py-1.5 text-[12px] font-medium text-stone-700 shadow-sm transition-colors hover:border-stone-300 hover:bg-stone-50"
+                                >
+                                  {suggestedPreset.preset.name}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    </div>
+                  )}
                 </div>
               }
             />
 
+            <p className={`mt-6 ${APPENDIX_APP_TEXT_CLASS} text-gray-600`}>
+              <InlineMathText>
+                {`That closes the expression-level story. Part II turns to storage, where the visible free-label action still matters, but now as a post-accumulation output-layout symmetry rather than a summand-compression rule.`}
+              </InlineMathText>
+            </p>
           </AppendixSection>
 
-          {/* §6 — Why G_f is not used for compression */}
-          <AppendixSection
-            n={6}
-            label="Why Burnside on the formal group overcounts"
-            title="Why Burnside on the formal group overcounts"
-          >
+          <AppendixPartHeader
+            part="Part II"
+            title="Symmetry-aware storage"
+            deck="The last appendix item changes optimization axis. It is no longer about compressing summands at expression level, but about collapsing mirrored output cells after accumulation has already happened."
+            className="border-t border-gray-200 pt-10"
+          />
 
-            {exprAlpha !== null ? (
-              <>
-                <div className={`rounded-md border-l-4 border-amber-500 bg-amber-50 px-5 py-4 ${APPENDIX_APP_TEXT_STRONG_CLASS.replace('text-gray-900', 'text-amber-900')}`}>
-                  <p>
-                    <InlineMathText>
-                      {`Applying Burnside's orbit-counting formula to $G_{\\text{f}}$ in place of $G_{\\text{pt}}$ would yield $\\alpha =$`}
-                    </InlineMathText>{' '}
-                    <strong>{exprAlpha}</strong>.
-                  </p>
-                  <p className={`mt-2 ${APPENDIX_APP_TEXT_CLASS.replace('text-gray-700', 'text-amber-800')}`}>
-                    <InlineMathText>
-                      {`This value is not correct as a compression count. Orbits under $S(W_{\\mathrm{summed}})$ contain tuples whose summand values differ — because $S(W_{\\mathrm{summed}})$ is row-unwitnessed, its orbits don't correspond to any row-level symmetry of the summand, only to the bound-variable renaming of the total (Section 4 above). The main-page cost card therefore reports $\\alpha$ with respect to $G_{\\text{pt}}$ only.`}
-                    </InlineMathText>
-                  </p>
-                </div>
-                <div className={`mt-4 max-w-[74ch] ${APPENDIX_PROSE_CLASS}`}>
-                  <p>
-                    <InlineMathText>
-                      {`$G_{\\text{pt}}$ is the largest group under which every orbit's summand values are genuinely equal, so Burnside's "one representative per orbit" principle is faithful there. Any larger group collapses tuples whose representatives are only formally related, producing a compression claim that does not match the actual output tensor.`}
-                    </InlineMathText>
-                  </p>
-                </div>
-              </>
-            ) : (
-              <div className={`rounded-md border border-border/60 bg-muted/20 px-5 py-4 ${APPENDIX_APP_TEXT_CLASS.replace('text-gray-700', 'text-gray-600')}`}>
-                <InlineMathText>
-                  {`For this einsum $G_{\\text{f}}$ coincides with $G_{\\text{pt}}$ (either $|W_{\\mathrm{summed}}| \\leq 1$ or the induced permutation group on $V_{\\mathrm{free}}$ is trivial), so the two counts agree and no contrast is available to display.`}
-                </InlineMathText>
+          <section className="pt-8">
+            <div className="space-y-5">
+              <div className={`space-y-4 ${APPENDIX_PROSE_JUSTIFIED_CLASS}`}>
+                <p>
+                  <InlineMathText>
+                    {`The governing group for storage is $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$, the visible free-label action already extracted in Part I. It appeared there as the $V_{\\mathrm{free}}$ factor of $${notationLatex('g_formal')}$, but it is equally a subgroup of $G_{\\text{pt}}$ itself. That is why the output tensor is genuinely pointwise-symmetric under it, and why storage collapse here is legitimate rather than merely formal.`}
+                  </InlineMathText>
+                </p>
+                <p>
+                  <InlineMathText>
+                    {`The table below records the additional savings available when output storage respects those $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ orbits. This is a separate optimization axis from the main page's $\\alpha$: it reduces mirrored writes to output cells after the accumulations have already been determined.`}
+                  </InlineMathText>
+                </p>
               </div>
-            )}
-          </AppendixSection>
 
-          {/* §7 — Leftover savings via G_pt|_V-aware storage */}
-          <AppendixSection
-            n={7}
-            label="Storage-aware savings"
-            title="Storage-aware savings"
-          >
-
-            {/*
-              Bridging paragraph. Without this the reader hits
-              "G_pt|V-aware storage" immediately after six sections spent
-              arguing that "G_f's extras beyond G_pt admit no pointwise
-              compression", and the apparent contradiction lands before
-              the axis-pivot is named. Three beats:
-                1. Close the accumulation-count story from §6.
-                2. Name the new axis (output-tensor storage).
-                3. Reframe G_pt|V's role: it appeared in §5 as the
-                   V-factor of G_f, but equivalently it is a *subgroup
-                   of G_pt itself*. That dual role is the reason R is
-                   genuinely pointwise-symmetric under G_pt|V — and
-                   therefore why storage collapse is a legitimate
-                   (not formal-only) win here.
-            */}
-            <AppendixTwoColBlock
-              left={
-                <div className={`space-y-4 ${APPENDIX_PROSE_JUSTIFIED_CLASS}`}>
-                  <p>
-                    <InlineMathText>
-                      {`Section 6 closed the accumulation-count story: $G_{\\text{f}}$'s extra elements beyond $G_{\\text{pt}}$ admit no pointwise compression of $\\alpha$ under the enumerate-and-accumulate evaluation model. Before closing the appendix we pivot to a *different* optimization axis — output-tensor storage — where savings *are* available. The group governing this axis is $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$: it appeared in Section 5 as the $V_{\\mathrm{free}}$-factor of $G_{\\text{f}}$, but equivalently it is a subgroup of $G_{\\text{pt}}$ itself — the $V_{\\mathrm{free}}$-action that $G_{\\text{pt}}$'s $V_{\\mathrm{free}}/W_{\\mathrm{summed}}$-preserving elements already induce. That dual role is precisely why the output tensor is genuinely *pointwise*-symmetric under it, and therefore why the savings discussed below are not formal-only.`}
-                    </InlineMathText>
-                  </p>
-                  <p>
-                    <InlineMathText>
-                      {`For every $\\sigma \\in G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$, the identity $R[\\sigma\\,\\omega] = R[\\omega]$ holds on the output tensor cell by cell. For generic operands at large enough $n$, this inclusion is tight: $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ is the complete structural $V_{\\mathrm{free}}$ symmetry of $R$.`}
-                    </InlineMathText>
-                  </p>
-                  <p>
-                    <InlineMathText>
-                      {`The table below records the additional savings available when output storage also respects the visible-label symmetry induced by $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$.`}
-                    </InlineMathText>
-                  </p>
-                </div>
-              }
-              right={
-                <div className={`space-y-4 ${APPENDIX_PROSE_JUSTIFIED_CLASS}`}>
-                  <p>
-                    <InlineMathText>
-                      {`At small $n$, the index space can degenerate and create coincidental free-label symmetries that disappear once larger label sizes separate the relevant orbits. A symmetry-aware output store can exploit the persistent $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ orbits by mapping each orbit of output cells to one physical slot and thereby reducing mirrored writes.`}
-                    </InlineMathText>
-                  </p>
-                  <p>
-                    <InlineMathText>
-                      {`The reported $\\alpha$ does not include that win because it counts distinct accumulation operations in the enumerate-and-accumulate model using $G_{\\text{pt}}$ as the summand-value equivalence relation. Post-accumulation storage collapse is a separate optimization axis, so folding it into $\\alpha$ would blur two different sources of savings.`}
-                    </InlineMathText>
-                  </p>
-                  <p>
-                    <InlineMathText>
-                      {`Per $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$-orbit of size $s$, the savings are $(s-1) \\cdot (\\text{accumulations per bin})$ operations, so the total gap scales with the order and orbit structure of $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$. Presets with trivial $G_{\\text{pt}}\\big|_{V_{\\mathrm{free}}}$ carry no output-tensor mirroring — there is nothing to collapse, and $\\alpha_{\\text{storage}} = \\alpha_{\\text{engine}}$.`}
-                    </InlineMathText>
-                  </p>
-                  <p className={APPENDIX_FOOTNOTE_CLASS}>
-                    <InlineMathText>
-                      {`The $S(W_{\\mathrm{summed}})$ factor of $G_{\\text{f}}$ contributes nothing at the storage level because it acts on summation variables rather than output cells; there is no output-tensor symmetry to exploit on the $W_{\\mathrm{summed}}$ side beyond what $G_{\\text{pt}}$ already captures through its orbit structure on tuples.`}
-                    </InlineMathText>
-                  </p>
-                </div>
-              }
-            />
-
-            <div className="mt-5 overflow-x-auto">
-              <table className="w-full border-collapse text-[12px]">
-                <thead className="border-b border-gray-200">
-                  <tr className="text-left text-[12px] text-muted-foreground">
-                    <th className="px-2 py-2 font-semibold">Preset</th>
-                    <th className="px-2 py-2 font-semibold">Einsum</th>
-                    <th className="px-2 py-2 font-semibold">Operand sym.</th>
-                    <th className="px-2 py-2 font-semibold">V</th>
-                    <th className="px-2 py-2 font-semibold"><Latex math="G_{\text{pt}}\big|_{V_{\mathrm{free}}}" /></th>
-                    <th className="px-2 py-2 font-semibold text-right"><Latex math="\alpha_{\text{engine}}" /></th>
-                    <th className="px-2 py-2 font-semibold text-right"><Latex math="\alpha_{\text{storage}}" /></th>
-                    <th className="px-2 py-2 font-semibold text-right">Saving</th>
-                  </tr>
-                </thead>
-                <tbody className="[&_tr]:border-b [&_tr]:border-gray-100">
-                  {SAVINGS_TABLE_ROWS.map((r) => {
-                    const hasSaving = r.saving > 0;
-                    const preset = EXAMPLES_BY_ID.get(r.id);
-                    const subs = preset?.expression?.subscripts ?? '';
-                    const output = preset?.expression?.output ?? '';
-                    const operands = describeOperands(preset);
-                    const groupLabel = preset?.expectedGroup ?? appendixGroupLabel(r.vSub);
-                    return (
-                      <tr key={r.id} className={hasSaving ? '' : 'text-muted-foreground'}>
-                        <td className="px-2 py-2 whitespace-nowrap">
-                          <AppendixPresetHoverLabel preset={preset} groupLabel={groupLabel} />
-                        </td>
-                        <td className="px-2 py-2 font-mono whitespace-nowrap">
-                          <AppendixEinsumHoverCell
-                            subs={subs}
-                            output={output}
-                            preset={preset}
-                            groupLabel={groupLabel}
-                          />
-                        </td>
-                        <td className="px-2 py-2 whitespace-nowrap">
-                          {operands.map((o, i) => (
-                            <span key={o.name}>
-                              {i > 0 && <span className="text-muted-foreground">; </span>}
-                              <span className="font-mono font-semibold">{o.name}</span>
-                              {o.count > 1 && (
-                                <span className="font-mono text-muted-foreground">×{o.count}</span>
-                              )}
-                              <span className="text-muted-foreground">: </span>
-                              <span className={o.sym === 'dense' ? 'text-muted-foreground italic' : 'font-mono'}>
-                                {o.sym}
+              <div className="mt-5 overflow-x-auto">
+                <table className="w-full border-collapse text-[12px]">
+                  <thead className="border-b border-gray-200">
+                    <tr className="text-left text-[12px] text-muted-foreground">
+                      <th className="px-2 py-2 font-semibold">Preset</th>
+                      <th className="px-2 py-2 font-semibold">Einsum</th>
+                      <th className="px-2 py-2 font-semibold">Operand sym.</th>
+                      <th className="px-2 py-2 font-semibold">V</th>
+                      <th className="px-2 py-2 font-semibold"><Latex math="G_{\text{pt}}\big|_{V_{\mathrm{free}}}" /></th>
+                      <th className="px-2 py-2 font-semibold text-right"><Latex math="\alpha_{\text{engine}}" /></th>
+                      <th className="px-2 py-2 font-semibold text-right"><Latex math="\alpha_{\text{storage}}" /></th>
+                      <th className="px-2 py-2 font-semibold text-right">Saving</th>
+                    </tr>
+                  </thead>
+                  <tbody className="[&_tr]:border-b [&_tr]:border-gray-100">
+                    {SAVINGS_TABLE_ROWS.map((r) => {
+                      const hasSaving = r.saving > 0;
+                      const preset = EXAMPLES_BY_ID.get(r.id);
+                      const subs = preset?.expression?.subscripts ?? '';
+                      const output = preset?.expression?.output ?? '';
+                      const operands = describeOperands(preset);
+                      const groupLabel = preset?.expectedGroup ?? appendixGroupLabel(r.vSub);
+                      return (
+                        <tr key={r.id} className={hasSaving ? '' : 'text-muted-foreground'}>
+                          <td className="px-2 py-2 whitespace-nowrap">
+                            <AppendixPresetHoverLabel preset={preset} groupLabel={groupLabel} />
+                          </td>
+                          <td className="px-2 py-2 font-mono whitespace-nowrap">
+                            <AppendixEinsumHoverCell
+                              subs={subs}
+                              output={output}
+                              preset={preset}
+                              groupLabel={groupLabel}
+                            />
+                          </td>
+                          <td className="px-2 py-2 whitespace-nowrap">
+                            {operands.map((o, i) => (
+                              <span key={o.name}>
+                                {i > 0 && <span className="text-muted-foreground">; </span>}
+                                <span className="font-mono font-semibold">{o.name}</span>
+                                {o.count > 1 && (
+                                  <span className="font-mono text-muted-foreground">×{o.count}</span>
+                                )}
+                                <span className="text-muted-foreground">: </span>
+                                <span className={o.sym === 'dense' ? 'text-muted-foreground italic' : 'font-mono'}>
+                                  {o.sym}
+                                </span>
                               </span>
-                            </span>
-                          ))}
-                        </td>
-                        <td className="px-2 py-2 whitespace-nowrap">
-                          <Latex math={r.v === '\\varnothing' ? '\\varnothing' : `\\{${r.v}\\}`} />
-                        </td>
-                        <td className="px-2 py-2 whitespace-nowrap"><Latex math={r.vSub} /></td>
-                        <td className="px-2 py-2 text-right font-mono">{r.ae}</td>
-                        <td className="px-2 py-2 text-right font-mono">{r.as}</td>
-                        <td className={`px-2 py-2 text-right font-mono whitespace-nowrap ${hasSaving ? 'text-emerald-700' : ''}`}>
-                          {hasSaving ? `${r.saving} (${r.pct}%)` : '—'}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <p className={`mt-2 ${APPENDIX_FOOTNOTE_CLASS}`}>
-                All entries computed at <Latex math="n = 3" />; sorted by % saving, descending. <span className="font-mono not-italic">×k</span> on an operand indicates it appears <Latex math="k" /> times in the expression (driving top-group transpositions in the wreath σ-loop). Hover any preset name or einsum to see the full construction with per-operand ranks, declared axes, and generators.
-              </p>
-            </div>
-
-            <div className={`mt-4 space-y-4 ${APPENDIX_PROSE_JUSTIFIED_CLASS}`}>
-              <p>
-                <InlineMathText>
-                  {`The $S(W_{\\mathrm{summed}})$ factor of $G_{\\text{f}}$ contributes nothing at the storage level because $S(W_{\\mathrm{summed}})$ acts on summation variables rather than output cells; there is no output-tensor symmetry to exploit on the $W_{\\mathrm{summed}}$-side beyond what $G_{\\text{pt}}$ already captures through its orbit structure on tuples.`}
-                </InlineMathText>
-              </p>
-              <p>
-                <InlineMathText>
-                  All entries in the table above are computed at{' '}
-                  <Latex math="n = 3" />, sorted by savings, descending.
-                </InlineMathText>
-              </p>
-            </div>
-
-            <div className="mt-6 border-t border-stone-200/70 bg-gray-50 px-5 py-4 md:px-6">
-              <div className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
-                Scope
+                            ))}
+                          </td>
+                          <td className="px-2 py-2 whitespace-nowrap">
+                            <Latex math={r.v === '\\varnothing' ? '\\varnothing' : `\\{${r.v}\\}`} />
+                          </td>
+                          <td className="px-2 py-2 whitespace-nowrap"><Latex math={r.vSub} /></td>
+                          <td className="px-2 py-2 text-right font-mono">{r.ae}</td>
+                          <td className="px-2 py-2 text-right font-mono">{r.as}</td>
+                          <td className={`px-2 py-2 text-right font-mono whitespace-nowrap ${hasSaving ? 'text-emerald-700' : ''}`}>
+                            {hasSaving ? `${r.saving} (${r.pct}%)` : '—'}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+                <p className={`mt-2 ${APPENDIX_FOOTNOTE_CLASS}`}>
+                  All entries computed at <Latex math="n = 3" />; sorted by %
+                  saving, descending. <span className="font-mono not-italic">×k</span>{' '}
+                  on an operand indicates it appears <Latex math="k" /> times
+                  in the expression. Hover any preset name or einsum to see the
+                  full construction with per-operand ranks, declared axes, and
+                  generators.
+                </p>
               </div>
-              <p className="mt-1.5 text-[12.5px] leading-6 text-stone-700">
-                <InlineMathText>
-                  {`The $\\alpha$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model with $G_{\\text{pt}}$ as the summand-value equivalence relation.`}
-                </InlineMathText>
-              </p>
-              <p className="mt-2 text-[12.5px] leading-6 text-stone-700">
-                <InlineMathText>
-                  {`Output-tensor storage collapse, algebraic restructuring such as factoring $R = v\\,v^\\top$, and contraction re-ordering all sit outside that scope and require different machinery than the pointwise orbit compression measured here.`}
-                </InlineMathText>
-              </p>
+
+              <div className={`space-y-4 ${APPENDIX_PROSE_JUSTIFIED_CLASS}`}>
+                <p>
+                  <InlineMathText>
+                    {`The formal-only factor $${notationLatex('s_w_summed')}$ contributes nothing at the storage level because it acts on summation variables rather than output cells. The only storage symmetries available are the visible free-label symmetries already inherited from $G_{\\text{pt}}$.`}
+                  </InlineMathText>
+                </p>
+              </div>
+
+              <div className="mt-6 border-t border-stone-200/70 bg-gray-50 px-5 py-4 md:px-6">
+                <div className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
+                  Scope
+                </div>
+                <p className="mt-1.5 text-[12.5px] leading-6 text-stone-700">
+                  <InlineMathText>
+                    {`The $\\alpha$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model with $G_{\\text{pt}}$ as the summand-value equivalence relation.`}
+                  </InlineMathText>
+                </p>
+                <p className="mt-2 text-[12.5px] leading-6 text-stone-700">
+                  <InlineMathText>
+                    {`Output-tensor storage collapse, algebraic restructuring such as factoring $R = v\\,v^\\top$, and contraction re-ordering all sit outside that scope and require different machinery than the pointwise orbit compression measured on the main page.`}
+                  </InlineMathText>
+                </p>
+              </div>
             </div>
-          </AppendixSection>
+          </section>
         </div>
       </div>
     </div>

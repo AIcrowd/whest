@@ -108,7 +108,7 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
 
   if (!expressionGroup || expressionGroup.order <= 1) {
     return (
-      <div className="mt-4 border border-gray-200 bg-white px-5 py-4 text-[15px] text-gray-600">
+      <div className="mt-4 text-[15px] text-gray-600">
         <Latex math={`${notationLatex('g_pointwise_restricted_v')} \\times ${notationLatex('s_w_summed')}`} /> is trivial for this einsum.
       </div>
     );
@@ -158,7 +158,7 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
   };
 
   return (
-    <div className="mt-5 border border-gray-200 bg-white px-5 py-5">
+    <div className="mt-5">
       <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500">
         Formal-group construction
       </div>

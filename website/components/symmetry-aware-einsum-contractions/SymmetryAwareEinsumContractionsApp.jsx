@@ -521,6 +521,8 @@ export default function SymmetryAwareEinsumContractionsApp() {
         onClose={() => setExprModalOpen(false)}
         analysis={analysis}
         group={group}
+        example={example}
+        onSelectPreset={handleSelect}
       />
       <ExplorerThemeDock
         explorerThemeId={explorerThemeId}

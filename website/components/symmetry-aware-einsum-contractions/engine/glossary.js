@@ -58,8 +58,8 @@ export const GLOSSARY = [
     definition: 'The subgroup of G whose elements fix every V-label individually. When G = Sym(L), this is Sym(W). The Young regime uses α = |X / pointwise-V-stabilizer|, a multinomial closed form.',
   },
   {
-    term: 'F-check',
-    definition: 'The direct-product test on a materialized group G: verify that no element crosses V/W, then check |G| = |G_V| · |G_W|. Passing the F-check (and the meaningfulness guard on both projection sizes > 1) means G factors as G_V × G_W acting factor-wise on V and W.',
+    term: 'Factorization check',
+    definition: 'The direct-product test on a materialized group G: verify that no element crosses V/W, then check |G| = |G_V| · |G_W|. Passing the factorization check (and the meaningfulness guard on both projection sizes > 1) means G factors as G_V × G_W acting factor-wise on V and W.',
   },
   {
     term: 'meaningfulness guard',

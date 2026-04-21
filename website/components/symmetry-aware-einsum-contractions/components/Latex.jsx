@@ -39,5 +39,5 @@ export default function Latex({ math, display = false, colorize = true }) {
 
   return display
     ? <div style={MATH_WRAPPER_STYLE} dangerouslySetInnerHTML={{ __html: html }} />
-    : <span style={MATH_WRAPPER_STYLE} dangerouslySetInnerHTML={{ __html: html }} />;
+    : <span className="mx-[0.08em]" style={MATH_WRAPPER_STYLE} dangerouslySetInnerHTML={{ __html: html }} />;
 }
