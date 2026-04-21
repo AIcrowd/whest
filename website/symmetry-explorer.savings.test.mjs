@@ -92,7 +92,8 @@ test('Section 5 renders the exact Option B-style Cost Savings spread', () => {
   assert.match(totalCostSource, /font-serif text-\[54px\] leading-\[0\.95\] tracking-\[-0\.03em\]/);
   assert.match(totalCostSource, /font-serif text-\[24px\] leading-none tracking-\[-0\.02em\]/);
   assert.match(totalCostSource, /text-coral/);
-  assert.match(totalCostSource, /explorerThemeColor\(explorerThemeId, 'quantity'\)/);
+  assert.match(totalCostSource, /explorerThemeColor\(SECTION_FIVE_THEME_OVERRIDE, 'quantity'\)/);
+  assert.doesNotMatch(totalCostSource, /explorerThemeColor\(explorerThemeId, 'quantity'\)/);
   assert.doesNotMatch(totalCostSource, /explorerThemeColor\(explorerThemeId, 'statusSuccess'\)/);
   assert.doesNotMatch(totalCostSource, /explorerThemeTint\(explorerThemeId, 'statusSuccess', 0\.08\)/);
   assert.match(totalCostSource, /valueStyle/);
@@ -141,8 +142,8 @@ test('ComponentCostView renders the decision ladder and component table', () => 
 test('TotalCostView explains how per-component costs aggregate into the global total', () => {
   const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
   const recapIndex = totalCostSource.indexOf('<ComponentRecap components={components} />');
-  const introIndex = totalCostSource.indexOf('<SectionFiveIntroBlock />');
-  const aggregationIndex = totalCostSource.indexOf('<AggregationExplainer />');
+  const introIndex = totalCostSource.indexOf('<SectionFiveIntroBlock themeOverride={SECTION_FIVE_THEME_OVERRIDE} />');
+  const aggregationIndex = totalCostSource.indexOf('<AggregationExplainer themeOverride={SECTION_FIVE_THEME_OVERRIDE} />');
   const spreadIndex = totalCostSource.indexOf('<EditorialComparisonSpread');
 
   // Helpers the explainer block depends on.
@@ -170,8 +171,10 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /\(k-1\)\s*\\cdot\s*\\prod_\{a\}/);
   assert.match(totalCostSource, /\\tfrac\{1\}\{\|G_a\|\}/);
   assert.match(totalCostSource, /\\sum_\{g\s*\\in\s*G_a\}/);
-  assert.match(totalCostSource, /inSet\('g', tc\(SYM\.group, notationLatex\('g_component'\)\)\)/);
+  assert.match(totalCostSource, /inSet\(tc\(SYM\.element, notationLatex\('g_element'\)\), tc\(SYM\.localGroup, notationLatex\('g_component'\)\)\)/);
   assert.match(totalCostSource, /\\prod_\{c\}\s*n_c/);
+  assert.match(totalCostSource, /PIECEWISE_LABEL/);
+  assert.match(totalCostSource, /Per-component accumulation equation/);
   assert.match(totalCostSource, /PIECEWISE_SCOPE_NOTE/);
   assert.match(totalCostSource, /defines only the per-component accumulation term/);
   assert.match(totalCostSource, /\\prod_\{a\}\s*\\alpha_a/);
@@ -196,12 +199,13 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /omega_orbit/);
   assert.match(totalCostSource, /orbit of the single free label/);
   assert.match(totalCostSource, /notationLatex\('c_omega_cycles'\)/);
+  assert.match(totalCostSource, /cue: 'hardest case'/);
   assert.match(totalCostSource, /accumulation cost/);
   assert.match(totalCostSource, /<dl/);
   assert.match(totalCostSource, /<dt/);
   assert.match(totalCostSource, /<dd/);
 
-  // Six leaves from the current SHAPE × REGIME classification
+  // Seven leaves from the current SHAPE × REGIME classification
   // (shapeSpec.js + regimeSpec.js). Leaf ids match the canonical regime/shape
   // ids so CaseBadge resolves color + tooltip from the live spec — no
   // duplicated content in this file.
@@ -212,6 +216,7 @@ test('TotalCostView explains how per-component costs aggregate into the global t
     "id: 'allSummed'",
     "id: 'singleton'",
     "id: 'directProduct'",
+    "id: 'young'",
     "id: 'bruteForceOrbit'",
   ]) {
     assert.ok(totalCostSource.includes(leaf), `expected leaf ${leaf} in TotalCostView`);
@@ -225,6 +230,51 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.ok(recapIndex !== -1 && introIndex !== -1 && aggregationIndex !== -1 && spreadIndex !== -1);
   assert.ok(recapIndex < introIndex && introIndex < aggregationIndex && aggregationIndex < spreadIndex);
   assert.doesNotMatch(totalCostSource, /Seven paths through Section 5/);
+});
+
+test('Section 5 keeps the explorer on editorial-noir but overrides the cost-model subtree to editorial-noir-math', () => {
+  const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
+  const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
+  const caseBadgeSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/CaseBadge.jsx', import.meta.url), 'utf8');
+  const glossaryListSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/GlossaryList.jsx', import.meta.url), 'utf8');
+  const regimePresentationSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/regimePresentation.js', import.meta.url), 'utf8');
+
+  assert.equal(EXPLORER_THEME_RECOMMENDED_ID, 'editorial-noir');
+  assert.match(totalCostSource, /const SECTION_FIVE_THEME_OVERRIDE = 'editorial-noir-math';/);
+  assert.match(totalCostSource, /getExplorerThemeCssVariables/);
+  assert.match(totalCostSource, /const sectionFiveThemeCssVars = getExplorerThemeCssVariables\(SECTION_FIVE_THEME_OVERRIDE\);/);
+  assert.match(totalCostSource, /<div className="space-y-8" style=\{sectionFiveThemeCssVars\}>/);
+  assert.match(totalCostSource, /function getSymPalette\(themeOverride = SECTION_FIVE_THEME_OVERRIDE\)/);
+  assert.match(totalCostSource, /notationColor\('k_operands', themeOverride\)/);
+  assert.match(totalCostSource, /notationColor\('alpha_component', themeOverride\)/);
+  assert.match(totalCostSource, /<SectionFiveIntroBlock themeOverride=\{SECTION_FIVE_THEME_OVERRIDE\} \/>/);
+  assert.match(totalCostSource, /<AggregationExplainer themeOverride=\{SECTION_FIVE_THEME_OVERRIDE\} \/>/);
+  assert.match(totalCostSource, /<InlineMathText themeOverride=\{themeOverride\}>/);
+  assert.match(totalCostSource, /<Latex display math=\{topLine\} themeOverride=\{themeOverride\} \/>/);
+  assert.match(totalCostSource, /<Latex math=\{piecewisePrefix\} themeOverride=\{themeOverride\} \/>/);
+  assert.match(totalCostSource, /<Latex math=\{leaf\.formula\} themeOverride=\{themeOverride\} \/>/);
+  assert.match(totalCostSource, /function MetricSupport\(\{ formula, detail, themeOverride = SECTION_FIVE_THEME_OVERRIDE \}\)/);
+  assert.match(totalCostSource, /<Latex math=\{formula\} colorize=\{false\} themeOverride=\{themeOverride\} \/>/);
+  assert.match(totalCostSource, /<MetricSupport formula=\{formula\} detail=\{detail\} themeOverride=\{themeOverride\} \/>/);
+  assert.match(totalCostSource, /<CaseBadge[\s\S]*regimeId=\{leaf\.id\}[\s\S]*className="whitespace-nowrap"[\s\S]*themeOverride=\{themeOverride\}[\s\S]*presentationThemeOverride=\{null\}/);
+  assert.match(totalCostSource, /<CaseBadge[\s\S]*regimeId=\{leaf\.id\}[\s\S]*size="xs"[\s\S]*themeOverride=\{themeOverride\}[\s\S]*presentationThemeOverride=\{null\}/);
+  assert.match(totalCostSource, /const regimeColor = getRegimePresentation\(regimeId\)\?\.color;/);
+  assert.match(totalCostSource, /<CaseBadge[\s\S]*regimeId=\{regimeId\}[\s\S]*size="xs"[\s\S]*themeOverride=\{SECTION_FIVE_THEME_OVERRIDE\}[\s\S]*presentationThemeOverride=\{null\}/);
+  assert.match(totalCostSource, /<GlossaryProse text=\{entry\.definition\} themeOverride=\{themeOverride\} \/>/);
+  assert.match(caseBadgeSource, /themeOverride = null/);
+  assert.match(caseBadgeSource, /presentationThemeOverride = themeOverride/);
+  assert.match(caseBadgeSource, /const presentation = getRegimePresentation\(regimeId,\s*presentationThemeOverride\);/);
+  assert.match(caseBadgeSource, /<InlineMathText themeOverride=\{themeOverride\}>/);
+  assert.match(caseBadgeSource, /<Latex math=\{tooltip\.latex\} display themeOverride=\{themeOverride\} \/>/);
+  assert.match(caseBadgeSource, /<GlossaryList entries=\{tooltip\.glossary\} themeOverride=\{themeOverride\} \/>/);
+  assert.match(glossaryListSource, /export default function GlossaryList\(\{ entries, themeOverride = null \}\)/);
+  assert.match(glossaryListSource, /<Latex math=\{term\} themeOverride=\{themeOverride\} \/>/);
+  assert.match(glossaryListSource, /<GlossaryProse text=\{definition\} themeOverride=\{themeOverride\} \/>/);
+  assert.match(regimePresentationSource, /function regimePresentationFromSpec\(id,\s*themeOverride = null\)/);
+  assert.match(regimePresentationSource, /notationColor\(spec\.colorId,\s*themeOverride\)/);
+  assert.match(regimePresentationSource, /export function getRegimePresentation\(id,\s*themeOverride = null\)/);
+  assert.match(appSource, /const themeCssVars = useMemo\(\(\) => getExplorerThemeCssVariables\(theme\), \[theme\]\)/);
+  assert.doesNotMatch(appSource, /editorial-noir-math/);
 });
 
 test('app owns the active explorer theme, defaults to editorial-noir, and toggles the dock with Ctrl+Shift+E', () => {
@@ -247,7 +297,13 @@ test('app owns the active explorer theme, defaults to editorial-noir, and toggle
   assert.match(appSource, /buildVariableColors\(example\.variables,\s*theme\.id\)/);
   assert.match(appSource, /explorerThemeId=\{explorerThemeId\}/);
   assert.match(appSource, /import ExplorerThemeDock/);
-  assert.match(appSource, /<ExplorerThemeDock/);
+  assert.match(appSource, /const \[isThemeDockVisible,\s*setIsThemeDockVisible\] = useState\(false\)/);
+  assert.match(appSource, /EXPLORER_THEME_RECOMMENDED_ID,\s*getActiveExplorerThemeId,\s*getExplorerThemePreset/);
+  assert.match(appSource, /key: 'E'/);
+  assert.match(appSource, /modifiers: \{ ctrlKey: true, shiftKey: true \}/);
+  assert.doesNotMatch(appSource, /modifiers: \{ metaKey: true, shiftKey: true \}/);
+  assert.match(appSource, /setIsThemeDockVisible\(\(visible\) => !visible\)/);
+  assert.match(appSource, /\{isThemeDockVisible \? \(\s*<ExplorerThemeDock explorerThemeId=\{explorerThemeId\} onChange=\{setActiveExplorerTheme\} \/>\s*\) : null\}/);
   assert.doesNotMatch(appSource, /const \[explorerThemeId,\s*setExplorerThemeId\] = useState\(/);
   assert.doesNotMatch(appSource, /notationGrammarId/);
   assert.doesNotMatch(appSource, /setActiveNotationGrammar/);

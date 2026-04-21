@@ -11,6 +11,7 @@ import {
 } from '../lib/notationSystem.js';
 import {
   explorerThemeColor,
+  getExplorerThemeCssVariables,
 } from '../lib/explorerTheme.js';
 
 // Canonical formula string — exported for tests and for readers who want the
@@ -25,7 +26,9 @@ const SECTION_FIVE_INTRO_CLOSE = 'The full equation below makes that assembly ex
 const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total\ Cost} = \mu + \alpha`;
 const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
 const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
+const SECTION_FIVE_THEME_OVERRIDE = 'editorial-noir-math';
 const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\\x\end{matrix}}\right.`;
+const PIECEWISE_LABEL = `Per-component accumulation equation $${notationLatex('alpha_component')}$`;
 const PIECEWISE_SCOPE_NOTE = `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$; the top line remains the global total cost.`;
 
 
@@ -38,21 +41,29 @@ const sumOver = (binder) => String.raw`\sum_{${binder}}`;
 const productOver = (binder, body) => String.raw`\prod_{${binder}} ${body}`;
 const inSet = (lhs, rhs) => `${lhs}\\,\\in\\,${rhs}`;
 
-function getSymPalette() {
+function getSymPalette(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
   return {
-    k: notationColor('k_operands'),
-    group: notationColor('g_component'),
-    element: notationColor('g_element'),
-    cycle: notationColor('n_cycle'),
-    alpha: notationColor('alpha_total'),
-    orbit: notationColor('x_space'),
-    vlabel: notationColor('v_free'),
-    wlabel: notationColor('w_summed'),
+    k: notationColor('k_operands', themeOverride),
+    localGroup: notationColor('g_component', themeOverride),
+    summedGroup: notationColor('g_w_factor', themeOverride),
+    element: notationColor('g_element', themeOverride),
+    cycleCount: notationColor('n_cycle', themeOverride),
+    labelCount: notationColor('n_label', themeOverride),
+    youngCount: notationColor('n_l', themeOverride),
+    omegaSize: notationColor('n_omega', themeOverride),
+    omegaExponent: notationColor('c_omega_cycles', themeOverride),
+    alpha: notationColor('alpha_total', themeOverride),
+    ambient: notationColor('x_space', themeOverride),
+    orbitObject: notationColor('orbit_o', themeOverride),
+    projection: notationColor('projection_pi_v_free', themeOverride),
+    shapeSet: notationColor('l_labels', themeOverride),
+    vlabel: notationColor('v_free', themeOverride),
+    wlabel: notationColor('w_summed', themeOverride),
   };
 }
 
-function getPiecewisePrefix() {
-  return String.raw`\textcolor{${notationColor('alpha_component')}}{${notationLatex('alpha_component')}} \, = \, ${PIECEWISE_BRACE}`;
+function getPiecewisePrefix(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
+  return String.raw`\textcolor{${notationColor('alpha_component', themeOverride)}}{${notationLatex('alpha_component')}} \, = \, ${PIECEWISE_BRACE}`;
 }
 
 // Glossary — "hybrid" policy: covers every symbol in the top line plus any
@@ -61,12 +72,12 @@ function getPiecewisePrefix() {
 // Seven rows total. Colors in the definition prose + math match the dt
 // color for each symbol, so the reader's eye binds symbol ↔ definition ↔
 // hero appearance by color.
-function getAggregationLegend() {
-  const SYM = getSymPalette();
+function getAggregationLegend(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
+  const SYM = getSymPalette(themeOverride);
   return [
     {
       symbol: 'a',
-      color: notationColor('l_labels'),
+      color: notationColor('l_labels', themeOverride),
       definition: `component index. Products over $a$ run across the independent components, and subscripts like $${notationLatex('g_component')}$ or $${tc(SYM.alpha, notationLatex('alpha_component'))}$ mean “restricted to component $a$.”`,
     },
     {
@@ -76,18 +87,18 @@ function getAggregationLegend() {
     },
     {
       symbol: notationLatex('g_component'),
-      color: SYM.group,
-      definition: `symmetry group acting on component $a$; $|${tc(SYM.group, notationLatex('g_component'))}|$ is its order (number of group elements averaged over).`,
+      color: SYM.localGroup,
+      definition: `symmetry group acting on component $a$; $|${tc(SYM.localGroup, notationLatex('g_component'))}|$ is its order (number of group elements averaged over).`,
     },
     {
       symbol: notationLatex('g_element'),
       color: SYM.element,
-      definition: `one group element — a permutation of the component's labels. The sum averages over every $${tc(SYM.element, notationLatex('g_element'))} \\in ${tc(SYM.group, notationLatex('g_component'))}$.`,
+      definition: `one group element — a permutation of the component's labels. The sum averages over every $${tc(SYM.element, notationLatex('g_element'))} \\in ${tc(SYM.localGroup, notationLatex('g_component'))}$.`,
     },
     {
       symbol: notationLatex('n_cycle'),
-      color: SYM.cycle,
-      definition: `the common label-size inside cycle $${tc(SYM.cycle, 'c')}$ of $${tc(SYM.element, notationLatex('g_element'))}$ — forced equal by the action, since $${tc(SYM.element, notationLatex('g_element'))}$ permutes labels of equal size. The product $${productOver('c', tc(SYM.cycle, notationLatex('n_cycle')))}$ equals $|\\mathrm{Fix}(${tc(SYM.element, notationLatex('g_element'))})| = |${tc(SYM.orbit, notationLatex('x_space'))}^{${tc(SYM.element, notationLatex('g_element'))}}|$ — the standard Burnside fixed-point set, written here as a product of cycle sizes. Cycles of the identity degenerate to singleton labels, so $${productOver('\\ell', tc(SYM.cycle, notationLatex('n_label')))}$ collapses to $${productOver('\\ell', tc(SYM.cycle, notationLatex('n_label')))}$ on the trivial / all-visible rows.`,
+      color: SYM.cycleCount,
+      definition: `the common label-size inside cycle $${tc(SYM.cycleCount, 'c')}$ of $${tc(SYM.element, notationLatex('g_element'))}$ — forced equal by the action, since $${tc(SYM.element, notationLatex('g_element'))}$ permutes labels of equal size. The product $${productOver('c', tc(SYM.cycleCount, notationLatex('n_cycle')))}$ equals $|\\mathrm{Fix}(${tc(SYM.element, notationLatex('g_element'))})| = |${tc(SYM.ambient, notationLatex('x_space'))}^{${tc(SYM.element, notationLatex('g_element'))}}|$ — the standard Burnside fixed-point set, written here as a product of cycle sizes. Cycles of the identity degenerate to singleton labels, so $${productOver('\\ell', tc(SYM.labelCount, notationLatex('n_label')))}$ collapses to $${productOver('\\ell', tc(SYM.labelCount, notationLatex('n_label')))}$ on the trivial / all-visible rows.`,
     },
     {
       symbol: `${tc(SYM.vlabel, notationLatex('v_free'))},\\ ${tc(SYM.wlabel, notationLatex('w_summed'))}`,
@@ -102,19 +113,19 @@ function getAggregationLegend() {
       ),
     },
     {
-      symbol: `${notationLatex('x_space')},\\ ${notationLatex('orbit_space_component')},\\ ${notationLatex('orbit_o')},\\ ${notationLatex('projection_pi_v_free')}`,
-      color: SYM.orbit,
-      definition: `assignment space $${notationLatex('x_space')} = [n]^{${notationLatex('l_labels')}}$; $${notationLatex('orbit_space_component')}$, the set of $${notationLatex('g_component')}$-orbits in $${notationLatex('x_space')}$; a single orbit $${notationLatex('orbit_o')}$; and its projection onto the free labels $${notationLatex('projection_pi_v_free')}$ — the distinct output bins that orbit touches.`,
+      symbol: `${tc(SYM.ambient, notationLatex('x_space'))},\\ ${tc(SYM.ambient, notationLatex('orbit_space_component'))},\\ ${tc(SYM.orbitObject, notationLatex('orbit_o'))},\\ ${tc(SYM.projection, notationLatex('projection_pi_v_free'))}`,
+      color: SYM.ambient,
+      definition: `assignment space $${tc(SYM.ambient, notationLatex('x_space'))} = [n]^{${tc(SYM.shapeSet, notationLatex('l_labels'))}}$; $${tc(SYM.ambient, notationLatex('orbit_space_component'))}$, the set of $${tc(SYM.localGroup, notationLatex('g_component'))}$-orbits in $${tc(SYM.ambient, notationLatex('x_space'))}$; a single orbit $${tc(SYM.orbitObject, notationLatex('orbit_o'))}$; and its projection onto the free labels $${tc(SYM.projection, notationLatex('projection_pi_v_free'))}$ — the distinct output bins that orbit touches.`,
     },
     {
-      symbol: `${notationLatex('omega_orbit')},\\ ${tc(SYM.cycle, notationLatex('n_omega'))},\\ ${tc(SYM.cycle, notationLatex('c_omega_cycles'))}`,
-      color: SYM.cycle,
-      definition: `singleton-regime symbols: $${notationLatex('omega_orbit')} = ${notationLatex('g_component')} \\cdot v$ is the orbit of the single free label $v$ under the component symmetry group. $${tc(SYM.cycle, notationLatex('n_omega'))}$ is the size shared by the labels in $${notationLatex('omega_orbit')}$, and $${tc(SYM.cycle, notationLatex('c_omega_cycles'))}$ counts how many cycles of the group element $${tc(SYM.element, notationLatex('g_element'))}$ lie inside that distinguished class.`,
+      symbol: `${tc(SYM.orbitObject, notationLatex('omega_orbit'))},\\ ${tc(SYM.omegaSize, notationLatex('n_omega'))},\\ ${tc(SYM.omegaExponent, notationLatex('c_omega_cycles'))}`,
+      color: SYM.orbitObject,
+      definition: `singleton-regime symbols: $${tc(SYM.orbitObject, notationLatex('omega_orbit'))} = ${tc(SYM.localGroup, notationLatex('g_component'))} \\cdot v$ is the orbit of the single free label $v$ under the component symmetry group. $${tc(SYM.omegaSize, notationLatex('n_omega'))}$ is the size shared by the labels in $${tc(SYM.orbitObject, notationLatex('omega_orbit'))}$, and $${tc(SYM.omegaExponent, notationLatex('c_omega_cycles'))}$ counts how many cycles of the group element $${tc(SYM.element, notationLatex('g_element'))}$ lie inside that distinguished class.`,
     },
     {
       symbol: `${tc(SYM.alpha, notationLatex('alpha_total'))},\\ ${tc(SYM.alpha, notationLatex('alpha_component'))}`,
       color: SYM.alpha,
-      definition: `accumulation cost. Per-component accumulation is $${tc(SYM.alpha, notationLatex('alpha_component'))}$ — one of the shape- and regime-specific formulas above. Global total is $${tc(SYM.alpha, notationLatex('alpha_total'))} = ${productOver('a', tc(SYM.alpha, notationLatex('alpha_component')))}$.`,
+      definition: `accumulation cost. Per-component accumulation is $${tc(SYM.alpha, notationLatex('alpha_component'))}$ — one of the shape- and regime-specific equations above. Global total is $${tc(SYM.alpha, notationLatex('alpha_total'))} = ${productOver('a', tc(SYM.alpha, notationLatex('alpha_component')))}$.`,
     },
   ];
 }
@@ -123,43 +134,44 @@ function getAggregationLegend() {
 // regimeSpec.js). Each entry bundles the α_a formula and its layer tag; the
 // leaf *id* is the canonical regime/shape id so CaseBadge can resolve its
 // color + tooltip from the live spec — no duplicated content here.
-function getAggregationLeaves() {
-  const SYM = getSymPalette();
+function getAggregationLeaves(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
+  const SYM = getSymPalette(themeOverride);
   return [
     {
       id: 'trivial',
       layer: 'shape',
-      formula: String.raw`\prod_{\ell \in ${notationLatex('l_labels')}} ${tc(SYM.cycle, notationLatex('n_label'))}`,
+      formula: String.raw`\prod_{\ell \in ${notationLatex('l_labels')}} ${tc(SYM.labelCount, notationLatex('n_label'))}`,
     },
     {
       id: 'allVisible',
       layer: 'shape',
-      formula: String.raw`\prod_{\ell \in ${tc(SYM.vlabel, notationLatex('v_free'))}} ${tc(SYM.cycle, notationLatex('n_label'))}`,
+      formula: String.raw`\prod_{\ell \in ${tc(SYM.vlabel, notationLatex('v_free'))}} ${tc(SYM.labelCount, notationLatex('n_label'))}`,
     },
     {
       id: 'allSummed',
       layer: 'shape',
-      formula: String.raw`|${tc(SYM.orbit, 'X')}/${tc(SYM.group, notationLatex('g_component'))}| = \tfrac{1}{|${tc(SYM.group, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, 'g'))} ${productOver('c', tc(SYM.cycle, notationLatex('n_cycle')))}`,
+      formula: String.raw`|${tc(SYM.ambient, notationLatex('x_space'))}/${tc(SYM.localGroup, notationLatex('g_component'))}| = \tfrac{1}{|${tc(SYM.localGroup, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, notationLatex('g_element')))} ${productOver('c', tc(SYM.cycleCount, notationLatex('n_cycle')))}`,
     },
     {
       id: 'singleton',
       layer: 'regime',
-      formula: String.raw`\tfrac{${tc(SYM.cycle, notationLatex('n_omega'))}}{|${tc(SYM.group, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, 'g'))} \Bigl(${productOver(`c \\in ${notationLatex('r_complement')}`, tc(SYM.cycle, notationLatex('n_cycle')))}\Bigr)\!\Bigl(${tc(SYM.cycle, notationLatex('n_omega'))}^{\,${tc(SYM.cycle, notationLatex('c_omega_cycles'))}} - (${tc(SYM.cycle, notationLatex('n_omega'))} - 1)^{\,${tc(SYM.cycle, notationLatex('c_omega_cycles'))}}\Bigr)`,
+      cue: 'hardest case',
+      formula: String.raw`\tfrac{${tc(SYM.omegaSize, notationLatex('n_omega'))}}{|${tc(SYM.localGroup, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, notationLatex('g_element')))} \Bigl(${productOver(`c \\in ${notationLatex('r_complement')}`, tc(SYM.cycleCount, notationLatex('n_cycle')))}\Bigr)\!\Bigl(${tc(SYM.omegaSize, notationLatex('n_omega'))}^{\,${tc(SYM.omegaExponent, notationLatex('c_omega_cycles'))}} - (${tc(SYM.omegaSize, notationLatex('n_omega'))} - 1)^{\,${tc(SYM.omegaExponent, notationLatex('c_omega_cycles'))}}\Bigr)`,
     },
     {
       id: 'directProduct',
       layer: 'regime',
-      formula: String.raw`\Bigl(${productOver(`\\ell \\in ${tc(SYM.vlabel, notationLatex('v_free'))}`, tc(SYM.cycle, notationLatex('n_label')))}\Bigr) \cdot |${tc(SYM.orbit, 'X')}_{${tc(SYM.wlabel, notationLatex('w_summed'))}} / ${tc(SYM.group, notationLatex('g_w_factor'))}|`,
+      formula: String.raw`\Bigl(${productOver(`\\ell \\in ${tc(SYM.vlabel, notationLatex('v_free'))}`, tc(SYM.labelCount, notationLatex('n_label')))}\Bigr) \cdot |${tc(SYM.ambient, 'X')}_{${tc(SYM.wlabel, notationLatex('w_summed'))}} / ${tc(SYM.summedGroup, notationLatex('g_w_factor'))}|`,
     },
     {
       id: 'young',
       layer: 'regime',
-      formula: String.raw`${tc(SYM.cycle, 'n_L')}^{|${tc(SYM.vlabel, notationLatex('v_free'))}|} \cdot \binom{${tc(SYM.cycle, 'n_L')} + |${tc(SYM.wlabel, notationLatex('w_summed'))}| - 1}{|${tc(SYM.wlabel, notationLatex('w_summed'))}|}`,
+      formula: String.raw`${tc(SYM.youngCount, notationLatex('n_l'))}^{|${tc(SYM.vlabel, notationLatex('v_free'))}|} \cdot \binom{${tc(SYM.youngCount, notationLatex('n_l'))} + |${tc(SYM.wlabel, notationLatex('w_summed'))}| - 1}{|${tc(SYM.wlabel, notationLatex('w_summed'))}|}`,
     },
     {
       id: 'bruteForceOrbit',
       layer: 'regime',
-      formula: String.raw`${sumOver(`${tc(SYM.orbit, notationLatex('orbit_o'))} \\in X/G_a`)} |${tc(SYM.orbit, '\\pi')}_{${tc(SYM.vlabel, notationLatex('v_free'))}}(${tc(SYM.orbit, notationLatex('orbit_o'))})|`,
+      formula: String.raw`${sumOver(`${tc(SYM.orbitObject, notationLatex('orbit_o'))} \\in ${tc(SYM.ambient, notationLatex('x_space'))}/${tc(SYM.localGroup, notationLatex('g_component'))}`)} |${tc(SYM.projection, notationLatex('pi_relabeling'))}_{${tc(SYM.vlabel, notationLatex('v_free'))}}(${tc(SYM.orbitObject, notationLatex('orbit_o'))})|`,
     },
   ];
 }
@@ -172,32 +184,35 @@ function getPiecewiseRowSpan() {
 // Hero formula — top line + piecewise definition of α_a.
 // ---------------------------------------------------------------------------
 
-function getTopLine() {
-  const SYM = getSymPalette();
-  return String.raw`\text{Total Cost} \;=\; (${tc(SYM.k, notationLatex('k_operands'))}-1) \cdot \prod_a \tfrac{1}{|${tc(SYM.group, notationLatex('g_component'))}|} ${sumOver(inSet('g', tc(SYM.group, notationLatex('g_component'))))} ${productOver('c', tc(SYM.cycle, notationLatex('n_cycle')))} \;+\; \prod_a ${tc(SYM.alpha, notationLatex('alpha_component'))}`;
+function getTopLine(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
+  const SYM = getSymPalette(themeOverride);
+  return String.raw`\text{Total Cost} \;=\; (${tc(SYM.k, notationLatex('k_operands'))}-1) \cdot \prod_a \tfrac{1}{|${tc(SYM.localGroup, notationLatex('g_component'))}|} ${sumOver(inSet(tc(SYM.element, notationLatex('g_element')), tc(SYM.localGroup, notationLatex('g_component'))))} ${productOver('c', tc(SYM.cycleCount, notationLatex('n_cycle')))} \;+\; \prod_a ${tc(SYM.alpha, notationLatex('alpha_component'))}`;
 }
-// The `g \in G_a` subscript above is fully orange; G_a in the subscript is
-// close enough to the rest of the sum that unified orange reads better than
-// splitting the colors inside a 7-point subscript.
+// The Burnside binder above now colors `g` and `G_a` separately so the
+// acting element and the local group stay visually distinct even inside
+// the tight 7-point sum subscript.
 
-function HeroFormulaBlock() {
-  const topLine = getTopLine();
-  const piecewisePrefix = getPiecewisePrefix();
-  const aggregationLeaves = getAggregationLeaves();
+function HeroFormulaBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
+  const topLine = getTopLine(themeOverride);
+  const piecewisePrefix = getPiecewisePrefix(themeOverride);
+  const aggregationLeaves = getAggregationLeaves(themeOverride);
   const piecewiseRowSpan = getPiecewiseRowSpan();
   return (
     <div className="space-y-7">
       {/* Top line */}
       <div className="flex justify-center overflow-x-auto overflow-y-visible">
         <div className="min-w-0 text-[17px] sm:text-[19px]">
-          <Latex display math={topLine} />
+          <Latex display math={topLine} themeOverride={themeOverride} />
         </div>
       </div>
 
       {/* Piecewise — α_a defined by six leaves of the shape × regime ladder */}
       <div className="space-y-1 text-center">
+        <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
+          <InlineMathText themeOverride={themeOverride}>{PIECEWISE_LABEL}</InlineMathText>
+        </div>
         <div className="mx-auto max-w-2xl font-serif text-[14px] leading-[1.7] text-gray-700">
-          <InlineMathText>{PIECEWISE_SCOPE_NOTE}</InlineMathText>
+          <InlineMathText themeOverride={themeOverride}>{PIECEWISE_SCOPE_NOTE}</InlineMathText>
         </div>
       </div>
       <div className="flex justify-center overflow-x-auto overflow-y-visible">
@@ -213,11 +228,11 @@ function HeroFormulaBlock() {
               gridRow: `1 / span ${piecewiseRowSpan}`,
             }}
           >
-            <Latex math={piecewisePrefix} />
+            <Latex math={piecewisePrefix} themeOverride={themeOverride} />
           </div>
 
           {aggregationLeaves.map((leaf) => (
-            <FormulaRow key={leaf.id} leaf={leaf} />
+            <FormulaRow key={leaf.id} leaf={leaf} themeOverride={themeOverride} />
           ))}
         </div>
       </div>
@@ -225,14 +240,19 @@ function HeroFormulaBlock() {
   );
 }
 
-function FormulaRow({ leaf }) {
+function FormulaRow({ leaf, themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
   return (
     <>
       {/* Formula cell wrapped in CaseBadge passthrough mode — hovering the
           formula opens the same shape/regime tooltip as the leaf pill. */}
       <div className="py-1 pr-4" style={{ gridColumn: 3 }}>
-        <CaseBadge regimeId={leaf.id} className="whitespace-nowrap">
-          <Latex math={leaf.formula} />
+        <CaseBadge
+          regimeId={leaf.id}
+          className="whitespace-nowrap"
+          themeOverride={themeOverride}
+          presentationThemeOverride={null}
+        >
+          <Latex math={leaf.formula} themeOverride={themeOverride} />
         </CaseBadge>
       </div>
       <div className="flex items-center gap-2 whitespace-nowrap pl-2 text-[12px] text-muted-foreground" style={{ gridColumn: 4 }}>
@@ -240,7 +260,12 @@ function FormulaRow({ leaf }) {
         <span className="rounded border border-border bg-surface-raised px-1.5 py-[1px] text-[9px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
           {leaf.layer}
         </span>
-        <CaseBadge regimeId={leaf.id} size="xs" />
+        <CaseBadge
+          regimeId={leaf.id}
+          size="xs"
+          themeOverride={themeOverride}
+          presentationThemeOverride={null}
+        />
         {leaf.cue ? (
           <span className="text-[11px] italic text-gray-500">
             {leaf.cue}
@@ -255,8 +280,8 @@ function FormulaRow({ leaf }) {
 // AggregationExplainer — wraps the hero and the glossary.
 // ---------------------------------------------------------------------------
 
-function AggregationExplainer() {
-  const aggregationLegend = getAggregationLegend();
+function AggregationExplainer({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
+  const aggregationLegend = getAggregationLegend(themeOverride);
   // Editorial flat layout — no outer card, no inner gradient-box. The
   // formula and its glossary float inside Section 5's ExplorerSectionCard
   // with only whitespace framing them, so the reader's eye travels
@@ -272,7 +297,7 @@ function AggregationExplainer() {
         How components combine
       </h3>
       <div className="py-4">
-        <HeroFormulaBlock />
+        <HeroFormulaBlock themeOverride={themeOverride} />
       </div>
 
       <div className="mx-auto mt-10 max-w-2xl border-t border-gray-100 pt-6">
@@ -283,11 +308,11 @@ function AggregationExplainer() {
                 className="justify-self-end whitespace-nowrap text-[15px]"
                 style={{ color: entry.color }}
               >
-                <Latex math={entry.symbol} />
+                <Latex math={entry.symbol} themeOverride={themeOverride} />
               </dt>
               <dd>
                 {typeof entry.definition === 'string'
-                  ? <GlossaryProse text={entry.definition} />
+                  ? <GlossaryProse text={entry.definition} themeOverride={themeOverride} />
                   : entry.definition}
               </dd>
             </div>
@@ -335,6 +360,8 @@ function ComponentRecap({ components }) {
             <CaseBadge
               regimeId={regimeId}
               size="xs"
+              themeOverride={SECTION_FIVE_THEME_OVERRIDE}
+              presentationThemeOverride={null}
             />
             <span className="font-mono text-gray-900">{`{${(comp.labels ?? []).join(', ')}}`}</span>
           </span>
@@ -344,14 +371,14 @@ function ComponentRecap({ components }) {
   );
 }
 
-function SectionFiveIntroBlock() {
+function SectionFiveIntroBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
   return (
     <div className="mx-auto max-w-[48rem] space-y-7 text-center">
       <p
         className="font-serif text-[17px] leading-[1.75] text-gray-700"
         style={{ textAlign: 'justify' }}
       >
-        <InlineMathText>{SECTION_FIVE_INTRO_PARAGRAPH}</InlineMathText>
+        <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_PARAGRAPH}</InlineMathText>
       </p>
 
       <div className="space-y-7">
@@ -359,13 +386,13 @@ function SectionFiveIntroBlock() {
           className="font-serif text-[17px] leading-[1.75] text-gray-700"
           style={{ textAlign: 'justify' }}
         >
-          <InlineMathText>{SECTION_FIVE_INTRO_LEAD}</InlineMathText>
+          <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_LEAD}</InlineMathText>
         </p>
 
         <div className="space-y-6">
           <div className="flex justify-center overflow-x-auto overflow-y-visible">
             <div className="min-w-0 text-[18px] sm:text-[20px]">
-              <Latex display math={SECTION_FIVE_TOTAL_FORMULA} />
+              <Latex display math={SECTION_FIVE_TOTAL_FORMULA} themeOverride={themeOverride} />
             </div>
           </div>
 
@@ -376,12 +403,12 @@ function SectionFiveIntroBlock() {
             />
             <div className="flex justify-center overflow-x-auto overflow-y-visible sm:justify-end sm:pr-5">
               <div className="min-w-0 text-[17px] sm:text-[19px]">
-                <Latex display math={SECTION_FIVE_MU_FORMULA} />
+                <Latex display math={SECTION_FIVE_MU_FORMULA} themeOverride={themeOverride} />
               </div>
             </div>
             <div className="flex justify-center overflow-x-auto overflow-y-visible sm:justify-start sm:pl-5">
               <div className="min-w-0 text-[17px] sm:text-[19px]">
-                <Latex display math={SECTION_FIVE_ALPHA_FORMULA} />
+                <Latex display math={SECTION_FIVE_ALPHA_FORMULA} themeOverride={themeOverride} />
               </div>
             </div>
           </div>
@@ -391,14 +418,14 @@ function SectionFiveIntroBlock() {
           className="font-serif text-[17px] leading-[1.75] text-gray-700"
           style={{ textAlign: 'justify' }}
         >
-          <InlineMathText>{SECTION_FIVE_INTRO_CLOSE}</InlineMathText>
+          <InlineMathText themeOverride={themeOverride}>{SECTION_FIVE_INTRO_CLOSE}</InlineMathText>
         </p>
       </div>
     </div>
   );
 }
 
-function MetricSupport({ formula, detail }) {
+function MetricSupport({ formula, detail, themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
   if (!formula && !detail) return null;
 
   return (
@@ -406,7 +433,7 @@ function MetricSupport({ formula, detail }) {
       {formula ? (
         <div className="flex justify-center text-[10.5px] leading-[1.35] text-gray-400">
           <div className="max-w-[24rem] overflow-x-auto overflow-y-hidden">
-            <Latex math={formula} colorize={false} />
+            <Latex math={formula} colorize={false} themeOverride={themeOverride} />
           </div>
         </div>
       ) : null}
@@ -419,7 +446,7 @@ function MetricSupport({ formula, detail }) {
   );
 }
 
-function ComparisonMetric({ label, value, valueClassName, valueStyle, formula, detail }) {
+function ComparisonMetric({ label, value, valueClassName, valueStyle, formula, detail, themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
   return (
     <div className="flex min-h-[160px] flex-col items-center justify-center px-4 py-[28px] text-center sm:px-6">
       <div
@@ -434,12 +461,12 @@ function ComparisonMetric({ label, value, valueClassName, valueStyle, formula, d
       <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-600">
         {label}
       </div>
-      <MetricSupport formula={formula} detail={detail} />
+      <MetricSupport formula={formula} detail={detail} themeOverride={themeOverride} />
     </div>
   );
 }
 
-function SupportingMetric({ label, value, valueClassName, valueStyle, formula, detail }) {
+function SupportingMetric({ label, value, valueClassName, valueStyle, formula, detail, themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
   return (
     <div className="flex min-h-[126px] flex-col items-center justify-center px-4 py-[22px] text-center sm:px-5">
       <div
@@ -454,12 +481,12 @@ function SupportingMetric({ label, value, valueClassName, valueStyle, formula, d
       <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-600">
         {label}
       </div>
-      <MetricSupport formula={formula} detail={detail} />
+      <MetricSupport formula={formula} detail={detail} themeOverride={themeOverride} />
     </div>
   );
 }
 
-function EditorialComparisonSpread({ topMetrics, supportingMetrics }) {
+function EditorialComparisonSpread({ topMetrics, supportingMetrics, themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
   return (
     <div className="section5-editorial-spread mx-auto max-w-[44rem] bg-white px-[6px] py-[6px] text-center">
       <div className="section5-editorial-header mb-2 flex items-center justify-center gap-[14px]">
@@ -482,6 +509,7 @@ function EditorialComparisonSpread({ topMetrics, supportingMetrics }) {
             valueStyle={metric.valueStyle}
             formula={metric.formula}
             detail={metric.detail}
+            themeOverride={themeOverride}
           />
         ))}
       </div>
@@ -513,6 +541,7 @@ function EditorialComparisonSpread({ topMetrics, supportingMetrics }) {
               valueStyle={metric.valueStyle}
               formula={metric.formula}
               detail={metric.detail}
+              themeOverride={themeOverride}
             />
           ))}
         </div>
@@ -530,6 +559,7 @@ export default function TotalCostView({
 }) {
   if (!componentCosts || !componentData) return null;
 
+  const sectionFiveThemeCssVars = getExplorerThemeCssVariables(SECTION_FIVE_THEME_OVERRIDE);
   const { mu = 0, alpha = 0, mTotal = 0, perComponent = [] } = componentCosts;
   const totalCost = mu + alpha;
   const allLabelCount = componentData?.components?.reduce((sum, comp) => sum + comp.labels.length, 0) ?? 0;
@@ -588,23 +618,24 @@ export default function TotalCostView({
       value: `${savingsPct}%`,
       valueStyle: savingsPositive
         ? {
-            color: explorerThemeColor(explorerThemeId, 'quantity'),
+            color: explorerThemeColor(SECTION_FIVE_THEME_OVERRIDE, 'quantity'),
           }
         : undefined,
     },
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8" style={sectionFiveThemeCssVars}>
       <ComponentRecap components={components} />
 
-      <SectionFiveIntroBlock />
+      <SectionFiveIntroBlock themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
 
-      <AggregationExplainer />
+      <AggregationExplainer themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
 
       <EditorialComparisonSpread
         topMetrics={TOP_COMPARISON_METRICS}
         supportingMetrics={SUPPORTING_METRICS}
+        themeOverride={SECTION_FIVE_THEME_OVERRIDE}
       />
     </div>
   );
