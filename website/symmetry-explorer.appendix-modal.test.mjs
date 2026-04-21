@@ -116,4 +116,8 @@ test('appendix hover surfaces and shared typography registers remain intact', ()
   assert.match(source, /const APPENDIX_MONO_LEDGER_CLASS = 'font-mono text-\[13px\] leading-relaxed text-gray-900';/);
   assert.match(source, /const APPENDIX_KICKER_CLASS = 'text-\[10px\] font-semibold uppercase tracking-\[0\.16em\] text-gray-400';/);
   assert.match(source, /const APPENDIX_FOOTNOTE_CLASS = 'text-\[11px\] italic text-muted-foreground';/);
+  assert.doesNotMatch(source, /style=\{vStyle\}/);
+  assert.doesNotMatch(source, /style=\{wStyle\}/);
+  assert.match(source, /style=\{vStyle\(\)\}/);
+  assert.match(source, /style=\{wStyle\(\)\}/);
 });

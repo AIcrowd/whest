@@ -846,8 +846,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     <WorkedExampleEquation
                       assignment={
                         <>
-                          R[<span style={vStyle}>0</span>,<span style={vStyle}>1</span>] =
-                          A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>] + A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>] + A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>] + A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]
+                          R[<span style={vStyle()}>0</span>,<span style={vStyle()}>1</span>] =
+                          A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>] + A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>] + A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>] + A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]
                         </>
                       }
                       numeric={
@@ -859,8 +859,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     <WorkedExampleEquation
                       assignment={
                         <>
-                          R[<span style={vStyle}>1</span>,<span style={vStyle}>0</span>] =
-                          A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>] + A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>] + A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>] + A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]
+                          R[<span style={vStyle()}>1</span>,<span style={vStyle()}>0</span>] =
+                          A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>] + A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>] + A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>] + A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]
                         </>
                       }
                       numeric={
@@ -906,8 +906,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     <WorkedExampleEquation
                       assignment={
                         <>
-                          (k,l) = (<span style={wStyle}>0</span>,<span style={wStyle}>1</span>) :
-                          A[<span style={vStyle}>0</span>,<span style={wStyle}>0</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>1</span>]
+                          (k,l) = (<span style={wStyle()}>0</span>,<span style={wStyle()}>1</span>) :
+                          A[<span style={vStyle()}>0</span>,<span style={wStyle()}>0</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>1</span>]
                         </>
                       }
                       numeric={
@@ -919,8 +919,8 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     <WorkedExampleEquation
                       assignment={
                         <>
-                          (k,l) = (<span style={wStyle}>1</span>,<span style={wStyle}>0</span>) :
-                          A[<span style={vStyle}>0</span>,<span style={wStyle}>1</span>]·A[<span style={vStyle}>1</span>,<span style={wStyle}>0</span>]
+                          (k,l) = (<span style={wStyle()}>1</span>,<span style={wStyle()}>0</span>) :
+                          A[<span style={vStyle()}>0</span>,<span style={wStyle()}>1</span>]·A[<span style={vStyle()}>1</span>,<span style={wStyle()}>0</span>]
                         </>
                       }
                       numeric={
