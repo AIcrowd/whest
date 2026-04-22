@@ -229,12 +229,12 @@ def einsum(
         satisfies ``result[i,j,...] == result[j,i,...]``. This does NOT
         declare input symmetry — use ``me.as_symmetric()`` for that.
         Mutually exclusive with *symmetry*.
-    symmetry : PermutationGroup or list of PermutationGroup, optional
+    symmetry : SymmetryGroup or list of SymmetryGroup, optional
         **Output** permutation group symmetry. Declares that the result
-        is symmetric under the given ``PermutationGroup``(s) and wraps it
+        is symmetric under the given ``SymmetryGroup``(s) and wraps it
         as a ``SymmetricTensor``. Unlike *symmetric_axes* (which always
         means S_k), this supports any permutation group — for example,
-        ``PermutationGroup.cyclic(3, axes=(0, 1, 2))`` declares cyclic
+        ``SymmetryGroup.cyclic(axes=(0, 1, 2))`` declares cyclic
         symmetry where ``result[i,j,k] == result[j,k,i] == result[k,i,j]``
         but ``result[i,j,k]`` need not equal ``result[j,i,k]``.
         Each group must have ``axes`` set. Mutually exclusive with
