@@ -747,7 +747,7 @@
     "signature": "we.asarray(a, dtype=None, **kwargs)",
     "status": "supported",
     "summary": "Convert the input to an array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.asarray"
   },
   "schema_version": 1,

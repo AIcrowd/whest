@@ -341,7 +341,7 @@
     "signature": "we.fft.rfftfreq(n, d=1.0, device=None)",
     "status": "supported",
     "summary": "Return the Discrete Fourier Transform sample frequencies (for usage with rfft, irfft).",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.fft.rfftfreq"
   },
   "schema_version": 1,

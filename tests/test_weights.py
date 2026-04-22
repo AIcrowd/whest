@@ -58,6 +58,12 @@ def test_load_weights_use_packaged_default_explicitly():
     assert get_weight("linalg.cholesky") == _packaged_weight("linalg.cholesky")
 
 
+def test_packaged_free_ops_have_zero_weight():
+    load_weights(use_packaged_default=True)
+    assert get_weight("empty") == 0.0
+    assert get_weight("reshape") == 0.0
+
+
 def test_load_weights_missing_file_warns_and_falls_back_to_packaged_default_when_enabled():
     with pytest.warns(RuntimeWarning, match="could not load custom weights"):
         load_weights("/nonexistent/path.json", use_packaged_default=True)

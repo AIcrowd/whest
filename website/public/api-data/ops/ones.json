@@ -481,7 +481,7 @@
     "signature": "we.ones(shape, dtype=None, order='C', *, device=None, like=None)",
     "status": "supported",
     "summary": "Return a new array of given shape and type, filled with ones.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.ones"
   },
   "schema_version": 1,

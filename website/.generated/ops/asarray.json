@@ -946,7 +946,7 @@
   "slug": "asarray",
   "summary": "Convert the input to an array.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.asarray",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L517"

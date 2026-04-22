@@ -275,7 +275,7 @@
     "signature": "we.mintypecode(typechars, typeset='GDFgdf', default='d')",
     "status": "supported",
     "summary": "Return the character for the minimum-size type to which given types can be safely cast.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.mintypecode"
   },
   "schema_version": 1,

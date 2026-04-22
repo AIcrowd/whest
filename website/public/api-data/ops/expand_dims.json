@@ -469,7 +469,7 @@
     "signature": "we.expand_dims(a, axis)",
     "status": "supported",
     "summary": "Expand the shape of an array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.expand_dims"
   },
   "schema_version": 1,

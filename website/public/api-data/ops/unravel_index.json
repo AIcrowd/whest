@@ -274,7 +274,7 @@
     "signature": "we.unravel_index(*args, **kwargs)",
     "status": "supported",
     "summary": "Converts a flat index or array of flat indices into a tuple of coordinate arrays.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.unravel_index"
   },
   "schema_version": 1,

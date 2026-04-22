@@ -374,7 +374,7 @@
     "signature": "we.isscalar(element)",
     "status": "supported",
     "summary": "Returns True if the type of `element` is a scalar type.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.isscalar"
   },
   "schema_version": 1,

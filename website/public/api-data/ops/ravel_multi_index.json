@@ -339,7 +339,7 @@
     "signature": "we.ravel_multi_index(*args, **kwargs)",
     "status": "supported",
     "summary": "Converts a tuple of index arrays into an array of flat indices, applying boundary modes to the multi-index.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.ravel_multi_index"
   },
   "schema_version": 1,

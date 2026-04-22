@@ -431,7 +431,7 @@
     "signature": "we.permute_dims(a, axes=None)",
     "status": "supported",
     "summary": "Returns an array with axes transposed.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.permute_dims"
   },
   "schema_version": 1,

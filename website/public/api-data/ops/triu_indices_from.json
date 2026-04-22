@@ -380,7 +380,7 @@
     "signature": "we.triu_indices_from(arr, k=0)",
     "status": "supported",
     "summary": "Return the indices for the upper-triangle of arr.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.triu_indices_from"
   },
   "schema_version": 1,

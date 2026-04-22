@@ -347,7 +347,7 @@
   "slug": "min_scalar_type",
   "summary": "For scalar ``a``, returns the data type with the smallest size and smallest scalar kind which can hold its value.  For non-scalar array ``a``, returns the vector's dtype unmodified.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.min_scalar_type",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1171"

@@ -545,7 +545,7 @@
   "slug": "eye",
   "summary": "Return a 2-D array with ones on the diagonal and zeros elsewhere.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L163",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.eye",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L77"

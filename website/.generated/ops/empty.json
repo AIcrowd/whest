@@ -672,7 +672,7 @@
   "slug": "empty",
   "summary": "Return a new array of given shape and type, without initializing entries.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.empty",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L177"

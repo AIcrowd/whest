@@ -268,7 +268,7 @@
     "signature": "we.broadcast_arrays(*args, subok=False)",
     "status": "supported",
     "summary": "Broadcast any number of arrays against each other.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.broadcast_arrays"
   },
   "schema_version": 1,

@@ -300,7 +300,7 @@
     "signature": "we.isdtype(dtype, kind)",
     "status": "supported",
     "summary": "Determine if a provided dtype is of a specified data type ``kind``.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.isdtype"
   },
   "schema_version": 1,

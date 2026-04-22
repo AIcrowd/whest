@@ -605,7 +605,7 @@
     "signature": "we.random.default_rng(seed=None)",
     "status": "supported",
     "summary": "Construct a new Generator with the default BitGenerator (PCG64).",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.random.default_rng"
   },
   "schema_version": 1,

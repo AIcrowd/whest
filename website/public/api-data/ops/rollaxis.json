@@ -364,7 +364,7 @@
     "signature": "we.rollaxis(a, axis, start=0)",
     "status": "supported",
     "summary": "Roll the specified axis backwards, until it lies in a given position.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.rollaxis"
   },
   "schema_version": 1,

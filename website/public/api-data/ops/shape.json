@@ -245,7 +245,7 @@
     "signature": "we.shape(a)",
     "status": "supported",
     "summary": "Return the shape of an array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.shape"
   },
   "schema_version": 1,

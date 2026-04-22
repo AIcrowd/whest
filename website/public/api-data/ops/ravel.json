@@ -603,7 +603,7 @@
     "signature": "we.ravel(a, order='C')",
     "status": "supported",
     "summary": "Return a contiguous flattened array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.ravel"
   },
   "schema_version": 1,

@@ -226,6 +226,7 @@ actual_cost = analytical_formula(shape) × weight(op_name)
 | `sin` | $\text\{numel\}(\text\{output\})$ | 16 | 1,048,576 |
 | `matmul` | $m \cdot k \cdot n$ | 1 | 16,777,216 |
 | `linalg.cholesky` | $n^3$ | 4 | 67,108,864 |
+| `reshape` | $0$ | 0 | 0 |
 
 Weights are measured using the overhead-subtracted correction-factor
 methodology described in [FLOP Weight Calibration Results](/docs/development/calibration/).
@@ -242,6 +243,10 @@ per category to remove numpy implementation noise from the weight.
 BLAS-backed operations (contractions, linalg) have weights near 1.0 because
 their tight FMA loops execute almost exactly 1 hardware FP instruction per
 analytical FLOP, with no ufunc overhead to subtract.
+
+Known analytical zero-FLOP operations (`reshape`, `broadcast_to`,
+`random.seed`, etc.) are stored with weight `0.0` in the official artifacts
+so the generated docs surface them as free rather than as `1x` unit-cost ops.
 
 Integer and bitwise operations (`bitwise_and`, `gcd`, `lcm`, etc.) use the
 `instructions` hardware counter (total retired instructions) because they

@@ -282,7 +282,7 @@
     "signature": "we.swapaxes(a, axis1, axis2)",
     "status": "supported",
     "summary": "Interchange two axes of an array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.swapaxes"
   },
   "schema_version": 1,

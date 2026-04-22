@@ -445,7 +445,7 @@
   "slug": "frombuffer",
   "summary": "Interpret a buffer as a 1-dimensional array.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.frombuffer",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L977"

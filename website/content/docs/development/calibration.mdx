@@ -21,7 +21,7 @@ Per-operation **weights** correct for this. Each weight is a multiplicative cons
 effective_cost = analytical_formula(shape) * weight(op_name)
 ```
 
-A weight of 16.0 for `exp` means each analytical FLOP of `exp` is calibrated as approximately 16 times more expensive than one analytical FLOP of `add` under the chosen measurement mode. In normal use, whest loads packaged official weights automatically on import. Set `WHEST_DISABLE_WEIGHTS=1` if you want the pure analytical unit-cost model instead.
+A weight of 16.0 for `exp` means each analytical FLOP of `exp` is calibrated as approximately 16 times more expensive than one analytical FLOP of `add` under the chosen measurement mode. Known analytical zero-FLOP operations are stored with weight `0.0` in the official artifacts so the generated docs and packaged defaults surface them as truly free. In normal use, whest loads packaged official weights automatically on import. Set `WHEST_DISABLE_WEIGHTS=1` if you want the pure analytical unit-cost model instead.
 
 ## Quick start
 
@@ -83,6 +83,7 @@ The JSON file must have a `"weights"` key mapping operation names to floats:
 ```json
 {
   "weights": {
+    "reshape": 0.0,
     "add": 1.0,
     "exp": 16.0,
     "sin": 16.0,
@@ -133,11 +134,14 @@ The benchmark suite supports two measurement modes, chosen automatically:
 | **perf** | Linux (with `perf` installed) | Instruction-style hardware counters, weighted by SIMD width |
 | **timing** | Any (macOS, Linux without `perf`) | Relative wall-clock cost, normalized against `np.add` |
 
-Every operation's weight is computed as:
+Every counted operation's weight is computed as:
 
 ```
 weight(op) = max(alpha_raw(op) - overhead_for_category, 0)
 ```
+
+Known analytical zero-FLOP operations are not benchmarked; they are emitted
+separately into the official artifacts with weight `0.0`.
 
 where `alpha_raw(op)` depends on the active measurement mode:
 

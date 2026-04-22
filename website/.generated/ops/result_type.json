@@ -438,7 +438,7 @@
   "slug": "result_type",
   "summary": "Returns the type that results from applying the NumPy type promotion rules to the arguments.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.result_type",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1334"

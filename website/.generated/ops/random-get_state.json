@@ -340,7 +340,7 @@
   "slug": "random-get_state",
   "summary": "Return a tuple representing the internal state of the generator.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.random.get_state",
   "whest_source_url": ""

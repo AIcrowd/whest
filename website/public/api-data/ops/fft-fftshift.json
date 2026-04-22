@@ -273,7 +273,7 @@
     "signature": "we.fft.fftshift(x, axes=None)",
     "status": "supported",
     "summary": "Shift the zero-frequency component to the center of the spectrum.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.fft.fftshift"
   },
   "schema_version": 1,

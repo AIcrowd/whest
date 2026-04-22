@@ -566,7 +566,7 @@
     "signature": "we.split(ary, indices_or_sections, axis=0)",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays as views into `ary`.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.split"
   },
   "schema_version": 1,

@@ -368,7 +368,7 @@
     "signature": "we.squeeze(a, axis=None)",
     "status": "supported",
     "summary": "Remove axes of length one from `a`.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.squeeze"
   },
   "schema_version": 1,

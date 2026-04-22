@@ -17,10 +17,12 @@ through the same normalisation path.  Raw alpha values are preserved in
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 import os
 import sys
 import time as _time
+from pathlib import Path
 from typing import Any
 
 from benchmarks._baseline import BaselineResult, measure_baseline, measure_baselines
@@ -132,6 +134,8 @@ _APPROX_OP_COUNTS: dict[str, int] = {
     "linalg_delegates": 15,
 }
 
+_WEIGHTS_CSV = Path(__file__).resolve().parent.parent / "src" / "whest" / "data" / "weights.csv"
+
 
 def normalize_weights(
     raw_alpha: dict[str, float], alpha_add: float
@@ -147,7 +151,7 @@ def normalize_weights_v2(
     all_details: dict[str, dict],
     baselines: BaselineResult,
 ) -> dict[str, float]:
-    """Subtract per-category ufunc overhead and clamp to minimum 1.0.
+    """Subtract per-category ufunc overhead for counted operations.
 
     Each operation's raw alpha is adjusted by subtracting the overhead
     attributable to numpy's ufunc dispatch layer. The ``measurement_mode``
@@ -161,7 +165,9 @@ def normalize_weights_v2(
 
     After subtraction, clamp to 0.0 (no negative weights). Values below 1.0
     are expected for ops with less FP work than the overhead measurement
-    (e.g., bitwise ops that generate 0 FP instructions).
+    (e.g., bitwise ops that generate 0 FP instructions). Known analytical
+    zero-FLOP operations are injected separately with weight 0.0 because they
+    are not benchmarked.
 
     Note: BLAS/linalg ops that are pure FMA loops will show weight ≈ 2.0
     because ``fp_arith_inst_retired`` counts each FMA as 2 retired FP
@@ -174,6 +180,24 @@ def normalize_weights_v2(
         overhead = baselines.overhead_for_mode(mode)
         weights[op] = max(alpha - overhead, 0.0)
     return weights
+
+
+def _load_known_free_ops() -> set[str]:
+    """Return analytical zero-FLOP operations from the curated weights CSV."""
+    if not _WEIGHTS_CSV.exists():
+        return set()
+
+    free_ops: set[str] = set()
+    with _WEIGHTS_CSV.open(newline="", encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            status = (row.get("Status") or "").strip().lower()
+            category = (row.get("Category") or "").strip().lower()
+            if status != "free" and category != "free":
+                continue
+            name = (row.get("Operation") or "").strip()
+            if name:
+                free_ops.add(name)
+    return free_ops
 
 
 def _compute_validation_stats(
@@ -506,13 +530,16 @@ def run_benchmarks(
             if op in timing_weights and op in all_details:
                 all_details[op]["timing_weight"] = timing_weights[op]
 
+    for op in _load_known_free_ops():
+        weights[op] = 0.0
+
     # -- methodology metadata (Step 1.3 + 1.4) ----------------------------
     meta["methodology"] = {
         "version": "3.0",
         "formula": (
-            "weight(op) = max(alpha_raw(op) - overhead_for_category, 1.0), "
+            "counted weight(op) = max(alpha_raw(op) - overhead_for_category, 0.0), "
             "where alpha_raw = median(perf_instructions / analytical_FLOPs). "
-            "Overhead is subtracted per ufunc category to remove numpy dispatch noise."
+            "Known analytical zero-FLOP ops are emitted with weight 0.0."
         ),
         "baseline_alpha_add_raw": round(baselines.alpha_add, 6),
         "baseline_alpha_abs_raw": round(baselines.alpha_abs, 6),
@@ -522,7 +549,8 @@ def run_benchmarks(
             "perf_instructions are SIMD-width-weighted "
             "fp_arith_inst_retired counts; "
             "ufunc overhead subtracted per category; "
-            "integer/bitwise ops use instructions counter"
+            "integer/bitwise ops use instructions counter; "
+            "known zero-FLOP ops are injected from the curated registry"
         ),
     }
     meta["validation"] = validation

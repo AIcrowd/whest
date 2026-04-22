@@ -657,7 +657,7 @@
   "slug": "random-default_rng",
   "summary": "Construct a new Generator with the default BitGenerator (PCG64).",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.random.default_rng",
   "whest_source_url": ""

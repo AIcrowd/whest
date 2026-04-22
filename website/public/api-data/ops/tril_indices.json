@@ -449,7 +449,7 @@
     "signature": "we.tril_indices(n, k=0, m=None)",
     "status": "supported",
     "summary": "Return the indices for the lower-triangle of an (n, m) array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.tril_indices"
   },
   "schema_version": 1,

@@ -431,7 +431,7 @@
     "signature": "we.transpose(a, axes=None)",
     "status": "supported",
     "summary": "Returns an array with axes transposed.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.transpose"
   },
   "schema_version": 1,

@@ -420,7 +420,7 @@
     "signature": "we.copy(a, order='K', subok=False)",
     "status": "supported",
     "summary": "Return an array copy of the given object.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.copy"
   },
   "schema_version": 1,

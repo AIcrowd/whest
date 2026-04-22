@@ -245,7 +245,7 @@
     "signature": "we.typename(char)",
     "status": "supported",
     "summary": "Return a description for the given data type code.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.typename"
   },
   "schema_version": 1,

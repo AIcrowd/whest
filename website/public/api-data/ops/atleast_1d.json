@@ -232,7 +232,7 @@
     "signature": "we.atleast_1d(*arys)",
     "status": "supported",
     "summary": "Convert inputs to arrays with at least one dimension.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.atleast_1d"
   },
   "schema_version": 1,

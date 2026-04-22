@@ -285,7 +285,7 @@
     "signature": "we.broadcast_to(array, shape, subok=False)",
     "status": "supported",
     "summary": "Broadcast an array to a new shape.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.broadcast_to"
   },
   "schema_version": 1,

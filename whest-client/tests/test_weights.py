@@ -108,6 +108,12 @@ def test_load_weights_use_packaged_default_explicitly():
     )
 
 
+def test_packaged_free_ops_have_zero_weight():
+    load_weights(use_packaged_default=True)
+    assert get_weight("empty") == 0.0
+    assert get_weight("reshape") == 0.0
+
+
 def test_disable_weights_env_takes_precedence(monkeypatch):
     monkeypatch.setenv("WHEST_DISABLE_WEIGHTS", "1")
     load_weights(use_packaged_default=True)

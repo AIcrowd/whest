@@ -300,7 +300,7 @@
     "signature": "we.identity(n, dtype=None, *, like=None)",
     "status": "supported",
     "summary": "Return the identity array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.identity"
   },
   "schema_version": 1,

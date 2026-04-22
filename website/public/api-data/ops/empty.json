@@ -522,7 +522,7 @@
     "signature": "we.empty(shape, dtype=<class 'float'>, **kwargs)",
     "status": "supported",
     "summary": "Return a new array of given shape and type, without initializing entries.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.empty"
   },
   "schema_version": 1,

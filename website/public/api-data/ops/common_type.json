@@ -188,7 +188,7 @@
     "signature": "we.common_type(*arrays)",
     "status": "supported",
     "summary": "Return a scalar type which is common to the input arrays.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.common_type"
   },
   "schema_version": 1,

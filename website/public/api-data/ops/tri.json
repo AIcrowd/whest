@@ -392,7 +392,7 @@
     "signature": "we.tri(N, M=None, k=0, dtype=<class 'float'>, *, like=None)",
     "status": "supported",
     "summary": "An array with ones at and below the given diagonal and zeros elsewhere.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.tri"
   },
   "schema_version": 1,

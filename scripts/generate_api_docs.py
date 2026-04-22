@@ -2854,6 +2854,10 @@ def resolve_operation_weight(
     if canonical not in registry and name in weights:
         return weights[name]
 
+    info = registry.get(canonical) or registry.get(name)
+    if info is not None and info.get("category") == "free":
+        return 0.0
+
     return 1.0
 
 

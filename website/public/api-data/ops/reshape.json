@@ -574,7 +574,7 @@
     "signature": "we.reshape(a, /, shape=None, order='C', *, newshape=None, copy=None)",
     "status": "supported",
     "summary": "Gives a new shape to an array without changing its data.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.reshape"
   },
   "schema_version": 1,

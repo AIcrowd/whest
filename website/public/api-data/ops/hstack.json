@@ -442,7 +442,7 @@
     "signature": "we.hstack(tup, *, dtype=None, casting='same_kind')",
     "status": "supported",
     "summary": "Stack arrays in sequence horizontally (column wise).",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.hstack"
   },
   "schema_version": 1,

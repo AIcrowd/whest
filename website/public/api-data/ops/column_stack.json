@@ -217,7 +217,7 @@
     "signature": "we.column_stack(tup)",
     "status": "supported",
     "summary": "Stack 1-D arrays as columns into a 2-D array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.column_stack"
   },
   "schema_version": 1,

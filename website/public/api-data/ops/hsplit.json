@@ -327,7 +327,7 @@
     "signature": "we.hsplit(ary, indices_or_sections)",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays horizontally (column-wise).",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.hsplit"
   },
   "schema_version": 1,

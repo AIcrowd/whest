@@ -334,7 +334,7 @@
     "signature": "we.issubdtype(arg1, arg2)",
     "status": "supported",
     "summary": "Returns True if first argument is a typecode lower/equal in type hierarchy.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.issubdtype"
   },
   "schema_version": 1,

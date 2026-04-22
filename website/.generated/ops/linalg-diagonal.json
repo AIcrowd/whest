@@ -513,7 +513,7 @@
   "slug": "linalg-diagonal",
   "summary": "Returns specified diagonals of a matrix (or a stack of matrices) ``x``.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3042",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.linalg.diagonal",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L100"

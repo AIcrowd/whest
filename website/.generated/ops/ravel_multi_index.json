@@ -425,7 +425,7 @@
   "slug": "ravel_multi_index",
   "summary": "Converts a tuple of index arrays into an array of flat indices, applying boundary modes to the multi-index.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.ravel_multi_index",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1305"
