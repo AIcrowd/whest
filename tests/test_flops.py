@@ -10,10 +10,14 @@ from whest._flops import (
     _ceil_log2,
     analytical_pointwise_cost,
     analytical_reduction_cost,
-    einsum_cost as analytical_einsum_cost,
     parse_einsum_subscripts,
     search_cost,
     sort_cost,
+)
+from whest._flops import (
+    einsum_cost as analytical_einsum_cost,
+)
+from whest._flops import (
     svd_cost as analytical_svd_cost,
 )
 from whest._symmetric import SymmetryInfo

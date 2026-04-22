@@ -11,20 +11,44 @@ from functools import wraps
 
 from whest._flops import (
     analytical_pointwise_cost as _analytical_pointwise_cost,
+)
+from whest._flops import (
     analytical_reduction_cost as _analytical_reduction_cost,
+)
+from whest._flops import (
     einsum_cost as _analytical_einsum_cost,
+)
+from whest._flops import (
     svd_cost as _analytical_svd_cost,
 )
 from whest._polynomial import (
     poly_cost as _analytical_poly_cost,
+)
+from whest._polynomial import (
     polyadd_cost as _analytical_polyadd_cost,
+)
+from whest._polynomial import (
     polyder_cost as _analytical_polyder_cost,
+)
+from whest._polynomial import (
     polydiv_cost as _analytical_polydiv_cost,
+)
+from whest._polynomial import (
     polyfit_cost as _analytical_polyfit_cost,
+)
+from whest._polynomial import (
     polyint_cost as _analytical_polyint_cost,
+)
+from whest._polynomial import (
     polymul_cost as _analytical_polymul_cost,
+)
+from whest._polynomial import (
     polysub_cost as _analytical_polysub_cost,
+)
+from whest._polynomial import (
     polyval_cost as _analytical_polyval_cost,
+)
+from whest._polynomial import (
     roots_cost as _analytical_roots_cost,
 )
 from whest._symmetric import SymmetryInfo
@@ -32,47 +56,101 @@ from whest._unwrap import unwrap_cost as _analytical_unwrap_cost
 from whest._weights import get_weight
 from whest._window import (
     bartlett_cost as _analytical_bartlett_cost,
+)
+from whest._window import (
     blackman_cost as _analytical_blackman_cost,
+)
+from whest._window import (
     hamming_cost as _analytical_hamming_cost,
+)
+from whest._window import (
     hanning_cost as _analytical_hanning_cost,
+)
+from whest._window import (
     kaiser_cost as _analytical_kaiser_cost,
 )
 from whest.fft._transforms import (
     fft_cost as _analytical_fft_cost,
+)
+from whest.fft._transforms import (
     fftn_cost as _analytical_fftn_cost,
+)
+from whest.fft._transforms import (
     hfft_cost as _analytical_hfft_cost,
+)
+from whest.fft._transforms import (
     rfft_cost as _analytical_rfft_cost,
+)
+from whest.fft._transforms import (
     rfftn_cost as _analytical_rfftn_cost,
 )
 from whest.linalg._compound import (
     matrix_power_cost as _analytical_matrix_power_cost,
+)
+from whest.linalg._compound import (
     multi_dot_cost as _analytical_multi_dot_cost,
 )
 from whest.linalg._decompositions import (
     cholesky_cost as _analytical_cholesky_cost,
+)
+from whest.linalg._decompositions import (
     eig_cost as _analytical_eig_cost,
+)
+from whest.linalg._decompositions import (
     eigh_cost as _analytical_eigh_cost,
+)
+from whest.linalg._decompositions import (
     eigvals_cost as _analytical_eigvals_cost,
+)
+from whest.linalg._decompositions import (
     eigvalsh_cost as _analytical_eigvalsh_cost,
+)
+from whest.linalg._decompositions import (
     qr_cost as _analytical_qr_cost,
+)
+from whest.linalg._decompositions import (
     svdvals_cost as _analytical_svdvals_cost,
 )
 from whest.linalg._properties import (
     cond_cost as _analytical_cond_cost,
+)
+from whest.linalg._properties import (
     det_cost as _analytical_det_cost,
+)
+from whest.linalg._properties import (
     matrix_norm_cost as _analytical_matrix_norm_cost,
+)
+from whest.linalg._properties import (
     matrix_rank_cost as _analytical_matrix_rank_cost,
+)
+from whest.linalg._properties import (
     norm_cost as _analytical_norm_cost,
+)
+from whest.linalg._properties import (
     slogdet_cost as _analytical_slogdet_cost,
+)
+from whest.linalg._properties import (
     trace_cost as _analytical_trace_cost,
+)
+from whest.linalg._properties import (
     vector_norm_cost as _analytical_vector_norm_cost,
 )
 from whest.linalg._solvers import (
     inv_cost as _analytical_inv_cost,
+)
+from whest.linalg._solvers import (
     lstsq_cost as _analytical_lstsq_cost,
+)
+from whest.linalg._solvers import (
     pinv_cost as _analytical_pinv_cost,
+)
+from whest.linalg._solvers import (
     solve_cost as _analytical_solve_cost,
+)
+from whest.linalg._solvers import (
     tensorinv_cost as _analytical_tensorinv_cost,
+)
+from whest.linalg._solvers import (
     tensorsolve_cost as _analytical_tensorsolve_cost,
 )
 

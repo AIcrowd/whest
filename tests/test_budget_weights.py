@@ -6,9 +6,9 @@ from importlib import resources
 
 import pytest
 
+import whest._weights as weights_module
 from whest import flops as public_flops
 from whest._budget import BudgetContext
-import whest._weights as weights_module
 from whest._weights import load_weights, reset_weights
 from whest.errors import BudgetExhaustedError
 
