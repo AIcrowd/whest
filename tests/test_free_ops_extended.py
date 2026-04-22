@@ -7,7 +7,9 @@ These are all trivial pass-throughs to numpy so we just need to execute them.
 import numpy
 import pytest
 
+import whest as we
 import whest._free_ops as ops
+from whest._symmetric import SymmetricTensor
 
 # ---------------------------------------------------------------------------
 # Helper
@@ -97,6 +99,13 @@ def test_ravel():
     assert r.shape == (6,)
 
 
+def test_ravel_drops_symmetry():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+    r = ops.ravel(a)
+    assert r.shape == (9,)
+    assert not isinstance(r, SymmetricTensor)
+
+
 def test_tile():
     a = numpy.array([1, 2])
     r = ops.tile(a, 3)
@@ -145,6 +154,20 @@ def test_broadcast_to():
     assert r.shape == (2, 3)
 
 
+def test_broadcast_to_only_adds_equal_size_blocks():
+    a = numpy.array([1, 2])
+    r = ops.broadcast_to(a, (2, 3, 2))
+    assert r.shape == (2, 3, 2)
+    assert not isinstance(r, SymmetricTensor)
+
+
+def test_broadcast_to_adds_equal_size_created_block():
+    a = numpy.array([1, 2])
+    r = ops.broadcast_to(a, (4, 4, 2))
+    assert isinstance(r, SymmetricTensor)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(0, 1))
+
+
 def test_meshgrid():
     x = numpy.array([1, 2])
     y = numpy.array([3, 4, 5])
@@ -156,6 +179,26 @@ def test_astype():
     a = numpy.array([1.0, 2.0])
     r = ops.astype(a, numpy.int32)
     assert r.dtype == numpy.int32
+
+
+def test_astype_and_copy_do_not_leak_invalid_view_symmetry():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+
+    cast = ops.astype(a, a.dtype, copy=False)
+    assert cast.shape == a.shape
+    assert not isinstance(cast, SymmetricTensor)
+
+    method_cast = a.astype(a.dtype, copy=False)
+    assert method_cast.shape == a.shape
+    assert not isinstance(method_cast, SymmetricTensor)
+
+    copied = ops.copy(a)
+    assert isinstance(copied, SymmetricTensor)
+    assert copied.symmetry == a.symmetry
+
+    method_copy = a.copy()
+    assert isinstance(method_copy, SymmetricTensor)
+    assert method_copy.symmetry == a.symmetry
 
 
 def test_asarray():
