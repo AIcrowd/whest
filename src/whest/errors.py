@@ -2,7 +2,17 @@
 
 from __future__ import annotations
 
-_DOCS_BASE = "https://aicrowd.github.io/whest/troubleshooting/common-errors"
+import os
+
+_DEFAULT_DOCS_ROOT = "https://aicrowd.github.io/whest/docs"
+_BUDGET_DOCS_PATH = "/guides/budget-planning"
+_COMPETITION_DOCS_PATH = "/getting-started/competition"
+_SYMMETRY_DOCS_PATH = "/guides/symmetry"
+
+
+def _docs_url(path: str) -> str:
+    root = os.environ.get("WHEST_DOCS_ROOT", "").strip() or _DEFAULT_DOCS_ROOT
+    return f"{root.rstrip('/')}{path}"
 
 
 class WhestError(Exception):
@@ -19,7 +29,7 @@ class BudgetExhaustedError(WhestError):
         super().__init__(
             f"{op_name} would cost {flop_cost:,} FLOPs but only "
             f"{flops_remaining:,} remain. "
-            f"See: {_DOCS_BASE}/#budgetexhaustederror"
+            f"See: {_docs_url(_BUDGET_DOCS_PATH)}"
         )
 
 
@@ -33,7 +43,7 @@ class TimeExhaustedError(WhestError):
         super().__init__(
             f"{op_name}: wall-clock time {elapsed_s:.3f}s exceeds "
             f"limit {limit_s:.3f}s. "
-            f"See: {_DOCS_BASE}/#timeexhaustederror"
+            f"See: {_docs_url(_BUDGET_DOCS_PATH)}"
         )
 
 
@@ -44,7 +54,7 @@ class NoBudgetContextError(WhestError):
         super().__init__(
             "No active BudgetContext. "
             "Wrap your code in `with whest.BudgetContext(...):`  "
-            f"See: {_DOCS_BASE}/#nobudgetcontexterror"
+            f"See: {_docs_url(_COMPETITION_DOCS_PATH)}"
         )
 
 
@@ -66,7 +76,7 @@ class SymmetryError(WhestError):
             f"Tensor not symmetric along axes ({', '.join(str(d) for d in axes)}): "
             f"max deviation = {max_deviation} "
             f"(tolerance: atol={atol}, rtol={rtol}). "
-            f"See: {_DOCS_BASE}/#symmetryerror"
+            f"See: {_docs_url(_SYMMETRY_DOCS_PATH)}"
         )
 
 

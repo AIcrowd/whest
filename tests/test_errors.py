@@ -8,6 +8,7 @@ from whest.errors import (
     BudgetExhaustedError,
     NoBudgetContextError,
     SymmetryError,
+    TimeExhaustedError,
     UnsupportedFunctionError,
     WhestError,
     WhestWarning,
@@ -44,6 +45,59 @@ def test_symmetry_error_attributes():
     assert err.axes == (0, 1)
     assert err.max_deviation == 0.5
     assert "0, 1" in str(err)
+
+
+def test_error_docs_links_use_hosted_fallback(monkeypatch):
+    monkeypatch.delenv("WHEST_DOCS_ROOT", raising=False)
+
+    assert "https://aicrowd.github.io/whest/docs/guides/budget-planning" in str(
+        BudgetExhaustedError("einsum", flop_cost=100, flops_remaining=50)
+    )
+    assert "https://aicrowd.github.io/whest/docs/guides/budget-planning" in str(
+        TimeExhaustedError("matmul", elapsed_s=1.5, limit_s=1.0)
+    )
+    assert "https://aicrowd.github.io/whest/docs/getting-started/competition" in str(
+        NoBudgetContextError()
+    )
+    assert "https://aicrowd.github.io/whest/docs/guides/symmetry" in str(
+        SymmetryError(axes=(0, 1), max_deviation=0.5)
+    )
+
+
+def test_error_docs_links_use_env_override(monkeypatch):
+    monkeypatch.setenv("WHEST_DOCS_ROOT", "http://localhost:3000/docs")
+
+    assert "http://localhost:3000/docs/guides/budget-planning" in str(
+        BudgetExhaustedError("einsum", flop_cost=100, flops_remaining=50)
+    )
+    assert "http://localhost:3000/docs/guides/budget-planning" in str(
+        TimeExhaustedError("matmul", elapsed_s=1.5, limit_s=1.0)
+    )
+    assert "http://localhost:3000/docs/getting-started/competition" in str(
+        NoBudgetContextError()
+    )
+    assert "http://localhost:3000/docs/guides/symmetry" in str(
+        SymmetryError(axes=(0, 1), max_deviation=0.5)
+    )
+
+
+def test_error_docs_links_normalize_trailing_slash(monkeypatch):
+    monkeypatch.setenv("WHEST_DOCS_ROOT", "http://localhost:3000/docs/")
+
+    assert "http://localhost:3000/docs/guides/budget-planning" in str(
+        TimeExhaustedError("matmul", elapsed_s=1.5, limit_s=1.0)
+    )
+    assert "http://localhost:3000/docs//guides/budget-planning" not in str(
+        TimeExhaustedError("matmul", elapsed_s=1.5, limit_s=1.0)
+    )
+
+
+def test_error_docs_links_blank_env_uses_hosted_fallback(monkeypatch):
+    monkeypatch.setenv("WHEST_DOCS_ROOT", "   ")
+
+    assert "https://aicrowd.github.io/whest/docs/guides/budget-planning" in str(
+        BudgetExhaustedError("einsum", flop_cost=100, flops_remaining=50)
+    )
 
 
 def test_whest_warning_is_warning():
