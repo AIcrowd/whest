@@ -524,7 +524,7 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(appendixSource, /The restriction <Latex math=\{String\.raw`G_\{\\text\{pt\}\}\\|_V`\} \/> to output labels/);
   assert.match(appendixSource, /notationLatex\('g_output'\)/);
   assert.match(appendixSource, /notationColoredLatex\('s_w_summed', 'S\(W\)'\)/);
-  assert.match(appendixSource, /The valid leftover optimization is output storage/);
+  assert.match(appendixSource, /appendixSection6\.title/);
   assert.match(regimeSpecSource, /\$\$\{notationLatex\('v_free'\)\}\$/);
   assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('w_summed'\)\}\)/);
   assert.match(regimeSpecSource, /notationLatex\('c_omega_cycles'\)/);

@@ -13,6 +13,9 @@ const section4 = {
     takeaway: [
       p('$G_{\\mathrm{f}}$ explains label-renaming symmetry after summation. It should not be substituted for $G_{\\mathrm{pt}}$ in the accumulation cost.'),
     ],
+    constructionTitle: [
+      p('Formal-group construction'),
+    ],
     constructionNote: [
       p('The construction above enumerates the two factors and their product for the selected preset.'),
     ],
