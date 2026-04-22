@@ -20,7 +20,7 @@ import numpy as _np
 import numpy.random as _npr
 
 from whest._flops import _ceil_log2, sort_cost
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup as PermutationGroup
 from whest._validation import require_budget
 
 # ---------------------------------------------------------------------------

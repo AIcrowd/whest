@@ -7,7 +7,7 @@ import functools
 import numpy as _np
 
 from whest._config import get_setting
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup as PermutationGroup
 from whest._symmetric import SymmetricTensor, validate_symmetry
 from whest._validation import check_nan_inf, require_budget
 
@@ -85,7 +85,7 @@ def _make_path_cache(maxsize):
         identity_pattern,
         use_inner_symmetry=True,
     ):
-        from whest._perm_group import Permutation
+        from whest._perm_group import _PermutationCompat as Permutation
 
         input_parts = subscripts.split("->")[0].split(",")
         output_str = subscripts.split("->")[1] if "->" in subscripts else ""

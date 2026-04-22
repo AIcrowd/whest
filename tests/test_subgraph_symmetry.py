@@ -700,7 +700,7 @@ class TestBurnsideFLOPCount:
         from whest._perm_group import SymmetryGroup
 
         n = 10
-        c3 = SymmetryGroup.cyclic(3)
+        c3 = SymmetryGroup.cyclic(axes=(0, 1, 2))
         result = unique_elements(
             frozenset({"i", "j", "k"}),
             {"i": n, "j": n, "k": n},
@@ -712,7 +712,7 @@ class TestBurnsideFLOPCount:
         from whest._perm_group import SymmetryGroup
 
         n = 10
-        s3 = SymmetryGroup.symmetric(3)
+        s3 = SymmetryGroup.symmetric(axes=(0, 1, 2))
         result_pg = unique_elements(
             frozenset({"i", "j", "k"}),
             {"i": n, "j": n, "k": n},
