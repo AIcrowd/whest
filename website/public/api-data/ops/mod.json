@@ -742,7 +742,7 @@
     "name": "mod",
     "notes": "Element-wise modulo.",
     "numpy_ref": "np.mod",
-    "signature": "we.mod(x, y)",
+    "signature": "we.mod(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the element-wise remainder of division.",
     "weight": 16.0,
@@ -752,6 +752,6 @@
   "slug": "mod",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

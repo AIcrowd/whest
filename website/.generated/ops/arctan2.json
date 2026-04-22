@@ -812,12 +812,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.arctan2(x, y)",
+  "signature": "we.arctan2(*args, **kwargs)",
   "slug": "arctan2",
   "summary": "Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.arctan2",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

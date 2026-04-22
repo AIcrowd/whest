@@ -418,7 +418,7 @@
     "name": "expm1",
     "notes": "Element-wise e^x - 1 (accurate near zero).",
     "numpy_ref": "np.expm1",
-    "signature": "we.expm1(x)",
+    "signature": "we.expm1(*args, **kwargs)",
     "status": "supported",
     "summary": "Calculate ``exp(x) - 1`` for all elements in the array.",
     "weight": 16.0,
@@ -428,6 +428,6 @@
   "slug": "expm1",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

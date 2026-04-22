@@ -468,7 +468,7 @@
     "name": "floor",
     "notes": "Element-wise floor.",
     "numpy_ref": "np.floor",
-    "signature": "we.floor(x)",
+    "signature": "we.floor(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the floor of the input, element-wise.",
     "weight": 1.0,
@@ -478,6 +478,6 @@
   "slug": "floor",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

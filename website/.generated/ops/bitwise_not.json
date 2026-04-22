@@ -806,12 +806,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.bitwise_not(x)",
+  "signature": "we.bitwise_not(*args, **kwargs)",
   "slug": "bitwise_not",
   "summary": "Compute bit-wise inversion, or bit-wise NOT, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.bitwise_not",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

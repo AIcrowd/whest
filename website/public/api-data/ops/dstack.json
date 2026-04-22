@@ -398,6 +398,6 @@
   "slug": "dstack",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L669",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L890"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L976"
   }
 }

@@ -441,12 +441,12 @@
     }
   ],
   "see_also": [],
-  "signature": "we.reciprocal(x)",
+  "signature": "we.reciprocal(*args, **kwargs)",
   "slug": "reciprocal",
   "summary": "Return the reciprocal of the argument, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.reciprocal",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

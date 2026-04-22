@@ -333,6 +333,6 @@
   "slug": "bmat",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/matrixlib/defmatrix.py#L1041",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L705"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L779"
   }
 }

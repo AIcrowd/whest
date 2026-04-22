@@ -390,6 +390,6 @@
   "slug": "linalg-tensorinv",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L419",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L287"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L291"
   }
 }

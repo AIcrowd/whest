@@ -562,7 +562,7 @@
     "name": "bitwise_and",
     "notes": "Element-wise bitwise AND.",
     "numpy_ref": "np.bitwise_and",
-    "signature": "we.bitwise_and(x, y)",
+    "signature": "we.bitwise_and(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the bit-wise AND of two arrays element-wise.",
     "weight": 1.0,
@@ -572,6 +572,6 @@
   "slug": "bitwise_and",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

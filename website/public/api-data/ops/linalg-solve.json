@@ -400,6 +400,6 @@
   "slug": "linalg-solve",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L320",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L52"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L53"
   }
 }

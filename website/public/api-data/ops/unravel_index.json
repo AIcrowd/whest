@@ -281,6 +281,6 @@
   "slug": "unravel_index",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unravel_index.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1518"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1604"
   }
 }

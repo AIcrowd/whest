@@ -529,6 +529,6 @@
   "slug": "empty",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.empty.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L177"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L208"
   }
 }

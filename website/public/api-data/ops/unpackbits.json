@@ -466,6 +466,6 @@
   "slug": "unpackbits",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unpackbits.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1497"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1583"
   }
 }

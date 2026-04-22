@@ -537,7 +537,7 @@
     "name": "fmax",
     "notes": "Element-wise maximum ignoring NaN.",
     "numpy_ref": "np.fmax",
-    "signature": "we.fmax(x, y)",
+    "signature": "we.fmax(*args, **kwargs)",
     "status": "supported",
     "summary": "Element-wise maximum of array elements.",
     "weight": 1.0,
@@ -547,6 +547,6 @@
   "slug": "fmax",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

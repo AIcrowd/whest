@@ -9,13 +9,46 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Probability density function at x of the given RV."
+                "text": "Probability density function at "
+              },
+              {
+                "kind": "emphasis",
+                "text": "x"
+              },
+              {
+                "kind": "text",
+                "text": "."
               }
             ],
             "type": "paragraph"
           }
         ],
         "title": "Summary"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Equivalent to "
+              },
+              {
+                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.pdf(x, loc, scale).html",
+                "href": "",
+                "kind": "link",
+                "target": "stats.norm.pdf(x, loc, scale)",
+                "text": "scipy.stats.norm.pdf(x, loc, scale)"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Extended Summary"
       },
       {
         "blocks": [
@@ -27,7 +60,7 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "quantiles"
+                        "text": "Quantiles."
                       }
                     ],
                     "type": "paragraph"
@@ -37,7 +70,7 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "quantiles"
+                    "text": "Quantiles."
                   }
                 ],
                 "name": "x",
@@ -49,39 +82,17 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                        "text": "Mean of the distribution (default 0)."
                       }
                     ],
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "array_like",
+                "data_type": "float, optional",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
-                  }
-                ],
-                "name": "arg1, arg2, arg3,...",
-                "type": "field_list"
-              },
-              {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "location parameter (default=0)"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like, optional",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "location parameter (default=0)"
+                    "text": "Mean of the distribution (default 0)."
                   }
                 ],
                 "name": "loc",
@@ -93,17 +104,17 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "scale parameter (default=1)"
+                        "text": "Standard deviation (default 1)."
                       }
                     ],
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "array_like, optional",
+                "data_type": "float, optional",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "scale parameter (default=1)"
+                    "text": "Standard deviation (default 1)."
                   }
                 ],
                 "name": "scale",
@@ -126,20 +137,36 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Probability density function evaluated at x"
+                        "text": "PDF evaluated at "
+                      },
+                      {
+                        "kind": "emphasis",
+                        "text": "x"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "ndarray",
+                "data_type": "WhestArray",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Probability density function evaluated at x"
+                    "text": "PDF evaluated at "
+                  },
+                  {
+                    "kind": "emphasis",
+                    "text": "x"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
-                "name": "pdf",
+                "name": "",
                 "type": "field_list"
               }
             ],
@@ -161,14 +188,14 @@
     "numpy_ref": "np.stats.norm.pdf",
     "signature": "we.stats.norm.pdf(x, loc=0, scale=1)",
     "status": "supported",
-    "summary": "Probability density function at x of the given RV.",
+    "summary": "Probability density function at *x*.",
     "weight": 16.0,
     "whest_ref": "we.stats.norm.pdf"
   },
   "schema_version": 1,
   "slug": "stats-norm-pdf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051",
+    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html",
     "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_norm.py#L38"
   }
 }

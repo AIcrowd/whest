@@ -546,7 +546,7 @@
     "name": "minimum",
     "notes": "Element-wise minimum (propagates NaN).",
     "numpy_ref": "np.minimum",
-    "signature": "we.minimum(x, y)",
+    "signature": "we.minimum(*args, **kwargs)",
     "status": "supported",
     "summary": "Element-wise minimum of array elements.",
     "weight": 1.0,
@@ -556,6 +556,6 @@
   "slug": "minimum",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

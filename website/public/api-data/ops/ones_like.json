@@ -472,6 +472,6 @@
   "slug": "ones_like",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L213",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L151"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L176"
   }
 }

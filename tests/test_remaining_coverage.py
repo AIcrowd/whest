@@ -1446,10 +1446,10 @@ class TestPathInfoFormatTable:
 
 
 def _make_sym_group(labels):
-    """Create a symmetric PermutationGroup with the given labels."""
-    from whest._perm_group import PermutationGroup
+    """Create a symmetric exact group with the given labels."""
+    from whest._perm_group import SymmetryGroup
 
-    pg = PermutationGroup.symmetric(len(labels))
+    pg = SymmetryGroup.symmetric(axes=tuple(range(len(labels))))
     pg._labels = labels
     return pg
 
