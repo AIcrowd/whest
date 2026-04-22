@@ -83,7 +83,7 @@ def einsum_cost(
             if len(axes) < 2 or symmetry.order() <= 1:
                 perm_groups.append(None)
                 continue
-            labeled_group = SymmetryGroup(*symmetry.generators)
+            labeled_group = SymmetryGroup(*symmetry.generators, axes=axes)
             labeled_group._labels = tuple(chars[axis] for axis in axes)
             perm_groups.append([labeled_group])
 
