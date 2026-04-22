@@ -6,7 +6,9 @@ import {
   mainSection5,
 } from '../content/main/index.ts';
 
-const getParagraphTexts = (blocks = []) => blocks.map(({ text }) => text);
+const getParagraphTexts = (blocks = []) => blocks
+  .filter(({ kind }) => kind === 'paragraph')
+  .map(({ text }) => text);
 const getFirstParagraphText = (blocks = []) => blocks.find(({ kind }) => kind === 'paragraph')?.text;
 
 export const EXPLORER_ACTS = [
@@ -15,7 +17,7 @@ export const EXPLORER_ACTS = [
     navTitle: 'Set Up',
     heading: mainSection1.title,
     question: mainSection1.deck,
-    introParagraphs: mainSection1.slots.intro.map(({ text }) => text),
+    introParagraphs: getParagraphTexts(mainSection1.slots.intro),
     produces: getFirstParagraphText(mainSection1.slots.produces),
   },
   {
