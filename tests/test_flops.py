@@ -5,6 +5,7 @@ from importlib import resources
 
 import pytest
 
+import whest as we
 from whest import flops as public_flops
 from whest._flops import (
     _ceil_log2,
@@ -20,7 +21,6 @@ from whest._flops import (
 from whest._flops import (
     svd_cost as analytical_svd_cost,
 )
-from whest._symmetric import SymmetryInfo
 from whest._weights import load_weights, reset_weights
 
 
@@ -102,13 +102,16 @@ def test_analytical_svd_cost_full():
 
 
 def test_analytical_pointwise_cost_symmetric():
-    info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(5, 5))
-    assert analytical_pointwise_cost(shape=(5, 5), symmetry_info=info) == 15
+    symmetry = we.SymmetryGroup.symmetric(axes=(0, 1))
+    assert analytical_pointwise_cost(shape=(5, 5), symmetry=symmetry) == 15
 
 
 def test_analytical_pointwise_cost_partial_symmetry():
-    info = SymmetryInfo(symmetric_axes=[(0, 1), (2, 3)], shape=(4, 4, 3, 3))
-    assert analytical_pointwise_cost(shape=(4, 4, 3, 3), symmetry_info=info) == 60
+    symmetry = we.SymmetryGroup.direct_product(
+        we.SymmetryGroup.symmetric(axes=(0, 1)),
+        we.SymmetryGroup.symmetric(axes=(2, 3)),
+    )
+    assert analytical_pointwise_cost(shape=(4, 4, 3, 3), symmetry=symmetry) == 60
 
 
 def test_analytical_pointwise_cost_no_symmetry_unchanged():
@@ -116,11 +119,8 @@ def test_analytical_pointwise_cost_no_symmetry_unchanged():
 
 
 def test_analytical_reduction_cost_symmetric():
-    info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(5, 5))
-    assert (
-        analytical_reduction_cost(input_shape=(5, 5), axis=None, symmetry_info=info)
-        == 15
-    )
+    symmetry = we.SymmetryGroup.symmetric(axes=(0, 1))
+    assert analytical_reduction_cost(input_shape=(5, 5), axis=None, symmetry=symmetry) == 15
 
 
 def test_analytical_reduction_cost_no_symmetry_unchanged():
@@ -128,9 +128,9 @@ def test_analytical_reduction_cost_no_symmetry_unchanged():
 
 
 def test_analytical_einsum_cost_symmetric_input():
-    info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(10, 10, 5))
+    symmetry = we.SymmetryGroup.symmetric(axes=(0, 1))
     cost = analytical_einsum_cost(
-        "ijk,k->ij", shapes=[(10, 10, 5), (5,)], operand_symmetries=[info, None]
+        "ijk,k->ij", shapes=[(10, 10, 5), (5,)], operand_symmetries=[symmetry, None]
     )
     dense_cost = 10 * 10 * 5
     assert cost < dense_cost
@@ -155,6 +155,12 @@ def test_public_pointwise_cost_is_weighted(tmp_path):
     assert public_flops.pointwise_cost("exp", shape=(3, 3)) == 22
 
 
+def test_public_pointwise_cost_uses_symmetry_keyword_and_weight(tmp_path):
+    symmetry = we.SymmetryGroup.symmetric(axes=(0, 1))
+    load_weights(_write_weights(tmp_path, {"exp": 2.5}), use_packaged_default=False)
+    assert public_flops.pointwise_cost("exp", shape=(5, 5), symmetry=symmetry) == 37
+
+
 def test_public_reduction_cost_is_weighted(tmp_path):
     load_weights(_write_weights(tmp_path, {"sum": 3.25}), use_packaged_default=False)
     assert public_flops.reduction_cost("sum", input_shape=(4, 5), axis=None) == 65
@@ -170,6 +176,11 @@ def test_public_helpers_can_use_packaged_default_weights():
     assert public_flops.pointwise_cost("exp", shape=(2, 2)) == int(
         analytical_pointwise_cost((2, 2)) * _packaged_weight("exp")
     )
+
+
+def test_public_flops_no_longer_export_symmetry_info():
+    assert not hasattr(public_flops, "SymmetryInfo")
+    assert "SymmetryInfo" not in public_flops.__all__
 
 
 class TestCeilLog2:
