@@ -33,6 +33,7 @@ API_NAME_ALIASES = {
     "concat": "concatenate",
     "deg2rad": "radians",
     "rad2deg": "degrees",
+    "row_stack": "vstack",
 }
 
 # Ensure benchmarks package is importable.

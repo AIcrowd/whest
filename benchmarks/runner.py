@@ -17,12 +17,10 @@ through the same normalisation path.  Raw alpha values are preserved in
 from __future__ import annotations
 
 import argparse
-import csv
 import json
 import os
 import sys
 import time as _time
-from pathlib import Path
 from typing import Any
 
 from benchmarks._baseline import BaselineResult, measure_baseline, measure_baselines
@@ -134,10 +132,6 @@ _APPROX_OP_COUNTS: dict[str, int] = {
     "linalg_delegates": 15,
 }
 
-_WEIGHTS_CSV = (
-    Path(__file__).resolve().parent.parent / "src" / "whest" / "data" / "weights.csv"
-)
-
 
 def normalize_weights(
     raw_alpha: dict[str, float], alpha_add: float
@@ -185,21 +179,15 @@ def normalize_weights_v2(
 
 
 def _load_known_free_ops() -> set[str]:
-    """Return analytical zero-FLOP operations from the curated weights CSV."""
-    if not _WEIGHTS_CSV.exists():
-        return set()
+    """Return analytical zero-FLOP operations from the live registry."""
+    repo_root = os.path.dirname(os.path.dirname(__file__))
+    src_root = os.path.join(repo_root, "src")
+    if src_root not in sys.path:
+        sys.path.insert(0, src_root)
 
-    free_ops: set[str] = set()
-    with _WEIGHTS_CSV.open(newline="", encoding="utf-8") as handle:
-        for row in csv.DictReader(handle):
-            status = (row.get("Status") or "").strip().lower()
-            category = (row.get("Category") or "").strip().lower()
-            if status != "free" and category != "free":
-                continue
-            name = (row.get("Operation") or "").strip()
-            if name:
-                free_ops.add(name)
-    return free_ops
+    from whest._registry import REGISTRY  # type: ignore
+
+    return {name for name, info in REGISTRY.items() if info.get("category") == "free"}
 
 
 def _compute_validation_stats(
