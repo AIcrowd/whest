@@ -548,15 +548,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         Appendix note
                       </span>
                       <span className="mt-1.5 block font-serif text-[15px] leading-7 text-stone-900">
-                        Is the detected group the full symmetry of this expression?
+                        Is this the full symmetry of the final expression?
                       </span>
                       <span className="mt-1.5 block text-[12.5px] leading-6 text-stone-700">
-                        No — the main calculation uses the pointwise group of the indexed summand. The
-                        fully summed expression can admit a larger formal symmetry group. The appendix
-                        explains that distinction, the relation{' '}
-                        <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_pointwise_restricted_v')} \\times ${notationLatex('s_w_summed')}`} />,
-                        and why the larger formal group is not fed back into multiplication-orbit
-                        compression.
+                        The cost above uses <Latex math={notationLatex('g_pointwise')} /> for accumulation. The fully summed expression can have a larger label-renaming formal symmetry, <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_output')} \\times ${notationLatex('s_w_summed')}`} />. That larger group cannot reduce the accumulation count, but its visible output part <Latex math={notationLatex('g_output')} /> can still reduce output storage.
                       </span>
                     </button>
                   </ExplorerSectionCard>

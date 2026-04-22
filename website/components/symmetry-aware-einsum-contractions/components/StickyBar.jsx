@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { withBasePath } from '@/lib/base-path';
+import { formatGeneratorNotation } from '../lib/symmetryLabel.js';
 import { EXPLORER_ACTS } from './explorerNarrative.js';
 import SymmetryBadge from './SymmetryBadge.jsx';
 
@@ -80,7 +81,7 @@ function symmetryLabel(variable) {
     case 'dihedral':
       return hasExplicitPartialAxes ? `D${k}{${axes.join(',')}}` : `D${k}`;
     case 'custom':
-      return hasExplicitPartialAxes ? `custom{${axes.join(',')}}` : 'custom';
+      return formatGeneratorNotation(variable.generators) ?? (hasExplicitPartialAxes ? `custom{${axes.join(',')}}` : 'custom');
     default:
       return null;
   }
@@ -99,7 +100,7 @@ function symmetryLabelFromPerOp(perOpSymmetry) {
     case 'dihedral':
       return k ? `D${k}` : 'dihedral';
     case 'custom':
-      return axes?.length ? `custom{${axes.join(',')}}` : 'custom';
+      return formatGeneratorNotation(perOpSymmetry.generators) ?? (axes?.length ? `custom{${axes.join(',')}}` : 'custom');
     case 'symmetric':
       return k ? `S${k}` : 'symmetric';
     default:

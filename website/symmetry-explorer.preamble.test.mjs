@@ -90,6 +90,16 @@ test('Einsum column transitions to symmetry at the bottom', () => {
   assert.match(src, /Burnside formulas or exact orbit enumeration/);
 });
 
+test('main-page section references are rendered as links, not plain text labels', () => {
+  const preambleSrc = readComponent('AlgorithmAtAGlance.jsx');
+  const narrativeSrc = readComponent('explorerNarrative.js');
+
+  assert.match(preambleSrc, /href="#setup"/);
+  assert.doesNotMatch(preambleSrc, /Start with <strong className="font-semibold">Section 1<\/strong> below/);
+  assert.match(narrativeSrc, /\[Section 3\]\(#proof\)/);
+  assert.doesNotMatch(narrativeSrc, /re-enters in Section 3, when we generate candidate row moves/);
+});
+
 test('μ / α definitions live in the code step headers — no separate callouts in the preamble', () => {
   const src = readComponent('AlgorithmAtAGlance.jsx');
   // μ and α still appear somewhere in the preamble (in the worked example).

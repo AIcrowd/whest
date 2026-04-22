@@ -75,6 +75,20 @@ test('ExampleChooser rebuilds variable colors from the active explorer theme', (
   assert.match(chooserSource, /\[variables,\s*explorerThemeId\]/);
 });
 
+test('shared symmetry labels standardize custom generators across chooser and sticky bar', () => {
+  const chooserSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/ExampleChooser.jsx', import.meta.url), 'utf8');
+  const stickyBarSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/StickyBar.jsx', import.meta.url), 'utf8');
+  const symmetryLabelSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/lib/symmetryLabel.js', import.meta.url), 'utf8');
+
+  assert.match(chooserSource, /import \{ variableSymmetryLabel \} from '\.\.\/lib\/symmetryLabel\.js';/);
+  assert.match(stickyBarSource, /import \{ formatGeneratorNotation \} from '\.\.\/lib\/symmetryLabel\.js';/);
+  assert.match(stickyBarSource, /formatGeneratorNotation\(variable\.generators\) \?\?/);
+  assert.match(stickyBarSource, /formatGeneratorNotation\(perOpSymmetry\.generators\) \?\?/);
+  assert.match(symmetryLabelSource, /⟨/);
+  assert.match(symmetryLabelSource, /formatGeneratorNotation/);
+  assert.doesNotMatch(symmetryLabelSource, /custom \([0-9]+ gen/);
+});
+
 test('buildVariableColors exposes fifteen distinct operand colors for editorial-noir-math before cycling', () => {
   const variables = Array.from({ length: 15 }, (_, idx) => ({
     name: `V${idx}`,

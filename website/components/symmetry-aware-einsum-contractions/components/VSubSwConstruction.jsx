@@ -4,8 +4,8 @@ import { explorerThemeColor, explorerThemeTint } from '../lib/explorerTheme.js';
 import {
   getActiveExplorerThemeId,
   notationColor,
+  notationColoredLatex,
   notationLatex,
-  notationText,
 } from '../lib/notationSystem.js';
 
 /**
@@ -96,6 +96,9 @@ function ColoredLabels({ text, vSet, wSet }) {
  */
 export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLabels = [] }) {
   const explorerThemeId = getActiveExplorerThemeId();
+  const SHORT_V_LATEX = notationColoredLatex('v_free', 'V');
+  const SHORT_S_W_LATEX = notationColoredLatex('s_w_summed', 'S(W)');
+  const SHORT_G_OUT_EQUALS_RESTRICTION_LATEX = `${notationLatex('g_output')} = ${notationLatex('g_pointwise')}\\big|_{${SHORT_V_LATEX}}`;
   const COLOR_V = notationColor('v_free');
   const COLOR_W = notationColor('w_summed');
   const PRODUCT_ACCENT = explorerThemeColor(explorerThemeId, 'quantity');
@@ -109,7 +112,7 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
   if (!expressionGroup || expressionGroup.order <= 1) {
     return (
       <div className="mt-4 text-[15px] text-gray-600">
-        <Latex math={`${notationLatex('g_pointwise_restricted_v')} \\times ${notationLatex('s_w_summed')}`} /> is trivial for this einsum.
+        <Latex math={SHORT_G_OUT_EQUALS_RESTRICTION_LATEX} /> is trivial for this einsum. <Latex math={SHORT_S_W_LATEX} /> is trivial as well.
       </div>
     );
   }
@@ -158,8 +161,8 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
   };
 
   return (
-    <div className="mt-5">
-      <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500">
+    <div className="space-y-3">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500">
         Formal-group construction
       </div>
       <div className="overflow-x-auto">
@@ -170,11 +173,9 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
           {/* Column headers */}
           <div>
             <div className={colHead}>
-              <Latex math={notationLatex('g_pointwise_restricted_v')} />
+              <Latex math={SHORT_G_OUT_EQUALS_RESTRICTION_LATEX} />
               <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
-                {'(induced permutation group on '}
-                {notationText('v_free')}
-                {')'}
+                (visible output action, inherited from G_pt)
               </span>
               <span className="block text-[10px] text-muted-foreground normal-case tracking-normal">
                 (row-witnessed)
@@ -184,11 +185,9 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
           <div className={colHead} />
           <div>
             <div className={colHead}>
-              <Latex math={notationLatex('s_w_summed')} />
+              <Latex math={SHORT_S_W_LATEX} />
               <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
-                {'(symmetric group on '}
-                {notationText('w_summed')}
-                {'-labels)'}
+                (dummy-label renamings, available only after summation)
               </span>
               <span className="block text-[10px] text-muted-foreground normal-case tracking-normal">
                 (row-unwitnessed)
@@ -198,9 +197,9 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
           <div className={colHead} />
           <div>
             <div className={colHead}>
-              <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_pointwise_restricted_v')} \\times ${notationLatex('s_w_summed')}`} />
+              <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_output')} \\times ${SHORT_S_W_LATEX}`} />
               <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
-                (formal symmetry group)
+                (label-renaming formal group)
               </span>
               <span className="block text-[10px] text-muted-foreground normal-case tracking-normal">
                 (row-witnessed × row-unwitnessed)

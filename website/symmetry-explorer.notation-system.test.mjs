@@ -77,10 +77,13 @@ test('notation registry defines text, latex, and the semantic grammar anchors', 
   assert.equal(notationColor('v_free'), '#292C2D');
   assert.equal(notationText('w_summed'), 'W_summed');
   assert.equal(notationLatex('w_summed'), 'W_{\\mathrm{summed}}');
-  assert.equal(notationColor('w_summed'), '#334155');
-  assert.equal(notationColor('g_detected'), '#292C2D');
-  assert.equal(notationColor('sigma_row_move'), '#292C2D');
-  assert.equal(notationColor('alpha_total'), '#292C2D');
+  assert.equal(notationColor('w_summed'), recommendedTheme.roles.summedSide);
+  assert.equal(notationColor('g_detected'), recommendedTheme.roles.symmetryObject);
+  assert.equal(notationText('g_output'), 'G_out');
+  assert.equal(notationLatex('g_output'), 'G_{\\mathrm{out}}');
+  assert.equal(notationColor('g_output'), recommendedTheme.roles.freeSide);
+  assert.equal(notationColor('sigma_row_move'), recommendedTheme.roles.action);
+  assert.equal(notationColor('alpha_total'), recommendedTheme.roles.quantity);
   assert.equal(notationColor('m_incidence'), '#292C2D');
   assert.equal(notationColor('l_labels'), '#5D5F60');
   assert.equal(notationColor('g_v_factor'), notationColor('v_free'));
@@ -376,7 +379,8 @@ test('legacy notation grammar setters are compatibility-only and do not override
 });
 
 test('shared latex colorizer colors representative raw formulas before render', () => {
-  const appendixFormula = String.raw`G_{\text{f}} = G_{\text{pt}}\big|_{V_{\mathrm{free}}} \times S(W_{\mathrm{summed}})`;
+  const appendixFormula = String.raw`G_{\text{f}} = G_{\mathrm{out}} \times S(W_{\mathrm{summed}})`;
+  const preciseAppendixFormula = String.raw`G_{\mathrm{out}} = G_{\text{pt}}\big|_{V_{\mathrm{free}}}`;
   const youngFormula = String.raw`\alpha = n_L^{|V_{\mathrm{free}}|} \cdot \binom{n_L + |W_{\mathrm{summed}}| - 1}{|W_{\mathrm{summed}}|}`;
   const precoloredFormula = String.raw`\textcolor{#2F855A}{\prod_c n_c} + \textcolor{#C05621}{n_\Omega}`;
   const singletonFormula = String.raw`\alpha = \frac{n_\Omega}{|G|}\sum_{g}\left(\prod_{c \in R} n_c\right)\left(n_\Omega^{c_\Omega(g)} - (n_\Omega - 1)^{c_\Omega(g)}\right)`;
@@ -386,6 +390,7 @@ test('shared latex colorizer colors representative raw formulas before render', 
   const appendixExponentIssue = String.raw`t \in [n]^L`;
 
   const colorizedAppendix = colorizeNotationLatex(appendixFormula);
+  const colorizedPreciseAppendix = colorizeNotationLatex(preciseAppendixFormula);
   const colorizedYoung = colorizeNotationLatex(youngFormula);
   const preservedPrecolored = colorizeNotationLatex(precoloredFormula);
   const colorizedSingleton = colorizeNotationLatex(singletonFormula);
@@ -395,8 +400,10 @@ test('shared latex colorizer colors representative raw formulas before render', 
   const colorizedAppendixExponentIssue = colorizeNotationLatex(appendixExponentIssue);
 
   assert.equal(colorizedAppendix.includes(notationColoredLatex('g_formal')), true);
-  assert.equal(colorizedAppendix.includes(notationColoredLatex('g_pointwise_restricted_v')), true);
+  assert.equal(colorizedAppendix.includes(notationColoredLatex('g_output')), true);
   assert.equal(colorizedAppendix.includes(notationColoredLatex('s_w_summed')), true);
+  assert.equal(colorizedPreciseAppendix.includes(notationColoredLatex('g_output')), true);
+  assert.equal(colorizedPreciseAppendix.includes(notationColoredLatex('g_pointwise_restricted_v')), true);
 
   assert.equal(colorizedYoung.includes(notationColoredLatex('alpha_total')), true);
   assert.equal(colorizedYoung.includes(notationColoredLatex('v_free')), true);
@@ -508,11 +515,16 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(priceSavingsSource, /notationLatex\('g_component'\)/);
   assert.match(constructionSource, /Formal-group construction/);
   assert.match(constructionSource, /notationLatex\('g_formal'\)/);
-  assert.match(constructionSource, /notationLatex\('g_pointwise_restricted_v'\)/);
-  assert.match(constructionSource, /notationLatex\('s_w_summed'\)/);
+  assert.match(constructionSource, /notationLatex\('g_output'\)/);
+  assert.match(constructionSource, /notationColoredLatex\('v_free', 'V'\)/);
+  assert.match(constructionSource, /notationColoredLatex\('s_w_summed', 'S\(W\)'\)/);
   assert.match(constructionSource, /is trivial for this einsum\./);
-  assert.match(appendixSource, /The table below records the additional savings available when output storage respects those/);
-  assert.match(appendixSource, /G_\{\\\\text\{pt\}\}\\\\big\|_\{V_\{\\\\mathrm\{free\}\}\}/);
+  assert.match(appendixSource, /Pointwise group/);
+  assert.match(appendixSource, /anchorId="appendix-section-3"/);
+  assert.match(appendixSource, /The restriction <Latex math=\{String\.raw`G_\{\\text\{pt\}\}\\|_V`\} \/> to output labels/);
+  assert.match(appendixSource, /notationLatex\('g_output'\)/);
+  assert.match(appendixSource, /notationColoredLatex\('s_w_summed', 'S\(W\)'\)/);
+  assert.match(appendixSource, /The valid leftover optimization is output storage/);
   assert.match(regimeSpecSource, /\$\$\{notationLatex\('v_free'\)\}\$/);
   assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('w_summed'\)\}\)/);
   assert.match(regimeSpecSource, /notationLatex\('c_omega_cycles'\)/);

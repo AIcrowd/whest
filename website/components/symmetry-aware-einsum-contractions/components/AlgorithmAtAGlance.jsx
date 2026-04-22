@@ -1,10 +1,10 @@
 import ExplorerSectionCard, { AnchorLink } from './ExplorerSectionCard.jsx';
+import EditorialCallout from './EditorialCallout.jsx';
 import Latex from './Latex.jsx';
 import MentalFrameworkCode from './MentalFrameworkCode.jsx';
 import InlineMathText from './InlineMathText.jsx';
-import NarrativeCallout from './NarrativeCallout.jsx';
-import { notationLatex } from '../lib/notationSystem.js';
-import { explorerThemeColor, getActiveExplorerThemeId } from '../lib/explorerTheme.js';
+import SectionReferenceLink from './SectionReferenceLink.jsx';
+import { notationColor, notationLatex } from '../lib/notationSystem.js';
 import { buildSection1ExampleView } from '../lib/section1ExampleView.js';
 
 /**
@@ -29,17 +29,18 @@ import { buildSection1ExampleView } from '../lib/section1ExampleView.js';
 // uniform axis size n. Shown symbolically to motivate why symmetry matters.
 const DENSE_SCALING = String.raw`\mathcal{O}(n^{5})`;
 
-function ColorLegend({ freeLabelColor, summedLabelColor }) {
+function ColorLegend() {
+  const landingFreeLabelColor = notationColor('v_free');
   return (
     <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-stone-700">
       <span className="inline-flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: summedLabelColor }} />
+        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: notationColor('w_summed') }} />
         <span>
           <strong className="font-semibold text-stone-900">summed</strong> label (collapses)
         </span>
       </span>
       <span className="inline-flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: freeLabelColor }} />
+        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: landingFreeLabelColor }} />
         <span>
           <strong className="font-semibold text-stone-900">free</strong> labels (stay on output)
         </span>
@@ -51,16 +52,9 @@ function ColorLegend({ freeLabelColor, summedLabelColor }) {
 const JUSTIFIED_PROSE_STYLE = { textAlign: 'justify' };
 
 function EinsumIntroColumn({ example }) {
-  const explorerThemeId = getActiveExplorerThemeId();
-  const freeLabelColor = explorerThemeColor(explorerThemeId, 'hero');
-  const summedLabelColor = explorerThemeColor(explorerThemeId, 'summedSide');
-  const view = buildSection1ExampleView(example, {
-    freeLabelColor: freeLabelColor,
-    summedLabelColor: summedLabelColor,
-  });
+  const view = buildSection1ExampleView(example);
   if (!view) return null;
-  const coloredVFreeNotation = String.raw`\textcolor{${freeLabelColor}}{${notationLatex('v_free')}}`;
-  const coloredWSummedNotation = String.raw`\textcolor{${summedLabelColor}}{${notationLatex('w_summed')}}`;
+  const coloredVFreeNotation = String.raw`\textcolor{${notationColor('v_free')}}{${notationLatex('v_free')}}`;
 
   return (
     <div id="einsum-contraction" className="flex h-full flex-col scroll-mt-24">
@@ -70,7 +64,7 @@ function EinsumIntroColumn({ example }) {
         </AnchorLink>
       </span>
       <h3 className="mt-1 font-heading text-lg font-semibold text-foreground">
-        A tensor operation, written as one equation
+        A tensor operation, written as one formula
       </h3>
 
       <p
@@ -83,7 +77,7 @@ function EinsumIntroColumn({ example }) {
         the full input grid — so even modestly sized examples explode quickly.
       </p>
 
-      <div className="mt-6 overflow-x-auto px-5 py-6">
+      <div className="mt-6 overflow-x-auto rounded-2xl border border-stone-200 bg-white px-5 py-6">
         <div className="flex justify-center">
           <code className="rounded-md px-2 py-1 font-mono text-[16px] font-semibold tracking-[0.01em] text-stone-800">
             {view.exactEinsumText}
@@ -100,52 +94,49 @@ function EinsumIntroColumn({ example }) {
             {view.operandCount} operand{view.operandCount === 1 ? '' : 's'}, {view.labelCount} label{view.labelCount === 1 ? '' : 's'}.
           </strong>{' '}
           <InlineMathText>
-            {`The summed labels $${coloredWSummedNotation} = \\{${view.wSummedSummary}\\}$ collapse under $\\sum$; the free labels $${coloredVFreeNotation} = \\{${view.vFreeSummary}\\}$ survive as the axes of $R$. Declared symmetries: ${view.declaredSymmetrySummary}. Dense cost scales as $${DENSE_SCALING}$ for uniform axis size n.`}
+            {`The summed labels $${notationLatex('w_summed')} = \\{${view.wSummedSummary}\\}$ collapse under $\\sum$; the free labels $${coloredVFreeNotation} = \\{${view.vFreeSummary}\\}$ survive as the axes of $R$. Declared symmetries: ${view.declaredSymmetrySummary}. Dense cost scales as $${DENSE_SCALING}$ for uniform axis size n.`}
           </InlineMathText>
         </p>
-        <ColorLegend freeLabelColor={freeLabelColor} summedLabelColor={summedLabelColor} />
       </div>
+
+      <ColorLegend />
 
       {/* Spacer: anchors the callout to the bottom when the right column is taller
           (so both columns end at the same y), with a mt-6 minimum gap when not. */}
       <div className="mt-6 flex-1" aria-hidden="true" />
 
-      <div id="where-symmetry-enters" className="scroll-mt-24">
-        <NarrativeCallout
-          label={(
-            <AnchorLink
-              anchorId="where-symmetry-enters"
-              labelText="Where symmetry enters"
-              hashGlyphClassName="text-[12px] text-primary/70"
-            >
-              Where symmetry enters
-            </AnchorLink>
-          )}
-          title="Not every product is distinct"
-          tone="preamble"
-        >
-          <p
-            className="text-[14px] leading-7 text-foreground"
-            style={JUSTIFIED_PROSE_STYLE}
+      <EditorialCallout
+        id="where-symmetry-enters"
+        className="scroll-mt-24"
+        label={(
+          <AnchorLink
+            anchorId="where-symmetry-enters"
+            labelText="Where symmetry enters"
+            hashGlyphClassName="text-[12px] text-primary/70"
           >
-            If several operand occurrences are identical, or if an input tensor has a
-            declared equality symmetry such as <Latex math={String.raw`A_{ij} = A_{ji}`} />,
-            some relabelings are accepted as preserving the scalar summand for this
-            model. Those accepted relabelings form a detected pointwise group{' '}
-            <strong className="font-semibold">G</strong>.
-            The explorer evaluates one representative product for each orbit of full label
-            assignments, while still updating every output bin touched by that orbit.
-          </p>
-          <p
-            className="text-[13px] italic leading-6 text-stone-600"
-            style={JUSTIFIED_PROSE_STYLE}
-          >
-            Thus the computation is not reduced by simply dividing by <Latex math="|G|" />.
-            Fixed loci, diagonal assignments, and output projections are counted explicitly
-            through Burnside formulas or exact orbit enumeration.
-          </p>
-        </NarrativeCallout>
-      </div>
+            Where symmetry enters
+          </AnchorLink>
+        )}
+        title="Not every product is distinct"
+        bodyClassName="mt-2 text-[14px] leading-7 text-foreground"
+        footer={(
+          <>
+            The explorer finds G automatically, then counts the distinct products (<Latex math="\mu" />)
+            and distinct output‑bin updates (<Latex math="\alpha" />) — the two numbers driving the
+            code on the right.
+          </>
+        )}
+      >
+        <>
+          If several operands are identical or individually symmetric
+          (e.g. <Latex math={String.raw`A_{ij} = A_{ji}`} />), the formula is invariant under certain
+          permutations of the labels. Those permutations form a{' '}
+          <strong className="font-semibold">group G</strong>, and whole{' '}
+          <em>orbits</em> of products collapse to a single distinct computation — the dense{' '}
+          <Latex math={DENSE_SCALING} /> drops to <Latex math={String.raw`n^{5}/|G|`} /> in the best
+          case (a free action), and to a Burnside count <Latex math={String.raw`(1/|G|)\sum_g |\mathrm{Fix}(g)|`} /> in general.
+        </>
+      </EditorialCallout>
     </div>
   );
 }
@@ -210,13 +201,11 @@ export default function AlgorithmAtAGlance({ example }) {
           className="mt-10 border-t border-stone-200 pt-8 font-serif text-[17px] leading-[1.75] text-gray-700"
           style={JUSTIFIED_PROSE_STYLE}
         >
-          The rest of this page shows how the explorer moves from a declared contraction
-          to accepted pointwise relabelings, then from those relabelings to the two
-          quantities that drive the direct cost: product orbits{' '}
-          <Latex math={String.raw`\mu`} /> and output-bin updates{' '}
-          <Latex math={String.raw`\alpha`} />. Start with{' '}
-          <strong className="font-semibold">Section 1</strong> below to pick or build a
-          contraction.
+          The rest of this page shows how the explorer detects the symmetry group{' '}
+          <Latex math="G" /> from a contraction and computes{' '}
+          <Latex math={String.raw`\mu`} /> and <Latex math={String.raw`\alpha`} /> automatically.
+          {' '}Start with <SectionReferenceLink href="#setup">Section 1</SectionReferenceLink> below to pick
+          or build a contraction.
         </p>
       </ExplorerSectionCard>
     </section>

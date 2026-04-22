@@ -53,3 +53,21 @@ test('buildSection1ExampleView accepts local free/summed chrome colors for the e
   assert.match(view.expandedEquationLatex, /\\textcolor\{#F0524D\}\{c\}/);
   assert.match(view.expandedEquationLatex, /\\textcolor\{#64748B\}\{i\}/);
 });
+
+test('buildSection1ExampleView uses generator notation for custom operand symmetries', () => {
+  const view = buildSection1ExampleView({
+    id: 'custom-gens',
+    name: 'Custom gens',
+    variables: [
+      { name: 'T', rank: 4, symmetry: 'custom', symAxes: [0, 1, 2, 3], generators: '(0 1), (2 3)' },
+    ],
+    expression: {
+      subscripts: 'abcd',
+      output: 'ab',
+      operandNames: 'T',
+    },
+  });
+
+  assert.match(view.declaredSymmetrySummary, /T: ⟨\(0 1\), \(2 3\)⟩/);
+  assert.doesNotMatch(view.declaredSymmetrySummary, /custom \([0-9]+ gens\)/);
+});

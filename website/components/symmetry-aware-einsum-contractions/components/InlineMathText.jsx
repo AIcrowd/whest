@@ -1,10 +1,31 @@
 import Latex from './Latex.jsx';
+import SectionReferenceLink from './SectionReferenceLink.jsx';
 
 export function renderTooltipInlineText(text, keyPrefix) {
   return text
-    .split(/(\*\*[^*]+\*\*|`[^`]+`|\*[^*\n]+\*)/g)
+    .split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|`[^`]+`|\*[^*\n]+\*)/g)
     .filter(Boolean)
     .map((segment, index) => {
+      const linkMatch = segment.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+      if (linkMatch) {
+        const [, label, href] = linkMatch;
+        if (href.startsWith('#')) {
+          return (
+            <SectionReferenceLink key={`${keyPrefix}-link-${index}`} href={href}>
+              {label}
+            </SectionReferenceLink>
+          );
+        }
+        return (
+          <a
+            key={`${keyPrefix}-link-${index}`}
+            href={href}
+            className="font-semibold text-coral underline decoration-coral/30 underline-offset-4 transition-colors hover:decoration-coral"
+          >
+            {label}
+          </a>
+        );
+      }
       if (segment.startsWith('**') && segment.endsWith('**') && segment.length > 4) {
         return (
           <strong key={`${keyPrefix}-bold-${index}`} className="font-semibold text-current">

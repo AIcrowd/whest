@@ -81,3 +81,18 @@ test('comparison helper reports mismatch state and exposes a structural witness 
   assert.match(comparison.witness.summandA, /^A\[/);
   assert.match(comparison.witness.summandB, /^A\[/);
 });
+
+test('comparison helper exposes a structural witness for a non-bilinear mismatch preset', () => {
+  const ex = EXAMPLES.find((e) => e.id === 'direct-s2-c3');
+  assert.ok(ex, 'direct-s2-c3 example not found');
+  const analysis = analyzeExample(ex, 3);
+  const comparison = computeExpressionAlphaComparison({ analysis, example: ex });
+
+  assert.equal(comparison.state, 'mismatch');
+  assert.ok(comparison.witness, 'expected a structural witness');
+  assert.notEqual(comparison.witness.tupleA.join('|'), comparison.witness.tupleB.join('|'));
+  assert.equal(comparison.witness.outputA.join('|'), comparison.witness.outputB.join('|'));
+  assert.notEqual(comparison.witness.summandA, comparison.witness.summandB);
+  assert.match(comparison.witness.summandA, /^T\[/);
+  assert.match(comparison.witness.summandB, /^T\[/);
+});
