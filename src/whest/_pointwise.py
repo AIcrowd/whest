@@ -62,6 +62,16 @@ def _prepare_symmetric_out(out, target_symmetry):
         raise SymmetryError(axes=tuple(axes), max_deviation=float("inf"))
 
 
+def _validate_result_symmetry(result, symmetry):
+    if symmetry is None:
+        return
+    if not _is_symmetric(_np.asarray(result), symmetry=symmetry):
+        axes = symmetry.axes
+        if axes is None:
+            axes = tuple(range(symmetry.degree))
+        raise SymmetryError(axes=tuple(axes), max_deviation=float("inf"))
+
+
 def _call_with_optional_out(np_func, *args, out=None, supports_out=False, **kwargs):
     if out is None:
         return np_func(*args, **kwargs)
@@ -75,13 +85,10 @@ def _call_with_optional_out(np_func, *args, out=None, supports_out=False, **kwar
 def _wrap_result(result, *, out=None, symmetry=None):
     if out is not None:
         if not isinstance(out, SymmetricTensor):
+            _validate_result_symmetry(result, symmetry)
             return out
         _prepare_symmetric_out(out, symmetry)
-        if not _is_symmetric(_np.asarray(result), symmetry=symmetry):
-            axes = symmetry.axes
-            if axes is None:
-                axes = tuple(range(symmetry.degree))
-            raise SymmetryError(axes=tuple(axes), max_deviation=float("inf"))
+        _validate_result_symmetry(result, symmetry)
         _np.copyto(_np.asarray(out), _np.asarray(result), casting="unsafe")
         return out
     if symmetry is not None:
