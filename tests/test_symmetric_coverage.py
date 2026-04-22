@@ -29,6 +29,7 @@ from whest._symmetry_utils import (
     broadcast_group,
     intersect_groups,
     normalize_symmetry_input,
+    reduce_group,
     remap_group_axes,
 )
 from whest.errors import SymmetryError, SymmetryLossWarning
@@ -1063,6 +1064,13 @@ def test_intersect_groups_identity_only_returns_none():
     assert intersect_groups(s2, t2, ndim=3) is None
 
 
+def test_intersect_groups_same_support_subset_preserves_axes():
+    g = we.SymmetryGroup.symmetric(axes=(1, 2))
+    out = intersect_groups(g, g, ndim=3)
+    assert out == g
+    assert out.axes == (1, 2)
+
+
 def test_remap_group_axes_reorders_generator_support():
     g = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
     remapped = remap_group_axes(g, {0: 2, 1: 0, 2: 1})
@@ -1092,3 +1100,17 @@ def test_normalize_symmetry_input_rejects_duplicate_axes():
 def test_normalize_symmetry_input_rejects_out_of_range_axis():
     with pytest.raises(ValueError, match="range"):
         normalize_symmetry_input((0, 3), ndim=2)
+
+
+def test_broadcast_group_axisless_group_remaps_after_restrict():
+    with_axes = we.SymmetryGroup.symmetric(axes=(0, 1))
+    axisless = we.SymmetryGroup(*with_axes.generators)
+    out = broadcast_group(axisless, input_shape=(3, 3), output_shape=(2, 3, 3))
+    assert out == we.SymmetryGroup.symmetric(axes=(1, 2))
+
+
+def test_reduce_group_axisless_group_remaps_after_restrict():
+    with_axes = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
+    axisless = we.SymmetryGroup(*with_axes.generators)
+    out = reduce_group(axisless, ndim=4, axis=0, keepdims=False)
+    assert out == we.SymmetryGroup.symmetric(axes=(0, 1))
