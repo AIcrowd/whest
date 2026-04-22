@@ -48,18 +48,20 @@ def _supports_out_argument(np_func) -> bool:
 
 def _prepare_symmetric_out(out, target_symmetry):
     if not isinstance(out, SymmetricTensor):
-        return
+        return target_symmetry
     carried_symmetry = out.symmetry
-    if target_symmetry is None:
-        raise ValueError("out symmetry does not match result symmetry")
-    if carried_symmetry is not None and carried_symmetry != target_symmetry:
+    effective_symmetry = target_symmetry if target_symmetry is not None else carried_symmetry
+    if effective_symmetry is None:
+        return None
+    if carried_symmetry is not None and carried_symmetry != effective_symmetry:
         raise ValueError("out symmetry does not match result symmetry")
 
-    if not _is_symmetric(_np.asarray(out), symmetry=target_symmetry):
-        axes = target_symmetry.axes
+    if not _is_symmetric(_np.asarray(out), symmetry=effective_symmetry):
+        axes = effective_symmetry.axes
         if axes is None:
-            axes = tuple(range(target_symmetry.degree))
+            axes = tuple(range(effective_symmetry.degree))
         raise SymmetryError(axes=tuple(axes), max_deviation=float("inf"))
+    return effective_symmetry
 
 
 def _validate_result_symmetry(result, symmetry):
@@ -87,8 +89,8 @@ def _wrap_result(result, *, out=None, symmetry=None):
         if not isinstance(out, SymmetricTensor):
             _validate_result_symmetry(result, symmetry)
             return out
-        _prepare_symmetric_out(out, symmetry)
-        _validate_result_symmetry(result, symmetry)
+        effective_symmetry = _prepare_symmetric_out(out, symmetry)
+        _validate_result_symmetry(result, effective_symmetry)
         _np.copyto(_np.asarray(out), _np.asarray(result), casting="unsafe")
         return out
     if symmetry is not None:
@@ -145,7 +147,7 @@ def _counted_unary(np_func, op_name: str):
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
         symmetry = _symmetry_of(x)
-        _prepare_symmetric_out(out, symmetry)
+        symmetry = _prepare_symmetric_out(out, symmetry)
         cost = pointwise_cost(x.shape, symmetry=symmetry)
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,)):
             result = _call_with_optional_out(
@@ -211,7 +213,7 @@ def _counted_binary(np_func, op_name: str):
             ((x, x_sym), (y, y_sym)),
             output_shape,
         )
-        _prepare_symmetric_out(out, out_symmetry)
+        out_symmetry = _prepare_symmetric_out(out, out_symmetry)
 
         cost = pointwise_cost(output_shape, symmetry=out_symmetry)
         with budget.deduct(

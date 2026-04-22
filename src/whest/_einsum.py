@@ -279,10 +279,9 @@ def _resolve_output_symmetry(
         return validate_symmetry_group(symmetry, ndim=len(output_subscript))
     if symmetric_axes is not None:
         return normalize_symmetry_input(symmetric_axes, ndim=len(output_subscript))
-    if len(operands) == 1:
-        inferred = _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
-        if inferred is not None:
-            return inferred
+    inferred = _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
+    if inferred is not None:
+        return inferred
     if path_info.steps:
         inferred = _remap_inferred_group(path_info.steps[-1].output_group, output_subscript)
         if inferred is not None:
@@ -384,7 +383,7 @@ def einsum(
         output_subscript=output_subscript,
         path_info=path_info,
     )
-    _prepare_symmetric_out(out, target_symmetry)
+    target_symmetry = _prepare_symmetric_out(out, target_symmetry)
 
     with budget.deduct(
         "einsum",

@@ -188,6 +188,28 @@ class TestEinsumPath:
 
 
 class TestOutputSymmetryWrapping:
+    def test_einsum_preserves_single_operand_reduction_subgroup_symmetry(self):
+        rng = numpy.random.RandomState(46)
+        data = rng.rand(3, 3, 3)
+        perms = (
+            data,
+            data.transpose(0, 2, 1),
+            data.transpose(1, 0, 2),
+            data.transpose(1, 2, 0),
+            data.transpose(2, 0, 1),
+            data.transpose(2, 1, 0),
+        )
+        tensor = as_symmetric(sum(perms) / len(perms), symmetry=(0, 1, 2))
+
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = einsum("ijk->ij", tensor)
+
+        expected = numpy.einsum("ijk->ij", numpy.asarray(tensor))
+        numpy.testing.assert_allclose(result, expected, rtol=1e-10)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry.axes == (0, 1)
+        assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
+
     def test_einsum_remaps_input_symmetry_to_output_axis_order(self):
         rng = numpy.random.RandomState(45)
         data = rng.rand(3, 4, 3)
@@ -223,6 +245,24 @@ class TestOutputSymmetryWrapping:
         assert result is out
         assert not isinstance(result, SymmetricTensor)
         numpy.testing.assert_allclose(out, expected, rtol=1e-10)
+
+    def test_einsum_with_symmetric_out_preserves_output_identity(self):
+        data = numpy.array(
+            [
+                [1.0, 2.0, 3.0],
+                [2.0, 5.0, 6.0],
+                [3.0, 6.0, 9.0],
+            ]
+        )
+        out = as_symmetric(numpy.zeros_like(data.T), symmetry=(0, 1))
+
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = einsum("ij->ji", data, out=out, symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
+
+        expected = numpy.einsum("ij->ji", data)
+        assert result is out
+        numpy.testing.assert_allclose(out, expected, rtol=1e-10)
+        assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
 
     def test_str_output_index_sizes_separates_different(self):
         """Different-sized indices should be listed separately."""
