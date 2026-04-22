@@ -43,26 +43,23 @@ test('Preamble lays Einsum notation and the code side-by-side on wide viewports'
 test('Einsum column uses a parametric exact-einsum lead-in followed by a color-coded expanded form', () => {
   const src = readComponent('AlgorithmAtAGlance.jsx');
   assert.match(src, /buildSection1ExampleView/);
-  assert.match(src, /const freeLabelColor = explorerThemeColor\(explorerThemeId, 'hero'\)/);
-  assert.match(src, /const summedLabelColor = explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
-  assert.match(src, /buildSection1ExampleView\(example,\s*\{\s*freeLabelColor: freeLabelColor,\s*summedLabelColor: summedLabelColor,\s*\}\)/s);
+  assert.match(src, /buildSection1ExampleView\(example\)/);
+  assert.match(src, /notationColor\('v_free'\)/);
+  assert.match(src, /notationColor\('w_summed'\)/);
   assert.match(src, /view\.exactEinsumText/);
   assert.match(src, /Latex display math=\{view\.expandedEquationLatex\}/);
   assert.match(src, /mt-2\.5 flex justify-center text-\[19px\]/);
-  assert.match(src, /explorerThemeColor\(explorerThemeId, 'hero'\)/);
-  assert.match(src, /explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
   assert.match(src, /operandCount/);
   assert.match(src, /labelCount/);
   assert.match(src, /The summed labels/);
   assert.match(src, /survive as the axes of \$R\$/);
   assert.match(src, /Declared symmetries:/);
   assert.match(src, /Dense cost scales as \$\$\{DENSE_SCALING\}\$/);
-  assert.doesNotMatch(src, /notationColor\('/);
   assert.doesNotMatch(src, /What this fixes/);
   assert.doesNotMatch(src, /CHAIN_FORMULA/);
   assert.doesNotMatch(src, /Exact einsum/);
   assert.doesNotMatch(src, /Example — the selected contraction/);
-  assert.doesNotMatch(src, /rounded-2xl border border-stone-200 bg-white px-5 py-6/);
+  assert.match(src, /rounded-2xl border border-stone-200 bg-white px-5 py-6/);
   assert.doesNotMatch(src, /A\[/);
   assert.doesNotMatch(src, /B\[/);
   assert.doesNotMatch(src, /C\[/);
@@ -72,7 +69,7 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
     'expanded contraction should render before the prose explanation',
   );
   assert.ok(
-    src.indexOf('The summed labels') < src.indexOf('<ColorLegend freeLabelColor={freeLabelColor} summedLabelColor={summedLabelColor} />'),
+    src.indexOf('The summed labels') < src.indexOf('<ColorLegend />'),
     'legend should stay inside the same einsum surface after the explanatory prose',
   );
   assert.match(src, /textAlign: 'justify'/);
@@ -80,14 +77,14 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
 
 test('Einsum column transitions to symmetry at the bottom', () => {
   const src = readComponent('AlgorithmAtAGlance.jsx');
-  assert.match(src, /import NarrativeCallout/);
+  assert.match(src, /import EditorialCallout/);
   assert.match(src, /Where symmetry enters/);
-  assert.match(src, /tone="preamble"/);
   assert.match(src, /title="Not every product is distinct"/);
-  assert.match(src, /detected pointwise group/i);
-  assert.match(src, /orbit of full label\s+assignments/i);
-  assert.match(src, /not reduced by simply dividing by/);
-  assert.match(src, /Burnside formulas or exact orbit enumeration/);
+  assert.match(src, /<em>orbits<\/em> of products collapse/i);
+  assert.match(src, /n\^\{5\}\/\|G\|/);
+  assert.match(src, /Burnside count/);
+  assert.match(src, /distinct products/);
+  assert.match(src, /distinct output‑bin updates/);
 });
 
 test('main-page section references are rendered as links, not plain text labels', () => {
@@ -107,7 +104,8 @@ test('μ / α definitions live in the code step headers — no separate callouts
   assert.match(src, /\\alpha/);
   // But the old standalone "Two kinds of work" NarrativeCallout pair must be gone.
   assert.doesNotMatch(src, /Two kinds of work/);
-  assert.match(src, /NarrativeCallout/);
+  assert.match(src, /EditorialCallout/);
+  assert.doesNotMatch(src, /NarrativeCallout/);
 });
 
 test('MentalFrameworkCode renders a short, natural-reading pseudocode (not the 20-line teaching model)', () => {
