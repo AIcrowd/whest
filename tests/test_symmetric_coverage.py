@@ -10,6 +10,7 @@ import warnings
 
 import numpy as np
 import pytest
+import whest as we
 
 from whest._perm_group import SymmetryGroup as PermutationGroup
 from whest._symmetric import (
@@ -23,6 +24,12 @@ from whest._symmetric import (
     propagate_symmetry_slice,
     validate_symmetry,
     validate_symmetry_groups,
+)
+from whest._symmetry_utils import (
+    broadcast_group,
+    intersect_groups,
+    normalize_symmetry_input,
+    remap_group_axes,
 )
 from whest.errors import SymmetryError, SymmetryLossWarning
 
@@ -1020,3 +1027,68 @@ class TestSymmetricTensorGeneralGroups:
         assert isinstance(result, SymmetricTensor)
         assert len(result._symmetry_groups) == 1
         assert result._symmetry_groups[0].order() == 2
+
+
+def test_broadcast_group_does_not_group_unequal_created_axes():
+    g = we.SymmetryGroup.symmetric(axes=(0, 1))
+    out = broadcast_group(g, input_shape=(3, 3), output_shape=(2, 3, 3, 3))
+    assert out == we.SymmetryGroup.symmetric(axes=(2, 3))
+
+
+def test_broadcast_group_adds_equal_size_created_block():
+    g = we.SymmetryGroup.symmetric(axes=(0, 1))
+    out = broadcast_group(g, input_shape=(3, 3), output_shape=(3, 3, 3, 3))
+    assert out == we.SymmetryGroup.young(blocks=((0, 1), (2, 3)))
+
+
+def test_broadcast_group_scalar_creates_output_symmetry():
+    out = broadcast_group(None, input_shape=(), output_shape=(4, 4))
+    assert out == we.SymmetryGroup.symmetric(axes=(0, 1))
+
+
+def test_broadcast_group_same_shape_plain_operand_is_none():
+    assert broadcast_group(None, input_shape=(4, 4), output_shape=(4, 4)) is None
+
+
+def test_intersect_groups_works_after_full_rank_embedding():
+    s4 = we.SymmetryGroup.symmetric(axes=(0, 1, 2, 3))
+    blk = we.SymmetryGroup.young(blocks=((0, 1), (2, 3)))
+    out = intersect_groups(s4, blk, ndim=4)
+    assert out == blk
+
+
+def test_intersect_groups_identity_only_returns_none():
+    s2 = we.SymmetryGroup.symmetric(axes=(0, 1))
+    t2 = we.SymmetryGroup.symmetric(axes=(1, 2))
+    assert intersect_groups(s2, t2, ndim=3) is None
+
+
+def test_remap_group_axes_reorders_generator_support():
+    g = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
+    remapped = remap_group_axes(g, {0: 2, 1: 0, 2: 1})
+    assert remapped.axes == (2, 0, 1)
+
+
+def test_normalize_symmetry_input_rejects_list_of_groups():
+    with pytest.raises(TypeError, match="SymmetryGroup"):
+        normalize_symmetry_input(
+            [
+                we.SymmetryGroup.symmetric(axes=(0, 1)),
+                we.SymmetryGroup.symmetric(axes=(2, 3)),
+            ]
+        )
+
+
+def test_normalize_symmetry_input_rejects_overlapping_partition_blocks():
+    with pytest.raises(ValueError, match="overlap"):
+        normalize_symmetry_input(((0, 1), (1, 2)), ndim=3)
+
+
+def test_normalize_symmetry_input_rejects_duplicate_axes():
+    with pytest.raises(ValueError, match="duplicate"):
+        normalize_symmetry_input((0, 0), ndim=2)
+
+
+def test_normalize_symmetry_input_rejects_out_of_range_axis():
+    with pytest.raises(ValueError, match="range"):
+        normalize_symmetry_input((0, 3), ndim=2)

@@ -9,6 +9,15 @@ import numpy as np
 
 from whest._config import get_setting
 from whest._perm_group import SymmetryGroup as PermutationGroup
+from whest._symmetry_utils import (
+    intersect_groups,
+    normalize_symmetry_input,
+    reduce_group,
+    remap_group_axes,
+    restrict_group_to_axes,
+    validate_symmetry_group,
+    wrap_with_symmetry,
+)
 from whest.errors import SymmetryError, SymmetryLossWarning
 
 
@@ -192,7 +201,7 @@ def symmetrize(
             perm[tensor_axis] = group_axes[g.array_form[local_idx]]
         symmetrized = symmetrized + np.transpose(array, perm)
 
-    return as_symmetric(symmetrized / group.order(), symmetry=group)
+    return wrap_with_symmetry(symmetrized / group.order(), group)
 
 
 def validate_symmetry_groups(data: np.ndarray, groups: list) -> None:
@@ -210,6 +219,7 @@ def validate_symmetry_groups(data: np.ndarray, groups: list) -> None:
         if axes is None:
             axes = tuple(range(group.degree))
             group._axes = axes
+        validate_symmetry_group(group, ndim=data.ndim, shape=data.shape)
         for orbit in group.orbits():
             sizes = {data.shape[axes[i]] for i in orbit}
             if len(sizes) != 1:
@@ -450,17 +460,18 @@ def propagate_symmetry_slice(
         if len(kept_tuple) < 2:
             continue
 
-        restricted = stab.restrict(kept_tuple)
-
-        if restricted.order() <= 1:
+        restricted = restrict_group_to_axes(
+            stab, tuple(axes[k] for k in kept_tuple)
+        )
+        if restricted is None:
             continue
 
-        # Remap axes to new tensor dim numbering.
-        new_axes = tuple(old_to_new[axes[k]] for k in kept_tuple)
-        if any(a is None for a in new_axes):
+        final = remap_group_axes(
+            restricted,
+            {axes[k]: old_to_new[axes[k]] for k in kept_tuple},
+        )
+        if final is None:
             continue
-
-        final = PermutationGroup(*restricted.generators, axes=new_axes)
         new_groups.append(final)
 
     return new_groups if new_groups else None
@@ -490,67 +501,11 @@ def propagate_symmetry_reduce(
     list of PermutationGroup or None
         Surviving groups, or ``None`` if no symmetry survives.
     """
-    if axis is None:
-        return None
-
-    # Normalize axis.
-    if isinstance(axis, int):
-        axes_set = {axis % ndim}
-    else:
-        axes_set = {a % ndim for a in axis}
-
-    # Build old→new mapping (only needed when not keepdims).
-    old_to_new: dict[int, int] = {}
-    if not keepdims:
-        new_idx = 0
-        for d in range(ndim):
-            if d not in axes_set:
-                old_to_new[d] = new_idx
-                new_idx += 1
-    else:
-        old_to_new = {d: d for d in range(ndim)}
-
     new_groups: list[PermutationGroup] = []
     for group in groups:
-        grp_axes = group.axes
-        if grp_axes is None:
-            continue
-
-        # Map tensor axes to group-local indices.
-        local_reduced: set[int] = set()
-        local_kept: list[int] = []
-        for local_idx, tensor_dim in enumerate(grp_axes):
-            if tensor_dim in axes_set:
-                local_reduced.add(local_idx)
-            else:
-                local_kept.append(local_idx)
-
-        if not local_reduced:
-            # Group is entirely outside the reduced axes — just remap.
-            new_axes = tuple(old_to_new[grp_axes[i]] for i in range(group.degree))
-            new_groups.append(PermutationGroup(*group.generators, axes=new_axes))
-            continue
-
-        if not local_kept:
-            # All axes in this group are reduced — group vanishes from output.
-            continue
-
-        # Setwise stabilizer: elements mapping reduced axes among themselves.
-        stab = group.setwise_stabilizer(local_reduced)
-
-        # Restrict to kept local indices.
-        kept_tuple = tuple(local_kept)
-        if len(kept_tuple) < 2:
-            continue
-
-        restricted = stab.restrict(kept_tuple)
-        if restricted.order() <= 1:
-            continue
-
-        # Remap to new tensor axis numbering.
-        new_axes = tuple(old_to_new[grp_axes[k]] for k in kept_tuple)
-        final = PermutationGroup(*restricted.generators, axes=new_axes)
-        new_groups.append(final)
+        reduced = reduce_group(group, ndim=ndim, axis=axis, keepdims=keepdims)
+        if reduced is not None:
+            new_groups.append(reduced)
 
     return new_groups if new_groups else None
 
@@ -634,11 +589,9 @@ def intersect_symmetry(
         gb = b_by_axes.get(ga.axes)
         if gb is None:
             continue
-        # Element-set intersection.
-        common_elements = set(ga.elements()) & set(gb.elements())
-        if len(common_elements) <= 1:
-            continue
-        intersection.append(PermutationGroup(*common_elements, axes=ga.axes))
+        common = intersect_groups(ga, gb, ndim=ndim_out)
+        if common is not None:
+            intersection.append(common)
 
     return intersection if intersection else None
 
@@ -876,15 +829,11 @@ def as_symmetric(
         else:
             perm_groups = list(symmetry)
 
-        validate_symmetry_groups(data, perm_groups)
-
-        # Build symmetric_axes from groups for backward compat
-        axes_list = []
-        for g in perm_groups:
-            if g.axes is not None:
-                axes_list.append(g.axes)
-
-        return SymmetricTensor(data, axes_list, perm_groups=perm_groups)
+        group = normalize_symmetry_input(symmetry, ndim=np.asarray(data).ndim)
+        if group is None:
+            raise ValueError("symmetry must not be None")
+        validate_symmetry_groups(data, [group])
+        return wrap_with_symmetry(data, group)
 
     # Legacy symmetric_axes path
     if symmetric_axes is None:
