@@ -133,7 +133,12 @@ class RequestHandler:
         sliced = arr[slices]
 
         if np.ndim(sliced) == 0:
-            return {"status": "ok", "value": sliced.item()}
+            return {
+                "status": "ok",
+                "data": sliced.tobytes(),
+                "shape": [],
+                "dtype": str(sliced.dtype),
+            }
 
         return {
             "status": "ok",
