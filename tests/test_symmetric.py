@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 from whest._budget import BudgetContext
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup as PermutationGroup
 from whest._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
@@ -266,6 +266,12 @@ class TestEndToEnd:
 
 
 class TestSymmetryInfoPermGroup:
+    def test_groups_property_from_symmetric_axes_uses_axes_only_constructor(self):
+        info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(5, 5))
+        assert len(info.groups) == 1
+        assert info.groups[0].axes == (0, 1)
+        assert info.groups[0].degree == 2
+
     def test_groups_property_from_symmetric_axes(self):
         info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(5, 5))
         assert len(info.groups) == 1

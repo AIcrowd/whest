@@ -39,7 +39,7 @@ class SymmetryInfo:
 
         if self.groups is None:
             auto_groups = [
-                PermutationGroup.symmetric(len(g), axes=g)
+                PermutationGroup.symmetric(axes=g)
                 for g in normalized
                 if len(g) >= 2
             ]
@@ -668,7 +668,7 @@ class SymmetricTensor(np.ndarray):
         else:
             # Auto-build S_k groups from symmetric_axes
             obj._symmetry_groups = [
-                PermutationGroup.symmetric(len(g), axes=g)
+                PermutationGroup.symmetric(axes=g)
                 for g in obj._symmetric_axes
                 if len(g) >= 2
             ]
@@ -822,7 +822,7 @@ class SymmetricTensor(np.ndarray):
         # Old format: last element is _symmetric_axes
         self._symmetric_axes = last
         self._symmetry_groups = [
-            PermutationGroup.symmetric(len(g), axes=g)
+            PermutationGroup.symmetric(axes=g)
             for g in self._symmetric_axes
             if len(g) >= 2
         ]
