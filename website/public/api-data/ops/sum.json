@@ -760,6 +760,6 @@
   "slug": "sum",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2338",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
   }
 }

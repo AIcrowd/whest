@@ -793,6 +793,6 @@
   "slug": "min",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3190",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
   }
 }

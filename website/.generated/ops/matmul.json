@@ -1070,5 +1070,5 @@
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.matmul",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L810"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L819"
 }

@@ -950,6 +950,6 @@
   "slug": "tensordot",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L968",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L894"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L903"
   }
 }

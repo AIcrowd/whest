@@ -589,6 +589,6 @@
   "slug": "nan_to_num",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L373",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
   }
 }

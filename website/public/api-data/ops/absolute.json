@@ -514,6 +514,6 @@
   "slug": "absolute",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L29"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
   }
 }

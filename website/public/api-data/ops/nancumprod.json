@@ -371,6 +371,6 @@
   "slug": "nancumprod",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L887",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L197"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
   }
 }
