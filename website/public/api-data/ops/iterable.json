@@ -206,6 +206,6 @@
   "slug": "iterable",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L339",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1121"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1207"
   }
 }

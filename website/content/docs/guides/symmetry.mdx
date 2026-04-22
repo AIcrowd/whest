@@ -142,7 +142,7 @@ column_swap_group = we.SymmetryGroup.symmetric(axes=(2, 3))
 
 two_group_tensor = we.as_symmetric(
     we.ones((3, 3, 5, 5)),
-    symmetry=[row_swap_group, column_swap_group],
+    symmetry=we.SymmetryGroup.direct_product(row_swap_group, column_swap_group),
 )
 ```
 

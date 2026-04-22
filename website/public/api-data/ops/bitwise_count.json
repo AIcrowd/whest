@@ -357,7 +357,7 @@
     "name": "bitwise_count",
     "notes": "Count set bits element-wise (popcount).",
     "numpy_ref": "np.bitwise_count",
-    "signature": "we.bitwise_count(x)",
+    "signature": "we.bitwise_count(*args, **kwargs)",
     "status": "supported",
     "summary": "Computes the number of 1-bits in the absolute value of ``x``. Analogous to the builtin `int.bit_count` or ``popcount`` in C++.",
     "weight": 1.0,
@@ -367,6 +367,6 @@
   "slug": "bitwise_count",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

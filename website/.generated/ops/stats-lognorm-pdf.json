@@ -9,13 +9,46 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Probability density function at x of the given RV."
+              "text": "Probability density function at "
+            },
+            {
+              "kind": "emphasis",
+              "text": "x"
+            },
+            {
+              "kind": "text",
+              "text": "."
             }
           ],
           "type": "paragraph"
         }
       ],
       "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.pdf(x, s, loc, scale).html",
+              "href": "",
+              "kind": "link",
+              "target": "stats.lognorm.pdf(x, s, loc, scale)",
+              "text": "scipy.stats.lognorm.pdf(x, s, loc, scale)"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
     },
     {
       "blocks": [
@@ -27,7 +60,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "quantiles"
+                      "text": "Quantiles."
                     }
                   ],
                   "type": "paragraph"
@@ -37,7 +70,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "quantiles"
+                  "text": "Quantiles."
                 }
               ],
               "name": "x",
@@ -49,20 +82,20 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                      "text": "Shape parameter (std dev of the underlying normal)."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "array_like",
+              "data_type": "float",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                  "text": "Shape parameter (std dev of the underlying normal)."
                 }
               ],
-              "name": "arg1, arg2, arg3,...",
+              "name": "s",
               "type": "field_list"
             },
             {
@@ -71,17 +104,17 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "location parameter (default=0)"
+                      "text": "Location parameter (default 0)."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "array_like, optional",
+              "data_type": "float, optional",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "location parameter (default=0)"
+                  "text": "Location parameter (default 0)."
                 }
               ],
               "name": "loc",
@@ -93,17 +126,17 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "scale parameter (default=1)"
+                      "text": "Scale parameter (default 1)."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "array_like, optional",
+              "data_type": "float, optional",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "scale parameter (default=1)"
+                  "text": "Scale parameter (default 1)."
                 }
               ],
               "name": "scale",
@@ -126,20 +159,36 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Probability density function evaluated at x"
+                      "text": "PDF evaluated at "
+                    },
+                    {
+                      "kind": "emphasis",
+                      "text": "x"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "ndarray",
+              "data_type": "WhestArray",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Probability density function evaluated at x"
+                  "text": "PDF evaluated at "
+                },
+                {
+                  "kind": "emphasis",
+                  "text": "x"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
-              "name": "pdf",
+              "name": "",
               "type": "field_list"
             }
           ],
@@ -174,32 +223,31 @@
   "parameters": [
     {
       "body": [
-        "quantiles"
+        "Quantiles."
       ],
       "name": "x",
       "type": "array_like"
     },
     {
       "body": [
-        "The shape parameter(s) for the distribution (see docstring of the",
-        "instance object for more information)"
+        "Shape parameter (std dev of the underlying normal)."
       ],
-      "name": "arg1, arg2, arg3,...",
-      "type": "array_like"
+      "name": "s",
+      "type": "float"
     },
     {
       "body": [
-        "location parameter (default=0)"
+        "Location parameter (default 0)."
       ],
       "name": "loc",
-      "type": "array_like, optional"
+      "type": "float, optional"
     },
     {
       "body": [
-        "scale parameter (default=1)"
+        "Scale parameter (default 1)."
       ],
       "name": "scale",
-      "type": "array_like, optional"
+      "type": "float, optional"
     }
   ],
   "previous": {
@@ -211,17 +259,17 @@
   "returns": [
     {
       "body": [
-        "Probability density function evaluated at x"
+        "PDF evaluated at *x*."
       ],
-      "name": "pdf",
-      "type": "ndarray"
+      "name": "",
+      "type": "WhestArray"
     }
   ],
   "see_also": [],
   "signature": "we.stats.lognorm.pdf(x, s, loc=0, scale=1)",
   "slug": "stats-lognorm-pdf",
-  "summary": "Probability density function at x of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051",
+  "summary": "Probability density function at *x*.",
+  "upstream_source_url": "",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.stats.lognorm.pdf",

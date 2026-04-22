@@ -221,7 +221,7 @@
     "name": "gcd",
     "notes": "Element-wise greatest common divisor.",
     "numpy_ref": "np.gcd",
-    "signature": "we.gcd(x, y)",
+    "signature": "we.gcd(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the greatest common divisor of ``|x1|`` and ``|x2|``",
     "weight": 16.0,
@@ -231,6 +231,6 @@
   "slug": "gcd",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

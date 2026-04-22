@@ -487,7 +487,7 @@
     "name": "arcsinh",
     "notes": "Element-wise inverse hyperbolic sine.",
     "numpy_ref": "np.arcsinh",
-    "signature": "we.arcsinh(x)",
+    "signature": "we.arcsinh(*args, **kwargs)",
     "status": "supported",
     "summary": "Inverse hyperbolic sine element-wise.",
     "weight": 16.0,
@@ -497,6 +497,6 @@
   "slug": "arcsinh",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

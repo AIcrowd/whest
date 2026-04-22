@@ -387,6 +387,6 @@
   "slug": "triu_indices_from",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L1128",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1481"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1567"
   }
 }

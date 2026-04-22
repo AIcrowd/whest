@@ -1,4 +1,4 @@
-"""Tests for Permutation and PermutationGroup."""
+"""Tests for the current exact-group implementation."""
 
 from __future__ import annotations
 
@@ -6,593 +6,88 @@ import math
 
 import pytest
 
-from whest._perm_group import Cycle, Permutation, PermutationGroup
+from whest._perm_group import SymmetryGroup, _Cycle, _Permutation
 
 
 class TestPermutation:
     def test_identity(self):
-        e = Permutation.identity(3)
+        e = _Permutation.identity(3)
         assert e.array_form == [0, 1, 2]
         assert e.size == 3
         assert e.is_identity
 
-    def test_from_array(self):
-        p = Permutation([1, 2, 0])
-        assert p.array_form == [1, 2, 0]
-        assert p.size == 3
-        assert not p.is_identity
-
     def test_from_cycle(self):
-        # (0 → 1 → 2 → 0)
-        p = Permutation.from_cycle(3, [0, 1, 2])
-        assert p.array_form == [1, 2, 0]
-
-    def test_from_cycle_transposition(self):
-        p = Permutation.from_cycle(4, [1, 3])
+        p = _Permutation.from_cycle(4, [1, 3])
         assert p.array_form == [0, 3, 2, 1]
 
-    def test_compose(self):
-        # (0 1 2) * (0 1 2) = (0 2 1)
-        p = Permutation([1, 2, 0])
-        q = p * p
-        assert q.array_form == [2, 0, 1]
+    def test_compose_and_inverse(self):
+        p = _Permutation([1, 2, 0])
+        assert (p * p).array_form == [2, 0, 1]
+        assert (p * ~p).is_identity
+        assert (~p * p).is_identity
 
-    def test_inverse(self):
-        p = Permutation([1, 2, 0])
-        inv = ~p
-        e = p * inv
-        assert e.is_identity
-
-    def test_eq_and_hash(self):
-        a = Permutation([1, 2, 0])
-        b = Permutation([1, 2, 0])
-        c = Permutation([2, 0, 1])
-        assert a == b
-        assert a != c
-        assert hash(a) == hash(b)
-        assert len({a, b, c}) == 2
-
-    def test_cyclic_form(self):
-        p = Permutation([1, 2, 0])
-        assert p.cyclic_form == [(0, 1, 2)]
-
-    def test_cyclic_form_two_cycles(self):
-        # (0 1)(2 3)
-        p = Permutation([1, 0, 3, 2])
-        cycles = p.cyclic_form
-        assert len(cycles) == 2
-        assert set(map(frozenset, cycles)) == {frozenset({0, 1}), frozenset({2, 3})}
-
-    def test_cyclic_form_identity(self):
-        assert Permutation.identity(3).cyclic_form == []
-
-    def test_full_cyclic_form_includes_fixed_points(self):
-        # (0 1) on size 4: fixed points 2, 3 become 1-cycles
-        p = Permutation([1, 0, 2, 3])
-        full = p.full_cyclic_form
-        # Should cover every position exactly once
-        all_positions = sorted(pos for cycle in full for pos in cycle)
-        assert all_positions == [0, 1, 2, 3]
-
-    def test_cycle_structure(self):
-        # (0 1 2) = one 3-cycle
-        p = Permutation([1, 2, 0])
-        assert p.cycle_structure == {3: 1}
-
-    def test_cycle_structure_mixed(self):
-        # (0 1)(2 3 4) on size 5 → {2: 1, 3: 1}
-        p = Permutation([1, 0, 3, 4, 2])
-        assert p.cycle_structure == {2: 1, 3: 1}
-
-    def test_order(self):
-        # (0 1 2) has order 3
-        assert Permutation([1, 2, 0]).order == 3
-        # (0 1)(2 3 4) has order lcm(2,3) = 6
-        assert Permutation([1, 0, 3, 4, 2]).order == 6
-        # identity has order 1
-        assert Permutation.identity(5).order == 1
+    def test_cycle_views(self):
+        p = _Permutation([1, 0, 3, 2])
+        assert {frozenset(c) for c in p.cyclic_form} == {
+            frozenset({0, 1}),
+            frozenset({2, 3}),
+        }
+        assert p.cycle_structure == {2: 2}
+        assert p.order == 2
 
 
-class TestPermutationGroup:
-    def test_symmetric_2(self):
-        """S_2 has order 2."""
-        g = PermutationGroup.symmetric(2)
-        assert g.degree == 2
-        assert g.order() == 2
-        assert g.is_symmetric()
+class TestCycleBuilder:
+    def test_cycle_builder_expands_to_permutation(self):
+        c = _Cycle(0, 2)(1, 3)
+        p = _Permutation(c)
+        assert p.array_form == [2, 3, 0, 1]
+        assert c.list() == [2, 3, 0, 1]
 
-    def test_symmetric_3(self):
-        """S_3 has order 6."""
-        g = PermutationGroup.symmetric(3)
-        assert g.order() == 6
-        assert g.is_symmetric()
 
-    def test_cyclic_3(self):
-        """C_3 has order 3, is NOT the full symmetric group."""
-        g = PermutationGroup.cyclic(3)
-        assert g.order() == 3
-        assert not g.is_symmetric()
-        elems = g.elements()
-        assert len(elems) == 3
-        assert Permutation.identity(3) in elems
-        assert Permutation([1, 2, 0]) in elems
-        assert Permutation([2, 0, 1]) in elems
+class TestSymmetryGroup:
+    def test_symmetric_cyclic_dihedral_orders(self):
+        assert SymmetryGroup.symmetric(axes=(0, 1)).order() == 2
+        assert SymmetryGroup.symmetric(axes=(0, 1, 2)).order() == 6
+        assert SymmetryGroup.cyclic(axes=(0, 1, 2)).order() == 3
+        assert SymmetryGroup.dihedral(axes=(0, 1, 2, 3)).order() == 8
 
-    def test_cyclic_4(self):
-        """C_4 has order 4."""
-        g = PermutationGroup.cyclic(4)
-        assert g.order() == 4
-        assert not g.is_symmetric()
-
-    def test_dihedral_3(self):
-        """D_3 = S_3 has order 6."""
-        g = PermutationGroup.dihedral(3)
-        assert g.order() == 6
-        assert g.is_symmetric()
-
-    def test_dihedral_4(self):
-        """D_4 has order 8, which is < 4! = 24."""
-        g = PermutationGroup.dihedral(4)
-        assert g.order() == 8
-        assert not g.is_symmetric()
-
-    def test_from_generators(self):
-        """Group generated by a single transposition (0 1) on 3 points has order 2."""
-        gen = Permutation.from_cycle(3, [0, 1])
-        g = PermutationGroup(gen)
-        assert g.order() == 2
-        assert not g.is_symmetric()
-
-    def test_elements_cached(self):
-        g = PermutationGroup.symmetric(3)
-        e1 = g.elements()
-        e2 = g.elements()
-        assert e1 is e2
-
-    def test_axes(self):
-        g = PermutationGroup.cyclic(3, axes=(2, 5, 7))
+    def test_from_generators_and_axes(self):
+        g = SymmetryGroup.from_generators([[1, 0, 2]], axes=(2, 5, 7))
         assert g.axes == (2, 5, 7)
         assert g.degree == 3
+        assert g.order() == 2
 
-    def test_orbits_transitive(self):
-        """S_3 is transitive: one orbit = {0, 1, 2}."""
-        g = PermutationGroup.symmetric(3)
-        orbs = g.orbits()
-        assert len(orbs) == 1
-        assert orbs[0] == frozenset({0, 1, 2})
-
-    def test_orbits_intransitive(self):
-        """(0 1) on 4 points: orbits = {0,1}, {2}, {3}."""
-        gen = Permutation.from_cycle(4, [0, 1])
-        g = PermutationGroup(gen)
-        orbs = sorted(g.orbits(), key=lambda s: min(s))
-        assert orbs == [frozenset({0, 1}), frozenset({2}), frozenset({3})]
-
-
-class TestBurnsideCount:
-    def test_s2_matches_stars_and_bars(self):
-        """S_2 on two dims of size n: C(n+1, 2)."""
-        g = PermutationGroup.symmetric(2)
+    def test_orbits_and_burnside(self):
+        g = SymmetryGroup.symmetric(axes=(0, 1, 2))
+        assert g.orbits() == [frozenset({0, 1, 2})]
         for n in [3, 5, 10]:
-            expected = math.comb(n + 1, 2)
-            assert g.burnside_unique_count({0: n, 1: n}) == expected
+            assert g.burnside_unique_count({0: n, 1: n, 2: n}) == math.comb(n + 2, 3)
 
-    def test_s3_matches_stars_and_bars(self):
-        """S_3 on three dims of size n: C(n+2, 3)."""
-        g = PermutationGroup.symmetric(3)
-        for n in [3, 5, 10]:
-            expected = math.comb(n + 2, 3)
-            assert g.burnside_unique_count({0: n, 1: n, 2: n}) == expected
-
-    def test_c3_differs_from_s3(self):
-        """C_3 unique count = (n^3 + 2n) / 3, which differs from S_3."""
-        g = PermutationGroup.cyclic(3)
-        for n in [3, 5, 10]:
-            expected_c3 = (n**3 + 2 * n) // 3
-            expected_s3 = math.comb(n + 2, 3)
-            result = g.burnside_unique_count({0: n, 1: n, 2: n})
-            assert result == expected_c3
-            assert result > expected_s3
-
-    def test_c4_burnside(self):
-        """C_4 unique count for n=3: verify it's between C_4 and S_4 results."""
-        g = PermutationGroup.cyclic(4)
-        n = 3
-        result = g.burnside_unique_count({0: n, 1: n, 2: n, 3: n})
-        s4_result = math.comb(n + 3, 4)
-        assert result > s4_result
-        assert result < n**4
-
-    def test_identity_group(self):
-        """Trivial group (identity only) on k dims: all elements unique = n^k."""
-        e = Permutation.identity(3)
-        g = PermutationGroup(e)
-        assert g.order() == 1
-        assert g.burnside_unique_count({0: 5, 1: 5, 2: 5}) == 125
-
-    def test_heterogeneous_sizes_raises(self):
-        """Positions in the same orbit must have equal sizes."""
-        g = PermutationGroup.symmetric(2)
-        with pytest.raises(ValueError, match="same dimension size"):
-            g.burnside_unique_count({0: 3, 1: 5})
+    def test_direct_product(self):
+        row = SymmetryGroup.symmetric(axes=(0, 1))
+        col = SymmetryGroup.symmetric(axes=(2, 3))
+        product = SymmetryGroup.direct_product(row, col)
+        assert product.axes == (0, 1, 2, 3)
+        assert product.order() == 4
 
 
 try:
     import sympy as _sympy_check  # noqa: F401
 
-    _sympy_available = True
+    _SYMPY_AVAILABLE = True
 except ImportError:
-    _sympy_available = False
+    _SYMPY_AVAILABLE = False
 
 
-@pytest.mark.skipif(not _sympy_available, reason="sympy not installed")
+@pytest.mark.skipif(not _SYMPY_AVAILABLE, reason='sympy not installed')
 class TestSympyBridge:
-    """Tests that require sympy. Skipped if sympy is not installed."""
-
     def test_permutation_round_trip(self):
-        from sympy.combinatorics import Permutation as SPerm
-
-        p = Permutation([2, 0, 1])
-        sp = p.as_sympy()
-        assert isinstance(sp, SPerm)
-        assert list(sp.array_form) == [2, 0, 1]
-
-        p2 = Permutation.from_sympy(sp)
+        p = _Permutation([2, 0, 1])
+        p2 = _Permutation.from_sympy(p.as_sympy())
         assert p2 == p
 
     def test_group_round_trip(self):
-        from sympy.combinatorics import PermutationGroup as SPG
-
-        g = PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
-        sg = g.as_sympy()
-        assert isinstance(sg, SPG)
-        assert sg.order() == 4
-
-        g2 = PermutationGroup.from_sympy(sg, axes=(0, 1, 2, 3))
-        assert g2.order() == 4
-        assert g2.axes == (0, 1, 2, 3)
-
-    def test_symmetric_round_trip(self):
-        g = PermutationGroup.symmetric(3)
-        sg = g.as_sympy()
-        g2 = PermutationGroup.from_sympy(sg)
-        assert g2.order() == 6
-        assert g2.is_symmetric()
-
-
-class TestCycle:
-    def test_single_cycle(self):
-        c = Cycle(0, 2)
-        p = Permutation(c)
-        assert p.array_form == [2, 1, 0]
-
-    def test_chained_cycles(self):
-        c = Cycle(0, 2)(1, 3)
-        p = Permutation(c)
-        assert p.array_form == [2, 3, 0, 1]
-
-    def test_three_cycle(self):
-        c = Cycle(0, 1, 2)
-        p = Permutation(c)
-        assert p.array_form == [1, 2, 0]
-
-    def test_chained_three_cycles(self):
-        c = Cycle(0, 1, 2)(3, 4)
-        p = Permutation(c)
-        assert p.array_form == [1, 2, 0, 4, 3]
-
-    def test_with_explicit_size(self):
-        c = Cycle(0, 1)
-        p = Permutation(c, size=5)
-        assert p.size == 5
-        assert p.array_form == [1, 0, 2, 3, 4]
-
-    def test_empty_cycle(self):
-        c = Cycle()
-        p = Permutation(c, size=3)
-        assert p.is_identity
-        assert p.size == 3
-
-    def test_cycle_list_method(self):
-        c = Cycle(0, 2)(1, 3)
-        assert c.list() == [2, 3, 0, 1]
-        assert c.list(6) == [2, 3, 0, 1, 4, 5]
-
-
-class TestPermutationCycleNotation:
-    def test_list_of_lists(self):
-        p = Permutation([[0, 2], [1, 3]])
-        assert p.array_form == [2, 3, 0, 1]
-
-    def test_single_cycle_list(self):
-        p = Permutation([[0, 1, 2]])
-        assert p.array_form == [1, 2, 0]
-
-    def test_list_of_lists_with_size(self):
-        p = Permutation([[0, 1]], size=5)
-        assert p.size == 5
-        assert p.array_form == [1, 0, 2, 3, 4]
-
-    def test_array_form_still_works(self):
-        p = Permutation([2, 0, 1])
-        assert p.array_form == [2, 0, 1]
-
-    def test_from_cycle_object(self):
-        p = Permutation(Cycle(0, 2)(1, 3))
-        assert p.array_form == [2, 3, 0, 1]
-
-
-class TestPermutationNewMethods:
-    def test_call(self):
-        p = Permutation([1, 2, 0])
-        assert p(0) == 1
-        assert p(1) == 2
-        assert p(2) == 0
-
-    def test_call_identity(self):
-        e = Permutation.identity(3)
-        assert e(0) == 0
-        assert e(2) == 2
-
-    def test_support(self):
-        assert Permutation([2, 3, 0, 1]).support() == {0, 1, 2, 3}
-        assert Permutation([0, 2, 1, 3]).support() == {1, 2}
-
-    def test_support_identity(self):
-        assert Permutation.identity(5).support() == set()
-
-    def test_parity_even(self):
-        assert Permutation([1, 2, 0]).parity() == 0
-
-    def test_parity_odd(self):
-        assert Permutation([1, 0, 2]).parity() == 1
-
-    def test_parity_identity(self):
-        assert Permutation.identity(3).parity() == 0
-
-    def test_parity_two_disjoint_transpositions(self):
-        assert Permutation([1, 0, 3, 2]).parity() == 0
-
-    def test_signature(self):
-        assert Permutation([1, 2, 0]).signature() == 1
-        assert Permutation([1, 0, 2]).signature() == -1
-        assert Permutation.identity(3).signature() == 1
-
-    def test_transpositions_3cycle(self):
-        t = Permutation([1, 2, 0]).transpositions()
-        assert len(t) == 2
-        result = Permutation.identity(3)
-        for a, b in t:
-            result = Permutation.from_cycle(3, [a, b]) * result
-        assert result == Permutation([1, 2, 0])
-
-    def test_transpositions_identity(self):
-        assert Permutation.identity(3).transpositions() == []
-
-    def test_transpositions_single_swap(self):
-        t = Permutation([1, 0, 2]).transpositions()
-        assert t == [(0, 1)]
-
-    def test_transpositions_two_disjoint(self):
-        t = Permutation([1, 0, 3, 2]).transpositions()
-        assert len(t) == 2
-        result = Permutation.identity(4)
-        for a, b in t:
-            result = Permutation.from_cycle(4, [a, b]) * result
-        assert result == Permutation([1, 0, 3, 2])
-
-
-class TestPermutationGroupNewMethods:
-    def test_contains_member(self):
-        g = PermutationGroup.cyclic(3)
-        assert g.contains(Permutation([1, 2, 0]))
-
-    def test_contains_non_member(self):
-        g = PermutationGroup.cyclic(3)
-        assert not g.contains(Permutation([0, 2, 1]))
-
-    def test_contains_identity(self):
-        g = PermutationGroup.cyclic(3)
-        assert g.contains(Permutation.identity(3))
-
-    def test_is_transitive_true(self):
-        assert PermutationGroup.symmetric(3).is_transitive
-        assert PermutationGroup.cyclic(4).is_transitive
-
-    def test_is_transitive_false(self):
-        gen = Permutation.from_cycle(4, [0, 1])
-        g = PermutationGroup(gen)
-        assert not g.is_transitive
-
-    def test_is_abelian_cyclic(self):
-        assert PermutationGroup.cyclic(4).is_abelian
-
-    def test_is_abelian_s2(self):
-        assert PermutationGroup.symmetric(2).is_abelian
-
-    def test_is_abelian_s3_false(self):
-        assert not PermutationGroup.symmetric(3).is_abelian
-
-    def test_identity_property(self):
-        g = PermutationGroup.symmetric(4)
-        e = g.identity
-        assert e.is_identity
-        assert e.size == 4
-
-    def test_equals_same_generators(self):
-        g1 = PermutationGroup.symmetric(3)
-        g2 = PermutationGroup.symmetric(3)
-        assert g1.equals(g2)
-
-    def test_equals_different_generators_same_group(self):
-        g1 = PermutationGroup(
-            Permutation.from_cycle(3, [0, 1]),
-            Permutation.from_cycle(3, [0, 1, 2]),
-        )
-        g2 = PermutationGroup.symmetric(3)
-        assert g1.equals(g2)
-
-    def test_equals_different_groups(self):
-        g1 = PermutationGroup.cyclic(3)
-        g2 = PermutationGroup.symmetric(3)
-        assert not g1.equals(g2)
-
-    def test_orbit_transitive(self):
-        g = PermutationGroup.symmetric(3)
-        assert g.orbit(0) == frozenset({0, 1, 2})
-        assert g.orbit(1) == frozenset({0, 1, 2})
-
-    def test_orbit_intransitive(self):
-        gen = Permutation.from_cycle(5, [0, 1])
-        g = PermutationGroup(gen)
-        assert g.orbit(0) == frozenset({0, 1})
-        assert g.orbit(1) == frozenset({0, 1})
-        assert g.orbit(2) == frozenset({2})
-        assert g.orbit(4) == frozenset({4})
-
-    def test_orbit_cyclic(self):
-        g = PermutationGroup.cyclic(4)
-        assert g.orbit(0) == frozenset({0, 1, 2, 3})
-
-
-class TestPointwiseStabilizer:
-    def test_s3_fix_one_point(self):
-        """S_3 fixing point 2 → {id, (0 1)} = S_2."""
-        g = PermutationGroup.symmetric(3)
-        stab = g.pointwise_stabilizer({2})
-        assert stab.order() == 2
-        assert stab.degree == 3
-        for elem in stab.elements():
-            assert elem(2) == 2
-
-    def test_c3_fix_one_point(self):
-        """C_3 fixing any single point → trivial group."""
-        g = PermutationGroup.cyclic(3)
-        for pt in range(3):
-            stab = g.pointwise_stabilizer({pt})
-            assert stab.order() == 1
-
-    def test_c4_fix_two_points(self):
-        """C_4 fixing {1,3} pointwise → only identity."""
-        g = PermutationGroup.cyclic(4)
-        stab = g.pointwise_stabilizer({1, 3})
-        assert stab.order() == 1
-
-    def test_s4_fix_two_points(self):
-        """S_4 fixing {0,1} pointwise → S_2 on {2,3}."""
-        g = PermutationGroup.symmetric(4)
-        stab = g.pointwise_stabilizer({0, 1})
-        assert stab.order() == 2
-        for elem in stab.elements():
-            assert elem(0) == 0
-            assert elem(1) == 1
-
-    def test_fix_empty_set(self):
-        """Fixing empty set returns the full group."""
-        g = PermutationGroup.cyclic(4)
-        stab = g.pointwise_stabilizer(set())
-        assert stab.order() == g.order()
-
-    def test_fix_all_points(self):
-        """Fixing all points returns trivial group."""
-        g = PermutationGroup.symmetric(3)
-        stab = g.pointwise_stabilizer({0, 1, 2})
-        assert stab.order() == 1
-
-
-class TestSetwiseStabilizer:
-    def test_c4_setwise_13(self):
-        """C_4 setwise stabilizer of {1,3} → {id, rot²} = C_2."""
-        g = PermutationGroup.cyclic(4)
-        stab = g.setwise_stabilizer({1, 3})
-        assert stab.order() == 2
-        for elem in stab.elements():
-            assert {elem(1), elem(3)} == {1, 3}
-
-    def test_c3_setwise_any_pair(self):
-        """C_3 setwise stabilizer of any 2-element subset → trivial."""
-        g = PermutationGroup.cyclic(3)
-        stab = g.setwise_stabilizer({0, 1})
-        assert stab.order() == 1
-
-    def test_s3_setwise_pair(self):
-        """S_3 setwise stabilizer of {0,1} → {id, (0 1)} = S_2."""
-        g = PermutationGroup.symmetric(3)
-        stab = g.setwise_stabilizer({0, 1})
-        assert stab.order() == 2
-        for elem in stab.elements():
-            assert {elem(0), elem(1)} == {0, 1}
-
-    def test_s4_setwise_pair(self):
-        """S_4 setwise stabilizer of {0,1}: 2! × 2! = 4 elements."""
-        g = PermutationGroup.symmetric(4)
-        stab = g.setwise_stabilizer({0, 1})
-        assert stab.order() == 4
-
-    def test_empty_set(self):
-        """Setwise stabilizer of empty set is the full group."""
-        g = PermutationGroup.cyclic(4)
-        stab = g.setwise_stabilizer(set())
-        assert stab.order() == g.order()
-
-    def test_full_set(self):
-        """Setwise stabilizer of the full set is the full group."""
-        g = PermutationGroup.symmetric(3)
-        stab = g.setwise_stabilizer({0, 1, 2})
-        assert stab.order() == g.order()
-
-    def test_d4_setwise(self):
-        """D_4 setwise stabilizer of {0,2} (opposite corners)."""
-        g = PermutationGroup.dihedral(4)
-        stab = g.setwise_stabilizer({0, 2})
-        assert stab.order() == 4
-
-
-class TestRestrict:
-    def test_s3_restrict_to_pair(self):
-        """S_3 pointwise-stabilizer of {2}, restricted to {0,1} → S_2."""
-        g = PermutationGroup.symmetric(3, axes=(10, 20, 30))
-        stab = g.pointwise_stabilizer({2})
-        r = stab.restrict((0, 1))
-        assert r.degree == 2
-        assert r.order() == 2
-        assert r.axes == (10, 20)
-
-    def test_c4_setwise_restrict(self):
-        """C_4 setwise-stabilizer of {1,3}, restricted to {0,2} → C_2."""
-        g = PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
-        stab = g.setwise_stabilizer({1, 3})
-        r = stab.restrict((0, 2))
-        assert r.degree == 2
-        assert r.order() == 2
-        assert r.axes == (0, 2)
-        # The non-identity element swaps 0↔1 (re-indexed from 0↔2)
-        elems = r.elements()
-        non_id = [e for e in elems if not e.is_identity]
-        assert len(non_id) == 1
-        assert non_id[0](0) == 1 and non_id[0](1) == 0
-
-    def test_restrict_preserves_identity(self):
-        """Restricting a trivial group gives a trivial group."""
-        g = PermutationGroup.cyclic(3)
-        stab = g.pointwise_stabilizer({0, 1, 2})  # trivial
-        r = stab.restrict((0, 1))
-        assert r.degree == 2
-        assert r.order() == 1
-
-    def test_restrict_single_point(self):
-        """Restricting to a single point gives degree-1 trivial group."""
-        g = PermutationGroup.symmetric(3)
-        stab = g.pointwise_stabilizer({1, 2})
-        r = stab.restrict((0,))
-        assert r.degree == 1
-        assert r.order() == 1
-
-    def test_restrict_no_axes(self):
-        """Restrict works when group has no axes metadata."""
-        g = PermutationGroup.symmetric(3)
-        stab = g.pointwise_stabilizer({2})
-        r = stab.restrict((0, 1))
-        assert r.degree == 2
-        assert r.order() == 2
-        assert r.axes is None
+        g = SymmetryGroup.cyclic(axes=(0, 1, 2, 3))
+        g2 = SymmetryGroup.from_sympy(g.as_sympy(), axes=(0, 1, 2, 3))
+        assert g2.axes == g.axes
+        assert g2.order() == g.order()

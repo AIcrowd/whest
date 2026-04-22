@@ -241,14 +241,13 @@ For each group element `sigma`:
    match, reject this sigma.
 4. **Validate pi:** `pi(V) is a subset of V` and `pi(W) is a subset of W`. Any cycle crossing V to W
    invalidates the sigma.
-5. **Collect pi as a `Permutation` object** restricted to V labels (and
-   separately to W labels). Non-identity permutations become generators
-   of the detected `SymmetryGroup`.
+5. **Collect pi as a generator literal** restricted to V labels (and
+   separately to W labels). Non-identity generators become part of the
+   detected `SymmetryGroup`.
 
-The sigma-loop collects all non-identity pi restrictions as `Permutation` objects.
-These generators are passed to Dimino's algorithm (via `SymmetryGroup(...)`)
-to close the group and build the exact symmetry group on V (and separately
-on W).
+The sigma-loop collects all non-identity pi restrictions as generator literals.
+These generators are passed to Dimino's algorithm to close the group and build
+the exact symmetry group on V (and separately on W).
 
 ## Interactive explorer
 
@@ -305,7 +304,7 @@ gives:
 pi(a) = b,  pi(b) = a,  pi(i) = i
 ```
 
-Cycle structure on V: single 2-cycle (a b) -- **per-index `S_2{a, b}`**.
+Label action on V: a single transposition (a b) -- **per-index `S_2{a, b}`**.
 X^T X is symmetric in its two output indices, as expected.
 
 </Accordion>
@@ -358,8 +357,7 @@ Inner symmetry can be toggled with `we.configure(use_inner_symmetry=False)`.
 
 ## Exact group detection and Burnside counting
 
-The sigma-loop collects all valid pi permutations as `Permutation`
-objects (generators) and builds a `SymmetryGroup` directly.
+The sigma-loop collects all valid pi permutations as generator literals and builds a `SymmetryGroup` directly.
 
 When the generated group equals S_k (the full symmetric group, checked via
 `order == k!`), the existing stars-and-bars formula `C(n+k-1, k)` applies.

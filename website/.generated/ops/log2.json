@@ -686,12 +686,12 @@
       "unresolved": true
     }
   ],
-  "signature": "we.log2(x)",
+  "signature": "we.log2(*args, **kwargs)",
   "slug": "log2",
   "summary": "Base-2 logarithm of `x`.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.log2",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

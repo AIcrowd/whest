@@ -345,6 +345,6 @@
   "slug": "from_dlpack",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.from_dlpack.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L964"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1050"
   }
 }

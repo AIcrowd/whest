@@ -572,12 +572,12 @@
     }
   ],
   "see_also": [],
-  "signature": "we.copysign(x, y)",
+  "signature": "we.copysign(*args, **kwargs)",
   "slug": "copysign",
   "summary": "Change the sign of x1 to that of x2, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.copysign",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

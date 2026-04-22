@@ -343,6 +343,6 @@
   "slug": "fromiter",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fromiter.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1016"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1102"
   }
 }

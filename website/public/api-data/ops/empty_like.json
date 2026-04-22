@@ -502,6 +502,6 @@
   "slug": "empty_like",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.empty_like.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L185"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L216"
   }
 }

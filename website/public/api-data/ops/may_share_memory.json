@@ -244,6 +244,6 @@
   "slug": "may_share_memory",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.may_share_memory.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1163"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1249"
   }
 }

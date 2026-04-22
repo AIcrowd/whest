@@ -551,7 +551,7 @@
     "name": "log2",
     "notes": "Element-wise base-2 logarithm.",
     "numpy_ref": "np.log2",
-    "signature": "we.log2(x)",
+    "signature": "we.log2(*args, **kwargs)",
     "status": "supported",
     "summary": "Base-2 logarithm of `x`.",
     "weight": 16.0,
@@ -561,6 +561,6 @@
   "slug": "log2",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

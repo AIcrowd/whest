@@ -346,6 +346,6 @@
   "slug": "ravel_multi_index",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.ravel_multi_index.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1305"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1391"
   }
 }

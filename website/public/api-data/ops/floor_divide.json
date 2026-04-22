@@ -562,7 +562,7 @@
     "name": "floor_divide",
     "notes": "Element-wise floor division.",
     "numpy_ref": "np.floor_divide",
-    "signature": "we.floor_divide(x, y)",
+    "signature": "we.floor_divide(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the largest integer smaller or equal to the division of the inputs. It is equivalent to the Python ``//`` operator and pairs with the Python ``%`` (`remainder`), function so that ``a = a % b + b * (a // b)`` up to roundoff.",
     "weight": 16.0,
@@ -572,6 +572,6 @@
   "slug": "floor_divide",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

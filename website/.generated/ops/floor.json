@@ -594,12 +594,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.floor(x)",
+  "signature": "we.floor(*args, **kwargs)",
   "slug": "floor",
   "summary": "Return the floor of the input, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.floor",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

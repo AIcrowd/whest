@@ -505,7 +505,7 @@
     "name": "not_equal",
     "notes": "Element-wise x1 != x2.",
     "numpy_ref": "np.not_equal",
-    "signature": "we.not_equal(x, y)",
+    "signature": "we.not_equal(*args, **kwargs)",
     "status": "supported",
     "summary": "Return (x1 != x2) element-wise.",
     "weight": 1.0,
@@ -515,6 +515,6 @@
   "slug": "not_equal",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

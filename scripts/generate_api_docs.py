@@ -279,7 +279,7 @@ GENERATED_PAGES: dict[str, dict] = {
 EXISTING_PAGES: dict[str, set[str]] = {
     "api/counted-ops.md": set(),  # covers numpy counted ops + einsum + unwrap
     "api/free-ops.md": set(),  # covers numpy free ops
-    "api/symmetric.md": set(),  # covers SymmetricTensor, SymmetryInfo, as_symmetric
+    "api/symmetric.md": set(),  # covers SymmetricTensor, symmetry helpers, and as_symmetric
 }
 
 
@@ -690,10 +690,6 @@ PUBLIC_SYMBOL_GUIDES: dict[str, list[tuple[str, str]]] = {
     "SymmetryError": [("Symmetry Savings", "/docs/guides/symmetry")],
     "SymmetryLossWarning": [("Symmetry Savings", "/docs/guides/symmetry")],
     "SymmetricTensor": [
-        ("Symmetry Savings", "/docs/guides/symmetry"),
-        ("Symmetry Detection Deep Dive", "/docs/understanding/symmetry-detection"),
-    ],
-    "SymmetryInfo": [
         ("Symmetry Savings", "/docs/guides/symmetry"),
         ("Symmetry Detection Deep Dive", "/docs/understanding/symmetry-detection"),
     ],
@@ -2508,9 +2504,6 @@ def _related_guides_for_symbol(canonical_name: str) -> list[RelatedGuideLink]:
             guides.append(("FFT Guide", "/docs/guides/fft"))
         if canonical_name == "flops.einsum_cost":
             guides.append(("Einsum Guide", "/docs/guides/einsum"))
-
-    if canonical_name in {"Permutation", "PermutationGroup", "Cycle"}:
-        guides.append(("Symmetry Savings", "/docs/guides/symmetry"))
 
     deduped: list[RelatedGuideLink] = []
     seen: set[tuple[str, str]] = set()

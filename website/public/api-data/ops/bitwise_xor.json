@@ -553,7 +553,7 @@
     "name": "bitwise_xor",
     "notes": "Element-wise bitwise XOR.",
     "numpy_ref": "np.bitwise_xor",
-    "signature": "we.bitwise_xor(x, y)",
+    "signature": "we.bitwise_xor(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the bit-wise XOR of two arrays element-wise.",
     "weight": 1.0,
@@ -563,6 +563,6 @@
   "slug": "bitwise_xor",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

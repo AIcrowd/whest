@@ -627,12 +627,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.logical_xor(x, y)",
+  "signature": "we.logical_xor(*args, **kwargs)",
   "slug": "logical_xor",
   "summary": "Compute the truth value of x1 XOR x2, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.logical_xor",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

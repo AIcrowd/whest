@@ -291,12 +291,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.lcm(x, y)",
+  "signature": "we.lcm(*args, **kwargs)",
   "slug": "lcm",
   "summary": "Returns the lowest common multiple of ``|x1|`` and ``|x2|``",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.lcm",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

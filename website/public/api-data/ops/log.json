@@ -575,7 +575,7 @@
     "name": "log",
     "notes": "Element-wise natural logarithm.",
     "numpy_ref": "np.log",
-    "signature": "we.log(x)",
+    "signature": "we.log(*args, **kwargs)",
     "status": "supported",
     "summary": "Natural logarithm, element-wise.",
     "weight": 16.0,
@@ -585,6 +585,6 @@
   "slug": "log",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

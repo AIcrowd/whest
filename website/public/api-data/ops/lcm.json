@@ -230,7 +230,7 @@
     "name": "lcm",
     "notes": "Element-wise least common multiple.",
     "numpy_ref": "np.lcm",
-    "signature": "we.lcm(x, y)",
+    "signature": "we.lcm(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the lowest common multiple of ``|x1|`` and ``|x2|``",
     "weight": 16.0,
@@ -240,6 +240,6 @@
   "slug": "lcm",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

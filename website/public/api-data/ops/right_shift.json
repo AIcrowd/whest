@@ -561,7 +561,7 @@
     "name": "right_shift",
     "notes": "Element-wise right bit shift (legacy name).",
     "numpy_ref": "np.right_shift",
-    "signature": "we.right_shift(x, y)",
+    "signature": "we.right_shift(*args, **kwargs)",
     "status": "supported",
     "summary": "Shift the bits of an integer to the right.",
     "weight": 1.0,
@@ -571,6 +571,6 @@
   "slug": "right_shift",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

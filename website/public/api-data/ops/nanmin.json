@@ -698,6 +698,6 @@
   "slug": "nanmin",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L253",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L299"
   }
 }

@@ -922,6 +922,6 @@
   "slug": "arange",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.arange.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L113"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L135"
   }
 }

@@ -9,7 +9,15 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Cumulative distribution function of the given RV."
+                "text": "Cumulative distribution function at "
+              },
+              {
+                "kind": "emphasis",
+                "text": "x"
+              },
+              {
+                "kind": "text",
+                "text": "."
               }
             ],
             "type": "paragraph"
@@ -20,142 +28,27 @@
       {
         "blocks": [
           {
-            "items": [
+            "inline": [
               {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "quantiles"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "quantiles"
-                  }
-                ],
-                "name": "x",
-                "type": "field_list"
+                "kind": "text",
+                "text": "Equivalent to "
               },
               {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
-                  }
-                ],
-                "name": "arg1, arg2, arg3,...",
-                "type": "field_list"
+                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.cdf(x, s, loc, scale).html",
+                "href": "",
+                "kind": "link",
+                "target": "stats.lognorm.cdf(x, s, loc, scale)",
+                "text": "scipy.stats.lognorm.cdf(x, s, loc, scale)"
               },
               {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "location parameter (default=0)"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like, optional",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "location parameter (default=0)"
-                  }
-                ],
-                "name": "loc",
-                "type": "field_list"
-              },
-              {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "scale parameter (default=1)"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like, optional",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "scale parameter (default=1)"
-                  }
-                ],
-                "name": "scale",
-                "type": "field_list"
+                "kind": "text",
+                "text": "."
               }
             ],
-            "title": "Parameters",
-            "type": "field_list"
+            "type": "paragraph"
           }
         ],
-        "title": "Parameters"
-      },
-      {
-        "blocks": [
-          {
-            "items": [
-              {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "Cumulative distribution function evaluated at "
-                      },
-                      {
-                        "kind": "code",
-                        "text": "x"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "ndarray",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "Cumulative distribution function evaluated at "
-                  },
-                  {
-                    "kind": "code",
-                    "text": "x"
-                  }
-                ],
-                "name": "cdf",
-                "type": "field_list"
-              }
-            ],
-            "title": "Returns",
-            "type": "field_list"
-          }
-        ],
-        "title": "Returns"
+        "title": "Extended Summary"
       }
     ]
   },
@@ -169,14 +62,14 @@
     "numpy_ref": "np.stats.lognorm.cdf",
     "signature": "we.stats.lognorm.cdf(x, s, loc=0, scale=1)",
     "status": "supported",
-    "summary": "Cumulative distribution function of the given RV.",
+    "summary": "Cumulative distribution function at *x*.",
     "weight": 16.0,
     "whest_ref": "we.stats.lognorm.cdf"
   },
   "schema_version": 1,
   "slug": "stats-lognorm-cdf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
+    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html",
     "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_lognorm.py#L70"
   }
 }
