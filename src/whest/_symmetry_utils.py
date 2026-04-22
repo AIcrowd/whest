@@ -344,7 +344,4 @@ def wrap_with_symmetry(data, symmetry: SymmetryGroup | None):
     validate_symmetry_group(symmetry, ndim=array.ndim)
     from whest._symmetric import SymmetricTensor
 
-    out = array.view(SymmetricTensor)
-    out._symmetry_groups = [symmetry]
-    out._symmetric_axes = [symmetry.axes] if symmetry.axes is not None else []
-    return out
+    return SymmetricTensor(array, symmetry=symmetry)
