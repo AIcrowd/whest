@@ -322,3 +322,16 @@ def _aswhest(x):
     if arr.flags.owndata:
         result = result.copy(order="A")
     return result
+
+
+def _asplainwhest(x):
+    """Convert any array-like to a base WhestArray.
+
+    Unlike :func:`_aswhest`, this always drops ndarray subclasses so callers can
+    explicitly return a plain tracked array after metadata becomes invalid.
+    """
+    arr = _np.asarray(x)
+    result = arr.view(WhestArray)
+    if arr.flags.owndata:
+        result = result.copy(order="A")
+    return result
