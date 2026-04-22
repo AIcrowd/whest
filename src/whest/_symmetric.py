@@ -10,6 +10,7 @@ import numpy as np
 from whest._config import get_setting
 from whest._perm_group import SymmetryGroup as PermutationGroup
 from whest._symmetry_utils import (
+    broadcast_group,
     intersect_groups,
     normalize_symmetry_input,
     reduce_group,
@@ -541,40 +542,19 @@ def intersect_symmetry(
         return None
 
     ndim_out = len(output_shape)
-    ndim_a = len(shape_a)
-    ndim_b = len(shape_b)
 
-    offset_a = ndim_out - ndim_a
-    offset_b = ndim_out - ndim_b
-
-    def _remap_axes(
-        groups: list[PermutationGroup], offset: int, input_shape: tuple[int, ...]
-    ):
-        """Remap group axes to output dims and remove broadcast-stretched dims."""
-        result = []
-        for group in groups:
-            if group.axes is None:
-                continue
-            new_axes = []
-            local_kept = []
-            for local_idx, tensor_dim in enumerate(group.axes):
-                out_dim = tensor_dim + offset
-                # Check if broadcast-stretched (size 1 → larger).
-                if 0 <= tensor_dim < len(input_shape):
-                    if input_shape[tensor_dim] == 1 and output_shape[out_dim] > 1:
-                        continue  # stretched — remove from group
-                new_axes.append(out_dim)
-                local_kept.append(local_idx)
-            if len(local_kept) >= 2:
-                restricted = group.restrict(tuple(local_kept))
-                if restricted.order() > 1:
-                    result.append(
-                        PermutationGroup(*restricted.generators, axes=tuple(new_axes))
-                    )
-        return result
-
-    aligned_a = _remap_axes(groups_a, offset_a, shape_a)
-    aligned_b = _remap_axes(groups_b, offset_b, shape_b)
+    aligned_a = [
+        aligned
+        for group in groups_a
+        if (aligned := broadcast_group(group, input_shape=shape_a, output_shape=output_shape))
+        is not None
+    ]
+    aligned_b = [
+        aligned
+        for group in groups_b
+        if (aligned := broadcast_group(group, input_shape=shape_b, output_shape=output_shape))
+        is not None
+    ]
 
     # Intersect: for groups acting on the same output axes, compute element intersection.
     b_by_axes: dict[tuple[int, ...], PermutationGroup] = {}
