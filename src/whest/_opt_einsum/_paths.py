@@ -15,7 +15,7 @@ from typing import Any
 from ._helpers import compute_size_by_dict, flop_count
 from ._subgraph_symmetry import SubgraphSymmetryOracle
 from ._symmetry import (
-    PermutationGroup,
+    SymmetryGroup,
     symmetric_flop_count,
     unique_elements,
 )
@@ -142,7 +142,7 @@ def calc_k12_flops(
     size_dict: dict[str, int],
     oracle: SubgraphSymmetryOracle | None = None,
     ssa_to_subset: dict[int, frozenset[int]] | None = None,
-) -> tuple[frozenset[str], int, PermutationGroup | None]:
+) -> tuple[frozenset[str], int, SymmetryGroup | None]:
     """Calculate the resulting indices and flops for a potential pairwise
     contraction.
 
@@ -163,7 +163,7 @@ def calc_k12_flops(
         The resulting indices of the potential tensor.
     cost : int
         Estimated flop count of the operation.
-    sym12 : PermutationGroup | None
+    sym12 : SymmetryGroup | None
         Symmetry of the result tensor (None when no oracle or no symmetry).
     """
     k1, k2 = inputs[i], inputs[j]
@@ -172,7 +172,7 @@ def calc_k12_flops(
     k12 = either & keep
     inner = bool(either - k12)
 
-    sym12: PermutationGroup | None = None
+    sym12: SymmetryGroup | None = None
     if oracle is not None and ssa_to_subset is not None:
         merged_subset = ssa_to_subset[i] | ssa_to_subset[j]
         subset_sym = oracle.sym(merged_subset)
@@ -239,7 +239,7 @@ def optimal(
     # same frozenset key produce the same symmetry.
     result_cache: dict[
         tuple[ArrayIndexType, ArrayIndexType, frozenset[int]],
-        tuple[frozenset[str], int, PermutationGroup | None],
+        tuple[frozenset[str], int, SymmetryGroup | None],
     ] = {}
 
     def _optimal_iterate(path, remaining, inputs, flops, ssa_to_subset):
@@ -442,7 +442,7 @@ class BranchBound(PathOptimizer):
         # Result cache is valid with the oracle — key by (k1, k2, merged_subset)
         result_cache: dict[
             tuple[frozenset[str], frozenset[str], frozenset[int]],
-            tuple[frozenset[str], int, PermutationGroup | None],
+            tuple[frozenset[str], int, SymmetryGroup | None],
         ] = {}
 
         def _branch_iterate(path, inputs, remaining, flops, size, ssa_to_subset):
