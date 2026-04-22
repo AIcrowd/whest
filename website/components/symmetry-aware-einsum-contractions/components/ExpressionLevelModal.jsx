@@ -1281,10 +1281,14 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
               )}
               support={(
                 <div>
+                  <h4 className="font-heading text-[18px] font-semibold text-gray-900">
+                    Formal-group construction
+                  </h4>
                   <VSubSwConstruction
                     expressionGroup={expressionGroup}
                     vLabels={vLabels}
                     wLabels={wLabels}
+                    showHeading={false}
                   />
                   <p className={`mt-4 ${APPENDIX_SMALL_TEXT_CLASS}`}>
                     The construction above enumerates the two factors and their product for the selected preset.

@@ -64,6 +64,8 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
   assert.match(section3, /Worked example — bilinear trace/);
 
   assert.match(section4, /AppendixSupportSplit/);
+  assert.match(section4, /<h4 className="font-heading text-\[18px\] font-semibold text-gray-900">\s*Formal-group construction\s*<\/h4>/);
+  assert.match(section4, /<VSubSwConstruction[\s\S]*showHeading=\{false\}/);
   assert.match(section4, /VSubSwConstruction/);
 
   assert.match(section5, /AppendixSupportSplit/);

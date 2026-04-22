@@ -61,9 +61,10 @@ test('approved mathematically safer prose appears in the narrative data', () => 
 
   assert.match(section2, /V_\{\\mathrm\{free\}\}/);
   assert.match(section2, /W_\{\\mathrm\{summed\}\}/);
-  assert.match(section2, /candidate filter, not a proof of symmetry/i);
-  assert.match(section2, /operand identity/i);
-  assert.match(section2, /declared input symmetries/i);
+  assert.match(section2, /forget the numerical entries and keep only its incidence pattern/i);
+  assert.match(section2, /bipartite graph/i);
+  assert.match(section2, /pattern that any relabeling must preserve is still visible/i);
+  assert.match(section2, /Declared per-operand symmetry is carried alongside this encoding/i);
   assert.match(section2, /metadata needed for the acceptance step/i);
   assert.doesNotMatch(section2, /purely combinatorial encoding/i);
 

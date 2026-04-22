@@ -94,7 +94,12 @@ function ColoredLabels({ text, vSet, wSet }) {
  * the explorer uses. Hover is bidirectional: hover any row in any column
  * to highlight its counterparts in the other two.
  */
-export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLabels = [] }) {
+export default function VSubSwConstruction({
+  expressionGroup,
+  vLabels = [],
+  wLabels = [],
+  showHeading = true,
+}) {
   const explorerThemeId = getActiveExplorerThemeId();
   const SHORT_V_LATEX = notationColoredLatex('v_free', 'V');
   const SHORT_S_W_LATEX = notationColoredLatex('s_w_summed', 'S(W)');
@@ -162,9 +167,11 @@ export default function VSubSwConstruction({ expressionGroup, vLabels = [], wLab
 
   return (
     <div className="space-y-3">
-      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500">
-        Formal-group construction
-      </div>
+      {showHeading ? (
+        <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-500">
+          Formal-group construction
+        </div>
+      ) : null}
       <div className="overflow-x-auto">
         <div
           className="grid min-w-[560px] items-start gap-3"

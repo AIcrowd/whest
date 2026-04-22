@@ -299,10 +299,10 @@ test('main page copy distinguishes candidates, accepted relabelings, and output-
   assert.match(appSource, /The graph and incidence matrix describe which relabelings are structurally plausible/);
   assert.match(appSource, /The accepted objects are lifted pairs/);
   assert.match(appSource, /After analysis, the visualizations update/);
-  assert.match(appSource, /larger formal symmetry group/);
-  assert.match(appSource, /not fed back into multiplication-orbit[\s\S]*compression/);
+  assert.match(appSource, /expression-level formal group discussed in the appendix is deliberately kept separate from this pointwise group/);
+  assert.match(appSource, /not used for multiplication compression/);
 
-  assert.match(narrativeSource, /candidate filter, not a proof of symmetry/);
+  assert.match(narrativeSource, /the metadata needed for the acceptance step/);
   assert.match(narrativeSource, /detected pointwise group/);
   assert.match(narrativeSource, /preserve the summand itself/);
   assert.match(narrativeSource, /lifted witness used by this model/);
