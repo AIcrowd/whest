@@ -50,18 +50,17 @@ def _prepare_symmetric_out(out, target_symmetry):
     if not isinstance(out, SymmetricTensor):
         return target_symmetry
     carried_symmetry = out.symmetry
-    effective_symmetry = target_symmetry if target_symmetry is not None else carried_symmetry
-    if effective_symmetry is None:
-        return None
-    if carried_symmetry is not None and carried_symmetry != effective_symmetry:
+    if target_symmetry is None:
+        raise ValueError("out symmetry does not match result symmetry")
+    if carried_symmetry is not None and carried_symmetry != target_symmetry:
         raise ValueError("out symmetry does not match result symmetry")
 
-    if not _is_symmetric(_np.asarray(out), symmetry=effective_symmetry):
-        axes = effective_symmetry.axes
+    if not _is_symmetric(_np.asarray(out), symmetry=target_symmetry):
+        axes = target_symmetry.axes
         if axes is None:
-            axes = tuple(range(effective_symmetry.degree))
+            axes = tuple(range(target_symmetry.degree))
         raise SymmetryError(axes=tuple(axes), max_deviation=float("inf"))
-    return effective_symmetry
+    return target_symmetry
 
 
 def _validate_result_symmetry(result, symmetry):

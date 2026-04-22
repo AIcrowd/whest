@@ -283,6 +283,15 @@ class TestBinarySymmetric:
                 add(st, dense, out=out)
         assert numpy.array_equal(out, before)
 
+    def test_negative_with_dense_input_and_symmetric_out_raises_without_mutation(self):
+        dense = numpy.arange(16.0).reshape(4, 4)
+        out = as_symmetric(numpy.eye(4), symmetry=(0, 1))
+        before = numpy.asarray(out).copy()
+        with BudgetContext(flop_budget=10**6):
+            with pytest.raises(ValueError, match="out symmetry"):
+                negative(dense, out=out)
+        assert numpy.array_equal(out, before)
+
     def test_binary_op_total_symmetry_loss_warning(self):
         """When no symmetry groups are shared, warn about total loss."""
         # Create tensor sym in (0,1), combine with non-symmetric of same shape
