@@ -89,8 +89,24 @@ class TestPropagateSymmetrySlice:
         result = propagate_symmetry_slice([_sg(0, 1)], (5, 5), (slice(None), slice(None)))
         _assert_groups_equal(result, [(0, 1)])
 
+    def test_integer_index_on_s3_keeps_remaining_swap(self):
+        result = propagate_symmetry_slice(
+            [SymmetryGroup.symmetric(axes=(0, 1, 2))],
+            (4, 4, 4),
+            (0, slice(None), slice(None)),
+        )
+        _assert_groups_equal(result, [(0, 1)])
+
     def test_integer_index_removes_group(self):
         assert propagate_symmetry_slice([_sg(0, 1)], (5, 5), (0,)) is None
+
+    def test_repeated_integer_indices_use_pointwise_stabilizer(self):
+        result = propagate_symmetry_slice(
+            [SymmetryGroup.symmetric(axes=(0, 1, 2))],
+            (4, 4, 4),
+            (0, 0, slice(None)),
+        )
+        assert result is None
 
     def test_newaxis_renumbers_group(self):
         result = propagate_symmetry_slice([_sg(0, 1)], (5, 5), (None, slice(None), slice(None)))
@@ -99,6 +115,14 @@ class TestPropagateSymmetrySlice:
     def test_multiple_groups_partial_survival(self):
         result = propagate_symmetry_slice([_sg(0, 1), _sg(2, 3)], (3, 3, 4, 4), (0,))
         _assert_groups_equal(result, [(1, 2)])
+
+    def test_resized_kept_axis_drops_surviving_subgroup(self):
+        result = propagate_symmetry_slice(
+            [SymmetryGroup.symmetric(axes=(0, 1, 2))],
+            (4, 4, 4),
+            (0, slice(0, 3), slice(None)),
+        )
+        assert result is None
 
 
 class TestPropagateSymmetryReduce:
