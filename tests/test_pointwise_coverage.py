@@ -55,6 +55,7 @@ from whest._pointwise import (
     multiply,
     negative,
     outer,
+    real_if_close,
     round,
     sort_complex,
     sqrt,
@@ -125,6 +126,13 @@ class TestUnarySymmetric:
         assert isinstance(result, SymmetricTensor)
         assert result.symmetry == expected
         assert result.symmetry != PermutationGroup.symmetric(axes=(0, 1, 2))
+
+    def test_real_if_close_preserves_symmetry_without_out_support(self):
+        st = _make_symmetric_2d()
+        with BudgetContext(flop_budget=10**6):
+            result = real_if_close(st)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == st.symmetry
 
     def test_sqrt_preserves_symmetry(self):
         st = _make_symmetric_2d()
@@ -247,6 +255,34 @@ class TestBinarySymmetric:
         assert result is out
         assert numpy.allclose(result, numpy.asarray(st) + 1.0)
 
+    def test_negative_with_symmetric_out_preserves_output_identity(self):
+        st = _make_symmetric_2d(4)
+        out = as_symmetric(numpy.zeros_like(numpy.asarray(st)), symmetry=(0, 1))
+        with BudgetContext(flop_budget=10**6):
+            result = negative(st, out=out)
+        assert result is out
+        assert numpy.allclose(result, -numpy.asarray(st))
+        assert result.symmetry == st.symmetry
+
+    def test_clip_with_symmetric_out_preserves_output_identity(self):
+        st = _make_symmetric_2d(4)
+        out = as_symmetric(numpy.zeros_like(numpy.asarray(st)), symmetry=(0, 1))
+        with BudgetContext(flop_budget=10**6):
+            result = clip(st, 0.25, 0.75, out=out)
+        assert result is out
+        assert numpy.allclose(result, numpy.clip(numpy.asarray(st), 0.25, 0.75))
+        assert result.symmetry == st.symmetry
+
+    def test_add_with_incompatible_symmetric_out_raises_without_mutation(self):
+        st = _make_symmetric_2d(4)
+        dense = numpy.arange(16.0).reshape(4, 4)
+        out = as_symmetric(numpy.eye(4), symmetry=(0, 1))
+        before = numpy.asarray(out).copy()
+        with BudgetContext(flop_budget=10**6):
+            with pytest.raises(ValueError, match="out symmetry"):
+                add(st, dense, out=out)
+        assert numpy.array_equal(out, before)
+
     def test_binary_op_total_symmetry_loss_warning(self):
         """When no symmetry groups are shared, warn about total loss."""
         # Create tensor sym in (0,1), combine with non-symmetric of same shape
@@ -303,6 +339,15 @@ class TestReductionSymmetric:
             result = sum(st, axis=2, out=out)
         assert result is out
         assert numpy.allclose(result, numpy.sum(numpy.asarray(st), axis=2))
+
+    def test_sum_with_symmetric_out_preserves_output_identity(self):
+        st = _make_symmetric_3d(3)
+        out = as_symmetric(numpy.zeros((3, 3)), symmetry=(0, 1))
+        with BudgetContext(flop_budget=10**6):
+            result = sum(st, axis=2, out=out)
+        assert result is out
+        assert numpy.allclose(result, numpy.sum(numpy.asarray(st), axis=2))
+        assert result.symmetry == PermutationGroup.symmetric(axes=(0, 1))
 
     def test_sum_along_symmetric_axis_reduces_group(self):
         """Reducing one axis of a symmetric group partially breaks it."""
@@ -1059,7 +1104,7 @@ class TestReductionSymmetryPartialLoss:
         for p in perms:
             sym += data.transpose(p)
         sym /= 6.0
-        return as_symmetric(sym, [(0, 1, 2)])
+        return as_symmetric(sym, symmetry=[(0, 1, 2)])
 
     def test_reduce_one_axis_of_3group_warns_partial_loss(self):
         """Reducing axis 0 from group (0,1,2) leaves (1,2) -> renumbered (0,1)."""
