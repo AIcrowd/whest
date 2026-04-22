@@ -18,13 +18,13 @@ function read(relativePath) {
 test('copy registry schema stays prose-only and string-first', () => {
   const schema = read('schema.ts');
 
-  assert.match(schema, /type\s+ProseBlock\s*=/);
-  assert.match(schema, /'paragraph'/);
-  assert.match(schema, /'callout'/);
-  assert.match(schema, /'label'/);
-  assert.match(schema, /'caption'/);
+  assert.match(schema, /export\s+type\s+ProseBlock/);
+  assert.match(schema, /paragraph/);
+  assert.match(schema, /callout/);
+  assert.match(schema, /label/);
+  assert.match(schema, /caption/);
   assert.match(schema, /text:\s*string/);
-  assert.match(schema, /type\s+SectionCopy\s*=\s*\{/);
+  assert.match(schema, /export\s+type\s+SectionCopy/);
   assert.match(schema, /blocks\?:\s*ProseBlock\[\]/);
   assert.match(schema, /slots\?:\s*Record<string,\s*ProseBlock\[\]>/);
   assert.doesNotMatch(schema, /ReactNode|JSX|className/);
@@ -33,13 +33,39 @@ test('copy registry schema stays prose-only and string-first', () => {
 test('renderProseBlocks is a thin math adapter without layout shells', () => {
   const renderer = read('renderProseBlocks.jsx');
 
-  assert.match(renderer, /import\s+InlineMathText\s+from\s+'\.\.\/components\/InlineMathText\.jsx'/);
+  assert.match(renderer, /import\s+\{\s*Fragment\s*\}\s+from\s+'react'/);
+  assert.match(renderer, /InlineMathText/);
   assert.match(renderer, /function\s+renderProseBlocks/);
   assert.doesNotMatch(renderer, /grid-cols|rounded-2xl|px-6|border-gray-200/);
   assert.doesNotMatch(renderer, /className=/);
 });
 
-test('content modules expose slots without JSX layout markup', () => {
+test('content barrel wires the registry and leaf modules stay layout-free', () => {
+  const index = read('index.ts');
+  const expectedExports = [
+    'mainPreamble',
+    'mainSection1',
+    'mainSection2',
+    'mainSection3',
+    'mainSection4',
+    'mainSection5',
+    'appendixSection1',
+    'appendixSection2',
+    'appendixSection3',
+    'appendixSection4',
+    'appendixSection5',
+    'appendixSection6',
+  ];
+
+  assert.match(index, /export\s+\{\s*default\s+as\s+mainPreamble\s+\}\s+from\s+'\.\/main\/preamble'/);
+  assert.match(index, /export\s+const\s+contentRegistry\s*=\s*\{/);
+  for (const exportName of expectedExports) {
+    assert.match(index, new RegExp(`export\\s+\\{\\s*default\\s+as\\s+${exportName}\\s+\\}`));
+  }
+  for (const sectionName of ['preamble', 'section1', 'section2', 'section3', 'section4', 'section5', 'section6']) {
+    assert.match(index, new RegExp(`\\b${sectionName}:\\s*`));
+  }
+
   const modules = [
     'main/preamble.ts',
     'main/section1.ts',
