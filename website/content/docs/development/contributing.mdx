@@ -72,6 +72,16 @@ uv run pytest
 uv run mkdocs serve
 ```
 
+When running the local docs site and you want whest error messages to link to
+your local copy instead of the hosted site, set:
+
+```bash
+export WHEST_DOCS_ROOT=http://localhost:3000/docs
+```
+
+If `WHEST_DOCS_ROOT` is unset, whest falls back to the hosted docs at
+`https://aicrowd.github.io/whest/docs`.
+
 ### Client package
 
 The client package is independently installable, so its test suite can run via

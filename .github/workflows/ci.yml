@@ -10,6 +10,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  WHEST_DOCS_ROOT: https://aicrowd.github.io/whest/docs
+
 jobs:
   lint:
     runs-on: ubuntu-latest
