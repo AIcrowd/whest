@@ -369,10 +369,12 @@ def propagate_symmetry_slice(
             old_dim_idx += 1
         elif isinstance(k, slice):
             start, stop, step = k.indices(shape[old_dim_idx])
-            new_size = max(0, (stop - start + (step - (1 if step > 0 else -1))) // step)
-            if new_size == shape[old_dim_idx]:
+            if start == 0 and stop == shape[old_dim_idx] and step == 1:
                 dim_actions[old_dim_idx] = "untouched"
             else:
+                new_size = max(
+                    0, (stop - start + (step - (1 if step > 0 else -1))) // step
+                )
                 dim_actions[old_dim_idx] = ("resized", new_size)
             old_dim_idx += 1
         else:
@@ -424,28 +426,13 @@ def propagate_symmetry_slice(
         if not local_kept:
             continue
 
+        if any(dim_actions.get(axes[local_idx], "untouched") != "untouched" for local_idx in local_kept):
+            continue
+
         # Pointwise stabilizer: each removed axis must map to itself.
         # (Setwise would only be valid when all removed axes share the
         # same slice value, which we can't determine in general.)
         stab = group.pointwise_stabilizer(local_removed)
-
-        # Among surviving axes, check for size mismatches.
-        size_map: dict[int, int] = {}
-        for local_idx in local_kept:
-            tensor_dim = axes[local_idx]
-            action = dim_actions.get(tensor_dim, "untouched")
-            if isinstance(action, tuple) and action[0] == "resized":
-                size_map[local_idx] = action[1]
-            else:
-                size_map[local_idx] = shape[tensor_dim]
-
-        sizes = set(size_map.values())
-        if len(sizes) > 1:
-            for sz in sizes:
-                same_size = {li for li, s in size_map.items() if s == sz}
-                complement = set(local_kept) - same_size
-                if complement:
-                    stab = stab.setwise_stabilizer(same_size)
 
         # Restrict to kept local indices.
         kept_tuple = tuple(local_kept)
@@ -608,6 +595,14 @@ class SymmetricTensor(WhestArray):
     def __array_finalize__(self, obj: object) -> None:
         self._symmetry = None
 
+    def __array_wrap__(self, out_arr, context=None, return_scalar=False):
+        result = super().__array_wrap__(out_arr, context, return_scalar)
+        if return_scalar:
+            return result
+        if isinstance(result, SymmetricTensor) and result._symmetry is None:
+            return _asplainwhest(np.asarray(result))
+        return result
+
     # -- public API --
 
     @property
@@ -682,6 +677,9 @@ class SymmetricTensor(WhestArray):
 
     def flatten(self, order: str = "C"):  # type: ignore[override]
         return _asplainwhest(np.asarray(self).flatten(order))
+
+    def squeeze(self, axis=None):  # type: ignore[override]
+        return _asplainwhest(np.squeeze(np.asarray(self), axis=axis))
 
     def astype(  # type: ignore[override]
         self,
