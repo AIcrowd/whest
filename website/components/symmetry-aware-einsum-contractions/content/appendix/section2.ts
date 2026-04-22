@@ -5,7 +5,7 @@ const l = (text: string) => ({ kind: 'label', text } as const);
 
 const section2 = {
   title: 'Summation creates a second kind of symmetry',
-  deck: 'Once the W-labels have been summed over, they become dummy variables. Renaming them preserves the completed expression, even when it does not preserve individual summands.',
+  deck: 'Once the $W_{\\mathrm{summed}}$-labels have been summed over, they become dummy variables. Renaming them preserves the completed expression, even when it does not preserve individual summands.',
   slots: {
     intro: [
       p('The pointwise group is not the only symmetry visible after the expression has been fully assembled. The labels in $W_{\\mathrm{summed}}$ are bound summation variables. After the sum has been taken, a permutation of $W_{\\mathrm{summed}}$ is an α-renaming of dummy variables: it changes the names used inside the summation, but not the value of the completed expression.'),

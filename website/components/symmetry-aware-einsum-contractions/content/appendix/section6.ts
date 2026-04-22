@@ -5,7 +5,7 @@ const c = (text: string) => ({ kind: 'caption', text } as const);
 
 const section6 = {
   title: 'The valid leftover optimization is output storage',
-  deck: 'After accumulation has been decided, G_out can still reduce mirrored output cells. The dummy-label factor S(W_summed) cannot.',
+  deck: 'After accumulation has been decided, $G_{\\mathrm{out}}$ can still reduce mirrored output cells. The dummy-label factor $S(W_{\\mathrm{summed}})$ cannot.',
   slots: {
     intro: [
       p('The failure of $G_{\\mathrm{f}}$ as an accumulation group does not mean the additional structure is useless. It means the optimization must be placed on the correct axis.'),

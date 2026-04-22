@@ -5,10 +5,10 @@ const l = (text: string) => ({ kind: 'label', text } as const);
 
 const section5 = {
   title: 'Why formal symmetry cannot replace pointwise symmetry in the cost',
-  deck: 'The tempting shortcut is to apply Burnside to G_f. That shortcut is invalid for accumulation because formal orbits may contain unequal summands.',
+  deck: 'The tempting shortcut is to apply Burnside to $G_{\\mathrm{f}}$. That shortcut is invalid for accumulation because formal orbits may contain unequal summands.',
   slots: {
     intro: [
-      p('The main page’s α counts accumulation representatives. Such a representative is valid only when every assignment in its orbit contributes the same indexed product. That condition holds for $G_{\\mathrm{pt}}$ by construction. It need not hold for $G_{\\mathrm{f}}$, because the $S(W_{\\mathrm{summed}})$ factor can rename dummy variables only after the terms have already been summed.'),
+      p('The main page’s $\\alpha$ counts accumulation representatives. Such a representative is valid only when every assignment in its orbit contributes the same indexed product. That condition holds for $G_{\\mathrm{pt}}$ by construction. It need not hold for $G_{\\mathrm{f}}$, because the $S(W_{\\mathrm{summed}})$ factor can rename dummy variables only after the terms have already been summed.'),
       p('Therefore, Burnside over $G_{\\mathrm{f}}$ answers a different question: it counts orbits of formal label renamings in the completed expression. It does not, in general, count the number of distinct summand computations required by the accumulation.'),
     ],
     mismatchLead: [
