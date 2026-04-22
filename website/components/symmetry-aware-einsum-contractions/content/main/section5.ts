@@ -1,4 +1,4 @@
-import type { SectionCopy } from '../schema';
+import type { SectionCopy } from '../schema.ts';
 
 const p = (text: string) => ({ kind: 'paragraph', text } as const);
 const l = (text: string) => ({ kind: 'label', text } as const);

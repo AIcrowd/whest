@@ -11,6 +11,11 @@ const COMPONENTS = 'components/symmetry-aware-einsum-contractions/components';
 
 const readComponent = (name) =>
   readFileSync(resolve(__dirname, COMPONENTS, name), 'utf-8');
+const readMainContent = (name) =>
+  readFileSync(
+    resolve(__dirname, 'components/symmetry-aware-einsum-contractions/content/main', name),
+    'utf-8',
+  );
 
 test('AlgorithmAtAGlance renders above the Act 1 setup section in the app', () => {
   const appSrc = readFileSync(
@@ -80,28 +85,49 @@ test('Einsum column transitions to symmetry at the bottom', () => {
   assert.match(src, /import EditorialCallout/);
   assert.match(src, /Where symmetry enters/);
   assert.match(src, /title="Not every product is distinct"/);
-  assert.match(src, /<em>orbits<\/em> of products collapse/i);
-  assert.match(src, /n\^\{\|L\|\}\/\|G\|/);
-  assert.match(src, /Burnside count/);
-  assert.match(src, /distinct products/);
-  assert.match(src, /distinct output‑bin updates/);
+  assert.match(src, /mainPreamble\.slots\.calloutBodyBeforeGroup/);
+  assert.match(src, /mainPreamble\.slots\.calloutBodyBetweenGroupAndOrbits/);
+  assert.match(src, /mainPreamble\.slots\.calloutBodyAfterOrbits/);
+  assert.match(src, /mainPreamble\.slots\.calloutFooter/);
+});
+
+test('AlgorithmAtAGlance sources its narrative prose from the content registry', () => {
+  const src = readComponent('AlgorithmAtAGlance.jsx');
+  const preambleSrc = readMainContent('preamble.ts');
+
+  assert.match(src, /import\s+\{\s*default as renderProseBlocks\s*\}\s+from\s+'\.\.\/content\/renderProseBlocks\.jsx'/);
+  assert.match(src, /import\s+mainPreamble\s+from\s+'\.\.\/content\/main\/preamble\.ts'/);
+  assert.match(src, /renderSingleProseBlock\(mainPreamble\.slots\.calloutFooter\)/);
+  assert.match(src, /mainPreamble\.slots\.einsumIntroBeforeSummed/);
+  assert.match(src, /mainPreamble\.slots\.mentalFrameworkIntroBeforeRepSet/);
+  assert.match(src, /mainPreamble\.slots\.handoffBeforeSectionLink/);
+  assert.match(preambleSrc, /einsumIntroBeforeSummed/);
+  assert.match(preambleSrc, /mentalFrameworkIntroBeforeRepSet/);
+  assert.match(preambleSrc, /calloutBodyBeforeGroup/);
+  assert.match(preambleSrc, /handoffBeforeSectionLink/);
+  assert.doesNotMatch(src, /function renderEinsumIntro/);
+  assert.doesNotMatch(src, /function renderMentalFrameworkIntro/);
+  assert.doesNotMatch(src, /function renderCalloutBody/);
+  assert.doesNotMatch(src, /\.replace\('Section 1'/);
+  assert.doesNotMatch(src, /\.split\('summed over'\)/);
+  assert.doesNotMatch(src, /\.split\('RepSet'\)/);
+  assert.doesNotMatch(src, /\.split\('group \$G\$'\)/);
+  assert.doesNotMatch(src, /Every index label that appears on an input but not on the output is/);
+  assert.doesNotMatch(src, /If several operands are identical or individually symmetric/);
+  assert.doesNotMatch(src, /The rest of this page shows how the explorer detects the symmetry group/);
 });
 
 test('main-page section references are rendered as links, not plain text labels', () => {
   const preambleSrc = readComponent('AlgorithmAtAGlance.jsx');
-  const narrativeSrc = readComponent('explorerNarrative.js');
 
-  assert.match(preambleSrc, /href="#setup"/);
+  assert.match(preambleSrc, /<SectionReferenceLink href="#setup">Section 1<\/SectionReferenceLink>/);
   assert.doesNotMatch(preambleSrc, /Start with <strong className="font-semibold">Section 1<\/strong> below/);
-  assert.match(narrativeSrc, /\[Section 3\]\(#proof\)/);
-  assert.doesNotMatch(narrativeSrc, /re-enters in Section 3, when we generate candidate row moves/);
 });
 
 test('μ / α definitions live in the code step headers — no separate callouts in the preamble', () => {
   const src = readComponent('AlgorithmAtAGlance.jsx');
-  // μ and α still appear somewhere in the preamble (in the worked example).
-  assert.match(src, /\\mu/);
-  assert.match(src, /\\alpha/);
+  // μ and α still appear somewhere in the preamble via registry-backed footer prose.
+  assert.match(src, /mainPreamble\.slots\.calloutFooter/);
   // But the old standalone "Two kinds of work" NarrativeCallout pair must be gone.
   assert.doesNotMatch(src, /Two kinds of work/);
   assert.match(src, /EditorialCallout/);

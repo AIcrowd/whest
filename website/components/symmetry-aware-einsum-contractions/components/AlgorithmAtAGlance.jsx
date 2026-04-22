@@ -4,6 +4,8 @@ import Latex from './Latex.jsx';
 import MentalFrameworkCode from './MentalFrameworkCode.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import SectionReferenceLink from './SectionReferenceLink.jsx';
+import { default as renderProseBlocks } from '../content/renderProseBlocks.jsx';
+import mainPreamble from '../content/main/preamble.ts';
 import { notationColor, notationLatex } from '../lib/notationSystem.js';
 import { buildSection1ExampleView } from '../lib/section1ExampleView.js';
 
@@ -25,10 +27,13 @@ import { buildSection1ExampleView } from '../lib/section1ExampleView.js';
  * discovers it by picking a preset and watching the cost counts update.
  */
 
-// Dense scaling for a uniform-size contraction with |L| total labels.
-// Kept symbolic in the preamble so the same explanation still reads correctly
-// across presets even when the active example changes.
-const DENSE_SCALING = String.raw`n^{|L|}`;
+// Dense scaling: the brute-force cost of evaluating the chain above for
+// uniform axis size n. Shown symbolically to motivate why symmetry matters.
+const DENSE_SCALING = String.raw`\mathcal{O}(n^{5})`;
+
+function renderSingleProseBlock(blocks = []) {
+  return renderProseBlocks(blocks)[0] ?? null;
+}
 
 function ColorLegend() {
   const landingFreeLabelColor = notationColor('v_free');
@@ -72,10 +77,11 @@ function EinsumIntroColumn({ example }) {
         className="mt-3 font-serif text-[17px] leading-[1.75] text-gray-700"
         style={JUSTIFIED_PROSE_STYLE}
       >
-        Every index label that appears on an input but not on the output is{' '}
-        <strong className="font-semibold">summed over</strong>; labels on the output are{' '}
-        <strong className="font-semibold">free</strong>. A dense implementation pays for every cell of
-        the full input grid — so even modestly sized examples explode quickly.
+        {renderSingleProseBlock(mainPreamble.slots.einsumIntroBeforeSummed)}
+        <strong className="font-semibold">summed over</strong>
+        {renderSingleProseBlock(mainPreamble.slots.einsumIntroBetweenSummedAndFree)}
+        <strong className="font-semibold">free</strong>
+        {renderSingleProseBlock(mainPreamble.slots.einsumIntroAfterFree)}
       </p>
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-stone-200 bg-white px-5 py-6">
@@ -122,20 +128,18 @@ function EinsumIntroColumn({ example }) {
         bodyClassName="mt-2 text-[14px] leading-7 text-foreground"
         footer={(
           <>
-            The explorer finds G automatically, then counts the distinct products (<Latex math="\mu" />)
-            and distinct output‑bin updates (<Latex math="\alpha" />) — the two numbers driving the
-            code on the right.
+            {renderSingleProseBlock(mainPreamble.slots.calloutFooter)}
           </>
         )}
       >
         <>
-          If several operands are identical or individually symmetric
-          (e.g. <Latex math={String.raw`A_{ij} = A_{ji}`} />), the formula is invariant under certain
-          permutations of the labels. Those permutations form a{' '}
-          <strong className="font-semibold">group G</strong>, and whole{' '}
-          <em>orbits</em> of products collapse to a single distinct computation — the dense{' '}
-          <Latex math={DENSE_SCALING} /> drops to <Latex math={String.raw`n^{|L|}/|G|`} /> in the best
-          case (a free action), and to a Burnside count <Latex math={String.raw`(1/|G|)\sum_g |\mathrm{Fix}(g)|`} /> in general.
+          {renderSingleProseBlock(mainPreamble.slots.calloutBodyBeforeGroup)}
+          <strong className="font-semibold">
+            group <Latex math="G" />
+          </strong>
+          {renderSingleProseBlock(mainPreamble.slots.calloutBodyBetweenGroupAndOrbits)}
+          <em>orbits</em>
+          {renderSingleProseBlock(mainPreamble.slots.calloutBodyAfterOrbits)}
         </>
       </EditorialCallout>
     </div>
@@ -158,10 +162,13 @@ function MentalFrameworkColumn({ example }) {
         className="mt-3 font-serif text-[17px] leading-[1.75] text-gray-700"
         style={JUSTIFIED_PROSE_STYLE}
       >
-        Every contraction has the same shape. Symmetry only changes the content of three things:{' '}
-        <code className="explorer-inline-code">RepSet</code>, <code className="explorer-inline-code">Outs(rep)</code>, and{' '}
-        <code className="explorer-inline-code">coeff(rep, out)</code>. The rest of the explorer is about
-        counting them without enumerating the full grid.
+        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBeforeRepSet)}
+        <code className="explorer-inline-code">RepSet</code>
+        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBetweenRepSetAndOuts)}
+        <code className="explorer-inline-code">Outs(rep)</code>
+        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBetweenOutsAndCoeff)}
+        <code className="explorer-inline-code">coeff(rep, out)</code>
+        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroAfterCoeff)}
       </p>
 
       <div className="mt-6 flex flex-1 flex-col">
@@ -182,8 +189,8 @@ export default function AlgorithmAtAGlance({ example }) {
             </span>
           </AnchorLink>
         }
-        title={<span id="algorithm-at-a-glance-title">What this explorer is counting</span>}
-        description="The direct indexed computation, the representative products, and the output-bin updates it induces."
+        title={<span id="algorithm-at-a-glance-title">{mainPreamble.title}</span>}
+        description={mainPreamble.deck}
         className="border-gray-200 bg-white"
         contentClassName="pt-6"
       >
@@ -202,11 +209,9 @@ export default function AlgorithmAtAGlance({ example }) {
           className="mt-10 border-t border-stone-200 pt-8 font-serif text-[17px] leading-[1.75] text-gray-700"
           style={JUSTIFIED_PROSE_STYLE}
         >
-          The rest of this page shows how the explorer detects the symmetry group{' '}
-          <Latex math="G" /> from a contraction and computes{' '}
-          <Latex math={String.raw`\mu`} /> and <Latex math={String.raw`\alpha`} /> automatically.
-          {' '}Start with <SectionReferenceLink href="#setup">Section 1</SectionReferenceLink> below to pick
-          or build a contraction.
+          {renderSingleProseBlock(mainPreamble.slots.handoffBeforeSectionLink)}
+          <SectionReferenceLink href="#setup">Section 1</SectionReferenceLink>
+          {renderSingleProseBlock(mainPreamble.slots.handoffAfterSectionLink)}
         </p>
       </ExplorerSectionCard>
     </section>

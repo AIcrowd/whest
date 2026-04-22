@@ -22,6 +22,21 @@ test('EXPLORER_ACTS still exported (backward compat)', () => {
   assert.ok(EXPLORER_ACTS.length >= 4);
 });
 
+test('EXPLORER_ACTS sources main-page copy from registry modules', () => {
+  const src = readFileSync(
+    resolve(__dirname, 'components/symmetry-aware-einsum-contractions/components/explorerNarrative.js'),
+    'utf-8',
+  );
+
+  assert.match(src, /import\s+\{[\s\S]*mainSection1[\s\S]*mainSection5[\s\S]*\}\s+from\s+'\.\.\/content\/main\/index\.ts'/);
+  assert.match(src, /heading:\s*mainSection1\.title/);
+  assert.match(src, /question:\s*mainSection1\.deck/);
+  assert.match(src, /introParagraphs:\s*mainSection1\.slots\.intro\.map\(\(\{ text \}\) => text\)/);
+  assert.match(src, /produces:\s*getFirstParagraphText\(mainSection1\.slots\.produces\)/);
+  assert.doesNotMatch(src, /The first step is to fix the mathematical object/);
+  assert.doesNotMatch(src, /Once the contraction is fixed, we forget the numerical entries/);
+});
+
 test('ARTICLE_SECTIONS and EXPLORER_ACTS have unique ids', () => {
   const articleIds = ARTICLE_SECTIONS.map((s) => s.id);
   const actIds = EXPLORER_ACTS.map((a) => a.id);
