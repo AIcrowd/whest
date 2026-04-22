@@ -1,11 +1,11 @@
-import {highlight} from 'fumadocs-core/highlight';
-import {CodeBlock, Pre} from 'fumadocs-ui/components/codeblock';
-import {Children, Fragment, isValidElement, type CSSProperties, type ReactElement, type ReactNode} from 'react';
+import {ServerCodeBlock} from 'fumadocs-ui/components/codeblock.rsc';
+import {Fragment, type ReactNode} from 'react';
 import Latex from '../shared/Latex';
 import OperationDocFieldList from './OperationDocFieldList';
 import OperationDocLink from './OperationDocLink';
 import OperationDocSectionHeading from './OperationDocSectionHeading';
 import OperationDocSignature from './OperationDocSignature';
+import {apiCodeThemes} from './runtime-shiki-themes';
 import styles from './styles.module.css';
 import type {
   DocBlock,
@@ -22,18 +22,6 @@ import type {
   DocRawBlock,
   DocSection,
 } from './op-doc-types';
-
-const editorTheme = {
-  light: 'github-light',
-  dark: 'github-dark',
-} as const;
-
-type HighlightedPre = ReactElement<{
-  children?: ReactNode;
-  className?: string;
-  style?: CSSProperties;
-  tabIndex?: number;
-}>;
 
 function renderInline(nodes: DocInlineNode[]): ReactNode[] {
   return nodes.flatMap((node, index) => [
@@ -276,19 +264,18 @@ async function renderDoctest(block: DocBlock & {lines: DocLine[]}): Promise<Reac
 }
 
 async function renderHighlightedCode(code: string, lang: string): Promise<ReactNode> {
-  const highlighted = await highlight(code, {lang, themes: editorTheme});
-  const preNode = Children.toArray(highlighted).find(
-    (child): child is HighlightedPre => isValidElement(child) && child.type === 'pre',
-  );
-
-  if (!preNode) {
-    return <CodeBlock allowCopy={false}>{highlighted}</CodeBlock>;
-  }
-
   return (
-    <CodeBlock allowCopy={false} className={preNode.props.className} style={preNode.props.style}>
-      <Pre tabIndex={preNode.props.tabIndex}>{preNode.props.children}</Pre>
-    </CodeBlock>
+    <ServerCodeBlock
+      code={code}
+      lang={lang}
+      themes={apiCodeThemes}
+      codeblock={{
+        allowCopy: false,
+        keepBackground: true,
+        className: styles.apiCodeFigure,
+        viewportProps: {className: styles.apiCodeViewport},
+      }}
+    />
   );
 }
 

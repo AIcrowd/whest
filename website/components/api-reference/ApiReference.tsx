@@ -57,8 +57,7 @@ export default function ApiReference({operations}: ApiReferenceProps): React.Rea
               <th>Operation</th>
               <th>Area</th>
               <th>Type</th>
-              <th>Weight</th>
-              <th>Cost Formula</th>
+              <th>Cost</th>
             </tr>
           </thead>
           <tbody>
@@ -67,7 +66,7 @@ export default function ApiReference({operations}: ApiReferenceProps): React.Rea
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={5} className={styles.noResults}>
+                <td colSpan={4} className={styles.noResults}>
                   No operations match your filters.
                 </td>
               </tr>
