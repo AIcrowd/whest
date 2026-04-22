@@ -1,6 +1,7 @@
 """Tests for automatic symmetric annotation on tensor creation operations."""
 
 import numpy as np
+import pytest
 
 import whest as we
 from whest._symmetric import SymmetricTensor
@@ -211,6 +212,20 @@ class TestFullLike:
         result = we.full_like(np.ones((2, 3)), 1.0)
         assert not isinstance(result, SymmetricTensor)
 
+    @pytest.mark.parametrize(
+        ("factory", "args"),
+        [
+            (we.zeros_like, ()),
+            (we.ones_like, ()),
+            (we.full_like, (5.0,)),
+        ],
+    )
+    def test_shape_override_drops_incompatible_symmetry(self, factory, args):
+        source = we.as_symmetric(np.eye(3), symmetry=(0, 1))
+        result = factory(source, *args, shape=(2, 3))
+        assert result.shape == (2, 3)
+        assert not isinstance(result, SymmetricTensor)
+
 
 # ---------------------------------------------------------------------------
 # Integration: symmetry flows through downstream operations
@@ -244,6 +259,24 @@ class TestIntegration:
             inv_ident = we.linalg.inv(ident)
             assert isinstance(inv_ident, SymmetricTensor)
             np.testing.assert_allclose(inv_ident, np.eye(4))
+
+    def test_batched_inv_preserves_exact_group(self):
+        A = np.array([[4.0, 1.0], [1.0, 3.0]])
+        B = np.array([[5.0, 0.5], [0.5, 2.5]])
+        C = np.array([[6.0, 1.5], [1.5, 4.0]])
+        batched = np.empty((2, 2, 2, 2), dtype=float)
+        batched[0, 0] = A
+        batched[0, 1] = B
+        batched[1, 0] = B
+        batched[1, 1] = C
+
+        exact = we.as_symmetric(batched, symmetry=((0, 1), (2, 3)))
+
+        with we.BudgetContext(flop_budget=10**6):
+            result = we.linalg.inv(exact)
+
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == exact.symmetry
 
     def test_creation_ops_cost(self):
         with we.BudgetContext(flop_budget=10**6) as budget:

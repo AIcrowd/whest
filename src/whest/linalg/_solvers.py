@@ -6,9 +6,9 @@ from __future__ import annotations
 import numpy as _np
 
 from whest._docstrings import attach_docstring
-from whest._perm_group import SymmetryGroup
 from whest._symmetric import SymmetricTensor, as_symmetric
 from whest._validation import require_budget
+from whest.errors import SymmetryError
 
 
 def _batch_size(shape):
@@ -111,7 +111,10 @@ def inv(a):
     ):
         result = _np.linalg.inv(a)
     if is_symmetric:
-        result = as_symmetric(result, symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
+        try:
+            result = as_symmetric(result, symmetry=a.symmetry)
+        except SymmetryError:
+            pass
     return result
 
 
