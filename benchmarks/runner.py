@@ -134,7 +134,9 @@ _APPROX_OP_COUNTS: dict[str, int] = {
     "linalg_delegates": 15,
 }
 
-_WEIGHTS_CSV = Path(__file__).resolve().parent.parent / "src" / "whest" / "data" / "weights.csv"
+_WEIGHTS_CSV = (
+    Path(__file__).resolve().parent.parent / "src" / "whest" / "data" / "weights.csv"
+)
 
 
 def normalize_weights(
