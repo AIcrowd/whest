@@ -10,6 +10,7 @@ from __future__ import annotations
 import struct
 
 import pytest
+from whest._perm_group import SymmetryGroup
 from whest._remote_array import (
     RemoteArray,
     RemoteScalar,
@@ -176,6 +177,23 @@ class TestResultFromResponse:
         assert out.handle_id == "handle-abc"
         assert out.shape == (3, 4)
         assert out.dtype == "float64"
+        assert out.symmetry is None
+
+    def test_single_array_result_with_symmetry(self):
+        payload = {"axes": [0, 1], "generators": [[1, 0]]}
+        resp = {
+            "status": "ok",
+            "result": {
+                "id": "handle-abc",
+                "shape": [3, 3],
+                "dtype": "float64",
+                "symmetry": payload,
+            },
+        }
+        out = _result_from_response(resp)
+        assert isinstance(out, RemoteArray)
+        assert out.symmetry == SymmetryGroup.from_payload(payload)
+        assert not hasattr(out, "symmetry_info")
 
     def test_scalar_result(self):
         resp = {
@@ -333,3 +351,35 @@ class TestRemoteArrayReverseOps:
 
     def test_has_rmatmul(self):
         assert hasattr(RemoteArray, "__rmatmul__")
+
+
+class TestRemoteArraySymmetryTransport:
+    """Exact symmetry metadata should stay on remote array responses."""
+
+    def test_multiple_result_decodes_keep_symmetry(self):
+        payload = {"axes": [0, 1], "generators": [[1, 0]]}
+        first = _result_from_response(
+            {
+                "status": "ok",
+                "result": {
+                    "id": "a1",
+                    "shape": [2, 2],
+                    "dtype": "float64",
+                    "symmetry": payload,
+                },
+            }
+        )
+        second = _result_from_response(
+            {
+                "status": "ok",
+                "result": {
+                    "id": "a2",
+                    "shape": [2, 2],
+                    "dtype": "float64",
+                    "symmetry": payload,
+                },
+            }
+        )
+
+        assert first.symmetry == SymmetryGroup.from_payload(payload)
+        assert second.symmetry == SymmetryGroup.from_payload(payload)
