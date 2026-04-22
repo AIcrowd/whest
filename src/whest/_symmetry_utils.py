@@ -191,6 +191,14 @@ def intersect_groups(
     """Intersect two groups after embedding them into the same tensor rank."""
     if a is None or b is None:
         return None
+    if a.axes is not None and b.axes is not None and a.axes == b.axes:
+        common = sorted(
+            set(a.elements()) & set(b.elements()),
+            key=lambda perm: tuple(perm.array_form),
+        )
+        if len(common) <= 1:
+            return None
+        return SymmetryGroup(*common, axes=a.axes)
     embedded_a = embed_group(a, ndim)
     embedded_b = embed_group(b, ndim)
     assert embedded_a is not None
@@ -257,8 +265,8 @@ def broadcast_group(
             remapped = remap_group_axes(
                 restricted,
                 {
-                    restricted.axes[i]: restricted.axes[i] + offset
-                    for i in range(len(restricted.axes or ()))
+                    new_local_idx: axes[old_local_idx] + offset
+                    for new_local_idx, old_local_idx in enumerate(kept_local)
                 },
             )
             if remapped is not None and remapped.order() > 1:
@@ -311,8 +319,8 @@ def reduce_group(
     remapped = remap_group_axes(
         restricted,
         {
-            restricted.axes[i]: old_to_new[restricted.axes[i]]
-            for i in range(len(restricted.axes or ()))
+            new_local_idx: old_to_new[group_axes[old_local_idx]]
+            for new_local_idx, old_local_idx in enumerate(local_kept)
         },
     )
     return remapped if remapped is not None and remapped.order() > 1 else None
