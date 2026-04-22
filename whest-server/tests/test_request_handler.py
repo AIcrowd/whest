@@ -177,8 +177,8 @@ def test_handle_fetch_slice(handler, session):
     resp = handler.handle({"op": "fetch_slice", "id": handle, "slices": [[2, 5]]})
     assert resp["status"] == "ok"
     expected = arr[2:5]
-    assert resp["data"] == expected.tobytes()
-    assert resp["shape"] == [3]
+    assert resp["result"]["shape"] == [3]
+    assert resp["result"]["dtype"] == "float64"
 
 
 # ---------------------------------------------------------------------------
@@ -312,6 +312,19 @@ def test_pack_result_mixed_tuple(handler, session):
     # Second item should be a scalar (has "value")
     assert "value" in items[1]
     assert abs(items[1]["value"] - 3.14) < 1e-10
+
+
+def test_pack_result_uses_symmetry_payload(handler):
+    import whest as we
+
+    arr = np.array([[1.0, 2.0], [2.0, 3.0]])
+    st = we.as_symmetric(arr, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
+
+    result = handler._pack_result(st)
+
+    assert result["status"] == "ok"
+    assert result["result"]["symmetry"] == {"axes": [0, 1], "generators": [[1, 0]]}
+    assert "symmetry_info" not in result["result"]
 
 
 # ---------------------------------------------------------------------------

@@ -208,9 +208,9 @@ class TestSubmoduleParity:
 
 
 class TestPermGroupParity:
-    """Client _perm_group.py exposes Permutation, PermutationGroup, Cycle."""
+    """Client and core _perm_group.py expose the same exact-group surface."""
 
-    _EXPECTED_NAMES = ["Permutation", "PermutationGroup", "Cycle"]
+    _EXPECTED_NAMES = ["_Permutation", "_Cycle", "SymmetryGroup"]
 
     @pytest.fixture(scope="class")
     def client_perm_group(self):

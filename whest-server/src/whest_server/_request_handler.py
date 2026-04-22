@@ -9,6 +9,7 @@ from typing import Any
 import numpy as np
 
 import whest as me
+from whest._perm_group import SymmetryGroup, _Permutation
 from whest_server._session import Session
 
 _HANDLE_RE = re.compile(r"^a\d+$")
@@ -129,17 +130,7 @@ class RequestHandler:
     def _handle_fetch_slice(self, request: dict) -> dict:
         arr = self._session.get_array(request["id"])
         slices = tuple(slice(*s) for s in request["slices"])
-        sliced = arr[slices]
-
-        if np.ndim(sliced) == 0:
-            return {"status": "ok", "value": sliced.item()}
-
-        return {
-            "status": "ok",
-            "data": sliced.tobytes(),
-            "shape": list(sliced.shape),
-            "dtype": str(sliced.dtype),
-        }
+        return self._pack_result(arr[slices])
 
     def _handle_free(self, request: dict) -> dict:
         # Support both direct "ids" field and kwargs-based "handles"
@@ -244,20 +235,16 @@ class RequestHandler:
             # Permutation wire format
             perm_data = arg.get("__permutation__") or arg.get(b"__permutation__")
             if perm_data is not None:
-                return me.Permutation(list(perm_data))
-            # PermutationGroup wire format
-            pg_data = arg.get("__perm_group__") or arg.get(b"__perm_group__")
+                return _Permutation(list(perm_data))
+            # SymmetryGroup wire format
+            pg_data = arg.get("__symmetry_group__") or arg.get(b"__symmetry_group__")
             if pg_data is not None:
                 if isinstance(pg_data, dict):
                     pg_data = {
                         (k.decode("utf-8") if isinstance(k, bytes) else k): v
                         for k, v in pg_data.items()
                     }
-                generators = [me.Permutation(list(g)) for g in pg_data["generators"]]
-                axes = (
-                    tuple(pg_data["axes"]) if pg_data.get("axes") is not None else None
-                )
-                return me.PermutationGroup(*generators, axes=axes)
+                return SymmetryGroup.from_payload(pg_data)
         # Recurse into lists/tuples so that e.g. concatenate([a, b]) works
         if isinstance(arg, (list, tuple)):
             resolved = [self._resolve_arg(item) for item in arg]
@@ -302,24 +289,6 @@ class RequestHandler:
     def _pack_result(self, result: Any) -> dict:
         """Pack a whest function result into a response dict."""
         budget = self._session.budget_status()
-
-        # SymmetricTensor — ndarray subclass with symmetry metadata
-        if hasattr(me, "SymmetricTensor") and isinstance(result, me.SymmetricTensor):
-            if result.nbytes > MAX_ARRAY_BYTES:
-                return {
-                    "status": "error",
-                    "error_type": "ValueError",
-                    "message": f"result array too large: {result.nbytes} bytes exceeds {MAX_ARRAY_BYTES} byte limit",
-                }
-            handle = self._session.store_array(np.asarray(result))
-            meta = self._session.array_metadata(handle)
-            si = result.symmetry_info
-            if si is not None:
-                meta["symmetry_info"] = {
-                    "symmetric_axes": [list(g) for g in si.symmetric_axes],
-                    "shape": list(si.shape),
-                }
-            return {"status": "ok", "result": meta, "budget": budget}
 
         if isinstance(result, np.ndarray):
             if result.nbytes > MAX_ARRAY_BYTES:

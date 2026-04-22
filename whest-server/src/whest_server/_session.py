@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as np
 
 import whest as me
@@ -69,14 +71,14 @@ class Session:
     # Array operations (delegate to ArrayStore)
     # ------------------------------------------------------------------
 
-    def store_array(self, arr: np.ndarray) -> str:
+    def store_array(self, arr: Any) -> str:
         """Store *arr* and return its handle ID.
 
         Delegates to :meth:`ArrayStore.put`.
         """
         return self._store.put(arr)
 
-    def get_array(self, handle: str) -> np.ndarray:
+    def get_array(self, handle: str) -> Any:
         """Return the array for *handle*.
 
         Delegates to :meth:`ArrayStore.get`.

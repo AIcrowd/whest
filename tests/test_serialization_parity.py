@@ -66,7 +66,6 @@ def _load_client_module(rel_path: str, module_name: str):
 # there's no collision risk.
 _load_client_module("whest/_constants.py", "whest._constants")
 _load_client_module("whest/_math_compat.py", "whest._math_compat")
-_load_client_module("whest/_symmetric_info.py", "whest._symmetric_info")
 _load_client_module("whest/_perm_group.py", "whest._perm_group")
 _client_remote_array = _load_client_module(
     "whest/_remote_array.py", "whest._remote_array"
@@ -77,9 +76,9 @@ _client_perm_group = sys.modules["whest._perm_group"]
 _encode_arg = _client_remote_array._encode_arg
 _result_from_response = _client_remote_array._result_from_response
 
-ClientPermutation = _client_perm_group.Permutation
-ClientPermutationGroup = _client_perm_group.PermutationGroup
-ClientCycle = _client_perm_group.Cycle
+ClientPermutation = _client_perm_group._Permutation
+ClientSymmetryGroup = _client_perm_group.SymmetryGroup
+ClientCycle = _client_perm_group._Cycle
 
 
 # ---------------------------------------------------------------------------
@@ -109,7 +108,7 @@ def handler_session():
 
 
 class TestPermutationRoundTrip:
-    """Client Permutation/PermutationGroup/Cycle → encode → server resolve → same value."""
+    """Client hidden permutation helpers and SymmetryGroup round-trip cleanly."""
 
     def test_permutation_basic(self, handler_session):
         """Permutation([2,0,1]) survives the round-trip."""
@@ -125,7 +124,7 @@ class TestPermutationRoundTrip:
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, we.Permutation)
+        assert resolved.__class__.__name__ == "_Permutation"
         assert resolved.array_form == [2, 0, 1]
 
     def test_permutation_identity(self, handler_session):
@@ -135,38 +134,38 @@ class TestPermutationRoundTrip:
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, we.Permutation)
+        assert resolved.__class__.__name__ == "_Permutation"
         assert resolved.array_form == [0, 1, 2, 3]
         assert resolved.is_identity
 
-    def test_permutation_group_symmetric(self, handler_session):
-        """PermutationGroup.symmetric(3) encodes and decodes with correct degree."""
-        group = ClientPermutationGroup.symmetric(3)
+    def test_symmetry_group_symmetric(self, handler_session):
+        """SymmetryGroup.symmetric encodes and decodes with correct degree."""
+        group = ClientSymmetryGroup.symmetric(axes=(0, 1, 2))
         encoded = _encode_arg(group)
 
         assert isinstance(encoded, dict)
-        assert "__perm_group__" in encoded
-        pg_wire = encoded["__perm_group__"]
-        assert pg_wire["degree"] == 3
+        assert "__symmetry_group__" in encoded
+        pg_wire = encoded["__symmetry_group__"]
+        assert pg_wire["axes"] == [0, 1, 2]
         assert len(pg_wire["generators"]) >= 1
 
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, we.PermutationGroup)
+        assert isinstance(resolved, we.SymmetryGroup)
         assert resolved.degree == 3
         # S_3 has 6 elements
         assert resolved.order() == 6
 
-    def test_permutation_group_with_axes(self, handler_session):
-        """PermutationGroup with axes survives round-trip."""
-        group = ClientPermutationGroup.symmetric(2, axes=(0, 1))
+    def test_symmetry_group_with_axes(self, handler_session):
+        """SymmetryGroup with axes survives round-trip."""
+        group = ClientSymmetryGroup.symmetric(axes=(0, 1))
         encoded = _encode_arg(group)
 
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, we.PermutationGroup)
+        assert isinstance(resolved, we.SymmetryGroup)
         assert resolved.degree == 2
         assert resolved.axes == (0, 1)
 
@@ -181,7 +180,7 @@ class TestPermutationRoundTrip:
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, we.Permutation)
+        assert resolved.__class__.__name__ == "_Permutation"
         # Cycle(0,2)(1,3): 0->2, 2->0, 1->3, 3->1 → array form [2,3,0,1]
         assert resolved.array_form == [2, 3, 0, 1]
 
@@ -193,7 +192,7 @@ class TestPermutationRoundTrip:
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 
-        assert isinstance(resolved, we.Permutation)
+        assert resolved.__class__.__name__ == "_Permutation"
         assert resolved.array_form == [1, 0]
 
     def test_permutation_in_list(self, handler_session):
@@ -209,7 +208,7 @@ class TestPermutationRoundTrip:
         resolved = handler._resolve_arg(encoded)
 
         assert isinstance(resolved, list)
-        assert isinstance(resolved[0], we.Permutation)
+        assert resolved[0].__class__.__name__ == "_Permutation"
         assert resolved[0].array_form == [1, 0, 2]
         assert resolved[1] == 42
 
@@ -220,7 +219,7 @@ class TestPermutationRoundTrip:
 
 
 class TestSymmetryInfoRoundTrip:
-    """SymmetricTensor packed by server → unpacked by client → SymmetryInfo present."""
+    """SymmetricTensor packed by server → unpacked by client → symmetry present."""
 
     def _make_symmetric_array(self) -> np.ndarray:
         """Create a small symmetric (in axes 0,1) numpy array."""
@@ -231,9 +230,12 @@ class TestSymmetryInfoRoundTrip:
         return data
 
     def test_symmetric_tensor_pack_unpack(self, handler_session):
-        """as_symmetric → _pack_result → _result_from_response → SymmetryInfo present."""
+        """as_symmetric → _pack_result → _result_from_response → symmetry present."""
         data = self._make_symmetric_array()
-        sym_tensor = we.as_symmetric(data, symmetric_axes=(0, 1))
+        sym_tensor = we.as_symmetric(
+            data,
+            symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
+        )
 
         session, handler = handler_session
         packed = handler._pack_result(sym_tensor)
@@ -241,50 +243,46 @@ class TestSymmetryInfoRoundTrip:
         assert packed["status"] == "ok"
         result_dict = packed["result"]
         assert "id" in result_dict, "Expected handle id in result"
-        assert "symmetry_info" in result_dict, "Expected symmetry_info in result"
+        assert "symmetry" in result_dict, "Expected symmetry in result"
 
-        si = result_dict["symmetry_info"]
-        assert "symmetric_axes" in si
-        assert "shape" in si
-        assert list(si["shape"]) == list(data.shape)
-
-        # Client decode: _result_from_response reconstructs RemoteArray with SymmetryInfo
         remote_arr = _result_from_response(packed)
 
-        assert remote_arr.symmetry_info is not None
-        sym_info = remote_arr.symmetry_info
-        assert sym_info.shape == tuple(data.shape)
-        assert (0, 1) in sym_info.symmetric_axes or [0, 1] in [
-            list(g) for g in sym_info.symmetric_axes
-        ]
+        assert remote_arr.symmetry is not None
+        assert remote_arr.symmetry == ClientSymmetryGroup.from_payload(
+            {"axes": [0, 1], "generators": [[1, 0]]}
+        )
 
-    def test_plain_array_no_symmetry_info(self, handler_session):
-        """Plain ndarray packed → _result_from_response → symmetry_info is None."""
+    def test_plain_array_no_symmetry(self, handler_session):
+        """Plain ndarray packed → _result_from_response → symmetry is None."""
         data = np.array([[1.0, 2.0], [3.0, 4.0]])
 
         session, handler = handler_session
         packed = handler._pack_result(data)
 
         assert packed["status"] == "ok"
-        assert "symmetry_info" not in packed["result"]
+        assert "symmetry" not in packed["result"]
 
         remote_arr = _result_from_response(packed)
-        assert remote_arr.symmetry_info is None
+        assert remote_arr.symmetry is None
 
     def test_symmetric_tensor_shape_preserved(self, handler_session):
         """Shape is correctly preserved through the full pack/unpack cycle."""
         rng = np.random.default_rng(7)
         raw = rng.random((4, 4))
         data = (raw + raw.T) / 2.0
-        sym_tensor = we.as_symmetric(data, symmetric_axes=(0, 1))
+        sym_tensor = we.as_symmetric(
+            data,
+            symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
+        )
 
         session, handler = handler_session
         packed = handler._pack_result(sym_tensor)
         remote_arr = _result_from_response(packed)
 
         assert remote_arr.shape == (4, 4)
-        assert remote_arr.symmetry_info is not None
-        assert remote_arr.symmetry_info.shape == (4, 4)
+        assert remote_arr.symmetry == ClientSymmetryGroup.from_payload(
+            {"axes": [0, 1], "generators": [[1, 0]]}
+        )
 
     def test_symmetric_tensor_multi_group(self, handler_session):
         """Tensor with two symmetry groups packs/unpacks with both groups present."""
@@ -295,13 +293,20 @@ class TestSymmetryInfoRoundTrip:
         raw = (raw + raw.transpose(1, 0, 2, 3)) / 2.0
         # Symmetrize axes 2,3
         raw = (raw + raw.transpose(0, 1, 3, 2)) / 2.0
-        sym_tensor = we.as_symmetric(raw, symmetric_axes=[(0, 1), (2, 3)])
+        sym_tensor = we.as_symmetric(
+            raw,
+            symmetry=we.SymmetryGroup.direct_product(
+                we.SymmetryGroup.symmetric(axes=(0, 1)),
+                we.SymmetryGroup.symmetric(axes=(2, 3)),
+            ),
+        )
 
         session, handler = handler_session
         packed = handler._pack_result(sym_tensor)
         remote_arr = _result_from_response(packed)
 
-        assert remote_arr.symmetry_info is not None
-        axes_list = [set(g) for g in remote_arr.symmetry_info.symmetric_axes]
-        assert {0, 1} in axes_list
-        assert {2, 3} in axes_list
+        assert remote_arr.symmetry is not None
+        assert remote_arr.symmetry.to_payload() == {
+            "axes": [0, 1, 2, 3],
+            "generators": [[1, 0, 2, 3], [0, 1, 3, 2]],
+        }
