@@ -28,7 +28,11 @@ test('appendix modal shell keeps the editorial rail and the new cost-vs-expressi
   assert.match(source, /import appendixSection5 from '\.\.\/content\/appendix\/section5\.ts'/);
   assert.match(source, /import appendixSection6 from '\.\.\/content\/appendix\/section6\.ts'/);
   assert.match(source, /function normalizeAppendixDisplayText\(/);
+  assert.match(source, /const APPENDIX_REQUIRED_SLOT_ERRORS = \{/);
+  assert.match(source, /function invariantAppendixSlot\(/);
   assert.match(source, /function renderAppendixSlot\(/);
+  assert.match(source, /throw new Error\(APPENDIX_REQUIRED_SLOT_ERRORS\[slotKey\] \?\? `Missing appendix slot: \$\{slotKey\}`\)/);
+  assert.match(source, /throw new Error\(`Missing appendix slot block: \$\{slotKey\}\[\$\{index\}\]`\)/);
   assert.match(source, /renderProseBlocks\(normalizedBlocks/);
   assert.match(source, /relative w-full max-w-\[(1460px|var\(--content-max\))\] rounded-lg border border-gray-200 bg-white shadow-2xl/);
   assert.match(source, /appendixRailClass = 'mx-auto w-full max-w-\[(1460px|var\(--content-max\))\] px-6 md:px-8 lg:px-10'/);
@@ -41,6 +45,7 @@ test('appendix modal shell keeps the editorial rail and the new cost-vs-expressi
   assert.doesNotMatch(source, /Act 5 computed a symmetry-aware accumulation count\./);
   assert.doesNotMatch(source, /This appendix has two parts\./);
   assert.doesNotMatch(source, /Expression-level symmetry and Symmetry-aware storage/);
+  assert.doesNotMatch(source, /if \(!block\) return null;/);
 });
 
 test('appendix uses an editorial spine with asymmetric support shelves', () => {

@@ -92,3 +92,28 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
     );
   }
 });
+
+test('appendix copy modules use canonical notation keys for pointwise and formal groups', () => {
+  const appendixModules = [
+    'appendix/section1.ts',
+    'appendix/section2.ts',
+    'appendix/section3.ts',
+    'appendix/section4.ts',
+    'appendix/section5.ts',
+    'appendix/section6.ts',
+  ];
+
+  for (const relativePath of appendixModules) {
+    const source = read(relativePath);
+    assert.doesNotMatch(
+      source,
+      /G_\{\\\\mathrm\{pt\}\}/,
+      `${relativePath} should not use raw \\mathrm form for G_pt`,
+    );
+    assert.doesNotMatch(
+      source,
+      /G_\{\\\\mathrm\{f\}\}/,
+      `${relativePath} should not use raw \\mathrm form for G_f`,
+    );
+  }
+});

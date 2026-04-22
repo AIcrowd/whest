@@ -8,10 +8,10 @@ const section4 = {
   slots: {
     intro: [
       p('We can now name the label-renaming formal group considered in this appendix. It has two independent factors: the visible output action $G_{\\mathrm{out}}$, and the dummy-label renaming group $S(W_{\\mathrm{summed}})$. Their direct product is'),
-      p('An element of $G_{\\mathrm{f}}$ acts by applying an output relabeling on $V_{\\mathrm{free}}$ and an independent dummy renaming on $W_{\\mathrm{summed}}$. This is a symmetry of the completed formal expression. It is not automatically a symmetry of the accumulation process.'),
+      p('An element of $G_{\\text{f}}$ acts by applying an output relabeling on $V_{\\mathrm{free}}$ and an independent dummy renaming on $W_{\\mathrm{summed}}$. This is a symmetry of the completed formal expression. It is not automatically a symmetry of the accumulation process.'),
     ],
     takeaway: [
-      p('$G_{\\mathrm{f}}$ explains label-renaming symmetry after summation. It should not be substituted for $G_{\\mathrm{pt}}$ in the accumulation cost.'),
+      p('$G_{\\text{f}}$ explains label-renaming symmetry after summation. It should not be substituted for $G_{\\text{pt}}$ in the accumulation cost.'),
     ],
     constructionTitle: [
       p('Formal-group construction'),

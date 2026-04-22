@@ -203,6 +203,14 @@ const APPENDIX_PI_SIGMA_LATEX = `${notationLatex('pi_relabeling')}_{${notationLa
 const APPENDIX_PI_RESTRICT_V_LATEX = () => `${notationLatex('pi_relabeling')}|_{${APPENDIX_SHORT_V_LATEX()}}`;
 const APPENDIX_G_OUT_DEFINITION_LATEX = () =>
   `${notationLatex('g_output')} := \\{ ${APPENDIX_PI_RESTRICT_V_LATEX()} : ${notationLatex('pi_relabeling')} \\in ${notationLatex('g_pointwise')} \\text{ and } ${notationLatex('pi_relabeling')}(${APPENDIX_SHORT_V_LATEX()}) = ${APPENDIX_SHORT_V_LATEX()} \\}.`;
+const APPENDIX_REQUIRED_SLOT_ERRORS = {};
+
+function invariantAppendixSlot(blocks, slotKey) {
+  if (!Array.isArray(blocks) || blocks.length === 0) {
+    throw new Error(APPENDIX_REQUIRED_SLOT_ERRORS[slotKey] ?? `Missing appendix slot: ${slotKey}`);
+  }
+  return blocks;
+}
 
 function normalizeAppendixDisplayText(text = '') {
   return String(text ?? '')
@@ -218,8 +226,9 @@ function replaceAppendixDisplayText(text = '', replacements = []) {
   );
 }
 
-function renderAppendixSlot(blocks = [], { replacements = [], renderCallout } = {}) {
-  const normalizedBlocks = (blocks ?? []).map((block) => ({
+function renderAppendixSlot(blocks = [], { replacements = [], renderCallout, slotKey = 'appendix-slot' } = {}) {
+  const requiredBlocks = invariantAppendixSlot(blocks, slotKey);
+  const normalizedBlocks = requiredBlocks.map((block) => ({
     ...block,
     text: replaceAppendixDisplayText(
       normalizeAppendixDisplayText(block.text),
@@ -230,8 +239,12 @@ function renderAppendixSlot(blocks = [], { replacements = [], renderCallout } = 
 }
 
 function renderAppendixSingleBlock(blocks = [], index = 0, options = {}) {
-  const block = blocks?.[index];
-  if (!block) return null;
+  const slotKey = options.slotKey ?? 'appendix-slot';
+  const requiredBlocks = invariantAppendixSlot(blocks, slotKey);
+  const block = requiredBlocks[index];
+  if (!block) {
+    throw new Error(`Missing appendix slot block: ${slotKey}[${index}]`);
+  }
   return renderAppendixSlot([block], options)[0] ?? null;
 }
 
