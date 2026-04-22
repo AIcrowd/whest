@@ -103,7 +103,9 @@ def test_invalid_weight_values_warn_and_fall_back_to_packaged_default(tmp_path):
 def test_load_weights_use_packaged_default_explicitly():
     load_weights(use_packaged_default=True)
     assert get_weight("exp") == _packaged_weight("exp")
-    assert we.flops.pointwise_cost("exp", shape=(2, 2)) == int(4 * _packaged_weight("exp"))
+    assert we.flops.pointwise_cost("exp", shape=(2, 2)) == int(
+        4 * _packaged_weight("exp")
+    )
 
 
 def test_disable_weights_env_takes_precedence(monkeypatch):

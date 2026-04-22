@@ -64,7 +64,9 @@ def test_load_weights_missing_file_warns_and_falls_back_to_packaged_default_when
     assert get_weight("exp") == _packaged_weight("exp")
 
 
-def test_load_weights_invalid_json_warns_and_falls_back_to_packaged_default_when_enabled(tmp_path):
+def test_load_weights_invalid_json_warns_and_falls_back_to_packaged_default_when_enabled(
+    tmp_path,
+):
     path = tmp_path / "invalid.json"
     path.write_text("not valid json", encoding="utf-8")
     with pytest.warns(RuntimeWarning, match="could not load custom weights"):

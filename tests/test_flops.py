@@ -117,7 +117,10 @@ def test_analytical_pointwise_cost_no_symmetry_unchanged():
 
 def test_analytical_reduction_cost_symmetric():
     info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(5, 5))
-    assert analytical_reduction_cost(input_shape=(5, 5), axis=None, symmetry_info=info) == 15
+    assert (
+        analytical_reduction_cost(input_shape=(5, 5), axis=None, symmetry_info=info)
+        == 15
+    )
 
 
 def test_analytical_reduction_cost_no_symmetry_unchanged():

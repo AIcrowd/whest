@@ -68,7 +68,9 @@ def test_deduct_uses_packaged_default_when_explicitly_loaded():
         assert budget.flops_used == int(10 * _packaged_weight("exp"))
 
 
-def test_public_helpers_match_runtime_deduction_under_default_import_config(monkeypatch):
+def test_public_helpers_match_runtime_deduction_under_default_import_config(
+    monkeypatch,
+):
     monkeypatch.delenv("WHEST_WEIGHTS_FILE", raising=False)
     monkeypatch.delenv("WHEST_DISABLE_WEIGHTS", raising=False)
     importlib.reload(weights_module)
