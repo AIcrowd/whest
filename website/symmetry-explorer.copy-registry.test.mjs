@@ -42,28 +42,28 @@ test('renderProseBlocks is a thin math adapter without layout shells', () => {
 
 test('content barrel wires the registry and leaf modules stay layout-free', () => {
   const index = read('index.ts');
-  const expectedExports = [
-    'mainPreamble',
-    'mainSection1',
-    'mainSection2',
-    'mainSection3',
-    'mainSection4',
-    'mainSection5',
-    'appendixSection1',
-    'appendixSection2',
-    'appendixSection3',
-    'appendixSection4',
-    'appendixSection5',
-    'appendixSection6',
+  const expectedMappings = [
+    ['main', 'preamble', 'mainPreamble'],
+    ['main', 'section1', 'mainSection1'],
+    ['main', 'section2', 'mainSection2'],
+    ['main', 'section3', 'mainSection3'],
+    ['main', 'section4', 'mainSection4'],
+    ['main', 'section5', 'mainSection5'],
+    ['appendix', 'section1', 'appendixSection1'],
+    ['appendix', 'section2', 'appendixSection2'],
+    ['appendix', 'section3', 'appendixSection3'],
+    ['appendix', 'section4', 'appendixSection4'],
+    ['appendix', 'section5', 'appendixSection5'],
+    ['appendix', 'section6', 'appendixSection6'],
   ];
 
-  assert.match(index, /export\s+\{\s*default\s+as\s+mainPreamble\s+\}\s+from\s+'\.\/main\/preamble'/);
   assert.match(index, /export\s+const\s+contentRegistry\s*=\s*\{/);
-  for (const exportName of expectedExports) {
-    assert.match(index, new RegExp(`export\\s+\\{\\s*default\\s+as\\s+${exportName}\\s+\\}`));
-  }
-  for (const sectionName of ['preamble', 'section1', 'section2', 'section3', 'section4', 'section5', 'section6']) {
-    assert.match(index, new RegExp(`\\b${sectionName}:\\s*`));
+  for (const [group, section, binding] of expectedMappings) {
+    assert.match(
+      index,
+      new RegExp(`${group}:\\s*\\{[\\s\\S]*?\\b${section}:\\s*${binding}\\b`),
+      `${group}.${section} should point at ${binding}`,
+    );
   }
 
   const modules = [
