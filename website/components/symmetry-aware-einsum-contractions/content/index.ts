@@ -1,30 +1,30 @@
-import mainPreamble from './main/preamble.ts';
-import mainSection1 from './main/section1.ts';
-import mainSection2 from './main/section2.ts';
-import mainSection3 from './main/section3.ts';
-import mainSection4 from './main/section4.ts';
-import mainSection5 from './main/section5.ts';
-import appendixSection1 from './appendix/section1.ts';
-import appendixSection2 from './appendix/section2.ts';
-import appendixSection3 from './appendix/section3.ts';
-import appendixSection4 from './appendix/section4.ts';
-import appendixSection5 from './appendix/section5.ts';
-import appendixSection6 from './appendix/section6.ts';
+import mainPreamble from './main/preamble';
+import mainSection1 from './main/section1';
+import mainSection2 from './main/section2';
+import mainSection3 from './main/section3';
+import mainSection4 from './main/section4';
+import mainSection5 from './main/section5';
+import appendixSection1 from './appendix/section1';
+import appendixSection2 from './appendix/section2';
+import appendixSection3 from './appendix/section3';
+import appendixSection4 from './appendix/section4';
+import appendixSection5 from './appendix/section5';
+import appendixSection6 from './appendix/section6';
 
-export * from './schema.ts';
+export * from './schema';
 export { default as renderProseBlocks } from './renderProseBlocks.jsx';
-export { default as mainPreamble } from './main/preamble.ts';
-export { default as mainSection1 } from './main/section1.ts';
-export { default as mainSection2 } from './main/section2.ts';
-export { default as mainSection3 } from './main/section3.ts';
-export { default as mainSection4 } from './main/section4.ts';
-export { default as mainSection5 } from './main/section5.ts';
-export { default as appendixSection1 } from './appendix/section1.ts';
-export { default as appendixSection2 } from './appendix/section2.ts';
-export { default as appendixSection3 } from './appendix/section3.ts';
-export { default as appendixSection4 } from './appendix/section4.ts';
-export { default as appendixSection5 } from './appendix/section5.ts';
-export { default as appendixSection6 } from './appendix/section6.ts';
+export { default as mainPreamble } from './main/preamble';
+export { default as mainSection1 } from './main/section1';
+export { default as mainSection2 } from './main/section2';
+export { default as mainSection3 } from './main/section3';
+export { default as mainSection4 } from './main/section4';
+export { default as mainSection5 } from './main/section5';
+export { default as appendixSection1 } from './appendix/section1';
+export { default as appendixSection2 } from './appendix/section2';
+export { default as appendixSection3 } from './appendix/section3';
+export { default as appendixSection4 } from './appendix/section4';
+export { default as appendixSection5 } from './appendix/section5';
+export { default as appendixSection6 } from './appendix/section6';
 
 export const contentRegistry = {
   main: {
