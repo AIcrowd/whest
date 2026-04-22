@@ -140,14 +140,15 @@ def _counted_binary(np_func, op_name: str):
                 _warn_symmetry_loss(
                     lost, f"{op_name} — groups not shared by both operands"
                 )
-        elif isinstance(result, SymmetricTensor):
-            result = _np.asarray(result)
+        else:
+            if isinstance(result, SymmetricTensor):
+                result = _np.asarray(result)
             # Warn about total loss.
             input_groups_list = []
-            if x_sym:
-                input_groups_list.extend(x_sym.symmetric_axes)
-            if y_sym:
-                input_groups_list.extend(y_sym.symmetric_axes)
+            if x_sym is not None and x_sym.axes is not None:
+                input_groups_list.append(x_sym.axes)
+            if y_sym is not None and y_sym.axes is not None:
+                input_groups_list.append(y_sym.axes)
             if input_groups_list:
                 _warn_symmetry_loss(
                     input_groups_list,
