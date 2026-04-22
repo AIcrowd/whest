@@ -258,6 +258,27 @@ class TestSymmetricTensor:
         data[1, 0] -= 1e-8
         as_symmetric(data, symmetry=(0, 1))
 
+    def test_symmetric_plus_dense_same_shape_drops_symmetry(self):
+        st = as_symmetric(_make_symmetric_matrix(4), symmetry=(0, 1))
+        dense = np.arange(16.0).reshape(4, 4)
+
+        with BudgetContext(flop_budget=10**6):
+            result = st + dense
+
+        assert isinstance(result, WhestArray)
+        assert not isinstance(result, SymmetricTensor)
+        assert np.allclose(result, np.asarray(st) + dense)
+
+    def test_symmetric_plus_scalar_preserves_shared_symmetry(self):
+        st = as_symmetric(_make_symmetric_matrix(4), symmetry=(0, 1))
+
+        with BudgetContext(flop_budget=10**6):
+            result = st + 2.0
+
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == PermutationGroup.symmetric(axes=(0, 1))
+        assert np.allclose(result, np.asarray(st) + 2.0)
+
     def test_exceeds_tolerance_fails(self):
         data = _make_symmetric_matrix()
         data[0, 1] += 1e-3
