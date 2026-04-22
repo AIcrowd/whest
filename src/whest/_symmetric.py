@@ -598,20 +598,9 @@ class SymmetricTensor(WhestArray):
     def __new__(
         cls,
         input_array: np.ndarray,
-        symmetric_axes: list[tuple[int, ...]] | None = None,
         *,
-        perm_groups: list | None = None,
-        symmetry: PermutationGroup | None = None,
+        symmetry: PermutationGroup,
     ) -> SymmetricTensor:
-        if symmetry is None and perm_groups is not None:
-            symmetry = _merge_symmetry_groups(perm_groups)
-        if symmetry is None and symmetric_axes is not None:
-            symmetry = normalize_symmetry_input(
-                symmetric_axes,
-                ndim=np.asarray(input_array).ndim,
-            )
-        if symmetry is None:
-            raise ValueError("SymmetricTensor requires a symmetry group")
         obj = np.asarray(input_array).view(cls)
         obj._symmetry = symmetry
         return obj
