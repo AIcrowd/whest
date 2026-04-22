@@ -63,6 +63,8 @@ export function LabelInteractionGraph({
   const explorerThemeId = getActiveExplorerThemeId();
   const COLOR_V = explorerThemeColor(explorerThemeId, 'hero');
   const COLOR_W = explorerThemeColor(explorerThemeId, 'summedSide');
+  const FREE_HULL_COLOR = explorerThemeColor(explorerThemeId, 'heroMuted');
+  const SUMMED_HULL_COLOR = explorerThemeColor(explorerThemeId, 'summedSide');
   const EDGE_COLOR = explorerThemeColor(explorerThemeId, 'muted');
   const NODE_BORDER_COLOR = explorerThemeColor(explorerThemeId, 'surface');
   const n = allLabels.length;
@@ -82,23 +84,24 @@ export function LabelInteractionGraph({
   const hullData = useMemo(
     () =>
       (richComponents ?? graphComponents).map((entry, compIdx) => {
+        const indices = Array.isArray(entry) ? entry : entry?.indices ?? [];
+        const hasFreeLabel = indices.some((idx) => vSet.has(allLabels[idx]));
         if (Array.isArray(entry)) {
           return {
-            indices: entry,
-            color: COMP_COLORS[compIdx % COMP_COLORS.length],
+            indices,
+            color: hasFreeLabel ? FREE_HULL_COLOR : SUMMED_HULL_COLOR,
             comp: null,
           };
         }
-        const indices = entry?.indices ?? [];
         const leafId = compLeafId(entry);
         const presentation = leafId ? getRegimePresentation(leafId) : null;
         return {
           indices,
-          color: presentation?.color ?? COMP_COLORS[compIdx % COMP_COLORS.length],
+          color: hasFreeLabel ? FREE_HULL_COLOR : (presentation?.color ?? SUMMED_HULL_COLOR),
           comp: entry,
         };
       }),
-    [richComponents, graphComponents],
+    [richComponents, graphComponents, vSet, allLabels, FREE_HULL_COLOR, SUMMED_HULL_COLOR],
   );
 
   // Label index -> rich component (used inside node tooltips).

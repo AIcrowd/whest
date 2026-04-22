@@ -46,6 +46,7 @@ export default function NarrativeCallout({ label, title = null, tone = 'muted', 
   }
 
   if (tone === 'preamble') {
+    const hasHeader = Boolean(label || title);
     return (
       <div className="rounded-2xl border border-primary/20 bg-accent/40 px-5 py-5">
         {label ? (
@@ -58,7 +59,7 @@ export default function NarrativeCallout({ label, title = null, tone = 'muted', 
             {title}
           </h4>
         ) : null}
-        <div className="mt-2 space-y-3">
+        <div className={hasHeader ? 'mt-2 space-y-3' : 'space-y-3'}>
           {children}
         </div>
       </div>

@@ -29,20 +29,17 @@ import { buildSection1ExampleView } from '../lib/section1ExampleView.js';
 // uniform axis size n. Shown symbolically to motivate why symmetry matters.
 const DENSE_SCALING = String.raw`\mathcal{O}(n^{5})`;
 
-function ColorLegend() {
-  const explorerThemeId = getActiveExplorerThemeId();
-  const landingFreeLabelColor = explorerThemeColor(explorerThemeId, 'hero');
-  const landingSummedLabelColor = explorerThemeColor(explorerThemeId, 'summedSide');
+function ColorLegend({ freeLabelColor, summedLabelColor }) {
   return (
     <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-stone-700">
       <span className="inline-flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: landingSummedLabelColor }} />
+        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: summedLabelColor }} />
         <span>
           <strong className="font-semibold text-stone-900">summed</strong> label (collapses)
         </span>
       </span>
       <span className="inline-flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: landingFreeLabelColor }} />
+        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: freeLabelColor }} />
         <span>
           <strong className="font-semibold text-stone-900">free</strong> labels (stay on output)
         </span>
@@ -54,11 +51,16 @@ function ColorLegend() {
 const JUSTIFIED_PROSE_STYLE = { textAlign: 'justify' };
 
 function EinsumIntroColumn({ example }) {
-  const view = buildSection1ExampleView(example);
-  if (!view) return null;
   const explorerThemeId = getActiveExplorerThemeId();
-  const coloredVFreeNotation = String.raw`\textcolor{${explorerThemeColor(explorerThemeId, 'hero')}}{${notationLatex('v_free')}}`;
-  const coloredWSummedNotation = String.raw`\textcolor{${explorerThemeColor(explorerThemeId, 'summedSide')}}{${notationLatex('w_summed')}}`;
+  const freeLabelColor = explorerThemeColor(explorerThemeId, 'hero');
+  const summedLabelColor = explorerThemeColor(explorerThemeId, 'summedSide');
+  const view = buildSection1ExampleView(example, {
+    freeLabelColor: freeLabelColor,
+    summedLabelColor: summedLabelColor,
+  });
+  if (!view) return null;
+  const coloredVFreeNotation = String.raw`\textcolor{${freeLabelColor}}{${notationLatex('v_free')}}`;
+  const coloredWSummedNotation = String.raw`\textcolor{${summedLabelColor}}{${notationLatex('w_summed')}}`;
 
   return (
     <div id="einsum-contraction" className="flex h-full flex-col scroll-mt-24">
@@ -81,7 +83,7 @@ function EinsumIntroColumn({ example }) {
         the full input grid — so even modestly sized examples explode quickly.
       </p>
 
-      <div className="mt-6 overflow-x-auto rounded-2xl border border-stone-200 bg-white px-5 py-6">
+      <div className="mt-6 overflow-x-auto px-5 py-6">
         <div className="flex justify-center">
           <code className="rounded-md px-2 py-1 font-mono text-[16px] font-semibold tracking-[0.01em] text-stone-800">
             {view.exactEinsumText}
@@ -101,9 +103,8 @@ function EinsumIntroColumn({ example }) {
             {`The summed labels $${coloredWSummedNotation} = \\{${view.wSummedSummary}\\}$ collapse under $\\sum$; the free labels $${coloredVFreeNotation} = \\{${view.vFreeSummary}\\}$ survive as the axes of $R$. Declared symmetries: ${view.declaredSymmetrySummary}. Dense cost scales as $${DENSE_SCALING}$ for uniform axis size n.`}
           </InlineMathText>
         </p>
+        <ColorLegend freeLabelColor={freeLabelColor} summedLabelColor={summedLabelColor} />
       </div>
-
-      <ColorLegend />
 
       {/* Spacer: anchors the callout to the bottom when the right column is taller
           (so both columns end at the same y), with a mt-6 minimum gap when not. */}

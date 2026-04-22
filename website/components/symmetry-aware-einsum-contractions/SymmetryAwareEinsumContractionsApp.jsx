@@ -415,7 +415,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      <NarrativeCallout label="Candidate, not proof" tone="preamble">
+                      <NarrativeCallout tone="preamble">
                         <p className="text-[14px] leading-7 text-foreground" style={{ textAlign: 'justify' }}>
                           <InlineMathText>
                             {`The graph and incidence matrix describe which relabelings are structurally plausible. A relabeling becomes a detected symmetry only in the next section, after it is lifted through operand identity and declared slot symmetries and accepted by the $${notationLatex('sigma_row_move')}$-loop used by this model.`}
@@ -478,7 +478,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      <NarrativeCallout label="What the model accepts" tone="preamble">
+                      <NarrativeCallout tone="preamble">
                         <p className="text-[14px] leading-7 text-foreground" style={{ textAlign: 'justify' }}>
                           <InlineMathText>
                             {`The accepted objects are lifted pairs: a row move $${notationLatex('sigma_row_move')}$ together with a label relabeling $${notationLatex('pi_relabeling')}$. The generated group is built from those accepted relabelings. The expression-level formal group discussed in the appendix is deliberately kept separate from this pointwise group and is not used for multiplication compression.`}

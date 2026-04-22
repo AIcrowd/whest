@@ -233,13 +233,13 @@ function SourceNode({ data }) {
 }
 
 function LeafNode({ data }) {
-  const bg = data.active ? mixWithWhite(data.color, 0.72) : mixWithWhite(data.color, 0.88);
+  const bg = mixWithWhite(data.color, 0.88);
   const SPOTLIGHT_RING = notationColor('v_free');
-  const shadow = data.spotlight
-    ? `0 0 0 10px ${SPOTLIGHT_RING}33, 0 0 0 6px ${mixWithWhite(data.color, 0.6)}`
-    : data.active
-      ? `0 0 0 6px ${mixWithWhite(data.color, 0.65)}`
-      : undefined;
+  const ACTIVE_RING = mixWithWhite(data.color, 0.4);
+  const shadow = [
+    data.spotlight ? `0 0 0 7px ${SPOTLIGHT_RING}26` : null,
+    data.active ? `inset 0 0 0 2px ${ACTIVE_RING}` : null,
+  ].filter(Boolean).join(', ') || undefined;
   const borderColor = data.spotlight ? SPOTLIGHT_RING : data.color;
   // Allow 2-line wrap for longer leaf labels (e.g. the Young regime's
   // "Young subgroup (full Sym, cross V/W)"). Shorter labels render on one
@@ -250,7 +250,7 @@ function LeafNode({ data }) {
       style={{
         backgroundColor: bg,
         borderColor,
-        borderWidth: data.spotlight ? 3 : data.active ? 3 : 2,
+        borderWidth: data.spotlight ? 3 : 2,
         borderStyle: 'solid',
         color: '#0F172A',
         boxShadow: shadow,

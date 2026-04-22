@@ -43,6 +43,9 @@ test('Preamble lays Einsum notation and the code side-by-side on wide viewports'
 test('Einsum column uses a parametric exact-einsum lead-in followed by a color-coded expanded form', () => {
   const src = readComponent('AlgorithmAtAGlance.jsx');
   assert.match(src, /buildSection1ExampleView/);
+  assert.match(src, /const freeLabelColor = explorerThemeColor\(explorerThemeId, 'hero'\)/);
+  assert.match(src, /const summedLabelColor = explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
+  assert.match(src, /buildSection1ExampleView\(example,\s*\{\s*freeLabelColor: freeLabelColor,\s*summedLabelColor: summedLabelColor,\s*\}\)/s);
   assert.match(src, /view\.exactEinsumText/);
   assert.match(src, /Latex display math=\{view\.expandedEquationLatex\}/);
   assert.match(src, /mt-2\.5 flex justify-center text-\[19px\]/);
@@ -59,6 +62,7 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
   assert.doesNotMatch(src, /CHAIN_FORMULA/);
   assert.doesNotMatch(src, /Exact einsum/);
   assert.doesNotMatch(src, /Example — the selected contraction/);
+  assert.doesNotMatch(src, /rounded-2xl border border-stone-200 bg-white px-5 py-6/);
   assert.doesNotMatch(src, /A\[/);
   assert.doesNotMatch(src, /B\[/);
   assert.doesNotMatch(src, /C\[/);
@@ -66,6 +70,10 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
   assert.ok(
     src.indexOf('view.expandedEquationLatex') < src.indexOf('The summed labels'),
     'expanded contraction should render before the prose explanation',
+  );
+  assert.ok(
+    src.indexOf('The summed labels') < src.indexOf('<ColorLegend freeLabelColor={freeLabelColor} summedLabelColor={summedLabelColor} />'),
+    'legend should stay inside the same einsum surface after the explanatory prose',
   );
   assert.match(src, /textAlign: 'justify'/);
 });

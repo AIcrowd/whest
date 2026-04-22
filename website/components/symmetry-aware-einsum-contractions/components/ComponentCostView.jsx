@@ -23,6 +23,7 @@ import {
   getActiveExplorerThemeId,
   notationColor,
   notationColoredLatex,
+  notationLatex,
 } from '../lib/notationSystem.js';
 
 function isTrivial(comp) {
@@ -352,15 +353,19 @@ function InteractionGraphMetricStrip({ labelCount, edgeCount, componentCount }) 
 // must match LabelInteractionGraph's COLOR_V / COLOR_W so the legend stays
 // truthful.
 function InteractionGraphLegend() {
+  const explorerThemeId = getActiveExplorerThemeId();
+  const freeLabelColor = explorerThemeColor(explorerThemeId, 'hero');
+  const summedLabelColor = explorerThemeColor(explorerThemeId, 'summedSide');
+  const hullColor = explorerThemeColor(explorerThemeId, 'heroMuted');
   return (
     <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px] text-muted-foreground">
       <span className="inline-flex items-center gap-1.5">
-        <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: notationColor('v_free') }} />
-        free label (<Latex math={notationColoredLatex('v_free')} />)
+        <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: freeLabelColor }} />
+        free label <span style={{ color: freeLabelColor, textTransform: 'none' }}>(<Latex math={notationLatex('v_free')} inheritColor />)</span>
       </span>
       <span className="inline-flex items-center gap-1.5">
-        <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: notationColor('w_summed') }} />
-        summed label (<Latex math={notationColoredLatex('w_summed')} />)
+        <span className="inline-block size-2.5 rounded-full" style={{ backgroundColor: summedLabelColor }} />
+        summed label <span style={{ color: summedLabelColor, textTransform: 'none' }}>(<Latex math={notationLatex('w_summed')} inheritColor />)</span>
       </span>
       <span className="inline-flex items-center gap-1.5">
         <span className="inline-block h-px w-5" style={{ backgroundColor: '#6B7280' }} />
@@ -369,7 +374,7 @@ function InteractionGraphLegend() {
       <span className="inline-flex items-center gap-1.5">
         <span
           className="inline-block size-2.5 rounded-sm border"
-          style={{ borderStyle: 'dashed', borderColor: notationColor('w_summed') }}
+          style={{ borderStyle: 'dashed', borderColor: hullColor }}
         />
         hull: one independent component
       </span>

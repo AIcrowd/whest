@@ -38,3 +38,18 @@ test('buildSection1ExampleView follows custom edited subscripts and output', () 
   assert.match(view.declaredSymmetrySummary, /T: S3/);
   assert.match(view.expandedEquationLatex, /\\sum_/);
 });
+
+test('buildSection1ExampleView accepts local free/summed chrome colors for the expanded equation', () => {
+  const view = buildSection1ExampleView(
+    EXAMPLES.find((example) => example.id === 'triple-outer'),
+    {
+      freeLabelColor: '#F0524D',
+      summedLabelColor: '#64748B',
+    },
+  );
+
+  assert.match(view.expandedEquationLatex, /\\textcolor\{#F0524D\}\{a\}/);
+  assert.match(view.expandedEquationLatex, /\\textcolor\{#F0524D\}\{b\}/);
+  assert.match(view.expandedEquationLatex, /\\textcolor\{#F0524D\}\{c\}/);
+  assert.match(view.expandedEquationLatex, /\\textcolor\{#64748B\}\{i\}/);
+});

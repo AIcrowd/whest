@@ -60,7 +60,10 @@ test('WreathStructureView caps the initial table at 10 rows, opens a modal for t
   assert.doesNotMatch(WIDGET_SRC, /bg-rose-50/);
   assert.match(WIDGET_SRC, /✓ kept in G/);
   assert.match(WIDGET_SRC, /✗ no matching relabeling/);
-  assert.match(WIDGET_SRC, /style=\{\{ color: explorerThemeColor\(explorerThemeId, 'heroMuted'\) \}\}/);
+  assert.doesNotMatch(
+    WIDGET_SRC,
+    /<span style=\{\{ color: explorerThemeColor\(explorerThemeId, 'heroMuted'\) \}\}>\s*<Latex math=\{matrixEffect\} \/>/s,
+  );
   assert.match(WIDGET_SRC, /pillText: explorerThemeColor\(explorerThemeId, 'hero'\)/);
   assert.match(WIDGET_SRC, /pillText: explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
   assert.match(WIDGET_SRC, /pillText: explorerThemeColor\(explorerThemeId, 'editorialAccent'\)/);

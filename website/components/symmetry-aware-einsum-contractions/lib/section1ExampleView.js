@@ -46,28 +46,30 @@ function uniqueChars(text) {
   return [...new Set((text || '').split('').filter(Boolean))];
 }
 
-function roleColor(label, freeSet) {
-  return freeSet.has(label) ? notationColor('v_free') : notationColor('w_summed');
+function roleColor(label, freeSet, palette = {}) {
+  return freeSet.has(label)
+    ? (palette.freeLabelColor ?? notationColor('v_free'))
+    : (palette.summedLabelColor ?? notationColor('w_summed'));
 }
 
-function coloredLabel(label, freeSet) {
-  return String.raw`\textcolor{${roleColor(label, freeSet)}}{${label}}`;
+function coloredLabel(label, freeSet, palette = {}) {
+  return String.raw`\textcolor{${roleColor(label, freeSet, palette)}}{${label}}`;
 }
 
-function coloredIndexList(labels, freeSet) {
-  return labels.map((label) => coloredLabel(label, freeSet)).join(',');
+function coloredIndexList(labels, freeSet, palette = {}) {
+  return labels.map((label) => coloredLabel(label, freeSet, palette)).join(',');
 }
 
-function formatOperandFactor(name, subscript, freeSet) {
+function formatOperandFactor(name, subscript, freeSet, palette = {}) {
   const base = name || 'T';
   const labels = uniqueChars(subscript);
-  return `${base}[${coloredIndexList(labels, freeSet)}]`;
+  return `${base}[${coloredIndexList(labels, freeSet, palette)}]`;
 }
 
-function formatOutputTensor(output, freeSet) {
+function formatOutputTensor(output, freeSet, palette = {}) {
   const labels = uniqueChars(output);
   if (labels.length === 0) return 'R';
-  return `R[${coloredIndexList(labels, freeSet)}]`;
+  return `R[${coloredIndexList(labels, freeSet, palette)}]`;
 }
 
 function formatDeclaredSymmetrySummary(variables) {
@@ -77,7 +79,7 @@ function formatDeclaredSymmetrySummary(variables) {
     .join(' · ');
 }
 
-export function buildSection1ExampleView(example) {
+export function buildSection1ExampleView(example, palette = {}) {
   const normalized = normalizeSection1Example(example);
   if (!normalized) return null;
 
@@ -92,12 +94,12 @@ export function buildSection1ExampleView(example) {
     : `einsum('${subscripts.join(',')}->${output}')`;
   const exactEinsumLatex = String.raw`\texttt{${escapeTexttt(exactEinsumText)}}`;
 
-  const expandedLeft = formatOutputTensor(output, freeSet);
+  const expandedLeft = formatOutputTensor(output, freeSet, palette);
   const sumPart = summedLabels.length > 0
-    ? String.raw`\sum_{${coloredIndexList(summedLabels, freeSet)}}\;`
+    ? String.raw`\sum_{${coloredIndexList(summedLabels, freeSet, palette)}}\;`
     : '';
   const product = subscripts
-    .map((subscript, idx) => formatOperandFactor(operandNames[idx], subscript, freeSet))
+    .map((subscript, idx) => formatOperandFactor(operandNames[idx], subscript, freeSet, palette))
     .join(String.raw`\,\cdot\,`);
 
   return {

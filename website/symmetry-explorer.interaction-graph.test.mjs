@@ -122,12 +122,20 @@ test('LabelInteractionGraph card surface is interactive (Stage 2)', () => {
     new URL('./components/symmetry-aware-einsum-contractions/components/ComponentView.jsx', import.meta.url),
     'utf8',
   );
+  const componentCostSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx', import.meta.url),
+    'utf8',
+  );
 
   assert.match(source, /import \{ createPortal \} from 'react-dom'/);
   assert.match(source, /import RoleBadge from '\.\/RoleBadge\.jsx'/);
   assert.match(source, /import SymmetryBadge from '\.\/SymmetryBadge\.jsx'/);
   assert.match(source, /const COLOR_V = explorerThemeColor\(explorerThemeId, 'hero'\)/);
   assert.match(source, /const COLOR_W = explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
+  assert.match(source, /const FREE_HULL_COLOR = explorerThemeColor\(explorerThemeId, 'heroMuted'\)/);
+  assert.match(source, /const SUMMED_HULL_COLOR = explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
+  assert.match(source, /const hasFreeLabel = indices\.some\(\(idx\) => vSet\.has\(allLabels\[idx\]\)\)/);
+  assert.match(source, /color: hasFreeLabel \? FREE_HULL_COLOR : SUMMED_HULL_COLOR/);
   // The graph body must render a role=tooltip via portal so it escapes
   // ancestor CSS transforms (PanZoomCanvas).
   assert.match(source, /role="tooltip"/);
@@ -156,6 +164,20 @@ test('LabelInteractionGraph card surface is interactive (Stage 2)', () => {
   assert.match(source, /presentation\?\.tooltip\?\.body/);
   assert.match(source, /<RoleBadge key=\{`tooltip-\$\{hovered\.idx\}-\$\{label\}`\} role=\{role\}>/);
   assert.match(source, /<SymmetryBadge value=\{comp\.groupName \|\| 'trivial'\} \/>/);
+
+  // The legend should use graph chrome colors, not notation-role colors, so
+  // editorial-noir can keep V_free notation restrained without losing the
+  // visual distinction in the Interaction Graph.
+  assert.match(componentCostSource, /const explorerThemeId = getActiveExplorerThemeId\(\)/);
+  assert.match(componentCostSource, /const freeLabelColor = explorerThemeColor\(explorerThemeId, 'hero'\)/);
+  assert.match(componentCostSource, /const summedLabelColor = explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
+  assert.match(componentCostSource, /const hullColor = explorerThemeColor\(explorerThemeId, 'heroMuted'\)/);
+  assert.match(componentCostSource, /backgroundColor: freeLabelColor/);
+  assert.match(componentCostSource, /backgroundColor: summedLabelColor/);
+  assert.match(componentCostSource, /borderColor: hullColor/);
+  assert.match(componentCostSource, /<Latex math=\{notationLatex\('v_free'\)\} inheritColor \/>/);
+  assert.match(componentCostSource, /<Latex math=\{notationLatex\('w_summed'\)\} inheritColor \/>/);
+  assert.doesNotMatch(componentCostSource, /backgroundColor: notationColor\('v_free'\)/);
 });
 
 test('StickyBar selected section pill keeps a visible coral inner marker and aligned geometry', () => {

@@ -61,3 +61,13 @@ test('DecisionLadder stage bands use the editorial white/coral-light surface tre
   assert.doesNotMatch(source, /linear-gradient\(180deg, rgba\(34,197,94,0\.07\)/);
   assert.doesNotMatch(source, /linear-gradient\(180deg, rgba\(139,92,246,0\.08\)/);
 });
+
+test('DecisionLadder leaf selection uses an inset ring while spotlight keeps the outer halo', () => {
+  assert.match(source, /const bg = mixWithWhite\(data\.color, 0\.88\);/);
+  assert.match(source, /const ACTIVE_RING = mixWithWhite\(data\.color, 0\.4\);/);
+  assert.match(source, /inset 0 0 0 2px/);
+  assert.match(source, /0 0 0 7px \$\{SPOTLIGHT_RING\}26/);
+  assert.match(source, /borderWidth: data\.spotlight \? 3 : 2/);
+  assert.doesNotMatch(source, /borderWidth: data\.spotlight \? 3 : data\.active \? 3 : 2/);
+  assert.doesNotMatch(source, /data\.active\s*\?\s*`0 0 0 6px/);
+});

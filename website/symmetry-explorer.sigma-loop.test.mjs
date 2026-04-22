@@ -6,6 +6,10 @@ const SIGMA_LOOP_SRC = readFileSync(
   new URL('./components/symmetry-aware-einsum-contractions/components/SigmaLoop.jsx', import.meta.url),
   'utf8',
 );
+const SIGMA_LOOP_STYLES = readFileSync(
+  new URL('./components/symmetry-aware-einsum-contractions/styles.css', import.meta.url),
+  'utf8',
+);
 const APP_SRC = readFileSync(
   new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
   'utf8',
@@ -32,4 +36,13 @@ test('sigma-loop compact chips and toggles render latex in inherited control col
   assert.match(SIGMA_LOOP_SRC, /valid-toggle/);
   assert.match(SIGMA_LOOP_SRC, /rejected-toggle/);
   assert.match(SIGMA_LOOP_SRC, /pair-chip pair-valid/);
+});
+
+test('valid sigma-pair cards and overflow toggle use the primary coral accent instead of the success lane', () => {
+  assert.match(SIGMA_LOOP_STYLES, /\.pair-chip\.pair-valid \{[^}]*var\(--coral\)/s);
+  assert.match(SIGMA_LOOP_STYLES, /\.pair-pi \{[^}]*var\(--coral\)/s);
+  assert.match(SIGMA_LOOP_STYLES, /\.valid-toggle \{[^}]*var\(--coral\)/s);
+  assert.doesNotMatch(SIGMA_LOOP_STYLES, /\.pair-chip\.pair-valid \{[^}]*var\(--success\)/s);
+  assert.doesNotMatch(SIGMA_LOOP_STYLES, /\.pair-pi \{[^}]*var\(--success\)/s);
+  assert.doesNotMatch(SIGMA_LOOP_STYLES, /\.valid-toggle \{[^}]*var\(--success\)/s);
 });

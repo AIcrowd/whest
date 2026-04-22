@@ -28,9 +28,9 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
   assert.equal(countMatches(appSource, /label="Approach"/g), 0);
   assert.equal(countMatches(appSource, /label="What this produces"/g), 4);
   assert.match(appSource, /Scope of the calculation/);
-  assert.match(appSource, /Candidate, not proof/);
-  assert.match(appSource, /What the model accepts/);
   assert.equal(countMatches(appSource, /tone="preamble"/g), 2);
+  assert.equal(countMatches(appSource, /label="Candidate, not proof"/g), 0);
+  assert.equal(countMatches(appSource, /label="What the model accepts"/g), 0);
   assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.why/);
   assert.doesNotMatch(appSource, /onOpenModalSection=\{/);
 });
@@ -46,6 +46,16 @@ test('"What this produces" callout uses shared vertical centering on desktop', (
   assert.doesNotMatch(calloutSource, /sm:items-start/);
 });
 
+test('preamble callouts collapse their top spacing when the label is omitted', () => {
+  const calloutSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/NarrativeCallout.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(calloutSource, /const hasHeader = Boolean\(label \|\| title\);/);
+  assert.match(calloutSource, /className=\{hasHeader \? 'mt-2 space-y-3' : 'space-y-3'\}/);
+});
+
 test('article route still wires the appendix modal while the main page stays appendix-free', () => {
   const appSource = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
@@ -59,4 +69,21 @@ test('article route still wires the appendix modal while the main page stays app
   assert.doesNotMatch(appSource, /REVIEW_RESPONSE\.md §5/);
   assert.doesNotMatch(appSource, /AUDIT\.md/);
   assert.doesNotMatch(appSource, /empirically verified on 22 presets \+ 543 σ-checks/);
+});
+
+test('route wrapper uses a branded centered loading shell instead of plain text', () => {
+  const routeSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/index.tsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(routeSource, /import \{ Loader2 \} from 'lucide-react';/);
+  assert.match(routeSource, /function SymmetryAwareEinsumContractionsLoading\(/);
+  assert.match(routeSource, /className="relative flex h-88 w-88 items-center justify-center"/);
+  assert.match(routeSource, /className="whest-wordmark[^"]*text-\[38px\][^"]*sm:text-\[48px\]/);
+  assert.match(routeSource, /Loader2[\s\S]*animate-spin/);
+  assert.match(routeSource, /strokeWidth=\{1\.05\}/);
+  assert.match(routeSource, /min-h-\[100svh\]/);
+  assert.doesNotMatch(routeSource, /radial-gradient/);
+  assert.doesNotMatch(routeSource, /Loading Symmetry Aware Einsum Contractions/);
 });

@@ -593,7 +593,15 @@
 }
 
 .pair-chip:hover { border-color: var(--gray-400); }
-.pair-chip.pair-valid { border-left: 3px solid var(--success); }
+.pair-chip.pair-valid {
+  background: color-mix(in oklab, var(--coral) 4%, var(--white));
+  border-color: color-mix(in oklab, var(--coral) 22%, var(--gray-200));
+  border-left: 3px solid var(--coral);
+}
+.pair-chip.pair-valid:hover {
+  background: color-mix(in oklab, var(--coral) 7%, var(--white));
+  border-color: color-mix(in oklab, var(--coral) 38%, var(--gray-300));
+}
 .pair-chip.pair-invalid { border-left: 3px solid var(--coral); opacity: 0.6; }
 
 .pair-sigma {
@@ -601,7 +609,7 @@
   font-family: var(--font-mono);
   word-break: break-word;
 }
-.pair-pi { color: var(--success); font-size: 10px; font-family: var(--font-mono); }
+.pair-pi { color: var(--coral); font-size: 10px; font-family: var(--font-mono); }
 .pair-rejected { color: var(--coral); font-weight: 500; font-size: 10px; }
 
 /* ─── Rejected toggle & modal ───────── */
@@ -618,14 +626,14 @@
 .rejected-toggle:hover { background: var(--coral); color: var(--white); }
 
 .valid-toggle {
-  background: color-mix(in oklab, var(--success) 10%, transparent); border: 1px solid var(--success);
+  background: color-mix(in oklab, var(--coral) 5%, var(--white)); border: 1px solid color-mix(in oklab, var(--coral) 55%, var(--gray-200));
   border-radius: 20px;
   padding: 6px 16px; font-size: 12px; font-weight: 600;
-  color: var(--success); cursor: pointer;
+  color: var(--coral); cursor: pointer;
   font-family: inherit; transition: all 0.2s;
 }
 
-.valid-toggle:hover { background: var(--success); color: var(--white); }
+.valid-toggle:hover { background: var(--coral); color: var(--white); }
 
 .rejected-chips { margin-top: 8px; }
 

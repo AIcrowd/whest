@@ -234,9 +234,7 @@ function WreathElementRow({ element, index }) {
       </td>
       <td className="px-3 py-2 font-mono text-[11px]">{factorStr}</td>
       <td className="px-3 py-2 font-mono text-[11px]">
-        <span style={{ color: explorerThemeColor(explorerThemeId, 'heroMuted') }}>
-          <Latex math={matrixEffect} />
-        </span>
+        <Latex math={matrixEffect} />
       </td>
       <td className="px-3 py-2 font-mono text-[11px]">{piStr}</td>
       <td className="px-3 py-2 font-medium" style={{ color: rowTone.outcome }}>{classLabel}</td>

@@ -294,8 +294,9 @@ test('main page copy distinguishes candidates, accepted relabelings, and output-
 
   assert.match(appSource, /Scope of the calculation/);
   assert.match(appSource, /candidate relabelings, accepts the lifted relabelings used by the cost model/);
-  assert.match(appSource, /Candidate, not proof/);
-  assert.match(appSource, /What the model accepts/);
+  assert.doesNotMatch(appSource, /label="Candidate, not proof"/);
+  assert.doesNotMatch(appSource, /label="What the model accepts"/);
+  assert.match(appSource, /The graph and incidence matrix describe which relabelings are structurally plausible/);
   assert.match(appSource, /The accepted objects are lifted pairs/);
   assert.match(appSource, /After analysis, the visualizations update/);
   assert.match(appSource, /larger formal symmetry group/);
