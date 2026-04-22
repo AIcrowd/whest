@@ -84,7 +84,7 @@ This declares one full symmetric group on axes `(0, 1)` and another on
 ### Explicit full symmetric groups with `SymmetryGroup.symmetric`
 
 ```python
-s3_group = we.SymmetryGroup.symmetric(3, axes=(0, 1, 2))
+s3_group = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
 s3_tensor = we.as_symmetric(
     we.ones((4, 4, 4)),
     symmetry=s3_group,
@@ -96,7 +96,7 @@ This explicit group is useful once you want to inspect or combine symmetry direc
 ### Cyclic symmetry with `SymmetryGroup.cyclic`
 
 ```python
-c3_group = we.SymmetryGroup.cyclic(3, axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(axes=(0, 1, 2))
 c3_tensor = we.as_symmetric(
     we.ones((4, 4, 4)),
     symmetry=c3_group,
@@ -109,7 +109,7 @@ than `S_3`, so it usually gives fewer savings.
 ### Dihedral symmetry with `SymmetryGroup.dihedral`
 
 ```python
-d4_group = we.SymmetryGroup.dihedral(4, axes=(0, 1, 2, 3))
+d4_group = we.SymmetryGroup.dihedral(axes=(0, 1, 2, 3))
 d4_tensor = we.as_symmetric(
     we.ones((4, 4, 4, 4)),
     symmetry=d4_group,
@@ -137,8 +137,8 @@ Use this form when the built-in constructors do not describe your symmetry.
 ### Multiple explicit groups on one tensor
 
 ```python
-row_swap_group = we.SymmetryGroup.symmetric(2, axes=(0, 1))
-column_swap_group = we.SymmetryGroup.symmetric(2, axes=(2, 3))
+row_swap_group = we.SymmetryGroup.symmetric(axes=(0, 1))
+column_swap_group = we.SymmetryGroup.symmetric(axes=(2, 3))
 
 two_group_tensor = we.as_symmetric(
     we.ones((3, 3, 5, 5)),
@@ -179,9 +179,9 @@ This helper is ideal for docs, tests, and experiments:
 - it keeps examples consistent across symmetry classes
 
 ```python
-s3_group = we.SymmetryGroup.symmetric(3, axes=(0, 1, 2))
-c3_group = we.SymmetryGroup.cyclic(3, axes=(0, 1, 2))
-d4_group = we.SymmetryGroup.dihedral(4, axes=(0, 1, 2, 3))
+s3_group = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(axes=(0, 1, 2))
+d4_group = we.SymmetryGroup.dihedral(axes=(0, 1, 2, 3))
 
 s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
 c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
@@ -246,8 +246,8 @@ axes remain, but it does not change the propagation rule itself.
 The difference between full and non-full groups matters immediately:
 
 ```python
-s3_group = we.SymmetryGroup.symmetric(3, axes=(0, 1, 2))
-c3_group = we.SymmetryGroup.cyclic(3, axes=(0, 1, 2))
+s3_group = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(axes=(0, 1, 2))
 
 s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
 c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
@@ -267,9 +267,9 @@ reduced axes are allowed to permute among themselves, because summation treats
 all positions along the reduced set equivalently.
 
 ```python
-s3_group = we.SymmetryGroup.symmetric(3, axes=(0, 1, 2))
-c3_group = we.SymmetryGroup.cyclic(3, axes=(0, 1, 2))
-c4_group = we.SymmetryGroup.cyclic(4, axes=(0, 1, 2, 3))
+s3_group = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(axes=(0, 1, 2))
+c4_group = we.SymmetryGroup.cyclic(axes=(0, 1, 2, 3))
 
 s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
 c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
@@ -299,8 +299,8 @@ general groups, that means element-set intersection on matching output axes,
 not just matching tuples of axis numbers.
 
 ```python
-s3_group = we.SymmetryGroup.symmetric(3, axes=(0, 1, 2))
-c3_group = we.SymmetryGroup.cyclic(3, axes=(0, 1, 2))
+s3_group = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(axes=(0, 1, 2))
 
 s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
 c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
@@ -334,7 +334,7 @@ Broadcasting matters too:
 ```python
 stretched_s2_tensor = we.as_symmetric(
     we.ones((1, 1, 4)),
-    symmetry=we.SymmetryGroup.symmetric(2, axes=(0, 1)),
+    symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
 )
 
 plain_tensor = we.ones((3, 3, 4))
