@@ -291,6 +291,9 @@ test('Section 5 keeps the explorer on editorial-noir but overrides the cost-mode
 test('main page copy distinguishes candidates, accepted relabelings, and output-projection updates', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
   const narrativeSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/explorerNarrative.js', import.meta.url), 'utf8');
+  const section2Source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/content/main/section2.ts', import.meta.url), 'utf8');
+  const section3Source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/content/main/section3.ts', import.meta.url), 'utf8');
+  const section4Source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/content/main/section4.ts', import.meta.url), 'utf8');
   const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
 
   assert.match(appSource, /Scope of the calculation/);
@@ -303,10 +306,14 @@ test('main page copy distinguishes candidates, accepted relabelings, and output-
   assert.match(appSource, /expression-level formal group discussed in the appendix is deliberately kept separate from this pointwise group/);
   assert.match(appSource, /not used for multiplication compression/);
 
-  assert.match(narrativeSource, /the metadata needed for the acceptance step/);
-  assert.match(narrativeSource, /detected pointwise group/);
-  assert.match(narrativeSource, /preserve the summand itself/);
-  assert.match(narrativeSource, /lifted witness used by this model/);
+  assert.match(narrativeSource, /mainSection2/);
+  assert.match(narrativeSource, /mainSection3/);
+  assert.match(narrativeSource, /mainSection4/);
+  assert.match(section2Source, /the metadata needed for the acceptance step/);
+  assert.match(section3Source, /detected pointwise group/);
+  assert.match(section3Source, /preserve the summand itself/);
+  assert.match(section3Source, /lifted witness used by this model/);
+  assert.match(section4Source, /orbit-projection count/);
   assert.doesNotMatch(narrativeSource, /incidence matrix reveals the symmetry group/i);
 
   assert.match(totalCostSource, /not to divide the dense computation by the group order/);
