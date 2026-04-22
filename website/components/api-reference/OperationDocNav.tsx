@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {ChevronLeft, ChevronRight} from 'lucide-react';
 import type {OperationNavLink} from './op-doc-types';
+import styles from './styles.module.css';
 
 function NavCard({link, index}: {link: OperationNavLink; index: 0 | 1}) {
   const Icon = index === 0 ? ChevronLeft : ChevronRight;
@@ -9,6 +10,7 @@ function NavCard({link, index}: {link: OperationNavLink; index: 0 | 1}) {
     <Link
       href={link.href}
       className={[
+        styles.docNavCard,
         'flex flex-col gap-2 rounded-lg border p-4 text-sm transition-colors hover:bg-fd-accent/80 hover:text-fd-accent-foreground @max-lg:col-span-full',
         index === 1 ? 'text-end' : '',
       ]
@@ -47,6 +49,7 @@ export default function OperationDocNav({
   return (
     <nav
       className={[
+        styles.docNav,
         '@container grid gap-4',
         previous && next ? 'grid-cols-2' : 'grid-cols-1',
       ].join(' ')}

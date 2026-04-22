@@ -1,19 +1,6 @@
-import Latex, {stripMathDelimiters} from '../shared/Latex';
+import BilledCost from './BilledCost';
 import styles from './styles.module.css';
 import type {OperationDocRecord} from './op-doc-types';
-
-function renderFormula(value: string) {
-  const trimmed = value.trim();
-  if (!trimmed) {
-    return <span>&mdash;</span>;
-  }
-
-  if (trimmed.startsWith('$') && trimmed.endsWith('$')) {
-    return <Latex math={stripMathDelimiters(trimmed)} display />;
-  }
-
-  return <span>{trimmed}</span>;
-}
 
 // Paper-register metadata panel: no card chrome, no "Quick Info" heading.
 // Kickers + chips/values flow as part of the page directly under the
@@ -21,7 +8,6 @@ function renderFormula(value: string) {
 // data sits in the prose flow without widget framing.
 export default function OperationDocOverlay({op}: {op: OperationDocRecord}) {
   const aliases = op.aliases.length ? op.aliases.map((alias) => `we.${alias}`).join(', ') : null;
-  const formattedWeight = Number.isInteger(op.weight) ? op.weight.toString() : op.weight.toFixed(1);
 
   return (
     <section className={styles.docOverlay} aria-label="Operation summary">
@@ -37,12 +23,16 @@ export default function OperationDocOverlay({op}: {op: OperationDocRecord}) {
           </span>
         </div>
         <div className={styles.docMetaPair}>
-          <span className={styles.docMetaLabel}>Weight</span>
-          <span className={styles.docMetaValue}>{formattedWeight}&times;</span>
-        </div>
-        <div className={styles.docMetaPair}>
           <span className={styles.docMetaLabel}>NumPy Ref</span>
-          <span className={styles.docMetaValue}>{op.numpy_ref}</span>
+          <span className={styles.docMetaValue}>
+            {op.provenance_url ? (
+              <a href={op.provenance_url} target="_blank" rel="noreferrer">
+                {op.numpy_ref}
+              </a>
+            ) : (
+              op.numpy_ref
+            )}
+          </span>
         </div>
       </div>
 
@@ -54,8 +44,10 @@ export default function OperationDocOverlay({op}: {op: OperationDocRecord}) {
       ) : null}
 
       <div className={styles.docMetaRow}>
-        <span className={styles.docMetaLabel}>Cost Formula</span>
-        <div className={styles.docFormula}>{renderFormula(op.cost_formula_latex)}</div>
+        <span className={styles.docMetaLabel}>Cost</span>
+        <div className={styles.docFormula}>
+          <BilledCost op={op} />
+        </div>
       </div>
 
       {op.notes ? (
