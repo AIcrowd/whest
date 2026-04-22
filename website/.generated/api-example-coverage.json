@@ -3609,6 +3609,16 @@
     "has_inherited_examples": true,
     "has_whest_examples": false
   },
+  "row_stack": {
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://numpy.org/doc/stable/reference/generated/numpy.row_stack.html"
+    ],
+    "has_inherited_examples": true,
+    "has_whest_examples": false
+  },
   "searchsorted": {
     "coverage_status": "derived",
     "example_count": 1,

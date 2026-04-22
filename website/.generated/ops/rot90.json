@@ -375,8 +375,8 @@
   "module": "numpy",
   "name": "rot90",
   "next": {
-    "href": "/docs/api/ops/searchsorted/",
-    "label": "we.searchsorted"
+    "href": "/docs/api/ops/row_stack/",
+    "label": "we.row_stack"
   },
   "notes": "Rotate array 90 degrees.",
   "notes_sections": [

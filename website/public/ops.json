@@ -7243,6 +7243,26 @@
     {
       "area": "core",
       "blocked": false,
+      "category": "free",
+      "cost_formula": "0",
+      "cost_formula_latex": "$0$",
+      "detail_href": "/docs/api/ops/row_stack/",
+      "detail_json_href": "/api-data/ops/row_stack.json",
+      "display_type": "free",
+      "free": true,
+      "module": "numpy",
+      "name": "row_stack",
+      "notes": "Stack arrays vertically (alias for vstack).",
+      "numpy_ref": "np.row_stack",
+      "slug": "row_stack",
+      "status": "supported",
+      "summary": "Stack arrays in sequence vertically (row wise).",
+      "weight": 0.0,
+      "whest_ref": "we.row_stack"
+    },
+    {
+      "area": "core",
+      "blocked": false,
       "category": "counted_custom",
       "cost_formula": "per-operation",
       "cost_formula_latex": "varies",
@@ -9001,5 +9021,5 @@
       "whest_ref": "we.zeros_like"
     }
   ],
-  "total": 450
+  "total": 451
 }

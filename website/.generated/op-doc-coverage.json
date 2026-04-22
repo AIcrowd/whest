@@ -3993,6 +3993,12 @@
     "unresolved_references": [],
     "unsupported_directives": []
   },
+  "row_stack": {
+    "has_issues": false,
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
   "searchsorted": {
     "has_issues": true,
     "raw_blocks": [
