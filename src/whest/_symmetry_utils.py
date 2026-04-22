@@ -262,10 +262,15 @@ def broadcast_group(
             kept_local.append(local_idx)
         if len(kept_local) >= 2:
             restricted = group if len(kept_local) == group.degree else group.restrict(tuple(kept_local))
+            restricted_axes = (
+                restricted.axes
+                if restricted.axes is not None
+                else tuple(range(restricted.degree))
+            )
             remapped = remap_group_axes(
                 restricted,
                 {
-                    new_local_idx: axes[old_local_idx] + offset
+                    restricted_axes[new_local_idx]: axes[old_local_idx] + offset
                     for new_local_idx, old_local_idx in enumerate(kept_local)
                 },
             )
@@ -316,10 +321,15 @@ def reduce_group(
     restricted = stabilized.restrict(tuple(local_kept))
     if restricted.order() <= 1:
         return None
+    restricted_axes = (
+        restricted.axes
+        if restricted.axes is not None
+        else tuple(range(restricted.degree))
+    )
     remapped = remap_group_axes(
         restricted,
         {
-            new_local_idx: old_to_new[group_axes[old_local_idx]]
+            restricted_axes[new_local_idx]: old_to_new[group_axes[old_local_idx]]
             for new_local_idx, old_local_idx in enumerate(local_kept)
         },
     )

@@ -1109,8 +1109,20 @@ def test_broadcast_group_axisless_group_remaps_after_restrict():
     assert out == we.SymmetryGroup.symmetric(axes=(1, 2))
 
 
+def test_broadcast_group_explicit_nonzero_axes_remap_after_restrict():
+    g = we.SymmetryGroup.from_generators([[0, 2, 1]], axes=(1, 2, 3))
+    out = broadcast_group(g, input_shape=(5, 1, 3, 3), output_shape=(7, 5, 9, 3, 3))
+    assert out == we.SymmetryGroup.symmetric(axes=(3, 4))
+
+
 def test_reduce_group_axisless_group_remaps_after_restrict():
     with_axes = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
     axisless = we.SymmetryGroup(*with_axes.generators)
     out = reduce_group(axisless, ndim=4, axis=0, keepdims=False)
     assert out == we.SymmetryGroup.symmetric(axes=(0, 1))
+
+
+def test_reduce_group_explicit_nonzero_axes_remap_after_restrict():
+    g = we.SymmetryGroup.from_generators([[0, 2, 1]], axes=(1, 2, 3))
+    out = reduce_group(g, ndim=5, axis=1, keepdims=False)
+    assert out == we.SymmetryGroup.symmetric(axes=(1, 2))
