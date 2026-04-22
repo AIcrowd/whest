@@ -130,7 +130,17 @@ class RequestHandler:
     def _handle_fetch_slice(self, request: dict) -> dict:
         arr = self._session.get_array(request["id"])
         slices = tuple(slice(*s) for s in request["slices"])
-        return self._pack_result(arr[slices])
+        sliced = arr[slices]
+
+        if np.ndim(sliced) == 0:
+            return {"status": "ok", "value": sliced.item()}
+
+        return {
+            "status": "ok",
+            "data": sliced.tobytes(),
+            "shape": list(sliced.shape),
+            "dtype": str(sliced.dtype),
+        }
 
     def _handle_free(self, request: dict) -> dict:
         # Support both direct "ids" field and kwargs-based "handles"
