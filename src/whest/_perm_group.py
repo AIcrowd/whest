@@ -228,24 +228,6 @@ def _normalize_generator_literal(generator: list[int] | tuple[int, ...], *, degr
     return _Permutation(arr)
 
 
-def _resolve_degree_and_axes(
-    degree: int | None,
-    axes: tuple[Any, ...] | list[Any] | None,
-) -> tuple[int, tuple[Any, ...] | None]:
-    if axes is not None:
-        norm_axes = _normalize_axes(axes)
-        if degree is not None and degree != len(norm_axes):
-            raise ValueError(
-                f"degree {degree} does not match axes length {len(norm_axes)}"
-            )
-        return len(norm_axes), norm_axes
-    if degree is None:
-        raise TypeError("Either degree or axes must be provided")
-    if degree < 1:
-        raise ValueError(f"degree must be >= 1, got {degree}")
-    return degree, None
-
-
 class SymmetryGroup:
     """A finite symmetry group defined by explicit generators."""
 
@@ -476,13 +458,9 @@ class SymmetryGroup:
         return count
 
     @classmethod
-    def symmetric(
-        cls,
-        degree: int | None = None,
-        *,
-        axes: tuple[Any, ...] | list[Any] | None = None,
-    ) -> SymmetryGroup:
-        k, norm_axes = _resolve_degree_and_axes(degree, axes)
+    def symmetric(cls, *, axes: tuple[Any, ...] | list[Any]) -> SymmetryGroup:
+        norm_axes = _normalize_axes(axes)
+        k = len(norm_axes)
         if k == 1:
             return cls(_Permutation.identity(1), axes=norm_axes)
         gens = []
@@ -493,26 +471,18 @@ class SymmetryGroup:
         return cls(*gens, axes=norm_axes)
 
     @classmethod
-    def cyclic(
-        cls,
-        degree: int | None = None,
-        *,
-        axes: tuple[Any, ...] | list[Any] | None = None,
-    ) -> SymmetryGroup:
-        k, norm_axes = _resolve_degree_and_axes(degree, axes)
+    def cyclic(cls, *, axes: tuple[Any, ...] | list[Any]) -> SymmetryGroup:
+        norm_axes = _normalize_axes(axes)
+        k = len(norm_axes)
         if k == 1:
             return cls(_Permutation.identity(1), axes=norm_axes)
         gen = _Permutation(list(range(1, k)) + [0])
         return cls(gen, axes=norm_axes)
 
     @classmethod
-    def dihedral(
-        cls,
-        degree: int | None = None,
-        *,
-        axes: tuple[Any, ...] | list[Any] | None = None,
-    ) -> SymmetryGroup:
-        k, norm_axes = _resolve_degree_and_axes(degree, axes)
+    def dihedral(cls, *, axes: tuple[Any, ...] | list[Any]) -> SymmetryGroup:
+        norm_axes = _normalize_axes(axes)
+        k = len(norm_axes)
         if k <= 2:
             return cls.symmetric(axes=norm_axes)
         rotation = _Permutation(list(range(1, k)) + [0])
@@ -581,10 +551,9 @@ class SymmetryGroup:
         literals = ", ".join(repr(g.array_form) for g in self._generators)
         return f"SymmetryGroup({literals}{axes_str})"
 
-
-Cycle = _Cycle
-Permutation = _Permutation
-PermutationGroup = SymmetryGroup
+_CycleCompat = _Cycle
+_PermutationCompat = _Permutation
+_PermutationGroupCompat = SymmetryGroup
 
 
 def _dimino(generators: tuple[_Permutation, ...]) -> list[_Permutation]:

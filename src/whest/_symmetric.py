@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 import numpy as np
 
 from whest._config import get_setting
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup as PermutationGroup
 from whest.errors import SymmetryError, SymmetryLossWarning
 
 
