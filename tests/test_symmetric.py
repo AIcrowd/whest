@@ -7,6 +7,7 @@ import numpy as np
 import pytest
 
 from whest._budget import BudgetContext
+from whest._ndarray import WhestArray
 from whest._perm_group import SymmetryGroup as PermutationGroup
 from whest._symmetric import (
     SymmetricTensor,
@@ -161,6 +162,48 @@ def test_is_symmetric_false_for_non_symmetric_data():
     g = PermutationGroup.symmetric(axes=(0, 1))
     x = np.array([[1, 2], [3, 4]])
     assert is_symmetric(x, symmetry=g) is False
+
+
+def test_offset_slice_drops_symmetry():
+    g = PermutationGroup.symmetric(axes=(0, 1))
+    t = as_symmetric(np.eye(4), symmetry=g)
+
+    out = t[1:, 1:]
+
+    assert isinstance(out, WhestArray)
+    assert not isinstance(out, SymmetricTensor)
+
+
+def test_stepped_slice_drops_symmetry():
+    g = PermutationGroup.symmetric(axes=(0, 1))
+    t = as_symmetric(np.eye(4), symmetry=g)
+
+    out = t[::-1, ::-1]
+
+    assert isinstance(out, WhestArray)
+    assert not isinstance(out, SymmetricTensor)
+
+
+def test_numpy_negative_downgrades_without_symmetry_metadata():
+    g = PermutationGroup.symmetric(axes=(0, 1))
+    t = as_symmetric(np.eye(3), symmetry=g)
+
+    out = np.negative(t)
+
+    assert isinstance(out, WhestArray)
+    assert not isinstance(out, SymmetricTensor)
+
+
+def test_squeeze_downgrades_without_symmetry_metadata():
+    g = PermutationGroup.symmetric(axes=(1, 2))
+    data = np.zeros((1, 3, 3))
+    data[0] = np.eye(3)
+    t = as_symmetric(data, symmetry=g)
+
+    out = t.squeeze()
+
+    assert isinstance(out, WhestArray)
+    assert not isinstance(out, SymmetricTensor)
 
 
 class TestSymmetricTensor:
