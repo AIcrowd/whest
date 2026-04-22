@@ -4,10 +4,9 @@ from __future__ import annotations
 
 import math
 from collections import Counter
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from whest._symmetric import SymmetryInfo
+from whest._perm_group import SymmetryGroup
+from whest._symmetry_utils import unique_elements_for_shape, validate_symmetry_group
 
 
 def parse_einsum_subscripts(subscripts: str) -> tuple[list[list[str]], list[str]]:
@@ -43,7 +42,7 @@ def parse_einsum_subscripts(subscripts: str) -> tuple[list[list[str]], list[str]
 def einsum_cost(
     subscripts: str,
     shapes: list[tuple[int, ...]],
-    operand_symmetries: list[SymmetryInfo | None] | None = None,
+    operand_symmetries: list[SymmetryGroup | None] | None = None,
 ) -> int:
     """FLOP cost of an einsum operation.
 
@@ -56,8 +55,8 @@ def einsum_cost(
         Einsum subscript string.
     shapes : list of tuple of int
         Shapes of the input operands.
-    operand_symmetries : list of SymmetryInfo or None, optional
-        Symmetry information for each input operand.
+    operand_symmetries : list of SymmetryGroup or None, optional
+        Exact symmetry group for each input operand.
 
     Returns
     -------
@@ -66,18 +65,27 @@ def einsum_cost(
     """
     from whest._opt_einsum import contract_path
 
-    # Convert SymmetryInfo -> PermutationGroup for oracle
     oracle = None
     if operand_symmetries and any(s is not None for s in operand_symmetries):
-        from whest._einsum import _symmetry_info_to_perm_groups
-
         input_parts = subscripts.replace(" ", "").split("->")[0].split(",")
         output_str = subscripts.split("->")[1] if "->" in subscripts else ""
-
-        perm_groups = [
-            _symmetry_info_to_perm_groups(sym, chars)
-            for sym, chars in zip(operand_symmetries, input_parts, strict=False)
-        ]
+        perm_groups = []
+        for symmetry, chars, shape in zip(
+            operand_symmetries, input_parts, shapes, strict=False
+        ):
+            if symmetry is None:
+                perm_groups.append(None)
+                continue
+            validate_symmetry_group(symmetry, ndim=len(shape), shape=shape)
+            axes = symmetry.axes if symmetry.axes is not None else tuple(
+                range(symmetry.degree)
+            )
+            if len(axes) < 2 or symmetry.order() <= 1:
+                perm_groups.append(None)
+                continue
+            labeled_group = SymmetryGroup(*symmetry.generators)
+            labeled_group._labels = tuple(chars[axis] for axis in axes)
+            perm_groups.append([labeled_group])
 
         from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
@@ -97,7 +105,7 @@ def einsum_cost(
 
 
 def analytical_pointwise_cost(
-    shape: tuple[int, ...], symmetry_info: SymmetryInfo | None = None
+    shape: tuple[int, ...], symmetry: SymmetryGroup | None = None
 ) -> int:
     """FLOP cost of a pointwise (element-wise) operation.
 
@@ -105,7 +113,7 @@ def analytical_pointwise_cost(
     ----------
     shape : tuple of int
         Shape of the array.
-    symmetry_info : SymmetryInfo or None, optional
+    symmetry : SymmetryGroup or None, optional
         If provided, only unique elements are counted.
 
     Returns
@@ -113,8 +121,8 @@ def analytical_pointwise_cost(
     int
         Estimated FLOP count (one per element, or one per unique element).
     """
-    if symmetry_info is not None:
-        return max(symmetry_info.unique_elements, 1)
+    if symmetry is not None:
+        return max(unique_elements_for_shape(symmetry, shape), 1)
     result = 1
     for dim in shape:
         result *= dim
@@ -124,7 +132,7 @@ def analytical_pointwise_cost(
 def analytical_reduction_cost(
     input_shape: tuple[int, ...],
     axis: int | None = None,
-    symmetry_info: SymmetryInfo | None = None,
+    symmetry: SymmetryGroup | None = None,
 ) -> int:
     """FLOP cost of a reduction operation.
 
@@ -134,7 +142,7 @@ def analytical_reduction_cost(
         Shape of the input array.
     axis : int or None, optional
         Axis along which to reduce. If None, reduce over all elements.
-    symmetry_info : SymmetryInfo or None, optional
+    symmetry : SymmetryGroup or None, optional
         If provided, only unique elements are counted.
 
     Returns
@@ -148,8 +156,8 @@ def analytical_reduction_cost(
     affect the result: a reduction always touches every element regardless
     of which axis is reduced, so the cost is always ``prod(input_shape)``.
     """
-    if symmetry_info is not None:
-        return max(symmetry_info.unique_elements, 1)
+    if symmetry is not None:
+        return max(unique_elements_for_shape(symmetry, input_shape), 1)
     result = 1
     for dim in input_shape:
         result *= dim
