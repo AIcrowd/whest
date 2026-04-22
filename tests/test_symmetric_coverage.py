@@ -11,7 +11,7 @@ import warnings
 import numpy as np
 import pytest
 
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup as PermutationGroup
 from whest._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
@@ -33,7 +33,7 @@ from whest.errors import SymmetryError, SymmetryLossWarning
 
 def _sg(*axes: int) -> PermutationGroup:
     """Shorthand: full symmetric group on the given axes."""
-    return PermutationGroup.symmetric(len(axes), axes=axes)
+    return PermutationGroup.symmetric(axes=axes)
 
 
 def _assert_groups_equal(result, expected_axes_list):
@@ -597,6 +597,25 @@ class TestPickle:
         # Groups should be auto-rebuilt
         assert len(new_obj._symmetry_groups) == 1
         assert isinstance(new_obj._symmetry_groups[0], PermutationGroup)
+
+    def test_old_format_compat_rebuilds_symmetry_groups_with_axes_only_api(self):
+        data = _sym_4d()
+        st = as_symmetric(data, [(0, 1), (2, 3)])
+        reconstruct, args, state = st.__reduce__()
+        ndarray_state = state[:-2]
+        old_state = ndarray_state + ([(0, 1), (2, 3)],)
+
+        new_obj = reconstruct(*args)
+        new_obj.__setstate__(old_state)
+
+        assert isinstance(new_obj, SymmetricTensor)
+        assert new_obj._symmetric_axes == [(0, 1), (2, 3)]
+        assert [group.axes for group in new_obj._symmetry_groups] == [
+            (0, 1),
+            (2, 3),
+        ]
+        assert all(isinstance(group, PermutationGroup) for group in new_obj._symmetry_groups)
+        assert all(group.is_symmetric() for group in new_obj._symmetry_groups)
 
     def test_new_format_empty_groups(self):
         """New format with empty groups list."""

@@ -168,7 +168,7 @@ def symmetrize(
     --------
     >>> import whest as we
     >>> data = we.random.randn(4, 4)
-    >>> S = we.symmetrize(data, we.PermutationGroup.symmetric(2, axes=(0, 1)))
+    >>> S = we.symmetrize(data, we.SymmetryGroup.symmetric(axes=(0, 1)))
     >>> S.is_symmetric((0, 1))
     True
     """
@@ -849,8 +849,8 @@ def as_symmetric(
     symmetric_axes : tuple of int or list of tuple of int, optional
         A single symmetry group ``(0, 1)`` or a list ``[(0, 1), (2, 3)]``.
         Mutually exclusive with *symmetry*.
-    symmetry : PermutationGroup or list of PermutationGroup, optional
-        One or more :class:`PermutationGroup` objects (must have axes set).
+    symmetry : SymmetryGroup or list of SymmetryGroup, optional
+        One or more :class:`SymmetryGroup` objects (must have axes set).
         Mutually exclusive with *symmetric_axes*.
 
     Returns

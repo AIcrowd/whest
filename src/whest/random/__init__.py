@@ -343,13 +343,13 @@ def symmetric(
     Examples
     --------
     >>> import whest as we
-    >>> S = we.random.symmetric((4, 4), we.PermutationGroup.symmetric(2, axes=(0, 1)))
+    >>> S = we.random.symmetric((4, 4), we.SymmetryGroup.symmetric(axes=(0, 1)))
     >>> S.is_symmetric((0, 1))
     True
 
     >>> S = we.random.symmetric(
     ...     (3, 3, 3),
-    ...     we.PermutationGroup.cyclic(3, axes=(0, 1, 2)),
+    ...     we.SymmetryGroup.cyclic(axes=(0, 1, 2)),
     ...     distribution="normal",
     ...     loc=0.0,
     ...     scale=1.0,
@@ -361,7 +361,7 @@ def symmetric(
     >>> import whest as we
     >>> def shifted_uniform(shape, **kwargs):
     ...     return np.random.uniform(*shape, **kwargs)
-    >>> S = we.random.symmetric((2, 2), we.PermutationGroup.symmetric(2, axes=(0, 1)), distribution=shifted_uniform)
+    >>> S = we.random.symmetric((2, 2), we.SymmetryGroup.symmetric(axes=(0, 1)), distribution=shifted_uniform)
     >>> S.is_symmetric((0, 1))
     True
     """
