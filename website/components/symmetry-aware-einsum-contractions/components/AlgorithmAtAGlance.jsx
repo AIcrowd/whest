@@ -25,9 +25,10 @@ import { buildSection1ExampleView } from '../lib/section1ExampleView.js';
  * discovers it by picking a preset and watching the cost counts update.
  */
 
-// Dense scaling: the brute-force cost of evaluating the chain above for
-// uniform axis size n. Shown symbolically to motivate why symmetry matters.
-const DENSE_SCALING = String.raw`\mathcal{O}(n^{5})`;
+// Dense scaling for a uniform-size contraction with |L| total labels.
+// Kept symbolic in the preamble so the same explanation still reads correctly
+// across presets even when the active example changes.
+const DENSE_SCALING = String.raw`n^{|L|}`;
 
 function ColorLegend() {
   const landingFreeLabelColor = notationColor('v_free');
@@ -133,7 +134,7 @@ function EinsumIntroColumn({ example }) {
           permutations of the labels. Those permutations form a{' '}
           <strong className="font-semibold">group G</strong>, and whole{' '}
           <em>orbits</em> of products collapse to a single distinct computation — the dense{' '}
-          <Latex math={DENSE_SCALING} /> drops to <Latex math={String.raw`n^{5}/|G|`} /> in the best
+          <Latex math={DENSE_SCALING} /> drops to <Latex math={String.raw`n^{|L|}/|G|`} /> in the best
           case (a free action), and to a Burnside count <Latex math={String.raw`(1/|G|)\sum_g |\mathrm{Fix}(g)|`} /> in general.
         </>
       </EditorialCallout>

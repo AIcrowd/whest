@@ -135,7 +135,7 @@ test('PresetSidebar matches the design-system preset-list spec (flat container, 
   assert.match(presetSelectionSource, /PRESET_GLYPHS_BY_CLASSIFICATION/);
   assert.match(presetSelectionSource, /trivial: '·'/);
   assert.match(presetSelectionSource, /allVisible: '◌'/);
-  assert.match(presetSelectionSource, /allSummed: '∑'/);
+  assert.match(presetSelectionSource, /allSummed: '●'/);
   assert.match(presetSelectionSource, /mixed: '⟡'/);
   assert.match(presetSelectionSource, /singleton: '①'/);
   assert.match(presetSelectionSource, /directProduct: '⊗'/);
@@ -147,6 +147,10 @@ test('PresetSidebar matches the design-system preset-list spec (flat container, 
 test('CaseBadge compact variant uses the shared xs scale instead of micro text sizes', () => {
   const badgeSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/CaseBadge.jsx', import.meta.url), 'utf8');
   assert.match(badgeSource, /variant === 'compact'/);
+  assert.match(badgeSource, /function colorsFor\(baseColor,\s*\{\s*outlined\s*=\s*false\s*\}\s*=\s*\{\}\)/);
+  assert.match(badgeSource, /if \(outlined\)\s*\{[\s\S]*text:\s*darkSurface\s*\?\s*mixWithWhite\(baseColor,\s*0\.08\)\s*:\s*\(lightSurface\s*\?\s*mixWithBlack\(baseColor,\s*0\.28\)\s*:\s*mixWithBlack\(baseColor,\s*0\.18\)\)/);
+  assert.match(badgeSource, /if \(outlined\)\s*\{[\s\S]*border:\s*darkSurface\s*\?\s*mixWithWhite\(baseColor,\s*0\.16\)\s*:\s*\(lightSurface\s*\?\s*mixWithBlack\(baseColor,\s*0\.12\)\s*:\s*mixWithBlack\(baseColor,\s*0\.08\)\)/);
+  assert.match(badgeSource, /const colors = colorsFor\(presentation\.color \?\? '#94A3B8',\s*\{\s*outlined:\s*outlinedPill\s*\}\);/);
   assert.match(badgeSource, /size === 'xs'[\s\S]*h-5 w-5 justify-center rounded-full px-0\.5 py-0 leading-none text-\[11px\] font-bold/);
   assert.doesNotMatch(badgeSource, /text-\[9px\]/);
 });

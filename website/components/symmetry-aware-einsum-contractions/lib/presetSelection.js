@@ -3,7 +3,7 @@ export const CUSTOM_IDX = -1;
 const PRESET_GLYPHS_BY_CLASSIFICATION = {
   trivial: '·',
   allVisible: '◌',
-  allSummed: '∑',
+  allSummed: '●',
   mixed: '⟡',
   singleton: '①',
   directProduct: '⊗',

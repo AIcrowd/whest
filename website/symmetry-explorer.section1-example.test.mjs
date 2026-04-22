@@ -71,3 +71,11 @@ test('buildSection1ExampleView uses generator notation for custom operand symmet
   assert.match(view.declaredSymmetrySummary, /T: ⟨\(0 1\), \(2 3\)⟩/);
   assert.doesNotMatch(view.declaredSymmetrySummary, /custom \([0-9]+ gens\)/);
 });
+
+test('starter presets avoid heterogeneous label-size maps', () => {
+  const tripleOuter = EXAMPLES.find((example) => example.id === 'triple-outer');
+  const outer = EXAMPLES.find((example) => example.id === 'outer');
+
+  assert.deepEqual(tripleOuter.labelSizes, { i: 6, 'a,b,c': 6 });
+  assert.deepEqual(outer.labelSizes, { 'a,c': 4, 'b,d': 4 });
+});

@@ -8,6 +8,7 @@ import GlossaryList from './GlossaryList.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
+import { explorerThemeColor, getActiveExplorerThemeId } from '../lib/explorerTheme.js';
 import { notationColor, notationTint } from '../lib/notationSystem.js';
 
 // ─── DecisionLadder (two-stage hybrid) ─────────────────────────────────
@@ -260,14 +261,15 @@ function LeafNode({ data }) {
   const bg = data.color ?? '#94A3B8';
   const darkSurface = isDarkColor(bg);
   const SPOTLIGHT_RING = notationColor('v_free');
-  const ACTIVE_RING = darkSurface ? mixWithWhite(bg, 0.34) : mixWithBlack(bg, 0.2);
+  const ACTIVE_RING = bg;
+  const baseBorderColor = darkSurface ? mixWithWhite(bg, 0.18) : mixWithBlack(bg, 0.16);
   const shadow = [
-    data.spotlight ? `0 0 0 7px ${SPOTLIGHT_RING}26` : null,
-    data.active ? `inset 0 0 0 2px ${ACTIVE_RING}` : null,
+    data.spotlight ? `0 0 0 9px ${SPOTLIGHT_RING}26` : null,
+    data.active ? `0 0 0 3px #FFFFFF, 0 0 0 5px ${ACTIVE_RING}` : null,
   ].filter(Boolean).join(', ') || undefined;
-  const borderColor = data.spotlight
-    ? SPOTLIGHT_RING
-    : (darkSurface ? mixWithWhite(bg, 0.18) : mixWithBlack(bg, 0.16));
+  const borderColor = data.active
+    ? ACTIVE_RING
+    : (data.spotlight ? SPOTLIGHT_RING : baseBorderColor);
   const textColor = darkSurface ? '#F8FAFC' : '#132228';
   // Allow 2-line wrap for longer leaf labels (e.g. the Young regime's
   // "Young subgroup (full Sym, cross V/W)"). Shorter labels render on one
@@ -301,13 +303,14 @@ function LeafNode({ data }) {
 // bottom of the band (where the "no" label crosses into the enumerate node).
 function StageBandNode({ data }) {
   const isStage1 = data.stage === 1;
-  const accent = isStage1 ? notationColor('l_labels') : notationColor('v_free');
+  const accent = explorerThemeColor(getActiveExplorerThemeId(), isStage1 ? 'caseAllVisible' : 'caseSingleton')
+    ?? (isStage1 ? notationColor('l_labels') : notationColor('g_detected'));
   return (
     <div
       className="pointer-events-none box-border h-full w-full rounded-xl"
       style={{
         background: '#FFFFFF',
-        border: `1.5px solid ${isStage1 ? '#D9DCDC' : 'rgba(240,82,77,0.22)'}`,
+        border: `1.5px solid ${explorerThemeColor(getActiveExplorerThemeId(), 'border')}`,
       }}
     >
       <div

@@ -52,24 +52,26 @@ test('DecisionLadder intuition copy uses editorial italic example names instead 
   assert.doesNotMatch(source, /\\texttt\{four-A-grid\}/);
 });
 
-test('DecisionLadder stage bands use paper-white surfaces with stage-specific borders', () => {
-  assert.match(source, /const accent = isStage1 \? notationColor\('l_labels'\) : notationColor\('v_free'\)/);
+test('DecisionLadder stage bands use a shared neutral frame and stage-family accents from the theme', () => {
+  assert.match(source, /const accent = explorerThemeColor\(getActiveExplorerThemeId\(\), isStage1 \? 'caseAllVisible' : 'caseSingleton'\)/);
   assert.match(source, /background:\s*'#FFFFFF'/);
-  assert.match(source, /border:\s*`1\.5px solid \$\{isStage1 \? '#D9DCDC' : 'rgba\(240,82,77,0\.22\)'\}`/);
+  assert.match(source, /border:\s*`1\.5px solid \$\{explorerThemeColor\(getActiveExplorerThemeId\(\), 'border'\)\}`/);
   assert.match(source, /label: 'Stage 1 · Structure'/);
   assert.match(source, /label: 'Stage 2 · Symmetry'/);
   assert.doesNotMatch(source, /linear-gradient\(180deg, rgba\(34,197,94,0\.07\)/);
   assert.doesNotMatch(source, /linear-gradient\(180deg, rgba\(139,92,246,0\.08\)/);
+  assert.doesNotMatch(source, /rgba\(240,82,77,0\.22\)/);
 });
 
-test('DecisionLadder leaf selection uses an inset ring while spotlight keeps the outer halo', () => {
+test('DecisionLadder leaf selection uses a separated same-color outer ring while spotlight keeps the stronger halo', () => {
   assert.match(source, /const bg = data\.color \?\? '#94A3B8';/);
   assert.match(source, /const darkSurface = isDarkColor\(bg\);/);
-  assert.match(source, /const ACTIVE_RING = darkSurface \? mixWithWhite\(bg, 0\.34\) : mixWithBlack\(bg, 0\.2\);/);
-  assert.match(source, /const borderColor = data\.spotlight[\s\S]*mixWithBlack\(bg, 0\.16\)/);
+  assert.match(source, /const ACTIVE_RING = bg;/);
+  assert.match(source, /const baseBorderColor = darkSurface \? mixWithWhite\(bg, 0\.18\) : mixWithBlack\(bg, 0\.16\);/);
+  assert.match(source, /const borderColor = data\.active[\s\S]*\? ACTIVE_RING[\s\S]*data\.spotlight[\s\S]*\? SPOTLIGHT_RING[\s\S]*: baseBorderColor/);
   assert.match(source, /text-\[13px\]/);
-  assert.match(source, /inset 0 0 0 2px/);
-  assert.match(source, /0 0 0 7px \$\{SPOTLIGHT_RING\}26/);
+  assert.match(source, /0 0 0 3px #FFFFFF,\s*0 0 0 5px \$\{ACTIVE_RING\}/);
+  assert.match(source, /0 0 0 9px \$\{SPOTLIGHT_RING\}26/);
   assert.match(source, /borderWidth: data\.spotlight \? 3 : 2/);
   assert.match(source, /const textColor = darkSurface \? '#F8FAFC' : '#132228';/);
   assert.match(source, /color: textColor/);
@@ -78,5 +80,5 @@ test('DecisionLadder leaf selection uses an inset ring while spotlight keeps the
   assert.match(source, /color: presentation\?\.color \?\? spec\.color/);
   assert.doesNotMatch(source, /const bg = '#334155';/);
   assert.doesNotMatch(source, /borderWidth: data\.spotlight \? 3 : data\.active \? 3 : 2/);
-  assert.doesNotMatch(source, /data\.active\s*\?\s*`0 0 0 6px/);
+  assert.doesNotMatch(source, /inset 0 0 0 2px/);
 });

@@ -586,7 +586,7 @@ export default function TotalCostView({
     {
       label: 'Dense Cost',
       value: denseTotalCost.toLocaleString(),
-      formula: String.raw`(k-1)\cdot |X| + |X|`,
+      formula: String.raw`(k-1)\cdot n^{|L|} + n^{|L|}`,
       detail: denseExpansion,
     },
     {

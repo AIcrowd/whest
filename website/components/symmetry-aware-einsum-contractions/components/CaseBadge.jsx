@@ -59,9 +59,20 @@ function isDarkColor(hex) {
   return relativeLuminance(hex) < 0.3;
 }
 
-function colorsFor(baseColor) {
+function colorsFor(baseColor, { outlined = false } = {}) {
   const darkSurface = isDarkColor(baseColor);
   const lightSurface = relativeLuminance(baseColor) > 0.58;
+  if (outlined) {
+    return {
+      bg: '#FFFFFF',
+      text: darkSurface
+        ? mixWithWhite(baseColor, 0.08)
+        : (lightSurface ? mixWithBlack(baseColor, 0.28) : mixWithBlack(baseColor, 0.18)),
+      border: darkSurface
+        ? mixWithWhite(baseColor, 0.16)
+        : (lightSurface ? mixWithBlack(baseColor, 0.12) : mixWithBlack(baseColor, 0.08)),
+    };
+  }
   return {
     bg: darkSurface
       ? mixWithWhite(baseColor, 0.7)
@@ -110,10 +121,10 @@ export default function CaseBadge({
     return () => { tooltipSubscribers.delete(notify); };
   }, []);
 
-  const presentation = getRegimePresentation(regimeId, presentationThemeOverride);
-  const colors = colorsFor(presentation.color ?? '#94A3B8');
-  const tooltip = interactive ? presentation.tooltip : null;
   const outlinedPill = variant !== 'compact';
+  const presentation = getRegimePresentation(regimeId, presentationThemeOverride);
+  const colors = colorsFor(presentation.color ?? '#94A3B8', { outlined: outlinedPill });
+  const tooltip = interactive ? presentation.tooltip : null;
 
   const handleEnter = () => {
     if (!tooltip || !ref.current) return;
@@ -200,11 +211,11 @@ export default function CaseBadge({
           className,
         )}
         style={{
-          backgroundColor: outlinedPill ? '#FFFFFF' : colors.bg,
+          backgroundColor: colors.bg,
           color: colors.text,
-          borderColor: outlinedPill ? colors.text : colors.border,
+          borderColor: colors.border,
           boxShadow: active
-            ? `0 0 0 4px #FFFFFF, 0 0 0 5px ${outlinedPill ? colors.text : colors.border}`
+            ? `0 0 0 4px #FFFFFF, 0 0 0 5px ${colors.border}`
             : undefined,
         }}
         aria-label={presentation.label}

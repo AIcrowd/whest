@@ -81,7 +81,7 @@ test('Einsum column transitions to symmetry at the bottom', () => {
   assert.match(src, /Where symmetry enters/);
   assert.match(src, /title="Not every product is distinct"/);
   assert.match(src, /<em>orbits<\/em> of products collapse/i);
-  assert.match(src, /n\^\{5\}\/\|G\|/);
+  assert.match(src, /n\^\{\|L\|\}\/\|G\|/);
   assert.match(src, /Burnside count/);
   assert.match(src, /distinct products/);
   assert.match(src, /distinct output‑bin updates/);

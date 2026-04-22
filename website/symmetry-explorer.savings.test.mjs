@@ -158,6 +158,7 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /SECTION_FIVE_TOTAL_FORMULA = String\.raw`\\mathrm\{Total\\ Cost\} = \\mu \+ \\alpha`/);
   assert.match(totalCostSource, /SECTION_FIVE_MU_FORMULA = String\.raw`\\mu = \(k-1\)\\prod_a M_a`/);
   assert.match(totalCostSource, /SECTION_FIVE_ALPHA_FORMULA = String\.raw`\\alpha = \\prod_a \\alpha_a`/);
+  assert.match(totalCostSource, /formula: String\.raw`\(k-1\)\\cdot n\^\{\|L\|\} \+ n\^\{\|L\|\}`/);
   assert.match(totalCostSource, /representative products and the output updates induced by those representatives/);
   assert.match(totalCostSource, /The expanded equation below shows how M_a is computed by Burnside when a closed form applies/);
   assert.match(totalCostSource, /<ComponentRecap components=\{components\} \/>/);
@@ -373,5 +374,5 @@ test('triple-outer component baselines stay size-aware', () => {
     .map((component) => component.sizes.join(','))
     .sort();
 
-  assert.deepEqual(componentSizes, ['3,3,3', '6']);
+  assert.deepEqual(componentSizes, ['6', '6,6,6']);
 });
