@@ -2,8 +2,8 @@
 
 import pytest
 
-from whest._budget import _reset_global_default, budget_reset
 import whest._weights as weights_module
+from whest._budget import _reset_global_default, budget_reset
 from whest._weights import reset_weights
 
 
