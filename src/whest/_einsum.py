@@ -383,7 +383,10 @@ def einsum(
         output_subscript=output_subscript,
         path_info=path_info,
     )
-    target_symmetry = _prepare_symmetric_out(out, target_symmetry)
+    effective_out_symmetry = target_symmetry
+    if effective_out_symmetry is None and isinstance(out, SymmetricTensor):
+        effective_out_symmetry = out.symmetry
+    target_symmetry = _prepare_symmetric_out(out, effective_out_symmetry)
 
     with budget.deduct(
         "einsum",
