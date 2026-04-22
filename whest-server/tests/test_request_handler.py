@@ -177,8 +177,22 @@ def test_handle_fetch_slice(handler, session):
     resp = handler.handle({"op": "fetch_slice", "id": handle, "slices": [[2, 5]]})
     assert resp["status"] == "ok"
     expected = arr[2:5]
-    assert resp["result"]["shape"] == [3]
-    assert resp["result"]["dtype"] == "float64"
+    assert resp["data"] == expected.tobytes()
+    assert resp["shape"] == [3]
+    assert resp["dtype"] == "float64"
+
+
+def test_handle_fetch_slice_does_not_allocate_new_handle(handler, session):
+    arr = np.arange(10, dtype=np.float64)
+    handle = session.store_array(arr)
+    initial_count = session._store.count
+
+    first = handler.handle({"op": "fetch_slice", "id": handle, "slices": [[2, 5]]})
+    second = handler.handle({"op": "fetch_slice", "id": handle, "slices": [[4, 7]]})
+
+    assert first["status"] == "ok"
+    assert second["status"] == "ok"
+    assert session._store.count == initial_count
 
 
 # ---------------------------------------------------------------------------
