@@ -465,7 +465,7 @@
     "signature": "we.ones_like(a, dtype=None, order='K', subok=True, shape=None, *, device=None)",
     "status": "supported",
     "summary": "Return an array of ones with the same shape and type as a given array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.ones_like"
   },
   "schema_version": 1,

@@ -345,7 +345,7 @@
     "signature": "we.result_type(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the type that results from applying the NumPy type promotion rules to the arguments.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.result_type"
   },
   "schema_version": 1,

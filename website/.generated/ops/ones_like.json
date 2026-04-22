@@ -618,7 +618,7 @@
   "slug": "ones_like",
   "summary": "Return an array of ones with the same shape and type as a given array.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L213",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.ones_like",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L151"

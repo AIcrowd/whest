@@ -335,7 +335,7 @@
   "slug": "size",
   "summary": "Return the number of elements along a given axis.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3566",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.size",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1400"

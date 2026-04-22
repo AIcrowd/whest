@@ -400,7 +400,7 @@
   "slug": "random-set_state",
   "summary": "Set the internal state of the generator from a tuple.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.random.set_state",
   "whest_source_url": ""

@@ -651,7 +651,7 @@
   "slug": "empty_like",
   "summary": "Return a new array with the same shape and type as a given array.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.empty_like",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L185"

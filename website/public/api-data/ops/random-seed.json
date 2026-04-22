@@ -73,7 +73,7 @@
     "signature": "we.random.seed(seed=None)",
     "status": "supported",
     "summary": "Reseed the singleton RandomState instance.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.random.seed"
   },
   "schema_version": 1,

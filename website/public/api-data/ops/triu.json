@@ -214,7 +214,7 @@
     "signature": "we.triu(m, k=0)",
     "status": "supported",
     "summary": "Upper triangle of an array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.triu"
   },
   "schema_version": 1,

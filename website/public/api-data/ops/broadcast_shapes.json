@@ -246,7 +246,7 @@
     "signature": "we.broadcast_shapes(*args)",
     "status": "supported",
     "summary": "Broadcast the input shapes into a single shape.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.broadcast_shapes"
   },
   "schema_version": 1,

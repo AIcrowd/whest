@@ -495,7 +495,7 @@
     "signature": "we.empty_like(a, dtype=None, **kwargs)",
     "status": "supported",
     "summary": "Return a new array with the same shape and type as a given array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.empty_like"
   },
   "schema_version": 1,

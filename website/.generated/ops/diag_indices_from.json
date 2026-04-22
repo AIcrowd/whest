@@ -258,7 +258,7 @@
   "slug": "diag_indices_from",
   "summary": "Return the indices to access the main diagonal of an n-dimensional array.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_index_tricks_impl.py#L1018",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.diag_indices_from",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L849"

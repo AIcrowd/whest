@@ -443,7 +443,7 @@
     "signature": "we.linalg.diagonal(x, /, *, offset=0)",
     "status": "supported",
     "summary": "Returns specified diagonals of a matrix (or a stack of matrices) ``x``.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.linalg.diagonal"
   },
   "schema_version": 1,

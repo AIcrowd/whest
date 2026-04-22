@@ -596,6 +596,6 @@
   "slug": "inner",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.inner.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L854"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L863"
   }
 }

@@ -214,7 +214,7 @@
     "signature": "we.linalg.matrix_transpose(x, /)",
     "status": "supported",
     "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.linalg.matrix_transpose"
   },
   "schema_version": 1,

@@ -517,7 +517,7 @@
       "slug": "array_split",
       "status": "supported",
       "summary": "Split an array into multiple sub-arrays.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.array_split"
     },
     {
@@ -537,7 +537,7 @@
       "slug": "asarray",
       "status": "supported",
       "summary": "Convert the input to an array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.asarray"
     },
     {
@@ -577,7 +577,7 @@
       "slug": "astype",
       "status": "supported",
       "summary": "Copies an array to a specified data type.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.astype"
     },
     {
@@ -597,7 +597,7 @@
       "slug": "atleast_1d",
       "status": "supported",
       "summary": "Convert inputs to arrays with at least one dimension.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.atleast_1d"
     },
     {
@@ -617,7 +617,7 @@
       "slug": "atleast_2d",
       "status": "supported",
       "summary": "View inputs as arrays with at least two dimensions.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.atleast_2d"
     },
     {
@@ -637,7 +637,7 @@
       "slug": "atleast_3d",
       "status": "supported",
       "summary": "View inputs as arrays with at least three dimensions.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.atleast_3d"
     },
     {
@@ -917,7 +917,7 @@
       "slug": "broadcast_arrays",
       "status": "supported",
       "summary": "Broadcast any number of arrays against each other.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.broadcast_arrays"
     },
     {
@@ -937,7 +937,7 @@
       "slug": "broadcast_shapes",
       "status": "supported",
       "summary": "Broadcast the input shapes into a single shape.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.broadcast_shapes"
     },
     {
@@ -957,7 +957,7 @@
       "slug": "broadcast_to",
       "status": "supported",
       "summary": "Broadcast an array to a new shape.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.broadcast_to"
     },
     {
@@ -977,7 +977,7 @@
       "slug": "can_cast",
       "status": "supported",
       "summary": "Returns True if cast between data types can occur according to the casting rule.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.can_cast"
     },
     {
@@ -1077,7 +1077,7 @@
       "slug": "column_stack",
       "status": "supported",
       "summary": "Stack 1-D arrays as columns into a 2-D array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.column_stack"
     },
     {
@@ -1097,7 +1097,7 @@
       "slug": "common_type",
       "status": "supported",
       "summary": "Return a scalar type which is common to the input arrays.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.common_type"
     },
     {
@@ -1217,7 +1217,7 @@
       "slug": "copy",
       "status": "supported",
       "summary": "Return an array copy of the given object.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.copy"
     },
     {
@@ -1557,7 +1557,7 @@
       "slug": "diag_indices",
       "status": "supported",
       "summary": "Return the indices to access the main diagonal of an array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.diag_indices"
     },
     {
@@ -1577,7 +1577,7 @@
       "slug": "diag_indices_from",
       "status": "supported",
       "summary": "Return the indices to access the main diagonal of an n-dimensional array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.diag_indices_from"
     },
     {
@@ -1717,7 +1717,7 @@
       "slug": "dsplit",
       "status": "supported",
       "summary": "Split array into multiple sub-arrays along the 3rd axis (depth).",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.dsplit"
     },
     {
@@ -1817,7 +1817,7 @@
       "slug": "empty",
       "status": "supported",
       "summary": "Return a new array of given shape and type, without initializing entries.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.empty"
     },
     {
@@ -1837,7 +1837,7 @@
       "slug": "empty_like",
       "status": "supported",
       "summary": "Return a new array with the same shape and type as a given array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.empty_like"
     },
     {
@@ -1917,7 +1917,7 @@
       "slug": "expand_dims",
       "status": "supported",
       "summary": "Expand the shape of an array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.expand_dims"
     },
     {
@@ -1977,7 +1977,7 @@
       "slug": "eye",
       "status": "supported",
       "summary": "Return a 2-D array with ones on the diagonal and zeros elsewhere.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.eye"
     },
     {
@@ -2057,7 +2057,7 @@
       "slug": "fft-fftfreq",
       "status": "supported",
       "summary": "Return the Discrete Fourier Transform sample frequencies.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.fft.fftfreq"
     },
     {
@@ -2097,7 +2097,7 @@
       "slug": "fft-fftshift",
       "status": "supported",
       "summary": "Shift the zero-frequency component to the center of the spectrum.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.fft.fftshift"
     },
     {
@@ -2197,7 +2197,7 @@
       "slug": "fft-ifftshift",
       "status": "supported",
       "summary": "The inverse of `fftshift`. Although identical for even-length `x`, the functions differ by one sample for odd-length `x`.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.fft.ifftshift"
     },
     {
@@ -2337,7 +2337,7 @@
       "slug": "fft-rfftfreq",
       "status": "supported",
       "summary": "Return the Discrete Fourier Transform sample frequencies (for usage with rfft, irfft).",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.fft.rfftfreq"
     },
     {
@@ -2417,7 +2417,7 @@
       "slug": "flip",
       "status": "supported",
       "summary": "Reverse the order of elements in an array along the given axis.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.flip"
     },
     {
@@ -2437,7 +2437,7 @@
       "slug": "fliplr",
       "status": "supported",
       "summary": "Reverse the order of elements along axis 1 (left/right).",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.fliplr"
     },
     {
@@ -2457,7 +2457,7 @@
       "slug": "flipud",
       "status": "supported",
       "summary": "Reverse the order of elements along axis 0 (up/down).",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.flipud"
     },
     {
@@ -2617,7 +2617,7 @@
       "slug": "from_dlpack",
       "status": "supported",
       "summary": "Create a NumPy array from an object implementing the ``__dlpack__`` protocol. Generally, the returned NumPy array is a view of the input object. See [1]_ and [2]_ for more details.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.from_dlpack"
     },
     {
@@ -2637,7 +2637,7 @@
       "slug": "frombuffer",
       "status": "supported",
       "summary": "Interpret a buffer as a 1-dimensional array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.frombuffer"
     },
     {
@@ -2977,7 +2977,7 @@
       "slug": "hsplit",
       "status": "supported",
       "summary": "Split an array into multiple sub-arrays horizontally (column-wise).",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.hsplit"
     },
     {
@@ -2997,7 +2997,7 @@
       "slug": "hstack",
       "status": "supported",
       "summary": "Stack arrays in sequence horizontally (column wise).",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.hstack"
     },
     {
@@ -3057,7 +3057,7 @@
       "slug": "identity",
       "status": "supported",
       "summary": "Return the identity array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.identity"
     },
     {
@@ -3297,7 +3297,7 @@
       "slug": "isdtype",
       "status": "supported",
       "summary": "Determine if a provided dtype is of a specified data type ``kind``.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.isdtype"
     },
     {
@@ -3337,7 +3337,7 @@
       "slug": "isfortran",
       "status": "supported",
       "summary": "Check if the array is Fortran contiguous but *not* C contiguous.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.isfortran"
     },
     {
@@ -3497,7 +3497,7 @@
       "slug": "isscalar",
       "status": "supported",
       "summary": "Returns True if the type of `element` is a scalar type.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.isscalar"
     },
     {
@@ -3517,7 +3517,7 @@
       "slug": "issubdtype",
       "status": "supported",
       "summary": "Returns True if first argument is a typecode lower/equal in type hierarchy.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.issubdtype"
     },
     {
@@ -3537,7 +3537,7 @@
       "slug": "iterable",
       "status": "supported",
       "summary": "Check whether or not an object can be iterated over.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.iterable"
     },
     {
@@ -3817,7 +3817,7 @@
       "slug": "linalg-diagonal",
       "status": "supported",
       "summary": "Returns specified diagonals of a matrix (or a stack of matrices) ``x``.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.linalg.diagonal"
     },
     {
@@ -4037,7 +4037,7 @@
       "slug": "linalg-matrix_transpose",
       "status": "supported",
       "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.linalg.matrix_transpose"
     },
     {
@@ -4637,7 +4637,7 @@
       "slug": "matrix_transpose",
       "status": "supported",
       "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.matrix_transpose"
     },
     {
@@ -4717,7 +4717,7 @@
       "slug": "may_share_memory",
       "status": "supported",
       "summary": "Determine if two arrays might share memory",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.may_share_memory"
     },
     {
@@ -4817,7 +4817,7 @@
       "slug": "min_scalar_type",
       "status": "supported",
       "summary": "For scalar ``a``, returns the data type with the smallest size and smallest scalar kind which can hold its value.  For non-scalar array ``a``, returns the vector's dtype unmodified.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.min_scalar_type"
     },
     {
@@ -4857,7 +4857,7 @@
       "slug": "mintypecode",
       "status": "supported",
       "summary": "Return the character for the minimum-size type to which given types can be safely cast.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.mintypecode"
     },
     {
@@ -4917,7 +4917,7 @@
       "slug": "moveaxis",
       "status": "supported",
       "summary": "Move axes of an array to new positions.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.moveaxis"
     },
     {
@@ -5257,7 +5257,7 @@
       "slug": "ndim",
       "status": "supported",
       "summary": "Return the number of dimensions of an array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.ndim"
     },
     {
@@ -5357,7 +5357,7 @@
       "slug": "ones",
       "status": "supported",
       "summary": "Return a new array of given shape and type, filled with ones.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.ones"
     },
     {
@@ -5377,7 +5377,7 @@
       "slug": "ones_like",
       "status": "supported",
       "summary": "Return an array of ones with the same shape and type as a given array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.ones_like"
     },
     {
@@ -5497,7 +5497,7 @@
       "slug": "permute_dims",
       "status": "supported",
       "summary": "Returns an array with axes transposed.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.permute_dims"
     },
     {
@@ -5797,7 +5797,7 @@
       "slug": "promote_types",
       "status": "supported",
       "summary": "Returns the data type with the smallest size and smallest scalar kind to which both ``type1`` and ``type2`` may be safely cast. The returned data type is always considered \"canonical\", this mainly means that the promoted dtype will always be in native byte order.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.promote_types"
     },
     {
@@ -6037,7 +6037,7 @@
       "slug": "random-default_rng",
       "status": "supported",
       "summary": "Construct a new Generator with the default BitGenerator (PCG64).",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.random.default_rng"
     },
     {
@@ -6157,7 +6157,7 @@
       "slug": "random-get_state",
       "status": "supported",
       "summary": "Return a tuple representing the internal state of the generator.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.random.get_state"
     },
     {
@@ -6637,7 +6637,7 @@
       "slug": "random-seed",
       "status": "supported",
       "summary": "Reseed the singleton RandomState instance.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.random.seed"
     },
     {
@@ -6657,7 +6657,7 @@
       "slug": "random-set_state",
       "status": "supported",
       "summary": "Set the internal state of the generator from a tuple.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.random.set_state"
     },
     {
@@ -6917,7 +6917,7 @@
       "slug": "ravel",
       "status": "supported",
       "summary": "Return a contiguous flattened array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.ravel"
     },
     {
@@ -6937,7 +6937,7 @@
       "slug": "ravel_multi_index",
       "status": "supported",
       "summary": "Converts a tuple of index arrays into an array of flat indices, applying boundary modes to the multi-index.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.ravel_multi_index"
     },
     {
@@ -7057,7 +7057,7 @@
       "slug": "require",
       "status": "supported",
       "summary": "Return an ndarray of the provided type that satisfies requirements.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.require"
     },
     {
@@ -7077,7 +7077,7 @@
       "slug": "reshape",
       "status": "supported",
       "summary": "Gives a new shape to an array without changing its data.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.reshape"
     },
     {
@@ -7117,7 +7117,7 @@
       "slug": "result_type",
       "status": "supported",
       "summary": "Returns the type that results from applying the NumPy type promotion rules to the arguments.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.result_type"
     },
     {
@@ -7197,7 +7197,7 @@
       "slug": "rollaxis",
       "status": "supported",
       "summary": "Roll the specified axis backwards, until it lies in a given position.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.rollaxis"
     },
     {
@@ -7237,8 +7237,28 @@
       "slug": "rot90",
       "status": "supported",
       "summary": "Rotate an array by 90 degrees in the plane specified by axes.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.rot90"
+    },
+    {
+      "area": "core",
+      "blocked": false,
+      "category": "free",
+      "cost_formula": "0",
+      "cost_formula_latex": "$0$",
+      "detail_href": "/docs/api/ops/row_stack/",
+      "detail_json_href": "/api-data/ops/row_stack.json",
+      "display_type": "free",
+      "free": true,
+      "module": "numpy",
+      "name": "row_stack",
+      "notes": "Stack arrays vertically (alias for vstack).",
+      "numpy_ref": "np.row_stack",
+      "slug": "row_stack",
+      "status": "supported",
+      "summary": "Stack arrays in sequence vertically (row wise).",
+      "weight": 0.0,
+      "whest_ref": "we.row_stack"
     },
     {
       "area": "core",
@@ -7337,7 +7357,7 @@
       "slug": "shape",
       "status": "supported",
       "summary": "Return the shape of an array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.shape"
     },
     {
@@ -7357,7 +7377,7 @@
       "slug": "shares_memory",
       "status": "supported",
       "summary": "Determine if two arrays share memory.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.shares_memory"
     },
     {
@@ -7477,7 +7497,7 @@
       "slug": "size",
       "status": "supported",
       "summary": "Return the number of elements along a given axis.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.size"
     },
     {
@@ -7557,7 +7577,7 @@
       "slug": "split",
       "status": "supported",
       "summary": "Split an array into multiple sub-arrays as views into `ary`.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.split"
     },
     {
@@ -7617,7 +7637,7 @@
       "slug": "squeeze",
       "status": "supported",
       "summary": "Remove axes of length one from `a`.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.squeeze"
     },
     {
@@ -8197,7 +8217,7 @@
       "slug": "swapaxes",
       "status": "supported",
       "summary": "Interchange two axes of an array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.swapaxes"
     },
     {
@@ -8357,7 +8377,7 @@
       "slug": "transpose",
       "status": "supported",
       "summary": "Returns an array with axes transposed.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.transpose"
     },
     {
@@ -8397,7 +8417,7 @@
       "slug": "tri",
       "status": "supported",
       "summary": "An array with ones at and below the given diagonal and zeros elsewhere.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.tri"
     },
     {
@@ -8417,7 +8437,7 @@
       "slug": "tril",
       "status": "supported",
       "summary": "Lower triangle of an array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.tril"
     },
     {
@@ -8437,7 +8457,7 @@
       "slug": "tril_indices",
       "status": "supported",
       "summary": "Return the indices for the lower-triangle of an (n, m) array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.tril_indices"
     },
     {
@@ -8457,7 +8477,7 @@
       "slug": "tril_indices_from",
       "status": "supported",
       "summary": "Return the indices for the lower-triangle of arr.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.tril_indices_from"
     },
     {
@@ -8497,7 +8517,7 @@
       "slug": "triu",
       "status": "supported",
       "summary": "Upper triangle of an array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.triu"
     },
     {
@@ -8517,7 +8537,7 @@
       "slug": "triu_indices",
       "status": "supported",
       "summary": "Return the indices for the upper-triangle of an (n, m) array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.triu_indices"
     },
     {
@@ -8537,7 +8557,7 @@
       "slug": "triu_indices_from",
       "status": "supported",
       "summary": "Return the indices for the upper-triangle of arr.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.triu_indices_from"
     },
     {
@@ -8597,7 +8617,7 @@
       "slug": "typename",
       "status": "supported",
       "summary": "Return a description for the given data type code.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.typename"
     },
     {
@@ -8757,7 +8777,7 @@
       "slug": "unravel_index",
       "status": "supported",
       "summary": "Converts a flat index or array of flat indices into a tuple of coordinate arrays.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.unravel_index"
     },
     {
@@ -8917,7 +8937,7 @@
       "slug": "vsplit",
       "status": "supported",
       "summary": "Split an array into multiple sub-arrays vertically (row-wise).",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.vsplit"
     },
     {
@@ -8977,7 +8997,7 @@
       "slug": "zeros",
       "status": "supported",
       "summary": "Return a new array of given shape and type, filled with zeros.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.zeros"
     },
     {
@@ -8997,9 +9017,9 @@
       "slug": "zeros_like",
       "status": "supported",
       "summary": "Return an array of zeros with the same shape and type as a given array.",
-      "weight": 1.0,
+      "weight": 0.0,
       "whest_ref": "we.zeros_like"
     }
   ],
-  "total": 450
+  "total": 451
 }

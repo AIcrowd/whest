@@ -10,10 +10,14 @@ Measures three baselines:
 3. **Binary ufunc overhead** = ``alpha(add) - 1.0`` (since one add = exactly
    one FP instruction; the rest is overhead).
 
-The runner subtracts the appropriate overhead from each operation's raw
-alpha before storing it as the weight::
+The runner subtracts the appropriate overhead from each counted operation's
+raw alpha before storing it as the weight::
 
-    weight(op) = max(alpha_raw(op) - overhead_for_category, 1.0)
+    weight(op) = max(alpha_raw(op) - overhead_for_category, 0.0)
+
+Known analytical zero-FLOP operations are stored separately with
+``weight(op) = 0.0`` so the published artifacts surface them as free rather
+than as unit-cost operations.
 
 This replaces the old ``weight(op) = alpha(op) / alpha(add)`` formula which
 penalized BLAS ops (that bypass the ufunc layer) with ufunc overhead they
@@ -76,7 +80,10 @@ class BaselineResult:
             "overhead_ufunc_unary": self.overhead_ufunc_unary,
             "overhead_ufunc_binary": self.overhead_ufunc_binary,
             "overhead_ufunc_reduction": self.overhead_ufunc_reduction,
-            "normalization": "subtract per-category ufunc overhead, clamp to min 1.0",
+            "normalization": (
+                "subtract per-category ufunc overhead; known zero-FLOP ops use "
+                "weight 0.0"
+            ),
         }
 
 

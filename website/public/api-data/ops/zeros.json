@@ -451,7 +451,7 @@
     "signature": "we.zeros(shape, dtype=<class 'float'>, **kwargs)",
     "status": "supported",
     "summary": "Return a new array of given shape and type, filled with zeros.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.zeros"
   },
   "schema_version": 1,

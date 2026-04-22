@@ -311,7 +311,7 @@
     "signature": "we.fliplr(m)",
     "status": "supported",
     "summary": "Reverse the order of elements along axis 1 (left/right).",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.fliplr"
   },
   "schema_version": 1,

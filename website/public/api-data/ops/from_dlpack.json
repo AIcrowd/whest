@@ -338,7 +338,7 @@
     "signature": "we.from_dlpack(*args, **kwargs)",
     "status": "supported",
     "summary": "Create a NumPy array from an object implementing the ``__dlpack__`` protocol. Generally, the returned NumPy array is a view of the input object. See [1]_ and [2]_ for more details.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.from_dlpack"
   },
   "schema_version": 1,

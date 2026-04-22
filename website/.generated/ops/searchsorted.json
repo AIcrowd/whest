@@ -642,8 +642,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/rot90/",
-    "label": "we.rot90"
+    "href": "/docs/api/ops/row_stack/",
+    "label": "we.row_stack"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html",

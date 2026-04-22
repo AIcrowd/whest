@@ -109,7 +109,7 @@
   "slug": "random-seed",
   "summary": "Reseed the singleton RandomState instance.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.random.seed",
   "whest_source_url": ""

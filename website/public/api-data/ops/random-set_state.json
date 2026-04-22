@@ -328,7 +328,7 @@
     "signature": "we.random.set_state(state)",
     "status": "supported",
     "summary": "Set the internal state of the generator from a tuple.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.random.set_state"
   },
   "schema_version": 1,

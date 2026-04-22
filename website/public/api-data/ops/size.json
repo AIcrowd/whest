@@ -223,7 +223,7 @@
     "signature": "we.size(a, axis=None)",
     "status": "supported",
     "summary": "Return the number of elements along a given axis.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.size"
   },
   "schema_version": 1,

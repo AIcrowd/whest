@@ -320,7 +320,7 @@
     "signature": "we.isfortran(a)",
     "status": "supported",
     "summary": "Check if the array is Fortran contiguous but *not* C contiguous.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.isfortran"
   },
   "schema_version": 1,

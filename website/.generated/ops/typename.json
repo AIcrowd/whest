@@ -299,7 +299,7 @@
   "slug": "typename",
   "summary": "Return a description for the given data type code.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L574",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.typename",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1489"

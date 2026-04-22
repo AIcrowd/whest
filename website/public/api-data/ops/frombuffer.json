@@ -342,7 +342,7 @@
     "signature": "we.frombuffer(*args, **kwargs)",
     "status": "supported",
     "summary": "Interpret a buffer as a 1-dimensional array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.frombuffer"
   },
   "schema_version": 1,

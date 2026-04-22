@@ -325,7 +325,7 @@
     "signature": "we.flipud(m)",
     "status": "supported",
     "summary": "Reverse the order of elements along axis 0 (up/down).",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.flipud"
   },
   "schema_version": 1,

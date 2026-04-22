@@ -415,7 +415,7 @@
     "signature": "we.eye(N, M=None, k=0, dtype=<class 'float'>, order='C', *, device=None, like=None)",
     "status": "supported",
     "summary": "Return a 2-D array with ones on the diagonal and zeros elsewhere.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.eye"
   },
   "schema_version": 1,

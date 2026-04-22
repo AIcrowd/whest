@@ -400,7 +400,7 @@
   "slug": "fft-rfftfreq",
   "summary": "Return the Discrete Fourier Transform sample frequencies (for usage with rfft, irfft).",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L180",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.fft.rfftfreq",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_free.py#L22"

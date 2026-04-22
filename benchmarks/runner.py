@@ -147,7 +147,7 @@ def normalize_weights_v2(
     all_details: dict[str, dict],
     baselines: BaselineResult,
 ) -> dict[str, float]:
-    """Subtract per-category ufunc overhead and clamp to minimum 1.0.
+    """Subtract per-category ufunc overhead for counted operations.
 
     Each operation's raw alpha is adjusted by subtracting the overhead
     attributable to numpy's ufunc dispatch layer. The ``measurement_mode``
@@ -161,7 +161,9 @@ def normalize_weights_v2(
 
     After subtraction, clamp to 0.0 (no negative weights). Values below 1.0
     are expected for ops with less FP work than the overhead measurement
-    (e.g., bitwise ops that generate 0 FP instructions).
+    (e.g., bitwise ops that generate 0 FP instructions). Known analytical
+    zero-FLOP operations are injected separately with weight 0.0 because they
+    are not benchmarked.
 
     Note: BLAS/linalg ops that are pure FMA loops will show weight ≈ 2.0
     because ``fp_arith_inst_retired`` counts each FMA as 2 retired FP
@@ -174,6 +176,18 @@ def normalize_weights_v2(
         overhead = baselines.overhead_for_mode(mode)
         weights[op] = max(alpha - overhead, 0.0)
     return weights
+
+
+def _load_known_free_ops() -> set[str]:
+    """Return analytical zero-FLOP operations from the live registry."""
+    repo_root = os.path.dirname(os.path.dirname(__file__))
+    src_root = os.path.join(repo_root, "src")
+    if src_root not in sys.path:
+        sys.path.insert(0, src_root)
+
+    from whest._registry import REGISTRY  # type: ignore
+
+    return {name for name, info in REGISTRY.items() if info.get("category") == "free"}
 
 
 def _compute_validation_stats(
@@ -506,13 +520,16 @@ def run_benchmarks(
             if op in timing_weights and op in all_details:
                 all_details[op]["timing_weight"] = timing_weights[op]
 
+    for op in _load_known_free_ops():
+        weights[op] = 0.0
+
     # -- methodology metadata (Step 1.3 + 1.4) ----------------------------
     meta["methodology"] = {
         "version": "3.0",
         "formula": (
-            "weight(op) = max(alpha_raw(op) - overhead_for_category, 1.0), "
+            "counted weight(op) = max(alpha_raw(op) - overhead_for_category, 0.0), "
             "where alpha_raw = median(perf_instructions / analytical_FLOPs). "
-            "Overhead is subtracted per ufunc category to remove numpy dispatch noise."
+            "Known analytical zero-FLOP ops are emitted with weight 0.0."
         ),
         "baseline_alpha_add_raw": round(baselines.alpha_add, 6),
         "baseline_alpha_abs_raw": round(baselines.alpha_abs, 6),
@@ -522,7 +539,8 @@ def run_benchmarks(
             "perf_instructions are SIMD-width-weighted "
             "fp_arith_inst_retired counts; "
             "ufunc overhead subtracted per category; "
-            "integer/bitwise ops use instructions counter"
+            "integer/bitwise ops use instructions counter; "
+            "known zero-FLOP ops are injected from the curated registry"
         ),
     }
     meta["validation"] = validation

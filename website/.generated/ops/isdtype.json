@@ -366,7 +366,7 @@
   "slug": "isdtype",
   "summary": "Determine if a provided dtype is of a specified data type ``kind``.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numerictypes.py#L381",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.isdtype",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1081"

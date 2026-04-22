@@ -441,7 +441,7 @@
     "signature": "we.flip(m, axis=None)",
     "status": "supported",
     "summary": "Reverse the order of elements in an array along the given axis.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.flip"
   },
   "schema_version": 1,

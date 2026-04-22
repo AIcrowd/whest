@@ -237,7 +237,7 @@
     "signature": "we.may_share_memory(*args, **kwargs)",
     "status": "supported",
     "summary": "Determine if two arrays might share memory",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.may_share_memory"
   },
   "schema_version": 1,

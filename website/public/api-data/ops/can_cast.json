@@ -341,7 +341,7 @@
     "signature": "we.can_cast(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns True if cast between data types can occur according to the casting rule.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.can_cast"
   },
   "schema_version": 1,

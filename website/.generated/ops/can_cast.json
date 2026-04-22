@@ -429,7 +429,7 @@
   "slug": "can_cast",
   "summary": "Returns True if cast between data types can occur according to the casting rule.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.can_cast",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L739"

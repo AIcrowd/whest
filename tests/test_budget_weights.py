@@ -1,69 +1,90 @@
 """Tests for FLOP weight integration in BudgetContext.deduct()."""
 
+import importlib
 import json
-import os
-import tempfile
+from importlib import resources
 
 import pytest
 
+import whest._weights as weights_module
+from whest import flops as public_flops
 from whest._budget import BudgetContext
 from whest._weights import load_weights, reset_weights
 from whest.errors import BudgetExhaustedError
 
 
-def test_deduct_applies_weight():
+@pytest.fixture(autouse=True)
+def _reset_weights():
     reset_weights()
-    data = {"weights": {"exp": 10.0}}
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
-        json.dump(data, f)
-        path = f.name
-    try:
-        load_weights(path)
-        with BudgetContext(flop_budget=1_000_000) as budget:
-            budget.deduct("exp", flop_cost=100, subscripts=None, shapes=((100,),))
-            assert budget.flops_used == 1000  # 100 * 10.0
-            rec = budget.op_log[0]
-            assert rec.flop_cost == 1000
-    finally:
-        reset_weights()
-        os.unlink(path)
+    yield
+    reset_weights()
+
+
+def _write_weights(tmp_path, weights):
+    path = tmp_path / "weights.json"
+    path.write_text(json.dumps({"weights": weights}), encoding="utf-8")
+    return str(path)
+
+
+def _packaged_weight(op_name):
+    resource = resources.files("whest").joinpath("data/default_weights.json")
+    with resource.open("r", encoding="utf-8") as f:
+        return json.load(f)["weights"][op_name]
+
+
+def test_deduct_applies_weight(tmp_path):
+    load_weights(_write_weights(tmp_path, {"exp": 10.0}))
+    with BudgetContext(flop_budget=1_000_000) as budget:
+        budget.deduct("exp", flop_cost=100, subscripts=None, shapes=((100,),))
+        assert budget.flops_used == 1000
+        rec = budget.op_log[0]
+        assert rec.flop_cost == 1000
 
 
 def test_deduct_weight_default_is_one():
-    reset_weights()
     with BudgetContext(flop_budget=1_000_000) as budget:
         budget.deduct("add", flop_cost=100, subscripts=None, shapes=((100,),))
-        assert budget.flops_used == 100  # no weight loaded, default 1.0
+        assert budget.flops_used == 100
 
 
-def test_deduct_weight_stacks_with_flop_multiplier():
-    reset_weights()
-    data = {"weights": {"exp": 10.0}}
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
-        json.dump(data, f)
-        path = f.name
-    try:
-        load_weights(path)
-        with BudgetContext(flop_budget=1_000_000, flop_multiplier=2.0) as budget:
+def test_deduct_weight_stacks_with_flop_multiplier(tmp_path):
+    load_weights(_write_weights(tmp_path, {"exp": 10.0}))
+    with BudgetContext(flop_budget=1_000_000, flop_multiplier=2.0) as budget:
+        budget.deduct("exp", flop_cost=100, subscripts=None, shapes=((100,),))
+        assert budget.flops_used == 2000
+
+
+def test_deduct_exhaustion_accounts_for_weight(tmp_path):
+    load_weights(_write_weights(tmp_path, {"exp": 10.0}))
+    with pytest.raises(BudgetExhaustedError):
+        with BudgetContext(flop_budget=500) as budget:
             budget.deduct("exp", flop_cost=100, subscripts=None, shapes=((100,),))
-            assert budget.flops_used == 2000  # 100 * 2.0 * 10.0
-    finally:
-        reset_weights()
-        os.unlink(path)
 
 
-def test_deduct_exhaustion_accounts_for_weight():
-    reset_weights()
-    data = {"weights": {"exp": 10.0}}
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
-        json.dump(data, f)
-        path = f.name
-    try:
-        load_weights(path)
-        with pytest.raises(BudgetExhaustedError):
-            with BudgetContext(flop_budget=500) as budget:
-                # 100 * 10.0 = 1000 > 500
-                budget.deduct("exp", flop_cost=100, subscripts=None, shapes=((100,),))
-    finally:
-        reset_weights()
-        os.unlink(path)
+def test_deduct_uses_packaged_default_when_explicitly_loaded():
+    load_weights(use_packaged_default=True)
+    with BudgetContext(flop_budget=1_000_000) as budget:
+        budget.deduct("exp", flop_cost=10, subscripts=None, shapes=((10,),))
+        assert budget.flops_used == int(10 * _packaged_weight("exp"))
+
+
+def test_public_helpers_match_runtime_deduction_under_default_import_config(
+    monkeypatch,
+):
+    monkeypatch.delenv("WHEST_WEIGHTS_FILE", raising=False)
+    monkeypatch.delenv("WHEST_DISABLE_WEIGHTS", raising=False)
+    importlib.reload(weights_module)
+
+    expected = public_flops.pointwise_cost("exp", shape=(2, 5))
+
+    with BudgetContext(flop_budget=1_000_000) as budget:
+        budget.deduct("exp", flop_cost=10, subscripts=None, shapes=((2, 5),))
+        assert budget.flops_used == expected
+
+
+def test_deduct_disable_weights_ignores_packaged_default(monkeypatch):
+    monkeypatch.setenv("WHEST_DISABLE_WEIGHTS", "1")
+    load_weights(use_packaged_default=True)
+    with BudgetContext(flop_budget=1_000_000) as budget:
+        budget.deduct("exp", flop_cost=10, subscripts=None, shapes=((10,),))
+        assert budget.flops_used == 10

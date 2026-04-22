@@ -407,7 +407,7 @@
   "slug": "tril_indices_from",
   "summary": "Return the indices for the lower-triangle of arr.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L983",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.tril_indices_from",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1450"

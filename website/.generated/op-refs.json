@@ -1915,9 +1915,9 @@
     "label": "we.rint"
   },
   "row_stack": {
-    "canonical_name": "vstack",
-    "href": "/docs/api/ops/vstack/",
-    "label": "we.vstack"
+    "canonical_name": "row_stack",
+    "href": "/docs/api/ops/row_stack/",
+    "label": "we.row_stack"
   },
   "searchsorted": {
     "canonical_name": "searchsorted",

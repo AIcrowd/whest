@@ -358,7 +358,7 @@
   "slug": "fft-fftfreq",
   "summary": "Return the Discrete Fourier Transform sample frequencies.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L125",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.fft.fftfreq",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_free.py#L11"

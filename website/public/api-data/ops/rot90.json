@@ -368,7 +368,7 @@
     "signature": "we.rot90(m, k=1, axes=(0, 1))",
     "status": "supported",
     "summary": "Rotate an array by 90 degrees in the plane specified by axes.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.rot90"
   },
   "schema_version": 1,

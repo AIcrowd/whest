@@ -212,7 +212,7 @@
     "signature": "we.ndim(a)",
     "status": "supported",
     "summary": "Return the number of dimensions of an array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.ndim"
   },
   "schema_version": 1,

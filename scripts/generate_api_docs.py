@@ -2666,7 +2666,11 @@ def load_alias_map(registry: dict[str, dict]) -> dict[str, str]:
         if not match:
             continue
         target = choose_alias_target(match.group(1), registry)
-        if target and target != name:
+        if (
+            target
+            and target != name
+            and registry.get(target, {}).get("category") == info.get("category")
+        ):
             alias_map[name] = target
 
     if WEIGHTS_CSV_PATH.exists():
@@ -2683,6 +2687,10 @@ def load_alias_map(registry: dict[str, dict]) -> dict[str, str]:
                     continue
                 target = choose_alias_target(match.group(1), registry)
                 if not target or target == name:
+                    continue
+                if registry.get(target, {}).get("category") != registry.get(
+                    name, {}
+                ).get("category"):
                     continue
                 # Prefer registry-authored canonical targets when metadata disagrees.
                 if alias_map.get(target) == name:
@@ -2853,6 +2861,10 @@ def resolve_operation_weight(
 
     if canonical not in registry and name in weights:
         return weights[name]
+
+    info = registry.get(canonical) or registry.get(name)
+    if info is not None and info.get("category") == "free":
+        return 0.0
 
     return 1.0
 

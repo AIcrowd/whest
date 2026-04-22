@@ -222,7 +222,7 @@
     "signature": "we.fft.ifftshift(x, axes=None)",
     "status": "supported",
     "summary": "The inverse of `fftshift`. Although identical for even-length `x`, the functions differ by one sample for odd-length `x`.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.fft.ifftshift"
   },
   "schema_version": 1,

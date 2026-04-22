@@ -8,7 +8,16 @@ import inspect as _inspect
 import numpy as _np
 
 from whest._docstrings import attach_docstring
-from whest._flops import _ceil_log2, einsum_cost, pointwise_cost, reduction_cost
+from whest._flops import (
+    _ceil_log2,
+    einsum_cost,
+)
+from whest._flops import (
+    analytical_pointwise_cost as pointwise_cost,
+)
+from whest._flops import (
+    analytical_reduction_cost as reduction_cost,
+)
 from whest._ndarray import _aswhest
 from whest._symmetric import (
     SymmetricTensor,

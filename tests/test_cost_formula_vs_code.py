@@ -1,41 +1,17 @@
-"""Guard against divergence between weights.json Cost Formulas and code.
+"""Regression coverage for analytical runtime costs under unit-weight resets.
 
-The Google Sheet's Cost Formula column is the single source of truth.
-weights.json mirrors those formulas in ``meta.per_op_details[op].analytical_formula``.
-This test ensures the code always charges exactly what the formula says.
-
-If this test fails it means someone changed a cost function without
-updating weights.json (or vice-versa). Fix the *code* to match the
-formula, not the other way around — the sheet is authoritative.
+These tests call ``reset_weights()`` in an autouse fixture, so the runtime
+charges here continue to exercise the raw analytical formulas even though
+packaged weights now autoload on a normal import path.
 """
 
 from __future__ import annotations
-
-import json
-from pathlib import Path
 
 import numpy
 import pytest
 
 from whest._budget import BudgetContext
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-WEIGHTS_JSON = (
-    Path(__file__).resolve().parent.parent / "src" / "whest" / "data" / "weights.json"
-)
-
-
-def _load_formulas() -> dict[str, str]:
-    with open(WEIGHTS_JSON) as f:
-        data = json.load(f)
-    return {
-        op: info["analytical_formula"]
-        for op, info in data["meta"]["per_op_details"].items()
-        if "analytical_formula" in info
-    }
+from whest._weights import reset_weights
 
 
 def _cost_of(fn, *args, **kwargs) -> int:
@@ -43,6 +19,29 @@ def _cost_of(fn, *args, **kwargs) -> int:
     with BudgetContext(flop_budget=10**12) as b:
         fn(*args, **kwargs)
     return b.flops_used
+
+
+@pytest.fixture(autouse=True)
+def _reset_runtime_weights():
+    reset_weights()
+    yield
+    reset_weights()
+
+
+@pytest.fixture(autouse=True)
+def _deterministic_numpy_random(monkeypatch):
+    rng = numpy.random.default_rng(0)
+
+    def _rand(*dims):
+        if not dims:
+            return float(rng.random())
+        return rng.random(dims)
+
+    def _randint(low, high=None, size=None, dtype=int):
+        return rng.integers(low, high=high, size=size, dtype=dtype)
+
+    monkeypatch.setattr(numpy.random, "rand", _rand)
+    monkeypatch.setattr(numpy.random, "randint", _randint)
 
 
 # ---------------------------------------------------------------------------
@@ -55,11 +54,6 @@ def we():
     import whest
 
     return whest
-
-
-@pytest.fixture(scope="module")
-def formulas():
-    return _load_formulas()
 
 
 # ---------------------------------------------------------------------------
@@ -146,7 +140,7 @@ def _unary_input(name):
 
 
 @pytest.mark.parametrize("name", _UNARY_NUMEL)
-def test_unary_numel(name, we, formulas):
+def test_unary_numel(name, we):
     fn = getattr(we, name)
     inp = _unary_input(name)
     cost = _cost_of(fn, inp)
@@ -199,6 +193,7 @@ _BINARY_NUMEL = [
     "remainder",
     "subtract",
     "true_divide",
+    "ldexp",
     "bitwise_and",
     "bitwise_or",
     "bitwise_xor",

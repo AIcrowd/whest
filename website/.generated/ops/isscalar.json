@@ -442,7 +442,7 @@
   "slug": "isscalar",
   "summary": "Returns True if the type of `element` is a scalar type.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1927",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.isscalar",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1105"

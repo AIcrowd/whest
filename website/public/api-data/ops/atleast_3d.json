@@ -319,7 +319,7 @@
     "signature": "we.atleast_3d(*arys)",
     "status": "supported",
     "summary": "View inputs as arrays with at least three dimensions.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.atleast_3d"
   },
   "schema_version": 1,

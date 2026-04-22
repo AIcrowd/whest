@@ -214,7 +214,7 @@
     "signature": "we.diag_indices_from(arr)",
     "status": "supported",
     "summary": "Return the indices to access the main diagonal of an n-dimensional array.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.diag_indices_from"
   },
   "schema_version": 1,

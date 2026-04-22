@@ -435,7 +435,7 @@
   "slug": "promote_types",
   "summary": "Returns the data type with the smallest size and smallest scalar kind to which both ``type1`` and ``type2`` may be safely cast. The returned data type is always considered \"canonical\", this mainly means that the promoted dtype will always be in native byte order.",
   "upstream_source_url": "",
-  "weight": 1.0,
+  "weight": 0.0,
   "whest_examples_html": "",
   "whest_ref": "we.promote_types",
   "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1254"

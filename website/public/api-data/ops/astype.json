@@ -377,7 +377,7 @@
     "signature": "we.astype(x, dtype, /, *, copy=True, device=None)",
     "status": "supported",
     "summary": "Copies an array to a specified data type.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.astype"
   },
   "schema_version": 1,

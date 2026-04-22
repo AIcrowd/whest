@@ -260,7 +260,7 @@
     "signature": "we.min_scalar_type(*args, **kwargs)",
     "status": "supported",
     "summary": "For scalar ``a``, returns the data type with the smallest size and smallest scalar kind which can hold its value.  For non-scalar array ``a``, returns the vector's dtype unmodified.",
-    "weight": 1.0,
+    "weight": 0.0,
     "whest_ref": "we.min_scalar_type"
   },
   "schema_version": 1,
