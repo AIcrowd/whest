@@ -14,9 +14,14 @@ import numpy as _np
 from whest._docstrings import attach_docstring
 from whest._perm_group import SymmetryGroup
 from whest._symmetric import SymmetricTensor
-from whest._symmetry_utils import broadcast_group, remap_group_axes, wrap_with_symmetry
+from whest._symmetry_utils import (
+    broadcast_group,
+    remap_group_axes,
+    validate_symmetry_group,
+    wrap_with_symmetry,
+)
 from whest._validation import require_budget
-from whest.errors import UnsupportedFunctionError
+from whest.errors import SymmetryError, UnsupportedFunctionError
 
 
 def _symmetric_2d(result):
@@ -24,6 +29,21 @@ def _symmetric_2d(result):
     if result.ndim == 2 and result.shape[0] == result.shape[1]:
         return wrap_with_symmetry(result, SymmetryGroup.symmetric(axes=(0, 1)))
     return result
+
+
+def _compatible_symmetry_for_shape(symmetry, shape):
+    """Return ``symmetry`` only when ``shape`` still supports it exactly."""
+    if symmetry is None:
+        return None
+    try:
+        validate_symmetry_group(symmetry, ndim=len(shape), shape=shape)
+    except (SymmetryError, ValueError):
+        return None
+    return symmetry
+
+
+def _normalize_axis_order(axes, ndim):
+    return tuple(axis % ndim for axis in axes)
 
 
 # ---------------------------------------------------------------------------
@@ -143,7 +163,10 @@ def zeros_like(a, dtype=None, **kwargs):
     """Return array of zeros with same shape. Wraps ``numpy.zeros_like``. Cost: 0 FLOPs."""
     result = _np.zeros_like(a, dtype=dtype, **kwargs)
     if isinstance(a, SymmetricTensor):
-        return wrap_with_symmetry(result, a.symmetry)
+        return wrap_with_symmetry(
+            result,
+            _compatible_symmetry_for_shape(a.symmetry, result.shape),
+        )
     return result
 
 
@@ -154,7 +177,10 @@ def ones_like(a, dtype=None, **kwargs):
     """Return array of ones with same shape. Wraps ``numpy.ones_like``. Cost: 0 FLOPs."""
     result = _np.ones_like(a, dtype=dtype, **kwargs)
     if isinstance(a, SymmetricTensor):
-        return wrap_with_symmetry(result, a.symmetry)
+        return wrap_with_symmetry(
+            result,
+            _compatible_symmetry_for_shape(a.symmetry, result.shape),
+        )
     return result
 
 
@@ -169,7 +195,10 @@ def full_like(a, fill_value, dtype=None, **kwargs):
     with budget.deduct("full_like", flop_cost=cost, subscripts=None, shapes=()):
         result = _np.full_like(a, fill_value, dtype=dtype, **kwargs)
     if isinstance(a, SymmetricTensor):
-        return wrap_with_symmetry(result, a.symmetry)
+        return wrap_with_symmetry(
+            result,
+            _compatible_symmetry_for_shape(a.symmetry, result.shape),
+        )
     return result
 
 
@@ -221,7 +250,7 @@ def transpose(a, axes=None):
     if axes is None:
         order = tuple(reversed(range(a.ndim)))
     else:
-        order = tuple(axes)
+        order = _normalize_axis_order(tuple(axes), a.ndim)
     mapping = {old: new for new, old in enumerate(order)}
     return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))
 
@@ -247,7 +276,24 @@ attach_docstring(swapaxes, _np.swapaxes, "free", "0 FLOPs")
 
 def moveaxis(a, source, destination):
     """Move axes to new positions. Wraps ``numpy.moveaxis``. Cost: 0 FLOPs."""
-    return _np.moveaxis(_np.asarray(a), source, destination)
+    result = _np.moveaxis(_np.asarray(a), source, destination)
+    if not isinstance(a, SymmetricTensor):
+        return result
+    if _np.ndim(source) == 0:
+        source_axes = (int(source),)
+    else:
+        source_axes = tuple(source)
+    if _np.ndim(destination) == 0:
+        destination_axes = (int(destination),)
+    else:
+        destination_axes = tuple(destination)
+    source_axes = _normalize_axis_order(source_axes, a.ndim)
+    destination_axes = _normalize_axis_order(destination_axes, a.ndim)
+    order = [axis for axis in range(a.ndim) if axis not in source_axes]
+    for dest, src in sorted(zip(destination_axes, source_axes)):
+        order.insert(dest, src)
+    mapping = {old: new for new, old in enumerate(order)}
+    return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))
 
 
 attach_docstring(moveaxis, _np.moveaxis, "free", "0 FLOPs")

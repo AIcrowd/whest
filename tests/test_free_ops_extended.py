@@ -66,6 +66,14 @@ def test_moveaxis():
     assert r.shape == (3, 4, 2)
 
 
+def test_moveaxis_remaps_symmetry():
+    a = we.as_symmetric(numpy.stack([numpy.eye(3), 2 * numpy.eye(3)], axis=-1), symmetry=(0, 1))
+    r = ops.moveaxis(a, 2, 0)
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (2, 3, 3)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(1, 2))
+
+
 def test_vstack():
     r = ops.vstack([numpy.ones((2, 3)), numpy.zeros((2, 3))])
     assert r.shape == (4, 3)
@@ -173,6 +181,14 @@ def test_meshgrid():
     y = numpy.array([3, 4, 5])
     Xg, Yg = ops.meshgrid(x, y)
     assert Xg.shape == (3, 2)
+
+
+def test_transpose_negative_axes_preserves_symmetry():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+    r = ops.transpose(a, axes=(-1, -2))
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (3, 3)
+    assert r.symmetry == a.symmetry
 
 
 def test_astype():
