@@ -279,7 +279,7 @@ def choice(a, size=None, replace=True, p=None):
 
 def symmetric(
     shape: int | tuple[int, ...] | list[int],
-    group: PermutationGroup,
+    symmetry: PermutationGroup,
     distribution: str | callable = "randn",
     **distribution_kwargs,
 ):
@@ -289,7 +289,7 @@ def symmetric(
     ----------
     shape : int or tuple of int
         Shape of the sampled array.
-    group : PermutationGroup
+    symmetry : PermutationGroup
         Symmetry group used for Reynolds averaging.
     distribution : str or callable, default ``\"randn\"``
         Name of a ``numpy.random`` distribution function (for example
@@ -321,7 +321,7 @@ def symmetric(
 
     Notes
     -----
-    This is equivalent to ``we.symmetrize( sampled_data, group)`` where
+    This is equivalent to ``we.symmetrize(sampled_data, symmetry=symmetry)`` where
     ``sampled_data`` is drawn from ``distribution``.
 
     The implementation currently:
@@ -401,7 +401,7 @@ def symmetric(
         )
 
     budget = require_budget()
-    sym_cost = _builtins.max(sample_size * _builtins.max(group.order(), 1), 1)
+    sym_cost = _builtins.max(sample_size * _builtins.max(symmetry.order(), 1), 1)
     sample_cost = sample_size
     with budget.deduct(
         "random.symmetric",
@@ -411,7 +411,7 @@ def symmetric(
     ):
         from whest import symmetrize
 
-        return symmetrize(sample, group)
+        return symmetrize(sample, symmetry=symmetry)
 
 
 def bytes(length):

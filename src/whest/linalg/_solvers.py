@@ -6,6 +6,7 @@ from __future__ import annotations
 import numpy as _np
 
 from whest._docstrings import attach_docstring
+from whest._perm_group import SymmetryGroup
 from whest._symmetric import SymmetricTensor, as_symmetric
 from whest._validation import require_budget
 
@@ -110,7 +111,7 @@ def inv(a):
     ):
         result = _np.linalg.inv(a)
     if is_symmetric:
-        result = as_symmetric(result, symmetric_axes=(0, 1))
+        result = as_symmetric(result, symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
     return result
 
 
