@@ -34,23 +34,23 @@ async function runPythonInRepo(source) {
 test('symmetry guide documents every declaration style', async () => {
   const source = await readSymmetryGuide();
 
-  assert.match(source, /symmetric_axes=\(0, 1\)/);
-  assert.match(source, /symmetric_axes=\[\(0, 1\), \(2, 3\)\]/);
+  assert.match(source, /symmetry=we\.SymmetryGroup\.symmetric\(axes=\(0, 1\)\)/);
+  assert.match(source, /symmetry=we\.SymmetryGroup\.young\(blocks=\(\(0, 1\), \(2, 3\)\)\)/);
   assert.match(
     source,
-    /PermutationGroup\.symmetric\(3, axes=\(0, 1, 2\)\)/,
+    /SymmetryGroup\.symmetric\(axes=\(0, 1, 2\)\)/,
   );
   assert.match(
     source,
-    /PermutationGroup\.cyclic\(3, axes=\(0, 1, 2\)\)/,
+    /SymmetryGroup\.cyclic\(axes=\(0, 1, 2\)\)/,
   );
   assert.match(
     source,
-    /PermutationGroup\.dihedral\(4, axes=\(0, 1, 2, 3\)\)/,
+    /SymmetryGroup\.dihedral\(axes=\(0, 1, 2, 3\)\)/,
   );
   assert.match(
     source,
-    /we\.PermutationGroup\(\s*[\s\S]*we\.Permutation\(we\.Cycle\(0, 2\)\(1, 3\)\)/,
+    /we\.SymmetryGroup\.from_generators\(\s*\[\[2, 3, 0, 1\]\]/,
   );
 });
 
@@ -92,9 +92,9 @@ test('symmetry guide documents the current unary pointwise caveat for non-full g
   const source = await readSymmetryGuide();
 
   assert.doesNotMatch(source, /unary pointwise ops keep the same groups/);
-  assert.match(source, /Unary pointwise ops preserve symmetry-aware costs and keep the same symmetric axes/);
-  assert.match(source, /non-full groups such as `C_k` or `D_k`, the current implementation widens the metadata to full symmetry on those axes/);
-  assert.match(source, /`we\.exp\(c3_tensor\)` still gets symmetry-aware cost savings, but the result is currently tagged as full symmetry on `\(0, 1, 2\)`/);
+  assert.match(source, /Unary pointwise ops preserve symmetry-aware costs/);
+  assert.match(source, /non-full groups such as `C_k`, `D_k`, or custom groups the current implementation widens the metadata to full symmetry on those axes/);
+  assert.match(source, /non-full groups such as `C_k`, `D_k`, or custom groups/);
 });
 
 test('symmetry guide representative propagation claims match runtime behavior', async () => {
@@ -126,19 +126,19 @@ def symmetrize_with_group(shape, symmetry_group):
 
 s2_matrix = we.as_symmetric(
     we.ones((6, 6)),
-    symmetric_axes=(0, 1),
+    symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
 )
 row_slice = s2_matrix[0]
 advanced_index_slice = s2_matrix[we.array([0, 1])]
 
-s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
-c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
-c4_group = we.PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+s3_group = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(axes=(0, 1, 2))
+c4_group = we.SymmetryGroup.cyclic(axes=(0, 1, 2, 3))
 
 s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
 c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
 c4_tensor = symmetrize_with_group((4, 4, 4, 4), c4_group)
-d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
+d4_group = we.SymmetryGroup.dihedral(axes=(0, 1, 2, 3))
 d4_tensor = symmetrize_with_group((4, 4, 4, 4), d4_group)
 
 s3_slice = s3_tensor[:, :, 0]
@@ -154,7 +154,7 @@ with we.BudgetContext(flop_budget=10**8) as budget:
         'ki,kj->ij',
         repeated_input,
         repeated_input,
-        symmetric_axes=[(0, 1)],
+        symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
     )
     repeated_einsum_cost = budget.flops_used
 
@@ -165,23 +165,23 @@ with we.BudgetContext(flop_budget=10**8) as budget:
         'ki,kj->ij',
         distinct_left,
         distinct_right,
-        symmetric_axes=[(0, 1)],
+        symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
     )
     distinct_einsum_cost = budget.flops_used
 
 left_tensor = we.as_symmetric(
     we.ones((3, 3, 5, 5)),
-    symmetric_axes=[(0, 1), (2, 3)],
+    symmetry=we.SymmetryGroup.young(blocks=((0, 1), (2, 3))),
 )
 right_tensor = we.as_symmetric(
     we.ones((3, 3, 5, 5)),
-    symmetric_axes=[(0, 1)],
+    symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
 )
 shared_group_tensor = we.add(left_tensor, right_tensor)
 
 stretched_s2_tensor = we.as_symmetric(
     we.ones((1, 1, 4)),
-    symmetry=we.PermutationGroup.symmetric(2, axes=(0, 1)),
+    symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
 )
 plain_tensor = we.ones((3, 3, 4))
 broadcast_sum = we.add(stretched_s2_tensor, plain_tensor)
@@ -190,20 +190,20 @@ print(json.dumps({
     "row_slice_type": type(row_slice).__name__,
     "advanced_index_slice_type": type(advanced_index_slice).__name__,
     "s3_slice_type": type(s3_slice).__name__,
-    "s3_slice_orders": [group.order() for group in s3_slice.symmetry_info.groups],
-    "s3_slice_axes": [group.axes for group in s3_slice.symmetry_info.groups],
+    "s3_slice_order": s3_slice.symmetry.order(),
+    "s3_slice_axes": list(s3_slice.symmetry.axes),
     "c3_slice_type": type(c3_slice).__name__,
-    "c3_slice_has_symmetry": hasattr(c3_slice, "symmetry_info"),
+    "c3_slice_has_symmetry": getattr(c3_slice, "symmetry", None) is not None,
     "c4_reduced_type": type(c4_reduced).__name__,
-    "c4_reduced_orders": [group.order() for group in c4_reduced.symmetry_info.groups],
-    "c4_reduced_axes": [group.axes for group in c4_reduced.symmetry_info.groups],
+    "c4_reduced_order": c4_reduced.symmetry.order(),
+    "c4_reduced_axes": list(c4_reduced.symmetry.axes),
     "intersection_type": type(intersection_tensor).__name__,
-    "intersection_orders": [group.order() for group in intersection_tensor.symmetry_info.groups],
+    "intersection_order": intersection_tensor.symmetry.order(),
     "shared_group_type": type(shared_group_tensor).__name__,
-    "shared_group_axes": [group.axes for group in shared_group_tensor.symmetry_info.groups],
-    "broadcast_has_symmetry": hasattr(broadcast_sum, "symmetry_info"),
-    "unary_c3_orders": [group.order() for group in unary_c3.symmetry_info.groups],
-    "unary_d4_orders": [group.order() for group in unary_d4.symmetry_info.groups],
+    "shared_group_axes": list(shared_group_tensor.symmetry.axes),
+    "broadcast_has_symmetry": getattr(broadcast_sum, "symmetry", None) is not None,
+    "unary_c3_order": unary_c3.symmetry.order(),
+    "unary_d4_order": unary_d4.symmetry.order(),
     "repeated_einsum_cost": repeated_einsum_cost,
     "distinct_einsum_cost": distinct_einsum_cost,
     "repeated_einsum_type": type(repeated_einsum).__name__,
@@ -216,20 +216,20 @@ print(json.dumps({
     row_slice_type: 'ndarray',
     advanced_index_slice_type: 'ndarray',
     s3_slice_type: 'SymmetricTensor',
-    s3_slice_orders: [2],
-    s3_slice_axes: [[0, 1]],
+    s3_slice_order: 2,
+    s3_slice_axes: [0, 1],
     c3_slice_type: 'ndarray',
     c3_slice_has_symmetry: false,
     c4_reduced_type: 'SymmetricTensor',
-    c4_reduced_orders: [2],
-    c4_reduced_axes: [[0, 1]],
+    c4_reduced_order: 2,
+    c4_reduced_axes: [0, 1],
     intersection_type: 'SymmetricTensor',
-    intersection_orders: [3],
+    intersection_order: 3,
     shared_group_type: 'SymmetricTensor',
-    shared_group_axes: [[0, 1]],
+    shared_group_axes: [0, 1],
     broadcast_has_symmetry: false,
-    unary_c3_orders: [6],
-    unary_d4_orders: [24],
+    unary_c3_order: 6,
+    unary_d4_order: 24,
     repeated_einsum_cost: 30,
     distinct_einsum_cost: 45,
     repeated_einsum_type: 'SymmetricTensor',

@@ -836,7 +836,7 @@ class TestLinalgSolversExtended:
         # Symmetric cost: n^3/3 + n^3
         n = 4
         a = numpy.eye(n) * 2.0
-        sym_a = as_symmetric(a, symmetric_axes=(0, 1))
+        sym_a = as_symmetric(a, symmetry=(0, 1))
         with BudgetContext(flop_budget=10**9) as budget:
             result = inv(sym_a)
         expected_cost = inv_cost(n, symmetric=True)

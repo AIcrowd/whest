@@ -206,10 +206,10 @@ sigma-loop -- they are not a standalone detection mechanism.
 ### Sigma loop: derive pi from generators
 
 The sigma-loop iterates over **generators** of the row-permutation group on M,
-drawn from two sources:
+drawn from three sources:
 
 - **Source A -- per-operand internal symmetry generators.** For each operand
-  that carries a declared `PermutationGroup`, each generator of that group is
+  that carries a declared `SymmetryGroup`, each generator of that group is
   lifted to a row permutation on M (permuting only the rows belonging to that
   operand). This captures symmetry that was previously handled by orbit-based
   axis merging.
@@ -219,19 +219,16 @@ drawn from two sources:
   `(op_i, op_{i+1})` are used as generators. Each such swap is lifted to a row
   permutation that exchanges the rows of the two operands.
 
+- **Source C -- coordinated axis relabeling.** When identical operands share
+  the same subscript pattern (e.g. both have subscript `ij`), permuting axes
+  uniformly across all copies is equivalent to relabeling dummy indices.
+  Adjacent transpositions on W-only (summed) axes are generated, applied to
+  every copy simultaneously. This is restricted to W-side labels because
+  relabeling free (output) labels would change the output tensor.
+
 All generators are collected and passed to Dimino's algorithm to build the
 full row-permutation group. The sigma-loop then iterates over **all elements**
 of this group (not just the generators), deriving pi for each.
-
-> **Historical note.** An earlier draft emitted a third generator source
-> (**Source C**: coordinated W-axis relabeling across identical operands
-> sharing the same subscript). That source produces **expression-level**
-> symmetries -- valid under dummy-variable renaming of summed indices -- but
-> *not* **per-tuple** symmetries. Feeding them into Burnside orbit compression
-> caused over-compression: on Frobenius `'ij,ij→'` with generic A at n=2, the
-> engine claimed μ=3 when the truth is μ=4. Source C was removed; expression-
-> level symmetries are now recovered separately via $V_{\text{sub}} \times S(W)$ (below)
-> without contaminating compression.
 
 For each group element `sigma`:
 
@@ -242,52 +239,15 @@ For each group element `sigma`:
    hash-table lookup in O(1). When multiple labels share a fingerprint
    (collision), pick the lex-first unused candidate. If any label has no
    match, reject this sigma.
-4. **Validate pi:** require a bijective fingerprint match. In the JS
-   explorer, cross-V/W cycles are retained — a declared axis symmetry that
-   links a V-axis with a W-axis (e.g., a symmetric matrix used as `A[i,j]`
-   with `i` free and `j` summed) produces a legitimate per-tuple symmetry
-   even though it crosses the V/W boundary. The classification tree
-   (singleton, young, directProduct, bruteForceOrbit) dispatches correctly
-   based on whether cross elements are present.
-5. **Collect pi as a `Permutation` object** over all labels. Non-identity
-   permutations become generators of the detected per-tuple group $G_{\text{pt}}$.
+4. **Validate pi:** `pi(V) is a subset of V` and `pi(W) is a subset of W`. Any cycle crossing V to W
+   invalidates the sigma.
+5. **Collect pi as a generator literal** restricted to V labels (and
+   separately to W labels). Non-identity generators become part of the
+   detected `SymmetryGroup`.
 
-The sigma-loop collects all non-identity pi as `Permutation` objects.
-These generators are passed to Dimino's algorithm (via `PermutationGroup(...)`)
-to close the group and build the exact **per-tuple** symmetry group.
-
-### Per-tuple vs expression-level symmetry
-
-Every einsum actually admits **two** distinct label-permutation groups:
-
-- **Per-tuple** $G_{\text{pt}}$: a permutation π such that for every tuple `t` of
-  index values, `summand(t) = summand(π⁻¹ t)`. Compression uses this group
-  — reusing one orbit representative is only valid when every tuple in the
-  orbit has the same summand value.
-
-- **Expression-level** $G_{\text{expr}}$: a permutation π such that the total sum
-  is unchanged under renaming all labels by π, even if individual terms get
-  reshuffled. Always a superset of $G_{\text{pt}}$; includes dummy-rename
-  permutations of summed labels.
-
-The expression-level group factors cleanly (when restricted to V/W-
-preserving elements) as $V_{\text{sub}} \times S(W)$:
-
-- $V_{\text{sub}}$: $G_{\text{pt}}$ projected to V-labels (the action on output axes).
-- $S(W)$: the full symmetric group on W-labels. Every permutation of W
-  is always an expression-level symmetry because summing over W is
-  bound-variable iteration — renaming dummies does not change the total.
-
-$G_{\text{expr}}$ is computed directly from this formula, with no additional σ-loop
-source and no Dimino pass. The explorer shows both groups in its sticky
-bar (`per-tuple` and `expr-level` badges) when they differ.
-
-**Why both?** Compression formulas (μ, α) must use $G_{\text{pt}}$ — feeding them
-$G_{\text{expr}}$ over-compresses, because dummy-rename orbits contain tuples whose
-summand values differ. But the expression-level group is the "natural"
-counting symmetry readers recognize: bilinear-trace has a Z₂ × Z₂ counting
-symmetry even though only its Z₂ diagonal is per-tuple. Exposing both
-distinguishes the *structural* story from the *compression-valid* story.
+The sigma-loop collects all non-identity pi restrictions as generator literals.
+These generators are passed to Dimino's algorithm to close the group and build
+the exact symmetry group on V (and separately on W).
 
 ## Interactive explorer
 
@@ -344,7 +304,7 @@ gives:
 pi(a) = b,  pi(b) = a,  pi(i) = i
 ```
 
-Cycle structure on V: single 2-cycle (a b) -- **per-index `S_2{a, b}`**.
+Label action on V: a single transposition (a b) -- **per-index `S_2{a, b}`**.
 X^T X is symmetric in its two output indices, as expected.
 
 </Accordion>
@@ -397,8 +357,7 @@ Inner symmetry can be toggled with `we.configure(use_inner_symmetry=False)`.
 
 ## Exact group detection and Burnside counting
 
-The sigma-loop collects all valid pi permutations as `Permutation`
-objects (generators) and builds a `PermutationGroup` directly.
+The sigma-loop collects all valid pi permutations as generator literals and builds a `SymmetryGroup` directly.
 
 When the generated group equals S_k (the full symmetric group, checked via
 `order == k!`), the existing stars-and-bars formula `C(n+k-1, k)` applies.
@@ -432,7 +391,8 @@ and groups of sizes `k_1, k_2, ...`:
 
 - **Generator collection:** Source A contributes O(rank) generators per operand
   with declared symmetry. Source B contributes k-1 generators per identical group.
-  Total generators: `g = O(N * rank)`.
+  Source C contributes at most rank-1 generators per identical group with matching
+  subscripts. Total generators: `g = O(N * rank)`.
 - **Group enumeration:** Dimino's algorithm builds the full row-permutation
   group from the generators in `O(|G| * g)` compositions.
 - **Pi derivation:** For each of the `|G|` group elements, deriving pi costs

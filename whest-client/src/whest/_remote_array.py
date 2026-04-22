@@ -682,14 +682,8 @@ def _encode_arg(arg):
         return arg._value
     if isinstance(arg, RemoteArray):
         return {"__handle__": arg.handle_id}
-    # Hidden permutation helpers and public symmetry groups → wire format
-    from whest._perm_group import SymmetryGroup, _Cycle, _Permutation
+    from whest._perm_group import SymmetryGroup
 
-    if isinstance(arg, _Cycle):
-        arr = arg.list()
-        return {"__permutation__": arr}
-    if isinstance(arg, _Permutation):
-        return {"__permutation__": arg.array_form}
     if isinstance(arg, SymmetryGroup):
         return {"__symmetry_group__": arg.to_payload()}
     if isinstance(arg, (list, tuple)):

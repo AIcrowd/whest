@@ -422,7 +422,6 @@ from whest._sorting_ops import (  # noqa: F401
 # --- Symmetric tensor ---
 from whest._symmetric import (  # noqa: F401
     SymmetricTensor,
-    SymmetryInfo,
     as_symmetric,
     is_symmetric,
     symmetrize,

@@ -23,10 +23,10 @@ instead of dense ones.
 | Operation | Dense cost | Symmetry-aware cost | Why it drops |
 |-----------|------------|---------------------|--------------|
 | `we.exp(s2_matrix)` | `n^2` | `n * (n + 1) / 2` | only unique matrix entries matter |
-| `we.einsum('ki,kj->ij', x, x, symmetric_axes=[(0, 1)])` | `m * n^2` | `m * n * (n + 1) / 2` | the repeated `x` operand lets whest detect symmetric output and reduce the cost |
+| `we.einsum('ki,kj->ij', x, x, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))` | `m * n^2` | `m * n * (n + 1) / 2` | the repeated `x` operand lets whest detect symmetric output and reduce the cost |
 | `we.einsum('i,j,k->ijk', v, v, v)` | `n^3` | symmetry-reduced | repeated operands induce output symmetry |
 
-By contrast, `symmetric_axes` on an `einsum` output tags the result for downstream
+By contrast, declaring `symmetry=` on an `einsum` output tags the result for downstream
 operations; it does not reduce that `einsum`'s own cost by itself.
 
 ## Quick start
@@ -37,7 +37,7 @@ import whest as we
 with we.BudgetContext(flop_budget=10**6) as budget:
     s2_matrix = we.as_symmetric(
         we.array([[2.0, 1.0], [1.0, 3.0]]),
-        symmetric_axes=(0, 1),
+        symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
     )
 
     exp_s2_matrix = we.exp(s2_matrix)
@@ -53,16 +53,16 @@ symmetry metadata algebraically through many operations. Unary pointwise ops pre
 
 ## How to declare symmetry
 
-### Full symmetric shorthand with `symmetric_axes`
+### Full symmetry with `SymmetryGroup.symmetric`
 
-Use `symmetric_axes` when the tensor is invariant under every permutation of a
+Use `SymmetryGroup.symmetric` when the tensor is invariant under every permutation of a
 set of axes.
 
 ```python
 import whest as we
 
 matrix_data = we.array([[2.0, 1.0], [1.0, 3.0]])
-s2_matrix = we.as_symmetric(matrix_data, symmetric_axes=(0, 1))
+s2_matrix = we.as_symmetric(matrix_data, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
 ```
 
 This is the most common declaration: full `S_2` symmetry on matrix axes
@@ -74,30 +74,29 @@ This is the most common declaration: full `S_2` symmetry on matrix axes
 block_tensor_data = we.ones((2, 2, 3, 3))
 block_s2_tensor = we.as_symmetric(
     block_tensor_data,
-    symmetric_axes=[(0, 1), (2, 3)],
+    symmetry=we.SymmetryGroup.young(blocks=((0, 1), (2, 3))),
 )
 ```
 
 This declares one full symmetric group on axes `(0, 1)` and another on
 `(2, 3)`.
 
-### Explicit full symmetric groups with `PermutationGroup.symmetric`
+### Explicit full symmetric groups with `SymmetryGroup.symmetric`
 
 ```python
-s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+s3_group = we.SymmetryGroup.symmetric(3, axes=(0, 1, 2))
 s3_tensor = we.as_symmetric(
     we.ones((4, 4, 4)),
     symmetry=s3_group,
 )
 ```
 
-This is equivalent in meaning to `symmetric_axes=(0, 1, 2)`, but explicit
-groups are useful once you want to inspect or combine them directly.
+This explicit group is useful once you want to inspect or combine symmetry directly.
 
-### Cyclic symmetry with `PermutationGroup.cyclic`
+### Cyclic symmetry with `SymmetryGroup.cyclic`
 
 ```python
-c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(3, axes=(0, 1, 2))
 c3_tensor = we.as_symmetric(
     we.ones((4, 4, 4)),
     symmetry=c3_group,
@@ -107,10 +106,10 @@ c3_tensor = we.as_symmetric(
 `C_3` means rotations are allowed, but reflections are not. This is weaker
 than `S_3`, so it usually gives fewer savings.
 
-### Dihedral symmetry with `PermutationGroup.dihedral`
+### Dihedral symmetry with `SymmetryGroup.dihedral`
 
 ```python
-d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
+d4_group = we.SymmetryGroup.dihedral(4, axes=(0, 1, 2, 3))
 d4_tensor = we.as_symmetric(
     we.ones((4, 4, 4, 4)),
     symmetry=d4_group,
@@ -122,8 +121,8 @@ d4_tensor = we.as_symmetric(
 ### Arbitrary subgroups from custom generators
 
 ```python
-opposite_pair_swap_group = we.PermutationGroup(
-    we.Permutation(we.Cycle(0, 2)(1, 3)),
+opposite_pair_swap_group = we.SymmetryGroup.from_generators(
+    [[2, 3, 0, 1]],
     axes=(0, 1, 2, 3),
 )
 
@@ -138,8 +137,8 @@ Use this form when the built-in constructors do not describe your symmetry.
 ### Multiple explicit groups on one tensor
 
 ```python
-row_swap_group = we.PermutationGroup.symmetric(2, axes=(0, 1))
-column_swap_group = we.PermutationGroup.symmetric(2, axes=(2, 3))
+row_swap_group = we.SymmetryGroup.symmetric(2, axes=(0, 1))
+column_swap_group = we.SymmetryGroup.symmetric(2, axes=(2, 3))
 
 two_group_tensor = we.as_symmetric(
     we.ones((3, 3, 5, 5)),
@@ -147,7 +146,7 @@ two_group_tensor = we.as_symmetric(
 )
 ```
 
-This is the explicit-group equivalent of `symmetric_axes=[(0, 1), (2, 3)]`.
+This uses a direct product of two exact symmetry factors, one on `(0, 1)` and one on `(2, 3)`.
 
 ## Generating example data with the Reynolds operator
 
@@ -180,9 +179,9 @@ This helper is ideal for docs, tests, and experiments:
 - it keeps examples consistent across symmetry classes
 
 ```python
-s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
-c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
-d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
+s3_group = we.SymmetryGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(3, axes=(0, 1, 2))
+d4_group = we.SymmetryGroup.dihedral(4, axes=(0, 1, 2, 3))
 
 s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
 c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
@@ -222,7 +221,7 @@ every removed axis must stay fixed under any surviving group element.
 ```python
 s2_matrix = we.as_symmetric(
     we.ones((6, 6)),
-    symmetric_axes=(0, 1),
+    symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
 )
 
 same_size_slice = s2_matrix[:3, :3]
@@ -247,8 +246,8 @@ axes remain, but it does not change the propagation rule itself.
 The difference between full and non-full groups matters immediately:
 
 ```python
-s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
-c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+s3_group = we.SymmetryGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(3, axes=(0, 1, 2))
 
 s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
 c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
@@ -268,9 +267,9 @@ reduced axes are allowed to permute among themselves, because summation treats
 all positions along the reduced set equivalently.
 
 ```python
-s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
-c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
-c4_group = we.PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+s3_group = we.SymmetryGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(3, axes=(0, 1, 2))
+c4_group = we.SymmetryGroup.cyclic(4, axes=(0, 1, 2, 3))
 
 s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
 c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
@@ -300,8 +299,8 @@ general groups, that means element-set intersection on matching output axes,
 not just matching tuples of axis numbers.
 
 ```python
-s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
-c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+s3_group = we.SymmetryGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.SymmetryGroup.cyclic(3, axes=(0, 1, 2))
 
 s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
 c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
@@ -317,11 +316,11 @@ Multiple groups are handled independently:
 ```python
 left_tensor = we.as_symmetric(
     we.ones((3, 3, 5, 5)),
-    symmetric_axes=[(0, 1), (2, 3)],
+    symmetry=we.SymmetryGroup.young(blocks=((0, 1), (2, 3))),
 )
 right_tensor = we.as_symmetric(
     we.ones((3, 3, 5, 5)),
-    symmetric_axes=[(0, 1)],
+    symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
 )
 
 shared_group_tensor = we.add(left_tensor, right_tensor)
@@ -335,7 +334,7 @@ Broadcasting matters too:
 ```python
 stretched_s2_tensor = we.as_symmetric(
     we.ones((1, 1, 4)),
-    symmetry=we.PermutationGroup.symmetric(2, axes=(0, 1)),
+    symmetry=we.SymmetryGroup.symmetric(2, axes=(0, 1)),
 )
 
 plain_tensor = we.ones((3, 3, 4))
@@ -355,7 +354,7 @@ guarantee that the declared symmetry survives, the result falls back to a plain
 ```python
 s2_matrix = we.as_symmetric(
     we.ones((6, 6)),
-    symmetric_axes=(0, 1),
+    symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
 )
 
 row_slice = s2_matrix[0]
@@ -380,9 +379,8 @@ change.
 
 The propagation rules are easier to predict if you keep three ideas in mind:
 
-- **Unary pointwise ops** currently rebuild results from `symmetric_axes`, so
-  they preserve the same symmetric axes but not exact subgroup identity for
-  `C_k`, `D_k`, or custom groups
+- **Unary pointwise ops** preserve symmetry-aware costs, but for
+  non-full groups such as `C_k`, `D_k`, or custom groups the current implementation widens the metadata to full symmetry on those axes
 - **Slicing** uses the pointwise stabilizer of the removed axes
 - **Reductions** use the setwise stabilizer of the reduced axes
 - **Binary pointwise ops** use intersection of both operands' groups after

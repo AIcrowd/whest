@@ -76,20 +76,20 @@ There are two separate symmetry declarations — one for inputs, one for outputs
 
 ```python
 with we.BudgetContext(flop_budget=10**8) as budget:
-    S = we.as_symmetric(we.eye(10), symmetric_axes=(0, 1))  # 55 unique elements
+    S = we.as_symmetric(we.eye(10), symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))  # 55 unique elements
     v = we.ones((10,))
 
     result = we.einsum('ij,j->i', S, v)  # cost reduced by input symmetry
 ```
 
-**Output symmetry** — pass `symmetric_axes` to `einsum()` to declare that the result is symmetric. This wraps the output as a `SymmetricTensor` so downstream operations benefit from reduced costs. It does NOT affect the cost of this einsum — it's a declaration about the result's structure:
+**Output symmetry** — pass `symmetry=` to `einsum()` to declare that the result is symmetric. This wraps the output as a `SymmetricTensor` so downstream operations benefit from reduced costs. It does NOT affect the cost of this einsum — it's a declaration about the result's structure:
 
 ```python
 with we.BudgetContext(flop_budget=10**8) as budget:
     X = we.random.randn(100, 10)
 
-    # X^T X is always symmetric — declare output axes (0,1) as symmetric
-    C = we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
+    # X^T X is always symmetric — declare the exact output group
+    C = we.einsum('ki,kj->ij', X, X, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
 
     print(type(C))  # <class 'SymmetricTensor'>
     # C can now be passed to other operations with automatic cost savings
@@ -105,7 +105,7 @@ For the full symmetry guide, see [Symmetry Savings](/docs/guides/symmetry/).
 import whest as we
 
 n = 10
-T = we.as_symmetric(we.ones((n, n, n)), symmetric_axes=(0, 1, 2))
+T = we.as_symmetric(we.ones((n, n, n)), symmetry=we.SymmetryGroup.symmetric(axes=(0, 1, 2)))
 A = we.random.randn(n, n)
 B = we.random.randn(n, n)
 C = we.random.randn(n, n)
