@@ -1,7 +1,8 @@
-"""FLOP cost estimation utilities.
+"""Public FLOP cost estimation utilities for the lightweight client.
 
-Some cost functions can be computed locally (pure arithmetic); others
-proxy to the server for more complex estimations.
+Local helpers mirror the core ``whest.flops`` public API shape. They apply
+client-side FLOP weights when configured via ``whest._weights``; more complex
+helpers continue to proxy to the server.
 """
 
 from __future__ import annotations
@@ -9,34 +10,50 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 from whest._math_compat import prod as _prod
+from whest._weights import get_weight
 
 # ---------------------------------------------------------------------------
 # Local cost functions (no server needed)
 # ---------------------------------------------------------------------------
 
 
-def pointwise_cost(shape: tuple[int, ...]) -> int:
-    """Return the FLOP cost of a pointwise (element-wise) operation.
+def _weight_cost(op_name: str, analytical_cost: int) -> int:
+    """Convert an analytical FLOP count into a weighted public estimate."""
+    return int(analytical_cost * get_weight(op_name))
+
+
+def pointwise_cost(op_name: str, *, shape: tuple[int, ...]) -> int:
+    """Return the weighted client-side cost of a pointwise operation.
 
     Parameters
     ----------
+    op_name:
+        Operation name used for weight lookup.
     shape:
         Shape of the array the operation is applied to.
 
     Returns
     -------
     int
-        Number of elements (``_prod(shape)``), which equals the number
-        of FLOPs for a single pointwise operation.
+        Weighted public cost estimate for a single pointwise operation.
     """
-    return max(_prod(shape), 1)
+    if not isinstance(op_name, str):
+        raise TypeError("pointwise_cost() requires op_name as the first argument")
+    return _weight_cost(op_name, max(_prod(shape), 1))
 
 
-def reduction_cost(input_shape: tuple[int, ...], axis: int | None = None) -> int:
-    """Return the FLOP cost of a reduction operation.
+def reduction_cost(
+    op_name: str,
+    *,
+    input_shape: tuple[int, ...],
+    axis: int | None = None,
+) -> int:
+    """Return the weighted client-side cost of a reduction operation.
 
     Parameters
     ----------
+    op_name:
+        Operation name used for weight lookup.
     input_shape:
         Shape of the input array.
     axis:
@@ -46,14 +63,16 @@ def reduction_cost(input_shape: tuple[int, ...], axis: int | None = None) -> int
     Returns
     -------
     int
-        Number of FLOPs for the reduction.
+        Weighted public cost estimate for the reduction.
     """
+    if not isinstance(op_name, str):
+        raise TypeError("reduction_cost() requires op_name as the first argument")
     total = max(_prod(input_shape), 1)
     if axis is None:
-        return total
+        return _weight_cost(op_name, total)
     # Reduction along a single axis: cost is the total element count
     # (each element participates once).
-    return total
+    return _weight_cost(op_name, total)
 
 
 # ---------------------------------------------------------------------------

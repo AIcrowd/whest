@@ -37,9 +37,12 @@ whest computes FLOP costs **analytically from tensor shapes**, not by measuring 
 
 ## Cost formulas by category
 
-Each formula below gives the **analytical base cost**. When per-operation
-[weights](#per-operation-weights) are loaded, the base cost is multiplied
-by the operation's weight to give the final deducted cost.
+Each formula below gives the **analytical base cost**. In normal use,
+whest loads the packaged official per-operation
+[weights](#per-operation-weights) automatically at import time, so the base
+cost is multiplied by the operation's weight to give the final deducted
+cost. Set `WHEST_DISABLE_WEIGHTS=1` if you want the pure analytical unit-cost
+model instead.
 
 | Category | Formula | Example |
 |----------|---------|---------|
@@ -245,8 +248,10 @@ Integer and bitwise operations (`bitwise_and`, `gcd`, `lcm`, etc.) use the
 do not retire `fp_arith_inst_retired` events. Their weights are derived from
 instruction counts normalized the same way as FP operations.
 
-Weights are loaded from a JSON config file. Without a config file, all
-weights default to 1.0 -- the analytical formulas apply unchanged.
+Official weights are packaged with whest and enabled by default on import.
+Use `WHEST_WEIGHTS_FILE` to override them with a custom JSON file, or set
+`WHEST_DISABLE_WEIGHTS=1` to disable weighting entirely and fall back to
+unit weights (1.0 for all operations).
 
 ### How weights are applied
 
@@ -262,13 +267,19 @@ This means weights compose with `flop_multiplier` and with symmetry
 reductions -- symmetry reduces the element count, the weight scales the
 per-element cost, and both apply independently.
 
-### Loading a weights config
+### Overriding or disabling packaged weights
 
-Set the `WHEST_WEIGHTS_FILE` environment variable to load weights at
-import time:
+Normal imports load the packaged official weights automatically. To override
+them at import time, set `WHEST_WEIGHTS_FILE`:
 
 ```bash
 export WHEST_WEIGHTS_FILE=/path/to/weights.json
+```
+
+To disable weighting entirely and use unit weights instead:
+
+```bash
+export WHEST_DISABLE_WEIGHTS=1
 ```
 
 The JSON file must have a `"weights"` key mapping operation names to floats:
@@ -285,7 +296,7 @@ The JSON file must have a `"weights"` key mapping operation names to floats:
 }
 ```
 
-Operations not listed in the file default to 1.0. See
+Operations not listed in the override file default to 1.0. See
 [Calibrate Weights](/docs/development/calibration/) for how to generate
 this file.
 

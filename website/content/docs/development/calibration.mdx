@@ -21,7 +21,7 @@ Per-operation **weights** correct for this. Each weight is a multiplicative cons
 effective_cost = analytical_formula(shape) * weight(op_name)
 ```
 
-A weight of 16.0 for `exp` means each analytical FLOP of `exp` costs approximately 16 times more in actual hardware instructions than one FLOP of `add`. Without a weights config, all weights default to 1.0 -- the analytical formulas apply unchanged.
+A weight of 16.0 for `exp` means each analytical FLOP of `exp` is calibrated as approximately 16 times more expensive than one analytical FLOP of `add` under the chosen measurement mode. In normal use, whest loads packaged official weights automatically on import. Set `WHEST_DISABLE_WEIGHTS=1` if you want the pure analytical unit-cost model instead.
 
 ## Quick start
 
@@ -37,8 +37,12 @@ python -m benchmarks.runner \
 
 This benchmarks all 291 operations across 14 categories and writes:
 
-- `weights.json` -- the weights config for whest
+- `weights.json` -- the rich weights config and metadata source for whest
 - `report.html` -- a human-readable HTML dashboard
+
+The generated `weights.json` is the source-of-truth artifact: it contains the
+per-operation weights plus metadata used by the generated docs and API data.
+The packaged runtime file is a slim derivative used only for default loading.
 
 To benchmark only certain categories:
 
@@ -54,12 +58,23 @@ Available categories: `pointwise`, `reductions`, `linalg`, `linalg_delegates`, `
 
 ## Using weights
 
-### Environment variable
+### Default, override, and disable behavior
 
-Set `WHEST_WEIGHTS_FILE` to load weights at import time:
+whest ships with packaged official weights and loads them automatically on a
+normal import.
+
+Set `WHEST_WEIGHTS_FILE` to override those packaged defaults at import time:
 
 ```bash
 export WHEST_WEIGHTS_FILE=weights.json
+python your_code.py
+```
+
+Set `WHEST_DISABLE_WEIGHTS=1` to disable weighting entirely and use unit
+weights:
+
+```bash
+export WHEST_DISABLE_WEIGHTS=1
 python your_code.py
 ```
 
@@ -77,7 +92,7 @@ The JSON file must have a `"weights"` key mapping operation names to floats:
 }
 ```
 
-Operations not listed in the file default to 1.0. A partial config (e.g., pointwise-only) works without error.
+Operations not listed in the override file default to 1.0. A partial config (e.g., pointwise-only) works without error.
 
 ### Programmatic loading
 
@@ -87,12 +102,15 @@ from whest._weights import load_weights, reset_weights, get_weight
 # Load from a specific file
 load_weights("/path/to/weights.json")
 
+# Or re-load the packaged official defaults explicitly
+load_weights()
+
 # Check a weight
 print(get_weight("exp"))   # e.g. 16.0 after calibration
 print(get_weight("add"))   # 1.0
 print(get_weight("foo"))   # 1.0 (unknown ops default to 1.0)
 
-# Reset to defaults (all 1.0)
+# Clear active overrides in the current process
 reset_weights()
 ```
 
@@ -112,8 +130,8 @@ The benchmark suite supports two measurement modes, chosen automatically:
 
 | Mode | Platform | What it measures |
 |------|----------|------------------|
-| **perf** | Linux (with `perf` installed) | Actual FP instructions via hardware counters, weighted by SIMD width |
-| **timing** | Any (macOS, Linux without `perf`) | Wall-clock time, normalized against `np.add` |
+| **perf** | Linux (with `perf` installed) | Instruction-style hardware counters, weighted by SIMD width |
+| **timing** | Any (macOS, Linux without `perf`) | Relative wall-clock cost, normalized against `np.add` |
 
 Every operation's weight is computed as:
 
@@ -121,7 +139,12 @@ Every operation's weight is computed as:
 weight(op) = max(alpha_raw(op) - overhead_for_category, 0)
 ```
 
-where `alpha_raw(op)` is the median ratio of hardware-observed FP instructions to the analytical FLOP count (FMA = 1 op), measured across 3 input distributions.
+where `alpha_raw(op)` depends on the active measurement mode:
+
+- in **perf** mode, it is the median ratio of counter-observed retired instructions to the analytical FLOP count (FMA = 1 op)
+- in **timing** mode, it is the median ratio of wall-clock cost relative to `np.add`, normalized against the same analytical FLOP count
+
+In other words, perf-mode weights are instruction-oriented calibration factors, while timing-mode weights are relative cost proxies. Both are useful for scaling analytical FLOPs, but timing-mode results should not be read as literal hardware instruction counts.
 
 The ufunc dispatch overhead (measured from `np.abs`, which generates zero FP arithmetic) is subtracted per category to remove NumPy implementation noise from the weight. BLAS-backed operations bypass the ufunc layer and have zero overhead subtracted.
 
@@ -129,9 +152,9 @@ Each measurement uses pre-allocated output arrays to eliminate memory allocation
 
 ## Interpreting results
 
-- **weight = 1.0** -- the operation retires the same number of FP instructions per analytical FLOP as `np.add`
-- **weight > 1.0** -- more FP instructions per analytical FLOP (e.g., `exp` at ~14 means each FLOP of `exp` costs approximately 14 FP instructions)
-- **weight < 1.0** -- fewer FP instructions per analytical FLOP, typically the **FMA effect**: BLAS-backed operations like `matmul` use fused multiply-add instructions that compute `a * b + c` in one instruction but count as 2 analytical FLOPs; a weight of ~0.64 for `matmul` reflects this fusion
+- **weight = 1.0** -- the operation has the same calibrated cost per analytical FLOP as `np.add` under the chosen measurement mode
+- **weight > 1.0** -- the operation is more expensive per analytical FLOP than `np.add` under the chosen calibration mode (for example, transcendental functions such as `exp`)
+- **weight < 1.0** -- the operation is cheaper per analytical FLOP than `np.add` under the chosen calibration mode. This can happen because of efficient kernels, vectorization, library implementation details, or benchmarking noise; it should not be interpreted using the old “FMA counts as 2 FLOPs” convention, because whest uses FMA = 1 throughout the model
 
 Weights are platform-specific -- different CPUs, BLAS libraries, and libm implementations produce different values. Always measure on the target platform. Symmetry reductions are independent of weights: symmetry reduces the element count while the weight scales the per-element cost.
 

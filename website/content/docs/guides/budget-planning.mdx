@@ -26,11 +26,11 @@ cost = we.flops.svd_cost(m=256, n=256, k=10)
 print(f"SVD cost: {cost:,}")            # 655,360
 
 # Pointwise cost (unary/binary ops like exp, add, multiply)
-cost = we.flops.pointwise_cost(shape=(256, 256))
+cost = we.flops.pointwise_cost("exp", shape=(256, 256))
 print(f"Pointwise cost: {cost:,}")      # 65,536
 
 # Reduction cost (sum, mean, max, etc.)
-cost = we.flops.reduction_cost(input_shape=(256, 256))
+cost = we.flops.reduction_cost("sum", input_shape=(256, 256))
 print(f"Reduction cost: {cost:,}")      # 65,536
 ```
 
@@ -53,8 +53,8 @@ Plan a multi-step computation before executing:
 ```python
 steps = [
     ("einsum ij,j->i", we.flops.einsum_cost('ij,j->i', shapes=[(256, 256), (256,)])),
-    ("ReLU (maximum)", we.flops.pointwise_cost(shape=(256,))),
-    ("sum reduction", we.flops.reduction_cost(input_shape=(256,))),
+    ("ReLU (maximum)", we.flops.pointwise_cost("maximum", shape=(256,))),
+    ("sum reduction", we.flops.reduction_cost("sum", input_shape=(256,))),
 ]
 
 total = sum(cost for _, cost in steps)

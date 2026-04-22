@@ -14,16 +14,16 @@ steps = [
         "Layer 1: W1 @ x",
         we.flops.einsum_cost("ij,j->i", shapes=[(width, width), (width,)]),
     ),
-    ("Layer 1: ReLU", we.flops.pointwise_cost(shape=(width,))),
+    ("Layer 1: ReLU", we.flops.pointwise_cost("maximum", shape=(width,))),
     (
         "Layer 2: W2 @ h1",
         we.flops.einsum_cost("ij,j->i", shapes=[(width, width), (width,)]),
     ),
-    ("Layer 2: ReLU", we.flops.pointwise_cost(shape=(width,))),
+    ("Layer 2: ReLU", we.flops.pointwise_cost("maximum", shape=(width,))),
     (
         "Output: mean",
-        we.flops.reduction_cost(input_shape=(width,)) + 1,
-    ),  # +1 for division
+        we.flops.reduction_cost("mean", input_shape=(width,)),
+    ),
 ]
 
 total = sum(cost for _, cost in steps)

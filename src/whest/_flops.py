@@ -96,7 +96,7 @@ def einsum_cost(
     return path_info.optimized_cost
 
 
-def pointwise_cost(
+def analytical_pointwise_cost(
     shape: tuple[int, ...], symmetry_info: SymmetryInfo | None = None
 ) -> int:
     """FLOP cost of a pointwise (element-wise) operation.
@@ -121,7 +121,7 @@ def pointwise_cost(
     return max(result, 1)
 
 
-def reduction_cost(
+def analytical_reduction_cost(
     input_shape: tuple[int, ...],
     axis: int | None = None,
     symmetry_info: SymmetryInfo | None = None,
@@ -154,6 +154,12 @@ def reduction_cost(
     for dim in input_shape:
         result *= dim
     return max(result, 1)
+
+
+# Backward-compatible internal aliases. The public weighted API lives in
+# ``whest.flops`` and wraps these analytical formulas.
+pointwise_cost = analytical_pointwise_cost
+reduction_cost = analytical_reduction_cost
 
 
 def svd_cost(m: int, n: int, k: int | None = None) -> int:

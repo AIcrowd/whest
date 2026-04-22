@@ -1,12 +1,11 @@
-"""Configurable per-operation FLOP weights for whest.
+"""Configurable per-operation FLOP weights for the lightweight client.
 
-Whest supports official packaged weights, custom overrides via
-``WHEST_WEIGHTS_FILE``, and complete disabling via ``WHEST_DISABLE_WEIGHTS=1``.
-Packaged official weights are loaded automatically on import unless explicitly
-overridden or disabled.
+The client mirrors the core library's weight resolution rules:
 
-The JSON payload must have a ``"weights"`` key mapping
-``op_name -> float multiplier``.
+- ``WHEST_DISABLE_WEIGHTS=1`` disables all weights.
+- ``WHEST_WEIGHTS_FILE=/path/to/file.json`` loads an explicit override.
+- packaged official defaults bundled with the client load automatically on
+  import unless overridden or disabled.
 """
 
 from __future__ import annotations
@@ -64,60 +63,25 @@ def _read_weights_file(path: str, *, source: str) -> dict[str, float]:
 
 def _load_packaged_weights() -> dict[str, float] | None:
     try:
-        resource = resources.files("whest").joinpath("data/default_weights.json")
+        resource = resources.files("whest.data").joinpath("default_weights.json")
         with resource.open("r", encoding="utf-8") as f:
             data = json.load(f)
         return _extract_weights(data, source="Packaged official weights")
     except Exception as exc:  # pragma: no cover - defensive fallback path
         _warn_once(
-            "Whest could not load packaged official weights "
+            "Whest client could not load packaged official weights "
             f"({exc}); falling back to unit weights (1.0 for all operations)."
         )
         return None
 
 
 def get_weight(op_name: str) -> float:
-    """Return the FLOP weight multiplier for an operation.
-
-    Parameters
-    ----------
-    op_name : str
-        Operation name as passed to ``BudgetContext.deduct()``,
-        e.g. ``"exp"``, ``"linalg.cholesky"``, ``"fft.fft"``.
-
-    Returns
-    -------
-    float
-        Multiplicative weight. Defaults to 1.0 if not configured.
-    """
+    """Return the FLOP weight multiplier for an operation."""
     return _ACTIVE_WEIGHTS.get(op_name, 1.0)
 
 
 def load_weights(path: str | None = None, *, use_packaged_default: bool = True) -> None:
-    """Resolve and load active FLOP weights.
-
-    Parameters
-    ----------
-    path : str or None
-        Explicit path to a weights JSON file. If None, reads from the
-        ``WHEST_WEIGHTS_FILE`` environment variable when present.
-    use_packaged_default : bool, optional
-        Whether to fall back to the packaged official weights when no valid
-        override is available.
-
-    Notes
-    -----
-    Resolution order:
-
-    1. If ``WHEST_DISABLE_WEIGHTS=1``, all weights are disabled.
-    2. If an explicit path or ``WHEST_WEIGHTS_FILE`` is provided and valid,
-       it is used.
-    3. If the override is unusable, a warning is emitted and Whest falls back
-       to the packaged official weights when enabled, otherwise to unit
-       weights.
-    4. If packaged weights are enabled but unavailable, a warning is emitted
-       and Whest falls back to unit weights.
-    """
+    """Resolve and load active FLOP weights."""
     _ACTIVE_WEIGHTS.clear()
 
     if _weights_disabled():
@@ -139,7 +103,7 @@ def load_weights(path: str | None = None, *, use_packaged_default: bool = True) 
                 "packaged official weights" if use_packaged_default else "unit weights"
             )
             _warn_once(
-                f"Whest could not load custom weights from '{override_path}' "
+                f"Whest client could not load custom weights from '{override_path}' "
                 f"({exc}); falling back to {fallback_target}."
             )
 

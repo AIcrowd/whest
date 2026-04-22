@@ -345,14 +345,14 @@ class TestFlopsLocal:
     """Tests for locally computable flops cost functions."""
 
     def test_pointwise_cost(self):
-        assert we.flops.pointwise_cost((3, 4)) == 12
-        assert we.flops.pointwise_cost((10,)) == 10
-        assert we.flops.pointwise_cost(()) == 1
+        assert we.flops.pointwise_cost("exp", shape=(3, 4)) == 12
+        assert we.flops.pointwise_cost("add", shape=(10,)) == 10
+        assert we.flops.pointwise_cost("sqrt", shape=()) == 1
 
     def test_reduction_cost(self):
-        assert we.flops.reduction_cost((3, 4), axis=0) == 12
-        assert we.flops.reduction_cost((3, 4), axis=None) == 12
-        assert we.flops.reduction_cost((10,)) == 10
+        assert we.flops.reduction_cost("sum", input_shape=(3, 4), axis=0) == 12
+        assert we.flops.reduction_cost("mean", input_shape=(3, 4), axis=None) == 12
+        assert we.flops.reduction_cost("max", input_shape=(10,)) == 10
 
     def test_einsum_cost_is_callable(self):
         assert callable(we.flops.einsum_cost)
