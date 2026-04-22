@@ -66,7 +66,10 @@ test('BipartiteGraph group labels render without gray badge backgrounds', () => 
   assert.match(src, /function LabelBadge\(\{ x, y, text, color \}\)/);
   assert.match(src, /<text x=\{x\} y=\{y - 4\}/);
   assert.match(src, /function MathLabelBadge\(\{ x, y, math, color, width \}\)/);
-  assert.match(src, /<foreignObject x=\{x\} y=\{y - 18\} width=\{width\} height=\{18\}>/);
+  assert.match(src, /<foreignObject x=\{x\} y=\{y - 20\} width=\{width\} height=\{20\}>/);
+  assert.match(src, /fontSize=\{12\}/);
+  assert.match(src, /fontSize: '12px'/);
+  assert.match(src, /fontSize: '11px'/);
   assert.doesNotMatch(src, /fill="#F8F9F9"/);
   assert.doesNotMatch(src, /<rect x=\{x\} y=\{y - 10\} width=\{w\} height=\{18\} rx=\{4\} fill=\{bg\}/);
 });

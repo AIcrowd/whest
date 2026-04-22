@@ -36,11 +36,38 @@ function mixWithWhite(hex, amount) {
   return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
 }
 
+function mixWithBlack(hex, amount) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const mix = (c) => Math.round(c * (1 - amount));
+  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+}
+
+function relativeLuminance(hex) {
+  const rgb = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)]
+    .map((part) => parseInt(part, 16) / 255)
+    .map((channel) => (
+      channel <= 0.03928
+        ? channel / 12.92
+        : ((channel + 0.055) / 1.055) ** 2.4
+    ));
+  return (0.2126 * rgb[0]) + (0.7152 * rgb[1]) + (0.0722 * rgb[2]);
+}
+
+function isDarkColor(hex) {
+  return relativeLuminance(hex) < 0.3;
+}
+
 function colorsFor(baseColor) {
+  const darkSurface = isDarkColor(baseColor);
+  const lightSurface = relativeLuminance(baseColor) > 0.58;
   return {
-    bg: mixWithWhite(baseColor, 0.88),
-    text: baseColor,
-    border: mixWithWhite(baseColor, 0.55),
+    bg: darkSurface
+      ? mixWithWhite(baseColor, 0.7)
+      : (lightSurface ? mixWithBlack(baseColor, 0.06) : mixWithWhite(baseColor, 0.38)),
+    text: darkSurface ? mixWithBlack(baseColor, 0.06) : mixWithBlack(baseColor, 0.56),
+    border: darkSurface ? mixWithWhite(baseColor, 0.16) : mixWithBlack(baseColor, 0.12),
   };
 }
 
@@ -86,6 +113,7 @@ export default function CaseBadge({
   const presentation = getRegimePresentation(regimeId, presentationThemeOverride);
   const colors = colorsFor(presentation.color ?? '#94A3B8');
   const tooltip = interactive ? presentation.tooltip : null;
+  const outlinedPill = variant !== 'compact';
 
   const handleEnter = () => {
     if (!tooltip || !ref.current) return;
@@ -172,11 +200,11 @@ export default function CaseBadge({
           className,
         )}
         style={{
-          backgroundColor: colors.bg,
+          backgroundColor: outlinedPill ? '#FFFFFF' : colors.bg,
           color: colors.text,
-          borderColor: colors.border,
+          borderColor: outlinedPill ? colors.text : colors.border,
           boxShadow: active
-            ? `0 0 0 4px ${colors.bg}, 0 0 0 5px ${colors.border}`
+            ? `0 0 0 4px #FFFFFF, 0 0 0 5px ${outlinedPill ? colors.text : colors.border}`
             : undefined,
         }}
         aria-label={presentation.label}

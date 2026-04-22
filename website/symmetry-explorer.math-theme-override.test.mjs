@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import katex from 'katex';
 import { getRegimePresentation } from './components/symmetry-aware-einsum-contractions/components/regimePresentation.js';
+import { explorerThemeColor } from './components/symmetry-aware-einsum-contractions/lib/explorerTheme.js';
 import {
   colorizeNotationLatex,
   notationColor,
@@ -48,6 +49,7 @@ test('Section 5 override path applies editorial-noir-math colors at runtime', (t
   setActiveExplorerTheme('editorial-noir');
   t.after(() => resetActiveExplorerTheme());
 
+  const defaultTrivialPresentation = getRegimePresentation('trivial');
   const defaultYoungPresentation = getRegimePresentation('young');
   const overrideYoungPresentation = getRegimePresentation('young', 'editorial-noir-math');
   const sectionFiveMath = [
@@ -64,9 +66,9 @@ test('Section 5 override path applies editorial-noir-math colors at runtime', (t
     trust: true,
   });
 
-  assert.equal(defaultYoungPresentation.color, notationColor('alpha_total', 'editorial-noir'));
-  assert.equal(overrideYoungPresentation.color, notationColor('alpha_total', 'editorial-noir-math'));
-  assert.notEqual(defaultYoungPresentation.color, overrideYoungPresentation.color);
+  assert.equal(defaultTrivialPresentation.color, explorerThemeColor('editorial-noir', 'caseTrivial'));
+  assert.equal(defaultYoungPresentation.color, explorerThemeColor('editorial-noir', 'caseYoung'));
+  assert.equal(overrideYoungPresentation.color, explorerThemeColor('editorial-noir-math', 'caseYoung'));
 
   assert.ok(defaultMarkup.includes(notationColor('alpha_component', 'editorial-noir')));
   assert.ok(!defaultMarkup.includes(notationColor('alpha_component', 'editorial-noir-math')));

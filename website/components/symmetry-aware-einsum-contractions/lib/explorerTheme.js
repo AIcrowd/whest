@@ -14,6 +14,8 @@ const SUMMED_SIDE = '#64748B';
 const DEEP_SLATE = '#334155';
 const MID_SLATE = '#94A3B8';
 const LIGHT_SLATE = '#D1D5DB';
+const SLATE_MUTED = '#5F6B71';
+const DEEP_INK = '#132228';
 const INFO_DEEP = '#2959C4';
 const INFO = '#4A7CFF';
 const QUANTITY_TEAL = '#0B6D7A';
@@ -380,6 +382,14 @@ export const EXPLORER_THEME_PRESETS = [
       muted: DEEP_SLATE,
       statusSuccess: HERO_MUTED,
       statusWarning: WARM_EXCEPTION,
+      caseTrivial: INK,
+      caseAllVisible: DEEP_SLATE,
+      caseAllSummed: WARM_EXCEPTION,
+      caseMixed: LIGHT_SLATE,
+      caseSingleton: SUMMED_SIDE,
+      caseDirectProduct: MID_SLATE,
+      caseYoung: SLATE_MUTED,
+      caseBruteForceOrbit: MID_GRAY,
     }),
   ),
   createExplorerTheme(
@@ -395,6 +405,14 @@ export const EXPLORER_THEME_PRESETS = [
       muted: DEEP_SLATE,
       statusSuccess: HERO_MUTED,
       statusWarning: WARM_EXCEPTION,
+      caseTrivial: INK,
+      caseAllVisible: DEEP_SLATE,
+      caseAllSummed: WARM_EXCEPTION,
+      caseMixed: LIGHT_SLATE,
+      caseSingleton: SUMMED_SIDE,
+      caseDirectProduct: MID_SLATE,
+      caseYoung: SLATE_MUTED,
+      caseBruteForceOrbit: MID_GRAY,
     }),
     {
       mathPaletteId: EDITORIAL_NOIR_RICH_MATH_PALETTE_ID,

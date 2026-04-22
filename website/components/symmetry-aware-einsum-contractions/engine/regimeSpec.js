@@ -34,7 +34,7 @@ export const REGIME_SPEC = {
       { term: '\\prod_{c \\in R} n_c', definition: 'multiply one factor $n_c$ for each cycle $c$ of $g$ inside $R$.' },
       { term: notationLatex('n_cycle'), definition: 'the common size of labels in cycle $c$.' },
     ],
-    colorId: 'g_detected',
+    themeRole: 'caseSingleton',
   },
   directProduct: {
     id: 'directProduct',
@@ -54,7 +54,7 @@ export const REGIME_SPEC = {
       { term: `${notationLatex('x_w_summed')} / ${notationLatex('g_w_factor')}`, definition: `the $${notationLatex('g_w_factor')}$-orbits on $${notationLatex('x_w_summed')}$, counted by size-aware Burnside.` },
       { term: `${notationLatex('g_detected')} = ${notationLatex('g_v_factor')} \\times ${notationLatex('g_w_factor')}`, definition: `orbits factor: $${notationLatex('v_free')}$ contributes $\\prod_{\\ell \\in ${notationLatex('v_free')}} ${notationLatex('n_label')}$ (no reduction) and $${notationLatex('w_summed')}$ contributes Burnside on $${notationLatex('g_w_factor')}$.` },
     ],
-    colorId: 'pi_relabeling',
+    themeRole: 'caseDirectProduct',
   },
   young: {
     id: 'young',
@@ -74,7 +74,7 @@ export const REGIME_SPEC = {
         definition: `the pointwise $${notationLatex('v_free')}$-stabilizer — elements that fix every $${notationLatex('v_free')}$-label individually. When $G = \\mathrm{Sym}(L)$, this is the Young subgroup $\\mathrm{Sym}(${notationLatex('w_summed')})$.`,
       },
     ],
-    colorId: 'alpha_total',
+    themeRole: 'caseYoung',
   },
   bruteForceOrbit: {
     id: 'bruteForceOrbit',
@@ -94,7 +94,7 @@ export const REGIME_SPEC = {
       { term: 'runtime', definition: 'this method costs $O(|X| \\cdot |G|)$ — exactly one hash insert per (tuple, $g$) pair. Capped by the budget below.' },
       { term: 'budget', definition: 'the cap on $|X| \\cdot |G|$ — counted in $(\\text{tuple}, g)$ $\\textit{pair-touches}$ (each ≈ one hash-map op), set at $1{,}500{,}000$. A calibration, not a constant: roughly what a JS main thread handles in a few hundred ms without visibly hitching the UI. Below the cap the regime fires; above it, it declines and αₐ is reported as Unavailable. The cap bounds demo latency; it does not reflect the einsum\'s structural cost.' },
     ],
-    colorId: 'alpha_total',
+    themeRole: 'caseBruteForceOrbit',
   },
 };
 

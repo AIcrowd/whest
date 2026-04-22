@@ -1,6 +1,10 @@
 // website/components/symmetry-aware-einsum-contractions/components/regimePresentation.js
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
+import {
+  explorerThemeColor,
+  getActiveExplorerThemeId,
+} from '../lib/explorerTheme.js';
 import { notationColor } from '../lib/notationSystem.js';
 
 /**
@@ -10,6 +14,16 @@ import { notationColor } from '../lib/notationSystem.js';
  * Entries for shapes (trivial, allVisible, allSummed, mixed) come from SHAPE_SPEC.
  */
 
+function presentationColorFromSpec(spec, themeOverride = null) {
+  const themeRef = themeOverride ?? getActiveExplorerThemeId();
+  if (spec.themeRole) {
+    const themedColor = explorerThemeColor(themeRef, spec.themeRole);
+    if (themedColor) return themedColor;
+  }
+  if (spec.colorId) return notationColor(spec.colorId, themeOverride);
+  return spec.color ?? '#94A3B8';
+}
+
 function regimePresentationFromSpec(id, themeOverride = null) {
   const spec = REGIME_SPEC[id] || SHAPE_SPEC[id];
   if (!spec) return null;
@@ -17,7 +31,7 @@ function regimePresentationFromSpec(id, themeOverride = null) {
     id,
     label: spec.label,
     shortLabel: spec.shortLabel,
-    color: spec.colorId ? notationColor(spec.colorId, themeOverride) : (spec.color ?? '#94A3B8'),
+    color: presentationColorFromSpec(spec, themeOverride),
     tooltip: {
       title: spec.label,
       body: spec.description,

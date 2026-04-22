@@ -17,7 +17,7 @@ export const SHAPE_SPEC = {
       { term: 'G', definition: 'the detected symmetry group of the component; here $|G| = 1$.' },
       { term: '|G| = 1', definition: 'means every assignment is its own singleton orbit, so $\\alpha$ collapses to $|X| = \\prod_\\ell n_\\ell$.' },
     ],
-    colorId: 'w_summed',
+    themeRole: 'caseTrivial',
   },
   allVisible: {
     id: 'allVisible',
@@ -36,7 +36,7 @@ export const SHAPE_SPEC = {
         definition: `Symmetry on $${notationLatex('v_free')}$ does NOT reduce $\\alpha$ here — the output tensor is dense, so every $${notationLatex('v_free')}$-tuple is its own bin even when two tuples are related by a symmetry. $${notationLatex('v_free')}$-symmetry DOES reduce the multiplication count $\\mu$: you compute each orbit's product once and reuse it across the orbit's positions. See the Multiplication Cost card.`,
       },
     ],
-    colorId: 'v_free',
+    themeRole: 'caseAllVisible',
   },
   allSummed: {
     id: 'allSummed',
@@ -54,7 +54,7 @@ export const SHAPE_SPEC = {
       { term: '\\mathrm{cycles}(g)', definition: 'the disjoint cycles of $g$ viewed as a label permutation.' },
       { term: notationLatex('n_cycle'), definition: 'the common label-size inside cycle $c$ of $g$ (forced equal by the action).' },
     ],
-    colorId: 'w_summed_component',
+    themeRole: 'caseAllSummed',
   },
   mixed: {
     id: 'mixed',
@@ -72,6 +72,6 @@ export const SHAPE_SPEC = {
       { term: notationLatex('orbit_o'), definition: 'a $G$-orbit of full assignments in $X$.' },
       { term: notationLatex('projection_pi_v_free'), definition: "its projection onto the free labels — the distinct output bins that orbit touches." },
     ],
-    color: '#0F172A', // slate-900 (gateway)
+    themeRole: 'caseMixed',
   },
 };

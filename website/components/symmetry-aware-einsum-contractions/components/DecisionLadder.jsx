@@ -5,6 +5,7 @@ import '@xyflow/react/dist/style.css';
 import Latex from './Latex.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import GlossaryList from './GlossaryList.jsx';
+import { getRegimePresentation } from './regimePresentation.js';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 import { notationColor, notationTint } from '../lib/notationSystem.js';
@@ -199,6 +200,29 @@ function mixWithWhite(hex, amount) {
   return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
 }
 
+function mixWithBlack(hex, amount) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const mix = (c) => Math.round(c * (1 - amount));
+  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+}
+
+function relativeLuminance(hex) {
+  const rgb = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)]
+    .map((part) => parseInt(part, 16) / 255)
+    .map((channel) => (
+      channel <= 0.03928
+        ? channel / 12.92
+        : ((channel + 0.055) / 1.055) ** 2.4
+    ));
+  return (0.2126 * rgb[0]) + (0.7152 * rgb[1]) + (0.0722 * rgb[2]);
+}
+
+function isDarkColor(hex) {
+  return relativeLuminance(hex) < 0.28;
+}
+
 function specFor(leafId) {
   return SHAPE_SPEC[leafId] || REGIME_SPEC[leafId] || null;
 }
@@ -233,26 +257,30 @@ function SourceNode({ data }) {
 }
 
 function LeafNode({ data }) {
-  const bg = mixWithWhite(data.color, 0.88);
+  const bg = data.color ?? '#94A3B8';
+  const darkSurface = isDarkColor(bg);
   const SPOTLIGHT_RING = notationColor('v_free');
-  const ACTIVE_RING = mixWithWhite(data.color, 0.4);
+  const ACTIVE_RING = darkSurface ? mixWithWhite(bg, 0.34) : mixWithBlack(bg, 0.2);
   const shadow = [
     data.spotlight ? `0 0 0 7px ${SPOTLIGHT_RING}26` : null,
     data.active ? `inset 0 0 0 2px ${ACTIVE_RING}` : null,
   ].filter(Boolean).join(', ') || undefined;
-  const borderColor = data.spotlight ? SPOTLIGHT_RING : data.color;
+  const borderColor = data.spotlight
+    ? SPOTLIGHT_RING
+    : (darkSurface ? mixWithWhite(bg, 0.18) : mixWithBlack(bg, 0.16));
+  const textColor = darkSurface ? '#F8FAFC' : '#132228';
   // Allow 2-line wrap for longer leaf labels (e.g. the Young regime's
   // "Young subgroup (full Sym, cross V/W)"). Shorter labels render on one
   // line as usual because justify-center + items-center vertically centers.
   return (
     <div
-      className="box-border flex h-full w-full cursor-help items-center justify-center whitespace-normal break-words rounded-lg px-2 py-0.5 text-center text-xs font-bold leading-tight shadow-sm transition-all hover:shadow"
+      className="box-border flex h-full w-full cursor-help items-center justify-center whitespace-normal break-words rounded-lg px-2 py-0.5 text-center text-[13px] font-bold leading-tight shadow-sm transition-all hover:shadow"
       style={{
         backgroundColor: bg,
         borderColor,
         borderWidth: data.spotlight ? 3 : 2,
         borderStyle: 'solid',
-        color: '#0F172A',
+        color: textColor,
         boxShadow: shadow,
       }}
       data-tree-node={data.nodeId}
@@ -278,7 +306,7 @@ function StageBandNode({ data }) {
     <div
       className="pointer-events-none box-border h-full w-full rounded-xl"
       style={{
-        background: isStage1 ? '#FFFFFF' : '#FEF2F1',
+        background: '#FFFFFF',
         border: `1.5px solid ${isStage1 ? '#D9DCDC' : 'rgba(240,82,77,0.22)'}`,
       }}
     >
@@ -368,6 +396,7 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
   }
   const spec = specFor(nodeId);
   if (spec) {
+    const presentation = getRegimePresentation(nodeId);
     const liveReasons = liveReasonsByLeaf?.get?.(nodeId) ?? [];
     return {
       title: spec.label,
@@ -375,7 +404,7 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
       body: spec.description,
       latex: spec.latex,
       glossary: spec.glossary,
-      color: spec.colorId ? notationColor(spec.colorId) : spec.color,
+      color: presentation?.color ?? spec.color,
       liveReasons,
     };
   }
@@ -407,6 +436,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
   // bruteForceOrbit is reachable from both q_crossVW "no" and q_fullSym "no").
   function leafNode(leafId, y, centered = false, nodeIdSuffix = null) {
     const spec = specFor(leafId);
+    const presentation = getRegimePresentation(leafId);
     const nodeId = nodeIdSuffix ? `${leafId}__${nodeIdSuffix}` : leafId;
     return {
       id: nodeId,
@@ -414,8 +444,8 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
       type: 'leaf',
       style: { width: LEAF_W, height: LEAF_H },
       data: {
-        text: spec.label,
-        color: spec.colorId ? notationColor(spec.colorId) : spec.color,
+        text: presentation?.label ?? spec.label,
+        color: presentation?.color ?? spec.color,
         active: active.has(leafId),
         spotlight: spotlight.has(leafId),
         nodeId: leafId, // keep the canonical id for active/spotlight testing

@@ -117,9 +117,19 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.equal(coralSlateHardline.roles.quantity, '#292C2D');
   assert.equal(inkAuthority.roles.symmetryObject, '#292C2D');
   assert.equal(meanPropLed.roles.action, '#2959C4');
+  assert.equal(editorialNoir.roles.caseTrivial, '#292C2D');
+  assert.equal(editorialNoir.roles.caseAllVisible, '#334155');
+  assert.equal(editorialNoir.roles.caseAllSummed, '#B29F9E');
+  assert.equal(editorialNoir.roles.caseMixed, '#D1D5DB');
+  assert.equal(editorialNoir.roles.caseSingleton, '#64748B');
+  assert.equal(editorialNoir.roles.caseDirectProduct, '#94A3B8');
+  assert.equal(editorialNoir.roles.caseYoung, '#5F6B71');
+  assert.equal(editorialNoir.roles.caseBruteForceOrbit, '#AAACAD');
   assert.equal(editorialNoirMath.roles.ink, editorialNoir.roles.ink);
   assert.equal(editorialNoirMath.roles.freeSide, editorialNoir.roles.freeSide);
   assert.equal(editorialNoirMath.roles.summedSide, editorialNoir.roles.summedSide);
+  assert.equal(editorialNoirMath.roles.caseTrivial, editorialNoir.roles.caseTrivial);
+  assert.equal(editorialNoirMath.roles.caseYoung, editorialNoir.roles.caseYoung);
   assert.equal(editorialNoirMath.mathPaletteId, 'editorial-noir-rich-15');
   assert.equal(blueLedger.roles.quantity, '#2959C4');
   assert.equal(blueMargin.roles.symmetryObject, '#2959C4');
@@ -127,6 +137,8 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.equal(blueMargin.roles.editorialAccent, '#B29F9E');
   assert.equal(warmMargin.roles.quantity, '#B29F9E');
   assert.equal(covPropEditorial.roles.statusSuccess, '#B29F9E');
+  assert.equal(editorialBalance.roles.caseTrivial, undefined);
+  assert.equal(teachingCalm.roles.caseTrivial, undefined);
   assert.equal(getExplorerThemePreset('missing-id').id, 'editorial-balance');
 });
 

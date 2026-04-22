@@ -48,7 +48,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
   const opKeys = Object.keys(opGroups).sort((a, b) => a - b);
 
   // Compute pill widths for each U-vertex
-  const charW = 7.5;
+  const charW = 8.5;
   const uPillWidths = uVertices.map(u => {
     const labelStr = [...u.labels].sort().join(',');
     return Math.max(32, labelStr.length * charW + 18);
@@ -215,7 +215,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               width={122}
             />
             <text x={rightX} y={wBoxTop + wBoxH / 2 + 4}
-              textAnchor="middle" fontSize={11} fill={MUTED_COLOR}
+              textAnchor="middle" fontSize={12} fill={MUTED_COLOR}
               fontFamily="'Inter', sans-serif" fontStyle="italic">
               (empty)
             </text>
@@ -226,7 +226,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
         {uVertices.map((u, uIdx) => {
           const uy = uPositions[uIdx];
           const labelStr = [...u.labels].sort().join(',');
-          const pillW = Math.max(32, labelStr.length * 7.5 + 18);
+          const pillW = Math.max(32, labelStr.length * 8.5 + 18);
           const edgeStartX = leftX + pillW / 2 + 2;
           const eOpName = example.operandNames?.[u.opIdx];
           const eVc = variableColors?.[eOpName];
@@ -250,7 +250,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
         {uVertices.map((u, i) => {
           const y = uPositions[i];
           const labelStr = [...u.labels].sort().join(',');
-          const charW = 7.5;
+          const charW = 8.5;
           const pillW = Math.max(32, labelStr.length * charW + 18);
           const pillH = 28;
           const pillR = pillH / 2;
@@ -265,7 +265,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
                 fill="white" stroke={nodeColor} strokeWidth={hasSymmetry ? 2.5 : 1.5}
                 filter="url(#node-shadow)" />
               <text x={leftX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill={nodeColor} fontSize={11} fontWeight={500}
+                fill={nodeColor} fontSize={12} fontWeight={500}
                 fontFamily="'IBM Plex Mono', monospace">
                 {labelStr}
               </text>
@@ -283,7 +283,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
                 fill="white" stroke={hl ? HIGHLIGHT_COLOR : V_COLOR} strokeWidth={hl ? 3 : 1.5}
                 filter="url(#node-shadow)" />
               <text x={rightX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill={hl ? HIGHLIGHT_COLOR : V_COLOR} fontSize={11} fontWeight={600}
+                fill={hl ? HIGHLIGHT_COLOR : V_COLOR} fontSize={12} fontWeight={600}
                 fontFamily="'IBM Plex Mono', monospace">
                 {lbl}
               </text>
@@ -301,7 +301,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
                 fill="white" stroke={hl ? HIGHLIGHT_COLOR : W_COLOR} strokeWidth={hl ? 3 : 1.5}
                 filter="url(#node-shadow)" />
               <text x={rightX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill={hl ? HIGHLIGHT_COLOR : W_COLOR} fontSize={11} fontWeight={600}
+                fill={hl ? HIGHLIGHT_COLOR : W_COLOR} fontSize={12} fontWeight={600}
                 fontFamily="'IBM Plex Mono', monospace">
                 {lbl}
               </text>
@@ -318,7 +318,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               alignItems: 'center',
               justifyContent: 'center',
               gap: '6px',
-              fontSize: '10px',
+              fontSize: '11px',
               fontWeight: 600,
               letterSpacing: '0.06em',
               color: MUTED_COLOR,
@@ -340,7 +340,7 @@ export default function BipartiteGraph({ graph, example, variableColors, highlig
               alignItems: 'center',
               justifyContent: 'center',
               gap: '6px',
-              fontSize: '10px',
+              fontSize: '11px',
               fontWeight: 600,
               letterSpacing: '0.06em',
               color: MUTED_COLOR,
@@ -364,7 +364,7 @@ function LabelBadge({ x, y, text, color }) {
   return (
     <g>
       <text x={x} y={y - 4}
-        fontSize={10} fontWeight={600} fill={color}
+        fontSize={11} fontWeight={600} fill={color}
         fontFamily="'Inter', sans-serif" letterSpacing="0.06em">
         {text}
       </text>
@@ -375,16 +375,16 @@ function LabelBadge({ x, y, text, color }) {
 function MathLabelBadge({ x, y, math, color, width }) {
   return (
     <g>
-      <foreignObject x={x} y={y - 18} width={width} height={18}>
+      <foreignObject x={x} y={y - 20} width={width} height={20}>
         <div
           xmlns="http://www.w3.org/1999/xhtml"
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-start',
-            height: '18px',
+            height: '20px',
             color,
-            fontSize: '11px',
+            fontSize: '12px',
             lineHeight: 1,
             textTransform: 'none',
           }}
