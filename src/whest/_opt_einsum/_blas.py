@@ -13,18 +13,18 @@ def _has_symmetric_input(
 ) -> tuple[bool, bool]:
     """Check if any input has a symmetric group covering 2+ indices used in the contraction.
 
-    Each element of ``input_groups`` may be a ``PermutationGroup``
+    Each element of ``input_groups`` may be a ``SymmetryGroup``
     (the unified representation) or ``None``.
     """
     if input_groups is None:
         return False, False
 
-    from whest._perm_group import PermutationGroup
+    from whest._perm_group import SymmetryGroup
 
     def _is_symmetric(sym, input_chars: set[str]) -> bool:
         if sym is None:
             return False
-        if isinstance(sym, PermutationGroup):
+        if isinstance(sym, SymmetryGroup):
             if sym._labels is not None:
                 return len(set(sym._labels) & input_chars) >= 2
             return sym.degree >= 2
@@ -54,7 +54,7 @@ def can_blas(
         Indices that are removed in the summation
     shapes : sequence of tuple[int], optional
         If given, check also that none of the indices are broadcast dimensions.
-    input_groups : list of (PermutationGroup or None), optional
+    input_groups : list of (SymmetryGroup or None), optional
         Symmetry groups for each input. When an input has a symmetric group
         covering 2+ of its indices, the BLAS classification is refined:
         GEMM → SYMM, GEMV/EINSUM → SYMV, DOT → SYDT.

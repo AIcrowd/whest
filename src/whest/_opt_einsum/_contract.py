@@ -18,7 +18,7 @@ from . import _parser as parser
 from . import _paths as paths
 from ._hsluv import rgb_distance_hex, rich_label_palette
 from ._subgraph_symmetry import SubgraphSymmetryOracle
-from ._symmetry import PermutationGroup, symmetric_flop_count
+from ._symmetry import SymmetryGroup, symmetric_flop_count
 from ._typing import (
     ArrayType,
     ContractionListType,
@@ -60,11 +60,11 @@ class StepInfo:
     output_shape: tuple[int, ...]
     """Shape of the output operand for this step."""
 
-    input_groups: list[PermutationGroup | None]
-    """PermutationGroup for each input in this step."""
+    input_groups: list[SymmetryGroup | None]
+    """SymmetryGroup for each input in this step."""
 
-    output_group: PermutationGroup | None
-    """PermutationGroup of the output, or None."""
+    output_group: SymmetryGroup | None
+    """SymmetryGroup of the output, or None."""
 
     dense_flop_cost: int
     """FLOP cost without symmetry (FMA = 1 op)."""
@@ -74,8 +74,8 @@ class StepInfo:
 
     blas_type: str | bool = False
 
-    inner_group: PermutationGroup | None = None
-    """PermutationGroup among the contracted (summed) labels, or None.
+    inner_group: SymmetryGroup | None = None
+    """SymmetryGroup among the contracted (summed) labels, or None.
     Describes inner-summation redundancy from the W-side of the
     subgraph symmetry oracle."""
     """BLAS classification for this step (e.g. 'GEMM', 'SYMM', False)."""
@@ -449,7 +449,7 @@ class PathInfo:
         return None
 
     @staticmethod
-    def _fmt_generators(group: PermutationGroup, labels: tuple) -> str:
+    def _fmt_generators(group: SymmetryGroup, labels: tuple) -> str:
         """Format generators in cycle notation with labels."""
         parts = []
         for gen in group.generators:
@@ -464,8 +464,8 @@ class PathInfo:
             parts.append(perm_str)
         return ", ".join(parts) if parts else "e"
 
-    def _fmt_sym(self, group: PermutationGroup | None) -> str:
-        """Format a PermutationGroup for display."""
+    def _fmt_sym(self, group: SymmetryGroup | None) -> str:
+        """Format a SymmetryGroup for display."""
         if group is None:
             return "-"
         labels = group._labels or tuple(str(i) for i in range(group.degree))

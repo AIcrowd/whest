@@ -201,7 +201,7 @@ from whest._free_ops import (  # noqa: F401
 from whest._opt_einsum import PathInfo, StepInfo  # noqa: F401
 
 # --- Permutation groups ---
-from whest._perm_group import Cycle, Permutation, PermutationGroup  # noqa: F401
+from whest._perm_group import SymmetryGroup  # noqa: F401
 
 # --- Pointwise (counted) ---
 from whest._pointwise import (  # noqa: F401
