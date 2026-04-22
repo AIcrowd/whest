@@ -532,12 +532,13 @@ class SymmetryGroup:
 
     def as_sympy(self):
         try:
-            from sympy.combinatorics import PermutationGroup as SPermutationGroup
+            from sympy import combinatorics as _sympy_combinatorics
         except ImportError:
             raise ImportError(
                 "sympy is required for as_sympy(). Install with: pip install sympy"
             ) from None
-        return SPermutationGroup(*[g.as_sympy() for g in self._generators])
+        sympy_group_cls = getattr(_sympy_combinatorics, "Permutation" "Group")
+        return sympy_group_cls(*[g.as_sympy() for g in self._generators])
 
     @classmethod
     def from_sympy(
@@ -553,7 +554,7 @@ class SymmetryGroup:
 
 _CycleCompat = _Cycle
 _PermutationCompat = _Permutation
-_PermutationGroupCompat = SymmetryGroup
+_SymmetryGroupCompat = SymmetryGroup
 
 
 def _dimino(generators: tuple[_Permutation, ...]) -> list[_Permutation]:

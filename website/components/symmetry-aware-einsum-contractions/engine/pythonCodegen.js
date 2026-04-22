@@ -69,14 +69,14 @@ function buildGroupExpr(variable) {
 
   switch (symmetry) {
     case 'symmetric':
-      return `we.PermutationGroup.symmetric(${k}, axes=${axesTuple})`;
+      return `we.SymmetryGroup.symmetric(${k}, axes=${axesTuple})`;
     case 'cyclic':
-      return `we.PermutationGroup.cyclic(${k}, axes=${axesTuple})`;
+      return `we.SymmetryGroup.cyclic(${k}, axes=${axesTuple})`;
     case 'dihedral':
-      return `we.PermutationGroup.dihedral(${k}, axes=${axesTuple})`;
+      return `we.SymmetryGroup.dihedral(${k}, axes=${axesTuple})`;
     case 'custom': {
       const gens = parseGensForPython(generators || '');
-      return `we.PermutationGroup(${gens.join(', ')}, axes=${axesTuple})`;
+      return `we.SymmetryGroup(${gens.join(', ')}, axes=${axesTuple})`;
     }
     default:
       return null;
@@ -103,28 +103,28 @@ function buildGroupLines(variable) {
   switch (symmetry) {
     case 'symmetric':
       return [
-        'we.PermutationGroup.symmetric(',
+        'we.SymmetryGroup.symmetric(',
         `    ${k},`,
         `    axes=${axesTuple},`,
         ')',
       ];
     case 'cyclic':
       return [
-        'we.PermutationGroup.cyclic(',
+        'we.SymmetryGroup.cyclic(',
         `    ${k},`,
         `    axes=${axesTuple},`,
         ')',
       ];
     case 'dihedral':
       return [
-        'we.PermutationGroup.dihedral(',
+        'we.SymmetryGroup.dihedral(',
         `    ${k},`,
         `    axes=${axesTuple},`,
         ')',
       ];
     case 'custom': {
       const gens = parseGensForPython(generators || '');
-      const lines = ['we.PermutationGroup('];
+      const lines = ['we.SymmetryGroup('];
       for (const gen of gens) {
         lines.push(`    ${gen},`);
       }

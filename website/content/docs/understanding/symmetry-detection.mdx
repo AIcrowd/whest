@@ -209,7 +209,7 @@ The sigma-loop iterates over **generators** of the row-permutation group on M,
 drawn from three sources:
 
 - **Source A -- per-operand internal symmetry generators.** For each operand
-  that carries a declared `PermutationGroup`, each generator of that group is
+  that carries a declared `SymmetryGroup`, each generator of that group is
   lifted to a row permutation on M (permuting only the rows belonging to that
   operand). This captures symmetry that was previously handled by orbit-based
   axis merging.
@@ -243,10 +243,10 @@ For each group element `sigma`:
    invalidates the sigma.
 5. **Collect pi as a `Permutation` object** restricted to V labels (and
    separately to W labels). Non-identity permutations become generators
-   of the detected `PermutationGroup`.
+   of the detected `SymmetryGroup`.
 
 The sigma-loop collects all non-identity pi restrictions as `Permutation` objects.
-These generators are passed to Dimino's algorithm (via `PermutationGroup(...)`)
+These generators are passed to Dimino's algorithm (via `SymmetryGroup(...)`)
 to close the group and build the exact symmetry group on V (and separately
 on W).
 
@@ -359,7 +359,7 @@ Inner symmetry can be toggled with `we.configure(use_inner_symmetry=False)`.
 ## Exact group detection and Burnside counting
 
 The sigma-loop collects all valid pi permutations as `Permutation`
-objects (generators) and builds a `PermutationGroup` directly.
+objects (generators) and builds a `SymmetryGroup` directly.
 
 When the generated group equals S_k (the full symmetric group, checked via
 `order == k!`), the existing stars-and-bars formula `C(n+k-1, k)` applies.

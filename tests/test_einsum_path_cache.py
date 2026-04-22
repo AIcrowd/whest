@@ -4,6 +4,7 @@ import numpy
 
 from whest._config import configure, get_setting
 from whest._einsum import _identity_pattern, _symmetry_fingerprint
+from whest._perm_group import SymmetryGroup
 from whest._symmetric import SymmetricTensor
 
 
@@ -29,7 +30,7 @@ def test_symmetry_fingerprint_no_symmetry():
 
 def test_symmetry_fingerprint_with_symmetry():
     data = numpy.ones((3, 3))
-    S = SymmetricTensor(data, symmetric_axes=[(0, 1)])
+    S = SymmetricTensor(data, symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
     fp = _symmetry_fingerprint([S], ["ij"])
     assert fp != (None,)
     assert isinstance(fp, tuple)
@@ -39,7 +40,7 @@ def test_symmetry_fingerprint_with_symmetry():
 
 def test_symmetry_fingerprint_deterministic():
     data = numpy.ones((3, 3))
-    S = SymmetricTensor(data, symmetric_axes=[(0, 1)])
+    S = SymmetricTensor(data, symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
     fp1 = _symmetry_fingerprint([S], ["ij"])
     fp2 = _symmetry_fingerprint([S], ["ij"])
     assert fp1 == fp2
@@ -154,7 +155,7 @@ def test_einsum_with_symmetric_input_cached():
     clear_einsum_cache()
     data = numpy.random.randn(4, 4)
     sym_data = (data + data.T) / 2
-    S = SymmetricTensor(sym_data, symmetric_axes=[(0, 1)])
+    S = SymmetricTensor(sym_data, symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
     B = numpy.random.randn(4, 3)
     with BudgetContext(flop_budget=10**6):
         r1 = einsum("ij,jk->ik", S, B)

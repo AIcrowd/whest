@@ -1,9 +1,4 @@
-"""Test that whest function signatures match numpy exactly.
-
-Whest-only extensions (like svd.k) must be in the allowlist.
-Ufuncs are skipped since numpy ufuncs are C-level objects whose
-inspect.signature() returns (*args, **kwargs).
-"""
+"""Test that whest public signatures match numpy plus explicit whest extensions."""
 
 import inspect
 
@@ -14,21 +9,18 @@ import whest as we
 
 # Whest-only keyword extensions that numpy doesn't have
 ALLOWED_EXTRA_PARAMS = {
-    "einsum": {"symmetric_axes", "symmetry", "subscripts"},
+    "einsum": {"symmetry", "subscripts"},
     "linalg.svd": {"k"},
     "linalg.svdvals": {"k"},
 }
 
 # Functions where whest intentionally differs (with reason)
 SKIP_FUNCTIONS = {
-    # einsum_path has different optimizer interface
     "einsum_path",
 }
 
 _NUMPY_GE_2_4 = tuple(int(x) for x in np.__version__.split(".")[:2]) >= (2, 4)
 if _NUMPY_GE_2_4:
-    # numpy 2.4 added C-level positional-only markers that whest's
-    # (*args, **kwargs) wrappers can't match exactly.
     SKIP_FUNCTIONS |= {
         "dot",
         "packbits",
@@ -40,8 +32,6 @@ if _NUMPY_GE_2_4:
 
 
 def _iter_whest_functions():
-    """Yield (dotted_name, whest_fn, numpy_fn) for all comparable functions."""
-    # Top-level
     for name in sorted(dir(we)):
         if name.startswith("_"):
             continue
@@ -53,7 +43,6 @@ def _iter_whest_functions():
             continue
         yield name, we_fn, np_fn
 
-    # Submodules
     for submod in ["linalg", "fft", "random"]:
         np_sub = getattr(np, submod, None)
         we_sub = getattr(we, submod, None)
@@ -72,7 +61,6 @@ def _iter_whest_functions():
 
 
 def _get_param_names(sig):
-    """Extract parameter names, excluding *args and **kwargs."""
     return {
         name
         for name, p in sig.parameters.items()
@@ -89,7 +77,6 @@ def _get_param_names(sig):
     ],
 )
 def test_signature_matches_numpy(dotted_name, we_fn, np_fn):
-    """whest function signature must be a superset of numpy's."""
     try:
         np_sig = inspect.signature(np_fn)
     except (ValueError, TypeError):
@@ -117,3 +104,32 @@ def test_signature_matches_numpy(dotted_name, we_fn, np_fn):
         f"  numpy:  {np_sig}\n"
         f"  whest:  {we_sig}"
     )
+
+
+def test_no_legacy_public_symmetry_names():
+    for legacy_name in ("PermutationGroup", "Permutation", "Cycle", "SymmetryInfo"):
+        assert not hasattr(we, legacy_name)
+
+
+def test_einsum_signature_only_uses_symmetry_keyword():
+    params = inspect.signature(we.einsum).parameters
+    assert "symmetry" in params
+    assert "symmetric_axes" not in params
+
+
+def test_symmetrize_and_random_symmetric_use_new_keyword():
+    assert "symmetry" in inspect.signature(we.symmetrize).parameters
+    assert "symmetry" in inspect.signature(we.random.symmetric).parameters
+    assert "symmetric_axes" not in inspect.signature(we.symmetrize).parameters
+    assert "symmetric_axes" not in inspect.signature(we.random.symmetric).parameters
+
+
+def test_public_flop_apis_use_symmetry_keyword():
+    for fn in (we.flops.pointwise_cost, we.flops.reduction_cost):
+        params = inspect.signature(fn).parameters
+        assert "symmetry" in params
+        assert "symmetric_axes" not in params
+
+    einsum_params = inspect.signature(we.flops.einsum_cost).parameters
+    assert "operand_symmetries" in einsum_params
+    assert "symmetric_axes" not in einsum_params

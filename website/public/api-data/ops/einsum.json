@@ -2300,7 +2300,7 @@
     "name": "einsum",
     "notes": "Generalized Einstein summation.",
     "numpy_ref": "np.einsum",
-    "signature": "we.einsum(subscripts: 'str', *operands: '_np.ndarray', out=None, optimize: 'str | bool | list' = 'auto', symmetric_axes: 'list[tuple[int, ...]] | None' = None, symmetry: 'PermutationGroup | list[PermutationGroup] | None' = None, **kwargs) -> '_np.ndarray'",
+    "signature": "we.einsum(subscripts: 'str', *operands: '_np.ndarray', out=None, optimize: 'str | bool | list' = 'auto', symmetry=None, **kwargs) -> '_np.ndarray'",
     "status": "supported",
     "summary": "Evaluates the Einstein summation convention on the operands.",
     "weight": 1.0,

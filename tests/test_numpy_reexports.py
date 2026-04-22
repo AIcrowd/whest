@@ -211,3 +211,8 @@ def test_typing_NDArray_accepts_whest_array():
     with we.BudgetContext(flop_budget=int(1e9)):
         result = f(m)
     assert isinstance(result, we.ndarray)
+
+
+def test_no_legacy_symmetry_exports():
+    for legacy_name in ("PermutationGroup", "Permutation", "Cycle", "SymmetryInfo"):
+        assert not hasattr(we, legacy_name)

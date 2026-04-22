@@ -247,10 +247,6 @@ class RequestHandler:
                 if isinstance(handle, bytes):
                     handle = handle.decode("utf-8")
                 return self._session.get_array(handle)
-            # Permutation wire format
-            perm_data = arg.get("__permutation__") or arg.get(b"__permutation__")
-            if perm_data is not None:
-                return _Permutation(list(perm_data))
             # SymmetryGroup wire format
             pg_data = arg.get("__symmetry_group__") or arg.get(b"__symmetry_group__")
             if pg_data is not None:

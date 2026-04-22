@@ -485,10 +485,15 @@ class TestBackwardCompatibility:
             assert budget.flops_used == 60  # 3*4*5 * op_factor(1), FMA=1
             assert result.shape == (3, 5)
 
-    def test_symmetric_axes_output_still_works(self):
+    def test_symmetry_output_kwarg_still_works(self):
         X = numpy.ones((5, 10))
         with BudgetContext(flop_budget=10**8, quiet=True):
-            result = einsum("ki,kj->ij", X, X, symmetric_axes=[(0, 1)])
+            result = einsum(
+                "ki,kj->ij",
+                X,
+                X,
+                symmetry=SymmetryGroup.symmetric(axes=(0, 1)),
+            )
             assert isinstance(result, SymmetricTensor)
 
 

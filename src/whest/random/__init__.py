@@ -20,7 +20,7 @@ import numpy as _np
 import numpy.random as _npr
 
 from whest._flops import _ceil_log2, sort_cost
-from whest._perm_group import SymmetryGroup as PermutationGroup
+from whest._perm_group import SymmetryGroup
 from whest._validation import require_budget
 
 # ---------------------------------------------------------------------------
@@ -279,7 +279,7 @@ def choice(a, size=None, replace=True, p=None):
 
 def symmetric(
     shape: int | tuple[int, ...] | list[int],
-    symmetry: PermutationGroup,
+    symmetry: SymmetryGroup,
     distribution: str | callable = "randn",
     **distribution_kwargs,
 ):
@@ -289,7 +289,7 @@ def symmetric(
     ----------
     shape : int or tuple of int
         Shape of the sampled array.
-    symmetry : PermutationGroup
+    symmetry : SymmetryGroup
         Symmetry group used for Reynolds averaging.
     distribution : str or callable, default ``\"randn\"``
         Name of a ``numpy.random`` distribution function (for example

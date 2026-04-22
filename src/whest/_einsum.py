@@ -8,36 +8,17 @@ import numpy as _np
 
 from whest._config import get_setting
 from whest._pointwise import _prepare_symmetric_out, _validate_result_symmetry
-from whest._perm_group import SymmetryGroup as PermutationGroup
+from whest._perm_group import SymmetryGroup
 from whest._symmetric import SymmetricTensor
 from whest._symmetry_utils import normalize_symmetry_input, validate_symmetry_group
 from whest._validation import check_nan_inf, require_budget
-
-
-def _symmetry_info_to_perm_groups(sym_info, subscript_chars: str):
-    """Convert SymmetryInfo (positional axes) to label-indexed PermutationGroups.
-
-    Returns a list of PermutationGroup objects with _labels set to the
-    corresponding einsum characters, or None if no symmetry.
-    """
-    if sym_info is None:
-        return None
-    groups = []
-    for group in sym_info.groups:
-        if group.axes is None or group.degree < 2:
-            continue
-        labels = tuple(subscript_chars[ax] for ax in group.axes)
-        new_group = PermutationGroup(*group.generators)
-        new_group._labels = labels
-        groups.append(new_group)
-    return groups if groups else None
 
 
 def _symmetry_fingerprint(operands, input_parts):
     """Build a hashable symmetry fingerprint for cache keying.
 
     For each operand, captures None (no symmetry) or a tuple of
-    (axes, generator_array_forms) per PermutationGroup. This fully
+    (axes, generator_array_forms) per SymmetryGroup. This fully
     determines the symmetry structure without referencing tensor values.
     """
     parts = []
@@ -97,7 +78,7 @@ def _make_path_cache(maxsize):
             groups = []
             for axes, gen_arrays in fp_entry:
                 gens = [Permutation(list(g)) for g in gen_arrays]
-                group = PermutationGroup(*gens, axes=axes)
+                group = SymmetryGroup(*gens, axes=axes)
                 labels = tuple(chars[ax] for ax in axes)
                 group._labels = labels
                 groups.append(group)
@@ -240,7 +221,7 @@ def _relabel_group_to_output(group, source_labels: tuple[str, ...], output_subsc
             )
         )
 
-    remapped = PermutationGroup(*generators, axes=axes)
+    remapped = SymmetryGroup(*generators, axes=axes)
     remapped._labels = tuple(output_subscript[axis] for axis in axes)
     return validate_symmetry_group(remapped, ndim=len(output_subscript))
 
@@ -267,18 +248,13 @@ def _infer_pathless_output_symmetry(operands, input_parts, output_subscript: str
 def _resolve_output_symmetry(
     *,
     symmetry,
-    symmetric_axes,
     operands,
     input_parts,
     output_subscript: str,
     path_info,
 ):
     if symmetry is not None:
-        if isinstance(symmetry, list):
-            raise TypeError("symmetry must be a single SymmetryGroup")
-        return validate_symmetry_group(symmetry, ndim=len(output_subscript))
-    if symmetric_axes is not None:
-        return normalize_symmetry_input(symmetric_axes, ndim=len(output_subscript))
+        return normalize_symmetry_input(symmetry, ndim=len(output_subscript))
     inferred = _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
     if inferred is not None:
         return inferred
@@ -294,16 +270,14 @@ def einsum(
     *operands: _np.ndarray,
     out=None,
     optimize: str | bool | list = "auto",
-    symmetric_axes: list[tuple[int, ...]] | None = None,
-    symmetry: PermutationGroup | list[PermutationGroup] | None = None,  # NEW
+    symmetry=None,
     **kwargs,
 ) -> _np.ndarray:
     """Evaluate Einstein summation with FLOP counting and optional path optimization.
 
     Wraps ``numpy.einsum`` with analytical FLOP cost computation and
     optional symmetry savings. If any input is a ``SymmetricTensor``,
-    the cost is automatically reduced. If ``symmetric_axes`` is provided
-    and the output passes validation, a ``SymmetricTensor`` is returned.
+    the cost is automatically reduced. If ``symmetry`` is provided and the output passes validation, a ``SymmetricTensor`` is returned.
 
     All contractions go through opt_einsum's ``contract_path`` to find an
     optimal pairwise decomposition. The FLOP cost uses opt_einsum's cost
@@ -331,23 +305,9 @@ def einsum(
           or construct manually. Each tuple names the operand positions
           to contract at that step; the result is appended to the end.
         - ``False``: treated as ``'auto'``.
-    symmetric_axes : list of tuple of int, optional
-        **Output** dimension symmetry groups (S_k only). Declares that the
-        result is symmetric in the given axes and wraps it as a
-        ``SymmetricTensor``. For example, ``[(0, 1)]`` means the output
-        satisfies ``result[i,j,...] == result[j,i,...]``. This does NOT
-        declare input symmetry — use ``me.as_symmetric()`` for that.
-        Mutually exclusive with *symmetry*.
-    symmetry : SymmetryGroup or list of SymmetryGroup, optional
-        **Output** permutation group symmetry. Declares that the result
-        is symmetric under the given ``SymmetryGroup``(s) and wraps it
-        as a ``SymmetricTensor``. Unlike *symmetric_axes* (which always
-        means S_k), this supports any permutation group — for example,
-        ``SymmetryGroup.cyclic(axes=(0, 1, 2))`` declares cyclic
-        symmetry where ``result[i,j,k] == result[j,k,i] == result[k,i,j]``
-        but ``result[i,j,k]`` need not equal ``result[j,i,k]``.
-        Each group must have ``axes`` set. Mutually exclusive with
-        *symmetric_axes*. This does NOT declare input symmetry — use
+    symmetry : SymmetryGroup or symmetry shorthand, optional
+        Declares output symmetry and wraps the validated result as a
+        ``SymmetricTensor``. This does NOT declare input symmetry; use
         ``me.as_symmetric()`` for that.
 
     Returns
@@ -362,13 +322,10 @@ def einsum(
     NoBudgetContextError
         If called outside a ``BudgetContext``.
     SymmetryError
-        If ``symmetric_axes`` or ``symmetry`` is provided but the result
+        If ``symmetry`` is provided but the result
         does not satisfy the declared symmetry. Validation checks the
         data against each generator of the group.
     """
-    if symmetric_axes is not None and symmetry is not None:
-        raise ValueError("symmetric_axes and symmetry are mutually exclusive")
-
     budget = require_budget()
     canonical_subscripts, input_parts, output_subscript, shapes, path_info = _get_path_info(
         subscripts,
@@ -377,7 +334,6 @@ def einsum(
     )
     target_symmetry = _resolve_output_symmetry(
         symmetry=symmetry,
-        symmetric_axes=symmetric_axes,
         operands=operands,
         input_parts=input_parts,
         output_subscript=output_subscript,

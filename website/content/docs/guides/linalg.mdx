@@ -69,7 +69,7 @@ Pass a `SymmetricTensor` to get automatic cost reductions:
 import whest as we
 
 with we.BudgetContext(flop_budget=10**8) as budget:
-    A = we.as_symmetric(we.multiply(we.eye(10), 2.0), symmetric_axes=(0, 1))
+    A = we.as_symmetric(we.multiply(we.eye(10), 2.0), symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
 
     # solve_cost(n=10) = n^3 = 1000 FLOPs (symmetric/nrhs params are currently ignored)
     x = we.linalg.solve(A, we.ones(10))
