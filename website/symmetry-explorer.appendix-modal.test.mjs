@@ -292,8 +292,8 @@ test('section 6 frames storage as a separate optimization axis with α_engine an
   assert.match(source, /n=\{6\}[\s\S]*chipName: operand\.count > 1 \? `\$\{operand\.name\}×\$\{operand\.count\}` : operand\.name/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="flex flex-wrap gap-1\.5">\s*\{operandChips\.map\(\(operand\) => \(/);
   assert.match(source, /n=\{6\}[\s\S]*<SymmetryChip key=\{`\$\{operand\.name\}-\$\{operand\.sym\}`\} name=\{operand\.chipName\} symmetry=\{operand\.sym\} \/>/);
-  assert.match(source, /import \{ buildAppendixSavingsTableRows \} from '\.\.\/lib\/appendixStorageSurvey\.js';/);
-  assert.match(source, /const savingsTableRows = useMemo\(\s*\(\) => buildAppendixSavingsTableRows\(\),\s*\[\],\s*\)/);
+  assert.match(source, /import \{ buildStorageSavingsRows \} from '\.\.\/engine\/storageSavings\.js';/);
+  assert.match(source, /const savingsTableRows = useMemo\(\s*\(\) => buildStorageSavingsRows\(EXAMPLES, 3\),\s*\[\],\s*\)/);
   assert.doesNotMatch(source, /const SAVINGS_TABLE_ROWS = \[/);
   assert.doesNotMatch(source, /n=\{6\}[\s\S]*<span className="font-mono font-semibold">\{o\.name\}<\/span>/);
   assert.match(source, /Accumulation representatives/);
@@ -303,6 +303,11 @@ test('section 6 frames storage as a separate optimization axis with α_engine an
   assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Accumulation representatives<\/div>/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="text-\[13px\] font-semibold text-gray-900">\s*<Latex math="\\alpha_\{\\text\{storage\}\}" \/>/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Storage-aware output updates<\/div>/);
+  assert.match(source, /n=\{6\}[\s\S]*r\.vLatex === '\\\\varnothing' \? '\\\\varnothing' : `\\\\\{\$\{r\.vLatex\}\\\\\}`/);
+  assert.match(source, /n=\{6\}[\s\S]*<Latex math=\{r\.vSubLatex\} \/>/);
+  assert.match(source, /n=\{6\}[\s\S]*\{r\.alphaEngine\}/);
+  assert.match(source, /n=\{6\}[\s\S]*\{r\.alphaStorage\}/);
+  assert.match(source, /n=\{6\}[\s\S]*\$\{r\.saving\} \(\$\{r\.savingPct\}%\)/);
   assert.doesNotMatch(source, /n=\{6\}[\s\S]*Accumulation is governed by \$\$\{notationLatex\('g_pointwise'\)\}\$/);
   assert.doesNotMatch(source, /n=\{6\}[\s\S]*Output storage is governed by \$\$\{notationLatex\('g_output'\)\}\$/);
   assert.doesNotMatch(source, /n=\{6\}[\s\S]*The dummy-label group \$\$\{notationLatex\('s_w_summed'\)\}\$ contributes nothing to output storage/);

@@ -16,8 +16,8 @@ import appendixSection4 from '../content/appendix/section4.ts';
 import appendixSection5 from '../content/appendix/section5.ts';
 import appendixSection6 from '../content/appendix/section6.ts';
 import { computeExpressionAlphaComparison } from '../engine/comparisonAlpha.js';
+import { buildStorageSavingsRows } from '../engine/storageSavings.js';
 import { EXAMPLES } from '../data/examples.js';
-import { buildAppendixSavingsTableRows } from '../lib/appendixStorageSurvey.js';
 import { formatGeneratorNotation, variableSymmetryLabel } from '../lib/symmetryLabel.js';
 import { notationColor, notationColoredLatex, notationLatex } from '../lib/notationSystem.js';
 
@@ -812,7 +812,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
     [runningExamplePreset],
   );
   const savingsTableRows = useMemo(
-    () => buildAppendixSavingsTableRows(),
+    () => buildStorageSavingsRows(EXAMPLES, 3),
     [],
   );
   const showBilinearFormalOrbitExample =
@@ -1750,7 +1750,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                       ...operand,
                       chipName: operand.count > 1 ? `${operand.name}×${operand.count}` : operand.name,
                     }));
-                    const groupLabel = preset?.expectedGroup ?? appendixGroupLabel(r.vSub);
+                    const groupLabel = preset?.expectedGroup ?? appendixGroupLabel(r.vSubLatex);
                     return (
                       <tr key={r.id} className={hasSaving ? '' : 'text-muted-foreground'}>
                         <td className="px-2 py-2 whitespace-nowrap">
@@ -1772,13 +1772,13 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                           </div>
                         </td>
                         <td className="px-2 py-2 whitespace-nowrap">
-                          <Latex math={r.v === '\\varnothing' ? '\\varnothing' : `\\{${r.v}\\}`} />
+                          <Latex math={r.vLatex === '\\varnothing' ? '\\varnothing' : `\\{${r.vLatex}\\}`} />
                         </td>
-                        <td className="px-2 py-2 whitespace-nowrap"><Latex math={r.vSub} /></td>
-                        <td className="px-2 py-2 text-right font-mono">{r.ae}</td>
-                        <td className="px-2 py-2 text-right font-mono">{r.as}</td>
+                        <td className="px-2 py-2 whitespace-nowrap"><Latex math={r.vSubLatex} /></td>
+                        <td className="px-2 py-2 text-right font-mono">{r.alphaEngine}</td>
+                        <td className="px-2 py-2 text-right font-mono">{r.alphaStorage}</td>
                         <td className={`px-2 py-2 text-right font-mono whitespace-nowrap ${hasSaving ? 'text-[var(--status-success)]' : ''}`}>
-                          {hasSaving ? `${r.saving} (${r.pct}%)` : '—'}
+                          {hasSaving ? `${r.saving} (${r.savingPct}%)` : '—'}
                         </td>
                       </tr>
                     );

@@ -3,15 +3,15 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { EXAMPLES } from './components/symmetry-aware-einsum-contractions/data/examples.js';
 import { analyzeExample } from './components/symmetry-aware-einsum-contractions/engine/pipeline.js';
-import { EXPLORER_THEME_RECOMMENDED_ID } from './components/symmetry-aware-einsum-contractions/lib/explorerTheme.js';
 import {
-  APPENDIX_STORAGE_SURVEY_DIMENSION,
-  buildAppendixSavingsTableRows,
-  computeAppendixStorageRepresentatives,
-} from './components/symmetry-aware-einsum-contractions/lib/appendixStorageSurvey.js';
+  buildStorageSavingsRows,
+  computeStorageSavingsRow,
+} from './components/symmetry-aware-einsum-contractions/engine/storageSavings.js';
+import { EXPLORER_THEME_RECOMMENDED_ID } from './components/symmetry-aware-einsum-contractions/lib/explorerTheme.js';
 
 test('appendix storage table rows stay synchronized with live preset analyses', () => {
-  const rows = buildAppendixSavingsTableRows();
+  const dimensionN = 3;
+  const rows = buildStorageSavingsRows(EXAMPLES, dimensionN);
   const rowsById = new Map(rows.map((row) => [row.id, row]));
 
   assert.equal(rows.length, EXAMPLES.length);
@@ -19,17 +19,18 @@ test('appendix storage table rows stay synchronized with live preset analyses', 
   for (const id of ['triple-outer', 'outer']) {
     const preset = EXAMPLES.find((example) => example.id === id);
     assert.ok(preset, `missing preset ${id}`);
-    const analysis = analyzeExample(preset, APPENDIX_STORAGE_SURVEY_DIMENSION);
+    const analysis = analyzeExample(preset, dimensionN);
+    const computed = computeStorageSavingsRow(preset, dimensionN);
     const row = rowsById.get(id);
     assert.ok(row, `missing appendix savings row ${id}`);
-    assert.equal(row.ae, analysis.componentCosts.alpha, `${id} α_engine should come from the live analysis`);
-    assert.equal(row.as, computeAppendixStorageRepresentatives(analysis), `${id} α_storage should come from the live analysis`);
+    assert.equal(row.alphaEngine, analysis.componentCosts.alpha, `${id} α_engine should come from the live analysis`);
+    assert.equal(row.alphaStorage, computed.alphaStorage, `${id} α_storage should come from the live analysis`);
   }
 
-  assert.equal(rowsById.get('triple-outer')?.ae, 1296);
-  assert.equal(rowsById.get('triple-outer')?.as, 336);
-  assert.equal(rowsById.get('outer')?.ae, 256);
-  assert.equal(rowsById.get('outer')?.as, 136);
+  assert.equal(rowsById.get('triple-outer')?.alphaEngine, 1296);
+  assert.equal(rowsById.get('triple-outer')?.alphaStorage, 336);
+  assert.equal(rowsById.get('outer')?.alphaEngine, 256);
+  assert.equal(rowsById.get('outer')?.alphaStorage, 136);
 });
 
 test('Acts 2-4 are sequenced around the inline savings narrative', () => {
