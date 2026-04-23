@@ -110,3 +110,14 @@ test('route wrapper uses a branded centered loading shell instead of plain text'
   assert.doesNotMatch(routeSource, /radial-gradient/);
   assert.doesNotMatch(routeSource, /Loading Symmetry Aware Einsum Contractions/);
 });
+
+test('sticky bar wordmark relies on Next Link basePath handling instead of pre-prefixing the home href', () => {
+  const stickyBarSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/StickyBar.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(stickyBarSource, /import Link from 'next\/link';/);
+  assert.match(stickyBarSource, /href="\/"/);
+  assert.doesNotMatch(stickyBarSource, /href=\{withBasePath\('\/'\)\}/);
+});
