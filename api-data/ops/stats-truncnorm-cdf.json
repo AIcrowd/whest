@@ -1,0 +1,182 @@
+{
+  "detail_href": "/docs/api/ops/stats-truncnorm-cdf/",
+  "detail_json_href": "/api-data/ops/stats-truncnorm-cdf.json",
+  "docs": {
+    "sections": [
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Cumulative distribution function of the given RV."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Summary"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "quantiles"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "quantiles"
+                  }
+                ],
+                "name": "x",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                  }
+                ],
+                "name": "arg1, arg2, arg3,...",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "location parameter (default=0)"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "location parameter (default=0)"
+                  }
+                ],
+                "name": "loc",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "scale parameter (default=1)"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "array_like, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "scale parameter (default=1)"
+                  }
+                ],
+                "name": "scale",
+                "type": "field_list"
+              }
+            ],
+            "title": "Parameters",
+            "type": "field_list"
+          }
+        ],
+        "title": "Parameters"
+      },
+      {
+        "blocks": [
+          {
+            "items": [
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "Cumulative distribution function evaluated at "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "x"
+                      }
+                    ],
+                    "type": "paragraph"
+                  }
+                ],
+                "data_type": "ndarray",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Cumulative distribution function evaluated at "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "x"
+                  }
+                ],
+                "name": "cdf",
+                "type": "field_list"
+              }
+            ],
+            "title": "Returns",
+            "type": "field_list"
+          }
+        ],
+        "title": "Returns"
+      }
+    ]
+  },
+  "op": {
+    "category": "counted_custom",
+    "cost_formula": "30n",
+    "cost_formula_latex": "$30n$",
+    "module": "whest.stats",
+    "name": "stats.truncnorm.cdf",
+    "notes": "Truncated normal CDF; cost = numel(input).",
+    "numpy_ref": "np.stats.truncnorm.cdf",
+    "signature": "we.stats.truncnorm.cdf(x, a, b, loc=0, scale=1)",
+    "status": "supported",
+    "summary": "Cumulative distribution function of the given RV.",
+    "weight": 16.0,
+    "whest_ref": "we.stats.truncnorm.cdf"
+  },
+  "schema_version": 1,
+  "slug": "stats-truncnorm-cdf",
+  "source": {
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_truncnorm.py#L84"
+  }
+}

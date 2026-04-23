@@ -1,0 +1,2392 @@
+============================================================
+Getting Started
+============================================================
+
+--- getting-started/installation ---
+URL: https://aicrowd.github.io/whest/docs/getting-started/installation
+
+Getting StartedInstallationUse this page when setting up whest for the first time.
+You will learn:
+
+How to install whest as a dependency or for development
+How to verify your installation works
+How to fix common installation pitfalls
+
+Install as a dependency
+uv add git+https://github.com/AIcrowd/whest.git
+Install for development
+git clone https://github.com/AIcrowd/whest.git
+cd whest
+uv sync --all-extras
+Verify installation
+uv run python -c "import whest as we; print(we.__version__)"
+What you'll see
+0.2.0+np2.2.6
+The version string includes the installed NumPy version suffix. If you see a version number, whest is installed correctly.
+Common pitfalls
+Symptom: ImportError: numpy version mismatch
+Fix: whest supports NumPy >=2.0.0,<2.3.0 (default install uses NumPy 2.2). Using uv handles this automatically. If you installed manually, check your NumPy version:
+uv run python -c "import numpy; print(numpy.__version__)"
+Related pages
+
+Quickstart — run your first FLOP-counted computation
+QuickstartNext Page
+
+--- getting-started/quickstart ---
+URL: https://aicrowd.github.io/whest/docs/getting-started/quickstart
+
+Getting StartedQuickstartRun your first FLOP-counted computation in under 2 minutes.
+You will learn:
+
+How to run a FLOP-counted computation with the global default budget
+How to read the budget summary output
+
+Prerequisites
+
+Installation
+
+Quickest possible start
+You do not need to set up a budget context to start counting FLOPs. whest activates a global default context the first time any counted operation runs. The default budget is 1e15 FLOPs (configurable via the WHEST_DEFAULT_BUDGET environment variable).
+Save this as first_budget.py:
+import whest as we
+
+depth = 10   # number of layers
+width = 256  # hidden dimension
+
+# No BudgetContext needed — the global default activates automatically
+scale = we.sqrt(2.0 / width)     # Kaiming init scale: counted through whest
+weights = [
+    we.array(we.multiply(we.random.randn(width, width), scale))
+    for _ in range(depth)
+]
+x = we.random.randn(width)
+
+h = x
+for W in weights:
+    h = we.einsum('ij,j->i', W, h)  # matrix-vector multiply
+    h = we.maximum(h, 0)             # ReLU activation: counted
+
+result = we.sum(h)                   # reduction: counted
+
+# Print the default flat summary
+we.budget_summary()
+Run it:
+uv run python first_budget.py
+What you'll see
+whest FLOP Budget Summary
+=========================
+  Total budget:    1,000,000,000,000,000
+  Used:                       2,624,513  (0.0%)
+  Remaining:        999,999,997,375,487  (100.0%)
+
+  By operation:
+    random.randn              655,616  ( 25.0%)  [11 calls]
+    multiply                  655,360  ( 25.0%)  [10 calls]
+    array                     655,360  ( 25.0%)  [10 calls]
+    einsum                    655,360  ( 25.0%)  [10 calls]
+    maximum                     2,560  (  0.1%)  [10 calls]
+    sum                           256  (  0.0%)  [1 call]
+    sqrt                            1  (  0.0%)  [1 call]
+
+  By operation (time):
+    random.randn           ...s  ( ...%)  [11 calls]
+    multiply               ...s  ( ...%)  [10 calls]
+    einsum                 ...s  ( ...%)  [10 calls]
+    array                  ...s  ( ...%)  [10 calls]
+    maximum                ...s  ( ...%)  [10 calls]
+    sum                    ...s  ( ...%)  [1 call]
+    sqrt                   ...s  ( ...%)  [1 call]
+Reading the output:
+
+Top rows: Used is the total FLOP count spent so far across the current session, and Remaining shows the implicit global headroom
+Flat default: the summary stays flat unless you explicitly ask for we.budget_summary(by_namespace=True)
+Operations table: the 10-layer MLP spreads FLOPs roughly equally across random.randn, multiply, array, and einsum (~25% each); activations (maximum) are comparatively cheap, and the Kaiming scale sqrt adds just 1 FLOP
+
+If you want namespace attribution, opt in separately:
+with we.BudgetContext(flop_budget=10**6, namespace="train") as budget:
+    with we.namespace("precompute"):
+        ...
+    print(budget.summary(by_namespace=True))
+Next steps
+Ready for budget limits? See the Competition Guide.InstallationPrevious PageCompetition GuideNext Page
+
+--- getting-started/competition ---
+URL: https://aicrowd.github.io/whest/docs/getting-started/competition
+
+Getting StartedCompetition GuideEverything you need to compete within a FLOP budget.
+You will learn:
+
+How to set budget limits with BudgetContext
+How to use the @we.budget decorator form
+How wall-time limits work via wall_time_limit_s
+How to read budget summaries
+Common competition pitfalls and tips
+
+Setting a FLOP budget
+Every competition submission runs inside a FLOP budget. Use BudgetContext to declare how many FLOPs your code is allowed to spend:
+import whest as we
+
+with we.BudgetContext(flop_budget=50_000_000, namespace="solver") as budget:
+    A = we.ones((256, 256))
+    x = we.ones((256,))
+    h = we.einsum('ij,j->i', A, x)
+    h = we.exp(h)
+    result = we.sum(h)
+If your code exceeds the budget, whest raises BudgetExhaustedError before the offending operation executes. The error message includes the cost of the failed operation and the remaining budget.
+The namespace parameter sets the root namespace prefix for that budget context. Nested we.namespace(...) scopes extend it with dotted segments, but they do not create child budgets or split the FLOP limit into separate pools.
+Decorator form
+For cleaner code, use @we.budget to attach a budget directly to a function:
+import whest as we
+
+@we.budget(flop_budget=50_000_000, namespace="forward-pass")
+def forward(W, x):
+    h = we.einsum('ij,j->i', W, x)
+    h = we.maximum(h, 0)
+    return we.sum(h)
+
+result = forward(W, x)
+we.budget_summary()
+Each call to the decorated function runs inside the same BudgetContext; the namespace is only the root prefix used for attribution, not a separate budget pool. Repeated calls reuse that context and keep accumulating on the same budget and operation log.
+Wall-time limits
+In addition to FLOP budgets, competitions may enforce a wall-clock time limit via wall_time_limit_s. This prevents solutions from stalling on operations that are analytically cheap but slow in practice:
+with we.BudgetContext(flop_budget=10**9, wall_time_limit_s=60.0) as budget:
+    # Must finish within 60 seconds AND within 1 billion FLOPs
+    ...
+If the wall-clock time is exceeded, whest raises TimeExhaustedError. The timer starts when the context is entered and is checked after each counted operation.
+What wall_time_limit_s does and does not do:
+
+It is a BudgetContext setting, so you configure it in the same place you set flop_budget.
+It measures total wall-clock time for the active context, not FLOPs.
+It is checked cooperatively before and after counted NumPy calls, so overshoot is bounded by the duration of one NumPy call.
+It is a clean diagnostic limit inside whest. Hard process/container kills still belong to the outer execution environment.
+
+Reading the budget summary
+Call budget.summary() when you want the current context's summary, or we.budget_summary() for the accumulated session/global view. Both stay flat by default; use by_namespace=True only when you want a namespace breakdown:
+print(budget.summary())                   # context summary, flat by default
+print(budget.summary(by_namespace=True))  # context summary with namespaces
+we.budget_summary()                       # session/global summary
+we.budget_summary(by_namespace=True)      # session/global summary with namespaces
+Use these forms for different questions:
+
+budget.summary() answers "what did this one explicit context spend?"
+we.budget_summary() answers "what has this process/session spent overall?"
+budget.summary_dict(...) and we.budget_summary_dict(...) return the same information as structured data instead of formatted text.
+
+The block below shows print(budget.summary(by_namespace=True)) for the solver context:
+whest FLOP Budget Summary [solver]
+==================================
+  Total budget:              50,000,000
+  Used:                          66,048  (0.1%)
+  Remaining:                 49,933,952  (99.9%)
+
+  By namespace:
+    solver                         66,048  (100.0%)  [3 calls]  0.000s
+
+  By operation:
+    einsum                     65,536  ( 99.2%)  [1 call]
+    exp                           256  (  0.4%)  [1 call]
+    sum                           256  (  0.4%)  [1 call]
+
+  Wall time:             ...s
+  Tracked time:          ...s  ( ...%)
+  Untracked time:        ...s  ( ...%)
+
+  By operation (time):
+    einsum                 ...s  ( ...%)  [1 call]
+    sum                    ...s  ( ...%)  [1 call]
+    exp                    ...s  ( ...%)  [1 call]
+Key things to look for:
+
+Budget / Used / Remaining: the top rows show the explicit competition budget, current spend, and remaining headroom
+By namespace: solver is the root prefix, and nested scopes show up as dotted paths like solver.precompute. Use budget.summary(by_namespace=True) for the current context or we.budget_summary(by_namespace=True) for the accumulated session/global view
+By operation: this toy pass is dominated by the single einsum; exp and sum are tiny by comparison
+Wall / tracked / untracked time: wall time is total elapsed time for the context, tracked time is time spent inside counted NumPy calls, and untracked time is everything else in the context (wall_time - tracked_time)
+Flat default: the default summary stays flat unless you opt into by_namespace=True
+
+For programmatic access, use we.budget_summary_dict():
+data = we.budget_summary_dict()
+print(f"Used: {data['flops_used']:,} / {data['flop_budget']:,}")
+
+# Per-namespace breakdown:
+data = we.budget_summary_dict(by_namespace=True)
+print(data["by_namespace"]["solver"]["flops_used"])
+Quick tips for competition
+Check costs before committing budget. Use cost query functions to estimate before executing:
+cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+print(f"This matmul will cost {cost:,} FLOPs")  # 16,777,216
+Use namespaces for phases. Split your solution into named phases (e.g., "init", "solve", "refine") so the budget summary shows exactly where FLOPs are spent.
+Exploit symmetry for savings. If your tensors are symmetric, wrapping them with we.as_symmetric() can halve pointwise costs and significantly reduce einsum costs. See Symmetry Savings for details.
+Prefer cheaper operations. A matrix-vector product via we.einsum('ij,j->i', A, x) costs m*n FLOPs, while a full matrix-matrix multiply costs m*n*k. Avoid computing more than you need.
+Watch out for hidden costs. Operations like we.array() and we.concatenate() are not free -- they charge numel(output) FLOPs, and we.where() charges numel(condition). Check the cost of any operation you are unsure about.
+When things go wrong
+If you hit BudgetExhaustedError, see Budget Planning & Debugging for a systematic approach to diagnosing overruns and reducing costs.QuickstartPrevious PageMigrate from NumPyNext Page
+
+============================================================
+Guides
+============================================================
+
+--- guides/migrate-from-numpy ---
+URL: https://aicrowd.github.io/whest/docs/guides/migrate-from-numpy
+
+GuidesMigrate from NumPyUse this page when converting existing NumPy code to whest.
+You will learn:
+
+How to convert NumPy imports and operations to whest equivalents
+Which NumPy behaviors stay the same and which change
+How to avoid common pitfalls when migrating
+
+Prerequisites
+
+Installation
+Quickstart
+
+The basics
+Change your import and wrap computation in a BudgetContext:
+Before (NumPy):
+import numpy as np
+
+W = np.random.randn(256, 256)
+x = np.random.randn(256)
+h = np.dot(W, x)
+h = np.maximum(h, 0)
+After (whest) — simplest form:
+import whest as we
+
+# No setup needed — global default budget tracks FLOPs automatically
+W = we.random.randn(256, 256)
+x = we.random.randn(256)
+h = we.dot(W, x)
+h = we.maximum(h, 0)
+
+we.budget_summary()  # see what you spent
+After (whest) — with explicit budget control:
+import whest as we
+
+with we.BudgetContext(flop_budget=20_000_000) as budget:
+    W = we.random.randn(256, 256)
+    x = we.random.randn(256)
+    h = we.dot(W, x)
+    h = we.maximum(h, 0)
+What stays the same
+
+Function signatures match NumPy for supported operations
+Broadcasting rules are identical
+Array indexing, slicing, and assignment work normally
+
+What changes
+NumPywhestNotesimport numpy as npimport whest as weDrop-in replacementCall ops anywhereWorks anywhere tooA global default budget auto-activates; use explicit BudgetContext for limits and namespacingnp.linalg.svd(A)we.linalg.svd(A, k=10)Truncated SVD with explicit kPlain ndarray onlySymmetricTensor availableWrap with we.as_symmetric() for cost savingsAll NumPy ops availableMost available, 32 blacklistedI/O and config ops raise AttributeErrorNo cost trackingAutomatic FLOP countingEvery counted op deducts from budget
+Common pitfalls
+Symptom: AttributeError when calling an I/O or config function (e.g., we.save, we.seterr)
+Fix: 32 operations are blacklisted because they are I/O, configuration, or datetime functions with no FLOP cost. See Operation Categories for the full list. Use numpy directly for these.
+Symptom: Using np.linalg.svd instead of we.linalg.svd
+Fix: If you import NumPy alongside whest, make sure to use we. for operations you want counted. Operations called through np. bypass FLOP counting entirely.
+Related pages
+
+Operation Categories — what's supported and what isn't
+API Reference — full list of all operations
+Competition GuidePrevious PageEinsum PatternsNext Page
+
+--- guides/einsum ---
+URL: https://aicrowd.github.io/whest/docs/guides/einsum
+
+GuidesEinsum PatternsUse this page to understand we.einsum -- the core computation primitive in whest.
+You will learn:
+
+How to write common einsum patterns and understand their FLOP costs
+How to use symmetric tensors with einsum for cost savings
+How to inspect and customize contraction paths
+How to leverage path caching for repeated operations
+
+Prerequisites
+
+Quickstart
+
+Common patterns
+import whest as we
+
+with we.BudgetContext(flop_budget=10**8) as budget:
+    A = we.ones((256, 256))
+    B = we.ones((256, 256))
+    x = we.ones((256,))
+
+    # Matrix-vector multiply: cost = m × k
+    y = we.einsum('ij,j->i', A, x)           # 256 × 256 = 65,536 FLOPs
+
+    # Matrix multiply: cost = m × k × n
+    C = we.einsum('ij,jk->ik', A, B)         # 256 × 256 × 256 = 16,777,216 FLOPs
+
+    # Outer product: cost = i × j
+    outer = we.einsum('i,j->ij', x, x)       # 256 × 256 = 65,536 FLOPs
+
+    # Trace: cost = i
+    tr = we.einsum('ii->', A)                 # 256 FLOPs
+
+    # Batched matmul: cost = b × m × k × n
+    batch = we.ones((4, 256, 256))
+    out = we.einsum('bij,bjk->bik', batch, batch)  # 4 × 256 × 256 × 256 FLOPs
+
+    print(budget.summary())
+Cost formula
+The cost of an einsum is the sum of per-step costs along the optimal contraction path. Every einsum — even a simple two-operand one — goes through the opt_einsum path optimizer (a symmetry-aware fork of opt_einsum).
+For each pairwise step:
+cost = product of all index dimensions
+Each FMA (fused multiply-add) counts as 1 operation, so the cost is
+simply the product of all index dimensions with no factor-of-2.
+For 'ij,jk->ik' with shapes (256, 256) and (256, 256):
+
+Indices: i=256, j=256, k=256
+Cost: 256 x 256 x 256 = 16,777,216
+
+For multi-operand einsums (3+ tensors), whest automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
+When symmetric tensors are involved, each step's cost is further reduced by the ratio of unique output elements to total output elements. See Symmetry Savings for the full practical guide.
+we.dot and we.matmul
+we.dot(A, B) and we.matmul(A, B) are equivalent to the corresponding einsum and have the same FLOP cost.
+Symmetric tensors
+There are two separate symmetry declarations — one for inputs, one for outputs:
+Input symmetry — wrap with we.as_symmetric() before passing to einsum. The optimizer automatically uses symmetry to choose the best contraction order and charges reduced costs:
+with we.BudgetContext(flop_budget=10**8) as budget:
+    S = we.as_symmetric(we.eye(10), symmetric_axes=(0, 1))  # 55 unique elements
+    v = we.ones((10,))
+
+    result = we.einsum('ij,j->i', S, v)  # cost reduced by input symmetry
+Output symmetry — pass symmetric_axes to einsum() to declare that the result is symmetric. This wraps the output as a SymmetricTensor so downstream operations benefit from reduced costs. It does NOT affect the cost of this einsum — it's a declaration about the result's structure:
+with we.BudgetContext(flop_budget=10**8) as budget:
+    X = we.random.randn(100, 10)
+
+    # X^T X is always symmetric — declare output axes (0,1) as symmetric
+    C = we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
+
+    print(type(C))  # <class 'SymmetricTensor'>
+    # C can now be passed to other operations with automatic cost savings
+For the full symmetry guide, see Symmetry Savings.
+Inspecting costs
+we.einsum_path() previews the contraction plan without executing the contraction itself. Planning is cheap: it records a nominal 1-FLOP einsum_path event, but none of the contraction FLOPs are spent.
+import whest as we
+
+n = 10
+T = we.as_symmetric(we.ones((n, n, n)), symmetric_axes=(0, 1, 2))
+A = we.random.randn(n, n)
+B = we.random.randn(n, n)
+C = we.random.randn(n, n)
+
+path, info = we.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
+
+print(f"Path: {path}")
+print(info)
+print(f"Naive cost:     {info.naive_cost:,}")
+print(f"Optimized cost: {info.optimized_cost:,}")
+print(f"Speedup:        {info.speedup:.1f}x")
+print(f"Optimizer used: {info.optimizer_used}")
+Path: [(0, 1), (0, 2), (0, 1)]
+  Complete contraction:  ijk,ai,bj,ck->abc
+      Naive cost (whest):  3,000,000
+  Optimized cost (whest):  25,500
+                     Speedup:  117.647x
+       Largest intermediate:  1,000 elements
+                Index sizes:  a=b=c=i=j=k=10
+                  Optimizer:  optimal
+--------------------------------------------------------------------------------------------------------------------------------------------
+step  contract  subscript                                flops     dense_flops   savings  blas      unique/total  symmetry (inputs → output)
+--------------------------------------------------------------------------------------------------------------------------------------------
+   0  (0, 1)    ai,ijk->ajk                              5,500          10,000    45.0%  SYMM      V:550/1,000   - × S3{i,j,k} → S2{j,k}
+   1  (0, 2)    ajk,bj->akb                             10,000          10,000     0.0%  TDOT      -             S2{j,k} × - → -
+   2  (0, 1)    akb,ck->abc                             10,000          10,000     0.0%  TDOT      -             -
+Naive cost:     3,000,000
+Optimized cost: 25,500
+Speedup:        117.6x
+Optimizer used: optimal
+The printed table gives you the contraction order, naive-vs-optimized FLOP counts, largest intermediate, grouped index sizes, and one row per pairwise contraction step. Each step shows the chosen contract tuple, dense baseline, savings, BLAS tag, and any symmetry that survived into the intermediate.
+For per-step debugging, call print(info.format_table(verbose=True)). The verbose view adds indented rows with the merged operand subset, the intermediate output shape, and the running cumulative cost.
+we.flops.einsum_cost() returns the same cost that einsum() would deduct — one source of truth:
+cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+print(f"Matmul cost: {cost:,}")  # 16,777,216
+Custom contraction paths
+By default whest finds the optimal contraction order automatically. You can override this by passing an explicit path — a list of int-tuples specifying which operand positions to contract at each step:
+import whest as we
+
+A = we.ones((3, 4))
+B = we.ones((4, 5))
+C = we.ones((5, 6))
+
+# Plan first, execute later
+path, info = we.einsum_path('ij,jk,kl->il', A, B, C)
+print(f"Optimal path: {path}")  # e.g. [(0, 1), (0, 1)]
+
+# Execute with the planned path
+with we.BudgetContext(flop_budget=10**8) as budget:
+    result = we.einsum('ij,jk,kl->il', A, B, C, optimize=path)
+You can also specify a completely custom path. Each tuple names the positions (in the current operand list) to contract; the result is appended to the end:
+# Force B×C first (positions 1,2), then A×result (positions 0,1)
+result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(1, 2), (0, 1)])
+
+# Force A×B first (positions 0,1), then result×C (positions 0,1)
+result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(0, 1), (0, 1)])
+Different paths may have different FLOP costs. Use we.einsum_path() to compare — it returns the plan without executing the contraction.
+Path caching
+Contraction paths are cached automatically in a module-level LRU cache.
+When you call we.einsum() with the same subscripts, shapes, optimizer,
+and symmetry structure, the path is reused from cache instead of being
+recomputed. This makes repeated einsums in loops essentially free in
+path-finding overhead:
+with we.BudgetContext(flop_budget=10**9) as budget:
+    for i in range(1000):
+        y = we.einsum('ij,j->i', A, x)  # path computed once, reused 999 times
+we.einsum_path() shares the same cache, so planning a path warms the
+cache for subsequent we.einsum() calls and vice versa.
+Cache management
+# Inspect cache statistics
+info = we.einsum_cache_info()
+print(f"Hits: {info.hits}, Misses: {info.misses}, Size: {info.currsize}/{info.maxsize}")
+
+# Clear the cache (e.g., to free memory or force recomputation)
+we.clear_einsum_cache()
+
+# Change the cache size (default 4096 entries, rebuilds the cache)
+we.configure(einsum_path_cache_size=8192)
+Common pitfalls
+Symptom: Unexpectedly high FLOP cost
+Fix: Check all index dimensions. A subscript like 'ijkl,jklm->im' multiplies all five dimension sizes together. Use we.flops.einsum_cost() or we.einsum_path() to preview costs before executing.
+Related pages
+
+Symmetry Savings — full guide to symmetry mechanisms
+API Reference — algorithms, symmetry support, and operation details
+Plan Your Budget — query costs before executing
+FLOP Counting Model — how costs are computed
+Migrate from NumPyPrevious PageSymmetry SavingsNext Page
+
+--- guides/symmetry ---
+URL: https://aicrowd.github.io/whest/docs/guides/symmetry
+
+GuidesSymmetry SavingsReduce FLOP costs when your tensors have symmetry.
+You will learn:
+
+How to declare full and non-full tensor symmetries with we.as_symmetric()
+How to generate example tensors for arbitrary permutation groups
+When to use we.random.symmetric() (sample + project) versus we.symmetrize()
+(project existing data)
+How slicing, reductions, and binary pointwise ops preserve, weaken, or drop symmetry metadata
+When to re-tag results with we.as_symmetric() after conservative propagation
+
+Why symmetry matters
+Many tensors contain repeated structure. A symmetric matrix has only
+n * (n + 1) / 2 unique elements instead of n^2, and higher-order tensors
+with permutation symmetry can shrink the effective element count even more.
+When whest knows a tensor's symmetry, it charges FLOPs based on unique elements
+instead of dense ones.
+OperationDense costSymmetry-aware costWhy it dropswe.exp(s2_matrix)n^2n * (n + 1) / 2only unique matrix entries matterwe.einsum('ki,kj->ij', x, x, symmetric_axes=[(0, 1)])m * n^2m * n * (n + 1) / 2the repeated x operand lets whest detect symmetric output and reduce the costwe.einsum('i,j,k->ijk', v, v, v)n^3symmetry-reducedrepeated operands induce output symmetry
+By contrast, symmetric_axes on an einsum output tags the result for downstream
+operations; it does not reduce that einsum's own cost by itself.
+Quick start
+import whest as we
+
+with we.BudgetContext(flop_budget=10**6) as budget:
+    s2_matrix = we.as_symmetric(
+        we.array([[2.0, 1.0], [1.0, 3.0]]),
+        symmetric_axes=(0, 1),
+    )
+
+    exp_s2_matrix = we.exp(s2_matrix)
+    sliced_row = s2_matrix[0]
+
+    print(type(exp_s2_matrix).__name__)  # SymmetricTensor
+    print(type(sliced_row).__name__)     # ndarray
+    print(budget.flops_used)
+we.as_symmetric() validates the data first. After that, whest propagates
+symmetry metadata algebraically through many operations. Unary pointwise ops preserve symmetry-aware costs and keep the same symmetric axes. For non-full groups such as C_k or D_k, the current implementation widens the metadata to full symmetry on those axes. Slicing, reductions, and binary pointwise ops can weaken it or remove it entirely.
+How to declare symmetry
+Full symmetric shorthand with symmetric_axes
+Use symmetric_axes when the tensor is invariant under every permutation of a
+set of axes.
+import whest as we
+
+matrix_data = we.array([[2.0, 1.0], [1.0, 3.0]])
+s2_matrix = we.as_symmetric(matrix_data, symmetric_axes=(0, 1))
+This is the most common declaration: full S_2 symmetry on matrix axes
+(0, 1).
+Multiple independent full symmetric groups
+block_tensor_data = we.ones((2, 2, 3, 3))
+block_s2_tensor = we.as_symmetric(
+    block_tensor_data,
+    symmetric_axes=[(0, 1), (2, 3)],
+)
+This declares one full symmetric group on axes (0, 1) and another on
+(2, 3).
+Explicit full symmetric groups with PermutationGroup.symmetric
+s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+s3_tensor = we.as_symmetric(
+    we.ones((4, 4, 4)),
+    symmetry=s3_group,
+)
+This is equivalent in meaning to symmetric_axes=(0, 1, 2), but explicit
+groups are useful once you want to inspect or combine them directly.
+Cyclic symmetry with PermutationGroup.cyclic
+c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+c3_tensor = we.as_symmetric(
+    we.ones((4, 4, 4)),
+    symmetry=c3_group,
+)
+C_3 means rotations are allowed, but reflections are not. This is weaker
+than S_3, so it usually gives fewer savings.
+Dihedral symmetry with PermutationGroup.dihedral
+d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
+d4_tensor = we.as_symmetric(
+    we.ones((4, 4, 4, 4)),
+    symmetry=d4_group,
+)
+D_4 includes both rotations and reflections of a four-position structure.
+Arbitrary subgroups from custom generators
+opposite_pair_swap_group = we.PermutationGroup(
+    we.Permutation(we.Cycle(0, 2)(1, 3)),
+    axes=(0, 1, 2, 3),
+)
+
+opposite_pair_swap_tensor = we.as_symmetric(
+    we.ones((4, 4, 4, 4)),
+    symmetry=opposite_pair_swap_group,
+)
+Use this form when the built-in constructors do not describe your symmetry.
+Multiple explicit groups on one tensor
+row_swap_group = we.PermutationGroup.symmetric(2, axes=(0, 1))
+column_swap_group = we.PermutationGroup.symmetric(2, axes=(2, 3))
+
+two_group_tensor = we.as_symmetric(
+    we.ones((3, 3, 5, 5)),
+    symmetry=[row_swap_group, column_swap_group],
+)
+This is the explicit-group equivalent of symmetric_axes=[(0, 1), (2, 3)].
+Generating example data with the Reynolds operator
+When you want example tensors for arbitrary groups, prefer we.random.symmetric.
+It is a handy helper that samples from a distribution and applies the Reynolds
+operator.
+Use we.symmetrize when you already have concrete data to symmetrize, and
+we.as_symmetric when you already have concrete data to validate and tag.
+R_G(T) = (1 / |G|) * sum_{g in G} g · T
+S = we.random.symmetric((4, 4, 4), s3_group)
+T = we.random.symmetric((4, 4, 4), c3_group)
+U = we.random.symmetric((4, 4, 4, 4), d4_group)
+This helper is ideal for docs, tests, and experiments:
+
+it works for S_k, C_k, D_k, and custom generator sets
+prefer we.random.symmetric() for synthetic data generation
+we.random.symmetric internally samples data and calls we.symmetrize so the
+projection and validation behavior is identical.
+approximate costs (meaningful estimate):
+
+we.random.symmetric: C_dist(n) + |G| * n + n + validation
+we.symmetrize: |G| * n + n + validation
+with n total elements and |G| group order.
+
+in exact arithmetic it projects onto the invariant subspace, and in practice
+we.as_symmetric() validates the result with its usual validation tolerances
+it keeps examples consistent across symmetry classes
+
+s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
+
+s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
+c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
+d4_tensor = we.random.symmetric((4, 4, 4, 4), d4_group)
+The propagation examples below assume import whest as we; generated tensors
+above use we.random.symmetric(...) and the explicit transform helper is
+we.symmetrize(...).
+Symmetry propagation at a glance
+Symmetry propagation is conservative. Whest keeps symmetry metadata only when
+the operation's structure guarantees that the output still respects the
+surviving group.
+OperationResult typeRulewe.exp(s3_tensor)SymmetricTensorunary pointwise ops preserve symmetric axes; non-full groups are currently widened to full symmetry on those axeswe.add(s3_tensor, c3_tensor)SymmetricTensor or ndarraybinary pointwise ops keep the intersection of both operands' groupss2_matrix * 3SymmetricTensorscalar binary ops preserve the tensor's groupss2_matrix[0]ndarrayinteger indexing removes one axis; no nontrivial group survivess2_matrix[:3, :3]SymmetricTensorequal-size slices can preserve symmetrys2_matrix[:3, :2]ndarrayunequal-size slices break symmetry between those axess2_matrix[we.array([0, 1])]ndarrayadvanced indexing drops symmetry conservativelywe.sum(s3_tensor, axis=0)SymmetricTensorreductions keep the surviving setwise stabilizer subgroupwe.sum(d4_tensor, axis=(1, 3))SymmetricTensorreductions can keep a proper subgroup like C_2s2_matrix @ s2_matrixndarraymatrix products are not assumed symmetric in general
+we.exp(c3_tensor) still gets symmetry-aware cost savings, but the result is currently tagged as full symmetry on (0, 1, 2) rather than preserving the original C_3 subgroup exactly.
+Slicing rules
+Slicing uses the pointwise stabilizer of the removed axes. Informally:
+every removed axis must stay fixed under any surviving group element.
+s2_matrix = we.as_symmetric(
+    we.ones((6, 6)),
+    symmetric_axes=(0, 1),
+)
+
+same_size_slice = s2_matrix[:3, :3]
+different_size_slice = s2_matrix[:3, :2]
+expanded_s2_matrix = s2_matrix[we.newaxis, :, :]
+advanced_index_slice = s2_matrix[we.array([0, 1])]
+What happens here:
+
+same_size_slice stays symmetric because both surviving axes still have the
+same size
+different_size_slice loses symmetry because the two axes no longer match
+expanded_s2_matrix keeps the same S_2 action, but the axes are renumbered
+from (0, 1) to (1, 2)
+advanced_index_slice returns a plain ndarray; whest does not attempt to
+propagate symmetry through array/list indexing
+
+Ellipsis behaves like NumPy's normal expansion rules. It can change which
+axes remain, but it does not change the propagation rule itself.
+The difference between full and non-full groups matters immediately:
+s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+
+s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
+c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
+
+s3_slice = s3_tensor[:, :, 0]
+c3_slice = c3_tensor[:, :, 0]
+
+s3_slice keeps an S_2 subgroup on the surviving axes
+c3_slice loses all nontrivial symmetry, because C_3 has no non-identity
+element that fixes one point
+
+Reduction rules
+Reductions use the setwise stabilizer of the reduced axes. Informally:
+reduced axes are allowed to permute among themselves, because summation treats
+all positions along the reduced set equivalently.
+s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+c4_group = we.PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+
+s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
+c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
+c4_tensor = we.random.symmetric((4, 4, 4, 4), c4_group)
+
+s3_reduced = we.sum(s3_tensor, axis=0)
+c3_reduced = we.sum(c3_tensor, axis=2)
+c4_reduced = we.sum(c4_tensor, axis=(1, 3))
+c4_keepdims = we.sum(c4_tensor, axis=(1, 3), keepdims=True)
+What happens here:
+
+s3_reduced keeps an S_2 subgroup on the remaining axes
+c3_reduced loses all nontrivial symmetry
+c4_reduced keeps a C_2 subgroup
+c4_keepdims keeps the same surviving subgroup, but the output axes stay in
+their original tensor positions because keepdims=True
+
+Reducing an axis that is not in a symmetry group leaves that group alone, apart
+from any axis renumbering caused by the removed dimension.
+Binary pointwise ops and broadcasting
+Binary pointwise ops keep only the symmetry present in both operands. For
+general groups, that means element-set intersection on matching output axes,
+not just matching tuples of axis numbers.
+s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+
+s3_tensor = we.random.symmetric((4, 4, 4), s3_group)
+c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
+
+intersection_tensor = we.add(s3_tensor, c3_tensor)
+intersection_tensor keeps C_3, because C_3 is the common subgroup of
+S_3 and C_3.
+Multiple groups are handled independently:
+left_tensor = we.as_symmetric(
+    we.ones((3, 3, 5, 5)),
+    symmetric_axes=[(0, 1), (2, 3)],
+)
+right_tensor = we.as_symmetric(
+    we.ones((3, 3, 5, 5)),
+    symmetric_axes=[(0, 1)],
+)
+
+shared_group_tensor = we.add(left_tensor, right_tensor)
+shared_group_tensor keeps symmetry on (0, 1) and loses the independent
+group on (2, 3).
+Broadcasting matters too:
+stretched_s2_tensor = we.as_symmetric(
+    we.ones((1, 1, 4)),
+    symmetry=we.PermutationGroup.symmetric(2, axes=(0, 1)),
+)
+
+plain_tensor = we.ones((3, 3, 4))
+broadcast_sum = we.add(stretched_s2_tensor, plain_tensor)
+Before group intersection, any axis stretched from size 1 to a larger output
+size is removed from the candidate group. That is why broadcasted singleton
+axes do not automatically stay symmetric after a binary op.
+Warnings, conservative behavior, and re-tagging
+Whest propagates symmetry metadata conservatively. When the operation does not
+guarantee that the declared symmetry survives, the result falls back to a plain
+ndarray.
+s2_matrix = we.as_symmetric(
+    we.ones((6, 6)),
+    symmetric_axes=(0, 1),
+)
+
+row_slice = s2_matrix[0]
+row_slice is a plain ndarray, not a SymmetricTensor. That is expected.
+SymmetryLossWarning tells you that metadata was dropped or weakened during an
+operation. If you know more about the result than the conservative propagation
+rule does, you can re-tag it with we.as_symmetric().
+we.configure(symmetry_warnings=False)
+One important caveat: the current implementation does not report every
+possible partial weakening via SymmetryLossWarning. Treat the warning system
+as helpful guidance, not as a complete audit of every same-axis subgroup
+change.
+Under the hood
+The propagation rules are easier to predict if you keep three ideas in mind:
+
+Unary pointwise ops currently rebuild results from symmetric_axes, so
+they preserve the same symmetric axes but not exact subgroup identity for
+C_k, D_k, or custom groups
+Slicing uses the pointwise stabilizer of the removed axes
+Reductions use the setwise stabilizer of the reduced axes
+Binary pointwise ops use intersection of both operands' groups after
+broadcast alignment
+
+After computing the surviving subgroup, whest restricts it to the axes still
+present in the output and remaps those axes to the output tensor's numbering.
+That is why:
+
+slicing one axis of S_3 leaves S_2
+slicing one axis of C_3 leaves nothing nontrivial
+reducing {1, 3} of C_4 can still leave C_2
+
+Going deeper
+
+Einsum Patterns — how declared and induced symmetry interact with we.einsum
+Symmetry Detection Deep Dive — the full detection algorithm for einsum
+Symmetry Explorer — experiment with symmetry interactively
+Einsum PatternsPrevious PageLinear AlgebraNext Page
+
+--- guides/linalg ---
+URL: https://aicrowd.github.io/whest/docs/guides/linalg
+
+GuidesLinear AlgebraUse this page to learn how to use we.linalg operations and their FLOP costs.
+You will learn:
+
+How to use decompositions, solvers, and property operations in we.linalg
+How symmetric inputs reduce linalg costs
+How to query linalg costs before running them
+
+Prerequisites
+
+Quickstart
+
+Available operations
+Decompositions
+OperationCostWeightNoteswe.linalg.svd(A, k=k)m⋅n⋅km \cdot n \cdot km⋅n⋅k4.0Truncated SVDwe.linalg.eig(A)10n310n^310n34.0General eigendecompositionwe.linalg.eigh(A)4n3/34n^3/34n3/34.0Symmetric eigendecompositionwe.linalg.cholesky(A)n3/3n^3/3n3/34.0Cholesky (symmetric positive definite)we.linalg.qr(A)mn2−n3/3mn^2 - n^3/3mn2−n3/34.0Householder QR (FMA=1)we.linalg.eigvals(A)10n310n^310n34.0Eigenvalues onlywe.linalg.eigvalsh(A)4n3/34n^3/34n3/34.0Symmetric eigenvalues onlywe.linalg.svdvals(A)m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)4.0Singular values only
+Solvers
+solve_cost(n) always returns n^3 regardless of the symmetric or nrhs
+parameters — those arguments exist for API compatibility but are currently
+ignored in the cost model.
+OperationCostWeightwe.linalg.solve(A, b)n3n^3n34.0we.linalg.inv(A)n3n^3n34.0we.linalg.lstsq(A, b)m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)4.0we.linalg.pinv(A)m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)4.0
+inv of a symmetric matrix returns a SymmetricTensor.
+Properties
+OperationCostWeightwe.linalg.det(A)n3n^3n34.0we.linalg.slogdet(A)n3n^3n34.0we.linalg.norm(x)depends on ordvarieswe.linalg.cond(A)m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)varieswe.linalg.matrix_rank(A)m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)varieswe.linalg.trace(A)nnnvaries
+Compound
+OperationCostNoteswe.linalg.multi_dot(arrays)Optimal chain orderingUses np.linalg.multi_dotwe.linalg.matrix_power(A, n)n3×{exponent}n^3 \times \text\{exponent\}n3×{exponent}Repeated squaring
+Symmetric input savings
+Pass a SymmetricTensor to get automatic cost reductions:
+import whest as we
+
+with we.BudgetContext(flop_budget=10**8) as budget:
+    A = we.as_symmetric(we.multiply(we.eye(10), 2.0), symmetric_axes=(0, 1))
+
+    # solve_cost(n=10) = n^3 = 1000 FLOPs (symmetric/nrhs params are currently ignored)
+    x = we.linalg.solve(A, we.ones(10))
+
+    # inv returns SymmetricTensor
+    A_inv = we.linalg.inv(A)
+    print(isinstance(A_inv, we.SymmetricTensor))  # True
+See Exploit Symmetry Savings for full details.
+Query cost before running
+cost = we.flops.svd_cost(m=256, n=256, k=10)
+print(f"SVD cost: {cost:,}")  # 655,360
+
+cost = we.flops.solve_cost(n=256)
+print(f"Solve cost: {cost:,}")  # 16,777,216 (= 256^3; symmetric/nrhs params currently ignored)
+Common pitfalls
+Symptom: Using numpy.linalg.svd instead of we.linalg.svd
+Fix: Operations called through numpy directly bypass FLOP counting. Always use we.linalg.*.
+Related pages
+
+Exploit Symmetry Savings — symmetry-aware cost reductions
+Plan Your Budget — query costs before running
+API Reference — full list of supported operations
+Symmetry SavingsPrevious PageFFT OperationsNext Page
+
+--- guides/fft ---
+URL: https://aicrowd.github.io/whest/docs/guides/fft
+
+GuidesFFT OperationsUse this page to learn how to use we.fft operations and understand their FLOP costs.
+You will learn:
+
+How to use 1-D, 2-D, and N-D FFT operations and their cost formulas
+How to choose between real and complex transforms to save FLOPs
+How to query FFT costs before committing budget
+
+Prerequisites
+
+Quickstart
+
+Cost model
+FFT costs are based on the Cooley-Tukey radix-2 algorithm:
+TransformCost FormulaExample (n=1024)fft, ifft5n⋅⌈log⁡2n⌉5n \cdot \lceil\log_2 n\rceil5n⋅⌈log2​n⌉51,200rfft, irfft5(n/2)⋅⌈log⁡2n⌉5(n/2) \cdot \lceil\log_2 n\rceil5(n/2)⋅⌈log2​n⌉25,600fft2, ifft25N⋅⌈log⁡2N⌉5N \cdot \lceil\log_2 N\rceil5N⋅⌈log2​N⌉ where N=n{1}⋅n{2}N = n_\{1\} \cdot n_\{2\}N=n{​1}⋅n{​2}variesfftn, ifftn5N⋅⌈log⁡2N⌉5N \cdot \lceil\log_2 N\rceil5N⋅⌈log2​N⌉ where N=∏{i}n{i}N = \prod_\{i\} n_\{i\}N=∏{​i}n{​i}variesfftfreq, rfftfreq0 (free)0fftshift, ifftshift0 (free)0
+Real-valued transforms (rfft, irfft, rfftn, irfftn) cost roughly half of their complex counterparts because they exploit conjugate symmetry.
+Basic usage
+import whest as we
+
+with we.BudgetContext(flop_budget=1_000_000) as budget:
+    # Generate a signal (costs numel(output) = 1,024 FLOPs)
+    signal = we.random.randn(1024)
+
+    # Forward FFT: 5 * 1024 * 10 = 51,200 FLOPs
+    spectrum = we.fft.fft(signal)
+
+    # Inverse FFT: same cost
+    reconstructed = we.fft.ifft(spectrum)
+
+    # Frequency bins (free)
+    freqs = we.fft.fftfreq(1024)
+
+    # Total: randn 1,024 + fft 51,200 + ifft 51,200 + fftfreq 0 = 103,424
+    print(f"Total FFT cost: {budget.flops_used:,}")  # 103,424
+Real vs complex transforms
+When your input is real-valued (which is common in signal processing), prefer rfft over fft — it costs half as much:
+import whest as we
+
+with we.BudgetContext(flop_budget=1_000_000) as budget:
+    signal = we.random.randn(1024)  # 1,024 FLOPs
+
+    # Complex FFT: 51,200 FLOPs
+    spec_complex = we.fft.fft(signal)
+
+    budget_after_fft = budget.flops_used
+
+    # Real FFT: 25,600 FLOPs
+    spec_real = we.fft.rfft(signal)
+
+    rfft_cost = budget.flops_used - budget_after_fft
+
+    print(f"fft cost:  {budget_after_fft:,}")   # 52,224 (randn 1,024 + fft 51,200)
+    print(f"rfft cost: {rfft_cost:,}")           # 25,600
+The output of rfft has shape (n//2 + 1,) instead of (n,), since the negative frequencies are redundant for real inputs.
+Multi-dimensional FFT
+Use fft2 for 2-D transforms (e.g., images) and fftn for arbitrary dimensions:
+import whest as we
+
+with we.BudgetContext(flop_budget=10**8) as budget:
+    # 2-D image (costs numel(output) = 65,536 FLOPs)
+    image = we.random.randn(256, 256)
+
+    # 2-D FFT
+    spectrum_2d = we.fft.fft2(image)
+    print(f"2D FFT cost: {budget.flops_used:,}")
+
+    # N-D FFT with explicit shape
+    volume = we.random.randn(32, 32, 32)
+    spectrum_3d = we.fft.fftn(volume)
+Windowed FFT pattern
+A common signal processing pattern — window the signal before FFT to reduce spectral leakage:
+import whest as we
+
+with we.BudgetContext(flop_budget=1_000_000) as budget:
+    signal = we.random.randn(1024)
+
+    # Window function (counted — hamming costs n FLOPs)
+    window = we.hamming(1024)
+
+    # Apply window (counted — multiply costs n FLOPs)
+    windowed = we.multiply(signal, window)
+
+    # FFT (counted)
+    spectrum = we.fft.rfft(windowed)
+
+    print(budget.summary())
+Query costs before running
+from whest.flops import fft_cost, rfft_cost
+
+# Check cost of a large FFT before committing budget
+n = 2**20  # ~1 million points
+print(f"Complex FFT: {fft_cost(n):,} FLOPs")   # 104,857,600
+print(f"Real FFT:    {rfft_cost(n):,} FLOPs")   # 52,428,800
+Common pitfalls
+Symptom: Using we.fft.fft on real data when we.fft.rfft would suffice
+Fix: rfft costs half as much. If your input is real-valued, always prefer rfft/irfft over fft/ifft.
+Symptom: Unexpectedly high cost for multi-dimensional FFT
+Fix: The cost scales as 5⋅∏n{i}⋅⌈log⁡2(∏n{i})⌉5 \cdot \prod n_\{i\} \cdot \lceil\log_2(\prod n_\{i\})\rceil5⋅∏n{​i}⋅⌈log2​(∏n{​i})⌉. A 256x256 2-D FFT processes 65,536 elements, not 256. Use fft_cost to estimate before running.
+Related pages
+
+API Reference — full function signatures and docstrings
+Plan Your Budget — general cost estimation workflow
+FLOP Counting Model — how all costs are computed
+Linear AlgebraPrevious PageBudget Planning & DebuggingNext Page
+
+--- guides/budget-planning ---
+URL: https://aicrowd.github.io/whest/docs/guides/budget-planning
+
+GuidesBudget Planning & DebuggingEstimate costs before running and diagnose overruns after.
+You will learn:
+
+How to use cost query functions to estimate FLOPs without executing
+How to read and interpret the budget summary
+How to diagnose expensive operations using the operation log
+Optimization strategies for reducing FLOP consumption
+
+Estimate before running
+whest provides cost query functions that compute FLOP costs from shapes without executing anything or touching the budget. Use these to plan before committing FLOPs:
+import whest as we
+
+# Einsum cost
+cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+print(f"Matmul cost: {cost:,}")         # 16,777,216 (256^3, FMA=1)
+
+# SVD cost
+cost = we.flops.svd_cost(m=256, n=256, k=10)
+print(f"SVD cost: {cost:,}")            # 655,360
+
+# Pointwise cost (unary/binary ops like exp, add, multiply)
+cost = we.flops.pointwise_cost("exp", shape=(256, 256))
+print(f"Pointwise cost: {cost:,}")      # 65,536
+
+# Reduction cost (sum, mean, max, etc.)
+cost = we.flops.reduction_cost("sum", input_shape=(256, 256))
+print(f"Reduction cost: {cost:,}")      # 65,536
+For multi-operand einsums (3+ operands), use we.einsum_path() to see the step-by-step contraction breakdown with per-step costs and symmetry savings:
+path, info = we.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
+print(f"Optimized cost: {info.optimized_cost:,}")
+print(f"Naive cost:     {info.naive_cost:,}")
+print(f"Speedup:        {info.speedup:.1f}x")
+print(info)  # full per-step table
+we.einsum_path() does not execute the contraction, but it does record a nominal 1-FLOP planning event so the path query itself is still visible in the operation log.
+Budget breakdown example
+Plan a multi-step computation before executing:
+steps = [
+    ("einsum ij,j->i", we.flops.einsum_cost('ij,j->i', shapes=[(256, 256), (256,)])),
+    ("ReLU (maximum)", we.flops.pointwise_cost("maximum", shape=(256,))),
+    ("sum reduction", we.flops.reduction_cost("sum", input_shape=(256,))),
+]
+
+total = sum(cost for _, cost in steps)
+print(f"{'Operation':<20} {'FLOPs':>12}")
+print("-" * 34)
+for name, cost in steps:
+    print(f"{name:<20} {cost:>12,}")
+print("-" * 34)
+print(f"{'Total':<20} {total:>12,}")
+Read the budget summary
+Call we.budget_summary() after your computation for a human-readable breakdown, or budget.summary() inside a context. Pass by_namespace=True when you want dotted namespace attribution:
+with we.BudgetContext(flop_budget=10_000_000) as budget:
+    A = we.ones((256, 256))
+    x = we.ones((256,))
+    h = we.einsum('ij,j->i', A, x)
+    h = we.exp(h)
+    h = we.sum(h)
+    print(budget.summary())
+The summary shows cost per operation type, sorted by highest cost first. Look for operations consuming a disproportionate share of the budget. When you opt into by_namespace=True, the display adds a namespace breakdown for the exact dotted paths recorded in that run.
+For programmatic analysis, use we.budget_summary_dict():
+data = we.budget_summary_dict()
+print(f"Budget: {data['flop_budget']:,}")
+print(f"Used:   {data['flops_used']:,}")
+print(f"Left:   {data['flops_remaining']:,}")
+for op_name, op_data in data["operations"].items():
+    print(f"  {op_name}: {op_data['flop_cost']:,} ({op_data['calls']} calls)")
+Use we.budget_summary_dict(by_namespace=True) for exact per-namespace breakdowns keyed by the full dotted path:
+with we.BudgetContext(flop_budget=1000, namespace="predict") as budget:
+    x = we.ones((1,))
+    with we.namespace("fallback"):
+        with we.namespace("sampling"):
+            sample = we.add(x, 1)
+
+data = budget.summary_dict(by_namespace=True)
+print(data["by_namespace"]["predict.fallback.sampling"]["flops_used"])
+Add a time limit when FLOPs are not the only risk
+Some operations are analytically cheap enough to fit the FLOP budget but still
+slow in practice. Use wall_time_limit_s on the same BudgetContext when you
+want a cooperative wall-clock deadline in addition to the FLOP cap:
+with we.BudgetContext(
+    flop_budget=10_000_000,
+    wall_time_limit_s=2.0,
+    namespace="predict",
+) as budget:
+    # computation must stay within both limits
+    ...
+
+print(budget.summary())
+When the time limit is exceeded, whest raises TimeExhaustedError at the next
+operation boundary. The summary exposes three timing views:
+
+wall_time_s: total elapsed time for the context
+tracked_time_s: time spent inside counted NumPy calls
+untracked_time_s: everything else in the context (wall_time_s - tracked_time_s)
+
+Use budget.summary() when you want the current context's timings, and
+we.budget_summary() when you want the accumulated session/global view.
+Diagnose overruns
+When you hit a BudgetExhaustedError, the budget's operation log gives per-call detail:
+for record in budget.op_log:
+    print(f"{record.op_name:<16} cost={record.flop_cost:>12,}  cumulative={record.cumulative:>12,}")
+Each OpRecord contains:
+FieldDescriptionop_nameOperation name (e.g., "einsum", "exp")namespaceEffective namespace path recorded for that operationsubscriptsEinsum subscript string, or NoneshapesTuple of input shapesflop_costFLOP cost of this single callcumulativeRunning total after this call
+Look for the operation where cumulative jumps sharply -- that is your most expensive call.
+For real-time monitoring during long computations, use the live budget display:
+with we.budget_live():
+    with we.BudgetContext(flop_budget=10**8, namespace="training") as budget:
+        for i in range(100):
+            # ... computation ...
+            pass
+        # The live display updates automatically as FLOPs are consumed
+What to do next
+Once you have identified the expensive operations, apply these strategies:
+
+Reduce dimensions. If random.randn(1024, 1024) is too expensive, try smaller arrays. A 512x512 matrix costs 1/4 the FLOPs of a 1024x1024 matrix for a matmul.
+
+Exploit symmetry. If operands are symmetric, use we.as_symmetric() to halve pointwise costs and significantly reduce einsum costs. See Symmetry Savings.
+
+Use cheaper operations. A matrix-vector product costs m*n FLOPs, while a matrix-matrix product costs m*n*k. Avoid computing full matrix products when you only need a few rows or a single vector result.
+
+Increase budget. If the computation is genuinely needed and you have headroom, raise flop_budget on the BudgetContext.
+
+Split into phases. Use namespaces to attribute different phases without splitting the FLOP budget into child budgets:
+
+with we.BudgetContext(flop_budget=10**8, namespace="solver") as budget:
+    with we.namespace("init"):
+        # initialization
+        ...
+
+    with we.namespace("solve"):
+        # main computation
+        ...
+
+print(budget.summary(by_namespace=True))FFT OperationsPrevious PageHow whest WorksNext Page
+
+============================================================
+Understanding whest
+============================================================
+
+--- understanding/how-whest-works ---
+URL: https://aicrowd.github.io/whest/docs/understanding/how-whest-works
+
+Understanding whestHow whest WorksUnderstand how whest wraps NumPy to count every FLOP.
+You will learn:
+
+The wrapping pattern that makes import whest as we a drop-in for NumPy
+How costs are calculated from tensor shapes before execution
+How budgets are enforced and what happens when they are exceeded
+How the operation registry classifies every NumPy callable
+
+The wrapping pattern
+whest exposes a NumPy-compatible API. When you write import whest as we and call we.einsum(...), you get a function that behaves like np.einsum(...) but with FLOP counting layered on top.
+Under the hood, whest re-exports wrapped versions of NumPy functions. The whest/__init__.py module imports from internal modules that each handle a category of operations:
+
+_pointwise.py -- unary and binary elementwise operations (exp, add, multiply, etc.)
+_einsum.py -- the einsum and einsum_path functions with symmetry-aware path optimization
+_free_ops.py -- zero-cost operations (zeros, reshape, transpose, copy, etc.)
+_counting_ops.py -- operations that look free but involve genuine computation (trace, histogram, etc.)
+_sorting_ops.py -- sorting, searching, and set operations
+Submodules -- whest.linalg, whest.fft, whest.random, whest.stats
+
+Each wrapped function follows the same pattern: compute the analytical FLOP cost, check the budget, then delegate to the real NumPy implementation.
+Cost interception
+When you call a counted operation, whest computes its FLOP cost analytically from the tensor shapes before the operation executes. The cost depends on the operation category:
+CategoryCost formulaExamplePointwise unarynumel(output)we.exp(x) on shape (256, 256) costs 65,536Pointwise binarynumel(output)we.add(a, b) with broadcast output (256, 256) costs 65,536Reductionnumel(input)we.sum(x) on shape (256, 256) costs 65,536Einsumproduct of all index dimensions'ij,jk->ik' with shapes (m, k), (k, n) costs m * k * nFree0we.zeros(...), we.reshape(...), we.transpose(...)
+The cost is always deterministic -- the same shapes produce the same FLOP count regardless of the data values or the hardware running the code.
+Each FMA (fused multiply-add) counts as 1 operation, not 2. A matrix multiply of dimensions (m, k) x (k, n) costs m * k * n FLOPs.
+Budget enforcement
+BudgetContext accumulates the cost of every operation that runs inside it. Before each counted operation executes, the budget is checked:
+
+The wrapped function computes the analytical cost from input shapes
+It calls budget.deduct(op_name, flop_cost=cost, ...) on the active budget
+deduct() checks if flops_used + cost > flop_budget
+If within budget: the cost is recorded, and the real NumPy function runs
+If over budget: BudgetExhaustedError is raised, and the operation does not execute
+
+Every deduction is recorded as an OpRecord in the budget's operation log, capturing the operation name, input shapes, FLOP cost, and cumulative total. This log powers the budget summary and debugging tools.
+If no explicit BudgetContext is active, whest automatically creates a global default context with a budget of 1e15 FLOPs (configurable via the WHEST_DEFAULT_BUDGET environment variable). This means bare calls outside any with block still work and still count FLOPs.
+The flow of a single call
+Here is what happens when you call we.matmul(A, B) with shapes (100, 200) and (200, 50):
+User calls we.matmul(A, B)
+    |
+    v
+whest computes cost: 100 * 200 * 50 = 1,000,000 FLOPs
+    |
+    v
+budget.deduct("matmul", flop_cost=1_000_000, shapes=((100,200), (200,50)))
+    |
+    +--> if flops_used + 1_000_000 > flop_budget:
+    |        raise BudgetExhaustedError
+    |
+    +--> else: flops_used += 1_000_000
+                record OpRecord to op_log
+    |
+    v
+np.matmul(A, B) executes and returns the result
+    |
+    v
+Result returned to user
+The operation registry
+The registry (whest/_registry.py) is a mapping of every NumPy callable to its classification and cost behavior. Each entry specifies:
+
+Category: one of counted_unary, counted_binary, counted_reduction, counted_custom, free, or blacklisted
+Module: which NumPy module it belongs to (numpy, numpy.linalg, numpy.fft, etc.)
+Notes: any special behavior or cost formula details
+
+The categories determine how costs are calculated:
+CategoryMeaningCostcounted_unaryScalar math on each elementnumel(output)counted_binaryElement-wise binary operationnumel(output)counted_reductionReduce an array along axesnumel(input)counted_customBespoke cost formulaVaries (e.g., n * ceil(log2(n)) for sort)freeZero FLOP cost0blacklistedIntentionally unsupportedRaises AttributeError
+Free operations include allocation (zeros, ones, empty), shape manipulation (reshape, transpose, squeeze), indexing helpers (ix_, indices), and metadata queries (shape, ndim, size). These do not touch the budget.
+Blocked operations include I/O (save, load), error state management (geterr, seterr), and other operations that do not make sense in a FLOP-counted context. Calling a blocked operation raises AttributeError.
+When per-operation weights are loaded, the analytical cost is multiplied by the operation's weight before deduction. This allows the cost model to reflect that exp is more expensive than abs in terms of actual hardware instructions, while keeping the base formulas simple and deterministic.
+Related pages
+
+FLOP Counting Model -- detailed cost formulas for every category
+Operation Categories -- which operations are free, counted, or blocked
+Competition Guide -- using budgets in competition
+Budget Planning & DebuggingPrevious PageFLOP Counting ModelNext Page
+
+--- understanding/flop-counting-model ---
+URL: https://aicrowd.github.io/whest/docs/understanding/flop-counting-model
+
+Understanding whestFLOP Counting ModelUse this page to understand how whest counts FLOPs and why it uses analytical counting instead of runtime measurement.
+You will learn:
+
+How whest computes FLOP costs analytically from tensor shapes
+How cost formulas work for each operation category (einsum, linalg, FFT, etc.)
+How symmetry savings and per-operation weights modify costs
+How the FLOP multiplier and namespaces interact with the cost model
+
+Convention: FMA = 1 operation
+This codebase counts a fused multiply-add (a * b + c) as a single operation.
+Hardware FMA units execute this in one instruction; the common textbook
+convention of counting it as 2 (one multiply + one add) is not used here.
+All cost formulae reflect this: a matrix multiply of dimensions
+(m, k) x (k, n) costs mkn operations, not 2mk*n.
+Why FLOPs instead of wall-clock time
+
+Deterministic: The same code always produces the same FLOP count, regardless of hardware
+Hardware-independent: A matmul costs the same FLOPs on a laptop and a server
+Reproducible: No variance from CPU scheduling, cache effects, or thermal throttling
+Composable: You can sum individual operation costs to predict total cost
+
+How costs are computed
+whest computes FLOP costs analytically from tensor shapes, not by measuring execution time.
+
+You call a counted operation (e.g., we.einsum('ij,j->i', W, x))
+whest computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
+The cost is checked against the remaining budget
+If within budget: the operation executes and the cost is deducted
+If over budget: BudgetExhaustedError is raised, the operation does not execute
+
+Cost formulas by category
+Each formula below gives the analytical base cost. In normal use,
+whest loads the packaged official per-operation
+weights automatically at import time, so the base
+cost is multiplied by the operation's weight to give the final deducted
+cost. Set WHEST_DISABLE_WEIGHTS=1 if you want the pure analytical unit-cost
+model instead.
+CategoryFormulaExampleEinsumPer-step: product of all index dims'ij,jk->ik' → 3 × 4 × 5 = 60Unary (exp, log, sqrt, ...){numel}({output})\text\{numel\}(\text\{output\}){numel}({output})shape (256, 256) → 65,536Binary (add, multiply, ...){numel}({output})\text\{numel\}(\text\{output\}){numel}({output})shape (256, 256) → 65,536Reduction (sum, mean, max, ...){numel}({input})\text\{numel\}(\text\{input\}){numel}({input})shape (256, 256) → 65,536SVDm⋅n⋅km \cdot n \cdot km⋅n⋅k(256, 256, k=10) → 655,360Solven3n^3n3(256, 256) solve → 16,777,216Dot / MatmulSame as einsum(256, 256) @ (256, 256) → 256³Free ops0zeros, reshape, etc.
+Sorting & search
+CategoryFormulaExampleSort / Argsortn⋅⌈log⁡2n⌉n \cdot \lceil\log_2 n\rceiln⋅⌈log2​n⌉ per sliceshape (4, 8), axis=-1 → 4 × 8 × 3 = 96Lexsortk⋅n⋅⌈log⁡2n⌉k \cdot n \cdot \lceil\log_2 n\rceilk⋅n⋅⌈log2​n⌉2 keys of length 8 → 2 × 8 × 3 = 48Partitionnnn per sliceshape (100,), kth=50 → 100Searchsortedm⋅⌈log⁡2n⌉m \cdot \lceil\log_2 n\rceilm⋅⌈log2​n⌉5 queries into 1024 → 5 × 10 = 50Uniquen⋅⌈log⁡2n⌉n \cdot \lceil\log_2 n\rceiln⋅⌈log2​n⌉8 elements → 8 × 3 = 24Set ops(n+m)⋅⌈log⁡2(n+m)⌉(n+m) \cdot \lceil\log_2(n+m)\rceil(n+m)⋅⌈log2​(n+m)⌉4 + 4 elements → 8 × 3 = 24
+Histogram & counting
+CategoryFormulaExampleHistogramn⋅⌈log⁡2{bins}⌉n \cdot \lceil\log_2 \text\{bins\}\rceiln⋅⌈log2​{bins}⌉100 elements, 8 bins → 100 × 3 = 300Bincountnnn100 elements → 100
+Random sampling
+CategoryFormulaExampleSimple samplers{numel}({output})\text\{numel\}(\text\{output\}){numel}({output})shape (10, 20) → 200Shuffle / Permutationn⋅⌈log⁡2n⌉n \cdot \lceil\log_2 n\rceiln⋅⌈log2​n⌉16 elements → 16 × 4 = 64
+Symmetry savings
+When a tensor is a SymmetricTensor, costs are reduced based on the number of unique elements rather than total elements. For a symmetric n×nn \times nn×n matrix, there are n(n+1)/2n(n+1)/2n(n+1)/2 unique elements instead of n2n^2n2.
+CategorySymmetric costStandard costPointwise (unary/binary)unique_elements{numel}({output})\text\{numel\}(\text\{output\}){numel}({output})Reductionunique_elements{numel}({input})\text\{numel\}(\text\{input\}){numel}({input})Einsum (symmetric contraction)Symmetry-reduced (see below)Full productSolven3n^3n3n3n^3n3Det / Slogdetn3n^3n3n3n^3n3Invn3/3+n3n^3/3 + n^3n3/3+n3n3n^3n3
+See Exploit Symmetry Savings for usage details.
+Subgraph symmetry detection
+Symmetry that reduces einsum costs comes from two complementary sources,
+both unified under the subgraph symmetry detection algorithm:
+
+Declared per-operand symmetry. When an operand is wrapped with
+we.as_symmetric(), its symmetry groups are embedded in the bipartite
+graph as U-vertex equivalence classes. These propagate into intermediate
+tensors automatically.
+
+Induced symmetry from repeated operands. When the same Python object
+is passed at multiple operand positions, the subgraph oracle detects this
+via Python identity (is) and derives symmetry groups on the output that
+cannot be seen from per-operand metadata alone.
+
+The oracle builds a bipartite graph once per contract_path call and
+evaluates symmetry lazily per subset of operands encountered during path
+search. Both sources are merged via the same group-merging machinery, so a
+tensor that is both SymmetricTensor and also repeated in the subscript
+benefits from both contributions simultaneously.
+See the
+symmetry guide
+for usage examples, and the
+subgraph symmetry explanation
+for the algorithm walkthrough.
+Einsum cost model
+Every einsum — regardless of the number of operands — is decomposed into
+pairwise contraction steps along an optimal path (found via whest's
+opt_einsum fork).
+The total cost is the sum of per-step costs:
+total_cost = sum(step.flop_cost for step in path.steps)
+Per-step cost
+For each pairwise step, the dense cost is:
+dense_step_cost = product of all index dimensions
+Each fused multiply-add (FMA) counts as 1 operation (see
+Convention above), so the cost of a
+contraction step is simply the product of all index dimensions — there is
+no factor-of-2 distinction between inner products and outer products.
+When symmetry is present, whest reduces each step's cost based on
+the structure of the contraction.
+Symmetric contraction cost
+Each pairwise step's cost is reduced by two independent multiplicative
+factors — one for the output (V-side) indices and one for the inner
+(W-side) contracted indices:
+step_cost = dense_step_cost
+          × (unique_output_elements / total_output_elements)
+          × (unique_inner_elements / total_inner_elements)
+Each ratio is computed exactly using Burnside's lemma over the
+permutation group detected for that step by the
+SubgraphSymmetryOracle. For the
+full symmetric group Sk_kk​ on kkk equal-sized axes, Burnside reduces to
+the stars-and-bars formula ({n)+k−1}{k}\binom\{n+k-1\}\{k\}(n{​)+k−1}{k}; for proper subgroups like
+CkC_kCk​ or block groups the oracle returns the exact generators and
+Burnside counts over the enumerated elements.
+The output (V-side) reduction is always applied when the step's
+intermediate has a non-trivial permutation group on its free indices —
+only the unique output elements need to be computed.
+The inner (W-side) reduction is applied only when all labels in
+the detected inner group are present as contracted indices in that
+specific pairwise step. If any of those labels were contracted at an
+earlier step and no longer appear in the current step, the inner
+reduction is skipped (the per-step table shows this as [W: ...] when
+detected-but-not-applied versus [W✓: ...] when applied). Inner
+symmetry can be toggled globally with
+we.configure(use_inner_symmetry=False).
+The two factors are independent; outer-product contractions (no summed
+indices) and non-uniform index dimensions are handled by the same
+formula, since Burnside's lemma makes no assumption about uniform sizes
+beyond requiring axes in the same orbit to share a dimension.
+Multi-operand contractions
+For a simple two-operand einsum like 'ij,jk->ik', there is one step,
+so the total cost equals the step cost. For multi-operand einsums (3+
+tensors), the optimizer finds the pairwise ordering that minimizes the
+total cost.
+When symmetric tensors are present, the optimizer is symmetry-aware: it
+uses symmetric costs to decide which pair to contract at each step, so the
+returned path may differ from the dense-optimal path. Symmetry propagates
+through intermediates — if an early contraction produces a symmetric
+intermediate, subsequent steps benefit from the reduced element count, and
+the optimizer factors this into its ordering decisions.
+Use we.einsum_path() to inspect the per-step breakdown. See
+Use Einsum for examples.
+Per-operation weights
+The analytical formulas above treat all operations within a category as
+equally expensive -- exp, log, sin, and abs all cost
+{numel}({output})\text\{numel\}(\text\{output\}){numel}({output}) FLOPs. In reality, exp decomposes into
+a minimax polynomial approximation requiring approximately 14 FP
+instructions per element, while abs is a single bit manipulation.
+Per-operation weights correct for this. Each weight is a multiplicative
+constant applied on top of the analytical formula:
+actual_cost = analytical_formula(shape) × weight(op_name)
+OperationAnalytical formulaWeightEffective cost (256x256)add{numel}({output})\text\{numel\}(\text\{output\}){numel}({output})165,536exp{numel}({output})\text\{numel\}(\text\{output\}){numel}({output})161,048,576sin{numel}({output})\text\{numel\}(\text\{output\}){numel}({output})161,048,576matmulm⋅k⋅nm \cdot k \cdot nm⋅k⋅n116,777,216linalg.choleskyn3n^3n3467,108,864reshape00000
+Weights are measured using the overhead-subtracted correction-factor
+methodology described in FLOP Weight Calibration Results.
+The formula is:
+w({op})=max⁡(α{{raw}}({op})−{overhead}{{category}}, 0)w(\text\{op\}) = \max\bigl(\alpha_\{\text\{raw\}\}(\text\{op\}) - \text\{overhead\}_\{\text\{category\}\}, \ 0\bigr)w({op})=max(α{​{raw}}({op})−{overhead}{​{category}}, 0)
+where α{{raw}}\alpha_\{\text\{raw\}\}α{​{raw}} is the median ratio of hardware-observed FP
+instructions to analytical FLOPs (FMA = 1 op), measured via
+fp_arith_inst_retired performance counters. The ufunc dispatch overhead
+(measured from np.abs, which generates zero FP arithmetic) is subtracted
+per category to remove numpy implementation noise from the weight.
+BLAS-backed operations (contractions, linalg) have weights near 1.0 because
+their tight FMA loops execute almost exactly 1 hardware FP instruction per
+analytical FLOP, with no ufunc overhead to subtract.
+Known analytical zero-FLOP operations (reshape, broadcast_to,
+random.seed, etc.) are stored with weight 0.0 in the official artifacts
+so the generated docs surface them as free rather than as 1x unit-cost ops.
+Integer and bitwise operations (bitwise_and, gcd, lcm, etc.) use the
+instructions hardware counter (total retired instructions) because they
+do not retire fp_arith_inst_retired events. Their weights are derived from
+instruction counts normalized the same way as FP operations.
+Official weights are packaged with whest and enabled by default on import.
+Use WHEST_WEIGHTS_FILE to override them with a custom JSON file, or set
+WHEST_DISABLE_WEIGHTS=1 to disable weighting entirely and fall back to
+unit weights (1.0 for all operations).
+How weights are applied
+Weights are applied centrally in BudgetContext.deduct(). Every counted
+operation passes its op_name to deduct(), which looks up the weight
+and multiplies it into the cost:
+adjusted_cost = analytical_cost × flop_multiplier × weight(op_name)
+This means weights compose with flop_multiplier and with symmetry
+reductions -- symmetry reduces the element count, the weight scales the
+per-element cost, and both apply independently.
+Overriding or disabling packaged weights
+Normal imports load the packaged official weights automatically. To override
+them at import time, set WHEST_WEIGHTS_FILE:
+export WHEST_WEIGHTS_FILE=/path/to/weights.json
+To disable weighting entirely and use unit weights instead:
+export WHEST_DISABLE_WEIGHTS=1
+The JSON file must have a "weights" key mapping operation names to floats:
+{
+  "weights": {
+    "add": 1.0,
+    "exp": 16.0,
+    "sin": 16.0,
+    "matmul": 1.0,
+    "linalg.cholesky": 4.0
+  }
+}
+Operations not listed in the override file default to 1.0. See
+Calibrate Weights for how to generate
+this file.
+Where weights come from
+Weights can be determined in two ways:
+
+Hardware performance counters (Linux perf stat) -- counts actual
+floating-point instructions retired by the CPU, weighted by SIMD width.
+This gives the true number of basic FP ops per high-level operation.
+
+Wall-clock time normalization -- measures time(op) / time(add) as
+a relative proxy. Less precise than hardware counters but works on any
+platform.
+
+The benchmarks/ package in this repository automates both methods. See
+Calibrate Weights.
+FLOP multiplier
+The flop_multiplier parameter in BudgetContext scales all costs:
+with we.BudgetContext(flop_budget=10**6, flop_multiplier=2.0) as budget:
+    # Every operation costs 2× its normal FLOP count
+    ...
+This is useful for experimentation or adjusting the difficulty of a budget
+constraint. Note that flop_multiplier and per-operation weights are
+independent — flop_multiplier scales all operations uniformly, while
+weights scale each operation individually.
+Namespaces
+Use we.namespace(...) to create nested namespace scopes inside an active BudgetContext. The namespace parameter on BudgetContext sets the root namespace prefix for operations in that context:
+with we.BudgetContext(flop_budget=10**6, namespace="predict") as budget:
+    with we.namespace("precompute"):
+        stats = we.mean(x)
+
+    with we.namespace("fallback"):
+        with we.namespace("sampling"):
+            sample = we.add(stats, 1)
+
+    print(budget.summary(by_namespace=True))
+Namespaces are hierarchical and exact per operation. we.namespace("precompute") inside namespace="predict" records operations as predict.precompute, and nested scopes append dotted segments such as predict.fallback.sampling.
+Namespaces do not create child budgets or separate time limits. They only change attribution. budget.summary() and we.budget_summary() stay flat by default; budget.summary(by_namespace=True) and we.budget_summary(by_namespace=True) opt into a By namespace section. The structured forms, budget.summary_dict(by_namespace=True) and we.budget_summary_dict(by_namespace=True), return the same exact buckets keyed by the full namespace path or None for unlabeled operations.
+data = budget.summary_dict(by_namespace=True)
+print(data["by_namespace"]["predict.fallback.sampling"]["flops_used"])
+Related pages
+
+Operation Categories — which operations are free, counted, or unsupported
+Budget Planning — query costs before running
+Calibrate Weights — measure per-operation weights empirically
+How whest WorksPrevious PageOperation CategoriesNext Page
+
+--- understanding/operation-categories ---
+URL: https://aicrowd.github.io/whest/docs/understanding/operation-categories
+
+Understanding whestOperation CategoriesUse this page to understand which operations cost FLOPs, which are free, and which are unsupported.
+You will learn:
+
+How to identify free, counted, and blacklisted operations
+What cost formulas apply to each counted sub-category
+Which operations are blocked and why
+
+Three categories
+Every NumPy function falls into one of three categories in whest:
+Free operations (0 FLOPs)
+Operations that involve no arithmetic computation — just memory allocation, reshaping, or data movement.
+Examples: zeros, ones, full, eye, arange, linspace, empty, reshape, transpose, concatenate, stack, split, squeeze, expand_dims, ravel, take, where, copy, astype, asarray
+Counted operations (cost > 0)
+Operations that perform arithmetic. Cost is computed analytically from tensor shapes.
+Sub-categoryCost formulaExamplesUnarynumel(output)exp, log, sqrt, abs, sin, cos, tanh, ceil, floorBinarynumel(output)add, multiply, maximum, divide, power, subtractReductionnumel(input)sum, mean, max, min, std, var, argmax, nansumEinsumproduct of all index dimswe.einsum(...)Dot/Matmulequivalent einsumwe.dot(A, B), A @ BLinalgper-operation formulawe.linalg.solve, we.linalg.eigh, we.linalg.choleskyFFT5 N log Nwe.fft.fft, we.fft.rfft, we.fft.fft2SVDm × n × kwe.linalg.svd(A, k=10)Sort/Searchn log n per slicesort, argsort, unique, searchsortedRandomnumel(output)we.random.randn, we.random.normal, we.random.uniformStatsflat per-element (varies)we.stats.norm.pdf, we.stats.expon.cdf, we.stats.cauchy.ppf
+When inputs are SymmetricTensor, many operations automatically get reduced costs. See Exploit Symmetry.
+Blacklisted operations
+Operations not relevant to numerical computation. Calling them raises an AttributeError. These are I/O, configuration, datetime, and display functions that have no meaningful FLOP cost.
+we.save(array, "file.npy")
+# AttributeError: whest does not support 'save' (blacklisted). Save array to .npy file. Not supported.. Did you mean: 'ravel'?
+Blacklisted categories: I/O (save, load, loadtxt, savetxt, savez, genfromtxt), configuration (seterr, geterr, setbufsize), datetime (busday_count, is_busday), display (array2string, array_repr), functional (apply_along_axis, piecewise, frompyfunc).
+See API Reference for the complete list.
+Related pages
+
+API Reference — complete list of every operation and its category
+FLOP Counting Model — how costs are calculated
+Migrate from NumPy — what changes when moving from NumPy
+FLOP Counting ModelPrevious PageSymmetry Detection Deep DiveNext Page
+
+--- understanding/symmetry-detection ---
+URL: https://aicrowd.github.io/whest/docs/understanding/symmetry-detection
+
+Understanding whestSymmetry Detection Deep DiveContributor-level walkthrough of whest's symmetry detection algorithm.
+You will learn:
+
+How the bipartite graph is constructed from einsum subscripts
+How the subset-keyed oracle detects and caches symmetry lazily
+How the sigma-loop derives label permutations from row permutations
+How Burnside's lemma counts unique elements for exact FLOP reduction
+
+TL;DR: whest detects when an einsum expression has symmetry that allows computing fewer FLOPs. It does this by building a bipartite graph from the einsum subscripts, finding column permutations that preserve the graph structure, and using group theory to count how many unique terms exist. The savings can be dramatic -- a symmetric matrix multiplication can cost half as many FLOPs.
+The problem
+A multi-operand einsum like 'ij,ai,bj->ab' is decomposed by opt_einsum into
+a sequence of pairwise contractions. At each step the optimizer must evaluate
+candidate pairs -- and it needs to know, for each candidate intermediate, whether
+the result is symmetric, so it can score it with a reduced cost.
+When operands are SymmetricTensors, their per-operand symmetry is known
+upfront. But there is a second source of symmetry: when the same Python object
+appears at multiple operand positions, the output can be symmetric in index
+labels contributed by those repeated operands -- even if the operands are dense.
+The naive approach is to rerun a detection procedure at every step for every
+candidate subset. This is too expensive for large contractions. We want:
+
+Correctness -- detect all exploitable symmetry without false positives.
+Memoization -- compute each intermediate's symmetry at most once.
+Laziness -- only evaluate subsets that the path optimizer actually visits.
+
+Subgraph symmetry detection achieves all three.
+The bipartite graph
+The core data structure is a bipartite graph over the einsum expression.
+Left vertices (U): One U-vertex per axis of each operand. For a dense
+operand with subscript "ai", each axis produces its own U-vertex (two total).
+For a SymmetricTensor with subscript "ij" and declared symmetry S_2{i,j},
+both axes still produce separate U-vertices -- per-operand symmetry does not
+affect the graph topology. Instead, per-operand symmetry is handled entirely
+by the expanded sigma-loop (see below), which uses the declared symmetry
+generators as an additional source of row permutations.
+Right vertices (labels): One right vertex per unique index label. Labels are
+partitioned into:
+
+V (free labels): appear in the final output subscript or in operands
+outside the current subset (they "cross the cut").
+W (summed labels): contracted entirely within the current subset.
+
+Incidence: An edge from U-vertex u to label c has weight equal to the
+multiplicity of c in the axes belonging to U-vertex u.
+Identical-operand groups: Operands that are the same Python object are
+grouped. These groups are the source of induced symmetry.
+Worked example
+Consider 'ij,ai,bj->ab' with operands T, A, B where T is a dense tensor:
+Subscripts:  ij,  ai,  bj  ->  ab
+Operands:    T    A    B
+U-vertices (one per axis):
+
+(T, 0) -- label set {i}
+(T, 1) -- label set {j}
+(A, 0) -- label set {a}
+(A, 1) -- label set {i}
+(B, 0) -- label set {b}
+(B, 1) -- label set {j}
+
+Free labels at the top level: {a, b} (appear in output ->ab).
+Summed labels at the top level: {i, j} (contracted out).
+No identical operands in this example -- T, A, and B are distinct Python
+objects.
+Full bipartite graph
+   U (axes)                         Labels
+   -----------------               ------
+                                   V (free):
+   (A, 0) ------------------------- a
+   (B, 0) ------------------------- b
+
+                                   W (summed):
+   (T, 0) ----------+
+                    +--------------- i
+   (A, 1) ----------+
+
+   (T, 1) ----------+
+                    +--------------- j
+   (B, 1) ----------+
+Now consider the subset {A, B} (positions 1 and 2):
+
+U-vertices in subset: (A, 0), (A, 1), (B, 0), (B, 1)
+Labels in subset: {a, i, b, j}
+Labels outside subset (in T): {i, j}
+Crossing labels (in subset AND in outside): {i, j}
+V at this step = {a, b} + {i, j} = {a, b, i, j} (all four -- {i,j} cross the cut)
+W at this step = {} (nothing is summed entirely within {A, B})
+
+Induced subgraph for subset {A, B}
+When we restrict to subset {A, B}, labels i and j cross the cut (they also
+appear in T, outside the subset), so they move from W to V:
+   U (subset {A, B} only)           Labels
+   ----------------------           ------
+                                    V (all free):
+   (A, 0) ------------------------- a
+   (A, 1) ------------------------- i
+   (B, 0) ------------------------- b
+   (B, 1) ------------------------- j
+
+                                    W: (empty)
+The incidence matrix M at this subset (rows = U-vertices, columns = V+W):
+         a  i  b  j
+(A, 0):  1  0  0  0
+(A, 1):  0  1  0  0
+(B, 0):  0  0  1  0
+(B, 1):  0  0  0  1
+The subset-keyed oracle
+The key invariant is the pure-in-subset property: the symmetry of an
+intermediate tensor depends only on the set of original operands it was formed
+from, not on the order in which they were contracted. This is because:
+
+The bipartite graph structure is fixed for the full einsum.
+The induced subgraph on a subset S is fully determined by which operands
+are in S.
+Symmetry is a property of the final intermediate, not its contraction history.
+
+This property makes the subset key canonical. The oracle stores results in a
+dict[frozenset[int], SubsetSymmetry] and returns cached results on
+subsequent calls with the same subset.
+from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+
+# One oracle per contract_path call
+oracle = SubgraphSymmetryOracle(
+    operands=list(operands),
+    subscript_parts=input_parts,
+    per_op_groups=perm_groups,
+    output_chars=output_str,
+)
+
+# Lazy evaluation -- only computed on first access per subset
+result = oracle.sym(frozenset({0, 1}))  # SubsetSymmetry for intermediate from ops 0 and 1
+result.output  # V-side (output tensor) symmetry
+result.inner   # W-side (inner summation) symmetry
+The detection algorithm
+Goal
+For a fixed subset S with incidence matrix M, we want the full group
+of automorphisms of the labelled bipartite graph -- pairs (sigma, pi)
+where sigma permutes identical-operand rows and pi permutes label columns,
+such that applying pi to the columns of sigma(M) recovers M:
+pi(sigma(M)) = M
+Every such pi is a symmetry of the intermediate tensor built from S.
+Restricted to V labels it contributes to the output (V-side) symmetry;
+restricted to W labels it contributes to the inner (W-side) symmetry.
+The V/W partition is part of the labelled structure, so legitimate
+automorphisms must preserve it -- pi(V) is a subset of V and pi(W) is a subset of W -- and any
+pi with a cycle crossing V to W is rejected.
+Column fingerprints
+For each label c, compute its column fingerprint col(c) -- the tuple of
+incidence values down the rows of M. Labels with identical fingerprints are
+candidates for symmetry equivalence. The fingerprint-to-label mapping is
+used by the sigma-loop to derive pi in O(1) per label via hash lookup.
+Earlier versions had a standalone fast path that detected S_k whenever
+labels shared a fingerprint, without running the sigma-loop. This was
+incorrect for non-S_k groups (see the C3 bug note below) and has been
+removed. Fingerprints are now used only for pi derivation inside the
+sigma-loop -- they are not a standalone detection mechanism.
+Sigma loop: derive pi from generators
+The sigma-loop iterates over generators of the row-permutation group on M,
+drawn from two sources:
+
+Source A -- per-operand internal symmetry generators. For each operand
+that carries a declared PermutationGroup, each generator of that group is
+lifted to a row permutation on M (permuting only the rows belonging to that
+operand). This captures symmetry that was previously handled by orbit-based
+axis merging.
+
+Source B -- identical-operand swap generators. For each group of k
+identical operands (same Python object), the k-1 adjacent transpositions
+(op_i, op_{i+1}) are used as generators. Each such swap is lifted to a row
+permutation that exchanges the rows of the two operands.
+
+All generators are collected and passed to Dimino's algorithm to build the
+full row-permutation group. The sigma-loop then iterates over all elements
+of this group (not just the generators), deriving pi for each.
+
+Historical note. An earlier draft emitted a third generator source
+(Source C: coordinated W-axis relabeling across identical operands
+sharing the same subscript). That source produces expression-level
+symmetries -- valid under dummy-variable renaming of summed indices -- but
+not per-tuple symmetries. Feeding them into Burnside orbit compression
+caused over-compression: on Frobenius 'ij,ij→' with generic A at n=2, the
+engine claimed μ=3 when the truth is μ=4. Source C was removed; expression-
+level symmetries are now recovered separately via Vsub×S(W)V_{\text{sub}} \times S(W)Vsub​×S(W) (below)
+without contaminating compression.
+
+For each group element sigma:
+
+Lift sigma to a row permutation on M.
+Compute sigma(M)'s column fingerprints: sigma * col(c) for each label c.
+Derive the induced label permutation pi directly. For each label l,
+pi(l) is the label whose M-column matches sigma(M)'s column for l -- a
+hash-table lookup in O(1). When multiple labels share a fingerprint
+(collision), pick the lex-first unused candidate. If any label has no
+match, reject this sigma.
+Validate pi: require a bijective fingerprint match. In the JS
+explorer, cross-V/W cycles are retained — a declared axis symmetry that
+links a V-axis with a W-axis (e.g., a symmetric matrix used as A[i,j]
+with i free and j summed) produces a legitimate per-tuple symmetry
+even though it crosses the V/W boundary. The classification tree
+(singleton, young, directProduct, bruteForceOrbit) dispatches correctly
+based on whether cross elements are present.
+Collect pi as a Permutation object over all labels. Non-identity
+permutations become generators of the detected per-tuple group GptG_{\text{pt}}Gpt​.
+
+The sigma-loop collects all non-identity pi as Permutation objects.
+These generators are passed to Dimino's algorithm (via PermutationGroup(...))
+to close the group and build the exact per-tuple symmetry group.
+Per-tuple vs expression-level symmetry
+Every einsum actually admits two distinct label-permutation groups:
+
+Per-tuple GptG_{\text{pt}}Gpt​: a permutation π such that for every tuple t of
+index values, summand(t) = summand(π⁻¹ t). Compression uses this group
+— reusing one orbit representative is only valid when every tuple in the
+orbit has the same summand value.
+
+Expression-level GexprG_{\text{expr}}Gexpr​: a permutation π such that the total sum
+is unchanged under renaming all labels by π, even if individual terms get
+reshuffled. Always a superset of GptG_{\text{pt}}Gpt​; includes dummy-rename
+permutations of summed labels.
+
+The expression-level group factors cleanly (when restricted to V/W-
+preserving elements) as Vsub×S(W)V_{\text{sub}} \times S(W)Vsub​×S(W):
+
+VsubV_{\text{sub}}Vsub​: GptG_{\text{pt}}Gpt​ projected to V-labels (the action on output axes).
+S(W)S(W)S(W): the full symmetric group on W-labels. Every permutation of W
+is always an expression-level symmetry because summing over W is
+bound-variable iteration — renaming dummies does not change the total.
+
+GexprG_{\text{expr}}Gexpr​ is computed directly from this formula, with no additional σ-loop
+source and no Dimino pass. The explorer shows both groups in its sticky
+bar (per-tuple and expr-level badges) when they differ.
+Why both? Compression formulas (μ, α) must use GptG_{\text{pt}}Gpt​ — feeding them
+GexprG_{\text{expr}}Gexpr​ over-compresses, because dummy-rename orbits contain tuples whose
+summand values differ. But the expression-level group is the "natural"
+counting symmetry readers recognize: bilinear-trace has a Z₂ × Z₂ counting
+symmetry even though only its Z₂ diagonal is per-tuple. Exposing both
+distinguishes the structural story from the compression-valid story.
+Interactive explorer
+Walk through each detection step interactively with the Symmetry Explorer — choose a preset example or define your own einsum expression.
+Worked examples
+Click to expand each example.
+Block symmetry: einsum('ab,cd->abcd', X, X)Per-index symmetry: einsum('ia,ib->ab', X, X)Cautionary note: the C3 axis-merging bug
+V-side and W-side
+V-side groups are symmetries of the output tensor -- they reduce the number of
+unique output elements that need to be computed. W-side groups are symmetries
+among the contracted (summed) labels -- they reduce the number of unique
+summation terms. Both contribute multiplicatively to the cost reduction:
+cost = dense_cost * (unique_output / total_output) * (unique_inner / total_inner)
+The output (V-side) reduction is always applied when the step's
+intermediate has a non-trivial permutation group on its free indices.
+The inner (W-side) reduction is applied only when all labels in
+the detected inner group are present as contracted indices in that
+specific pairwise step. If any of those labels were contracted at an
+earlier step and no longer appear, the inner reduction is skipped.
+In the contraction path table, [W checkmark: ...] indicates the inner reduction was
+applied, while [W: ...] indicates it was detected but not applied.
+Inner symmetry can be toggled with we.configure(use_inner_symmetry=False).
+Exact group detection and Burnside counting
+The sigma-loop collects all valid pi permutations as Permutation
+objects (generators) and builds a PermutationGroup directly.
+When the generated group equals S_k (the full symmetric group, checked via
+order == k!), the existing stars-and-bars formula C(n+k-1, k) applies.
+When the group is a proper subgroup (e.g., C_3 from einsum('ij,jk,ki->', A, A, A)),
+Burnside's lemma gives the exact unique element count.
+Worked example: tr(A³)
+Complexity bound
+The oracle evaluates each subset at most once. For a contract with N operands
+and groups of sizes k_1, k_2, ...:
+
+Generator collection: Source A contributes O(rank) generators per operand
+with declared symmetry. Source B contributes k-1 generators per identical group.
+Total generators: g = O(N * rank).
+Group enumeration: Dimino's algorithm builds the full row-permutation
+group from the generators in O(|G| * g) compositions.
+Pi derivation: For each of the |G| group elements, deriving pi costs
+O(n_labels) via fingerprint hash lookup.
+Per-subset total: O(|G| * (g + n_labels)).
+Number of subsets visited: at most 2^N (usually much less -- path
+algorithms visit only O(N^2) subsets in practice).
+
+For the common case of a single pair of identical operands (|G| = 2, g = 1):
+per-subset cost is O(n_labels).
+Related pages
+
+Symmetry Savings -- practical guide to using symmetry
+FLOP Counting Model -- how costs are calculated
+Operation CategoriesPrevious PageAPI ReferenceNext Page
+
+============================================================
+API Reference
+============================================================
+
+--- api ---
+URL: https://aicrowd.github.io/whest/docs/api
+
+API ReferenceAPI ReferenceWhen to use this page
+Use this page to look up any whest operation's cost type, FLOP formula, and NumPy equivalent. The interactive table supports searching and filtering.
+All whest operations with their cost types, formulas, and NumPy equivalents.
+All areascorefftlinalgrandomstatsAllCountedFreeBlocked451 of 451OperationAreaTypeCostwe.absolutecorecountednumel(output)\text{numel}(\text{output})numel(output)we.addcorecountednumel(output)\text{numel}(\text{output})numel(output)we.allcorecountednumel(input)\text{numel}(\text{input})numel(input)we.allclosecorecustomper-operationwe.anglecorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.anycorecountednumel(input)\text{numel}(\text{input})numel(input)we.appendcorecustomper-operationwe.apply_along_axiscorecustom4×per-operationwe.apply_over_axescorecustomper-operationwe.arangecorecustomper-operationwe.arccoscorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.arccoshcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.arcsincorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.arcsinhcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.arctancorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.arctan2corecounted16×numel(output)\text{numel}(\text{output})numel(output)we.arctanhcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.argmaxcorecountednumel(input)\text{numel}(\text{input})numel(input)we.argmincorecountednumel(input)\text{numel}(\text{input})numel(input)we.argpartitioncorecustomper-operationwe.argsortcorecustomper-operationwe.argwherecorecustom4×per-operationwe.arraycorecustomper-operationwe.array_equalcorecustomper-operationwe.array_equivcorecustomper-operationwe.array_splitcorefree0we.asarraycorefree0we.asarray_chkfinitecorecustomper-operationwe.astypecorefree0we.atleast_1dcorefree0we.atleast_2dcorefree0we.atleast_3dcorefree0we.averagecorecountednumel(input)\text{numel}(\text{input})numel(input)we.bartlettcorecustomnnnwe.bincountcorecustomper-operationwe.bitwise_andcorecountednumel(output)\text{numel}(\text{output})numel(output)we.bitwise_countcorecountednumel(output)\text{numel}(\text{output})numel(output)we.bitwise_left_shiftcorecountednumel(output)\text{numel}(\text{output})numel(output)we.bitwise_notcorecountednumel(output)\text{numel}(\text{output})numel(output)we.bitwise_orcorecountednumel(output)\text{numel}(\text{output})numel(output)we.bitwise_right_shiftcorecountednumel(output)\text{numel}(\text{output})numel(output)we.bitwise_xorcorecountednumel(output)\text{numel}(\text{output})numel(output)we.blackmancorecustom16×3n3n3nwe.blockcorecustomper-operationwe.bmatcorecustom4×per-operationwe.broadcast_arrayscorefree0we.broadcast_shapescorefree0we.broadcast_tocorefree0we.can_castcorefree0we.cbrtcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.ceilcorecountednumel(output)\text{numel}(\text{output})numel(output)we.choosecorecustom4×per-operationwe.clipcorecustomnumel(input)\text{numel}(\text{input})numel(input)we.column_stackcorefree0we.common_typecorefree0we.compresscorecustom4×per-operationwe.concatenatecorecustomper-operationwe.conjcorecountednumel(output)\text{numel}(\text{output})numel(output)we.conjugatecorecountednumel(output)\text{numel}(\text{output})numel(output)we.convolvecorecustomn⋅mn \cdot mn⋅mwe.copycorefree0we.copysigncorecountednumel(output)\text{numel}(\text{output})numel(output)we.copytocorecustomper-operationwe.corrcoefcorecustomn2⋅mn^2 \cdot mn2⋅mwe.correlatecorecustomn⋅mn \cdot mn⋅mwe.coscorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.coshcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.count_nonzerocorecountednumel(input)\text{numel}(\text{input})numel(input)we.covcorecustomn2⋅mn^2 \cdot mn2⋅mwe.crosscorecustomnumel(output)\text{numel}(\text{output})numel(output)we.cumprodcorecountednumel(input)\text{numel}(\text{input})numel(input)we.cumsumcorecountednumel(input)\text{numel}(\text{input})numel(input)we.cumulative_prodcorecountednumel(input)\text{numel}(\text{input})numel(input)we.cumulative_sumcorecountednumel(input)\text{numel}(\text{input})numel(input)we.degreescorecountednumel(output)\text{numel}(\text{output})numel(output)we.deletecorecustomper-operationwe.diagcorecustom4×per-operationwe.diag_indicescorefree0we.diag_indices_fromcorefree0we.diagflatcorecustomper-operationwe.diagonalcorecustomper-operationwe.diffcorecustomnumel(input)\text{numel}(\text{input})numel(input)we.digitizecorecustomper-operationwe.dividecorecountednumel(output)\text{numel}(\text{output})numel(output)we.dotcorecustomm⋅k⋅nm \cdot k \cdot nm⋅k⋅nwe.dsplitcorefree0we.dstackcorecustomper-operationwe.ediff1dcorecustomnumel(input)\text{numel}(\text{input})numel(input)we.einsumcorecustomop_factor⋅∏idi\text{op\_factor} \cdot \prod_i d_iop_factor⋅∏i​di​we.einsum_pathcorecustom000we.emptycorefree0we.empty_likecorefree0we.equalcorecountednumel(output)\text{numel}(\text{output})numel(output)we.expcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.exp2corecounted16×numel(output)\text{numel}(\text{output})numel(output)we.expand_dimscorefree0we.expm1corecounted16×numel(output)\text{numel}(\text{output})numel(output)we.extractcorecustom4×per-operationwe.eyecorefree0we.fabscorecountednumel(output)\text{numel}(\text{output})numel(output)we.fft.fftfftcustom5n⋅⌈log⁡2n⌉5n \cdot \lceil\log_2 n\rceil5n⋅⌈log2​n⌉we.fft.fft2fftcustom5N⋅⌈log⁡2N⌉5N \cdot \lceil\log_2 N\rceil5N⋅⌈log2​N⌉we.fft.fftfreqfftfree0we.fft.fftnfftcustom5N⋅⌈log⁡2N⌉5N \cdot \lceil\log_2 N\rceil5N⋅⌈log2​N⌉we.fft.fftshiftfftfree0we.fft.hfftfftcustom5n⋅⌈log⁡2n⌉5n \cdot \lceil\log_2 n\rceil5n⋅⌈log2​n⌉we.fft.ifftfftcustom5n⋅⌈log⁡2n⌉5n \cdot \lceil\log_2 n\rceil5n⋅⌈log2​n⌉we.fft.ifft2fftcustom5N⋅⌈log⁡2N⌉5N \cdot \lceil\log_2 N\rceil5N⋅⌈log2​N⌉we.fft.ifftnfftcustom5N⋅⌈log⁡2N⌉5N \cdot \lceil\log_2 N\rceil5N⋅⌈log2​N⌉we.fft.ifftshiftfftfree0we.fft.ihfftfftcustom5n⋅⌈log⁡2n⌉5n \cdot \lceil\log_2 n\rceil5n⋅⌈log2​n⌉we.fft.irfftfftcustom5(n/2)⋅⌈log⁡2n⌉5(n/2) \cdot \lceil\log_2 n\rceil5(n/2)⋅⌈log2​n⌉we.fft.irfft2fftcustom5(N/2)⋅⌈log⁡2N⌉5(N/2) \cdot \lceil\log_2 N\rceil5(N/2)⋅⌈log2​N⌉we.fft.irfftnfftcustom5(N/2)⋅⌈log⁡2N⌉5(N/2) \cdot \lceil\log_2 N\rceil5(N/2)⋅⌈log2​N⌉we.fft.rfftfftcustom5(n/2)⋅⌈log⁡2n⌉5(n/2) \cdot \lceil\log_2 n\rceil5(n/2)⋅⌈log2​n⌉we.fft.rfft2fftcustom5(N/2)⋅⌈log⁡2N⌉5(N/2) \cdot \lceil\log_2 N\rceil5(N/2)⋅⌈log2​N⌉we.fft.rfftfreqfftfree0we.fft.rfftnfftcustom5(N/2)⋅⌈log⁡2N⌉5(N/2) \cdot \lceil\log_2 N\rceil5(N/2)⋅⌈log2​N⌉we.fill_diagonalcorecustom4×per-operationwe.flatnonzerocorecustomper-operationwe.flipcorefree0we.fliplrcorefree0we.flipudcorefree0we.float_powercorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.floorcorecountednumel(output)\text{numel}(\text{output})numel(output)we.floor_dividecorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.fmaxcorecountednumel(output)\text{numel}(\text{output})numel(output)we.fmincorecountednumel(output)\text{numel}(\text{output})numel(output)we.fmodcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.frexpcorecountednumel(output)\text{numel}(\text{output})numel(output)we.from_dlpackcorefree0we.frombuffercorefree0we.fromfunctioncorecustomper-operationwe.fromitercorecustom16×per-operationwe.fullcorecustomper-operationwe.full_likecorecustomper-operationwe.gcdcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.geomspacecorecustomper-operationwe.gradientcorecustomnumel(input)\text{numel}(\text{input})numel(input)we.greatercorecountednumel(output)\text{numel}(\text{output})numel(output)we.greater_equalcorecountednumel(output)\text{numel}(\text{output})numel(output)we.hammingcorecustom16×nnnwe.hanningcorecustom16×nnnwe.heavisidecorecountednumel(output)\text{numel}(\text{output})numel(output)we.histogramcorecustomper-operationwe.histogram2dcorecustomper-operationwe.histogram_bin_edgescorecustomper-operationwe.histogramddcorecustomper-operationwe.hsplitcorefree0we.hstackcorefree0we.hypotcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.i0corecounted16×numel(output)\text{numel}(\text{output})numel(output)we.identitycorefree0we.imagcorecountednumel(output)\text{numel}(\text{output})numel(output)we.in1dcorecustomper-operationwe.indicescorecustomper-operationwe.innercorecustomnnnwe.insertcorecustom4×per-operationwe.interpcorecustomn⋅log⁡mn \cdot \log mn⋅logmwe.intersect1dcorecustomper-operationwe.invertcorecountednumel(output)\text{numel}(\text{output})numel(output)we.isclosecorecountednumel(output)\text{numel}(\text{output})numel(output)we.iscomplexcorecountednumel(output)\text{numel}(\text{output})numel(output)we.iscomplexobjcorecountednumel(output)\text{numel}(\text{output})numel(output)we.isdtypecorefree0we.isfinitecorecustomper-operationwe.isfortrancorefree0we.isincorecustomper-operationwe.isinfcorecustomper-operationwe.isnancorecustomper-operationwe.isneginfcorecountednumel(output)\text{numel}(\text{output})numel(output)we.isposinfcorecountednumel(output)\text{numel}(\text{output})numel(output)we.isrealcorecountednumel(output)\text{numel}(\text{output})numel(output)we.isrealobjcorecountednumel(output)\text{numel}(\text{output})numel(output)we.isscalarcorefree0we.issubdtypecorefree0we.iterablecorefree0we.ix_corecustomper-operationwe.kaisercorecustom16×3n3n3nwe.kroncorecustomm1m2⋅n1n2m_1 m_2 \cdot n_1 n_2m1​m2​⋅n1​n2​we.lcmcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.ldexpcorecountednumel(output)\text{numel}(\text{output})numel(output)we.left_shiftcorecountednumel(output)\text{numel}(\text{output})numel(output)we.lesscorecountednumel(output)\text{numel}(\text{output})numel(output)we.less_equalcorecountednumel(output)\text{numel}(\text{output})numel(output)we.lexsortcorecustomper-operationwe.linalg.choleskylinalgcustom4×n3n^3n3we.linalg.condlinalgcustom4×m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)we.linalg.crosslinalgcustomdelegates to we.crosswe.linalg.detlinalgcustom4×n3n^3n3we.linalg.diagonallinalgfree0we.linalg.eiglinalgcustom4×n3n^3n3we.linalg.eighlinalgcustom4×n3n^3n3we.linalg.eigvalslinalgcustom4×n3n^3n3we.linalg.eigvalshlinalgcustom4×n3n^3n3we.linalg.invlinalgcustom4×n3n^3n3we.linalg.lstsqlinalgcustom4×m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)we.linalg.matmullinalgcustomdelegates to we.matmulwe.linalg.matrix_normlinalgcustomdepends on ordwe.linalg.matrix_powerlinalgcustom⌊log⁡2k⌋⋅n3\lfloor\log_2 k\rfloor \cdot n^3⌊log2​k⌋⋅n3we.linalg.matrix_ranklinalgcustom4×m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)we.linalg.matrix_transposelinalgfree0we.linalg.multi_dotlinalgcustomoptimal chain costwe.linalg.normlinalgcustomdepends on ordwe.linalg.outerlinalgcustomdelegates to we.outerwe.linalg.pinvlinalgcustom4×m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)we.linalg.qrlinalgcustom4×m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)we.linalg.slogdetlinalgcustom4×n3n^3n3we.linalg.solvelinalgcustom4×n3n^3n3we.linalg.svdlinalgcustom4×m⋅n⋅km \cdot n \cdot km⋅n⋅kwe.linalg.svdvalslinalgcustom4×m⋅n⋅min⁡(m,n)m \cdot n \cdot \min(m,n)m⋅n⋅min(m,n)we.linalg.tensordotlinalgcustomdelegates to we.tensordotwe.linalg.tensorinvlinalgcustom4×n3n^3n3we.linalg.tensorsolvelinalgcustom4×n3n^3n3we.linalg.tracelinalgcustomnnnwe.linalg.vecdotlinalgcustomdelegates to we.vecdotwe.linalg.vector_normlinalgcustomnnnwe.linspacecorecustomper-operationwe.logcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.log10corecounted16×numel(output)\text{numel}(\text{output})numel(output)we.log1pcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.log2corecounted16×numel(output)\text{numel}(\text{output})numel(output)we.logaddexpcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.logaddexp2corecounted16×numel(output)\text{numel}(\text{output})numel(output)we.logical_andcorecountednumel(output)\text{numel}(\text{output})numel(output)we.logical_notcorecountednumel(output)\text{numel}(\text{output})numel(output)we.logical_orcorecountednumel(output)\text{numel}(\text{output})numel(output)we.logical_xorcorecountednumel(output)\text{numel}(\text{output})numel(output)we.logspacecorecustomper-operationwe.mask_indicescorecustom4×per-operationwe.matmulcorecustomm⋅k⋅nm \cdot k \cdot nm⋅k⋅nwe.matrix_transposecorefree0we.matveccorecountednumel(output)\text{numel}(\text{output})numel(output)we.maxcorecountednumel(input)\text{numel}(\text{input})numel(input)we.maximumcorecountednumel(output)\text{numel}(\text{output})numel(output)we.may_share_memorycorefree0we.meancorecountednumel(input)\text{numel}(\text{input})numel(input)we.mediancorecountednumel(input)\text{numel}(\text{input})numel(input)we.meshgridcorecustomper-operationwe.mincorecountednumel(input)\text{numel}(\text{input})numel(input)we.min_scalar_typecorefree0we.minimumcorecountednumel(output)\text{numel}(\text{output})numel(output)we.mintypecodecorefree0we.modcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.modfcorecountednumel(output)\text{numel}(\text{output})numel(output)we.moveaxiscorefree0we.multiplycorecountednumel(output)\text{numel}(\text{output})numel(output)we.nan_to_numcorecountednumel(output)\text{numel}(\text{output})numel(output)we.nanargmaxcorecountednumel(input)\text{numel}(\text{input})numel(input)we.nanargmincorecountednumel(input)\text{numel}(\text{input})numel(input)we.nancumprodcorecountednumel(input)\text{numel}(\text{input})numel(input)we.nancumsumcorecountednumel(input)\text{numel}(\text{input})numel(input)we.nanmaxcorecountednumel(input)\text{numel}(\text{input})numel(input)we.nanmeancorecountednumel(input)\text{numel}(\text{input})numel(input)we.nanmediancorecountednumel(input)\text{numel}(\text{input})numel(input)we.nanmincorecountednumel(input)\text{numel}(\text{input})numel(input)we.nanpercentilecorecountednumel(input)\text{numel}(\text{input})numel(input)we.nanprodcorecountednumel(input)\text{numel}(\text{input})numel(input)we.nanquantilecorecountednumel(input)\text{numel}(\text{input})numel(input)we.nanstdcorecounted2×numel(input)\text{numel}(\text{input})numel(input)we.nansumcorecountednumel(input)\text{numel}(\text{input})numel(input)we.nanvarcorecounted2×numel(input)\text{numel}(\text{input})numel(input)we.ndimcorefree0we.negativecorecountednumel(output)\text{numel}(\text{output})numel(output)we.nextaftercorecountednumel(output)\text{numel}(\text{output})numel(output)we.nonzerocorecustomper-operationwe.not_equalcorecountednumel(output)\text{numel}(\text{output})numel(output)we.onescorefree0we.ones_likecorefree0we.outercorecustomm⋅nm \cdot nm⋅nwe.packbitscorecustomper-operationwe.padcorecustomper-operationwe.partitioncorecustomper-operationwe.percentilecorecountednumel(input)\text{numel}(\text{input})numel(input)we.permute_dimscorefree0we.piecewisecorecustom4×per-operationwe.placecorecustom4×per-operationwe.polycorecustomn2n^2n2we.polyaddcorecustommax⁡(n1,n2)\max(n_1, n_2)max(n1​,n2​)we.polydercorecustomnnnwe.polydivcorecustomn1⋅n2n_1 \cdot n_2n1​⋅n2​we.polyfitcorecustom2m⋅(deg+1)22m \cdot (\text{deg}+1)^22m⋅(deg+1)2we.polyintcorecustomnnnwe.polymulcorecustomn1⋅n2n_1 \cdot n_2n1​⋅n2​we.polysubcorecustommax⁡(n1,n2)\max(n_1, n_2)max(n1​,n2​)we.polyvalcorecustomm⋅degm \cdot \text{deg}m⋅degwe.positivecorecountednumel(output)\text{numel}(\text{output})numel(output)we.powercorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.prodcorecountednumel(input)\text{numel}(\text{input})numel(input)we.promote_typescorefree0we.ptpcorecountednumel(input)\text{numel}(\text{input})numel(input)we.putcorecustomper-operationwe.put_along_axiscorecustomper-operationwe.putmaskcorecustom4×per-operationwe.quantilecorecountednumel(input)\text{numel}(\text{input})numel(input)we.radianscorecountednumel(output)\text{numel}(\text{output})numel(output)we.random.betarandomcustom16×per-operationwe.random.binomialrandomcustom16×per-operationwe.random.bytesrandomcustomper-operationwe.random.chisquarerandomcustom16×per-operationwe.random.choicerandomcustomper-operationwe.random.default_rngrandomfree0we.random.dirichletrandomcustom16×per-operationwe.random.exponentialrandomcustom16×per-operationwe.random.frandomcustom16×per-operationwe.random.gammarandomcustom16×per-operationwe.random.geometricrandomcustom16×per-operationwe.random.get_staterandomfree0we.random.gumbelrandomcustom16×per-operationwe.random.hypergeometricrandomcustom16×per-operationwe.random.laplacerandomcustom16×per-operationwe.random.logisticrandomcustom16×per-operationwe.random.lognormalrandomcustom16×per-operationwe.random.logseriesrandomcustom16×per-operationwe.random.multinomialrandomcustom16×per-operationwe.random.multivariate_normalrandomcustom16×per-operationwe.random.negative_binomialrandomcustom16×per-operationwe.random.noncentral_chisquarerandomcustom16×per-operationwe.random.noncentral_frandomcustom16×per-operationwe.random.normalrandomcustom16×per-operationwe.random.paretorandomcustom16×per-operationwe.random.permutationrandomcustomper-operationwe.random.poissonrandomcustom16×per-operationwe.random.powerrandomcustom16×per-operationwe.random.randrandomcustomper-operationwe.random.randintrandomcustomper-operationwe.random.randnrandomcustom16×per-operationwe.random.randomrandomcustomper-operationwe.random.random_integersrandomcustomper-operationwe.random.random_samplerandomcustomper-operationwe.random.rayleighrandomcustom16×per-operationwe.random.seedrandomfree0we.random.set_staterandomfree0we.random.shufflerandomcustomper-operationwe.random.standard_cauchyrandomcustom16×per-operationwe.random.standard_exponentialrandomcustom16×per-operationwe.random.standard_gammarandomcustom16×per-operationwe.random.standard_normalrandomcustom16×per-operationwe.random.standard_trandomcustom16×per-operationwe.random.triangularrandomcustom16×per-operationwe.random.uniformrandomcustomper-operationwe.random.vonmisesrandomcustom16×per-operationwe.random.waldrandomcustom16×per-operationwe.random.weibullrandomcustom16×per-operationwe.random.zipfrandomcustom16×per-operationwe.ravelcorefree0we.ravel_multi_indexcorefree0we.realcorecountednumel(output)\text{numel}(\text{output})numel(output)we.real_if_closecorecountednumel(output)\text{numel}(\text{output})numel(output)we.reciprocalcorecountednumel(output)\text{numel}(\text{output})numel(output)we.remaindercorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.repeatcorecustomper-operationwe.requirecorefree0we.reshapecorefree0we.resizecorecustomper-operationwe.result_typecorefree0we.right_shiftcorecountednumel(output)\text{numel}(\text{output})numel(output)we.rintcorecountednumel(output)\text{numel}(\text{output})numel(output)we.rollcorecustomper-operationwe.rollaxiscorefree0we.rootscorecustom16×10n310n^310n3we.rot90corefree0we.row_stackcorefree0we.searchsortedcorecustomper-operationwe.selectcorecustom4×per-operationwe.setdiff1dcorecustomper-operationwe.setxor1dcorecustomper-operationwe.shapecorefree0we.shares_memorycorefree0we.signcorecountednumel(output)\text{numel}(\text{output})numel(output)we.signbitcorecountednumel(output)\text{numel}(\text{output})numel(output)we.sincorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.sinccorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.sinhcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.sizecorefree0we.sortcorecustomper-operationwe.sort_complexcorecustomper-operationwe.spacingcorecountednumel(output)\text{numel}(\text{output})numel(output)we.splitcorefree0we.sqrtcorecountednumel(output)\text{numel}(\text{output})numel(output)we.squarecorecountednumel(output)\text{numel}(\text{output})numel(output)we.squeezecorefree0we.stackcorecustomper-operationwe.stats.cauchy.cdfstatscustom16×5n5n5nwe.stats.cauchy.pdfstatscustom4×6n6n6nwe.stats.cauchy.ppfstatscustom16×5n5n5nwe.stats.expon.cdfstatscustom16×5n5n5nwe.stats.expon.pdfstatscustom16×5n5n5nwe.stats.expon.ppfstatscustom16×5n5n5nwe.stats.laplace.cdfstatscustom16×5n5n5nwe.stats.laplace.pdfstatscustom16×5n5n5nwe.stats.laplace.ppfstatscustom16×5n5n5nwe.stats.logistic.cdfstatscustom16×5n5n5nwe.stats.logistic.pdfstatscustom16×8n8n8nwe.stats.logistic.ppfstatscustom16×5n5n5nwe.stats.lognorm.cdfstatscustom16×25n25n25nwe.stats.lognorm.pdfstatscustom16×15n15n15nwe.stats.lognorm.ppfstatscustom16×45n45n45nwe.stats.norm.cdfstatscustom16×20n20n20nwe.stats.norm.pdfstatscustom16×10n10n10nwe.stats.norm.ppfstatscustom16×40n40n40nwe.stats.truncnorm.cdfstatscustom16×30n30n30nwe.stats.truncnorm.pdfstatscustom16×30n30n30nwe.stats.truncnorm.ppfstatscustom16×50n50n50nwe.stats.uniform.cdfstatscustom3n3n3nwe.stats.uniform.pdfstatscustom3n3n3nwe.stats.uniform.ppfstatscustom3n3n3nwe.stdcorecounted2×numel(input)\text{numel}(\text{input})numel(input)we.subtractcorecountednumel(output)\text{numel}(\text{output})numel(output)we.sumcorecountednumel(input)\text{numel}(\text{input})numel(input)we.swapaxescorefree0we.takecorecustom4×per-operationwe.take_along_axiscorecustomper-operationwe.tancorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.tanhcorecounted16×numel(output)\text{numel}(\text{output})numel(output)we.tensordotcorecustom∏idi\prod_i d_i∏i​di​we.tilecorecustomper-operationwe.tracecorecustomper-operationwe.transposecorefree0we.trapezoidcorecustomnumel(input)\text{numel}(\text{input})numel(input)we.tricorefree0we.trilcorefree0we.tril_indicescorefree0we.tril_indices_fromcorefree0we.trim_zeroscorecustom4×per-operationwe.triucorefree0we.triu_indicescorefree0we.triu_indices_fromcorefree0we.true_dividecorecountednumel(output)\text{numel}(\text{output})numel(output)we.trunccorecountednumel(output)\text{numel}(\text{output})numel(output)we.typenamecorefree0we.union1dcorecustomper-operationwe.uniquecorecustomper-operationwe.unique_allcorecustomper-operationwe.unique_countscorecustomper-operationwe.unique_inversecorecustomper-operationwe.unique_valuescorecustomper-operationwe.unpackbitscorecustomper-operationwe.unravel_indexcorefree0we.unstackcorecustomper-operationwe.unwrapcorecustomnumel(input)\text{numel}(\text{input})numel(input)we.vandercorecustomper-operationwe.varcorecounted2×numel(input)\text{numel}(\text{input})numel(input)we.vdotcorecustomnnnwe.vecdotcorecountednnnwe.vecmatcorecountednumel(output)\text{numel}(\text{output})numel(output)we.vsplitcorefree0we.vstackcorecustomper-operationwe.wherecorecustom4×per-operationwe.zeroscorefree0we.zeros_likecorefree0Symmetry Detection Deep DivePrevious PageFor AI AgentsNext Page
+
+--- api/for-agents ---
+URL: https://aicrowd.github.io/whest/docs/api/for-agents
+
+API ReferenceFor AI AgentsUse this page if you are an AI coding assistant (or building one) that needs to generate whest code correctly.
+You will learn:
+
+How to orient yourself with llms.txt, ops.json, per-op JSON, and the cheat sheet
+The five rules for generating correct whest code
+How to avoid common mistakes AI agents make with whest
+
+This page is for AI coding assistants (Claude, Cursor, Copilot, etc.) helping
+users write whest code. It explains what resources are available, how to
+access them, and the key things you must know before generating code.
+
+Quick orientation
+whest is NOT NumPy. It wraps a subset of NumPy with analytical FLOP
+counting. Every arithmetic operation is charged against a budget. Code that
+works with NumPy may fail or behave differently with whest:
+
+All counted operations require an active BudgetContext
+35 operations are blocked entirely (I/O, config, state)
+sort, argsort, trace, random.* sampling ops are now counted (not free)
+Costs are analytical (from tensor shapes), not measured at runtime
+
+Machine-readable resources
+ResourceFormatUse casellms.txtMarkdownStart here. Curated index of all doc pages with one-line descriptions. Under 4K tokens.llms-full.txtMarkdownComplete docs in one file. Use if your context window is large enough (~115KB).ops.jsonJSONSlim machine-readable index of all 508 operations. Query programmatically for names, filters, and detail URLs./api-data/ops/<slug>.jsonJSONFull standalone payload for one operation, including summary, signature, notes, and structured doc sections.API ReferenceMarkdownDense reference of every operation's cost and full operation inventory.
+How to use llms.txt
+If you're an agent encountering whest for the first time:
+
+Fetch llms.txt — this gives you the doc map in ~300 words
+Identify which page answers your question from the section descriptions
+Fetch that specific page
+
+URL patterns: llms.txt links to .md variants of each page (raw
+markdown for agents). Every page is also available as rendered HTML — just
+drop the trailing /index.md from the URL:
+Agent URL (raw markdown)Human URL (rendered HTML).../getting-started/installation/index.md.../getting-started/installation/.../guides/einsum/index.md.../guides/einsum/.../api/index.md.../api/
+If you have a large context window, fetch llms-full.txt instead to get
+everything in one request.
+How to use ops.json
+ops.json contains a JSON object with an operations array. Each entry is a
+slim index row with the information needed to search, filter, and find the full
+payload for one operation:
+{
+  "name": "einsum",
+  "slug": "einsum",
+  "detail_href": "/docs/api/ops/einsum/",
+  "detail_json_href": "/api-data/ops/einsum.json",
+  "module": "numpy",
+  "whest_ref": "we.einsum",
+  "numpy_ref": "np.einsum",
+  "category": "counted_custom",
+  "cost_formula": "product of all index dims (FMA=1)",
+  "cost_formula_latex": "$\\prod_i d_i$",
+  "free": false,
+  "blocked": false,
+  "status": "supported",
+  "summary": "Evaluate Einstein summation with FLOP counting and optional path optimization.",
+  "notes": "Supports SymmetricTensor inputs and repeated-operand detection for automatic cost reduction"
+}
+Use this to:
+
+Check if an operation is supported: filter by "blocked": false
+Get the cost formula for a specific operation: look up by name
+List all free operations: filter by "free": true
+Map between NumPy and whest calls: use numpy_ref and whest_ref
+Jump to the standalone page or full payload: use detail_href and detail_json_href
+
+How to use per-op JSON
+Each operation also has a full standalone JSON payload at:
+/api-data/ops/<slug>.json
+For example:
+/api-data/ops/einsum.json
+These payloads include:
+
+top-level metadata (slug, detail_href, detail_json_href)
+source links (source.whest, source.numpy)
+operation metadata (op.*)
+normalized doc sections under docs.sections[]
+
+Fetch the per-op JSON when you need the full signature, summary, notes,
+parameter list, returns, or examples for a single function without loading the
+entire reference surface.
+Five rules for generating whest code
+1. A global default budget is active automatically — use BudgetContext for control.
+A global default budget auto-activates when whest is imported, so quick
+scripts work without any setup. For precise budget control and namespacing,
+use an explicit BudgetContext. Both forms are valid:
+# Quick work — global default handles budget tracking automatically
+result = we.einsum('ij,jk->ik', A, B)
+
+# Recommended for budget control and namespacing
+with we.BudgetContext(flop_budget=10**8) as budget:
+    result = we.einsum('ij,jk->ik', A, B)
+
+# Decorator form for functions
+@we.BudgetContext(flop_budget=10**8)
+def my_forward_pass(x):
+    return we.einsum('ij,j->i', W, x)
+2. Know what's free and what's counted.
+Free (0 FLOPs): zeros, ones, reshape, transpose, copy,
+random.seed, random.get_state, random.set_state, random.default_rng.
+Custom cost (numel FLOPs): array, linspace, arange, concatenate, where.
+These are NOT free — each charges numel(output) FLOPs against the budget.
+Counted: einsum, dot, matmul, exp, log, add, multiply, sum,
+mean, all linalg.*, all fft.*, sort, argsort, trace,
+unique, set ops (in1d, isin, etc.), histogram, random.* sampling.
+Blocked: save, load, geterr, seterr, and 28 others. These raise
+AttributeError.
+When in doubt, check ops.json, the relevant /api-data/ops/<slug>.json, or the API Reference.
+3. Use we.flops.* to estimate costs before running.
+cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+cost = we.flops.svd_cost(m=256, n=256, k=10)
+These are pure functions — no BudgetContext needed.
+4. Use we.einsum as the primary computation primitive.
+Most linear algebra can be expressed as einsum. The cost is simply the
+product of all index dimensions — each FMA (fused multiply-add) counts
+as 1 operation.
+'ij,jk->ik' with shapes (m, k) and (k, n) costs m * k * n FLOPs.
+5. Use wall_time_limit_s for time-limited execution.
+In competition evaluation, submissions run under both a FLOP budget and a
+wall-clock time limit. Test locally with:
+with we.BudgetContext(flop_budget=10**9, wall_time_limit_s=5.0) as budget:
+    # your code — must complete within 5 seconds
+    ...
+If the time limit is exceeded, TimeExhaustedError is raised at the next
+operation boundary. The error includes the operation name, elapsed time, and
+configured limit for diagnostics.
+6. Exploit symmetry for cost savings.
+
+Use symmetric_axes for symmetric outputs:
+we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
+Wrap known-symmetric matrices with we.as_symmetric(data, symmetric_axes=(0, 1))
+for automatic savings in downstream ops
+
+Common mistakes agents make
+MistakeWhat happensFixUsing np.einsum instead of we.einsumFLOPs not counted, budget not checkedAlways use we.* for operations you want trackedSkipping BudgetContext entirelyNo error (global default handles it), but budget is harder to track and namespaceUse an explicit BudgetContext for any work you want to measure or labelAssuming array, linspace, concatenate, where are freeUnderestimates budget usage — each charges numel(output) FLOPsThese are custom-cost ops, not free; check the cheat sheetAssuming sort is freeUnderestimates budget usagesort costs n*ceil(log2(n)) per slice — check the cheat sheetUsing we.save() or we.load()AttributeError — blockedUse numpy directly for I/ONesting two explicit BudgetContext blocksRuntimeErrorUse a single explicit context; nesting with the global default is fineIgnoring wall_time_limit_s in testingTimeExhaustedError in competitionTest with a time limit locally to catch slow code early
+Related pages
+
+API Reference — full operation inventory and cost reference
+Exploit Symmetry — detailed symmetry guide
+API ReferencePrevious PageClient-Server ModelNext Page
+
+============================================================
+Infrastructure
+============================================================
+
+--- infrastructure/client-server ---
+URL: https://aicrowd.github.io/whest/docs/infrastructure/client-server
+
+InfrastructureClient-Server ModelThis page covers the client-server architecture used for competition evaluation, where participant code runs in an isolated container. For how whest wraps NumPy internally, see How whest Works.
+Use this page to understand how whest's client-server architecture works and why it exists.
+You will learn:
+
+Why whest uses a client-server model for competition evaluation
+How arrays, operations, and budgets flow between client and server
+How to choose between the local library and client-server packages
+
+Why client-server?
+In competition evaluation, participant code runs in an isolated container that cannot import NumPy directly. This prevents participants from bypassing FLOP counting by calling NumPy functions outside whest.
+The client-server model enforces this isolation:
+
+How it works
+
+Server runs the real whest library backed by NumPy. It stores all arrays, enforces budgets, and counts FLOPs.
+
+Client is a drop-in replacement (import whest as we) that proxies every operation to the server over ZMQ (msgpack-encoded messages).
+
+Arrays stay on the server. The client holds lightweight RemoteArray handles that reference server-side data. When you call we.einsum(...), the client sends the operation and handle IDs to the server, which executes it and returns a new handle.
+
+Budget enforcement happens server-side. The client cannot manipulate FLOP counts.
+
+Communication protocol
+
+Transport: ZMQ (REQ/REP pattern)
+Serialization: msgpack with binary-safe array payloads
+Default endpoint: ipc:///tmp/whest.sock (configurable via WHEST_SERVER_URL)
+Timeout: 30 seconds per request
+
+API compatibility
+Code written for the local library works unchanged with the client:
+# This code works with BOTH the local library and the client
+import whest as we
+
+with we.BudgetContext(flop_budget=10**6) as budget:
+    x = we.zeros((256,))
+    W = we.random.randn(256, 256)
+    h = we.einsum('ij,j->i', W, x)
+    print(budget.summary())
+When to use which
+Use casePackageInstall pathDevelopment, testing, researchwhest (local library)uv add git+... or uv sync from repoCompetition evaluation, sandboxed environmentswhest-client + whest-serverDocker containers
+Three packages in this repo
+PackageLocationDescriptionwhestsrc/whest/Local library — full NumPy backend, direct executionwhest-clientwhest-client/Client proxy — no NumPy dependency, forwards ops to serverwhest-serverwhest-server/Server — runs real whest, manages sessions and arrays
+Related pages
+
+Running with Docker — set up client-server locally
+Contributor Guide — source-checkout commands for local development
+Quickstart — getting started with the local library
+For AI AgentsPrevious PageRunning with DockerNext Page
+
+--- infrastructure/docker ---
+URL: https://aicrowd.github.io/whest/docs/infrastructure/docker
+
+InfrastructureRunning with DockerUse this page to run the client-server model locally, either with Docker Compose or manually.
+You will learn:
+
+How to start the client-server setup with Docker Compose
+How to run client and server manually without Docker
+How to configure IPC and TCP transports
+
+Prerequisites
+
+Client-Server Model — understand why the architecture exists
+Docker and Docker Compose installed
+
+With Docker Compose
+The docker/ directory contains a ready-to-use setup:
+cd docker
+docker compose up --build
+This starts two containers:
+ServiceImageRolebackendDockerfile.serverRuns whest server, listens on IPC socketparticipantDockerfile.participant-hardenedRuns participant code with whest-client only
+The containers share an IPC socket volume for communication.
+Without Docker
+From a source checkout, start both processes from the repository root so the
+server can import the local src/whest package:
+# Terminal 1: Start the server
+PYTHONPATH=src:whest-server/src \
+  uv run --with pyzmq --with msgpack \
+  python -m whest_server --url ipc:///tmp/whest.sock
+# Terminal 2: Run client code
+export WHEST_SERVER_URL=ipc:///tmp/whest.sock
+PYTHONPATH=whest-client/src \
+  uv run --with pyzmq --with msgpack python your_script.py
+For TCP (e.g., across machines):
+# Server
+PYTHONPATH=src:whest-server/src \
+  uv run --with pyzmq --with msgpack \
+  python -m whest_server --url tcp://0.0.0.0:15555
+
+# Client
+export WHEST_SERVER_URL=tcp://server-host:15555
+PYTHONPATH=whest-client/src \
+  uv run --with pyzmq --with msgpack python your_script.py
+If you already have whest-client and whest-server installed into
+separate environments, the shorter cd ... && uv run ... workflow also works.
+The commands above are the reproducible source-checkout path.
+Time limit enforcement
+Submissions run under two layers of time enforcement:
+
+In-library (cooperative): BudgetContext(wall_time_limit_s=N) checks the deadline before and after each numpy call. When exceeded, it raises TimeExhaustedError with diagnostic info (which operation, elapsed time, configured limit). This is a UX feature — it gives participants a clean error message.
+
+Container-level (hard): The Docker container enforces a kernel-level time limit via cgroups/rlimit. If the in-library check doesn't catch the overshoot (e.g., a single very long numpy call), the container delivers SIGKILL. This is the ultimate backstop — no Python code can escape it.
+
+Signal-based preemption (SIGALRM) is deliberately not used because Python signal handlers cannot interrupt C extensions (numpy/LAPACK/BLAS), making them ineffective for exactly the operations where time limits matter most.
+Common pitfalls
+Symptom: Connection refused or timeout
+Fix: Ensure the server is running before starting the client. Check that WHEST_SERVER_URL matches the server's --url argument.
+Symptom: Port conflict
+Fix: Change the port in both the server --url and client WHEST_SERVER_URL.
+Related pages
+
+Client-Server Model — architecture overview
+Contributor Guide — local repo workflows
+Client-Server ModelPrevious PageContributor GuideNext Page
+
+============================================================
+Development
+============================================================
+
+--- development/contributing ---
+URL: https://aicrowd.github.io/whest/docs/development/contributing
+
+DevelopmentContributor GuideUse this page when you are working on the whest repository itself rather than only consuming the published API.
+You will learn:
+
+How the repository is organized across three packages
+How to set up your development environment and run tests
+How to work with client, server, and Docker workflows
+How auto-generated documentation is maintained
+
+Repository layout
+This repository contains three Python packages plus docs and Docker assets:
+PathPurposesrc/whest/Core library backed by NumPywhest-client/src/whest/Client proxy used in sandboxed participant environmentswhest-server/src/whest_server/ZMQ server that executes the real librarytests/Core library test suitewhest-client/tests/Client unit, integration, and adversarial testswhest-server/tests/Server unit testswebsite/content/docs/Docs source for the published sitewebsite/public/ops.jsonGenerated slim API operation index consumed by /docs/apiwebsite/public/api-data/ops/*.jsonGenerated per-operation detail payloads for standalone op pageswebsite/.generated/op-doc-imports.tsGenerated static import map used by /docs/api/ops/<slug>/scripts/generate_api_docs.pyRegenerates the API index, per-op payloads, and import mapdocker/Local client-server and hardened evaluation images
+Initial setup
+For normal work on the core package, docs, and root test suite:
+git clone https://github.com/AIcrowd/whest.git
+cd whest
+make install
+make install runs uv sync --all-extras and configures the local git hooks.
+Which environment to use
+The root environment covers the core package, linting, docs, and the main test
+suite. The client and server each also have their own pyproject.toml.
+One important caveat: whest-server depends on the local whest
+package, which is not resolved from a package index in a fresh source checkout.
+For server development, run commands from the repository root with
+PYTHONPATH=src:whest-server/src instead of relying on cd whest-server && uv run ....
+Common commands
+Core library
+make lint
+make test
+make test-numpy-compat
+make docs-build
+make docs-serve
+make ci
+If you prefer direct uv commands:
+uv run pytest
+uv run mkdocs serve
+When running the local docs site and you want whest error messages to link to
+your local copy instead of the hosted site, set:
+export WHEST_DOCS_ROOT=http://localhost:3000/docs
+If WHEST_DOCS_ROOT is unset, whest falls back to the hosted docs at
+https://aicrowd.github.io/whest/docs.
+Client package
+The client package is independently installable, so its test suite can run via
+its own project file:
+uv run --project whest-client pytest whest-client/tests
+Client integration and adversarial tests start a real server subprocess using
+the repository root .venv/bin/python, so run make install first.
+Server package
+Run server tests from the repository root so the local core package is on
+PYTHONPATH:
+PYTHONPATH=src:whest-server/src \
+  uv run --with pyzmq --with msgpack pytest whest-server/tests
+To launch the server manually from a source checkout:
+PYTHONPATH=src:whest-server/src \
+  uv run --with pyzmq --with msgpack \
+  python -m whest_server --url ipc:///tmp/whest.sock
+Running client and server together without Docker
+From a source checkout, use repo-root commands so both packages resolve
+correctly:
+# Terminal 1
+PYTHONPATH=src:whest-server/src \
+  uv run --with pyzmq --with msgpack \
+  python -m whest_server --url ipc:///tmp/whest.sock
+# Terminal 2
+export WHEST_SERVER_URL=ipc:///tmp/whest.sock
+PYTHONPATH=whest-client/src \
+  uv run --with pyzmq --with msgpack python your_script.py
+See Running with Docker if you want the same split
+using containers.
+Generated documentation
+Do not hand-edit website/public/ops.json,
+website/public/api-data/ops/*.json, or website/.generated/op-doc-imports.ts.
+The interactive API reference and standalone op pages consume those generated
+artifacts directly.
+Instead, update scripts/generate_api_docs.py, the relevant source docstrings,
+or the operation registry, then regenerate and verify:
+uv run python scripts/generate_api_docs.py
+uv run python scripts/generate_api_docs.py --verify
+NumPy Compatibility Testing
+whest's goal is to be a drop-in replacement for NumPy: import whest as np should work for all supported functions. To verify this, we run NumPy's own test suite against whest.
+How it works
+A pytest conftest at tests/numpy_compat/conftest.py monkeypatches numpy functions with their whest equivalents at session start. When we point pytest at NumPy's installed test files using --pyargs, every test that calls np.sum(...), np.mean(...), etc. actually calls whest's version.
+NumPy test file                conftest.py               whest
+  calls np.sum(x)  ──────>   np.sum = we.sum   ──────>  we.sum(x)
+  asserts result              (monkeypatch)              (FLOP-counted)
+Avoiding infinite recursion
+whest functions internally call numpy (e.g., we.dot calls _np.dot). Since _np IS the numpy module, patching numpy.dot = we.dot would cause infinite recursion: we.dot → _np.dot → numpy.dot → we.dot → ...
+We solve this by freezing numpy before patching: the conftest creates a snapshot of the numpy module (and its submodules like numpy.linalg, numpy.fft), then rebinds every whest module's _np reference to the frozen copy. Now whest's internal calls go to the original numpy functions, while the test suite sees whest's versions.
+# Simplified flow in conftest.py:
+frozen_np = freeze_numpy()           # snapshot of original numpy
+rebind_whest_np(frozen_np)       # we._np → frozen copy
+patch_numpy()                        # np.sum = we.sum, etc.
+# Now: test calls np.sum → we.sum → frozen_np.sum (original) ✓
+What gets patched
+Of whest's 508 registered functions, most non-ufunc functions are patched onto numpy during testing. The only categories skipped:
+CategoryCountWhy skippedUfuncs101whest functions are plain callables, not ufuncs -- they lack .reduce, .accumulate, .outer, .nargs. Tests check these attributes at collection time.Blacklisted32Intentionally unsupportedlinalg.outer1we.linalg.outer delegates to np.outer (not np.linalg.outer), which has different validation behavior
+Everything else -- free ops, counted custom ops (dot, einsum, etc.), submodule functions (linalg, fft), reductions, and special functions -- is patched.
+Test suites
+We run 7 NumPy test modules covering core math, ufuncs, numerics, linear algebra, FFT, polynomials, and random:
+SuiteModulePassedxfailedCore mathnumpy._core.tests.test_umath4,66813Ufunc infrastructurenumpy._core.tests.test_ufunc7957Numeric operationsnumpy._core.tests.test_numeric1,56020Linear algebranumpy.linalg.tests.test_linalg48255FFTnumpy.fft.tests.test_pocketfft11434Polynomialsnumpy.polynomial.tests.test_polynomial362Randomnumpy.random.tests.test_random1420Total7,363331
+All failures are tracked as xfails in tests/numpy_compat/xfails.py.
+Running the tests
+Tests use pytest-xdist for parallel execution across all CPU cores.
+# Run everything (recommended)
+make test-numpy-compat
+
+# Run a single suite
+uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q
+
+# Filter to specific functions
+uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -k "sqrt" -n auto -v
+
+# Run without parallelism (for debugging)
+uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -v --tb=short
+The numpy_compat tests are excluded from the default pytest run (via pyproject.toml addopts) to prevent the monkeypatch from contaminating the main test suite. They run as a separate step in CI.
+Known divergences (xfails)
+Tests that fail due to known, accepted differences are tracked in tests/numpy_compat/xfails.py. Each entry maps a test pattern to a categorized reason:
+CategoryMeaningExamplesNOT_IMPLEMENTEDFunction exists but lacks a kwarg or edge caseMissing out=, where=, subok= kwargsUNSUPPORTED_DTYPEwhest doesn't support this dtypetimedelta, object arraysUFUNC_INTERNALSTest relies on ufunc protocol.reduce, __array_ufunc__BUDGET_SIDE_EFFECTTest assumes no global state changesBudget deduction during assertionsNUMPY_INTERNALTest uses numpy internals_umath_tests, internal type tables
+The linalg suite has the most xfails (255) because whest's linalg wrappers don't support stacked/batched arrays, 0-size arrays, or some advanced kwargs that numpy's linalg tests exercise extensively.
+Triaging new failures
+
+Run a suite: uv run pytest tests/numpy_compat/ --pyargs <module> -n auto --tb=line
+Categorize each failure
+If it's a bug we should fix, create an issue
+If it's an accepted divergence, add it to xfails.py
+
+Why monkeypatching (not subclassing)
+We considered alternatives:
+
+Array subclass with __array_ufunc__: Would intercept ufunc calls, but whest arrays are plain numpy.ndarray by design -- no custom tensor class.
+Running tests with import whest as np: NumPy's test files import from numpy._core, numpy.testing, etc. -- can't redirect all internal imports.
+Monkeypatching with frozen numpy: Simple, works with NumPy's existing test infrastructure, tests exactly what users experience (same function signatures), and the frozen-numpy trick prevents infinite recursion.
+
+Related pages
+
+Running with Docker — containerized client-server setup
+Client-Server Model — architecture overview
+Running with DockerPrevious PageCalibration & Empirical WeightsNext Page
+
+--- development/calibration ---
+URL: https://aicrowd.github.io/whest/docs/development/calibration
+
+DevelopmentCalibration & Empirical WeightsHow analytical FLOPs map to real hardware via per-operation weights.
+You will learn:
+
+What per-operation weights are and why they matter
+How to run calibration and produce a weights config
+How to load and use weights in your code
+How the measurement methodology works
+How to interpret weight values
+
+What are weights?
+whest's analytical cost formulas treat all operations within a category equally -- exp, log, sin, and abs all cost numel(output) FLOPs for a pointwise unary operation. In reality, exp decomposes into a minimax polynomial approximation requiring approximately 14 floating-point instructions per element, while abs is a single bit manipulation.
+Per-operation weights correct for this. Each weight is a multiplicative constant applied on top of the analytical formula:
+effective_cost = analytical_formula(shape) * weight(op_name)
+A weight of 16.0 for exp means each analytical FLOP of exp is calibrated as approximately 16 times more expensive than one analytical FLOP of add under the chosen measurement mode. Known analytical zero-FLOP operations are stored with weight 0.0 in the official artifacts so the generated docs and packaged defaults surface them as truly free. In normal use, whest loads packaged official weights automatically on import. Set WHEST_DISABLE_WEIGHTS=1 if you want the pure analytical unit-cost model instead.
+Quick start
+Run the benchmark suite to produce a JSON config:
+python -m benchmarks.runner \
+    --dtype float64 \
+    --output weights.json \
+    --html report.html \
+    --repeats 5
+This benchmarks all 291 operations across 14 categories and writes:
+
+weights.json -- the rich weights config and metadata source for whest
+report.html -- a human-readable HTML dashboard
+
+The generated weights.json is the source-of-truth artifact: it contains the
+per-operation weights plus metadata used by the generated docs and API data.
+The packaged runtime file is a slim derivative used only for default loading.
+To benchmark only certain categories:
+python -m benchmarks.runner \
+    --dtype float64 \
+    --output weights.json \
+    --category pointwise \
+    --category linalg
+Available categories: pointwise, reductions, linalg, linalg_delegates, fft, sorting, random, polynomial, contractions, misc, window, bitwise, complex.
+Using weights
+Default, override, and disable behavior
+whest ships with packaged official weights and loads them automatically on a
+normal import.
+Set WHEST_WEIGHTS_FILE to override those packaged defaults at import time:
+export WHEST_WEIGHTS_FILE=weights.json
+python your_code.py
+Set WHEST_DISABLE_WEIGHTS=1 to disable weighting entirely and use unit
+weights:
+export WHEST_DISABLE_WEIGHTS=1
+python your_code.py
+The JSON file must have a "weights" key mapping operation names to floats:
+{
+  "weights": {
+    "reshape": 0.0,
+    "add": 1.0,
+    "exp": 16.0,
+    "sin": 16.0,
+    "matmul": 1.0,
+    "linalg.cholesky": 4.0
+  }
+}
+Operations not listed in the override file default to 1.0. A partial config (e.g., pointwise-only) works without error.
+Programmatic loading
+from whest._weights import load_weights, reset_weights, get_weight
+
+# Load from a specific file
+load_weights("/path/to/weights.json")
+
+# Or re-load the packaged official defaults explicitly
+load_weights()
+
+# Check a weight
+print(get_weight("exp"))   # e.g. 16.0 after calibration
+print(get_weight("add"))   # 1.0
+print(get_weight("foo"))   # 1.0 (unknown ops default to 1.0)
+
+# Clear active overrides in the current process
+reset_weights()
+How weights are applied
+Weights are applied centrally in BudgetContext.deduct(). Every counted operation passes its op_name to deduct(), which looks up the weight and multiplies it into the cost:
+adjusted_cost = analytical_cost * flop_multiplier * weight(op_name)
+Weights compose with flop_multiplier and with symmetry reductions -- symmetry reduces the element count, the weight scales the per-element cost, and both apply independently.
+How measurement works
+The benchmark suite supports two measurement modes, chosen automatically:
+ModePlatformWhat it measuresperfLinux (with perf installed)Instruction-style hardware counters, weighted by SIMD widthtimingAny (macOS, Linux without perf)Relative wall-clock cost, normalized against np.add
+Every counted operation's weight is computed as:
+weight(op) = max(alpha_raw(op) - overhead_for_category, 0)
+Known analytical zero-FLOP operations are not benchmarked; they are emitted
+separately into the official artifacts with weight 0.0.
+where alpha_raw(op) depends on the active measurement mode:
+
+in perf mode, it is the median ratio of counter-observed retired instructions to the analytical FLOP count (FMA = 1 op)
+in timing mode, it is the median ratio of wall-clock cost relative to np.add, normalized against the same analytical FLOP count
+
+In other words, perf-mode weights are instruction-oriented calibration factors, while timing-mode weights are relative cost proxies. Both are useful for scaling analytical FLOPs, but timing-mode results should not be read as literal hardware instruction counts.
+The ufunc dispatch overhead (measured from np.abs, which generates zero FP arithmetic) is subtracted per category to remove NumPy implementation noise from the weight. BLAS-backed operations bypass the ufunc layer and have zero overhead subtracted.
+Each measurement uses pre-allocated output arrays to eliminate memory allocation overhead, multiple input distributions for robustness, subprocess isolation to prevent interference, and warmup iterations in timing mode.
+Interpreting results
+
+weight = 1.0 -- the operation has the same calibrated cost per analytical FLOP as np.add under the chosen measurement mode
+weight > 1.0 -- the operation is more expensive per analytical FLOP than np.add under the chosen calibration mode (for example, transcendental functions such as exp)
+weight < 1.0 -- the operation is cheaper per analytical FLOP than np.add under the chosen calibration mode. This can happen because of efficient kernels, vectorization, library implementation details, or benchmarking noise; it should not be interpreted using the old “FMA counts as 2 FLOPs” convention, because whest uses FMA = 1 throughout the model
+
+Weights are platform-specific -- different CPUs, BLAS libraries, and libm implementations produce different values. Always measure on the target platform. Symmetry reductions are independent of weights: symmetry reduces the element count while the weight scales the per-element cost.
+Full per-operation weight data is available in the API Reference and on each standalone operation page under /docs/api/ops/<slug>/.
+Related pages
+
+FLOP Counting Model -- how weights fit into the cost model
+Budget Planning & Debugging -- query costs before running
+Contributor GuidePrevious PageChangelogNext Page
+
+============================================================
+Changelog
+============================================================
+
+--- changelog ---
+URL: https://aicrowd.github.io/whest/docs/changelog
+
+ChangelogUnreleased
+Added
+
+Wall-clock time limits. BudgetContext now accepts wall_time_limit_s to
+set a wall-clock deadline. When exceeded, TimeExhaustedError is raised at the
+next operation boundary with diagnostic info (operation name, elapsed time, limit).
+The deadline is checked both before and after each numpy call (cooperative
+enforcement). The entry banner shows the time limit when set.
+
+Per-operation duration tracking. Every operation now records its wall-clock
+duration in OpRecord.duration. The budget summary (both plain-text and Rich)
+shows wall time, tracked/untracked breakdown, and per-operation timing. Use
+budget.summary() or we.budget_summary() to see the timing data.
+
+TimeExhaustedError added to both the core library and the client package.
+
+Einsum path caching. Contraction paths are now cached in a module-level
+LRU cache (default 4096 entries). Repeated we.einsum() calls with the same
+subscripts, shapes, optimizer, and symmetry structure reuse the cached path
+instead of recomputing it. New public API: we.clear_einsum_cache(),
+we.einsum_cache_info(), and we.configure(einsum_path_cache_size=N).
+
+Multi-version NumPy support. whest now supports NumPy 2.0, 2.1, and 2.2
+(>=2.0.0,<2.3.0). Default install resolves to NumPy 2.2. Functions not available
+in older NumPy versions raise UnsupportedFunctionError with an actionable message
+at call time (not import time).
+
+matvec and vecmat — new FLOP-counted wrappers for NumPy 2.2's matrix-vector
+and vector-matrix product ufuncs. Cost = output_size * contracted_axis (weight 1.0).
+
+UnsupportedFunctionError — new exception for calling functions that require a
+newer NumPy version than what's installed.
+
+CI NumPy version matrix — tests now run against NumPy 2.0, 2.1, and 2.2.
+
+Changed
+
+Renamed package from mechestim to whest to reflect the new challenge
+name "ARC Whitebox Estimation Challenge". The import convention changes from
+import mechestim as me to import whest as we.
+
+Symmetric BLAS classification restored. Pairwise contractions with
+symmetric inputs now correctly report SYMM, SYMV, or SYDT BLAS
+types instead of the generic GEMM, GEMV, DOT. This was disabled
+during the subgraph-symmetry refactor because per-input symmetry wasn't
+being looked up; now each step's inputs are queried via
+symmetry_oracle.sym(ssa_to_subset[ssa_id]) before calling can_blas.
+
+Symmetry detection rewritten — the induced-symmetry mechanism is replaced
+by a subset-keyed subgraph symmetry oracle (SubgraphSymmetryOracle). The
+oracle analyses the bipartite structure of the einsum expression, evaluates
+symmetry lazily per operand subset, and caches results. This correctly handles
+intermediates (not just the top-level contraction) and eliminates over-eager
+per-step propagation.
+
+Every optimizer is symmetry-aware — the symmetry_oracle kwarg is plumbed
+through _PATH_OPTIONS so that optimal, branch-*, greedy, random-greedy, and
+dynamic-programming algorithms all receive symmetry information and use the
+exact unique/dense ratio for scoring. DP uses a subset-keyed ratio cache
+(get_ratio(s, legs)) co-located with the existing bitmap_to_subset closure
+inside DynamicProgramming.__call__, amortizing the int↔str label translation
+across all _dp_compare_* helper calls for a given subset. Previously only
+greedy received symmetry info in some code paths.
+
+Silent fallback deleted — the previous code silently fell back to dense
+costs when detection produced no result. The oracle now enforces that symmetry
+information is consumed. Enforcement is verified by
+tests/test_no_silent_symmetry_drop.py.
+
+Removed
+
+symmetric_flop_count's input_symmetries parameter (high-level API)
+propagate_symmetry and related helpers
+_detect_induced_output_symmetry and related helpers
+induced_output_symmetry kwarg on contract_path
+
+Fixed
+
+bitmap_to_subset in DP now correctly handles operand renumbering.
+Previously, when _dp_parse_out_single_term_ops removed or renumbered
+operands before the DP loop (e.g., on einsum('i,ab,cd->abcd', v, X, X)
+where v has a unique index that reduces to a scalar), the
+bitmap-to-subset mapping would point at the wrong original operand
+positions, causing the oracle to return symmetry for an unrelated
+intermediate. This bug was latent under the conservative 2× heuristic
+and only surfaces with exact ratio scoring.
+
+Heterogeneous block dimensions in unique_elements — the stars-and-bars
+block-cardinality calculation assumed all axes within a block had the same
+dimension. For rectangular block-symmetric tensors (e.g.
+einsum('ab,cd->abcd', X, X) with X of shape (3, 4)), it computed
+n**s = 3**2 = 9 instead of the correct product 3*4 = 12, silently
+underestimating the unique-element count by up to ~8× on rank-3 cases.
+block_card is now computed as prod(size_dict[c] for c in blocks[0]),
+which reduces to the old formula for per-index groups and gives the
+correct product for block groups with differing axis sizes.
+
+Added
+
+Enriched PathInfo display — we.einsum_path().format_table(verbose=False)
+(called by __str__) now shows an Optimizer: header line resolving
+optimize='auto'/'auto-hq' to the inner choice that actually ran
+(e.g. optimal, dynamic_programming, random_greedy_128), a
+contract column giving the path-supplied contraction tuple, and a
+unique/dense column showing the bare element counts that the
+symmetry savings derive from. Call format_table(verbose=True) for an
+indented detail row per step showing the merged operand subset, the
+intermediate's output shape, and the running cumulative cost — the
+most useful view when debugging why a particular step's savings are
+what they are.
+New PathInfo.optimizer_used: str field and new StepInfo fields
+path_indices: tuple[int, ...] and merged_subset: frozenset[int] | None.
+The merged_subset field is the exact key
+SubgraphSymmetryOracle.sym(...) uses for its lookups, making the
+symmetry column directly attributable to the oracle's view of each
+intermediate.
+
+0.2.0 (2026-04-03)
+Second release with unified einsum cost model, NumPy compatibility testing, and expanded operation coverage.
+New features
+
+Unified einsum cost model — all einsum-like operations (einsum, dot, matmul, tensordot) now share a single cost model based on opt_einsum's contraction path optimizer
+Symmetry-aware path finding — the opt_einsum path optimizer now factors symmetry savings into contraction ordering decisions, producing different (cheaper) paths for symmetric inputs
+NumPy compatibility test harness — run NumPy's own test suite against whest via monkeypatching; 7,300+ tests passing across 7 NumPy test modules
+Polynomial operations — polyval, polyfit, polymul, polydiv, polyadd, polysub, poly, roots, polyder, polyint with analytical FLOP costs
+Window functions — bartlett, hamming, hanning, blackman, kaiser with per-function cost formulas
+FFT module — fft, ifft, rfft, irfft, fft2, ifft2, fftn, ifftn, rfftn, irfftn and free helpers (fftfreq, rfftfreq, fftshift, ifftshift)
+Client-server architecture — whest-client and whest-server packages for sandboxed competition evaluation over ZMQ
+Global default budget — a 1e15 FLOP budget auto-activates on first use, so explicit BudgetContext is no longer required for quick scripts
+WHEST_DEFAULT_BUDGET env var — configure the global default budget amount
+budget_live() — Rich-based live-updating budget display context manager
+einsum_path() — inspect contraction plans with per-step symmetry savings without spending budget
+90%+ test coverage gate enforced in CI
+
+Breaking changes
+
+Einsum cost formula now uses product_of_all_index_dims × op_factor (op_factor=2 for inner products, 1 for outer products), matching opt_einsum convention. Previously used a different formula.
+we.dot and we.matmul costs are now computed via the einsum cost model instead of separate formulas.
+
+Bug fixes
+
+Accept scalars and array-likes in all whest functions
+Fix symmetry-aware greedy algorithm to actually use symmetry in path selection
+Fix contract_path cost reporting for output indices
+Correctly handle symmetric_dims propagation through multi-step contraction paths
+
+Documentation
+
+Comprehensive how-to guides for einsum, symmetry, linalg, budget planning, and debugging
+Architecture docs for client-server model and Docker deployment
+AI agent guide with llms.txt, ops.json, and cheat sheet
+NumPy compatibility testing methodology docs
+
+0.1.0 (2026-04-01)
+Initial release for warm-up round.
+
+Einsum with symmetry detection and FLOP counting
+Pointwise operations (exp, log, add, multiply, etc.)
+Reductions (sum, mean, max, etc.)
+SVD with truncated top-k
+Free tensor creation and manipulation ops
+Budget enforcement via BudgetContext
+FLOP cost query API
+NumPy-compatible API (import whest as we)
+Calibration & Empirical WeightsPrevious Page

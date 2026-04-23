@@ -1,0 +1,44 @@
+# whest
+
+> NumPy-compatible math primitives with FLOP counting
+
+## Getting Started
+
+- [Install whest and verify setup](https://aicrowd.github.io/whest/docs/getting-started/installation)
+- [Run your first FLOP-counted computation](https://aicrowd.github.io/whest/docs/getting-started/quickstart)
+- [Everything you need to compete within a FLOP budget](https://aicrowd.github.io/whest/docs/getting-started/competition)
+
+## Guides
+
+- [Migrate existing NumPy code to whest](https://aicrowd.github.io/whest/docs/guides/migrate-from-numpy)
+- [Einsum patterns, costs, and optimization](https://aicrowd.github.io/whest/docs/guides/einsum)
+- [Reduce FLOP costs with symmetric tensors](https://aicrowd.github.io/whest/docs/guides/symmetry)
+- [Linear algebra operations and costs](https://aicrowd.github.io/whest/docs/guides/linalg)
+- [FFT operations, real vs complex, and costs](https://aicrowd.github.io/whest/docs/guides/fft)
+- [Estimate costs and diagnose budget overruns](https://aicrowd.github.io/whest/docs/guides/budget-planning)
+
+## Understanding whest
+
+- [How whest wraps NumPy to count every FLOP](https://aicrowd.github.io/whest/docs/understanding/how-whest-works)
+- [Analytical FLOP cost formulas and conventions](https://aicrowd.github.io/whest/docs/understanding/flop-counting-model)
+- [Free vs counted vs blocked operations](https://aicrowd.github.io/whest/docs/understanding/operation-categories)
+- [Subgraph symmetry detection algorithm deep dive](https://aicrowd.github.io/whest/docs/understanding/symmetry-detection)
+
+## API Reference
+
+- [Interactive searchable reference for all 508 operations](https://aicrowd.github.io/whest/docs/api)
+- [Machine-readable resources and rules for AI coding assistants](https://aicrowd.github.io/whest/docs/api/for-agents)
+
+## Infrastructure
+
+- [Client-server architecture for competition evaluation](https://aicrowd.github.io/whest/docs/infrastructure/client-server)
+- [Running whest with Docker](https://aicrowd.github.io/whest/docs/infrastructure/docker)
+
+## Development
+
+- [Repository layout, local workflows, and test suite](https://aicrowd.github.io/whest/docs/development/contributing)
+- [Empirical weight calibration methodology](https://aicrowd.github.io/whest/docs/development/calibration)
+
+## Changelog
+
+- [Release history and breaking changes](https://aicrowd.github.io/whest/docs/changelog)
