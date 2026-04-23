@@ -80,11 +80,19 @@ function formatDeclaredSymmetrySummary(variables) {
     .join(' · ');
 }
 
+function labelSizesFromClusters(clusters = []) {
+  return (Array.isArray(clusters) ? clusters : []).reduce((acc, cluster) => {
+    if (!cluster?.id || !Number.isFinite(cluster?.size) || cluster.size <= 0) return acc;
+    acc[cluster.id] = cluster.size;
+    return acc;
+  }, {});
+}
+
 export function selectSection1PreambleExample({
   example = null,
   previewExample = null,
   isDirty = false,
-  clusterSizes = {},
+  analysisClusters = null,
   defaultSize,
 } = {}) {
   if (isDirty) {
@@ -95,13 +103,13 @@ export function selectSection1PreambleExample({
   const committedExample = example ?? previewExample;
   if (!committedExample) return null;
 
+  const labelSizes = Array.isArray(analysisClusters) && analysisClusters.length > 0
+    ? labelSizesFromClusters(analysisClusters)
+    : (committedExample.labelSizes || {});
+
   return {
     ...committedExample,
-    defaultSize,
-    labelSizes: {
-      ...(committedExample.labelSizes || {}),
-      ...(clusterSizes || {}),
-    },
+    labelSizes,
   };
 }
 

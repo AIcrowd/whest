@@ -139,15 +139,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
   // Normalize the example for algorithm consumption
   const normalizedExample = useMemo(() => example ? normalizeExample(example) : null, [example]);
-  const preambleExample = useMemo(() => {
-    return selectSection1PreambleExample({
-      example: normalizedExample,
-      previewExample,
-      isDirty,
-      clusterSizes,
-      defaultSize,
-    });
-  }, [normalizedExample, previewExample, isDirty, clusterSizes, defaultSize]);
 
   // Handle preset selection
   const handleSelect = useCallback((idx) => {
@@ -200,6 +191,16 @@ export default function SymmetryAwareEinsumContractionsApp() {
     componentCosts,
     clusters: analysisClusters,
   } = analysis || {};
+
+  const preambleExample = useMemo(() => {
+    return selectSection1PreambleExample({
+      example: normalizedExample,
+      previewExample,
+      isDirty,
+      analysisClusters,
+      defaultSize,
+    });
+  }, [normalizedExample, previewExample, isDirty, analysisClusters, defaultSize]);
 
   // Seed clusterSizes from analysis when clusters appear
   useEffect(() => {

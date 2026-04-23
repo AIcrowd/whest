@@ -53,11 +53,17 @@ test('section-one view exposes dense scaling for the selected expression', () =>
 
 test('preamble source merges live cluster-size overrides when the page is clean', () => {
   const outer = preset('outer');
+  const analysis = analyzeExample({
+    ...outer,
+    labelSizes: {
+      ...(outer.labelSizes || {}),
+      'b,d': 7,
+    },
+  }, 5);
   const preambleExample = selectSection1PreambleExample({
     example: outer,
-    clusterSizes: { 'b,d': 7 },
+    analysisClusters: analysis.clusters,
     isDirty: false,
-    defaultSize: 5,
   });
   const view = buildSection1ExampleView(preambleExample);
 
@@ -75,7 +81,7 @@ test('preamble source preserves dirty preview behavior without merging stale clu
   const preambleExample = selectSection1PreambleExample({
     example: outer,
     previewExample,
-    clusterSizes: { 'b,d': 7 },
+    analysisClusters: [{ id: 'a,c', size: 4 }, { id: 'b,d', size: 7 }],
     isDirty: true,
     defaultSize: 4,
   });
@@ -89,14 +95,31 @@ test('preamble source preserves dirty preview behavior without merging stale clu
 
 test('preamble source treats partial cluster-size overrides as heterogeneous against default size', () => {
   const matrix = preset('matrix-chain');
+  const analysis = analyzeExample({
+    ...matrix,
+    labelSizes: { i: 7 },
+  }, 5);
   const preambleExample = selectSection1PreambleExample({
     example: matrix,
-    clusterSizes: { i: 7 },
-    defaultSize: 5,
+    analysisClusters: analysis.clusters,
     isDirty: false,
   });
   const view = buildSection1ExampleView(preambleExample);
 
   assert.equal(view.hasHeterogeneousSizes, true);
   assert.equal(view.denseGridScalingLatex, String.raw`\prod_{\ell \in L} n_\ell`);
+});
+
+test('preamble source keeps uniform scaling when a preset already fixes all label sizes', () => {
+  const outer = preset('outer');
+  const analysis = analyzeExample(outer, 9);
+  const preambleExample = selectSection1PreambleExample({
+    example: outer,
+    analysisClusters: analysis.clusters,
+    isDirty: false,
+  });
+  const view = buildSection1ExampleView(preambleExample);
+
+  assert.equal(view.hasHeterogeneousSizes, false);
+  assert.equal(view.denseGridScalingLatex, String.raw`n^{4}`);
 });
