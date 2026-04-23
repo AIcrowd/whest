@@ -206,7 +206,9 @@ class TestOutputSymmetryWrapping:
         with BudgetContext(flop_budget=10**8, quiet=True):
             result = einsum("ijk,ai,bj,ck->abc", tensor, weight, weight, weight)
 
-        expected = numpy.einsum("ijk,ai,bj,ck->abc", numpy.asarray(tensor), weight, weight, weight)
+        expected = numpy.einsum(
+            "ijk,ai,bj,ck->abc", numpy.asarray(tensor), weight, weight, weight
+        )
         numpy.testing.assert_allclose(result, expected, rtol=1e-10)
         assert isinstance(result, SymmetricTensor)
         assert result.symmetry.order() == 6
@@ -281,7 +283,9 @@ class TestOutputSymmetryWrapping:
         out = as_symmetric(numpy.zeros_like(data.T), symmetry=(0, 1))
 
         with BudgetContext(flop_budget=10**8, quiet=True):
-            result = einsum("ij->ji", data, out=out, symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
+            result = einsum(
+                "ij->ji", data, out=out, symmetry=SymmetryGroup.symmetric(axes=(0, 1))
+            )
 
         expected = numpy.einsum("ij->ji", data)
         assert result is out

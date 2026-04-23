@@ -215,7 +215,9 @@ def _normalize_axes(axes: tuple[Any, ...] | list[Any]) -> tuple[Any, ...]:
     return norm_axes
 
 
-def _normalize_generator_literal(generator: list[int] | tuple[int, ...], *, degree: int) -> _Permutation:
+def _normalize_generator_literal(
+    generator: list[int] | tuple[int, ...], *, degree: int
+) -> _Permutation:
     arr = list(generator)
     if len(arr) != degree:
         raise ValueError(
@@ -261,7 +263,8 @@ class SymmetryGroup:
     @classmethod
     def from_generators(
         cls,
-        generators: list[list[int] | tuple[int, ...]] | tuple[list[int] | tuple[int, ...], ...],
+        generators: list[list[int] | tuple[int, ...]]
+        | tuple[list[int] | tuple[int, ...], ...],
         *,
         axes: tuple[Any, ...] | list[Any],
     ) -> SymmetryGroup:
@@ -366,7 +369,9 @@ class SymmetryGroup:
             return self._axes
         return tuple(range(self._degree))
 
-    def _canonical_axis_action(self) -> tuple[tuple[Any, ...], tuple[tuple[Any, ...], ...]]:
+    def _canonical_axis_action(
+        self,
+    ) -> tuple[tuple[Any, ...], tuple[tuple[Any, ...], ...]]:
         domain = self._semantic_domain()
         labelled_axes = tuple(sorted(domain, key=repr))
         actions = []
@@ -490,7 +495,11 @@ class SymmetryGroup:
         return cls(rotation, reflection, axes=norm_axes)
 
     @classmethod
-    def young(cls, blocks: list[tuple[Any, ...] | list[Any]] | tuple[tuple[Any, ...] | list[Any], ...]) -> SymmetryGroup:
+    def young(
+        cls,
+        blocks: list[tuple[Any, ...] | list[Any]]
+        | tuple[tuple[Any, ...] | list[Any], ...],
+    ) -> SymmetryGroup:
         factors = [cls.symmetric(axes=tuple(block)) for block in blocks]
         if not factors:
             raise ValueError("young() requires at least one block")
@@ -503,7 +512,9 @@ class SymmetryGroup:
         supports = []
         for group in groups:
             if group.axes is None:
-                raise ValueError("SymmetryGroup.direct_product() requires axes on every factor")
+                raise ValueError(
+                    "SymmetryGroup.direct_product() requires axes on every factor"
+                )
             supports.append(set(group.axes))
         for i, support in enumerate(supports):
             for other in supports[i + 1 :]:
@@ -541,9 +552,7 @@ class SymmetryGroup:
         return sympy_group_cls(*[g.as_sympy() for g in self._generators])
 
     @classmethod
-    def from_sympy(
-        cls, spg, *, axes: tuple[Any, ...] | None = None
-    ) -> SymmetryGroup:
+    def from_sympy(cls, spg, *, axes: tuple[Any, ...] | None = None) -> SymmetryGroup:
         gens = [_Permutation.from_sympy(g) for g in spg.generators]
         return cls(*gens, axes=axes)
 
@@ -551,6 +560,7 @@ class SymmetryGroup:
         axes_str = f", axes={self._axes}" if self._axes is not None else ""
         literals = ", ".join(repr(g.array_form) for g in self._generators)
         return f"SymmetryGroup({literals}{axes_str})"
+
 
 _CycleCompat = _Cycle
 _PermutationCompat = _Permutation

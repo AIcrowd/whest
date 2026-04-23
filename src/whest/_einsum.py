@@ -196,7 +196,9 @@ def _get_path_info(subscripts: str, operands, optimize):
     return canonical_subscripts, input_parts, output_subscript, shapes, path_info
 
 
-def _relabel_group_to_output(group, source_labels: tuple[str, ...], output_subscript: str):
+def _relabel_group_to_output(
+    group, source_labels: tuple[str, ...], output_subscript: str
+):
     if group is None or not source_labels or not output_subscript:
         return None
     output_positions = {label: idx for idx, label in enumerate(output_subscript)}
@@ -207,9 +209,13 @@ def _relabel_group_to_output(group, source_labels: tuple[str, ...], output_subsc
     if len(set(source_positions)) != len(source_positions):
         return None
 
-    order = tuple(sorted(range(len(source_positions)), key=source_positions.__getitem__))
+    order = tuple(
+        sorted(range(len(source_positions)), key=source_positions.__getitem__)
+    )
     axes = tuple(source_positions[idx] for idx in order)
-    source_to_sorted = {source_idx: sorted_idx for sorted_idx, source_idx in enumerate(order)}
+    source_to_sorted = {
+        source_idx: sorted_idx for sorted_idx, source_idx in enumerate(order)
+    }
 
     from whest._perm_group import _PermutationCompat as Permutation
 
@@ -259,7 +265,9 @@ def _resolve_output_symmetry(
     if inferred is not None:
         return inferred
     if path_info.steps:
-        inferred = _remap_inferred_group(path_info.steps[-1].output_group, output_subscript)
+        inferred = _remap_inferred_group(
+            path_info.steps[-1].output_group, output_subscript
+        )
         if inferred is not None:
             return inferred
     return _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
@@ -327,10 +335,12 @@ def einsum(
         data against each generator of the group.
     """
     budget = require_budget()
-    canonical_subscripts, input_parts, output_subscript, shapes, path_info = _get_path_info(
-        subscripts,
-        operands,
-        optimize,
+    canonical_subscripts, input_parts, output_subscript, shapes, path_info = (
+        _get_path_info(
+            subscripts,
+            operands,
+            optimize,
+        )
     )
     target_symmetry = _resolve_output_symmetry(
         symmetry=symmetry,
@@ -397,10 +407,12 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
     budget = require_budget()
     with budget.deduct("einsum_path", flop_cost=1, subscripts=None, shapes=()):
         pass
-    _canonical_subscripts, _input_parts, _output_subscript, _shapes, path_info = _get_path_info(
-        subscripts,
-        operands,
-        optimize,
+    _canonical_subscripts, _input_parts, _output_subscript, _shapes, path_info = (
+        _get_path_info(
+            subscripts,
+            operands,
+            optimize,
+        )
     )
     return list(path_info.path), path_info
 

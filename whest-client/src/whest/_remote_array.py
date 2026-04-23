@@ -313,9 +313,7 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
 
     __slots__ = ("_handle_id", "_shape", "_dtype", "_symmetry")
 
-    def __init__(
-        self, handle_id: str, shape: tuple, dtype: str, symmetry=None
-    ) -> None:
+    def __init__(self, handle_id: str, shape: tuple, dtype: str, symmetry=None) -> None:
         self._handle_id = handle_id
         self._shape = tuple(shape)
         self._dtype = dtype

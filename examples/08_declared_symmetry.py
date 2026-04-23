@@ -87,7 +87,9 @@ block_group = we.SymmetryGroup.from_generators(
 )
 print(f"Block-swap generators: {block_group.generator_literals}")
 print(f"Block-swap order:      {block_group.order()}")
-print(f"Unique elements (20^4 with block swap): {block_group.burnside_unique_count({0: 20, 1: 20, 2: 20, 3: 20}):,}")
+print(
+    f"Unique elements (20^4 with block swap): {block_group.burnside_unique_count({0: 20, 1: 20, 2: 20, 3: 20}):,}"
+)
 
 print("\n=== Output symmetry via einsum(symmetry=...) ===\n")
 

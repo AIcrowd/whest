@@ -67,7 +67,9 @@ def test_moveaxis():
 
 
 def test_moveaxis_remaps_symmetry():
-    a = we.as_symmetric(numpy.stack([numpy.eye(3), 2 * numpy.eye(3)], axis=-1), symmetry=(0, 1))
+    a = we.as_symmetric(
+        numpy.stack([numpy.eye(3), 2 * numpy.eye(3)], axis=-1), symmetry=(0, 1)
+    )
     r = ops.moveaxis(a, 2, 0)
     assert isinstance(r, SymmetricTensor)
     assert r.shape == (2, 3, 3)

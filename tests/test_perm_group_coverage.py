@@ -9,19 +9,19 @@ from whest._perm_group import SymmetryGroup, _dimino, _Permutation
 
 class TestValidation:
     def test_group_requires_generators(self):
-        with pytest.raises(ValueError, match='At least one generator'):
+        with pytest.raises(ValueError, match="At least one generator"):
             SymmetryGroup()
 
     def test_mismatched_generator_sizes_raise(self):
-        with pytest.raises(ValueError, match='same size'):
+        with pytest.raises(ValueError, match="same size"):
             SymmetryGroup(_Permutation([1, 0]), _Permutation([1, 0, 2]))
 
     def test_from_generators_rejects_non_bijection(self):
-        with pytest.raises(ValueError, match='bijection'):
+        with pytest.raises(ValueError, match="bijection"):
             SymmetryGroup.from_generators([[1, 1]], axes=(0, 1))
 
     def test_from_generators_rejects_wrong_degree(self):
-        with pytest.raises(ValueError, match='degree'):
+        with pytest.raises(ValueError, match="degree"):
             SymmetryGroup.from_generators([[1, 0, 2]], axes=(0, 1))
 
 
@@ -40,12 +40,12 @@ class TestGroupOperations:
     def test_direct_product_requires_disjoint_support(self):
         a = SymmetryGroup.symmetric(axes=(0, 1))
         b = SymmetryGroup.symmetric(axes=(1, 2))
-        with pytest.raises(ValueError, match='disjoint'):
+        with pytest.raises(ValueError, match="disjoint"):
             SymmetryGroup.direct_product(a, b)
 
     def test_repr_uses_symmetry_group_name(self):
         g = SymmetryGroup.cyclic(axes=(0, 1, 2))
-        assert 'SymmetryGroup(' in repr(g)
+        assert "SymmetryGroup(" in repr(g)
 
 
 class TestDimino:

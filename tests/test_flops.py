@@ -123,7 +123,10 @@ def test_analytical_pointwise_cost_no_symmetry_unchanged():
 
 def test_analytical_reduction_cost_symmetric():
     symmetry = we.SymmetryGroup.symmetric(axes=(0, 1))
-    assert analytical_reduction_cost(input_shape=(5, 5), axis=None, symmetry=symmetry) == 15
+    assert (
+        analytical_reduction_cost(input_shape=(5, 5), axis=None, symmetry=symmetry)
+        == 15
+    )
 
 
 def test_analytical_reduction_cost_no_symmetry_unchanged():
@@ -155,7 +158,9 @@ def test_analytical_einsum_cost_preserves_repeated_label_axis_positions(monkeypa
     class DummyPathInfo:
         optimized_cost = 11
 
-    def fake_contract_path(subscripts, *operand_shapes, shapes=True, symmetry_oracle=None):
+    def fake_contract_path(
+        subscripts, *operand_shapes, shapes=True, symmetry_oracle=None
+    ):
         assert symmetry_oracle is not None
         return None, DummyPathInfo()
 

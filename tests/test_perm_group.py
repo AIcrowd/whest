@@ -79,7 +79,7 @@ except ImportError:
     _SYMPY_AVAILABLE = False
 
 
-@pytest.mark.skipif(not _SYMPY_AVAILABLE, reason='sympy not installed')
+@pytest.mark.skipif(not _SYMPY_AVAILABLE, reason="sympy not installed")
 class TestSympyBridge:
     def test_permutation_round_trip(self):
         p = _Permutation([2, 0, 1])
