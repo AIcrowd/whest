@@ -59,7 +59,8 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
   assert.match(src, /The summed labels/);
   assert.match(src, /survive as the axes of \$R\$/);
   assert.match(src, /Declared symmetries:/);
-  assert.match(src, /Dense cost scales as \$\$\{DENSE_SCALING\}\$/);
+  assert.match(src, /The dense direct grid has \$\$\{view\.denseGridScalingLatex\}\$ assignments before symmetry is used\./);
+  assert.doesNotMatch(src, /DENSE_SCALING/);
   assert.doesNotMatch(src, /What this fixes/);
   assert.doesNotMatch(src, /CHAIN_FORMULA/);
   assert.doesNotMatch(src, /Exact einsum/);

@@ -27,10 +27,6 @@ import { buildSection1ExampleView } from '../lib/section1ExampleView.js';
  * discovers it by picking a preset and watching the cost counts update.
  */
 
-// Dense scaling: the brute-force cost of evaluating the chain above for
-// uniform axis size n. Shown symbolically to motivate why symmetry matters.
-const DENSE_SCALING = String.raw`\mathcal{O}(n^{5})`;
-
 function renderSingleProseBlock(blocks = []) {
   return renderProseBlocks(blocks)[0] ?? null;
 }
@@ -101,7 +97,7 @@ function EinsumIntroColumn({ example }) {
             {view.operandCount} operand{view.operandCount === 1 ? '' : 's'}, {view.labelCount} label{view.labelCount === 1 ? '' : 's'}.
           </strong>{' '}
           <InlineMathText>
-            {`The summed labels $${notationLatex('w_summed')} = \\{${view.wSummedSummary}\\}$ collapse under $\\sum$; the free labels $${coloredVFreeNotation} = \\{${view.vFreeSummary}\\}$ survive as the axes of $R$. Declared symmetries: ${view.declaredSymmetrySummary}. Dense cost scales as $${DENSE_SCALING}$ for uniform axis size n.`}
+            {`The summed labels $${notationLatex('w_summed')} = \\{${view.wSummedSummary}\\}$ collapse under $\\sum$; the free labels $${coloredVFreeNotation} = \\{${view.vFreeSummary}\\}$ survive as the axes of $R$. Declared symmetries: ${view.declaredSymmetrySummary}. The dense direct grid has $${view.denseGridScalingLatex}$ assignments before symmetry is used.`}
           </InlineMathText>
         </p>
       </div>

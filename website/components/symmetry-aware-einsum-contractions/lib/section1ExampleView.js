@@ -1,5 +1,6 @@
 import { notationColor, notationLatex } from './notationSystem.js';
 import { variableSymmetryLabel } from './symmetryLabel.js';
+import { denseGridScalingLatex, hasHeterogeneousLabelSizesFromOverrides } from '../engine/denseCost.js';
 
 function normalizeSection1Example(example) {
   if (!example) return null;
@@ -101,6 +102,11 @@ export function buildSection1ExampleView(example, palette = {}) {
   const product = subscripts
     .map((subscript, idx) => formatOperandFactor(operandNames[idx], subscript, freeSet, palette))
     .join(String.raw`\,\cdot\,`);
+  const hasHeterogeneousSizes = hasHeterogeneousLabelSizesFromOverrides(normalized.labelSizes);
+  const denseGridLatex = denseGridScalingLatex({
+    labelCount: allLabels.length,
+    hasHeterogeneousSizes,
+  });
 
   return {
     exactEinsumText,
@@ -113,6 +119,8 @@ export function buildSection1ExampleView(example, palette = {}) {
     vFreeSummary: freeLabels.length ? freeLabels.join(', ') : '∅',
     wSummedSummary: summedLabels.length ? summedLabels.join(', ') : '∅',
     declaredSymmetrySummary: formatDeclaredSymmetrySummary(variables),
+    hasHeterogeneousSizes,
+    denseGridScalingLatex: denseGridLatex,
     vFreeNotation: notationLatex('v_free'),
     wSummedNotation: notationLatex('w_summed'),
   };

@@ -13,6 +13,10 @@ import {
   explorerThemeColor,
   getExplorerThemeCssVariables,
 } from '../lib/explorerTheme.js';
+import {
+  denseDirectEventCostFromComponents,
+  denseTupleCountFromComponents,
+} from '../engine/denseCost.js';
 
 // Canonical formula string — exported for tests and for readers who want the
 // raw LaTeX without color decorations. The multiplication side expands M_a by
@@ -563,10 +567,9 @@ export default function TotalCostView({
   const sectionFiveThemeCssVars = getExplorerThemeCssVariables(SECTION_FIVE_THEME_OVERRIDE);
   const { mu = 0, alpha = 0, mTotal = 0, perComponent = [] } = componentCosts;
   const totalCost = mu + alpha;
-  const allLabelCount = componentData?.components?.reduce((sum, comp) => sum + comp.labels.length, 0) ?? 0;
-  const denseTuples = Math.pow(dimensionN, allLabelCount);
+  const denseTuples = denseTupleCountFromComponents(componentData?.components ?? []);
   const multiplicationFactor = Math.max(numTerms - 1, 0);
-  const denseTotalCost = multiplicationFactor * denseTuples + denseTuples;
+  const denseTotalCost = denseDirectEventCostFromComponents(componentData?.components ?? [], numTerms);
   const totalSpeedup = totalCost > 0 ? (denseTotalCost / totalCost).toFixed(1) : '1.0';
   const savingsPct = denseTotalCost > 0 ? (((denseTotalCost - totalCost) / denseTotalCost) * 100).toFixed(1) : '0';
   const savingsPositive = Number(savingsPct) > 0;
@@ -579,13 +582,13 @@ export default function TotalCostView({
     : alpha.toLocaleString();
   const TOP_COMPARISON_METRICS = [
     {
-      label: 'Dense Cost',
+      label: 'Dense Direct Events',
       value: denseTotalCost.toLocaleString(),
-      formula: String.raw`(k-1)\cdot n^{|L|} + n^{|L|}`,
+      formula: String.raw`(k-1)\prod_{\ell\in L} n_\ell + \prod_{\ell\in L} n_\ell`,
       detail: denseExpansion,
     },
     {
-      label: 'Symmetry-Aware Cost',
+      label: 'Symmetry-Aware Direct Events',
       value: totalCost.toLocaleString(),
       valueClassName: 'text-coral',
       formula: String.raw`\mu + \alpha`,

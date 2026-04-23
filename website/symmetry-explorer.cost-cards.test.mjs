@@ -83,3 +83,16 @@ test('Section 5 piecewise brace renders as valid KaTeX', () => {
 
   assert.doesNotMatch(html, /katex-error/);
 });
+
+test('TotalCostView compares dense and symmetry-aware direct event counts with product-size formulas', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx');
+
+  assert.match(src, /denseDirectEventCostFromComponents/);
+  assert.match(src, /denseTupleCountFromComponents/);
+  assert.match(src, /label:\s*'Dense Direct Events'/);
+  assert.match(src, /label:\s*'Symmetry-Aware Direct Events'/);
+  assert.match(src, /formula:\s*String\.raw`\((k-1|k-1)\)\\prod_\{\\ell\\in L\} n_\\ell \+ \\prod_\{\\ell\\in L\} n_\\ell`/);
+  assert.doesNotMatch(src, /label:\s*'Dense Cost'/);
+  assert.doesNotMatch(src, /label:\s*'Symmetry-Aware Cost'/);
+  assert.doesNotMatch(src, /n\^\{\|L\|\}/);
+});
