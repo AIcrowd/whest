@@ -260,6 +260,22 @@ class TestIntegration:
             assert isinstance(inv_ident, SymmetricTensor)
             np.testing.assert_allclose(inv_ident, np.eye(4))
 
+    def test_issue_42_broadcast_and_pointwise_keep_block_symmetry(self):
+        n = 3
+        A = we.as_symmetric(
+            np.ones((n, n, n, n)),
+            symmetry=we.SymmetryGroup.symmetric(axes=(0, 1, 2, 3)),
+        )
+        B = we.as_symmetric(np.ones((n, n)), symmetry=(0, 1))
+
+        B_bc = we.broadcast_to(B, A.shape)
+        assert isinstance(B_bc, SymmetricTensor)
+        assert B_bc.symmetry == _young_2x2()
+
+        result = we.multiply(A, B)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == _young_2x2()
+
     def test_batched_inv_preserves_exact_group(self):
         A = np.array([[4.0, 1.0], [1.0, 3.0]])
         B = np.array([[5.0, 0.5], [0.5, 2.5]])

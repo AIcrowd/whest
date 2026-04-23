@@ -64,6 +64,18 @@ class TestBinarySymmetry:
             result = we.multiply(A, scalar)
             assert isinstance(result, SymmetricTensor)
 
+    def test_dunder_with_dense_operand_matches_function_and_drops_symmetry(self):
+        A = as_symmetric(numpy.eye(5), symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
+        B = numpy.arange(25.0).reshape(5, 5)
+        with BudgetContext(flop_budget=10**6, quiet=True) as function_budget:
+            expected = we.multiply(A, B)
+        with BudgetContext(flop_budget=10**6, quiet=True) as dunder_budget:
+            result = A * B
+        assert function_budget.flops_used == dunder_budget.flops_used
+        assert not isinstance(expected, SymmetricTensor)
+        assert not isinstance(result, SymmetricTensor)
+        assert numpy.allclose(result, expected)
+
 
 class TestReductionSymmetry:
     def test_sum_symmetric_cost(self):

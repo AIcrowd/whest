@@ -156,6 +156,13 @@ def test_diagonal():
     assert list(r) == [1, 4]
 
 
+def test_diagonal_view_copy_does_not_crash():
+    a = we.as_symmetric(numpy.eye(4), symmetry=(0, 1))
+    copied = we.diagonal(a).copy()
+    assert copied.shape == (4,)
+    assert numpy.allclose(copied, numpy.diagonal(numpy.asarray(a)))
+
+
 def test_broadcast_to():
     a = numpy.array([1, 2, 3])
     r = ops.broadcast_to(a, (2, 3))
