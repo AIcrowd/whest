@@ -46,6 +46,8 @@ def _infer_constant_shape_symmetry(shape):
 def _wrap_constant_fill(result):
     symmetry = _infer_constant_shape_symmetry(result.shape)
     if symmetry is None:
+        if isinstance(a, SymmetricTensor):
+            return _np.array(result, copy=False, subok=False)
         return result
     return wrap_with_symmetry(result, symmetry)
 
@@ -187,7 +189,9 @@ def zeros_like(a, dtype=None, **kwargs):
     if symmetry is None:
         symmetry = _infer_constant_shape_symmetry(result.shape)
     if symmetry is None:
-        return _np.asarray(result)
+        if isinstance(a, SymmetricTensor):
+            return _np.array(result, copy=False, subok=False)
+        return result
     return wrap_with_symmetry(result, symmetry)
 
 
@@ -203,7 +207,9 @@ def ones_like(a, dtype=None, **kwargs):
     if symmetry is None:
         symmetry = _infer_constant_shape_symmetry(result.shape)
     if symmetry is None:
-        return _np.asarray(result)
+        if isinstance(a, SymmetricTensor):
+            return _np.array(result, copy=False, subok=False)
+        return result
     return wrap_with_symmetry(result, symmetry)
 
 
@@ -223,7 +229,9 @@ def full_like(a, fill_value, dtype=None, **kwargs):
     if symmetry is None:
         symmetry = _infer_constant_shape_symmetry(result.shape)
     if symmetry is None:
-        return _np.asarray(result)
+        if isinstance(a, SymmetricTensor):
+            return _np.array(result, copy=False, subok=False)
+        return result
     return wrap_with_symmetry(result, symmetry)
 
 
