@@ -24,5 +24,5 @@ export function denseGridScalingLatex({ labelCount = 0, hasHeterogeneousSizes = 
 export function hasHeterogeneousLabelSizesFromOverrides(labelSizes = {}) {
   const values = Object.values(labelSizes ?? {});
   if (values.length === 0) return false;
-  return new Set(values).size > 1 || values.length > 0;
+  return new Set(values).size > 1;
 }

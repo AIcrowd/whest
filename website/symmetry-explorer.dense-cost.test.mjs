@@ -5,6 +5,7 @@ import {
   denseTupleCountFromComponents,
   denseDirectEventCostFromComponents,
   denseGridScalingLatex,
+  hasHeterogeneousLabelSizesFromOverrides,
 } from './components/symmetry-aware-einsum-contractions/engine/denseCost.js';
 import { analyzeExample } from './components/symmetry-aware-einsum-contractions/engine/pipeline.js';
 import { EXAMPLES } from './components/symmetry-aware-einsum-contractions/data/examples.js';
@@ -34,9 +35,14 @@ test('dense scaling latex reflects selected label count, not a hard-coded n^5', 
   assert.equal(denseGridScalingLatex({ labelCount: 4, hasHeterogeneousSizes: true }), String.raw`\prod_{\ell \in L} n_\ell`);
 });
 
+test('heterogeneous-size detection stays false for uniform explicit overrides', () => {
+  assert.equal(hasHeterogeneousLabelSizesFromOverrides({ i: 3, j: 3 }), false);
+  assert.equal(hasHeterogeneousLabelSizesFromOverrides({ i: 3, j: 4 }), true);
+});
+
 test('section-one view exposes dense scaling for the selected expression', () => {
   const view = buildSection1ExampleView(preset('triple-outer'));
   assert.equal(view.labelCount, 4);
-  assert.equal(view.denseGridScalingLatex, String.raw`\prod_{\ell \in L} n_\ell`);
-  assert.equal(view.hasHeterogeneousSizes, true);
+  assert.equal(view.denseGridScalingLatex, String.raw`n^{4}`);
+  assert.equal(view.hasHeterogeneousSizes, false);
 });
