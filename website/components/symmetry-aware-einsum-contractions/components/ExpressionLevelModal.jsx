@@ -19,6 +19,7 @@ import { computeExpressionAlphaComparison } from '../engine/comparisonAlpha.js';
 import { buildStorageSavingsRows } from '../engine/storageSavings.js';
 import { EXAMPLES } from '../data/examples.js';
 import { formatGeneratorNotation, variableSymmetryLabel } from '../lib/symmetryLabel.js';
+import { explorerThemeColor, getActiveExplorerThemeId } from '../lib/explorerTheme.js';
 import { notationColor, notationColoredLatex, notationLatex } from '../lib/notationSystem.js';
 
 // Lookup map keyed by preset id so §7's savings table can pull the raw
@@ -185,11 +186,17 @@ function EinsumConstructionTooltip({ preset, groupLabel }) {
 }
 
 function vStyle() {
-  return { color: notationColor('v_free'), fontWeight: 600 };
+  return {
+    color: explorerThemeColor(getActiveExplorerThemeId(), 'hero'),
+    fontWeight: 600,
+  };
 }
 
 function wStyle() {
-  return { color: notationColor('w_summed'), fontWeight: 600 };
+  return {
+    color: explorerThemeColor(getActiveExplorerThemeId(), 'summedSide'),
+    fontWeight: 600,
+  };
 }
 
 const APPENDIX_PROSE_CLASS = 'font-serif text-[17px] leading-[1.75] text-gray-900';
@@ -795,6 +802,14 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
   const wLabels = group?.wLabels ?? [];
   const expressionGroup = analysis?.expressionGroup ?? null;
   const runningExamplePreset = EXAMPLES_BY_ID.get('bilinear-trace');
+  const runningExampleExpressionParts = useMemo(
+    () => getExampleExpressionParts(runningExamplePreset),
+    [runningExamplePreset],
+  );
+  const runningExampleFactors = useMemo(
+    () => buildWorkedExampleFactors(runningExamplePreset),
+    [runningExamplePreset],
+  );
   const selectedOperandItems = useMemo(
     () =>
       describeOperands(example).map((operand) => ({
@@ -814,10 +829,6 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
   const formalOrbitExample = useMemo(
     () => buildFormalOrbitExampleData({ example, labelOrder: analysis?.symmetry?.allLabels ?? [], witness: alphaComparison.witness }),
     [analysis?.symmetry?.allLabels, alphaComparison.witness, example],
-  );
-  const runningExampleExpandedEquation = useMemo(
-    () => buildExpandedEinsumEquation(runningExamplePreset),
-    [runningExamplePreset],
   );
   const savingsTableRows = useMemo(
     () => buildStorageSavingsRows(EXAMPLES, 3),
@@ -1093,21 +1104,28 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     <p className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
                       {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLead, 0)}
                     </p>
-                    {runningExampleExpandedEquation ? (
-                      <div className="pl-0 sm:pl-4">
-                        <div className={APPENDIX_PROSE_CLASS}>
-                          <Latex math={runningExampleExpandedEquation} />
-                        </div>
-                      </div>
+                    {runningExampleExpressionParts ? (
+                      <WorkedExampleDisplayEquation
+                        outputCoords={runningExampleExpressionParts.outputLabels}
+                        outputRoles={runningExampleExpressionParts.outputLabels.map(() => 'v')}
+                        sumCoords={runningExampleExpressionParts.summedLabels}
+                        sumRoles={runningExampleExpressionParts.summedLabels.map(() => 'w')}
+                        factors={runningExampleFactors}
+                      />
                     ) : null}
                     <p className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
                       {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLead, 1)}
                     </p>
-                    <div className="pl-0 sm:pl-4">
-                      <div className={APPENDIX_PROSE_CLASS}>
-                        <Latex math={String.raw`R[i,j] = \sum_{k,l} A[i,l] \cdot A[j,k]`} />
-                      </div>
-                    </div>
+                    <WorkedExampleDisplayEquation
+                      outputCoords={['i', 'j']}
+                      outputRoles={['v', 'v']}
+                      sumCoords={['k', 'l']}
+                      sumRoles={['w', 'w']}
+                      factors={[
+                        { name: 'A', coords: ['i', 'l'], roles: ['v', 'w'] },
+                        { name: 'A', coords: ['j', 'k'], roles: ['v', 'w'] },
+                      ]}
+                    />
                     <p className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
                       {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLead, 2)}
                     </p>
@@ -1162,6 +1180,11 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                   groupLabel={EXAMPLES_BY_ID.get('bilinear-trace')?.expectedGroup}
                   intro={
                     <>
+                      <p className={APPENDIX_APP_TEXT_STRONG_CLASS}>
+                        <span className="font-mono text-[13px] leading-6 text-stone-900">
+                          <FormulaHighlighted example={EXAMPLES_BY_ID.get('bilinear-trace')} hoveredLabels={null} />
+                        </span>
+                      </p>
                       <p>
                         <span>Let </span>
                         <Latex math={String.raw`A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}`} />

@@ -38,6 +38,7 @@ test('appendix modal shell keeps the editorial rail and the new cost-vs-expressi
   assert.match(source, /throw new Error\(APPENDIX_REQUIRED_SLOT_ERRORS\[slotKey\] \?\? `Missing appendix slot: \$\{slotKey\}`\)/);
   assert.match(source, /throw new Error\(`Missing appendix slot block: \$\{slotKey\}\[\$\{index\}\]`\)/);
   assert.match(source, /renderProseBlocks\(normalizedBlocks/);
+  assert.match(source, /import \{ explorerThemeColor, getActiveExplorerThemeId \} from '\.\.\/lib\/explorerTheme\.js';/);
   assert.match(source, /relative w-full max-w-\[(1460px|var\(--content-max\))\] rounded-lg border border-gray-200 bg-white shadow-2xl/);
   assert.match(source, /appendixRailClass = 'mx-auto w-full max-w-\[(1460px|var\(--content-max\))\] px-6 md:px-8 lg:px-10'/);
   assert.match(source, /id="expr-modal-heading"[\s\S]*>\s*Why expression symmetry is not the cost symmetry\s*<span style=\{\{ color: 'var\(--coral\)' \}\}>/);
@@ -164,10 +165,13 @@ test('sections 2 through 4 introduce same-domain dummy renaming, then G_out, the
   assert.match(source, /n=\{2\}[\s\S]*appendixSection2\.slots\.runningExamplePresetLabel/);
   assert.match(source, /n=\{2\}[\s\S]*appendixSection2\.slots\.runningExampleLead/);
   assert.match(source, /n=\{2\}[\s\S]*<FormulaHighlighted example=\{runningExamplePreset\} hoveredLabels=\{null\} \/>/);
-  assert.match(source, /const runningExampleExpandedEquation = useMemo\(/);
-  assert.match(source, /buildExpandedEinsumEquation\(runningExamplePreset\)/);
-  assert.match(source, /n=\{2\}[\s\S]*<Latex math=\{runningExampleExpandedEquation\} \/>/);
-  assert.match(source, /n=\{2\}[\s\S]*A\[i,l\] \\cdot A\[j,k\]/);
+  assert.match(source, /const runningExampleExpressionParts = useMemo\(/);
+  assert.match(source, /const runningExampleFactors = useMemo\(/);
+  assert.match(source, /n=\{2\}[\s\S]*outputCoords=\{runningExampleExpressionParts\.outputLabels\}/);
+  assert.match(source, /n=\{2\}[\s\S]*sumCoords=\{runningExampleExpressionParts\.summedLabels\}/);
+  assert.match(source, /n=\{2\}[\s\S]*factors=\{runningExampleFactors\}/);
+  assert.match(source, /n=\{2\}[\s\S]*coords: \['i', 'l'\]/);
+  assert.match(source, /n=\{2\}[\s\S]*coords: \['j', 'k'\]/);
   assert.doesNotMatch(source, /n=\{2\}[\s\S]*This gives a second group, \$\$\{notationLatex\('s_w_summed'\)\}\$/);
   assert.doesNotMatch(source, /n=\{2\}[\s\S]*Rename dummy variables back/);
   assert.doesNotMatch(source, /n=\{2\}[\s\S]*The swap [\s\S]* preserves the double sum as a formal expression/);
@@ -184,6 +188,7 @@ test('sections 2 through 4 introduce same-domain dummy renaming, then G_out, the
   assert.match(source, /const APPENDIX_G_OUT_DEFINITION_LATEX/);
   assert.match(source, /APPENDIX_PI_RESTRICT_V_LATEX/);
   assert.match(source, /n=\{3\}[\s\S]*appendixSection3\.slots\.workedExampleLead/);
+  assert.match(source, /n=\{3\}[\s\S]*<FormulaHighlighted example=\{EXAMPLES_BY_ID\.get\('bilinear-trace'\)\} hoveredLabels=\{null\} \/>/);
   assert.match(source, /n=\{3\}[\s\S]*\\begin\{bmatrix\} 1 & 2 \\\\ 3 & 4 \\end\{bmatrix\}/);
   assert.doesNotMatch(source, /n=\{3\}[\s\S]*Among the elements of \$\$\{notationLatex\('g_pointwise'\)\}\$/);
   assert.doesNotMatch(source, /n=\{3\}[\s\S]*supportClassName=\{`\$\{APPENDIX_SUPPORT_SHELF_CLASS\} xl:pt-5`\}/);
@@ -231,6 +236,8 @@ test('section 5 uses alphaComparison branches and the bilinear witness to reject
   assert.match(source, /function WorkedExampleTensorRef\(/);
   assert.match(source, /function WorkedExampleTensorProduct\(/);
   assert.match(source, /function WorkedExampleDisplayEquation\(/);
+  assert.match(source, /function vStyle\(\) \{\s*return \{\s*color: explorerThemeColor\(getActiveExplorerThemeId\(\), 'hero'\),\s*fontWeight: 600,\s*\};\s*\}/);
+  assert.match(source, /function wStyle\(\) \{\s*return \{\s*color: explorerThemeColor\(getActiveExplorerThemeId\(\), 'summedSide'\),\s*fontWeight: 600,\s*\};\s*\}/);
   assert.match(source, /function buildWorkedExampleFactors\(/);
   assert.match(source, /alphaComparison\.state === 'mismatch'/);
   assert.match(source, /alphaComparison\.state === 'coincident'/);
