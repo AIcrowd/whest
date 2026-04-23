@@ -261,6 +261,18 @@ test('#15 output-label-missing: fix removes the offending label', () => {
   assert.equal(next.outputStr, 'ij');
 });
 
+test('explicit output labels must be unique', () => {
+  const state = stateFor([v({ rank: 2 })], 'ij', 'ii', 'T');
+  const r = run(state);
+  const err = findError(r, ERROR_CODES.OUTPUT_DUPLICATE_LABEL);
+  assert.ok(err);
+  assert.match(err.message, /appears twice/);
+  assert.match(err.message, /explicit output axes/);
+  assert.equal(err.fix.label, 'Remove duplicate "i"');
+  const next = applyFix(state, err);
+  assert.equal(next.outputStr, 'i');
+});
+
 // ── Field plumbing ───────────────────────────────────────────────────
 
 test('fields are stable per rule so the UI can suppress by touch', () => {

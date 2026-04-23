@@ -29,6 +29,7 @@ export const ERROR_CODES = Object.freeze({
   SUBSCRIPT_DUPLICATE_LABEL: 'subscript-duplicate-label',
   SUBSCRIPT_LENGTH_MISMATCH: 'subscript-length-mismatch',
   OUTPUT_NON_LOWERCASE: 'output-non-lowercase',
+  OUTPUT_DUPLICATE_LABEL: 'output-duplicate-label',
   OUTPUT_LABEL_MISSING: 'output-label-missing',
 });
 
@@ -338,6 +339,32 @@ export function outputLabelMissingError({ ch }) {
         ...state,
         outputStr: state.outputStr.split('').filter((c) => c !== ch).join(''),
       }),
+    },
+  };
+}
+
+export function outputDuplicateLabelError({ ch }) {
+  return {
+    code: ERROR_CODES.OUTPUT_DUPLICATE_LABEL,
+    field: 'output',
+    message: `Output label "${ch}" appears twice — this explorer uses explicit output axes, so each output label must be unique.`,
+    fix: {
+      label: `Remove duplicate "${ch}"`,
+      apply: (state) => {
+        const seen = new Set();
+        return {
+          ...state,
+          outputStr: state.outputStr
+            .split('')
+            .filter((label) => {
+              if (label !== ch) return true;
+              if (seen.has(label)) return false;
+              seen.add(label);
+              return true;
+            })
+            .join(''),
+        };
+      },
     },
   };
 }

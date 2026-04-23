@@ -14,6 +14,7 @@ import {
   subscriptDuplicateLabelError,
   subscriptLengthMismatchError,
   outputNonLowercaseError,
+  outputDuplicateLabelError,
   outputLabelMissingError,
 } from './validationMessages.js';
 
@@ -197,7 +198,20 @@ export function validateAll(variables, subscripts, output, operandNames) {
     errors.push(outputNonLowercaseError({ outputStr: output }));
   }
 
-  // 15. All output labels must exist in at least one input subscript
+  // 15. Explicit output labels must be unique
+  if (output) {
+    const seenOutput = new Set();
+    for (const ch of output) {
+      if (!/[a-z]/.test(ch)) continue;
+      if (seenOutput.has(ch)) {
+        errors.push(outputDuplicateLabelError({ ch }));
+        break;
+      }
+      seenOutput.add(ch);
+    }
+  }
+
+  // 16. All output labels must exist in at least one input subscript
   if (output) {
     for (const ch of output) {
       if (/[a-z]/.test(ch) && !allInputLabels.has(ch)) {
