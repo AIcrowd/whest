@@ -73,6 +73,10 @@ const EDGE_NO = new Proxy({}, {
   get: (_, prop) => ({ color: notationColor('v_free'), label: 'no' })[prop],
 });
 
+const LEAF_LABEL_OVERRIDES = {
+  allSummed: 'Direct Scalar Events',
+};
+
 // Edge-label offsets. Once the label background went transparent (so the
 // dashed stage bands read through), the naturally centered label text
 // started overlapping the stroke it was annotating. These offsets shift
@@ -226,6 +230,10 @@ function isDarkColor(hex) {
 
 function specFor(leafId) {
   return SHAPE_SPEC[leafId] || REGIME_SPEC[leafId] || null;
+}
+
+function labelForLeaf(leafId, fallback) {
+  return LEAF_LABEL_OVERRIDES[leafId] ?? fallback;
 }
 
 // ─── Node renderers ──────────────────────────────────────────────────
@@ -402,7 +410,7 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
     const presentation = getRegimePresentation(nodeId);
     const liveReasons = liveReasonsByLeaf?.get?.(nodeId) ?? [];
     return {
-      title: spec.label,
+      title: labelForLeaf(nodeId, presentation?.label ?? spec.label),
       whenText: spec.when,
       body: spec.description,
       latex: spec.latex,
@@ -447,7 +455,7 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
       type: 'leaf',
       style: { width: LEAF_W, height: LEAF_H },
       data: {
-        text: presentation?.label ?? spec.label,
+        text: labelForLeaf(leafId, presentation?.label ?? spec.label),
         color: presentation?.color ?? spec.color,
         active: active.has(leafId),
         spotlight: spotlight.has(leafId),

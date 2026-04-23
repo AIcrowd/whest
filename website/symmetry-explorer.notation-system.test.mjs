@@ -98,6 +98,13 @@ test('notation registry defines text, latex, and the semantic grammar anchors', 
   );
 });
 
+test('notation registry separates product count M from multiplication cost μ', () => {
+  assert.equal(notationText('m_total'), 'M');
+  assert.equal(notationLatex('m_total'), 'M');
+  assert.equal(notationText('mu_total'), 'μ');
+  assert.equal(notationLatex('mu_total'), '\\mu');
+});
+
 test('explorer themes expose the approved page-wide alternatives with a stable recommendation', () => {
   const presetIds = EXPLORER_THEME_PRESETS.map((preset) => preset.id);
 

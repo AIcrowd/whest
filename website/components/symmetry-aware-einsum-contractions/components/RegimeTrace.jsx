@@ -2,8 +2,13 @@ import React from 'react';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 
+const LABEL_OVERRIDES = {
+  allSummed: 'Direct Scalar Events',
+};
+
 function labelFor(step) {
   return (
+    LABEL_OVERRIDES[step.regimeId] ||
     REGIME_SPEC[step.regimeId]?.label ||
     SHAPE_SPEC[step.regimeId]?.label ||
     step.regimeId

@@ -16,22 +16,20 @@ test('MultiplicationCostCard exports a default React component', () => {
   assert.match(src, /export default function MultiplicationCostCard/);
 });
 
-test('MultiplicationCostCard shows both μ and M formulas + live rows', () => {
+test('MultiplicationCostCard uses the aligned M/μ/α event labels and caption', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/MultiplicationCostCard.jsx');
-  // Heading uses the canonical μ notation from the Counting Convention band.
-  assert.match(src, /Calculating Multiplication Cost \(μ\)/);
+  assert.match(src, /Multiplication Events \(μ\)/);
+  assert.match(src, /M counts representative product values\. μ=\(k−1\)M counts multiplication-chain events\. α counts direct output-bin updates induced by product orbits\./);
   assert.match(src, /Live for this example/i);
-  // μ-formula ties the Burnside count M to the binary-multiply cost via (k−1).
   assert.match(src, /\\mu\s*\\;=\\;\s*\(/);
-  // Mentions num_terms as the einsum-operand-count scaling factor.
   assert.match(src, /num_terms/);
-  // And the raw Burnside sum below it.
   assert.match(src, /\\mathrm\{cycles\}\(g\)/);
   assert.match(src, /multiplicationCount/);
   assert.match(src, /InlineMathText/);
   assert.match(src, /className="explorer-support-prose mt-2"/);
   assert.match(src, /V_\{\\mathrm\{free\}\}/);
   assert.match(src, /W_\{\\mathrm\{summed\}\}/);
+  assert.doesNotMatch(src, /Calculating Multiplication Cost \(μ\)/);
 });
 
 test('AccumulationHardCard exports a default React component with shared support prose and no extra pointer footer', () => {
@@ -60,6 +58,23 @@ test('ComponentCostView imports the two new cards + renders the CLASSIFICATION T
   assert.match(src, /import MultiplicationCostCard/);
   assert.match(src, /import AccumulationHardCard/);
   assert.match(src, /Classification Tree/);
+  assert.match(src, /Product Orbits \(/);
+  assert.match(src, /Accumulation Updates \(/);
+  assert.match(src, /NotationSymbol id="m_component"/);
+  assert.match(src, /NotationSymbol id="alpha_component"/);
+  assert.match(src, /The dense baseline is the same direct-event convention without symmetry: one product chain and one output update for every full label assignment\./);
+  assert.doesNotMatch(src, /Product orbits\s*</);
+  assert.doesNotMatch(src, /Output updates\s*</);
+  assert.doesNotMatch(src, /NotationSymbol id="m_total"/);
+  assert.doesNotMatch(src, /NotationSymbol id="alpha_total"/);
+});
+
+test('Decision surfaces rename the scalar-output leaf to Direct Scalar Events', () => {
+  const ladderSrc = read('components/symmetry-aware-einsum-contractions/components/DecisionLadder.jsx');
+  const traceSrc = read('components/symmetry-aware-einsum-contractions/components/RegimeTrace.jsx');
+
+  assert.match(ladderSrc, /Direct Scalar Events/);
+  assert.match(traceSrc, /Direct Scalar Events/);
 });
 
 test('ComponentCostView passes activeLeafIds (all detected) to the DecisionLadder', () => {

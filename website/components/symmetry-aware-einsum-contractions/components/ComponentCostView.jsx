@@ -111,14 +111,17 @@ function ComponentSummaryTable({
 
   return (
     <div className="max-w-full overflow-x-auto bg-white">
+      <p className="px-5 py-3 text-[12px] leading-5 text-muted-foreground">
+        The dense baseline is the same direct-event convention without symmetry: one product chain and one output update for every full label assignment.
+      </p>
       {/* Global column header — only labels the 5 middle-row columns. */}
       <div
         className={`grid ${MIDDLE_COLS} items-center gap-x-4 bg-surface-raised px-5 py-2.5 text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-900`}
       >
         <span>Component</span>
         <span>Method</span>
-        <span>Product orbits <NotationSymbol id="m_component" mode="math" /></span>
-        <span>Output updates <NotationSymbol id="alpha_component" mode="math" /></span>
+        <span>Product Orbits (<NotationSymbol id="m_component" mode="math" />)</span>
+        <span>Accumulation Updates (<NotationSymbol id="alpha_component" mode="math" />)</span>
         <span>Savings vs dense</span>
       </div>
 
