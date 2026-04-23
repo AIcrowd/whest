@@ -25,11 +25,29 @@ from whest._validation import require_budget
 from whest.errors import SymmetryError, UnsupportedFunctionError
 
 
-def _symmetric_2d(result):
-    """Wrap a 2D square result as SymmetricTensor with axes (0,1)."""
-    if result.ndim == 2 and result.shape[0] == result.shape[1]:
-        return wrap_with_symmetry(result, SymmetryGroup.symmetric(axes=(0, 1)))
-    return result
+def _infer_constant_shape_symmetry(shape):
+    if len(shape) < 2:
+        return None
+
+    blocks_by_extent: dict[int, list[int]] = {}
+    for axis, extent in enumerate(shape):
+        blocks_by_extent.setdefault(int(extent), []).append(axis)
+
+    blocks = tuple(
+        tuple(axes) for axes in blocks_by_extent.values() if len(axes) >= 2
+    )
+    if not blocks:
+        return None
+    if len(blocks) == 1:
+        return SymmetryGroup.symmetric(axes=blocks[0])
+    return SymmetryGroup.young(blocks=blocks)
+
+
+def _wrap_constant_fill(result):
+    symmetry = _infer_constant_shape_symmetry(result.shape)
+    if symmetry is None:
+        return result
+    return wrap_with_symmetry(result, symmetry)
 
 
 def _compatible_symmetry_for_shape(symmetry, shape):
@@ -70,7 +88,7 @@ attach_docstring(array, _np.array, "counted_custom", "numel(input) FLOPs")
 
 def zeros(shape, dtype=float, **kwargs):
     """Return array of zeros. Wraps ``numpy.zeros``. Cost: 0 FLOPs."""
-    return _symmetric_2d(_np.zeros(shape, dtype=dtype, **kwargs))
+    return _wrap_constant_fill(_np.zeros(shape, dtype=dtype, **kwargs))
 
 
 attach_docstring(zeros, _np.zeros, "free", "0 FLOPs")
@@ -78,7 +96,7 @@ attach_docstring(zeros, _np.zeros, "free", "0 FLOPs")
 
 def ones(shape, dtype=float, **kwargs):
     """Return array of ones. Wraps ``numpy.ones``. Cost: 0 FLOPs."""
-    return _symmetric_2d(_np.ones(shape, dtype=dtype, **kwargs))
+    return _wrap_constant_fill(_np.ones(shape, dtype=dtype, **kwargs))
 
 
 attach_docstring(ones, _np.ones, "free", "0 FLOPs")
@@ -90,7 +108,7 @@ def full(shape, fill_value, dtype=None, **kwargs):
     result = _np.full(shape, fill_value, dtype=dtype, **kwargs)
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct("full", flop_cost=cost, subscripts=None, shapes=()):
-        result = _symmetric_2d(result)
+        result = _wrap_constant_fill(result)
     return result
 
 

@@ -127,8 +127,13 @@ class TestZeros:
         result = we.zeros((5,))
         assert not isinstance(result, SymmetricTensor)
 
-    def test_3d_not_symmetric(self):
+    def test_3d_equal_extents_infers_full_symmetry(self):
         result = we.zeros((3, 3, 3))
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == we.SymmetryGroup.symmetric(axes=(0, 1, 2))
+
+    def test_distinct_extents_stay_plain(self):
+        result = we.zeros((3, 4, 5))
         assert not isinstance(result, SymmetricTensor)
 
     def test_scalar_not_symmetric(self):
@@ -150,6 +155,11 @@ class TestOnes:
         result = we.ones((10,))
         assert not isinstance(result, SymmetricTensor)
 
+    def test_single_equal_extent_block_infers_partial_symmetry(self):
+        result = we.ones((3, 3, 2))
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == we.SymmetryGroup.symmetric(axes=(0, 1))
+
 
 class TestFull:
     def test_square_symmetric(self):
@@ -161,6 +171,12 @@ class TestFull:
     def test_non_square_not_symmetric(self):
         result = we.full((3, 4), 5.0)
         assert not isinstance(result, SymmetricTensor)
+
+    def test_two_equal_extent_blocks_infer_young_symmetry(self):
+        result = we.full((3, 3, 2, 2), 7.0)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == we.SymmetryGroup.young(blocks=((0, 1), (2, 3)))
+        assert np.all(result == 7.0)
 
 
 # ---------------------------------------------------------------------------
