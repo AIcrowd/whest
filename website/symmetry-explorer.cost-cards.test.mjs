@@ -95,4 +95,8 @@ test('TotalCostView compares dense and symmetry-aware direct event counts with p
   assert.doesNotMatch(src, /label:\s*'Dense Cost'/);
   assert.doesNotMatch(src, /label:\s*'Symmetry-Aware Cost'/);
   assert.doesNotMatch(src, /n\^\{\|L\|\}/);
+  assert.match(src, /support-connected component decomposition/);
+  assert.match(src, /M_a be the number of product orbits/);
+  assert.match(src, /Under the independent-component factorization, M = ∏_a M_a and α = ∏_a α_a/);
+  assert.match(src, /reported unavailable instead of being guessed/);
 });
