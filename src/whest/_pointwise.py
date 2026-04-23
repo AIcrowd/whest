@@ -19,6 +19,7 @@ from whest._flops import (
     analytical_reduction_cost as reduction_cost,
 )
 from whest._ndarray import _aswhest
+from whest._perm_group import SymmetryGroup
 from whest._symmetric import (
     SymmetricTensor,
     _warn_symmetry_loss,
@@ -1007,16 +1008,26 @@ attach_docstring(inner, _np.inner, "counted_custom", "product of matching dims")
 def outer(a, b, out=None):
     """Counted version of np.outer."""
     budget = require_budget()
+    a_orig = a
+    b_orig = b
+    target_symmetry = (
+        SymmetryGroup.symmetric(axes=(0, 1)) if a_orig is b_orig else None
+    )
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
+    target_symmetry = _prepare_symmetric_out(out, target_symmetry)
     cost = a.size * b.size
     with budget.deduct(
         "outer", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _np.outer(a, b, out=out)
-    return result
+        result = _np.outer(
+            a,
+            b,
+            out=None if isinstance(out, SymmetricTensor) else out,
+        )
+    return _wrap_result(result, out=out, symmetry=target_symmetry)
 
 
 attach_docstring(outer, _np.outer, "counted_custom", "m * n FLOPs")
