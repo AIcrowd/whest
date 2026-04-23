@@ -17,6 +17,7 @@ import appendixSection5 from '../content/appendix/section5.ts';
 import appendixSection6 from '../content/appendix/section6.ts';
 import { computeExpressionAlphaComparison } from '../engine/comparisonAlpha.js';
 import { EXAMPLES } from '../data/examples.js';
+import { buildAppendixSavingsTableRows } from '../lib/appendixStorageSurvey.js';
 import { formatGeneratorNotation, variableSymmetryLabel } from '../lib/symmetryLabel.js';
 import { notationColor, notationColoredLatex, notationLatex } from '../lib/notationSystem.js';
 
@@ -769,58 +770,6 @@ function AppendixPresetHoverLabel({ preset, groupLabel, children = null, classNa
 }
 
 /**
- * Per-preset storage-α ledger used by §7.
- *
- * Baseline: `analyzeExample(preset, 3)` followed by
- * `α_storage = Σ over G_pt-orbits O of |π_V(O) / G_pt|_V|`, i.e. the number
- * of distinct (G_pt|_V)-output-slot writes each orbit contributes under a
- * symmetry-aware output store. For presets with trivial $G_{\text{pt}}\big|_{V_{\mathrm{free}}}$,
- * α_storage equals α_engine (no mirrored cells to collapse).
- *
- * Label-size overrides. A few presets declare non-uniform `labelSizes` on
- * their definition in `data/examples.js` — currently `triple-outer`
- * (`{ i: 6, 'a,b,c': 3 }`) and `outer` (`{ 'a,c': 4, 'b,d': 3 }`). The
- * engine applies those overrides to every label's effective size, and the
- * rows below apply them *consistently* to BOTH `ae` and `as`: otherwise
- * the two columns describe different operand shapes and the reported
- * saving becomes meaningless. (An earlier version of this table mixed
- * override-aware `ae` with uniform-n `as` for those two presets; the
- * SymPy audit at `.claude/worktrees/.../audit/check_savings_table.py`
- * caught the discrepancy.)
- *
- * Rows are sorted by savings percentage descending so the nontrivial cases
- * read first and the zero-savings "nothing to mirror" block sits at the end.
- *
- * If the engine's α definition or the preset list changes, regenerate by
- * running a small survey of EXAMPLES through `analyzeExample(preset, 3)`
- * and the audit's `alpha_storage` reference.
- */
-const SAVINGS_TABLE_ROWS = [
-  { id: 'four-cycle',       v: 'i,j,k,l',        vSub: '\\text{order-}8', ae: 81,  as: 21,  saving: 60,  pct: '74.1' },
-  { id: 'bilinear-trace-3', v: 'i,j,m',          vSub: 'S_3',             ae: 516, as: 165, saving: 351, pct: '68.0' },
-  { id: 'direct-s3-s2',     v: 'a,b,c',          vSub: 'S_3',             ae: 162, as: 60,  saving: 102, pct: '63.0' },
-  { id: 'young-s4-v3w1',    v: 'a,b,c',          vSub: 'S_3',             ae: 81,  as: 30,  saving: 51,  pct: '63.0' },
-  { id: 'triple-outer',     v: 'a,b,c',          vSub: 'S_3',             ae: 162, as: 60,  saving: 102, pct: '63.0' },
-  { id: 'declared-c3',      v: 'b,i,j,k',        vSub: '\\text{order-}3', ae: 243, as: 99,  saving: 144, pct: '59.3' },
-  { id: 'triangle',         v: 'i,j,k',          vSub: 'C_3',             ae: 27,  as: 11,  saving: 16,  pct: '59.3' },
-  { id: 'outer',            v: 'a,b,c,d',        vSub: '\\text{order-}2', ae: 144, as: 78,  saving: 66,  pct: '45.8' },
-  { id: 'bilinear-trace',   v: 'i,j',            vSub: 'S_2',             ae: 72,  as: 45,  saving: 27,  pct: '37.5' },
-  { id: 'direct-s2-c3',     v: 'a,b',            vSub: 'S_2',             ae: 99,  as: 66,  saving: 33,  pct: '33.3' },
-  { id: 'four-A-grid',      v: 'a,b',            vSub: 'S_2',             ae: 54,  as: 36,  saving: 18,  pct: '33.3' },
-  { id: 'young-s4-v2w2',    v: 'a,b',            vSub: 'S_2',             ae: 54,  as: 36,  saving: 18,  pct: '33.3' },
-  { id: 'direct-s2-s2',     v: 'a,b',            vSub: 'S_2',             ae: 54,  as: 36,  saving: 18,  pct: '33.3' },
-  { id: 'young-s3',         v: 'a,b',            vSub: 'S_2',             ae: 27,  as: 18,  saving: 9,   pct: '33.3' },
-  { id: 'mixed-chain',      v: 'i,l',            vSub: '\\{e\\}',         ae: 81,  as: 81,  saving: 0,   pct: '0' },
-  { id: 'matrix-chain',     v: 'i,k',            vSub: '\\{e\\}',         ae: 27,  as: 27,  saving: 0,   pct: '0' },
-  { id: 'cross-c3-partial', v: 'a,b',            vSub: '\\{e\\}',         ae: 27,  as: 27,  saving: 0,   pct: '0' },
-  { id: 'cross-s2',         v: 'i,k',            vSub: '\\{e\\}',         ae: 27,  as: 27,  saving: 0,   pct: '0' },
-  { id: 'cyclic-cross',     v: 'i',              vSub: '\\{e\\}',         ae: 21,  as: 21,  saving: 0,   pct: '0' },
-  { id: 'cross-s3',         v: 'i',              vSub: '\\{e\\}',         ae: 18,  as: 18,  saving: 0,   pct: '0' },
-  { id: 'frobenius',        v: '\\varnothing',   vSub: '\\{e\\}',         ae: 9,   as: 9,   saving: 0,   pct: '0' },
-  { id: 'trace-product',    v: '\\varnothing',   vSub: '\\{e\\}',         ae: 6,   as: 6,   saving: 0,   pct: '0' },
-];
-
-/**
  * Appendix modal that walks the reader through the distinction between the
  * two symmetry groups of an einsum:
  *
@@ -861,6 +810,10 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
   const runningExampleExpandedEquation = useMemo(
     () => buildExpandedEinsumEquation(runningExamplePreset),
     [runningExamplePreset],
+  );
+  const savingsTableRows = useMemo(
+    () => buildAppendixSavingsTableRows(),
+    [],
   );
   const showBilinearFormalOrbitExample =
     example?.id === 'bilinear-trace' &&
@@ -1123,11 +1076,11 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                       {renderAppendixSingleBlock(appendixSection2.slots.runningExamplePresetLabel, 0)}
                     </AppendixPresetHoverLabel>
                   </p>
-                  <div className="inline-flex max-w-full rounded-xl border border-stone-200 bg-white px-3 py-2.5 shadow-sm">
-                    <div className="font-mono text-[12px] leading-6 text-stone-900">
+                  <p className={APPENDIX_APP_TEXT_STRONG_CLASS}>
+                    <span className="font-mono text-[13px] leading-6 text-stone-900">
                       <FormulaHighlighted example={runningExamplePreset} hoveredLabels={null} />
-                    </div>
-                  </div>
+                    </span>
+                  </p>
                   <div className="space-y-4">
                     <p className={APPENDIX_PROSE_JUSTIFIED_CLASS}>
                       {renderAppendixSingleBlock(appendixSection2.slots.runningExampleLead, 0)}
@@ -1335,7 +1288,6 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                   {example ? (
                     <div className="space-y-2">
                       <p className={APPENDIX_APP_TEXT_STRONG_CLASS}>
-                        <span className="font-semibold text-gray-900">{renderAppendixSingleBlock(appendixSection5.slots.selectedEinsumLabel, 0)}</span>{' '}
                         <span className="font-mono text-[13px] leading-6 text-stone-900">
                           <FormulaHighlighted example={example} hoveredLabels={null} />
                         </span>
@@ -1742,7 +1694,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
 
           <AppendixSection
             n={6}
-            label="Storage"
+            label="Symmetry Aware Storage"
             anchorId="appendix-section-6"
             title={appendixSection6.title}
             deckClassName="max-w-none"
@@ -1780,7 +1732,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                       <div className="text-[13px] font-semibold text-gray-900">
                         <Latex math="\alpha_{\text{storage}}" />
                       </div>
-                      <div className="mt-1 text-[11px] font-normal leading-5 text-gray-500">Output-storage representatives</div>
+                      <div className="mt-1 text-[11px] font-normal leading-5 text-gray-500">Storage-aware output updates</div>
                     </th>
                     <th className="px-2 py-2 font-semibold text-right">
                       <div>Storage-only saving</div>
@@ -1788,7 +1740,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                   </tr>
                 </thead>
                 <tbody className="[&_tr]:border-b [&_tr]:border-gray-100">
-                  {SAVINGS_TABLE_ROWS.map((r) => {
+                  {savingsTableRows.map((r) => {
                     const hasSaving = r.saving > 0;
                     const preset = EXAMPLES_BY_ID.get(r.id);
                     const subs = preset?.expression?.subscripts ?? '';

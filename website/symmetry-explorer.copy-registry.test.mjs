@@ -116,6 +116,32 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
   }
 });
 
+test('content registry does not wrap inline math in markdown code ticks', () => {
+  const modules = [
+    'main/preamble.ts',
+    'main/section1.ts',
+    'main/section2.ts',
+    'main/section3.ts',
+    'main/section4.ts',
+    'main/section5.ts',
+    'appendix/section1.ts',
+    'appendix/section2.ts',
+    'appendix/section3.ts',
+    'appendix/section4.ts',
+    'appendix/section5.ts',
+    'appendix/section6.ts',
+  ];
+
+  for (const relativePath of modules) {
+    const source = read(relativePath);
+    assert.doesNotMatch(
+      source,
+      /`\$[^`]+\$`/,
+      `${relativePath} should not wrap inline math in code ticks`,
+    );
+  }
+});
+
 test('appendix copy modules use canonical notation keys for pointwise and formal groups', () => {
   const appendixModules = [
     'appendix/section1.ts',

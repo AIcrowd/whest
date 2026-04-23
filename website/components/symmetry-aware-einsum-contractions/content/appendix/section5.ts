@@ -20,9 +20,6 @@ const section5 = {
     noneLead: [
       p('For the selected preset, the formal group does not produce a distinct accumulation count to compare. The conceptual distinction remains the same: $G_{\\text{f}}$ describes post-summation label-renaming symmetry, while $G_{\\text{pt}}$ is the group used for accumulation.'),
     ],
-    selectedEinsumLabel: [
-      l('Selected einsum:'),
-    ],
     presetPickerLabel: [
       l('Presets with a visible mismatch:'),
     ],

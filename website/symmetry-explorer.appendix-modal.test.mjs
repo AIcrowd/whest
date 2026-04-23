@@ -75,6 +75,8 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
   assert.match(section2, /className="lg:grid-cols-\[0\.95fr_1\.25fr\]"/);
   assert.match(section2, /appendixSection2\.slots\.runningExampleLabelPrefix/);
   assert.match(section2, /appendixSection2\.slots\.runningExamplePresetLabel/);
+  assert.match(section2, /<FormulaHighlighted example=\{runningExamplePreset\} hoveredLabels=\{null\} \/>/);
+  assert.doesNotMatch(section2, /inline-flex max-w-full rounded-xl border border-stone-200 bg-white px-3 py-2\.5 shadow-sm/);
 
   assert.match(section3, /AppendixSupportSplit/);
   assert.match(section3, /Worked example — bilinear trace/);
@@ -85,7 +87,6 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
   assert.match(section4, /VSubSwConstruction/);
 
   assert.match(section5, /AppendixSupportSplit/);
-  assert.match(section5, /appendixSection5\.slots\.selectedEinsumLabel/);
   assert.match(section5, /supportClassName="space-y-5 xl:pt-1"/);
   assert.doesNotMatch(section5, /supportClassName=\{APPENDIX_SUPPORT_SHELF_CLASS\}/);
 
@@ -195,7 +196,6 @@ test('section 5 uses alphaComparison branches and the bilinear witness to reject
   assert.match(source, /n=\{5\}[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection5\.deck\)\}\s*<\/InlineMathText>\s*\}/);
   assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.intro/);
   assert.match(source, /n=\{5\}[\s\S]*renderAppendixSingleBlock\(appendixSection5\.slots\.rule, 0\)/);
-  assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.selectedEinsumLabel/);
   assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.presetPickerLabel/);
   assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.mismatchLead/);
   assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.coincidentLead/);
@@ -257,7 +257,6 @@ test('section 5 uses alphaComparison branches and the bilinear witness to reject
   assert.match(source, /appendixSection5\.slots\.genericNoteTemplate/);
   assert.doesNotMatch(source, /Rule\./);
   assert.match(source, /appendixSection5\.slots\.rule/);
-  assert.match(source, /appendixSection5\.slots\.selectedEinsumLabel/);
   assert.match(source, /font-mono text-\[13px\] leading-6 text-stone-900/);
   assert.match(source, /<FormulaHighlighted example=\{example\} hoveredLabels=\{null\} \/>/);
   assert.match(source, /selectedOperandItems = useMemo/);
@@ -273,7 +272,10 @@ test('section 5 uses alphaComparison branches and the bilinear witness to reject
   const section5Start = source.indexOf('n={5}');
   const presetsIdx = source.indexOf('appendixSection5.slots.presetPickerLabel', section5Start);
   const mismatchIdx = source.indexOf("alphaComparison.state === 'mismatch'", section5Start);
-  assert(source.indexOf('appendixSection5.slots.selectedEinsumLabel', section5Start) < presetsIdx, 'preset jump row should follow the selected einsum header');
+  assert.equal(source.includes('appendixSection5.slots.selectedEinsumLabel'), false);
+  assert.doesNotMatch(source, /Selected einsum:/);
+  const selectedFormulaIdx = source.indexOf('<FormulaHighlighted example={example} hoveredLabels={null} />', section5Start);
+  assert(selectedFormulaIdx < presetsIdx, 'preset jump row should follow the selected einsum line');
   assert(presetsIdx < mismatchIdx, 'preset jump row should appear before the branch-specific explanation block');
 });
 
@@ -290,14 +292,17 @@ test('section 6 frames storage as a separate optimization axis with α_engine an
   assert.match(source, /n=\{6\}[\s\S]*chipName: operand\.count > 1 \? `\$\{operand\.name\}×\$\{operand\.count\}` : operand\.name/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="flex flex-wrap gap-1\.5">\s*\{operandChips\.map\(\(operand\) => \(/);
   assert.match(source, /n=\{6\}[\s\S]*<SymmetryChip key=\{`\$\{operand\.name\}-\$\{operand\.sym\}`\} name=\{operand\.chipName\} symmetry=\{operand\.sym\} \/>/);
+  assert.match(source, /import \{ buildAppendixSavingsTableRows \} from '\.\.\/lib\/appendixStorageSurvey\.js';/);
+  assert.match(source, /const savingsTableRows = useMemo\(\s*\(\) => buildAppendixSavingsTableRows\(\),\s*\[\],\s*\)/);
+  assert.doesNotMatch(source, /const SAVINGS_TABLE_ROWS = \[/);
   assert.doesNotMatch(source, /n=\{6\}[\s\S]*<span className="font-mono font-semibold">\{o\.name\}<\/span>/);
   assert.match(source, /Accumulation representatives/);
-  assert.match(source, /Output-storage representatives/);
+  assert.match(source, /Storage-aware output updates/);
   assert.match(source, /Storage-only saving/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="text-\[13px\] font-semibold text-gray-900">\s*<Latex math="\\alpha_\{\\text\{engine\}\}" \/>/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Accumulation representatives<\/div>/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="text-\[13px\] font-semibold text-gray-900">\s*<Latex math="\\alpha_\{\\text\{storage\}\}" \/>/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Output-storage representatives<\/div>/);
+  assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Storage-aware output updates<\/div>/);
   assert.doesNotMatch(source, /n=\{6\}[\s\S]*Accumulation is governed by \$\$\{notationLatex\('g_pointwise'\)\}\$/);
   assert.doesNotMatch(source, /n=\{6\}[\s\S]*Output storage is governed by \$\$\{notationLatex\('g_output'\)\}\$/);
   assert.doesNotMatch(source, /n=\{6\}[\s\S]*The dummy-label group \$\$\{notationLatex\('s_w_summed'\)\}\$ contributes nothing to output storage/);

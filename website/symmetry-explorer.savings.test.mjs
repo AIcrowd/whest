@@ -4,6 +4,33 @@ import fs from 'node:fs';
 import { EXAMPLES } from './components/symmetry-aware-einsum-contractions/data/examples.js';
 import { analyzeExample } from './components/symmetry-aware-einsum-contractions/engine/pipeline.js';
 import { EXPLORER_THEME_RECOMMENDED_ID } from './components/symmetry-aware-einsum-contractions/lib/explorerTheme.js';
+import {
+  APPENDIX_STORAGE_SURVEY_DIMENSION,
+  buildAppendixSavingsTableRows,
+  computeAppendixStorageRepresentatives,
+} from './components/symmetry-aware-einsum-contractions/lib/appendixStorageSurvey.js';
+
+test('appendix storage table rows stay synchronized with live preset analyses', () => {
+  const rows = buildAppendixSavingsTableRows();
+  const rowsById = new Map(rows.map((row) => [row.id, row]));
+
+  assert.equal(rows.length, EXAMPLES.length);
+
+  for (const id of ['triple-outer', 'outer']) {
+    const preset = EXAMPLES.find((example) => example.id === id);
+    assert.ok(preset, `missing preset ${id}`);
+    const analysis = analyzeExample(preset, APPENDIX_STORAGE_SURVEY_DIMENSION);
+    const row = rowsById.get(id);
+    assert.ok(row, `missing appendix savings row ${id}`);
+    assert.equal(row.ae, analysis.componentCosts.alpha, `${id} α_engine should come from the live analysis`);
+    assert.equal(row.as, computeAppendixStorageRepresentatives(analysis), `${id} α_storage should come from the live analysis`);
+  }
+
+  assert.equal(rowsById.get('triple-outer')?.ae, 1296);
+  assert.equal(rowsById.get('triple-outer')?.as, 336);
+  assert.equal(rowsById.get('outer')?.ae, 256);
+  assert.equal(rowsById.get('outer')?.as, 136);
+});
 
 test('Acts 2-4 are sequenced around the inline savings narrative', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
@@ -179,8 +206,6 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /\\sum_\{g\s*\\in\s*G_a\}/);
   assert.match(totalCostSource, /inSet\(tc\(SYM\.element, notationLatex\('g_element'\)\), tc\(SYM\.localGroup, notationLatex\('g_component'\)\)\)/);
   assert.match(totalCostSource, /\\prod_\{c\}\s*n_c/);
-  assert.match(totalCostSource, /PIECEWISE_LABEL/);
-  assert.match(totalCostSource, /Per-component accumulation equation/);
   assert.match(totalCostSource, /PIECEWISE_SCOPE_NOTE/);
   assert.match(totalCostSource, /defines only the per-component accumulation term/);
   assert.match(totalCostSource, /output projections of product orbits/);
@@ -209,7 +234,6 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /omega_orbit/);
   assert.match(totalCostSource, /orbit of the single free label/);
   assert.match(totalCostSource, /notationLatex\('c_omega_cycles'\)/);
-  assert.match(totalCostSource, /cue: 'hardest case'/);
   assert.match(totalCostSource, /accumulation\/output-update cost/);
   assert.match(totalCostSource, /product-orbit count/);
   assert.match(totalCostSource, /<dl/);

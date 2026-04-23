@@ -33,7 +33,6 @@ const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
 const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
 const SECTION_FIVE_THEME_OVERRIDE = 'editorial-noir-math';
 const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\\x\end{matrix}}\right.`;
-const PIECEWISE_LABEL = `Per-component accumulation equation $${notationLatex('alpha_component')}$`;
 const PIECEWISE_SCOPE_NOTE =
   `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$. It counts output projections of product orbits: an orbit that touches several output bins contributes once to each such bin.`;
 
@@ -161,7 +160,6 @@ function getAggregationLeaves(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
     {
       id: 'singleton',
       layer: 'regime',
-      cue: 'hardest case',
       formula: String.raw`\tfrac{${tc(SYM.omegaSize, notationLatex('n_omega'))}}{|${tc(SYM.localGroup, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, notationLatex('g_element')))} \Bigl(${productOver(`c \\in ${notationLatex('r_complement')}`, tc(SYM.cycleCount, notationLatex('n_cycle')))}\Bigr)\!\Bigl(${tc(SYM.omegaSize, notationLatex('n_omega'))}^{\,${tc(SYM.omegaExponent, notationLatex('c_omega_cycles'))}} - (${tc(SYM.omegaSize, notationLatex('n_omega'))} - 1)^{\,${tc(SYM.omegaExponent, notationLatex('c_omega_cycles'))}}\Bigr)`,
     },
     {
@@ -213,10 +211,7 @@ function HeroFormulaBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
       </div>
 
       {/* Piecewise — α_a defined by six leaves of the shape × regime ladder */}
-      <div className="space-y-1 text-center">
-        <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
-          <InlineMathText themeOverride={themeOverride}>{PIECEWISE_LABEL}</InlineMathText>
-        </div>
+      <div className="text-center">
         <div className="mx-auto max-w-2xl font-serif text-[14px] leading-[1.7] text-gray-700">
           <InlineMathText themeOverride={themeOverride}>{PIECEWISE_SCOPE_NOTE}</InlineMathText>
         </div>

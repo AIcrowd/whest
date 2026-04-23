@@ -16,7 +16,7 @@ const section6 = {
       p('All rows are computed at $n = 3$. Savings here are storage-only savings after accumulation has already been accounted for.'),
     ],
     tableNote: [
-      c('The table below records the storage-only savings available for the presets at $n = 3$. The column $\\alpha_{\\text{engine}}$ is the accumulation representative count used by the main page. The column $\\alpha_{\\text{storage}}$ is the number of output-storage representatives after grouping output cells into $G_{\\mathrm{out}}$-orbits. These are different quantities; $\\alpha_{\\text{storage}}$ is not a replacement for the accumulation cost.'),
+      c('The table above records the storage-only savings available for the presets at $n = 3$. The column $\\alpha_{\\text{engine}}$ is the accumulation representative count used by the main page. The column $\\alpha_{\\text{storage}}$ is the storage-aware output-update count obtained by collapsing each pointwise orbit’s visible output bins by $G_{\\mathrm{out}}$. These are different quantities; $\\alpha_{\\text{storage}}$ is not a replacement for the accumulation cost.'),
     ],
     scopeLabel: [
       c('SCOPE'),
