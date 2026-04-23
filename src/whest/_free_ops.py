@@ -33,9 +33,7 @@ def _infer_constant_shape_symmetry(shape):
     for axis, extent in enumerate(shape):
         blocks_by_extent.setdefault(int(extent), []).append(axis)
 
-    blocks = tuple(
-        tuple(axes) for axes in blocks_by_extent.values() if len(axes) >= 2
-    )
+    blocks = tuple(tuple(axes) for axes in blocks_by_extent.values() if len(axes) >= 2)
     if not blocks:
         return None
     if len(blocks) == 1:
@@ -162,9 +160,7 @@ def diag(v, k=0):
         cost = min(m, n)
     with budget.deduct("diag", flop_cost=cost, subscripts=None, shapes=(v.shape,)):
         result = _np.diag(v, k=k)
-    symmetry = _infer_structural_constructor_symmetry(
-        kind="diag", k=k, v_ndim=v.ndim
-    )
+    symmetry = _infer_structural_constructor_symmetry(kind="diag", k=k, v_ndim=v.ndim)
     if symmetry is not None:
         return wrap_with_symmetry(result, symmetry)
     return result

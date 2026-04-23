@@ -260,9 +260,7 @@ class TestFullLike:
         source = we.as_symmetric(np.eye(3), symmetry=(0, 1))
         result = we.full_like(source, 1.0, shape=(2, 3, 5, 5, 7, 7))
         assert isinstance(result, SymmetricTensor)
-        assert result.symmetry == we.SymmetryGroup.young(
-            blocks=((2, 3), (4, 5))
-        )
+        assert result.symmetry == we.SymmetryGroup.young(blocks=((2, 3), (4, 5)))
 
     def test_shape_override_preserves_compatible_carried_symmetry(self):
         source = we.as_symmetric(np.zeros((3, 3, 2)), symmetry=(0, 1))
