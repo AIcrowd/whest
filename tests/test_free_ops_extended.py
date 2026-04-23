@@ -7,7 +7,9 @@ These are all trivial pass-throughs to numpy so we just need to execute them.
 import numpy
 import pytest
 
+import whest as we
 import whest._free_ops as ops
+from whest._symmetric import SymmetricTensor
 
 # ---------------------------------------------------------------------------
 # Helper
@@ -64,6 +66,88 @@ def test_moveaxis():
     assert r.shape == (3, 4, 2)
 
 
+def test_moveaxis_remaps_symmetry():
+    a = we.as_symmetric(
+        numpy.stack([numpy.eye(3), 2 * numpy.eye(3)], axis=-1), symmetry=(0, 1)
+    )
+    r = ops.moveaxis(a, 2, 0)
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (2, 3, 3)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(1, 2))
+
+
+def test_expand_dims_remaps_full_symmetry_from_issue_49():
+    a = we.as_symmetric(numpy.ones((3, 3, 3)), symmetry=(0, 1, 2))
+    r = ops.expand_dims(a, axis=1)
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (3, 1, 3, 3)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(0, 2, 3))
+
+
+def test_expand_dims_remaps_partial_symmetry_front_middle_and_end():
+    a = we.as_symmetric(
+        numpy.stack([numpy.eye(3), 2 * numpy.eye(3)], axis=-1), symmetry=(0, 1)
+    )
+    front = ops.expand_dims(a, axis=0)
+    middle = ops.expand_dims(a, axis=1)
+    end = ops.expand_dims(a, axis=-1)
+    assert front.symmetry == we.SymmetryGroup.symmetric(axes=(1, 2))
+    assert middle.symmetry == we.SymmetryGroup.symmetric(axes=(0, 2))
+    assert end.symmetry == we.SymmetryGroup.symmetric(axes=(0, 1))
+
+
+def test_expand_dims_negative_axis_remaps_symmetry():
+    a = we.as_symmetric(numpy.ones((3, 3, 3)), symmetry=(0, 1, 2))
+    r = ops.expand_dims(a, axis=-4)
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (1, 3, 3, 3)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(1, 2, 3))
+
+
+def test_expand_dims_tuple_axis_remaps_symmetry():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+    r = ops.expand_dims(a, axis=(0, 2))
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (1, 3, 1, 3)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(1, 3))
+
+
+def test_expand_dims_plain_arrays_remain_plain():
+    r = ops.expand_dims(numpy.array([1, 2, 3]), axis=0)
+    assert not isinstance(r, SymmetricTensor)
+    assert r.shape == (1, 3)
+
+
+def test_expand_dims_invalid_axis_matches_numpy():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+    with pytest.raises(Exception) as ours:
+        ops.expand_dims(a, axis=4)
+    with pytest.raises(Exception) as numpy_err:
+        numpy.expand_dims(numpy.eye(3), axis=4)
+    assert type(ours.value) is type(numpy_err.value)
+
+
+def test_expand_dims_duplicate_axes_match_numpy():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+    with pytest.raises(Exception) as ours:
+        ops.expand_dims(a, axis=(0, 0))
+    with pytest.raises(Exception) as numpy_err:
+        numpy.expand_dims(numpy.eye(3), axis=(0, 0))
+    assert type(ours.value) is type(numpy_err.value)
+
+
+def test_expand_dims_matches_newaxis_symmetry():
+    a = we.as_symmetric(
+        numpy.stack([numpy.eye(3), 2 * numpy.eye(3)], axis=-1), symmetry=(0, 1)
+    )
+    by_fn = ops.expand_dims(a, axis=0)
+    by_slice = a[None, ...]
+    assert isinstance(by_fn, SymmetricTensor)
+    assert isinstance(by_slice, SymmetricTensor)
+    assert numpy.array_equal(by_fn, by_slice)
+    assert by_fn.symmetry == by_slice.symmetry
+
+
 def test_vstack():
     r = ops.vstack([numpy.ones((2, 3)), numpy.zeros((2, 3))])
     assert r.shape == (4, 3)
@@ -95,6 +179,13 @@ def test_ravel():
     a = arr(2, 3)
     r = ops.ravel(a)
     assert r.shape == (6,)
+
+
+def test_ravel_drops_symmetry():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+    r = ops.ravel(a)
+    assert r.shape == (9,)
+    assert not isinstance(r, SymmetricTensor)
 
 
 def test_tile():
@@ -139,10 +230,31 @@ def test_diagonal():
     assert list(r) == [1, 4]
 
 
+def test_diagonal_view_copy_does_not_crash():
+    a = we.as_symmetric(numpy.eye(4), symmetry=(0, 1))
+    copied = we.diagonal(a).copy()
+    assert copied.shape == (4,)
+    assert numpy.allclose(copied, numpy.diagonal(numpy.asarray(a)))
+
+
 def test_broadcast_to():
     a = numpy.array([1, 2, 3])
     r = ops.broadcast_to(a, (2, 3))
     assert r.shape == (2, 3)
+
+
+def test_broadcast_to_only_adds_equal_size_blocks():
+    a = numpy.array([1, 2])
+    r = ops.broadcast_to(a, (2, 3, 2))
+    assert r.shape == (2, 3, 2)
+    assert not isinstance(r, SymmetricTensor)
+
+
+def test_broadcast_to_adds_equal_size_created_block():
+    a = numpy.array([1, 2])
+    r = ops.broadcast_to(a, (4, 4, 2))
+    assert isinstance(r, SymmetricTensor)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(0, 1))
 
 
 def test_meshgrid():
@@ -152,10 +264,38 @@ def test_meshgrid():
     assert Xg.shape == (3, 2)
 
 
+def test_transpose_negative_axes_preserves_symmetry():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+    r = ops.transpose(a, axes=(-1, -2))
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (3, 3)
+    assert r.symmetry == a.symmetry
+
+
 def test_astype():
     a = numpy.array([1.0, 2.0])
     r = ops.astype(a, numpy.int32)
     assert r.dtype == numpy.int32
+
+
+def test_astype_and_copy_do_not_leak_invalid_view_symmetry():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+
+    cast = ops.astype(a, a.dtype, copy=False)
+    assert cast.shape == a.shape
+    assert not isinstance(cast, SymmetricTensor)
+
+    method_cast = a.astype(a.dtype, copy=False)
+    assert method_cast.shape == a.shape
+    assert not isinstance(method_cast, SymmetricTensor)
+
+    copied = ops.copy(a)
+    assert isinstance(copied, SymmetricTensor)
+    assert copied.symmetry == a.symmetry
+
+    method_copy = a.copy()
+    assert isinstance(method_copy, SymmetricTensor)
+    assert method_copy.symmetry == a.symmetry
 
 
 def test_asarray():

@@ -627,7 +627,7 @@
     "name": "left_shift",
     "notes": "Element-wise left bit shift (legacy name).",
     "numpy_ref": "np.left_shift",
-    "signature": "we.left_shift(x, y)",
+    "signature": "we.left_shift(*args, **kwargs)",
     "status": "supported",
     "summary": "Shift the bits of an integer to the left.",
     "weight": 1.0,
@@ -637,6 +637,6 @@
   "slug": "left_shift",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

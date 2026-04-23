@@ -492,7 +492,7 @@
     "name": "greater",
     "notes": "Element-wise x1 > x2.",
     "numpy_ref": "np.greater",
-    "signature": "we.greater(x, y)",
+    "signature": "we.greater(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the truth value of (x1 > x2) element-wise.",
     "weight": 1.0,
@@ -502,6 +502,6 @@
   "slug": "greater",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

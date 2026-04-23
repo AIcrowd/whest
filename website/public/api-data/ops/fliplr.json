@@ -318,6 +318,6 @@
   "slug": "fliplr",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L49",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L948"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1034"
   }
 }

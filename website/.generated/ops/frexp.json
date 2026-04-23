@@ -677,12 +677,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.frexp(x)",
+  "signature": "we.frexp(*args, **kwargs)",
   "slug": "frexp",
   "summary": "Decompose the elements of x into mantissa and twos exponent.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.frexp",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L62"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L175"
 }

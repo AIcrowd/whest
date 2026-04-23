@@ -19,40 +19,156 @@ from whest._flops import (
     analytical_reduction_cost as reduction_cost,
 )
 from whest._ndarray import _aswhest
+from whest._perm_group import SymmetryGroup
 from whest._symmetric import (
     SymmetricTensor,
-    SymmetryInfo,
     _warn_symmetry_loss,
-    intersect_symmetry,
-    propagate_symmetry_reduce,
 )
+from whest._symmetric import (
+    is_symmetric as _is_symmetric,
+)
+from whest._symmetry_utils import broadcast_group, intersect_groups, reduce_group
 from whest._validation import check_nan_inf, require_budget
-from whest.errors import UnsupportedFunctionError
+from whest.errors import SymmetryError, UnsupportedFunctionError
 
 # ---------------------------------------------------------------------------
 # Factory helpers
 # ---------------------------------------------------------------------------
 
 
+def _symmetry_of(value):
+    return value.symmetry if isinstance(value, SymmetricTensor) else None
+
+
+def _supports_out_argument(np_func) -> bool:
+    if isinstance(np_func, _np.ufunc):
+        return True
+    try:
+        return "out" in _inspect.signature(np_func).parameters
+    except (TypeError, ValueError):
+        return False
+
+
+def _prepare_symmetric_out(out, target_symmetry):
+    if not isinstance(out, SymmetricTensor):
+        return target_symmetry
+    carried_symmetry = out.symmetry
+    if target_symmetry is None:
+        raise ValueError("out symmetry does not match result symmetry")
+    if carried_symmetry is not None and carried_symmetry != target_symmetry:
+        raise ValueError("out symmetry does not match result symmetry")
+
+    if not _is_symmetric(_np.asarray(out), symmetry=target_symmetry):
+        axes = target_symmetry.axes
+        if axes is None:
+            axes = tuple(range(target_symmetry.degree))
+        raise SymmetryError(axes=tuple(axes), max_deviation=float("inf"))
+    return target_symmetry
+
+
+def _validate_result_symmetry(result, symmetry):
+    if symmetry is None:
+        return
+    if not _is_symmetric(_np.asarray(result), symmetry=symmetry):
+        axes = symmetry.axes
+        if axes is None:
+            axes = tuple(range(symmetry.degree))
+        raise SymmetryError(axes=tuple(axes), max_deviation=float("inf"))
+
+
+def _call_with_optional_out(np_func, *args, out=None, supports_out=False, **kwargs):
+    if out is None:
+        return np_func(*args, **kwargs)
+    if supports_out:
+        return np_func(*args, out=out, **kwargs)
+    result = np_func(*args, **kwargs)
+    _np.copyto(out, _np.asarray(result), casting="unsafe")
+    return out
+
+
+def _wrap_result(result, *, out=None, symmetry=None):
+    if out is not None:
+        if not isinstance(out, SymmetricTensor):
+            _validate_result_symmetry(result, symmetry)
+            return out
+        effective_symmetry = _prepare_symmetric_out(out, symmetry)
+        _validate_result_symmetry(result, effective_symmetry)
+        _np.copyto(_np.asarray(out), _np.asarray(result), casting="unsafe")
+        return out
+    if symmetry is not None:
+        return SymmetricTensor(_np.asarray(result), symmetry=symmetry)
+    return _aswhest(result)
+
+
+def _wrap_multi_result(result, *, symmetry=None):
+    if isinstance(result, tuple):
+        return tuple(_wrap_result(part, symmetry=symmetry) for part in result)
+    return _wrap_result(result, symmetry=symmetry)
+
+
+def _pointwise_symmetry(operands, output_shape):
+    aligned_groups = []
+    dense_operand_present = False
+
+    for operand, symmetry in operands:
+        if operand.ndim == 0:
+            continue
+        if symmetry is None:
+            dense_operand_present = True
+            continue
+        aligned = broadcast_group(
+            symmetry,
+            input_shape=operand.shape,
+            output_shape=output_shape,
+        )
+        if aligned is not None:
+            aligned_groups.append(aligned)
+
+    if not aligned_groups:
+        return None, []
+    if dense_operand_present:
+        return None, aligned_groups
+
+    output_symmetry = aligned_groups[0]
+    for aligned in aligned_groups[1:]:
+        output_symmetry = intersect_groups(
+            output_symmetry,
+            aligned,
+            ndim=len(output_shape),
+        )
+        if output_symmetry is None:
+            break
+    return output_symmetry, aligned_groups
+
+
 def _counted_unary(np_func, op_name: str):
-    def wrapper(x):
+    supports_out = _supports_out_argument(np_func)
+
+    def wrapper(x, out=None, **kwargs):
         budget = require_budget()
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
-        sym_info = x.symmetry_info if isinstance(x, SymmetricTensor) else None
-        cost = pointwise_cost(x.shape, symmetry_info=sym_info)
+        symmetry = _symmetry_of(x)
+        symmetry = _prepare_symmetric_out(out, symmetry)
+        cost = pointwise_cost(x.shape, symmetry=symmetry)
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-            result = np_func(x)
+            result = _call_with_optional_out(
+                np_func,
+                x,
+                out=None if isinstance(out, SymmetricTensor) else out,
+                supports_out=supports_out,
+                **kwargs,
+            )
         check_nan_inf(result, op_name)
-        if sym_info is not None:
-            result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
-        if sym_info is None:
-            result = _aswhest(result)
-        return result
+        return _wrap_result(result, out=out, symmetry=symmetry)
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_unary", "numel(output) FLOPs")
+    try:
+        wrapper.__signature__ = _inspect.signature(np_func)
+    except (ValueError, TypeError):
+        pass
     return wrapper
 
 
@@ -63,23 +179,26 @@ def _counted_unary_multi(np_func, op_name: str):
         budget = require_budget()
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
-        cost = pointwise_cost(x.shape)
+        symmetry = _symmetry_of(x)
+        cost = pointwise_cost(x.shape, symmetry=symmetry)
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,)):
             result = np_func(x)
-        if isinstance(result, tuple):
-            result = tuple(_aswhest(r) for r in result)
-        else:
-            result = _aswhest(result)
-        return result
+        return _wrap_multi_result(result, symmetry=symmetry)
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_unary", "numel(input) FLOPs")
+    try:
+        wrapper.__signature__ = _inspect.signature(np_func)
+    except (ValueError, TypeError):
+        pass
     return wrapper
 
 
 def _counted_binary(np_func, op_name: str):
-    def wrapper(x, y):
+    supports_out = _supports_out_argument(np_func)
+
+    def wrapper(x, y, out=None, **kwargs):
         budget = require_budget()
         # Preserve original (possibly Python-scalar) values for the actual
         # numpy call so that NEP 50 weak-typing rules apply correctly. We
@@ -90,86 +209,56 @@ def _counted_binary(np_func, op_name: str):
         if not isinstance(y, _np.ndarray):
             y = _np.asarray(y)
         output_shape = _np.broadcast_shapes(x.shape, y.shape)
-        x_sym = x.symmetry_info if isinstance(x, SymmetricTensor) else None
-        y_sym = y.symmetry_info if isinstance(y, SymmetricTensor) else None
-        x_is_scalar = x.ndim == 0
-        y_is_scalar = y.ndim == 0
-
-        # Determine output symmetry.
-        out_groups: list | None = None
-        out_sym_axes: list | None = None
-        if x_sym and y_is_scalar:
-            out_groups = x_sym.groups if x_sym.groups else None
-            out_sym_axes = x_sym.symmetric_axes
-        elif y_sym and x_is_scalar:
-            out_groups = y_sym.groups if y_sym.groups else None
-            out_sym_axes = y_sym.symmetric_axes
-        elif x_sym or y_sym:
-            x_groups = x_sym.groups if x_sym else []
-            y_groups = y_sym.groups if y_sym else []
-            out_groups = intersect_symmetry(
-                x_groups if x_groups else None,
-                y_groups if y_groups else None,
-                x.shape,
-                y.shape,
-                output_shape,
-            )
-            out_sym_axes = (
-                [g.axes for g in out_groups if g.axes is not None]
-                if out_groups
-                else None
-            )
-
-        out_sym_info = (
-            SymmetryInfo(symmetric_axes=out_sym_axes, shape=output_shape)
-            if out_sym_axes
-            else None
+        x_sym = _symmetry_of(x)
+        y_sym = _symmetry_of(y)
+        out_symmetry, aligned_inputs = _pointwise_symmetry(
+            ((x, x_sym), (y, y_sym)),
+            output_shape,
         )
-        cost = pointwise_cost(output_shape, symmetry_info=out_sym_info)
+        out_symmetry = _prepare_symmetric_out(out, out_symmetry)
+
+        cost = pointwise_cost(output_shape, symmetry=out_symmetry)
         with budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         ):
             # Call the underlying ufunc with the ORIGINAL inputs so that
             # Python-scalar dtype promotion (NEP 50) and FloatingPointError
             # propagation (np.errstate) work exactly as in plain numpy.
-            result = np_func(x_orig, y_orig)
-        check_nan_inf(result, op_name)
-        if out_sym_axes:
-            result = SymmetricTensor(
-                result, symmetric_axes=out_sym_axes, perm_groups=out_groups
+            result = _call_with_optional_out(
+                np_func,
+                x_orig,
+                y_orig,
+                out=None if isinstance(out, SymmetricTensor) else out,
+                supports_out=supports_out,
+                **kwargs,
             )
-            # Warn if either input had more symmetry.
-            input_axes = set()
-            if x_sym:
-                input_axes.update(x_sym.symmetric_axes)
-            if y_sym:
-                input_axes.update(y_sym.symmetric_axes)
-            out_set = set(out_sym_axes)
-            lost = [g for g in input_axes if g not in out_set]
+        check_nan_inf(result, op_name)
+        if out_symmetry is not None:
+            lost = []
+            for group in aligned_inputs:
+                if group != out_symmetry and group.axes is not None:
+                    lost.append(group.axes)
             if lost:
                 _warn_symmetry_loss(
-                    lost, f"{op_name} — groups not shared by both operands"
+                    list(dict.fromkeys(lost)),
+                    f"{op_name} — groups not shared by both operands",
                 )
-        elif isinstance(result, SymmetricTensor):
-            result = _np.asarray(result)
-            # Warn about total loss.
-            input_groups_list = []
-            if x_sym:
-                input_groups_list.extend(x_sym.symmetric_axes)
-            if y_sym:
-                input_groups_list.extend(y_sym.symmetric_axes)
-            if input_groups_list:
+        else:
+            lost = [group.axes for group in aligned_inputs if group.axes is not None]
+            if lost:
                 _warn_symmetry_loss(
-                    input_groups_list,
+                    list(dict.fromkeys(lost)),
                     f"{op_name} — no symmetry groups shared by both operands",
                 )
-        if not isinstance(result, SymmetricTensor):
-            result = _aswhest(result)
-        return result
+        return _wrap_result(result, out=out, symmetry=out_symmetry)
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_binary", "numel(output) FLOPs")
+    try:
+        wrapper.__signature__ = _inspect.signature(np_func)
+    except (ValueError, TypeError):
+        pass
     return wrapper
 
 
@@ -183,92 +272,99 @@ def _counted_binary_multi(np_func, op_name: str):
         if not isinstance(y, _np.ndarray):
             y = _np.asarray(y)
         output_shape = _np.broadcast_shapes(x.shape, y.shape)
-        cost = pointwise_cost(output_shape)
+        out_symmetry, _ = _pointwise_symmetry(
+            ((x, _symmetry_of(x)), (y, _symmetry_of(y))), output_shape
+        )
+        cost = pointwise_cost(output_shape, symmetry=out_symmetry)
         with budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         ):
             result = np_func(x, y)
-        if isinstance(result, tuple):
-            result = tuple(_aswhest(r) for r in result)
-        else:
-            result = _aswhest(result)
-        return result
+        return _wrap_multi_result(result, symmetry=out_symmetry)
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_binary", "numel(output) FLOPs")
+    try:
+        wrapper.__signature__ = _inspect.signature(np_func)
+    except (ValueError, TypeError):
+        pass
     return wrapper
 
 
 def _counted_reduction(
     np_func, op_name: str, cost_multiplier: int = 1, extra_output: bool = False
 ):
+    supports_out = _supports_out_argument(np_func)
+
     def wrapper(a, axis=None, **kwargs):
         budget = require_budget()
         if not isinstance(a, _np.ndarray):
             a = _np.asarray(a)
-        sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
-        cost = reduction_cost(a.shape, axis, symmetry_info=sym_info) * cost_multiplier
+        symmetry = a.symmetry if isinstance(a, SymmetricTensor) else None
+        keepdims = kwargs.get("keepdims", False)
+        out = kwargs.get("out")
+        new_symmetry = (
+            reduce_group(symmetry, ndim=len(a.shape), axis=axis, keepdims=keepdims)
+            if symmetry is not None
+            else None
+        )
+        _prepare_symmetric_out(out, new_symmetry)
+        cost = reduction_cost(a.shape, axis, symmetry=symmetry) * cost_multiplier
         if extra_output:
             # Pre-compute extra cost from output shape without running numpy yet
             if axis is None:
                 extra_cost = 1  # scalar output
             else:
                 ax = axis if axis >= 0 else axis + a.ndim
-                keepdims = kwargs.get("keepdims", False)
                 if keepdims:
                     out_shape = a.shape[:ax] + (1,) + a.shape[ax + 1 :]
                 else:
                     out_shape = a.shape[:ax] + a.shape[ax + 1 :]
                 extra_cost = pointwise_cost(out_shape)
             cost += extra_cost
+        numpy_kwargs = dict(kwargs)
+        numpy_kwargs.pop("out", None)
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-            result = np_func(a, axis=axis, **kwargs)
-
-        # If caller passed out=, honor numpy's contract: the returned object
-        # must be the exact same object (identity). Skip WhestArray wrapping
-        # and symmetry tagging when out= is supplied — callers relying on
-        # out= are opting out of whest's subclass semantics.
-        if kwargs.get("out") is not None:
-            return kwargs["out"]
+            result = _call_with_optional_out(
+                np_func,
+                a,
+                axis=axis,
+                out=None if isinstance(out, SymmetricTensor) else out,
+                supports_out=supports_out,
+                **numpy_kwargs,
+            )
 
         # Propagate symmetry through reduction.
-        if sym_info is not None:
-            keepdims = kwargs.get("keepdims", False)
-            perm_groups = sym_info.groups if sym_info.groups else []
-            new_groups = propagate_symmetry_reduce(
-                perm_groups, len(a.shape), axis, keepdims=keepdims
-            )
-            if new_groups is not None:
-                result = _np.asarray(result).view(SymmetricTensor)
-                result._symmetry_groups = new_groups
-                result._symmetric_axes = [
-                    g.axes for g in new_groups if g.axes is not None
-                ]
-                # Warn if any group changed (order decreased or axes changed).
-                old_axes_set = {g.axes for g in perm_groups if g.axes is not None}
-                new_axes_set = {g.axes for g in new_groups if g.axes is not None}
-                if old_axes_set != new_axes_set:
-                    lost = [
-                        g.axes
-                        for g in perm_groups
-                        if g.axes is not None and g.axes not in new_axes_set
-                    ]
-                    if lost:
-                        _warn_symmetry_loss(lost, f"{op_name} reduced dims")
+        if out is not None:
+            return _wrap_result(result, out=out, symmetry=new_symmetry)
+
+        if symmetry is not None:
+            if new_symmetry is not None:
+                reduced_axes = (
+                    set(range(a.ndim))
+                    if axis is None
+                    else (
+                        {axis % a.ndim}
+                        if isinstance(axis, int)
+                        else {ax % a.ndim for ax in axis}
+                    )
+                )
+                symmetry_axes = (
+                    set(symmetry.axes)
+                    if symmetry.axes is not None
+                    else set(range(symmetry.degree))
+                )
+                if reduced_axes & symmetry_axes and new_symmetry != symmetry:
+                    if symmetry.axes is not None:
+                        _warn_symmetry_loss([symmetry.axes], f"{op_name} reduced dims")
             else:
-                if isinstance(result, SymmetricTensor):
-                    result = _np.asarray(result)
-                if perm_groups:
+                if symmetry is not None and symmetry.axes is not None:
                     _warn_symmetry_loss(
-                        [g.axes for g in perm_groups if g.axes is not None],
+                        [symmetry.axes],
                         f"{op_name} removed all symmetric dim groups",
                     )
-        elif isinstance(result, SymmetricTensor):
-            result = _np.asarray(result)
-        if not isinstance(result, SymmetricTensor):
-            result = _aswhest(result)
-        return result
+        return _wrap_result(result, symmetry=new_symmetry)
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -329,21 +425,26 @@ def around(a, decimals=0, out=None):
     a_is_scalar = not isinstance(a, _np.ndarray) and _np.ndim(a) == 0
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
-    cost = pointwise_cost(a.shape, symmetry_info=sym_info)
+    symmetry = _symmetry_of(a)
+    _prepare_symmetric_out(out, symmetry)
+    cost = pointwise_cost(a.shape, symmetry=symmetry)
     with budget.deduct("around", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.around(a, decimals=decimals, out=out)
+        result = _call_with_optional_out(
+            _np.around,
+            a,
+            decimals=decimals,
+            out=None if isinstance(out, SymmetricTensor) else out,
+            supports_out=True,
+        )
     check_nan_inf(result, "around")
-    if sym_info is not None:
-        result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
     if (
         a_is_scalar
         and out is None
-        and isinstance(result, _np.ndarray)
-        and result.ndim == 0
+        and _np.ndim(result) == 0
+        and hasattr(result, "item")
     ):
         return result.item()
-    return result
+    return _wrap_result(result, out=out, symmetry=symmetry)
 
 
 attach_docstring(around, _np.around, "counted_unary", "numel(output) FLOPs")
@@ -406,21 +507,26 @@ def round(a, decimals=0, out=None):
     a_is_scalar = not isinstance(a, _np.ndarray) and _np.ndim(a) == 0
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
-    cost = pointwise_cost(a.shape, symmetry_info=sym_info)
+    symmetry = _symmetry_of(a)
+    _prepare_symmetric_out(out, symmetry)
+    cost = pointwise_cost(a.shape, symmetry=symmetry)
     with budget.deduct("round", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.round(a, decimals=decimals, out=out)
+        result = _call_with_optional_out(
+            _np.round,
+            a,
+            decimals=decimals,
+            out=None if isinstance(out, SymmetricTensor) else out,
+            supports_out=True,
+        )
     check_nan_inf(result, "round")
-    if sym_info is not None:
-        result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
     if (
         a_is_scalar
         and out is None
-        and isinstance(result, _np.ndarray)
-        and result.ndim == 0
+        and _np.ndim(result) == 0
+        and hasattr(result, "item")
     ):
         return result.item()
-    return result
+    return _wrap_result(result, out=out, symmetry=symmetry)
 
 
 attach_docstring(round, _np.round, "counted_unary", "numel(output) FLOPs")
@@ -467,19 +573,18 @@ def isclose(a, b, **kwargs):
     a_arr = a if isinstance(a, _np.ndarray) else _np.asarray(a)
     b_arr = b if isinstance(b, _np.ndarray) else _np.asarray(b)
     output_shape = _np.broadcast_shapes(a_arr.shape, b_arr.shape)
-    cost = pointwise_cost(output_shape)
+    out_symmetry, _ = _pointwise_symmetry(
+        ((a_arr, _symmetry_of(a_arr)), (b_arr, _symmetry_of(b_arr))),
+        output_shape,
+    )
+    cost = pointwise_cost(output_shape, symmetry=out_symmetry)
     with budget.deduct(
         "isclose", flop_cost=cost, subscripts=None, shapes=(a_arr.shape, b_arr.shape)
     ):
         result = _np.isclose(a, b, **kwargs)
-    if (
-        a_is_scalar
-        and b_is_scalar
-        and isinstance(result, _np.ndarray)
-        and result.ndim == 0
-    ):
-        return result.item()
-    return result
+    if a_is_scalar and b_is_scalar and _np.ndim(result) == 0:
+        return result
+    return _wrap_result(result, symmetry=out_symmetry)
 
 
 attach_docstring(isclose, _np.isclose, "counted_unary", "numel(output) FLOPs")
@@ -657,16 +762,34 @@ def clip(a, *args, out=None, **kwargs):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    sym_info = a.symmetry_info if isinstance(a, SymmetricTensor) else None
-    cost = pointwise_cost(a.shape, symmetry_info=sym_info)
+    operand_arrays = [(a, _symmetry_of(a))]
+    for value in args:
+        if value is None:
+            continue
+        arr = value if isinstance(value, _np.ndarray) else _np.asarray(value)
+        operand_arrays.append((arr, _symmetry_of(arr)))
+    for key in ("a_min", "a_max", "min", "max"):
+        value = kwargs.get(key)
+        if value is None:
+            continue
+        arr = value if isinstance(value, _np.ndarray) else _np.asarray(value)
+        operand_arrays.append((arr, _symmetry_of(arr)))
+    symmetry, _ = _pointwise_symmetry(operand_arrays, a.shape)
+    _prepare_symmetric_out(out, symmetry)
+    cost = pointwise_cost(a.shape, symmetry=symmetry)
     with budget.deduct("clip", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
         # Delegate all argument handling (validation, min/max/a_min/a_max) to numpy
-        result = _np.clip(a, *args, out=out, **kwargs)
+        result = _call_with_optional_out(
+            _np.clip,
+            a,
+            *args,
+            out=None if isinstance(out, SymmetricTensor) else out,
+            supports_out=True,
+            **kwargs,
+        )
     if a.dtype.kind in ("f", "c"):
         check_nan_inf(result, "clip")
-    if sym_info is not None:
-        result = SymmetricTensor(result, symmetric_axes=sym_info.symmetric_axes)
-    return result
+    return _wrap_result(result, out=out, symmetry=symmetry)
 
 
 attach_docstring(clip, _np.clip, "counted_custom", "numel(input) FLOPs")
@@ -785,10 +908,10 @@ def dot(a, b):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
-    # Extract symmetry info for cost calculation
+    # Extract exact symmetry groups for cost calculation
     operand_symmetries = [
-        a.symmetry_info if isinstance(a, SymmetricTensor) else None,
-        b.symmetry_info if isinstance(b, SymmetricTensor) else None,
+        a.symmetry if isinstance(a, SymmetricTensor) else None,
+        b.symmetry if isinstance(b, SymmetricTensor) else None,
     ]
     has_sym = _builtins.any(s is not None for s in operand_symmetries)
     if a.ndim == 2 and b.ndim == 2:
@@ -823,10 +946,10 @@ def matmul(a, b):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
-    # Extract symmetry info for cost calculation
+    # Extract exact symmetry groups for cost calculation
     operand_symmetries = [
-        a.symmetry_info if isinstance(a, SymmetricTensor) else None,
-        b.symmetry_info if isinstance(b, SymmetricTensor) else None,
+        a.symmetry if isinstance(a, SymmetricTensor) else None,
+        b.symmetry if isinstance(b, SymmetricTensor) else None,
     ]
     has_sym = _builtins.any(s is not None for s in operand_symmetries)
     if a.ndim == 2 and b.ndim == 2:
@@ -885,16 +1008,29 @@ attach_docstring(inner, _np.inner, "counted_custom", "product of matching dims")
 def outer(a, b, out=None):
     """Counted version of np.outer."""
     budget = require_budget()
+    a_orig = a
+    b_orig = b
+    target_symmetry = SymmetryGroup.symmetric(axes=(0, 1)) if a_orig is b_orig else None
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
+    if target_symmetry is not None:
+        target_symmetry = _prepare_symmetric_out(out, target_symmetry)
     cost = a.size * b.size
     with budget.deduct(
         "outer", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _np.outer(a, b, out=out)
-    return result
+        result = _np.outer(
+            a,
+            b,
+            out=None if isinstance(out, SymmetricTensor) else out,
+        )
+    if target_symmetry is None:
+        if out is not None:
+            return out
+        return result
+    return _wrap_result(result, out=out, symmetry=target_symmetry)
 
 
 attach_docstring(outer, _np.outer, "counted_custom", "m * n FLOPs")

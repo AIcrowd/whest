@@ -311,15 +311,13 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
         Element data-type string (e.g. ``"float64"``).
     """
 
-    __slots__ = ("_handle_id", "_shape", "_dtype", "_symmetry_info")
+    __slots__ = ("_handle_id", "_shape", "_dtype", "_symmetry")
 
-    def __init__(
-        self, handle_id: str, shape: tuple, dtype: str, symmetry_info=None
-    ) -> None:
+    def __init__(self, handle_id: str, shape: tuple, dtype: str, symmetry=None) -> None:
         self._handle_id = handle_id
         self._shape = tuple(shape)
         self._dtype = dtype
-        self._symmetry_info = symmetry_info
+        self._symmetry = symmetry
 
     # -- cached metadata (no round-trip) ------------------------------------
 
@@ -336,9 +334,9 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
         return self._dtype
 
     @property
-    def symmetry_info(self):
-        """SymmetryInfo metadata, or None if not a symmetric tensor."""
-        return self._symmetry_info
+    def symmetry(self):
+        """SymmetryGroup metadata, or None if not a symmetric tensor."""
+        return self._symmetry
 
     @property
     def ndim(self) -> int:
@@ -621,11 +619,17 @@ def _result_from_response(resp: dict) -> RemoteArray | RemoteScalar | tuple | di
         items = []
         for item in result["multi"]:
             if "id" in item:
+                symmetry = None
+                if "symmetry" in item:
+                    from whest._perm_group import SymmetryGroup
+
+                    symmetry = SymmetryGroup.from_payload(item["symmetry"])
                 items.append(
                     RemoteArray(
                         handle_id=item["id"],
                         shape=tuple(item["shape"]),
                         dtype=item["dtype"],
+                        symmetry=symmetry,
                     )
                 )
             elif "value" in item:
@@ -640,20 +644,16 @@ def _result_from_response(resp: dict) -> RemoteArray | RemoteScalar | tuple | di
         return tuple(items)
 
     if "id" in result:
-        sym_info = None
-        if "symmetry_info" in result:
-            from whest._symmetric_info import SymmetryInfo
+        symmetry = None
+        if "symmetry" in result:
+            from whest._perm_group import SymmetryGroup
 
-            si = result["symmetry_info"]
-            sym_info = SymmetryInfo(
-                symmetric_axes=[tuple(g) for g in si["symmetric_axes"]],
-                shape=tuple(si["shape"]),
-            )
+            symmetry = SymmetryGroup.from_payload(result["symmetry"])
         return RemoteArray(
             handle_id=result["id"],
             shape=tuple(result["shape"]),
             dtype=result["dtype"],
-            symmetry_info=sym_info,
+            symmetry=symmetry,
         )
 
     return result
@@ -680,22 +680,10 @@ def _encode_arg(arg):
         return arg._value
     if isinstance(arg, RemoteArray):
         return {"__handle__": arg.handle_id}
-    # Permutation types → wire format
-    from whest._perm_group import Cycle, Permutation, PermutationGroup
+    from whest._perm_group import SymmetryGroup
 
-    if isinstance(arg, Cycle):
-        arr = arg.list()
-        return {"__permutation__": arr}
-    if isinstance(arg, Permutation):
-        return {"__permutation__": arg.array_form}
-    if isinstance(arg, PermutationGroup):
-        return {
-            "__perm_group__": {
-                "generators": [g.array_form for g in arg.generators],
-                "degree": arg.degree,
-                "axes": list(arg.axes) if arg.axes is not None else None,
-            }
-        }
+    if isinstance(arg, SymmetryGroup):
+        return {"__symmetry_group__": arg.to_payload()}
     if isinstance(arg, (list, tuple)):
         return [_encode_arg(item) for item in arg]
     return arg

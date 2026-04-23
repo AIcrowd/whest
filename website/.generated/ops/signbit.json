@@ -399,12 +399,12 @@
     }
   ],
   "see_also": [],
-  "signature": "we.signbit(x)",
+  "signature": "we.signbit(*args, **kwargs)",
   "slug": "signbit",
   "summary": "Returns element-wise True where signbit is set (less than zero).",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.signbit",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

@@ -7,6 +7,7 @@ import pytest
 
 from whest._budget import BudgetContext
 from whest._einsum import einsum, einsum_path
+from whest._perm_group import SymmetryGroup
 from whest._symmetric import SymmetricTensor, as_symmetric
 from whest.errors import BudgetExhaustedError
 
@@ -32,7 +33,7 @@ class TestMultiOperandEinsum:
             + T_data.transpose(1, 2, 0)
             + T_data.transpose(2, 0, 1)
         ) / 6
-        T = as_symmetric(T_data, symmetric_axes=(0, 1, 2))
+        T = as_symmetric(T_data, symmetry=(0, 1, 2))
         A = numpy.random.RandomState(43).rand(n, n)
         B = numpy.random.RandomState(44).rand(n, n)
 
@@ -116,7 +117,7 @@ class TestEinsumPath:
         # symmetric group provides a real cost reduction.
         n = 10
         k = 5
-        S = as_symmetric(numpy.ones((n, n, k)), symmetric_axes=(0, 1))
+        S = as_symmetric(numpy.ones((n, n, k)), symmetry=(0, 1))
         v = numpy.ones(k)
         path, info = einsum_path("ijk,k->ij", S, v)
         assert len(info.steps) >= 1
@@ -146,7 +147,7 @@ class TestEinsumPath:
         """When any operand has symmetry, the symmetry column is shown
         with per-step inputs → output annotations."""
         n = 6
-        T = as_symmetric(numpy.ones((n, n, n)), symmetric_axes=(0, 1, 2))
+        T = as_symmetric(numpy.ones((n, n, n)), symmetry=(0, 1, 2))
         A = numpy.ones((n, n))
         _, info = einsum_path("ijk,ai->ajk", T, A)
         table = str(info)
@@ -161,7 +162,7 @@ class TestEinsumPath:
         """Verify that symmetry savings through a multi-step path are shown:
         the oracle reduces cost for the first step via S2{j,k} on the intermediate."""
         n = 5
-        T = as_symmetric(numpy.ones((n, n, n)), symmetric_axes=(0, 1, 2))
+        T = as_symmetric(numpy.ones((n, n, n)), symmetry=(0, 1, 2))
         A = numpy.ones((n, n))
         B = numpy.ones((n, n))
         C = numpy.ones((n, n))
@@ -177,13 +178,119 @@ class TestEinsumPath:
         """The 'Index sizes' line should appear and group equal-sized indices."""
         # All same size: should collapse to a=b=c=d=i=j=k=l=N
         n = 7
-        T = as_symmetric(numpy.ones((n, n, n)), symmetric_axes=(0, 1, 2))
+        T = as_symmetric(numpy.ones((n, n, n)), symmetry=(0, 1, 2))
         A = numpy.ones((n, n))
         _, info = einsum_path("ijk,ai->ajk", T, A)
         table = str(info)
         assert "Index sizes:" in table
         # All four indices have size 7 → grouped
         assert "a=i=j=k=7" in table or "i=j=k=a=7" in table or "7" in table
+
+
+class TestOutputSymmetryWrapping:
+    def test_multi_operand_einsum_wraps_s3_output(self):
+        n = 4
+        rng = numpy.random.RandomState(47)
+        data = rng.rand(n, n, n)
+        perms = (
+            data,
+            data.transpose(0, 2, 1),
+            data.transpose(1, 0, 2),
+            data.transpose(1, 2, 0),
+            data.transpose(2, 0, 1),
+            data.transpose(2, 1, 0),
+        )
+        tensor = as_symmetric(sum(perms) / len(perms), symmetry=(0, 1, 2))
+        weight = rng.rand(n, n)
+
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = einsum("ijk,ai,bj,ck->abc", tensor, weight, weight, weight)
+
+        expected = numpy.einsum(
+            "ijk,ai,bj,ck->abc", numpy.asarray(tensor), weight, weight, weight
+        )
+        numpy.testing.assert_allclose(result, expected, rtol=1e-10)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry.order() == 6
+        assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 1, 2)))
+
+    def test_einsum_preserves_single_operand_reduction_subgroup_symmetry(self):
+        rng = numpy.random.RandomState(46)
+        data = rng.rand(3, 3, 3)
+        perms = (
+            data,
+            data.transpose(0, 2, 1),
+            data.transpose(1, 0, 2),
+            data.transpose(1, 2, 0),
+            data.transpose(2, 0, 1),
+            data.transpose(2, 1, 0),
+        )
+        tensor = as_symmetric(sum(perms) / len(perms), symmetry=(0, 1, 2))
+
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = einsum("ijk->ij", tensor)
+
+        expected = numpy.einsum("ijk->ij", numpy.asarray(tensor))
+        numpy.testing.assert_allclose(result, expected, rtol=1e-10)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry.axes == (0, 1)
+        assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
+
+    def test_einsum_remaps_input_symmetry_to_output_axis_order(self):
+        rng = numpy.random.RandomState(45)
+        data = rng.rand(3, 4, 3)
+        data = 0.5 * (data + data.transpose(2, 1, 0))
+        tensor = as_symmetric(data, symmetry=SymmetryGroup.symmetric(axes=(0, 2)))
+
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = einsum("ijk->kji", tensor)
+
+        expected = numpy.einsum("ijk->kji", data)
+        numpy.testing.assert_allclose(result, expected, rtol=1e-10)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry.axes == (0, 2)
+        assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 2)))
+
+    def test_einsum_with_plain_out_and_explicit_symmetry_validates_but_returns_plain_out(
+        self,
+    ):
+        data = numpy.array(
+            [
+                [1.0, 2.0, 3.0],
+                [2.0, 5.0, 6.0],
+                [3.0, 6.0, 9.0],
+            ]
+        )
+        target = SymmetryGroup.symmetric(axes=(0, 1))
+        out = numpy.empty_like(data.T)
+
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = einsum("ij->ji", data, out=out, symmetry=target)
+
+        expected = numpy.einsum("ij->ji", data)
+        assert result is out
+        assert not isinstance(result, SymmetricTensor)
+        numpy.testing.assert_allclose(out, expected, rtol=1e-10)
+
+    def test_einsum_with_symmetric_out_preserves_output_identity(self):
+        data = numpy.array(
+            [
+                [1.0, 2.0, 3.0],
+                [2.0, 5.0, 6.0],
+                [3.0, 6.0, 9.0],
+            ]
+        )
+        out = as_symmetric(numpy.zeros_like(data.T), symmetry=(0, 1))
+
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = einsum(
+                "ij->ji", data, out=out, symmetry=SymmetryGroup.symmetric(axes=(0, 1))
+            )
+
+        expected = numpy.einsum("ij->ji", data)
+        assert result is out
+        numpy.testing.assert_allclose(out, expected, rtol=1e-10)
+        assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
 
     def test_str_output_index_sizes_separates_different(self):
         """Different-sized indices should be listed separately."""
@@ -406,10 +513,15 @@ class TestBackwardCompatibility:
             assert budget.flops_used == 60  # 3*4*5 * op_factor(1), FMA=1
             assert result.shape == (3, 5)
 
-    def test_symmetric_axes_output_still_works(self):
+    def test_symmetry_output_kwarg_still_works(self):
         X = numpy.ones((5, 10))
         with BudgetContext(flop_budget=10**8, quiet=True):
-            result = einsum("ki,kj->ij", X, X, symmetric_axes=[(0, 1)])
+            result = einsum(
+                "ki,kj->ij",
+                X,
+                X,
+                symmetry=SymmetryGroup.symmetric(axes=(0, 1)),
+            )
             assert isinstance(result, SymmetricTensor)
 
 
@@ -423,7 +535,7 @@ class TestSymmetricBlasClassification:
         import whest as we
 
         n = 10
-        X = we.as_symmetric(numpy.ones((n, n)), symmetric_axes=(0, 1))
+        X = we.as_symmetric(numpy.ones((n, n)), symmetry=(0, 1))
         _, info = einsum_path("ij,jk->ik", X, X)
         assert len(info.steps) == 1
         assert info.steps[0].blas_type == "SYMM", (

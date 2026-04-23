@@ -272,12 +272,12 @@
     }
   ],
   "see_also": [],
-  "signature": "we.positive(x)",
+  "signature": "we.positive(*args, **kwargs)",
   "slug": "positive",
   "summary": "Numerical positive, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.positive",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

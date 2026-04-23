@@ -66,6 +66,17 @@ def _write_or_check(path: Path, content: str, check: bool, diffs: list[str]) -> 
         print(f"  wrote {path}")
 
 
+def _remove_or_check_absent(path: Path, check: bool, diffs: list[str]) -> None:
+    """Delete a stale generated file, or report it during --check."""
+    if check:
+        if path.exists():
+            diffs.append(f"--- {path} should be removed ---\n")
+        return
+    if path.exists():
+        path.unlink()
+        print(f"  removed {path}")
+
+
 def _generate_errors() -> str:
     """Generate errors.py for the client from core whest.errors."""
     # Classes with custom __init__ that need message-based constructors
@@ -344,6 +355,9 @@ def main():
         args.check,
         diffs,
     )
+
+    print("Removing stale symmetry info shim...")
+    _remove_or_check_absent(_CLIENT_SRC / "_symmetric_info.py", args.check, diffs)
 
     print("Generating stats proxy...")
     _write_or_check(

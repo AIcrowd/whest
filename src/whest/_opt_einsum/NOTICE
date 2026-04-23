@@ -276,7 +276,7 @@ pairwise step along the optimized path.
 HOW SYMMETRY FLOWS THROUGH THE SYSTEM
 ================================================================================
 
-The host project (whest) converts its SymmetryInfo objects (positional
+The host project (whest) converts its symmetry metadata (positional
 integer dims like [(0,1,2)]) to IndexSymmetry (character labels like
 [frozenset("ijk")]) at the boundary, then passes them to contract_path().
 

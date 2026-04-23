@@ -6,12 +6,12 @@ from whest._opt_einsum._symmetry import (
     symmetric_flop_count,
     unique_elements,
 )
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup
 
 
 def _s_group(*labels):
     """Create S_k group with given labels for testing."""
-    g = PermutationGroup.symmetric(len(labels))
+    g = SymmetryGroup.symmetric(axes=tuple(range(len(labels))))
     g._labels = tuple(labels)
     return g
 
@@ -653,7 +653,7 @@ class TestExhaustiveSymmetryValidation:
             + T_data.transpose(1, 2, 0)
             + T_data.transpose(2, 0, 1)
         ) / 6
-        T = as_symmetric(T_data, symmetric_axes=(0, 1, 2))
+        T = as_symmetric(T_data, symmetry=(0, 1, 2))
         A = np.random.RandomState(43).rand(n, n)
         B = np.random.RandomState(44).rand(n, n)
 
@@ -773,7 +773,7 @@ class TestInnerSymmetryFlops:
         n = 5
         T = np.random.randn(n, n, n, n)
         T = (T + T.transpose(1, 0, 2, 3)) / 2
-        Tsym = we.as_symmetric(T, symmetric_axes=[(0, 1)])
+        Tsym = we.as_symmetric(T, symmetry=((0, 1),))
 
         with we.BudgetContext(flop_budget=1e15):
             _, info_on = we.einsum_path("abij,abkl->ijkl", Tsym, Tsym)

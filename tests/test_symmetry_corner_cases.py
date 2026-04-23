@@ -11,7 +11,7 @@ import numpy as np
 import pytest
 
 import whest as we
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup
 
 
 def _symmetrize(shape, group):
@@ -121,7 +121,7 @@ class TestDeclaredSymmetryNonIdentical:
     def test_symmetric_times_dense_trivial(self):
         """S·W where S has S2: no output symmetry (non-identical operands, no
         identical-operand source)."""
-        S = _symmetrize((N, N), PermutationGroup.symmetric(2, axes=(0, 1)))
+        S = _symmetrize((N, N), SymmetryGroup.symmetric(axes=(0, 1)))
         W = we.random.randn(N, N)
         assert _detect_order("ij,jk->ik", S, W) == 1
 
@@ -131,7 +131,7 @@ class TestDeclaredSymmetryNonIdentical:
         T has C3, W is dense, non-identical operands. Source A produces the
         C3 generator on T's axes, which induces C3{i,j,k} on the output.
         """
-        T = _symmetrize((N, N, N, N), PermutationGroup.cyclic(3, axes=(1, 2, 3)))
+        T = _symmetrize((N, N, N, N), SymmetryGroup.cyclic(axes=(1, 2, 3)))
         W = we.random.randn(N, N)
         assert _detect_order("aijk,ab->ijkb", T, W) == 3
 
@@ -140,9 +140,7 @@ class TestDeclaredSymmetryNonIdentical:
 
         D4 has order 8 (4 rotations + 4 reflections).
         """
-        T = _symmetrize(
-            (N, N, N, N, N), PermutationGroup.dihedral(4, axes=(1, 2, 3, 4))
-        )
+        T = _symmetrize((N, N, N, N, N), SymmetryGroup.dihedral(axes=(1, 2, 3, 4)))
         W = we.random.randn(N, N)
         assert _detect_order("aijkl,ab->ijklb", T, W) == 8
 
@@ -157,7 +155,7 @@ class TestDeclaredPlusIdentical:
         Using S=S^T: R[k,i] = sum_j S[k,j]*S[j,i] = sum_j S[j,k]*S[i,j] = R[i,k].
         So the result IS symmetric → S2{i,k} is correct.
         """
-        S = _symmetrize((N, N), PermutationGroup.symmetric(2, axes=(0, 1)))
+        S = _symmetrize((N, N), SymmetryGroup.symmetric(axes=(0, 1)))
         assert _detect_order("ij,jk->ik", S, S) == 2
         result = we.einsum("ij,jk->ik", S, S)
         assert np.allclose(result, result.T)
@@ -167,7 +165,7 @@ class TestDeclaredPlusIdentical:
 
         S symmetric enables reflections: C4 + reflections = D4, order 8.
         """
-        S = _symmetrize((N, N), PermutationGroup.symmetric(2, axes=(0, 1)))
+        S = _symmetrize((N, N), SymmetryGroup.symmetric(axes=(0, 1)))
         assert _detect_order("ij,jk,kl,li->ijkl", S, S, S, S) == 8
 
     def test_c3_self_contraction_trivial(self):
@@ -177,7 +175,7 @@ class TestDeclaredPlusIdentical:
         C3 has no transpositions, so orbit-based merging was wrong.
         Numerically: Result[i,k] ≠ Result[k,i].
         """
-        T = _symmetrize((N, N, N), PermutationGroup.cyclic(3, axes=(0, 1, 2)))
+        T = _symmetrize((N, N, N), SymmetryGroup.cyclic(axes=(0, 1, 2)))
         assert _detect_order("ijk,jki->ik", T, T) == 1
         result = we.einsum("ijk,jki->ik", T, T)
         assert not np.allclose(result, result.T)
@@ -188,7 +186,7 @@ class TestDeclaredPlusIdentical:
         Directed triangle with symmetric matrices: S2 on each operand enables
         reflections, promoting C3 → S3 (order 6).
         """
-        S = _symmetrize((N, N), PermutationGroup.symmetric(2, axes=(0, 1)))
+        S = _symmetrize((N, N), SymmetryGroup.symmetric(axes=(0, 1)))
         assert _detect_order("ij,jk,ki->ijk", S, S, S) == 6
 
 

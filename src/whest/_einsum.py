@@ -7,49 +7,29 @@ import functools
 import numpy as _np
 
 from whest._config import get_setting
-from whest._perm_group import PermutationGroup
-from whest._symmetric import SymmetricTensor, validate_symmetry
+from whest._perm_group import SymmetryGroup
+from whest._pointwise import _prepare_symmetric_out, _validate_result_symmetry
+from whest._symmetric import SymmetricTensor
+from whest._symmetry_utils import normalize_symmetry_input, validate_symmetry_group
 from whest._validation import check_nan_inf, require_budget
-
-
-def _symmetry_info_to_perm_groups(sym_info, subscript_chars: str):
-    """Convert SymmetryInfo (positional axes) to label-indexed PermutationGroups.
-
-    Returns a list of PermutationGroup objects with _labels set to the
-    corresponding einsum characters, or None if no symmetry.
-    """
-    if sym_info is None:
-        return None
-    groups = []
-    for group in sym_info.groups:
-        if group.axes is None or group.degree < 2:
-            continue
-        labels = tuple(subscript_chars[ax] for ax in group.axes)
-        new_group = PermutationGroup(*group.generators)
-        new_group._labels = labels
-        groups.append(new_group)
-    return groups if groups else None
 
 
 def _symmetry_fingerprint(operands, input_parts):
     """Build a hashable symmetry fingerprint for cache keying.
 
     For each operand, captures None (no symmetry) or a tuple of
-    (axes, generator_array_forms) per PermutationGroup. This fully
+    (axes, generator_array_forms) per SymmetryGroup. This fully
     determines the symmetry structure without referencing tensor values.
     """
     parts = []
     for op, _chars in zip(operands, input_parts, strict=False):
-        if not isinstance(op, SymmetricTensor) or op.symmetry_info is None:
+        if not isinstance(op, SymmetricTensor) or op.symmetry is None:
             parts.append(None)
             continue
-        groups = op.symmetry_info.groups or []
-        group_fps = []
-        for g in groups:
-            axes = g.axes
-            gens = tuple(tuple(gen.array_form) for gen in g.generators)
-            group_fps.append((axes, gens))
-        parts.append(tuple(group_fps) if group_fps else None)
+        group = op.symmetry
+        axes = group.axes
+        gens = tuple(tuple(gen.array_form) for gen in group.generators)
+        parts.append(((axes, gens),))
     return tuple(parts)
 
 
@@ -85,7 +65,7 @@ def _make_path_cache(maxsize):
         identity_pattern,
         use_inner_symmetry=True,
     ):
-        from whest._perm_group import Permutation
+        from whest._perm_group import _PermutationCompat as Permutation
 
         input_parts = subscripts.split("->")[0].split(",")
         output_str = subscripts.split("->")[1] if "->" in subscripts else ""
@@ -98,7 +78,7 @@ def _make_path_cache(maxsize):
             groups = []
             for axes, gen_arrays in fp_entry:
                 gens = [Permutation(list(g)) for g in gen_arrays]
-                group = PermutationGroup(*gens, axes=axes)
+                group = SymmetryGroup(*gens, axes=axes)
                 labels = tuple(chars[ax] for ax in axes)
                 group._labels = labels
                 groups.append(group)
@@ -180,21 +160,132 @@ def _execute_pairwise(path_info, operands: list):
     return ops[0]
 
 
+def _normalize_optimize(optimize):
+    if optimize is False:
+        return "auto"
+    if isinstance(optimize, list):
+        return tuple(tuple(t) for t in optimize)
+    return optimize
+
+
+def _parse_einsum_parts(subscripts: str, operands):
+    from whest._opt_einsum._parser import parse_einsum_input
+
+    input_subscripts, output_subscript, _ = parse_einsum_input((subscripts, *operands))
+    canonical_subscripts = f"{input_subscripts}->{output_subscript}"
+    return canonical_subscripts, input_subscripts.split(","), output_subscript
+
+
+def _get_path_info(subscripts: str, operands, optimize):
+    canonical_subscripts, input_parts, output_subscript = _parse_einsum_parts(
+        subscripts,
+        operands,
+    )
+    shapes = tuple(tuple(op.shape) for op in operands)
+    sym_fp = _symmetry_fingerprint(operands, input_parts)
+    id_pat = _identity_pattern(operands)
+    inner_sym = bool(get_setting("use_inner_symmetry"))
+    path_info = _path_cache(
+        canonical_subscripts,
+        shapes,
+        _normalize_optimize(optimize),
+        sym_fp,
+        id_pat,
+        inner_sym,
+    )
+    return canonical_subscripts, input_parts, output_subscript, shapes, path_info
+
+
+def _relabel_group_to_output(
+    group, source_labels: tuple[str, ...], output_subscript: str
+):
+    if group is None or not source_labels or not output_subscript:
+        return None
+    output_positions = {label: idx for idx, label in enumerate(output_subscript)}
+    try:
+        source_positions = tuple(output_positions[label] for label in source_labels)
+    except KeyError:
+        return None
+    if len(set(source_positions)) != len(source_positions):
+        return None
+
+    order = tuple(
+        sorted(range(len(source_positions)), key=source_positions.__getitem__)
+    )
+    axes = tuple(source_positions[idx] for idx in order)
+    source_to_sorted = {
+        source_idx: sorted_idx for sorted_idx, source_idx in enumerate(order)
+    }
+
+    from whest._perm_group import _PermutationCompat as Permutation
+
+    generators = []
+    for gen in group.generators:
+        generators.append(
+            Permutation(
+                [source_to_sorted[gen.array_form[source_idx]] for source_idx in order]
+            )
+        )
+
+    remapped = SymmetryGroup(*generators, axes=axes)
+    remapped._labels = tuple(output_subscript[axis] for axis in axes)
+    return validate_symmetry_group(remapped, ndim=len(output_subscript))
+
+
+def _remap_inferred_group(group, output_subscript: str):
+    labels = getattr(group, "_labels", None)
+    if group is None or labels is None:
+        return None
+    return _relabel_group_to_output(group, tuple(labels), output_subscript)
+
+
+def _infer_pathless_output_symmetry(operands, input_parts, output_subscript: str):
+    if len(operands) != 1:
+        return None
+    operand = operands[0]
+    if not isinstance(operand, SymmetricTensor) or operand.symmetry is None:
+        return None
+    group = operand.symmetry
+    axes = group.axes if group.axes is not None else tuple(range(group.degree))
+    source_labels = tuple(input_parts[0][axis] for axis in axes)
+    return _relabel_group_to_output(group, source_labels, output_subscript)
+
+
+def _resolve_output_symmetry(
+    *,
+    symmetry,
+    operands,
+    input_parts,
+    output_subscript: str,
+    path_info,
+):
+    if symmetry is not None:
+        return normalize_symmetry_input(symmetry, ndim=len(output_subscript))
+    inferred = _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
+    if inferred is not None:
+        return inferred
+    if path_info.steps:
+        inferred = _remap_inferred_group(
+            path_info.steps[-1].output_group, output_subscript
+        )
+        if inferred is not None:
+            return inferred
+    return _infer_pathless_output_symmetry(operands, input_parts, output_subscript)
+
+
 def einsum(
     subscripts: str,
     *operands: _np.ndarray,
     out=None,
     optimize: str | bool | list = "auto",
-    symmetric_axes: list[tuple[int, ...]] | None = None,
-    symmetry: PermutationGroup | list[PermutationGroup] | None = None,  # NEW
+    symmetry=None,
     **kwargs,
 ) -> _np.ndarray:
     """Evaluate Einstein summation with FLOP counting and optional path optimization.
 
     Wraps ``numpy.einsum`` with analytical FLOP cost computation and
     optional symmetry savings. If any input is a ``SymmetricTensor``,
-    the cost is automatically reduced. If ``symmetric_axes`` is provided
-    and the output passes validation, a ``SymmetricTensor`` is returned.
+    the cost is automatically reduced. If ``symmetry`` is provided and the output passes validation, a ``SymmetricTensor`` is returned.
 
     All contractions go through opt_einsum's ``contract_path`` to find an
     optimal pairwise decomposition. The FLOP cost uses opt_einsum's cost
@@ -222,23 +313,9 @@ def einsum(
           or construct manually. Each tuple names the operand positions
           to contract at that step; the result is appended to the end.
         - ``False``: treated as ``'auto'``.
-    symmetric_axes : list of tuple of int, optional
-        **Output** dimension symmetry groups (S_k only). Declares that the
-        result is symmetric in the given axes and wraps it as a
-        ``SymmetricTensor``. For example, ``[(0, 1)]`` means the output
-        satisfies ``result[i,j,...] == result[j,i,...]``. This does NOT
-        declare input symmetry — use ``me.as_symmetric()`` for that.
-        Mutually exclusive with *symmetry*.
-    symmetry : PermutationGroup or list of PermutationGroup, optional
-        **Output** permutation group symmetry. Declares that the result
-        is symmetric under the given ``PermutationGroup``(s) and wraps it
-        as a ``SymmetricTensor``. Unlike *symmetric_axes* (which always
-        means S_k), this supports any permutation group — for example,
-        ``PermutationGroup.cyclic(3, axes=(0, 1, 2))`` declares cyclic
-        symmetry where ``result[i,j,k] == result[j,k,i] == result[k,i,j]``
-        but ``result[i,j,k]`` need not equal ``result[j,i,k]``.
-        Each group must have ``axes`` set. Mutually exclusive with
-        *symmetric_axes*. This does NOT declare input symmetry — use
+    symmetry : SymmetryGroup or symmetry shorthand, optional
+        Declares output symmetry and wraps the validated result as a
+        ``SymmetricTensor``. This does NOT declare input symmetry; use
         ``me.as_symmetric()`` for that.
 
     Returns
@@ -253,61 +330,52 @@ def einsum(
     NoBudgetContextError
         If called outside a ``BudgetContext``.
     SymmetryError
-        If ``symmetric_axes`` or ``symmetry`` is provided but the result
+        If ``symmetry`` is provided but the result
         does not satisfy the declared symmetry. Validation checks the
         data against each generator of the group.
     """
-    if symmetric_axes is not None and symmetry is not None:
-        raise ValueError("symmetric_axes and symmetry are mutually exclusive")
-
     budget = require_budget()
-    shapes = tuple(tuple(op.shape) for op in operands)
-
-    input_parts = subscripts.split("->")[0].split(",")
-
-    # Build cache key components
-    sym_fp = _symmetry_fingerprint(operands, input_parts)
-    id_pat = _identity_pattern(operands)
-
-    # Normalize optimize for hashability
-    if optimize is False:
-        opt_key = "auto"
-    elif isinstance(optimize, list):
-        opt_key = tuple(tuple(t) for t in optimize)
-    else:
-        opt_key = optimize
-
-    # Get cached PathInfo (or compute on miss)
-    inner_sym = bool(get_setting("use_inner_symmetry"))
-    path_info = _path_cache(subscripts, shapes, opt_key, sym_fp, id_pat, inner_sym)
+    canonical_subscripts, input_parts, output_subscript, shapes, path_info = (
+        _get_path_info(
+            subscripts,
+            operands,
+            optimize,
+        )
+    )
+    target_symmetry = _resolve_output_symmetry(
+        symmetry=symmetry,
+        operands=operands,
+        input_parts=input_parts,
+        output_subscript=output_subscript,
+        path_info=path_info,
+    )
+    effective_out_symmetry = target_symmetry
+    if effective_out_symmetry is None and isinstance(out, SymmetricTensor):
+        effective_out_symmetry = out.symmetry
+    target_symmetry = _prepare_symmetric_out(out, effective_out_symmetry)
 
     with budget.deduct(
         "einsum",
         flop_cost=path_info.optimized_cost,
-        subscripts=subscripts,
+        subscripts=canonical_subscripts,
         shapes=tuple(shapes),
     ):
-        # Execute pairwise steps
-        result = _execute_pairwise(path_info, list(operands))
+        if path_info.steps:
+            result = _execute_pairwise(path_info, list(operands))
+        else:
+            result = _np.einsum(canonical_subscripts, *operands)
 
-    # Handle out= parameter
     if out is not None:
-        _np.copyto(out, result)
-        result = out
+        _validate_result_symmetry(result, target_symmetry)
+        _np.copyto(_np.asarray(out), _np.asarray(result), casting="unsafe")
+        check_nan_inf(out, "einsum")
+        return out
 
-    # Handle output symmetry wrapping
-    if symmetry is not None and isinstance(result, _np.ndarray) and result.ndim >= 2:
-        from whest._symmetric import validate_symmetry_groups
-
-        perm_groups_out = (
-            [symmetry] if isinstance(symmetry, PermutationGroup) else list(symmetry)
-        )
-        validate_symmetry_groups(result, perm_groups_out)
-        sym_axes = [g.axes for g in perm_groups_out if g.axes is not None]
-        result = SymmetricTensor(result, sym_axes, perm_groups=perm_groups_out)
-    elif symmetric_axes and isinstance(result, _np.ndarray) and result.ndim >= 2:
-        validate_symmetry(result, symmetric_axes)
-        result = SymmetricTensor(result, symmetric_axes=symmetric_axes)
+    if target_symmetry is not None:
+        _validate_result_symmetry(result, target_symmetry)
+        result = SymmetricTensor(_np.asarray(result), symmetry=target_symmetry)
+    else:
+        result = _aswhest(_np.asarray(result))
 
     check_nan_inf(result, "einsum")
     return result
@@ -338,26 +406,20 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
     """
     budget = require_budget()
     with budget.deduct("einsum_path", flop_cost=1, subscripts=None, shapes=()):
-        shapes = tuple(tuple(op.shape) for op in operands)
-    input_parts = subscripts.split("->")[0].split(",")
-
-    sym_fp = _symmetry_fingerprint(operands, input_parts)
-    id_pat = _identity_pattern(operands)
-
-    if optimize is False:
-        opt_key = "auto"
-    elif isinstance(optimize, list):
-        opt_key = tuple(tuple(t) for t in optimize)
-    else:
-        opt_key = optimize
-
-    inner_sym = bool(get_setting("use_inner_symmetry"))
-    path_info = _path_cache(subscripts, shapes, opt_key, sym_fp, id_pat, inner_sym)
+        pass
+    _canonical_subscripts, _input_parts, _output_subscript, _shapes, path_info = (
+        _get_path_info(
+            subscripts,
+            operands,
+            optimize,
+        )
+    )
     return list(path_info.path), path_info
 
 
 import sys as _sys  # noqa: E402
 
+from whest._ndarray import _aswhest  # noqa: E402
 from whest._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
 
-_wrap_module_returns(_sys.modules[__name__], skip_names={"einsum_path"})
+_wrap_module_returns(_sys.modules[__name__], skip_names={"einsum", "einsum_path"})

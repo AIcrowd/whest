@@ -443,7 +443,7 @@
     "name": "modf",
     "notes": "Return fractional and integral parts element-wise.",
     "numpy_ref": "np.modf",
-    "signature": "we.modf(x)",
+    "signature": "we.modf(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the fractional and integral parts of an array, element-wise.",
     "weight": 1.0,
@@ -453,6 +453,6 @@
   "slug": "modf",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L62"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L175"
   }
 }

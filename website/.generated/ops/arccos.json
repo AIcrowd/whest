@@ -790,12 +790,12 @@
       "unresolved": true
     }
   ],
-  "signature": "we.arccos(x)",
+  "signature": "we.arccos(*args, **kwargs)",
   "slug": "arccos",
   "summary": "Trigonometric inverse cosine, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.arccos",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

@@ -1,46 +1,36 @@
-"""Declared tensor symmetry — as_symmetric, PermutationGroup, and Cycle.
-
-Tensors with known symmetries (e.g. a symmetric matrix where A[i,j] = A[j,i])
-store fewer unique elements.  whest uses this to reduce FLOP counts in
-einsum contractions automatically.
+"""Declared tensor symmetry with the final exact-group API.
 
 Run: uv run python examples/08_declared_symmetry.py
 """
 
+import math
+
 import numpy as np
 
 import whest as we
-from whest import Cycle, Permutation, PermutationGroup
 
-# ---------------------------------------------------------------------------
-# 1. Symmetric matrix — simple axis declaration
-# ---------------------------------------------------------------------------
 print("=== Symmetric matrix (S2 on axes 0,1) ===\n")
 
 n = 100
 data = np.random.randn(n, n)
-data = (data + data.T) / 2  # make it actually symmetric
+data = (data + data.T) / 2
 
-A_sym = we.as_symmetric(data, symmetric_axes=(0, 1))
+matrix_group = we.SymmetryGroup.symmetric(axes=(0, 1))
+A_sym = we.as_symmetric(data, symmetry=matrix_group)
 print(f"Shape:            {A_sym.shape}")
-print(f"Symmetry factor:  {A_sym.symmetry_info.symmetry_factor}")
-print(f"Unique elements:  {A_sym.symmetry_info.unique_elements:,} / {n * n:,}")
+print(f"Group order:      {A_sym.symmetry.order()}")
+print(f"Unique elements:  {n * (n + 1) // 2:,} / {n * n:,}")
 
-# einsum_path sees the symmetry and reduces cost
 v = we.random.randn(n)
 _, info = we.einsum_path("ij,j->i", A_sym, v)
 _, info_dense = we.einsum_path("ij,j->i", we.array(data), v)
 print(f"Matvec cost (symmetric): {info.optimized_cost:>10,} FLOPs")
 print(f"Matvec cost (dense):     {info_dense.optimized_cost:>10,} FLOPs")
 
-# ---------------------------------------------------------------------------
-# 2. Fully-symmetric rank-3 tensor + same-object detection
-# ---------------------------------------------------------------------------
 print("\n=== Rank-3 symmetric tensor + repeated operands ===\n")
 
 n = 50
 raw = np.random.randn(n, n, n)
-# Symmetrize over all 6 permutations of (i,j,k)
 T_data = (
     raw
     + raw.transpose(0, 2, 1)
@@ -50,14 +40,10 @@ T_data = (
     + raw.transpose(2, 1, 0)
 ) / 6
 
-T = we.as_symmetric(T_data, symmetric_axes=(0, 1, 2))
+s3_group = we.SymmetryGroup.symmetric(axes=(0, 1, 2))
+T = we.as_symmetric(T_data, symmetry=s3_group)
 M = we.random.randn(n, n)
-
-# Pass M three times as the same object — einsum_path detects both
-# the declared S3 symmetry on T and the identity-based savings from M=M=M
 _, info_same = we.einsum_path("ijk,ai,bj,ck->abc", T, M, M, M)
-
-# Compare: three DIFFERENT matrices
 M2 = we.random.randn(n, n)
 M3 = we.random.randn(n, n)
 _, info_diff = we.einsum_path("ijk,ai,bj,ck->abc", T, M, M2, M3)
@@ -66,17 +52,13 @@ print(f"Same M (declared + identity): {info_same.optimized_cost:>12,} FLOPs")
 print(f"Diff M (declared only):       {info_diff.optimized_cost:>12,} FLOPs")
 print(info_same.format_table(verbose=True))
 
-# ---------------------------------------------------------------------------
-# 3. PermutationGroup constructors and introspection
-# ---------------------------------------------------------------------------
-print("=== PermutationGroup types ===\n")
+print("=== SymmetryGroup types ===\n")
 
-S3 = PermutationGroup.symmetric(3, axes=(0, 1, 2))
-C3 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
-D3 = PermutationGroup.dihedral(3, axes=(0, 1, 2))
+C3 = we.SymmetryGroup.cyclic(axes=(0, 1, 2))
+D3 = we.SymmetryGroup.dihedral(axes=(0, 1, 2))
 
 print(
-    f"S3 (symmetric):  order={S3.order():<3}  abelian={S3.is_abelian}  transitive={S3.is_transitive}"
+    f"S3 (symmetric):  order={s3_group.order():<3}  abelian={s3_group.is_abelian}  transitive={s3_group.is_transitive}"
 )
 print(
     f"C3 (cyclic):     order={C3.order():<3}  abelian={C3.is_abelian}  transitive={C3.is_transitive}"
@@ -85,47 +67,40 @@ print(
     f"D3 (dihedral):   order={D3.order():<3}  abelian={D3.is_abelian}  transitive={D3.is_transitive}"
 )
 
-# Burnside's lemma: count unique elements under group action
 size_dict = {0: n, 1: n, 2: n}
 print(f"\nUnique elements in {n}x{n}x{n} tensor:")
-print(f"  Under S3: {S3.burnside_unique_count(size_dict):>8,}")
+print(f"  Under S3: {s3_group.burnside_unique_count(size_dict):>8,}")
 print(f"  Under C3: {C3.burnside_unique_count(size_dict):>8,}")
 print(f"  Under D3: {D3.burnside_unique_count(size_dict):>8,}")
 print(f"  No sym:   {n**3:>8,}")
 
-# Cyclic symmetry gives less savings than full symmetric
 T_cyclic = we.as_symmetric(T_data, symmetry=C3)
 _, info_cyclic = we.einsum_path("ijk,ai,bj,ck->abc", T_cyclic, M, M, M)
 print(f"\nWith S3 symmetry: {info_same.optimized_cost:>12,} FLOPs")
 print(f"With C3 symmetry: {info_cyclic.optimized_cost:>12,} FLOPs")
 
-# ---------------------------------------------------------------------------
-# 4. Cycle and Permutation — building permutations from cycles
-# ---------------------------------------------------------------------------
-print("\n=== Cycle and Permutation ===\n")
+print("\n=== Exact generators via SymmetryGroup.from_generators ===\n")
 
-# Build a block-swap permutation: (0 2)(1 3) — swaps blocks (0,1) and (2,3)
-block_swap = Permutation(Cycle(0, 2)(1, 3))
-print(f"Block swap (0 2)(1 3): {block_swap.array_form}")
-print(f"  Cyclic form:   {block_swap.cyclic_form}")
-print(f"  Order:         {block_swap.order}")
-print(f"  Parity:        {block_swap.parity()}")
+block_group = we.SymmetryGroup.from_generators(
+    [[2, 3, 0, 1]],
+    axes=(0, 1, 2, 3),
+)
+print(f"Block-swap generators: {block_group.generator_literals}")
+print(f"Block-swap order:      {block_group.order()}")
+print(
+    f"Unique elements (20^4 with block swap): {block_group.burnside_unique_count({0: 20, 1: 20, 2: 20, 3: 20}):,}"
+)
 
-# Build S2 from the block swap and use as output symmetry in einsum
-# This declares that result[a,b,c,d] == result[c,d,a,b]
-print("\n=== Output symmetry via einsum symmetry= parameter ===\n")
+print("\n=== Output symmetry via einsum(symmetry=...) ===\n")
 
 X = we.random.randn(20, 20)
-block_group = PermutationGroup(block_swap, axes=(0, 1, 2, 3))
-
-with we.BudgetContext(flop_budget=10**9, quiet=True) as budget:
-    # Outer product X[a,b]*X[c,d] is symmetric under block swap (a,b)↔(c,d)
+with we.BudgetContext(flop_budget=10**9, quiet=True):
     result = we.einsum("ab,cd->abcd", X, X, symmetry=block_group)
 
-print(f"Result type: {type(result).__name__}")
-print(f"Result shape: {result.shape}")
-print(f"Symmetry factor: {result.symmetry_info.symmetry_factor}")
+print(f"Result type:    {type(result).__name__}")
+print(f"Result shape:   {result.shape}")
+print(f"Group order:    {result.symmetry.order()}")
 print(
-    f"Verify: result[a,b,c,d] == result[c,d,a,b]? "
+    "Verify block swap: "
     f"{np.allclose(np.array(result), np.array(result).transpose(2, 3, 0, 1))}"
 )

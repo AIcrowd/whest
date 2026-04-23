@@ -9,15 +9,15 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Percent point function (inverse of "
+                "text": "Percent-point function (inverse CDF) at "
               },
               {
-                "kind": "code",
-                "text": "cdf"
+                "kind": "emphasis",
+                "text": "q"
               },
               {
                 "kind": "text",
-                "text": ") at q of the given RV."
+                "text": "."
               }
             ],
             "type": "paragraph"
@@ -28,134 +28,27 @@
       {
         "blocks": [
           {
-            "items": [
+            "inline": [
               {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "lower tail probability"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "lower tail probability"
-                  }
-                ],
-                "name": "q",
-                "type": "field_list"
+                "kind": "text",
+                "text": "Equivalent to "
               },
               {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
-                  }
-                ],
-                "name": "arg1, arg2, arg3,...",
-                "type": "field_list"
+                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.laplace.ppf(q, loc, scale).html",
+                "href": "",
+                "kind": "link",
+                "target": "stats.laplace.ppf(q, loc, scale)",
+                "text": "scipy.stats.laplace.ppf(q, loc, scale)"
               },
               {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "location parameter (default=0)"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like, optional",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "location parameter (default=0)"
-                  }
-                ],
-                "name": "loc",
-                "type": "field_list"
-              },
-              {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "scale parameter (default=1)"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like, optional",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "scale parameter (default=1)"
-                  }
-                ],
-                "name": "scale",
-                "type": "field_list"
+                "kind": "text",
+                "text": "."
               }
             ],
-            "title": "Parameters",
-            "type": "field_list"
+            "type": "paragraph"
           }
         ],
-        "title": "Parameters"
-      },
-      {
-        "blocks": [
-          {
-            "items": [
-              {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "quantile corresponding to the lower tail probability q."
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "quantile corresponding to the lower tail probability q."
-                  }
-                ],
-                "name": "x",
-                "type": "field_list"
-              }
-            ],
-            "title": "Returns",
-            "type": "field_list"
-          }
-        ],
-        "title": "Returns"
+        "title": "Extended Summary"
       }
     ]
   },
@@ -169,14 +62,14 @@
     "numpy_ref": "np.stats.laplace.ppf",
     "signature": "we.stats.laplace.ppf(q, loc=0, scale=1)",
     "status": "supported",
-    "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+    "summary": "Percent-point function (inverse CDF) at *q*.",
     "weight": 16.0,
     "whest_ref": "we.stats.laplace.ppf"
   },
   "schema_version": 1,
   "slug": "stats-laplace-ppf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",
+    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.laplace.html",
     "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_laplace.py#L54"
   }
 }

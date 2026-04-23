@@ -492,12 +492,12 @@
     }
   ],
   "see_also": [],
-  "signature": "we.conj(x)",
+  "signature": "we.conj(*args, **kwargs)",
   "slug": "conj",
   "summary": "Return the complex conjugate, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.conj",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

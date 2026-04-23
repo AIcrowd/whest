@@ -9,20 +9,25 @@
 // Helpers
 // ---------------------------------------------------------------------------
 
+function tupleExpr(values) {
+  if (values.length === 1) {
+    return `(${values[0]},)`;
+  }
+  return `(${values.join(', ')})`;
+}
+
 /**
- * Parse a cycle-notation string such as "(0 1)(2 3), (0 2)(1 3)" into an
- * array of Python expression strings, one per generator.
+ * Parse cycle notation such as "(0 1)(2 3), (0 2)(1 3)" into local generator
+ * literals for SymmetryGroup.from_generators(...).
  *
- * Each generator is a product of disjoint cycles written as `(a b c ...)`.
- * Generators are separated by commas that are *outside* parentheses.
- *
- * A single generator like `(0 1)(2 3)` becomes:
- *   "we.Permutation(we.Cycle(0, 1)(2, 3))"
+ * The cycle labels refer to the selected tensor axes in `symAxes`, not to the
+ * local positions within the symmetry group. We therefore map the cycle labels
+ * through the `symAxes` order and emit permutation arrays on
+ * `range(len(symAxes))`.
  */
-function parseGensForPython(input) {
+function parseGeneratorLiterals(input, symAxes) {
   if (!input || !input.trim()) return [];
 
-  // Split on commas that sit outside parentheses.
   const generators = [];
   let depth = 0;
   let current = '';
@@ -38,24 +43,30 @@ function parseGensForPython(input) {
   }
   if (current.trim()) generators.push(current.trim());
 
+  const axisToLocal = new Map(symAxes.map((axis, idx) => [axis, idx]));
+
   return generators.map((gen) => {
-    // gen looks like "(0 1)(2 3)" — possibly multiple cycles chained.
-    // Convert each (a b c) into we.Cycle(a, b, c), then chain with ().
-    const cycles = [];
+    const arr = Array.from({ length: symAxes.length }, (_, idx) => idx);
     const cycleRe = /\(([^)]+)\)/g;
+    let matched = false;
     let m;
+
     while ((m = cycleRe.exec(gen)) !== null) {
-      const elements = m[1].trim().split(/\s+/).join(', ');
-      cycles.push(`we.Cycle(${elements})`);
+      matched = true;
+      const cycleAxes = m[1].trim().split(/\s+/).map((value) => Number.parseInt(value, 10));
+      const cycle = cycleAxes.map((axis) => axisToLocal.get(axis));
+      if (cycle.some((idx) => idx === undefined)) {
+        return null;
+      }
+      for (let i = 0; i < cycle.length; i += 1) {
+        arr[cycle[i]] = cycle[(i + 1) % cycle.length];
+      }
     }
-    if (cycles.length === 0) return null;
-    // Chain cycles: we.Cycle(0, 1)(2, 3)
-    const chained = cycles[0] + cycles.slice(1).map((c) => {
-      // Extract the args portion from "we.Cycle(args)"
-      const inner = c.slice('we.Cycle'.length);
-      return inner; // already "(a, b)"
-    }).join('');
-    return `we.Permutation(${chained})`;
+
+    if (!matched) {
+      return null;
+    }
+    return `[${arr.join(', ')}]`;
   }).filter(Boolean);
 }
 
@@ -64,19 +75,18 @@ function parseGensForPython(input) {
  */
 function buildGroupExpr(variable) {
   const { symmetry, symAxes, generators } = variable;
-  const k = symAxes.length;
-  const axesTuple = `(${symAxes.join(',')})`;
+  const axesTuple = tupleExpr(symAxes);
 
   switch (symmetry) {
     case 'symmetric':
-      return `we.PermutationGroup.symmetric(${k}, axes=${axesTuple})`;
+      return `we.SymmetryGroup.symmetric(axes=${axesTuple})`;
     case 'cyclic':
-      return `we.PermutationGroup.cyclic(${k}, axes=${axesTuple})`;
+      return `we.SymmetryGroup.cyclic(axes=${axesTuple})`;
     case 'dihedral':
-      return `we.PermutationGroup.dihedral(${k}, axes=${axesTuple})`;
+      return `we.SymmetryGroup.dihedral(axes=${axesTuple})`;
     case 'custom': {
-      const gens = parseGensForPython(generators || '');
-      return `we.PermutationGroup(${gens.join(', ')}, axes=${axesTuple})`;
+      const gens = parseGeneratorLiterals(generators || '', symAxes);
+      return `we.SymmetryGroup.from_generators([${gens.join(', ')}], axes=${axesTuple})`;
     }
     default:
       return null;
@@ -87,7 +97,7 @@ function buildGroupExpr(variable) {
  * Build the shape tuple string for a variable, e.g. "(n, n, n)".
  */
 function shapeExpr(rank) {
-  return `(${new Array(rank).fill('n').join(', ')})`;
+  return tupleExpr(new Array(rank).fill('n'));
 }
 
 function indentLines(lines, spaces = 4) {
@@ -97,37 +107,31 @@ function indentLines(lines, spaces = 4) {
 
 function buildGroupLines(variable) {
   const { symmetry, symAxes, generators } = variable;
-  const k = symAxes.length;
-  const axesTuple = `(${symAxes.join(', ')})`;
+  const axesTuple = tupleExpr(symAxes);
 
   switch (symmetry) {
     case 'symmetric':
       return [
-        'we.PermutationGroup.symmetric(',
-        `    ${k},`,
+        'we.SymmetryGroup.symmetric(',
         `    axes=${axesTuple},`,
         ')',
       ];
     case 'cyclic':
       return [
-        'we.PermutationGroup.cyclic(',
-        `    ${k},`,
+        'we.SymmetryGroup.cyclic(',
         `    axes=${axesTuple},`,
         ')',
       ];
     case 'dihedral':
       return [
-        'we.PermutationGroup.dihedral(',
-        `    ${k},`,
+        'we.SymmetryGroup.dihedral(',
         `    axes=${axesTuple},`,
         ')',
       ];
     case 'custom': {
-      const gens = parseGensForPython(generators || '');
-      const lines = ['we.PermutationGroup('];
-      for (const gen of gens) {
-        lines.push(`    ${gen},`);
-      }
+      const gens = parseGeneratorLiterals(generators || '', symAxes);
+      const lines = ['we.SymmetryGroup.from_generators('];
+      lines.push(`    [${gens.join(', ')}],`);
       lines.push(`    axes=${axesTuple},`);
       lines.push(')');
       return lines;

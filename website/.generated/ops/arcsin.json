@@ -765,12 +765,12 @@
       "unresolved": true
     }
   ],
-  "signature": "we.arcsin(x)",
+  "signature": "we.arcsin(*args, **kwargs)",
   "slug": "arcsin",
   "summary": "Inverse sine, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.arcsin",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

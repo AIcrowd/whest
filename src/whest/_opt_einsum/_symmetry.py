@@ -12,7 +12,7 @@ from __future__ import annotations
 from collections.abc import Collection
 from dataclasses import dataclass
 
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup
 
 from ._helpers import flop_count
 
@@ -23,20 +23,20 @@ class SubsetSymmetry:
 
     Attributes
     ----------
-    output : PermutationGroup or None
+    output : SymmetryGroup or None
         Exact permutation group for the output (V) labels.
-    inner : PermutationGroup or None
+    inner : SymmetryGroup or None
         Exact permutation group for the inner (W) labels.
     """
 
-    output: PermutationGroup | None
-    inner: PermutationGroup | None
+    output: SymmetryGroup | None
+    inner: SymmetryGroup | None
 
 
 def unique_elements(
     indices: frozenset[str],
     size_dict: dict[str, int],
-    perm_group: PermutationGroup | None = None,
+    perm_group: SymmetryGroup | None = None,
 ) -> int:
     """Count distinct elements of a tensor with the given symmetry.
 
@@ -78,9 +78,9 @@ def symmetric_flop_count(
     num_terms: int,
     size_dictionary: dict[str, int],
     *,
-    output_group: PermutationGroup | None = None,
+    output_group: SymmetryGroup | None = None,
     output_indices: frozenset[str] | None = None,
-    inner_group: PermutationGroup | None = None,
+    inner_group: SymmetryGroup | None = None,
     inner_indices: frozenset[str] | None = None,
     use_inner_symmetry: bool = True,
     per_operand_free_counts: tuple[int, ...] | None = None,

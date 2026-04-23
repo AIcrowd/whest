@@ -180,7 +180,7 @@ def test_matrix_norm_cost_fallback():
 def test_det_symmetric_tensor_cost():
     n = 4
     data = numpy.eye(n)
-    sym_a = as_symmetric(data, (0, 1))
+    sym_a = as_symmetric(data, symmetry=(0, 1))
     with BudgetContext(flop_budget=10**6) as budget:
         det(sym_a)
     assert budget.flops_used == det_cost(n, symmetric=True)
@@ -189,7 +189,7 @@ def test_det_symmetric_tensor_cost():
 def test_slogdet_symmetric_tensor_cost():
     n = 4
     data = numpy.eye(n)
-    sym_a = as_symmetric(data, (0, 1))
+    sym_a = as_symmetric(data, symmetry=(0, 1))
     with BudgetContext(flop_budget=10**6) as budget:
         slogdet(sym_a)
     assert budget.flops_used == slogdet_cost(n, symmetric=True)

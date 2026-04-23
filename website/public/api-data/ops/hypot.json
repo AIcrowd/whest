@@ -404,7 +404,7 @@
     "name": "hypot",
     "notes": "Element-wise Euclidean norm sqrt(x1^2 + x2^2).",
     "numpy_ref": "np.hypot",
-    "signature": "we.hypot(x, y)",
+    "signature": "we.hypot(*args, **kwargs)",
     "status": "supported",
     "summary": "Given the \"legs\" of a right triangle, return its hypotenuse.",
     "weight": 16.0,
@@ -414,6 +414,6 @@
   "slug": "hypot",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

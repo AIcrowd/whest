@@ -95,6 +95,35 @@ def test_create_array_and_fetch(server_and_client):
     np.testing.assert_array_equal(fetched, arr)
 
 
+def test_fetch_slice_scalar_uses_raw_transport(server_and_client):
+    """Scalar fetch_slice stays on the raw data/shape/dtype transport path."""
+    _server, client = server_and_client
+
+    _send(client, {"op": "budget_open", "flop_budget": 1_000_000})
+
+    arr = np.array(2.0, dtype="float64")
+    resp = _send(
+        client,
+        {
+            "op": "create_from_data",
+            "data": arr.tobytes(),
+            "dtype": "float64",
+            "shape": [],
+        },
+    )
+    handle = resp["result"]["id"]
+
+    resp = _send(client, {"op": "fetch_slice", "id": handle, "slices": []})
+    assert resp["status"] == "ok"
+    assert resp["shape"] == []
+    assert resp["dtype"] == "float64"
+    assert "result" not in resp
+    value = (
+        np.frombuffer(resp["data"], dtype=resp["dtype"]).reshape(resp["shape"]).item()
+    )
+    assert value == 2.0
+
+
 def test_operation_chain_ones_exp_fetch(server_and_client):
     """ones -> exp -> fetch, verify values are exp(1)."""
     _server, client = server_and_client

@@ -7,6 +7,9 @@ FLOP costs. Uses hand-computed expected values.
 import numpy as np
 
 import whest as we
+from whest._budget import BudgetContext
+from whest._perm_group import SymmetryGroup
+from whest._symmetric import SymmetricTensor
 
 
 class TestGramMatrixInduction:
@@ -29,6 +32,30 @@ class TestGramMatrixInduction:
         _, info = we.einsum_path("ij,ik->jk", X, Y)
         # Different operands → no induction → full dense (FMA=1)
         assert info.optimized_cost == 1000
+
+    def test_einsum_infers_output_symmetry_from_path_info(self):
+        X = np.arange(1.0, 17.0).reshape(4, 4)
+
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = we.einsum("ij,ik->jk", X, X)
+
+        expected = np.einsum("ij,ik->jk", X, X)
+        np.testing.assert_allclose(result, expected, rtol=1e-10)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry.axes == (0, 1)
+        assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
+
+    def test_einsum_with_plain_out_preserves_output_identity(self):
+        X = np.arange(1.0, 17.0).reshape(4, 4)
+        out = np.empty((4, 4))
+
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = we.einsum("ij,ik->jk", X, X, out=out)
+
+        expected = np.einsum("ij,ik->jk", X, X)
+        assert result is out
+        assert not isinstance(result, SymmetricTensor)
+        np.testing.assert_allclose(out, expected, rtol=1e-10)
 
 
 class TestMatMulChainNoInducedSymmetry:
@@ -94,7 +121,7 @@ class TestSymmetricXMatMul:
     def test_both_sources_apply(self):
         n = 10
         X_data = np.ones((n, n))
-        X = we.as_symmetric(X_data, symmetric_axes=(0, 1))
+        X = we.as_symmetric(X_data, symmetry=(0, 1))
         _, info = we.einsum_path("ij,jk->ik", X, X)
         # dense = n^3 = 1000 (FMA=1)
         # Induced S2{i,k} on output → unique = C(11,2) = 55, total = 100

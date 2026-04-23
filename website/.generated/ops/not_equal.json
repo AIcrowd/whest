@@ -643,12 +643,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.not_equal(x, y)",
+  "signature": "we.not_equal(*args, **kwargs)",
   "slug": "not_equal",
   "summary": "Return (x1 != x2) element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.not_equal",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

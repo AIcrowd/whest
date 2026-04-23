@@ -20,7 +20,7 @@ import numpy as _np
 import numpy.random as _npr
 
 from whest._flops import _ceil_log2, sort_cost
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup
 from whest._validation import require_budget
 
 # ---------------------------------------------------------------------------
@@ -279,7 +279,7 @@ def choice(a, size=None, replace=True, p=None):
 
 def symmetric(
     shape: int | tuple[int, ...] | list[int],
-    group: PermutationGroup,
+    symmetry: SymmetryGroup,
     distribution: str | callable = "randn",
     **distribution_kwargs,
 ):
@@ -289,7 +289,7 @@ def symmetric(
     ----------
     shape : int or tuple of int
         Shape of the sampled array.
-    group : PermutationGroup
+    symmetry : SymmetryGroup
         Symmetry group used for Reynolds averaging.
     distribution : str or callable, default ``\"randn\"``
         Name of a ``numpy.random`` distribution function (for example
@@ -321,7 +321,7 @@ def symmetric(
 
     Notes
     -----
-    This is equivalent to ``we.symmetrize( sampled_data, group)`` where
+    This is equivalent to ``we.symmetrize(sampled_data, symmetry=symmetry)`` where
     ``sampled_data`` is drawn from ``distribution``.
 
     The implementation currently:
@@ -343,13 +343,13 @@ def symmetric(
     Examples
     --------
     >>> import whest as we
-    >>> S = we.random.symmetric((4, 4), we.PermutationGroup.symmetric(2, axes=(0, 1)))
+    >>> S = we.random.symmetric((4, 4), we.SymmetryGroup.symmetric(axes=(0, 1)))
     >>> S.is_symmetric((0, 1))
     True
 
     >>> S = we.random.symmetric(
     ...     (3, 3, 3),
-    ...     we.PermutationGroup.cyclic(3, axes=(0, 1, 2)),
+    ...     we.SymmetryGroup.cyclic(axes=(0, 1, 2)),
     ...     distribution="normal",
     ...     loc=0.0,
     ...     scale=1.0,
@@ -361,7 +361,7 @@ def symmetric(
     >>> import whest as we
     >>> def shifted_uniform(shape, **kwargs):
     ...     return np.random.uniform(*shape, **kwargs)
-    >>> S = we.random.symmetric((2, 2), we.PermutationGroup.symmetric(2, axes=(0, 1)), distribution=shifted_uniform)
+    >>> S = we.random.symmetric((2, 2), we.SymmetryGroup.symmetric(axes=(0, 1)), distribution=shifted_uniform)
     >>> S.is_symmetric((0, 1))
     True
     """
@@ -401,7 +401,7 @@ def symmetric(
         )
 
     budget = require_budget()
-    sym_cost = _builtins.max(sample_size * _builtins.max(group.order(), 1), 1)
+    sym_cost = _builtins.max(sample_size * _builtins.max(symmetry.order(), 1), 1)
     sample_cost = sample_size
     with budget.deduct(
         "random.symmetric",
@@ -411,7 +411,7 @@ def symmetric(
     ):
         from whest import symmetrize
 
-        return symmetrize(sample, group)
+        return symmetrize(sample, symmetry=symmetry)
 
 
 def bytes(length):
