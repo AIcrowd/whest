@@ -326,10 +326,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
               lineHeight: 1.6,
             }}
           >
-            Given a tensor contraction written in einsum notation, this explorer constructs
-            candidate relabelings, accepts the lifted relabelings used by the cost model, and
-            then counts the product orbits and output-bin updates required by the resulting
-            symmetry-aware direct computation. After analysis, the visualizations update as
+            Given a tensor contraction written in explicit einsum notation, this explorer
+            detects structural pointwise relabelings certified by the declared operand
+            symmetries, then counts the representative products and output-bin updates
+            required by a direct symmetry-aware evaluator. The visualizations update as
             the contraction, declared symmetries, and label sizes change.
           </p>
         </header>
@@ -348,14 +348,15 @@ export default function SymmetryAwareEinsumContractionsApp() {
               style={{ textAlign: 'justify' }}
             >
               <InlineMathText>
-                {`This page counts the direct indexed computation under the detected pointwise permutation symmetries used by the model. A detected symmetry may move free labels; when it does, it can reduce the number of distinct products while still requiring separate updates to each output component touched by the orbit. For that reason the cost model uses orbit projections, not a naive division by the group order.`}
+                {`This page reports a direct indexed scalar-event count: multiplication-chain events for representative products plus direct output-bin update events. It is not whest’s general FMA FLOP convention, not wall-clock time, and not a contraction-path or memory-traffic model. The cost model uses orbit projections, not naive division by the group order, because one product orbit can touch several output bins.`}
               </InlineMathText>
             </p>
             <p className="mt-2 text-[12.5px] leading-6 text-stone-600">
-              Assumptions: scalar commutative exact arithmetic; declared equality
-              symmetries only; shared sizes along permuted label orbits; operand identity
-              determined by the selected expression. Contraction-path optimizations are outside this
-              calculation.
+              Assumptions: exact commutative scalar arithmetic; declared equality
+              symmetries only; repeated operand names denote the same tensor object;
+              label permutations preserve label domains/sizes; no ellipsis, broadcasting, repeated labels within one input, duplicate output labels, antisymmetry/signs,
+              conjugation, sparsity, approximate numerical symmetry, or contraction-path
+              optimization.
             </p>
           </div>
         </div>

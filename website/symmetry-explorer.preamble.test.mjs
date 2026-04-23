@@ -194,8 +194,9 @@ test('MentalFrameworkCode step metadata names the Feynman-style labels and color
 test('MentalFrameworkCode renders the Counting Convention panel introducing μ and α', () => {
   const src = readComponent('MentalFrameworkCode.jsx');
   assert.match(src, /Counting convention/);
-  assert.match(src, /Multiplication Cost \(μ\)/);
-  assert.match(src, /Accumulation Cost \(α\)/);
+  assert.match(src, /The number of representative products is/);
+  assert.match(src, /μ = \(k-1\)M/);
+  assert.match(src, /This page reports μ \+ α/);
   // Anchors into the code above — names both lines it talks about.
   assert.match(src, /base_val/);
   assert.match(src, /R\[out\] \+= coeff/);

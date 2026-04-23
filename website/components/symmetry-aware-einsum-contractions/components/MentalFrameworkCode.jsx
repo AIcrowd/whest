@@ -235,25 +235,22 @@ export default function MentalFrameworkCode({ example }) {
           Counting convention
         </div>
         <p className="mt-1.5 text-[12.5px] leading-6 text-stone-700">
-          Every{' '}
+          The number of representative products is <strong className="font-semibold">M</strong>. Every{' '}
           <code className="rounded bg-stone-200/60 px-1 font-mono text-[12px] text-stone-800">
             base_val
           </code>{' '}
-          above is short-hand for a multiplicative chain: two-operand einsums
-          cost one multiply per line, three-operand einsums cost two,
-          four-operand einsums cost three. Summing across all lines gives what
-          we call the{' '}
+          above is shorthand for a multiplicative chain, so a k-operand product contributes k-1 binary multiplies. We write{' '}
           <strong className="font-semibold" style={{ color: notationColor('mu_total') }}>
-            Multiplication Cost (μ)
-          </strong>.
-          Every{' '}
+            μ = (k-1)M
+          </strong>{' '}
+          for those multiplication-chain events. Every{' '}
           <code className="rounded bg-stone-200/60 px-1 font-mono text-[12px] text-stone-800">
             R[out] += coeff · base_val
           </code>{' '}
-          is one fused multiply-add; the sum of those is the{' '}
+          is one direct output-bin update event, implemented as a fused multiply-add when the coefficient is not one; summing those events gives{' '}
           <strong className="font-semibold" style={{ color: notationColor('alpha_total') }}>
-            Accumulation Cost (α)
-          </strong>.
+            α
+          </strong>. This page reports μ + α and does not model memory traffic, BLAS kernels, or contraction-path rewrites.
         </p>
       </div>
     </figure>

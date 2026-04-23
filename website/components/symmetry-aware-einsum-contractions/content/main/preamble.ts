@@ -3,8 +3,8 @@ import type { SectionCopy } from '../schema.ts';
 const p = (text: string) => ({ kind: 'paragraph', text } as const);
 
 const preamble = {
-  title: 'What this explorer is counting',
-  deck: 'The direct indexed computation, the representative products, and the output-bin updates it induces.',
+  title: 'What this explorer counts',
+  deck: 'A direct indexed event model: representative products plus the output-bin updates they induce.',
   slots: {
     einsumIntroBeforeSummed: [
       p('Every index label that appears on an input but not on the output is '),
@@ -13,10 +13,10 @@ const preamble = {
       p('; labels on the output are '),
     ],
     einsumIntroAfterFree: [
-      p('. A dense implementation pays for every cell of the full input grid — so even modestly sized examples explode quickly.'),
+      p('. A dense direct implementation visits every assignment in the full label grid before any symmetry is used.'),
     ],
     mentalFrameworkIntroBeforeRepSet: [
-      p('Every contraction has the same shape. Symmetry only changes the content of three things: '),
+      p('Every direct evaluator has the same skeleton. Symmetry changes only three data structures: '),
     ],
     mentalFrameworkIntroBetweenRepSetAndOuts: [
       p(', '),
@@ -25,22 +25,22 @@ const preamble = {
       p(', and '),
     ],
     mentalFrameworkIntroAfterCoeff: [
-      p('. The rest of the explorer is about counting them without enumerating the full grid.'),
+      p('. The rest of the explorer is about certifying these sets and counting them without enumerating the dense grid.'),
     ],
     calloutBodyBeforeGroup: [
-      p('If several operands are identical or individually symmetric (e.g. $A_{ij} = A_{ji}$), the formula is invariant under certain permutations of the labels. Those permutations form a '),
+      p('Some relabelings preserve each pre-summation product under the declared operand symmetries and repeated operand identities. Those accepted relabelings form the '),
     ],
     calloutBodyBetweenGroupAndOrbits: [
-      p(', and whole '),
+      p(', and its '),
     ],
     calloutBodyAfterOrbits: [
-      p(' of products collapse to a single distinct computation — the dense $n^{5}$ drops to $n^{5}/|G|$ in the best case (a free action), and to a Burnside count $(1/|G|)\\sum_g |\\mathrm{Fix}(g)|$ in general.'),
+      p(' of full label assignments give the representative products. If the action were free, the representative-product count would shrink by $|G_{\\mathrm{pt}}|$; in ordinary tensor-index actions, diagonal assignments create fixed points, so Burnside’s lemma gives the exact orbit count.'),
     ],
     calloutFooter: [
-      p('The explorer finds $G$ automatically, then counts the distinct products ($\\mu$) and distinct output-bin updates ($\\alpha$) — the two numbers driving the code on the right.'),
+      p('The explorer detects this structural pointwise group, then reports M (representative products), $\\mu=(k-1)M$ (multiplication-chain events), and $\\alpha$ (output-bin updates).'),
     ],
     handoffBeforeSectionLink: [
-      p('The rest of this page shows how the explorer detects the symmetry group $G$ from a contraction and computes $\\mu$ and $\\alpha$ automatically. Start with '),
+      p('The rest of this page explains which relabelings are certified, why $\\alpha$ is an orbit-projection count, and why post-summation dummy renamings belong in the appendix rather than in the direct accumulation cost. Start with '),
     ],
     handoffAfterSectionLink: [
       p(' below to pick or build a contraction.'),

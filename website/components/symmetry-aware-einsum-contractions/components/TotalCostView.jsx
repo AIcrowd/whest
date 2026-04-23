@@ -25,13 +25,13 @@ import {
 // of the visible labels alone.
 const AGGREGATION_FORMULA = String.raw`\text{Total Cost} \;=\; (k-1) \cdot \prod_{a} \tfrac{1}{|G_a|} \sum_{g \in G_a} \prod_{c} n_c \;+\; \prod_{a} \alpha_a`;
 const SECTION_FIVE_INTRO_PARAGRAPH =
-  'The preceding sections have produced a detected pointwise group and decomposed its label action into independent components. The final step is not to divide the dense computation by the group order, but to combine two exact orbit counts: representative products and the output updates induced by those representatives.';
+  'The preceding sections have produced a detected pointwise group and a support-connected component decomposition of its label action. The final step is to combine the two quantities a direct symmetry-aware evaluator needs: representative products and the output-bin updates induced by those representatives.';
 
 const SECTION_FIVE_INTRO_LEAD =
-  'For each component, let M_a be the number of product orbits and let α_a be the number of output-bin updates induced by those orbits. With k operand tensors, the direct symmetry-aware cost is';
+  'For component a, let M_a be the number of product orbits and let α_a be the number of output-bin updates induced by those orbits. Under the independent-component factorization, M = ∏_a M_a and α = ∏_a α_a. With k operand tensors, the direct scalar-event cost reported here is';
 
 const SECTION_FIVE_INTRO_CLOSE =
-  'The expanded equation below shows how M_a is computed by Burnside when a closed form applies, while α_a is selected from the shape and regime ladder. The numerical spread then compares this direct symmetry-aware count with the naive dense baseline.';
+  'M_a is a size-aware Burnside orbit count when a closed form applies; α_a is selected by the shape and regime ladder. If a mixed component falls outside the analytic regimes and exceeds the brute-force budget, the count is reported unavailable instead of being guessed.';
 const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total\ Cost} = \mu + \alpha`;
 const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
 const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
