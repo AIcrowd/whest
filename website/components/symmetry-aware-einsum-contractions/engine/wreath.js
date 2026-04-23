@@ -67,9 +67,11 @@ export function enumerateH(sym, rank) {
   }
 
   if (sym?.type === 'custom') {
-    const axes = Array.isArray(sym.axes) && sym.axes.length > 0
+    const axes = Array.isArray(sym.axes)
       ? sym.axes
       : Array.from({ length: rank }, (_, i) => i);
+
+    if (axes.length === 0) return [identity];
 
     let generatorCycles;
     if (typeof sym.generators === 'string') {

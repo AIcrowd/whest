@@ -164,3 +164,13 @@ test('custom generator cycles still work when all axes are selected', () => {
   const arrays = elements.map((perm) => perm.arr.join(','));
   assert.ok(arrays.includes('1,2,0'));
 });
+
+test('custom generators with an explicit empty selected-axis list stay trivial', () => {
+  const elements = enumerateH(
+    { type: 'custom', axes: [], generators: [[[0, 1]]] },
+    4,
+  );
+  const arrays = elements.map((perm) => perm.arr.join(','));
+
+  assert.deepEqual(arrays, ['0,1,2,3']);
+});
