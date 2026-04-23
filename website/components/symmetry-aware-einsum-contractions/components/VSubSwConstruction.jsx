@@ -83,16 +83,16 @@ function ColoredLabels({ text, vSet, wSet }) {
 }
 
 /**
- * G_f = G_pt|_V × S(W) construction widget. Renders a 5-column grid:
+ * G_f = G_pt|_V × ∏_d S(W_d) construction widget. Renders a 5-column grid:
  *
- *   G_pt|_V   ×   S(W)   =   G_f
+ *   G_pt|_V   ×   ∏_d S(W_d)   =   G_f
  *
  * where G_pt|_V is the induced permutation group on V (the V-restriction
- * of G_pt), S(W) is the symmetric group on W-labels, and G_f is the
- * formal symmetry group. Every label inside a cycle is colored by its
- * V/W class (V → blue, W → slate) using the canonical hexes the rest of
- * the explorer uses. Hover is bidirectional: hover any row in any column
- * to highlight its counterparts in the other two.
+ * of G_pt), ∏_d S(W_d) is the same-domain dummy-renaming factor on W-label
+ * blocks, and G_f is the formal symmetry group. Every label inside a cycle
+ * is colored by its V/W class (V → blue, W → slate) using the canonical
+ * hexes the rest of the explorer uses. Hover is bidirectional: hover any
+ * row in any column to highlight its counterparts in the other two.
  */
 export default function VSubSwConstruction({
   expressionGroup,
@@ -102,7 +102,7 @@ export default function VSubSwConstruction({
 }) {
   const explorerThemeId = getActiveExplorerThemeId();
   const SHORT_V_LATEX = notationColoredLatex('v_free', 'V');
-  const SHORT_S_W_LATEX = notationColoredLatex('s_w_summed', 'S(W)');
+  const SHORT_DUMMY_FACTOR_LATEX = String.raw`\prod_d ${notationColoredLatex('s_w_summed', 'S(W_d)')}`;
   const SHORT_G_OUT_EQUALS_RESTRICTION_LATEX = `${notationLatex('g_output')} = ${notationLatex('g_pointwise')}\\big|_{${SHORT_V_LATEX}}`;
   const COLOR_V = notationColor('v_free');
   const COLOR_W = notationColor('w_summed');
@@ -117,7 +117,7 @@ export default function VSubSwConstruction({
   if (!expressionGroup || expressionGroup.order <= 1) {
     return (
       <div className="mt-4 text-[15px] text-gray-600">
-        <Latex math={SHORT_G_OUT_EQUALS_RESTRICTION_LATEX} /> is trivial for this einsum. <Latex math={SHORT_S_W_LATEX} /> is trivial as well.
+        <Latex math={SHORT_G_OUT_EQUALS_RESTRICTION_LATEX} /> is trivial for this einsum. <Latex math={SHORT_DUMMY_FACTOR_LATEX} /> is trivial as well.
       </div>
     );
   }
@@ -192,9 +192,9 @@ export default function VSubSwConstruction({
           <div className={colHead} />
           <div>
             <div className={colHead}>
-              <Latex math={SHORT_S_W_LATEX} />
+              <Latex math={SHORT_DUMMY_FACTOR_LATEX} />
               <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
-                (dummy-label renamings, available only after summation)
+                (same-domain dummy-label renamings, available only after summation)
               </span>
               <span className="block text-[10px] text-muted-foreground normal-case tracking-normal">
                 (row-unwitnessed)
@@ -204,7 +204,7 @@ export default function VSubSwConstruction({
           <div className={colHead} />
           <div>
             <div className={colHead}>
-              <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_output')} \\times ${SHORT_S_W_LATEX}`} />
+              <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_output')} \\times ${SHORT_DUMMY_FACTOR_LATEX}`} />
               <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
                 (label-renaming formal group)
               </span>

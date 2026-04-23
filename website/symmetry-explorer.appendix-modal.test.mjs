@@ -125,7 +125,7 @@ test('section 1 explains G_pt first and moves the σ-loop ledger into an audit b
   assert.match(source, /n=\{1\}[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 1\)/);
   assert.match(source, /n=\{1\}[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 2\)/);
   assert.match(source, /n=\{1\}[\s\S]*renderAppendixSingleBlock\(appendixSection1\.slots\.followups, 3\)/);
-  assert.match(source, /data-takeaway=\{String\.raw`G_\{\\text\{pt\}\} is a cost group: it is valid for accumulation because it identifies genuinely equal indexed products\.`\}/);
+  assert.match(source, /data-takeaway=\{String\.raw`G_\{\\mathrm\{pt\}\} is a cost group: it is valid for direct product\/update compression because it identifies equal indexed products under the declared equality model\.`\}/);
   assert.match(source, /n=\{1\}[\s\S]*className=\{APPENDIX_PROSE_JUSTIFIED_CLASS\}/);
   assert.match(source, /appendixSection1\.slots\.auditIntro/);
   assert.match(source, /n=\{1\}[\s\S]*appendixSection1\.slots\.columnGuide/);
@@ -143,7 +143,7 @@ test('section 1 explains G_pt first and moves the σ-loop ledger into an audit b
   assert.doesNotMatch(source, /Takeaway\.\s*<\/span>\s*<Latex math=\{String\.raw`G_\\\{\\text\\\{pt\\\}\\\}`/);
 });
 
-test('sections 2 through 4 introduce S(W), then G_out, then G_f in dependency order', () => {
+test('sections 2 through 4 introduce same-domain dummy renaming, then G_out, then G_f in dependency order', () => {
   assert.match(source, /n=\{2\}[\s\S]*title=\{appendixSection2\.title\}/);
   assert.match(source, /n=\{2\}[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection2\.deck\)\}\s*<\/InlineMathText>\s*\}/);
   assert.match(source, /n=\{2\}[\s\S]*appendixSection2\.slots\.intro/);
@@ -181,7 +181,7 @@ test('sections 2 through 4 introduce S(W), then G_out, then G_f in dependency or
   assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.takeaway/);
   assert.match(source, /n=\{4\}[\s\S]*renderAppendixSingleBlock\(appendixSection4\.slots\.constructionTitle, 0\)/);
   assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.constructionNote/);
-  assert.match(source, /n=\{4\}[\s\S]*<Latex math=\{`\$\{notationLatex\('g_formal'\)\} = \$\{notationLatex\('g_output'\)\} \\\\times \$\{APPENDIX_SHORT_S_W_LATEX\(\)\}`\} \/>/);
+  assert.match(source, /n=\{4\}[\s\S]*<Latex math=\{String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`\} \/>/);
   assert.match(source, /n=\{4\}[\s\S]*<VSubSwConstruction/);
   assert.doesNotMatch(source, /n=\{4\}[\s\S]*We can now name the label-renaming formal group considered in this appendix\./);
   assert.doesNotMatch(source, /n=\{4\}[\s\S]*rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-center/);
@@ -381,5 +381,6 @@ test('appendix roadmap cards are formula-first with white background and black b
   assert.doesNotMatch(roadmapBlock, /Dummy group/);
   assert.doesNotMatch(roadmapBlock, /Formal group/);
   assert.match(source, /The restriction <Latex math=\{String\.raw`G_\{\\text\{pt\}\}\\|_V`\} \/> to output labels/);
-  assert.match(source, /alpha-renamings of bound summation variables/);
+  assert.match(source, /same-domain dummy renamings of bound summation variables/);
+  assert.match(source, /<Latex math=\{String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`\} \/>/);
 });

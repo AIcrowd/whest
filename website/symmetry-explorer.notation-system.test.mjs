@@ -517,7 +517,7 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(constructionSource, /notationLatex\('g_formal'\)/);
   assert.match(constructionSource, /notationLatex\('g_output'\)/);
   assert.match(constructionSource, /notationColoredLatex\('v_free', 'V'\)/);
-  assert.match(constructionSource, /notationColoredLatex\('s_w_summed', 'S\(W\)'\)/);
+  assert.match(constructionSource, /String\.raw`\\prod_d \$\{notationColoredLatex\('s_w_summed', 'S\(W_d\)'\)\}`/);
   assert.match(constructionSource, /is trivial for this einsum\./);
   assert.match(appendixSource, /Pointwise group/);
   assert.match(appendixSource, /anchorId="appendix-section-3"/);

@@ -8,8 +8,8 @@ const section5 = {
   deck: 'The tempting shortcut is to apply Burnside to $G_{\\text{f}}$. That shortcut is invalid for accumulation because formal orbits may contain unequal summands.',
   slots: {
     intro: [
-      p('The main page’s $\\alpha$ counts accumulation representatives. Such a representative is valid only when every assignment in its orbit contributes the same indexed product. That condition holds for $G_{\\text{pt}}$ by construction. It need not hold for $G_{\\text{f}}$, because the $S(W_{\\mathrm{summed}})$ factor can rename dummy variables only after the terms have already been summed.'),
-      p('Therefore, Burnside over $G_{\\text{f}}$ answers a different question: it counts orbits of formal label renamings in the completed expression. It does not, in general, count the number of distinct summand computations required by the accumulation.'),
+      p('The main page’s $\\alpha$ counts direct output-bin updates. Such a representative is valid only when every assignment in its orbit contributes the same indexed product. That condition holds for $G_{\\mathrm{pt}}$ by construction. It need not hold for $G_{\\mathrm{f}}$, because the domain-compatible dummy-label factor can rename bound variables only after the terms have already been summed.'),
+      p('Therefore, Burnside over $G_{\\mathrm{f}}$ answers a different question: it counts orbits of formal label renamings in the completed expression. It does not, in general, count the number of distinct summand computations or direct updates required during accumulation.'),
     ],
     mismatchLead: [
       p('For the selected preset, the difference is visible numerically. A naive formal count using $G_{\\text{f}}$ gives $\\alpha_{\\text{formal}}$. The pointwise accumulation count used by the engine is $\\alpha_{\\text{engine}}$. The mismatch is not a bug; it is exactly the gap between formal equivalence and pointwise equality.'),
@@ -81,7 +81,7 @@ const section5 = {
       p('Both assignments contribute to the same {{targetNoun}} ${{outputEntry}}$, but they remain different pointwise products and must be counted separately.'),
     ],
     rule: [
-      p('Use $G_{\\text{pt}}$ for accumulation. Use $G_{\\text{f}}$ to describe formal symmetry of the completed expression. Do not use the dummy-label factor $S(W_{\\mathrm{summed}})$ to remove summand computations.'),
+      p('Use $G_{\\mathrm{pt}}$ for direct multiplication and accumulation. Use $G_{\\mathrm{f}} = G_{\\mathrm{out}} \\times \\prod_d S(W_d)$ to describe formal symmetry of the completed expression. Do not use the domain-compatible dummy-label factor $\\prod_d S(W_d)$ to remove pre-summation summand computations.'),
     ],
   },
 } satisfies SectionCopy;

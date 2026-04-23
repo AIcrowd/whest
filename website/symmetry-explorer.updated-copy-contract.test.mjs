@@ -36,3 +36,14 @@ test('scope copy names direct event model and unsupported features', () => {
   assert.match(app, /repeated operand names denote the same tensor object/);
   assert.match(app, /no ellipsis, broadcasting, repeated labels within one input, duplicate output labels/);
 });
+
+test('appendix copy uses domain-compatible formal dummy renaming', () => {
+  const section2 = read('components/symmetry-aware-einsum-contractions/content/appendix/section2.ts');
+  const section4 = read('components/symmetry-aware-einsum-contractions/content/appendix/section4.ts');
+  const section5 = read('components/symmetry-aware-einsum-contractions/content/appendix/section5.ts');
+
+  assert.match(section2, /same-domain blocks/);
+  assert.match(section4, /\\\\prod_d S\(W_d\)/);
+  assert.match(section5, /domain-compatible dummy-label factor/);
+  assert.doesNotMatch(section4, /G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times S\(W_\{\\mathrm\{summed\}\}\)/);
+});

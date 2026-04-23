@@ -605,15 +605,15 @@ function AppendixRoadmap() {
         </div>
         <div className="rounded-lg border border-black bg-white px-4 py-3">
           <div className="font-mono text-[15px] font-semibold" style={{ color: notationColor('s_w_summed') }}>
-            <Latex math={APPENDIX_SHORT_S_W_LATEX()} />
+            <Latex math={String.raw`\prod_d S(W_d)`} />
           </div>
           <div className="mt-2 text-[12.5px] leading-6 text-gray-700">
-            These are alpha-renamings of bound summation variables: they preserve the completed expression by changing only bound-label names, not the summands themselves.
+            These are same-domain dummy renamings of bound summation variables: they preserve the completed expression by changing only valid bound-label names, not the summands themselves.
           </div>
         </div>
         <div className="rounded-lg border border-black bg-white px-4 py-3">
           <div className="font-mono text-[15px] font-semibold text-gray-900">
-            <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_output')} \\times ${APPENDIX_SHORT_S_W_LATEX()}`} />
+            <Latex math={String.raw`G_{\text{f}} = G_{\mathrm{out}} \times \prod_d S(W_d)`} />
           </div>
           <div className="mt-2 text-[12.5px] leading-6 text-gray-700">
             The label-renaming symmetry of the completed expression. This explains expression symmetry, but it is not the accumulation-cost group.
@@ -777,7 +777,7 @@ function AppendixPresetHoverLabel({ preset, groupLabel, children = null, classNa
  *   · the formal symmetry group     G_f  — holds only on the total sum
  *
  * and builds G_f from its two components: the induced permutation group
- * G_pt|_{V_free} and the symmetric group S(W_summed). The modal then contrasts the α
+ * G_pt|_{V_free} and the same-domain dummy-label factor ∏_d S(W_d). The modal then contrasts the α
  * that naive Burnside on G_f would claim with the correct G_pt-based α,
  * and discloses the output-tensor savings still available via
  * G_pt|_V-aware storage.
@@ -934,7 +934,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     </p>
                   ))}
                   <div
-                    data-takeaway={String.raw`G_{\text{pt}} is a cost group: it is valid for accumulation because it identifies genuinely equal indexed products.`}
+                    data-takeaway={String.raw`G_{\mathrm{pt}} is a cost group: it is valid for direct product/update compression because it identifies equal indexed products under the declared equality model.`}
                   >
                     <AppendixTakeaway>
                       {renderAppendixSingleBlock(appendixSection1.slots.takeaway, 0)}
@@ -1222,7 +1222,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     </p>
                   ))}
                   <div className="py-1 text-center">
-                    <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_output')} \\times ${APPENDIX_SHORT_S_W_LATEX()}`} />
+                    <Latex math={String.raw`G_{\text{f}} = G_{\mathrm{out}} \times \prod_d S(W_d)`} />
                   </div>
                   {renderAppendixSlot(appendixSection4.slots.intro.slice(1)).map((content, index) => (
                     <p key={`appendix-4-outro-${index}`} className={APPENDIX_PROSE_CLASS}>
