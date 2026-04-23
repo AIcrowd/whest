@@ -76,7 +76,8 @@ test('DecisionLadder leaf selection uses a separated same-color outer ring while
   assert.match(source, /const textColor = darkSurface \? '#F8FAFC' : '#132228';/);
   assert.match(source, /color: textColor/);
   assert.match(source, /const presentation = getRegimePresentation\(leafId\);/);
-  assert.match(source, /text: presentation\?\.label \?\? spec\.label/);
+  assert.match(source, /function labelForLeaf\(leafId, fallback\)/);
+  assert.match(source, /text: labelForLeaf\(leafId,\s*presentation\?\.label \?\? spec\.label\)/);
   assert.match(source, /color: presentation\?\.color \?\? spec\.color/);
   assert.doesNotMatch(source, /const bg = '#334155';/);
   assert.doesNotMatch(source, /borderWidth: data\.spotlight \? 3 : data\.active \? 3 : 2/);
