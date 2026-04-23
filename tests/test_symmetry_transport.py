@@ -54,6 +54,7 @@ def handler_session():
     if session.is_open:
         session.close()
 
+
 def _make_symmetric_tensor():
     data = np.array([[1.0, 2.0], [2.0, 3.0]])
     return we.as_symmetric(data, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))

@@ -77,8 +77,10 @@ def einsum_cost(
                 perm_groups.append(None)
                 continue
             validate_symmetry_group(symmetry, ndim=len(shape), shape=shape)
-            axes = symmetry.axes if symmetry.axes is not None else tuple(
-                range(symmetry.degree)
+            axes = (
+                symmetry.axes
+                if symmetry.axes is not None
+                else tuple(range(symmetry.degree))
             )
             if len(axes) < 2 or symmetry.order() <= 1:
                 perm_groups.append(None)

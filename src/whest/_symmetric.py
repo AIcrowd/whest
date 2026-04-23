@@ -359,7 +359,10 @@ def propagate_symmetry_slice(
         if not local_kept:
             continue
 
-        if any(dim_actions.get(axes[local_idx], "untouched") != "untouched" for local_idx in local_kept):
+        if any(
+            dim_actions.get(axes[local_idx], "untouched") != "untouched"
+            for local_idx in local_kept
+        ):
             continue
 
         # Pointwise stabilizer: each removed axis must map to itself.
@@ -372,9 +375,7 @@ def propagate_symmetry_slice(
         if len(kept_tuple) < 2:
             continue
 
-        restricted = restrict_group_to_axes(
-            stab, tuple(axes[k] for k in kept_tuple)
-        )
+        restricted = restrict_group_to_axes(stab, tuple(axes[k] for k in kept_tuple))
         if restricted is None:
             continue
 
@@ -457,13 +458,21 @@ def intersect_symmetry(
     aligned_a = [
         aligned
         for group in groups_a
-        if (aligned := broadcast_group(group, input_shape=shape_a, output_shape=output_shape))
+        if (
+            aligned := broadcast_group(
+                group, input_shape=shape_a, output_shape=output_shape
+            )
+        )
         is not None
     ]
     aligned_b = [
         aligned
         for group in groups_b
-        if (aligned := broadcast_group(group, input_shape=shape_b, output_shape=output_shape))
+        if (
+            aligned := broadcast_group(
+                group, input_shape=shape_b, output_shape=output_shape
+            )
+        )
         is not None
     ]
 
@@ -551,10 +560,14 @@ class SymmetricTensor(WhestArray):
         rtol: float = 1e-5,
     ) -> bool:
         """Check whether the data satisfies the given (or carried) symmetry."""
-        group = self._symmetry if symmetry is None else _resolve_symmetry_argument(
-            self,
-            symmetry=symmetry,
-            required=False,
+        group = (
+            self._symmetry
+            if symmetry is None
+            else _resolve_symmetry_argument(
+                self,
+                symmetry=symmetry,
+                required=False,
+            )
         )
         if group is None:
             return False
@@ -661,7 +674,11 @@ class SymmetricTensor(WhestArray):
 
     def __reduce__(self):
         pickled_state = super().__reduce__()
-        return (pickled_state[0], pickled_state[1], pickled_state[2] + (self._symmetry,))
+        return (
+            pickled_state[0],
+            pickled_state[1],
+            pickled_state[2] + (self._symmetry,),
+        )
 
     def __setstate__(self, state):
         if len(state) < 2 or not isinstance(state[-1], SymmetryGroup):

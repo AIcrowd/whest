@@ -25,7 +25,9 @@ def _sg(*axes: int) -> SymmetryGroup:
 
 def _assert_groups_equal(result, expected_axes_list):
     assert result is not None
-    assert [group.axes for group in result] == [tuple(axes) for axes in expected_axes_list]
+    assert [group.axes for group in result] == [
+        tuple(axes) for axes in expected_axes_list
+    ]
 
 
 def _sym_matrix(n: int = 4) -> np.ndarray:
@@ -55,7 +57,9 @@ class TestValidateSymmetryGroups:
 
     def test_invalid_data_raises(self):
         with pytest.raises(SymmetryError):
-            validate_symmetry_groups(np.random.default_rng(0).standard_normal((4, 4)), [_sg(0, 1)])
+            validate_symmetry_groups(
+                np.random.default_rng(0).standard_normal((4, 4)), [_sg(0, 1)]
+            )
 
     def test_mismatched_orbit_sizes_raise(self):
         with pytest.raises(SymmetryError):
@@ -75,18 +79,22 @@ class TestIsSymmetricAndWrapping:
         projected = symmetrize(np.arange(16.0).reshape(4, 4), symmetry=_sg(0, 1))
         assert isinstance(tensor, SymmetricTensor)
         assert tensor.symmetry == _sg(0, 1)
-        assert not hasattr(tensor, 'symmetry' + '_info')
-        assert not hasattr(tensor, 'symmetric_' + 'axes')
+        assert not hasattr(tensor, "symmetry" + "_info")
+        assert not hasattr(tensor, "symmetric_" + "axes")
         assert projected.symmetry == _sg(0, 1)
 
     def test_as_symmetric_rejects_non_symmetric_input(self):
         with pytest.raises(SymmetryError):
-            as_symmetric(np.random.default_rng(9).standard_normal((4, 4)), symmetry=(0, 1))
+            as_symmetric(
+                np.random.default_rng(9).standard_normal((4, 4)), symmetry=(0, 1)
+            )
 
 
 class TestPropagateSymmetrySlice:
     def test_full_slice_preserves(self):
-        result = propagate_symmetry_slice([_sg(0, 1)], (5, 5), (slice(None), slice(None)))
+        result = propagate_symmetry_slice(
+            [_sg(0, 1)], (5, 5), (slice(None), slice(None))
+        )
         _assert_groups_equal(result, [(0, 1)])
 
     def test_integer_index_on_s3_keeps_remaining_swap(self):
@@ -109,7 +117,9 @@ class TestPropagateSymmetrySlice:
         assert result is None
 
     def test_newaxis_renumbers_group(self):
-        result = propagate_symmetry_slice([_sg(0, 1)], (5, 5), (None, slice(None), slice(None)))
+        result = propagate_symmetry_slice(
+            [_sg(0, 1)], (5, 5), (None, slice(None), slice(None))
+        )
         _assert_groups_equal(result, [(1, 2)])
 
     def test_multiple_groups_partial_survival(self):
@@ -144,7 +154,9 @@ class TestIntersectSymmetry:
         _assert_groups_equal(result, [(0, 1)])
 
     def test_broadcast_alignment(self):
-        result = intersect_symmetry([_sg(0, 1)], [_sg(1, 2)], (3, 3), (1, 3, 3), (1, 3, 3))
+        result = intersect_symmetry(
+            [_sg(0, 1)], [_sg(1, 2)], (3, 3), (1, 3, 3), (1, 3, 3)
+        )
         _assert_groups_equal(result, [(1, 2)])
 
     def test_broadcast_stretched_dim_drops_group(self):

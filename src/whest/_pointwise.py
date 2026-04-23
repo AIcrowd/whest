@@ -243,11 +243,7 @@ def _counted_binary(np_func, op_name: str):
                     f"{op_name} — groups not shared by both operands",
                 )
         else:
-            lost = [
-                group.axes
-                for group in aligned_inputs
-                if group.axes is not None
-            ]
+            lost = [group.axes for group in aligned_inputs if group.axes is not None]
             if lost:
                 _warn_symmetry_loss(
                     list(dict.fromkeys(lost)),
@@ -275,7 +271,9 @@ def _counted_binary_multi(np_func, op_name: str):
         if not isinstance(y, _np.ndarray):
             y = _np.asarray(y)
         output_shape = _np.broadcast_shapes(x.shape, y.shape)
-        out_symmetry, _ = _pointwise_symmetry(((x, _symmetry_of(x)), (y, _symmetry_of(y))), output_shape)
+        out_symmetry, _ = _pointwise_symmetry(
+            ((x, _symmetry_of(x)), (y, _symmetry_of(y))), output_shape
+        )
         cost = pointwise_cost(output_shape, symmetry=out_symmetry)
         with budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
@@ -345,7 +343,11 @@ def _counted_reduction(
                 reduced_axes = (
                     set(range(a.ndim))
                     if axis is None
-                    else ({axis % a.ndim} if isinstance(axis, int) else {ax % a.ndim for ax in axis})
+                    else (
+                        {axis % a.ndim}
+                        if isinstance(axis, int)
+                        else {ax % a.ndim for ax in axis}
+                    )
                 )
                 symmetry_axes = (
                     set(symmetry.axes)
@@ -434,7 +436,12 @@ def around(a, decimals=0, out=None):
             supports_out=True,
         )
     check_nan_inf(result, "around")
-    if a_is_scalar and out is None and _np.ndim(result) == 0 and hasattr(result, "item"):
+    if (
+        a_is_scalar
+        and out is None
+        and _np.ndim(result) == 0
+        and hasattr(result, "item")
+    ):
         return result.item()
     return _wrap_result(result, out=out, symmetry=symmetry)
 
@@ -511,7 +518,12 @@ def round(a, decimals=0, out=None):
             supports_out=True,
         )
     check_nan_inf(result, "round")
-    if a_is_scalar and out is None and _np.ndim(result) == 0 and hasattr(result, "item"):
+    if (
+        a_is_scalar
+        and out is None
+        and _np.ndim(result) == 0
+        and hasattr(result, "item")
+    ):
         return result.item()
     return _wrap_result(result, out=out, symmetry=symmetry)
 

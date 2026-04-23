@@ -37,8 +37,10 @@ def normalize_symmetry_input(obj, *, ndim: int | None = None):
         return None
     if isinstance(obj, SymmetryGroup):
         return validate_symmetry_group(obj, ndim=ndim)
-    if isinstance(obj, list) and obj and all(
-        isinstance(group, SymmetryGroup) for group in obj
+    if (
+        isinstance(obj, list)
+        and obj
+        and all(isinstance(group, SymmetryGroup) for group in obj)
     ):
         raise TypeError("symmetry must be a single SymmetryGroup, not a list of groups")
     if isinstance(obj, (tuple, list)) and obj:
@@ -152,7 +154,9 @@ def restrict_group_to_axes(
     local_indices = []
     for axis in wanted_axes:
         if axis not in group_axes:
-            raise ValueError(f"restricted axes {wanted_axes} are not a subset of {group_axes}")
+            raise ValueError(
+                f"restricted axes {wanted_axes} are not a subset of {group_axes}"
+            )
         local_indices.append(group_axes.index(axis))
     if len(local_indices) < 2:
         return None
@@ -179,7 +183,9 @@ def remap_group_axes(
             raise ValueError(f"missing remap for axis {axis}")
         remapped_axes.append(axis_map[axis])
     _normalize_axis_tuple(remapped_axes, what="remapped axes")
-    return SymmetryGroup.from_generators(group.generator_literals, axes=tuple(remapped_axes))
+    return SymmetryGroup.from_generators(
+        group.generator_literals, axes=tuple(remapped_axes)
+    )
 
 
 def intersect_groups(
@@ -261,7 +267,11 @@ def broadcast_group(
                 continue
             kept_local.append(local_idx)
         if len(kept_local) >= 2:
-            restricted = group if len(kept_local) == group.degree else group.restrict(tuple(kept_local))
+            restricted = (
+                group
+                if len(kept_local) == group.degree
+                else group.restrict(tuple(kept_local))
+            )
             restricted_axes = (
                 restricted.axes
                 if restricted.axes is not None
@@ -305,8 +315,12 @@ def reduce_group(
     group_axes = group.axes
     if group_axes is None:
         group_axes = tuple(range(group.degree))
-    local_reduced = {i for i, tensor_axis in enumerate(group_axes) if tensor_axis in axes_set}
-    local_kept = [i for i, tensor_axis in enumerate(group_axes) if tensor_axis not in axes_set]
+    local_reduced = {
+        i for i, tensor_axis in enumerate(group_axes) if tensor_axis in axes_set
+    }
+    local_kept = [
+        i for i, tensor_axis in enumerate(group_axes) if tensor_axis not in axes_set
+    ]
 
     if not local_reduced:
         remapped = remap_group_axes(

@@ -140,9 +140,7 @@ class TestDeclaredSymmetryNonIdentical:
 
         D4 has order 8 (4 rotations + 4 reflections).
         """
-        T = _symmetrize(
-            (N, N, N, N, N), SymmetryGroup.dihedral(axes=(1, 2, 3, 4))
-        )
+        T = _symmetrize((N, N, N, N, N), SymmetryGroup.dihedral(axes=(1, 2, 3, 4)))
         W = we.random.randn(N, N)
         assert _detect_order("aijkl,ab->ijklb", T, W) == 8
 

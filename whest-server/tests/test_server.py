@@ -119,9 +119,7 @@ def test_fetch_slice_scalar_uses_raw_transport(server_and_client):
     assert resp["dtype"] == "float64"
     assert "result" not in resp
     value = (
-        np.frombuffer(resp["data"], dtype=resp["dtype"])
-        .reshape(resp["shape"])
-        .item()
+        np.frombuffer(resp["data"], dtype=resp["dtype"]).reshape(resp["shape"]).item()
     )
     assert value == 2.0
 
