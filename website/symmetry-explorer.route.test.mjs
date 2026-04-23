@@ -69,6 +69,7 @@ test('article route still wires the appendix modal while the main page stays app
   assert.match(appSource, /The cost above uses .*notationLatex\('g_pointwise'\).* for accumulation/);
   assert.match(appSource, /The fully summed expression can have a larger label-renaming formal symmetry/);
   assert.match(appSource, /String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`/);
+  assert.match(appSource, /where each <Latex math=\{String\.raw`W_d`\} \/> is a same-domain block of summed labels/);
   assert.match(appSource, /notationLatex\('g_output'\)/);
   assert.doesNotMatch(appSource, /VERBATIM, AUDIT-VERIFIED/);
   assert.doesNotMatch(appSource, /REVIEW_RESPONSE\.md §5/);
