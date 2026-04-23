@@ -102,7 +102,8 @@ def inv(a):
         a = _np.asarray(a)
     n = a.shape[-1]
     batch = _batch_size(a.shape)
-    is_symmetric = isinstance(a, SymmetricTensor)
+    input_symmetry = a.symmetry if isinstance(a, SymmetricTensor) else None
+    is_symmetric = input_symmetry is not None
     cost = (
         inv_cost(n, symmetric=is_symmetric) * batch if not _has_zero_dim(a.shape) else 0
     )
@@ -112,7 +113,7 @@ def inv(a):
         result = _np.linalg.inv(a)
     if is_symmetric:
         try:
-            result = as_symmetric(result, symmetry=a.symmetry)
+            result = as_symmetric(result, symmetry=input_symmetry)
         except SymmetryError:
             pass
     return result
