@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EXAMPLES } from './components/symmetry-aware-einsum-contractions/data/examples.js';
+import { Permutation } from './components/symmetry-aware-einsum-contractions/engine/permutation.js';
 import { analyzeExample } from './components/symmetry-aware-einsum-contractions/engine/pipeline.js';
 import {
   computeExpressionAlphaComparison,
@@ -95,4 +96,29 @@ test('comparison helper exposes a structural witness for a non-bilinear mismatch
   assert.notEqual(comparison.witness.summandA, comparison.witness.summandB);
   assert.match(comparison.witness.summandA, /^T\[/);
   assert.match(comparison.witness.summandB, /^T\[/);
+});
+
+test('comparison helper throws when a formal action leaves the assignment domain', () => {
+  const analysis = {
+    expressionGroup: {
+      elements: [Permutation.identity(2), new Permutation([1, 0])],
+    },
+    symmetry: {
+      allLabels: ['i', 'j'],
+      vLabels: [],
+      fullElements: [Permutation.identity(2)],
+    },
+    clusters: [
+      { labels: ['i'], size: 1 },
+      { labels: ['j'], size: 2 },
+    ],
+    componentCosts: {
+      alpha: 0,
+    },
+  };
+
+  assert.throws(
+    () => computeExpressionAlphaComparison({ analysis }),
+    /group action mapped tuple outside the assignment domain/,
+  );
 });

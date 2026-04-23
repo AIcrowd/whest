@@ -1,8 +1,12 @@
 // website/components/symmetry-aware-einsum-contractions/engine/expressionGroup.js
 //
 // Given the pointwise group G_pt, compute the expression-level group
-// G_expr = G_out × ∏_d S(W_d), where W_d ranges over same-domain/same-size
-// summed-label blocks.
+// G_expr = G_out × ∏_d S(W_d), where W_d ranges over summed-label blocks that
+// are compatible in the engine's current label-domain model.
+//
+// Today that compatibility model is represented by label-size classes
+// (`sizeByLabel` / cluster sizes), so only same-size summed labels share a
+// dummy-renaming block.
 //
 // G_expr is strictly pedagogical/display-only. It does NOT feed into direct
 // Burnside compression or accumulation counting. Direct compression uses G_pt.
@@ -96,7 +100,8 @@ function enumerateBlockSymmetricW(wLabels, sizeByLabel) {
  * @param {string[]} args.vLabels free labels
  * @param {string[]} args.wLabels summed labels
  * @param {string[]} args.allLabels full label list
- * @param {Map<string, number>|Record<string, number>=} args.sizeByLabel optional domain/size lookup
+ * @param {Map<string, number>|Record<string, number>=} args.sizeByLabel optional
+ * label-domain lookup encoded by size classes in the current engine
  */
 export function buildExpressionGroup({
   perTupleElements = [],
