@@ -4,12 +4,12 @@ Use this folder for string-first narrative edits. The content modules below are 
 
 ## Registry to consumer map
 
-- `main/preamble.ts` → `AlgorithmAtAGlance.jsx`
-- `main/section1.ts` → `explorerNarrative.js`
-- `main/section2.ts` → `explorerNarrative.js`
-- `main/section3.ts` → `explorerNarrative.js`
-- `main/section4.ts` → `explorerNarrative.js`
-- `main/section5.ts` → `explorerNarrative.js`
+- `main/preamble.js` → `AlgorithmAtAGlance.jsx`
+- `main/section1.js` → `explorerNarrative.js`
+- `main/section2.js` → `explorerNarrative.js`
+- `main/section3.js` → `explorerNarrative.js`
+- `main/section4.js` → `explorerNarrative.js`
+- `main/section5.js` → `explorerNarrative.js`
 - `appendix/section1.ts` → `ExpressionLevelModal.jsx`
 - `appendix/section2.ts` → `ExpressionLevelModal.jsx`
 - `appendix/section3.ts` → `ExpressionLevelModal.jsx`

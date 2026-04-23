@@ -1,6 +1,4 @@
-import type { SectionCopy } from '../schema.ts';
-
-const p = (text: string) => ({ kind: 'paragraph', text } as const);
+const p = (text) => ({ kind: 'paragraph', text });
 
 const section2 = {
   title: 'Encode the Structural Candidates',
@@ -14,6 +12,6 @@ const section2 = {
       p('A structural candidate space: labels, axis classes, incidence fingerprints, declared slot actions, and the size constraints any valid relabeling must preserve.'),
     ],
   },
-} satisfies SectionCopy;
+};
 
 export default section2;

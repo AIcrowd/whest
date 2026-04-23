@@ -318,9 +318,9 @@ test('Section 5 keeps the explorer on editorial-noir but overrides the cost-mode
 test('main page copy distinguishes candidates, accepted relabelings, and output-projection updates', () => {
   const appSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url), 'utf8');
   const narrativeSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/explorerNarrative.js', import.meta.url), 'utf8');
-  const section2Source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/content/main/section2.ts', import.meta.url), 'utf8');
-  const section3Source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/content/main/section3.ts', import.meta.url), 'utf8');
-  const section4Source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/content/main/section4.ts', import.meta.url), 'utf8');
+  const section2Source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/content/main/section2.js', import.meta.url), 'utf8');
+  const section3Source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/content/main/section3.js', import.meta.url), 'utf8');
+  const section4Source = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/content/main/section4.js', import.meta.url), 'utf8');
   const totalCostSource = fs.readFileSync(new URL('./components/symmetry-aware-einsum-contractions/components/TotalCostView.jsx', import.meta.url), 'utf8');
 
   assert.match(appSource, /Scope of the calculation/);

@@ -28,7 +28,7 @@ test('EXPLORER_ACTS sources main-page copy from registry modules', () => {
     'utf-8',
   );
 
-  assert.match(src, /import\s+\{[\s\S]*mainSection1[\s\S]*mainSection5[\s\S]*\}\s+from\s+'\.\.\/content\/main\/index\.ts'/);
+  assert.match(src, /import\s+\{[\s\S]*mainSection1[\s\S]*mainSection5[\s\S]*\}\s+from\s+'\.\.\/content\/main\/index\.js'/);
   assert.match(src, /const getParagraphTexts = \(blocks = \[\]\) => blocks/);
   assert.match(src, /filter\(\(\{ kind \}\) => kind === 'paragraph'\)/);
   assert.match(src, /heading:\s*mainSection1\.title/);

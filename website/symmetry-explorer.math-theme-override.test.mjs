@@ -34,7 +34,7 @@ test('Latex threads themeOverride into notation colorization and memoization', (
 test('InlineMathText accepts themeOverride and forwards it to nested Latex', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/InlineMathText.jsx');
 
-  assert.match(src, /export default function InlineMathText\(\{ children, themeOverride = null \}\)/);
+  assert.match(src, /export default function InlineMathText\(\{ children, themeOverride = null, strongClassName = null \}\)/);
   assert.match(src, /<Latex key=\{`math-\$\{i\}`\} math=\{part\.slice\(1, -1\)\} themeOverride=\{themeOverride\} \/>/);
 });
 

@@ -74,7 +74,7 @@ test('copy renderers thread stable key prefixes through singleton prose helpers'
 
 test('content barrel wires the registry and leaf modules stay layout-free', () => {
   const index = read('index.ts');
-  const mainIndex = read('main/index.ts');
+  const mainIndex = read('main/index.js');
   const expectedMappings = [
     ['main', 'preamble', 'mainPreamble'],
     ['main', 'section1', 'mainSection1'],
@@ -91,11 +91,8 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
   ];
 
   assert.match(index, /export\s+const\s+contentRegistry\s*=\s*\{/);
-  assert.match(
-    mainIndex,
-    /@ts-expect-error -- Node test runner needs explicit \.ts specifiers/,
-    'main/index.ts should document the Node-vs-Next import compatibility shim',
-  );
+  assert.match(mainIndex, /export \{ default as mainPreamble \} from '\.\/preamble\.js';/);
+  assert.match(mainIndex, /export \{ default as mainSection5 \} from '\.\/section5\.js';/);
   for (const [group, section, binding] of expectedMappings) {
     assert.match(
       index,
@@ -105,12 +102,12 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
   }
 
   const modules = [
-    'main/preamble.ts',
-    'main/section1.ts',
-    'main/section2.ts',
-    'main/section3.ts',
-    'main/section4.ts',
-    'main/section5.ts',
+    'main/preamble.js',
+    'main/section1.js',
+    'main/section2.js',
+    'main/section3.js',
+    'main/section4.js',
+    'main/section5.js',
     'appendix/section1.ts',
     'appendix/section2.ts',
     'appendix/section3.ts',
@@ -133,12 +130,12 @@ test('content barrel wires the registry and leaf modules stay layout-free', () =
 
 test('content registry does not wrap inline math in markdown code ticks', () => {
   const modules = [
-    'main/preamble.ts',
-    'main/section1.ts',
-    'main/section2.ts',
-    'main/section3.ts',
-    'main/section4.ts',
-    'main/section5.ts',
+    'main/preamble.js',
+    'main/section1.js',
+    'main/section2.js',
+    'main/section3.js',
+    'main/section4.js',
+    'main/section5.js',
     'appendix/section1.ts',
     'appendix/section2.ts',
     'appendix/section3.ts',
@@ -180,10 +177,10 @@ test('appendix section 6 names the three evaluator models for output symmetry', 
 
 test('copy modules use canonical notation keys for pointwise and formal groups', () => {
   const modules = [
-    'main/preamble.ts',
-    'main/section3.ts',
-    'main/section4.ts',
-    'main/section5.ts',
+    'main/preamble.js',
+    'main/section3.js',
+    'main/section4.js',
+    'main/section5.js',
     'appendix/section1.ts',
     'appendix/section2.ts',
     'appendix/section3.ts',
@@ -216,12 +213,12 @@ test('COPY_MAP documents the copy surface and the JSX-owned exceptions', () => {
   };
 
   assert.match(copyMap, /^# Copy Map$/m);
-  assertMapped('main/preamble.ts', 'AlgorithmAtAGlance.jsx');
-  assertMapped('main/section1.ts', 'explorerNarrative.js');
-  assertMapped('main/section2.ts', 'explorerNarrative.js');
-  assertMapped('main/section3.ts', 'explorerNarrative.js');
-  assertMapped('main/section4.ts', 'explorerNarrative.js');
-  assertMapped('main/section5.ts', 'explorerNarrative.js');
+  assertMapped('main/preamble.js', 'AlgorithmAtAGlance.jsx');
+  assertMapped('main/section1.js', 'explorerNarrative.js');
+  assertMapped('main/section2.js', 'explorerNarrative.js');
+  assertMapped('main/section3.js', 'explorerNarrative.js');
+  assertMapped('main/section4.js', 'explorerNarrative.js');
+  assertMapped('main/section5.js', 'explorerNarrative.js');
   assertMapped('appendix/section1.ts', 'ExpressionLevelModal.jsx');
   assertMapped('appendix/section2.ts', 'ExpressionLevelModal.jsx');
   assertMapped('appendix/section3.ts', 'ExpressionLevelModal.jsx');
@@ -252,10 +249,10 @@ test('registry consumers stay constrained to the documented copy surface', () =>
     .filter((relativePath) => contentImportPattern.test(readFromWebsiteRoot(relativePath)))
     .sort();
 
-  assert.match(`import demo from '../content/main/preamble.ts';`, contentImportPattern);
-  assert.match(`import demo from '../../content/main/preamble.ts';`, contentImportPattern);
-  assert.match(algorithm, /import\s+mainPreamble\s+from\s+'\.\.\/content\/main\/preamble\.ts'/);
-  assert.match(narrative, /from\s+'\.\.\/content\/main\/index\.ts'/);
+  assert.match(`import demo from '../content/main/preamble.js';`, contentImportPattern);
+  assert.match(`import demo from '../../content/main/preamble.js';`, contentImportPattern);
+  assert.match(algorithm, /import\s+mainPreamble\s+from\s+'\.\.\/content\/main\/preamble\.js'/);
+  assert.match(narrative, /from\s+'\.\.\/content\/main\/index\.js'/);
   assert.match(appendix, /import\s+appendixSection1\s+from\s+'\.\.\/content\/appendix\/section1\.ts'/);
   assert.match(appendix, /import\s+appendixSection6\s+from\s+'\.\.\/content\/appendix\/section6\.ts'/);
   assert.deepEqual(importers, [

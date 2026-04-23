@@ -107,10 +107,10 @@ test('Einsum column transitions to symmetry at the bottom', () => {
 
 test('AlgorithmAtAGlance sources its narrative prose from the content registry', () => {
   const src = readComponent('AlgorithmAtAGlance.jsx');
-  const preambleSrc = readMainContent('preamble.ts');
+  const preambleSrc = readMainContent('preamble.js');
 
   assert.match(src, /import\s+\{\s*default as renderProseBlocks\s*\}\s+from\s+'\.\.\/content\/renderProseBlocks\.jsx'/);
-  assert.match(src, /import\s+mainPreamble\s+from\s+'\.\.\/content\/main\/preamble\.ts'/);
+  assert.match(src, /import\s+mainPreamble\s+from\s+'\.\.\/content\/main\/preamble\.js'/);
   assert.match(src, /function renderSingleProseBlock\(blocks = \[\], keyPrefix = 'main-prose-block'\)/);
   assert.match(src, /renderSingleProseBlock\(mainPreamble\.slots\.calloutFooter,\s*'symmetry-callout-footer'\)/);
   assert.match(src, /mainPreamble\.slots\.einsumIntroBeforeSummed/);

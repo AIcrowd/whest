@@ -1,6 +1,4 @@
-import type { SectionCopy } from '../schema.ts';
-
-const p = (text: string) => ({ kind: 'paragraph', text } as const);
+const p = (text) => ({ kind: 'paragraph', text });
 
 const section1 = {
   title: 'Specify the Contraction',
@@ -14,6 +12,6 @@ const section1 = {
       p('A normalized direct-index contraction instance with operands, slots, output labels, label domains, and declared equality symmetries.'),
     ],
   },
-} satisfies SectionCopy;
+};
 
 export default section1;

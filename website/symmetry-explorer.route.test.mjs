@@ -62,7 +62,7 @@ test('article route still wires the appendix modal while the main page stays app
     'utf8',
   );
   const section1Copy = fs.readFileSync(
-    new URL('./components/symmetry-aware-einsum-contractions/content/main/section1.ts', import.meta.url),
+    new URL('./components/symmetry-aware-einsum-contractions/content/main/section1.js', import.meta.url),
     'utf8',
   );
 

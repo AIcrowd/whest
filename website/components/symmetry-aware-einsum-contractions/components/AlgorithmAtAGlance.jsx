@@ -5,7 +5,7 @@ import MentalFrameworkCode from './MentalFrameworkCode.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import SectionReferenceLink from './SectionReferenceLink.jsx';
 import { default as renderProseBlocks } from '../content/renderProseBlocks.jsx';
-import mainPreamble from '../content/main/preamble.ts';
+import mainPreamble from '../content/main/preamble.js';
 import { getActiveExplorerThemeId, explorerThemeColor } from '../lib/explorerTheme.js';
 import { notationLatex } from '../lib/notationSystem.js';
 import { buildSection1ExampleView } from '../lib/section1ExampleView.js';

@@ -4,7 +4,7 @@ import {
   mainSection3,
   mainSection4,
   mainSection5,
-} from '../content/main/index.ts';
+} from '../content/main/index.js';
 
 const getParagraphTexts = (blocks = []) => blocks
   .filter(({ kind }) => kind === 'paragraph')

@@ -1,6 +1,4 @@
-import type { SectionCopy } from '../schema.ts';
-
-const p = (text: string) => ({ kind: 'paragraph', text } as const);
+const p = (text) => ({ kind: 'paragraph', text });
 
 const section4 = {
   title: 'Count Product Orbits and Output Projections',
@@ -15,6 +13,6 @@ const section4 = {
       p('Per-component product counts $M_a$ and update counts $\\alpha_a$, then global $M=\\prod_a M_a$ and $\\alpha=\\prod_a\\alpha_a$ when the support-connected components factor independently.'),
     ],
   },
-} satisfies SectionCopy;
+};
 
 export default section4;

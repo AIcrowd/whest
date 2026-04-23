@@ -1,6 +1,4 @@
-import type { SectionCopy } from '../schema.ts';
-
-const p = (text: string) => ({ kind: 'paragraph', text } as const);
+const p = (text) => ({ kind: 'paragraph', text });
 
 const section3 = {
   title: 'Certify the Pointwise Symmetry Group',
@@ -15,6 +13,6 @@ const section3 = {
       p('A detected pointwise group $G_{\\text{pt}}$, represented by accepted witnesses and the generated label action on the full assignment grid.'),
     ],
   },
-} satisfies SectionCopy;
+};
 
 export default section3;

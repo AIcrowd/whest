@@ -1,6 +1,4 @@
-import type { SectionCopy } from '../schema.ts';
-
-const p = (text: string) => ({ kind: 'paragraph', text } as const);
+const p = (text) => ({ kind: 'paragraph', text });
 
 const preamble = {
   title: 'What this explorer counts',
@@ -46,6 +44,6 @@ const preamble = {
       p(' below to pick or build a contraction.'),
     ],
   },
-} satisfies SectionCopy;
+};
 
 export default preamble;
