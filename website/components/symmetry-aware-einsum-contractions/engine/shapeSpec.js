@@ -7,7 +7,7 @@ export const SHAPE_SPEC = {
     id: 'trivial',
     label: 'Trivial',
     shortLabel: '∅',
-    description: 'Direct count — no symmetry to exploit, so every cell is distinct work.',
+    description: 'No detected pointwise symmetry in this component, so every full assignment remains its own product/update representative.',
     latex: String.raw`\alpha = \prod_{\ell \in ${notationLatex('l_labels')}} ${notationLatex('n_label')} \quad (|${notationLatex('g_detected')}|=1)`,
     when: 'Detected group G is trivial.',
     glossary: [
@@ -23,7 +23,7 @@ export const SHAPE_SPEC = {
     id: 'allVisible',
     label: 'All-visible',
     shortLabel: 'V',
-    description: 'Cartesian product — W is empty, so each free-label tuple is its own output bin.',
+    description: 'No summed labels in this component. Product symmetry can reduce M, but the dense output still has one bin for every visible-label tuple.',
     latex: String.raw`\alpha = \prod_{\ell \in ${notationLatex('v_free')}} ${notationLatex('n_label')}`,
     when: 'W = ∅.',
     glossary: [
@@ -33,7 +33,7 @@ export const SHAPE_SPEC = {
       { term: notationLatex('n_label'), definition: 'the size of label $\\ell$. Every output bin is written exactly once, so $\\alpha$ is the Cartesian product of free-label sizes.' },
       {
         term: `${notationLatex('v_free')}\\text{-symmetry}`,
-        definition: `Symmetry on $${notationLatex('v_free')}$ does NOT reduce $\\alpha$ here — the output tensor is dense, so every $${notationLatex('v_free')}$-tuple is its own bin even when two tuples are related by a symmetry. $${notationLatex('v_free')}$-symmetry DOES reduce the multiplication count $\\mu$: you compute each orbit's product once and reuse it across the orbit's positions. See the Multiplication Cost card.`,
+        definition: `Symmetry on $${notationLatex('v_free')}$ can reduce representative products, but it does not reduce direct output-bin updates in an all-visible dense output. Every visible tuple is still an output bin.`,
       },
     ],
     themeRole: 'caseAllVisible',
@@ -42,7 +42,7 @@ export const SHAPE_SPEC = {
     id: 'allSummed',
     label: 'All-summed',
     shortLabel: 'W',
-    description: 'Size-aware Burnside — V is empty, so every orbit maps to the single scalar output.',
+    description: 'No visible labels in this component. Every product orbit updates the single scalar output once, so α equals the product-orbit count.',
     latex: String.raw`\alpha = |X / ${notationLatex('g_detected')}| = \tfrac{1}{|${notationLatex('g_detected')}|} \sum_{g \in ${notationLatex('g_detected')}} \prod_{c \in \mathrm{cycles}(g)} ${notationLatex('n_cycle')}`,
     when: 'V = ∅.',
     glossary: [
@@ -60,7 +60,7 @@ export const SHAPE_SPEC = {
     id: 'mixed',
     label: 'Mixed',
     shortLabel: 'V+W',
-    description: `Mixed shape — both $${notationLatex('v_free')}$ and $${notationLatex('w_summed')}$ are nonempty; dispatch to the regime ladder.`,
+    description: `Both $${notationLatex('v_free')}$ and $${notationLatex('w_summed')}$ are present. α must count output projections of product orbits, so the component dispatches to the regime ladder.`,
     latex: String.raw`\alpha = \sum_{${notationLatex('orbit_o')} \in X/${notationLatex('g_detected')}} |${notationLatex('projection_pi_v_free')}|`,
     when: `$${notationLatex('v_free')}$, $${notationLatex('w_summed')}$ both nonempty.`,
     glossary: [

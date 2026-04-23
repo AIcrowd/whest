@@ -7,11 +7,11 @@
 export const GLOSSARY = [
   {
     term: 'pointwise symmetry',
-    definition: 'A label permutation π such that for every tuple t of index values, summand(t) = summand(π⁻¹ t). The invariance is required at every individual summand (pointwise on the tuple space), not merely on the total. Compression uses this group: reusing one orbit representative is only valid when every tuple in the orbit has the same summand value.',
+    definition: 'A label relabeling π that preserves every pre-summation scalar product under the declared operand equality symmetries and repeated-operand identities. This is the group used for direct computation: one representative per orbit is valid only when every assignment in the orbit has the same summand product.',
   },
   {
     term: 'formal symmetry',
-    definition: 'A V-preserving label permutation π = (π_V, π_W) ∈ Sym(V) × Sym(W) under which the output tensor R, viewed as a polynomial in the entries of the operand tensors, is invariant: R[π_V·ω] = R[ω] as polynomials, after relabelling the summed indices by π_W. "Formal" here has its standard mathematical meaning — invariance at the level of the expression as a formal polynomial, not at the level of its values on any specific operand. The V-preserving restriction of any pointwise symmetry projects to a formal symmetry; the converse does not hold in general (dummy W-renamings in {e} × S(W) are formal but not pointwise).',
+    definition: 'A symmetry of the completed expression after summed labels have become bound variables. Formal symmetry may include output relabelings inherited from pointwise symmetry and same-domain dummy renamings of summed labels. It explains expression equality after summation; it is not generally valid for reducing pre-summation products or accumulation updates.',
   },
   {
     term: '$G_{\\text{pt}}\\big|_V$',
@@ -19,7 +19,19 @@ export const GLOSSARY = [
   },
   {
     term: '$S(W)$',
-    definition: 'The full symmetric group on the summed (contracted) labels W. Every permutation of W is a formal symmetry because the sum over W is bound-variable iteration — renaming dummies does not change the total.',
+    definition: 'The symmetric group on a same-domain block of summed labels. With heterogeneous sizes, the valid dummy-renaming factor is ∏_d S(W_d), where each W_d contains summed labels with the same domain/size. Full S(W) is valid only when all summed labels share a common domain.',
+  },
+  {
+    term: 'representative products M',
+    definition: 'M is the number of product orbits under G_pt. In components, M = ∏_a M_a. It counts how many distinct product values the direct symmetry-aware evaluator must form before accounting for the k-operand multiplication chain length.',
+  },
+  {
+    term: 'multiplication cost μ',
+    definition: 'μ is the multiplication-chain event count derived from representative products: μ = (k - 1)M for k operand tensors. μ is not the product-orbit count itself.',
+  },
+  {
+    term: 'accumulation cost α',
+    definition: 'α is the direct output-bin update count. It is an orbit-projection count: sum over product orbits O of the number of distinct visible/output projections touched by O. It is not output storage and not generally equal to M.',
   },
   {
     term: 'wreath product',
@@ -43,7 +55,7 @@ export const GLOSSARY = [
   },
   {
     term: 'component',
-    definition: "A connected piece of the einsum's label-interaction graph (labels linked by the σ-loop's generators). Each component has its own labels L_c, V_c, W_c, and restricted symmetry group G_c. The classification tree runs per-component; components combine to give the einsum's total cost.",
+    definition: "A support-connected block of labels induced by the detected generators. Each component has labels L_a, output labels V_a, summed labels W_a, and restricted group G_a. The decomposition is safe for the displayed product formula; algebraically independent factors that remain inside a support-connected block are handled by the regime ladder.",
   },
   {
     term: 'cross-V/W element',
@@ -59,7 +71,7 @@ export const GLOSSARY = [
   },
   {
     term: 'Factorization check',
-    definition: 'The direct-product test on a materialized group G: verify that no element crosses V/W, then check |G| = |G_V| · |G_W|. Passing the factorization check (and the meaningfulness guard on both projection sizes > 1) means G factors as G_V × G_W acting factor-wise on V and W.',
+    definition: 'The direct-product recognizer checks that no group element crosses V/W and that |G| = |G_V| · |G_W|. Passing means the action factors over visible and summed labels, so the direct-product α formula is exact.',
   },
   {
     term: 'meaningfulness guard',
