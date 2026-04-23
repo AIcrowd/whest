@@ -57,6 +57,21 @@ test('renderProseBlocks is a thin math adapter without layout shells', () => {
   assert.doesNotMatch(renderer, /className=/);
 });
 
+test('copy renderers thread stable key prefixes through singleton prose helpers', () => {
+  const renderer = read('renderProseBlocks.jsx');
+  const algorithm = readFromWebsiteRoot('components/symmetry-aware-einsum-contractions/components/AlgorithmAtAGlance.jsx');
+  const appendix = readFromWebsiteRoot('components/symmetry-aware-einsum-contractions/components/ExpressionLevelModal.jsx');
+
+  assert.match(renderer, /renderProseBlocks\(\s*blocks = \[\],\s*\{ renderCallout, strongClassName = null, keyPrefix = 'prose' \} = \{\},\s*\)/);
+  assert.match(renderer, /const blockKey = `\$\{keyPrefix\}-\$\{block\.kind\}-\$\{index\}`;/);
+  assert.match(renderer, /<Fragment key=\{blockKey\}>/);
+  assert.match(renderer, /<InlineMathText key=\{blockKey\} strongClassName=\{strongClassName\}>/);
+  assert.match(algorithm, /function renderSingleProseBlock\(blocks = \[\], keyPrefix = 'main-prose-block'\)/);
+  assert.match(algorithm, /return renderProseBlocks\(blocks, \{ keyPrefix \}\)\[0\] \?\? null;/);
+  assert.match(appendix, /return renderProseBlocks\(normalizedBlocks, \{ renderCallout, strongClassName, keyPrefix: slotKey \}\);/);
+  assert.match(appendix, /return renderAppendixSlot\(\[block\], \{ \.\.\.options, slotKey: `\$\{slotKey\}-\$\{index\}` \}\)\[0\] \?\? null;/);
+});
+
 test('content barrel wires the registry and leaf modules stay layout-free', () => {
   const index = read('index.ts');
   const mainIndex = read('main/index.ts');
@@ -142,8 +157,33 @@ test('content registry does not wrap inline math in markdown code ticks', () => 
   }
 });
 
-test('appendix copy modules use canonical notation keys for pointwise and formal groups', () => {
-  const appendixModules = [
+test('appendix section 3 takeaway states that G_out is inherited from G_pt', () => {
+  const source = read('appendix/section3.ts');
+
+  assert.match(
+    source,
+    /\$G_\{\\\\mathrm\{out\}\}\$ is the output-level symmetry inherited from \$G_\{\\\\text\{pt\}\}\$/,
+  );
+  assert.match(source, /collapsing storage to one representative per output orbit/);
+  assert.doesNotMatch(source, /direct dense-output evaluator/);
+  assert.doesNotMatch(source, /symmetry-aware accumulation model/);
+});
+
+test('appendix section 6 names the three evaluator models for output symmetry', () => {
+  const source = read('appendix/section6.ts');
+
+  assert.match(source, /Model 1 — current page\./);
+  assert.match(source, /Model 2 — symmetry-aware storage only\./);
+  assert.match(source, /Model 3 — symmetry-aware storage plus symmetry-aware accumulation\./);
+  assert.match(source, /output-orbit representatives/);
+});
+
+test('copy modules use canonical notation keys for pointwise and formal groups', () => {
+  const modules = [
+    'main/preamble.ts',
+    'main/section3.ts',
+    'main/section4.ts',
+    'main/section5.ts',
     'appendix/section1.ts',
     'appendix/section2.ts',
     'appendix/section3.ts',
@@ -152,7 +192,7 @@ test('appendix copy modules use canonical notation keys for pointwise and formal
     'appendix/section6.ts',
   ];
 
-  for (const relativePath of appendixModules) {
+  for (const relativePath of modules) {
     const source = read(relativePath);
     assert.doesNotMatch(
       source,

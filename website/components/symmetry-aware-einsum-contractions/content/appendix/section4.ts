@@ -16,6 +16,9 @@ const section4 = {
     constructionTitle: [
       p('Formal-group construction'),
     ],
+    presetPickerLabel: [
+      p('Interesting presets:'),
+    ],
     constructionNote: [
       p('The construction above enumerates the output factor and the same-domain dummy-renaming factors for the selected preset.'),
     ],

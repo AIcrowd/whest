@@ -1,7 +1,8 @@
 import Latex from './Latex.jsx';
 import SectionReferenceLink from './SectionReferenceLink.jsx';
 
-export function renderTooltipInlineText(text, keyPrefix) {
+export function renderTooltipInlineText(text, keyPrefix, options = {}) {
+  const strongClassName = options.strongClassName ?? 'font-semibold text-current';
   return text
     .split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*|`[^`]+`|\*[^*\n]+\*)/g)
     .filter(Boolean)
@@ -28,7 +29,7 @@ export function renderTooltipInlineText(text, keyPrefix) {
       }
       if (segment.startsWith('**') && segment.endsWith('**') && segment.length > 4) {
         return (
-          <strong key={`${keyPrefix}-bold-${index}`} className="font-semibold text-current">
+          <strong key={`${keyPrefix}-bold-${index}`} className={strongClassName}>
             {segment.slice(2, -2)}
           </strong>
         );
@@ -73,7 +74,7 @@ export function renderTooltipInlineText(text, keyPrefix) {
  * - Non-string children pass through unchanged, so callers can interleave
  *   JSX nodes with strings without special-casing.
  */
-export default function InlineMathText({ children, themeOverride = null }) {
+export default function InlineMathText({ children, themeOverride = null, strongClassName = null }) {
   if (children == null) return null;
   if (typeof children !== 'string') return children;
 
@@ -86,7 +87,7 @@ export default function InlineMathText({ children, themeOverride = null }) {
         if (part.startsWith('$') && part.endsWith('$') && part.length >= 3) {
           return [<Latex key={`math-${i}`} math={part.slice(1, -1)} themeOverride={themeOverride} />];
         }
-        return renderTooltipInlineText(part, `segment-${i}`);
+        return renderTooltipInlineText(part, `segment-${i}`, { strongClassName });
       })}
     </>
   );

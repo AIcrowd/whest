@@ -18,6 +18,10 @@ const appendixSectionSource = fs.readFileSync(
   new URL('./components/symmetry-aware-einsum-contractions/components/AppendixSection.jsx', import.meta.url),
   'utf8',
 );
+const inlineMathTextSource = fs.readFileSync(
+  new URL('./components/symmetry-aware-einsum-contractions/components/InlineMathText.jsx', import.meta.url),
+  'utf8',
+);
 
 test('appendix modal shell keeps the editorial rail and the new cost-vs-expression masthead', () => {
   assert.match(source, /import renderProseBlocks from '\.\.\/content\/renderProseBlocks\.jsx'/);
@@ -81,8 +85,13 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
   assert.match(section3, /AppendixSupportSplit/);
   assert.match(section3, /Worked example — bilinear trace/);
 
+  assert.match(source, /SECTION4_FORMAL_GROUP_PRESET_IDS = \['frobenius', 'direct-s2-c3', 'triple-outer'\]/);
+  assert.match(source, /SECTION4_FORMAL_GROUP_PRESETS = SECTION4_FORMAL_GROUP_PRESET_IDS/);
   assert.match(section4, /AppendixSupportSplit/);
   assert.match(section4, /renderAppendixSingleBlock\(appendixSection4\.slots\.constructionTitle, 0\)/);
+  assert.match(section4, /renderAppendixSingleBlock\(appendixSection4\.slots\.presetPickerLabel, 0\)/);
+  assert.match(section4, /SECTION4_FORMAL_GROUP_PRESETS\.map\(\(suggestedPreset\) =>/);
+  assert.match(section4, /onClick=\{\(\) => onSelectPreset\?\.\(suggestedPreset\.idx\)\}/);
   assert.match(section4, /<VSubSwConstruction[\s\S]*showHeading=\{false\}/);
   assert.match(section4, /VSubSwConstruction/);
 
@@ -102,8 +111,11 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
 
   assert.match(appendixSectionSource, /anchorId = ''/);
   assert.match(appendixSectionSource, /deckClassName = ''/);
+  assert.match(appendixSectionSource, /import InlineMathText from '\.\/InlineMathText\.jsx';/);
+  assert.match(appendixSectionSource, /const renderedTitle = typeof title === 'string' \? <InlineMathText>\{title\}<\/InlineMathText> : title;/);
   assert.match(appendixSectionSource, /<section id=\{anchorId \|\| undefined\}/);
   assert.match(appendixSectionSource, /<SectionEyebrow n=\{n\} label=\{label\} anchorId=\{anchorId\} \/>/);
+  assert.match(appendixSectionSource, /<h3 className="mt-2 font-heading text-\[24px\] font-semibold leading-tight text-gray-900">\s*\{renderedTitle\}\s*<\/h3>/);
   assert.match(appendixSectionSource, /className=\{\['mt-3 font-serif text-\[17px\] leading-\[1\.75\] text-gray-700', deckClassName \|\| 'max-w-\[70ch\]'\]\.filter\(Boolean\)\.join\(' '\)\}/);
   assert.match(source, /anchorId="appendix-section-1"/);
   assert.match(source, /anchorId="appendix-section-2"/);
@@ -180,6 +192,11 @@ test('sections 2 through 4 introduce same-domain dummy renaming, then G_out, the
   assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.intro/);
   assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.takeaway/);
   assert.match(source, /n=\{4\}[\s\S]*renderAppendixSingleBlock\(appendixSection4\.slots\.constructionTitle, 0\)/);
+  assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.presetPickerLabel/);
+  assert.match(source, /SECTION4_FORMAL_GROUP_PRESET_IDS/);
+  assert.match(source, /frobenius/);
+  assert.match(source, /direct-s2-c3/);
+  assert.match(source, /triple-outer/);
   assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.constructionNote/);
   assert.match(source, /n=\{4\}[\s\S]*<Latex math=\{String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`\} \/>/);
   assert.match(source, /n=\{4\}[\s\S]*<VSubSwConstruction/);
@@ -288,6 +305,9 @@ test('section 6 frames storage as a separate optimization axis with α_engine an
   assert.match(source, /n=\{6\}[\s\S]*renderAppendixSingleBlock\(appendixSection6\.slots\.tableNote, 0\)/);
   assert.match(source, /n=\{6\}[\s\S]*renderAppendixSingleBlock\(appendixSection6\.slots\.scopeLabel, 0\)/);
   assert.match(source, /n=\{6\}[\s\S]*appendixSection6\.slots\.footer/);
+  assert.match(source, /n=\{6\}[\s\S]*const isModelBlock = index >= 1 && index <= 3;/);
+  assert.match(source, /n=\{6\}[\s\S]*rounded-lg border border-stone-200\/70 bg-stone-50\/60 px-4 py-3/);
+  assert.match(source, /n=\{6\}[\s\S]*strongClassName: isModelBlock \? 'font-semibold text-\[var\(--primary\)\]' : null/);
   assert.match(source, /n=\{6\}[\s\S]*const operandChips = operands\.map\(\(operand\) => \(\{/);
   assert.match(source, /n=\{6\}[\s\S]*chipName: operand\.count > 1 \? `\$\{operand\.name\}×\$\{operand\.count\}` : operand\.name/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="flex flex-wrap gap-1\.5">\s*\{operandChips\.map\(\(operand\) => \(/);
@@ -297,12 +317,12 @@ test('section 6 frames storage as a separate optimization axis with α_engine an
   assert.doesNotMatch(source, /const SAVINGS_TABLE_ROWS = \[/);
   assert.doesNotMatch(source, /n=\{6\}[\s\S]*<span className="font-mono font-semibold">\{o\.name\}<\/span>/);
   assert.match(source, /Accumulation representatives/);
-  assert.match(source, /Storage-aware output updates/);
+  assert.match(source, /Output-orbit representatives/);
   assert.match(source, /Storage-only saving/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="text-\[13px\] font-semibold text-gray-900">\s*<Latex math="\\alpha_\{\\text\{engine\}\}" \/>/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Accumulation representatives<\/div>/);
   assert.match(source, /n=\{6\}[\s\S]*<div className="text-\[13px\] font-semibold text-gray-900">\s*<Latex math="\\alpha_\{\\text\{storage\}\}" \/>/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Storage-aware output updates<\/div>/);
+  assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Output-orbit representatives<\/div>/);
   assert.match(source, /n=\{6\}[\s\S]*r\.vLatex === '\\\\varnothing' \? '\\\\varnothing' : `\\\\\{\$\{r\.vLatex\}\\\\\}`/);
   assert.match(source, /n=\{6\}[\s\S]*<Latex math=\{r\.vSubLatex\} \/>/);
   assert.match(source, /n=\{6\}[\s\S]*\{r\.alphaEngine\}/);
@@ -327,6 +347,13 @@ test('appendix avoids raw unthemed math literals for key semantic symbols and ex
   assert.match(source, /notationColoredLatex\('s_w_summed', 'S\(W\)'\)/);
   assert.match(source, /WorkedExampleTensorProduct/);
   assert.match(source, /WorkedExampleDisplayEquation/);
+});
+
+test('section 6 model prefixes are emphasized through copy plus InlineMathText strong overrides', () => {
+  assert.match(inlineMathTextSource, /export function renderTooltipInlineText\(text, keyPrefix, options = \{\}\)/);
+  assert.match(inlineMathTextSource, /const strongClassName = options\.strongClassName \?\? 'font-semibold text-current';/);
+  assert.match(inlineMathTextSource, /className=\{strongClassName\}/);
+  assert.match(source, /strongClassName: isModelBlock \? 'font-semibold text-\[var\(--primary\)\]' : null/);
 });
 
 test('appendix hover surfaces and shared typography registers remain intact', () => {
@@ -380,7 +407,8 @@ test('appendix roadmap cards are formula-first with white background and black b
   assert.doesNotMatch(roadmapBlock, /Output group/);
   assert.doesNotMatch(roadmapBlock, /Dummy group/);
   assert.doesNotMatch(roadmapBlock, /Formal group/);
-  assert.match(source, /The restriction <Latex math=\{String\.raw`G_\{\\text\{pt\}\}\\|_V`\} \/> to output labels/);
+  assert.ok(roadmapBlock.includes('The restriction <Latex math={String.raw`G_{\\text{pt}}\\|_V`} /> to output labels.'));
+  assert.match(roadmapBlock, /This is the output-level symmetry inherited from pointwise equality; in this appendix it is used to discuss output equality and storage collapse\./);
   assert.match(source, /same-domain dummy renamings of bound summation variables/);
   assert.match(source, /<Latex math=\{String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`\} \/>/);
 });

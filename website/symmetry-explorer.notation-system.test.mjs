@@ -523,8 +523,15 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(constructionSource, /Formal-group construction/);
   assert.match(constructionSource, /notationLatex\('g_formal'\)/);
   assert.match(constructionSource, /notationLatex\('g_output'\)/);
-  assert.match(constructionSource, /notationColoredLatex\('v_free', 'V'\)/);
-  assert.match(constructionSource, /String\.raw`\\prod_d \$\{notationColoredLatex\('s_w_summed', 'S\(W_d\)'\)\}`/);
+  assert.match(constructionSource, /const COLOR_V = explorerThemeColor\(explorerThemeId, 'hero'\)/);
+  assert.match(constructionSource, /const COLOR_W = explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
+  assert.match(constructionSource, /InlineMathText>\{`\(\s*visible output action, inherited from \$\$\{notationLatex\('g_pointwise'\)\}\$\s*\)`\}<\/InlineMathText>/);
+  assert.match(constructionSource, /function themedMath\(latex, color\)/);
+  assert.match(constructionSource, /const SHORT_V_LATEX = themedMath\('V', COLOR_V\)/);
+  assert.match(constructionSource, /const SHORT_DUMMY_FACTOR_LATEX = String\.raw`\\prod_d \$\{themedMath\('S\(W_d\)', COLOR_W\)\}`/);
+  assert.match(constructionSource, /<ColoredLabels[\s\S]*vColor=\{COLOR_V\}[\s\S]*wColor=\{COLOR_W\}/);
+  assert.doesNotMatch(constructionSource, /notationColoredLatex\('v_free', 'V'\)/);
+  assert.doesNotMatch(constructionSource, /notationColoredLatex\('s_w_summed', 'S\(W_d\)'\)/);
   assert.match(constructionSource, /is trivial for this einsum\./);
   assert.match(appendixSource, /Pointwise group/);
   assert.match(appendixSource, /anchorId="appendix-section-3"/);

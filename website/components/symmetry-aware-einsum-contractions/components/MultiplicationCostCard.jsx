@@ -152,7 +152,7 @@ export default function MultiplicationCostCard({ components = [] }) {
         <InlineMathText>{String.raw`Every component gets the same treatment. Size-aware Burnside counts the per-component orbit count $M_a$ once each; the multiplication cost is then $\mu = (\texttt{num\_terms} - 1)\cdot \prod_a M_a$, one product per global orbit representative, where forming that product costs num_terms - 1 binary multiplies. No regime dispatch is needed because the equation ignores the $V_{\mathrm{free}} / W_{\mathrm{summed}}$ split.`}</InlineMathText>
       </p>
       <p className="mt-3 text-[12px] leading-5 text-muted-foreground">
-        M counts representative product values. μ=(k−1)M counts multiplication-chain events. α counts direct output-bin updates induced by product orbits.
+        <InlineMathText>{String.raw`$M$ counts representative product values. $\mu = (k-1)M$ counts multiplication-chain events. $\alpha$ counts direct output-bin updates induced by product orbits.`}</InlineMathText>
       </p>
 
       {/* Hover-wrapped formula — shows μ on top, the per-component

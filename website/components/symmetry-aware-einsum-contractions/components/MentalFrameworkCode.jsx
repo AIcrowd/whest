@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
+import Latex from './Latex.jsx';
 import { tokenizePseudocodeLine } from '../engine/teachingModel.js';
-import { notationColor } from '../lib/notationSystem.js';
+import { notationLatex } from '../lib/notationSystem.js';
 
 /**
  * Editorial-light rendering of the symmetry-aware contraction pseudocode.
@@ -235,22 +236,26 @@ export default function MentalFrameworkCode({ example }) {
           Counting convention
         </div>
         <p className="mt-1.5 text-[12.5px] leading-6 text-stone-700">
-          The number of representative products is <strong className="font-semibold">M</strong>. Every{' '}
+          <span>The number of representative products is </span>
+          <Latex math={notationLatex('m_total')} />
+          <span>.</span>
+          {' '}Every{' '}
           <code className="rounded bg-stone-200/60 px-1 font-mono text-[12px] text-stone-800">
             base_val
           </code>{' '}
           above is shorthand for a multiplicative chain, so a k-operand product contributes k-1 binary multiplies. We write{' '}
-          <strong className="font-semibold" style={{ color: notationColor('mu_total') }}>
-            μ = (k-1)M
-          </strong>{' '}
-          for those multiplication-chain events. Every{' '}
+          <Latex
+            math={String.raw`${notationLatex('mu_total')} = (${notationLatex('k_operands')}-1)${notationLatex('m_total')}`}
+          />
+          {' '}for those multiplication-chain events. Every{' '}
           <code className="rounded bg-stone-200/60 px-1 font-mono text-[12px] text-stone-800">
             R[out] += coeff · base_val
           </code>{' '}
           is one direct output-bin update event, implemented as a fused multiply-add when the coefficient is not one; summing those events gives{' '}
-          <strong className="font-semibold" style={{ color: notationColor('alpha_total') }}>
-            α
-          </strong>. This page reports μ + α and does not model memory traffic, BLAS kernels, or contraction-path rewrites.
+          <Latex math={notationLatex('alpha_total')} />
+          <span>. This page reports </span>
+          <Latex math={String.raw`${notationLatex('mu_total')} + ${notationLatex('alpha_total')}`} />
+          <span> and does not model memory traffic, BLAS kernels, or contraction-path rewrites.</span>
         </p>
       </div>
     </figure>

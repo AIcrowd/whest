@@ -28,10 +28,10 @@ const SECTION_FIVE_INTRO_PARAGRAPH =
   'The preceding sections have produced a detected pointwise group and a support-connected component decomposition of its label action. The final step is to combine the two quantities a direct symmetry-aware evaluator needs: representative products and the output-bin updates induced by those representatives.';
 
 const SECTION_FIVE_INTRO_LEAD =
-  'For component a, let M_a be the number of product orbits and let α_a be the number of output-bin updates induced by those orbits. Under the independent-component factorization, M = ∏_a M_a and α = ∏_a α_a. With k operand tensors, the direct scalar-event cost reported here is';
+  String.raw`For component $a$, let $M_a$ be the number of product orbits and let $\alpha_a$ be the number of output-bin updates induced by those orbits. Under the independent-component factorization, $M = \prod_a M_a$ and $\alpha = \prod_a \alpha_a$. With $k$ operand tensors, the direct scalar-event cost reported here is`;
 
 const SECTION_FIVE_INTRO_CLOSE =
-  'M_a is a size-aware Burnside orbit count when a closed form applies; α_a is selected by the shape and regime ladder. If a mixed component falls outside the analytic regimes and exceeds the brute-force budget, the count is reported unavailable instead of being guessed.';
+  String.raw`$M_a$ is a size-aware Burnside orbit count when a closed form applies; $\alpha_a$ is selected by the shape and regime ladder. If a mixed component falls outside the analytic regimes and exceeds the brute-force budget, the count is reported unavailable instead of being guessed.`;
 const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total\ Cost} = \mu + \alpha`;
 const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
 const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;

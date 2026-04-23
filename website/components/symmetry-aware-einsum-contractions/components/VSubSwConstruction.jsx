@@ -1,10 +1,8 @@
 import { Fragment, useMemo, useState } from 'react';
+import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
-import { explorerThemeColor, explorerThemeTint } from '../lib/explorerTheme.js';
+import { explorerThemeColor, explorerThemeTint, getActiveExplorerThemeId } from '../lib/explorerTheme.js';
 import {
-  getActiveExplorerThemeId,
-  notationColor,
-  notationColoredLatex,
   notationLatex,
 } from '../lib/notationSystem.js';
 
@@ -42,9 +40,7 @@ function toCycleString(perm, labels) {
  * Parens, spaces, and the "id" token pass through uncolored. Inline spans
  * (no flex container) so the inter-label spaces render verbatim.
  */
-function ColoredLabels({ text, vSet, wSet }) {
-  const COLOR_V = notationColor('v_free');
-  const COLOR_W = notationColor('w_summed');
+function ColoredLabels({ text, vSet, wSet, vColor, wColor }) {
   if (!text) return null;
   if (text === 'id') {
     return <span className="italic text-muted-foreground">id</span>;
@@ -57,14 +53,14 @@ function ColoredLabels({ text, vSet, wSet }) {
         if (!tok) return null;
         if (vSet.has(tok)) {
           return (
-            <span key={i} style={{ color: COLOR_V, fontWeight: 600 }}>
+            <span key={i} style={{ color: vColor, fontWeight: 600 }}>
               {tok}
             </span>
           );
         }
         if (wSet.has(tok)) {
           return (
-            <span key={i} style={{ color: COLOR_W, fontWeight: 600 }}>
+            <span key={i} style={{ color: wColor, fontWeight: 600 }}>
               {tok}
             </span>
           );
@@ -80,6 +76,10 @@ function ColoredLabels({ text, vSet, wSet }) {
       })}
     </>
   );
+}
+
+function themedMath(latex, color) {
+  return String.raw`\textcolor{${color}}{${latex}}`;
 }
 
 /**
@@ -101,11 +101,11 @@ export default function VSubSwConstruction({
   showHeading = true,
 }) {
   const explorerThemeId = getActiveExplorerThemeId();
-  const SHORT_V_LATEX = notationColoredLatex('v_free', 'V');
-  const SHORT_DUMMY_FACTOR_LATEX = String.raw`\prod_d ${notationColoredLatex('s_w_summed', 'S(W_d)')}`;
+  const COLOR_V = explorerThemeColor(explorerThemeId, 'hero');
+  const COLOR_W = explorerThemeColor(explorerThemeId, 'summedSide');
+  const SHORT_V_LATEX = themedMath('V', COLOR_V);
+  const SHORT_DUMMY_FACTOR_LATEX = String.raw`\prod_d ${themedMath('S(W_d)', COLOR_W)}`;
   const SHORT_G_OUT_EQUALS_RESTRICTION_LATEX = `${notationLatex('g_output')} = ${notationLatex('g_pointwise')}\\big|_{${SHORT_V_LATEX}}`;
-  const COLOR_V = notationColor('v_free');
-  const COLOR_W = notationColor('w_summed');
   const PRODUCT_ACCENT = explorerThemeColor(explorerThemeId, 'quantity');
   const [hoveredVIdx, setHoveredVIdx] = useState(null);
   const [hoveredWIdx, setHoveredWIdx] = useState(null);
@@ -182,7 +182,7 @@ export default function VSubSwConstruction({
             <div className={colHead}>
               <Latex math={SHORT_G_OUT_EQUALS_RESTRICTION_LATEX} />
               <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
-                (visible output action, inherited from G_pt)
+                <InlineMathText>{`(visible output action, inherited from $${notationLatex('g_pointwise')}$)`}</InlineMathText>
               </span>
               <span className="block text-[10px] text-muted-foreground normal-case tracking-normal">
                 (row-witnessed)
@@ -236,6 +236,8 @@ export default function VSubSwConstruction({
                       text={toCycleString(vElem, vLabels)}
                       vSet={vLabelSet}
                       wSet={wLabelSet}
+                      vColor={COLOR_V}
+                      wColor={COLOR_W}
                     />
                   </span>
                 </button>
@@ -280,6 +282,8 @@ export default function VSubSwConstruction({
                       text={toCycleString(wElem, wLabels)}
                       vSet={vLabelSet}
                       wSet={wLabelSet}
+                      vColor={COLOR_V}
+                      wColor={COLOR_W}
                     />
                   </span>
                 </button>
@@ -345,6 +349,8 @@ export default function VSubSwConstruction({
                         text={toCycleString(elem, allLabels)}
                         vSet={vLabelSet}
                         wSet={wLabelSet}
+                        vColor={COLOR_V}
+                        wColor={COLOR_W}
                       />
                     </span>
                   </button>

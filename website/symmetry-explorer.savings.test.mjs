@@ -186,6 +186,8 @@ test('TotalCostView explains how per-component costs aggregate into the global t
   assert.match(totalCostSource, /SECTION_FIVE_TOTAL_FORMULA = String\.raw`\\mathrm\{Total\\ Cost\} = \\mu \+ \\alpha`/);
   assert.match(totalCostSource, /SECTION_FIVE_MU_FORMULA = String\.raw`\\mu = \(k-1\)\\prod_a M_a`/);
   assert.match(totalCostSource, /SECTION_FIVE_ALPHA_FORMULA = String\.raw`\\alpha = \\prod_a \\alpha_a`/);
+  assert.match(totalCostSource, /For component \$a\$, let \$M_a\$ be the number of product orbits and let \$\\alpha_a\$ be the number of output-bin updates induced by those orbits\./);
+  assert.match(totalCostSource, /\$M_a\$ is a size-aware Burnside orbit count when a closed form applies; \$\\alpha_a\$ is selected by the shape and regime ladder\./);
   assert.match(totalCostSource, /formula: String\.raw`\(k-1\)\\prod_\{\\ell\\in L\} n_\\ell \+ \\prod_\{\\ell\\in L\} n_\\ell`/);
   assert.match(totalCostSource, /representative products and the output-bin updates induced by those representatives/);
   assert.match(totalCostSource, /The brace below defines only the per-component accumulation term/);

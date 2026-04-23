@@ -55,7 +55,7 @@ export const GLOSSARY = [
   },
   {
     term: 'component',
-    definition: "A support-connected block of labels induced by the detected generators. Each component has labels L_a, output labels V_a, summed labels W_a, and restricted group G_a. The decomposition is safe for the displayed product formula; algebraically independent factors that remain inside a support-connected block are handled by the regime ladder.",
+    definition: "A support-connected block of labels induced by the detected generators. Each component has labels L_a, output labels V_a, summed labels W_a, and restricted group G_a. The decomposition is safe for the displayed product equation; algebraically independent factors that remain inside a support-connected block are handled by the regime ladder.",
   },
   {
     term: 'cross-V/W element',
@@ -71,7 +71,7 @@ export const GLOSSARY = [
   },
   {
     term: 'Factorization check',
-    definition: 'The direct-product recognizer checks that no group element crosses V/W and that |G| = |G_V| · |G_W|. Passing means the action factors over visible and summed labels, so the direct-product α formula is exact.',
+    definition: 'The direct-product recognizer checks that no group element crosses V/W and that |G| = |G_V| · |G_W|. Passing means the action factors over visible and summed labels, so the direct-product α equation is exact.',
   },
   {
     term: 'meaningfulness guard',

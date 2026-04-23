@@ -4,7 +4,7 @@ const p = (text: string) => ({ kind: 'paragraph', text } as const);
 
 const preamble = {
   title: 'What this explorer counts',
-  deck: 'A direct indexed event model: representative products plus the output-bin updates they induce.',
+  deck: 'A direct computation count: representative products plus the output-bin updates they induce.',
   slots: {
     einsumIntroBeforeSummed: [
       p('Every index label that appears on an input but not on the output is '),
@@ -34,10 +34,10 @@ const preamble = {
       p(', and its '),
     ],
     calloutBodyAfterOrbits: [
-      p(' of full label assignments give the representative products. If the action were free, the representative-product count would shrink by $|G_{\\mathrm{pt}}|$; in ordinary tensor-index actions, diagonal assignments create fixed points, so Burnside’s lemma gives the exact orbit count.'),
+      p(' of full label assignments give the representative products. If the action were free, the representative-product count would shrink by $|G_{\\text{pt}}|$; in ordinary tensor-index actions, diagonal assignments create fixed points, so Burnside’s lemma gives the exact orbit count.'),
     ],
     calloutFooter: [
-      p('The explorer detects this structural pointwise group, then reports M (representative products), $\\mu=(k-1)M$ (multiplication-chain events), and $\\alpha$ (output-bin updates).'),
+      p('The explorer detects this structural pointwise group, then reports $M$ (representative products), $\\mu = (k-1)M$ (multiplication-chain events), and $\\alpha$ (output-bin updates).'),
     ],
     handoffBeforeSectionLink: [
       p('The rest of this page explains which relabelings are certified, why $\\alpha$ is an orbit-projection count, and why post-summation dummy renamings belong in the appendix rather than in the direct accumulation cost. Start with '),

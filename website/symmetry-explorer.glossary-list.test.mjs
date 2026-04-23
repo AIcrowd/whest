@@ -95,11 +95,11 @@ test('glossary copy includes the updated pointwise/formal/direct-cost terminolog
   );
   assert.equal(
     byTerm.get('component'),
-    "A support-connected block of labels induced by the detected generators. Each component has labels L_a, output labels V_a, summed labels W_a, and restricted group G_a. The decomposition is safe for the displayed product formula; algebraically independent factors that remain inside a support-connected block are handled by the regime ladder.",
+    "A support-connected block of labels induced by the detected generators. Each component has labels L_a, output labels V_a, summed labels W_a, and restricted group G_a. The decomposition is safe for the displayed product equation; algebraically independent factors that remain inside a support-connected block are handled by the regime ladder.",
   );
   assert.equal(
     byTerm.get('Factorization check'),
-    'The direct-product recognizer checks that no group element crosses V/W and that |G| = |G_V| · |G_W|. Passing means the action factors over visible and summed labels, so the direct-product α formula is exact.',
+    'The direct-product recognizer checks that no group element crosses V/W and that |G| = |G_V| · |G_W|. Passing means the action factors over visible and summed labels, so the direct-product α equation is exact.',
   );
 });
 

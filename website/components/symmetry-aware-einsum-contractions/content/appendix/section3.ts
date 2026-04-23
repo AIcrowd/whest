@@ -5,11 +5,11 @@ const l = (text: string) => ({ kind: 'label', text } as const);
 
 const section3 = {
   title: 'The pointwise group also induces output symmetry',
-  deck: 'Some pointwise relabelings act visibly on the output tensor. This visible action is the part that matters for storage.',
+  deck: 'Some pointwise relabelings act visibly on the output tensor. This visible action certifies output equality and, in the current appendix discussion, is the part used for storage collapse.',
   slots: {
     definitionLead: [
       p('Among the elements of $G_{\\text{pt}}$, some preserve the output-label set $V$. Restricting those elements to $V$ gives the output group'),
-      p('This group acts on output cells. If two output assignments lie in the same $G_{\\mathrm{out}}$-orbit, the corresponding entries of the computed output tensor are equal. Unlike dummy renaming, this symmetry is inherited from pointwise equality, so it is legitimate on the output tensor itself.'),
+      p('This group acts on output cells. If two output assignments lie in the same $G_{\\mathrm{out}}$-orbit, the corresponding entries of the computed output tensor are equal. Unlike dummy renaming, this symmetry is inherited from pointwise equality and therefore lives on the output tensor itself.'),
     ],
     workedExampleLabelPrefix: [
       l('Worked example —'),
@@ -25,7 +25,7 @@ const section3 = {
       p('The equality $R[0,1] = R[1,0]$ is therefore genuine on the computed output tensor itself.'),
     ],
     takeaway: [
-      p('$G_{\\mathrm{out}}$ is not an extra formal artifact. It is the visible output action inherited from $G_{\\text{pt}}$, and it is useful for storage rather than for reducing direct accumulation updates.'),
+      p('$G_{\\mathrm{out}}$ is the output-level symmetry inherited from $G_{\\text{pt}}$. In this appendix, its immediate role is to certify equal completed output entries and the possibility of collapsing storage to one representative per output orbit.'),
     ],
   },
 } satisfies SectionCopy;

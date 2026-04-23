@@ -36,6 +36,8 @@ test('Preamble lays Einsum notation and the code side-by-side on wide viewports'
   const src = readComponent('AlgorithmAtAGlance.jsx');
   // The two-column grid responsive class is the structural contract.
   assert.match(src, /lg:grid-cols-2/);
+  assert.match(src, /A tensor operation, written as one equation/);
+  assert.doesNotMatch(src, /A tensor operation, written as one formula/);
   // Both columns are present.
   assert.match(src, /EinsumIntroColumn/);
   assert.match(src, /MentalFrameworkColumn/);
@@ -48,9 +50,9 @@ test('Preamble lays Einsum notation and the code side-by-side on wide viewports'
 test('Einsum column uses a parametric exact-einsum lead-in followed by a color-coded expanded form', () => {
   const src = readComponent('AlgorithmAtAGlance.jsx');
   assert.match(src, /buildSection1ExampleView/);
-  assert.match(src, /buildSection1ExampleView\(example\)/);
-  assert.match(src, /notationColor\('v_free'\)/);
-  assert.match(src, /notationColor\('w_summed'\)/);
+  assert.match(src, /buildSection1ExampleView\(example,\s*\{/);
+  assert.match(src, /freeLabelColor:\s*explorerThemeColor\(explorerThemeId,\s*'hero'\)/);
+  assert.match(src, /summedLabelColor:\s*explorerThemeColor\(explorerThemeId,\s*'summedSide'\)/);
   assert.match(src, /view\.exactEinsumText/);
   assert.match(src, /Latex display math=\{view\.expandedEquationLatex\}/);
   assert.match(src, /mt-2\.5 flex justify-center text-\[19px\]/);
@@ -75,10 +77,21 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
     'expanded contraction should render before the prose explanation',
   );
   assert.ok(
-    src.indexOf('The summed labels') < src.indexOf('<ColorLegend />'),
+    src.indexOf('The summed labels') < src.indexOf('<ColorLegend freeLabelColor={freeLabelColor} summedLabelColor={summedLabelColor} />'),
     'legend should stay inside the same einsum surface after the explanatory prose',
   );
   assert.match(src, /textAlign: 'justify'/);
+});
+
+test('Preamble label legend uses the same theme roles as the interaction graph', () => {
+  const src = readComponent('AlgorithmAtAGlance.jsx');
+
+  assert.match(src, /const explorerThemeId = getActiveExplorerThemeId\(\)/);
+  assert.match(src, /const freeLabelColor = explorerThemeColor\(explorerThemeId, 'hero'\)/);
+  assert.match(src, /const summedLabelColor = explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
+  assert.match(src, /backgroundColor: summedLabelColor/);
+  assert.match(src, /backgroundColor: freeLabelColor/);
+  assert.doesNotMatch(src, /backgroundColor: notationColor\('w_summed'\)/);
 });
 
 test('Einsum column transitions to symmetry at the bottom', () => {
@@ -98,7 +111,8 @@ test('AlgorithmAtAGlance sources its narrative prose from the content registry',
 
   assert.match(src, /import\s+\{\s*default as renderProseBlocks\s*\}\s+from\s+'\.\.\/content\/renderProseBlocks\.jsx'/);
   assert.match(src, /import\s+mainPreamble\s+from\s+'\.\.\/content\/main\/preamble\.ts'/);
-  assert.match(src, /renderSingleProseBlock\(mainPreamble\.slots\.calloutFooter\)/);
+  assert.match(src, /function renderSingleProseBlock\(blocks = \[\], keyPrefix = 'main-prose-block'\)/);
+  assert.match(src, /renderSingleProseBlock\(mainPreamble\.slots\.calloutFooter,\s*'symmetry-callout-footer'\)/);
   assert.match(src, /mainPreamble\.slots\.einsumIntroBeforeSummed/);
   assert.match(src, /mainPreamble\.slots\.mentalFrameworkIntroBeforeRepSet/);
   assert.match(src, /mainPreamble\.slots\.handoffBeforeSectionLink/);
@@ -195,8 +209,10 @@ test('MentalFrameworkCode renders the Counting Convention panel introducing μ a
   const src = readComponent('MentalFrameworkCode.jsx');
   assert.match(src, /Counting convention/);
   assert.match(src, /The number of representative products is/);
-  assert.match(src, /μ = \(k-1\)M/);
-  assert.match(src, /This page reports μ \+ α/);
+  assert.match(src, /<Latex math=\{notationLatex\('m_total'\)\} \/>/);
+  assert.match(src, /<Latex[\s\S]*notationLatex\('mu_total'\)[\s\S]*notationLatex\('k_operands'\)[\s\S]*notationLatex\('m_total'\)/);
+  assert.match(src, /<Latex math=\{notationLatex\('alpha_total'\)\} \/>/);
+  assert.match(src, /<Latex math=\{String\.raw`\$\{notationLatex\('mu_total'\)\} \+ \$\{notationLatex\('alpha_total'\)\}`\} \/>/);
   // Anchors into the code above — names both lines it talks about.
   assert.match(src, /base_val/);
   assert.match(src, /R\[out\] \+= coeff/);

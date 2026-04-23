@@ -33,6 +33,14 @@ const BURNSIDE_GAP_PRESETS = BURNSIDE_GAP_PRESET_IDS
     return preset && idx >= 0 ? { id, idx, preset } : null;
   })
   .filter(Boolean);
+const SECTION4_FORMAL_GROUP_PRESET_IDS = ['frobenius', 'direct-s2-c3', 'triple-outer'];
+const SECTION4_FORMAL_GROUP_PRESETS = SECTION4_FORMAL_GROUP_PRESET_IDS
+  .map((id) => {
+    const preset = EXAMPLES_BY_ID.get(id);
+    const idx = EXAMPLES.findIndex((example) => example.id === id);
+    return preset && idx >= 0 ? { id, idx, preset } : null;
+  })
+  .filter(Boolean);
 
 /**
  * Per-preset operand listing: distinct operand names in first-appearance
@@ -227,7 +235,7 @@ function replaceAppendixDisplayText(text = '', replacements = []) {
   );
 }
 
-function renderAppendixSlot(blocks = [], { replacements = [], renderCallout, slotKey = 'appendix-slot' } = {}) {
+function renderAppendixSlot(blocks = [], { replacements = [], renderCallout, slotKey = 'appendix-slot', strongClassName = null } = {}) {
   const requiredBlocks = invariantAppendixSlot(blocks, slotKey);
   const normalizedBlocks = requiredBlocks.map((block) => ({
     ...block,
@@ -236,7 +244,7 @@ function renderAppendixSlot(blocks = [], { replacements = [], renderCallout, slo
       replacements,
     ),
   }));
-  return renderProseBlocks(normalizedBlocks, { renderCallout });
+  return renderProseBlocks(normalizedBlocks, { renderCallout, strongClassName, keyPrefix: slotKey });
 }
 
 function renderAppendixSingleBlock(blocks = [], index = 0, options = {}) {
@@ -246,7 +254,7 @@ function renderAppendixSingleBlock(blocks = [], index = 0, options = {}) {
   if (!block) {
     throw new Error(`Missing appendix slot block: ${slotKey}[${index}]`);
   }
-  return renderAppendixSlot([block], options)[0] ?? null;
+  return renderAppendixSlot([block], { ...options, slotKey: `${slotKey}-${index}` })[0] ?? null;
 }
 
 function getExampleExpressionParts(example) {
@@ -600,7 +608,7 @@ function AppendixRoadmap() {
             <Latex math={notationLatex('g_output')} />
           </div>
           <div className="mt-2 text-[12.5px] leading-6 text-gray-700">
-            The restriction <Latex math={String.raw`G_{\text{pt}}\|_V`} /> to output labels. This is the group used for output storage.
+            The restriction <Latex math={String.raw`G_{\text{pt}}\|_V`} /> to output labels. This is the output-level symmetry inherited from pointwise equality; in this appendix it is used to discuss output equality and storage collapse.
           </div>
         </div>
         <div className="rounded-lg border border-black bg-white px-4 py-3">
@@ -1235,10 +1243,29 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                 </>
               )}
               support={(
-                <div>
+                <div className="space-y-4">
                   <h4 className="font-heading text-[18px] font-semibold text-gray-900">
                     {renderAppendixSingleBlock(appendixSection4.slots.constructionTitle, 0)}
                   </h4>
+                  {onSelectPreset && SECTION4_FORMAL_GROUP_PRESETS.length ? (
+                    <div className="space-y-3">
+                      <p className={APPENDIX_SMALL_TEXT_CLASS}>
+                        {renderAppendixSingleBlock(appendixSection4.slots.presetPickerLabel, 0)}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {SECTION4_FORMAL_GROUP_PRESETS.map((suggestedPreset) => (
+                          <button
+                            key={suggestedPreset.id}
+                            type="button"
+                            onClick={() => onSelectPreset?.(suggestedPreset.idx)}
+                            className="inline-flex items-center rounded-full border border-stone-200 bg-white px-3 py-1.5 text-[12px] font-medium text-stone-700 shadow-sm transition-colors hover:border-stone-300 hover:bg-stone-50"
+                          >
+                            {suggestedPreset.preset.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
                   <VSubSwConstruction
                     expressionGroup={expressionGroup}
                     vLabels={vLabels}
@@ -1694,7 +1721,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
 
           <AppendixSection
             n={6}
-            label="Symmetry Aware Storage"
+            label="Output symmetry and storage"
             anchorId="appendix-section-6"
             title={appendixSection6.title}
             deckClassName="max-w-none"
@@ -1707,9 +1734,24 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
             {/* Source-contract marker: Accumulation is governed by G_pt. */}
             <div className="space-y-4">
               {renderAppendixSlot(appendixSection6.slots.intro).map((content, index) => (
-                <p key={`appendix-6-intro-${index}`} className={APPENDIX_PROSE_CLASS}>
-                  {content}
-                </p>
+                (() => {
+                  const isModelBlock = index >= 1 && index <= 3;
+                  return (
+                    <p
+                      key={`appendix-6-intro-${index}`}
+                      className={
+                        isModelBlock
+                          ? 'rounded-lg border border-stone-200/70 bg-stone-50/60 px-4 py-3 font-serif text-[16px] leading-[1.8] text-stone-800'
+                          : APPENDIX_PROSE_CLASS
+                      }
+                    >
+                      {renderAppendixSingleBlock(appendixSection6.slots.intro, index, {
+                        slotKey: 'appendix-section6-intro',
+                        strongClassName: isModelBlock ? 'font-semibold text-[var(--primary)]' : null,
+                      })}
+                    </p>
+                  );
+                })()
               ))}
             </div>
 
@@ -1732,7 +1774,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                       <div className="text-[13px] font-semibold text-gray-900">
                         <Latex math="\alpha_{\text{storage}}" />
                       </div>
-                      <div className="mt-1 text-[11px] font-normal leading-5 text-gray-500">Storage-aware output updates</div>
+                      <div className="mt-1 text-[11px] font-normal leading-5 text-gray-500">Output-orbit representatives</div>
                     </th>
                     <th className="px-2 py-2 font-semibold text-right">
                       <div>Storage-only saving</div>

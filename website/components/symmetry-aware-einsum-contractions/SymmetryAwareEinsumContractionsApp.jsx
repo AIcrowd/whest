@@ -354,9 +354,12 @@ export default function SymmetryAwareEinsumContractionsApp() {
             <p className="mt-2 text-[12.5px] leading-6 text-stone-600">
               Assumptions: exact commutative scalar arithmetic; declared equality
               symmetries only; repeated operand names denote the same tensor object;
-              label permutations preserve label domains/sizes; no ellipsis, broadcasting, repeated labels within one input, duplicate output labels, antisymmetry/signs,
-              conjugation, sparsity, approximate numerical symmetry, or contraction-path
-              optimization.
+              the accepted explicit-index einsum language uses lowercase
+              single-character labels with explicit outputs and forbids
+              ellipsis, broadcasting, repeated labels within one input, and
+              duplicate output labels; label permutations preserve label
+              domains/sizes; no antisymmetry/signs, conjugation, sparsity,
+              approximate numerical symmetry, or contraction-path optimization.
             </p>
           </div>
         </div>

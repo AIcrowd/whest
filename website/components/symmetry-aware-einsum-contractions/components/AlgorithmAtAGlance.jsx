@@ -6,7 +6,8 @@ import InlineMathText from './InlineMathText.jsx';
 import SectionReferenceLink from './SectionReferenceLink.jsx';
 import { default as renderProseBlocks } from '../content/renderProseBlocks.jsx';
 import mainPreamble from '../content/main/preamble.ts';
-import { notationColor, notationLatex } from '../lib/notationSystem.js';
+import { getActiveExplorerThemeId, explorerThemeColor } from '../lib/explorerTheme.js';
+import { notationLatex } from '../lib/notationSystem.js';
 import { buildSection1ExampleView } from '../lib/section1ExampleView.js';
 
 /**
@@ -27,22 +28,21 @@ import { buildSection1ExampleView } from '../lib/section1ExampleView.js';
  * discovers it by picking a preset and watching the cost counts update.
  */
 
-function renderSingleProseBlock(blocks = []) {
-  return renderProseBlocks(blocks)[0] ?? null;
+function renderSingleProseBlock(blocks = [], keyPrefix = 'main-prose-block') {
+  return renderProseBlocks(blocks, { keyPrefix })[0] ?? null;
 }
 
-function ColorLegend() {
-  const landingFreeLabelColor = notationColor('v_free');
+function ColorLegend({ freeLabelColor, summedLabelColor }) {
   return (
     <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-stone-700">
       <span className="inline-flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: notationColor('w_summed') }} />
+        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: summedLabelColor }} />
         <span>
           <strong className="font-semibold text-stone-900">summed</strong> label (collapses)
         </span>
       </span>
       <span className="inline-flex items-center gap-2">
-        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: landingFreeLabelColor }} />
+        <span className="h-2.5 w-2.5 rounded-full" aria-hidden="true" style={{ backgroundColor: freeLabelColor }} />
         <span>
           <strong className="font-semibold text-stone-900">free</strong> labels (stay on output)
         </span>
@@ -54,9 +54,16 @@ function ColorLegend() {
 const JUSTIFIED_PROSE_STYLE = { textAlign: 'justify' };
 
 function EinsumIntroColumn({ example }) {
-  const view = buildSection1ExampleView(example);
+  const explorerThemeId = getActiveExplorerThemeId();
+  const freeLabelColor = explorerThemeColor(explorerThemeId, 'hero');
+  const summedLabelColor = explorerThemeColor(explorerThemeId, 'summedSide');
+  const view = buildSection1ExampleView(example, {
+    freeLabelColor: explorerThemeColor(explorerThemeId, 'hero'),
+    summedLabelColor: explorerThemeColor(explorerThemeId, 'summedSide'),
+  });
   if (!view) return null;
-  const coloredVFreeNotation = String.raw`\textcolor{${notationColor('v_free')}}{${notationLatex('v_free')}}`;
+  const coloredVFreeNotation = String.raw`\textcolor{${freeLabelColor}}{${notationLatex('v_free')}}`;
+  const coloredWSummedNotation = String.raw`\textcolor{${summedLabelColor}}{${notationLatex('w_summed')}}`;
 
   return (
     <div id="einsum-contraction" className="flex h-full flex-col scroll-mt-24">
@@ -66,18 +73,18 @@ function EinsumIntroColumn({ example }) {
         </AnchorLink>
       </span>
       <h3 className="mt-1 font-heading text-lg font-semibold text-foreground">
-        A tensor operation, written as one formula
+        A tensor operation, written as one equation
       </h3>
 
       <p
         className="mt-3 font-serif text-[17px] leading-[1.75] text-gray-700"
         style={JUSTIFIED_PROSE_STYLE}
       >
-        {renderSingleProseBlock(mainPreamble.slots.einsumIntroBeforeSummed)}
+        {renderSingleProseBlock(mainPreamble.slots.einsumIntroBeforeSummed, 'einsum-intro-before-summed')}
         <strong className="font-semibold">summed over</strong>
-        {renderSingleProseBlock(mainPreamble.slots.einsumIntroBetweenSummedAndFree)}
+        {renderSingleProseBlock(mainPreamble.slots.einsumIntroBetweenSummedAndFree, 'einsum-intro-between-summed-free')}
         <strong className="font-semibold">free</strong>
-        {renderSingleProseBlock(mainPreamble.slots.einsumIntroAfterFree)}
+        {renderSingleProseBlock(mainPreamble.slots.einsumIntroAfterFree, 'einsum-intro-after-free')}
       </p>
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-stone-200 bg-white px-5 py-6">
@@ -97,12 +104,12 @@ function EinsumIntroColumn({ example }) {
             {view.operandCount} operand{view.operandCount === 1 ? '' : 's'}, {view.labelCount} label{view.labelCount === 1 ? '' : 's'}.
           </strong>{' '}
           <InlineMathText>
-            {`The summed labels $${notationLatex('w_summed')} = \\{${view.wSummedSummary}\\}$ collapse under $\\sum$; the free labels $${coloredVFreeNotation} = \\{${view.vFreeSummary}\\}$ survive as the axes of $R$. Declared symmetries: ${view.declaredSymmetrySummary}. The dense direct grid has $${view.denseGridScalingLatex}$ assignments before symmetry is used.`}
+            {`The summed labels $${coloredWSummedNotation} = \\{${view.wSummedSummary}\\}$ collapse under $\\sum$; the free labels $${coloredVFreeNotation} = \\{${view.vFreeSummary}\\}$ survive as the axes of $R$. Declared symmetries: ${view.declaredSymmetrySummary}. The dense direct grid has $${view.denseGridScalingLatex}$ assignments before symmetry is used.`}
           </InlineMathText>
         </p>
       </div>
 
-      <ColorLegend />
+      <ColorLegend freeLabelColor={freeLabelColor} summedLabelColor={summedLabelColor} />
 
       {/* Spacer: anchors the callout to the bottom when the right column is taller
           (so both columns end at the same y), with a mt-6 minimum gap when not. */}
@@ -124,18 +131,18 @@ function EinsumIntroColumn({ example }) {
         bodyClassName="mt-2 text-[14px] leading-7 text-foreground"
         footer={(
           <>
-            {renderSingleProseBlock(mainPreamble.slots.calloutFooter)}
+            {renderSingleProseBlock(mainPreamble.slots.calloutFooter, 'symmetry-callout-footer')}
           </>
         )}
       >
         <>
-          {renderSingleProseBlock(mainPreamble.slots.calloutBodyBeforeGroup)}
+          {renderSingleProseBlock(mainPreamble.slots.calloutBodyBeforeGroup, 'symmetry-callout-before-group')}
           <strong className="font-semibold">
             group <Latex math="G" />
           </strong>
-          {renderSingleProseBlock(mainPreamble.slots.calloutBodyBetweenGroupAndOrbits)}
+          {renderSingleProseBlock(mainPreamble.slots.calloutBodyBetweenGroupAndOrbits, 'symmetry-callout-between-group-orbits')}
           <em>orbits</em>
-          {renderSingleProseBlock(mainPreamble.slots.calloutBodyAfterOrbits)}
+          {renderSingleProseBlock(mainPreamble.slots.calloutBodyAfterOrbits, 'symmetry-callout-after-orbits')}
         </>
       </EditorialCallout>
     </div>
@@ -158,13 +165,13 @@ function MentalFrameworkColumn({ example }) {
         className="mt-3 font-serif text-[17px] leading-[1.75] text-gray-700"
         style={JUSTIFIED_PROSE_STYLE}
       >
-        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBeforeRepSet)}
+        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBeforeRepSet, 'mental-framework-before-repset')}
         <code className="explorer-inline-code">RepSet</code>
-        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBetweenRepSetAndOuts)}
+        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBetweenRepSetAndOuts, 'mental-framework-between-repset-outs')}
         <code className="explorer-inline-code">Outs(rep)</code>
-        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBetweenOutsAndCoeff)}
+        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBetweenOutsAndCoeff, 'mental-framework-between-outs-coeff')}
         <code className="explorer-inline-code">coeff(rep, out)</code>
-        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroAfterCoeff)}
+        {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroAfterCoeff, 'mental-framework-after-coeff')}
       </p>
 
       <div className="mt-6 flex flex-1 flex-col">
@@ -205,9 +212,9 @@ export default function AlgorithmAtAGlance({ example }) {
           className="mt-10 border-t border-stone-200 pt-8 font-serif text-[17px] leading-[1.75] text-gray-700"
           style={JUSTIFIED_PROSE_STYLE}
         >
-          {renderSingleProseBlock(mainPreamble.slots.handoffBeforeSectionLink)}
+          {renderSingleProseBlock(mainPreamble.slots.handoffBeforeSectionLink, 'handoff-before-section-link')}
           <SectionReferenceLink href="#setup">Section 1</SectionReferenceLink>
-          {renderSingleProseBlock(mainPreamble.slots.handoffAfterSectionLink)}
+          {renderSingleProseBlock(mainPreamble.slots.handoffAfterSectionLink, 'handoff-after-section-link')}
         </p>
       </ExplorerSectionCard>
     </section>

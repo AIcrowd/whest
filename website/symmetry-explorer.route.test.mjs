@@ -61,6 +61,10 @@ test('article route still wires the appendix modal while the main page stays app
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),
     'utf8',
   );
+  const section1Copy = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/content/main/section1.ts', import.meta.url),
+    'utf8',
+  );
 
   assert.match(appSource, /<ExpressionLevelModal/);
   assert.match(appSource, /<ExpressionLevelModal[\s\S]*example=\{example\}/);
@@ -71,6 +75,8 @@ test('article route still wires the appendix modal while the main page stays app
   assert.match(appSource, /String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`/);
   assert.match(appSource, /where each <Latex math=\{String\.raw`W_d`\} \/> is a same-domain block of summed labels/);
   assert.match(appSource, /notationLatex\('g_output'\)/);
+  assert.match(appSource, /accepted explicit-index einsum language uses lowercase[\s\S]*explicit outputs[\s\S]*forbids[\s\S]*duplicate output labels/);
+  assert.doesNotMatch(section1Copy, /restricted explicit-index einsum language/);
   assert.doesNotMatch(appSource, /VERBATIM, AUDIT-VERIFIED/);
   assert.doesNotMatch(appSource, /REVIEW_RESPONSE\.md §5/);
   assert.doesNotMatch(appSource, /AUDIT\.md/);
