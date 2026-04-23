@@ -192,11 +192,10 @@ class TestZerosLike:
         assert result.symmetry == _s2()
         np.testing.assert_array_equal(result, np.zeros((3, 3)))
 
-    def test_plain_input_not_symmetric(self):
-        a = np.ones((3, 3))
+    def test_plain_input_non_square_not_symmetric(self):
+        a = np.ones((3, 4))
         result = we.zeros_like(a)
-        assert isinstance(result, SymmetricTensor)
-        assert result.symmetry == _s2()
+        assert not isinstance(result, SymmetricTensor)
 
     def test_plain_input_shape_infers_constant_fill_symmetry(self):
         result = we.zeros_like(np.empty((4, 4, 2)))
@@ -218,10 +217,9 @@ class TestOnesLike:
         assert isinstance(result, SymmetricTensor)
         assert result.symmetry == _s2()
 
-    def test_plain_input_not_symmetric(self):
-        result = we.ones_like(np.zeros((5, 5)))
-        assert isinstance(result, SymmetricTensor)
-        assert result.symmetry == _s2()
+    def test_plain_input_non_square_not_symmetric(self):
+        result = we.ones_like(np.zeros((5, 4)))
+        assert not isinstance(result, SymmetricTensor)
 
     def test_plain_input_shape_infers_young_symmetry(self):
         result = we.ones_like(np.empty((2, 2, 5, 5)))
@@ -243,9 +241,17 @@ class TestFullLike:
 
     def test_incompatible_carried_symmetry_falls_back_to_shape_inference(self):
         source = we.as_symmetric(np.eye(3), symmetry=(0, 1))
-        result = we.full_like(source, 1.0, shape=(2, 2, 5, 5))
+        result = we.full_like(source, 1.0, shape=(2, 3, 5, 5, 7, 7))
         assert isinstance(result, SymmetricTensor)
-        assert result.symmetry == we.SymmetryGroup.young(blocks=((0, 1), (2, 3)))
+        assert result.symmetry == we.SymmetryGroup.young(
+            blocks=((2, 3), (4, 5))
+        )
+
+    def test_shape_override_preserves_compatible_carried_symmetry(self):
+        source = we.as_symmetric(np.zeros((3, 3, 2)), symmetry=(0, 1))
+        result = we.zeros_like(source, shape=(5, 5, 2))
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == _s2()
 
     @pytest.mark.parametrize(
         ("factory", "args"),

@@ -46,8 +46,6 @@ def _infer_constant_shape_symmetry(shape):
 def _wrap_constant_fill(result):
     symmetry = _infer_constant_shape_symmetry(result.shape)
     if symmetry is None:
-        if isinstance(a, SymmetricTensor):
-            return _np.array(result, copy=False, subok=False)
         return result
     return wrap_with_symmetry(result, symmetry)
 
@@ -184,7 +182,7 @@ def zeros_like(a, dtype=None, **kwargs):
     """Return array of zeros with same shape. Wraps ``numpy.zeros_like``. Cost: 0 FLOPs."""
     result = _np.zeros_like(a, dtype=dtype, **kwargs)
     symmetry = None
-    if isinstance(a, SymmetricTensor) and _np.shape(a) == result.shape:
+    if isinstance(a, SymmetricTensor):
         symmetry = _compatible_symmetry_for_shape(a.symmetry, result.shape)
     if symmetry is None:
         symmetry = _infer_constant_shape_symmetry(result.shape)
@@ -202,7 +200,7 @@ def ones_like(a, dtype=None, **kwargs):
     """Return array of ones with same shape. Wraps ``numpy.ones_like``. Cost: 0 FLOPs."""
     result = _np.ones_like(a, dtype=dtype, **kwargs)
     symmetry = None
-    if isinstance(a, SymmetricTensor) and _np.shape(a) == result.shape:
+    if isinstance(a, SymmetricTensor):
         symmetry = _compatible_symmetry_for_shape(a.symmetry, result.shape)
     if symmetry is None:
         symmetry = _infer_constant_shape_symmetry(result.shape)
@@ -224,7 +222,7 @@ def full_like(a, fill_value, dtype=None, **kwargs):
     with budget.deduct("full_like", flop_cost=cost, subscripts=None, shapes=()):
         result = _np.full_like(a, fill_value, dtype=dtype, **kwargs)
     symmetry = None
-    if isinstance(a, SymmetricTensor) and _np.shape(a) == result.shape:
+    if isinstance(a, SymmetricTensor):
         symmetry = _compatible_symmetry_for_shape(a.symmetry, result.shape)
     if symmetry is None:
         symmetry = _infer_constant_shape_symmetry(result.shape)
