@@ -1,5 +1,20 @@
 export const CUSTOM_IDX = -1;
 
+const PRESET_GLYPHS_BY_CLASSIFICATION = {
+  trivial: '·',
+  allVisible: '◌',
+  allSummed: '●',
+  mixed: '⟡',
+  singleton: '①',
+  directProduct: '⊗',
+  young: 'Y',
+  bruteForceOrbit: '◎',
+};
+
+function presetGlyphForClassification(leafId) {
+  return PRESET_GLYPHS_BY_CLASSIFICATION[leafId] ?? '◆';
+}
+
 export function getPresetControlSelection(exampleIdx, isDirty) {
   return isDirty ? CUSTOM_IDX : exampleIdx;
 }
@@ -20,12 +35,21 @@ export function presetToState(ex) {
 }
 
 export function getPresetSummary(ex) {
+  const leafId = ex.regimeId ?? ex.shapeId ?? null;
+  const caseIds = leafId == null
+    ? []
+    : ['singleton', 'directProduct', 'young', 'bruteForceOrbit'].includes(leafId)
+      ? ['mixed', leafId]
+      : [leafId];
+
   return {
     id: ex.id,
     name: ex.name,
     formula: ex.formula,
     description: ex.description ?? '',
-    caseType: ex.caseType ?? null,
+    glyph: presetGlyphForClassification(leafId),
+    caseIds,
+    regimeId: leafId,
     expectedGroup: ex.expectedGroup ?? '',
     color: ex.color ?? '#7C3AED',
   };

@@ -2,6 +2,8 @@ import { useCallback, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check, Copy } from 'lucide-react';
 import ExplorerSectionCard from './ExplorerSectionCard.jsx';
+import { explorerThemeColor } from '../lib/explorerTheme.js';
+import { getActiveExplorerThemeId } from '../lib/notationSystem.js';
 
 function highlightPython(code) {
   const tokens = [];
@@ -42,6 +44,7 @@ function highlightPython(code) {
     'import', 'from', 'as', 'for', 'in', 'if', 'else', 'def', 'return',
     'class', 'sum', 'range', 'list', 'True', 'False', 'None',
   ]);
+  const PRIMARY_FUNCTIONS = new Set(['randn', 'einsum_path']);
 
   function esc(value) {
     return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -63,7 +66,11 @@ function highlightPython(code) {
       } else {
         const after = text.slice(re.lastIndex).match(/^\s*\(/);
         if (after) {
-          result += `<span class="hl-fn">${esc(word)}</span>`;
+          if (PRIMARY_FUNCTIONS.has(word)) {
+            result += `<span class="hl-fn-primary">${esc(word)}</span>`;
+          } else {
+            result += `<span class="hl-fn">${esc(word)}</span>`;
+          }
         } else {
           result += esc(word);
         }
@@ -87,11 +94,24 @@ function highlightPython(code) {
 }
 
 function PythonHighlight({ code }) {
+  const explorerThemeId = getActiveExplorerThemeId();
   const html = useMemo(() => highlightPython(code), [code]);
+  const tokenVars = useMemo(
+    () => ({
+      '--python-comment': explorerThemeColor(explorerThemeId, 'muted'),
+      '--python-function': explorerThemeColor(explorerThemeId, 'symmetryObject'),
+      '--python-function-primary': explorerThemeColor(explorerThemeId, 'heroMuted'),
+      '--python-keyword': explorerThemeColor(explorerThemeId, 'heroMuted'),
+      '--python-number': explorerThemeColor(explorerThemeId, 'action'),
+      '--python-string': explorerThemeColor(explorerThemeId, 'quantity'),
+    }),
+    [explorerThemeId],
+  );
   return (
-    <pre className="min-h-0 h-full overflow-auto whitespace-pre-wrap rounded-xl bg-slate-950 p-5 font-mono text-sm leading-7 text-slate-300">
+    <pre className="min-h-0 h-full overflow-auto whitespace-pre-wrap rounded-xl border border-stone-200 bg-white p-5 font-mono text-sm leading-7 text-stone-800">
       <code
-        className="[&_.hl-cmt]:text-slate-500 [&_.hl-fn]:font-semibold [&_.hl-fn]:text-sky-300 [&_.hl-kw]:font-semibold [&_.hl-kw]:text-rose-300 [&_.hl-num]:text-amber-300 [&_.hl-str]:text-emerald-300"
+        style={tokenVars}
+        className="[&_.hl-cmt]:text-[var(--python-comment)] [&_.hl-fn]:font-semibold [&_.hl-fn]:text-[var(--python-function)] [&_.hl-fn-primary]:font-semibold [&_.hl-fn-primary]:text-[var(--python-function-primary)] [&_.hl-kw]:font-semibold [&_.hl-kw]:text-[var(--python-keyword)] [&_.hl-num]:text-[var(--python-number)] [&_.hl-str]:text-[var(--python-string)]"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </pre>
@@ -100,8 +120,8 @@ function PythonHighlight({ code }) {
 
 export default function PythonCodeBlock({
   code,
-  title = 'Reference Code',
-  description = 'This is a generated Python sketch of the contraction you are about to analyze.',
+  title,
+  description,
   className,
   contentClassName,
 }) {
@@ -114,28 +134,40 @@ export default function PythonCodeBlock({
     });
   }, [code]);
 
+  const codeBody = (
+    <div className="relative min-h-0 flex-1">
+      <PythonHighlight code={code} />
+      <Button
+        type="button"
+        size="icon-sm"
+        variant="outline"
+        className="absolute right-3 top-3 z-10 size-7 border-stone-200 bg-white/95 text-stone-500 hover:bg-stone-50 hover:text-stone-700"
+        onClick={handleCopy}
+        aria-label={copied ? 'Copied' : 'Copy code'}
+        title={copied ? 'Copied' : 'Copy code'}
+      >
+        {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+      </Button>
+    </div>
+  );
+
+  if (!title && !description) {
+    return (
+      <div className={['flex min-h-0 flex-col', className, contentClassName].filter(Boolean).join(' ')}>
+        {codeBody}
+      </div>
+    );
+  }
+
   return (
     <ExplorerSectionCard
       eyebrow={title}
       description={description}
-      className={['border-border/70 bg-muted/20', className].filter(Boolean).join(' ')}
+      className={['border-gray-200 bg-white', className].filter(Boolean).join(' ')}
       contentClassName={['pt-5', 'min-h-0', 'flex', 'flex-col', contentClassName].filter(Boolean).join(' ')}
       action={null}
     >
-      <div className="relative min-h-0 flex-1">
-        <PythonHighlight code={code} />
-        <Button
-          type="button"
-          size="icon-sm"
-          variant="outline"
-          className="absolute right-3 top-3 z-10 size-7 border-white/25 bg-slate-900/85 text-slate-200 hover:bg-slate-900"
-          onClick={handleCopy}
-          aria-label={copied ? 'Copied' : 'Copy code'}
-          title={copied ? 'Copied' : 'Copy code'}
-        >
-          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
-        </Button>
-      </div>
+      {codeBody}
     </ExplorerSectionCard>
   );
 }

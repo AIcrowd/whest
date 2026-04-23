@@ -1,4 +1,5 @@
 import Latex from './Latex.jsx';
+import { renderTooltipInlineText } from './InlineMathText.jsx';
 
 /**
  * Renders a glossary string where `$...$` segments are rendered as inline KaTeX
@@ -8,7 +9,7 @@ import Latex from './Latex.jsx';
  * This is the distill-style convention: running prose with inline math segments
  * that share the same typesetting as the displayed equation.
  */
-export default function GlossaryProse({ text }) {
+export default function GlossaryProse({ text, themeOverride = null }) {
   if (!text) return null;
 
   const parts = [];
@@ -41,8 +42,8 @@ export default function GlossaryProse({ text }) {
     <>
       {parts.map((part) =>
         part.kind === 'math'
-          ? <Latex key={part.key} math={part.value} />
-          : <span key={part.key}>{part.value}</span>,
+          ? <Latex key={part.key} math={part.value} themeOverride={themeOverride} />
+          : renderTooltipInlineText(part.value, `glossary-${part.key}`),
       )}
     </>
   );

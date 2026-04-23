@@ -6,8 +6,10 @@ import {
   computeBurnside,
 } from './algorithm.js';
 import { parseCycleNotation } from './cycleParser.js';
-import { computeExactCostModel } from './costModel.js';
-import { decomposeAndClassify } from './componentDecomposition.js';
+import { computeExactCostModel, aggregateComponentCosts } from './costModel.js';
+import { decomposeClassifyAndCount } from './componentDecomposition.js';
+import { computeLabelClusters } from './sizeAware/labelClusters.js';
+import { buildExpressionGroup } from './expressionGroup.js';
 
 function normalizeExample(example) {
   if (!example) return null;
@@ -48,23 +50,67 @@ export function analyzeExample(example, dimensionN) {
   const normalizedExample = normalizeExample(example);
   const graph = buildBipartite(normalizedExample);
   const matrixData = buildIncidenceMatrix(graph);
-  const sigmaResults = runSigmaLoop(graph, matrixData, normalizedExample);
+  const { results: sigmaResults, wreathElements } = runSigmaLoop(graph, matrixData, normalizedExample);
   const symmetry = buildGroup(sigmaResults, graph, normalizedExample);
-  const componentData = decomposeAndClassify(
+  const rawClusters = computeLabelClusters(symmetry.allLabels, symmetry.fullGenerators, dimensionN);
+  const labelSizesOverride = example.labelSizes || {};
+  const clusters = rawClusters.map((c) => ({
+    ...c,
+    size: Object.prototype.hasOwnProperty.call(labelSizesOverride, c.id)
+      ? labelSizesOverride[c.id]
+      : dimensionN,
+  }));
+  const sizeByLabel = new Map();
+  for (const c of clusters) {
+    for (const label of c.labels) sizeByLabel.set(label, c.size);
+  }
+  const sizes = symmetry.allLabels.map((l) => sizeByLabel.get(l) ?? dimensionN);
+  const componentData = decomposeClassifyAndCount(
     symmetry.allLabels,
     symmetry.vLabels,
     symmetry.wLabels,
     symmetry.fullGenerators,
     symmetry.fullElements,
+    sizes,
   );
   const burnside = computeBurnside(symmetry, dimensionN);
+  const numTerms = normalizedExample.subscripts.length;
   const costModel = computeExactCostModel({
     labels: symmetry.allLabels,
     vLabels: symmetry.vLabels,
     groupElements: symmetry.fullElements,
     dimensionN,
-    numTerms: normalizedExample.subscripts.length,
+    sizes,
+    numTerms,
+  });
+  // Per-component aggregation drives the displayed μ and α.
+  // costModel above is kept as a brute-force ground truth.
+  const componentCosts = aggregateComponentCosts(componentData.components, numTerms);
+
+  // Expression-level group: V-sub × S(W). Pedagogical only — not used for
+  // compression. See engine/expressionGroup.js for the derivation.
+  const expressionGroup = buildExpressionGroup({
+    perTupleElements: symmetry.fullElements ?? [],
+    vLabels: symmetry.vLabels ?? [],
+    wLabels: symmetry.wLabels ?? [],
+    allLabels: symmetry.allLabels ?? [],
+    sizeByLabel,
   });
 
-  return { graph, matrixData, sigmaResults, symmetry, componentData, burnside, costModel };
+  return {
+    graph,
+    matrixData,
+    sigmaResults,
+    symmetry: {
+      ...symmetry,
+      wreathElements,
+      identicalGroups: graph.identicalGroups,
+    },
+    componentData,
+    burnside,
+    costModel,
+    componentCosts,
+    clusters,
+    expressionGroup,
+  };
 }

@@ -30,7 +30,14 @@ test('legacy explorer shell selectors have been removed from styles.css', () => 
   assert.doesNotMatch(styles, /\.pill-v/);
   assert.doesNotMatch(styles, /\.pill-w/);
 
-  assert.match(styles, /\.pseudocode-editor/);
+  // The pseudocode-* IDE-chrome styles were removed when Mental Framework
+  // moved from a modal into the AlgorithmAtAGlance preamble with its own
+  // editorial-light code card. These must no longer be present.
+  assert.doesNotMatch(styles, /\.pseudocode-editor/);
+  assert.doesNotMatch(styles, /\.pseudocode-code-line/);
+
+  // Still-used visualization styles.
+  assert.match(styles, /\.orbit-inspector-kicker/);
   assert.match(styles, /\.matrix-table/);
   assert.match(styles, /\.orbit-detail-card/);
 });

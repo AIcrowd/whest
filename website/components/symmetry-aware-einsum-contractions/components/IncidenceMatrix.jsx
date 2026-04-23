@@ -6,14 +6,23 @@
  * matching the animated matrix style. When `animate` is true, rows
  * and columns transition smoothly to new positions.
  */
+import Latex from './Latex.jsx';
 import { buildUVertexLabels } from '../engine/uVertexLabel.js';
+import {
+  explorerThemeColor,
+  getExplorerThemeFingerprintPalette,
+} from '../lib/explorerTheme.js';
+import {
+  getActiveExplorerThemeId,
+  notationColor,
+  notationLatex,
+} from '../lib/notationSystem.js';
 
 // Layout constants — single source of truth
 export const CELL_W = 70;
 export const CELL_H = 38;
 export const HEADER_H = 32;
 export const LABEL_W = 90;
-const DEFAULT_LABEL_COLOR = '#9ca3af';
 
 export default function IncidenceMatrix({
   matrix,          // number[][] — the matrix data to display
@@ -29,9 +38,11 @@ export default function IncidenceMatrix({
   label,           // string | null — title above the matrix (e.g. "M", "σ(M)")
   compact,         // boolean — slightly smaller for modal use
 }) {
+  const explorerThemeId = getActiveExplorerThemeId();
   const numRows = matrix.length;
   const numCols = colLabels.length;
   const uLabels = buildUVertexLabels(uVertices, example);
+  const defaultLabelColor = explorerThemeColor(explorerThemeId, 'muted');
 
   const cellW = compact ? 56 : CELL_W;
   const cellH = compact ? 32 : CELL_H;
@@ -67,7 +78,7 @@ export default function IncidenceMatrix({
     (fpToLabels[fp] ??= new Set()).add(lbl);
   }
   // Color equivalent fingerprints
-  const fpColorPalette = ['#4a7cff', '#3ddc84', '#ffb74d', '#bb86fc', '#ff5252'];
+  const fpColorPalette = getExplorerThemeFingerprintPalette(explorerThemeId);
   const fpColors = {};
   let fpColorIdx = 0;
   for (const [fp, lblSet] of Object.entries(fpToLabels)) {
@@ -78,7 +89,22 @@ export default function IncidenceMatrix({
 
   return (
     <div className="inc-matrix-outer">
-      {label && <div className="inc-matrix-label">{label}</div>}
+      {label && (
+        <div className="inc-matrix-label">
+          <Latex math={label} />
+        </div>
+      )}
+      <div className="inc-matrix-legend">
+        <span className="inc-matrix-legend-item">
+          <span className="inc-matrix-legend-kicker">rows:</span>
+          <Latex math={notationLatex('u_axis_classes')} />
+          <span className="inc-matrix-legend-text">axis classes</span>
+        </span>
+        <span className="inc-matrix-legend-item">
+          <span className="inc-matrix-legend-kicker">columns:</span>
+          <Latex math={`${notationLatex('l_labels')} = ${notationLatex('v_free')} \\sqcup ${notationLatex('w_summed')}`} />
+        </span>
+      </div>
       <div className="inc-matrix" style={{ height: containerH, width: containerW }}>
         {/* Column headers */}
         {colLabels.map((lbl, ci) => {
@@ -92,7 +118,7 @@ export default function IncidenceMatrix({
                 transform: `translateX(${labelW + ci * cellW}px)`,
                 width: cellW, height: headerH,
               }}>
-              {lbl}
+              <Latex math={lbl} />
             </div>
           );
         })}
@@ -116,7 +142,7 @@ export default function IncidenceMatrix({
                 width: labelW,
                 color: (() => {
                   const opName = example?.operandNames?.[uVertices[uIdx]?.opIdx];
-                  return variableColors?.[opName]?.color || DEFAULT_LABEL_COLOR;
+                  return variableColors?.[opName]?.color || defaultLabelColor;
                 })(),
               }}>
                 {uLabels[uIdx]}
@@ -149,9 +175,15 @@ export default function IncidenceMatrix({
           const eqColor = fpColors[fp];
           return (
             <div key={lbl} className="inc-fp-item" style={eqColor ? { borderColor: eqColor } : {}}>
-              <span className={`inc-fp-label ${freeLabels?.has(lbl) ? 'inc-col-v' : 'inc-col-w'}`}>{lbl}</span>
+              <span className={`inc-fp-label ${freeLabels?.has(lbl) ? 'inc-col-v' : 'inc-col-w'}`}>
+                <Latex math={lbl} />
+              </span>
               <code className="inc-fp-value">({fp})</code>
-              {eqColor && <span className="inc-fp-eq" style={{ background: eqColor }}>≡</span>}
+              {eqColor && (
+                <span className="inc-fp-eq" style={{ background: eqColor, color: notationColor('m_incidence') }}>
+                  ≡
+                </span>
+              )}
             </div>
           );
         })}

@@ -17,7 +17,12 @@
    palette defined in global.css.
    ------------------------------------------------------------------------- */
 :root {
-  --radius: var(--radius-lg); /* 0.5rem — matches spec --radius-lg */
+  /* --radius is already 0.5rem in tokens.css; the prior
+     `--radius: var(--radius-lg)` alias here created a circular
+     reference (--radius-lg is itself var(--radius)), which the browser
+     resolved to the invalid/empty value and silently broke every
+     rounded-lg utility (computed to 0px). Dropping the alias — tokens.css
+     is the single source of truth. */
 
   /* shadcn / Tailwind theme vars */
   --background: #ffffff;

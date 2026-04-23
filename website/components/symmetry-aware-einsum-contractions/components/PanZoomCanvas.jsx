@@ -1,13 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import PanZoomControls, { PanZoomHint } from './PanZoomControls.jsx';
 
 /**
  * Lightweight pan/zoom wrapper for arbitrary children (e.g. SVG diagrams
  * that don't speak ReactFlow).
  *
- * - Wheel / trackpad pinch zooms around the pointer.
- * - Click + drag pans.
- * - Double-click resets to the initial viewport.
- * - Plus / minus buttons step the zoom in fixed increments.
+ * Gesture contract:
+ *   - Plain scroll passes through to the page. This is deliberate: users
+ *     skimming the page by scrolling past a canvas must never get stuck
+ *     inside it. The hint in the corner advertises the real zoom gesture.
+ *   - ⌘-scroll (macOS) / Ctrl-scroll zooms around the pointer.
+ *   - Click + drag pans.
+ *   - Double-click resets to the initial viewport.
+ *   - Buttons in the corner step zoom in fixed increments / reset.
  */
 export default function PanZoomCanvas({
   children,
@@ -37,7 +42,10 @@ export default function PanZoomCanvas({
 
   const handleWheel = useCallback((event) => {
     if (!containerRef.current) return;
-    // Only zoom when the pointer is over the canvas; let the page scroll otherwise.
+    // Only zoom when the user explicitly opts in with ⌘ / Ctrl. Plain
+    // wheel scrolls the page as normal — lets a reader skim past.
+    if (!(event.ctrlKey || event.metaKey)) return;
+
     event.preventDefault();
     const rect = containerRef.current.getBoundingClientRect();
     const px = event.clientX - rect.left - rect.width / 2;
@@ -59,7 +67,9 @@ export default function PanZoomCanvas({
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return undefined;
-    // Attach wheel as non-passive so preventDefault works.
+    // Attach wheel as non-passive so preventDefault works when the user
+    // IS zooming. When they aren't, we early-return above without
+    // calling preventDefault — the event bubbles normally.
     el.addEventListener('wheel', handleWheel, { passive: false });
     return () => el.removeEventListener('wheel', handleWheel);
   }, [handleWheel]);
@@ -114,33 +124,13 @@ export default function PanZoomCanvas({
         </div>
       </div>
 
-      <div className="pointer-events-auto absolute bottom-2 right-2 flex flex-col gap-1 rounded-md border border-border bg-white/90 p-1 text-xs shadow-sm backdrop-blur">
-        <button
-          type="button"
-          aria-label="Zoom in"
-          onClick={() => zoomBy(1.2)}
-          className="flex h-6 w-6 items-center justify-center rounded text-foreground hover:bg-surface-raised"
-        >
-          +
-        </button>
-        <button
-          type="button"
-          aria-label="Zoom out"
-          onClick={() => zoomBy(1 / 1.2)}
-          className="flex h-6 w-6 items-center justify-center rounded text-foreground hover:bg-surface-raised"
-        >
-          −
-        </button>
-        <button
-          type="button"
-          aria-label="Reset view"
-          onClick={reset}
-          className="flex h-6 w-6 items-center justify-center rounded text-foreground hover:bg-surface-raised"
-          title="Reset"
-        >
-          ⟳
-        </button>
-      </div>
+      <PanZoomHint className="absolute bottom-2 left-2" />
+      <PanZoomControls
+        onZoomIn={() => zoomBy(1.2)}
+        onZoomOut={() => zoomBy(1 / 1.2)}
+        onReset={reset}
+        className="absolute bottom-2 right-2"
+      />
     </div>
   );
 }

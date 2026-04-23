@@ -5,21 +5,22 @@
  * determined by its symmetry type.  The buildVariableColors() helper
  * produces the lookup map consumed by every visualisation layer.
  */
+import { getExplorerThemeOperandPalette } from '../lib/explorerTheme.js';
 
 // Operand colors — chosen to avoid V-free blue (#4A7CFF) and W-summed
 // slate (#64748B).  Warm/saturated tones that stay distinct from each
 // other and from the V/W semantic colors.
 export const PALETTE = [
-  '#E85D04',   // burnt orange
-  '#9B5DE5',   // vivid purple
-  '#00BBF9',   // cyan
-  '#F15BB5',   // hot pink
-  '#00F5D4',   // mint/teal
-  '#FEE440',   // bright yellow
-  '#D62828',   // deep red
-  '#06D6A0',   // emerald
-  '#118AB2',   // ocean blue (darker, distinct from V-blue)
-  '#073B4C',   // dark teal
+  '#0B6D7A',   // quantity teal
+  '#334155',   // deep slate
+  '#FA9E33',   // warning amber
+  '#D23934',   // muted coral
+  '#64748B',   // summed-side slate
+  '#9A3412',   // burnt sienna
+  '#C7632F',   // terracotta
+  '#0F766E',   // deep teal
+  '#B45309',   // bronze
+  '#BE185D',   // berry rose
 ];
 
 export const SYMMETRY_ICONS = {
@@ -77,17 +78,19 @@ function symmetryLabel(symmetry, rank, symAxes) {
  * Build a color / icon map keyed by variable name.
  *
  * @param {Array<{name: string, rank: number, symmetry: string, symAxes: number[]}>} variables
+ * @param {string | object | null} themeOrId
  * @returns {Object.<string, {color: string, icon: string, symmetryLabel: string, symmetry: string}>}
  */
-export function buildVariableColors(variables) {
+export function buildVariableColors(variables, themeOrId = null) {
   const map = {};
   let idx = 0;
+  const palette = themeOrId ? getExplorerThemeOperandPalette(themeOrId) : PALETTE;
 
   for (const v of variables) {
     if (map[v.name] !== undefined) continue;
 
     map[v.name] = {
-      color: PALETTE[idx % PALETTE.length],
+      color: palette[idx % palette.length],
       icon: SYMMETRY_ICONS[v.symmetry] ?? '',
       symmetryLabel: symmetryLabel(v.symmetry, v.rank, v.symAxes),
       symmetry: v.symmetry,

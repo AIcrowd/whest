@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 import IncidenceMatrix from './IncidenceMatrix.jsx';
+import InlineMathText from './InlineMathText.jsx';
+import Latex from './Latex.jsx';
+import { notationColor, notationLatex } from '../lib/notationSystem.js';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
-const VISIBLE_VALID_PAIR_LIMIT = 5;
+const VISIBLE_VALID_PAIR_LIMIT = 4;
 
 export default function SigmaLoop({ results, graph, matrixData, example, variableColors, group, onSelectedPairChange }) {
   const allPairs = results.filter((result) => !result.skipped);
@@ -142,12 +145,17 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   }
 
   return (
-    <div className="sigma-loop">
+    <div className="sigma-loop bg-white p-4">
+      <div className="explorer-support-prose mb-2">
+        <InlineMathText>
+          {`Each $${notationLatex('sigma_row_move')}$ is a wreath element; each accepted pair shows a row move together with its matching relabeling $${notationLatex('pi_relabeling')}$.`}
+        </InlineMathText>
+      </div>
       {/* Summary stats */}
       <div className="sigma-summary">
         <div className="sigma-stat">
           <span className="stat-num">{results.length}</span>
-          <span className="stat-label">total σ's</span>
+          <span className="stat-label">total <Latex math={String.raw`\sigma`} inheritColor />&apos;s</span>
         </div>
         <div className="sigma-stat">
           <span className="stat-num">{results.filter(r => r.skipped).length}</span>
@@ -155,7 +163,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
         <div className="sigma-stat accepted">
           <span className="stat-num">{allPairs.filter(r => r.isValid).length}</span>
-          <span className="stat-label">valid π found</span>
+          <span className="stat-label">valid <Latex math={String.raw`\pi`} inheritColor /> found</span>
         </div>
         <div className="sigma-stat rejected">
           <span className="stat-num">{allPairs.filter(r => !r.isValid).length}</span>
@@ -163,46 +171,47 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
         </div>
       </div>
 
-      {/* Valid pairs — shown inline */}
+      {/* Valid pairs — shown inline in a 2-column grid */}
       {validPairs.length > 0 && (
         <div className="pair-selector">
-          <span className="pair-selector-label">Valid (σ, π) pairs:</span>
-          <div className="pair-chips">
+          <span className="pair-selector-label">Valid (<Latex math={String.raw`\sigma`} />, <Latex math={String.raw`\pi`} />) pairs:</span>
+          <div className="pair-chips pair-chips-grid">
             {inlineValidPairs.map((r) => {
               const origIdx = allPairs.indexOf(r);
               return (
                 <button key={origIdx}
                   className="pair-chip pair-valid"
                   onClick={() => handleSelectPair(origIdx)}>
-                  <span className="pair-sigma">σ = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
-                  <span className="pair-pi">π = {fmtPi(r.pi)}</span>
+                  <span className="pair-sigma"><Latex math={String.raw`\sigma`} inheritColor /> = {fmtSigma(r.sigmaRowPerm, uLabels)}</span>
+                  <span className="pair-pi"><Latex math={String.raw`\pi`} inheritColor /> = {fmtPi(r.pi)}</span>
                   <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
                     {kindLabel(r.piKind)}
                   </span>
                 </button>
               );
             })}
-
-            {remainingValidPairs.length > 0 && (
-              <button
-                className="valid-toggle"
-                onClick={() => setShowMoreValid(true)}
-              >
-                ▸ {remainingValidPairs.length} more (σ, π) pairs
-              </button>
-            )}
           </div>
         </div>
       )}
 
-      {/* Rejected pairs — opens modal list */}
-      {rejectedPairs.length > 0 && (
-        <div className="rejected-section">
-          <button
-            className="rejected-toggle"
-            onClick={() => setShowRejected(true)}>
-            ▸ {rejectedPairs.length} rejected σ{rejectedPairs.length !== 1 ? "'s" : ''}
-          </button>
+      {/* Overflow + rejected toggles — share one row */}
+      {(remainingValidPairs.length > 0 || rejectedPairs.length > 0) && (
+        <div className="sigma-toggles-row">
+          {remainingValidPairs.length > 0 && (
+            <button
+              className="valid-toggle"
+              onClick={() => setShowMoreValid(true)}
+            >
+              ▸ {remainingValidPairs.length} more (<Latex math={String.raw`\sigma`} inheritColor />, <Latex math={String.raw`\pi`} inheritColor />) pair{remainingValidPairs.length !== 1 ? 's' : ''}
+            </button>
+          )}
+          {rejectedPairs.length > 0 && (
+            <button
+              className="rejected-toggle"
+              onClick={() => setShowRejected(true)}>
+              ▸ {rejectedPairs.length} rejected <Latex math={String.raw`\sigma`} inheritColor />{rejectedPairs.length !== 1 ? "'s" : ''}
+            </button>
+          )}
         </div>
       )}
 
@@ -217,7 +226,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 <div key={i} className="stage-step-wrapper">
                   {i > 0 && (
                     <div className={`stage-connector ${stage >= i ? 'stage-connector-done' : ''} ${!reachable ? 'stage-connector-disabled' : ''}`}>
-                      <span className="stage-connector-label">{i === 1 ? 'apply σ' : 'apply π'}</span>
+                      <span className="stage-connector-label">{i === 1 ? <>apply <Latex math={String.raw`\sigma`} inheritColor /></> : <>apply <Latex math={String.raw`\pi`} inheritColor /></>}</span>
                     </div>
                   )}
                   <button
@@ -268,7 +277,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
               )}
               {stage >= 1 && !selected.isValid && (
                 <div className="recovery-badge-below recovery-fail">
-                  π not found — {selected.reason}
+                  <Latex math={String.raw`\pi`} inheritColor /> not found — {selected.reason}
                 </div>
               )}
             </div>
@@ -278,7 +287,7 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
           {selected.isValid && selected.pi && (
             <>
               <div className="pi-detail-panel">
-                <h5>π mapping</h5>
+                <h5><Latex math={String.raw`\pi`} /> mapping</h5>
                 <div className="pi-arrows">
                   {Object.entries(selected.pi).map(([from, to]) => (
                     <div key={from} className={`pi-arrow ${from !== to ? 'moved' : 'fixed'}`}>
@@ -291,10 +300,37 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 <div className="mt-4 space-y-3 text-sm">
                   <div>
                     <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Ordered active labels</div>
-                    <code className="mt-1 block font-mono text-foreground">{`[${labels.join(', ')}]`}</code>
+                    {/*
+                      Color each label by its V/W role so this block matches
+                      the rest of the page (InteractionGraph, DiminoView,
+                      VSubSwConstruction, ExpressionLevelModal all use the
+                      shared notation palette for free and summed labels).
+                      Without this the [a, b, c, i] list rendered as uniform black text —
+                      the one place on the page where the V/W distinction
+                      was not visible at a glance.
+                    */}
+                    <code className="mt-1 block font-mono text-foreground">
+                      [
+                      {labels.map((l, i) => {
+                        const isV = group?.vLabels?.includes(l);
+                        const isW = group?.wLabels?.includes(l);
+                        const color = isV
+                          ? notationColor('v_free')
+                          : isW
+                            ? notationColor('w_summed')
+                            : undefined;
+                        return (
+                          <span key={`${l}-${i}`}>
+                            {i > 0 && ', '}
+                            <span style={color ? { color, fontWeight: 600 } : undefined}>{l}</span>
+                          </span>
+                        );
+                      })}
+                      ]
+                    </code>
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      This π induces candidate permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
+                      This <Latex math={String.raw`\pi`} /> induces the label permutation {selectedCandidate ? selectedCandidate.cycleNotation : '—'} on the ordered active labels. The right panel now tests it in generator construction.
                     </div>
                   </div>
                 </div>
@@ -379,7 +415,7 @@ function RejectedModal({
     <div className="rejected-modal-overlay" onClick={onClose}>
       <div className="rejected-modal" onClick={e => e.stopPropagation()}>
         <div className="rejected-modal-header">
-          <h4>{pair ? 'Rejected σ — Detail' : `${rejectedPairs.length} Rejected σ's`}</h4>
+          <h4>{pair ? <>Rejected <Latex math={String.raw`\sigma`} /> — Detail</> : <>{rejectedPairs.length} Rejected <Latex math={String.raw`\sigma`} />&apos;s</>}</h4>
           <button className="rejected-modal-close" onClick={onClose}>✕</button>
         </div>
 
@@ -392,10 +428,10 @@ function RejectedModal({
                 <button key={origIdx} className="rejected-list-item"
                   onClick={() => onSelectDetail(origIdx)}>
                   <span className="rejected-list-sigma">
-                    σ = {fmtSigma(r.sigmaRowPerm, uLabels)}
+                    <Latex math={String.raw`\sigma`} inheritColor /> = {fmtSigma(r.sigmaRowPerm, uLabels)}
                   </span>
                   <span className="rejected-list-reason">
-                    {r.reason || 'no valid π'}
+                    {r.reason || <>no valid <Latex math={String.raw`\pi`} inheritColor /></>}
                   </span>
                   <span className="rejected-list-arrow">→</span>
                 </button>
@@ -438,7 +474,7 @@ function ValidPairsModal({
     <div className="rejected-modal-overlay" onClick={onClose}>
       <div className="rejected-modal" onClick={(event) => event.stopPropagation()}>
         <div className="rejected-modal-header">
-          <h4>{`${pairs.length} additional valid σ${pairs.length === 1 ? '' : "'s"}`}</h4>
+          <h4>{pairs.length} additional valid <Latex math={String.raw`\sigma`} />{pairs.length === 1 ? '' : "'s"}</h4>
           <button className="rejected-modal-close" onClick={onClose}>✕</button>
         </div>
 
@@ -448,10 +484,10 @@ function ValidPairsModal({
             return (
               <button key={origIdx} className="rejected-list-item" onClick={() => onSelectPair(origIdx)}>
                 <span className="rejected-list-sigma">
-                  σ = {fmtSigma(r.sigmaRowPerm, uLabels)}
+                  <Latex math={String.raw`\sigma`} inheritColor /> = {fmtSigma(r.sigmaRowPerm, uLabels)}
                 </span>
                 <span className="pair-pi">
-                  π = {fmtPi(r.pi)}
+                  <Latex math={String.raw`\pi`} inheritColor /> = {fmtPi(r.pi)}
                 </span>
                 <span className={`pair-kind pair-kind-${r.piKind || 'identity'}`}>
                   {kindLabel(r.piKind)}
@@ -485,9 +521,9 @@ function RejectedDetail({ pair, labels, uVertices, example, freeLabels, uLabels,
         ← Back to list
       </button>
       <div className="rejected-modal-sigma">
-        σ = {fmtSigma(pair.sigmaRowPerm, uLabels)}
+        <Latex math={String.raw`\sigma`} /> = {fmtSigma(pair.sigmaRowPerm, uLabels)}
       </div>
-      <p className="rejected-modal-reason">{pair.reason || 'No valid π found'}</p>
+      <p className="rejected-modal-reason">{pair.reason || <>No valid <Latex math={String.raw`\pi`} /> found</>}</p>
 
       <div className="rejected-detail-controls">
         <button

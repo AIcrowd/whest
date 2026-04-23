@@ -5,6 +5,7 @@
 
 import { Permutation, dimino, burnsideCount } from './permutation.js';
 import { buildFullGroup, classifyPi } from './fullGroup.js';
+import { enumerateWreath } from './wreath.js';
 
 // ─── Bipartite Graph Construction ─────────────────────────────────
 
@@ -139,24 +140,17 @@ function derivePi(sigmaColOf, fpToLabels, vLabels, wLabels) {
 }
 
 /**
- * Convert cycle-array notation [[0,1],[2,3]] to array-form permutation of length k.
- */
-function cyclesToArrayForm(cycles, k) {
-  const arr = Array.from({ length: k }, (_, i) => i);
-  for (const cycle of cycles) {
-    for (let i = 0; i < cycle.length; i++) {
-      arr[cycle[i]] = cycle[(i + 1) % cycle.length];
-    }
-  }
-  return arr;
-}
-
-/**
- * Run the full σ-loop. Returns results for each σ generator.
+ * Run the full σ-loop. Returns results for each wreath-product element.
  *
- * Sources of σ generators:
- *   A) Per-operand declared symmetry → row permutations within one operand
- *   B) Identical-operand groups → adjacent swap generators between operands
+ * Directly enumerates the wreath product ∏_i (H_i ≀ S_{m_i}) via
+ * enumerateWreath, replacing the old Source A/B generator emission +
+ * Dimino-#1 closure pipeline. Per AUDIT Appendix A, the result is an
+ * identity-equivalent set.
+ *
+ * @returns {{results: Array, wreathElements: Array}} results is the Shape-1/2/3
+ *   schema consumed by buildGroup/SigmaLoop/DiminoView (unchanged from Task 3).
+ *   wreathElements is a parallel array with 3-way classification entries aligned
+ *   index-by-index with results.
  */
 export function runSigmaLoop(graph, matrixData, example) {
   const { freeLabels, summedLabels, allLabels, incidence, uOperand } = graph;
@@ -174,128 +168,58 @@ export function runSigmaLoop(graph, matrixData, example) {
   }
 
   const results = [];
-  const nRows = rowOrder.length;
-  const identityRow = Array.from({ length: nRows }, (_, i) => i);
+  const wreathElements = [];
 
-  // ── Collect row-permutation generators from both sources ──
-  const rowPermGenerators = [];  // { perm: number[], label: string }
-
-  // ── Source A: per-operand declared symmetry generators ──
+  // ── Directly enumerate the wreath product ∏_i (H_i ≀ S_{m_i}) ──
+  // (Replaces the old Source A/B emitters + Dimino-#1 closure.
+  // Per AUDIT Appendix A, the result is an identity-equivalent set.)
+  const axisRanks = example.subscripts.map((s) => s.length);
   const perOpSymmetry = example?.perOpSymmetry;
-  if (perOpSymmetry) {
-    const subscripts = example.subscripts;
-    for (let opIdx = 0; opIdx < subscripts.length; opIdx++) {
-      const opSym = Array.isArray(perOpSymmetry) ? perOpSymmetry[opIdx] : perOpSymmetry;
-      if (!opSym) continue;
+  // Pass per-operand symmetry aligned by operand position. If perOpSymmetry
+  // is a single object (legacy shape), broadcast it to all operands so
+  // enumerateH sees the right shape.
+  const perOpSymmetryArr = Array.isArray(perOpSymmetry)
+    ? perOpSymmetry
+    : axisRanks.map(() => perOpSymmetry ?? null);
 
-      const sub = subscripts[opIdx];
-      let symType, symAxes;
-      if (typeof opSym === 'string') {
-        symType = opSym;
-        symAxes = Array.from({ length: sub.length }, (_, i) => i);
-      } else if (opSym && typeof opSym === 'object') {
-        symType = opSym.type || 'symmetric';
-        symAxes = opSym.axes || Array.from({ length: sub.length }, (_, i) => i);
-      } else {
-        continue;
-      }
-
-      // Get generators for this symmetry type
-      let gens;
-      if (symType === 'custom' && opSym.generators) {
-        gens = opSym.generators.map(cycles => cyclesToArrayForm(cycles, symAxes.length))
-          .filter(arr => !arr.every((v, i) => v === i));
-      } else {
-        gens = declaredSymGenerators(symType, symAxes.length).map(p => p.arr);
-      }
-
-      // Map each generator to a row permutation
-      const uIndices = opToUIndices[opIdx];
-      if (!uIndices || uIndices.length === 0) continue;
-
-      for (const genArr of gens) {
-        const rowPerm = [...identityRow];
-        let isId = true;
-        for (let i = 0; i < symAxes.length; i++) {
-          const fromRow = uIndices[symAxes[i]];
-          const toRow = uIndices[symAxes[genArr[i]]];
-          if (fromRow !== undefined && toRow !== undefined) {
-            rowPerm[fromRow] = identityRow[toRow];
-            if (fromRow !== toRow) isId = false;
-          }
-        }
-        if (!isId) rowPermGenerators.push({ perm: rowPerm, label: `Op${opIdx} sym` });
-      }
-    }
+  // Compute uOffsets from opToUIndices so enumerateWreath's row-perm
+  // coordinate frame matches graph.uVertices indexing.
+  const nOperands = axisRanks.length;
+  const uOffsets = new Array(nOperands);
+  for (let p = 0; p < nOperands; p += 1) {
+    const positions = opToUIndices[p] || [];
+    uOffsets[p] = positions.length > 0 ? positions[0] : 0;
   }
 
-  // ── Source B: identical-operand adjacent swap generators ──
-  const { identicalGroups } = graph;
-  for (const group of identicalGroups) {
-    for (let g = 0; g < group.length - 1; g++) {
-      const iOp = group[g];
-      const jOp = group[g + 1];
-      const posA = opToUIndices[iOp] || [];
-      const posB = opToUIndices[jOp] || [];
-      if (posA.length !== posB.length) continue;
-      const rowPerm = [...identityRow];
-      for (let p = 0; p < posA.length; p++) {
-        rowPerm[posA[p]] = identityRow[posB[p]];
-        rowPerm[posB[p]] = identityRow[posA[p]];
-      }
-      rowPermGenerators.push({ perm: rowPerm, label: `Swap Op${iOp}↔Op${jOp}` });
-    }
+  // identicalGroups contains only groups of size >= 2. For operands with no
+  // partner we add singleton groups so the wreath enumerator walks every
+  // operand's H_i.
+  const groupedOperands = new Set();
+  for (const g of graph.identicalGroups) for (const p of g) groupedOperands.add(p);
+  const singletonGroups = [];
+  for (let p = 0; p < nOperands; p += 1) {
+    if (!groupedOperands.has(p)) singletonGroups.push([p]);
   }
+  const identicalGroupsAll = [...graph.identicalGroups, ...singletonGroups];
 
-  // ── Source C: coordinated axis relabeling for identical operands ──
-  // When identical operands share the same subscript, axis permutations
-  // applied uniformly across all copies relabel dummy indices.
-  // Only valid for W-side (summed) axes — free labels would change the output.
-  const subscripts = example?.subscripts || [];
-  for (const group of identicalGroups) {
-    // Check all operands have the same subscript
-    const groupSubs = group.map(op => subscripts[op]);
-    if (new Set(groupSubs).size !== 1 || !groupSubs[0]) continue;
-    const sub = groupSubs[0];
-    const rank = sub.length;
-    if (rank < 2) continue;
-    // Find W-only axis positions
-    const wAxes = [];
-    for (let ax = 0; ax < rank; ax++) {
-      if (wLabels.has(sub[ax])) wAxes.push(ax);
-    }
-    if (wAxes.length < 2) continue;
-    // Adjacent transpositions on W-only axes
-    for (let idx = 0; idx < wAxes.length - 1; idx++) {
-      const axA = wAxes[idx];
-      const axB = wAxes[idx + 1];
-      const rowPerm = [...identityRow];
-      let isId = true;
-      for (const opIdx of group) {
-        const positions = opToUIndices[opIdx] || [];
-        if (axA >= positions.length || axB >= positions.length) continue;
-        const pa = positions[axA], pb = positions[axB];
-        rowPerm[pa] = identityRow[pb];
-        rowPerm[pb] = identityRow[pa];
-        isId = false;
-      }
-      if (!isId) rowPermGenerators.push({ perm: rowPerm, label: `Axis swap ${axA}↔${axB}` });
-    }
-  }
+  // (Source C removed: it emitted expression-level dummy-rename symmetries
+  // on summed axes of identical operands. Those are invariant under the
+  // total sum but NOT at the per-tuple level required by Burnside orbit
+  // compression, so feeding them to the compression pipeline caused
+  // over-compression on Frobenius-style einsums. Expression-level
+  // symmetries are now recovered separately via G_expr = V-sub × S(W)
+  // for pedagogical display without contaminating compression.)
 
-  // ── Build group from all generators, enumerate all elements via Dimino ──
-  if (rowPermGenerators.length === 0) return results;
+  for (const element of enumerateWreath({
+    identicalGroups: identicalGroupsAll,
+    perOpSymmetry: perOpSymmetryArr,
+    axisRanks,
+    uOffsets,
+  })) {
+    const sigmaRowPerm = element.rowPerm.arr;
+    const isIdentity = sigmaRowPerm.every((v, i) => v === i);
 
-  const permGens = rowPermGenerators.map(g => new Permutation(g.perm));
-  const allRowPerms = dimino(permGens);
-
-  // ── Derive π for each non-identity group element ──
-  // Build a label for each row so we can describe σ in human-readable form.
-  // Each row is "OpN·label" — we build an operand-level sigma mapping from
-  // the row permutation by tracking which operand positions get swapped.
-  for (const sigmaPerm of allRowPerms) {
-    const sigmaRowPerm = sigmaPerm.arr;
-    if (sigmaPerm.isIdentity) {
+    if (isIdentity) {
       const identityPi = Object.fromEntries(allLabels.map((label) => [label, label]));
       results.push({
         sigma: {},
@@ -308,6 +232,15 @@ export function runSigmaLoop(graph, matrixData, example) {
         piCrossesVw: false,
         piMovesV: false,
         piMovesW: false,
+      });
+      wreathElements.push({
+        id: `w${wreathElements.length}`,
+        rowPerm: element.rowPerm,
+        derivePiResult: identityPi,
+        matrixPreserving: true,
+        isValid: true,
+        classification: 'matrix-preserving',
+        factorization: element.factorization,
       });
       continue;
     }
@@ -332,6 +265,15 @@ export function runSigmaLoop(graph, matrixData, example) {
         sigma: {}, sigmaRowPerm, sigmaMatrix, sigmaColOf,
         isValid: false, reason: 'No matching π (fingerprint mismatch)',
       });
+      wreathElements.push({
+        id: `w${wreathElements.length}`,
+        rowPerm: element.rowPerm,
+        derivePiResult: null,
+        matrixPreserving: false,
+        isValid: false,
+        classification: 'rejected',
+        factorization: element.factorization,
+      });
       continue;
     }
 
@@ -348,9 +290,18 @@ export function runSigmaLoop(graph, matrixData, example) {
       isValid: true, piIsIdentity, piKind,
       piCrossesVw, piMovesV, piMovesW,
     });
+    wreathElements.push({
+      id: `w${wreathElements.length}`,
+      rowPerm: element.rowPerm,
+      derivePiResult: pi,
+      matrixPreserving: piIsIdentity,
+      isValid: true,
+      classification: piIsIdentity ? 'matrix-preserving' : 'valid',
+      factorization: element.factorization,
+    });
   }
 
-  return results;
+  return { results, wreathElements };
 }
 
 // ─── Group Construction ───────────────────────────────────────────
@@ -372,35 +323,6 @@ function minimalGenerators(gens) {
     }
   }
   return minimal;
-}
-
-/**
- * Build generators for a declared symmetry type on a given number of axes.
- * Returns Permutation[] or empty array.
- */
-function declaredSymGenerators(symType, k) {
-  if (symType === 'symmetric') {
-    // S_k: adjacent transpositions
-    const gens = [];
-    for (let i = 0; i < k - 1; i++) {
-      const arr = Array.from({ length: k }, (_, j) => j);
-      arr[i] = i + 1;
-      arr[i + 1] = i;
-      gens.push(new Permutation(arr));
-    }
-    return gens;
-  }
-  if (symType === 'cyclic') {
-    return [new Permutation(Array.from({ length: k }, (_, j) => (j + 1) % k))];
-  }
-  if (symType === 'dihedral') {
-    const gens = [new Permutation(Array.from({ length: k }, (_, j) => (j + 1) % k))];
-    if (k >= 3) {
-      gens.push(new Permutation([0, ...Array.from({ length: k - 1 }, (_, j) => k - 1 - j)]));
-    }
-    return gens;
-  }
-  return [];
 }
 
 export function buildGroup(sigmaResults, graph) {
@@ -718,7 +640,6 @@ export function computeBurnside(group, dimensionN) {
     fullTotalFixed: fullResult.totalFixed,
     orbitCount,
     totalTupleCount,
-    evaluationCost: orbitCount,
     dimensionN,
   };
 }

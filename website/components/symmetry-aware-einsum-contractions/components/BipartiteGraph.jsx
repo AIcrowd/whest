@@ -3,7 +3,30 @@
  * labeled group boxes for U axis-classes (left), V free and W summed (right).
  */
 
-export default function BipartiteGraph({ graph, example, variableColors }) {
+import PanZoomCanvas from './PanZoomCanvas.jsx';
+import Latex from './Latex.jsx';
+import {
+  explorerThemeColor,
+  explorerThemeTint,
+  getExplorerThemeOperandPalette,
+} from '../lib/explorerTheme.js';
+import {
+  getActiveExplorerThemeId,
+  notationLatex,
+} from '../lib/notationSystem.js';
+
+export default function BipartiteGraph({ graph, example, variableColors, highlightedLabels = new Set() }) {
+  const explorerThemeId = getActiveExplorerThemeId();
+  const V_COLOR = explorerThemeColor(explorerThemeId, 'hero');
+  const W_COLOR = explorerThemeColor(explorerThemeId, 'summedSide');
+  const U_FALLBACK_COLOR = explorerThemeColor(explorerThemeId, 'heroMuted');
+  const HIGHLIGHT_COLOR = explorerThemeColor(explorerThemeId, 'heroMuted');
+  const MUTED_COLOR = explorerThemeColor(explorerThemeId, 'muted');
+  const BORDER_COLOR = explorerThemeColor(explorerThemeId, 'border');
+  const isHighlighted = (label) =>
+    highlightedLabels instanceof Set
+      ? highlightedLabels.has(label)
+      : Array.isArray(highlightedLabels) && highlightedLabels.includes(label);
   const { uVertices, incidence, freeLabels, summedLabels, identicalGroups } = graph;
 
   const vLabels = [...freeLabels].sort();
@@ -25,7 +48,7 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
   const opKeys = Object.keys(opGroups).sort((a, b) => a - b);
 
   // Compute pill widths for each U-vertex
-  const charW = 7.5;
+  const charW = 8.5;
   const uPillWidths = uVertices.map(u => {
     const labelStr = [...u.labels].sort().join(',');
     return Math.max(32, labelStr.length * charW + 18);
@@ -49,8 +72,11 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
     const colors = vc
       ? { fill: `${vc.color}08`, stroke: `${vc.color}4D` }
       : identicalGroups.length > 0
-        ? getGroupColor(opIdx, identicalGroups)
-        : { fill: 'rgba(250,158,51,0.04)', stroke: 'rgba(250,158,51,0.25)' };
+        ? getGroupColor(opIdx, identicalGroups, explorerThemeId)
+        : {
+            fill: explorerThemeTint(explorerThemeId, 'heroMuted', 0.04),
+            stroke: explorerThemeTint(explorerThemeId, 'heroMuted', 0.25),
+          };
 
     const boxTop = leftY;
     indices.forEach((uIdx, j) => {
@@ -103,8 +129,11 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
   };
 
   return (
-    <div className="graph-container">
-      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: '100%', height: 'auto' }}>
+    <PanZoomCanvas
+      className="graph-container h-[560px]"
+      ariaLabel="Bipartite graph (zoomable)"
+    >
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: W, height: H, maxWidth: 'none' }}>
         <defs>
           <filter id="node-shadow" x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="1" stdDeviation="2" floodOpacity="0.07" />
@@ -120,12 +149,12 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
               <rect
                 x={lbLeft} y={top}
                 width={lbFullW} height={bottom - top}
-                rx={14} fill={colors.fill} stroke={colors.stroke} strokeWidth={1.5}
+                rx={14} fill={colors.fill}
               />
               <LabelBadge
                 x={lbLeft + 12} y={top}
                 text={label}
-                color={vc?.color || '#FA9E33'} bg="#F8F9F9"
+                color={vc?.color || U_FALLBACK_COLOR}
               />
             </g>
           );
@@ -135,9 +164,18 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
         <rect
           x={rbLeft} y={vBoxTop}
           width={rbFullW} height={vBoxH}
-          rx={14} fill="rgba(74,124,255,0.03)" stroke="rgba(74,124,255,0.2)" strokeWidth={1.5}
+          rx={14}
+          fill={explorerThemeTint(explorerThemeId, 'hero', 0.03)}
+          stroke={explorerThemeTint(explorerThemeId, 'hero', 0.2)}
+          strokeWidth={1.5}
         />
-        <LabelBadge x={rbLeft + 12} y={vBoxTop} text="V (free)" color="#4A7CFF" bg="#F8F9F9" />
+        <MathLabelBadge
+          x={rbLeft + 12}
+          y={vBoxTop}
+          math={notationLatex('v_free')}
+          color={V_COLOR}
+          width={92}
+        />
 
         {/* ── W summed group box (right) ── */}
         {wLabels.length > 0 ? (
@@ -145,21 +183,39 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
             <rect
               x={rbLeft} y={wBoxTop}
               width={rbFullW} height={wBoxH}
-              rx={14} fill="rgba(100,116,139,0.03)" stroke="rgba(100,116,139,0.2)" strokeWidth={1.5}
+              rx={14}
+              fill={explorerThemeTint(explorerThemeId, 'summedSide', 0.03)}
+              stroke={explorerThemeTint(explorerThemeId, 'summedSide', 0.2)}
+              strokeWidth={1.5}
             />
-            <LabelBadge x={rbLeft + 12} y={wBoxTop} text="W (summed)" color="#64748B" bg="#F8F9F9" />
+            <MathLabelBadge
+              x={rbLeft + 12}
+              y={wBoxTop}
+              math={notationLatex('w_summed')}
+              color={W_COLOR}
+              width={122}
+            />
           </g>
         ) : (
           <g>
             <rect
               x={rbLeft} y={wBoxTop}
               width={rbFullW} height={wBoxH}
-              rx={14} fill="rgba(100,116,139,0.02)"
-              stroke="rgba(100,116,139,0.15)" strokeWidth={1.5} strokeDasharray="6,4"
+              rx={14}
+              fill={explorerThemeTint(explorerThemeId, 'summedSide', 0.02)}
+              stroke={explorerThemeTint(explorerThemeId, 'summedSide', 0.15)}
+              strokeWidth={1.5}
+              strokeDasharray="6,4"
             />
-            <LabelBadge x={rbLeft + 12} y={wBoxTop} text="W (summed)" color="#64748B" bg="#F8F9F9" />
+            <MathLabelBadge
+              x={rbLeft + 12}
+              y={wBoxTop}
+              math={notationLatex('w_summed')}
+              color={W_COLOR}
+              width={122}
+            />
             <text x={rightX} y={wBoxTop + wBoxH / 2 + 4}
-              textAnchor="middle" fontSize={11} fill="#AAACAD"
+              textAnchor="middle" fontSize={12} fill={MUTED_COLOR}
               fontFamily="'Inter', sans-serif" fontStyle="italic">
               (empty)
             </text>
@@ -170,11 +226,11 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
         {uVertices.map((u, uIdx) => {
           const uy = uPositions[uIdx];
           const labelStr = [...u.labels].sort().join(',');
-          const pillW = Math.max(32, labelStr.length * 7.5 + 18);
+          const pillW = Math.max(32, labelStr.length * 8.5 + 18);
           const edgeStartX = leftX + pillW / 2 + 2;
           const eOpName = example.operandNames?.[u.opIdx];
           const eVc = variableColors?.[eOpName];
-          const edgeColor = eVc?.color || '#D9DCDC';
+          const edgeColor = eVc?.color || BORDER_COLOR;
           return [...vLabels, ...wLabels].map((lbl) => {
             const mult = incidence[uIdx][lbl] || 0;
             if (mult === 0) return null;
@@ -194,13 +250,13 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
         {uVertices.map((u, i) => {
           const y = uPositions[i];
           const labelStr = [...u.labels].sort().join(',');
-          const charW = 7.5;
+          const charW = 8.5;
           const pillW = Math.max(32, labelStr.length * charW + 18);
           const pillH = 28;
           const pillR = pillH / 2;
           const nOpName = example.operandNames?.[u.opIdx];
           const nVc = variableColors?.[nOpName];
-          const nodeColor = nVc?.color || '#FA9E33';
+          const nodeColor = nVc?.color || U_FALLBACK_COLOR;
           const hasSymmetry = nVc?.symmetry && nVc.symmetry !== 'none';
           return (
             <g key={`u-${i}`}>
@@ -209,7 +265,7 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
                 fill="white" stroke={nodeColor} strokeWidth={hasSymmetry ? 2.5 : 1.5}
                 filter="url(#node-shadow)" />
               <text x={leftX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill={nodeColor} fontSize={11} fontWeight={500}
+                fill={nodeColor} fontSize={12} fontWeight={500}
                 fontFamily="'IBM Plex Mono', monospace">
                 {labelStr}
               </text>
@@ -220,13 +276,14 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
         {/* ── V label nodes (right) ── */}
         {vLabels.map((lbl, i) => {
           const y = vPositions[i];
+          const hl = isHighlighted(lbl);
           return (
             <g key={`v-${lbl}`}>
               <circle cx={rightX} cy={y} r={nodeR}
-                fill="white" stroke="#4A7CFF" strokeWidth={1.5}
+                fill="white" stroke={hl ? HIGHLIGHT_COLOR : V_COLOR} strokeWidth={hl ? 3 : 1.5}
                 filter="url(#node-shadow)" />
               <text x={rightX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill="#4A7CFF" fontSize={11} fontWeight={600}
+                fill={hl ? HIGHLIGHT_COLOR : V_COLOR} fontSize={12} fontWeight={600}
                 fontFamily="'IBM Plex Mono', monospace">
                 {lbl}
               </text>
@@ -237,13 +294,14 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
         {/* ── W label nodes (right) ── */}
         {wLabels.map((lbl, i) => {
           const y = wPositions[i];
+          const hl = isHighlighted(lbl);
           return (
             <g key={`w-${lbl}`}>
               <circle cx={rightX} cy={y} r={nodeR}
-                fill="white" stroke="#64748B" strokeWidth={1.5}
+                fill="white" stroke={hl ? HIGHLIGHT_COLOR : W_COLOR} strokeWidth={hl ? 3 : 1.5}
                 filter="url(#node-shadow)" />
               <text x={rightX} y={y + 1} textAnchor="middle" dominantBaseline="middle"
-                fill="#64748B" fontSize={11} fontWeight={600}
+                fill={hl ? HIGHLIGHT_COLOR : W_COLOR} fontSize={12} fontWeight={600}
                 fontFamily="'IBM Plex Mono', monospace">
                 {lbl}
               </text>
@@ -252,28 +310,61 @@ export default function BipartiteGraph({ graph, example, variableColors }) {
         })}
 
         {/* ── Column labels ── */}
-        <text x={leftX} y={H - 8} textAnchor="middle" fill="#AAACAD" fontSize={10}
-          fontFamily="'Inter', sans-serif" fontWeight={600} letterSpacing="0.06em">
-          U (AXIS CLASSES)
-        </text>
-        <text x={rightX} y={H - 8} textAnchor="middle" fill="#AAACAD" fontSize={10}
-          fontFamily="'Inter', sans-serif" fontWeight={600} letterSpacing="0.06em">
-          INDEX LABELS
-        </text>
+        <foreignObject x={leftX - 72} y={H - 30} width={144} height={28}>
+          <div
+            xmlns="http://www.w3.org/1999/xhtml"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              fontSize: '11px',
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              color: MUTED_COLOR,
+              textTransform: 'uppercase',
+              fontFamily: 'Inter, sans-serif',
+            }}
+          >
+            <span style={{ color: explorerThemeColor(explorerThemeId, 'heroMuted'), textTransform: 'none' }}>
+              <Latex math={notationLatex('u_axis_classes')} />
+            </span>
+            <span>axis classes</span>
+          </div>
+        </foreignObject>
+        <foreignObject x={rightX - 72} y={H - 30} width={144} height={28}>
+          <div
+            xmlns="http://www.w3.org/1999/xhtml"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              fontSize: '11px',
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              color: MUTED_COLOR,
+              textTransform: 'uppercase',
+              fontFamily: 'Inter, sans-serif',
+            }}
+          >
+            <span style={{ color: explorerThemeColor(explorerThemeId, 'summedSide'), textTransform: 'none' }}>
+              <Latex math={notationLatex('l_labels')} />
+            </span>
+            <span>index labels</span>
+          </div>
+        </foreignObject>
       </svg>
-    </div>
+    </PanZoomCanvas>
   );
 }
 
 /** Small label badge that sits on the top edge of a group box */
-function LabelBadge({ x, y, text, color, bg }) {
-  // Measure approximate width (10px per char is close enough for SVG)
-  const w = text.length * 7.5 + 16;
+function LabelBadge({ x, y, text, color }) {
   return (
     <g>
-      <rect x={x} y={y - 10} width={w} height={18} rx={4} fill={bg} />
-      <text x={x + 8} y={y + 3}
-        fontSize={10} fontWeight={600} fill={color}
+      <text x={x} y={y - 4}
+        fontSize={11} fontWeight={600} fill={color}
         fontFamily="'Inter', sans-serif" letterSpacing="0.06em">
         {text}
       </text>
@@ -281,19 +372,47 @@ function LabelBadge({ x, y, text, color, bg }) {
   );
 }
 
-function getGroupColor(opIdx, identicalGroups) {
-  const fills = [
-    'rgba(74,124,255,0.06)', 'rgba(35,183,97,0.06)',
-    'rgba(250,158,51,0.06)', 'rgba(124,58,237,0.06)',
-  ];
-  const strokes = [
-    'rgba(74,124,255,0.3)', 'rgba(35,183,97,0.3)',
-    'rgba(250,158,51,0.3)', 'rgba(124,58,237,0.3)',
-  ];
+function MathLabelBadge({ x, y, math, color, width }) {
+  return (
+    <g>
+      <foreignObject x={x} y={y - 20} width={width} height={20}>
+        <div
+          xmlns="http://www.w3.org/1999/xhtml"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            height: '20px',
+            color,
+            fontSize: '12px',
+            lineHeight: 1,
+            textTransform: 'none',
+          }}
+        >
+          <Latex math={math} />
+        </div>
+      </foreignObject>
+    </g>
+  );
+}
+
+function getGroupColor(opIdx, identicalGroups, explorerThemeId) {
+  const palette = getExplorerThemeOperandPalette(explorerThemeId);
   for (let gi = 0; gi < identicalGroups.length; gi++) {
     if (identicalGroups[gi].includes(Number(opIdx))) {
-      return { fill: fills[gi % fills.length], stroke: strokes[gi % strokes.length] };
+      const color = palette[gi % palette.length];
+      return {
+        fill: colorWithAlpha(color, '0F'),
+        stroke: colorWithAlpha(color, '4D'),
+      };
     }
   }
-  return { fill: 'rgba(250,158,51,0.04)', stroke: 'rgba(250,158,51,0.25)' };
+  return {
+    fill: explorerThemeTint(explorerThemeId, 'heroMuted', 0.04),
+    stroke: explorerThemeTint(explorerThemeId, 'heroMuted', 0.25),
+  };
+}
+
+function colorWithAlpha(color, alphaHex) {
+  return /^#[0-9a-f]{6}$/i.test(color) ? `${color}${alphaHex}` : color;
 }

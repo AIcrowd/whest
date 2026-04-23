@@ -2,63 +2,14 @@
  * Component Decomposition Engine
  *
  * Decomposes the full symmetry group G into independent label components
- * (connected components of the label-interaction graph) and classifies
- * each component using the shared spec in ./classificationSpec.js.
- *
- * Cases:
- *   trivial  — no nontrivial symmetry (|Gₐ| = 1)
- *   A        — only V-labels (Wa = empty)
- *   B        — only W-labels (Va = empty)
- *   C        — both V and W labels, but no generator crosses the V/W boundary
- *   D        — cross-V/W generators AND the restricted group is the full symmetric group
- *   E        — cross-V/W generators but NOT the full symmetric group
- *
- * The decision order and predicates live in classificationSpec.js; changes
- * to the tree structure happen in one place there, and both this module
- * and the tree visualization pick them up automatically.
+ * (connected components of the label-interaction graph). Shape + regime
+ * classification is owned by shapeLayer.js and the regime ladder — this
+ * module only produces the components themselves.
  */
 
-import { Permutation, dimino } from './permutation.js';
-import { classifyComponent } from './classificationSpec.js';
-
-export const CASE_META = {
-  trivial: {
-    label: 'Direct count (trivial)',
-    description: 'Trivial group — no symmetry, count every assignment directly',
-    color: '#CBD5E1',
-    method: 'ρ = |Iₐ| (direct)',
-  },
-  A: {
-    label: 'Case A: V-only',
-    description: 'V-only component (free labels only, no summed labels)',
-    color: '#4A7CFF',
-    method: 'ρ = ∏nₗ (no accumulation savings)',
-  },
-  B: {
-    label: 'Case B: W-only',
-    description: 'W-only component (summed labels only, no free labels)',
-    color: '#94A3B8',
-    method: 'ρ = Burnside on Gₐ',
-  },
-  C: {
-    label: 'Case C: Correlated',
-    description: 'Mixed V+W component — no cross-boundary generators',
-    color: '#FA9E33',
-    method: 'ρ = orbit enumeration',
-  },
-  D: {
-    label: 'Case D: Cross (Young)',
-    description: 'Mixed V+W — cross generators, full symmetric group',
-    color: '#23B761',
-    method: 'ρ = Burnside on Hₐ',
-  },
-  E: {
-    label: 'Case E: Cross (general)',
-    description: 'Mixed V+W — cross generators, partial group',
-    color: '#F0524D',
-    method: 'ρ = orbit enumeration',
-  },
-};
+import { Permutation, dimino, burnsideCount } from './permutation.js';
+import { detectShape } from './shapeLayer.js';
+import { computeAccumulation } from './accumulationCount.js';
 
 class UnionFind {
   constructor(n) {
@@ -89,14 +40,19 @@ class UnionFind {
 export function buildLabelInteractionGraph(allLabels, generators) {
   const n = allLabels.length;
   const uf = new UnionFind(n);
+  // Each edge is a 3-tuple [fromIdx, toIdx, generatorIdx]. The generator index
+  // lets the UI attribute an edge back to the specific σ that introduced it
+  // (see LabelInteractionGraph's edge tooltips). Downstream consumers that
+  // only destructure [a, b] still work — the third element is silently
+  // dropped by array destructuring.
   const edges = [];
 
-  for (const gen of generators) {
+  generators.forEach((gen, generatorIdx) => {
     const movedByThisGen = [];
     for (let i = 0; i < n; i += 1) {
       if (gen.arr[i] !== i) {
         movedByThisGen.push(i);
-        edges.push([i, gen.arr[i]]);
+        edges.push([i, gen.arr[i], generatorIdx]);
         uf.union(i, gen.arr[i]);
       }
     }
@@ -104,7 +60,7 @@ export function buildLabelInteractionGraph(allLabels, generators) {
     for (let j = 1; j < movedByThisGen.length; j += 1) {
       uf.union(movedByThisGen[0], movedByThisGen[j]);
     }
-  }
+  });
 
   const componentMap = new Map();
   for (let i = 0; i < n; i += 1) {
@@ -197,12 +153,16 @@ function classifyGroupName(labels, generators, elements) {
 
   if (order === 2) {
     if (effectiveDegree > 2) {
+      // Single generator with disjoint 2-cycles: one coupled order-2 element,
+      // not S2 × S2 (which would have order 4). Cycle notation makes the
+      // order unambiguous.
       const gen = generators[0];
       const cycles = gen?.cyclicForm() || [];
       if (cycles.length > 1 && cycles.every((cycle) => cycle.length === 2)) {
-        return cycles
-          .map((cycle) => `S2{${cycle.map((i) => labels[i]).join(',')}}`)
-          .join('\u00d7');
+        const genText = cycles
+          .map((cycle) => `(${cycle.map((i) => labels[i]).join(' ')})`)
+          .join('');
+        return `\u27e8${genText}\u27e9`;
       }
       return `Z2${labelSet}`;
     }
@@ -244,59 +204,6 @@ export function decomposeAndClassify(allLabels, vLabels, wLabels, fullGenerators
     const order = elements.length;
     const groupName = classifyGroupName(labels, dedupGens, elements);
 
-    const hasCrossGen = dedupGens.some((gen) => {
-      for (let localPos = 0; localPos < indices.length; localPos += 1) {
-        const globalFrom = indices[localPos];
-        const globalTo = indices[gen.arr[localPos]];
-        const fromIsV = vSet.has(allLabels[globalFrom]);
-        const toIsV = vSet.has(allLabels[globalTo]);
-        if (fromIsV !== toIsV) return true;
-      }
-      return false;
-    });
-
-    const isFullSym = order === factorial(indices.length);
-    const classification = classifyComponent({
-      order,
-      vCount: va.length,
-      wCount: wa.length,
-      hasCrossGen,
-      isFullSym,
-      labelCount: indices.length,
-    });
-    const { caseType, path } = classification;
-
-    let ha = null;
-    let haElements = null;
-    if (caseType === 'D') {
-      const vaLocalPos = labels
-        .map((label, localPos) => ({ label, localPos }))
-        .filter(({ label }) => vSet.has(label))
-        .map(({ localPos }) => localPos);
-
-      haElements = elements.filter((el) => {
-        for (const pos of vaLocalPos) {
-          if (el.arr[pos] !== pos) return false;
-        }
-        return true;
-      });
-
-      const haGens = haElements.filter((el) => !el.isIdentity);
-      const haGenKeys = new Set();
-      const haGensDedup = haGens.filter((el) => {
-        const key = el.key();
-        if (haGenKeys.has(key)) return false;
-        haGenKeys.add(key);
-        return true;
-      });
-
-      ha = {
-        generators: haGensDedup,
-        elements: haElements,
-        order: haElements.length,
-      };
-    }
-
     return {
       indices,
       labels,
@@ -306,12 +213,47 @@ export function decomposeAndClassify(allLabels, vLabels, wLabels, fullGenerators
       elements,
       order,
       groupName,
-      caseType,
-      path,
-      ha,
-      haElements,
     };
   });
 
   return { interactionGraph, components };
+}
+
+/**
+ * Like decomposeAndClassify, but also attaches { shape, accumulation } to each
+ * component using the shape layer + regime ladder from accumulationCount.js.
+ *
+ * @param {string[]} allLabels
+ * @param {string[]} vLabels
+ * @param {string[]} wLabels
+ * @param {Permutation[]} fullGenerators
+ * @param {Permutation[]} fullElements
+ * @param {number[]} sizes - one entry per label in allLabels
+ */
+export function decomposeClassifyAndCount(
+  allLabels, vLabels, wLabels, fullGenerators, fullElements, sizes,
+) {
+  const base = decomposeAndClassify(allLabels, vLabels, wLabels, fullGenerators, fullElements);
+  const components = base.components.map((comp) => {
+    const compSizes = comp.indices.map((i) => sizes[i]);
+    const localLabels = comp.labels;
+    const vPositionsLocal = comp.va.map((l) => localLabels.indexOf(l));
+    const shape = detectShape({ va: comp.va, wa: comp.wa, elements: comp.elements });
+    const accumulation = computeAccumulation({
+      labels: localLabels,
+      va: comp.va,
+      wa: comp.wa,
+      elements: comp.elements,
+      sizes: compSizes,
+      visiblePositions: vPositionsLocal,
+      generators: comp.generators,
+    });
+    // Per-component orbit count M_a = Burnside on this component's group action.
+    // For trivial components (identity-only) this equals ∏ compSizes.
+    const multiplication = {
+      count: burnsideCount(comp.elements, compSizes).uniqueCount,
+    };
+    return { ...comp, sizes: compSizes, shape: shape.kind, accumulation, multiplication };
+  });
+  return { ...base, components };
 }
