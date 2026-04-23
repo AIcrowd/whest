@@ -46,3 +46,18 @@ test('section-one view exposes dense scaling for the selected expression', () =>
   assert.equal(view.denseGridScalingLatex, String.raw`n^{4}`);
   assert.equal(view.hasHeterogeneousSizes, false);
 });
+
+test('section-one view reflects merged runtime label-size overrides', () => {
+  const outer = preset('outer');
+  const view = buildSection1ExampleView({
+    ...outer,
+    labelSizes: {
+      ...(outer.labelSizes || {}),
+      'b,d': 7,
+    },
+  });
+
+  assert.equal(view.labelCount, 4);
+  assert.equal(view.hasHeterogeneousSizes, true);
+  assert.equal(view.denseGridScalingLatex, String.raw`\prod_{\ell \in L} n_\ell`);
+});

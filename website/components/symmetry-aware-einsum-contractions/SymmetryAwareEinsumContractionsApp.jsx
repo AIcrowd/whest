@@ -138,6 +138,16 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
   // Normalize the example for algorithm consumption
   const normalizedExample = useMemo(() => example ? normalizeExample(example) : null, [example]);
+  const preambleExample = useMemo(() => {
+    if (!normalizedExample) return null;
+    return {
+      ...normalizedExample,
+      labelSizes: {
+        ...(normalizedExample.labelSizes || {}),
+        ...clusterSizes,
+      },
+    };
+  }, [normalizedExample, clusterSizes]);
 
   // Handle preset selection
   const handleSelect = useCallback((idx) => {
@@ -324,7 +334,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
         </header>
 
         <div className="mx-auto w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
-          <AlgorithmAtAGlance example={previewExample ?? example} />
+          <AlgorithmAtAGlance example={preambleExample} />
         </div>
 
         <div className="mx-auto mb-8 mt-[-0.25rem] w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
