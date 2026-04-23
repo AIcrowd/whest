@@ -76,6 +76,78 @@ def test_moveaxis_remaps_symmetry():
     assert r.symmetry == we.SymmetryGroup.symmetric(axes=(1, 2))
 
 
+def test_expand_dims_remaps_full_symmetry_from_issue_49():
+    a = we.as_symmetric(numpy.ones((3, 3, 3)), symmetry=(0, 1, 2))
+    r = ops.expand_dims(a, axis=1)
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (3, 1, 3, 3)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(0, 2, 3))
+
+
+def test_expand_dims_remaps_partial_symmetry_front_middle_and_end():
+    a = we.as_symmetric(
+        numpy.stack([numpy.eye(3), 2 * numpy.eye(3)], axis=-1), symmetry=(0, 1)
+    )
+    front = ops.expand_dims(a, axis=0)
+    middle = ops.expand_dims(a, axis=1)
+    end = ops.expand_dims(a, axis=-1)
+    assert front.symmetry == we.SymmetryGroup.symmetric(axes=(1, 2))
+    assert middle.symmetry == we.SymmetryGroup.symmetric(axes=(0, 2))
+    assert end.symmetry == we.SymmetryGroup.symmetric(axes=(0, 1))
+
+
+def test_expand_dims_negative_axis_remaps_symmetry():
+    a = we.as_symmetric(numpy.ones((3, 3, 3)), symmetry=(0, 1, 2))
+    r = ops.expand_dims(a, axis=-4)
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (1, 3, 3, 3)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(1, 2, 3))
+
+
+def test_expand_dims_tuple_axis_remaps_symmetry():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+    r = ops.expand_dims(a, axis=(0, 2))
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (1, 3, 1, 3)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(1, 3))
+
+
+def test_expand_dims_plain_arrays_remain_plain():
+    r = ops.expand_dims(numpy.array([1, 2, 3]), axis=0)
+    assert not isinstance(r, SymmetricTensor)
+    assert r.shape == (1, 3)
+
+
+def test_expand_dims_invalid_axis_matches_numpy():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+    with pytest.raises(Exception) as ours:
+        ops.expand_dims(a, axis=4)
+    with pytest.raises(Exception) as numpy_err:
+        numpy.expand_dims(numpy.eye(3), axis=4)
+    assert type(ours.value) is type(numpy_err.value)
+
+
+def test_expand_dims_duplicate_axes_match_numpy():
+    a = we.as_symmetric(numpy.eye(3), symmetry=(0, 1))
+    with pytest.raises(Exception) as ours:
+        ops.expand_dims(a, axis=(0, 0))
+    with pytest.raises(Exception) as numpy_err:
+        numpy.expand_dims(numpy.eye(3), axis=(0, 0))
+    assert type(ours.value) is type(numpy_err.value)
+
+
+def test_expand_dims_matches_newaxis_symmetry():
+    a = we.as_symmetric(
+        numpy.stack([numpy.eye(3), 2 * numpy.eye(3)], axis=-1), symmetry=(0, 1)
+    )
+    by_fn = ops.expand_dims(a, axis=0)
+    by_slice = a[None, ...]
+    assert isinstance(by_fn, SymmetricTensor)
+    assert isinstance(by_slice, SymmetricTensor)
+    assert numpy.array_equal(by_fn, by_slice)
+    assert by_fn.symmetry == by_slice.symmetry
+
+
 def test_vstack():
     r = ops.vstack([numpy.ones((2, 3)), numpy.zeros((2, 3))])
     assert r.shape == (4, 3)
