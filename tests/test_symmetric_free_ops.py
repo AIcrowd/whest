@@ -249,7 +249,7 @@ class TestFullLike:
 
     def test_shape_override_preserves_compatible_carried_symmetry(self):
         source = we.as_symmetric(np.zeros((3, 3, 2)), symmetry=(0, 1))
-        result = we.zeros_like(source, shape=(5, 5, 2))
+        result = we.zeros_like(source, shape=(5, 5, 5))
         assert isinstance(result, SymmetricTensor)
         assert result.symmetry == _s2()
 
