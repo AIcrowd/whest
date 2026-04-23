@@ -188,6 +188,30 @@ class TestEinsumPath:
 
 
 class TestOutputSymmetryWrapping:
+    def test_multi_operand_einsum_wraps_s3_output(self):
+        n = 4
+        rng = numpy.random.RandomState(47)
+        data = rng.rand(n, n, n)
+        perms = (
+            data,
+            data.transpose(0, 2, 1),
+            data.transpose(1, 0, 2),
+            data.transpose(1, 2, 0),
+            data.transpose(2, 0, 1),
+            data.transpose(2, 1, 0),
+        )
+        tensor = as_symmetric(sum(perms) / len(perms), symmetry=(0, 1, 2))
+        weight = rng.rand(n, n)
+
+        with BudgetContext(flop_budget=10**8, quiet=True):
+            result = einsum("ijk,ai,bj,ck->abc", tensor, weight, weight, weight)
+
+        expected = numpy.einsum("ijk,ai,bj,ck->abc", numpy.asarray(tensor), weight, weight, weight)
+        numpy.testing.assert_allclose(result, expected, rtol=1e-10)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry.order() == 6
+        assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 1, 2)))
+
     def test_einsum_preserves_single_operand_reduction_subgroup_symmetry(self):
         rng = numpy.random.RandomState(46)
         data = rng.rand(3, 3, 3)
