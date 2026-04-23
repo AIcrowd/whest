@@ -72,6 +72,7 @@ test('|sigmaResults| equals the wreath order ∏_i |H_i|^{m_i} · m_i! on every 
 });
 
 import { enumerateWreath } from './components/symmetry-aware-einsum-contractions/engine/wreath.js';
+import { enumerateH } from './components/symmetry-aware-einsum-contractions/engine/wreath.js';
 
 test('enumerateWreath emits the correct count on representative structures', () => {
   // Single copy, no declared symmetry: wreath = trivial
@@ -136,4 +137,30 @@ test('enumerateH accepts both raw-string and pre-parsed custom.generators', () =
   assert.equal(fromString.length, 4, '⟨(0 1), (2 3)⟩ has order 4 (raw string)');
   assert.equal(fromArray.length, 4, '⟨(0 1), (2 3)⟩ has order 4 (pre-parsed)');
   assert.equal(fromString.length, fromArray.length, 'both shapes yield the same count');
+});
+
+test('custom generator cycles are local to selected axes, not absolute tensor axes', () => {
+  const elements = enumerateH(
+    { type: 'custom', axes: [2, 3], generators: [[[0, 1]]] },
+    4,
+  );
+  const arrays = elements.map((perm) => perm.arr.join(','));
+
+  assert.ok(
+    arrays.includes('0,1,3,2'),
+    'local generator (0 1) on selected axes [2,3] should swap absolute axes 2 and 3',
+  );
+  assert.ok(
+    !arrays.includes('1,0,2,3'),
+    'local generator (0 1) must not swap absolute axes 0 and 1 when selected axes are [2,3]',
+  );
+});
+
+test('custom generator cycles still work when all axes are selected', () => {
+  const elements = enumerateH(
+    { type: 'custom', axes: [0, 1, 2], generators: [[[0, 1, 2]]] },
+    3,
+  );
+  const arrays = elements.map((perm) => perm.arr.join(','));
+  assert.ok(arrays.includes('1,2,0'));
 });

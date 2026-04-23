@@ -503,7 +503,7 @@ export default function ExampleChooser({
                       placeholder="(0 1)(2 3), (0 2)(1 3)"
                       hint={(
                         <>
-                          Cycle notation, comma-separated generators. E.g. <code className="rounded bg-gray-100 px-1">(0 1)</code> swaps axes 0 and 1.
+                          Cycle notation, comma-separated generators. Indices are local to the selected axes above: if axes 2 and 3 are selected, <code className="rounded bg-gray-100 px-1">(0 1)</code> swaps tensor axes 2 and 3.
                         </>
                       )}
                     />

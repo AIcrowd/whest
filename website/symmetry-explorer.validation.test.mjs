@@ -155,6 +155,26 @@ test('#7 custom-generator-axis-oor: message names the valid range', () => {
   assert.match(err.message, /valid indices are 0–1/);
 });
 
+test('custom generator indices are local to the selected-axis list', () => {
+  const local = run(stateFor(
+    [v({ rank: 4, symmetry: 'custom', symAxes: [2, 3], generators: '(0 1)' })],
+    'abcd',
+    'abcd',
+    'T',
+  ));
+  assert.equal(local.valid, true);
+
+  const absolute = run(stateFor(
+    [v({ rank: 4, symmetry: 'custom', symAxes: [2, 3], generators: '(2 3)' })],
+    'abcd',
+    'abcd',
+    'T',
+  ));
+  const err = findError(absolute, ERROR_CODES.CUSTOM_GENERATOR_AXIS_OOR);
+  assert.ok(err);
+  assert.match(err.message, /valid indices are 0–1/);
+});
+
 test('#8 no-operands: helpful example', () => {
   const r = run(stateFor([v()], '', '', ''));
   const err = findError(r, ERROR_CODES.NO_OPERANDS);

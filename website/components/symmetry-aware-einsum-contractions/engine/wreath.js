@@ -67,12 +67,10 @@ export function enumerateH(sym, rank) {
   }
 
   if (sym?.type === 'custom') {
-    // axes kept for future symAxes support; not used by the cycle-to-arr loop
-    // since custom cycles already index into [0, rank).
-    // eslint-disable-next-line no-unused-vars
-    const axes = sym.axes || Array.from({ length: rank }, (_, i) => i);
-    // Accept both raw strings and the pre-parsed array shape that
-    // pipeline.js emits (see module header).
+    const axes = Array.isArray(sym.axes) && sym.axes.length > 0
+      ? sym.axes
+      : Array.from({ length: rank }, (_, i) => i);
+
     let generatorCycles;
     if (typeof sym.generators === 'string') {
       const parsed = parseCycleNotation(sym.generators);
@@ -87,11 +85,16 @@ export function enumerateH(sym, rank) {
       const arr = Array.from({ length: rank }, (_, i) => i);
       for (const cycle of perm) {
         for (let k = 0; k < cycle.length; k += 1) {
-          arr[cycle[k]] = cycle[(k + 1) % cycle.length];
+          const fromLocal = cycle[k];
+          const toLocal = cycle[(k + 1) % cycle.length];
+          const fromAxis = axes[fromLocal];
+          const toAxis = axes[toLocal];
+          arr[fromAxis] = toAxis;
         }
       }
       return new Permutation(arr);
     });
+
     return dimino(gens);
   }
 
