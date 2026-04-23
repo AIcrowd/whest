@@ -1,5 +1,6 @@
 export function denseTupleCountFromComponents(components = []) {
-  if (!Array.isArray(components) || components.length === 0) return 0;
+  if (!Array.isArray(components)) return 0;
+  if (components.length === 0) return 1;
   let total = 1;
   for (const component of components) {
     const sizes = Array.isArray(component.sizes) ? component.sizes : [];
@@ -24,7 +25,5 @@ export function denseGridScalingLatex({ labelCount = 0, hasHeterogeneousSizes = 
 export function hasHeterogeneousLabelSizesFromOverrides(labelSizes = {}, defaultSize) {
   const values = Object.values(labelSizes ?? {});
   if (values.length === 0) return false;
-  if (new Set(values).size > 1) return true;
-  if (!Number.isFinite(defaultSize) || defaultSize <= 0) return false;
-  return values.some((size) => size !== defaultSize);
+  return new Set(values).size > 1;
 }

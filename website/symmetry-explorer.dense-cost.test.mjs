@@ -32,6 +32,11 @@ test('dense tuple count keeps uniform behavior for ordinary presets', () => {
   assert.equal(denseDirectEventCostFromComponents(matrix.componentData.components, 2), 54);
 });
 
+test('dense tuple count treats an empty scalar grid as one assignment', () => {
+  assert.equal(denseTupleCountFromComponents([]), 1);
+  assert.equal(denseDirectEventCostFromComponents([], 1), 1);
+});
+
 test('dense scaling latex reflects selected label count, not a hard-coded n^5', () => {
   assert.equal(denseGridScalingLatex({ labelCount: 4, hasHeterogeneousSizes: false }), String.raw`n^{4}`);
   assert.equal(denseGridScalingLatex({ labelCount: 5, hasHeterogeneousSizes: false }), String.raw`n^{5}`);
@@ -41,7 +46,7 @@ test('dense scaling latex reflects selected label count, not a hard-coded n^5', 
 test('heterogeneous-size detection stays false for uniform explicit overrides', () => {
   assert.equal(hasHeterogeneousLabelSizesFromOverrides({ i: 3, j: 3 }), false);
   assert.equal(hasHeterogeneousLabelSizesFromOverrides({ i: 3, j: 4 }), true);
-  assert.equal(hasHeterogeneousLabelSizesFromOverrides({ i: 7 }, 5), true);
+  assert.equal(hasHeterogeneousLabelSizesFromOverrides({ i: 7 }, 5), false);
 });
 
 test('section-one view exposes dense scaling for the selected expression', () => {
@@ -110,7 +115,7 @@ test('preamble source treats partial cluster-size overrides as heterogeneous aga
   assert.equal(view.denseGridScalingLatex, String.raw`\prod_{\ell \in L} n_\ell`);
 });
 
-test('preamble source keeps uniform scaling when a preset already fixes all label sizes', () => {
+test('preamble source keeps uniform scaling when explicit preset sizes are uniform and only global n changes', () => {
   const outer = preset('outer');
   const analysis = analyzeExample(outer, 9);
   const preambleExample = selectSection1PreambleExample({
