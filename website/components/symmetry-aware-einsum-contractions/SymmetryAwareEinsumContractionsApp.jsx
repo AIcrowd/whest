@@ -39,6 +39,7 @@ import { getPresetControlSelection } from './lib/presetSelection.js';
 import {
   notationLatex,
 } from './lib/notationSystem.js';
+import { selectSection1PreambleExample } from './lib/section1ExampleView.js';
 import { useKeyboardShortcuts } from './lib/useKeyboardShortcuts.js';
 import './styles.css';
 
@@ -139,15 +140,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
   // Normalize the example for algorithm consumption
   const normalizedExample = useMemo(() => example ? normalizeExample(example) : null, [example]);
   const preambleExample = useMemo(() => {
-    if (!normalizedExample) return null;
-    return {
-      ...normalizedExample,
-      labelSizes: {
-        ...(normalizedExample.labelSizes || {}),
-        ...clusterSizes,
-      },
-    };
-  }, [normalizedExample, clusterSizes]);
+    return selectSection1PreambleExample({
+      example: normalizedExample,
+      previewExample,
+      isDirty,
+      clusterSizes,
+    });
+  }, [normalizedExample, previewExample, isDirty, clusterSizes]);
 
   // Handle preset selection
   const handleSelect = useCallback((idx) => {

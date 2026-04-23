@@ -80,6 +80,26 @@ function formatDeclaredSymmetrySummary(variables) {
     .join(' · ');
 }
 
+export function selectSection1PreambleExample({
+  example = null,
+  previewExample = null,
+  isDirty = false,
+  clusterSizes = {},
+} = {}) {
+  if (isDirty) return previewExample ?? example ?? null;
+
+  const committedExample = example ?? previewExample;
+  if (!committedExample) return null;
+
+  return {
+    ...committedExample,
+    labelSizes: {
+      ...(committedExample.labelSizes || {}),
+      ...(clusterSizes || {}),
+    },
+  };
+}
+
 export function buildSection1ExampleView(example, palette = {}) {
   const normalized = normalizeSection1Example(example);
   if (!normalized) return null;

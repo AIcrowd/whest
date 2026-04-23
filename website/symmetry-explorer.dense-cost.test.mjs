@@ -9,7 +9,10 @@ import {
 } from './components/symmetry-aware-einsum-contractions/engine/denseCost.js';
 import { analyzeExample } from './components/symmetry-aware-einsum-contractions/engine/pipeline.js';
 import { EXAMPLES } from './components/symmetry-aware-einsum-contractions/data/examples.js';
-import { buildSection1ExampleView } from './components/symmetry-aware-einsum-contractions/lib/section1ExampleView.js';
+import {
+  buildSection1ExampleView,
+  selectSection1PreambleExample,
+} from './components/symmetry-aware-einsum-contractions/lib/section1ExampleView.js';
 
 function preset(id) {
   const found = EXAMPLES.find((example) => example.id === id);
@@ -47,17 +50,35 @@ test('section-one view exposes dense scaling for the selected expression', () =>
   assert.equal(view.hasHeterogeneousSizes, false);
 });
 
-test('section-one view reflects merged runtime label-size overrides', () => {
+test('preamble source merges live cluster-size overrides when the page is clean', () => {
   const outer = preset('outer');
-  const view = buildSection1ExampleView({
-    ...outer,
-    labelSizes: {
-      ...(outer.labelSizes || {}),
-      'b,d': 7,
-    },
+  const preambleExample = selectSection1PreambleExample({
+    example: outer,
+    clusterSizes: { 'b,d': 7 },
+    isDirty: false,
   });
+  const view = buildSection1ExampleView(preambleExample);
 
   assert.equal(view.labelCount, 4);
   assert.equal(view.hasHeterogeneousSizes, true);
   assert.equal(view.denseGridScalingLatex, String.raw`\prod_{\ell \in L} n_\ell`);
+});
+
+test('preamble source preserves dirty preview behavior without merging stale cluster sizes', () => {
+  const outer = preset('outer');
+  const previewExample = {
+    ...outer,
+    labelSizes: { 'a,c': 4, 'b,d': 4 },
+  };
+  const preambleExample = selectSection1PreambleExample({
+    example: outer,
+    previewExample,
+    clusterSizes: { 'b,d': 7 },
+    isDirty: true,
+  });
+  const view = buildSection1ExampleView(preambleExample);
+
+  assert.equal(preambleExample, previewExample);
+  assert.equal(view.hasHeterogeneousSizes, false);
+  assert.equal(view.denseGridScalingLatex, String.raw`n^{4}`);
 });
