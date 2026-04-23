@@ -181,12 +181,14 @@ attach_docstring(linspace, _np.linspace, "counted_custom", "numel(output) FLOPs"
 def zeros_like(a, dtype=None, **kwargs):
     """Return array of zeros with same shape. Wraps ``numpy.zeros_like``. Cost: 0 FLOPs."""
     result = _np.zeros_like(a, dtype=dtype, **kwargs)
-    if isinstance(a, SymmetricTensor):
-        return wrap_with_symmetry(
-            result,
-            _compatible_symmetry_for_shape(a.symmetry, result.shape),
-        )
-    return result
+    symmetry = None
+    if isinstance(a, SymmetricTensor) and _np.shape(a) == result.shape:
+        symmetry = _compatible_symmetry_for_shape(a.symmetry, result.shape)
+    if symmetry is None:
+        symmetry = _infer_constant_shape_symmetry(result.shape)
+    if symmetry is None:
+        return _np.asarray(result)
+    return wrap_with_symmetry(result, symmetry)
 
 
 attach_docstring(zeros_like, _np.zeros_like, "free", "0 FLOPs")
@@ -195,12 +197,14 @@ attach_docstring(zeros_like, _np.zeros_like, "free", "0 FLOPs")
 def ones_like(a, dtype=None, **kwargs):
     """Return array of ones with same shape. Wraps ``numpy.ones_like``. Cost: 0 FLOPs."""
     result = _np.ones_like(a, dtype=dtype, **kwargs)
-    if isinstance(a, SymmetricTensor):
-        return wrap_with_symmetry(
-            result,
-            _compatible_symmetry_for_shape(a.symmetry, result.shape),
-        )
-    return result
+    symmetry = None
+    if isinstance(a, SymmetricTensor) and _np.shape(a) == result.shape:
+        symmetry = _compatible_symmetry_for_shape(a.symmetry, result.shape)
+    if symmetry is None:
+        symmetry = _infer_constant_shape_symmetry(result.shape)
+    if symmetry is None:
+        return _np.asarray(result)
+    return wrap_with_symmetry(result, symmetry)
 
 
 attach_docstring(ones_like, _np.ones_like, "free", "0 FLOPs")
@@ -213,12 +217,14 @@ def full_like(a, fill_value, dtype=None, **kwargs):
     cost = max(a_arr.size, 1)
     with budget.deduct("full_like", flop_cost=cost, subscripts=None, shapes=()):
         result = _np.full_like(a, fill_value, dtype=dtype, **kwargs)
-    if isinstance(a, SymmetricTensor):
-        return wrap_with_symmetry(
-            result,
-            _compatible_symmetry_for_shape(a.symmetry, result.shape),
-        )
-    return result
+    symmetry = None
+    if isinstance(a, SymmetricTensor) and _np.shape(a) == result.shape:
+        symmetry = _compatible_symmetry_for_shape(a.symmetry, result.shape)
+    if symmetry is None:
+        symmetry = _infer_constant_shape_symmetry(result.shape)
+    if symmetry is None:
+        return _np.asarray(result)
+    return wrap_with_symmetry(result, symmetry)
 
 
 attach_docstring(full_like, _np.full_like, "free", "0 FLOPs")

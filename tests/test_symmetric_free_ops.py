@@ -195,7 +195,13 @@ class TestZerosLike:
     def test_plain_input_not_symmetric(self):
         a = np.ones((3, 3))
         result = we.zeros_like(a)
-        assert not isinstance(result, SymmetricTensor)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == _s2()
+
+    def test_plain_input_shape_infers_constant_fill_symmetry(self):
+        result = we.zeros_like(np.empty((4, 4, 2)))
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == we.SymmetryGroup.symmetric(axes=(0, 1))
 
     def test_propagates_multi_group(self):
         data = np.zeros((3, 3, 3, 3))
@@ -214,7 +220,13 @@ class TestOnesLike:
 
     def test_plain_input_not_symmetric(self):
         result = we.ones_like(np.zeros((5, 5)))
-        assert not isinstance(result, SymmetricTensor)
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == _s2()
+
+    def test_plain_input_shape_infers_young_symmetry(self):
+        result = we.ones_like(np.empty((2, 2, 5, 5)))
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == we.SymmetryGroup.young(blocks=((0, 1), (2, 3)))
 
 
 class TestFullLike:
@@ -228,6 +240,12 @@ class TestFullLike:
     def test_non_square_not_symmetric(self):
         result = we.full_like(np.ones((2, 3)), 1.0)
         assert not isinstance(result, SymmetricTensor)
+
+    def test_incompatible_carried_symmetry_falls_back_to_shape_inference(self):
+        source = we.as_symmetric(np.eye(3), symmetry=(0, 1))
+        result = we.full_like(source, 1.0, shape=(2, 2, 5, 5))
+        assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == we.SymmetryGroup.young(blocks=((0, 1), (2, 3)))
 
     @pytest.mark.parametrize(
         ("factory", "args"),
