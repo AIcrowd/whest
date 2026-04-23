@@ -15,6 +15,23 @@ def _young_2x2():
     return we.SymmetryGroup.young(blocks=((0, 1), (2, 3)))
 
 
+@pytest.mark.parametrize(
+    ("factory", "args", "expected_symmetry"),
+    [
+        (we.eye, (3,), _s2()),
+        (we.identity, (3,), _s2()),
+        (we.diag, ([1, 2, 3],), _s2()),
+        (we.diagflat, ([1, 2, 3],), _s2()),
+    ],
+)
+def test_structural_constructors_keep_current_exact_symmetry(
+    factory, args, expected_symmetry
+):
+    result = factory(*args)
+    assert isinstance(result, SymmetricTensor)
+    assert result.symmetry == expected_symmetry
+
+
 # ---------------------------------------------------------------------------
 # Tier 1: Always symmetric (identity / diagonal)
 # ---------------------------------------------------------------------------

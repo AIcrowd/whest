@@ -65,6 +65,24 @@ def _normalize_axis_order(axes, ndim):
     return tuple(axis % ndim for axis in axes)
 
 
+def _infer_structural_constructor_symmetry(*, kind, N=None, M=None, k=0, v_ndim=None):
+    if kind == "eye":
+        if k == 0 and (M is None or M == N):
+            return SymmetryGroup.symmetric(axes=(0, 1))
+        return None
+    if kind == "identity":
+        return SymmetryGroup.symmetric(axes=(0, 1))
+    if kind == "diag":
+        if v_ndim == 1 and k == 0:
+            return SymmetryGroup.symmetric(axes=(0, 1))
+        return None
+    if kind == "diagflat":
+        if k == 0:
+            return SymmetryGroup.symmetric(axes=(0, 1))
+        return None
+    return None
+
+
 # ---------------------------------------------------------------------------
 # Tensor creation
 # ---------------------------------------------------------------------------
@@ -118,8 +136,9 @@ attach_docstring(full, _np.full, "free", "0 FLOPs")
 def eye(N, M=None, k=0, dtype=float, **kwargs):
     """Return identity matrix. Wraps ``numpy.eye``. Cost: 0 FLOPs."""
     result = _np.eye(N, M=M, k=k, dtype=dtype, **kwargs)
-    if k == 0 and (M is None or M == N):
-        return wrap_with_symmetry(result, SymmetryGroup.symmetric(axes=(0, 1)))
+    symmetry = _infer_structural_constructor_symmetry(kind="eye", N=N, M=M, k=k)
+    if symmetry is not None:
+        return wrap_with_symmetry(result, symmetry)
     return result
 
 
@@ -143,8 +162,11 @@ def diag(v, k=0):
         cost = min(m, n)
     with budget.deduct("diag", flop_cost=cost, subscripts=None, shapes=(v.shape,)):
         result = _np.diag(v, k=k)
-    if v.ndim == 1 and k == 0:
-        return wrap_with_symmetry(result, SymmetryGroup.symmetric(axes=(0, 1)))
+    symmetry = _infer_structural_constructor_symmetry(
+        kind="diag", k=k, v_ndim=v.ndim
+    )
+    if symmetry is not None:
+        return wrap_with_symmetry(result, symmetry)
     return result
 
 
@@ -255,7 +277,10 @@ attach_docstring(empty_like, _np.empty_like, "free", "0 FLOPs")
 def identity(n, dtype=float):
     """Return identity matrix. Wraps ``numpy.identity``. Cost: 0 FLOPs."""
     result = _np.identity(n, dtype=dtype)
-    return wrap_with_symmetry(result, SymmetryGroup.symmetric(axes=(0, 1)))
+    symmetry = _infer_structural_constructor_symmetry(kind="identity")
+    if symmetry is not None:
+        return wrap_with_symmetry(result, symmetry)
+    return result
 
 
 attach_docstring(identity, _np.identity, "free", "0 FLOPs")
@@ -985,8 +1010,11 @@ def diagflat(v, k=0):
         "diagflat", flop_cost=cost, subscripts=None, shapes=(v_arr.shape,)
     ):
         pass  # numpy call already executed above
-    if k == 0:
-        return wrap_with_symmetry(result, SymmetryGroup.symmetric(axes=(0, 1)))
+    symmetry = _infer_structural_constructor_symmetry(
+        kind="diagflat", k=k, v_ndim=v_arr.ndim
+    )
+    if symmetry is not None:
+        return wrap_with_symmetry(result, symmetry)
     return result
 
 
