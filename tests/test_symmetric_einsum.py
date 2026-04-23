@@ -1,7 +1,6 @@
 """Tests for symmetry-aware einsum."""
 
 import numpy
-import pytest
 
 import whest as we
 from whest._budget import BudgetContext

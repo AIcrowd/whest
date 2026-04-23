@@ -88,13 +88,14 @@ test('symmetry guide explains why the einsum savings example is cheaper', async 
   );
 });
 
-test('symmetry guide documents the current unary pointwise caveat for non-full groups', async () => {
+test('symmetry guide documents exact unary pointwise preservation for non-full groups', async () => {
   const source = await readSymmetryGuide();
 
-  assert.doesNotMatch(source, /unary pointwise ops keep the same groups/);
+  assert.match(source, /Unary pointwise ops preserve symmetry-aware costs and keep the same exact group/);
   assert.match(source, /Unary pointwise ops preserve symmetry-aware costs/);
-  assert.match(source, /non-full groups such as `C_k`, `D_k`, or custom groups the current implementation widens the metadata to full symmetry on those axes/);
-  assert.match(source, /non-full groups such as `C_k`, `D_k`, or custom groups/);
+  assert.match(source, /including non-full groups such as `C_k` or `D_k`/);
+  assert.match(source, /custom exact groups/);
+  assert.doesNotMatch(source, /current implementation widens the metadata to full symmetry/);
 });
 
 test('symmetry guide representative propagation claims match runtime behavior', async () => {
@@ -213,12 +214,12 @@ print(json.dumps({
   const runtimeBehavior = JSON.parse(stdout.trim());
 
   assert.deepEqual(runtimeBehavior, {
-    row_slice_type: 'ndarray',
-    advanced_index_slice_type: 'ndarray',
+    row_slice_type: 'WhestArray',
+    advanced_index_slice_type: 'WhestArray',
     s3_slice_type: 'SymmetricTensor',
     s3_slice_order: 2,
     s3_slice_axes: [0, 1],
-    c3_slice_type: 'ndarray',
+    c3_slice_type: 'WhestArray',
     c3_slice_has_symmetry: false,
     c4_reduced_type: 'SymmetricTensor',
     c4_reduced_order: 2,
@@ -226,10 +227,10 @@ print(json.dumps({
     intersection_type: 'SymmetricTensor',
     intersection_order: 3,
     shared_group_type: 'SymmetricTensor',
-    shared_group_axes: [0, 1],
+    shared_group_axes: [0, 1, 2, 3],
     broadcast_has_symmetry: false,
-    unary_c3_order: 6,
-    unary_d4_order: 24,
+    unary_c3_order: 3,
+    unary_d4_order: 8,
     repeated_einsum_cost: 30,
     distinct_einsum_cost: 45,
     repeated_einsum_type: 'SymmetricTensor',

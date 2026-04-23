@@ -9,7 +9,6 @@ import numpy as np
 
 import whest as we
 
-
 print("=== Symmetric matrix (S2 on axes 0,1) ===\n")
 
 n = 100

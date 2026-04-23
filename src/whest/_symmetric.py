@@ -1,7 +1,9 @@
 """Symmetric tensor support: SymmetricTensor, as_symmetric, and helpers."""
 
 from __future__ import annotations
+
 import warnings
+
 import numpy as np
 
 from whest._config import get_setting
@@ -15,11 +17,8 @@ from whest._symmetry_utils import (
     remap_group_axes,
     restrict_group_to_axes,
     validate_symmetry_group,
-    wrap_with_symmetry,
 )
 from whest.errors import SymmetryError, SymmetryLossWarning
-
-
 
 # ---------------------------------------------------------------------------
 # Validation

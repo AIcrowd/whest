@@ -1,6 +1,7 @@
 """Tests for encoding/decoding the current client symmetry transport surface."""
 
 from whest._remote_array import RemoteArray, _encode_arg, _result_from_response
+
 from whest._perm_group import SymmetryGroup
 
 

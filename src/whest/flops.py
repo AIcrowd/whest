@@ -21,6 +21,7 @@ from whest._flops import (
 from whest._flops import (
     svd_cost as _analytical_svd_cost,
 )
+from whest._perm_group import SymmetryGroup
 from whest._polynomial import (
     poly_cost as _analytical_poly_cost,
 )
@@ -51,7 +52,6 @@ from whest._polynomial import (
 from whest._polynomial import (
     roots_cost as _analytical_roots_cost,
 )
-from whest._perm_group import SymmetryGroup
 from whest._unwrap import unwrap_cost as _analytical_unwrap_cost
 from whest._weights import get_weight
 from whest._window import (

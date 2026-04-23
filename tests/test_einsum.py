@@ -2,8 +2,8 @@
 
 import numpy
 import pytest
-from whest import SymmetryGroup
 
+from whest import SymmetryGroup
 from whest._budget import BudgetContext
 from whest._einsum import einsum
 from whest.errors import BudgetExhaustedError, SymmetryError

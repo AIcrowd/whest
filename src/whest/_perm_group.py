@@ -537,7 +537,7 @@ class SymmetryGroup:
             raise ImportError(
                 "sympy is required for as_sympy(). Install with: pip install sympy"
             ) from None
-        sympy_group_cls = getattr(_sympy_combinatorics, "Permutation" "Group")
+        sympy_group_cls = _sympy_combinatorics.PermutationGroup
         return sympy_group_cls(*[g.as_sympy() for g in self._generators])
 
     @classmethod

@@ -1,8 +1,8 @@
 """Tests for symmetry-aware pointwise operations."""
 
 import numpy
-import whest as we
 
+import whest as we
 from whest._budget import BudgetContext
 from whest._symmetric import SymmetricTensor, as_symmetric
 

@@ -1,9 +1,9 @@
 """Tests for symmetry-aware linalg operations."""
 
 import numpy
-from whest import SymmetryGroup
 
 import whest.linalg as la
+from whest import SymmetryGroup
 from whest._budget import BudgetContext
 from whest._symmetric import SymmetricTensor, as_symmetric
 

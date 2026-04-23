@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from whest._perm_group import SymmetryGroup, _Permutation, _dimino
+from whest._perm_group import SymmetryGroup, _dimino, _Permutation
 
 
 class TestValidation:
