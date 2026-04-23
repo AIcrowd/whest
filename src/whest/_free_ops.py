@@ -290,7 +290,7 @@ def moveaxis(a, source, destination):
     source_axes = _normalize_axis_order(source_axes, a.ndim)
     destination_axes = _normalize_axis_order(destination_axes, a.ndim)
     order = [axis for axis in range(a.ndim) if axis not in source_axes]
-    for dest, src in sorted(zip(destination_axes, source_axes)):
+    for dest, src in sorted(zip(destination_axes, source_axes, strict=True)):
         order.insert(dest, src)
     mapping = {old: new for new, old in enumerate(order)}
     return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))
@@ -801,7 +801,7 @@ def broadcast_arrays(*args, **kwargs):
         return result
     output_shape = result[0].shape
     wrapped = []
-    for original, array, broadcasted in zip(args, arrays, result):
+    for original, array, broadcasted in zip(args, arrays, result, strict=True):
         symmetry = broadcast_group(
             original.symmetry if isinstance(original, SymmetricTensor) else None,
             input_shape=array.shape,

@@ -10,13 +10,14 @@ from __future__ import annotations
 import struct
 
 import pytest
-from whest._perm_group import SymmetryGroup
 from whest._remote_array import (
     RemoteArray,
     RemoteScalar,
     _bytes_to_list,
     _result_from_response,
 )
+
+from whest._perm_group import SymmetryGroup
 
 # =========================================================================
 # TestRemoteArrayMetadata

@@ -21,8 +21,10 @@ from whest._flops import (
 from whest._ndarray import _aswhest
 from whest._symmetric import (
     SymmetricTensor,
-    is_symmetric as _is_symmetric,
     _warn_symmetry_loss,
+)
+from whest._symmetric import (
+    is_symmetric as _is_symmetric,
 )
 from whest._symmetry_utils import broadcast_group, intersect_groups, reduce_group
 from whest._validation import check_nan_inf, require_budget
@@ -432,12 +434,7 @@ def around(a, decimals=0, out=None):
             supports_out=True,
         )
     check_nan_inf(result, "around")
-    if (
-        a_is_scalar
-        and out is None
-        and isinstance(result, _np.ndarray)
-        and result.ndim == 0
-    ):
+    if a_is_scalar and out is None and _np.ndim(result) == 0 and hasattr(result, "item"):
         return result.item()
     return _wrap_result(result, out=out, symmetry=symmetry)
 
@@ -514,12 +511,7 @@ def round(a, decimals=0, out=None):
             supports_out=True,
         )
     check_nan_inf(result, "round")
-    if (
-        a_is_scalar
-        and out is None
-        and isinstance(result, _np.ndarray)
-        and result.ndim == 0
-    ):
+    if a_is_scalar and out is None and _np.ndim(result) == 0 and hasattr(result, "item"):
         return result.item()
     return _wrap_result(result, out=out, symmetry=symmetry)
 
@@ -580,8 +572,8 @@ def isclose(a, b, **kwargs):
     if (
         a_is_scalar
         and b_is_scalar
-        and isinstance(result, _np.ndarray)
-        and result.ndim == 0
+        and _np.ndim(result) == 0
+        and hasattr(result, "item")
     ):
         return result.item()
     return _wrap_result(result, symmetry=out_symmetry)

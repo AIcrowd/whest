@@ -7,8 +7,8 @@ import functools
 import numpy as _np
 
 from whest._config import get_setting
-from whest._pointwise import _prepare_symmetric_out, _validate_result_symmetry
 from whest._perm_group import SymmetryGroup
+from whest._pointwise import _prepare_symmetric_out, _validate_result_symmetry
 from whest._symmetric import SymmetricTensor
 from whest._symmetry_utils import normalize_symmetry_input, validate_symmetry_group
 from whest._validation import check_nan_inf, require_budget
@@ -407,6 +407,7 @@ def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"
 
 import sys as _sys  # noqa: E402
 
-from whest._ndarray import _aswhest, wrap_module_returns as _wrap_module_returns  # noqa: E402
+from whest._ndarray import _aswhest  # noqa: E402
+from whest._ndarray import wrap_module_returns as _wrap_module_returns  # noqa: E402
 
 _wrap_module_returns(_sys.modules[__name__], skip_names={"einsum", "einsum_path"})
