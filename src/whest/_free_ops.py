@@ -244,9 +244,9 @@ attach_docstring(reshape, _np.reshape, "free", "0 FLOPs")
 
 def transpose(a, axes=None):
     """Permute array dimensions. Wraps ``numpy.transpose``. Cost: 0 FLOPs."""
-    result = _np.transpose(_np.asarray(a), axes=axes)
     if not isinstance(a, SymmetricTensor):
-        return result
+        return _np.transpose(a, axes=axes)
+    result = _np.transpose(_np.asarray(a), axes=axes)
     if axes is None:
         order = tuple(reversed(range(a.ndim)))
     else:
@@ -260,9 +260,9 @@ attach_docstring(transpose, _np.transpose, "free", "0 FLOPs")
 
 def swapaxes(a, axis1, axis2):
     """Swap two axes. Wraps ``numpy.swapaxes``. Cost: 0 FLOPs."""
-    result = _np.swapaxes(_np.asarray(a), axis1, axis2)
     if not isinstance(a, SymmetricTensor):
-        return result
+        return _np.swapaxes(a, axis1, axis2)
+    result = _np.swapaxes(_np.asarray(a), axis1, axis2)
     order = list(range(a.ndim))
     axis1 %= a.ndim
     axis2 %= a.ndim
@@ -276,9 +276,9 @@ attach_docstring(swapaxes, _np.swapaxes, "free", "0 FLOPs")
 
 def moveaxis(a, source, destination):
     """Move axes to new positions. Wraps ``numpy.moveaxis``. Cost: 0 FLOPs."""
-    result = _np.moveaxis(_np.asarray(a), source, destination)
     if not isinstance(a, SymmetricTensor):
-        return result
+        return _np.moveaxis(a, source, destination)
+    result = _np.moveaxis(_np.asarray(a), source, destination)
     if _np.ndim(source) == 0:
         source_axes = (int(source),)
     else:
@@ -585,7 +585,7 @@ attach_docstring(meshgrid, _np.meshgrid, "free", "0 FLOPs")
 
 def astype(x, dtype, /, *, copy=True, device=None):
     """Cast array to *dtype*. Wraps ``np.astype(x, dtype)``. Cost: 0 FLOPs."""
-    return _np.astype(_np.asarray(x), dtype, copy=copy, device=device)
+    return _np.astype(x, dtype, copy=copy, device=device)
 
 
 def asarray(a, dtype=None, **kwargs):

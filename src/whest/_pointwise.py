@@ -581,13 +581,8 @@ def isclose(a, b, **kwargs):
         "isclose", flop_cost=cost, subscripts=None, shapes=(a_arr.shape, b_arr.shape)
     ):
         result = _np.isclose(a, b, **kwargs)
-    if (
-        a_is_scalar
-        and b_is_scalar
-        and _np.ndim(result) == 0
-        and hasattr(result, "item")
-    ):
-        return result.item()
+    if a_is_scalar and b_is_scalar and _np.ndim(result) == 0:
+        return result
     return _wrap_result(result, symmetry=out_symmetry)
 
 
