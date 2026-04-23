@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { withBasePath } from '@/lib/base-path';
 import { formatGeneratorNotation } from '../lib/symmetryLabel.js';
 import { EXPLORER_ACTS } from './explorerNarrative.js';
 import SymmetryBadge from './SymmetryBadge.jsx';
@@ -255,7 +254,7 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
             `.whest-wordmark` utility (Newsreader 700 opsz32, coral dot);
             do not reimplement. */}
         <Link
-          href={withBasePath('/')}
+          href="/"
           aria-label="Whest."
           className="whest-wordmark mr-4 shrink-0 text-[20px] no-underline"
         >

@@ -69,6 +69,17 @@ test('article route still wires the appendix modal while the main page stays app
   assert.match(appSource, /<ExpressionLevelModal/);
   assert.match(appSource, /<ExpressionLevelModal[\s\S]*example=\{example\}/);
   assert.match(appSource, /<ExpressionLevelModal[\s\S]*onSelectPreset=\{handleSelect\}/);
+  assert.match(appSource, /const APPENDIX_ROOT_HASH = '#appendix';/);
+  assert.match(appSource, /const APPENDIX_SECTION_HASH_PREFIX = '#appendix-section-';/);
+  assert.match(appSource, /function isAppendixHash\(hash = ''\)/);
+  assert.match(appSource, /function scrollToHashTarget\(hash\)/);
+  assert.match(appSource, /const openAppendix = useCallback\(\(hash = APPENDIX_ROOT_HASH\) =>/);
+  assert.match(appSource, /const closeAppendix = useCallback\(\(\) =>/);
+  assert.match(appSource, /window\.addEventListener\('hashchange', syncAppendixFromHash\)/);
+  assert.match(appSource, /window\.history\.replaceState\(null, '', hash\)/);
+  assert.match(appSource, /window\.history\.replaceState\(null, '', fallbackHash\)/);
+  assert.match(appSource, /onClick=\{\(\) => openAppendix\(\)\}/);
+  assert.match(appSource, /<ExpressionLevelModal[\s\S]*onClose=\{closeAppendix\}/);
   assert.match(appSource, /Is this the full symmetry of the final expression\?/);
   assert.match(appSource, /The cost above uses .*notationLatex\('g_pointwise'\).* for accumulation/);
   assert.match(appSource, /The fully summed expression can have a larger label-renaming formal symmetry/);
@@ -98,4 +109,15 @@ test('route wrapper uses a branded centered loading shell instead of plain text'
   assert.match(routeSource, /min-h-\[100svh\]/);
   assert.doesNotMatch(routeSource, /radial-gradient/);
   assert.doesNotMatch(routeSource, /Loading Symmetry Aware Einsum Contractions/);
+});
+
+test('sticky bar wordmark relies on Next Link basePath handling instead of pre-prefixing the home href', () => {
+  const stickyBarSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/StickyBar.jsx', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(stickyBarSource, /import Link from 'next\/link';/);
+  assert.match(stickyBarSource, /href="\/"/);
+  assert.doesNotMatch(stickyBarSource, /href=\{withBasePath\('\/'\)\}/);
 });

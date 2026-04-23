@@ -47,6 +47,23 @@ const CUSTOM_IDX = -1;
 const DEFAULT_EXAMPLE_ID = 'triple-outer';
 const DEFAULT_EXAMPLE_IDX = Math.max(0, EXAMPLES.findIndex((example) => example.id === DEFAULT_EXAMPLE_ID));
 const DEFAULT_DIMENSION_N = 5;
+const APPENDIX_ROOT_HASH = '#appendix';
+const APPENDIX_SECTION_HASH_PREFIX = '#appendix-section-';
+const APPENDIX_RETURN_HASH = '#cost-savings';
+
+function isAppendixHash(hash = '') {
+  return hash === APPENDIX_ROOT_HASH || hash.startsWith(APPENDIX_SECTION_HASH_PREFIX);
+}
+
+function scrollToHashTarget(hash) {
+  if (typeof document === 'undefined') return;
+  if (hash === APPENDIX_ROOT_HASH) {
+    document.getElementById('expr-modal-heading')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+  if (!hash?.startsWith('#')) return;
+  document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
 function presetDefaultSize(example) {
   const sizes = Object.values(example?.labelSizes ?? {}).filter(
@@ -108,6 +125,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
   const [graphHover, setGraphHover] = useState(null);
   const [exprModalOpen, setExprModalOpen] = useState(false);
   const [isThemeDockVisible, setIsThemeDockVisible] = useState(false);
+  const appendixReturnHashRef = useRef(APPENDIX_RETURN_HASH);
   const explorerThemeId = useSyncExternalStore(
     subscribeActiveExplorerTheme,
     getActiveExplorerThemeId,
@@ -225,6 +243,57 @@ export default function SymmetryAwareEinsumContractionsApp() {
   useEffect(() => {
     resetActiveExplorerTheme();
     return () => resetActiveExplorerTheme();
+  }, []);
+
+  const openAppendix = useCallback((hash = APPENDIX_ROOT_HASH) => {
+    if (typeof window !== 'undefined') {
+      const currentHash = window.location.hash;
+      if (currentHash && !isAppendixHash(currentHash)) {
+        appendixReturnHashRef.current = currentHash;
+      }
+      window.history.replaceState(null, '', hash);
+    }
+    setExprModalOpen(true);
+    if (typeof window !== 'undefined') {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          scrollToHashTarget(hash);
+        });
+      });
+    }
+  }, []);
+
+  const closeAppendix = useCallback(() => {
+    setExprModalOpen(false);
+    if (typeof window === 'undefined') return;
+    if (!isAppendixHash(window.location.hash)) return;
+    const fallbackHash = appendixReturnHashRef.current || APPENDIX_RETURN_HASH;
+    window.history.replaceState(null, '', fallbackHash);
+    if (fallbackHash.startsWith('#')) {
+      document.getElementById(fallbackHash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const syncAppendixFromHash = () => {
+      const hash = window.location.hash;
+      if (isAppendixHash(hash)) {
+        setExprModalOpen(true);
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            scrollToHashTarget(hash);
+          });
+        });
+        return;
+      }
+      if (hash) appendixReturnHashRef.current = hash;
+      setExprModalOpen(false);
+    };
+
+    syncAppendixFromHash();
+    window.addEventListener('hashchange', syncAppendixFromHash);
+    return () => window.removeEventListener('hashchange', syncAppendixFromHash);
   }, []);
 
   useEffect(() => {
@@ -556,7 +625,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                     <button
                       type="button"
-                      onClick={() => setExprModalOpen(true)}
+                      onClick={() => openAppendix()}
                       className="-mx-4 -mb-4 mt-8 block w-auto cursor-pointer border-t border-stone-200/70 bg-gray-50 px-4 py-4 text-left transition-colors hover:bg-stone-100/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-coral"
                     >
                       <span className="block font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
@@ -588,7 +657,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
       <ExpressionLevelModal
         isOpen={exprModalOpen}
-        onClose={() => setExprModalOpen(false)}
+        onClose={closeAppendix}
         analysis={analysis}
         group={group}
         example={example}
