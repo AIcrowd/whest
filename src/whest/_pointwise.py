@@ -1015,7 +1015,8 @@ def outer(a, b, out=None):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
-    target_symmetry = _prepare_symmetric_out(out, target_symmetry)
+    if target_symmetry is not None:
+        target_symmetry = _prepare_symmetric_out(out, target_symmetry)
     cost = a.size * b.size
     with budget.deduct(
         "outer", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
@@ -1025,6 +1026,10 @@ def outer(a, b, out=None):
             b,
             out=None if isinstance(out, SymmetricTensor) else out,
         )
+    if target_symmetry is None:
+        if out is not None:
+            return out
+        return result
     return _wrap_result(result, out=out, symmetry=target_symmetry)
 
 
