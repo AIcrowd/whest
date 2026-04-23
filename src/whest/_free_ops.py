@@ -17,6 +17,7 @@ from whest._symmetric import SymmetricTensor
 from whest._symmetry_utils import (
     broadcast_group,
     remap_group_axes,
+    remap_group_for_expand_dims,
     validate_symmetry_group,
     wrap_with_symmetry,
 )
@@ -391,7 +392,11 @@ attach_docstring(squeeze, _np.squeeze, "free", "0 FLOPs")
 
 def expand_dims(a, axis):
     """Insert a new axis. Wraps ``numpy.expand_dims``. Cost: 0 FLOPs."""
-    return _np.expand_dims(a, axis=axis)
+    if not isinstance(a, SymmetricTensor):
+        return _np.expand_dims(a, axis=axis)
+    result = _np.expand_dims(_np.asarray(a), axis=axis)
+    symmetry = remap_group_for_expand_dims(a.symmetry, ndim=a.ndim, axis=axis)
+    return wrap_with_symmetry(result, symmetry)
 
 
 attach_docstring(expand_dims, _np.expand_dims, "free", "0 FLOPs")
