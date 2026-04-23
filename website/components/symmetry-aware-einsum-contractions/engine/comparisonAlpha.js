@@ -82,8 +82,15 @@ function buildOrbitPartition(assignments, elements) {
     }
 
     const memberKeys = [...local.keys()].sort();
+    for (const memberKey of memberKeys) {
+      if (!keyToTuple.has(memberKey)) {
+        throw new Error(
+          `group action mapped tuple outside the assignment domain: ${memberKey}`,
+        );
+      }
+    }
     const orbitId = memberKeys[0];
-    const members = memberKeys.map((memberKey) => keyToTuple.get(memberKey)).filter(Boolean);
+    const members = memberKeys.map((memberKey) => keyToTuple.get(memberKey));
     for (const memberKey of memberKeys) orbitIdByKey.set(memberKey, orbitId);
     orbits.push({ id: orbitId, members });
   }

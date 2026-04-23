@@ -76,3 +76,42 @@ test('G_pt with cross-V/W elements: V-sub drops them but S(W) is still full', ()
   // G_expr = vSub × sw = 2 × 1 = 2.
   assert.equal(result.order, 2);
 });
+
+test('dummy-renaming factor only permutes same-size summed-label blocks', () => {
+  const identity = Permutation.identity(3);
+  const result = buildExpressionGroup({
+    perTupleElements: [identity],
+    vLabels: [],
+    wLabels: ['i', 'j', 'k'],
+    allLabels: ['i', 'j', 'k'],
+    sizeByLabel: new Map([
+      ['i', 2],
+      ['j', 2],
+      ['k', 3],
+    ]),
+  });
+
+  assert.equal(result.sw.length, 2, 'S({i,j}) × S({k}) has order 2');
+  assert.equal(result.order, 2);
+  assert.deepEqual(
+    result.wBlocks.map((block) => block.labels),
+    [['i', 'j'], ['k']],
+  );
+
+  for (const elem of result.elements) {
+    assert.equal(elem.arr[2], 2, 'size-3 label k must not be swapped with size-2 labels');
+  }
+});
+
+test('dummy-renaming remains full S(W) when no sizes are supplied', () => {
+  const identity = Permutation.identity(3);
+  const result = buildExpressionGroup({
+    perTupleElements: [identity],
+    vLabels: [],
+    wLabels: ['i', 'j', 'k'],
+    allLabels: ['i', 'j', 'k'],
+  });
+
+  assert.equal(result.sw.length, 6, 'legacy equal-domain case remains full S(W)');
+  assert.equal(result.order, 6);
+});

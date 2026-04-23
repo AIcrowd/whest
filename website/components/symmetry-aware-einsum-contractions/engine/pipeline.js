@@ -94,6 +94,7 @@ export function analyzeExample(example, dimensionN) {
     vLabels: symmetry.vLabels ?? [],
     wLabels: symmetry.wLabels ?? [],
     allLabels: symmetry.allLabels ?? [],
+    sizeByLabel,
   });
 
   return {
