@@ -1010,9 +1010,7 @@ def outer(a, b, out=None):
     budget = require_budget()
     a_orig = a
     b_orig = b
-    target_symmetry = (
-        SymmetryGroup.symmetric(axes=(0, 1)) if a_orig is b_orig else None
-    )
+    target_symmetry = SymmetryGroup.symmetric(axes=(0, 1)) if a_orig is b_orig else None
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
