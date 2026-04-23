@@ -145,8 +145,9 @@ export default function SymmetryAwareEinsumContractionsApp() {
       previewExample,
       isDirty,
       clusterSizes,
+      defaultSize,
     });
-  }, [normalizedExample, previewExample, isDirty, clusterSizes]);
+  }, [normalizedExample, previewExample, isDirty, clusterSizes, defaultSize]);
 
   // Handle preset selection
   const handleSelect = useCallback((idx) => {

@@ -41,6 +41,7 @@ test('dense scaling latex reflects selected label count, not a hard-coded n^5', 
 test('heterogeneous-size detection stays false for uniform explicit overrides', () => {
   assert.equal(hasHeterogeneousLabelSizesFromOverrides({ i: 3, j: 3 }), false);
   assert.equal(hasHeterogeneousLabelSizesFromOverrides({ i: 3, j: 4 }), true);
+  assert.equal(hasHeterogeneousLabelSizesFromOverrides({ i: 7 }, 5), true);
 });
 
 test('section-one view exposes dense scaling for the selected expression', () => {
@@ -56,6 +57,7 @@ test('preamble source merges live cluster-size overrides when the page is clean'
     example: outer,
     clusterSizes: { 'b,d': 7 },
     isDirty: false,
+    defaultSize: 5,
   });
   const view = buildSection1ExampleView(preambleExample);
 
@@ -75,10 +77,26 @@ test('preamble source preserves dirty preview behavior without merging stale clu
     previewExample,
     clusterSizes: { 'b,d': 7 },
     isDirty: true,
+    defaultSize: 4,
   });
   const view = buildSection1ExampleView(preambleExample);
 
-  assert.equal(preambleExample, previewExample);
+  assert.equal(preambleExample.defaultSize, 4);
+  assert.deepEqual(preambleExample.labelSizes, previewExample.labelSizes);
   assert.equal(view.hasHeterogeneousSizes, false);
   assert.equal(view.denseGridScalingLatex, String.raw`n^{4}`);
+});
+
+test('preamble source treats partial cluster-size overrides as heterogeneous against default size', () => {
+  const matrix = preset('matrix-chain');
+  const preambleExample = selectSection1PreambleExample({
+    example: matrix,
+    clusterSizes: { i: 7 },
+    defaultSize: 5,
+    isDirty: false,
+  });
+  const view = buildSection1ExampleView(preambleExample);
+
+  assert.equal(view.hasHeterogeneousSizes, true);
+  assert.equal(view.denseGridScalingLatex, String.raw`\prod_{\ell \in L} n_\ell`);
 });

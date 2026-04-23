@@ -85,14 +85,19 @@ export function selectSection1PreambleExample({
   previewExample = null,
   isDirty = false,
   clusterSizes = {},
+  defaultSize,
 } = {}) {
-  if (isDirty) return previewExample ?? example ?? null;
+  if (isDirty) {
+    const dirtyExample = previewExample ?? example;
+    return dirtyExample ? { ...dirtyExample, defaultSize } : null;
+  }
 
   const committedExample = example ?? previewExample;
   if (!committedExample) return null;
 
   return {
     ...committedExample,
+    defaultSize,
     labelSizes: {
       ...(committedExample.labelSizes || {}),
       ...(clusterSizes || {}),
@@ -122,7 +127,7 @@ export function buildSection1ExampleView(example, palette = {}) {
   const product = subscripts
     .map((subscript, idx) => formatOperandFactor(operandNames[idx], subscript, freeSet, palette))
     .join(String.raw`\,\cdot\,`);
-  const hasHeterogeneousSizes = hasHeterogeneousLabelSizesFromOverrides(normalized.labelSizes);
+  const hasHeterogeneousSizes = hasHeterogeneousLabelSizesFromOverrides(normalized.labelSizes, normalized.defaultSize);
   const denseGridLatex = denseGridScalingLatex({
     labelCount: allLabels.length,
     hasHeterogeneousSizes,

@@ -21,8 +21,10 @@ export function denseGridScalingLatex({ labelCount = 0, hasHeterogeneousSizes = 
   return `n^{${labelCount}}`;
 }
 
-export function hasHeterogeneousLabelSizesFromOverrides(labelSizes = {}) {
+export function hasHeterogeneousLabelSizesFromOverrides(labelSizes = {}, defaultSize) {
   const values = Object.values(labelSizes ?? {});
   if (values.length === 0) return false;
-  return new Set(values).size > 1;
+  if (new Set(values).size > 1) return true;
+  if (!Number.isFinite(defaultSize) || defaultSize <= 0) return false;
+  return values.some((size) => size !== defaultSize);
 }
