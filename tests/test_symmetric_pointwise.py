@@ -94,3 +94,36 @@ class TestReductionSymmetry:
         with BudgetContext(flop_budget=10**6, quiet=True):
             result = we.sum(S)
             assert not isinstance(result, SymmetricTensor)
+
+    def test_sum_axis_sym_split_pair_runtime(self):
+        import whest as we
+
+        # sym(5,5) reducing axis=0 → split group → 5 outputs × (5−1) = 20.
+        data = numpy.ones((5, 5))
+        S = as_symmetric(data, symmetric_axes=(0, 1))
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            we.sum(S, axis=0)
+            assert budget.flops_used == 20
+
+    def test_sum_axis_sym_preserving_runtime(self):
+        import whest as we
+
+        # sym(5,5,10) with sym axes (0,1) reducing axis=2:
+        # S_2 survives on output (kept axes {0,1}) → 15 unique outputs × (10−1) = 135.
+        data = numpy.ones((5, 5, 10))
+        S = as_symmetric(data, symmetric_axes=(0, 1))
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            we.sum(S, axis=2)
+            assert budget.flops_used == 135
+
+    def test_sum_tuple_axis_inner_clean_runtime(self):
+        import whest as we
+
+        # sym(5,5,10) reducing both (0,1) → inner-clean group (g.axes ⊆ R).
+        # u_R = 15 (Burnside on S_2 over 5×5); 10 outputs (axis 2 kept).
+        # Cost = 10 × (15−1) = 140.
+        data = numpy.ones((5, 5, 10))
+        S = as_symmetric(data, symmetric_axes=(0, 1))
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            we.sum(S, axis=(0, 1))
+            assert budget.flops_used == 140
