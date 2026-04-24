@@ -218,6 +218,12 @@ def test_analytical_reduction_cost_scalar():
     assert analytical_reduction_cost(input_shape=(), axis=None) == 1
 
 
+def test_analytical_reduction_cost_scalar_with_axis_raises():
+    # Scalar input with an explicit axis should raise ValueError (no axes exist).
+    with pytest.raises(ValueError, match="scalar"):
+        analytical_reduction_cost(input_shape=(), axis=0)
+
+
 def test_analytical_reduction_cost_size_one_axis():
     # axis of size 1 has 0 accumulations → clamped to 1.
     assert analytical_reduction_cost(input_shape=(1, 10), axis=0) == 1

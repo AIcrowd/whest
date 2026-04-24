@@ -6,7 +6,10 @@ import math
 from collections import Counter
 from typing import TYPE_CHECKING
 
+from whest._symmetric import propagate_symmetry_reduce
+
 if TYPE_CHECKING:
+    from whest._perm_group import PermutationGroup
     from whest._symmetric import SymmetryInfo
 
 
@@ -124,17 +127,28 @@ def analytical_pointwise_cost(
 def _normalize_axis(
     axis: int | tuple[int, ...] | None, ndim: int
 ) -> tuple[int, ...] | None:
-    """Return normalized reduction axes as a sorted tuple, or None for full reduction."""
+    """Return normalized reduction axes as a sorted tuple, or None for full reduction.
+
+    Raises
+    ------
+    ValueError
+        If ``axis`` is not ``None`` but ``ndim == 0`` (scalar input has no axes).
+    """
     if axis is None:
         return None
+    if ndim == 0:
+        raise ValueError(
+            f"axis={axis!r} is out of bounds for scalar input (ndim=0); "
+            "use axis=None for full reduction of a scalar"
+        )
     if isinstance(axis, int):
         axis = (axis,)
-    normalized = tuple(sorted((a % ndim) if ndim > 0 else a for a in axis))
+    normalized = tuple(sorted(a % ndim for a in axis))
     return normalized
 
 
 def _compute_output_unique_count(
-    groups: list | None,
+    groups: list[PermutationGroup] | None,
     input_shape: tuple[int, ...],
     reduced_axes: tuple[int, ...] | None,
 ) -> int:
@@ -144,9 +158,6 @@ def _compute_output_unique_count(
     groups, then multiplies Burnside counts (over symmetric axes) by free-axis
     sizes (kept non-symmetric axes).
     """
-    # Runtime import to avoid circular dependency at module load.
-    from whest._symmetric import propagate_symmetry_reduce
-
     ndim = len(input_shape)
     if reduced_axes is None:
         # Full reduction → scalar output.
@@ -184,7 +195,7 @@ def _compute_output_unique_count(
 
 
 def _compute_R_unique_count(
-    groups: list | None,
+    groups: list[PermutationGroup] | None,
     input_shape: tuple[int, ...],
     reduced_axes: tuple[int, ...] | None,
 ) -> int:
@@ -194,6 +205,9 @@ def _compute_R_unique_count(
     savings — they act entirely within the reduced axes and combine equivalent
     values. Split groups (spanning both R and K) and output-only groups
     (``g.axes ⊆ K``) contribute no savings here.
+
+    When ``reduced_axes is None`` (full reduction), every axis is treated as
+    reduced, so ``u_R`` equals the total number of unique input elements.
     """
     ndim = len(input_shape)
     if reduced_axes is None:
