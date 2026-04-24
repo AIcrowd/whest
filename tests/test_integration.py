@@ -41,9 +41,9 @@ def test_budget_tracking_accuracy():
     with we.BudgetContext(flop_budget=10**8) as budget:
         we.einsum("ij,jk->ik", A, B)  # 10 * 20 * 30 = 6000 (FMA=1)
         we.exp(we.ones((100,)))  # 100
-        we.sum(we.ones((50,)))  # 50
-        assert budget.flops_used == 6000 + 100 + 50
-        assert budget.flops_remaining == 10**8 - 6150
+        we.sum(we.ones((50,)))  # 50 − 1 = 49
+        assert budget.flops_used == 6000 + 100 + 49
+        assert budget.flops_remaining == 10**8 - 6149
 
 
 def test_flop_query_matches_execution():

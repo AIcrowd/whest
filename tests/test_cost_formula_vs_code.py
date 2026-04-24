@@ -239,7 +239,7 @@ def test_vecdot_batch_times_k(we):
 
 
 # ---------------------------------------------------------------------------
-# Counted Reduction — numel(input)
+# Counted Reduction — numel(input) − 1 (first value is a free copy)
 # ---------------------------------------------------------------------------
 
 _REDUCTION_NUMEL = [
@@ -281,28 +281,28 @@ def test_reduction_numel(name, we):
     a = numpy.random.rand(10, 10)
     fn = getattr(we, name)
     cost = _cost_of(fn, a)
-    assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
+    assert cost == 99, f"{name}: expected numel(input)-1=99, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["percentile", "nanpercentile"])
 def test_percentile_numel(name, we):
     a = numpy.random.rand(10, 10)
     cost = _cost_of(getattr(we, name), a, q=50)
-    assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
+    assert cost == 99, f"{name}: expected numel(input)-1=99, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["quantile", "nanquantile"])
 def test_quantile_numel(name, we):
     a = numpy.random.rand(10, 10)
     cost = _cost_of(getattr(we, name), a, q=0.5)
-    assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
+    assert cost == 99, f"{name}: expected numel(input)-1=99, got {cost}"
 
 
 @pytest.mark.parametrize("name", ["cumulative_sum", "cumulative_prod"])
 def test_cumulative_numel(name, we):
     a = numpy.random.rand(10, 10)
     cost = _cost_of(getattr(we, name), a, axis=0)
-    assert cost == 100, f"{name}: expected numel(input)=100, got {cost}"
+    assert cost == 90, f"{name}: expected 10*(10-1)=90, got {cost}"
 
 
 # ---------------------------------------------------------------------------

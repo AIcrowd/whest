@@ -83,7 +83,8 @@ class TestReductionSymmetry:
         S = as_symmetric(data, symmetric_axes=(0, 1))
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             we.sum(S)
-            assert budget.flops_used == 55
+            # sym(10,10) has 55 unique elements; full reduction: 55 − 1 = 54.
+            assert budget.flops_used == 54
 
     def test_sum_returns_plain(self):
         import whest as we

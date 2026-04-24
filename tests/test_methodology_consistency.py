@@ -124,20 +124,21 @@ class TestPointwiseConsistency:
 
 
 class TestReductionConsistency:
-    """Reductions: cost = numel(input)."""
+    """Reductions: cost = numel(input) − 1 (first value is a free copy)."""
 
     def test_sum(self):
         n = 1000
         a = np.random.rand(n)
         runtime_cost = _run_and_get_cost(we.sum, a)
-        assert runtime_cost == n
+        assert runtime_cost == n - 1
 
     def test_mean(self):
         n = 1000
         a = np.random.rand(n)
         runtime_cost = _run_and_get_cost(we.mean, a)
-        # mean charges n+1 (sum + divide) or just n depending on impl
-        assert runtime_cost >= n
+        # mean charges (n−1) + possibly a divide; impl-dependent but must be
+        # at least n−1.
+        assert runtime_cost >= n - 1
 
 
 # ---------------------------------------------------------------------------
