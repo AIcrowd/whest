@@ -341,7 +341,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.conj is fnp.conjugate"
+              "text": "flops.conj is flops.conjugate"
             },
             {
               "kind": "output",
@@ -360,12 +360,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.conjugate(1+2j)"
+              "text": "flops.conjugate(1+2j)"
             },
             {
               "kind": "output",
@@ -379,12 +379,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.eye(2) + 1j * fnp.eye(2)"
+              "text": "x = flops.eye(2) + 1j * flops.eye(2)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.conjugate(x)"
+              "text": "flops.conjugate(x)"
             },
             {
               "kind": "output",
@@ -402,6 +402,7 @@
     }
   ],
   "canonical_name": "conjugate",
+  "canonical_path": "conjugate",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -419,24 +420,25 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.conjugate(1+2j)\n\nx = fnp.eye(2) + 1j * fnp.eye(2)\n\nfnp.conjugate(x)",
+    "code": "import flopscope as flops\n\nflops.conjugate(1+2j)\n\nx = flops.eye(2) + 1j * flops.eye(2)\n\nflops.conjugate(x)",
     "output": "(1-2j)\n\narray([[ 1.-1.j,  0.-0.j],\n       [ 0.-0.j,  1.-1.j]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.conjugate",
+  "flopscope_ref": "flops.conjugate",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/conjugate/",
+  "href": "/docs/api/conjugate/",
+  "legacy_href": "/docs/api/ops/conjugate/",
   "module": "numpy",
   "name": "conjugate",
   "next": {
-    "href": "/docs/api/ops/convolve/",
-    "label": "fnp.convolve"
+    "href": "/docs/api/convolve/",
+    "label": "flops.convolve"
   },
   "notes": "Complex conjugate element-wise.",
   "notes_sections": [
     "`conj` is an alias for `conjugate`:",
-    ">>> fnp.conj is fnp.conjugate True"
+    ">>> flops.conj is flops.conjugate True"
   ],
   "numpy_ref": "np.conjugate",
   "parameters": [
@@ -479,8 +481,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/conj/",
-    "label": "fnp.conj"
+    "href": "/docs/api/conj/",
+    "label": "flops.conj"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.conjugate.html",
@@ -495,7 +497,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.conjugate(*args, **kwargs)",
+  "signature": "flops.conjugate(*args, **kwargs)",
   "slug": "conjugate",
   "summary": "Return the complex conjugate, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

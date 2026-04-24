@@ -111,7 +111,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
@@ -131,7 +131,7 @@
             {
               "kind": "input",
               "prompt": "...",
-              "text": "print(typechar, ' : ', fnp.typename(typechar))"
+              "text": "print(typechar, ' : ', flops.typename(typechar))"
             },
             {
               "kind": "input",
@@ -234,6 +234,7 @@
     }
   ],
   "canonical_name": "typename",
+  "canonical_path": "typename",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -244,19 +245,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\ntypechars = ['S1', '?', 'B', 'D', 'G', 'F', 'I', 'H', 'L', 'O', 'Q',\n             'S', 'U', 'V', 'b', 'd', 'g', 'f', 'i', 'h', 'l', 'q']\n\nfor typechar in typechars:\n    print(typechar, ' : ', fnp.typename(typechar))",
+    "code": "import flopscope as flops\n\ntypechars = ['S1', '?', 'B', 'D', 'G', 'F', 'I', 'H', 'L', 'O', 'Q',\n             'S', 'U', 'V', 'b', 'd', 'g', 'f', 'i', 'h', 'l', 'q']\n\nfor typechar in typechars:\n    print(typechar, ' : ', flops.typename(typechar))",
     "output": "S1  :  character\n?  :  bool\nB  :  unsigned char\nD  :  complex double precision\nG  :  complex long double precision\nF  :  complex single precision\nI  :  unsigned integer\nH  :  unsigned short\nL  :  unsigned long integer\nO  :  object\nQ  :  unsigned long long integer\nS  :  string\nU  :  unicode\nV  :  void\nb  :  signed char\nd  :  double precision\ng  :  long precision\nf  :  single precision\ni  :  integer\nh  :  short\nl  :  long integer\nq  :  long long integer",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.typename",
+  "flopscope_ref": "flops.typename",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1640",
-  "href": "/docs/api/ops/typename/",
+  "href": "/docs/api/typename/",
+  "legacy_href": "/docs/api/ops/typename/",
   "module": "numpy",
   "name": "typename",
   "next": {
-    "href": "/docs/api/ops/union1d/",
-    "label": "fnp.union1d"
+    "href": "/docs/api/union1d/",
+    "label": "flops.union1d"
   },
   "notes": "Return description of given data type code.",
   "notes_sections": [],
@@ -271,8 +273,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/trunc/",
-    "label": "fnp.trunc"
+    "href": "/docs/api/trunc/",
+    "label": "flops.trunc"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.typename.html",
@@ -298,7 +300,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.typename(char)",
+  "signature": "flops.typename(char)",
   "slug": "typename",
   "summary": "Return a description for the given data type code.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L574",

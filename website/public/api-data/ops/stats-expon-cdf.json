@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-expon-cdf/",
+  "detail_href": "/docs/api/stats/expon/cdf/",
   "detail_json_href": "/api-data/ops/stats-expon-cdf.json",
   "docs": {
     "sections": [
@@ -163,12 +163,12 @@
     "category": "counted_custom",
     "cost_formula": "5n",
     "cost_formula_latex": "$5n$",
-    "flopscope_ref": "fnp.stats.expon.cdf",
+    "flopscope_ref": "flops.stats.expon.cdf",
     "module": "flopscope.stats",
     "name": "stats.expon.cdf",
     "notes": "Exponential CDF; cost = numel(input).",
     "numpy_ref": "np.stats.expon.cdf",
-    "signature": "fnp.stats.expon.cdf(x, loc=0, scale=1)",
+    "signature": "flops.stats.expon.cdf(x, loc=0, scale=1)",
     "status": "supported",
     "summary": "Cumulative distribution function of the given RV.",
     "weight": 16.0

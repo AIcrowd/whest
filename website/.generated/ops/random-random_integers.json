@@ -16,7 +16,7 @@
               "href": "",
               "kind": "link",
               "target": "int_",
-              "text": "fnp.int_"
+              "text": "flops.int_"
             },
             {
               "kind": "text",
@@ -57,7 +57,7 @@
               "href": "",
               "kind": "link",
               "target": "int_",
-              "text": "fnp.int_"
+              "text": "flops.int_"
             },
             {
               "kind": "text",
@@ -100,7 +100,7 @@
               "href": "",
               "kind": "link",
               "target": "int_",
-              "text": "fnp.int_"
+              "text": "flops.int_"
             },
             {
               "kind": "text",
@@ -428,7 +428,7 @@
         },
         {
           "language": null,
-          "text": "a + (b - a) * (fnp.random.random_integers(N) - 1) / (N - 1.)",
+          "text": "a + (b - a) * (flops.random.random_integers(N) - 1) / (N - 1.)",
           "type": "literal_block"
         }
       ],
@@ -441,7 +441,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.random.random_integers(5)"
+              "text": "flops.random.random_integers(5)"
             },
             {
               "kind": "output",
@@ -450,16 +450,16 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "type(fnp.random.random_integers(5))"
+              "text": "type(flops.random.random_integers(5))"
             },
             {
               "kind": "output",
-              "text": "<class 'fnp.int64'>"
+              "text": "<class 'flops.int64'>"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.random.random_integers(5, size=(3,2))"
+              "text": "flops.random.random_integers(5, size=(3,2))"
             },
             {
               "kind": "output",
@@ -506,7 +506,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "2.5 * (fnp.random.random_integers(5, size=(5,)) - 1) / 4."
+              "text": "2.5 * (flops.random.random_integers(5, size=(5,)) - 1) / 4."
             },
             {
               "kind": "output",
@@ -529,12 +529,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "d1 = fnp.random.random_integers(1, 6, 1000)"
+              "text": "d1 = flops.random.random_integers(1, 6, 1000)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "d2 = fnp.random.random_integers(1, 6, 1000)"
+              "text": "d2 = flops.random.random_integers(1, 6, 1000)"
             },
             {
               "kind": "input",
@@ -578,6 +578,7 @@
     }
   ],
   "canonical_name": "random.random_integers",
+  "canonical_path": "random/random-integers",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -588,24 +589,25 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "fnp.random.random_integers(5)\n\ntype(fnp.random.random_integers(5))\n\nfnp.random.random_integers(5, size=(3,2))\n\n2.5 * (fnp.random.random_integers(5, size=(5,)) - 1) / 4.\n\nd1 = fnp.random.random_integers(1, 6, 1000)\n\nd2 = fnp.random.random_integers(1, 6, 1000)\n\ndsums = d1 + d2\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(dsums, 11, density=True)\n\nplt.show()",
-    "output": "4 # random\n\n<class 'fnp.int64'>\n\narray([[5, 4], # random\n       [3, 3],\n       [4, 5]])\n\narray([ 0.625,  1.25 ,  0.625,  0.625,  2.5  ]) # random",
+    "code": "flops.random.random_integers(5)\n\ntype(flops.random.random_integers(5))\n\nflops.random.random_integers(5, size=(3,2))\n\n2.5 * (flops.random.random_integers(5, size=(5,)) - 1) / 4.\n\nd1 = flops.random.random_integers(1, 6, 1000)\n\nd2 = flops.random.random_integers(1, 6, 1000)\n\ndsums = d1 + d2\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(dsums, 11, density=True)\n\nplt.show()",
+    "output": "4 # random\n\n<class 'flops.int64'>\n\narray([[5, 4], # random\n       [3, 3],\n       [4, 5]])\n\narray([ 0.625,  1.25 ,  0.625,  0.625,  2.5  ]) # random",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.random_integers",
+  "flopscope_ref": "flops.random.random_integers",
   "flopscope_source_url": "",
-  "href": "/docs/api/ops/random-random_integers/",
+  "href": "/docs/api/random/random-integers/",
+  "legacy_href": "/docs/api/ops/random-random_integers/",
   "module": "numpy.random",
   "name": "random.random_integers",
   "next": {
-    "href": "/docs/api/ops/random-random_sample/",
-    "label": "fnp.random.random_sample"
+    "href": "/docs/api/random/random-sample/",
+    "label": "flops.random.random_sample"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
     "To sample from N evenly spaced floating-point numbers between a and b, use::",
-    "a + (b - a) * (fnp.random.random_integers(N) - 1) / (N - 1.)"
+    "a + (b - a) * (flops.random.random_integers(N) - 1) / (N - 1.)"
   ],
   "numpy_ref": "np.random.random_integers",
   "parameters": [
@@ -637,8 +639,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-random/",
-    "label": "fnp.random.random"
+    "href": "/docs/api/random/random/",
+    "label": "flops.random.random"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.random_integers.html",
@@ -702,9 +704,9 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.random_integers(low, high=None, size=None)",
+  "signature": "flops.random.random_integers(low, high=None, size=None)",
   "slug": "random-random_integers",
-  "summary": "Random integers of type `fnp.int_` between `low` and `high`, inclusive.",
+  "summary": "Random integers of type `flops.int_` between `low` and `high`, inclusive.",
   "upstream_source_url": "",
   "weight": 1.0
 }

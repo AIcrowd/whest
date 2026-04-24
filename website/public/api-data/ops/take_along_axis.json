@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/take_along_axis/",
+  "detail_href": "/docs/api/take-along-axis/",
   "detail_json_href": "/api-data/ops/take_along_axis.json",
   "docs": {
     "sections": [
@@ -262,7 +262,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/take",
-                "label": "fnp.take",
+                "label": "flops.take",
                 "original_target": "take",
                 "role": "",
                 "target": "take",
@@ -278,7 +278,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/put_along_axis",
-                "label": "fnp.put_along_axis",
+                "label": "flops.put_along_axis",
                 "original_target": "put_along_axis",
                 "role": "",
                 "target": "put_along_axis",
@@ -335,7 +335,7 @@
           },
           {
             "language": null,
-            "text": "Ni, M, Nk = a.shape[:axis], a.shape[axis], a.shape[axis+1:]\nJ = indices.shape[axis]  # Need not equal M\nout = fnp.empty(Ni + (J,) + Nk)\n\nfor ii in ndindex(Ni):\n    for kk in ndindex(Nk):\n        a_1d       = a      [ii + s_[:,] + kk]\n        indices_1d = indices[ii + s_[:,] + kk]\n        out_1d     = out    [ii + s_[:,] + kk]\n        for j in range(J):\n            out_1d[j] = a_1d[indices_1d[j]]",
+            "text": "Ni, M, Nk = a.shape[:axis], a.shape[axis], a.shape[axis+1:]\nJ = indices.shape[axis]  # Need not equal M\nout = flops.empty(Ni + (J,) + Nk)\n\nfor ii in ndindex(Ni):\n    for kk in ndindex(Nk):\n        a_1d       = a      [ii + s_[:,] + kk]\n        indices_1d = indices[ii + s_[:,] + kk]\n        out_1d     = out    [ii + s_[:,] + kk]\n        for j in range(J):\n            out_1d[j] = a_1d[indices_1d[j]]",
             "type": "literal_block"
           },
           {
@@ -362,7 +362,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -381,7 +381,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[10, 30, 20], [60, 40, 50]])"
+                "text": "a = flops.array([[10, 30, 20], [60, 40, 50]])"
               }
             ],
             "type": "doctest_block"
@@ -400,7 +400,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.sort(a, axis=1)"
+                "text": "flops.sort(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -413,7 +413,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ai = fnp.argsort(a, axis=1)"
+                "text": "ai = flops.argsort(a, axis=1)"
               },
               {
                 "kind": "input",
@@ -431,7 +431,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.take_along_axis(a, ai, axis=1)"
+                "text": "flops.take_along_axis(a, ai, axis=1)"
               },
               {
                 "kind": "output",
@@ -466,7 +466,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.max(a, axis=1, keepdims=True)"
+                "text": "flops.max(a, axis=1, keepdims=True)"
               },
               {
                 "kind": "output",
@@ -479,7 +479,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ai = fnp.argmax(a, axis=1, keepdims=True)"
+                "text": "ai = flops.argmax(a, axis=1, keepdims=True)"
               },
               {
                 "kind": "input",
@@ -497,7 +497,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.take_along_axis(a, ai, axis=1)"
+                "text": "flops.take_along_axis(a, ai, axis=1)"
               },
               {
                 "kind": "output",
@@ -524,17 +524,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ai_min = fnp.argmin(a, axis=1, keepdims=True)"
+                "text": "ai_min = flops.argmin(a, axis=1, keepdims=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ai_max = fnp.argmax(a, axis=1, keepdims=True)"
+                "text": "ai_max = flops.argmax(a, axis=1, keepdims=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ai = fnp.concatenate([ai_min, ai_max], axis=1)"
+                "text": "ai = flops.concatenate([ai_min, ai_max], axis=1)"
               },
               {
                 "kind": "input",
@@ -552,7 +552,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.take_along_axis(a, ai, axis=1)"
+                "text": "flops.take_along_axis(a, ai, axis=1)"
               },
               {
                 "kind": "output",
@@ -574,12 +574,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.take_along_axis",
+    "flopscope_ref": "flops.take_along_axis",
     "module": "numpy",
     "name": "take_along_axis",
     "notes": "Take values from input array by matching 1-D index. Cost: numel(output).",
     "numpy_ref": "np.take_along_axis",
-    "signature": "fnp.take_along_axis(arr, indices, axis)",
+    "signature": "flops.take_along_axis(arr, indices, axis)",
     "status": "supported",
     "summary": "Take values from the input array by matching 1d index and data slices.",
     "weight": 1.0

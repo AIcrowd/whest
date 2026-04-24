@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/modf/",
+  "detail_href": "/docs/api/modf/",
   "detail_json_href": "/api-data/ops/modf.json",
   "docs": {
     "sections": [
@@ -374,7 +374,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/floor_divide",
-                "label": "fnp.floor_divide",
+                "label": "flops.floor_divide",
                 "original_target": "divmod",
                 "role": "",
                 "target": "floor_divide",
@@ -407,12 +407,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.modf([0, 3.5])"
+                "text": "flops.modf([0, 3.5])"
               },
               {
                 "kind": "output",
@@ -421,7 +421,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.modf(-0.5)"
+                "text": "flops.modf(-0.5)"
               },
               {
                 "kind": "output",
@@ -439,12 +439,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.modf",
+    "flopscope_ref": "flops.modf",
     "module": "numpy",
     "name": "modf",
     "notes": "Return fractional and integral parts element-wise.",
     "numpy_ref": "np.modf",
-    "signature": "fnp.modf(*args, **kwargs)",
+    "signature": "flops.modf(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the fractional and integral parts of an array, element-wise.",
     "weight": 1.0

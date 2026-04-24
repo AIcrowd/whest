@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/common_type/",
+  "detail_href": "/docs/api/common-type/",
   "detail_json_href": "/api-data/ops/common_type.json",
   "docs": {
     "sections": [
@@ -126,7 +126,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/mintypecode",
-                "label": "fnp.mintypecode",
+                "label": "flops.mintypecode",
                 "original_target": "mintypecode",
                 "role": "",
                 "target": "mintypecode",
@@ -145,29 +145,29 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.common_type(fnp.arange(2, dtype=fnp.float32))"
+                "text": "flops.common_type(flops.arange(2, dtype=flops.float32))"
               },
               {
                 "kind": "output",
-                "text": "<class 'fnp.float32'>"
+                "text": "<class 'flops.float32'>"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.common_type(fnp.arange(2, dtype=fnp.float32), fnp.arange(2))"
+                "text": "flops.common_type(flops.arange(2, dtype=flops.float32), flops.arange(2))"
               },
               {
                 "kind": "output",
-                "text": "<class 'fnp.float64'>"
+                "text": "<class 'flops.float64'>"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.common_type(fnp.arange(4), fnp.array([45, 6.j]), fnp.array([45.0]))"
+                "text": "flops.common_type(flops.arange(4), flops.array([45, 6.j]), flops.array([45.0]))"
               },
               {
                 "kind": "output",
-                "text": "<class 'fnp.complex128'>"
+                "text": "<class 'flops.complex128'>"
               }
             ],
             "type": "doctest_block"
@@ -181,12 +181,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.common_type",
+    "flopscope_ref": "flops.common_type",
     "module": "numpy",
     "name": "common_type",
     "notes": "Return scalar type common to all input arrays.",
     "numpy_ref": "np.common_type",
-    "signature": "fnp.common_type(*arrays)",
+    "signature": "flops.common_type(*arrays)",
     "status": "supported",
     "summary": "Return a scalar type which is common to the input arrays.",
     "weight": 0.0

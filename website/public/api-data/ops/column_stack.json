@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/column_stack/",
+  "detail_href": "/docs/api/column-stack/",
   "detail_json_href": "/api-data/ops/column_stack.json",
   "docs": {
     "sections": [
@@ -117,7 +117,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/stack",
-                "label": "fnp.stack",
+                "label": "flops.stack",
                 "original_target": "stack",
                 "role": "",
                 "target": "stack",
@@ -128,7 +128,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/hstack",
-                "label": "fnp.hstack",
+                "label": "flops.hstack",
                 "original_target": "hstack",
                 "role": "",
                 "target": "hstack",
@@ -139,7 +139,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/vstack",
-                "label": "fnp.vstack",
+                "label": "flops.vstack",
                 "original_target": "vstack",
                 "role": "",
                 "target": "vstack",
@@ -150,7 +150,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/concatenate",
-                "label": "fnp.concatenate",
+                "label": "flops.concatenate",
                 "original_target": "concatenate",
                 "role": "",
                 "target": "concatenate",
@@ -169,22 +169,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array((1,2,3))"
+                "text": "a = flops.array((1,2,3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.array((2,3,4))"
+                "text": "b = flops.array((2,3,4))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.column_stack((a,b))"
+                "text": "flops.column_stack((a,b))"
               },
               {
                 "kind": "output",
@@ -210,12 +210,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.column_stack",
+    "flopscope_ref": "flops.column_stack",
     "module": "numpy",
     "name": "column_stack",
     "notes": "Stack 1-D arrays as columns into 2-D array.",
     "numpy_ref": "np.column_stack",
-    "signature": "fnp.column_stack(tup)",
+    "signature": "flops.column_stack(tup)",
     "status": "supported",
     "summary": "Stack 1-D arrays as columns into a 2-D array.",
     "weight": 0.0

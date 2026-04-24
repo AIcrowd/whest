@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/log10/",
+  "detail_href": "/docs/api/log10/",
   "detail_json_href": "/api-data/ops/log10.json",
   "docs": {
     "sections": [
@@ -474,12 +474,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.log10([1e-15, -3.])"
+                "text": "flops.log10([1e-15, -3.])"
               },
               {
                 "kind": "output",
@@ -497,12 +497,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.log10",
+    "flopscope_ref": "flops.log10",
     "module": "numpy",
     "name": "log10",
     "notes": "Element-wise base-10 logarithm.",
     "numpy_ref": "np.log10",
-    "signature": "fnp.log10(*args, **kwargs)",
+    "signature": "flops.log10(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the base 10 logarithm of the input array, element-wise.",
     "weight": 16.0

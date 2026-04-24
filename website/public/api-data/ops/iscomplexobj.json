@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/iscomplexobj/",
+  "detail_href": "/docs/api/iscomplexobj/",
   "detail_json_href": "/api-data/ops/iscomplexobj.json",
   "docs": {
     "sections": [
@@ -133,7 +133,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isrealobj",
-                "label": "fnp.isrealobj",
+                "label": "flops.isrealobj",
                 "original_target": "isrealobj",
                 "role": "",
                 "target": "isrealobj",
@@ -144,7 +144,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/iscomplex",
-                "label": "fnp.iscomplex",
+                "label": "flops.iscomplex",
                 "original_target": "iscomplex",
                 "role": "",
                 "target": "iscomplex",
@@ -163,12 +163,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.iscomplexobj(1)"
+                "text": "flops.iscomplexobj(1)"
               },
               {
                 "kind": "output",
@@ -177,7 +177,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.iscomplexobj(1+0j)"
+                "text": "flops.iscomplexobj(1+0j)"
               },
               {
                 "kind": "output",
@@ -186,7 +186,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.iscomplexobj([3, 1+0j, True])"
+                "text": "flops.iscomplexobj([3, 1+0j, True])"
               },
               {
                 "kind": "output",
@@ -204,12 +204,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.iscomplexobj",
+    "flopscope_ref": "flops.iscomplexobj",
     "module": "numpy",
     "name": "iscomplexobj",
     "notes": "Return True if input is a complex type or array.",
     "numpy_ref": "np.iscomplexobj",
-    "signature": "fnp.iscomplexobj(x)",
+    "signature": "flops.iscomplexobj(x)",
     "status": "supported",
     "summary": "Check for a complex type or an array of complex numbers.",
     "weight": 1.0

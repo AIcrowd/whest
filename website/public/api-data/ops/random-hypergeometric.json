@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-hypergeometric/",
+  "detail_href": "/docs/api/random/hypergeometric/",
   "detail_json_href": "/api-data/ops/random-hypergeometric.json",
   "docs": {
     "sections": [
@@ -113,7 +113,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.hypergeometric`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~flops.random.Generator.hypergeometric`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -264,7 +264,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "fnp.broadcast(ngood, nbad, nsample).size"
+                        "text": "flops.broadcast(ngood, nbad, nsample).size"
                       },
                       {
                         "kind": "text",
@@ -330,7 +330,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "fnp.broadcast(ngood, nbad, nsample).size"
+                    "text": "flops.broadcast(ngood, nbad, nsample).size"
                   },
                   {
                     "kind": "text",
@@ -639,7 +639,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = fnp.random.hypergeometric(ngood, nbad, nsamp, 1000)"
+                "text": "s = flops.random.hypergeometric(ngood, nbad, nsamp, 1000)"
               },
               {
                 "kind": "input",
@@ -672,7 +672,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = fnp.random.hypergeometric(15, 15, 15, 100000)"
+                "text": "s = flops.random.hypergeometric(15, 15, 15, 100000)"
               },
               {
                 "kind": "input",
@@ -695,12 +695,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.hypergeometric",
+    "flopscope_ref": "flops.random.hypergeometric",
     "module": "numpy.random",
     "name": "random.hypergeometric",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.hypergeometric",
-    "signature": "fnp.random.hypergeometric(ngood, nbad, nsample, size=None)",
+    "signature": "flops.random.hypergeometric(ngood, nbad, nsample, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Hypergeometric distribution.",
     "weight": 16.0

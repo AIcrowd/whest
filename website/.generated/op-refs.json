@@ -1,2367 +1,2367 @@
 {
   "abs": {
     "canonical_name": "absolute",
-    "href": "/docs/api/ops/absolute/",
-    "label": "fnp.absolute"
+    "href": "/docs/api/absolute/",
+    "label": "flops.absolute"
   },
   "absolute": {
     "canonical_name": "absolute",
-    "href": "/docs/api/ops/absolute/",
-    "label": "fnp.absolute"
+    "href": "/docs/api/absolute/",
+    "label": "flops.absolute"
   },
   "acos": {
     "canonical_name": "arccos",
-    "href": "/docs/api/ops/arccos/",
-    "label": "fnp.arccos"
+    "href": "/docs/api/arccos/",
+    "label": "flops.arccos"
   },
   "acosh": {
     "canonical_name": "arccosh",
-    "href": "/docs/api/ops/arccosh/",
-    "label": "fnp.arccosh"
+    "href": "/docs/api/arccosh/",
+    "label": "flops.arccosh"
   },
   "add": {
     "canonical_name": "add",
-    "href": "/docs/api/ops/add/",
-    "label": "fnp.add"
+    "href": "/docs/api/add/",
+    "label": "flops.add"
   },
   "all": {
     "canonical_name": "all",
-    "href": "/docs/api/ops/all/",
-    "label": "fnp.all"
+    "href": "/docs/api/all/",
+    "label": "flops.all"
   },
   "allclose": {
     "canonical_name": "allclose",
-    "href": "/docs/api/ops/allclose/",
-    "label": "fnp.allclose"
+    "href": "/docs/api/allclose/",
+    "label": "flops.allclose"
   },
   "amax": {
     "canonical_name": "max",
-    "href": "/docs/api/ops/max/",
-    "label": "fnp.max"
+    "href": "/docs/api/max/",
+    "label": "flops.max"
   },
   "amin": {
     "canonical_name": "min",
-    "href": "/docs/api/ops/min/",
-    "label": "fnp.min"
+    "href": "/docs/api/min/",
+    "label": "flops.min"
   },
   "angle": {
     "canonical_name": "angle",
-    "href": "/docs/api/ops/angle/",
-    "label": "fnp.angle"
+    "href": "/docs/api/angle/",
+    "label": "flops.angle"
   },
   "any": {
     "canonical_name": "any",
-    "href": "/docs/api/ops/any/",
-    "label": "fnp.any"
+    "href": "/docs/api/any/",
+    "label": "flops.any"
   },
   "append": {
     "canonical_name": "append",
-    "href": "/docs/api/ops/append/",
-    "label": "fnp.append"
+    "href": "/docs/api/append/",
+    "label": "flops.append"
   },
   "apply_along_axis": {
     "canonical_name": "apply_along_axis",
-    "href": "/docs/api/ops/apply_along_axis/",
-    "label": "fnp.apply_along_axis"
+    "href": "/docs/api/apply-along-axis/",
+    "label": "flops.apply_along_axis"
   },
   "apply_over_axes": {
     "canonical_name": "apply_over_axes",
-    "href": "/docs/api/ops/apply_over_axes/",
-    "label": "fnp.apply_over_axes"
+    "href": "/docs/api/apply-over-axes/",
+    "label": "flops.apply_over_axes"
   },
   "arange": {
     "canonical_name": "arange",
-    "href": "/docs/api/ops/arange/",
-    "label": "fnp.arange"
+    "href": "/docs/api/arange/",
+    "label": "flops.arange"
   },
   "arccos": {
     "canonical_name": "arccos",
-    "href": "/docs/api/ops/arccos/",
-    "label": "fnp.arccos"
+    "href": "/docs/api/arccos/",
+    "label": "flops.arccos"
   },
   "arccosh": {
     "canonical_name": "arccosh",
-    "href": "/docs/api/ops/arccosh/",
-    "label": "fnp.arccosh"
+    "href": "/docs/api/arccosh/",
+    "label": "flops.arccosh"
   },
   "arcsin": {
     "canonical_name": "arcsin",
-    "href": "/docs/api/ops/arcsin/",
-    "label": "fnp.arcsin"
+    "href": "/docs/api/arcsin/",
+    "label": "flops.arcsin"
   },
   "arcsinh": {
     "canonical_name": "arcsinh",
-    "href": "/docs/api/ops/arcsinh/",
-    "label": "fnp.arcsinh"
+    "href": "/docs/api/arcsinh/",
+    "label": "flops.arcsinh"
   },
   "arctan": {
     "canonical_name": "arctan",
-    "href": "/docs/api/ops/arctan/",
-    "label": "fnp.arctan"
+    "href": "/docs/api/arctan/",
+    "label": "flops.arctan"
   },
   "arctan2": {
     "canonical_name": "arctan2",
-    "href": "/docs/api/ops/arctan2/",
-    "label": "fnp.arctan2"
+    "href": "/docs/api/arctan2/",
+    "label": "flops.arctan2"
   },
   "arctanh": {
     "canonical_name": "arctanh",
-    "href": "/docs/api/ops/arctanh/",
-    "label": "fnp.arctanh"
+    "href": "/docs/api/arctanh/",
+    "label": "flops.arctanh"
   },
   "argmax": {
     "canonical_name": "argmax",
-    "href": "/docs/api/ops/argmax/",
-    "label": "fnp.argmax"
+    "href": "/docs/api/argmax/",
+    "label": "flops.argmax"
   },
   "argmin": {
     "canonical_name": "argmin",
-    "href": "/docs/api/ops/argmin/",
-    "label": "fnp.argmin"
+    "href": "/docs/api/argmin/",
+    "label": "flops.argmin"
   },
   "argpartition": {
     "canonical_name": "argpartition",
-    "href": "/docs/api/ops/argpartition/",
-    "label": "fnp.argpartition"
+    "href": "/docs/api/argpartition/",
+    "label": "flops.argpartition"
   },
   "argsort": {
     "canonical_name": "argsort",
-    "href": "/docs/api/ops/argsort/",
-    "label": "fnp.argsort"
+    "href": "/docs/api/argsort/",
+    "label": "flops.argsort"
   },
   "argwhere": {
     "canonical_name": "argwhere",
-    "href": "/docs/api/ops/argwhere/",
-    "label": "fnp.argwhere"
+    "href": "/docs/api/argwhere/",
+    "label": "flops.argwhere"
   },
   "around": {
     "canonical_name": "rint",
-    "href": "/docs/api/ops/rint/",
-    "label": "fnp.rint"
+    "href": "/docs/api/rint/",
+    "label": "flops.rint"
   },
   "array": {
     "canonical_name": "array",
-    "href": "/docs/api/ops/array/",
-    "label": "fnp.array"
+    "href": "/docs/api/array/",
+    "label": "flops.array"
   },
   "array_equal": {
     "canonical_name": "array_equal",
-    "href": "/docs/api/ops/array_equal/",
-    "label": "fnp.array_equal"
+    "href": "/docs/api/array-equal/",
+    "label": "flops.array_equal"
   },
   "array_equiv": {
     "canonical_name": "array_equiv",
-    "href": "/docs/api/ops/array_equiv/",
-    "label": "fnp.array_equiv"
+    "href": "/docs/api/array-equiv/",
+    "label": "flops.array_equiv"
   },
   "array_split": {
     "canonical_name": "array_split",
-    "href": "/docs/api/ops/array_split/",
-    "label": "fnp.array_split"
+    "href": "/docs/api/array-split/",
+    "label": "flops.array_split"
   },
   "asarray": {
     "canonical_name": "asarray",
-    "href": "/docs/api/ops/asarray/",
-    "label": "fnp.asarray"
+    "href": "/docs/api/asarray/",
+    "label": "flops.asarray"
   },
   "asarray_chkfinite": {
     "canonical_name": "asarray_chkfinite",
-    "href": "/docs/api/ops/asarray_chkfinite/",
-    "label": "fnp.asarray_chkfinite"
+    "href": "/docs/api/asarray-chkfinite/",
+    "label": "flops.asarray_chkfinite"
   },
   "asin": {
     "canonical_name": "arcsin",
-    "href": "/docs/api/ops/arcsin/",
-    "label": "fnp.arcsin"
+    "href": "/docs/api/arcsin/",
+    "label": "flops.arcsin"
   },
   "asinh": {
     "canonical_name": "arcsinh",
-    "href": "/docs/api/ops/arcsinh/",
-    "label": "fnp.arcsinh"
+    "href": "/docs/api/arcsinh/",
+    "label": "flops.arcsinh"
   },
   "astype": {
     "canonical_name": "astype",
-    "href": "/docs/api/ops/astype/",
-    "label": "fnp.astype"
+    "href": "/docs/api/astype/",
+    "label": "flops.astype"
   },
   "atan": {
     "canonical_name": "arctan",
-    "href": "/docs/api/ops/arctan/",
-    "label": "fnp.arctan"
+    "href": "/docs/api/arctan/",
+    "label": "flops.arctan"
   },
   "atan2": {
     "canonical_name": "arctan2",
-    "href": "/docs/api/ops/arctan2/",
-    "label": "fnp.arctan2"
+    "href": "/docs/api/arctan2/",
+    "label": "flops.arctan2"
   },
   "atanh": {
     "canonical_name": "arctanh",
-    "href": "/docs/api/ops/arctanh/",
-    "label": "fnp.arctanh"
+    "href": "/docs/api/arctanh/",
+    "label": "flops.arctanh"
   },
   "atleast_1d": {
     "canonical_name": "atleast_1d",
-    "href": "/docs/api/ops/atleast_1d/",
-    "label": "fnp.atleast_1d"
+    "href": "/docs/api/atleast-1d/",
+    "label": "flops.atleast_1d"
   },
   "atleast_2d": {
     "canonical_name": "atleast_2d",
-    "href": "/docs/api/ops/atleast_2d/",
-    "label": "fnp.atleast_2d"
+    "href": "/docs/api/atleast-2d/",
+    "label": "flops.atleast_2d"
   },
   "atleast_3d": {
     "canonical_name": "atleast_3d",
-    "href": "/docs/api/ops/atleast_3d/",
-    "label": "fnp.atleast_3d"
+    "href": "/docs/api/atleast-3d/",
+    "label": "flops.atleast_3d"
   },
   "average": {
     "canonical_name": "average",
-    "href": "/docs/api/ops/average/",
-    "label": "fnp.average"
+    "href": "/docs/api/average/",
+    "label": "flops.average"
   },
   "bartlett": {
     "canonical_name": "bartlett",
-    "href": "/docs/api/ops/bartlett/",
-    "label": "fnp.bartlett"
+    "href": "/docs/api/bartlett/",
+    "label": "flops.bartlett"
   },
   "bincount": {
     "canonical_name": "bincount",
-    "href": "/docs/api/ops/bincount/",
-    "label": "fnp.bincount"
+    "href": "/docs/api/bincount/",
+    "label": "flops.bincount"
   },
   "bitwise_and": {
     "canonical_name": "bitwise_and",
-    "href": "/docs/api/ops/bitwise_and/",
-    "label": "fnp.bitwise_and"
+    "href": "/docs/api/bitwise-and/",
+    "label": "flops.bitwise_and"
   },
   "bitwise_count": {
     "canonical_name": "bitwise_count",
-    "href": "/docs/api/ops/bitwise_count/",
-    "label": "fnp.bitwise_count"
+    "href": "/docs/api/bitwise-count/",
+    "label": "flops.bitwise_count"
   },
   "bitwise_invert": {
     "canonical_name": "bitwise_not",
-    "href": "/docs/api/ops/bitwise_not/",
-    "label": "fnp.bitwise_not"
+    "href": "/docs/api/bitwise-not/",
+    "label": "flops.bitwise_not"
   },
   "bitwise_left_shift": {
     "canonical_name": "bitwise_left_shift",
-    "href": "/docs/api/ops/bitwise_left_shift/",
-    "label": "fnp.bitwise_left_shift"
+    "href": "/docs/api/bitwise-left-shift/",
+    "label": "flops.bitwise_left_shift"
   },
   "bitwise_not": {
     "canonical_name": "bitwise_not",
-    "href": "/docs/api/ops/bitwise_not/",
-    "label": "fnp.bitwise_not"
+    "href": "/docs/api/bitwise-not/",
+    "label": "flops.bitwise_not"
   },
   "bitwise_or": {
     "canonical_name": "bitwise_or",
-    "href": "/docs/api/ops/bitwise_or/",
-    "label": "fnp.bitwise_or"
+    "href": "/docs/api/bitwise-or/",
+    "label": "flops.bitwise_or"
   },
   "bitwise_right_shift": {
     "canonical_name": "bitwise_right_shift",
-    "href": "/docs/api/ops/bitwise_right_shift/",
-    "label": "fnp.bitwise_right_shift"
+    "href": "/docs/api/bitwise-right-shift/",
+    "label": "flops.bitwise_right_shift"
   },
   "bitwise_xor": {
     "canonical_name": "bitwise_xor",
-    "href": "/docs/api/ops/bitwise_xor/",
-    "label": "fnp.bitwise_xor"
+    "href": "/docs/api/bitwise-xor/",
+    "label": "flops.bitwise_xor"
   },
   "blackman": {
     "canonical_name": "blackman",
-    "href": "/docs/api/ops/blackman/",
-    "label": "fnp.blackman"
+    "href": "/docs/api/blackman/",
+    "label": "flops.blackman"
   },
   "block": {
     "canonical_name": "block",
-    "href": "/docs/api/ops/block/",
-    "label": "fnp.block"
+    "href": "/docs/api/block/",
+    "label": "flops.block"
   },
   "bmat": {
     "canonical_name": "bmat",
-    "href": "/docs/api/ops/bmat/",
-    "label": "fnp.bmat"
+    "href": "/docs/api/bmat/",
+    "label": "flops.bmat"
   },
   "broadcast_arrays": {
     "canonical_name": "broadcast_arrays",
-    "href": "/docs/api/ops/broadcast_arrays/",
-    "label": "fnp.broadcast_arrays"
+    "href": "/docs/api/broadcast-arrays/",
+    "label": "flops.broadcast_arrays"
   },
   "broadcast_shapes": {
     "canonical_name": "broadcast_shapes",
-    "href": "/docs/api/ops/broadcast_shapes/",
-    "label": "fnp.broadcast_shapes"
+    "href": "/docs/api/broadcast-shapes/",
+    "label": "flops.broadcast_shapes"
   },
   "broadcast_to": {
     "canonical_name": "broadcast_to",
-    "href": "/docs/api/ops/broadcast_to/",
-    "label": "fnp.broadcast_to"
+    "href": "/docs/api/broadcast-to/",
+    "label": "flops.broadcast_to"
   },
   "can_cast": {
     "canonical_name": "can_cast",
-    "href": "/docs/api/ops/can_cast/",
-    "label": "fnp.can_cast"
+    "href": "/docs/api/can-cast/",
+    "label": "flops.can_cast"
   },
   "cbrt": {
     "canonical_name": "cbrt",
-    "href": "/docs/api/ops/cbrt/",
-    "label": "fnp.cbrt"
+    "href": "/docs/api/cbrt/",
+    "label": "flops.cbrt"
   },
   "ceil": {
     "canonical_name": "ceil",
-    "href": "/docs/api/ops/ceil/",
-    "label": "fnp.ceil"
+    "href": "/docs/api/ceil/",
+    "label": "flops.ceil"
   },
   "choose": {
     "canonical_name": "choose",
-    "href": "/docs/api/ops/choose/",
-    "label": "fnp.choose"
+    "href": "/docs/api/choose/",
+    "label": "flops.choose"
   },
   "clip": {
     "canonical_name": "clip",
-    "href": "/docs/api/ops/clip/",
-    "label": "fnp.clip"
+    "href": "/docs/api/clip/",
+    "label": "flops.clip"
   },
   "column_stack": {
     "canonical_name": "column_stack",
-    "href": "/docs/api/ops/column_stack/",
-    "label": "fnp.column_stack"
+    "href": "/docs/api/column-stack/",
+    "label": "flops.column_stack"
   },
   "common_type": {
     "canonical_name": "common_type",
-    "href": "/docs/api/ops/common_type/",
-    "label": "fnp.common_type"
+    "href": "/docs/api/common-type/",
+    "label": "flops.common_type"
   },
   "compress": {
     "canonical_name": "compress",
-    "href": "/docs/api/ops/compress/",
-    "label": "fnp.compress"
+    "href": "/docs/api/compress/",
+    "label": "flops.compress"
   },
   "concat": {
     "canonical_name": "concatenate",
-    "href": "/docs/api/ops/concatenate/",
-    "label": "fnp.concatenate"
+    "href": "/docs/api/concatenate/",
+    "label": "flops.concatenate"
   },
   "concatenate": {
     "canonical_name": "concatenate",
-    "href": "/docs/api/ops/concatenate/",
-    "label": "fnp.concatenate"
+    "href": "/docs/api/concatenate/",
+    "label": "flops.concatenate"
   },
   "conj": {
     "canonical_name": "conj",
-    "href": "/docs/api/ops/conj/",
-    "label": "fnp.conj"
+    "href": "/docs/api/conj/",
+    "label": "flops.conj"
   },
   "conjugate": {
     "canonical_name": "conjugate",
-    "href": "/docs/api/ops/conjugate/",
-    "label": "fnp.conjugate"
+    "href": "/docs/api/conjugate/",
+    "label": "flops.conjugate"
   },
   "convolve": {
     "canonical_name": "convolve",
-    "href": "/docs/api/ops/convolve/",
-    "label": "fnp.convolve"
+    "href": "/docs/api/convolve/",
+    "label": "flops.convolve"
   },
   "copy": {
     "canonical_name": "copy",
-    "href": "/docs/api/ops/copy/",
-    "label": "fnp.copy"
+    "href": "/docs/api/copy/",
+    "label": "flops.copy"
   },
   "copysign": {
     "canonical_name": "copysign",
-    "href": "/docs/api/ops/copysign/",
-    "label": "fnp.copysign"
+    "href": "/docs/api/copysign/",
+    "label": "flops.copysign"
   },
   "copyto": {
     "canonical_name": "copyto",
-    "href": "/docs/api/ops/copyto/",
-    "label": "fnp.copyto"
+    "href": "/docs/api/copyto/",
+    "label": "flops.copyto"
   },
   "corrcoef": {
     "canonical_name": "corrcoef",
-    "href": "/docs/api/ops/corrcoef/",
-    "label": "fnp.corrcoef"
+    "href": "/docs/api/corrcoef/",
+    "label": "flops.corrcoef"
   },
   "correlate": {
     "canonical_name": "correlate",
-    "href": "/docs/api/ops/correlate/",
-    "label": "fnp.correlate"
+    "href": "/docs/api/correlate/",
+    "label": "flops.correlate"
   },
   "cos": {
     "canonical_name": "cos",
-    "href": "/docs/api/ops/cos/",
-    "label": "fnp.cos"
+    "href": "/docs/api/cos/",
+    "label": "flops.cos"
   },
   "cosh": {
     "canonical_name": "cosh",
-    "href": "/docs/api/ops/cosh/",
-    "label": "fnp.cosh"
+    "href": "/docs/api/cosh/",
+    "label": "flops.cosh"
   },
   "count_nonzero": {
     "canonical_name": "count_nonzero",
-    "href": "/docs/api/ops/count_nonzero/",
-    "label": "fnp.count_nonzero"
+    "href": "/docs/api/count-nonzero/",
+    "label": "flops.count_nonzero"
   },
   "cov": {
     "canonical_name": "cov",
-    "href": "/docs/api/ops/cov/",
-    "label": "fnp.cov"
+    "href": "/docs/api/cov/",
+    "label": "flops.cov"
   },
   "cross": {
     "canonical_name": "cross",
-    "href": "/docs/api/ops/cross/",
-    "label": "fnp.cross"
+    "href": "/docs/api/cross/",
+    "label": "flops.cross"
   },
   "cumprod": {
     "canonical_name": "cumprod",
-    "href": "/docs/api/ops/cumprod/",
-    "label": "fnp.cumprod"
+    "href": "/docs/api/cumprod/",
+    "label": "flops.cumprod"
   },
   "cumsum": {
     "canonical_name": "cumsum",
-    "href": "/docs/api/ops/cumsum/",
-    "label": "fnp.cumsum"
+    "href": "/docs/api/cumsum/",
+    "label": "flops.cumsum"
   },
   "cumulative_prod": {
     "canonical_name": "cumulative_prod",
-    "href": "/docs/api/ops/cumulative_prod/",
-    "label": "fnp.cumulative_prod"
+    "href": "/docs/api/cumulative-prod/",
+    "label": "flops.cumulative_prod"
   },
   "cumulative_sum": {
     "canonical_name": "cumulative_sum",
-    "href": "/docs/api/ops/cumulative_sum/",
-    "label": "fnp.cumulative_sum"
+    "href": "/docs/api/cumulative-sum/",
+    "label": "flops.cumulative_sum"
   },
   "deg2rad": {
     "canonical_name": "radians",
-    "href": "/docs/api/ops/radians/",
-    "label": "fnp.radians"
+    "href": "/docs/api/radians/",
+    "label": "flops.radians"
   },
   "degrees": {
     "canonical_name": "degrees",
-    "href": "/docs/api/ops/degrees/",
-    "label": "fnp.degrees"
+    "href": "/docs/api/degrees/",
+    "label": "flops.degrees"
   },
   "delete": {
     "canonical_name": "delete",
-    "href": "/docs/api/ops/delete/",
-    "label": "fnp.delete"
+    "href": "/docs/api/delete/",
+    "label": "flops.delete"
   },
   "diag": {
     "canonical_name": "diag",
-    "href": "/docs/api/ops/diag/",
-    "label": "fnp.diag"
+    "href": "/docs/api/diag/",
+    "label": "flops.diag"
   },
   "diag_indices": {
     "canonical_name": "diag_indices",
-    "href": "/docs/api/ops/diag_indices/",
-    "label": "fnp.diag_indices"
+    "href": "/docs/api/diag-indices/",
+    "label": "flops.diag_indices"
   },
   "diag_indices_from": {
     "canonical_name": "diag_indices_from",
-    "href": "/docs/api/ops/diag_indices_from/",
-    "label": "fnp.diag_indices_from"
+    "href": "/docs/api/diag-indices-from/",
+    "label": "flops.diag_indices_from"
   },
   "diagflat": {
     "canonical_name": "diagflat",
-    "href": "/docs/api/ops/diagflat/",
-    "label": "fnp.diagflat"
+    "href": "/docs/api/diagflat/",
+    "label": "flops.diagflat"
   },
   "diagonal": {
     "canonical_name": "diagonal",
-    "href": "/docs/api/ops/diagonal/",
-    "label": "fnp.diagonal"
+    "href": "/docs/api/diagonal/",
+    "label": "flops.diagonal"
   },
   "diff": {
     "canonical_name": "diff",
-    "href": "/docs/api/ops/diff/",
-    "label": "fnp.diff"
+    "href": "/docs/api/diff/",
+    "label": "flops.diff"
   },
   "digitize": {
     "canonical_name": "digitize",
-    "href": "/docs/api/ops/digitize/",
-    "label": "fnp.digitize"
+    "href": "/docs/api/digitize/",
+    "label": "flops.digitize"
   },
   "divide": {
     "canonical_name": "divide",
-    "href": "/docs/api/ops/divide/",
-    "label": "fnp.divide"
+    "href": "/docs/api/divide/",
+    "label": "flops.divide"
   },
   "divmod": {
     "canonical_name": "floor_divide",
-    "href": "/docs/api/ops/floor_divide/",
-    "label": "fnp.floor_divide"
+    "href": "/docs/api/floor-divide/",
+    "label": "flops.floor_divide"
   },
   "dot": {
     "canonical_name": "dot",
-    "href": "/docs/api/ops/dot/",
-    "label": "fnp.dot"
+    "href": "/docs/api/dot/",
+    "label": "flops.dot"
   },
   "dsplit": {
     "canonical_name": "dsplit",
-    "href": "/docs/api/ops/dsplit/",
-    "label": "fnp.dsplit"
+    "href": "/docs/api/dsplit/",
+    "label": "flops.dsplit"
   },
   "dstack": {
     "canonical_name": "dstack",
-    "href": "/docs/api/ops/dstack/",
-    "label": "fnp.dstack"
+    "href": "/docs/api/dstack/",
+    "label": "flops.dstack"
   },
   "ediff1d": {
     "canonical_name": "ediff1d",
-    "href": "/docs/api/ops/ediff1d/",
-    "label": "fnp.ediff1d"
+    "href": "/docs/api/ediff1d/",
+    "label": "flops.ediff1d"
   },
   "einsum": {
     "canonical_name": "einsum",
-    "href": "/docs/api/ops/einsum/",
-    "label": "fnp.einsum"
+    "href": "/docs/api/einsum/",
+    "label": "flops.einsum"
   },
   "einsum_path": {
     "canonical_name": "einsum_path",
-    "href": "/docs/api/ops/einsum_path/",
-    "label": "fnp.einsum_path"
+    "href": "/docs/api/einsum-path/",
+    "label": "flops.einsum_path"
   },
   "empty": {
     "canonical_name": "empty",
-    "href": "/docs/api/ops/empty/",
-    "label": "fnp.empty"
+    "href": "/docs/api/empty/",
+    "label": "flops.empty"
   },
   "empty_like": {
     "canonical_name": "empty_like",
-    "href": "/docs/api/ops/empty_like/",
-    "label": "fnp.empty_like"
+    "href": "/docs/api/empty-like/",
+    "label": "flops.empty_like"
   },
   "equal": {
     "canonical_name": "equal",
-    "href": "/docs/api/ops/equal/",
-    "label": "fnp.equal"
+    "href": "/docs/api/equal/",
+    "label": "flops.equal"
   },
   "exp": {
     "canonical_name": "exp",
-    "href": "/docs/api/ops/exp/",
-    "label": "fnp.exp"
+    "href": "/docs/api/exp/",
+    "label": "flops.exp"
   },
   "exp2": {
     "canonical_name": "exp2",
-    "href": "/docs/api/ops/exp2/",
-    "label": "fnp.exp2"
+    "href": "/docs/api/exp2/",
+    "label": "flops.exp2"
   },
   "expand_dims": {
     "canonical_name": "expand_dims",
-    "href": "/docs/api/ops/expand_dims/",
-    "label": "fnp.expand_dims"
+    "href": "/docs/api/expand-dims/",
+    "label": "flops.expand_dims"
   },
   "expm1": {
     "canonical_name": "expm1",
-    "href": "/docs/api/ops/expm1/",
-    "label": "fnp.expm1"
+    "href": "/docs/api/expm1/",
+    "label": "flops.expm1"
   },
   "extract": {
     "canonical_name": "extract",
-    "href": "/docs/api/ops/extract/",
-    "label": "fnp.extract"
+    "href": "/docs/api/extract/",
+    "label": "flops.extract"
   },
   "eye": {
     "canonical_name": "eye",
-    "href": "/docs/api/ops/eye/",
-    "label": "fnp.eye"
+    "href": "/docs/api/eye/",
+    "label": "flops.eye"
   },
   "fabs": {
     "canonical_name": "fabs",
-    "href": "/docs/api/ops/fabs/",
-    "label": "fnp.fabs"
+    "href": "/docs/api/fabs/",
+    "label": "flops.fabs"
   },
   "fft.fft": {
     "canonical_name": "fft.fft",
-    "href": "/docs/api/ops/fft-fft/",
-    "label": "fnp.fft.fft"
+    "href": "/docs/api/fft/fft/",
+    "label": "flops.fft.fft"
   },
   "fft.fft2": {
     "canonical_name": "fft.fft2",
-    "href": "/docs/api/ops/fft-fft2/",
-    "label": "fnp.fft.fft2"
+    "href": "/docs/api/fft/fft2/",
+    "label": "flops.fft.fft2"
   },
   "fft.fftfreq": {
     "canonical_name": "fft.fftfreq",
-    "href": "/docs/api/ops/fft-fftfreq/",
-    "label": "fnp.fft.fftfreq"
+    "href": "/docs/api/fft/fftfreq/",
+    "label": "flops.fft.fftfreq"
   },
   "fft.fftn": {
     "canonical_name": "fft.fftn",
-    "href": "/docs/api/ops/fft-fftn/",
-    "label": "fnp.fft.fftn"
+    "href": "/docs/api/fft/fftn/",
+    "label": "flops.fft.fftn"
   },
   "fft.fftshift": {
     "canonical_name": "fft.fftshift",
-    "href": "/docs/api/ops/fft-fftshift/",
-    "label": "fnp.fft.fftshift"
+    "href": "/docs/api/fft/fftshift/",
+    "label": "flops.fft.fftshift"
   },
   "fft.hfft": {
     "canonical_name": "fft.hfft",
-    "href": "/docs/api/ops/fft-hfft/",
-    "label": "fnp.fft.hfft"
+    "href": "/docs/api/fft/hfft/",
+    "label": "flops.fft.hfft"
   },
   "fft.ifft": {
     "canonical_name": "fft.ifft",
-    "href": "/docs/api/ops/fft-ifft/",
-    "label": "fnp.fft.ifft"
+    "href": "/docs/api/fft/ifft/",
+    "label": "flops.fft.ifft"
   },
   "fft.ifft2": {
     "canonical_name": "fft.ifft2",
-    "href": "/docs/api/ops/fft-ifft2/",
-    "label": "fnp.fft.ifft2"
+    "href": "/docs/api/fft/ifft2/",
+    "label": "flops.fft.ifft2"
   },
   "fft.ifftn": {
     "canonical_name": "fft.ifftn",
-    "href": "/docs/api/ops/fft-ifftn/",
-    "label": "fnp.fft.ifftn"
+    "href": "/docs/api/fft/ifftn/",
+    "label": "flops.fft.ifftn"
   },
   "fft.ifftshift": {
     "canonical_name": "fft.ifftshift",
-    "href": "/docs/api/ops/fft-ifftshift/",
-    "label": "fnp.fft.ifftshift"
+    "href": "/docs/api/fft/ifftshift/",
+    "label": "flops.fft.ifftshift"
   },
   "fft.ihfft": {
     "canonical_name": "fft.ihfft",
-    "href": "/docs/api/ops/fft-ihfft/",
-    "label": "fnp.fft.ihfft"
+    "href": "/docs/api/fft/ihfft/",
+    "label": "flops.fft.ihfft"
   },
   "fft.irfft": {
     "canonical_name": "fft.irfft",
-    "href": "/docs/api/ops/fft-irfft/",
-    "label": "fnp.fft.irfft"
+    "href": "/docs/api/fft/irfft/",
+    "label": "flops.fft.irfft"
   },
   "fft.irfft2": {
     "canonical_name": "fft.irfft2",
-    "href": "/docs/api/ops/fft-irfft2/",
-    "label": "fnp.fft.irfft2"
+    "href": "/docs/api/fft/irfft2/",
+    "label": "flops.fft.irfft2"
   },
   "fft.irfftn": {
     "canonical_name": "fft.irfftn",
-    "href": "/docs/api/ops/fft-irfftn/",
-    "label": "fnp.fft.irfftn"
+    "href": "/docs/api/fft/irfftn/",
+    "label": "flops.fft.irfftn"
   },
   "fft.rfft": {
     "canonical_name": "fft.rfft",
-    "href": "/docs/api/ops/fft-rfft/",
-    "label": "fnp.fft.rfft"
+    "href": "/docs/api/fft/rfft/",
+    "label": "flops.fft.rfft"
   },
   "fft.rfft2": {
     "canonical_name": "fft.rfft2",
-    "href": "/docs/api/ops/fft-rfft2/",
-    "label": "fnp.fft.rfft2"
+    "href": "/docs/api/fft/rfft2/",
+    "label": "flops.fft.rfft2"
   },
   "fft.rfftfreq": {
     "canonical_name": "fft.rfftfreq",
-    "href": "/docs/api/ops/fft-rfftfreq/",
-    "label": "fnp.fft.rfftfreq"
+    "href": "/docs/api/fft/rfftfreq/",
+    "label": "flops.fft.rfftfreq"
   },
   "fft.rfftn": {
     "canonical_name": "fft.rfftn",
-    "href": "/docs/api/ops/fft-rfftn/",
-    "label": "fnp.fft.rfftn"
+    "href": "/docs/api/fft/rfftn/",
+    "label": "flops.fft.rfftn"
   },
   "fill_diagonal": {
     "canonical_name": "fill_diagonal",
-    "href": "/docs/api/ops/fill_diagonal/",
-    "label": "fnp.fill_diagonal"
+    "href": "/docs/api/fill-diagonal/",
+    "label": "flops.fill_diagonal"
   },
   "fix": {
     "canonical_name": "trunc",
-    "href": "/docs/api/ops/trunc/",
-    "label": "fnp.trunc"
+    "href": "/docs/api/trunc/",
+    "label": "flops.trunc"
   },
   "flatnonzero": {
     "canonical_name": "flatnonzero",
-    "href": "/docs/api/ops/flatnonzero/",
-    "label": "fnp.flatnonzero"
+    "href": "/docs/api/flatnonzero/",
+    "label": "flops.flatnonzero"
   },
   "flip": {
     "canonical_name": "flip",
-    "href": "/docs/api/ops/flip/",
-    "label": "fnp.flip"
+    "href": "/docs/api/flip/",
+    "label": "flops.flip"
   },
   "fliplr": {
     "canonical_name": "fliplr",
-    "href": "/docs/api/ops/fliplr/",
-    "label": "fnp.fliplr"
+    "href": "/docs/api/fliplr/",
+    "label": "flops.fliplr"
   },
   "flipud": {
     "canonical_name": "flipud",
-    "href": "/docs/api/ops/flipud/",
-    "label": "fnp.flipud"
+    "href": "/docs/api/flipud/",
+    "label": "flops.flipud"
   },
   "float_power": {
     "canonical_name": "float_power",
-    "href": "/docs/api/ops/float_power/",
-    "label": "fnp.float_power"
+    "href": "/docs/api/float-power/",
+    "label": "flops.float_power"
   },
   "floor": {
     "canonical_name": "floor",
-    "href": "/docs/api/ops/floor/",
-    "label": "fnp.floor"
+    "href": "/docs/api/floor/",
+    "label": "flops.floor"
   },
   "floor_divide": {
     "canonical_name": "floor_divide",
-    "href": "/docs/api/ops/floor_divide/",
-    "label": "fnp.floor_divide"
+    "href": "/docs/api/floor-divide/",
+    "label": "flops.floor_divide"
   },
   "fmax": {
     "canonical_name": "fmax",
-    "href": "/docs/api/ops/fmax/",
-    "label": "fnp.fmax"
+    "href": "/docs/api/fmax/",
+    "label": "flops.fmax"
   },
   "fmin": {
     "canonical_name": "fmin",
-    "href": "/docs/api/ops/fmin/",
-    "label": "fnp.fmin"
+    "href": "/docs/api/fmin/",
+    "label": "flops.fmin"
   },
   "fmod": {
     "canonical_name": "fmod",
-    "href": "/docs/api/ops/fmod/",
-    "label": "fnp.fmod"
+    "href": "/docs/api/fmod/",
+    "label": "flops.fmod"
   },
   "frexp": {
     "canonical_name": "frexp",
-    "href": "/docs/api/ops/frexp/",
-    "label": "fnp.frexp"
+    "href": "/docs/api/frexp/",
+    "label": "flops.frexp"
   },
   "from_dlpack": {
     "canonical_name": "from_dlpack",
-    "href": "/docs/api/ops/from_dlpack/",
-    "label": "fnp.from_dlpack"
+    "href": "/docs/api/from-dlpack/",
+    "label": "flops.from_dlpack"
   },
   "frombuffer": {
     "canonical_name": "frombuffer",
-    "href": "/docs/api/ops/frombuffer/",
-    "label": "fnp.frombuffer"
+    "href": "/docs/api/frombuffer/",
+    "label": "flops.frombuffer"
   },
   "fromfunction": {
     "canonical_name": "fromfunction",
-    "href": "/docs/api/ops/fromfunction/",
-    "label": "fnp.fromfunction"
+    "href": "/docs/api/fromfunction/",
+    "label": "flops.fromfunction"
   },
   "fromiter": {
     "canonical_name": "fromiter",
-    "href": "/docs/api/ops/fromiter/",
-    "label": "fnp.fromiter"
+    "href": "/docs/api/fromiter/",
+    "label": "flops.fromiter"
   },
   "full": {
     "canonical_name": "full",
-    "href": "/docs/api/ops/full/",
-    "label": "fnp.full"
+    "href": "/docs/api/full/",
+    "label": "flops.full"
   },
   "full_like": {
     "canonical_name": "full_like",
-    "href": "/docs/api/ops/full_like/",
-    "label": "fnp.full_like"
+    "href": "/docs/api/full-like/",
+    "label": "flops.full_like"
   },
   "gcd": {
     "canonical_name": "gcd",
-    "href": "/docs/api/ops/gcd/",
-    "label": "fnp.gcd"
+    "href": "/docs/api/gcd/",
+    "label": "flops.gcd"
   },
   "geomspace": {
     "canonical_name": "geomspace",
-    "href": "/docs/api/ops/geomspace/",
-    "label": "fnp.geomspace"
+    "href": "/docs/api/geomspace/",
+    "label": "flops.geomspace"
   },
   "gradient": {
     "canonical_name": "gradient",
-    "href": "/docs/api/ops/gradient/",
-    "label": "fnp.gradient"
+    "href": "/docs/api/gradient/",
+    "label": "flops.gradient"
   },
   "greater": {
     "canonical_name": "greater",
-    "href": "/docs/api/ops/greater/",
-    "label": "fnp.greater"
+    "href": "/docs/api/greater/",
+    "label": "flops.greater"
   },
   "greater_equal": {
     "canonical_name": "greater_equal",
-    "href": "/docs/api/ops/greater_equal/",
-    "label": "fnp.greater_equal"
+    "href": "/docs/api/greater-equal/",
+    "label": "flops.greater_equal"
   },
   "hamming": {
     "canonical_name": "hamming",
-    "href": "/docs/api/ops/hamming/",
-    "label": "fnp.hamming"
+    "href": "/docs/api/hamming/",
+    "label": "flops.hamming"
   },
   "hanning": {
     "canonical_name": "hanning",
-    "href": "/docs/api/ops/hanning/",
-    "label": "fnp.hanning"
+    "href": "/docs/api/hanning/",
+    "label": "flops.hanning"
   },
   "heaviside": {
     "canonical_name": "heaviside",
-    "href": "/docs/api/ops/heaviside/",
-    "label": "fnp.heaviside"
+    "href": "/docs/api/heaviside/",
+    "label": "flops.heaviside"
   },
   "histogram": {
     "canonical_name": "histogram",
-    "href": "/docs/api/ops/histogram/",
-    "label": "fnp.histogram"
+    "href": "/docs/api/histogram/",
+    "label": "flops.histogram"
   },
   "histogram2d": {
     "canonical_name": "histogram2d",
-    "href": "/docs/api/ops/histogram2d/",
-    "label": "fnp.histogram2d"
+    "href": "/docs/api/histogram2d/",
+    "label": "flops.histogram2d"
   },
   "histogram_bin_edges": {
     "canonical_name": "histogram_bin_edges",
-    "href": "/docs/api/ops/histogram_bin_edges/",
-    "label": "fnp.histogram_bin_edges"
+    "href": "/docs/api/histogram-bin-edges/",
+    "label": "flops.histogram_bin_edges"
   },
   "histogramdd": {
     "canonical_name": "histogramdd",
-    "href": "/docs/api/ops/histogramdd/",
-    "label": "fnp.histogramdd"
+    "href": "/docs/api/histogramdd/",
+    "label": "flops.histogramdd"
   },
   "hsplit": {
     "canonical_name": "hsplit",
-    "href": "/docs/api/ops/hsplit/",
-    "label": "fnp.hsplit"
+    "href": "/docs/api/hsplit/",
+    "label": "flops.hsplit"
   },
   "hstack": {
     "canonical_name": "hstack",
-    "href": "/docs/api/ops/hstack/",
-    "label": "fnp.hstack"
+    "href": "/docs/api/hstack/",
+    "label": "flops.hstack"
   },
   "hypot": {
     "canonical_name": "hypot",
-    "href": "/docs/api/ops/hypot/",
-    "label": "fnp.hypot"
+    "href": "/docs/api/hypot/",
+    "label": "flops.hypot"
   },
   "i0": {
     "canonical_name": "i0",
-    "href": "/docs/api/ops/i0/",
-    "label": "fnp.i0"
+    "href": "/docs/api/i0/",
+    "label": "flops.i0"
   },
   "identity": {
     "canonical_name": "identity",
-    "href": "/docs/api/ops/identity/",
-    "label": "fnp.identity"
+    "href": "/docs/api/identity/",
+    "label": "flops.identity"
   },
   "imag": {
     "canonical_name": "imag",
-    "href": "/docs/api/ops/imag/",
-    "label": "fnp.imag"
+    "href": "/docs/api/imag/",
+    "label": "flops.imag"
   },
   "in1d": {
     "canonical_name": "in1d",
-    "href": "/docs/api/ops/in1d/",
-    "label": "fnp.in1d"
+    "href": "/docs/api/in1d/",
+    "label": "flops.in1d"
   },
   "indices": {
     "canonical_name": "indices",
-    "href": "/docs/api/ops/indices/",
-    "label": "fnp.indices"
+    "href": "/docs/api/indices/",
+    "label": "flops.indices"
   },
   "inner": {
     "canonical_name": "inner",
-    "href": "/docs/api/ops/inner/",
-    "label": "fnp.inner"
+    "href": "/docs/api/inner/",
+    "label": "flops.inner"
   },
   "insert": {
     "canonical_name": "insert",
-    "href": "/docs/api/ops/insert/",
-    "label": "fnp.insert"
+    "href": "/docs/api/insert/",
+    "label": "flops.insert"
   },
   "interp": {
     "canonical_name": "interp",
-    "href": "/docs/api/ops/interp/",
-    "label": "fnp.interp"
+    "href": "/docs/api/interp/",
+    "label": "flops.interp"
   },
   "intersect1d": {
     "canonical_name": "intersect1d",
-    "href": "/docs/api/ops/intersect1d/",
-    "label": "fnp.intersect1d"
+    "href": "/docs/api/intersect1d/",
+    "label": "flops.intersect1d"
   },
   "invert": {
     "canonical_name": "invert",
-    "href": "/docs/api/ops/invert/",
-    "label": "fnp.invert"
+    "href": "/docs/api/invert/",
+    "label": "flops.invert"
   },
   "isclose": {
     "canonical_name": "isclose",
-    "href": "/docs/api/ops/isclose/",
-    "label": "fnp.isclose"
+    "href": "/docs/api/isclose/",
+    "label": "flops.isclose"
   },
   "iscomplex": {
     "canonical_name": "iscomplex",
-    "href": "/docs/api/ops/iscomplex/",
-    "label": "fnp.iscomplex"
+    "href": "/docs/api/iscomplex/",
+    "label": "flops.iscomplex"
   },
   "iscomplexobj": {
     "canonical_name": "iscomplexobj",
-    "href": "/docs/api/ops/iscomplexobj/",
-    "label": "fnp.iscomplexobj"
+    "href": "/docs/api/iscomplexobj/",
+    "label": "flops.iscomplexobj"
   },
   "isdtype": {
     "canonical_name": "isdtype",
-    "href": "/docs/api/ops/isdtype/",
-    "label": "fnp.isdtype"
+    "href": "/docs/api/isdtype/",
+    "label": "flops.isdtype"
   },
   "isfinite": {
     "canonical_name": "isfinite",
-    "href": "/docs/api/ops/isfinite/",
-    "label": "fnp.isfinite"
+    "href": "/docs/api/isfinite/",
+    "label": "flops.isfinite"
   },
   "isfortran": {
     "canonical_name": "isfortran",
-    "href": "/docs/api/ops/isfortran/",
-    "label": "fnp.isfortran"
+    "href": "/docs/api/isfortran/",
+    "label": "flops.isfortran"
   },
   "isin": {
     "canonical_name": "isin",
-    "href": "/docs/api/ops/isin/",
-    "label": "fnp.isin"
+    "href": "/docs/api/isin/",
+    "label": "flops.isin"
   },
   "isinf": {
     "canonical_name": "isinf",
-    "href": "/docs/api/ops/isinf/",
-    "label": "fnp.isinf"
+    "href": "/docs/api/isinf/",
+    "label": "flops.isinf"
   },
   "isnan": {
     "canonical_name": "isnan",
-    "href": "/docs/api/ops/isnan/",
-    "label": "fnp.isnan"
+    "href": "/docs/api/isnan/",
+    "label": "flops.isnan"
   },
   "isneginf": {
     "canonical_name": "isneginf",
-    "href": "/docs/api/ops/isneginf/",
-    "label": "fnp.isneginf"
+    "href": "/docs/api/isneginf/",
+    "label": "flops.isneginf"
   },
   "isposinf": {
     "canonical_name": "isposinf",
-    "href": "/docs/api/ops/isposinf/",
-    "label": "fnp.isposinf"
+    "href": "/docs/api/isposinf/",
+    "label": "flops.isposinf"
   },
   "isreal": {
     "canonical_name": "isreal",
-    "href": "/docs/api/ops/isreal/",
-    "label": "fnp.isreal"
+    "href": "/docs/api/isreal/",
+    "label": "flops.isreal"
   },
   "isrealobj": {
     "canonical_name": "isrealobj",
-    "href": "/docs/api/ops/isrealobj/",
-    "label": "fnp.isrealobj"
+    "href": "/docs/api/isrealobj/",
+    "label": "flops.isrealobj"
   },
   "isscalar": {
     "canonical_name": "isscalar",
-    "href": "/docs/api/ops/isscalar/",
-    "label": "fnp.isscalar"
+    "href": "/docs/api/isscalar/",
+    "label": "flops.isscalar"
   },
   "issubdtype": {
     "canonical_name": "issubdtype",
-    "href": "/docs/api/ops/issubdtype/",
-    "label": "fnp.issubdtype"
+    "href": "/docs/api/issubdtype/",
+    "label": "flops.issubdtype"
   },
   "iterable": {
     "canonical_name": "iterable",
-    "href": "/docs/api/ops/iterable/",
-    "label": "fnp.iterable"
+    "href": "/docs/api/iterable/",
+    "label": "flops.iterable"
   },
   "ix_": {
     "canonical_name": "ix_",
-    "href": "/docs/api/ops/ix_/",
-    "label": "fnp.ix_"
+    "href": "/docs/api/ix-/",
+    "label": "flops.ix_"
   },
   "kaiser": {
     "canonical_name": "kaiser",
-    "href": "/docs/api/ops/kaiser/",
-    "label": "fnp.kaiser"
+    "href": "/docs/api/kaiser/",
+    "label": "flops.kaiser"
   },
   "kron": {
     "canonical_name": "kron",
-    "href": "/docs/api/ops/kron/",
-    "label": "fnp.kron"
+    "href": "/docs/api/kron/",
+    "label": "flops.kron"
   },
   "lcm": {
     "canonical_name": "lcm",
-    "href": "/docs/api/ops/lcm/",
-    "label": "fnp.lcm"
+    "href": "/docs/api/lcm/",
+    "label": "flops.lcm"
   },
   "ldexp": {
     "canonical_name": "ldexp",
-    "href": "/docs/api/ops/ldexp/",
-    "label": "fnp.ldexp"
+    "href": "/docs/api/ldexp/",
+    "label": "flops.ldexp"
   },
   "left_shift": {
     "canonical_name": "left_shift",
-    "href": "/docs/api/ops/left_shift/",
-    "label": "fnp.left_shift"
+    "href": "/docs/api/left-shift/",
+    "label": "flops.left_shift"
   },
   "less": {
     "canonical_name": "less",
-    "href": "/docs/api/ops/less/",
-    "label": "fnp.less"
+    "href": "/docs/api/less/",
+    "label": "flops.less"
   },
   "less_equal": {
     "canonical_name": "less_equal",
-    "href": "/docs/api/ops/less_equal/",
-    "label": "fnp.less_equal"
+    "href": "/docs/api/less-equal/",
+    "label": "flops.less_equal"
   },
   "lexsort": {
     "canonical_name": "lexsort",
-    "href": "/docs/api/ops/lexsort/",
-    "label": "fnp.lexsort"
+    "href": "/docs/api/lexsort/",
+    "label": "flops.lexsort"
   },
   "linalg.cholesky": {
     "canonical_name": "linalg.cholesky",
-    "href": "/docs/api/ops/linalg-cholesky/",
-    "label": "fnp.linalg.cholesky"
+    "href": "/docs/api/linalg/cholesky/",
+    "label": "flops.linalg.cholesky"
   },
   "linalg.cond": {
     "canonical_name": "linalg.cond",
-    "href": "/docs/api/ops/linalg-cond/",
-    "label": "fnp.linalg.cond"
+    "href": "/docs/api/linalg/cond/",
+    "label": "flops.linalg.cond"
   },
   "linalg.cross": {
     "canonical_name": "linalg.cross",
-    "href": "/docs/api/ops/linalg-cross/",
-    "label": "fnp.linalg.cross"
+    "href": "/docs/api/linalg/cross/",
+    "label": "flops.linalg.cross"
   },
   "linalg.det": {
     "canonical_name": "linalg.det",
-    "href": "/docs/api/ops/linalg-det/",
-    "label": "fnp.linalg.det"
+    "href": "/docs/api/linalg/det/",
+    "label": "flops.linalg.det"
   },
   "linalg.diagonal": {
     "canonical_name": "linalg.diagonal",
-    "href": "/docs/api/ops/linalg-diagonal/",
-    "label": "fnp.linalg.diagonal"
+    "href": "/docs/api/linalg/diagonal/",
+    "label": "flops.linalg.diagonal"
   },
   "linalg.eig": {
     "canonical_name": "linalg.eig",
-    "href": "/docs/api/ops/linalg-eig/",
-    "label": "fnp.linalg.eig"
+    "href": "/docs/api/linalg/eig/",
+    "label": "flops.linalg.eig"
   },
   "linalg.eigh": {
     "canonical_name": "linalg.eigh",
-    "href": "/docs/api/ops/linalg-eigh/",
-    "label": "fnp.linalg.eigh"
+    "href": "/docs/api/linalg/eigh/",
+    "label": "flops.linalg.eigh"
   },
   "linalg.eigvals": {
     "canonical_name": "linalg.eigvals",
-    "href": "/docs/api/ops/linalg-eigvals/",
-    "label": "fnp.linalg.eigvals"
+    "href": "/docs/api/linalg/eigvals/",
+    "label": "flops.linalg.eigvals"
   },
   "linalg.eigvalsh": {
     "canonical_name": "linalg.eigvalsh",
-    "href": "/docs/api/ops/linalg-eigvalsh/",
-    "label": "fnp.linalg.eigvalsh"
+    "href": "/docs/api/linalg/eigvalsh/",
+    "label": "flops.linalg.eigvalsh"
   },
   "linalg.inv": {
     "canonical_name": "linalg.inv",
-    "href": "/docs/api/ops/linalg-inv/",
-    "label": "fnp.linalg.inv"
+    "href": "/docs/api/linalg/inv/",
+    "label": "flops.linalg.inv"
   },
   "linalg.lstsq": {
     "canonical_name": "linalg.lstsq",
-    "href": "/docs/api/ops/linalg-lstsq/",
-    "label": "fnp.linalg.lstsq"
+    "href": "/docs/api/linalg/lstsq/",
+    "label": "flops.linalg.lstsq"
   },
   "linalg.matmul": {
     "canonical_name": "linalg.matmul",
-    "href": "/docs/api/ops/linalg-matmul/",
-    "label": "fnp.linalg.matmul"
+    "href": "/docs/api/linalg/matmul/",
+    "label": "flops.linalg.matmul"
   },
   "linalg.matrix_norm": {
     "canonical_name": "linalg.matrix_norm",
-    "href": "/docs/api/ops/linalg-matrix_norm/",
-    "label": "fnp.linalg.matrix_norm"
+    "href": "/docs/api/linalg/matrix-norm/",
+    "label": "flops.linalg.matrix_norm"
   },
   "linalg.matrix_power": {
     "canonical_name": "linalg.matrix_power",
-    "href": "/docs/api/ops/linalg-matrix_power/",
-    "label": "fnp.linalg.matrix_power"
+    "href": "/docs/api/linalg/matrix-power/",
+    "label": "flops.linalg.matrix_power"
   },
   "linalg.matrix_rank": {
     "canonical_name": "linalg.matrix_rank",
-    "href": "/docs/api/ops/linalg-matrix_rank/",
-    "label": "fnp.linalg.matrix_rank"
+    "href": "/docs/api/linalg/matrix-rank/",
+    "label": "flops.linalg.matrix_rank"
   },
   "linalg.matrix_transpose": {
     "canonical_name": "linalg.matrix_transpose",
-    "href": "/docs/api/ops/linalg-matrix_transpose/",
-    "label": "fnp.linalg.matrix_transpose"
+    "href": "/docs/api/linalg/matrix-transpose/",
+    "label": "flops.linalg.matrix_transpose"
   },
   "linalg.multi_dot": {
     "canonical_name": "linalg.multi_dot",
-    "href": "/docs/api/ops/linalg-multi_dot/",
-    "label": "fnp.linalg.multi_dot"
+    "href": "/docs/api/linalg/multi-dot/",
+    "label": "flops.linalg.multi_dot"
   },
   "linalg.norm": {
     "canonical_name": "linalg.norm",
-    "href": "/docs/api/ops/linalg-norm/",
-    "label": "fnp.linalg.norm"
+    "href": "/docs/api/linalg/norm/",
+    "label": "flops.linalg.norm"
   },
   "linalg.outer": {
     "canonical_name": "linalg.outer",
-    "href": "/docs/api/ops/linalg-outer/",
-    "label": "fnp.linalg.outer"
+    "href": "/docs/api/linalg/outer/",
+    "label": "flops.linalg.outer"
   },
   "linalg.pinv": {
     "canonical_name": "linalg.pinv",
-    "href": "/docs/api/ops/linalg-pinv/",
-    "label": "fnp.linalg.pinv"
+    "href": "/docs/api/linalg/pinv/",
+    "label": "flops.linalg.pinv"
   },
   "linalg.qr": {
     "canonical_name": "linalg.qr",
-    "href": "/docs/api/ops/linalg-qr/",
-    "label": "fnp.linalg.qr"
+    "href": "/docs/api/linalg/qr/",
+    "label": "flops.linalg.qr"
   },
   "linalg.slogdet": {
     "canonical_name": "linalg.slogdet",
-    "href": "/docs/api/ops/linalg-slogdet/",
-    "label": "fnp.linalg.slogdet"
+    "href": "/docs/api/linalg/slogdet/",
+    "label": "flops.linalg.slogdet"
   },
   "linalg.solve": {
     "canonical_name": "linalg.solve",
-    "href": "/docs/api/ops/linalg-solve/",
-    "label": "fnp.linalg.solve"
+    "href": "/docs/api/linalg/solve/",
+    "label": "flops.linalg.solve"
   },
   "linalg.svd": {
     "canonical_name": "linalg.svd",
-    "href": "/docs/api/ops/linalg-svd/",
-    "label": "fnp.linalg.svd"
+    "href": "/docs/api/linalg/svd/",
+    "label": "flops.linalg.svd"
   },
   "linalg.svdvals": {
     "canonical_name": "linalg.svdvals",
-    "href": "/docs/api/ops/linalg-svdvals/",
-    "label": "fnp.linalg.svdvals"
+    "href": "/docs/api/linalg/svdvals/",
+    "label": "flops.linalg.svdvals"
   },
   "linalg.tensordot": {
     "canonical_name": "linalg.tensordot",
-    "href": "/docs/api/ops/linalg-tensordot/",
-    "label": "fnp.linalg.tensordot"
+    "href": "/docs/api/linalg/tensordot/",
+    "label": "flops.linalg.tensordot"
   },
   "linalg.tensorinv": {
     "canonical_name": "linalg.tensorinv",
-    "href": "/docs/api/ops/linalg-tensorinv/",
-    "label": "fnp.linalg.tensorinv"
+    "href": "/docs/api/linalg/tensorinv/",
+    "label": "flops.linalg.tensorinv"
   },
   "linalg.tensorsolve": {
     "canonical_name": "linalg.tensorsolve",
-    "href": "/docs/api/ops/linalg-tensorsolve/",
-    "label": "fnp.linalg.tensorsolve"
+    "href": "/docs/api/linalg/tensorsolve/",
+    "label": "flops.linalg.tensorsolve"
   },
   "linalg.trace": {
     "canonical_name": "linalg.trace",
-    "href": "/docs/api/ops/linalg-trace/",
-    "label": "fnp.linalg.trace"
+    "href": "/docs/api/linalg/trace/",
+    "label": "flops.linalg.trace"
   },
   "linalg.vecdot": {
     "canonical_name": "linalg.vecdot",
-    "href": "/docs/api/ops/linalg-vecdot/",
-    "label": "fnp.linalg.vecdot"
+    "href": "/docs/api/linalg/vecdot/",
+    "label": "flops.linalg.vecdot"
   },
   "linalg.vector_norm": {
     "canonical_name": "linalg.vector_norm",
-    "href": "/docs/api/ops/linalg-vector_norm/",
-    "label": "fnp.linalg.vector_norm"
+    "href": "/docs/api/linalg/vector-norm/",
+    "label": "flops.linalg.vector_norm"
   },
   "linspace": {
     "canonical_name": "linspace",
-    "href": "/docs/api/ops/linspace/",
-    "label": "fnp.linspace"
+    "href": "/docs/api/linspace/",
+    "label": "flops.linspace"
   },
   "log": {
     "canonical_name": "log",
-    "href": "/docs/api/ops/log/",
-    "label": "fnp.log"
+    "href": "/docs/api/log/",
+    "label": "flops.log"
   },
   "log10": {
     "canonical_name": "log10",
-    "href": "/docs/api/ops/log10/",
-    "label": "fnp.log10"
+    "href": "/docs/api/log10/",
+    "label": "flops.log10"
   },
   "log1p": {
     "canonical_name": "log1p",
-    "href": "/docs/api/ops/log1p/",
-    "label": "fnp.log1p"
+    "href": "/docs/api/log1p/",
+    "label": "flops.log1p"
   },
   "log2": {
     "canonical_name": "log2",
-    "href": "/docs/api/ops/log2/",
-    "label": "fnp.log2"
+    "href": "/docs/api/log2/",
+    "label": "flops.log2"
   },
   "logaddexp": {
     "canonical_name": "logaddexp",
-    "href": "/docs/api/ops/logaddexp/",
-    "label": "fnp.logaddexp"
+    "href": "/docs/api/logaddexp/",
+    "label": "flops.logaddexp"
   },
   "logaddexp2": {
     "canonical_name": "logaddexp2",
-    "href": "/docs/api/ops/logaddexp2/",
-    "label": "fnp.logaddexp2"
+    "href": "/docs/api/logaddexp2/",
+    "label": "flops.logaddexp2"
   },
   "logical_and": {
     "canonical_name": "logical_and",
-    "href": "/docs/api/ops/logical_and/",
-    "label": "fnp.logical_and"
+    "href": "/docs/api/logical-and/",
+    "label": "flops.logical_and"
   },
   "logical_not": {
     "canonical_name": "logical_not",
-    "href": "/docs/api/ops/logical_not/",
-    "label": "fnp.logical_not"
+    "href": "/docs/api/logical-not/",
+    "label": "flops.logical_not"
   },
   "logical_or": {
     "canonical_name": "logical_or",
-    "href": "/docs/api/ops/logical_or/",
-    "label": "fnp.logical_or"
+    "href": "/docs/api/logical-or/",
+    "label": "flops.logical_or"
   },
   "logical_xor": {
     "canonical_name": "logical_xor",
-    "href": "/docs/api/ops/logical_xor/",
-    "label": "fnp.logical_xor"
+    "href": "/docs/api/logical-xor/",
+    "label": "flops.logical_xor"
   },
   "logspace": {
     "canonical_name": "logspace",
-    "href": "/docs/api/ops/logspace/",
-    "label": "fnp.logspace"
+    "href": "/docs/api/logspace/",
+    "label": "flops.logspace"
   },
   "mask_indices": {
     "canonical_name": "mask_indices",
-    "href": "/docs/api/ops/mask_indices/",
-    "label": "fnp.mask_indices"
+    "href": "/docs/api/mask-indices/",
+    "label": "flops.mask_indices"
   },
   "matmul": {
     "canonical_name": "matmul",
-    "href": "/docs/api/ops/matmul/",
-    "label": "fnp.matmul"
+    "href": "/docs/api/matmul/",
+    "label": "flops.matmul"
   },
   "matrix_transpose": {
     "canonical_name": "matrix_transpose",
-    "href": "/docs/api/ops/matrix_transpose/",
-    "label": "fnp.matrix_transpose"
+    "href": "/docs/api/matrix-transpose/",
+    "label": "flops.matrix_transpose"
   },
   "matvec": {
     "canonical_name": "matvec",
-    "href": "/docs/api/ops/matvec/",
-    "label": "fnp.matvec"
+    "href": "/docs/api/matvec/",
+    "label": "flops.matvec"
   },
   "max": {
     "canonical_name": "max",
-    "href": "/docs/api/ops/max/",
-    "label": "fnp.max"
+    "href": "/docs/api/max/",
+    "label": "flops.max"
   },
   "maximum": {
     "canonical_name": "maximum",
-    "href": "/docs/api/ops/maximum/",
-    "label": "fnp.maximum"
+    "href": "/docs/api/maximum/",
+    "label": "flops.maximum"
   },
   "may_share_memory": {
     "canonical_name": "may_share_memory",
-    "href": "/docs/api/ops/may_share_memory/",
-    "label": "fnp.may_share_memory"
+    "href": "/docs/api/may-share-memory/",
+    "label": "flops.may_share_memory"
   },
   "mean": {
     "canonical_name": "mean",
-    "href": "/docs/api/ops/mean/",
-    "label": "fnp.mean"
+    "href": "/docs/api/mean/",
+    "label": "flops.mean"
   },
   "median": {
     "canonical_name": "median",
-    "href": "/docs/api/ops/median/",
-    "label": "fnp.median"
+    "href": "/docs/api/median/",
+    "label": "flops.median"
   },
   "meshgrid": {
     "canonical_name": "meshgrid",
-    "href": "/docs/api/ops/meshgrid/",
-    "label": "fnp.meshgrid"
+    "href": "/docs/api/meshgrid/",
+    "label": "flops.meshgrid"
   },
   "min": {
     "canonical_name": "min",
-    "href": "/docs/api/ops/min/",
-    "label": "fnp.min"
+    "href": "/docs/api/min/",
+    "label": "flops.min"
   },
   "min_scalar_type": {
     "canonical_name": "min_scalar_type",
-    "href": "/docs/api/ops/min_scalar_type/",
-    "label": "fnp.min_scalar_type"
+    "href": "/docs/api/min-scalar-type/",
+    "label": "flops.min_scalar_type"
   },
   "minimum": {
     "canonical_name": "minimum",
-    "href": "/docs/api/ops/minimum/",
-    "label": "fnp.minimum"
+    "href": "/docs/api/minimum/",
+    "label": "flops.minimum"
   },
   "mintypecode": {
     "canonical_name": "mintypecode",
-    "href": "/docs/api/ops/mintypecode/",
-    "label": "fnp.mintypecode"
+    "href": "/docs/api/mintypecode/",
+    "label": "flops.mintypecode"
   },
   "mod": {
     "canonical_name": "mod",
-    "href": "/docs/api/ops/mod/",
-    "label": "fnp.mod"
+    "href": "/docs/api/mod/",
+    "label": "flops.mod"
   },
   "modf": {
     "canonical_name": "modf",
-    "href": "/docs/api/ops/modf/",
-    "label": "fnp.modf"
+    "href": "/docs/api/modf/",
+    "label": "flops.modf"
   },
   "moveaxis": {
     "canonical_name": "moveaxis",
-    "href": "/docs/api/ops/moveaxis/",
-    "label": "fnp.moveaxis"
+    "href": "/docs/api/moveaxis/",
+    "label": "flops.moveaxis"
   },
   "multiply": {
     "canonical_name": "multiply",
-    "href": "/docs/api/ops/multiply/",
-    "label": "fnp.multiply"
+    "href": "/docs/api/multiply/",
+    "label": "flops.multiply"
   },
   "nan_to_num": {
     "canonical_name": "nan_to_num",
-    "href": "/docs/api/ops/nan_to_num/",
-    "label": "fnp.nan_to_num"
+    "href": "/docs/api/nan-to-num/",
+    "label": "flops.nan_to_num"
   },
   "nanargmax": {
     "canonical_name": "nanargmax",
-    "href": "/docs/api/ops/nanargmax/",
-    "label": "fnp.nanargmax"
+    "href": "/docs/api/nanargmax/",
+    "label": "flops.nanargmax"
   },
   "nanargmin": {
     "canonical_name": "nanargmin",
-    "href": "/docs/api/ops/nanargmin/",
-    "label": "fnp.nanargmin"
+    "href": "/docs/api/nanargmin/",
+    "label": "flops.nanargmin"
   },
   "nancumprod": {
     "canonical_name": "nancumprod",
-    "href": "/docs/api/ops/nancumprod/",
-    "label": "fnp.nancumprod"
+    "href": "/docs/api/nancumprod/",
+    "label": "flops.nancumprod"
   },
   "nancumsum": {
     "canonical_name": "nancumsum",
-    "href": "/docs/api/ops/nancumsum/",
-    "label": "fnp.nancumsum"
+    "href": "/docs/api/nancumsum/",
+    "label": "flops.nancumsum"
   },
   "nanmax": {
     "canonical_name": "nanmax",
-    "href": "/docs/api/ops/nanmax/",
-    "label": "fnp.nanmax"
+    "href": "/docs/api/nanmax/",
+    "label": "flops.nanmax"
   },
   "nanmean": {
     "canonical_name": "nanmean",
-    "href": "/docs/api/ops/nanmean/",
-    "label": "fnp.nanmean"
+    "href": "/docs/api/nanmean/",
+    "label": "flops.nanmean"
   },
   "nanmedian": {
     "canonical_name": "nanmedian",
-    "href": "/docs/api/ops/nanmedian/",
-    "label": "fnp.nanmedian"
+    "href": "/docs/api/nanmedian/",
+    "label": "flops.nanmedian"
   },
   "nanmin": {
     "canonical_name": "nanmin",
-    "href": "/docs/api/ops/nanmin/",
-    "label": "fnp.nanmin"
+    "href": "/docs/api/nanmin/",
+    "label": "flops.nanmin"
   },
   "nanpercentile": {
     "canonical_name": "nanpercentile",
-    "href": "/docs/api/ops/nanpercentile/",
-    "label": "fnp.nanpercentile"
+    "href": "/docs/api/nanpercentile/",
+    "label": "flops.nanpercentile"
   },
   "nanprod": {
     "canonical_name": "nanprod",
-    "href": "/docs/api/ops/nanprod/",
-    "label": "fnp.nanprod"
+    "href": "/docs/api/nanprod/",
+    "label": "flops.nanprod"
   },
   "nanquantile": {
     "canonical_name": "nanquantile",
-    "href": "/docs/api/ops/nanquantile/",
-    "label": "fnp.nanquantile"
+    "href": "/docs/api/nanquantile/",
+    "label": "flops.nanquantile"
   },
   "nanstd": {
     "canonical_name": "nanstd",
-    "href": "/docs/api/ops/nanstd/",
-    "label": "fnp.nanstd"
+    "href": "/docs/api/nanstd/",
+    "label": "flops.nanstd"
   },
   "nansum": {
     "canonical_name": "nansum",
-    "href": "/docs/api/ops/nansum/",
-    "label": "fnp.nansum"
+    "href": "/docs/api/nansum/",
+    "label": "flops.nansum"
   },
   "nanvar": {
     "canonical_name": "nanvar",
-    "href": "/docs/api/ops/nanvar/",
-    "label": "fnp.nanvar"
+    "href": "/docs/api/nanvar/",
+    "label": "flops.nanvar"
   },
   "ndim": {
     "canonical_name": "ndim",
-    "href": "/docs/api/ops/ndim/",
-    "label": "fnp.ndim"
+    "href": "/docs/api/ndim/",
+    "label": "flops.ndim"
   },
   "negative": {
     "canonical_name": "negative",
-    "href": "/docs/api/ops/negative/",
-    "label": "fnp.negative"
+    "href": "/docs/api/negative/",
+    "label": "flops.negative"
   },
   "nextafter": {
     "canonical_name": "nextafter",
-    "href": "/docs/api/ops/nextafter/",
-    "label": "fnp.nextafter"
+    "href": "/docs/api/nextafter/",
+    "label": "flops.nextafter"
   },
   "nonzero": {
     "canonical_name": "nonzero",
-    "href": "/docs/api/ops/nonzero/",
-    "label": "fnp.nonzero"
+    "href": "/docs/api/nonzero/",
+    "label": "flops.nonzero"
   },
   "not_equal": {
     "canonical_name": "not_equal",
-    "href": "/docs/api/ops/not_equal/",
-    "label": "fnp.not_equal"
+    "href": "/docs/api/not-equal/",
+    "label": "flops.not_equal"
   },
   "ones": {
     "canonical_name": "ones",
-    "href": "/docs/api/ops/ones/",
-    "label": "fnp.ones"
+    "href": "/docs/api/ones/",
+    "label": "flops.ones"
   },
   "ones_like": {
     "canonical_name": "ones_like",
-    "href": "/docs/api/ops/ones_like/",
-    "label": "fnp.ones_like"
+    "href": "/docs/api/ones-like/",
+    "label": "flops.ones_like"
   },
   "outer": {
     "canonical_name": "outer",
-    "href": "/docs/api/ops/outer/",
-    "label": "fnp.outer"
+    "href": "/docs/api/outer/",
+    "label": "flops.outer"
   },
   "packbits": {
     "canonical_name": "packbits",
-    "href": "/docs/api/ops/packbits/",
-    "label": "fnp.packbits"
+    "href": "/docs/api/packbits/",
+    "label": "flops.packbits"
   },
   "pad": {
     "canonical_name": "pad",
-    "href": "/docs/api/ops/pad/",
-    "label": "fnp.pad"
+    "href": "/docs/api/pad/",
+    "label": "flops.pad"
   },
   "partition": {
     "canonical_name": "partition",
-    "href": "/docs/api/ops/partition/",
-    "label": "fnp.partition"
+    "href": "/docs/api/partition/",
+    "label": "flops.partition"
   },
   "percentile": {
     "canonical_name": "percentile",
-    "href": "/docs/api/ops/percentile/",
-    "label": "fnp.percentile"
+    "href": "/docs/api/percentile/",
+    "label": "flops.percentile"
   },
   "permute_dims": {
     "canonical_name": "permute_dims",
-    "href": "/docs/api/ops/permute_dims/",
-    "label": "fnp.permute_dims"
+    "href": "/docs/api/permute-dims/",
+    "label": "flops.permute_dims"
   },
   "piecewise": {
     "canonical_name": "piecewise",
-    "href": "/docs/api/ops/piecewise/",
-    "label": "fnp.piecewise"
+    "href": "/docs/api/piecewise/",
+    "label": "flops.piecewise"
   },
   "place": {
     "canonical_name": "place",
-    "href": "/docs/api/ops/place/",
-    "label": "fnp.place"
+    "href": "/docs/api/place/",
+    "label": "flops.place"
   },
   "poly": {
     "canonical_name": "poly",
-    "href": "/docs/api/ops/poly/",
-    "label": "fnp.poly"
+    "href": "/docs/api/poly/",
+    "label": "flops.poly"
   },
   "polyadd": {
     "canonical_name": "polyadd",
-    "href": "/docs/api/ops/polyadd/",
-    "label": "fnp.polyadd"
+    "href": "/docs/api/polyadd/",
+    "label": "flops.polyadd"
   },
   "polyder": {
     "canonical_name": "polyder",
-    "href": "/docs/api/ops/polyder/",
-    "label": "fnp.polyder"
+    "href": "/docs/api/polyder/",
+    "label": "flops.polyder"
   },
   "polydiv": {
     "canonical_name": "polydiv",
-    "href": "/docs/api/ops/polydiv/",
-    "label": "fnp.polydiv"
+    "href": "/docs/api/polydiv/",
+    "label": "flops.polydiv"
   },
   "polyfit": {
     "canonical_name": "polyfit",
-    "href": "/docs/api/ops/polyfit/",
-    "label": "fnp.polyfit"
+    "href": "/docs/api/polyfit/",
+    "label": "flops.polyfit"
   },
   "polyint": {
     "canonical_name": "polyint",
-    "href": "/docs/api/ops/polyint/",
-    "label": "fnp.polyint"
+    "href": "/docs/api/polyint/",
+    "label": "flops.polyint"
   },
   "polymul": {
     "canonical_name": "polymul",
-    "href": "/docs/api/ops/polymul/",
-    "label": "fnp.polymul"
+    "href": "/docs/api/polymul/",
+    "label": "flops.polymul"
   },
   "polysub": {
     "canonical_name": "polysub",
-    "href": "/docs/api/ops/polysub/",
-    "label": "fnp.polysub"
+    "href": "/docs/api/polysub/",
+    "label": "flops.polysub"
   },
   "polyval": {
     "canonical_name": "polyval",
-    "href": "/docs/api/ops/polyval/",
-    "label": "fnp.polyval"
+    "href": "/docs/api/polyval/",
+    "label": "flops.polyval"
   },
   "positive": {
     "canonical_name": "positive",
-    "href": "/docs/api/ops/positive/",
-    "label": "fnp.positive"
+    "href": "/docs/api/positive/",
+    "label": "flops.positive"
   },
   "pow": {
     "canonical_name": "power",
-    "href": "/docs/api/ops/power/",
-    "label": "fnp.power"
+    "href": "/docs/api/power/",
+    "label": "flops.power"
   },
   "power": {
     "canonical_name": "power",
-    "href": "/docs/api/ops/power/",
-    "label": "fnp.power"
+    "href": "/docs/api/power/",
+    "label": "flops.power"
   },
   "prod": {
     "canonical_name": "prod",
-    "href": "/docs/api/ops/prod/",
-    "label": "fnp.prod"
+    "href": "/docs/api/prod/",
+    "label": "flops.prod"
   },
   "promote_types": {
     "canonical_name": "promote_types",
-    "href": "/docs/api/ops/promote_types/",
-    "label": "fnp.promote_types"
+    "href": "/docs/api/promote-types/",
+    "label": "flops.promote_types"
   },
   "ptp": {
     "canonical_name": "ptp",
-    "href": "/docs/api/ops/ptp/",
-    "label": "fnp.ptp"
+    "href": "/docs/api/ptp/",
+    "label": "flops.ptp"
   },
   "put": {
     "canonical_name": "put",
-    "href": "/docs/api/ops/put/",
-    "label": "fnp.put"
+    "href": "/docs/api/put/",
+    "label": "flops.put"
   },
   "put_along_axis": {
     "canonical_name": "put_along_axis",
-    "href": "/docs/api/ops/put_along_axis/",
-    "label": "fnp.put_along_axis"
+    "href": "/docs/api/put-along-axis/",
+    "label": "flops.put_along_axis"
   },
   "putmask": {
     "canonical_name": "putmask",
-    "href": "/docs/api/ops/putmask/",
-    "label": "fnp.putmask"
+    "href": "/docs/api/putmask/",
+    "label": "flops.putmask"
   },
   "quantile": {
     "canonical_name": "quantile",
-    "href": "/docs/api/ops/quantile/",
-    "label": "fnp.quantile"
+    "href": "/docs/api/quantile/",
+    "label": "flops.quantile"
   },
   "rad2deg": {
     "canonical_name": "degrees",
-    "href": "/docs/api/ops/degrees/",
-    "label": "fnp.degrees"
+    "href": "/docs/api/degrees/",
+    "label": "flops.degrees"
   },
   "radians": {
     "canonical_name": "radians",
-    "href": "/docs/api/ops/radians/",
-    "label": "fnp.radians"
+    "href": "/docs/api/radians/",
+    "label": "flops.radians"
   },
   "random.beta": {
     "canonical_name": "random.beta",
-    "href": "/docs/api/ops/random-beta/",
-    "label": "fnp.random.beta"
+    "href": "/docs/api/random/beta/",
+    "label": "flops.random.beta"
   },
   "random.binomial": {
     "canonical_name": "random.binomial",
-    "href": "/docs/api/ops/random-binomial/",
-    "label": "fnp.random.binomial"
+    "href": "/docs/api/random/binomial/",
+    "label": "flops.random.binomial"
   },
   "random.bytes": {
     "canonical_name": "random.bytes",
-    "href": "/docs/api/ops/random-bytes/",
-    "label": "fnp.random.bytes"
+    "href": "/docs/api/random/bytes/",
+    "label": "flops.random.bytes"
   },
   "random.chisquare": {
     "canonical_name": "random.chisquare",
-    "href": "/docs/api/ops/random-chisquare/",
-    "label": "fnp.random.chisquare"
+    "href": "/docs/api/random/chisquare/",
+    "label": "flops.random.chisquare"
   },
   "random.choice": {
     "canonical_name": "random.choice",
-    "href": "/docs/api/ops/random-choice/",
-    "label": "fnp.random.choice"
+    "href": "/docs/api/random/choice/",
+    "label": "flops.random.choice"
   },
   "random.default_rng": {
     "canonical_name": "random.default_rng",
-    "href": "/docs/api/ops/random-default_rng/",
-    "label": "fnp.random.default_rng"
+    "href": "/docs/api/random/default-rng/",
+    "label": "flops.random.default_rng"
   },
   "random.dirichlet": {
     "canonical_name": "random.dirichlet",
-    "href": "/docs/api/ops/random-dirichlet/",
-    "label": "fnp.random.dirichlet"
+    "href": "/docs/api/random/dirichlet/",
+    "label": "flops.random.dirichlet"
   },
   "random.exponential": {
     "canonical_name": "random.exponential",
-    "href": "/docs/api/ops/random-exponential/",
-    "label": "fnp.random.exponential"
+    "href": "/docs/api/random/exponential/",
+    "label": "flops.random.exponential"
   },
   "random.f": {
     "canonical_name": "random.f",
-    "href": "/docs/api/ops/random-f/",
-    "label": "fnp.random.f"
+    "href": "/docs/api/random/f/",
+    "label": "flops.random.f"
   },
   "random.gamma": {
     "canonical_name": "random.gamma",
-    "href": "/docs/api/ops/random-gamma/",
-    "label": "fnp.random.gamma"
+    "href": "/docs/api/random/gamma/",
+    "label": "flops.random.gamma"
   },
   "random.geometric": {
     "canonical_name": "random.geometric",
-    "href": "/docs/api/ops/random-geometric/",
-    "label": "fnp.random.geometric"
+    "href": "/docs/api/random/geometric/",
+    "label": "flops.random.geometric"
   },
   "random.get_state": {
     "canonical_name": "random.get_state",
-    "href": "/docs/api/ops/random-get_state/",
-    "label": "fnp.random.get_state"
+    "href": "/docs/api/random/get-state/",
+    "label": "flops.random.get_state"
   },
   "random.gumbel": {
     "canonical_name": "random.gumbel",
-    "href": "/docs/api/ops/random-gumbel/",
-    "label": "fnp.random.gumbel"
+    "href": "/docs/api/random/gumbel/",
+    "label": "flops.random.gumbel"
   },
   "random.hypergeometric": {
     "canonical_name": "random.hypergeometric",
-    "href": "/docs/api/ops/random-hypergeometric/",
-    "label": "fnp.random.hypergeometric"
+    "href": "/docs/api/random/hypergeometric/",
+    "label": "flops.random.hypergeometric"
   },
   "random.laplace": {
     "canonical_name": "random.laplace",
-    "href": "/docs/api/ops/random-laplace/",
-    "label": "fnp.random.laplace"
+    "href": "/docs/api/random/laplace/",
+    "label": "flops.random.laplace"
   },
   "random.logistic": {
     "canonical_name": "random.logistic",
-    "href": "/docs/api/ops/random-logistic/",
-    "label": "fnp.random.logistic"
+    "href": "/docs/api/random/logistic/",
+    "label": "flops.random.logistic"
   },
   "random.lognormal": {
     "canonical_name": "random.lognormal",
-    "href": "/docs/api/ops/random-lognormal/",
-    "label": "fnp.random.lognormal"
+    "href": "/docs/api/random/lognormal/",
+    "label": "flops.random.lognormal"
   },
   "random.logseries": {
     "canonical_name": "random.logseries",
-    "href": "/docs/api/ops/random-logseries/",
-    "label": "fnp.random.logseries"
+    "href": "/docs/api/random/logseries/",
+    "label": "flops.random.logseries"
   },
   "random.multinomial": {
     "canonical_name": "random.multinomial",
-    "href": "/docs/api/ops/random-multinomial/",
-    "label": "fnp.random.multinomial"
+    "href": "/docs/api/random/multinomial/",
+    "label": "flops.random.multinomial"
   },
   "random.multivariate_normal": {
     "canonical_name": "random.multivariate_normal",
-    "href": "/docs/api/ops/random-multivariate_normal/",
-    "label": "fnp.random.multivariate_normal"
+    "href": "/docs/api/random/multivariate-normal/",
+    "label": "flops.random.multivariate_normal"
   },
   "random.negative_binomial": {
     "canonical_name": "random.negative_binomial",
-    "href": "/docs/api/ops/random-negative_binomial/",
-    "label": "fnp.random.negative_binomial"
+    "href": "/docs/api/random/negative-binomial/",
+    "label": "flops.random.negative_binomial"
   },
   "random.noncentral_chisquare": {
     "canonical_name": "random.noncentral_chisquare",
-    "href": "/docs/api/ops/random-noncentral_chisquare/",
-    "label": "fnp.random.noncentral_chisquare"
+    "href": "/docs/api/random/noncentral-chisquare/",
+    "label": "flops.random.noncentral_chisquare"
   },
   "random.noncentral_f": {
     "canonical_name": "random.noncentral_f",
-    "href": "/docs/api/ops/random-noncentral_f/",
-    "label": "fnp.random.noncentral_f"
+    "href": "/docs/api/random/noncentral-f/",
+    "label": "flops.random.noncentral_f"
   },
   "random.normal": {
     "canonical_name": "random.normal",
-    "href": "/docs/api/ops/random-normal/",
-    "label": "fnp.random.normal"
+    "href": "/docs/api/random/normal/",
+    "label": "flops.random.normal"
   },
   "random.pareto": {
     "canonical_name": "random.pareto",
-    "href": "/docs/api/ops/random-pareto/",
-    "label": "fnp.random.pareto"
+    "href": "/docs/api/random/pareto/",
+    "label": "flops.random.pareto"
   },
   "random.permutation": {
     "canonical_name": "random.permutation",
-    "href": "/docs/api/ops/random-permutation/",
-    "label": "fnp.random.permutation"
+    "href": "/docs/api/random/permutation/",
+    "label": "flops.random.permutation"
   },
   "random.poisson": {
     "canonical_name": "random.poisson",
-    "href": "/docs/api/ops/random-poisson/",
-    "label": "fnp.random.poisson"
+    "href": "/docs/api/random/poisson/",
+    "label": "flops.random.poisson"
   },
   "random.power": {
     "canonical_name": "random.power",
-    "href": "/docs/api/ops/random-power/",
-    "label": "fnp.random.power"
+    "href": "/docs/api/random/power/",
+    "label": "flops.random.power"
   },
   "random.rand": {
     "canonical_name": "random.rand",
-    "href": "/docs/api/ops/random-rand/",
-    "label": "fnp.random.rand"
+    "href": "/docs/api/random/rand/",
+    "label": "flops.random.rand"
   },
   "random.randint": {
     "canonical_name": "random.randint",
-    "href": "/docs/api/ops/random-randint/",
-    "label": "fnp.random.randint"
+    "href": "/docs/api/random/randint/",
+    "label": "flops.random.randint"
   },
   "random.randn": {
     "canonical_name": "random.randn",
-    "href": "/docs/api/ops/random-randn/",
-    "label": "fnp.random.randn"
+    "href": "/docs/api/random/randn/",
+    "label": "flops.random.randn"
   },
   "random.random": {
     "canonical_name": "random.random",
-    "href": "/docs/api/ops/random-random/",
-    "label": "fnp.random.random"
+    "href": "/docs/api/random/random/",
+    "label": "flops.random.random"
   },
   "random.random_integers": {
     "canonical_name": "random.random_integers",
-    "href": "/docs/api/ops/random-random_integers/",
-    "label": "fnp.random.random_integers"
+    "href": "/docs/api/random/random-integers/",
+    "label": "flops.random.random_integers"
   },
   "random.random_sample": {
     "canonical_name": "random.random_sample",
-    "href": "/docs/api/ops/random-random_sample/",
-    "label": "fnp.random.random_sample"
+    "href": "/docs/api/random/random-sample/",
+    "label": "flops.random.random_sample"
   },
   "random.ranf": {
     "canonical_name": "random.random_sample",
-    "href": "/docs/api/ops/random-random_sample/",
-    "label": "fnp.random.random_sample"
+    "href": "/docs/api/random/random-sample/",
+    "label": "flops.random.random_sample"
   },
   "random.rayleigh": {
     "canonical_name": "random.rayleigh",
-    "href": "/docs/api/ops/random-rayleigh/",
-    "label": "fnp.random.rayleigh"
+    "href": "/docs/api/random/rayleigh/",
+    "label": "flops.random.rayleigh"
   },
   "random.sample": {
     "canonical_name": "random.random_sample",
-    "href": "/docs/api/ops/random-random_sample/",
-    "label": "fnp.random.random_sample"
+    "href": "/docs/api/random/random-sample/",
+    "label": "flops.random.random_sample"
   },
   "random.seed": {
     "canonical_name": "random.seed",
-    "href": "/docs/api/ops/random-seed/",
-    "label": "fnp.random.seed"
+    "href": "/docs/api/random/seed/",
+    "label": "flops.random.seed"
   },
   "random.set_state": {
     "canonical_name": "random.set_state",
-    "href": "/docs/api/ops/random-set_state/",
-    "label": "fnp.random.set_state"
+    "href": "/docs/api/random/set-state/",
+    "label": "flops.random.set_state"
   },
   "random.shuffle": {
     "canonical_name": "random.shuffle",
-    "href": "/docs/api/ops/random-shuffle/",
-    "label": "fnp.random.shuffle"
+    "href": "/docs/api/random/shuffle/",
+    "label": "flops.random.shuffle"
   },
   "random.standard_cauchy": {
     "canonical_name": "random.standard_cauchy",
-    "href": "/docs/api/ops/random-standard_cauchy/",
-    "label": "fnp.random.standard_cauchy"
+    "href": "/docs/api/random/standard-cauchy/",
+    "label": "flops.random.standard_cauchy"
   },
   "random.standard_exponential": {
     "canonical_name": "random.standard_exponential",
-    "href": "/docs/api/ops/random-standard_exponential/",
-    "label": "fnp.random.standard_exponential"
+    "href": "/docs/api/random/standard-exponential/",
+    "label": "flops.random.standard_exponential"
   },
   "random.standard_gamma": {
     "canonical_name": "random.standard_gamma",
-    "href": "/docs/api/ops/random-standard_gamma/",
-    "label": "fnp.random.standard_gamma"
+    "href": "/docs/api/random/standard-gamma/",
+    "label": "flops.random.standard_gamma"
   },
   "random.standard_normal": {
     "canonical_name": "random.standard_normal",
-    "href": "/docs/api/ops/random-standard_normal/",
-    "label": "fnp.random.standard_normal"
+    "href": "/docs/api/random/standard-normal/",
+    "label": "flops.random.standard_normal"
   },
   "random.standard_t": {
     "canonical_name": "random.standard_t",
-    "href": "/docs/api/ops/random-standard_t/",
-    "label": "fnp.random.standard_t"
+    "href": "/docs/api/random/standard-t/",
+    "label": "flops.random.standard_t"
   },
   "random.triangular": {
     "canonical_name": "random.triangular",
-    "href": "/docs/api/ops/random-triangular/",
-    "label": "fnp.random.triangular"
+    "href": "/docs/api/random/triangular/",
+    "label": "flops.random.triangular"
   },
   "random.uniform": {
     "canonical_name": "random.uniform",
-    "href": "/docs/api/ops/random-uniform/",
-    "label": "fnp.random.uniform"
+    "href": "/docs/api/random/uniform/",
+    "label": "flops.random.uniform"
   },
   "random.vonmises": {
     "canonical_name": "random.vonmises",
-    "href": "/docs/api/ops/random-vonmises/",
-    "label": "fnp.random.vonmises"
+    "href": "/docs/api/random/vonmises/",
+    "label": "flops.random.vonmises"
   },
   "random.wald": {
     "canonical_name": "random.wald",
-    "href": "/docs/api/ops/random-wald/",
-    "label": "fnp.random.wald"
+    "href": "/docs/api/random/wald/",
+    "label": "flops.random.wald"
   },
   "random.weibull": {
     "canonical_name": "random.weibull",
-    "href": "/docs/api/ops/random-weibull/",
-    "label": "fnp.random.weibull"
+    "href": "/docs/api/random/weibull/",
+    "label": "flops.random.weibull"
   },
   "random.zipf": {
     "canonical_name": "random.zipf",
-    "href": "/docs/api/ops/random-zipf/",
-    "label": "fnp.random.zipf"
+    "href": "/docs/api/random/zipf/",
+    "label": "flops.random.zipf"
   },
   "ravel": {
     "canonical_name": "ravel",
-    "href": "/docs/api/ops/ravel/",
-    "label": "fnp.ravel"
+    "href": "/docs/api/ravel/",
+    "label": "flops.ravel"
   },
   "ravel_multi_index": {
     "canonical_name": "ravel_multi_index",
-    "href": "/docs/api/ops/ravel_multi_index/",
-    "label": "fnp.ravel_multi_index"
+    "href": "/docs/api/ravel-multi-index/",
+    "label": "flops.ravel_multi_index"
   },
   "real": {
     "canonical_name": "real",
-    "href": "/docs/api/ops/real/",
-    "label": "fnp.real"
+    "href": "/docs/api/real/",
+    "label": "flops.real"
   },
   "real_if_close": {
     "canonical_name": "real_if_close",
-    "href": "/docs/api/ops/real_if_close/",
-    "label": "fnp.real_if_close"
+    "href": "/docs/api/real-if-close/",
+    "label": "flops.real_if_close"
   },
   "reciprocal": {
     "canonical_name": "reciprocal",
-    "href": "/docs/api/ops/reciprocal/",
-    "label": "fnp.reciprocal"
+    "href": "/docs/api/reciprocal/",
+    "label": "flops.reciprocal"
   },
   "remainder": {
     "canonical_name": "remainder",
-    "href": "/docs/api/ops/remainder/",
-    "label": "fnp.remainder"
+    "href": "/docs/api/remainder/",
+    "label": "flops.remainder"
   },
   "repeat": {
     "canonical_name": "repeat",
-    "href": "/docs/api/ops/repeat/",
-    "label": "fnp.repeat"
+    "href": "/docs/api/repeat/",
+    "label": "flops.repeat"
   },
   "require": {
     "canonical_name": "require",
-    "href": "/docs/api/ops/require/",
-    "label": "fnp.require"
+    "href": "/docs/api/require/",
+    "label": "flops.require"
   },
   "reshape": {
     "canonical_name": "reshape",
-    "href": "/docs/api/ops/reshape/",
-    "label": "fnp.reshape"
+    "href": "/docs/api/reshape/",
+    "label": "flops.reshape"
   },
   "resize": {
     "canonical_name": "resize",
-    "href": "/docs/api/ops/resize/",
-    "label": "fnp.resize"
+    "href": "/docs/api/resize/",
+    "label": "flops.resize"
   },
   "result_type": {
     "canonical_name": "result_type",
-    "href": "/docs/api/ops/result_type/",
-    "label": "fnp.result_type"
+    "href": "/docs/api/result-type/",
+    "label": "flops.result_type"
   },
   "right_shift": {
     "canonical_name": "right_shift",
-    "href": "/docs/api/ops/right_shift/",
-    "label": "fnp.right_shift"
+    "href": "/docs/api/right-shift/",
+    "label": "flops.right_shift"
   },
   "rint": {
     "canonical_name": "rint",
-    "href": "/docs/api/ops/rint/",
-    "label": "fnp.rint"
+    "href": "/docs/api/rint/",
+    "label": "flops.rint"
   },
   "roll": {
     "canonical_name": "roll",
-    "href": "/docs/api/ops/roll/",
-    "label": "fnp.roll"
+    "href": "/docs/api/roll/",
+    "label": "flops.roll"
   },
   "rollaxis": {
     "canonical_name": "rollaxis",
-    "href": "/docs/api/ops/rollaxis/",
-    "label": "fnp.rollaxis"
+    "href": "/docs/api/rollaxis/",
+    "label": "flops.rollaxis"
   },
   "roots": {
     "canonical_name": "roots",
-    "href": "/docs/api/ops/roots/",
-    "label": "fnp.roots"
+    "href": "/docs/api/roots/",
+    "label": "flops.roots"
   },
   "rot90": {
     "canonical_name": "rot90",
-    "href": "/docs/api/ops/rot90/",
-    "label": "fnp.rot90"
+    "href": "/docs/api/rot90/",
+    "label": "flops.rot90"
   },
   "round": {
     "canonical_name": "rint",
-    "href": "/docs/api/ops/rint/",
-    "label": "fnp.rint"
+    "href": "/docs/api/rint/",
+    "label": "flops.rint"
   },
   "row_stack": {
     "canonical_name": "row_stack",
-    "href": "/docs/api/ops/row_stack/",
-    "label": "fnp.row_stack"
+    "href": "/docs/api/row-stack/",
+    "label": "flops.row_stack"
   },
   "searchsorted": {
     "canonical_name": "searchsorted",
-    "href": "/docs/api/ops/searchsorted/",
-    "label": "fnp.searchsorted"
+    "href": "/docs/api/searchsorted/",
+    "label": "flops.searchsorted"
   },
   "select": {
     "canonical_name": "select",
-    "href": "/docs/api/ops/select/",
-    "label": "fnp.select"
+    "href": "/docs/api/select/",
+    "label": "flops.select"
   },
   "setdiff1d": {
     "canonical_name": "setdiff1d",
-    "href": "/docs/api/ops/setdiff1d/",
-    "label": "fnp.setdiff1d"
+    "href": "/docs/api/setdiff1d/",
+    "label": "flops.setdiff1d"
   },
   "setxor1d": {
     "canonical_name": "setxor1d",
-    "href": "/docs/api/ops/setxor1d/",
-    "label": "fnp.setxor1d"
+    "href": "/docs/api/setxor1d/",
+    "label": "flops.setxor1d"
   },
   "shape": {
     "canonical_name": "shape",
-    "href": "/docs/api/ops/shape/",
-    "label": "fnp.shape"
+    "href": "/docs/api/shape/",
+    "label": "flops.shape"
   },
   "shares_memory": {
     "canonical_name": "shares_memory",
-    "href": "/docs/api/ops/shares_memory/",
-    "label": "fnp.shares_memory"
+    "href": "/docs/api/shares-memory/",
+    "label": "flops.shares_memory"
   },
   "sign": {
     "canonical_name": "sign",
-    "href": "/docs/api/ops/sign/",
-    "label": "fnp.sign"
+    "href": "/docs/api/sign/",
+    "label": "flops.sign"
   },
   "signbit": {
     "canonical_name": "signbit",
-    "href": "/docs/api/ops/signbit/",
-    "label": "fnp.signbit"
+    "href": "/docs/api/signbit/",
+    "label": "flops.signbit"
   },
   "sin": {
     "canonical_name": "sin",
-    "href": "/docs/api/ops/sin/",
-    "label": "fnp.sin"
+    "href": "/docs/api/sin/",
+    "label": "flops.sin"
   },
   "sinc": {
     "canonical_name": "sinc",
-    "href": "/docs/api/ops/sinc/",
-    "label": "fnp.sinc"
+    "href": "/docs/api/sinc/",
+    "label": "flops.sinc"
   },
   "sinh": {
     "canonical_name": "sinh",
-    "href": "/docs/api/ops/sinh/",
-    "label": "fnp.sinh"
+    "href": "/docs/api/sinh/",
+    "label": "flops.sinh"
   },
   "size": {
     "canonical_name": "size",
-    "href": "/docs/api/ops/size/",
-    "label": "fnp.size"
+    "href": "/docs/api/size/",
+    "label": "flops.size"
   },
   "sort": {
     "canonical_name": "sort",
-    "href": "/docs/api/ops/sort/",
-    "label": "fnp.sort"
+    "href": "/docs/api/sort/",
+    "label": "flops.sort"
   },
   "sort_complex": {
     "canonical_name": "sort_complex",
-    "href": "/docs/api/ops/sort_complex/",
-    "label": "fnp.sort_complex"
+    "href": "/docs/api/sort-complex/",
+    "label": "flops.sort_complex"
   },
   "spacing": {
     "canonical_name": "spacing",
-    "href": "/docs/api/ops/spacing/",
-    "label": "fnp.spacing"
+    "href": "/docs/api/spacing/",
+    "label": "flops.spacing"
   },
   "split": {
     "canonical_name": "split",
-    "href": "/docs/api/ops/split/",
-    "label": "fnp.split"
+    "href": "/docs/api/split/",
+    "label": "flops.split"
   },
   "sqrt": {
     "canonical_name": "sqrt",
-    "href": "/docs/api/ops/sqrt/",
-    "label": "fnp.sqrt"
+    "href": "/docs/api/sqrt/",
+    "label": "flops.sqrt"
   },
   "square": {
     "canonical_name": "square",
-    "href": "/docs/api/ops/square/",
-    "label": "fnp.square"
+    "href": "/docs/api/square/",
+    "label": "flops.square"
   },
   "squeeze": {
     "canonical_name": "squeeze",
-    "href": "/docs/api/ops/squeeze/",
-    "label": "fnp.squeeze"
+    "href": "/docs/api/squeeze/",
+    "label": "flops.squeeze"
   },
   "stack": {
     "canonical_name": "stack",
-    "href": "/docs/api/ops/stack/",
-    "label": "fnp.stack"
+    "href": "/docs/api/stack/",
+    "label": "flops.stack"
   },
   "stats.cauchy.cdf": {
     "canonical_name": "stats.cauchy.cdf",
-    "href": "/docs/api/ops/stats-cauchy-cdf/",
-    "label": "fnp.stats.cauchy.cdf"
+    "href": "/docs/api/stats/cauchy/cdf/",
+    "label": "flops.stats.cauchy.cdf"
   },
   "stats.cauchy.pdf": {
     "canonical_name": "stats.cauchy.pdf",
-    "href": "/docs/api/ops/stats-cauchy-pdf/",
-    "label": "fnp.stats.cauchy.pdf"
+    "href": "/docs/api/stats/cauchy/pdf/",
+    "label": "flops.stats.cauchy.pdf"
   },
   "stats.cauchy.ppf": {
     "canonical_name": "stats.cauchy.ppf",
-    "href": "/docs/api/ops/stats-cauchy-ppf/",
-    "label": "fnp.stats.cauchy.ppf"
+    "href": "/docs/api/stats/cauchy/ppf/",
+    "label": "flops.stats.cauchy.ppf"
   },
   "stats.expon.cdf": {
     "canonical_name": "stats.expon.cdf",
-    "href": "/docs/api/ops/stats-expon-cdf/",
-    "label": "fnp.stats.expon.cdf"
+    "href": "/docs/api/stats/expon/cdf/",
+    "label": "flops.stats.expon.cdf"
   },
   "stats.expon.pdf": {
     "canonical_name": "stats.expon.pdf",
-    "href": "/docs/api/ops/stats-expon-pdf/",
-    "label": "fnp.stats.expon.pdf"
+    "href": "/docs/api/stats/expon/pdf/",
+    "label": "flops.stats.expon.pdf"
   },
   "stats.expon.ppf": {
     "canonical_name": "stats.expon.ppf",
-    "href": "/docs/api/ops/stats-expon-ppf/",
-    "label": "fnp.stats.expon.ppf"
+    "href": "/docs/api/stats/expon/ppf/",
+    "label": "flops.stats.expon.ppf"
   },
   "stats.laplace.cdf": {
     "canonical_name": "stats.laplace.cdf",
-    "href": "/docs/api/ops/stats-laplace-cdf/",
-    "label": "fnp.stats.laplace.cdf"
+    "href": "/docs/api/stats/laplace/cdf/",
+    "label": "flops.stats.laplace.cdf"
   },
   "stats.laplace.pdf": {
     "canonical_name": "stats.laplace.pdf",
-    "href": "/docs/api/ops/stats-laplace-pdf/",
-    "label": "fnp.stats.laplace.pdf"
+    "href": "/docs/api/stats/laplace/pdf/",
+    "label": "flops.stats.laplace.pdf"
   },
   "stats.laplace.ppf": {
     "canonical_name": "stats.laplace.ppf",
-    "href": "/docs/api/ops/stats-laplace-ppf/",
-    "label": "fnp.stats.laplace.ppf"
+    "href": "/docs/api/stats/laplace/ppf/",
+    "label": "flops.stats.laplace.ppf"
   },
   "stats.logistic.cdf": {
     "canonical_name": "stats.logistic.cdf",
-    "href": "/docs/api/ops/stats-logistic-cdf/",
-    "label": "fnp.stats.logistic.cdf"
+    "href": "/docs/api/stats/logistic/cdf/",
+    "label": "flops.stats.logistic.cdf"
   },
   "stats.logistic.pdf": {
     "canonical_name": "stats.logistic.pdf",
-    "href": "/docs/api/ops/stats-logistic-pdf/",
-    "label": "fnp.stats.logistic.pdf"
+    "href": "/docs/api/stats/logistic/pdf/",
+    "label": "flops.stats.logistic.pdf"
   },
   "stats.logistic.ppf": {
     "canonical_name": "stats.logistic.ppf",
-    "href": "/docs/api/ops/stats-logistic-ppf/",
-    "label": "fnp.stats.logistic.ppf"
+    "href": "/docs/api/stats/logistic/ppf/",
+    "label": "flops.stats.logistic.ppf"
   },
   "stats.lognorm.cdf": {
     "canonical_name": "stats.lognorm.cdf",
-    "href": "/docs/api/ops/stats-lognorm-cdf/",
-    "label": "fnp.stats.lognorm.cdf"
+    "href": "/docs/api/stats/lognorm/cdf/",
+    "label": "flops.stats.lognorm.cdf"
   },
   "stats.lognorm.pdf": {
     "canonical_name": "stats.lognorm.pdf",
-    "href": "/docs/api/ops/stats-lognorm-pdf/",
-    "label": "fnp.stats.lognorm.pdf"
+    "href": "/docs/api/stats/lognorm/pdf/",
+    "label": "flops.stats.lognorm.pdf"
   },
   "stats.lognorm.ppf": {
     "canonical_name": "stats.lognorm.ppf",
-    "href": "/docs/api/ops/stats-lognorm-ppf/",
-    "label": "fnp.stats.lognorm.ppf"
+    "href": "/docs/api/stats/lognorm/ppf/",
+    "label": "flops.stats.lognorm.ppf"
   },
   "stats.norm.cdf": {
     "canonical_name": "stats.norm.cdf",
-    "href": "/docs/api/ops/stats-norm-cdf/",
-    "label": "fnp.stats.norm.cdf"
+    "href": "/docs/api/stats/norm/cdf/",
+    "label": "flops.stats.norm.cdf"
   },
   "stats.norm.pdf": {
     "canonical_name": "stats.norm.pdf",
-    "href": "/docs/api/ops/stats-norm-pdf/",
-    "label": "fnp.stats.norm.pdf"
+    "href": "/docs/api/stats/norm/pdf/",
+    "label": "flops.stats.norm.pdf"
   },
   "stats.norm.ppf": {
     "canonical_name": "stats.norm.ppf",
-    "href": "/docs/api/ops/stats-norm-ppf/",
-    "label": "fnp.stats.norm.ppf"
+    "href": "/docs/api/stats/norm/ppf/",
+    "label": "flops.stats.norm.ppf"
   },
   "stats.truncnorm.cdf": {
     "canonical_name": "stats.truncnorm.cdf",
-    "href": "/docs/api/ops/stats-truncnorm-cdf/",
-    "label": "fnp.stats.truncnorm.cdf"
+    "href": "/docs/api/stats/truncnorm/cdf/",
+    "label": "flops.stats.truncnorm.cdf"
   },
   "stats.truncnorm.pdf": {
     "canonical_name": "stats.truncnorm.pdf",
-    "href": "/docs/api/ops/stats-truncnorm-pdf/",
-    "label": "fnp.stats.truncnorm.pdf"
+    "href": "/docs/api/stats/truncnorm/pdf/",
+    "label": "flops.stats.truncnorm.pdf"
   },
   "stats.truncnorm.ppf": {
     "canonical_name": "stats.truncnorm.ppf",
-    "href": "/docs/api/ops/stats-truncnorm-ppf/",
-    "label": "fnp.stats.truncnorm.ppf"
+    "href": "/docs/api/stats/truncnorm/ppf/",
+    "label": "flops.stats.truncnorm.ppf"
   },
   "stats.uniform.cdf": {
     "canonical_name": "stats.uniform.cdf",
-    "href": "/docs/api/ops/stats-uniform-cdf/",
-    "label": "fnp.stats.uniform.cdf"
+    "href": "/docs/api/stats/uniform/cdf/",
+    "label": "flops.stats.uniform.cdf"
   },
   "stats.uniform.pdf": {
     "canonical_name": "stats.uniform.pdf",
-    "href": "/docs/api/ops/stats-uniform-pdf/",
-    "label": "fnp.stats.uniform.pdf"
+    "href": "/docs/api/stats/uniform/pdf/",
+    "label": "flops.stats.uniform.pdf"
   },
   "stats.uniform.ppf": {
     "canonical_name": "stats.uniform.ppf",
-    "href": "/docs/api/ops/stats-uniform-ppf/",
-    "label": "fnp.stats.uniform.ppf"
+    "href": "/docs/api/stats/uniform/ppf/",
+    "label": "flops.stats.uniform.ppf"
   },
   "std": {
     "canonical_name": "std",
-    "href": "/docs/api/ops/std/",
-    "label": "fnp.std"
+    "href": "/docs/api/std/",
+    "label": "flops.std"
   },
   "subtract": {
     "canonical_name": "subtract",
-    "href": "/docs/api/ops/subtract/",
-    "label": "fnp.subtract"
+    "href": "/docs/api/subtract/",
+    "label": "flops.subtract"
   },
   "sum": {
     "canonical_name": "sum",
-    "href": "/docs/api/ops/sum/",
-    "label": "fnp.sum"
+    "href": "/docs/api/sum/",
+    "label": "flops.sum"
   },
   "swapaxes": {
     "canonical_name": "swapaxes",
-    "href": "/docs/api/ops/swapaxes/",
-    "label": "fnp.swapaxes"
+    "href": "/docs/api/swapaxes/",
+    "label": "flops.swapaxes"
   },
   "take": {
     "canonical_name": "take",
-    "href": "/docs/api/ops/take/",
-    "label": "fnp.take"
+    "href": "/docs/api/take/",
+    "label": "flops.take"
   },
   "take_along_axis": {
     "canonical_name": "take_along_axis",
-    "href": "/docs/api/ops/take_along_axis/",
-    "label": "fnp.take_along_axis"
+    "href": "/docs/api/take-along-axis/",
+    "label": "flops.take_along_axis"
   },
   "tan": {
     "canonical_name": "tan",
-    "href": "/docs/api/ops/tan/",
-    "label": "fnp.tan"
+    "href": "/docs/api/tan/",
+    "label": "flops.tan"
   },
   "tanh": {
     "canonical_name": "tanh",
-    "href": "/docs/api/ops/tanh/",
-    "label": "fnp.tanh"
+    "href": "/docs/api/tanh/",
+    "label": "flops.tanh"
   },
   "tensordot": {
     "canonical_name": "tensordot",
-    "href": "/docs/api/ops/tensordot/",
-    "label": "fnp.tensordot"
+    "href": "/docs/api/tensordot/",
+    "label": "flops.tensordot"
   },
   "tile": {
     "canonical_name": "tile",
-    "href": "/docs/api/ops/tile/",
-    "label": "fnp.tile"
+    "href": "/docs/api/tile/",
+    "label": "flops.tile"
   },
   "trace": {
     "canonical_name": "trace",
-    "href": "/docs/api/ops/trace/",
-    "label": "fnp.trace"
+    "href": "/docs/api/trace/",
+    "label": "flops.trace"
   },
   "transpose": {
     "canonical_name": "transpose",
-    "href": "/docs/api/ops/transpose/",
-    "label": "fnp.transpose"
+    "href": "/docs/api/transpose/",
+    "label": "flops.transpose"
   },
   "trapezoid": {
     "canonical_name": "trapezoid",
-    "href": "/docs/api/ops/trapezoid/",
-    "label": "fnp.trapezoid"
+    "href": "/docs/api/trapezoid/",
+    "label": "flops.trapezoid"
   },
   "trapz": {
     "canonical_name": "trapezoid",
-    "href": "/docs/api/ops/trapezoid/",
-    "label": "fnp.trapezoid"
+    "href": "/docs/api/trapezoid/",
+    "label": "flops.trapezoid"
   },
   "tri": {
     "canonical_name": "tri",
-    "href": "/docs/api/ops/tri/",
-    "label": "fnp.tri"
+    "href": "/docs/api/tri/",
+    "label": "flops.tri"
   },
   "tril": {
     "canonical_name": "tril",
-    "href": "/docs/api/ops/tril/",
-    "label": "fnp.tril"
+    "href": "/docs/api/tril/",
+    "label": "flops.tril"
   },
   "tril_indices": {
     "canonical_name": "tril_indices",
-    "href": "/docs/api/ops/tril_indices/",
-    "label": "fnp.tril_indices"
+    "href": "/docs/api/tril-indices/",
+    "label": "flops.tril_indices"
   },
   "tril_indices_from": {
     "canonical_name": "tril_indices_from",
-    "href": "/docs/api/ops/tril_indices_from/",
-    "label": "fnp.tril_indices_from"
+    "href": "/docs/api/tril-indices-from/",
+    "label": "flops.tril_indices_from"
   },
   "trim_zeros": {
     "canonical_name": "trim_zeros",
-    "href": "/docs/api/ops/trim_zeros/",
-    "label": "fnp.trim_zeros"
+    "href": "/docs/api/trim-zeros/",
+    "label": "flops.trim_zeros"
   },
   "triu": {
     "canonical_name": "triu",
-    "href": "/docs/api/ops/triu/",
-    "label": "fnp.triu"
+    "href": "/docs/api/triu/",
+    "label": "flops.triu"
   },
   "triu_indices": {
     "canonical_name": "triu_indices",
-    "href": "/docs/api/ops/triu_indices/",
-    "label": "fnp.triu_indices"
+    "href": "/docs/api/triu-indices/",
+    "label": "flops.triu_indices"
   },
   "triu_indices_from": {
     "canonical_name": "triu_indices_from",
-    "href": "/docs/api/ops/triu_indices_from/",
-    "label": "fnp.triu_indices_from"
+    "href": "/docs/api/triu-indices-from/",
+    "label": "flops.triu_indices_from"
   },
   "true_divide": {
     "canonical_name": "true_divide",
-    "href": "/docs/api/ops/true_divide/",
-    "label": "fnp.true_divide"
+    "href": "/docs/api/true-divide/",
+    "label": "flops.true_divide"
   },
   "trunc": {
     "canonical_name": "trunc",
-    "href": "/docs/api/ops/trunc/",
-    "label": "fnp.trunc"
+    "href": "/docs/api/trunc/",
+    "label": "flops.trunc"
   },
   "typename": {
     "canonical_name": "typename",
-    "href": "/docs/api/ops/typename/",
-    "label": "fnp.typename"
+    "href": "/docs/api/typename/",
+    "label": "flops.typename"
   },
   "union1d": {
     "canonical_name": "union1d",
-    "href": "/docs/api/ops/union1d/",
-    "label": "fnp.union1d"
+    "href": "/docs/api/union1d/",
+    "label": "flops.union1d"
   },
   "unique": {
     "canonical_name": "unique",
-    "href": "/docs/api/ops/unique/",
-    "label": "fnp.unique"
+    "href": "/docs/api/unique/",
+    "label": "flops.unique"
   },
   "unique_all": {
     "canonical_name": "unique_all",
-    "href": "/docs/api/ops/unique_all/",
-    "label": "fnp.unique_all"
+    "href": "/docs/api/unique-all/",
+    "label": "flops.unique_all"
   },
   "unique_counts": {
     "canonical_name": "unique_counts",
-    "href": "/docs/api/ops/unique_counts/",
-    "label": "fnp.unique_counts"
+    "href": "/docs/api/unique-counts/",
+    "label": "flops.unique_counts"
   },
   "unique_inverse": {
     "canonical_name": "unique_inverse",
-    "href": "/docs/api/ops/unique_inverse/",
-    "label": "fnp.unique_inverse"
+    "href": "/docs/api/unique-inverse/",
+    "label": "flops.unique_inverse"
   },
   "unique_values": {
     "canonical_name": "unique_values",
-    "href": "/docs/api/ops/unique_values/",
-    "label": "fnp.unique_values"
+    "href": "/docs/api/unique-values/",
+    "label": "flops.unique_values"
   },
   "unpackbits": {
     "canonical_name": "unpackbits",
-    "href": "/docs/api/ops/unpackbits/",
-    "label": "fnp.unpackbits"
+    "href": "/docs/api/unpackbits/",
+    "label": "flops.unpackbits"
   },
   "unravel_index": {
     "canonical_name": "unravel_index",
-    "href": "/docs/api/ops/unravel_index/",
-    "label": "fnp.unravel_index"
+    "href": "/docs/api/unravel-index/",
+    "label": "flops.unravel_index"
   },
   "unstack": {
     "canonical_name": "unstack",
-    "href": "/docs/api/ops/unstack/",
-    "label": "fnp.unstack"
+    "href": "/docs/api/unstack/",
+    "label": "flops.unstack"
   },
   "unwrap": {
     "canonical_name": "unwrap",
-    "href": "/docs/api/ops/unwrap/",
-    "label": "fnp.unwrap"
+    "href": "/docs/api/unwrap/",
+    "label": "flops.unwrap"
   },
   "vander": {
     "canonical_name": "vander",
-    "href": "/docs/api/ops/vander/",
-    "label": "fnp.vander"
+    "href": "/docs/api/vander/",
+    "label": "flops.vander"
   },
   "var": {
     "canonical_name": "var",
-    "href": "/docs/api/ops/var/",
-    "label": "fnp.var"
+    "href": "/docs/api/var/",
+    "label": "flops.var"
   },
   "vdot": {
     "canonical_name": "vdot",
-    "href": "/docs/api/ops/vdot/",
-    "label": "fnp.vdot"
+    "href": "/docs/api/vdot/",
+    "label": "flops.vdot"
   },
   "vecdot": {
     "canonical_name": "vecdot",
-    "href": "/docs/api/ops/vecdot/",
-    "label": "fnp.vecdot"
+    "href": "/docs/api/vecdot/",
+    "label": "flops.vecdot"
   },
   "vecmat": {
     "canonical_name": "vecmat",
-    "href": "/docs/api/ops/vecmat/",
-    "label": "fnp.vecmat"
+    "href": "/docs/api/vecmat/",
+    "label": "flops.vecmat"
   },
   "vsplit": {
     "canonical_name": "vsplit",
-    "href": "/docs/api/ops/vsplit/",
-    "label": "fnp.vsplit"
+    "href": "/docs/api/vsplit/",
+    "label": "flops.vsplit"
   },
   "vstack": {
     "canonical_name": "vstack",
-    "href": "/docs/api/ops/vstack/",
-    "label": "fnp.vstack"
+    "href": "/docs/api/vstack/",
+    "label": "flops.vstack"
   },
   "where": {
     "canonical_name": "where",
-    "href": "/docs/api/ops/where/",
-    "label": "fnp.where"
+    "href": "/docs/api/where/",
+    "label": "flops.where"
   },
   "zeros": {
     "canonical_name": "zeros",
-    "href": "/docs/api/ops/zeros/",
-    "label": "fnp.zeros"
+    "href": "/docs/api/zeros/",
+    "label": "flops.zeros"
   },
   "zeros_like": {
     "canonical_name": "zeros_like",
-    "href": "/docs/api/ops/zeros_like/",
-    "label": "fnp.zeros_like"
+    "href": "/docs/api/zeros-like/",
+    "label": "flops.zeros_like"
   }
 }

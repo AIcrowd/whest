@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/array_split/",
+  "detail_href": "/docs/api/array-split/",
   "detail_json_href": "/api-data/ops/array_split.json",
   "docs": {
     "sections": [
@@ -83,7 +83,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/split",
-                "label": "fnp.split",
+                "label": "flops.split",
                 "original_target": "split",
                 "role": "",
                 "target": "split",
@@ -102,17 +102,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(8.0)"
+                "text": "x = flops.arange(8.0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_split(x, 3)"
+                "text": "flops.array_split(x, 3)"
               },
               {
                 "kind": "output",
@@ -126,12 +126,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(9)"
+                "text": "x = flops.arange(9)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_split(x, 4)"
+                "text": "flops.array_split(x, 4)"
               },
               {
                 "kind": "output",
@@ -149,12 +149,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.array_split",
+    "flopscope_ref": "flops.array_split",
     "module": "numpy",
     "name": "array_split",
     "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output).",
     "numpy_ref": "np.array_split",
-    "signature": "fnp.array_split(ary, indices_or_sections, axis=0)",
+    "signature": "flops.array_split(ary, indices_or_sections, axis=0)",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays.",
     "weight": 0.0

@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.truncnorm.ppf",
+  "canonical_path": "stats/truncnorm/ppf",
   "category": "counted_custom",
   "cost_formula": "50n",
   "cost_formula_latex": "$50n$",
@@ -170,14 +171,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.stats.truncnorm.ppf",
+  "flopscope_ref": "flops.stats.truncnorm.ppf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_truncnorm.py#L95",
-  "href": "/docs/api/ops/stats-truncnorm-ppf/",
+  "href": "/docs/api/stats/truncnorm/ppf/",
+  "legacy_href": "/docs/api/ops/stats-truncnorm-ppf/",
   "module": "flopscope.stats",
   "name": "stats.truncnorm.ppf",
   "next": {
-    "href": "/docs/api/ops/stats-uniform-cdf/",
-    "label": "fnp.stats.uniform.cdf"
+    "href": "/docs/api/stats/uniform/cdf/",
+    "label": "flops.stats.uniform.cdf"
   },
   "notes": "Truncated normal PPF; cost = numel(input).",
   "notes_sections": [],
@@ -214,8 +216,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-truncnorm-pdf/",
-    "label": "fnp.stats.truncnorm.pdf"
+    "href": "/docs/api/stats/truncnorm/pdf/",
+    "label": "flops.stats.truncnorm.pdf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.html",
@@ -229,7 +231,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.stats.truncnorm.ppf(q, a, b, loc=0, scale=1)",
+  "signature": "flops.stats.truncnorm.ppf(q, a, b, loc=0, scale=1)",
   "slug": "stats-truncnorm-ppf",
   "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",

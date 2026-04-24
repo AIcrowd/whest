@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/tensordot/",
+  "detail_href": "/docs/api/tensordot/",
   "detail_json_href": "/api-data/ops/tensordot.json",
   "docs": {
     "sections": [
@@ -274,7 +274,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/dot",
-                "label": "fnp.dot",
+                "label": "flops.dot",
                 "original_target": "dot",
                 "role": "",
                 "target": "dot",
@@ -285,7 +285,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/einsum",
-                "label": "fnp.einsum",
+                "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
@@ -491,7 +491,7 @@
                 "href": "/docs/api/ops/einsum",
                 "kind": "link",
                 "target": "einsum",
-                "text": "fnp.einsum"
+                "text": "flops.einsum"
               },
               {
                 "kind": "text",
@@ -528,17 +528,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a_0 = fnp.array([[1, 2], [3, 4]])"
+                "text": "a_0 = flops.array([[1, 2], [3, 4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b_0 = fnp.array([[5, 6], [7, 8]])"
+                "text": "b_0 = flops.array([[5, 6], [7, 8]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c_0 = fnp.tensordot(a_0, b_0, axes=0)"
+                "text": "c_0 = flops.tensordot(a_0, b_0, axes=0)"
               },
               {
                 "kind": "input",
@@ -603,17 +603,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.arange(60.).reshape(3,4,5)"
+                "text": "a = flops.arange(60.).reshape(3,4,5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.arange(24.).reshape(4,3,2)"
+                "text": "b = flops.arange(24.).reshape(4,3,2)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = fnp.tensordot(a,b, axes=([1,0],[0,1]))"
+                "text": "c = flops.tensordot(a,b, axes=([1,0],[0,1]))"
               },
               {
                 "kind": "input",
@@ -666,7 +666,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "d = fnp.zeros((5,2))"
+                "text": "d = flops.zeros((5,2))"
               },
               {
                 "kind": "input",
@@ -735,7 +735,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array(range(1, 9))"
+                "text": "a = flops.array(range(1, 9))"
               },
               {
                 "kind": "input",
@@ -745,7 +745,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = fnp.array(('a', 'b', 'c', 'd'), dtype=object)"
+                "text": "A = flops.array(('a', 'b', 'c', 'd'), dtype=object)"
               },
               {
                 "kind": "input",
@@ -789,7 +789,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.tensordot(a, A) # third argument default is 2 for double-contraction"
+                "text": "flops.tensordot(a, A) # third argument default is 2 for double-contraction"
               },
               {
                 "kind": "output",
@@ -803,7 +803,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.tensordot(a, A, 1)"
+                "text": "flops.tensordot(a, A, 1)"
               },
               {
                 "kind": "output",
@@ -829,7 +829,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.tensordot(a, A, 0) # tensor product (result too long to incl.)"
+                "text": "flops.tensordot(a, A, 0) # tensor product (result too long to incl.)"
               },
               {
                 "kind": "output",
@@ -852,7 +852,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.tensordot(a, A, (0, 1))"
+                "text": "flops.tensordot(a, A, (0, 1))"
               },
               {
                 "kind": "output",
@@ -878,7 +878,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.tensordot(a, A, (2, 1))"
+                "text": "flops.tensordot(a, A, (2, 1))"
               },
               {
                 "kind": "output",
@@ -904,7 +904,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.tensordot(a, A, ((0, 1), (0, 1)))"
+                "text": "flops.tensordot(a, A, ((0, 1), (0, 1)))"
               },
               {
                 "kind": "output",
@@ -918,7 +918,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.tensordot(a, A, ((2, 1), (1, 0)))"
+                "text": "flops.tensordot(a, A, ((2, 1), (1, 0)))"
               },
               {
                 "kind": "output",
@@ -936,12 +936,12 @@
     "category": "counted_custom",
     "cost_formula": "product of contracted dims * output size",
     "cost_formula_latex": "$\\prod_i d_i$",
-    "flopscope_ref": "fnp.tensordot",
+    "flopscope_ref": "flops.tensordot",
     "module": "numpy",
     "name": "tensordot",
     "notes": "Tensor dot product along specified axes.",
     "numpy_ref": "np.tensordot",
-    "signature": "fnp.tensordot(a, b, axes=2)",
+    "signature": "flops.tensordot(a, b, axes=2)",
     "status": "supported",
     "summary": "Compute tensor dot product along specified axes.",
     "weight": 1.0

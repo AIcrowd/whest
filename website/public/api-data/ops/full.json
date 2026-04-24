@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/full/",
+  "detail_href": "/docs/api/full/",
   "detail_json_href": "/api-data/ops/full.json",
   "docs": {
     "sections": [
@@ -115,7 +115,7 @@
                             "inline": [
                               {
                                 "kind": "code",
-                                "text": "fnp.array(fill_value).dtype"
+                                "text": "flops.array(fill_value).dtype"
                               },
                               {
                                 "kind": "text",
@@ -345,7 +345,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/full_like",
-                "label": "fnp.full_like",
+                "label": "flops.full_like",
                 "original_target": "full_like",
                 "role": "",
                 "target": "full_like",
@@ -361,7 +361,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/empty",
-                "label": "fnp.empty",
+                "label": "flops.empty",
                 "original_target": "empty",
                 "role": "",
                 "target": "empty",
@@ -377,7 +377,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/ones",
-                "label": "fnp.ones",
+                "label": "flops.ones",
                 "original_target": "ones",
                 "role": "",
                 "target": "ones",
@@ -393,7 +393,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/zeros",
-                "label": "fnp.zeros",
+                "label": "flops.zeros",
                 "original_target": "zeros",
                 "role": "",
                 "target": "zeros",
@@ -412,12 +412,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.full((2, 2), fnp.inf)"
+                "text": "flops.full((2, 2), flops.inf)"
               },
               {
                 "kind": "output",
@@ -430,7 +430,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.full((2, 2), 10)"
+                "text": "flops.full((2, 2), 10)"
               },
               {
                 "kind": "output",
@@ -448,7 +448,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.full((2, 2), [1, 2])"
+                "text": "flops.full((2, 2), [1, 2])"
               },
               {
                 "kind": "output",
@@ -470,12 +470,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.full",
+    "flopscope_ref": "flops.full",
     "module": "numpy",
     "name": "full",
     "notes": "Create array filled with scalar value. Cost: num copied.",
     "numpy_ref": "np.full",
-    "signature": "fnp.full(shape, fill_value, dtype=None, order='C', *, device=None, like=None)",
+    "signature": "flops.full(shape, fill_value, dtype=None, order='C', *, device=None, like=None)",
     "status": "supported",
     "summary": "Return a new array of given shape and type, filled with `fill_value`.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/promote_types/",
+  "detail_href": "/docs/api/promote-types/",
   "detail_json_href": "/api-data/ops/promote_types.json",
   "docs": {
     "sections": [
@@ -144,7 +144,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/result_type",
-                "label": "fnp.result_type",
+                "label": "flops.result_type",
                 "original_target": "result_type",
                 "role": "",
                 "target": "result_type",
@@ -166,7 +166,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/can_cast",
-                "label": "fnp.can_cast",
+                "label": "flops.can_cast",
                 "original_target": "can_cast",
                 "role": "",
                 "target": "can_cast",
@@ -191,7 +191,7 @@
                 "href": "/docs/api/ops/result_type",
                 "kind": "link",
                 "target": "result_type",
-                "text": "fnp.result_type"
+                "text": "flops.result_type"
               },
               {
                 "kind": "text",
@@ -238,26 +238,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.promote_types('f4', 'f8')"
-              },
-              {
-                "kind": "output",
-                "text": "dtype('float64')"
-              }
-            ],
-            "type": "doctest_block"
-          },
-          {
-            "lines": [
-              {
-                "kind": "input",
-                "prompt": ">>>",
-                "text": "fnp.promote_types('i8', 'f4')"
+                "text": "flops.promote_types('f4', 'f8')"
               },
               {
                 "kind": "output",
@@ -271,7 +257,21 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.promote_types('>i8', '<c8')"
+                "text": "flops.promote_types('i8', 'f4')"
+              },
+              {
+                "kind": "output",
+                "text": "dtype('float64')"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "flops.promote_types('>i8', '<c8')"
               },
               {
                 "kind": "output",
@@ -285,7 +285,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.promote_types('i4', 'S8')"
+                "text": "flops.promote_types('i4', 'S8')"
               },
               {
                 "kind": "output",
@@ -308,7 +308,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p = fnp.promote_types"
+                "text": "p = flops.promote_types"
               },
               {
                 "kind": "input",
@@ -340,12 +340,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.promote_types",
+    "flopscope_ref": "flops.promote_types",
     "module": "numpy",
     "name": "promote_types",
     "notes": "Return smallest type to which both types may be safely cast.",
     "numpy_ref": "np.promote_types",
-    "signature": "fnp.promote_types(*args, **kwargs)",
+    "signature": "flops.promote_types(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the data type with the smallest size and smallest scalar kind to which both ``type1`` and ``type2`` may be safely cast. The returned data type is always considered \"canonical\", this mainly means that the promoted dtype will always be in native byte order.",
     "weight": 0.0

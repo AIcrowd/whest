@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.uniform.ppf",
+  "canonical_path": "stats/uniform/ppf",
   "category": "counted_custom",
   "cost_formula": "3n",
   "cost_formula_latex": "$3n$",
@@ -170,14 +171,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.stats.uniform.ppf",
+  "flopscope_ref": "flops.stats.uniform.ppf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_uniform.py#L82",
-  "href": "/docs/api/ops/stats-uniform-ppf/",
+  "href": "/docs/api/stats/uniform/ppf/",
+  "legacy_href": "/docs/api/ops/stats-uniform-ppf/",
   "module": "flopscope.stats",
   "name": "stats.uniform.ppf",
   "next": {
-    "href": "/docs/api/ops/std/",
-    "label": "fnp.std"
+    "href": "/docs/api/std/",
+    "label": "flops.std"
   },
   "notes": "Uniform PPF; cost = numel(input).",
   "notes_sections": [],
@@ -214,8 +216,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-uniform-pdf/",
-    "label": "fnp.stats.uniform.pdf"
+    "href": "/docs/api/stats/uniform/pdf/",
+    "label": "flops.stats.uniform.pdf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.uniform.html",
@@ -229,7 +231,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.stats.uniform.ppf(q, loc=0, scale=1)",
+  "signature": "flops.stats.uniform.ppf(q, loc=0, scale=1)",
   "slug": "stats-uniform-ppf",
   "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",

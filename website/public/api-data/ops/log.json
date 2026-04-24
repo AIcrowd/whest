@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/log/",
+  "detail_href": "/docs/api/log/",
   "detail_json_href": "/api-data/ops/log.json",
   "docs": {
     "sections": [
@@ -327,7 +327,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log10",
-                "label": "fnp.log10",
+                "label": "flops.log10",
                 "original_target": "log10",
                 "role": "",
                 "target": "log10",
@@ -338,7 +338,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log2",
-                "label": "fnp.log2",
+                "label": "flops.log2",
                 "original_target": "log2",
                 "role": "",
                 "target": "log2",
@@ -349,7 +349,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log1p",
-                "label": "fnp.log1p",
+                "label": "flops.log1p",
                 "original_target": "log1p",
                 "role": "",
                 "target": "log1p",
@@ -548,12 +548,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.log([1, fnp.e, fnp.e**2, 0])"
+                "text": "flops.log([1, flops.e, flops.e**2, 0])"
               },
               {
                 "kind": "output",
@@ -571,12 +571,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.log",
+    "flopscope_ref": "flops.log",
     "module": "numpy",
     "name": "log",
     "notes": "Element-wise natural logarithm.",
     "numpy_ref": "np.log",
-    "signature": "fnp.log(*args, **kwargs)",
+    "signature": "flops.log(*args, **kwargs)",
     "status": "supported",
     "summary": "Natural logarithm, element-wise.",
     "weight": 16.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/cumprod/",
+  "detail_href": "/docs/api/cumprod/",
   "detail_json_href": "/api-data/ops/cumprod.json",
   "docs": {
     "sections": [
@@ -238,7 +238,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/cumulative_prod",
-                "label": "fnp.cumulative_prod",
+                "label": "flops.cumulative_prod",
                 "original_target": "cumulative_prod",
                 "role": "",
                 "target": "cumulative_prod",
@@ -282,17 +282,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([1,2,3])"
+                "text": "a = flops.array([1,2,3])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.cumprod(a) # intermediate results 1, 1*2"
+                "text": "flops.cumprod(a) # intermediate results 1, 1*2"
               },
               {
                 "kind": "input",
@@ -306,12 +306,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, 2, 3], [4, 5, 6]])"
+                "text": "a = flops.array([[1, 2, 3], [4, 5, 6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.cumprod(a, dtype=float) # specify type of output"
+                "text": "flops.cumprod(a, dtype=float) # specify type of output"
               },
               {
                 "kind": "output",
@@ -342,7 +342,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.cumprod(a, axis=0)"
+                "text": "flops.cumprod(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -377,7 +377,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.cumprod(a,axis=1)"
+                "text": "flops.cumprod(a,axis=1)"
               },
               {
                 "kind": "output",
@@ -399,12 +399,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "fnp.cumprod",
+    "flopscope_ref": "flops.cumprod",
     "module": "numpy",
     "name": "cumprod",
     "notes": "Cumulative product of array elements.",
     "numpy_ref": "np.cumprod",
-    "signature": "fnp.cumprod(a, axis=None, dtype=None, out=None)",
+    "signature": "flops.cumprod(a, axis=None, dtype=None, out=None)",
     "status": "supported",
     "summary": "Return the cumulative product of elements along a given axis.",
     "weight": 1.0

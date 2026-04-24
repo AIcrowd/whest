@@ -334,7 +334,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/ceil",
-              "label": "fnp.ceil",
+              "label": "flops.ceil",
               "original_target": "ceil",
               "role": "",
               "target": "ceil",
@@ -345,7 +345,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/floor",
-              "label": "fnp.floor",
+              "label": "flops.floor",
               "original_target": "floor",
               "role": "",
               "target": "floor",
@@ -356,7 +356,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/rint",
-              "label": "fnp.rint",
+              "label": "flops.rint",
               "original_target": "rint",
               "role": "",
               "target": "rint",
@@ -367,7 +367,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/trunc",
-              "label": "fnp.trunc",
+              "label": "flops.trunc",
               "original_target": "fix",
               "role": "",
               "target": "trunc",
@@ -386,17 +386,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])"
+              "text": "a = flops.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.trunc(a)"
+              "text": "flops.trunc(a)"
             },
             {
               "kind": "output",
@@ -410,6 +410,7 @@
     }
   ],
   "canonical_name": "trunc",
+  "canonical_path": "trunc",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -427,19 +428,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nfnp.trunc(a)",
+    "code": "import flopscope as flops\n\na = flops.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nflops.trunc(a)",
     "output": "array([-1., -1., -0.,  0.,  1.,  1.,  2.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.trunc",
+  "flopscope_ref": "flops.trunc",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/trunc/",
+  "href": "/docs/api/trunc/",
+  "legacy_href": "/docs/api/ops/trunc/",
   "module": "numpy",
   "name": "trunc",
   "next": {
-    "href": "/docs/api/ops/typename/",
-    "label": "fnp.typename"
+    "href": "/docs/api/typename/",
+    "label": "flops.typename"
   },
   "notes": "Truncate toward zero element-wise.",
   "notes_sections": [],
@@ -484,8 +486,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/true_divide/",
-    "label": "fnp.true_divide"
+    "href": "/docs/api/true-divide/",
+    "label": "flops.true_divide"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.trunc.html",
@@ -505,7 +507,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/ceil",
-      "label": "fnp.ceil",
+      "label": "flops.ceil",
       "original_target": "ceil",
       "role": "",
       "target": "ceil",
@@ -516,7 +518,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/floor",
-      "label": "fnp.floor",
+      "label": "flops.floor",
       "original_target": "floor",
       "role": "",
       "target": "floor",
@@ -527,7 +529,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/rint",
-      "label": "fnp.rint",
+      "label": "flops.rint",
       "original_target": "rint",
       "role": "",
       "target": "rint",
@@ -538,14 +540,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/trunc",
-      "label": "fnp.trunc",
+      "label": "flops.trunc",
       "original_target": "fix",
       "role": "",
       "target": "trunc",
       "unresolved": false
     }
   ],
-  "signature": "fnp.trunc(*args, **kwargs)",
+  "signature": "flops.trunc(*args, **kwargs)",
   "slug": "trunc",
   "summary": "Return the truncated value of the input, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

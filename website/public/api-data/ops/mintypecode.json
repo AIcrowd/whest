@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/mintypecode/",
+  "detail_href": "/docs/api/mintypecode/",
   "detail_json_href": "/api-data/ops/mintypecode.json",
   "docs": {
     "sections": [
@@ -217,12 +217,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.mintypecode(['d', 'f', 'S'])"
+                "text": "flops.mintypecode(['d', 'f', 'S'])"
               },
               {
                 "kind": "output",
@@ -231,12 +231,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([1.1, 2-3.j])"
+                "text": "x = flops.array([1.1, 2-3.j])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.mintypecode(x)"
+                "text": "flops.mintypecode(x)"
               },
               {
                 "kind": "output",
@@ -250,7 +250,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.mintypecode('abceh', default='G')"
+                "text": "flops.mintypecode('abceh', default='G')"
               },
               {
                 "kind": "output",
@@ -268,12 +268,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.mintypecode",
+    "flopscope_ref": "flops.mintypecode",
     "module": "numpy",
     "name": "mintypecode",
     "notes": "Return minimum data type character that can satisfy all given types.",
     "numpy_ref": "np.mintypecode",
-    "signature": "fnp.mintypecode(typechars, typeset='GDFgdf', default='d')",
+    "signature": "flops.mintypecode(typechars, typeset='GDFgdf', default='d')",
     "status": "supported",
     "summary": "Return the character for the minimum-size type to which given types can be safely cast.",
     "weight": 0.0

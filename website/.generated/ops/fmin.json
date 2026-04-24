@@ -353,7 +353,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/fmax",
-              "label": "fnp.fmax",
+              "label": "flops.fmax",
               "original_target": "fmax",
               "role": "",
               "target": "fmax",
@@ -369,7 +369,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/minimum",
-              "label": "fnp.minimum",
+              "label": "flops.minimum",
               "original_target": "minimum",
               "role": "",
               "target": "minimum",
@@ -385,7 +385,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/min",
-              "label": "fnp.min",
+              "label": "flops.min",
               "original_target": "amin",
               "role": "",
               "target": "min",
@@ -401,7 +401,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/nanmin",
-              "label": "fnp.nanmin",
+              "label": "flops.nanmin",
               "original_target": "nanmin",
               "role": "",
               "target": "nanmin",
@@ -412,7 +412,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/maximum",
-              "label": "fnp.maximum",
+              "label": "flops.maximum",
               "original_target": "maximum",
               "role": "",
               "target": "maximum",
@@ -423,7 +423,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/max",
-              "label": "fnp.max",
+              "label": "flops.max",
               "original_target": "amax",
               "role": "",
               "target": "max",
@@ -434,7 +434,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanmax",
-              "label": "fnp.nanmax",
+              "label": "flops.nanmax",
               "original_target": "nanmax",
               "role": "",
               "target": "nanmax",
@@ -459,7 +459,7 @@
               "href": "",
               "kind": "link",
               "target": "where(x1 <= x2, x1, x2)",
-              "text": "fnp.where(x1 <= x2, x1, x2)"
+              "text": "flops.where(x1 <= x2, x1, x2)"
             },
             {
               "kind": "text",
@@ -478,12 +478,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.fmin([2, 3, 4], [1, 5, 2])"
+              "text": "flops.fmin([2, 3, 4], [1, 5, 2])"
             },
             {
               "kind": "output",
@@ -497,7 +497,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.fmin(fnp.eye(2), [0.5, 2])"
+              "text": "flops.fmin(flops.eye(2), [0.5, 2])"
             },
             {
               "kind": "output",
@@ -515,7 +515,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.fmin([fnp.nan, 0, fnp.nan],[0, fnp.nan, fnp.nan])"
+              "text": "flops.fmin([flops.nan, 0, flops.nan],[0, flops.nan, flops.nan])"
             },
             {
               "kind": "output",
@@ -529,6 +529,7 @@
     }
   ],
   "canonical_name": "fmin",
+  "canonical_path": "fmin",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -546,23 +547,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.fmin([2, 3, 4], [1, 5, 2])\n\nfnp.fmin(fnp.eye(2), [0.5, 2])\n\nfnp.fmin([fnp.nan, 0, fnp.nan],[0, fnp.nan, fnp.nan])",
+    "code": "import flopscope as flops\n\nflops.fmin([2, 3, 4], [1, 5, 2])\n\nflops.fmin(flops.eye(2), [0.5, 2])\n\nflops.fmin([flops.nan, 0, flops.nan],[0, flops.nan, flops.nan])",
     "output": "array([1, 3, 2])\n\narray([[ 0.5,  0. ],\n       [ 0. ,  1. ]])\n\narray([ 0.,  0., nan])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.fmin",
+  "flopscope_ref": "flops.fmin",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/ops/fmin/",
+  "href": "/docs/api/fmin/",
+  "legacy_href": "/docs/api/ops/fmin/",
   "module": "numpy",
   "name": "fmin",
   "next": {
-    "href": "/docs/api/ops/fmod/",
-    "label": "fnp.fmod"
+    "href": "/docs/api/fmod/",
+    "label": "flops.fmod"
   },
   "notes": "Element-wise minimum ignoring NaN.",
   "notes_sections": [
-    "The fmin is equivalent to ``fnp.where(x1 <= x2, x1, x2)`` when neither x1 nor x2 are NaNs, but it is faster and does proper broadcasting."
+    "The fmin is equivalent to ``flops.where(x1 <= x2, x1, x2)`` when neither x1 nor x2 are NaNs, but it is faster and does proper broadcasting."
   ],
   "numpy_ref": "np.fmin",
   "parameters": [
@@ -607,8 +609,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fmax/",
-    "label": "fnp.fmax"
+    "href": "/docs/api/fmax/",
+    "label": "flops.fmax"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fmin.html",
@@ -633,7 +635,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/fmax",
-      "label": "fnp.fmax",
+      "label": "flops.fmax",
       "original_target": "fmax",
       "role": "",
       "target": "fmax",
@@ -649,7 +651,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/minimum",
-      "label": "fnp.minimum",
+      "label": "flops.minimum",
       "original_target": "minimum",
       "role": "",
       "target": "minimum",
@@ -665,7 +667,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/min",
-      "label": "fnp.min",
+      "label": "flops.min",
       "original_target": "amin",
       "role": "",
       "target": "min",
@@ -681,7 +683,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/nanmin",
-      "label": "fnp.nanmin",
+      "label": "flops.nanmin",
       "original_target": "nanmin",
       "role": "",
       "target": "nanmin",
@@ -692,7 +694,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/maximum",
-      "label": "fnp.maximum",
+      "label": "flops.maximum",
       "original_target": "maximum",
       "role": "",
       "target": "maximum",
@@ -703,7 +705,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/max",
-      "label": "fnp.max",
+      "label": "flops.max",
       "original_target": "amax",
       "role": "",
       "target": "max",
@@ -714,14 +716,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanmax",
-      "label": "fnp.nanmax",
+      "label": "flops.nanmax",
       "original_target": "nanmax",
       "role": "",
       "target": "nanmax",
       "unresolved": false
     }
   ],
-  "signature": "fnp.fmin(*args, **kwargs)",
+  "signature": "flops.fmin(*args, **kwargs)",
   "slug": "fmin",
   "summary": "Element-wise minimum of array elements.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

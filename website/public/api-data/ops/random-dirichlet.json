@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-dirichlet/",
+  "detail_href": "/docs/api/random/dirichlet/",
   "detail_json_href": "/api-data/ops/random-dirichlet.json",
   "docs": {
     "sections": [
@@ -92,7 +92,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.dirichlet`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.dirichlet`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -500,7 +500,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = fnp.random.dirichlet((10, 5, 3), 20).transpose()"
+                "text": "s = flops.random.dirichlet((10, 5, 3), 20).transpose()"
               }
             ],
             "type": "doctest_block"
@@ -544,12 +544,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.dirichlet",
+    "flopscope_ref": "flops.random.dirichlet",
     "module": "numpy.random",
     "name": "random.dirichlet",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.dirichlet",
-    "signature": "fnp.random.dirichlet(alpha, size=None)",
+    "signature": "flops.random.dirichlet(alpha, size=None)",
     "status": "supported",
     "summary": "Draw samples from the Dirichlet distribution.",
     "weight": 16.0

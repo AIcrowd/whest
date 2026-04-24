@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/place/",
+  "detail_href": "/docs/api/place/",
   "detail_json_href": "/api-data/ops/place.json",
   "docs": {
     "sections": [
@@ -30,7 +30,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "copyto(arr, vals, where=mask)",
-                "text": "fnp.copyto(arr, vals, where=mask)"
+                "text": "flops.copyto(arr, vals, where=mask)"
               },
               {
                 "kind": "text",
@@ -285,7 +285,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/copyto",
-                "label": "fnp.copyto",
+                "label": "flops.copyto",
                 "original_target": "copyto",
                 "role": "",
                 "target": "copyto",
@@ -296,7 +296,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/put",
-                "label": "fnp.put",
+                "label": "flops.put",
                 "original_target": "put",
                 "role": "",
                 "target": "put",
@@ -307,7 +307,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/take",
-                "label": "fnp.take",
+                "label": "flops.take",
                 "original_target": "take",
                 "role": "",
                 "target": "take",
@@ -318,7 +318,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/extract",
-                "label": "fnp.extract",
+                "label": "flops.extract",
                 "original_target": "extract",
                 "role": "",
                 "target": "extract",
@@ -337,17 +337,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = fnp.arange(6).reshape(2, 3)"
+                "text": "arr = flops.arange(6).reshape(2, 3)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.place(arr, arr>2, [44, 55])"
+                "text": "flops.place(arr, arr>2, [44, 55])"
               },
               {
                 "kind": "input",
@@ -374,12 +374,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.place",
+    "flopscope_ref": "flops.place",
     "module": "numpy",
     "name": "place",
     "notes": "Change elements satisfying condition. Cost: numel(input).",
     "numpy_ref": "np.place",
-    "signature": "fnp.place(arr, mask, vals, *args, **kwargs)",
+    "signature": "flops.place(arr, mask, vals, *args, **kwargs)",
     "status": "supported",
     "summary": "Change elements of an array based on conditional and input values.",
     "weight": 4.0

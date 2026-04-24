@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-pinv/",
+  "detail_href": "/docs/api/linalg/pinv/",
   "detail_json_href": "/api-data/ops/linalg-pinv.json",
   "docs": {
     "sections": [
@@ -597,12 +597,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = fnp.random.default_rng()"
+                "text": "rng = flops.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -612,12 +612,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "B = fnp.linalg.pinv(a)"
+                "text": "B = flops.linalg.pinv(a)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose(a, fnp.dot(a, fnp.dot(B, a)))"
+                "text": "flops.allclose(a, flops.dot(a, flops.dot(B, a)))"
               },
               {
                 "kind": "output",
@@ -626,7 +626,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose(B, fnp.dot(B, fnp.dot(a, B)))"
+                "text": "flops.allclose(B, flops.dot(B, flops.dot(a, B)))"
               },
               {
                 "kind": "output",
@@ -644,12 +644,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
-    "flopscope_ref": "fnp.linalg.pinv",
+    "flopscope_ref": "flops.linalg.pinv",
     "module": "numpy.linalg",
     "name": "linalg.pinv",
     "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
     "numpy_ref": "np.linalg.pinv",
-    "signature": "fnp.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
+    "signature": "flops.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
     "status": "supported",
     "summary": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.",
     "weight": 4.0

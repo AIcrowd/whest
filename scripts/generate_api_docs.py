@@ -30,6 +30,7 @@ from pathlib import Path
 # Paths
 # ---------------------------------------------------------------------------
 ROOT = Path(__file__).resolve().parent.parent
+SRC_ROOT = (ROOT / "src").resolve()
 WEBSITE = ROOT / "website"
 PUBLIC_DIR = WEBSITE / "public"
 API_DATA_DIR = PUBLIC_DIR / "api-data" / "ops"
@@ -51,11 +52,39 @@ WEIGHTS_CSV_PATH = ROOT / "src" / "flopscope" / "data" / "weights.csv"
 # ---------------------------------------------------------------------------
 
 
-def load_registry() -> dict[str, dict]:
-    sys.path.insert(0, str(ROOT / "src"))
-    from flopscope._registry import REGISTRY  # type: ignore
+def _module_is_from_local_checkout(module: object | None) -> bool:
+    module_file = getattr(module, "__file__", None)
+    if not module_file:
+        return False
 
-    return REGISTRY
+    try:
+        return Path(module_file).resolve().is_relative_to(SRC_ROOT)
+    except OSError:
+        return False
+
+
+def _import_local_flopscope_module(module_name: str):
+    src_root = str(SRC_ROOT)
+    if src_root not in sys.path:
+        sys.path.insert(0, src_root)
+
+    root_module = sys.modules.get('flopscope')
+    if root_module is not None and not _module_is_from_local_checkout(root_module):
+        for name in list(sys.modules):
+            if name == "flopscope" or name.startswith("flopscope."):
+                sys.modules.pop(name, None)
+
+    module = importlib.import_module(module_name)
+    if not _module_is_from_local_checkout(module):
+        raise RuntimeError(
+            f"Failed to import {module_name} from local checkout under {SRC_ROOT}"
+        )
+    return module
+
+
+def load_registry() -> dict[str, dict]:
+    registry_module = _import_local_flopscope_module("flopscope._registry")
+    return registry_module.REGISTRY
 
 
 # ---------------------------------------------------------------------------
@@ -111,11 +140,11 @@ GENERATED_PAGES: dict[str, dict] = {
 
             ```python
             import flopscope as flops
-            import flopscope.numpy as fnp
+
             with flops.BudgetContext(flop_budget=1_000_000) as budget:
-                signal = fnp.random.randn(1024)    # free
-                spectrum = fnp.fft.fft(signal)     # 5 * 1024 * 10 = 51,200 FLOPs
-                freqs = fnp.fft.fftfreq(1024)      # free
+                signal = flops.random.randn(1024)    # free
+                spectrum = flops.fft.fft(signal)     # 5 * 1024 * 10 = 51,200 FLOPs
+                freqs = flops.fft.fftfreq(1024)      # free
                 print(f"FFT cost: {budget.flops_used:,}")  # 51,200
             ```
 
@@ -163,11 +192,11 @@ GENERATED_PAGES: dict[str, dict] = {
 
             ```python
             import flopscope as flops
-            import flopscope.numpy as fnp
+
             with flops.BudgetContext(flop_budget=1_000_000) as budget:
-                coeffs = fnp.array([1.0, -3.0, 2.0])  # x^2 - 3x + 2 (free)
-                x = fnp.linspace(0, 5, 100)            # free
-                y = fnp.polyval(coeffs, x)             # 2 * 100 * 2 = 400 FLOPs
+                coeffs = flops.array([1.0, -3.0, 2.0])  # x^2 - 3x + 2 (free)
+                x = flops.linspace(0, 5, 100)            # free
+                y = flops.polyval(coeffs, x)             # 2 * 100 * 2 = 400 FLOPs
                 print(f"polyval cost: {budget.flops_used}")  # 400
             ```
 
@@ -210,12 +239,12 @@ GENERATED_PAGES: dict[str, dict] = {
 
             ```python
             import flopscope as flops
-            import flopscope.numpy as fnp
+
             with flops.BudgetContext(flop_budget=1_000_000) as budget:
-                x = fnp.linspace(-3, 3, 1000)         # free
+                x = flops.linspace(-3, 3, 1000)         # free
                 pdf_vals = flops.stats.norm.pdf(x)       # 10 * 1000 = 10,000 FLOPs
                 cdf_vals = flops.stats.norm.cdf(x)       # 20 * 1000 = 20,000 FLOPs
-                q = fnp.array([0.025, 0.975])           # free
+                q = flops.array([0.025, 0.975])           # free
                 bounds = flops.stats.norm.ppf(q)          # 40 * 2 = 80 FLOPs
                 print(f"Total: {budget.flops_used:,}")  # 30,080
             ```
@@ -259,10 +288,10 @@ GENERATED_PAGES: dict[str, dict] = {
 
             ```python
             import flopscope as flops
-            import flopscope.numpy as fnp
+
             with flops.BudgetContext(flop_budget=1_000_000) as budget:
-                win = fnp.hamming(256)   # 256 FLOPs
-                win2 = fnp.kaiser(256)   # 768 FLOPs (3 * 256)
+                win = flops.hamming(256)   # 256 FLOPs
+                win2 = flops.kaiser(256)   # 768 FLOPs (3 * 256)
                 print(f"Window cost: {budget.flops_used}")  # 1024
             ```
 
@@ -279,7 +308,7 @@ GENERATED_PAGES: dict[str, dict] = {
 EXISTING_PAGES: dict[str, set[str]] = {
     "api/counted-ops.md": set(),  # covers numpy counted ops + einsum + unwrap
     "api/free-ops.md": set(),  # covers numpy free ops
-    "api/symmetric.md": set(),  # covers SymmetricTensor, symmetry helpers, and as_symmetric
+    "api/symmetric.md": set(),  # covers SymmetricTensor, SymmetryInfo, as_symmetric
 }
 
 
@@ -385,11 +414,11 @@ CUSTOM_COSTS: dict[str, tuple[str, str]] = {
     "linalg.eigh": ("n^3", r"$n^3$"),
     "linalg.eigvals": ("n^3", r"$n^3$"),
     "linalg.eigvalsh": ("n^3", r"$n^3$"),
-    "linalg.cross": ("delegates to fnp.cross", r"delegates to `cross`"),
-    "linalg.matmul": ("delegates to fnp.matmul", r"delegates to `matmul`"),
-    "linalg.outer": ("delegates to fnp.outer", r"delegates to `outer`"),
-    "linalg.tensordot": ("delegates to fnp.tensordot", r"delegates to `tensordot`"),
-    "linalg.vecdot": ("delegates to fnp.vecdot", r"delegates to `vecdot`"),
+    "linalg.cross": ("delegates to flops.cross", r"delegates to `cross`"),
+    "linalg.matmul": ("delegates to flops.matmul", r"delegates to `matmul`"),
+    "linalg.outer": ("delegates to flops.outer", r"delegates to `outer`"),
+    "linalg.tensordot": ("delegates to flops.tensordot", r"delegates to `tensordot`"),
+    "linalg.vecdot": ("delegates to flops.vecdot", r"delegates to `vecdot`"),
     "linalg.solve": ("n^3", r"$n^3$"),
     "linalg.inv": ("n^3", r"$n^3$"),
     "linalg.lstsq": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
@@ -484,6 +513,8 @@ class OperationDocRecord:
     canonical_name: str
     slug: str
     href: str
+    canonical_path: str
+    legacy_href: str
     module: str
     area: str
     flopscope_ref: str
@@ -582,6 +613,7 @@ class PublicApiSymbolRecord:
     canonical_name: str
     slug: str
     href: str
+    canonical_path: str
     kind: str
     module: str
     import_path: str
@@ -592,6 +624,8 @@ class PublicApiSymbolRecord:
     source_url: str = ""
     upstream_source_url: str = ""
     related_guides: list[RelatedGuideLink] = field(default_factory=list)
+    members: list[OperationNavLink] = field(default_factory=list)
+    status_note: str = ""
     body_sections: list[dict] | None = None
 
 
@@ -617,7 +651,7 @@ def slug_for_operation(name: str) -> str:
 
 
 def detail_href_for_slug(slug: str) -> str:
-    """Return the canonical docs route for a generated operation page."""
+    """Return the legacy docs route for a generated operation page."""
     return f"/docs/api/ops/{slug}/"
 
 
@@ -629,12 +663,92 @@ def detail_json_href_for_slug(slug: str) -> str:
 CAMEL_BOUNDARY_RE = re.compile(r"(?<=[a-z0-9])(?=[A-Z])")
 
 
+def slug_for_api_segment(name: str) -> str:
+    """Return a URL-safe slug for one public API path segment."""
+    normalized = name.replace("_", "-")
+    normalized = CAMEL_BOUNDARY_RE.sub("-", normalized)
+    normalized = re.sub(r"-{2,}", "-", normalized)
+    return normalized.lower()
+
+
+def canonical_api_path_for_name(name: str) -> str:
+    """Return the canonical docs path key for a public API symbol."""
+    return "/".join(slug_for_api_segment(part) for part in name.split("."))
+
+
+def canonical_api_href_for_name(name: str) -> str:
+    """Return the canonical docs route for a public API symbol."""
+    return f"/docs/api/{canonical_api_path_for_name(name)}/"
+
+
 def slug_for_symbol(name: str) -> str:
     """Return a URL-safe slug for a public API symbol."""
     normalized = name.replace(".", "-").replace("_", "-")
     normalized = CAMEL_BOUNDARY_RE.sub("-", normalized)
     normalized = re.sub(r"-{2,}", "-", normalized)
     return normalized.lower()
+
+
+PUBLIC_API_TOP_LEVEL = (
+    # flopscope-specific primitives (live at ``flopscope.X``)
+    "BudgetContext",
+    "FlopscopeArray",
+    "OpRecord",
+    "PathInfo",
+    "StepInfo",
+    "SymmetricTensor",
+    "SymmetryGroup",
+    "as_symmetric",
+    "budget",
+    "budget_live",
+    "budget_reset",
+    "budget_summary",
+    "budget_summary_dict",
+    "configure",
+    "is_symmetric",
+    "namespace",
+    "symmetrize",
+    # NumPy-shaped helpers exposed under ``flopscope.numpy.X`` that we still
+    # surface as canonical top-level documentation entries.
+    "base_repr",
+    "binary_repr",
+    "broadcast",
+    "clear_einsum_cache",
+    "einsum_cache_info",
+    "errstate",
+    "finfo",
+    "fromfile",
+    "fromregex",
+    "fromstring",
+    "get_printoptions",
+    "geterr",
+    "iinfo",
+    "isnat",
+    "ndenumerate",
+    "ndindex",
+    "nditer",
+    "printoptions",
+    "set_printoptions",
+    "seterr",
+)
+
+PUBLIC_API_MODULES = ("random", "stats", "flops", "testing")
+
+# Maps the user-facing module label (e.g. "random") to the actual python
+# module path (e.g. "flopscope.numpy.random"). The labels match the canonical
+# names used in URLs and aliases (``flops.random.X`` → ``flopscope.numpy.random.X``).
+PUBLIC_API_MODULE_PATHS: dict[str, str] = {
+    "random": "flopscope.numpy.random",
+    "testing": "flopscope.numpy.testing",
+    "stats": "flopscope.stats",
+    "flops": "flopscope.accounting",
+}
+
+
+def _resolve_public_api_module(module_label: str):
+    """Resolve a public API module label to its concrete Python module."""
+    module_path = PUBLIC_API_MODULE_PATHS.get(module_label, f"flopscope.{module_label}")
+    return _import_local_flopscope_module(module_path)
 
 
 def display_type_for_category(category: str) -> str:
@@ -651,12 +765,12 @@ def display_type_for_category(category: str) -> str:
 def flopscope_ref(name: str, module: str) -> str:
     """Derive the flopscope call reference from an op name and registry module."""
     if module == "numpy.linalg":
-        return f"fnp.linalg.{name.removeprefix('linalg.')}"
+        return f"flops.linalg.{name.removeprefix('linalg.')}"
     if module == "numpy.fft":
-        return f"fnp.fft.{name.removeprefix('fft.')}"
+        return f"flops.fft.{name.removeprefix('fft.')}"
     if module == "numpy.random":
-        return f"fnp.random.{name.removeprefix('random.')}"
-    return f"fnp.{name}"
+        return f"flops.random.{name.removeprefix('random.')}"
+    return f"flops.{name}"
 
 
 def numpy_ref(name: str, module: str) -> str:
@@ -673,7 +787,7 @@ def numpy_ref(name: str, module: str) -> str:
 PUBLIC_SYMBOL_GUIDES: dict[str, list[tuple[str, str]]] = {
     "BudgetContext": [
         ("Budget Planning & Debugging", "/docs/guides/budget-planning"),
-        ("How flopscope works", "/docs/understanding/how-flopscope-works"),
+        ("How Flopscope works", "/docs/understanding/how-flopscope-works"),
     ],
     "OpRecord": [("Budget Planning & Debugging", "/docs/guides/budget-planning")],
     "BudgetExhaustedError": [
@@ -690,6 +804,10 @@ PUBLIC_SYMBOL_GUIDES: dict[str, list[tuple[str, str]]] = {
     "SymmetryError": [("Symmetry Savings", "/docs/guides/symmetry")],
     "SymmetryLossWarning": [("Symmetry Savings", "/docs/guides/symmetry")],
     "SymmetricTensor": [
+        ("Symmetry Savings", "/docs/guides/symmetry"),
+        ("Symmetry Detection Deep Dive", "/docs/understanding/symmetry-detection"),
+    ],
+    "SymmetryInfo": [
         ("Symmetry Savings", "/docs/guides/symmetry"),
         ("Symmetry Detection Deep Dive", "/docs/understanding/symmetry-detection"),
     ],
@@ -712,7 +830,7 @@ NUMPY_REF_PATTERN = re.compile(r"\b(?:np|numpy)\.(?=[A-Za-z_])")
 
 def rewrite_api_refs(text: str) -> str:
     """Rewrite NumPy API references to their flopscope equivalents."""
-    return NUMPY_REF_PATTERN.sub("fnp.", text)
+    return NUMPY_REF_PATTERN.sub("flops.", text)
 
 
 def _split_paragraphs(lines: list[str]) -> list[str]:
@@ -783,14 +901,14 @@ def _register_roles_from_text(text: str) -> None:
 def _normalize_reference_target(target: str) -> str:
     normalized = " ".join(target.strip().split())
     if normalized.startswith("flopscope."):
-        return f"fnp.{normalized.removeprefix('flopscope.')}"
+        return f"flops.{normalized.removeprefix('flopscope.')}"
     return normalized
 
 
 def _operation_candidate_from_target(target: str) -> str:
     normalized = _normalize_reference_target(target)
-    if normalized.startswith("fnp."):
-        return normalized.removeprefix("fnp.")
+    if normalized.startswith("flops."):
+        return normalized.removeprefix("flops.")
     if normalized.startswith("numpy."):
         return normalized.removeprefix("numpy.")
     if normalized.startswith("np."):
@@ -860,10 +978,10 @@ def _resolve_reference_destination(
     if candidate and candidate not in lookup_candidates:
         lookup_candidates.append(candidate)
     if (
-        normalized_target.startswith("fnp.")
-        and normalized_target.removeprefix("fnp.") not in lookup_candidates
+        normalized_target.startswith("flops.")
+        and normalized_target.removeprefix("flops.") not in lookup_candidates
     ):
-        lookup_candidates.append(normalized_target.removeprefix("fnp."))
+        lookup_candidates.append(normalized_target.removeprefix("flops."))
     if (
         normalized_target.startswith("flopscope.")
         and normalized_target.removeprefix("flopscope.") not in lookup_candidates
@@ -922,7 +1040,7 @@ def _linkish_inline_node(
     candidate = _operation_candidate_from_target(rewritten_target)
     canonical_candidate = resolve_canonical_name(candidate, alias_map or {})
     api_like = "." in rewritten_target or target.lstrip("~").startswith(
-        ("np.", "numpy.", "fnp.", "flopscope.", "scipy.")
+        ("np.", "numpy.", "flops.", "flopscope.", "scipy.")
     )
     if canonical_candidate not in (supported_ops or set()) and not api_like:
         return None
@@ -1153,7 +1271,7 @@ def _is_prompt_line(line: str) -> tuple[bool, str | None]:
 def rewrite_example_text(text: str) -> str:
     """Rewrite upstream NumPy example text to the current flopscope naming."""
     rewritten = rewrite_api_refs(text)
-    rewritten = rewritten.replace("import numpy as np", "import flopscope as fnp")
+    rewritten = rewritten.replace("import numpy as np", "import flopscope as flops")
     return rewritten
 
 
@@ -2178,25 +2296,23 @@ def _build_operation_record(
             "Parallel worker context not initialized; call _worker_init_operation_doc_context()"
         )
 
-    (
-        signature,
-        parsed_doc,
-        derived_example,
-        flopscope_source_url,
-        upstream_source_url,
-    ) = build_structured_doc(
-        name,
-        module,
-        owned_example_html,
-        alias_map=alias_map,
-        supported_ops=supported_ops,
+    signature, parsed_doc, derived_example, flopscope_source_url, upstream_source_url = (
+        build_structured_doc(
+            name,
+            module,
+            owned_example_html,
+            alias_map=alias_map,
+            supported_ops=supported_ops,
+        )
     )
     cost_plain, cost_latex = cost_for_op(name, category)
     return OperationDocRecord(
         name=name,
         canonical_name=name,
         slug=slug_for_operation(name),
-        href=detail_href_for_slug(slug_for_operation(name)),
+        href=canonical_api_href_for_name(name),
+        canonical_path=canonical_api_path_for_name(name),
+        legacy_href=detail_href_for_slug(slug_for_operation(name)),
         module=module,
         area=normalize_area(module),
         flopscope_ref=flopscope_ref(name, module),
@@ -2230,8 +2346,8 @@ def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]
     """Resolve the live flopscope object and its upstream NumPy/SciPy counterpart."""
     import numpy as np
 
-    import flopscope as flops
-    import flopscope.numpy as fnp
+    flops = _import_local_flopscope_module("flopscope")
+    fnp = _import_local_flopscope_module("flopscope.numpy")
 
     if module == "numpy.linalg":
         short_name = name.removeprefix("linalg.")
@@ -2243,20 +2359,21 @@ def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]
         short_name = name.removeprefix("random.")
         return getattr(fnp.random, short_name), getattr(np.random, short_name, None)
     if module == "flopscope.stats":
-        import flopscope as _flops_top
-
         try:
             from scipy import stats as scipy_stats
         except (
             Exception
         ):  # pragma: no cover - scipy availability is environment specific
             scipy_stats = None
-        return _resolve_attr(_flops_top, name), (
+        return _resolve_attr(flops.stats, name.removeprefix("stats.")), (
             _resolve_attr(scipy_stats, name.removeprefix("stats."))
             if scipy_stats is not None
             else None
         )
-    return getattr(fnp, name), getattr(np, name, None)
+    obj = getattr(flops, name, None)
+    if obj is None:
+        obj = getattr(fnp, name)
+    return obj, getattr(np, name, None)
 
 
 def _rewrite_doc_field(field: DocField) -> DocField:
@@ -2353,8 +2470,8 @@ def resolve_doc_link(
         )
 
     label = rewritten.label
-    if href and canonical_target in supported_ops and not label.startswith("fnp."):
-        label = f"fnp.{canonical_target}"
+    if href and canonical_target in supported_ops and not label.startswith("flops."):
+        label = f"flops.{canonical_target}"
 
     return DocLink(
         label=label,
@@ -2438,13 +2555,21 @@ def _public_symbol_kind(obj: object, canonical_name: str) -> str:
         if issubclass(obj, Exception):
             return "error"
         return "class"
+    if not callable(obj):
+        return "object"
     if canonical_name.startswith("flops.") and canonical_name.endswith("_cost"):
         return "cost_helper"
     return "function"
 
 
 def _top_level_symbol_aliases(name: str) -> list[str]:
-    return [name, f"fnp.{name}", f"flopscope.{name}"]
+    return [
+        name,
+        f"flops.{name}",
+        f"flopscope.{name}",
+        f"fnp.{name}",
+        f"flopscope.numpy.{name}",
+    ]
 
 
 def _flops_symbol_aliases(name: str) -> list[str]:
@@ -2454,6 +2579,19 @@ def _flops_symbol_aliases(name: str) -> list[str]:
         f"flopscope.accounting.{name}",
         name,
     ]
+
+
+def _module_symbol_aliases(module_label: str, name: str) -> list[str]:
+    aliases = [
+        f"{module_label}.{name}",
+        f"flops.{module_label}.{name}",
+    ]
+    actual_path = PUBLIC_API_MODULE_PATHS.get(module_label)
+    if actual_path:
+        aliases.append(f"{actual_path}.{name}")
+    else:
+        aliases.append(f"flopscope.{module_label}.{name}")
+    return aliases
 
 
 def _dedupe_aliases(values: list[str]) -> list[str]:
@@ -2517,6 +2655,9 @@ def _related_guides_for_symbol(canonical_name: str) -> list[RelatedGuideLink]:
         if canonical_name == "flops.einsum_cost":
             guides.append(("Einsum Guide", "/docs/guides/einsum"))
 
+    if canonical_name in {"Permutation", "PermutationGroup", "Cycle"}:
+        guides.append(("Symmetry Savings", "/docs/guides/symmetry"))
+
     deduped: list[RelatedGuideLink] = []
     seen: set[tuple[str, str]] = set()
     for title, href in guides:
@@ -2528,20 +2669,77 @@ def _related_guides_for_symbol(canonical_name: str) -> list[RelatedGuideLink]:
     return deduped
 
 
+def collect_public_api_surface_names() -> set[str]:
+    """Return the explicit public API surface that must have docs coverage."""
+    _import_local_flopscope_module("flopscope")
+
+    names = set(PUBLIC_API_TOP_LEVEL)
+    for module_label in PUBLIC_API_MODULES:
+        module = _resolve_public_api_module(module_label)
+        exports = getattr(module, "__all__", None)
+        if exports is None:
+            raise RuntimeError(
+                f"{module.__name__} must define __all__ for API docs generation"
+            )
+        names.update(f"{module_label}.{name}" for name in exports)
+    return names
+
+
+def _public_symbol_member_links(
+    canonical_name: str,
+    registry: dict[str, dict],
+    alias_map: dict[str, str],
+) -> list[OperationNavLink]:
+    prefix = f"{canonical_name}."
+    if not canonical_name.startswith("stats."):
+        return []
+
+    children = sorted(
+        {
+            resolve_canonical_name(name, alias_map)
+            for name, info in registry.items()
+            if info["category"] != "blacklisted" and name.startswith(prefix)
+        }
+    )
+    return [
+        OperationNavLink(
+            href=canonical_api_href_for_name(name),
+            label=f"flops.{name}",
+        )
+        for name in children
+    ]
+
+
+def _public_symbol_status_note(canonical_name: str, registry: dict[str, dict]) -> str:
+    info = registry.get(canonical_name)
+    if not info or info["category"] != "blacklisted":
+        return ""
+
+    return (
+        "This symbol is exported from flopscope, but it is excluded from the "
+        "operation registry and therefore does not appear in the operation "
+        "cost index."
+    )
+
+
 def _build_operation_internal_refs(
     registry: dict[str, dict], alias_map: dict[str, str]
 ) -> dict[str, dict[str, str]]:
     refs: dict[str, dict[str, str]] = {}
     for name, info in registry.items():
+        if info["category"] == "blacklisted":
+            continue
         canonical = resolve_canonical_name(name, alias_map)
+        if canonical != name:
+            continue
         entry = {
             "canonical_name": canonical,
-            "href": f"/docs/api/ops/{slug_for_operation(canonical)}",
+            "href": canonical_api_href_for_name(canonical),
         }
         op_aliases = {
             name,
             flopscope_ref(name, info["module"]),
-            flopscope_ref(name, info["module"]).replace("fnp.", "flopscope.", 1),
+            flopscope_ref(name, info["module"]).replace("flops.", "flopscope.", 1),
         }
         for alias in op_aliases:
             refs[alias] = entry
@@ -2551,61 +2749,77 @@ def _build_operation_internal_refs(
 def build_public_api_symbol_records(
     registry: dict[str, dict], alias_map: dict[str, str]
 ) -> list[PublicApiSymbolRecord]:
-    sys.path.insert(0, str(ROOT / "src"))
-    import flopscope as flops
-    import flopscope.numpy as fnp
+    flops = _import_local_flopscope_module("flopscope")
 
-    supported_ops = set(registry)
+    supported_ops = {
+        name
+        for name, info in registry.items()
+        if info["category"] != "blacklisted"
+        and resolve_canonical_name(name, alias_map) == name
+    }
     symbol_specs: dict[str, dict[str, object]] = {}
-    top_level_canonical_by_id: dict[int, str] = {}
+    canonical_by_id: dict[int, str] = {}
+    fnp = _import_local_flopscope_module("flopscope.numpy")
 
-    for name in sorted(dir(fnp)):
-        if name.startswith("_") or name in registry:
-            continue
-        obj = getattr(fnp, name)
-        if inspect.ismodule(obj):
-            continue
-        if not (inspect.isclass(obj) or callable(obj)):
-            continue
-
-        top_level_canonical_by_id[id(obj)] = name
+    for name in PUBLIC_API_TOP_LEVEL:
+        if hasattr(flops, name):
+            obj = getattr(flops, name)
+            display_module = getattr(obj, "__module__", "flopscope")
+            import_path = f"flops.{name}"
+            display_name = f"flops.{name}"
+        else:
+            obj = getattr(fnp, name)
+            display_module = getattr(obj, "__module__", "flopscope.numpy")
+            import_path = f"fnp.{name}"
+            display_name = f"fnp.{name}"
+        canonical_by_id[id(obj)] = name
         symbol_specs[name] = {
             "canonical_name": name,
             "obj": obj,
             "kind": _public_symbol_kind(obj, name),
-            "module": getattr(obj, "__module__", "flopscope"),
-            "import_path": f"fnp.{name}",
-            "display_name": name,
+            "module": display_module,
+            "import_path": import_path,
+            "display_name": display_name,
             "aliases": _top_level_symbol_aliases(name),
         }
 
-    for name in getattr(flops.accounting, "__all__", []):
-        if not hasattr(flops.accounting, name):
-            continue
-        obj = getattr(flops.accounting, name)
-        canonical_name = top_level_canonical_by_id.get(id(obj), f"flops.{name}")
-        aliases = _flops_symbol_aliases(name)
-        if canonical_name in symbol_specs:
-            symbol_specs[canonical_name]["aliases"] = _dedupe_aliases(
-                list(symbol_specs[canonical_name]["aliases"]) + aliases
-            )
-            continue
+    for module_label in PUBLIC_API_MODULES:
+        module = _resolve_public_api_module(module_label)
+        exports = getattr(module, "__all__", [])
+        for name in exports:
+            canonical_name = f"{module_label}.{name}"
+            if canonical_name in supported_ops:
+                continue
 
-        symbol_specs[canonical_name] = {
-            "canonical_name": canonical_name,
-            "obj": obj,
-            "kind": _public_symbol_kind(obj, canonical_name),
-            "module": getattr(obj, "__module__", "flopscope.accounting"),
-            "import_path": f"flops.accounting.{name}",
-            "display_name": f"flops.accounting.{name}",
-            "aliases": _dedupe_aliases(aliases),
-        }
+            obj = getattr(module, name)
+            canonical_from_id = canonical_by_id.get(id(obj), canonical_name)
+            aliases = (
+                _flops_symbol_aliases(name)
+                if module_label == "flops"
+                else _module_symbol_aliases(module_label, name)
+            )
+            if canonical_from_id in symbol_specs:
+                symbol_specs[canonical_from_id]["aliases"] = _dedupe_aliases(
+                    list(symbol_specs[canonical_from_id]["aliases"]) + aliases
+                )
+                continue
+
+            canonical_by_id[id(obj)] = canonical_from_id
+            symbol_specs[canonical_from_id] = {
+                "canonical_name": canonical_from_id,
+                "obj": obj,
+                "kind": _public_symbol_kind(obj, canonical_from_id),
+                "module": getattr(obj, "__module__", f"flopscope.{module_label}"),
+                "import_path": f"flops.{canonical_name}",
+                "display_name": f"flops.{canonical_name}",
+                "aliases": _dedupe_aliases(aliases),
+            }
 
     internal_refs = _build_operation_internal_refs(registry, alias_map)
     for spec in symbol_specs.values():
         entry = {
             "canonical_name": str(spec["canonical_name"]),
-            "href": f"/docs/api/symbols/{slug_for_symbol(str(spec['canonical_name']))}",
+            "href": canonical_api_href_for_name(str(spec["canonical_name"])),
         }
         for alias in spec["aliases"]:
             internal_refs[str(alias)] = entry
@@ -2626,7 +2840,8 @@ def build_public_api_symbol_records(
             name=canonical_name,
             canonical_name=canonical_name,
             slug=slug_for_symbol(canonical_name),
-            href=f"/docs/api/symbols/{slug_for_symbol(canonical_name)}",
+            href=canonical_api_href_for_name(canonical_name),
+            canonical_path=canonical_api_path_for_name(canonical_name),
             kind=str(spec["kind"]),
             module=str(spec["module"]),
             import_path=import_path,
@@ -2639,6 +2854,8 @@ def build_public_api_symbol_records(
                 repo_blob_root="https://github.com/AIcrowd/flopscope/blob/main",
             ),
             related_guides=_related_guides_for_symbol(canonical_name),
+            members=_public_symbol_member_links(canonical_name, registry, alias_map),
+            status_note=_public_symbol_status_note(canonical_name, registry),
             body_sections=parsed.sections or [],
         )
         records.append(record)
@@ -2964,7 +3181,9 @@ def build_operation_doc_records(
 
 def render_operation_stub(op: OperationDocRecord) -> str:
     """Render a generated standalone MDX page stub for one canonical operation."""
-    return f'---\ntitle: "{op.flopscope_ref}"\n---\n\n<OperationDocPage name="{op.name}" />\n'
+    return (
+        f'---\ntitle: "{op.flopscope_ref}"\n---\n\n<OperationDocPage name="{op.name}" />\n'
+    )
 
 
 def render_public_symbol_stub(symbol: PublicApiSymbolRecord) -> str:
@@ -3067,6 +3286,7 @@ def write_operation_doc_artifacts(
             {
                 "name": record.name,
                 "slug": record.slug,
+                "canonical_path": record.canonical_path,
                 "detail_href": record.href,
                 "detail_json_href": detail_json_href_for_slug(record.slug),
                 "module": record.module,
@@ -3121,32 +3341,88 @@ def write_operation_doc_artifacts(
 def write_public_symbol_artifacts(
     records: list[PublicApiSymbolRecord], website_root: Path
 ) -> None:
-    """Emit standalone MDX stubs plus generated public-symbol payloads."""
-    symbol_docs_dir = website_root / "content" / "docs" / "api" / "symbols"
+    """Emit generated public-symbol payloads and static import metadata."""
     generated_dir = website_root / ".generated"
     symbol_docs_payload_dir = generated_dir / "symbols"
-    symbol_docs_dir.mkdir(parents=True, exist_ok=True)
     generated_dir.mkdir(parents=True, exist_ok=True)
     symbol_docs_payload_dir.mkdir(parents=True, exist_ok=True)
 
     expected_pages = {record.slug for record in records}
-    for existing_page in symbol_docs_dir.glob("*.mdx"):
-        if existing_page.stem not in expected_pages:
-            existing_page.unlink()
     for existing_payload in symbol_docs_payload_dir.glob("*.json"):
         if existing_payload.stem not in expected_pages:
             existing_payload.unlink()
 
     docs_manifest: dict[str, dict[str, object]] = {}
+    import_map_lines = [
+        "export const symbolDocImports: Record<string, () => Promise<{ default: unknown }>> = {",
+    ]
     for record in sorted(records, key=lambda symbol: symbol.name):
-        stub_path = symbol_docs_dir / f"{record.slug}.mdx"
-        stub_path.write_text(render_public_symbol_stub(record))
         write_json(symbol_docs_payload_dir / f"{record.slug}.json", asdict(record))
         docs_manifest[record.name] = asdict(record)
+        import_map_lines.append(
+            f'  "{record.slug}": () => import("./symbols/{record.slug}.json"),'
+        )
 
+    import_map_lines.extend(
+        [
+            "};",
+            "",
+            "export const symbolDocSlugs = [",
+            *[
+                f'  "{record.slug}",'
+                for record in sorted(records, key=lambda symbol: symbol.slug)
+            ],
+            "] as const;",
+            "",
+        ]
+    )
     write_json(generated_dir / "public-api-symbols.json", docs_manifest)
-    print(f"  Generated {len(records)} standalone public-symbol stubs")
+    (generated_dir / "symbol-doc-imports.ts").write_text("\n".join(import_map_lines))
     print(f"  Generated {generated_dir / 'public-api-symbols.json'}")
+    print(f"  Generated {generated_dir / 'symbol-doc-imports.ts'}")
+
+
+def write_public_api_route_artifacts(
+    operation_records: list[OperationDocRecord],
+    symbol_records: list[PublicApiSymbolRecord],
+    website_root: Path,
+) -> None:
+    """Emit canonical route manifests for generated public API pages."""
+    generated_dir = website_root / ".generated"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+
+    routes: dict[str, dict[str, str]] = {}
+    legacy_redirects: dict[str, str] = {}
+
+    for record in sorted(operation_records, key=lambda op: op.name):
+        routes[record.canonical_path] = {
+            "kind": "op",
+            "slug": record.slug,
+            "href": record.href,
+            "canonical_name": record.canonical_name,
+        }
+        legacy_redirects[record.slug] = record.href
+
+    for record in sorted(symbol_records, key=lambda symbol: symbol.name):
+        routes[record.canonical_path] = {
+            "kind": "symbol",
+            "slug": record.slug,
+            "href": record.href,
+            "canonical_name": record.canonical_name,
+        }
+
+    write_json(generated_dir / "public-api-routes.json", routes)
+    write_json(generated_dir / "legacy-op-redirects.json", legacy_redirects)
+    write_json(
+        generated_dir / "public-api-refs.json",
+        build_public_api_refs_manifest(
+            operation_records=operation_records,
+            symbol_records=symbol_records,
+        ),
+    )
+    print(f"  Generated {generated_dir / 'public-api-routes.json'}")
+    print(f"  Generated {generated_dir / 'legacy-op-redirects.json'}")
+    print(f"  Generated {generated_dir / 'public-api-refs.json'}")
 
 
 def build_public_api_refs_manifest(
@@ -3175,14 +3451,14 @@ def build_public_api_refs_manifest(
         for alias in _dedupe_aliases([record.name] + list(record.aliases)):
             manifest[alias] = entry
             alias_import_path = (
-                f"fnp.{alias}"
+                f"flops.{alias}"
                 if not namespace or "." in alias
-                else f"fnp.{namespace}.{alias}"
+                else f"flops.{namespace}.{alias}"
             )
             manifest[alias_import_path] = entry
-            manifest[alias_import_path.replace("fnp.", "flopscope.", 1)] = entry
+            manifest[alias_import_path.replace("flops.", "flopscope.", 1)] = entry
         manifest[record.flopscope_ref] = entry
-        manifest[record.flopscope_ref.replace("fnp.", "flopscope.", 1)] = entry
+        manifest[record.flopscope_ref.replace("flops.", "flopscope.", 1)] = entry
 
     for record in symbol_records:
         entry = {
@@ -3514,7 +3790,8 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
     missing_detail_fields = [
         op["name"]
         for op in operations
-        if not {"slug", "detail_href", "detail_json_href", "summary"} <= set(op)
+        if not {"slug", "canonical_path", "detail_href", "detail_json_href", "summary"}
+        <= set(op)
     ]
     if missing_detail_fields:
         print("\nops.json entries missing detail fields:")
@@ -3555,14 +3832,65 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
     abs_ref = op_refs.get("abs")
     if (
         not isinstance(abs_ref, dict)
-        or abs_ref.get("label") != "fnp.absolute"
-        or abs_ref.get("href") != "/docs/api/ops/absolute/"
+        or abs_ref.get("label") != "flops.absolute"
+        or abs_ref.get("href") != "/docs/api/absolute/"
         or abs_ref.get("canonical_name") != "absolute"
     ):
         print(
             "\nop-refs.json missing structured alias entry for "
-            "'abs' -> '/docs/api/ops/absolute/'"
+            "'abs' -> '/docs/api/absolute/'"
         )
+        return False
+
+    public_api_routes_path = GENERATED_DIR / "public-api-routes.json"
+    if not public_api_routes_path.exists():
+        print(f"\npublic-api-routes.json NOT FOUND at {public_api_routes_path}")
+        return False
+
+    legacy_redirects_path = GENERATED_DIR / "legacy-op-redirects.json"
+    if not legacy_redirects_path.exists():
+        print(f"\nlegacy-op-redirects.json NOT FOUND at {legacy_redirects_path}")
+        return False
+
+    public_api_refs_path = GENERATED_DIR / "public-api-refs.json"
+    if not public_api_refs_path.exists():
+        print(f"\npublic-api-refs.json NOT FOUND at {public_api_refs_path}")
+        return False
+
+    public_api_symbols_path = GENERATED_DIR / "public-api-symbols.json"
+    if not public_api_symbols_path.exists():
+        print(f"\npublic-api-symbols.json NOT FOUND at {public_api_symbols_path}")
+        return False
+
+    symbol_import_map_path = GENERATED_DIR / "symbol-doc-imports.ts"
+    if not symbol_import_map_path.exists():
+        print(f"\nGenerated symbol import map NOT FOUND at {symbol_import_map_path}")
+        return False
+
+    public_api_routes = json.loads(public_api_routes_path.read_text())
+    if public_api_routes.get("stats/norm", {}).get("href") != "/docs/api/stats/norm/":
+        print("\npublic-api-routes.json missing canonical entry for stats/norm")
+        return False
+    if (
+        public_api_routes.get("stats/norm/pdf", {}).get("href")
+        != "/docs/api/stats/norm/pdf/"
+    ):
+        print("\npublic-api-routes.json missing canonical entry for stats/norm/pdf")
+        return False
+
+    legacy_redirects = json.loads(legacy_redirects_path.read_text())
+    if legacy_redirects.get("einsum") != "/docs/api/einsum/":
+        print("\nlegacy-op-redirects.json missing redirect for einsum")
+        return False
+
+    public_api_refs = json.loads(public_api_refs_path.read_text())
+    missing_surface = sorted(
+        name for name in collect_public_api_surface_names() if name not in public_api_refs
+    )
+    if missing_surface:
+        print("\npublic-api-refs.json missing public API entries:")
+        for name in missing_surface[:20]:
+            print(f"  {name}")
         return False
 
     public_payload = API_DATA_DIR / "absolute.json"
@@ -3583,7 +3911,7 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         return False
 
     print(
-        "Generated operation doc manifests, static payloads, parser coverage, and example coverage are present."
+        "Generated operation and public API manifests, static payloads, parser coverage, and example coverage are present."
     )
 
     return True
@@ -3619,7 +3947,11 @@ def main():
     print("Generating API reference data...")
     worker_count = max(1, args.workers)
     records = build_operation_doc_records(registry, workers=worker_count)
+    alias_map = load_alias_map(registry)
+    symbol_records = build_public_api_symbol_records(registry, alias_map)
     write_operation_doc_artifacts(records, WEBSITE)
+    write_public_symbol_artifacts(symbol_records, WEBSITE)
+    write_public_api_route_artifacts(records, symbol_records, WEBSITE)
     write_op_doc_coverage_artifact(records, WEBSITE)
     example_coverage = build_example_coverage(records, API_EXAMPLES_DIR)
     write_example_coverage_artifact(example_coverage, WEBSITE)

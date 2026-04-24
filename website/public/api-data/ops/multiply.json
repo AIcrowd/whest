@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/multiply/",
+  "detail_href": "/docs/api/multiply/",
   "detail_json_href": "/api-data/ops/multiply.json",
   "docs": {
     "sections": [
@@ -362,12 +362,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.multiply(2.0, 4.0)"
+                "text": "flops.multiply(2.0, 4.0)"
               },
               {
                 "kind": "output",
@@ -381,17 +381,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
+                "text": "x1 = flops.arange(9.0).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = fnp.arange(3.0)"
+                "text": "x2 = flops.arange(3.0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.multiply(x1, x2)"
+                "text": "flops.multiply(x1, x2)"
               },
               {
                 "kind": "output",
@@ -427,7 +427,7 @@
                 "href": "/docs/api/ops/multiply",
                 "kind": "link",
                 "target": "multiply",
-                "text": "fnp.multiply"
+                "text": "flops.multiply"
               },
               {
                 "kind": "text",
@@ -441,12 +441,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
+                "text": "x1 = flops.arange(9.0).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = fnp.arange(3.0)"
+                "text": "x2 = flops.arange(3.0)"
               },
               {
                 "kind": "input",
@@ -477,12 +477,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.multiply",
+    "flopscope_ref": "flops.multiply",
     "module": "numpy",
     "name": "multiply",
     "notes": "Element-wise multiplication.",
     "numpy_ref": "np.multiply",
-    "signature": "fnp.multiply(*args, **kwargs)",
+    "signature": "flops.multiply(*args, **kwargs)",
     "status": "supported",
     "summary": "Multiply arguments element-wise.",
     "weight": 1.0

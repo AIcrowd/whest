@@ -332,12 +332,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.cbrt([1,8,27])"
+              "text": "flops.cbrt([1,8,27])"
             },
             {
               "kind": "output",
@@ -351,6 +351,7 @@
     }
   ],
   "canonical_name": "cbrt",
+  "canonical_path": "cbrt",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -368,19 +369,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.cbrt([1,8,27])",
+    "code": "import flopscope as flops\n\nflops.cbrt([1,8,27])",
     "output": "array([ 1.,  2.,  3.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.cbrt",
+  "flopscope_ref": "flops.cbrt",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/cbrt/",
+  "href": "/docs/api/cbrt/",
+  "legacy_href": "/docs/api/ops/cbrt/",
   "module": "numpy",
   "name": "cbrt",
   "next": {
-    "href": "/docs/api/ops/ceil/",
-    "label": "fnp.ceil"
+    "href": "/docs/api/ceil/",
+    "label": "flops.ceil"
   },
   "notes": "Element-wise cube root.",
   "notes_sections": [],
@@ -425,8 +427,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/can_cast/",
-    "label": "fnp.can_cast"
+    "href": "/docs/api/can-cast/",
+    "label": "flops.can_cast"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cbrt.html",
@@ -443,7 +445,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.cbrt(*args, **kwargs)",
+  "signature": "flops.cbrt(*args, **kwargs)",
   "slug": "cbrt",
   "summary": "Return the cube-root of an array, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

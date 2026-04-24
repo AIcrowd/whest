@@ -1,0 +1,54 @@
+{
+  "aliases": [
+    "is_symmetric",
+    "flops.is_symmetric",
+    "flopscope.is_symmetric",
+    "fnp.is_symmetric",
+    "flopscope.numpy.is_symmetric"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Check whether "
+            },
+            {
+              "kind": "emphasis",
+              "text": "data"
+            },
+            {
+              "kind": "text",
+              "text": " is invariant under the given symmetry."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    }
+  ],
+  "canonical_name": "is_symmetric",
+  "canonical_path": "is-symmetric",
+  "display_name": "flops.is_symmetric",
+  "href": "/docs/api/is-symmetric/",
+  "import_path": "flops.is_symmetric",
+  "kind": "function",
+  "members": [],
+  "module": "flopscope._symmetric",
+  "name": "is_symmetric",
+  "related_guides": [
+    {
+      "href": "/docs/guides/symmetry",
+      "title": "Symmetry Savings"
+    }
+  ],
+  "signature": "flops.is_symmetric(data: 'np.ndarray', *, symmetry, atol: 'float' = 1e-06, rtol: 'float' = 1e-05) -> 'bool'",
+  "slug": "is-symmetric",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L184",
+  "status_note": "",
+  "summary": "Check whether *data* is invariant under the given symmetry.",
+  "upstream_source_url": ""
+}

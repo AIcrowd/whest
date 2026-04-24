@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/identity/",
+  "detail_href": "/docs/api/identity/",
   "detail_json_href": "/api-data/ops/identity.json",
   "docs": {
     "sections": [
@@ -262,12 +262,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.identity(3)"
+                "text": "flops.identity(3)"
               },
               {
                 "kind": "output",
@@ -293,12 +293,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.identity",
+    "flopscope_ref": "flops.identity",
     "module": "numpy",
     "name": "identity",
     "notes": "Create square identity matrix.",
     "numpy_ref": "np.identity",
-    "signature": "fnp.identity(n, dtype=None, *, like=None)",
+    "signature": "flops.identity(n, dtype=None, *, like=None)",
     "status": "supported",
     "summary": "Return the identity array.",
     "weight": 0.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/logspace/",
+  "detail_href": "/docs/api/logspace/",
   "detail_json_href": "/api-data/ops/logspace.json",
   "docs": {
     "sections": [
@@ -477,7 +477,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/arange",
-                "label": "fnp.arange",
+                "label": "flops.arange",
                 "original_target": "arange",
                 "role": "",
                 "target": "arange",
@@ -493,7 +493,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/linspace",
-                "label": "fnp.linspace",
+                "label": "flops.linspace",
                 "original_target": "linspace",
                 "role": "",
                 "target": "linspace",
@@ -509,7 +509,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/geomspace",
-                "label": "fnp.geomspace",
+                "label": "flops.geomspace",
                 "original_target": "geomspace",
                 "role": "",
                 "target": "geomspace",
@@ -548,7 +548,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.linspace(start, stop, num=num, endpoint=endpoint)"
+                "text": "y = flops.linspace(start, stop, num=num, endpoint=endpoint)"
               },
               {
                 "kind": "input",
@@ -578,12 +578,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.logspace(2.0, 3.0, num=4)"
+                "text": "flops.logspace(2.0, 3.0, num=4)"
               },
               {
                 "kind": "output",
@@ -592,7 +592,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.logspace(2.0, 3.0, num=4, endpoint=False)"
+                "text": "flops.logspace(2.0, 3.0, num=4, endpoint=False)"
               },
               {
                 "kind": "output",
@@ -601,7 +601,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.logspace(2.0, 3.0, num=4, base=2.0)"
+                "text": "flops.logspace(2.0, 3.0, num=4, base=2.0)"
               },
               {
                 "kind": "output",
@@ -610,7 +610,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.logspace(2.0, 3.0, num=4, base=[2.0, 3.0], axis=-1)"
+                "text": "flops.logspace(2.0, 3.0, num=4, base=[2.0, 3.0], axis=-1)"
               },
               {
                 "kind": "output",
@@ -647,17 +647,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = fnp.logspace(0.1, 1, N, endpoint=True)"
+                "text": "x1 = flops.logspace(0.1, 1, N, endpoint=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = fnp.logspace(0.1, 1, N, endpoint=False)"
+                "text": "x2 = flops.logspace(0.1, 1, N, endpoint=False)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.zeros(N)"
+                "text": "y = flops.zeros(N)"
               },
               {
                 "kind": "input",
@@ -703,12 +703,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.logspace",
+    "flopscope_ref": "flops.logspace",
     "module": "numpy",
     "name": "logspace",
     "notes": "Log-spaced generation; cost = num.",
     "numpy_ref": "np.logspace",
-    "signature": "fnp.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None, axis=0)",
+    "signature": "flops.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None, axis=0)",
     "status": "supported",
     "summary": "Return numbers spaced evenly on a log scale.",
     "weight": 1.0

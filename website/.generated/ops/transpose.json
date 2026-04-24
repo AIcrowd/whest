@@ -27,7 +27,7 @@
             },
             {
               "kind": "code",
-              "text": "fnp.atleast_2d(a).T"
+              "text": "flops.atleast_2d(a).T"
             },
             {
               "kind": "text",
@@ -35,7 +35,7 @@
             },
             {
               "kind": "code",
-              "text": "a[:, fnp.newaxis]"
+              "text": "a[:, flops.newaxis]"
             },
             {
               "kind": "text",
@@ -229,7 +229,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/moveaxis",
-              "label": "fnp.moveaxis",
+              "label": "flops.moveaxis",
               "original_target": "moveaxis",
               "role": "",
               "target": "moveaxis",
@@ -245,7 +245,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/argsort",
-              "label": "fnp.argsort",
+              "label": "flops.argsort",
               "original_target": "argsort",
               "role": "",
               "target": "argsort",
@@ -294,12 +294,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([[1, 2], [3, 4]])"
+              "text": "a = flops.array([[1, 2], [3, 4]])"
             },
             {
               "kind": "input",
@@ -317,7 +317,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.transpose(a)"
+              "text": "flops.transpose(a)"
             },
             {
               "kind": "output",
@@ -335,7 +335,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([1, 2, 3, 4])"
+              "text": "a = flops.array([1, 2, 3, 4])"
             },
             {
               "kind": "input",
@@ -349,7 +349,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.transpose(a)"
+              "text": "flops.transpose(a)"
             },
             {
               "kind": "output",
@@ -363,12 +363,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.ones((1, 2, 3))"
+              "text": "a = flops.ones((1, 2, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.transpose(a, (1, 0, 2)).shape"
+              "text": "flops.transpose(a, (1, 0, 2)).shape"
             },
             {
               "kind": "output",
@@ -382,12 +382,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.ones((2, 3, 4, 5))"
+              "text": "a = flops.ones((2, 3, 4, 5))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.transpose(a).shape"
+              "text": "flops.transpose(a).shape"
             },
             {
               "kind": "output",
@@ -401,12 +401,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.arange(3*4*5).reshape((3, 4, 5))"
+              "text": "a = flops.arange(3*4*5).reshape((3, 4, 5))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.transpose(a, (-1, 0, -2)).shape"
+              "text": "flops.transpose(a, (-1, 0, -2)).shape"
             },
             {
               "kind": "output",
@@ -420,6 +420,7 @@
     }
   ],
   "canonical_name": "transpose",
+  "canonical_path": "transpose",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -437,19 +438,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[1, 2], [3, 4]])\n\na\n\nfnp.transpose(a)\n\na = fnp.array([1, 2, 3, 4])\n\na\n\nfnp.transpose(a)\n\na = fnp.ones((1, 2, 3))\n\nfnp.transpose(a, (1, 0, 2)).shape\n\na = fnp.ones((2, 3, 4, 5))\n\nfnp.transpose(a).shape\n\na = fnp.arange(3*4*5).reshape((3, 4, 5))\n\nfnp.transpose(a, (-1, 0, -2)).shape",
+    "code": "import flopscope as flops\n\na = flops.array([[1, 2], [3, 4]])\n\na\n\nflops.transpose(a)\n\na = flops.array([1, 2, 3, 4])\n\na\n\nflops.transpose(a)\n\na = flops.ones((1, 2, 3))\n\nflops.transpose(a, (1, 0, 2)).shape\n\na = flops.ones((2, 3, 4, 5))\n\nflops.transpose(a).shape\n\na = flops.arange(3*4*5).reshape((3, 4, 5))\n\nflops.transpose(a, (-1, 0, -2)).shape",
     "output": "array([[1, 2],\n       [3, 4]])\n\narray([[1, 3],\n       [2, 4]])\n\narray([1, 2, 3, 4])\n\narray([1, 2, 3, 4])\n\n(2, 1, 3)\n\n(5, 4, 3, 2)\n\n(5, 3, 4)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.transpose",
+  "flopscope_ref": "flops.transpose",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L300",
-  "href": "/docs/api/ops/transpose/",
+  "href": "/docs/api/transpose/",
+  "legacy_href": "/docs/api/ops/transpose/",
   "module": "numpy",
   "name": "transpose",
   "next": {
-    "href": "/docs/api/ops/trapezoid/",
-    "label": "fnp.trapezoid"
+    "href": "/docs/api/trapezoid/",
+    "label": "flops.trapezoid"
   },
   "notes": "Permute array dimensions.",
   "notes_sections": [
@@ -478,8 +480,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/trace/",
-    "label": "fnp.trace"
+    "href": "/docs/api/trace/",
+    "label": "flops.trace"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.transpose.html",
@@ -519,7 +521,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/moveaxis",
-      "label": "fnp.moveaxis",
+      "label": "flops.moveaxis",
       "original_target": "moveaxis",
       "role": "",
       "target": "moveaxis",
@@ -535,14 +537,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/argsort",
-      "label": "fnp.argsort",
+      "label": "flops.argsort",
       "original_target": "argsort",
       "role": "",
       "target": "argsort",
       "unresolved": false
     }
   ],
-  "signature": "fnp.transpose(a, axes=None)",
+  "signature": "flops.transpose(a, axes=None)",
   "slug": "transpose",
   "summary": "Returns an array with axes transposed.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L630",

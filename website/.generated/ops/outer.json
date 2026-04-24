@@ -195,7 +195,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/inner",
-              "label": "fnp.inner",
+              "label": "flops.inner",
               "original_target": "inner",
               "role": "",
               "target": "inner",
@@ -215,14 +215,14 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/einsum",
-              "label": "fnp.einsum",
+              "label": "flops.einsum",
               "original_target": "einsum",
               "role": "",
               "target": "einsum",
               "unresolved": false
             },
             {
-              "description": "A generalization to dimensions other than 1D and other operations. ``fnp.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.",
+              "description": "A generalization to dimensions other than 1D and other operations. ``flops.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.",
               "description_inline": [
                 {
                   "kind": "text",
@@ -230,7 +230,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "fnp.multiply.outer(a.ravel(), b.ravel())"
+                  "text": "flops.multiply.outer(a.ravel(), b.ravel())"
                 },
                 {
                   "kind": "text",
@@ -246,7 +246,7 @@
               "unresolved": false
             },
             {
-              "description": "An Array API compatible variation of ``fnp.outer``, which accepts 1-dimensional inputs only.",
+              "description": "An Array API compatible variation of ``flops.outer``, which accepts 1-dimensional inputs only.",
               "description_inline": [
                 {
                   "kind": "text",
@@ -257,7 +257,7 @@
                   "href": "/docs/api/ops/outer",
                   "kind": "link",
                   "target": "outer",
-                  "text": "fnp.outer"
+                  "text": "flops.outer"
                 },
                 {
                   "kind": "text",
@@ -266,18 +266,18 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/linalg-outer",
-              "label": "fnp.linalg.outer",
+              "label": "flops.linalg.outer",
               "original_target": "linalg.outer",
               "role": "",
               "target": "linalg.outer",
               "unresolved": false
             },
             {
-              "description": "``fnp.tensordot(a.ravel(), b.ravel(), axes=((), ()))`` is the equivalent.",
+              "description": "``flops.tensordot(a.ravel(), b.ravel(), axes=((), ()))`` is the equivalent.",
               "description_inline": [
                 {
                   "kind": "code",
-                  "text": "fnp.tensordot(a.ravel(), b.ravel(), axes=((), ()))"
+                  "text": "flops.tensordot(a.ravel(), b.ravel(), axes=((), ()))"
                 },
                 {
                   "kind": "text",
@@ -286,7 +286,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/tensordot",
-              "label": "fnp.tensordot",
+              "label": "flops.tensordot",
               "original_target": "tensordot",
               "role": "",
               "target": "tensordot",
@@ -332,12 +332,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rl = fnp.outer(fnp.ones((5,)), fnp.linspace(-2, 2, 5))"
+              "text": "rl = flops.outer(flops.ones((5,)), flops.linspace(-2, 2, 5))"
             },
             {
               "kind": "input",
@@ -367,7 +367,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "im = fnp.outer(1j*fnp.linspace(2, -2, 5), fnp.ones((5,)))"
+              "text": "im = flops.outer(1j*flops.linspace(2, -2, 5), flops.ones((5,)))"
             },
             {
               "kind": "input",
@@ -441,12 +441,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.array(['a', 'b', 'c'], dtype=object)"
+              "text": "x = flops.array(['a', 'b', 'c'], dtype=object)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.outer(x, [1, 2, 3])"
+              "text": "flops.outer(x, [1, 2, 3])"
             },
             {
               "kind": "output",
@@ -468,6 +468,7 @@
     }
   ],
   "canonical_name": "outer",
+  "canonical_path": "outer",
   "category": "counted_custom",
   "cost_formula": "m * n",
   "cost_formula_latex": "$m \\cdot n$",
@@ -488,19 +489,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nrl = fnp.outer(fnp.ones((5,)), fnp.linspace(-2, 2, 5))\n\nrl\n\nim = fnp.outer(1j*fnp.linspace(2, -2, 5), fnp.ones((5,)))\n\nim\n\ngrid = rl + im\n\ngrid\n\nx = fnp.array(['a', 'b', 'c'], dtype=object)\n\nfnp.outer(x, [1, 2, 3])",
+    "code": "import flopscope as flops\n\nrl = flops.outer(flops.ones((5,)), flops.linspace(-2, 2, 5))\n\nrl\n\nim = flops.outer(1j*flops.linspace(2, -2, 5), flops.ones((5,)))\n\nim\n\ngrid = rl + im\n\ngrid\n\nx = flops.array(['a', 'b', 'c'], dtype=object)\n\nflops.outer(x, [1, 2, 3])",
     "output": "array([[-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.]])\n\narray([[0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j],\n       [0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j],\n       [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],\n       [0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j],\n       [0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j]])\n\narray([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],\n       [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],\n       [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],\n       [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],\n       [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])\n\narray([['a', 'aa', 'aaa'],\n       ['b', 'bb', 'bbb'],\n       ['c', 'cc', 'ccc']], dtype=object)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.outer",
+  "flopscope_ref": "flops.outer",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1014",
-  "href": "/docs/api/ops/outer/",
+  "href": "/docs/api/outer/",
+  "legacy_href": "/docs/api/ops/outer/",
   "module": "numpy",
   "name": "outer",
   "next": {
-    "href": "/docs/api/ops/packbits/",
-    "label": "fnp.packbits"
+    "href": "/docs/api/packbits/",
+    "label": "flops.packbits"
   },
   "notes": "Outer product of two vectors; cost = M*N.",
   "notes_sections": [],
@@ -531,8 +533,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ones_like/",
-    "label": "fnp.ones_like"
+    "href": "/docs/api/ones-like/",
+    "label": "flops.ones_like"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.outer.html",
@@ -551,7 +553,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/inner",
-      "label": "fnp.inner",
+      "label": "flops.inner",
       "original_target": "inner",
       "role": "",
       "target": "inner",
@@ -571,14 +573,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/einsum",
-      "label": "fnp.einsum",
+      "label": "flops.einsum",
       "original_target": "einsum",
       "role": "",
       "target": "einsum",
       "unresolved": false
     },
     {
-      "description": "A generalization to dimensions other than 1D and other operations. ``fnp.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.",
+      "description": "A generalization to dimensions other than 1D and other operations. ``flops.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.",
       "description_inline": [
         {
           "kind": "text",
@@ -586,7 +588,7 @@
         },
         {
           "kind": "code",
-          "text": "fnp.multiply.outer(a.ravel(), b.ravel())"
+          "text": "flops.multiply.outer(a.ravel(), b.ravel())"
         },
         {
           "kind": "text",
@@ -602,7 +604,7 @@
       "unresolved": false
     },
     {
-      "description": "An Array API compatible variation of ``fnp.outer``, which accepts 1-dimensional inputs only.",
+      "description": "An Array API compatible variation of ``flops.outer``, which accepts 1-dimensional inputs only.",
       "description_inline": [
         {
           "kind": "text",
@@ -613,7 +615,7 @@
           "href": "/docs/api/ops/outer",
           "kind": "link",
           "target": "outer",
-          "text": "fnp.outer"
+          "text": "flops.outer"
         },
         {
           "kind": "text",
@@ -622,18 +624,18 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/linalg-outer",
-      "label": "fnp.linalg.outer",
+      "label": "flops.linalg.outer",
       "original_target": "linalg.outer",
       "role": "",
       "target": "linalg.outer",
       "unresolved": false
     },
     {
-      "description": "``fnp.tensordot(a.ravel(), b.ravel(), axes=((), ()))`` is the equivalent.",
+      "description": "``flops.tensordot(a.ravel(), b.ravel(), axes=((), ()))`` is the equivalent.",
       "description_inline": [
         {
           "kind": "code",
-          "text": "fnp.tensordot(a.ravel(), b.ravel(), axes=((), ()))"
+          "text": "flops.tensordot(a.ravel(), b.ravel(), axes=((), ()))"
         },
         {
           "kind": "text",
@@ -642,14 +644,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/tensordot",
-      "label": "fnp.tensordot",
+      "label": "flops.tensordot",
       "original_target": "tensordot",
       "role": "",
       "target": "tensordot",
       "unresolved": false
     }
   ],
-  "signature": "fnp.outer(a, b, out=None)",
+  "signature": "flops.outer(a, b, out=None)",
   "slug": "outer",
   "summary": "Compute the outer product of two vectors.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L876",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/pad/",
+  "detail_href": "/docs/api/pad/",
   "detail_json_href": "/api-data/ops/pad.json",
   "docs": {
     "sections": [
@@ -931,7 +931,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -941,7 +941,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2, 3), 'constant', constant_values=(4, 6))"
+                "text": "flops.pad(a, (2, 3), 'constant', constant_values=(4, 6))"
               },
               {
                 "kind": "output",
@@ -955,7 +955,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2, 3), 'edge')"
+                "text": "flops.pad(a, (2, 3), 'edge')"
               },
               {
                 "kind": "output",
@@ -969,7 +969,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))"
+                "text": "flops.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))"
               },
               {
                 "kind": "output",
@@ -983,7 +983,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2,), 'maximum')"
+                "text": "flops.pad(a, (2,), 'maximum')"
               },
               {
                 "kind": "output",
@@ -997,7 +997,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2,), 'mean')"
+                "text": "flops.pad(a, (2,), 'mean')"
               },
               {
                 "kind": "output",
@@ -1011,7 +1011,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2,), 'median')"
+                "text": "flops.pad(a, (2,), 'median')"
               },
               {
                 "kind": "output",
@@ -1030,7 +1030,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, ((3, 2), (2, 3)), 'minimum')"
+                "text": "flops.pad(a, ((3, 2), (2, 3)), 'minimum')"
               },
               {
                 "kind": "output",
@@ -1073,7 +1073,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2, 3), 'reflect')"
+                "text": "flops.pad(a, (2, 3), 'reflect')"
               },
               {
                 "kind": "output",
@@ -1087,7 +1087,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2, 3), 'reflect', reflect_type='odd')"
+                "text": "flops.pad(a, (2, 3), 'reflect', reflect_type='odd')"
               },
               {
                 "kind": "output",
@@ -1101,7 +1101,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2, 3), 'symmetric')"
+                "text": "flops.pad(a, (2, 3), 'symmetric')"
               },
               {
                 "kind": "output",
@@ -1115,7 +1115,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2, 3), 'symmetric', reflect_type='odd')"
+                "text": "flops.pad(a, (2, 3), 'symmetric', reflect_type='odd')"
               },
               {
                 "kind": "output",
@@ -1129,7 +1129,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, (2, 3), 'wrap')"
+                "text": "flops.pad(a, (2, 3), 'wrap')"
               },
               {
                 "kind": "output",
@@ -1163,7 +1163,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.arange(6)"
+                "text": "a = flops.arange(6)"
               },
               {
                 "kind": "input",
@@ -1173,7 +1173,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, 2, pad_with)"
+                "text": "flops.pad(a, 2, pad_with)"
               },
               {
                 "kind": "output",
@@ -1202,7 +1202,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pad(a, 2, pad_with, padder=100)"
+                "text": "flops.pad(a, 2, pad_with, padder=100)"
               },
               {
                 "kind": "output",
@@ -1240,12 +1240,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.pad",
+    "flopscope_ref": "flops.pad",
     "module": "numpy",
     "name": "pad",
     "notes": "Pad array. Cost: numel(output).",
     "numpy_ref": "np.pad",
-    "signature": "fnp.pad(array, pad_width, mode='constant', **kwargs)",
+    "signature": "flops.pad(array, pad_width, mode='constant', **kwargs)",
     "status": "supported",
     "summary": "Pad an array.",
     "weight": 1.0

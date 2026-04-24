@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-gamma/",
+  "detail_href": "/docs/api/random/gamma/",
   "detail_json_href": "/api-data/ops/random-gamma.json",
   "docs": {
     "sections": [
@@ -100,7 +100,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.gamma`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.gamma`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -208,7 +208,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "fnp.broadcast(shape, scale).size"
+                        "text": "flops.broadcast(shape, scale).size"
                       },
                       {
                         "kind": "text",
@@ -269,7 +269,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "fnp.broadcast(shape, scale).size"
+                    "text": "flops.broadcast(shape, scale).size"
                   },
                   {
                     "kind": "text",
@@ -459,7 +459,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = fnp.random.gamma(shape, scale, 1000)"
+                "text": "s = flops.random.gamma(shape, scale, 1000)"
               }
             ],
             "type": "doctest_block"
@@ -493,7 +493,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = bins**(shape-1)*(fnp.exp(-bins/scale) /  # doctest: +SKIP"
+                "text": "y = bins**(shape-1)*(flops.exp(-bins/scale) /  # doctest: +SKIP"
               },
               {
                 "kind": "input",
@@ -522,12 +522,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.gamma",
+    "flopscope_ref": "flops.random.gamma",
     "module": "numpy.random",
     "name": "random.gamma",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.gamma",
-    "signature": "fnp.random.gamma(shape, scale=1.0, size=None)",
+    "signature": "flops.random.gamma(shape, scale=1.0, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Gamma distribution.",
     "weight": 16.0

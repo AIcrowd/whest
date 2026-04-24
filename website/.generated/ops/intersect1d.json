@@ -288,12 +288,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])"
+              "text": "flops.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])"
             },
             {
               "kind": "output",
@@ -321,7 +321,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "reduce(fnp.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
+              "text": "reduce(flops.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
             },
             {
               "kind": "output",
@@ -344,17 +344,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.array([1, 1, 2, 3, 4])"
+              "text": "x = flops.array([1, 1, 2, 3, 4])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = fnp.array([2, 1, 4, 6])"
+              "text": "y = flops.array([2, 1, 4, 6])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "xy, x_ind, y_ind = fnp.intersect1d(x, y, return_indices=True)"
+              "text": "xy, x_ind, y_ind = flops.intersect1d(x, y, return_indices=True)"
             },
             {
               "kind": "input",
@@ -382,6 +382,7 @@
     }
   ],
   "canonical_name": "intersect1d",
+  "canonical_path": "intersect1d",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -392,19 +393,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])\n\nfrom functools import reduce\n\nreduce(fnp.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))\n\nx = fnp.array([1, 1, 2, 3, 4])\n\ny = fnp.array([2, 1, 4, 6])\n\nxy, x_ind, y_ind = fnp.intersect1d(x, y, return_indices=True)\n\nx_ind, y_ind\n\nxy, x[x_ind], y[y_ind]",
+    "code": "import flopscope as flops\n\nflops.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])\n\nfrom functools import reduce\n\nreduce(flops.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))\n\nx = flops.array([1, 1, 2, 3, 4])\n\ny = flops.array([2, 1, 4, 6])\n\nxy, x_ind, y_ind = flops.intersect1d(x, y, return_indices=True)\n\nx_ind, y_ind\n\nxy, x[x_ind], y[y_ind]",
     "output": "array([1, 3])\n\narray([3])\n\n(array([0, 2, 4]), array([1, 0, 2]))\n\n(array([1, 2, 4]), array([1, 2, 4]), array([1, 2, 4]))",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.intersect1d",
+  "flopscope_ref": "flops.intersect1d",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L407",
-  "href": "/docs/api/ops/intersect1d/",
+  "href": "/docs/api/intersect1d/",
+  "legacy_href": "/docs/api/ops/intersect1d/",
   "module": "numpy",
   "name": "intersect1d",
   "next": {
-    "href": "/docs/api/ops/invert/",
-    "label": "fnp.invert"
+    "href": "/docs/api/invert/",
+    "label": "flops.invert"
   },
   "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m)).",
   "notes_sections": [],
@@ -438,8 +440,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/interp/",
-    "label": "fnp.interp"
+    "href": "/docs/api/interp/",
+    "label": "flops.interp"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.intersect1d.html",
@@ -469,7 +471,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.intersect1d(ar1, ar2, assume_unique=False, return_indices=False)",
+  "signature": "flops.intersect1d(ar1, ar2, assume_unique=False, return_indices=False)",
   "slug": "intersect1d",
   "summary": "Find the intersection of two arrays.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L617",

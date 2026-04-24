@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-eig/",
+  "detail_href": "/docs/api/linalg/eig/",
   "detail_json_href": "/api-data/ops/linalg-eig.json",
   "docs": {
     "sections": [
@@ -296,7 +296,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "linalg",
-                "text": "fnp.linalg"
+                "text": "flops.linalg"
               },
               {
                 "kind": "text",
@@ -585,7 +585,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -609,7 +609,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "eigenvalues, eigenvectors = LA.eig(fnp.diag((1, 2, 3)))"
+                "text": "eigenvalues, eigenvectors = LA.eig(flops.diag((1, 2, 3)))"
               },
               {
                 "kind": "input",
@@ -654,7 +654,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "eigenvalues, eigenvectors = LA.eig(fnp.array([[1, -1], [1, 1]]))"
+                "text": "eigenvalues, eigenvectors = LA.eig(flops.array([[1, -1], [1, 1]]))"
               },
               {
                 "kind": "input",
@@ -711,7 +711,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, 1j], [-1j, 1]])"
+                "text": "a = flops.array([[1, 1j], [-1j, 1]])"
               },
               {
                 "kind": "input",
@@ -757,7 +757,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1 + 1e-9, 0], [0, 1 - 1e-9]])"
+                "text": "a = flops.array([[1 + 1e-9, 0], [0, 1 - 1e-9]])"
               },
               {
                 "kind": "input",
@@ -803,12 +803,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "fnp.linalg.eig",
+    "flopscope_ref": "flops.linalg.eig",
     "module": "numpy.linalg",
     "name": "linalg.eig",
     "notes": "Eigendecomposition. Cost: $n^3$.",
     "numpy_ref": "np.linalg.eig",
-    "signature": "fnp.linalg.eig(a)",
+    "signature": "flops.linalg.eig(a)",
     "status": "supported",
     "summary": "Compute the eigenvalues and right eigenvectors of a square array.",
     "weight": 4.0

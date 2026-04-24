@@ -27,7 +27,7 @@
             },
             {
               "kind": "code",
-              "text": "fnp.nonzero(fnp.ravel(a))[0]"
+              "text": "flops.nonzero(flops.ravel(a))[0]"
             },
             {
               "kind": "text",
@@ -135,7 +135,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/nonzero",
-              "label": "fnp.nonzero",
+              "label": "flops.nonzero",
               "original_target": "nonzero",
               "role": "",
               "target": "nonzero",
@@ -151,7 +151,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/ravel",
-              "label": "fnp.ravel",
+              "label": "flops.ravel",
               "original_target": "ravel",
               "role": "",
               "target": "ravel",
@@ -170,12 +170,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.arange(-2, 3)"
+              "text": "x = flops.arange(-2, 3)"
             },
             {
               "kind": "input",
@@ -189,7 +189,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.flatnonzero(x)"
+              "text": "flops.flatnonzero(x)"
             },
             {
               "kind": "output",
@@ -212,7 +212,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x.ravel()[fnp.flatnonzero(x)]"
+              "text": "x.ravel()[flops.flatnonzero(x)]"
             },
             {
               "kind": "output",
@@ -226,6 +226,7 @@
     }
   ],
   "canonical_name": "flatnonzero",
+  "canonical_path": "flatnonzero",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -236,19 +237,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.arange(-2, 3)\n\nx\n\nfnp.flatnonzero(x)\n\nx.ravel()[fnp.flatnonzero(x)]",
+    "code": "import flopscope as flops\n\nx = flops.arange(-2, 3)\n\nx\n\nflops.flatnonzero(x)\n\nx.ravel()[flops.flatnonzero(x)]",
     "output": "array([-2, -1,  0,  1,  2])\n\narray([0, 1, 3, 4])\n\narray([-2, -1,  1,  2])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.flatnonzero",
+  "flopscope_ref": "flops.flatnonzero",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1084",
-  "href": "/docs/api/ops/flatnonzero/",
+  "href": "/docs/api/flatnonzero/",
+  "legacy_href": "/docs/api/ops/flatnonzero/",
   "module": "numpy",
   "name": "flatnonzero",
   "next": {
-    "href": "/docs/api/ops/flip/",
-    "label": "fnp.flip"
+    "href": "/docs/api/flip/",
+    "label": "flops.flip"
   },
   "notes": "Return indices of non-zero elements in flattened array. Cost: numel(input).",
   "notes_sections": [],
@@ -263,8 +265,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fill_diagonal/",
-    "label": "fnp.fill_diagonal"
+    "href": "/docs/api/fill-diagonal/",
+    "label": "flops.fill_diagonal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.flatnonzero.html",
@@ -289,7 +291,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/nonzero",
-      "label": "fnp.nonzero",
+      "label": "flops.nonzero",
       "original_target": "nonzero",
       "role": "",
       "target": "nonzero",
@@ -305,14 +307,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/ravel",
-      "label": "fnp.ravel",
+      "label": "flops.ravel",
       "original_target": "ravel",
       "role": "",
       "target": "ravel",
       "unresolved": false
     }
   ],
-  "signature": "fnp.flatnonzero(a)",
+  "signature": "flops.flatnonzero(a)",
   "slug": "flatnonzero",
   "summary": "Return indices that are non-zero in the flattened version of a.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L646",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/bincount/",
+  "detail_href": "/docs/api/bincount/",
   "detail_json_href": "/api-data/ops/bincount.json",
   "docs": {
     "sections": [
@@ -221,7 +221,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "amax(x)+1",
-                        "text": "fnp.amax(x)+1"
+                        "text": "flops.amax(x)+1"
                       },
                       {
                         "kind": "text",
@@ -250,7 +250,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "amax(x)+1",
-                    "text": "fnp.amax(x)+1"
+                    "text": "flops.amax(x)+1"
                   },
                   {
                     "kind": "text",
@@ -347,7 +347,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/histogram",
-                "label": "fnp.histogram",
+                "label": "flops.histogram",
                 "original_target": "histogram",
                 "role": "",
                 "target": "histogram",
@@ -358,7 +358,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/digitize",
-                "label": "fnp.digitize",
+                "label": "flops.digitize",
                 "original_target": "digitize",
                 "role": "",
                 "target": "digitize",
@@ -369,7 +369,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/unique",
-                "label": "fnp.unique",
+                "label": "flops.unique",
                 "original_target": "unique",
                 "role": "",
                 "target": "unique",
@@ -388,12 +388,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.bincount(fnp.arange(5))"
+                "text": "flops.bincount(flops.arange(5))"
               },
               {
                 "kind": "output",
@@ -402,7 +402,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.bincount(fnp.array([0, 1, 1, 3, 2, 1, 7]))"
+                "text": "flops.bincount(flops.array([0, 1, 1, 3, 2, 1, 7]))"
               },
               {
                 "kind": "output",
@@ -416,12 +416,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([0, 1, 1, 3, 2, 1, 7, 23])"
+                "text": "x = flops.array([0, 1, 1, 3, 2, 1, 7, 23])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.bincount(x).size == fnp.amax(x)+1"
+                "text": "flops.bincount(x).size == flops.amax(x)+1"
               },
               {
                 "kind": "output",
@@ -444,7 +444,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.bincount(fnp.arange(5, dtype=float))"
+                "text": "flops.bincount(flops.arange(5, dtype=float))"
               },
               {
                 "kind": "output",
@@ -499,17 +499,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "w = fnp.array([0.3, 0.5, 0.2, 0.7, 1., -0.6]) # weights"
+                "text": "w = flops.array([0.3, 0.5, 0.2, 0.7, 1., -0.6]) # weights"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([0, 1, 1, 2, 2, 2])"
+                "text": "x = flops.array([0, 1, 1, 2, 2, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.bincount(x,  weights=w)"
+                "text": "flops.bincount(x,  weights=w)"
               },
               {
                 "kind": "output",
@@ -527,12 +527,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.bincount",
+    "flopscope_ref": "flops.bincount",
     "module": "numpy",
     "name": "bincount",
     "notes": "Integer counting; cost = numel(x).",
     "numpy_ref": "np.bincount",
-    "signature": "fnp.bincount(x, **kwargs)",
+    "signature": "flops.bincount(x, **kwargs)",
     "status": "supported",
     "summary": "Count number of occurrences of each value in array of non-negative ints.",
     "weight": 1.0

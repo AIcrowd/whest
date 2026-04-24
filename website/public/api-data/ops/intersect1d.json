@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/intersect1d/",
+  "detail_href": "/docs/api/intersect1d/",
   "detail_json_href": "/api-data/ops/intersect1d.json",
   "docs": {
     "sections": [
@@ -288,12 +288,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])"
+                "text": "flops.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])"
               },
               {
                 "kind": "output",
@@ -321,7 +321,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "reduce(fnp.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
+                "text": "reduce(flops.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
               },
               {
                 "kind": "output",
@@ -344,17 +344,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([1, 1, 2, 3, 4])"
+                "text": "x = flops.array([1, 1, 2, 3, 4])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.array([2, 1, 4, 6])"
+                "text": "y = flops.array([2, 1, 4, 6])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xy, x_ind, y_ind = fnp.intersect1d(x, y, return_indices=True)"
+                "text": "xy, x_ind, y_ind = flops.intersect1d(x, y, return_indices=True)"
               },
               {
                 "kind": "input",
@@ -386,12 +386,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.intersect1d",
+    "flopscope_ref": "flops.intersect1d",
     "module": "numpy",
     "name": "intersect1d",
     "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m)).",
     "numpy_ref": "np.intersect1d",
-    "signature": "fnp.intersect1d(ar1, ar2, assume_unique=False, return_indices=False)",
+    "signature": "flops.intersect1d(ar1, ar2, assume_unique=False, return_indices=False)",
     "status": "supported",
     "summary": "Find the intersection of two arrays.",
     "weight": 1.0

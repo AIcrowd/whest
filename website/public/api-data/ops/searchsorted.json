@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/searchsorted/",
+  "detail_href": "/docs/api/searchsorted/",
   "detail_json_href": "/api-data/ops/searchsorted.json",
   "docs": {
     "sections": [
@@ -319,7 +319,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/sort",
-                "label": "fnp.sort",
+                "label": "flops.sort",
                 "original_target": "sort",
                 "role": "",
                 "target": "sort",
@@ -335,7 +335,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/histogram",
-                "label": "fnp.histogram",
+                "label": "flops.histogram",
                 "original_target": "histogram",
                 "role": "",
                 "target": "histogram",
@@ -456,12 +456,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.searchsorted([11,12,13,14,15], 13)"
+                "text": "flops.searchsorted([11,12,13,14,15], 13)"
               },
               {
                 "kind": "output",
@@ -470,7 +470,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.searchsorted([11,12,13,14,15], 13, side='right')"
+                "text": "flops.searchsorted([11,12,13,14,15], 13, side='right')"
               },
               {
                 "kind": "output",
@@ -479,7 +479,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.searchsorted([11,12,13,14,15], [-10, 20, 12, 13])"
+                "text": "flops.searchsorted([11,12,13,14,15], [-10, 20, 12, 13])"
               },
               {
                 "kind": "output",
@@ -526,12 +526,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([40, 10, 20, 30])"
+                "text": "a = flops.array([40, 10, 20, 30])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "sorter = fnp.argsort(a)"
+                "text": "sorter = flops.argsort(a)"
               },
               {
                 "kind": "input",
@@ -545,7 +545,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "result = fnp.searchsorted(a, 25, sorter=sorter)"
+                "text": "result = flops.searchsorted(a, 25, sorter=sorter)"
               },
               {
                 "kind": "input",
@@ -577,12 +577,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.searchsorted",
+    "flopscope_ref": "flops.searchsorted",
     "module": "numpy",
     "name": "searchsorted",
     "notes": "Binary search; cost = m*ceil(log2(n)).",
     "numpy_ref": "np.searchsorted",
-    "signature": "fnp.searchsorted(a, v, side='left', sorter=None)",
+    "signature": "flops.searchsorted(a, v, side='left', sorter=None)",
     "status": "supported",
     "summary": "Find indices where elements should be inserted to maintain order.",
     "weight": 1.0

@@ -30,7 +30,7 @@
               "href": "/docs/api/ops/outer",
               "kind": "link",
               "target": "outer",
-              "text": "fnp.outer"
+              "text": "flops.outer"
             },
             {
               "kind": "text",
@@ -171,7 +171,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/outer",
-              "label": "fnp.outer",
+              "label": "flops.outer",
               "original_target": "outer",
               "role": "",
               "target": "outer",
@@ -207,7 +207,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rl = fnp.linalg.outer(fnp.ones((5,)), fnp.linspace(-2, 2, 5))"
+              "text": "rl = flops.linalg.outer(flops.ones((5,)), flops.linspace(-2, 2, 5))"
             },
             {
               "kind": "input",
@@ -237,7 +237,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "im = fnp.linalg.outer(1j*fnp.linspace(2, -2, 5), fnp.ones((5,)))"
+              "text": "im = flops.linalg.outer(1j*flops.linspace(2, -2, 5), flops.ones((5,)))"
             },
             {
               "kind": "input",
@@ -311,12 +311,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.array(['a', 'b', 'c'], dtype=object)"
+              "text": "x = flops.array(['a', 'b', 'c'], dtype=object)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.linalg.outer(x, [1, 2, 3])"
+              "text": "flops.linalg.outer(x, [1, 2, 3])"
             },
             {
               "kind": "output",
@@ -338,8 +338,9 @@
     }
   ],
   "canonical_name": "linalg.outer",
+  "canonical_path": "linalg/outer",
   "category": "counted_custom",
-  "cost_formula": "delegates to fnp.outer",
+  "cost_formula": "delegates to flops.outer",
   "cost_formula_latex": "delegates to `outer`",
   "display_type": "custom",
   "doc_coverage": {
@@ -348,19 +349,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "rl = fnp.linalg.outer(fnp.ones((5,)), fnp.linspace(-2, 2, 5))\n\nrl\n\nim = fnp.linalg.outer(1j*fnp.linspace(2, -2, 5), fnp.ones((5,)))\n\nim\n\ngrid = rl + im\n\ngrid\n\nx = fnp.array(['a', 'b', 'c'], dtype=object)\n\nfnp.linalg.outer(x, [1, 2, 3])",
+    "code": "rl = flops.linalg.outer(flops.ones((5,)), flops.linspace(-2, 2, 5))\n\nrl\n\nim = flops.linalg.outer(1j*flops.linspace(2, -2, 5), flops.ones((5,)))\n\nim\n\ngrid = rl + im\n\ngrid\n\nx = flops.array(['a', 'b', 'c'], dtype=object)\n\nflops.linalg.outer(x, [1, 2, 3])",
     "output": "array([[-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.]])\n\narray([[0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j],\n       [0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j],\n       [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],\n       [0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j],\n       [0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j]])\n\narray([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],\n       [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],\n       [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],\n       [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],\n       [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])\n\narray([['a', 'aa', 'aaa'],\n       ['b', 'bb', 'bbb'],\n       ['c', 'cc', 'ccc']], dtype=object)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.linalg.outer",
+  "flopscope_ref": "flops.linalg.outer",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L57",
-  "href": "/docs/api/ops/linalg-outer/",
+  "href": "/docs/api/linalg/outer/",
+  "legacy_href": "/docs/api/ops/linalg-outer/",
   "module": "numpy.linalg",
   "name": "linalg.outer",
   "next": {
-    "href": "/docs/api/ops/linalg-pinv/",
-    "label": "fnp.linalg.pinv"
+    "href": "/docs/api/linalg/pinv/",
+    "label": "flops.linalg.pinv"
   },
   "notes": "Delegates to `we.outer` which charges `m*n` FLOPs.",
   "notes_sections": [],
@@ -384,8 +386,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-norm/",
-    "label": "fnp.linalg.norm"
+    "href": "/docs/api/linalg/norm/",
+    "label": "flops.linalg.norm"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.outer.html",
@@ -404,14 +406,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/outer",
-      "label": "fnp.outer",
+      "label": "flops.outer",
       "original_target": "outer",
       "role": "",
       "target": "outer",
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.outer(x1, x2, /)",
+  "signature": "flops.linalg.outer(x1, x2, /)",
   "slug": "linalg-outer",
   "summary": "Compute the outer product of two vectors.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L850",

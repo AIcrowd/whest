@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/kron/",
+  "detail_href": "/docs/api/kron/",
   "detail_json_href": "/api-data/ops/kron.json",
   "docs": {
     "sections": [
@@ -81,7 +81,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/outer",
-                "label": "fnp.outer",
+                "label": "flops.outer",
                 "original_target": "outer",
                 "role": "",
                 "target": "outer",
@@ -203,12 +203,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.kron([1,10,100], [5,6,7])"
+                "text": "flops.kron([1,10,100], [5,6,7])"
               },
               {
                 "kind": "output",
@@ -217,7 +217,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.kron([5,6,7], [1,10,100])"
+                "text": "flops.kron([5,6,7], [1,10,100])"
               },
               {
                 "kind": "output",
@@ -231,7 +231,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.kron(fnp.eye(2), fnp.ones((2,2)))"
+                "text": "flops.kron(flops.eye(2), flops.ones((2,2)))"
               },
               {
                 "kind": "output",
@@ -257,17 +257,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.arange(100).reshape((2,5,2,5))"
+                "text": "a = flops.arange(100).reshape((2,5,2,5))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.arange(24).reshape((2,3,4))"
+                "text": "b = flops.arange(24).reshape((2,3,4))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = fnp.kron(a,b)"
+                "text": "c = flops.kron(a,b)"
               },
               {
                 "kind": "input",
@@ -301,7 +301,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "K = tuple(fnp.array(I) * fnp.array(S1) + fnp.array(J1))"
+                "text": "K = tuple(flops.array(I) * flops.array(S1) + flops.array(J1))"
               },
               {
                 "kind": "input",
@@ -324,12 +324,12 @@
     "category": "counted_custom",
     "cost_formula": "m1*m2 * n1*n2",
     "cost_formula_latex": "$m_1 m_2 \\cdot n_1 n_2$",
-    "flopscope_ref": "fnp.kron",
+    "flopscope_ref": "flops.kron",
     "module": "numpy",
     "name": "kron",
     "notes": "Kronecker product; cost proportional to output size.",
     "numpy_ref": "np.kron",
-    "signature": "fnp.kron(a, b)",
+    "signature": "flops.kron(a, b)",
     "status": "supported",
     "summary": "Kronecker product of two arrays.",
     "weight": 1.0

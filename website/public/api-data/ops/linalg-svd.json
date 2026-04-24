@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-svd/",
+  "detail_href": "/docs/api/linalg/svd/",
   "detail_json_href": "/api-data/ops/linalg-svd.json",
   "docs": {
     "sections": [
@@ -43,7 +43,7 @@
               },
               {
                 "kind": "code",
-                "text": "u @ fnp.diag(s) @ vh = (u * s) @ vh"
+                "text": "u @ flops.diag(s) @ vh = (u * s) @ vh"
               },
               {
                 "kind": "text",
@@ -771,7 +771,7 @@
               },
               {
                 "kind": "math",
-                "latex": "S= \\mathtt{fnp.diag}(s)"
+                "latex": "S= \\mathtt{flops.diag}(s)"
               },
               {
                 "kind": "text",
@@ -935,7 +935,7 @@
                 "href": "/docs/api/ops/matmul",
                 "kind": "link",
                 "target": "matmul",
-                "text": "fnp.matmul"
+                "text": "flops.matmul"
               },
               {
                 "kind": "text",
@@ -987,12 +987,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = fnp.random.default_rng()"
+                "text": "rng = flops.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -1021,7 +1021,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "U, S, Vh = fnp.linalg.svd(a, full_matrices=True)"
+                "text": "U, S, Vh = flops.linalg.svd(a, full_matrices=True)"
               },
               {
                 "kind": "input",
@@ -1035,7 +1035,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose(a, fnp.dot(U[:, :6] * S, Vh))"
+                "text": "flops.allclose(a, flops.dot(U[:, :6] * S, Vh))"
               },
               {
                 "kind": "output",
@@ -1044,17 +1044,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "smat = fnp.zeros((9, 6), dtype=complex)"
+                "text": "smat = flops.zeros((9, 6), dtype=complex)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "smat[:6, :6] = fnp.diag(S)"
+                "text": "smat[:6, :6] = flops.diag(S)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose(a, fnp.dot(U, fnp.dot(smat, Vh)))"
+                "text": "flops.allclose(a, flops.dot(U, flops.dot(smat, Vh)))"
               },
               {
                 "kind": "output",
@@ -1077,7 +1077,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "U, S, Vh = fnp.linalg.svd(a, full_matrices=False)"
+                "text": "U, S, Vh = flops.linalg.svd(a, full_matrices=False)"
               },
               {
                 "kind": "input",
@@ -1091,7 +1091,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose(a, fnp.dot(U * S, Vh))"
+                "text": "flops.allclose(a, flops.dot(U * S, Vh))"
               },
               {
                 "kind": "output",
@@ -1100,12 +1100,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "smat = fnp.diag(S)"
+                "text": "smat = flops.diag(S)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose(a, fnp.dot(U, fnp.dot(smat, Vh)))"
+                "text": "flops.allclose(a, flops.dot(U, flops.dot(smat, Vh)))"
               },
               {
                 "kind": "output",
@@ -1128,7 +1128,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "U, S, Vh = fnp.linalg.svd(b, full_matrices=True)"
+                "text": "U, S, Vh = flops.linalg.svd(b, full_matrices=True)"
               },
               {
                 "kind": "input",
@@ -1142,7 +1142,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose(b, fnp.matmul(U[..., :3] * S[..., None, :], Vh))"
+                "text": "flops.allclose(b, flops.matmul(U[..., :3] * S[..., None, :], Vh))"
               },
               {
                 "kind": "output",
@@ -1151,7 +1151,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose(b, fnp.matmul(U[..., :3], S[..., None] * Vh))"
+                "text": "flops.allclose(b, flops.matmul(U[..., :3], S[..., None] * Vh))"
               },
               {
                 "kind": "output",
@@ -1174,7 +1174,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "U, S, Vh = fnp.linalg.svd(b, full_matrices=False)"
+                "text": "U, S, Vh = flops.linalg.svd(b, full_matrices=False)"
               },
               {
                 "kind": "input",
@@ -1188,7 +1188,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose(b, fnp.matmul(U * S[..., None, :], Vh))"
+                "text": "flops.allclose(b, flops.matmul(U * S[..., None, :], Vh))"
               },
               {
                 "kind": "output",
@@ -1197,7 +1197,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose(b, fnp.matmul(U, S[..., None] * Vh))"
+                "text": "flops.allclose(b, flops.matmul(U, S[..., None] * Vh))"
               },
               {
                 "kind": "output",
@@ -1215,12 +1215,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * k",
     "cost_formula_latex": "$m \\cdot n \\cdot k$",
-    "flopscope_ref": "fnp.linalg.svd",
+    "flopscope_ref": "flops.linalg.svd",
     "module": "numpy.linalg",
     "name": "linalg.svd",
     "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
     "numpy_ref": "np.linalg.svd",
-    "signature": "fnp.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
+    "signature": "flops.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
     "status": "supported",
     "summary": "Singular Value Decomposition.",
     "weight": 4.0

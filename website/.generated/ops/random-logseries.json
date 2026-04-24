@@ -89,7 +89,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.logseries`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.logseries`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -164,7 +164,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "fnp.array(p).size"
+                      "text": "flops.array(p).size"
                     },
                     {
                       "kind": "text",
@@ -214,7 +214,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "fnp.array(p).size"
+                  "text": "flops.array(p).size"
                 },
                 {
                   "kind": "text",
@@ -390,7 +390,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = fnp.random.logseries(a, 10000)"
+              "text": "s = flops.random.logseries(a, 10000)"
             },
             {
               "kind": "input",
@@ -424,7 +424,7 @@
             {
               "kind": "input",
               "prompt": "...",
-              "text": "return -p**k/(k*fnp.log(1-p))"
+              "text": "return -p**k/(k*flops.log(1-p))"
             },
             {
               "kind": "input",
@@ -449,6 +449,7 @@
     }
   ],
   "canonical_name": "random.logseries",
+  "canonical_path": "random/logseries",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -476,19 +477,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "a = .6\n\ns = fnp.random.logseries(a, 10000)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s)\n\ndef logseries(k, p):\n    return -p**k/(k*fnp.log(1-p))\n\nplt.plot(bins, logseries(bins, a)*count.max()/\n         logseries(bins, a).max(), 'r')\n\nplt.show()",
+    "code": "a = .6\n\ns = flops.random.logseries(a, 10000)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s)\n\ndef logseries(k, p):\n    return -p**k/(k*flops.log(1-p))\n\nplt.plot(bins, logseries(bins, a)*count.max()/\n         logseries(bins, a).max(), 'r')\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.logseries",
+  "flopscope_ref": "flops.random.logseries",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-logseries/",
+  "href": "/docs/api/random/logseries/",
+  "legacy_href": "/docs/api/ops/random-logseries/",
   "module": "numpy.random",
   "name": "random.logseries",
   "next": {
-    "href": "/docs/api/ops/random-multinomial/",
-    "label": "fnp.random.multinomial"
+    "href": "/docs/api/random/multinomial/",
+    "label": "flops.random.multinomial"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -511,15 +513,15 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``p`` is a scalar.  Otherwise,",
-        "``fnp.array(p).size`` samples are drawn."
+        "``flops.array(p).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-lognormal/",
-    "label": "fnp.random.lognormal"
+    "href": "/docs/api/random/lognormal/",
+    "label": "flops.random.lognormal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.logseries.html",
@@ -566,7 +568,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.logseries(p, size=None)",
+  "signature": "flops.random.logseries(p, size=None)",
   "slug": "random-logseries",
   "summary": "Draw samples from a logarithmic series distribution.",
   "upstream_source_url": "",

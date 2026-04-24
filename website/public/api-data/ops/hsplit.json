@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/hsplit/",
+  "detail_href": "/docs/api/hsplit/",
   "detail_json_href": "/api-data/ops/hsplit.json",
   "docs": {
     "sections": [
@@ -94,7 +94,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/split",
-                "label": "fnp.split",
+                "label": "flops.split",
                 "original_target": "split",
                 "role": "",
                 "target": "split",
@@ -113,12 +113,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(16.0).reshape(4, 4)"
+                "text": "x = flops.arange(16.0).reshape(4, 4)"
               },
               {
                 "kind": "input",
@@ -144,7 +144,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.hsplit(x, 2)"
+                "text": "flops.hsplit(x, 2)"
               },
               {
                 "kind": "output",
@@ -181,7 +181,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.hsplit(x, fnp.array([3, 6]))"
+                "text": "flops.hsplit(x, flops.array([3, 6]))"
               },
               {
                 "kind": "output",
@@ -236,7 +236,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(8.0).reshape(2, 2, 2)"
+                "text": "x = flops.arange(8.0).reshape(2, 2, 2)"
               },
               {
                 "kind": "input",
@@ -262,7 +262,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.hsplit(x, 2)"
+                "text": "flops.hsplit(x, 2)"
               },
               {
                 "kind": "output",
@@ -297,12 +297,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([0, 1, 2, 3, 4, 5])"
+                "text": "x = flops.array([0, 1, 2, 3, 4, 5])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.hsplit(x, 2)"
+                "text": "flops.hsplit(x, 2)"
               },
               {
                 "kind": "output",
@@ -320,12 +320,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.hsplit",
+    "flopscope_ref": "flops.hsplit",
     "module": "numpy",
     "name": "hsplit",
     "notes": "Split array into columns.",
     "numpy_ref": "np.hsplit",
-    "signature": "fnp.hsplit(ary, indices_or_sections)",
+    "signature": "flops.hsplit(ary, indices_or_sections)",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays horizontally (column-wise).",
     "weight": 0.0

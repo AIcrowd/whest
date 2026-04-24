@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/gcd/",
+  "detail_href": "/docs/api/gcd/",
   "detail_json_href": "/api-data/ops/gcd.json",
   "docs": {
     "sections": [
@@ -157,7 +157,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/lcm",
-                "label": "fnp.lcm",
+                "label": "flops.lcm",
                 "original_target": "lcm",
                 "role": "",
                 "target": "lcm",
@@ -176,12 +176,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.gcd(12, 20)"
+                "text": "flops.gcd(12, 20)"
               },
               {
                 "kind": "output",
@@ -190,7 +190,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.gcd.reduce([15, 25, 35])"
+                "text": "flops.gcd.reduce([15, 25, 35])"
               },
               {
                 "kind": "output",
@@ -199,7 +199,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.gcd(fnp.arange(6), 20)"
+                "text": "flops.gcd(flops.arange(6), 20)"
               },
               {
                 "kind": "output",
@@ -217,12 +217,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.gcd",
+    "flopscope_ref": "flops.gcd",
     "module": "numpy",
     "name": "gcd",
     "notes": "Element-wise greatest common divisor.",
     "numpy_ref": "np.gcd",
-    "signature": "fnp.gcd(*args, **kwargs)",
+    "signature": "flops.gcd(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the greatest common divisor of ``|x1|`` and ``|x2|``",
     "weight": 16.0

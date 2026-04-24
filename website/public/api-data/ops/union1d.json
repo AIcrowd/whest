@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/union1d/",
+  "detail_href": "/docs/api/union1d/",
   "detail_json_href": "/api-data/ops/union1d.json",
   "docs": {
     "sections": [
@@ -104,12 +104,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.union1d([-1, 0, 1], [-2, 0, 2])"
+                "text": "flops.union1d([-1, 0, 1], [-2, 0, 2])"
               },
               {
                 "kind": "output",
@@ -137,7 +137,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "reduce(fnp.union1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
+                "text": "reduce(flops.union1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
               },
               {
                 "kind": "output",
@@ -155,12 +155,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.union1d",
+    "flopscope_ref": "flops.union1d",
     "module": "numpy",
     "name": "union1d",
     "notes": "Set union; cost = (n+m)*ceil(log2(n+m)).",
     "numpy_ref": "np.union1d",
-    "signature": "fnp.union1d(ar1, ar2)",
+    "signature": "flops.union1d(ar1, ar2)",
     "status": "supported",
     "summary": "Find the union of two arrays.",
     "weight": 1.0

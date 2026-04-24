@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/flip/",
+  "detail_href": "/docs/api/flip/",
   "detail_json_href": "/api-data/ops/flip.json",
   "docs": {
     "sections": [
@@ -158,7 +158,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/flipud",
-                "label": "fnp.flipud",
+                "label": "flops.flipud",
                 "original_target": "flipud",
                 "role": "",
                 "target": "flipud",
@@ -174,7 +174,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/fliplr",
-                "label": "fnp.fliplr",
+                "label": "flops.fliplr",
                 "original_target": "fliplr",
                 "role": "",
                 "target": "fliplr",
@@ -291,12 +291,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = fnp.arange(8).reshape((2,2,2))"
+                "text": "A = flops.arange(8).reshape((2,2,2))"
               },
               {
                 "kind": "input",
@@ -322,7 +322,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.flip(A, 0)"
+                "text": "flops.flip(A, 0)"
               },
               {
                 "kind": "output",
@@ -343,7 +343,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.flip(A, 1)"
+                "text": "flops.flip(A, 1)"
               },
               {
                 "kind": "output",
@@ -364,7 +364,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.flip(A)"
+                "text": "flops.flip(A)"
               },
               {
                 "kind": "output",
@@ -385,7 +385,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.flip(A, (0, 2))"
+                "text": "flops.flip(A, (0, 2))"
               },
               {
                 "kind": "output",
@@ -406,7 +406,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = fnp.random.default_rng()"
+                "text": "rng = flops.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -416,7 +416,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.all(fnp.flip(A,2) == A[:,:,::-1,...])"
+                "text": "flops.all(flops.flip(A,2) == A[:,:,::-1,...])"
               },
               {
                 "kind": "output",
@@ -434,12 +434,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.flip",
+    "flopscope_ref": "flops.flip",
     "module": "numpy",
     "name": "flip",
     "notes": "Reverse order of elements along axis.",
     "numpy_ref": "np.flip",
-    "signature": "fnp.flip(m, axis=None)",
+    "signature": "flops.flip(m, axis=None)",
     "status": "supported",
     "summary": "Reverse the order of elements in an array along the given axis.",
     "weight": 0.0

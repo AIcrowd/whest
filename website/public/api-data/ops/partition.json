@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/partition/",
+  "detail_href": "/docs/api/partition/",
   "detail_json_href": "/api-data/ops/partition.json",
   "docs": {
     "sections": [
@@ -257,7 +257,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/argpartition",
-                "label": "fnp.argpartition",
+                "label": "flops.argpartition",
                 "original_target": "argpartition",
                 "role": "",
                 "target": "argpartition",
@@ -273,7 +273,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/sort",
-                "label": "fnp.sort",
+                "label": "flops.sort",
                 "original_target": "sort",
                 "role": "",
                 "target": "sort",
@@ -330,7 +330,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "nan",
-                "text": "fnp.nan"
+                "text": "flops.nan"
               },
               {
                 "kind": "text",
@@ -341,7 +341,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "inf",
-                "text": "fnp.inf"
+                "text": "flops.inf"
               },
               {
                 "kind": "text",
@@ -360,17 +360,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])"
+                "text": "a = flops.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p = fnp.partition(a, 4)"
+                "text": "p = flops.partition(a, 4)"
               },
               {
                 "kind": "input",
@@ -456,7 +456,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p2 = fnp.partition(a, (4, 8))"
+                "text": "p2 = flops.partition(a, (4, 8))"
               },
               {
                 "kind": "input",
@@ -561,12 +561,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.partition",
+    "flopscope_ref": "flops.partition",
     "module": "numpy",
     "name": "partition",
     "notes": "Quickselect; cost = n per slice.",
     "numpy_ref": "np.partition",
-    "signature": "fnp.partition(a, kth, axis=-1, kind='introselect', order=None)",
+    "signature": "flops.partition(a, kth, axis=-1, kind='introselect', order=None)",
     "status": "supported",
     "summary": "Return a partitioned copy of an array.",
     "weight": 1.0

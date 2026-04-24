@@ -350,7 +350,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/cumulative_sum",
-              "label": "fnp.cumulative_sum",
+              "label": "flops.cumulative_sum",
               "original_target": "cumulative_sum",
               "role": "",
               "target": "cumulative_sum",
@@ -366,7 +366,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/sum",
-              "label": "fnp.sum",
+              "label": "flops.sum",
               "original_target": "sum",
               "role": "",
               "target": "sum",
@@ -382,7 +382,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/trapezoid",
-              "label": "fnp.trapezoid",
+              "label": "flops.trapezoid",
               "original_target": "trapezoid",
               "role": "",
               "target": "trapezoid",
@@ -398,7 +398,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/diff",
-              "label": "fnp.diff",
+              "label": "flops.diff",
               "original_target": "diff",
               "role": "",
               "target": "diff",
@@ -474,12 +474,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([[1,2,3], [4,5,6]])"
+              "text": "a = flops.array([[1,2,3], [4,5,6]])"
             },
             {
               "kind": "input",
@@ -497,7 +497,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.cumsum(a)"
+              "text": "flops.cumsum(a)"
             },
             {
               "kind": "output",
@@ -506,7 +506,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.cumsum(a, dtype=float)     # specifies type of output value(s)"
+              "text": "flops.cumsum(a, dtype=float)     # specifies type of output value(s)"
             },
             {
               "kind": "output",
@@ -520,7 +520,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.cumsum(a,axis=0)      # sum over rows for each of the 3 columns"
+              "text": "flops.cumsum(a,axis=0)      # sum over rows for each of the 3 columns"
             },
             {
               "kind": "output",
@@ -533,7 +533,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.cumsum(a,axis=1)      # sum over columns for each of the 2 rows"
+              "text": "flops.cumsum(a,axis=1)      # sum over columns for each of the 2 rows"
             },
             {
               "kind": "output",
@@ -568,7 +568,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = fnp.array([1, 2e-9, 3e-9] * 1000000)"
+              "text": "b = flops.array([1, 2e-9, 3e-9] * 1000000)"
             },
             {
               "kind": "input",
@@ -596,6 +596,7 @@
     }
   ],
   "canonical_name": "cumsum",
+  "canonical_path": "cumsum",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -606,19 +607,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[1,2,3], [4,5,6]])\n\na\n\nfnp.cumsum(a)\n\nfnp.cumsum(a, dtype=float)     # specifies type of output value(s)\n\nfnp.cumsum(a,axis=0)      # sum over rows for each of the 3 columns\n\nfnp.cumsum(a,axis=1)      # sum over columns for each of the 2 rows\n\nb = fnp.array([1, 2e-9, 3e-9] * 1000000)\n\nb.cumsum()[-1]\n\nb.sum()",
+    "code": "import flopscope as flops\n\na = flops.array([[1,2,3], [4,5,6]])\n\na\n\nflops.cumsum(a)\n\nflops.cumsum(a, dtype=float)     # specifies type of output value(s)\n\nflops.cumsum(a,axis=0)      # sum over rows for each of the 3 columns\n\nflops.cumsum(a,axis=1)      # sum over columns for each of the 2 rows\n\nb = flops.array([1, 2e-9, 3e-9] * 1000000)\n\nb.cumsum()[-1]\n\nb.sum()",
     "output": "array([[1, 2, 3],\n       [4, 5, 6]])\n\narray([ 1,  3,  6, 10, 15, 21])\n\narray([  1.,   3.,   6.,  10.,  15.,  21.])\n\narray([[1, 2, 3],\n       [5, 7, 9]])\n\narray([[ 1,  3,  6],\n       [ 4,  9, 15]])\n\n1000000.0050045159\n\n1000000.0050000029",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.cumsum",
+  "flopscope_ref": "flops.cumsum",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/ops/cumsum/",
+  "href": "/docs/api/cumsum/",
+  "legacy_href": "/docs/api/ops/cumsum/",
   "module": "numpy",
   "name": "cumsum",
   "next": {
-    "href": "/docs/api/ops/cumulative_prod/",
-    "label": "fnp.cumulative_prod"
+    "href": "/docs/api/cumulative-prod/",
+    "label": "flops.cumulative_prod"
   },
   "notes": "Cumulative sum of array elements.",
   "notes_sections": [
@@ -665,8 +667,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/cumprod/",
-    "label": "fnp.cumprod"
+    "href": "/docs/api/cumprod/",
+    "label": "flops.cumprod"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cumsum.html",
@@ -704,7 +706,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/cumulative_sum",
-      "label": "fnp.cumulative_sum",
+      "label": "flops.cumulative_sum",
       "original_target": "cumulative_sum",
       "role": "",
       "target": "cumulative_sum",
@@ -720,7 +722,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/sum",
-      "label": "fnp.sum",
+      "label": "flops.sum",
       "original_target": "sum",
       "role": "",
       "target": "sum",
@@ -736,7 +738,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/trapezoid",
-      "label": "fnp.trapezoid",
+      "label": "flops.trapezoid",
       "original_target": "trapezoid",
       "role": "",
       "target": "trapezoid",
@@ -752,14 +754,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/diff",
-      "label": "fnp.diff",
+      "label": "flops.diff",
       "original_target": "diff",
       "role": "",
       "target": "diff",
       "unresolved": false
     }
   ],
-  "signature": "fnp.cumsum(a, axis=None, dtype=None, out=None)",
+  "signature": "flops.cumsum(a, axis=None, dtype=None, out=None)",
   "slug": "cumsum",
   "summary": "Return the cumulative sum of the elements along a given axis.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2879",

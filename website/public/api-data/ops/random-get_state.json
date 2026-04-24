@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-get_state/",
+  "detail_href": "/docs/api/random/get-state/",
   "detail_json_href": "/api-data/ops/random-get_state.json",
   "docs": {
     "sections": [
@@ -270,12 +270,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.random.get_state",
+    "flopscope_ref": "flops.random.get_state",
     "module": "numpy.random",
     "name": "random.get_state",
     "notes": "Return tuple representing internal state of generator.",
     "numpy_ref": "np.random.get_state",
-    "signature": "fnp.random.get_state(legacy=True)",
+    "signature": "flops.random.get_state(legacy=True)",
     "status": "supported",
     "summary": "Return a tuple representing the internal state of the generator.",
     "weight": 0.0

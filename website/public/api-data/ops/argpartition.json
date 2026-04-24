@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/argpartition/",
+  "detail_href": "/docs/api/argpartition/",
   "detail_json_href": "/api-data/ops/argpartition.json",
   "docs": {
     "sections": [
@@ -229,7 +229,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "take_along_axis(a, index_array, axis=axis)",
-                        "text": "fnp.take_along_axis(a, index_array, axis=axis)"
+                        "text": "flops.take_along_axis(a, index_array, axis=axis)"
                       },
                       {
                         "kind": "text",
@@ -290,7 +290,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "take_along_axis(a, index_array, axis=axis)",
-                    "text": "fnp.take_along_axis(a, index_array, axis=axis)"
+                    "text": "flops.take_along_axis(a, index_array, axis=axis)"
                   },
                   {
                     "kind": "text",
@@ -329,7 +329,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/partition",
-                "label": "fnp.partition",
+                "label": "flops.partition",
                 "original_target": "partition",
                 "role": "",
                 "target": "partition",
@@ -361,7 +361,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/argsort",
-                "label": "fnp.argsort",
+                "label": "flops.argsort",
                 "original_target": "argsort",
                 "role": "",
                 "target": "argsort",
@@ -385,7 +385,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/take_along_axis",
-                "label": "fnp.take_along_axis",
+                "label": "flops.take_along_axis",
                 "original_target": "take_along_axis",
                 "role": "",
                 "target": "take_along_axis",
@@ -462,17 +462,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([3, 4, 2, 1])"
+                "text": "x = flops.array([3, 4, 2, 1])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x[fnp.argpartition(x, 3)]"
+                "text": "x[flops.argpartition(x, 3)]"
               },
               {
                 "kind": "output",
@@ -481,7 +481,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x[fnp.argpartition(x, (1, 3))]"
+                "text": "x[flops.argpartition(x, (1, 3))]"
               },
               {
                 "kind": "output",
@@ -500,7 +500,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array(x)[fnp.argpartition(x, 3)]"
+                "text": "flops.array(x)[flops.argpartition(x, 3)]"
               },
               {
                 "kind": "output",
@@ -523,22 +523,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([[3, 4, 2], [1, 3, 1]])"
+                "text": "x = flops.array([[3, 4, 2], [1, 3, 1]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "index_array = fnp.argpartition(x, kth=1, axis=-1)"
+                "text": "index_array = flops.argpartition(x, kth=1, axis=-1)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "# below is the same as fnp.partition(x, kth=1)"
+                "text": "# below is the same as flops.partition(x, kth=1)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.take_along_axis(x, index_array, axis=-1)"
+                "text": "flops.take_along_axis(x, index_array, axis=-1)"
               },
               {
                 "kind": "output",
@@ -560,12 +560,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.argpartition",
+    "flopscope_ref": "flops.argpartition",
     "module": "numpy",
     "name": "argpartition",
     "notes": "Indirect partition; cost = n per slice.",
     "numpy_ref": "np.argpartition",
-    "signature": "fnp.argpartition(a, kth, axis=-1, kind='introselect', order=None)",
+    "signature": "flops.argpartition(a, kth, axis=-1, kind='introselect', order=None)",
     "status": "supported",
     "summary": "Perform an indirect partition along the given axis using the algorithm specified by the `kind` keyword. It returns an array of indices of the same shape as `a` that index data along the given axis in partitioned order.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-logistic-cdf/",
+  "detail_href": "/docs/api/stats/logistic/cdf/",
   "detail_json_href": "/api-data/ops/stats-logistic-cdf.json",
   "docs": {
     "sections": [
@@ -163,12 +163,12 @@
     "category": "counted_custom",
     "cost_formula": "5n",
     "cost_formula_latex": "$5n$",
-    "flopscope_ref": "fnp.stats.logistic.cdf",
+    "flopscope_ref": "flops.stats.logistic.cdf",
     "module": "flopscope.stats",
     "name": "stats.logistic.cdf",
     "notes": "Logistic CDF; cost = numel(input).",
     "numpy_ref": "np.stats.logistic.cdf",
-    "signature": "fnp.stats.logistic.cdf(x, loc=0, scale=1)",
+    "signature": "flops.stats.logistic.cdf(x, loc=0, scale=1)",
     "status": "supported",
     "summary": "Cumulative distribution function of the given RV.",
     "weight": 16.0

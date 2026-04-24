@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/trim_zeros/",
+  "detail_href": "/docs/api/trim-zeros/",
   "detail_json_href": "/api-data/ops/trim_zeros.json",
   "docs": {
     "sections": [
@@ -196,17 +196,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array((0, 0, 0, 1, 2, 3, 0, 2, 1, 0))"
+                "text": "a = flops.array((0, 0, 0, 1, 2, 3, 0, 2, 1, 0))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.trim_zeros(a)"
+                "text": "flops.trim_zeros(a)"
               },
               {
                 "kind": "output",
@@ -220,7 +220,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.trim_zeros(a, trim='b')"
+                "text": "flops.trim_zeros(a, trim='b')"
               },
               {
                 "kind": "output",
@@ -243,7 +243,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.array([[0, 0, 2, 3, 0, 0],"
+                "text": "b = flops.array([[0, 0, 2, 3, 0, 0],"
               },
               {
                 "kind": "input",
@@ -258,7 +258,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.trim_zeros(b)"
+                "text": "flops.trim_zeros(b)"
               },
               {
                 "kind": "output",
@@ -276,7 +276,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.trim_zeros(b, axis=-1)"
+                "text": "flops.trim_zeros(b, axis=-1)"
               },
               {
                 "kind": "output",
@@ -307,7 +307,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.trim_zeros([0, 1, 2, 0])"
+                "text": "flops.trim_zeros([0, 1, 2, 0])"
               },
               {
                 "kind": "output",
@@ -325,12 +325,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.trim_zeros",
+    "flopscope_ref": "flops.trim_zeros",
     "module": "numpy",
     "name": "trim_zeros",
     "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed.",
     "numpy_ref": "np.trim_zeros",
-    "signature": "fnp.trim_zeros(filt, trim='fb', axis=None)",
+    "signature": "flops.trim_zeros(filt, trim='fb', axis=None)",
     "status": "supported",
     "summary": "Remove values along a dimension which are zero along all other.",
     "weight": 4.0

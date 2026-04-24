@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/in1d/",
+  "detail_href": "/docs/api/in1d/",
   "detail_json_href": "/api-data/ops/in1d.json",
   "docs": {
     "sections": [
@@ -180,7 +180,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "in1d(a, b, invert=True)",
-                        "text": "fnp.in1d(a, b, invert=True)"
+                        "text": "flops.in1d(a, b, invert=True)"
                       },
                       {
                         "kind": "text",
@@ -191,7 +191,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "invert(in1d(a, b))",
-                        "text": "fnp.invert(in1d(a, b))"
+                        "text": "flops.invert(in1d(a, b))"
                       },
                       {
                         "kind": "text",
@@ -228,7 +228,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "in1d(a, b, invert=True)",
-                    "text": "fnp.in1d(a, b, invert=True)"
+                    "text": "flops.in1d(a, b, invert=True)"
                   },
                   {
                     "kind": "text",
@@ -239,7 +239,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "invert(in1d(a, b))",
-                    "text": "fnp.invert(in1d(a, b))"
+                    "text": "flops.invert(in1d(a, b))"
                   },
                   {
                     "kind": "text",
@@ -466,7 +466,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/isin",
-                "label": "fnp.isin",
+                "label": "flops.isin",
                 "original_target": "isin",
                 "role": "",
                 "target": "isin",
@@ -514,7 +514,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "array([item in b for item in a])",
-                "text": "fnp.array([item in b for item in a])"
+                "text": "flops.array([item in b for item in a])"
               },
               {
                 "kind": "text",
@@ -606,12 +606,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "test = fnp.array([0, 1, 2, 5, 0])"
+                "text": "test = flops.array([0, 1, 2, 5, 0])"
               },
               {
                 "kind": "input",
@@ -621,7 +621,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "mask = fnp.in1d(test, states)"
+                "text": "mask = flops.in1d(test, states)"
               },
               {
                 "kind": "input",
@@ -644,7 +644,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "mask = fnp.in1d(test, states, invert=True)"
+                "text": "mask = flops.in1d(test, states, invert=True)"
               },
               {
                 "kind": "input",
@@ -676,12 +676,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.in1d",
+    "flopscope_ref": "flops.in1d",
     "module": "numpy",
     "name": "in1d",
     "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)). Removed in numpy 2.4; use `isin` instead.",
     "numpy_ref": "np.in1d",
-    "signature": "fnp.in1d(ar1, ar2, assume_unique=False, invert=False, *, kind=None)",
+    "signature": "flops.in1d(ar1, ar2, assume_unique=False, invert=False, *, kind=None)",
     "status": "supported",
     "summary": "Test whether each element of a 1-D array is also present in a second array.",
     "weight": 1.0

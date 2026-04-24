@@ -90,7 +90,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.vonmises`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.vonmises`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -195,7 +195,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "fnp.broadcast(mu, kappa).size"
+                      "text": "flops.broadcast(mu, kappa).size"
                     },
                     {
                       "kind": "text",
@@ -253,7 +253,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "fnp.broadcast(mu, kappa).size"
+                  "text": "flops.broadcast(mu, kappa).size"
                 },
                 {
                   "kind": "text",
@@ -443,7 +443,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = fnp.random.vonmises(mu, kappa, 1000)"
+              "text": "s = flops.random.vonmises(mu, kappa, 1000)"
             }
           ],
           "type": "doctest_block"
@@ -477,12 +477,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.linspace(-fnp.pi, fnp.pi, num=51)"
+              "text": "x = flops.linspace(-flops.pi, flops.pi, num=51)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = fnp.exp(kappa*fnp.cos(x-mu))/(2*fnp.pi*i0(kappa))  # doctest: +SKIP"
+              "text": "y = flops.exp(kappa*flops.cos(x-mu))/(2*flops.pi*i0(kappa))  # doctest: +SKIP"
             },
             {
               "kind": "input",
@@ -502,6 +502,7 @@
     }
   ],
   "canonical_name": "random.vonmises",
+  "canonical_path": "random/vonmises",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -521,19 +522,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "mu, kappa = 0.0, 4.0 # mean and concentration\n\ns = fnp.random.vonmises(mu, kappa, 1000)\n\nimport matplotlib.pyplot as plt\n\nfrom scipy.special import i0  # doctest: +SKIP\n\nplt.hist(s, 50, density=True)\n\nx = fnp.linspace(-fnp.pi, fnp.pi, num=51)\n\ny = fnp.exp(kappa*fnp.cos(x-mu))/(2*fnp.pi*i0(kappa))  # doctest: +SKIP\n\nplt.plot(x, y, linewidth=2, color='r')  # doctest: +SKIP\n\nplt.show()",
+    "code": "mu, kappa = 0.0, 4.0 # mean and concentration\n\ns = flops.random.vonmises(mu, kappa, 1000)\n\nimport matplotlib.pyplot as plt\n\nfrom scipy.special import i0  # doctest: +SKIP\n\nplt.hist(s, 50, density=True)\n\nx = flops.linspace(-flops.pi, flops.pi, num=51)\n\ny = flops.exp(kappa*flops.cos(x-mu))/(2*flops.pi*i0(kappa))  # doctest: +SKIP\n\nplt.plot(x, y, linewidth=2, color='r')  # doctest: +SKIP\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.vonmises",
+  "flopscope_ref": "flops.random.vonmises",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-vonmises/",
+  "href": "/docs/api/random/vonmises/",
+  "legacy_href": "/docs/api/ops/random-vonmises/",
   "module": "numpy.random",
   "name": "random.vonmises",
   "next": {
-    "href": "/docs/api/ops/random-wald/",
-    "label": "fnp.random.wald"
+    "href": "/docs/api/random/wald/",
+    "label": "flops.random.wald"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -563,15 +565,15 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``mu`` and ``kappa`` are both scalars.",
-        "Otherwise, ``fnp.broadcast(mu, kappa).size`` samples are drawn."
+        "Otherwise, ``flops.broadcast(mu, kappa).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-uniform/",
-    "label": "fnp.random.uniform"
+    "href": "/docs/api/random/uniform/",
+    "label": "flops.random.uniform"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.vonmises.html",
@@ -618,7 +620,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.vonmises(mu, kappa, size=None)",
+  "signature": "flops.random.vonmises(mu, kappa, size=None)",
   "slug": "random-vonmises",
   "summary": "Draw samples from a von Mises distribution.",
   "upstream_source_url": "",

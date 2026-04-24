@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/logical_not/",
+  "detail_href": "/docs/api/logical-not/",
   "detail_json_href": "/api-data/ops/logical_not.json",
   "docs": {
     "sections": [
@@ -318,7 +318,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_and",
-                "label": "fnp.logical_and",
+                "label": "flops.logical_and",
                 "original_target": "logical_and",
                 "role": "",
                 "target": "logical_and",
@@ -329,7 +329,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_or",
-                "label": "fnp.logical_or",
+                "label": "flops.logical_or",
                 "original_target": "logical_or",
                 "role": "",
                 "target": "logical_or",
@@ -340,7 +340,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_xor",
-                "label": "fnp.logical_xor",
+                "label": "flops.logical_xor",
                 "original_target": "logical_xor",
                 "role": "",
                 "target": "logical_xor",
@@ -359,12 +359,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.logical_not(3)"
+                "text": "flops.logical_not(3)"
               },
               {
                 "kind": "output",
@@ -373,7 +373,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.logical_not([True, False, 0, 1])"
+                "text": "flops.logical_not([True, False, 0, 1])"
               },
               {
                 "kind": "output",
@@ -387,12 +387,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(5)"
+                "text": "x = flops.arange(5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.logical_not(x<3)"
+                "text": "flops.logical_not(x<3)"
               },
               {
                 "kind": "output",
@@ -410,12 +410,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.logical_not",
+    "flopscope_ref": "flops.logical_not",
     "module": "numpy",
     "name": "logical_not",
     "notes": "Element-wise logical NOT.",
     "numpy_ref": "np.logical_not",
-    "signature": "fnp.logical_not(*args, **kwargs)",
+    "signature": "flops.logical_not(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the truth value of NOT x element-wise.",
     "weight": 1.0

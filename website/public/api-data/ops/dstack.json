@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/dstack/",
+  "detail_href": "/docs/api/dstack/",
   "detail_json_href": "/api-data/ops/dstack.json",
   "docs": {
     "sections": [
@@ -196,7 +196,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/concatenate",
-                "label": "fnp.concatenate",
+                "label": "flops.concatenate",
                 "original_target": "concatenate",
                 "role": "",
                 "target": "concatenate",
@@ -212,7 +212,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/stack",
-                "label": "fnp.stack",
+                "label": "flops.stack",
                 "original_target": "stack",
                 "role": "",
                 "target": "stack",
@@ -228,7 +228,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/block",
-                "label": "fnp.block",
+                "label": "flops.block",
                 "original_target": "block",
                 "role": "",
                 "target": "block",
@@ -244,7 +244,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vstack",
-                "label": "fnp.vstack",
+                "label": "flops.vstack",
                 "original_target": "vstack",
                 "role": "",
                 "target": "vstack",
@@ -260,7 +260,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/hstack",
-                "label": "fnp.hstack",
+                "label": "flops.hstack",
                 "original_target": "hstack",
                 "role": "",
                 "target": "hstack",
@@ -276,7 +276,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/column_stack",
-                "label": "fnp.column_stack",
+                "label": "flops.column_stack",
                 "original_target": "column_stack",
                 "role": "",
                 "target": "column_stack",
@@ -292,7 +292,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/dsplit",
-                "label": "fnp.dsplit",
+                "label": "flops.dsplit",
                 "original_target": "dsplit",
                 "role": "",
                 "target": "dsplit",
@@ -311,22 +311,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array((1,2,3))"
+                "text": "a = flops.array((1,2,3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.array((2,3,4))"
+                "text": "b = flops.array((2,3,4))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.dstack((a,b))"
+                "text": "flops.dstack((a,b))"
               },
               {
                 "kind": "output",
@@ -348,17 +348,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1],[2],[3]])"
+                "text": "a = flops.array([[1],[2],[3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.array([[2],[3],[4]])"
+                "text": "b = flops.array([[2],[3],[4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.dstack((a,b))"
+                "text": "flops.dstack((a,b))"
               },
               {
                 "kind": "output",
@@ -384,12 +384,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.dstack",
+    "flopscope_ref": "flops.dstack",
     "module": "numpy",
     "name": "dstack",
     "notes": "Stack arrays depth-wise (along third axis). Cost: numel(output).",
     "numpy_ref": "np.dstack",
-    "signature": "fnp.dstack(tup)",
+    "signature": "flops.dstack(tup)",
     "status": "supported",
     "summary": "Stack arrays in sequence depth wise (along third axis).",
     "weight": 1.0

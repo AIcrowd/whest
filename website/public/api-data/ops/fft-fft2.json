@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fft-fft2/",
+  "detail_href": "/docs/api/fft/fft2/",
   "detail_json_href": "/api-data/ops/fft-fft2.json",
   "docs": {
     "sections": [
@@ -291,7 +291,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "fnp.fft"
+                        "text": "flops.fft"
                       },
                       {
                         "kind": "text",
@@ -322,7 +322,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "fnp.fft"
+                    "text": "flops.fft"
                   },
                   {
                     "kind": "text",
@@ -617,7 +617,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
                 "href": "",
-                "label": "fnp.fft",
+                "label": "flops.fft",
                 "original_target": "numpy.fft",
                 "role": "",
                 "target": "fft",
@@ -768,7 +768,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "fnp.fft"
+                "text": "flops.fft"
               },
               {
                 "kind": "text",
@@ -787,17 +787,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.mgrid[:5, :5][0]"
+                "text": "a = flops.mgrid[:5, :5][0]"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fft.fft2(a)"
+                "text": "flops.fft.fft2(a)"
               },
               {
                 "kind": "output",
@@ -851,12 +851,12 @@
     "category": "counted_custom",
     "cost_formula": "5N * ceil(log2(N))",
     "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
-    "flopscope_ref": "fnp.fft.fft2",
+    "flopscope_ref": "flops.fft.fft2",
     "module": "numpy.fft",
     "name": "fft.fft2",
     "notes": "2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.fft2",
-    "signature": "fnp.fft.fft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
+    "signature": "flops.fft.fft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the 2-dimensional discrete Fourier Transform.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-standard_cauchy/",
+  "detail_href": "/docs/api/random/standard-cauchy/",
   "detail_json_href": "/api-data/ops/random-standard_cauchy.json",
   "docs": {
     "sections": [
@@ -81,7 +81,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.standard_cauchy`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~flops.random.Generator.standard_cauchy`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -312,7 +312,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = fnp.random.standard_cauchy(1000000)"
+                "text": "s = flops.random.standard_cauchy(1000000)"
               },
               {
                 "kind": "input",
@@ -341,12 +341,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.standard_cauchy",
+    "flopscope_ref": "flops.random.standard_cauchy",
     "module": "numpy.random",
     "name": "random.standard_cauchy",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.standard_cauchy",
-    "signature": "fnp.random.standard_cauchy(size=None)",
+    "signature": "flops.random.standard_cauchy(size=None)",
     "status": "supported",
     "summary": "Draw samples from a standard Cauchy distribution with mode = 0.",
     "weight": 16.0

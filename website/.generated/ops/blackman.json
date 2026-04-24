@@ -106,7 +106,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/bartlett",
-              "label": "fnp.bartlett",
+              "label": "flops.bartlett",
               "original_target": "bartlett",
               "role": "",
               "target": "bartlett",
@@ -117,7 +117,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/hamming",
-              "label": "fnp.hamming",
+              "label": "flops.hamming",
               "original_target": "hamming",
               "role": "",
               "target": "hamming",
@@ -128,7 +128,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/hanning",
-              "label": "fnp.hanning",
+              "label": "flops.hanning",
               "original_target": "hanning",
               "role": "",
               "target": "hanning",
@@ -139,7 +139,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/kaiser",
-              "label": "fnp.kaiser",
+              "label": "flops.kaiser",
               "original_target": "kaiser",
               "role": "",
               "target": "kaiser",
@@ -210,7 +210,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
@@ -220,7 +220,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.blackman(12)"
+              "text": "flops.blackman(12)"
             },
             {
               "kind": "output",
@@ -255,7 +255,7 @@
           "content_blocks": [
             {
               "language": "python",
-              "text": "import matplotlib.pyplot as plt\nfrom fnp.fft import fft, fftshift\nwindow = fnp.blackman(51)\nplt.plot(window)\nplt.title(\"Blackman window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()  # doctest: +SKIP\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = fnp.abs(fftshift(A))\nfreq = fnp.linspace(-0.5, 0.5, len(A))\nwith fnp.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * fnp.log10(mag)\nresponse = fnp.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Blackman window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
+              "text": "import matplotlib.pyplot as plt\nfrom flops.fft import fft, fftshift\nwindow = flops.blackman(51)\nplt.plot(window)\nplt.title(\"Blackman window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()  # doctest: +SKIP\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = flops.abs(fftshift(A))\nfreq = flops.linspace(-0.5, 0.5, len(A))\nwith flops.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * flops.log10(mag)\nresponse = flops.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Blackman window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
               "type": "literal_block"
             }
           ],
@@ -275,6 +275,7 @@
     }
   ],
   "canonical_name": "blackman",
+  "canonical_path": "blackman",
   "category": "counted_custom",
   "cost_formula": "3n",
   "cost_formula_latex": "$3n$",
@@ -285,19 +286,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nimport matplotlib.pyplot as plt\n\nfnp.blackman(12)",
+    "code": "import flopscope as flops\n\nimport matplotlib.pyplot as plt\n\nflops.blackman(12)",
     "output": "array([-1.38777878e-17,   3.26064346e-02,   1.59903635e-01, # may vary\n        4.14397981e-01,   7.36045180e-01,   9.67046769e-01,\n        9.67046769e-01,   7.36045180e-01,   4.14397981e-01,\n        1.59903635e-01,   3.26064346e-02,  -1.38777878e-17])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.blackman",
+  "flopscope_ref": "flops.blackman",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L64",
-  "href": "/docs/api/ops/blackman/",
+  "href": "/docs/api/blackman/",
+  "legacy_href": "/docs/api/ops/blackman/",
   "module": "flopscope._window",
   "name": "blackman",
   "next": {
-    "href": "/docs/api/ops/block/",
-    "label": "fnp.block"
+    "href": "/docs/api/block/",
+    "label": "flops.block"
   },
   "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
   "notes_sections": [
@@ -317,8 +319,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bitwise_xor/",
-    "label": "fnp.bitwise_xor"
+    "href": "/docs/api/bitwise-xor/",
+    "label": "flops.bitwise_xor"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.blackman.html",
@@ -338,7 +340,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/bartlett",
-      "label": "fnp.bartlett",
+      "label": "flops.bartlett",
       "original_target": "bartlett",
       "role": "",
       "target": "bartlett",
@@ -349,7 +351,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/hamming",
-      "label": "fnp.hamming",
+      "label": "flops.hamming",
       "original_target": "hamming",
       "role": "",
       "target": "hamming",
@@ -360,7 +362,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/hanning",
-      "label": "fnp.hanning",
+      "label": "flops.hanning",
       "original_target": "hanning",
       "role": "",
       "target": "hanning",
@@ -371,14 +373,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/kaiser",
-      "label": "fnp.kaiser",
+      "label": "flops.kaiser",
       "original_target": "kaiser",
       "role": "",
       "target": "kaiser",
       "unresolved": false
     }
   ],
-  "signature": "fnp.blackman(M)",
+  "signature": "flops.blackman(M)",
   "slug": "blackman",
   "summary": "Return the Blackman window.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3058",

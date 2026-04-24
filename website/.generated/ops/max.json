@@ -425,7 +425,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/min",
-              "label": "fnp.min",
+              "label": "flops.min",
               "original_target": "amin",
               "role": "",
               "target": "min",
@@ -441,7 +441,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/nanmax",
-              "label": "fnp.nanmax",
+              "label": "flops.nanmax",
               "original_target": "nanmax",
               "role": "",
               "target": "nanmax",
@@ -457,7 +457,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/maximum",
-              "label": "fnp.maximum",
+              "label": "flops.maximum",
               "original_target": "maximum",
               "role": "",
               "target": "maximum",
@@ -473,7 +473,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/fmax",
-              "label": "fnp.fmax",
+              "label": "flops.fmax",
               "original_target": "fmax",
               "role": "",
               "target": "fmax",
@@ -489,7 +489,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/argmax",
-              "label": "fnp.argmax",
+              "label": "flops.argmax",
               "original_target": "argmax",
               "role": "",
               "target": "argmax",
@@ -500,7 +500,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanmin",
-              "label": "fnp.nanmin",
+              "label": "flops.nanmin",
               "original_target": "nanmin",
               "role": "",
               "target": "nanmin",
@@ -511,7 +511,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/minimum",
-              "label": "fnp.minimum",
+              "label": "flops.minimum",
               "original_target": "minimum",
               "role": "",
               "target": "minimum",
@@ -522,7 +522,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/fmin",
-              "label": "fnp.fmin",
+              "label": "flops.fmin",
               "original_target": "fmin",
               "role": "",
               "target": "fmin",
@@ -599,12 +599,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.arange(4).reshape((2,2))"
+              "text": "a = flops.arange(4).reshape((2,2))"
             },
             {
               "kind": "input",
@@ -622,7 +622,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.max(a)           # Maximum of the flattened array"
+              "text": "flops.max(a)           # Maximum of the flattened array"
             },
             {
               "kind": "output",
@@ -631,7 +631,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.max(a, axis=0)   # Maxima along the first axis"
+              "text": "flops.max(a, axis=0)   # Maxima along the first axis"
             },
             {
               "kind": "output",
@@ -640,7 +640,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.max(a, axis=1)   # Maxima along the second axis"
+              "text": "flops.max(a, axis=1)   # Maxima along the second axis"
             },
             {
               "kind": "output",
@@ -649,7 +649,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.max(a, where=[False, True], initial=-1, axis=0)"
+              "text": "flops.max(a, where=[False, True], initial=-1, axis=0)"
             },
             {
               "kind": "output",
@@ -658,26 +658,26 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = fnp.arange(5, dtype=float)"
+              "text": "b = flops.arange(5, dtype=float)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b[2] = fnp.nan"
+              "text": "b[2] = flops.nan"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.max(b)"
+              "text": "flops.max(b)"
             },
             {
               "kind": "output",
-              "text": "fnp.float64(nan)"
+              "text": "flops.float64(nan)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.max(b, where=~fnp.isnan(b), initial=-1)"
+              "text": "flops.max(b, where=~flops.isnan(b), initial=-1)"
             },
             {
               "kind": "output",
@@ -686,7 +686,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.nanmax(b)"
+              "text": "flops.nanmax(b)"
             },
             {
               "kind": "output",
@@ -709,7 +709,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.max([[-50], [10]], axis=-1, initial=0)"
+              "text": "flops.max([[-50], [10]], axis=-1, initial=0)"
             },
             {
               "kind": "output",
@@ -732,7 +732,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.max([5], initial=6)"
+              "text": "flops.max([5], initial=6)"
             },
             {
               "kind": "output",
@@ -755,6 +755,7 @@
     }
   ],
   "canonical_name": "max",
+  "canonical_path": "max",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -765,24 +766,25 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.arange(4).reshape((2,2))\n\na\n\nfnp.max(a)           # Maximum of the flattened array\n\nfnp.max(a, axis=0)   # Maxima along the first axis\n\nfnp.max(a, axis=1)   # Maxima along the second axis\n\nfnp.max(a, where=[False, True], initial=-1, axis=0)\n\nb = fnp.arange(5, dtype=float)\n\nb[2] = fnp.nan\n\nfnp.max(b)\n\nfnp.max(b, where=~fnp.isnan(b), initial=-1)\n\nfnp.nanmax(b)\n\nfnp.max([[-50], [10]], axis=-1, initial=0)\n\nfnp.max([5], initial=6)\n\nmax([5], default=6)",
-    "output": "array([[0, 1],\n       [2, 3]])\n\n3\n\narray([2, 3])\n\narray([1, 3])\n\narray([-1,  3])\n\nfnp.float64(nan)\n\n4.0\n\n4.0\n\narray([ 0, 10])\n\n6\n\n5",
+    "code": "import flopscope as flops\n\na = flops.arange(4).reshape((2,2))\n\na\n\nflops.max(a)           # Maximum of the flattened array\n\nflops.max(a, axis=0)   # Maxima along the first axis\n\nflops.max(a, axis=1)   # Maxima along the second axis\n\nflops.max(a, where=[False, True], initial=-1, axis=0)\n\nb = flops.arange(5, dtype=float)\n\nb[2] = flops.nan\n\nflops.max(b)\n\nflops.max(b, where=~flops.isnan(b), initial=-1)\n\nflops.nanmax(b)\n\nflops.max([[-50], [10]], axis=-1, initial=0)\n\nflops.max([5], initial=6)\n\nmax([5], default=6)",
+    "output": "array([[0, 1],\n       [2, 3]])\n\n3\n\narray([2, 3])\n\narray([1, 3])\n\narray([-1,  3])\n\nflops.float64(nan)\n\n4.0\n\n4.0\n\narray([ 0, 10])\n\n6\n\n5",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.max",
+  "flopscope_ref": "flops.max",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/ops/max/",
+  "href": "/docs/api/max/",
+  "legacy_href": "/docs/api/ops/max/",
   "module": "numpy",
   "name": "max",
   "next": {
-    "href": "/docs/api/ops/maximum/",
-    "label": "fnp.maximum"
+    "href": "/docs/api/maximum/",
+    "label": "flops.maximum"
   },
   "notes": "Maximum value of array.",
   "notes_sections": [
     "NaN values are propagated, that is if at least one item is NaN, the corresponding max value will be NaN as well. To ignore NaN values (MATLAB behavior), please use nanmax.",
-    "Don't use `~fnp.max` for element-wise comparison of 2 arrays; when ``a.shape[0]`` is 2, ``maximum(a[0], a[1])`` is faster than ``max(a, axis=0)``."
+    "Don't use `~flops.max` for element-wise comparison of 2 arrays; when ``a.shape[0]`` is 2, ``maximum(a[0], a[1])`` is faster than ``max(a, axis=0)``."
   ],
   "numpy_ref": "np.max",
   "parameters": [
@@ -829,14 +831,14 @@
     {
       "body": [
         "The minimum value of an output element. Must be present to allow",
-        "computation on empty slice. See `~fnp.ufunc.reduce` for details."
+        "computation on empty slice. See `~flops.ufunc.reduce` for details."
       ],
       "name": "initial",
       "type": "scalar, optional"
     },
     {
       "body": [
-        "Elements to compare for the maximum. See `~fnp.ufunc.reduce`",
+        "Elements to compare for the maximum. See `~flops.ufunc.reduce`",
         "for details."
       ],
       "name": "where",
@@ -844,8 +846,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/matvec/",
-    "label": "fnp.matvec"
+    "href": "/docs/api/matvec/",
+    "label": "flops.matvec"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.max.html",
@@ -872,7 +874,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/min",
-      "label": "fnp.min",
+      "label": "flops.min",
       "original_target": "amin",
       "role": "",
       "target": "min",
@@ -888,7 +890,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/nanmax",
-      "label": "fnp.nanmax",
+      "label": "flops.nanmax",
       "original_target": "nanmax",
       "role": "",
       "target": "nanmax",
@@ -904,7 +906,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/maximum",
-      "label": "fnp.maximum",
+      "label": "flops.maximum",
       "original_target": "maximum",
       "role": "",
       "target": "maximum",
@@ -920,7 +922,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/fmax",
-      "label": "fnp.fmax",
+      "label": "flops.fmax",
       "original_target": "fmax",
       "role": "",
       "target": "fmax",
@@ -936,7 +938,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/argmax",
-      "label": "fnp.argmax",
+      "label": "flops.argmax",
       "original_target": "argmax",
       "role": "",
       "target": "argmax",
@@ -947,7 +949,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanmin",
-      "label": "fnp.nanmin",
+      "label": "flops.nanmin",
       "original_target": "nanmin",
       "role": "",
       "target": "nanmin",
@@ -958,7 +960,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/minimum",
-      "label": "fnp.minimum",
+      "label": "flops.minimum",
       "original_target": "minimum",
       "role": "",
       "target": "minimum",
@@ -969,14 +971,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/fmin",
-      "label": "fnp.fmin",
+      "label": "flops.fmin",
       "original_target": "fmin",
       "role": "",
       "target": "fmin",
       "unresolved": false
     }
   ],
-  "signature": "fnp.max(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+  "signature": "flops.max(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "max",
   "summary": "Return the maximum of an array or maximum along an axis.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3052",

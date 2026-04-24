@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isinf/",
+  "detail_href": "/docs/api/isinf/",
   "detail_json_href": "/api-data/ops/isinf.json",
   "docs": {
     "sections": [
@@ -316,7 +316,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isneginf",
-                "label": "fnp.isneginf",
+                "label": "flops.isneginf",
                 "original_target": "isneginf",
                 "role": "",
                 "target": "isneginf",
@@ -327,7 +327,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isposinf",
-                "label": "fnp.isposinf",
+                "label": "flops.isposinf",
                 "original_target": "isposinf",
                 "role": "",
                 "target": "isposinf",
@@ -338,7 +338,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isnan",
-                "label": "fnp.isnan",
+                "label": "flops.isnan",
                 "original_target": "isnan",
                 "role": "",
                 "target": "isnan",
@@ -349,7 +349,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isfinite",
-                "label": "fnp.isfinite",
+                "label": "flops.isfinite",
                 "original_target": "isfinite",
                 "role": "",
                 "target": "isfinite",
@@ -391,12 +391,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isinf(fnp.inf)"
+                "text": "flops.isinf(flops.inf)"
               },
               {
                 "kind": "output",
@@ -405,7 +405,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isinf(fnp.nan)"
+                "text": "flops.isinf(flops.nan)"
               },
               {
                 "kind": "output",
@@ -414,7 +414,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isinf(-fnp.inf)"
+                "text": "flops.isinf(-flops.inf)"
               },
               {
                 "kind": "output",
@@ -423,7 +423,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isinf([fnp.inf, -fnp.inf, 1.0, fnp.nan])"
+                "text": "flops.isinf([flops.inf, -flops.inf, 1.0, flops.nan])"
               },
               {
                 "kind": "output",
@@ -437,17 +437,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([-fnp.inf, 0., fnp.inf])"
+                "text": "x = flops.array([-flops.inf, 0., flops.inf])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.array([2, 2, 2])"
+                "text": "y = flops.array([2, 2, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isinf(x, y)"
+                "text": "flops.isinf(x, y)"
               },
               {
                 "kind": "output",
@@ -474,12 +474,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.isinf",
+    "flopscope_ref": "flops.isinf",
     "module": "numpy",
     "name": "isinf",
     "notes": "Test for infinity element-wise. Cost: numel(input).",
     "numpy_ref": "np.isinf",
-    "signature": "fnp.isinf(*args, **kwargs)",
+    "signature": "flops.isinf(*args, **kwargs)",
     "status": "supported",
     "summary": "Test element-wise for positive or negative infinity.",
     "weight": 1.0

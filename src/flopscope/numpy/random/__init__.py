@@ -114,6 +114,62 @@ default_rng = _npr.default_rng
 RandomState = _npr.RandomState
 SeedSequence = _npr.SeedSequence
 
+__all__ = [
+    "seed",
+    "get_state",
+    "set_state",
+    "default_rng",
+    "RandomState",
+    "SeedSequence",
+    "rand",
+    "randn",
+    "normal",
+    "uniform",
+    "standard_normal",
+    "standard_exponential",
+    "exponential",
+    "poisson",
+    "binomial",
+    "geometric",
+    "hypergeometric",
+    "negative_binomial",
+    "logseries",
+    "power",
+    "pareto",
+    "rayleigh",
+    "standard_cauchy",
+    "standard_t",
+    "standard_gamma",
+    "weibull",
+    "zipf",
+    "gumbel",
+    "laplace",
+    "logistic",
+    "lognormal",
+    "vonmises",
+    "wald",
+    "triangular",
+    "chisquare",
+    "noncentral_chisquare",
+    "noncentral_f",
+    "f",
+    "beta",
+    "gamma",
+    "multinomial",
+    "multivariate_normal",
+    "dirichlet",
+    "randint",
+    "random",
+    "random_sample",
+    "ranf",
+    "sample",
+    "permutation",
+    "shuffle",
+    "choice",
+    "symmetric",
+    "bytes",
+]
+
 
 # ---------------------------------------------------------------------------
 # Dims-based samplers (rand, randn)
@@ -305,7 +361,7 @@ def symmetric(
     Returns
     -------
     SymmetricTensor
-        The symmetrized sample wrapped with :func:`we.as_symmetric`.
+        The symmetrized sample wrapped with :func:`flops.as_symmetric`.
 
     Raises
     ------
@@ -321,13 +377,13 @@ def symmetric(
 
     Notes
     -----
-    This is equivalent to ``we.symmetrize(sampled_data, symmetry=symmetry)`` where
+    This is equivalent to ``flops.symmetrize(sampled_data, symmetry=symmetry)`` where
     ``sampled_data`` is drawn from ``distribution``.
 
     The implementation currently:
 
     1. Samples raw values from the selected distribution.
-    2. Applies :func:`we.symmetrize` to project into the symmetry-invariant
+    2. Applies :func:`flops.symmetrize` to project into the symmetry-invariant
        subspace.
 
     Estimated FLOP cost is approximately:
@@ -338,18 +394,18 @@ def symmetric(
     ``C_dist(n_elem)`` is the cost of the chosen sampling distribution.
     The default ``distribution='randn'`` corresponds to ``C_dist(n_elem)≈n_elem``.
 
-    For existing data, use :func:`we.symmetrize` directly.
+    For existing data, use :func:`flops.symmetrize` directly.
 
     Examples
     --------
     >>> import flopscope as we
-    >>> S = we.random.symmetric((4, 4), we.SymmetryGroup.symmetric(axes=(0, 1)))
+    >>> S = flops.random.symmetric((4, 4), flops.SymmetryGroup.symmetric(axes=(0, 1)))
     >>> S.is_symmetric((0, 1))
     True
 
-    >>> S = we.random.symmetric(
+    >>> S = flops.random.symmetric(
     ...     (3, 3, 3),
-    ...     we.SymmetryGroup.cyclic(axes=(0, 1, 2)),
+    ...     flops.SymmetryGroup.cyclic(axes=(0, 1, 2)),
     ...     distribution="normal",
     ...     loc=0.0,
     ...     scale=1.0,
@@ -361,7 +417,7 @@ def symmetric(
     >>> import flopscope as we
     >>> def shifted_uniform(shape, **kwargs):
     ...     return np.random.uniform(*shape, **kwargs)
-    >>> S = we.random.symmetric((2, 2), we.SymmetryGroup.symmetric(axes=(0, 1)), distribution=shifted_uniform)
+    >>> S = flops.random.symmetric((2, 2), flops.SymmetryGroup.symmetric(axes=(0, 1)), distribution=shifted_uniform)
     >>> S.is_symmetric((0, 1))
     True
     """

@@ -241,7 +241,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/tensordot",
-              "label": "fnp.tensordot",
+              "label": "flops.tensordot",
               "original_target": "numpy.tensordot",
               "role": "",
               "target": "tensordot",
@@ -271,12 +271,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.eye(4*6)"
+              "text": "a = flops.eye(4*6)"
             },
             {
               "kind": "input",
@@ -286,7 +286,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ainv = fnp.linalg.tensorinv(a, ind=2)"
+              "text": "ainv = flops.linalg.tensorinv(a, ind=2)"
             },
             {
               "kind": "input",
@@ -300,7 +300,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rng = fnp.random.default_rng()"
+              "text": "rng = flops.random.default_rng()"
             },
             {
               "kind": "input",
@@ -310,7 +310,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(fnp.tensordot(ainv, b), fnp.linalg.tensorsolve(a, b))"
+              "text": "flops.allclose(flops.tensordot(ainv, b), flops.linalg.tensorsolve(a, b))"
             },
             {
               "kind": "output",
@@ -324,7 +324,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.eye(4*6)"
+              "text": "a = flops.eye(4*6)"
             },
             {
               "kind": "input",
@@ -334,7 +334,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ainv = fnp.linalg.tensorinv(a, ind=1)"
+              "text": "ainv = flops.linalg.tensorinv(a, ind=1)"
             },
             {
               "kind": "input",
@@ -348,7 +348,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rng = fnp.random.default_rng()"
+              "text": "rng = flops.random.default_rng()"
             },
             {
               "kind": "input",
@@ -358,7 +358,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(fnp.tensordot(ainv, b, 1), fnp.linalg.tensorsolve(a, b))"
+              "text": "flops.allclose(flops.tensordot(ainv, b, 1), flops.linalg.tensorsolve(a, b))"
             },
             {
               "kind": "output",
@@ -372,6 +372,7 @@
     }
   ],
   "canonical_name": "linalg.tensorinv",
+  "canonical_path": "linalg/tensorinv",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -382,19 +383,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.eye(4*6)\n\na.shape = (4, 6, 8, 3)\n\nainv = fnp.linalg.tensorinv(a, ind=2)\n\nainv.shape\n\nrng = fnp.random.default_rng()\n\nb = rng.normal(size=(4, 6))\n\nfnp.allclose(fnp.tensordot(ainv, b), fnp.linalg.tensorsolve(a, b))\n\na = fnp.eye(4*6)\n\na.shape = (24, 8, 3)\n\nainv = fnp.linalg.tensorinv(a, ind=1)\n\nainv.shape\n\nrng = fnp.random.default_rng()\n\nb = rng.normal(size=24)\n\nfnp.allclose(fnp.tensordot(ainv, b, 1), fnp.linalg.tensorsolve(a, b))",
+    "code": "import flopscope as flops\n\na = flops.eye(4*6)\n\na.shape = (4, 6, 8, 3)\n\nainv = flops.linalg.tensorinv(a, ind=2)\n\nainv.shape\n\nrng = flops.random.default_rng()\n\nb = rng.normal(size=(4, 6))\n\nflops.allclose(flops.tensordot(ainv, b), flops.linalg.tensorsolve(a, b))\n\na = flops.eye(4*6)\n\na.shape = (24, 8, 3)\n\nainv = flops.linalg.tensorinv(a, ind=1)\n\nainv.shape\n\nrng = flops.random.default_rng()\n\nb = rng.normal(size=24)\n\nflops.allclose(flops.tensordot(ainv, b, 1), flops.linalg.tensorsolve(a, b))",
     "output": "(8, 3, 4, 6)\n\nTrue\n\n(8, 3, 24)\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.linalg.tensorinv",
+  "flopscope_ref": "flops.linalg.tensorinv",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L292",
-  "href": "/docs/api/ops/linalg-tensorinv/",
+  "href": "/docs/api/linalg/tensorinv/",
+  "legacy_href": "/docs/api/ops/linalg-tensorinv/",
   "module": "numpy.linalg",
   "name": "linalg.tensorinv",
   "next": {
-    "href": "/docs/api/ops/linalg-tensorsolve/",
-    "label": "fnp.linalg.tensorsolve"
+    "href": "/docs/api/linalg/tensorsolve/",
+    "label": "flops.linalg.tensorsolve"
   },
   "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv).",
   "notes_sections": [],
@@ -418,8 +420,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-tensordot/",
-    "label": "fnp.linalg.tensordot"
+    "href": "/docs/api/linalg/tensordot/",
+    "label": "flops.linalg.tensordot"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.tensorinv.html",
@@ -438,7 +440,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/tensordot",
-      "label": "fnp.tensordot",
+      "label": "flops.tensordot",
       "original_target": "numpy.tensordot",
       "role": "",
       "target": "tensordot",
@@ -456,7 +458,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.tensorinv(a, ind=2)",
+  "signature": "flops.linalg.tensorinv(a, ind=2)",
   "slug": "linalg-tensorinv",
   "summary": "Compute the 'inverse' of an N-dimensional array.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L419",

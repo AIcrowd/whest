@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/cosh/",
+  "detail_href": "/docs/api/cosh/",
   "detail_json_href": "/api-data/ops/cosh.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "kind": "code",
-                "text": "1/2 * (fnp.exp(x) + fnp.exp(-x))"
+                "text": "1/2 * (flops.exp(x) + flops.exp(-x))"
               },
               {
                 "kind": "text",
@@ -38,7 +38,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "cos(1j*x)",
-                "text": "fnp.cos(1j*x)"
+                "text": "flops.cos(1j*x)"
               },
               {
                 "kind": "text",
@@ -317,12 +317,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.cosh(0)"
+                "text": "flops.cosh(0)"
               },
               {
                 "kind": "output",
@@ -350,12 +350,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.linspace(-4, 4, 1000)"
+                "text": "x = flops.linspace(-4, 4, 1000)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(x, fnp.cosh(x))"
+                "text": "plt.plot(x, flops.cosh(x))"
               },
               {
                 "kind": "input",
@@ -374,12 +374,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.cosh",
+    "flopscope_ref": "flops.cosh",
     "module": "numpy",
     "name": "cosh",
     "notes": "Element-wise hyperbolic cosine.",
     "numpy_ref": "np.cosh",
-    "signature": "fnp.cosh(*args, **kwargs)",
+    "signature": "flops.cosh(*args, **kwargs)",
     "status": "supported",
     "summary": "Hyperbolic cosine, element-wise.",
     "weight": 16.0

@@ -272,17 +272,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "signal = fnp.array([-2, 8, 6, 4, 1, 0, 3, 5, -3, 4], dtype=float)"
+              "text": "signal = flops.array([-2, 8, 6, 4, 1, 0, 3, 5, -3, 4], dtype=float)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fourier = fnp.fft.rfft(signal)"
+              "text": "fourier = flops.fft.rfft(signal)"
             },
             {
               "kind": "input",
@@ -297,7 +297,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "freq = fnp.fft.fftfreq(n, d=1./sample_rate)"
+              "text": "freq = flops.fft.fftfreq(n, d=1./sample_rate)"
             },
             {
               "kind": "input",
@@ -311,7 +311,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "freq = fnp.fft.rfftfreq(n, d=1./sample_rate)"
+              "text": "freq = flops.fft.rfftfreq(n, d=1./sample_rate)"
             },
             {
               "kind": "input",
@@ -330,6 +330,7 @@
     }
   ],
   "canonical_name": "fft.rfftfreq",
+  "canonical_path": "fft/rfftfreq",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -340,19 +341,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nsignal = fnp.array([-2, 8, 6, 4, 1, 0, 3, 5, -3, 4], dtype=float)\n\nfourier = fnp.fft.rfft(signal)\n\nn = signal.size\n\nsample_rate = 100\n\nfreq = fnp.fft.fftfreq(n, d=1./sample_rate)\n\nfreq\n\nfreq = fnp.fft.rfftfreq(n, d=1./sample_rate)\n\nfreq",
+    "code": "import flopscope as flops\n\nsignal = flops.array([-2, 8, 6, 4, 1, 0, 3, 5, -3, 4], dtype=float)\n\nfourier = flops.fft.rfft(signal)\n\nn = signal.size\n\nsample_rate = 100\n\nfreq = flops.fft.fftfreq(n, d=1./sample_rate)\n\nfreq\n\nfreq = flops.fft.rfftfreq(n, d=1./sample_rate)\n\nfreq",
     "output": "array([  0.,  10.,  20., ..., -30., -20., -10.])\n\narray([  0.,  10.,  20.,  30.,  40.,  50.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.fft.rfftfreq",
+  "flopscope_ref": "flops.fft.rfftfreq",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L22",
-  "href": "/docs/api/ops/fft-rfftfreq/",
+  "href": "/docs/api/fft/rfftfreq/",
+  "legacy_href": "/docs/api/ops/fft-rfftfreq/",
   "module": "numpy.fft",
   "name": "fft.rfftfreq",
   "next": {
-    "href": "/docs/api/ops/fft-rfftn/",
-    "label": "fnp.fft.rfftn"
+    "href": "/docs/api/fft/rfftn/",
+    "label": "flops.fft.rfftn"
   },
   "notes": "Real FFT sample frequencies. No arithmetic; returns index array.",
   "notes_sections": [],
@@ -384,8 +386,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-rfft2/",
-    "label": "fnp.fft.rfft2"
+    "href": "/docs/api/fft/rfft2/",
+    "label": "flops.fft.rfft2"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.rfftfreq.html",
@@ -399,7 +401,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.fft.rfftfreq(n, d=1.0, device=None)",
+  "signature": "flops.fft.rfftfreq(n, d=1.0, device=None)",
   "slug": "fft-rfftfreq",
   "summary": "Return the Discrete Fourier Transform sample frequencies (for usage with rfft, irfft).",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L180",

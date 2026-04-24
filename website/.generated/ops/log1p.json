@@ -328,7 +328,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/expm1",
-              "label": "fnp.expm1",
+              "label": "flops.expm1",
               "original_target": "expm1",
               "role": "",
               "target": "expm1",
@@ -527,12 +527,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.log1p(1e-99)"
+              "text": "flops.log1p(1e-99)"
             },
             {
               "kind": "output",
@@ -541,7 +541,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.log(1 + 1e-99)"
+              "text": "flops.log(1 + 1e-99)"
             },
             {
               "kind": "output",
@@ -555,6 +555,7 @@
     }
   ],
   "canonical_name": "log1p",
+  "canonical_path": "log1p",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -581,19 +582,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.log1p(1e-99)\n\nfnp.log(1 + 1e-99)",
+    "code": "import flopscope as flops\n\nflops.log1p(1e-99)\n\nflops.log(1 + 1e-99)",
     "output": "1e-99\n\n0.0",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.log1p",
+  "flopscope_ref": "flops.log1p",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/log1p/",
+  "href": "/docs/api/log1p/",
+  "legacy_href": "/docs/api/ops/log1p/",
   "module": "numpy",
   "name": "log1p",
   "next": {
-    "href": "/docs/api/ops/log2/",
-    "label": "fnp.log2"
+    "href": "/docs/api/log2/",
+    "label": "flops.log2"
   },
   "notes": "Element-wise log(1+x) (accurate near zero).",
   "notes_sections": [
@@ -643,8 +645,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/log10/",
-    "label": "fnp.log10"
+    "href": "/docs/api/log10/",
+    "label": "flops.log10"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.log1p.html",
@@ -684,14 +686,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/expm1",
-      "label": "fnp.expm1",
+      "label": "flops.expm1",
       "original_target": "expm1",
       "role": "",
       "target": "expm1",
       "unresolved": false
     }
   ],
-  "signature": "fnp.log1p(*args, **kwargs)",
+  "signature": "flops.log1p(*args, **kwargs)",
   "slug": "log1p",
   "summary": "Return the natural logarithm of one plus the input array, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

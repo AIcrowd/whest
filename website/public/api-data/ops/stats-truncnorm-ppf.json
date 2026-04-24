@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-truncnorm-ppf/",
+  "detail_href": "/docs/api/stats/truncnorm/ppf/",
   "detail_json_href": "/api-data/ops/stats-truncnorm-ppf.json",
   "docs": {
     "sections": [
@@ -163,12 +163,12 @@
     "category": "counted_custom",
     "cost_formula": "50n",
     "cost_formula_latex": "$50n$",
-    "flopscope_ref": "fnp.stats.truncnorm.ppf",
+    "flopscope_ref": "flops.stats.truncnorm.ppf",
     "module": "flopscope.stats",
     "name": "stats.truncnorm.ppf",
     "notes": "Truncated normal PPF; cost = numel(input).",
     "numpy_ref": "np.stats.truncnorm.ppf",
-    "signature": "fnp.stats.truncnorm.ppf(q, a, b, loc=0, scale=1)",
+    "signature": "flops.stats.truncnorm.ppf(q, a, b, loc=0, scale=1)",
     "status": "supported",
     "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
     "weight": 16.0

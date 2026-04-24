@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fft-fftshift/",
+  "detail_href": "/docs/api/fft/fftshift/",
   "detail_json_href": "/api-data/ops/fft-fftshift.json",
   "docs": {
     "sections": [
@@ -176,12 +176,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freqs = fnp.fft.fftfreq(10, 0.1)"
+                "text": "freqs = flops.fft.fftfreq(10, 0.1)"
               },
               {
                 "kind": "input",
@@ -195,7 +195,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fft.fftshift(freqs)"
+                "text": "flops.fft.fftshift(freqs)"
               },
               {
                 "kind": "output",
@@ -218,7 +218,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freqs = fnp.fft.fftfreq(9, d=1./9).reshape(3, 3)"
+                "text": "freqs = flops.fft.fftfreq(9, d=1./9).reshape(3, 3)"
               },
               {
                 "kind": "input",
@@ -240,7 +240,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fft.fftshift(freqs, axes=(1,))"
+                "text": "flops.fft.fftshift(freqs, axes=(1,))"
               },
               {
                 "kind": "output",
@@ -266,12 +266,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.fft.fftshift",
+    "flopscope_ref": "flops.fft.fftshift",
     "module": "numpy.fft",
     "name": "fft.fftshift",
     "notes": "Shift zero-frequency component to center. No arithmetic; index reordering only.",
     "numpy_ref": "np.fft.fftshift",
-    "signature": "fnp.fft.fftshift(x, axes=None)",
+    "signature": "flops.fft.fftshift(x, axes=None)",
     "status": "supported",
     "summary": "Shift the zero-frequency component to the center of the spectrum.",
     "weight": 0.0

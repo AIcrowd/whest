@@ -324,7 +324,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/logical_and",
-              "label": "fnp.logical_and",
+              "label": "flops.logical_and",
               "original_target": "logical_and",
               "role": "",
               "target": "logical_and",
@@ -335,7 +335,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/bitwise_or",
-              "label": "fnp.bitwise_or",
+              "label": "flops.bitwise_or",
               "original_target": "bitwise_or",
               "role": "",
               "target": "bitwise_or",
@@ -346,7 +346,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/bitwise_xor",
-              "label": "fnp.bitwise_xor",
+              "label": "flops.bitwise_xor",
               "original_target": "bitwise_xor",
               "role": "",
               "target": "bitwise_xor",
@@ -381,7 +381,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             }
           ],
           "type": "doctest_block"
@@ -424,7 +424,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.bitwise_and(13, 17)"
+              "text": "flops.bitwise_and(13, 17)"
             },
             {
               "kind": "output",
@@ -438,7 +438,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.bitwise_and(14, 13)"
+              "text": "flops.bitwise_and(14, 13)"
             },
             {
               "kind": "output",
@@ -447,7 +447,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.binary_repr(12)"
+              "text": "flops.binary_repr(12)"
             },
             {
               "kind": "output",
@@ -456,7 +456,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.bitwise_and([14,3], 13)"
+              "text": "flops.bitwise_and([14,3], 13)"
             },
             {
               "kind": "output",
@@ -470,7 +470,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.bitwise_and([11,7], [4,25])"
+              "text": "flops.bitwise_and([11,7], [4,25])"
             },
             {
               "kind": "output",
@@ -479,7 +479,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.bitwise_and(fnp.array([2,5,255]), fnp.array([3,14,16]))"
+              "text": "flops.bitwise_and(flops.array([2,5,255]), flops.array([3,14,16]))"
             },
             {
               "kind": "output",
@@ -488,7 +488,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.bitwise_and([True, True], [False, True])"
+              "text": "flops.bitwise_and([True, True], [False, True])"
             },
             {
               "kind": "output",
@@ -516,7 +516,7 @@
               "href": "/docs/api/ops/bitwise_and",
               "kind": "link",
               "target": "bitwise_and",
-              "text": "fnp.bitwise_and"
+              "text": "flops.bitwise_and"
             },
             {
               "kind": "text",
@@ -530,12 +530,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = fnp.array([2, 5, 255])"
+              "text": "x1 = flops.array([2, 5, 255])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = fnp.array([3, 14, 16])"
+              "text": "x2 = flops.array([3, 14, 16])"
             },
             {
               "kind": "input",
@@ -554,6 +554,7 @@
     }
   ],
   "canonical_name": "bitwise_and",
+  "canonical_path": "bitwise-and",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -571,19 +572,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.bitwise_and(13, 17)\n\nfnp.bitwise_and(14, 13)\n\nfnp.binary_repr(12)\n\nfnp.bitwise_and([14,3], 13)\n\nfnp.bitwise_and([11,7], [4,25])\n\nfnp.bitwise_and(fnp.array([2,5,255]), fnp.array([3,14,16]))\n\nfnp.bitwise_and([True, True], [False, True])\n\nx1 = fnp.array([2, 5, 255])\n\nx2 = fnp.array([3, 14, 16])\n\nx1 & x2",
+    "code": "import flopscope as flops\n\nflops.bitwise_and(13, 17)\n\nflops.bitwise_and(14, 13)\n\nflops.binary_repr(12)\n\nflops.bitwise_and([14,3], 13)\n\nflops.bitwise_and([11,7], [4,25])\n\nflops.bitwise_and(flops.array([2,5,255]), flops.array([3,14,16]))\n\nflops.bitwise_and([True, True], [False, True])\n\nx1 = flops.array([2, 5, 255])\n\nx2 = flops.array([3, 14, 16])\n\nx1 & x2",
     "output": "1\n\n12\n\n'1100'\n\narray([12,  1])\n\narray([0, 1])\n\narray([ 2,  4, 16])\n\narray([False,  True])\n\narray([ 2,  4, 16])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.bitwise_and",
+  "flopscope_ref": "flops.bitwise_and",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/ops/bitwise_and/",
+  "href": "/docs/api/bitwise-and/",
+  "legacy_href": "/docs/api/ops/bitwise_and/",
   "module": "numpy",
   "name": "bitwise_and",
   "next": {
-    "href": "/docs/api/ops/bitwise_count/",
-    "label": "fnp.bitwise_count"
+    "href": "/docs/api/bitwise-count/",
+    "label": "flops.bitwise_count"
   },
   "notes": "Element-wise bitwise AND.",
   "notes_sections": [],
@@ -630,8 +632,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bincount/",
-    "label": "fnp.bincount"
+    "href": "/docs/api/bincount/",
+    "label": "flops.bincount"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_and.html",
@@ -651,7 +653,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/logical_and",
-      "label": "fnp.logical_and",
+      "label": "flops.logical_and",
       "original_target": "logical_and",
       "role": "",
       "target": "logical_and",
@@ -662,7 +664,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/bitwise_or",
-      "label": "fnp.bitwise_or",
+      "label": "flops.bitwise_or",
       "original_target": "bitwise_or",
       "role": "",
       "target": "bitwise_or",
@@ -673,7 +675,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/bitwise_xor",
-      "label": "fnp.bitwise_xor",
+      "label": "flops.bitwise_xor",
       "original_target": "bitwise_xor",
       "role": "",
       "target": "bitwise_xor",
@@ -696,7 +698,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.bitwise_and(*args, **kwargs)",
+  "signature": "flops.bitwise_and(*args, **kwargs)",
   "slug": "bitwise_and",
   "summary": "Compute the bit-wise AND of two arrays element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

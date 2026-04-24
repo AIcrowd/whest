@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/matrix_transpose/",
+  "detail_href": "/docs/api/matrix-transpose/",
   "detail_json_href": "/api-data/ops/matrix_transpose.json",
   "docs": {
     "sections": [
@@ -135,7 +135,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/transpose",
-                "label": "fnp.transpose",
+                "label": "flops.transpose",
                 "original_target": "transpose",
                 "role": "",
                 "target": "transpose",
@@ -154,12 +154,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.matrix_transpose([[1, 2], [3, 4]])"
+                "text": "flops.matrix_transpose([[1, 2], [3, 4]])"
               },
               {
                 "kind": "output",
@@ -177,7 +177,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])"
+                "text": "flops.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])"
               },
               {
                 "kind": "output",
@@ -207,12 +207,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.matrix_transpose",
+    "flopscope_ref": "flops.matrix_transpose",
     "module": "numpy",
     "name": "matrix_transpose",
     "notes": "Transpose last two dimensions (NumPy 2.x array API).",
     "numpy_ref": "np.matrix_transpose",
-    "signature": "fnp.matrix_transpose(x, /)",
+    "signature": "flops.matrix_transpose(x, /)",
     "status": "supported",
     "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
     "weight": 0.0

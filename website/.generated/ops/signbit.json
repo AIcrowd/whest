@@ -284,12 +284,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.signbit(-1.2)"
+              "text": "flops.signbit(-1.2)"
             },
             {
               "kind": "output",
@@ -298,7 +298,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.signbit(fnp.array([1, -2.3, 2.1]))"
+              "text": "flops.signbit(flops.array([1, -2.3, 2.1]))"
             },
             {
               "kind": "output",
@@ -312,6 +312,7 @@
     }
   ],
   "canonical_name": "signbit",
+  "canonical_path": "signbit",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -329,19 +330,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.signbit(-1.2)\n\nfnp.signbit(fnp.array([1, -2.3, 2.1]))",
+    "code": "import flopscope as flops\n\nflops.signbit(-1.2)\n\nflops.signbit(flops.array([1, -2.3, 2.1]))",
     "output": "True\n\narray([False,  True, False])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.signbit",
+  "flopscope_ref": "flops.signbit",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/signbit/",
+  "href": "/docs/api/signbit/",
+  "legacy_href": "/docs/api/ops/signbit/",
   "module": "numpy",
   "name": "signbit",
   "next": {
-    "href": "/docs/api/ops/sin/",
-    "label": "fnp.sin"
+    "href": "/docs/api/sin/",
+    "label": "flops.sin"
   },
   "notes": "Returns True for elements with negative sign bit.",
   "notes_sections": [],
@@ -386,8 +388,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sign/",
-    "label": "fnp.sign"
+    "href": "/docs/api/sign/",
+    "label": "flops.sign"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.signbit.html",
@@ -402,7 +404,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.signbit(*args, **kwargs)",
+  "signature": "flops.signbit(*args, **kwargs)",
   "slug": "signbit",
   "summary": "Returns element-wise True where signbit is set (less than zero).",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

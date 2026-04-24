@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/square/",
+  "detail_href": "/docs/api/square/",
   "detail_json_href": "/api-data/ops/square.json",
   "docs": {
     "sections": [
@@ -302,7 +302,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/linalg-matrix_power",
-                "label": "fnp.linalg.matrix_power",
+                "label": "flops.linalg.matrix_power",
                 "original_target": "numpy.linalg.matrix_power",
                 "role": "",
                 "target": "linalg.matrix_power",
@@ -313,7 +313,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/sqrt",
-                "label": "fnp.sqrt",
+                "label": "flops.sqrt",
                 "original_target": "sqrt",
                 "role": "",
                 "target": "sqrt",
@@ -324,7 +324,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/power",
-                "label": "fnp.power",
+                "label": "flops.power",
                 "original_target": "power",
                 "role": "",
                 "target": "power",
@@ -343,12 +343,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.square([-1j, 1])"
+                "text": "flops.square([-1j, 1])"
               },
               {
                 "kind": "output",
@@ -366,12 +366,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.square",
+    "flopscope_ref": "flops.square",
     "module": "numpy",
     "name": "square",
     "notes": "Element-wise x^2.",
     "numpy_ref": "np.square",
-    "signature": "fnp.square(*args, **kwargs)",
+    "signature": "flops.square(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the element-wise square of the input.",
     "weight": 1.0

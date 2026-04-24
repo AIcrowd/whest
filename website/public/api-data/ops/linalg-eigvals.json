@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-eigvals/",
+  "detail_href": "/docs/api/linalg/eigvals/",
   "detail_json_href": "/api-data/ops/linalg-eigvals.json",
   "docs": {
     "sections": [
@@ -233,7 +233,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "linalg",
-                "text": "fnp.linalg"
+                "text": "flops.linalg"
               },
               {
                 "kind": "text",
@@ -326,7 +326,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -336,17 +336,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.random.random()"
+                "text": "x = flops.random.random()"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "Q = fnp.array([[fnp.cos(x), -fnp.sin(x)], [fnp.sin(x), fnp.cos(x)]])"
+                "text": "Q = flops.array([[flops.cos(x), -flops.sin(x)], [flops.sin(x), flops.cos(x)]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.norm(Q[0, :]), LA.norm(Q[1, :]), fnp.dot(Q[0, :],Q[1, :])"
+                "text": "LA.norm(Q[0, :]), LA.norm(Q[1, :]), flops.dot(Q[0, :],Q[1, :])"
               },
               {
                 "kind": "output",
@@ -385,7 +385,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "D = fnp.diag((-1,1))"
+                "text": "D = flops.diag((-1,1))"
               },
               {
                 "kind": "input",
@@ -399,12 +399,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = fnp.dot(Q, D)"
+                "text": "A = flops.dot(Q, D)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = fnp.dot(A, Q.T)"
+                "text": "A = flops.dot(A, Q.T)"
               },
               {
                 "kind": "input",
@@ -427,12 +427,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "fnp.linalg.eigvals",
+    "flopscope_ref": "flops.linalg.eigvals",
     "module": "numpy.linalg",
     "name": "linalg.eigvals",
     "notes": "Eigenvalues only. Cost: $n^3$.",
     "numpy_ref": "np.linalg.eigvals",
-    "signature": "fnp.linalg.eigvals(a)",
+    "signature": "flops.linalg.eigvals(a)",
     "status": "supported",
     "summary": "Compute the eigenvalues of a general matrix.",
     "weight": 4.0

@@ -724,7 +724,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/mean",
-              "label": "fnp.mean",
+              "label": "flops.mean",
               "original_target": "mean",
               "role": "",
               "target": "mean",
@@ -744,7 +744,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/median",
-              "label": "fnp.median",
+              "label": "flops.median",
               "original_target": "median",
               "role": "",
               "target": "median",
@@ -755,7 +755,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanpercentile",
-              "label": "fnp.nanpercentile",
+              "label": "flops.nanpercentile",
               "original_target": "nanpercentile",
               "role": "",
               "target": "nanpercentile",
@@ -771,7 +771,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/quantile",
-              "label": "fnp.quantile",
+              "label": "flops.quantile",
               "original_target": "quantile",
               "role": "",
               "target": "quantile",
@@ -796,7 +796,7 @@
               "href": "/docs/api/ops/percentile",
               "kind": "link",
               "target": "percentile",
-              "text": "fnp.percentile"
+              "text": "flops.percentile"
             },
             {
               "kind": "text",
@@ -815,7 +815,7 @@
               "href": "/docs/api/ops/quantile",
               "kind": "link",
               "target": "quantile",
-              "text": "fnp.quantile"
+              "text": "flops.quantile"
             },
             {
               "kind": "text",
@@ -834,7 +834,7 @@
               "href": "/docs/api/ops/quantile",
               "kind": "link",
               "target": "quantile",
-              "text": "fnp.quantile"
+              "text": "flops.quantile"
             },
             {
               "kind": "text",
@@ -863,12 +863,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([[10, 7, 4], [3, 2, 1]])"
+              "text": "a = flops.array([[10, 7, 4], [3, 2, 1]])"
             },
             {
               "kind": "input",
@@ -886,7 +886,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.percentile(a, 50)"
+              "text": "flops.percentile(a, 50)"
             },
             {
               "kind": "output",
@@ -895,7 +895,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.percentile(a, 50, axis=0)"
+              "text": "flops.percentile(a, 50, axis=0)"
             },
             {
               "kind": "output",
@@ -904,7 +904,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.percentile(a, 50, axis=1)"
+              "text": "flops.percentile(a, 50, axis=1)"
             },
             {
               "kind": "output",
@@ -913,7 +913,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.percentile(a, 50, axis=1, keepdims=True)"
+              "text": "flops.percentile(a, 50, axis=1, keepdims=True)"
             },
             {
               "kind": "output",
@@ -931,17 +931,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "m = fnp.percentile(a, 50, axis=0)"
+              "text": "m = flops.percentile(a, 50, axis=0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "out = fnp.zeros_like(m)"
+              "text": "out = flops.zeros_like(m)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.percentile(a, 50, axis=0, out=out)"
+              "text": "flops.percentile(a, 50, axis=0, out=out)"
             },
             {
               "kind": "output",
@@ -969,7 +969,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.percentile(b, 50, axis=1, overwrite_input=True)"
+              "text": "flops.percentile(b, 50, axis=1, overwrite_input=True)"
             },
             {
               "kind": "output",
@@ -978,7 +978,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "assert not fnp.all(a == b)"
+              "text": "assert not flops.all(a == b)"
             }
           ],
           "type": "doctest_block"
@@ -997,7 +997,7 @@
           "content_blocks": [
             {
               "language": "python",
-              "text": "import matplotlib.pyplot as plt\n\na = fnp.arange(4)\np = fnp.linspace(0, 100, 6001)\nax = plt.gca()\nlines = [\n    ('linear', '-', 'C0'),\n    ('inverted_cdf', ':', 'C1'),\n    # Almost the same as `inverted_cdf`:\n    ('averaged_inverted_cdf', '-.', 'C1'),\n    ('closest_observation', ':', 'C2'),\n    ('interpolated_inverted_cdf', '--', 'C1'),\n    ('hazen', '--', 'C3'),\n    ('weibull', '-.', 'C4'),\n    ('median_unbiased', '--', 'C5'),\n    ('normal_unbiased', '-.', 'C6'),\n    ]\nfor method, style, color in lines:\n    ax.plot(\n        p, fnp.percentile(a, p, method=method),\n        label=method, linestyle=style, color=color)\nax.set(\n    title='Percentiles for different methods and data: ' + str(a),\n    xlabel='Percentile',\n    ylabel='Estimated percentile value',\n    yticks=a)\nax.legend(bbox_to_anchor=(1.03, 1))\nplt.tight_layout()\nplt.show()",
+              "text": "import matplotlib.pyplot as plt\n\na = flops.arange(4)\np = flops.linspace(0, 100, 6001)\nax = plt.gca()\nlines = [\n    ('linear', '-', 'C0'),\n    ('inverted_cdf', ':', 'C1'),\n    # Almost the same as `inverted_cdf`:\n    ('averaged_inverted_cdf', '-.', 'C1'),\n    ('closest_observation', ':', 'C2'),\n    ('interpolated_inverted_cdf', '--', 'C1'),\n    ('hazen', '--', 'C3'),\n    ('weibull', '-.', 'C4'),\n    ('median_unbiased', '--', 'C5'),\n    ('normal_unbiased', '-.', 'C6'),\n    ]\nfor method, style, color in lines:\n    ax.plot(\n        p, flops.percentile(a, p, method=method),\n        label=method, linestyle=style, color=color)\nax.set(\n    title='Percentiles for different methods and data: ' + str(a),\n    xlabel='Percentile',\n    ylabel='Estimated percentile value',\n    yticks=a)\nax.legend(bbox_to_anchor=(1.03, 1))\nplt.tight_layout()\nplt.show()",
               "type": "literal_block"
             }
           ],
@@ -1012,6 +1012,7 @@
     }
   ],
   "canonical_name": "percentile",
+  "canonical_path": "percentile",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -1032,23 +1033,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[10, 7, 4], [3, 2, 1]])\n\na\n\nfnp.percentile(a, 50)\n\nfnp.percentile(a, 50, axis=0)\n\nfnp.percentile(a, 50, axis=1)\n\nfnp.percentile(a, 50, axis=1, keepdims=True)\n\nm = fnp.percentile(a, 50, axis=0)\n\nout = fnp.zeros_like(m)\n\nfnp.percentile(a, 50, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nfnp.percentile(b, 50, axis=1, overwrite_input=True)\n\nassert not fnp.all(a == b)",
+    "code": "import flopscope as flops\n\na = flops.array([[10, 7, 4], [3, 2, 1]])\n\na\n\nflops.percentile(a, 50)\n\nflops.percentile(a, 50, axis=0)\n\nflops.percentile(a, 50, axis=1)\n\nflops.percentile(a, 50, axis=1, keepdims=True)\n\nm = flops.percentile(a, 50, axis=0)\n\nout = flops.zeros_like(m)\n\nflops.percentile(a, 50, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nflops.percentile(b, 50, axis=1, overwrite_input=True)\n\nassert not flops.all(a == b)",
     "output": "array([[10,  7,  4],\n       [ 3,  2,  1]])\n\n3.5\n\narray([6.5, 4.5, 2.5])\n\narray([7.,  2.])\n\narray([[7.],\n       [2.]])\n\narray([6.5, 4.5, 2.5])\n\narray([6.5, 4.5, 2.5])\n\narray([7.,  2.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.percentile",
+  "flopscope_ref": "flops.percentile",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/ops/percentile/",
+  "href": "/docs/api/percentile/",
+  "legacy_href": "/docs/api/ops/percentile/",
   "module": "numpy",
   "name": "percentile",
   "next": {
-    "href": "/docs/api/ops/permute_dims/",
-    "label": "fnp.permute_dims"
+    "href": "/docs/api/permute-dims/",
+    "label": "flops.permute_dims"
   },
   "notes": "q-th percentile of array elements.",
   "notes_sections": [
-    "The behavior of `fnp.percentile` with percentage `q` is that of `fnp.quantile` with argument ``q/100``. For more information, please see `fnp.quantile`."
+    "The behavior of `flops.percentile` with percentage `q` is that of `flops.quantile` with argument ``q/100``. For more information, please see `flops.quantile`."
   ],
   "numpy_ref": "np.percentile",
   "parameters": [
@@ -1158,8 +1160,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/partition/",
-    "label": "fnp.partition"
+    "href": "/docs/api/partition/",
+    "label": "flops.partition"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.percentile.html",
@@ -1185,7 +1187,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/mean",
-      "label": "fnp.mean",
+      "label": "flops.mean",
       "original_target": "mean",
       "role": "",
       "target": "mean",
@@ -1205,7 +1207,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/median",
-      "label": "fnp.median",
+      "label": "flops.median",
       "original_target": "median",
       "role": "",
       "target": "median",
@@ -1216,7 +1218,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanpercentile",
-      "label": "fnp.nanpercentile",
+      "label": "flops.nanpercentile",
       "original_target": "nanpercentile",
       "role": "",
       "target": "nanpercentile",
@@ -1232,14 +1234,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/quantile",
-      "label": "fnp.quantile",
+      "label": "flops.quantile",
       "original_target": "quantile",
       "role": "",
       "target": "quantile",
       "unresolved": false
     }
   ],
-  "signature": "fnp.percentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
+  "signature": "flops.percentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
   "slug": "percentile",
   "summary": "Compute the q-th percentile of the data along the specified axis.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L4067",

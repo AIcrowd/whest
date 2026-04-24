@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/arctan/",
+  "detail_href": "/docs/api/arctan/",
   "detail_json_href": "/api-data/ops/arctan.json",
   "docs": {
     "sections": [
@@ -378,7 +378,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/arctan2",
-                "label": "fnp.arctan2",
+                "label": "flops.arctan2",
                 "original_target": "arctan2",
                 "role": "",
                 "target": "arctan2",
@@ -394,7 +394,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/angle",
-                "label": "fnp.angle",
+                "label": "flops.angle",
                 "original_target": "angle",
                 "role": "",
                 "target": "angle",
@@ -603,7 +603,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -613,7 +613,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.arctan([0, 1])"
+                "text": "flops.arctan([0, 1])"
               },
               {
                 "kind": "output",
@@ -627,7 +627,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.pi/4"
+                "text": "flops.pi/4"
               },
               {
                 "kind": "output",
@@ -655,12 +655,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.linspace(-10, 10)"
+                "text": "x = flops.linspace(-10, 10)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(x, fnp.arctan(x))"
+                "text": "plt.plot(x, flops.arctan(x))"
               },
               {
                 "kind": "input",
@@ -684,12 +684,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.arctan",
+    "flopscope_ref": "flops.arctan",
     "module": "numpy",
     "name": "arctan",
     "notes": "Element-wise inverse tangent.",
     "numpy_ref": "np.arctan",
-    "signature": "fnp.arctan(*args, **kwargs)",
+    "signature": "flops.arctan(*args, **kwargs)",
     "status": "supported",
     "summary": "Trigonometric inverse tangent, element-wise.",
     "weight": 16.0

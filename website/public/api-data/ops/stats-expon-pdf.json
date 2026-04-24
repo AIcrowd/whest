@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-expon-pdf/",
+  "detail_href": "/docs/api/stats/expon/pdf/",
   "detail_json_href": "/api-data/ops/stats-expon-pdf.json",
   "docs": {
     "sections": [
@@ -155,12 +155,12 @@
     "category": "counted_custom",
     "cost_formula": "5n",
     "cost_formula_latex": "$5n$",
-    "flopscope_ref": "fnp.stats.expon.pdf",
+    "flopscope_ref": "flops.stats.expon.pdf",
     "module": "flopscope.stats",
     "name": "stats.expon.pdf",
     "notes": "Exponential PDF; cost = numel(input).",
     "numpy_ref": "np.stats.expon.pdf",
-    "signature": "fnp.stats.expon.pdf(x, loc=0, scale=1)",
+    "signature": "flops.stats.expon.pdf(x, loc=0, scale=1)",
     "status": "supported",
     "summary": "Probability density function at x of the given RV.",
     "weight": 16.0

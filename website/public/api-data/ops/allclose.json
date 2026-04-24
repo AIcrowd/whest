@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/allclose/",
+  "detail_href": "/docs/api/allclose/",
   "detail_json_href": "/api-data/ops/allclose.json",
   "docs": {
     "sections": [
@@ -293,7 +293,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isclose",
-                "label": "fnp.isclose",
+                "label": "flops.isclose",
                 "original_target": "isclose",
                 "role": "",
                 "target": "isclose",
@@ -304,7 +304,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/all",
-                "label": "fnp.all",
+                "label": "flops.all",
                 "original_target": "all",
                 "role": "",
                 "target": "all",
@@ -315,7 +315,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/any",
-                "label": "fnp.any",
+                "label": "flops.any",
                 "original_target": "any",
                 "role": "",
                 "target": "any",
@@ -326,7 +326,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/equal",
-                "label": "fnp.equal",
+                "label": "flops.equal",
                 "original_target": "equal",
                 "role": "",
                 "target": "equal",
@@ -581,12 +581,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose([1e10,1e-7], [1.00001e10,1e-8])"
+                "text": "flops.allclose([1e10,1e-7], [1.00001e10,1e-8])"
               },
               {
                 "kind": "output",
@@ -600,7 +600,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose([1e10,1e-8], [1.00001e10,1e-9])"
+                "text": "flops.allclose([1e10,1e-8], [1.00001e10,1e-9])"
               },
               {
                 "kind": "output",
@@ -614,7 +614,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose([1e10,1e-8], [1.0001e10,1e-9])"
+                "text": "flops.allclose([1e10,1e-8], [1.0001e10,1e-9])"
               },
               {
                 "kind": "output",
@@ -628,7 +628,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose([1.0, fnp.nan], [1.0, fnp.nan])"
+                "text": "flops.allclose([1.0, flops.nan], [1.0, flops.nan])"
               },
               {
                 "kind": "output",
@@ -642,7 +642,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.allclose([1.0, fnp.nan], [1.0, fnp.nan], equal_nan=True)"
+                "text": "flops.allclose([1.0, flops.nan], [1.0, flops.nan], equal_nan=True)"
               },
               {
                 "kind": "output",
@@ -660,12 +660,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.allclose",
+    "flopscope_ref": "flops.allclose",
     "module": "numpy",
     "name": "allclose",
     "notes": "Element-wise tolerance check; cost = numel(a).",
     "numpy_ref": "np.allclose",
-    "signature": "fnp.allclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
+    "signature": "flops.allclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
     "status": "supported",
     "summary": "Returns True if two arrays are element-wise equal within a tolerance.",
     "weight": 1.0

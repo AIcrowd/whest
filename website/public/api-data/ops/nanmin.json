@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nanmin/",
+  "detail_href": "/docs/api/nanmin/",
   "detail_json_href": "/api-data/ops/nanmin.json",
   "docs": {
     "sections": [
@@ -451,7 +451,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/nanmax",
-                "label": "fnp.nanmax",
+                "label": "flops.nanmax",
                 "original_target": "nanmax",
                 "role": "",
                 "target": "nanmax",
@@ -467,7 +467,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/min",
-                "label": "fnp.min",
+                "label": "flops.min",
                 "original_target": "amin",
                 "role": "",
                 "target": "min",
@@ -483,7 +483,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/fmin",
-                "label": "fnp.fmin",
+                "label": "flops.fmin",
                 "original_target": "fmin",
                 "role": "",
                 "target": "fmin",
@@ -499,7 +499,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/minimum",
-                "label": "fnp.minimum",
+                "label": "flops.minimum",
                 "original_target": "minimum",
                 "role": "",
                 "target": "minimum",
@@ -515,7 +515,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/isnan",
-                "label": "fnp.isnan",
+                "label": "flops.isnan",
                 "original_target": "isnan",
                 "role": "",
                 "target": "isnan",
@@ -531,7 +531,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/isfinite",
-                "label": "fnp.isfinite",
+                "label": "flops.isfinite",
                 "original_target": "isfinite",
                 "role": "",
                 "target": "isfinite",
@@ -542,7 +542,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/max",
-                "label": "fnp.max",
+                "label": "flops.max",
                 "original_target": "amax",
                 "role": "",
                 "target": "max",
@@ -553,7 +553,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/fmax",
-                "label": "fnp.fmax",
+                "label": "flops.fmax",
                 "original_target": "fmax",
                 "role": "",
                 "target": "fmax",
@@ -564,7 +564,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/maximum",
-                "label": "fnp.maximum",
+                "label": "flops.maximum",
                 "original_target": "maximum",
                 "role": "",
                 "target": "maximum",
@@ -591,7 +591,7 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "If the input has a integer type the function is equivalent to fnp.min."
+                "text": "If the input has a integer type the function is equivalent to flops.min."
               }
             ],
             "type": "paragraph"
@@ -606,17 +606,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, 2], [3, fnp.nan]])"
+                "text": "a = flops.array([[1, 2], [3, flops.nan]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanmin(a)"
+                "text": "flops.nanmin(a)"
               },
               {
                 "kind": "output",
@@ -625,7 +625,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanmin(a, axis=0)"
+                "text": "flops.nanmin(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -634,7 +634,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanmin(a, axis=1)"
+                "text": "flops.nanmin(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -657,7 +657,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanmin([1, 2, fnp.nan, fnp.inf])"
+                "text": "flops.nanmin([1, 2, flops.nan, flops.inf])"
               },
               {
                 "kind": "output",
@@ -666,7 +666,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanmin([1, 2, fnp.nan, -fnp.inf])"
+                "text": "flops.nanmin([1, 2, flops.nan, -flops.inf])"
               },
               {
                 "kind": "output",
@@ -684,12 +684,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "fnp.nanmin",
+    "flopscope_ref": "flops.nanmin",
     "module": "numpy",
     "name": "nanmin",
     "notes": "Minimum ignoring NaNs.",
     "numpy_ref": "np.nanmin",
-    "signature": "fnp.nanmin(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+    "signature": "flops.nanmin(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
     "status": "supported",
     "summary": "Return minimum of an array or minimum along an axis, ignoring any NaNs. When all-NaN slices are encountered a ``RuntimeWarning`` is raised and Nan is returned for that slice.",
     "weight": 1.0

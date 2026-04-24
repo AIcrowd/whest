@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/roots/",
+  "detail_href": "/docs/api/roots/",
   "detail_json_href": "/api-data/ops/roots.json",
   "docs": {
     "sections": [
@@ -33,7 +33,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "polynomial",
-                    "text": "fnp.polynomial"
+                    "text": "flops.polynomial"
                   },
                   {
                     "kind": "text",
@@ -61,7 +61,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `fnp.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `flops.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
             "supported": true,
             "type": "directive_block"
           },
@@ -227,7 +227,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/poly",
-                "label": "fnp.poly",
+                "label": "flops.poly",
                 "original_target": "poly",
                 "role": "",
                 "target": "poly",
@@ -243,7 +243,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/polyval",
-                "label": "fnp.polyval",
+                "label": "flops.polyval",
                 "original_target": "polyval",
                 "role": "",
                 "target": "polyval",
@@ -259,7 +259,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/polyfit",
-                "label": "fnp.polyfit",
+                "label": "flops.polyfit",
                 "original_target": "polyfit",
                 "role": "",
                 "target": "polyfit",
@@ -326,7 +326,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -336,7 +336,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.roots(coeff)"
+                "text": "flops.roots(coeff)"
               },
               {
                 "kind": "output",
@@ -354,12 +354,12 @@
     "category": "counted_custom",
     "cost_formula": "10n^3",
     "cost_formula_latex": "$10n^3$",
-    "flopscope_ref": "fnp.roots",
+    "flopscope_ref": "flops.roots",
     "module": "flopscope._polynomial",
     "name": "roots",
     "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
     "numpy_ref": "np.roots",
-    "signature": "fnp.roots(p)",
+    "signature": "flops.roots(p)",
     "status": "supported",
     "summary": "Return the roots of a polynomial with coefficients given in p.",
     "weight": 16.0

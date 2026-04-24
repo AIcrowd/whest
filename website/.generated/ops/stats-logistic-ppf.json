@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.logistic.ppf",
+  "canonical_path": "stats/logistic/ppf",
   "category": "counted_custom",
   "cost_formula": "5n",
   "cost_formula_latex": "$5n$",
@@ -170,14 +171,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.stats.logistic.ppf",
+  "flopscope_ref": "flops.stats.logistic.ppf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_logistic.py#L55",
-  "href": "/docs/api/ops/stats-logistic-ppf/",
+  "href": "/docs/api/stats/logistic/ppf/",
+  "legacy_href": "/docs/api/ops/stats-logistic-ppf/",
   "module": "flopscope.stats",
   "name": "stats.logistic.ppf",
   "next": {
-    "href": "/docs/api/ops/stats-lognorm-cdf/",
-    "label": "fnp.stats.lognorm.cdf"
+    "href": "/docs/api/stats/lognorm/cdf/",
+    "label": "flops.stats.lognorm.cdf"
   },
   "notes": "Logistic PPF; cost = numel(input).",
   "notes_sections": [],
@@ -214,8 +216,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-logistic-pdf/",
-    "label": "fnp.stats.logistic.pdf"
+    "href": "/docs/api/stats/logistic/pdf/",
+    "label": "flops.stats.logistic.pdf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.logistic.html",
@@ -229,7 +231,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.stats.logistic.ppf(q, loc=0, scale=1)",
+  "signature": "flops.stats.logistic.ppf(q, loc=0, scale=1)",
   "slug": "stats-logistic-ppf",
   "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",

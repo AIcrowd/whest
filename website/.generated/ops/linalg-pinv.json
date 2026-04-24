@@ -597,12 +597,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rng = fnp.random.default_rng()"
+              "text": "rng = flops.random.default_rng()"
             },
             {
               "kind": "input",
@@ -612,12 +612,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "B = fnp.linalg.pinv(a)"
+              "text": "B = flops.linalg.pinv(a)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(a, fnp.dot(a, fnp.dot(B, a)))"
+              "text": "flops.allclose(a, flops.dot(a, flops.dot(B, a)))"
             },
             {
               "kind": "output",
@@ -626,7 +626,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(B, fnp.dot(B, fnp.dot(a, B)))"
+              "text": "flops.allclose(B, flops.dot(B, flops.dot(a, B)))"
             },
             {
               "kind": "output",
@@ -640,6 +640,7 @@
     }
   ],
   "canonical_name": "linalg.pinv",
+  "canonical_path": "linalg/pinv",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -660,19 +661,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nrng = fnp.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nB = fnp.linalg.pinv(a)\n\nfnp.allclose(a, fnp.dot(a, fnp.dot(B, a)))\n\nfnp.allclose(B, fnp.dot(B, fnp.dot(a, B)))",
+    "code": "import flopscope as flops\n\nrng = flops.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nB = flops.linalg.pinv(a)\n\nflops.allclose(a, flops.dot(a, flops.dot(B, a)))\n\nflops.allclose(B, flops.dot(B, flops.dot(a, B)))",
     "output": "True\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.linalg.pinv",
+  "flopscope_ref": "flops.linalg.pinv",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L194",
-  "href": "/docs/api/ops/linalg-pinv/",
+  "href": "/docs/api/linalg/pinv/",
+  "legacy_href": "/docs/api/ops/linalg-pinv/",
   "module": "numpy.linalg",
   "name": "linalg.pinv",
   "next": {
-    "href": "/docs/api/ops/linalg-qr/",
-    "label": "fnp.linalg.qr"
+    "href": "/docs/api/linalg/qr/",
+    "label": "flops.linalg.qr"
   },
   "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
   "notes_sections": [
@@ -721,8 +723,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-outer/",
-    "label": "fnp.linalg.outer"
+    "href": "/docs/api/linalg/outer/",
+    "label": "flops.linalg.outer"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.pinv.html",
@@ -770,7 +772,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
+  "signature": "flops.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
   "slug": "linalg-pinv",
   "summary": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2128",

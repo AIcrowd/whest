@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/unstack/",
+  "detail_href": "/docs/api/unstack/",
   "detail_json_href": "/api-data/ops/unstack.json",
   "docs": {
     "sections": [
@@ -200,7 +200,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/stack",
-                "label": "fnp.stack",
+                "label": "flops.stack",
                 "original_target": "stack",
                 "role": "",
                 "target": "stack",
@@ -216,7 +216,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/concatenate",
-                "label": "fnp.concatenate",
+                "label": "flops.concatenate",
                 "original_target": "concatenate",
                 "role": "",
                 "target": "concatenate",
@@ -232,7 +232,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/block",
-                "label": "fnp.block",
+                "label": "flops.block",
                 "original_target": "block",
                 "role": "",
                 "target": "block",
@@ -248,7 +248,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/split",
-                "label": "fnp.split",
+                "label": "flops.split",
                 "original_target": "split",
                 "role": "",
                 "target": "split",
@@ -310,7 +310,7 @@
               },
               {
                 "kind": "code",
-                "text": "tuple(fnp.moveaxis(x, axis, 0))"
+                "text": "tuple(flops.moveaxis(x, axis, 0))"
               },
               {
                 "kind": "text",
@@ -329,12 +329,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = fnp.arange(24).reshape((2, 3, 4))"
+                "text": "arr = flops.arange(24).reshape((2, 3, 4))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.unstack(arr)"
+                "text": "flops.unstack(arr)"
               },
               {
                 "kind": "output",
@@ -363,7 +363,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.unstack(arr, axis=1)"
+                "text": "flops.unstack(arr, axis=1)"
               },
               {
                 "kind": "output",
@@ -392,7 +392,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr2 = fnp.stack(fnp.unstack(arr, axis=1), axis=1)"
+                "text": "arr2 = flops.stack(flops.unstack(arr, axis=1), axis=1)"
               },
               {
                 "kind": "input",
@@ -406,11 +406,11 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.all(arr == arr2)"
+                "text": "flops.all(arr == arr2)"
               },
               {
                 "kind": "output",
-                "text": "fnp.True_"
+                "text": "flops.True_"
               }
             ],
             "type": "doctest_block"
@@ -424,12 +424,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.unstack",
+    "flopscope_ref": "flops.unstack",
     "module": "numpy",
     "name": "unstack",
     "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output).",
     "numpy_ref": "np.unstack",
-    "signature": "fnp.unstack(x, /, *, axis=0)",
+    "signature": "flops.unstack(x, /, *, axis=0)",
     "status": "supported",
     "summary": "Split an array into a sequence of arrays along the given axis.",
     "weight": 1.0

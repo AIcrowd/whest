@@ -387,7 +387,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/insert",
-              "label": "fnp.insert",
+              "label": "flops.insert",
               "original_target": "insert",
               "role": "",
               "target": "insert",
@@ -403,7 +403,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/delete",
-              "label": "fnp.delete",
+              "label": "flops.delete",
               "original_target": "delete",
               "role": "",
               "target": "delete",
@@ -422,12 +422,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])"
+              "text": "flops.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])"
             },
             {
               "kind": "output",
@@ -466,7 +466,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)"
+              "text": "flops.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)"
             },
             {
               "kind": "output",
@@ -488,7 +488,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)"
+              "text": "flops.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)"
             },
             {
               "kind": "output",
@@ -519,12 +519,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([1, 2], dtype=int)"
+              "text": "a = flops.array([1, 2], dtype=int)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "c = fnp.append(a, [])"
+              "text": "c = flops.append(a, [])"
             },
             {
               "kind": "input",
@@ -581,6 +581,7 @@
     }
   ],
   "canonical_name": "append",
+  "canonical_path": "append",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -591,19 +592,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])\n\nfnp.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)\n\nfnp.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)\n\na = fnp.array([1, 2], dtype=int)\n\nc = fnp.append(a, [])\n\nc\n\nc.dtype",
+    "code": "import flopscope as flops\n\nflops.append([1, 2, 3], [[4, 5, 6], [7, 8, 9]])\n\nflops.append([[1, 2, 3], [4, 5, 6]], [[7, 8, 9]], axis=0)\n\nflops.append([[1, 2, 3], [4, 5, 6]], [7, 8, 9], axis=0)\n\na = flops.array([1, 2], dtype=int)\n\nc = flops.append(a, [])\n\nc\n\nc.dtype",
     "output": "array([1, 2, 3, ..., 7, 8, 9])\n\narray([[1, 2, 3],\n       [4, 5, 6],\n       [7, 8, 9]])\n\nTraceback (most recent call last):\n    ...\nValueError: all the input arrays must have same number of dimensions, but\nthe array at index 0 has 2 dimension(s) and the array at index 1 has 1\ndimension(s)\n\narray([1., 2.])\n\nfloat64",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.append",
+  "flopscope_ref": "flops.append",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L714",
-  "href": "/docs/api/ops/append/",
+  "href": "/docs/api/append/",
+  "legacy_href": "/docs/api/ops/append/",
   "module": "numpy",
   "name": "append",
   "next": {
-    "href": "/docs/api/ops/apply_along_axis/",
-    "label": "fnp.apply_along_axis"
+    "href": "/docs/api/apply-along-axis/",
+    "label": "flops.apply_along_axis"
   },
   "notes": "Append values to end of array. Cost: numel(values).",
   "notes_sections": [],
@@ -636,8 +638,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/any/",
-    "label": "fnp.any"
+    "href": "/docs/api/any/",
+    "label": "flops.any"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.append.html",
@@ -663,7 +665,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/insert",
-      "label": "fnp.insert",
+      "label": "flops.insert",
       "original_target": "insert",
       "role": "",
       "target": "insert",
@@ -679,14 +681,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/delete",
-      "label": "fnp.delete",
+      "label": "flops.delete",
       "original_target": "delete",
       "role": "",
       "target": "delete",
       "unresolved": false
     }
   ],
-  "signature": "fnp.append(arr, values, axis=None)",
+  "signature": "flops.append(arr, values, axis=None)",
   "slug": "append",
   "summary": "Append values to the end of an array.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5644",

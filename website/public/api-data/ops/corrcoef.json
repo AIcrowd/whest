@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/corrcoef/",
+  "detail_href": "/docs/api/corrcoef/",
   "detail_json_href": "/api-data/ops/corrcoef.json",
   "docs": {
     "sections": [
@@ -308,7 +308,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "float64",
-                        "text": "fnp.float64"
+                        "text": "flops.float64"
                       },
                       {
                         "kind": "text",
@@ -339,7 +339,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "float64",
-                    "text": "fnp.float64"
+                    "text": "flops.float64"
                   },
                   {
                     "kind": "text",
@@ -403,7 +403,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/cov",
-                "label": "fnp.cov",
+                "label": "flops.cov",
                 "original_target": "cov",
                 "role": "",
                 "target": "cov",
@@ -461,7 +461,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -520,12 +520,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = fnp.random.default_rng(seed=42)"
+                "text": "rng = flops.random.default_rng(seed=42)"
               },
               {
                 "kind": "input",
@@ -552,7 +552,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "R1 = fnp.corrcoef(xarr)"
+                "text": "R1 = flops.corrcoef(xarr)"
               },
               {
                 "kind": "input",
@@ -634,7 +634,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "R2 = fnp.corrcoef(xarr, yarr)"
+                "text": "R2 = flops.corrcoef(xarr, yarr)"
               },
               {
                 "kind": "input",
@@ -730,7 +730,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "R3 = fnp.corrcoef(xarr, yarr, rowvar=False)"
+                "text": "R3 = flops.corrcoef(xarr, yarr, rowvar=False)"
               },
               {
                 "kind": "input",
@@ -797,12 +797,12 @@
     "category": "counted_custom",
     "cost_formula": "n^2 * m",
     "cost_formula_latex": "$n^2 \\cdot m$",
-    "flopscope_ref": "fnp.corrcoef",
+    "flopscope_ref": "flops.corrcoef",
     "module": "numpy",
     "name": "corrcoef",
     "notes": "Pearson correlation coefficients.",
     "numpy_ref": "np.corrcoef",
-    "signature": "fnp.corrcoef(x, y=None, rowvar=True, bias=<no value>, ddof=<no value>, *, dtype=None)",
+    "signature": "flops.corrcoef(x, y=None, rowvar=True, bias=<no value>, ddof=<no value>, *, dtype=None)",
     "status": "supported",
     "summary": "Return Pearson product-moment correlation coefficients.",
     "weight": 1.0

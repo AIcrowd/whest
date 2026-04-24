@@ -174,7 +174,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/shares_memory",
-              "label": "fnp.shares_memory",
+              "label": "flops.shares_memory",
               "original_target": "shares_memory",
               "role": "",
               "target": "shares_memory",
@@ -193,12 +193,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.may_share_memory(fnp.array([1,2]), fnp.array([5,8,9]))"
+              "text": "flops.may_share_memory(flops.array([1,2]), flops.array([5,8,9]))"
             },
             {
               "kind": "output",
@@ -207,12 +207,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.zeros([3, 4])"
+              "text": "x = flops.zeros([3, 4])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.may_share_memory(x[:,0], x[:,1])"
+              "text": "flops.may_share_memory(x[:,0], x[:,1])"
             },
             {
               "kind": "output",
@@ -226,6 +226,7 @@
     }
   ],
   "canonical_name": "may_share_memory",
+  "canonical_path": "may-share-memory",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -236,19 +237,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.may_share_memory(fnp.array([1,2]), fnp.array([5,8,9]))\n\nx = fnp.zeros([3, 4])\n\nfnp.may_share_memory(x[:,0], x[:,1])",
+    "code": "import flopscope as flops\n\nflops.may_share_memory(flops.array([1,2]), flops.array([5,8,9]))\n\nx = flops.zeros([3, 4])\n\nflops.may_share_memory(x[:,0], x[:,1])",
     "output": "False\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.may_share_memory",
+  "flopscope_ref": "flops.may_share_memory",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1314",
-  "href": "/docs/api/ops/may_share_memory/",
+  "href": "/docs/api/may-share-memory/",
+  "legacy_href": "/docs/api/ops/may_share_memory/",
   "module": "numpy",
   "name": "may_share_memory",
   "next": {
-    "href": "/docs/api/ops/mean/",
-    "label": "fnp.mean"
+    "href": "/docs/api/mean/",
+    "label": "flops.mean"
   },
   "notes": "Determine if two arrays might share memory.",
   "notes_sections": [],
@@ -272,8 +274,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/maximum/",
-    "label": "fnp.maximum"
+    "href": "/docs/api/maximum/",
+    "label": "flops.maximum"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.may_share_memory.html",
@@ -290,14 +292,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/shares_memory",
-      "label": "fnp.shares_memory",
+      "label": "flops.shares_memory",
       "original_target": "shares_memory",
       "role": "",
       "target": "shares_memory",
       "unresolved": false
     }
   ],
-  "signature": "fnp.may_share_memory(*args, **kwargs)",
+  "signature": "flops.may_share_memory(*args, **kwargs)",
   "slug": "may_share_memory",
   "summary": "Determine if two arrays might share memory",
   "upstream_source_url": "",

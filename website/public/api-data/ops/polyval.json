@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/polyval/",
+  "detail_href": "/docs/api/polyval/",
   "detail_json_href": "/api-data/ops/polyval.json",
   "docs": {
     "sections": [
@@ -33,7 +33,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "polynomial",
-                    "text": "fnp.polynomial"
+                    "text": "flops.polynomial"
                   },
                   {
                     "kind": "text",
@@ -61,7 +61,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `fnp.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `flops.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
             "supported": true,
             "type": "directive_block"
           },
@@ -461,12 +461,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.polyval([3,0,1], 5)  # 3 * 5**2 + 0 * 5**1 + 1"
+                "text": "flops.polyval([3,0,1], 5)  # 3 * 5**2 + 0 * 5**1 + 1"
               },
               {
                 "kind": "output",
@@ -475,7 +475,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.polyval([3,0,1], fnp.poly1d(5))"
+                "text": "flops.polyval([3,0,1], flops.poly1d(5))"
               },
               {
                 "kind": "output",
@@ -484,7 +484,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.polyval(fnp.poly1d([3,0,1]), 5)"
+                "text": "flops.polyval(flops.poly1d([3,0,1]), 5)"
               },
               {
                 "kind": "output",
@@ -493,7 +493,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.polyval(fnp.poly1d([3,0,1]), fnp.poly1d(5))"
+                "text": "flops.polyval(flops.poly1d([3,0,1]), flops.poly1d(5))"
               },
               {
                 "kind": "output",
@@ -511,12 +511,12 @@
     "category": "counted_custom",
     "cost_formula": "m * deg (FMA=1)",
     "cost_formula_latex": "$m \\cdot \\text{deg}$",
-    "flopscope_ref": "fnp.polyval",
+    "flopscope_ref": "flops.polyval",
     "module": "flopscope._polynomial",
     "name": "polyval",
     "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
     "numpy_ref": "np.polyval",
-    "signature": "fnp.polyval(p, x)",
+    "signature": "flops.polyval(p, x)",
     "status": "supported",
     "summary": "Evaluate a polynomial at specific values.",
     "weight": 1.0

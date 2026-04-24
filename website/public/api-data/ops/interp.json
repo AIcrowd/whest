@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/interp/",
+  "detail_href": "/docs/api/interp/",
   "detail_json_href": "/api-data/ops/interp.json",
   "docs": {
     "sections": [
@@ -604,7 +604,7 @@
           },
           {
             "language": null,
-            "text": "fnp.all(fnp.diff(xp) > 0)",
+            "text": "flops.all(flops.diff(xp) > 0)",
             "type": "literal_block"
           }
         ],
@@ -617,7 +617,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -632,7 +632,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.interp(2.5, xp, fp)"
+                "text": "flops.interp(2.5, xp, fp)"
               },
               {
                 "kind": "output",
@@ -641,7 +641,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)"
+                "text": "flops.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)"
               },
               {
                 "kind": "output",
@@ -655,7 +655,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.interp(3.14, xp, fp, right=UNDEF)"
+                "text": "flops.interp(3.14, xp, fp, right=UNDEF)"
               },
               {
                 "kind": "output",
@@ -678,22 +678,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.linspace(0, 2*fnp.pi, 10)"
+                "text": "x = flops.linspace(0, 2*flops.pi, 10)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.sin(x)"
+                "text": "y = flops.sin(x)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xvals = fnp.linspace(0, 2*fnp.pi, 50)"
+                "text": "xvals = flops.linspace(0, 2*flops.pi, 50)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "yinterp = fnp.interp(xvals, x, y)"
+                "text": "yinterp = flops.interp(xvals, x, y)"
               },
               {
                 "kind": "input",
@@ -755,7 +755,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.interp(x, xp, fp, period=360)"
+                "text": "flops.interp(x, xp, fp, period=360)"
               },
               {
                 "kind": "output",
@@ -793,7 +793,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.interp(x, xp, fp)"
+                "text": "flops.interp(x, xp, fp)"
               },
               {
                 "kind": "output",
@@ -811,12 +811,12 @@
     "category": "counted_custom",
     "cost_formula": "n * log(m)",
     "cost_formula_latex": "$n \\cdot \\log m$",
-    "flopscope_ref": "fnp.interp",
+    "flopscope_ref": "flops.interp",
     "module": "numpy",
     "name": "interp",
     "notes": "1-D linear interpolation.",
     "numpy_ref": "np.interp",
-    "signature": "fnp.interp(x, xp, fp, left=None, right=None, period=None)",
+    "signature": "flops.interp(x, xp, fp, left=None, right=None, period=None)",
     "status": "supported",
     "summary": "One-dimensional linear interpolation for monotonically increasing sample points.",
     "weight": 1.0

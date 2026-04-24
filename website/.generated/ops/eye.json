@@ -329,7 +329,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/identity",
-              "label": "fnp.identity",
+              "label": "flops.identity",
               "original_target": "identity",
               "role": "",
               "target": "identity",
@@ -345,7 +345,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/diag",
-              "label": "fnp.diag",
+              "label": "flops.diag",
               "original_target": "diag",
               "role": "",
               "target": "diag",
@@ -364,12 +364,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.eye(2, dtype=int)"
+              "text": "flops.eye(2, dtype=int)"
             },
             {
               "kind": "output",
@@ -382,7 +382,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.eye(3, k=1)"
+              "text": "flops.eye(3, k=1)"
             },
             {
               "kind": "output",
@@ -404,6 +404,7 @@
     }
   ],
   "canonical_name": "eye",
+  "canonical_path": "eye",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -414,19 +415,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.eye(2, dtype=int)\n\nfnp.eye(3, k=1)",
+    "code": "import flopscope as flops\n\nflops.eye(2, dtype=int)\n\nflops.eye(3, k=1)",
     "output": "array([[1, 0],\n       [0, 1]])\n\narray([[0.,  1.,  0.],\n       [0.,  0.,  1.],\n       [0.,  0.,  0.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.eye",
+  "flopscope_ref": "flops.eye",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L137",
-  "href": "/docs/api/ops/eye/",
+  "href": "/docs/api/eye/",
+  "legacy_href": "/docs/api/ops/eye/",
   "module": "numpy",
   "name": "eye",
   "next": {
-    "href": "/docs/api/ops/fabs/",
-    "label": "fnp.fabs"
+    "href": "/docs/api/fabs/",
+    "label": "flops.fabs"
   },
   "notes": "Create identity matrix.",
   "notes_sections": [],
@@ -495,8 +497,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/extract/",
-    "label": "fnp.extract"
+    "href": "/docs/api/extract/",
+    "label": "flops.extract"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.eye.html",
@@ -521,7 +523,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/identity",
-      "label": "fnp.identity",
+      "label": "flops.identity",
       "original_target": "identity",
       "role": "",
       "target": "identity",
@@ -537,14 +539,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/diag",
-      "label": "fnp.diag",
+      "label": "flops.diag",
       "original_target": "diag",
       "role": "",
       "target": "diag",
       "unresolved": false
     }
   ],
-  "signature": "fnp.eye(N, M=None, k=0, dtype=<class 'float'>, order='C', *, device=None, like=None)",
+  "signature": "flops.eye(N, M=None, k=0, dtype=<class 'float'>, order='C', *, device=None, like=None)",
   "slug": "eye",
   "summary": "Return a 2-D array with ones on the diagonal and zeros elsewhere.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L163",

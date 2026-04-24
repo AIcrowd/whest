@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/float_power/",
+  "detail_href": "/docs/api/float-power/",
   "detail_json_href": "/api-data/ops/float_power.json",
   "docs": {
     "sections": [
@@ -440,7 +440,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/power",
-                "label": "fnp.power",
+                "label": "flops.power",
                 "original_target": "power",
                 "role": "",
                 "target": "power",
@@ -459,7 +459,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -492,7 +492,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.float_power(x1, 3)"
+                "text": "flops.float_power(x1, 3)"
               },
               {
                 "kind": "output",
@@ -520,7 +520,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.float_power(x1, x2)"
+                "text": "flops.float_power(x1, x2)"
               },
               {
                 "kind": "output",
@@ -543,7 +543,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = fnp.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])"
+                "text": "x2 = flops.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])"
               },
               {
                 "kind": "input",
@@ -561,7 +561,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.float_power(x1, x2)"
+                "text": "flops.float_power(x1, x2)"
               },
               {
                 "kind": "output",
@@ -596,17 +596,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x3 = fnp.array([-1, -4])"
+                "text": "x3 = flops.array([-1, -4])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "with fnp.errstate(invalid='ignore'):"
+                "text": "with flops.errstate(invalid='ignore'):"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "p = fnp.float_power(x3, 1.5)"
+                "text": "p = flops.float_power(x3, 1.5)"
               },
               {
                 "kind": "input",
@@ -647,7 +647,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.float_power(x3, 1.5, dtype=complex)"
+                "text": "flops.float_power(x3, 1.5, dtype=complex)"
               },
               {
                 "kind": "output",
@@ -665,12 +665,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.float_power",
+    "flopscope_ref": "flops.float_power",
     "module": "numpy",
     "name": "float_power",
     "notes": "Element-wise exponentiation in float64.",
     "numpy_ref": "np.float_power",
-    "signature": "fnp.float_power(*args, **kwargs)",
+    "signature": "flops.float_power(*args, **kwargs)",
     "status": "supported",
     "summary": "First array elements raised to powers from second array, element-wise.",
     "weight": 16.0

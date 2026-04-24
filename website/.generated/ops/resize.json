@@ -149,7 +149,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/reshape",
-              "label": "fnp.reshape",
+              "label": "flops.reshape",
               "original_target": "numpy.reshape",
               "role": "",
               "target": "reshape",
@@ -165,7 +165,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/pad",
-              "label": "fnp.pad",
+              "label": "flops.pad",
               "original_target": "numpy.pad",
               "role": "",
               "target": "pad",
@@ -181,7 +181,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/repeat",
-              "label": "fnp.repeat",
+              "label": "flops.repeat",
               "original_target": "numpy.repeat",
               "role": "",
               "target": "repeat",
@@ -266,17 +266,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([[0,1],[2,3]])"
+              "text": "a = flops.array([[0,1],[2,3]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.resize(a,(2,3))"
+              "text": "flops.resize(a,(2,3))"
             },
             {
               "kind": "output",
@@ -289,7 +289,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.resize(a,(1,4))"
+              "text": "flops.resize(a,(1,4))"
             },
             {
               "kind": "output",
@@ -298,7 +298,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.resize(a,(2,4))"
+              "text": "flops.resize(a,(2,4))"
             },
             {
               "kind": "output",
@@ -316,6 +316,7 @@
     }
   ],
   "canonical_name": "resize",
+  "canonical_path": "resize",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -333,23 +334,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[0,1],[2,3]])\n\nfnp.resize(a,(2,3))\n\nfnp.resize(a,(1,4))\n\nfnp.resize(a,(2,4))",
+    "code": "import flopscope as flops\n\na = flops.array([[0,1],[2,3]])\n\nflops.resize(a,(2,3))\n\nflops.resize(a,(1,4))\n\nflops.resize(a,(2,4))",
     "output": "array([[0, 1, 2],\n       [3, 0, 1]])\n\narray([[0, 1, 2, 3]])\n\narray([[0, 1, 2, 3],\n       [0, 1, 2, 3]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.resize",
+  "flopscope_ref": "flops.resize",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1472",
-  "href": "/docs/api/ops/resize/",
+  "href": "/docs/api/resize/",
+  "legacy_href": "/docs/api/ops/resize/",
   "module": "numpy",
   "name": "resize",
   "next": {
-    "href": "/docs/api/ops/result_type/",
-    "label": "fnp.result_type"
+    "href": "/docs/api/result-type/",
+    "label": "flops.result_type"
   },
   "notes": "Return new array with given shape by repeating. Cost: numel(output).",
   "notes_sections": [
-    "When the total size of the array does not change `~fnp.reshape` should be used.  In most other cases either indexing (to reduce the size) or padding (to increase the size) may be a more appropriate solution.",
+    "When the total size of the array does not change `~flops.reshape` should be used.  In most other cases either indexing (to reduce the size) or padding (to increase the size) may be a more appropriate solution.",
     "Warning: This functionality does **not** consider axes separately, i.e. it does not apply interpolation/extrapolation. It fills the return array with the required number of elements, iterating over `a` in C-order, disregarding axes (and cycling back from the start if the new shape is larger).  This functionality is therefore not suitable to resize images, or data where each axis represents a separate and distinct entity."
   ],
   "numpy_ref": "np.resize",
@@ -370,8 +372,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/reshape/",
-    "label": "fnp.reshape"
+    "href": "/docs/api/reshape/",
+    "label": "flops.reshape"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.resize.html",
@@ -397,7 +399,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/reshape",
-      "label": "fnp.reshape",
+      "label": "flops.reshape",
       "original_target": "numpy.reshape",
       "role": "",
       "target": "reshape",
@@ -413,7 +415,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/pad",
-      "label": "fnp.pad",
+      "label": "flops.pad",
       "original_target": "numpy.pad",
       "role": "",
       "target": "pad",
@@ -429,7 +431,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/repeat",
-      "label": "fnp.repeat",
+      "label": "flops.repeat",
       "original_target": "numpy.repeat",
       "role": "",
       "target": "repeat",
@@ -452,7 +454,7 @@
       "unresolved": true
     }
   ],
-  "signature": "fnp.resize(a, new_shape)",
+  "signature": "flops.resize(a, new_shape)",
   "slug": "resize",
   "summary": "Return a new array with the specified shape.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1534",

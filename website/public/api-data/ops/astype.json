@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/astype/",
+  "detail_href": "/docs/api/astype/",
   "detail_json_href": "/api-data/ops/astype.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "kind": "code",
-                "text": "fnp.ndarray.astype"
+                "text": "flops.ndarray.astype"
               },
               {
                 "kind": "text",
@@ -305,12 +305,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = fnp.array([1, 2, 3]); arr"
+                "text": "arr = flops.array([1, 2, 3]); arr"
               },
               {
                 "kind": "output",
@@ -319,7 +319,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.astype(arr, fnp.float64)"
+                "text": "flops.astype(arr, flops.float64)"
               },
               {
                 "kind": "output",
@@ -342,17 +342,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = fnp.array([1, 2, 3])"
+                "text": "arr = flops.array([1, 2, 3])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr_noncpy = fnp.astype(arr, arr.dtype, copy=False)"
+                "text": "arr_noncpy = flops.astype(arr, arr.dtype, copy=False)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.shares_memory(arr, arr_noncpy)"
+                "text": "flops.shares_memory(arr, arr_noncpy)"
               },
               {
                 "kind": "output",
@@ -370,12 +370,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.astype",
+    "flopscope_ref": "flops.astype",
     "module": "numpy",
     "name": "astype",
     "notes": "Cast array to specified type.",
     "numpy_ref": "np.astype",
-    "signature": "fnp.astype(x, dtype, /, *, copy=True, device=None)",
+    "signature": "flops.astype(x, dtype, /, *, copy=True, device=None)",
     "status": "supported",
     "summary": "Copies an array to a specified data type.",
     "weight": 0.0

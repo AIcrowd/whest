@@ -340,7 +340,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/allclose",
-              "label": "fnp.allclose",
+              "label": "flops.allclose",
               "original_target": "allclose",
               "role": "",
               "target": "allclose",
@@ -559,12 +559,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isclose([1e10,1e-7], [1.00001e10,1e-8])"
+              "text": "flops.isclose([1e10,1e-7], [1.00001e10,1e-8])"
             },
             {
               "kind": "output",
@@ -578,7 +578,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isclose([1e10,1e-8], [1.00001e10,1e-9])"
+              "text": "flops.isclose([1e10,1e-8], [1.00001e10,1e-9])"
             },
             {
               "kind": "output",
@@ -592,7 +592,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isclose([1e10,1e-8], [1.0001e10,1e-9])"
+              "text": "flops.isclose([1e10,1e-8], [1.0001e10,1e-9])"
             },
             {
               "kind": "output",
@@ -606,7 +606,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isclose([1.0, fnp.nan], [1.0, fnp.nan])"
+              "text": "flops.isclose([1.0, flops.nan], [1.0, flops.nan])"
             },
             {
               "kind": "output",
@@ -620,7 +620,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isclose([1.0, fnp.nan], [1.0, fnp.nan], equal_nan=True)"
+              "text": "flops.isclose([1.0, flops.nan], [1.0, flops.nan], equal_nan=True)"
             },
             {
               "kind": "output",
@@ -634,7 +634,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isclose([1e-8, 1e-7], [0.0, 0.0])"
+              "text": "flops.isclose([1e-8, 1e-7], [0.0, 0.0])"
             },
             {
               "kind": "output",
@@ -648,7 +648,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)"
+              "text": "flops.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)"
             },
             {
               "kind": "output",
@@ -662,7 +662,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isclose([1e-10, 1e-10], [1e-20, 0.0])"
+              "text": "flops.isclose([1e-10, 1e-10], [1e-20, 0.0])"
             },
             {
               "kind": "output",
@@ -676,7 +676,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)"
+              "text": "flops.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)"
             },
             {
               "kind": "output",
@@ -690,6 +690,7 @@
     }
   ],
   "canonical_name": "isclose",
+  "canonical_path": "isclose",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -707,19 +708,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.isclose([1e10,1e-7], [1.00001e10,1e-8])\n\nfnp.isclose([1e10,1e-8], [1.00001e10,1e-9])\n\nfnp.isclose([1e10,1e-8], [1.0001e10,1e-9])\n\nfnp.isclose([1.0, fnp.nan], [1.0, fnp.nan])\n\nfnp.isclose([1.0, fnp.nan], [1.0, fnp.nan], equal_nan=True)\n\nfnp.isclose([1e-8, 1e-7], [0.0, 0.0])\n\nfnp.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)\n\nfnp.isclose([1e-10, 1e-10], [1e-20, 0.0])\n\nfnp.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)",
+    "code": "import flopscope as flops\n\nflops.isclose([1e10,1e-7], [1.00001e10,1e-8])\n\nflops.isclose([1e10,1e-8], [1.00001e10,1e-9])\n\nflops.isclose([1e10,1e-8], [1.0001e10,1e-9])\n\nflops.isclose([1.0, flops.nan], [1.0, flops.nan])\n\nflops.isclose([1.0, flops.nan], [1.0, flops.nan], equal_nan=True)\n\nflops.isclose([1e-8, 1e-7], [0.0, 0.0])\n\nflops.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)\n\nflops.isclose([1e-10, 1e-10], [1e-20, 0.0])\n\nflops.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)",
     "output": "array([ True, False])\n\narray([ True, True])\n\narray([False,  True])\n\narray([ True, False])\n\narray([ True, True])\n\narray([ True, False])\n\narray([False, False])\n\narray([ True,  True])\n\narray([False,  True])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.isclose",
+  "flopscope_ref": "flops.isclose",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L571",
-  "href": "/docs/api/ops/isclose/",
+  "href": "/docs/api/isclose/",
+  "legacy_href": "/docs/api/ops/isclose/",
   "module": "numpy",
   "name": "isclose",
   "next": {
-    "href": "/docs/api/ops/iscomplex/",
-    "label": "fnp.iscomplex"
+    "href": "/docs/api/iscomplex/",
+    "label": "flops.iscomplex"
   },
   "notes": "Element-wise approximate equality test.",
   "notes_sections": [
@@ -762,8 +764,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/invert/",
-    "label": "fnp.invert"
+    "href": "/docs/api/invert/",
+    "label": "flops.invert"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isclose.html",
@@ -784,7 +786,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/allclose",
-      "label": "fnp.allclose",
+      "label": "flops.allclose",
       "original_target": "allclose",
       "role": "",
       "target": "allclose",
@@ -802,7 +804,7 @@
       "unresolved": true
     }
   ],
-  "signature": "fnp.isclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
+  "signature": "flops.isclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
   "slug": "isclose",
   "summary": "Returns a boolean array where two arrays are element-wise equal within a tolerance.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2337",

@@ -339,7 +339,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/argsort",
-              "label": "fnp.argsort",
+              "label": "flops.argsort",
               "original_target": "argsort",
               "role": "",
               "target": "argsort",
@@ -355,7 +355,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/lexsort",
-              "label": "fnp.lexsort",
+              "label": "flops.lexsort",
               "original_target": "lexsort",
               "role": "",
               "target": "lexsort",
@@ -371,7 +371,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/searchsorted",
-              "label": "fnp.searchsorted",
+              "label": "flops.searchsorted",
               "original_target": "searchsorted",
               "role": "",
               "target": "searchsorted",
@@ -387,7 +387,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/partition",
-              "label": "fnp.partition",
+              "label": "flops.partition",
               "original_target": "partition",
               "role": "",
               "target": "partition",
@@ -457,8 +457,8 @@
               "text": " makes a temporary copy if needed to make the data\n"
             },
             {
-              "external_url": "https://fnp.org/doc/stable/glossary.html#term-contiguous",
-              "href": "https://fnp.org/doc/stable/glossary.html#term-contiguous",
+              "external_url": "https://flops.org/doc/stable/glossary.html#term-contiguous",
+              "href": "https://flops.org/doc/stable/glossary.html#term-contiguous",
               "kind": "link",
               "text": "contiguous"
             },
@@ -648,17 +648,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([[1,4],[3,1]])"
+              "text": "a = flops.array([[1,4],[3,1]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.sort(a)                # sort along the last axis"
+              "text": "flops.sort(a)                # sort along the last axis"
             },
             {
               "kind": "output",
@@ -671,7 +671,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.sort(a, axis=None)     # sort the flattened array"
+              "text": "flops.sort(a, axis=None)     # sort the flattened array"
             },
             {
               "kind": "output",
@@ -680,7 +680,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.sort(a, axis=0)        # sort along the first axis"
+              "text": "flops.sort(a, axis=0)        # sort along the first axis"
             },
             {
               "kind": "output",
@@ -730,12 +730,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array(values, dtype=dtype)       # create a structured array"
+              "text": "a = flops.array(values, dtype=dtype)       # create a structured array"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.sort(a, order='height')                        # doctest: +SKIP"
+              "text": "flops.sort(a, order='height')                        # doctest: +SKIP"
             },
             {
               "kind": "output",
@@ -766,7 +766,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.sort(a, order=['age', 'height'])               # doctest: +SKIP"
+              "text": "flops.sort(a, order=['age', 'height'])               # doctest: +SKIP"
             },
             {
               "kind": "output",
@@ -788,6 +788,7 @@
     }
   ],
   "canonical_name": "sort",
+  "canonical_path": "sort",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -840,26 +841,27 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[1,4],[3,1]])\n\nfnp.sort(a)                # sort along the last axis\n\nfnp.sort(a, axis=None)     # sort the flattened array\n\nfnp.sort(a, axis=0)        # sort along the first axis\n\ndtype = [('name', 'S10'), ('height', float), ('age', int)]\n\nvalues = [('Arthur', 1.8, 41), ('Lancelot', 1.9, 38),\n          ('Galahad', 1.7, 38)]\n\na = fnp.array(values, dtype=dtype)       # create a structured array\n\nfnp.sort(a, order='height')                        # doctest: +SKIP\n\nfnp.sort(a, order=['age', 'height'])               # doctest: +SKIP",
+    "code": "import flopscope as flops\n\na = flops.array([[1,4],[3,1]])\n\nflops.sort(a)                # sort along the last axis\n\nflops.sort(a, axis=None)     # sort the flattened array\n\nflops.sort(a, axis=0)        # sort along the first axis\n\ndtype = [('name', 'S10'), ('height', float), ('age', int)]\n\nvalues = [('Arthur', 1.8, 41), ('Lancelot', 1.9, 38),\n          ('Galahad', 1.7, 38)]\n\na = flops.array(values, dtype=dtype)       # create a structured array\n\nflops.sort(a, order='height')                        # doctest: +SKIP\n\nflops.sort(a, order=['age', 'height'])               # doctest: +SKIP",
     "output": "array([[1, 4],\n       [1, 3]])\n\narray([1, 1, 3, 4])\n\narray([[1, 1],\n       [3, 4]])\n\narray([('Galahad', 1.7, 38), ('Arthur', 1.8, 41),\n       ('Lancelot', 1.8999999999999999, 38)],\n      dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])\n\narray([('Galahad', 1.7, 38), ('Lancelot', 1.8999999999999999, 38),\n       ('Arthur', 1.8, 41)],\n      dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.sort",
+  "flopscope_ref": "flops.sort",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L44",
-  "href": "/docs/api/ops/sort/",
+  "href": "/docs/api/sort/",
+  "legacy_href": "/docs/api/ops/sort/",
   "module": "numpy",
   "name": "sort",
   "next": {
-    "href": "/docs/api/ops/sort_complex/",
-    "label": "fnp.sort_complex"
+    "href": "/docs/api/sort-complex/",
+    "label": "flops.sort_complex"
   },
   "notes": "Comparison sort; cost = n*ceil(log2(n)) per slice.",
   "notes_sections": [
     "The various sorting algorithms are characterized by their average speed, worst case performance, work space size, and whether they are stable. A stable sort keeps items with the same key in the same relative order. The four algorithms implemented in NumPy have the following properties:",
     "=========== ======= ============= ============ ======== kind      speed   worst case    work space   stable =========== ======= ============= ============ ======== 'quicksort'    1     O(n^2)            0          no 'heapsort'     3     O(n*log(n))       0          no 'mergesort'    2     O(n*log(n))      ~n/2        yes 'timsort'      2     O(n*log(n))      ~n/2        yes =========== ======= ============= ============ ========",
     ".. note:: The datatype determines which of 'mergesort' or 'timsort' is actually used, even if 'mergesort' is specified. User selection at a finer scale is not currently available.",
-    "For performance, ``sort`` makes a temporary copy if needed to make the data `contiguous <https://fnp.org/doc/stable/glossary.html#term-contiguous>`_ in memory along the sort axis. For even better performance and reduced memory consumption, ensure that the array is already contiguous along the sort axis.",
+    "For performance, ``sort`` makes a temporary copy if needed to make the data `contiguous <https://flops.org/doc/stable/glossary.html#term-contiguous>`_ in memory along the sort axis. For even better performance and reduced memory consumption, ensure that the array is already contiguous along the sort axis.",
     "The sort order for complex numbers is lexicographic. If both the real and imaginary parts are non-nan then the order is determined by the real parts except when they are equal, in which case the order is determined by the imaginary parts.",
     "Previous to numpy 1.4.0 sorting real and complex arrays containing nan values led to undefined behaviour. In numpy versions >= 1.4.0 nan values are sorted to the end. The extended sort order is:",
     "* Real: [R, nan] * Complex: [R + Rj, R + nanj, nan + Rj, nan + nanj]",
@@ -921,8 +923,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/size/",
-    "label": "fnp.size"
+    "href": "/docs/api/size/",
+    "label": "flops.size"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sort.html",
@@ -962,7 +964,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/argsort",
-      "label": "fnp.argsort",
+      "label": "flops.argsort",
       "original_target": "argsort",
       "role": "",
       "target": "argsort",
@@ -978,7 +980,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/lexsort",
-      "label": "fnp.lexsort",
+      "label": "flops.lexsort",
       "original_target": "lexsort",
       "role": "",
       "target": "lexsort",
@@ -994,7 +996,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/searchsorted",
-      "label": "fnp.searchsorted",
+      "label": "flops.searchsorted",
       "original_target": "searchsorted",
       "role": "",
       "target": "searchsorted",
@@ -1010,14 +1012,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/partition",
-      "label": "fnp.partition",
+      "label": "flops.partition",
       "original_target": "partition",
       "role": "",
       "target": "partition",
       "unresolved": false
     }
   ],
-  "signature": "fnp.sort(a, axis=-1, kind=None, order=None, *, stable=None)",
+  "signature": "flops.sort(a, axis=-1, kind=None, order=None, *, stable=None)",
   "slug": "sort",
   "summary": "Return a sorted copy of an array.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L969",

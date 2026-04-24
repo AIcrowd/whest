@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/tanh/",
+  "detail_href": "/docs/api/tanh/",
   "detail_json_href": "/api-data/ops/tanh.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "kind": "code",
-                "text": "fnp.sinh(x)/fnp.cosh(x)"
+                "text": "flops.sinh(x)/flops.cosh(x)"
               },
               {
                 "kind": "text",
@@ -35,7 +35,7 @@
               },
               {
                 "kind": "code",
-                "text": "-1j * fnp.tan(1j*x)"
+                "text": "-1j * flops.tan(1j*x)"
               },
               {
                 "kind": "text",
@@ -343,12 +343,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.tanh((0, fnp.pi*1j, fnp.pi*1j/2))"
+                "text": "flops.tanh((0, flops.pi*1j, flops.pi*1j/2))"
               },
               {
                 "kind": "output",
@@ -372,12 +372,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out1 = fnp.array([0], dtype='d')"
+                "text": "out1 = flops.array([0], dtype='d')"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out2 = fnp.tanh([0.1], out1)"
+                "text": "out2 = flops.tanh([0.1], out1)"
               },
               {
                 "kind": "input",
@@ -401,7 +401,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.tanh(fnp.zeros((3,3)),fnp.zeros((2,2)))"
+                "text": "flops.tanh(flops.zeros((3,3)),flops.zeros((2,2)))"
               },
               {
                 "kind": "output",
@@ -427,12 +427,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.tanh",
+    "flopscope_ref": "flops.tanh",
     "module": "numpy",
     "name": "tanh",
     "notes": "Element-wise hyperbolic tangent.",
     "numpy_ref": "np.tanh",
-    "signature": "fnp.tanh(*args, **kwargs)",
+    "signature": "flops.tanh(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute hyperbolic tangent element-wise.",
     "weight": 16.0

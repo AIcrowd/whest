@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/argwhere/",
+  "detail_href": "/docs/api/argwhere/",
   "detail_json_href": "/api-data/ops/argwhere.json",
   "docs": {
     "sections": [
@@ -124,7 +124,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/where",
-                "label": "fnp.where",
+                "label": "flops.where",
                 "original_target": "where",
                 "role": "",
                 "target": "where",
@@ -135,7 +135,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nonzero",
-                "label": "fnp.nonzero",
+                "label": "flops.nonzero",
                 "original_target": "nonzero",
                 "role": "",
                 "target": "nonzero",
@@ -156,7 +156,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "argwhere(a)",
-                "text": "fnp.argwhere(a)"
+                "text": "flops.argwhere(a)"
               },
               {
                 "kind": "text",
@@ -164,7 +164,7 @@
               },
               {
                 "kind": "code",
-                "text": "fnp.transpose(fnp.nonzero(a))"
+                "text": "flops.transpose(flops.nonzero(a))"
               },
               {
                 "kind": "text",
@@ -211,12 +211,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(6).reshape(2,3)"
+                "text": "x = flops.arange(6).reshape(2,3)"
               },
               {
                 "kind": "input",
@@ -234,7 +234,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.argwhere(x>1)"
+                "text": "flops.argwhere(x>1)"
               },
               {
                 "kind": "output",
@@ -264,12 +264,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.argwhere",
+    "flopscope_ref": "flops.argwhere",
     "module": "numpy",
     "name": "argwhere",
     "notes": "Find indices of non-zero elements. Cost: numel(input).",
     "numpy_ref": "np.argwhere",
-    "signature": "fnp.argwhere(a)",
+    "signature": "flops.argwhere(a)",
     "status": "supported",
     "summary": "Find the indices of array elements that are non-zero, grouped by element.",
     "weight": 4.0

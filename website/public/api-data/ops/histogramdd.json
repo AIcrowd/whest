@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/histogramdd/",
+  "detail_href": "/docs/api/histogramdd/",
   "detail_json_href": "/api-data/ops/histogramdd.json",
   "docs": {
     "sections": [
@@ -53,7 +53,7 @@
                               },
                               {
                                 "kind": "code",
-                                "text": "histogramdd(fnp.array([p1, p2, p3]))"
+                                "text": "histogramdd(flops.array([p1, p2, p3]))"
                               },
                               {
                                 "kind": "text",
@@ -398,7 +398,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/histogram",
-                "label": "fnp.histogram",
+                "label": "flops.histogram",
                 "original_target": "histogram",
                 "role": "",
                 "target": "histogram",
@@ -414,7 +414,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/histogram2d",
-                "label": "fnp.histogram2d",
+                "label": "flops.histogram2d",
                 "original_target": "histogram2d",
                 "role": "",
                 "target": "histogram2d",
@@ -433,12 +433,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = fnp.random.default_rng()"
+                "text": "rng = flops.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -448,7 +448,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "H, edges = fnp.histogramdd(r, bins = (5, 8, 4))"
+                "text": "H, edges = flops.histogramdd(r, bins = (5, 8, 4))"
               },
               {
                 "kind": "input",
@@ -471,12 +471,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.histogramdd",
+    "flopscope_ref": "flops.histogramdd",
     "module": "numpy",
     "name": "histogramdd",
     "notes": "ND binning; cost = n*sum(ceil(log2(b_i))).",
     "numpy_ref": "np.histogramdd",
-    "signature": "fnp.histogramdd(sample, bins=10, range=None, density=None, weights=None)",
+    "signature": "flops.histogramdd(sample, bins=10, range=None, density=None, weights=None)",
     "status": "supported",
     "summary": "Compute the multidimensional histogram of some data.",
     "weight": 1.0

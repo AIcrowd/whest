@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/ediff1d/",
+  "detail_href": "/docs/api/ediff1d/",
   "detail_json_href": "/api-data/ops/ediff1d.json",
   "docs": {
     "sections": [
@@ -152,7 +152,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/diff",
-                "label": "fnp.diff",
+                "label": "flops.diff",
                 "original_target": "diff",
                 "role": "",
                 "target": "diff",
@@ -163,7 +163,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/gradient",
-                "label": "fnp.gradient",
+                "label": "flops.gradient",
                 "original_target": "gradient",
                 "role": "",
                 "target": "gradient",
@@ -212,17 +212,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([1, 2, 4, 7, 0])"
+                "text": "x = flops.array([1, 2, 4, 7, 0])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.ediff1d(x)"
+                "text": "flops.ediff1d(x)"
               },
               {
                 "kind": "output",
@@ -236,7 +236,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.ediff1d(x, to_begin=-99, to_end=fnp.array([88, 99]))"
+                "text": "flops.ediff1d(x, to_begin=-99, to_end=flops.array([88, 99]))"
               },
               {
                 "kind": "output",
@@ -264,7 +264,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.ediff1d(y)"
+                "text": "flops.ediff1d(y)"
               },
               {
                 "kind": "output",
@@ -282,12 +282,12 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "fnp.ediff1d",
+    "flopscope_ref": "flops.ediff1d",
     "module": "numpy",
     "name": "ediff1d",
     "notes": "Differences between consecutive elements.",
     "numpy_ref": "np.ediff1d",
-    "signature": "fnp.ediff1d(ary, to_end=None, to_begin=None)",
+    "signature": "flops.ediff1d(ary, to_end=None, to_begin=None)",
     "status": "supported",
     "summary": "The differences between consecutive elements of an array.",
     "weight": 1.0

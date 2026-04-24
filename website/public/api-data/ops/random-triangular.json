@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-triangular/",
+  "detail_href": "/docs/api/random/triangular/",
   "detail_json_href": "/api-data/ops/random-triangular.json",
   "docs": {
     "sections": [
@@ -89,7 +89,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.triangular`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.triangular`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -256,7 +256,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "fnp.broadcast(left, mode, right).size"
+                        "text": "flops.broadcast(left, mode, right).size"
                       },
                       {
                         "kind": "text",
@@ -322,7 +322,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "fnp.broadcast(left, mode, right).size"
+                    "text": "flops.broadcast(left, mode, right).size"
                   },
                   {
                     "kind": "text",
@@ -458,7 +458,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "h = plt.hist(fnp.random.triangular(-3, 0, 8, 100000), bins=200,"
+                "text": "h = plt.hist(flops.random.triangular(-3, 0, 8, 100000), bins=200,"
               },
               {
                 "kind": "input",
@@ -482,12 +482,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.triangular",
+    "flopscope_ref": "flops.random.triangular",
     "module": "numpy.random",
     "name": "random.triangular",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.triangular",
-    "signature": "fnp.random.triangular(left, mode, right, size=None)",
+    "signature": "flops.random.triangular(left, mode, right, size=None)",
     "status": "supported",
     "summary": "Draw samples from the triangular distribution over the interval ``[left, right]``.",
     "weight": 16.0

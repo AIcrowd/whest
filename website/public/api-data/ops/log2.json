@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/log2/",
+  "detail_href": "/docs/api/log2/",
   "detail_json_href": "/api-data/ops/log2.json",
   "docs": {
     "sections": [
@@ -294,7 +294,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log",
-                "label": "fnp.log",
+                "label": "flops.log",
                 "original_target": "log",
                 "role": "",
                 "target": "log",
@@ -305,7 +305,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log10",
-                "label": "fnp.log10",
+                "label": "flops.log10",
                 "original_target": "log10",
                 "role": "",
                 "target": "log10",
@@ -316,7 +316,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log1p",
-                "label": "fnp.log1p",
+                "label": "flops.log1p",
                 "original_target": "log1p",
                 "role": "",
                 "target": "log1p",
@@ -500,17 +500,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([0, 1, 2, 2**4])"
+                "text": "x = flops.array([0, 1, 2, 2**4])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.log2(x)"
+                "text": "flops.log2(x)"
               },
               {
                 "kind": "output",
@@ -524,12 +524,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xi = fnp.array([0+1.j, 1, 2+0.j, 4.j])"
+                "text": "xi = flops.array([0+1.j, 1, 2+0.j, 4.j])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.log2(xi)"
+                "text": "flops.log2(xi)"
               },
               {
                 "kind": "output",
@@ -547,12 +547,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.log2",
+    "flopscope_ref": "flops.log2",
     "module": "numpy",
     "name": "log2",
     "notes": "Element-wise base-2 logarithm.",
     "numpy_ref": "np.log2",
-    "signature": "fnp.log2(*args, **kwargs)",
+    "signature": "flops.log2(*args, **kwargs)",
     "status": "supported",
     "summary": "Base-2 logarithm of `x`.",
     "weight": 16.0

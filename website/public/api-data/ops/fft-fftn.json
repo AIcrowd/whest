@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fft-fftn/",
+  "detail_href": "/docs/api/fft/fftn/",
   "detail_json_href": "/api-data/ops/fft-fftn.json",
   "docs": {
     "sections": [
@@ -307,7 +307,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "fnp.fft"
+                        "text": "flops.fft"
                       },
                       {
                         "kind": "text",
@@ -338,7 +338,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "fnp.fft"
+                    "text": "flops.fft"
                   },
                   {
                     "kind": "text",
@@ -617,7 +617,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
                 "href": "",
-                "label": "fnp.fft",
+                "label": "flops.fft",
                 "original_target": "numpy.fft",
                 "role": "",
                 "target": "fft",
@@ -763,7 +763,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "fnp.fft"
+                "text": "flops.fft"
               },
               {
                 "kind": "text",
@@ -782,17 +782,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.mgrid[:3, :3, :3][0]"
+                "text": "a = flops.mgrid[:3, :3, :3][0]"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fft.fftn(a, axes=(1, 2))"
+                "text": "flops.fft.fftn(a, axes=(1, 2))"
               },
               {
                 "kind": "output",
@@ -833,7 +833,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fft.fftn(a, (2, 2), axes=(0, 1))"
+                "text": "flops.fft.fftn(a, (2, 2), axes=(0, 1))"
               },
               {
                 "kind": "output",
@@ -864,27 +864,27 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "[X, Y] = fnp.meshgrid(2 * fnp.pi * fnp.arange(200) / 12,"
+                "text": "[X, Y] = flops.meshgrid(2 * flops.pi * flops.arange(200) / 12,"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "2 * fnp.pi * fnp.arange(200) / 34)"
+                "text": "2 * flops.pi * flops.arange(200) / 34)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "S = fnp.sin(X) + fnp.cos(Y) + fnp.random.uniform(0, 1, X.shape)"
+                "text": "S = flops.sin(X) + flops.cos(Y) + flops.random.uniform(0, 1, X.shape)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "FS = fnp.fft.fftn(S)"
+                "text": "FS = flops.fft.fftn(S)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.imshow(fnp.log(fnp.abs(fnp.fft.fftshift(FS))**2))"
+                "text": "plt.imshow(flops.log(flops.abs(flops.fft.fftshift(FS))**2))"
               },
               {
                 "kind": "output",
@@ -907,12 +907,12 @@
     "category": "counted_custom",
     "cost_formula": "5N * ceil(log2(N))",
     "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
-    "flopscope_ref": "fnp.fft.fftn",
+    "flopscope_ref": "flops.fft.fftn",
     "module": "numpy.fft",
     "name": "fft.fftn",
     "notes": "N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.fftn",
-    "signature": "fnp.fft.fftn(a, s=None, axes=None, norm=None, out=None)",
+    "signature": "flops.fft.fftn(a, s=None, axes=None, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the N-dimensional discrete Fourier Transform.",
     "weight": 1.0

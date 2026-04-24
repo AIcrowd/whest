@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fft-irfft/",
+  "detail_href": "/docs/api/fft/irfft/",
   "detail_json_href": "/api-data/ops/fft-irfft.json",
   "docs": {
     "sections": [
@@ -267,7 +267,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "fnp.fft"
+                        "text": "flops.fft"
                       },
                       {
                         "kind": "text",
@@ -298,7 +298,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "fnp.fft"
+                    "text": "flops.fft"
                   },
                   {
                     "kind": "text",
@@ -571,7 +571,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
                 "href": "",
-                "label": "fnp.fft",
+                "label": "flops.fft",
                 "original_target": "numpy.fft",
                 "role": "",
                 "target": "fft",
@@ -790,12 +790,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fft.ifft([1, -1j, -1, 1j])"
+                "text": "flops.fft.ifft([1, -1j, -1, 1j])"
               },
               {
                 "kind": "output",
@@ -804,7 +804,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fft.irfft([1, -1j, -1])"
+                "text": "flops.fft.irfft([1, -1j, -1])"
               },
               {
                 "kind": "output",
@@ -847,12 +847,12 @@
     "category": "counted_custom",
     "cost_formula": "5(n/2) * ceil(log2(n))",
     "cost_formula_latex": "$5(n/2) \\cdot \\lceil\\log_2 n\\rceil$",
-    "flopscope_ref": "fnp.fft.irfft",
+    "flopscope_ref": "flops.fft.irfft",
     "module": "numpy.fft",
     "name": "fft.irfft",
     "notes": "Inverse 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.irfft",
-    "signature": "fnp.fft.irfft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "flops.fft.irfft(a, n=None, axis=-1, norm=None, out=None)",
     "status": "supported",
     "summary": "Computes the inverse of `rfft`.",
     "weight": 1.0

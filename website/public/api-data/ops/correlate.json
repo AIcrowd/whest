@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/correlate/",
+  "detail_href": "/docs/api/correlate/",
   "detail_json_href": "/api-data/ops/correlate.json",
   "docs": {
     "sections": [
@@ -240,7 +240,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/convolve",
-                "label": "fnp.convolve",
+                "label": "flops.convolve",
                 "original_target": "convolve",
                 "role": "",
                 "target": "convolve",
@@ -325,7 +325,7 @@
                 "href": "/docs/api/ops/correlate",
                 "kind": "link",
                 "target": "correlate",
-                "text": "fnp.correlate"
+                "text": "flops.correlate"
               },
               {
                 "kind": "text",
@@ -365,12 +365,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.correlate([1, 2, 3], [0, 1, 0.5])"
+                "text": "flops.correlate([1, 2, 3], [0, 1, 0.5])"
               },
               {
                 "kind": "output",
@@ -379,7 +379,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.correlate([1, 2, 3], [0, 1, 0.5], \"same\")"
+                "text": "flops.correlate([1, 2, 3], [0, 1, 0.5], \"same\")"
               },
               {
                 "kind": "output",
@@ -388,7 +388,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.correlate([1, 2, 3], [0, 1, 0.5], \"full\")"
+                "text": "flops.correlate([1, 2, 3], [0, 1, 0.5], \"full\")"
               },
               {
                 "kind": "output",
@@ -411,7 +411,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.correlate([1+1j, 2, 3-1j], [0, 1, 0.5j], 'full')"
+                "text": "flops.correlate([1+1j, 2, 3-1j], [0, 1, 0.5j], 'full')"
               },
               {
                 "kind": "output",
@@ -442,7 +442,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.correlate([0, 1, 0.5j], [1+1j, 2, 3-1j], 'full')"
+                "text": "flops.correlate([0, 1, 0.5j], [1+1j, 2, 3-1j], 'full')"
               },
               {
                 "kind": "output",
@@ -460,12 +460,12 @@
     "category": "counted_custom",
     "cost_formula": "n * m",
     "cost_formula_latex": "$n \\cdot m$",
-    "flopscope_ref": "fnp.correlate",
+    "flopscope_ref": "flops.correlate",
     "module": "numpy",
     "name": "correlate",
     "notes": "1-D cross-correlation.",
     "numpy_ref": "np.correlate",
-    "signature": "fnp.correlate(a, v, mode='valid')",
+    "signature": "flops.correlate(a, v, mode='valid')",
     "status": "supported",
     "summary": "Cross-correlation of two 1-dimensional sequences.",
     "weight": 1.0

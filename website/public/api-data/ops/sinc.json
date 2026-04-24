@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/sinc/",
+  "detail_href": "/docs/api/sinc/",
   "detail_json_href": "/api-data/ops/sinc.json",
   "docs": {
     "sections": [
@@ -82,7 +82,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "sinc(x / fnp.pi)"
+                    "text": "sinc(x / flops.pi)"
                   },
                   {
                     "kind": "text",
@@ -102,7 +102,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n\n    Note the normalization factor of ``pi`` used in the definition.\n    This is the most commonly used definition in signal processing.\n    Use ``sinc(x / fnp.pi)`` to obtain the unnormalized sinc function\n    :math:`\\sin(x)/x` that is more common in mathematics.",
+            "raw_source": ".. note::\n\n    Note the normalization factor of ``pi`` used in the definition.\n    This is the most commonly used definition in signal processing.\n    Use ``sinc(x / flops.pi)`` to obtain the unnormalized sinc function\n    :math:`\\sin(x)/x` that is more common in mathematics.",
             "supported": true,
             "type": "directive_block"
           }
@@ -253,7 +253,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -263,12 +263,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.linspace(-4, 4, 41)"
+                "text": "x = flops.linspace(-4, 4, 41)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.sinc(x)"
+                "text": "flops.sinc(x)"
               },
               {
                 "kind": "output",
@@ -334,7 +334,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(x, fnp.sinc(x))"
+                "text": "plt.plot(x, flops.sinc(x))"
               },
               {
                 "kind": "output",
@@ -384,12 +384,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.sinc",
+    "flopscope_ref": "flops.sinc",
     "module": "numpy",
     "name": "sinc",
     "notes": "Normalized sinc function element-wise.",
     "numpy_ref": "np.sinc",
-    "signature": "fnp.sinc(x)",
+    "signature": "flops.sinc(x)",
     "status": "supported",
     "summary": "Return the normalized sinc function.",
     "weight": 16.0

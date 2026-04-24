@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/angle/",
+  "detail_href": "/docs/api/angle/",
   "detail_json_href": "/api-data/ops/angle.json",
   "docs": {
     "sections": [
@@ -90,7 +90,7 @@
                       },
                       {
                         "kind": "text",
-                        "text": ", with dtype as fnp.float64."
+                        "text": ", with dtype as flops.float64."
                       }
                     ],
                     "type": "paragraph"
@@ -108,7 +108,7 @@
                   },
                   {
                     "kind": "text",
-                    "text": ", with dtype as fnp.float64."
+                    "text": ", with dtype as flops.float64."
                   }
                 ],
                 "name": "angle",
@@ -130,7 +130,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/arctan2",
-                "label": "fnp.arctan2",
+                "label": "flops.arctan2",
                 "original_target": "arctan2",
                 "role": "",
                 "target": "arctan2",
@@ -141,7 +141,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/absolute",
-                "label": "fnp.absolute",
+                "label": "flops.absolute",
                 "original_target": "absolute",
                 "role": "",
                 "target": "absolute",
@@ -196,12 +196,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.angle([1.0, 1.0j, 1+1j])               # in radians"
+                "text": "flops.angle([1.0, 1.0j, 1+1j])               # in radians"
               },
               {
                 "kind": "output",
@@ -210,7 +210,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.angle(1+1j, deg=True)                  # in degrees"
+                "text": "flops.angle(1+1j, deg=True)                  # in degrees"
               },
               {
                 "kind": "output",
@@ -219,7 +219,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.angle([0., -0., complex(0., -0.), complex(-0., -0.)])  # convention"
+                "text": "flops.angle([0., -0., complex(0., -0.), complex(-0., -0.)])  # convention"
               },
               {
                 "kind": "output",
@@ -237,12 +237,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.angle",
+    "flopscope_ref": "flops.angle",
     "module": "numpy",
     "name": "angle",
     "notes": "Return angle of complex argument element-wise.",
     "numpy_ref": "np.angle",
-    "signature": "fnp.angle(z, deg=False)",
+    "signature": "flops.angle(z, deg=False)",
     "status": "supported",
     "summary": "Return the angle of the complex argument.",
     "weight": 16.0

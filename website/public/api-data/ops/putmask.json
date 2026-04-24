@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/putmask/",
+  "detail_href": "/docs/api/putmask/",
   "detail_json_href": "/api-data/ops/putmask.json",
   "docs": {
     "sections": [
@@ -254,7 +254,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/place",
-                "label": "fnp.place",
+                "label": "flops.place",
                 "original_target": "place",
                 "role": "",
                 "target": "place",
@@ -265,7 +265,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/put",
-                "label": "fnp.put",
+                "label": "flops.put",
                 "original_target": "put",
                 "role": "",
                 "target": "put",
@@ -276,7 +276,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/take",
-                "label": "fnp.take",
+                "label": "flops.take",
                 "original_target": "take",
                 "role": "",
                 "target": "take",
@@ -287,7 +287,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/copyto",
-                "label": "fnp.copyto",
+                "label": "flops.copyto",
                 "original_target": "copyto",
                 "role": "",
                 "target": "copyto",
@@ -306,17 +306,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(6).reshape(2, 3)"
+                "text": "x = flops.arange(6).reshape(2, 3)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.putmask(x, x>2, x**2)"
+                "text": "flops.putmask(x, x>2, x**2)"
               },
               {
                 "kind": "input",
@@ -364,12 +364,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(5)"
+                "text": "x = flops.arange(5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.putmask(x, x>1, [-33, -44])"
+                "text": "flops.putmask(x, x>1, [-33, -44])"
               },
               {
                 "kind": "input",
@@ -392,12 +392,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.putmask",
+    "flopscope_ref": "flops.putmask",
     "module": "numpy",
     "name": "putmask",
     "notes": "Change elements of array based on condition and input values. Cost: numel(input).",
     "numpy_ref": "np.putmask",
-    "signature": "fnp.putmask(a, mask, values, *args, **kwargs)",
+    "signature": "flops.putmask(a, mask, values, *args, **kwargs)",
     "status": "supported",
     "summary": "Changes elements of an array based on conditional and input values.",
     "weight": 4.0

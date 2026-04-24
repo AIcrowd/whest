@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/vecdot/",
+  "detail_href": "/docs/api/vecdot/",
   "detail_json_href": "/api-data/ops/vecdot.json",
   "docs": {
     "sections": [
@@ -374,7 +374,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vdot",
-                "label": "fnp.vdot",
+                "label": "flops.vdot",
                 "original_target": "vdot",
                 "role": "",
                 "target": "vdot",
@@ -390,7 +390,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/matmul",
-                "label": "fnp.matmul",
+                "label": "flops.matmul",
                 "original_target": "matmul",
                 "role": "",
                 "target": "matmul",
@@ -406,7 +406,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vecmat",
-                "label": "fnp.vecmat",
+                "label": "flops.vecmat",
                 "original_target": "vecmat",
                 "role": "",
                 "target": "vecmat",
@@ -422,7 +422,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/matvec",
-                "label": "fnp.matvec",
+                "label": "flops.matvec",
                 "original_target": "matvec",
                 "role": "",
                 "target": "matvec",
@@ -438,7 +438,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/einsum",
-                "label": "fnp.einsum",
+                "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
@@ -457,7 +457,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -476,17 +476,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "v = fnp.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])"
+                "text": "v = flops.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "n = fnp.array([0., 0.6, 0.8])"
+                "text": "n = flops.array([0., 0.6, 0.8])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.vecdot(v, n)"
+                "text": "flops.vecdot(v, n)"
               },
               {
                 "kind": "output",
@@ -504,12 +504,12 @@
     "category": "counted_binary",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
-    "flopscope_ref": "fnp.vecdot",
+    "flopscope_ref": "flops.vecdot",
     "module": "numpy",
     "name": "vecdot",
     "notes": "Vector dot product along last axis.",
     "numpy_ref": "np.vecdot",
-    "signature": "fnp.vecdot(a, b, **kwargs)",
+    "signature": "flops.vecdot(a, b, **kwargs)",
     "status": "supported",
     "summary": "Vector dot product of two arrays.",
     "weight": 1.0

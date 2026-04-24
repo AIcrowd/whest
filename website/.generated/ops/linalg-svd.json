@@ -43,7 +43,7 @@
             },
             {
               "kind": "code",
-              "text": "u @ fnp.diag(s) @ vh = (u * s) @ vh"
+              "text": "u @ flops.diag(s) @ vh = (u * s) @ vh"
             },
             {
               "kind": "text",
@@ -771,7 +771,7 @@
             },
             {
               "kind": "math",
-              "latex": "S= \\mathtt{fnp.diag}(s)"
+              "latex": "S= \\mathtt{flops.diag}(s)"
             },
             {
               "kind": "text",
@@ -935,7 +935,7 @@
               "href": "/docs/api/ops/matmul",
               "kind": "link",
               "target": "matmul",
-              "text": "fnp.matmul"
+              "text": "flops.matmul"
             },
             {
               "kind": "text",
@@ -987,12 +987,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rng = fnp.random.default_rng()"
+              "text": "rng = flops.random.default_rng()"
             },
             {
               "kind": "input",
@@ -1021,7 +1021,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "U, S, Vh = fnp.linalg.svd(a, full_matrices=True)"
+              "text": "U, S, Vh = flops.linalg.svd(a, full_matrices=True)"
             },
             {
               "kind": "input",
@@ -1035,7 +1035,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(a, fnp.dot(U[:, :6] * S, Vh))"
+              "text": "flops.allclose(a, flops.dot(U[:, :6] * S, Vh))"
             },
             {
               "kind": "output",
@@ -1044,17 +1044,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "smat = fnp.zeros((9, 6), dtype=complex)"
+              "text": "smat = flops.zeros((9, 6), dtype=complex)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "smat[:6, :6] = fnp.diag(S)"
+              "text": "smat[:6, :6] = flops.diag(S)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(a, fnp.dot(U, fnp.dot(smat, Vh)))"
+              "text": "flops.allclose(a, flops.dot(U, flops.dot(smat, Vh)))"
             },
             {
               "kind": "output",
@@ -1077,7 +1077,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "U, S, Vh = fnp.linalg.svd(a, full_matrices=False)"
+              "text": "U, S, Vh = flops.linalg.svd(a, full_matrices=False)"
             },
             {
               "kind": "input",
@@ -1091,7 +1091,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(a, fnp.dot(U * S, Vh))"
+              "text": "flops.allclose(a, flops.dot(U * S, Vh))"
             },
             {
               "kind": "output",
@@ -1100,12 +1100,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "smat = fnp.diag(S)"
+              "text": "smat = flops.diag(S)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(a, fnp.dot(U, fnp.dot(smat, Vh)))"
+              "text": "flops.allclose(a, flops.dot(U, flops.dot(smat, Vh)))"
             },
             {
               "kind": "output",
@@ -1128,7 +1128,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "U, S, Vh = fnp.linalg.svd(b, full_matrices=True)"
+              "text": "U, S, Vh = flops.linalg.svd(b, full_matrices=True)"
             },
             {
               "kind": "input",
@@ -1142,7 +1142,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(b, fnp.matmul(U[..., :3] * S[..., None, :], Vh))"
+              "text": "flops.allclose(b, flops.matmul(U[..., :3] * S[..., None, :], Vh))"
             },
             {
               "kind": "output",
@@ -1151,7 +1151,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(b, fnp.matmul(U[..., :3], S[..., None] * Vh))"
+              "text": "flops.allclose(b, flops.matmul(U[..., :3], S[..., None] * Vh))"
             },
             {
               "kind": "output",
@@ -1174,7 +1174,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "U, S, Vh = fnp.linalg.svd(b, full_matrices=False)"
+              "text": "U, S, Vh = flops.linalg.svd(b, full_matrices=False)"
             },
             {
               "kind": "input",
@@ -1188,7 +1188,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(b, fnp.matmul(U * S[..., None, :], Vh))"
+              "text": "flops.allclose(b, flops.matmul(U * S[..., None, :], Vh))"
             },
             {
               "kind": "output",
@@ -1197,7 +1197,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(b, fnp.matmul(U, S[..., None] * Vh))"
+              "text": "flops.allclose(b, flops.matmul(U, S[..., None] * Vh))"
             },
             {
               "kind": "output",
@@ -1211,6 +1211,7 @@
     }
   ],
   "canonical_name": "linalg.svd",
+  "canonical_path": "linalg/svd",
   "category": "counted_custom",
   "cost_formula": "m * n * k",
   "cost_formula_latex": "$m \\cdot n \\cdot k$",
@@ -1228,25 +1229,26 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nrng = fnp.random.default_rng()\n\na = rng.normal(size=(9, 6)) + 1j*rng.normal(size=(9, 6))\n\nb = rng.normal(size=(2, 7, 8, 3)) + 1j*rng.normal(size=(2, 7, 8, 3))\n\nU, S, Vh = fnp.linalg.svd(a, full_matrices=True)\n\nU.shape, S.shape, Vh.shape\n\nfnp.allclose(a, fnp.dot(U[:, :6] * S, Vh))\n\nsmat = fnp.zeros((9, 6), dtype=complex)\n\nsmat[:6, :6] = fnp.diag(S)\n\nfnp.allclose(a, fnp.dot(U, fnp.dot(smat, Vh)))\n\nU, S, Vh = fnp.linalg.svd(a, full_matrices=False)\n\nU.shape, S.shape, Vh.shape\n\nfnp.allclose(a, fnp.dot(U * S, Vh))\n\nsmat = fnp.diag(S)\n\nfnp.allclose(a, fnp.dot(U, fnp.dot(smat, Vh)))\n\nU, S, Vh = fnp.linalg.svd(b, full_matrices=True)\n\nU.shape, S.shape, Vh.shape\n\nfnp.allclose(b, fnp.matmul(U[..., :3] * S[..., None, :], Vh))\n\nfnp.allclose(b, fnp.matmul(U[..., :3], S[..., None] * Vh))\n\nU, S, Vh = fnp.linalg.svd(b, full_matrices=False)\n\nU.shape, S.shape, Vh.shape\n\nfnp.allclose(b, fnp.matmul(U * S[..., None, :], Vh))\n\nfnp.allclose(b, fnp.matmul(U, S[..., None] * Vh))",
+    "code": "import flopscope as flops\n\nrng = flops.random.default_rng()\n\na = rng.normal(size=(9, 6)) + 1j*rng.normal(size=(9, 6))\n\nb = rng.normal(size=(2, 7, 8, 3)) + 1j*rng.normal(size=(2, 7, 8, 3))\n\nU, S, Vh = flops.linalg.svd(a, full_matrices=True)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(a, flops.dot(U[:, :6] * S, Vh))\n\nsmat = flops.zeros((9, 6), dtype=complex)\n\nsmat[:6, :6] = flops.diag(S)\n\nflops.allclose(a, flops.dot(U, flops.dot(smat, Vh)))\n\nU, S, Vh = flops.linalg.svd(a, full_matrices=False)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(a, flops.dot(U * S, Vh))\n\nsmat = flops.diag(S)\n\nflops.allclose(a, flops.dot(U, flops.dot(smat, Vh)))\n\nU, S, Vh = flops.linalg.svd(b, full_matrices=True)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(b, flops.matmul(U[..., :3] * S[..., None, :], Vh))\n\nflops.allclose(b, flops.matmul(U[..., :3], S[..., None] * Vh))\n\nU, S, Vh = flops.linalg.svd(b, full_matrices=False)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(b, flops.matmul(U * S[..., None, :], Vh))\n\nflops.allclose(b, flops.matmul(U, S[..., None] * Vh))",
     "output": "((9, 9), (6,), (6, 6))\n\nTrue\n\nTrue\n\n((9, 6), (6,), (6, 6))\n\nTrue\n\nTrue\n\n((2, 7, 8, 8), (2, 7, 3), (2, 7, 3, 3))\n\nTrue\n\nTrue\n\n((2, 7, 8, 3), (2, 7, 3), (2, 7, 3, 3))\n\nTrue\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.linalg.svd",
+  "flopscope_ref": "flops.linalg.svd",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_svd.py#L27",
-  "href": "/docs/api/ops/linalg-svd/",
+  "href": "/docs/api/linalg/svd/",
+  "legacy_href": "/docs/api/ops/linalg-svd/",
   "module": "numpy.linalg",
   "name": "linalg.svd",
   "next": {
-    "href": "/docs/api/ops/linalg-svdvals/",
-    "label": "fnp.linalg.svdvals"
+    "href": "/docs/api/linalg/svdvals/",
+    "label": "flops.linalg.svdvals"
   },
   "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
   "notes_sections": [
     "The decomposition is performed using LAPACK routine ``_gesdd``.",
-    "SVD is usually described for the factorization of a 2D matrix :math:`A`. The higher-dimensional case will be discussed below. In the 2D case, SVD is written as :math:`A = U S V^H`, where :math:`A = a`, :math:`U= u`, :math:`S= \\mathtt{fnp.diag}(s)` and :math:`V^H = vh`. The 1D array `s` contains the singular values of `a` and `u` and `vh` are unitary. The rows of `vh` are the eigenvectors of :math:`A^H A` and the columns of `u` are the eigenvectors of :math:`A A^H`. In both cases the corresponding (possibly non-zero) eigenvalues are given by ``s**2``.",
-    "If `a` has more than two dimensions, then broadcasting rules apply, as explained in :ref:`routines.linalg-broadcasting`. This means that SVD is working in \"stacked\" mode: it iterates over all indices of the first ``a.ndim - 2`` dimensions and for each combination SVD is applied to the last two indices. The matrix `a` can be reconstructed from the decomposition with either ``(u * s[..., None, :]) @ vh`` or ``u @ (s[..., None] * vh)``. (The ``@`` operator can be replaced by the function ``fnp.matmul`` for python versions below 3.5.)",
+    "SVD is usually described for the factorization of a 2D matrix :math:`A`. The higher-dimensional case will be discussed below. In the 2D case, SVD is written as :math:`A = U S V^H`, where :math:`A = a`, :math:`U= u`, :math:`S= \\mathtt{flops.diag}(s)` and :math:`V^H = vh`. The 1D array `s` contains the singular values of `a` and `u` and `vh` are unitary. The rows of `vh` are the eigenvectors of :math:`A^H A` and the columns of `u` are the eigenvectors of :math:`A A^H`. In both cases the corresponding (possibly non-zero) eigenvalues are given by ``s**2``.",
+    "If `a` has more than two dimensions, then broadcasting rules apply, as explained in :ref:`routines.linalg-broadcasting`. This means that SVD is working in \"stacked\" mode: it iterates over all indices of the first ``a.ndim - 2`` dimensions and for each combination SVD is applied to the last two indices. The matrix `a` can be reconstructed from the decomposition with either ``(u * s[..., None, :]) @ vh`` or ``u @ (s[..., None] * vh)``. (The ``@`` operator can be replaced by the function ``flops.matmul`` for python versions below 3.5.)",
     "If `a` is a ``matrix`` object (as opposed to an ``ndarray``), then so are all the return values."
   ],
   "numpy_ref": "np.linalg.svd",
@@ -1287,8 +1289,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-solve/",
-    "label": "fnp.linalg.solve"
+    "href": "/docs/api/linalg/solve/",
+    "label": "flops.linalg.solve"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html",
@@ -1367,7 +1369,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
+  "signature": "flops.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
   "slug": "linalg-svd",
   "summary": "Singular Value Decomposition.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1639",

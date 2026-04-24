@@ -462,12 +462,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.arcsinh(fnp.array([fnp.e, 10.0]))"
+              "text": "flops.arcsinh(flops.array([flops.e, 10.0]))"
             },
             {
               "kind": "output",
@@ -481,6 +481,7 @@
     }
   ],
   "canonical_name": "arcsinh",
+  "canonical_path": "arcsinh",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -507,19 +508,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.arcsinh(fnp.array([fnp.e, 10.0]))",
+    "code": "import flopscope as flops\n\nflops.arcsinh(flops.array([flops.e, 10.0]))",
     "output": "array([ 1.72538256,  2.99822295])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.arcsinh",
+  "flopscope_ref": "flops.arcsinh",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/arcsinh/",
+  "href": "/docs/api/arcsinh/",
+  "legacy_href": "/docs/api/ops/arcsinh/",
   "module": "numpy",
   "name": "arcsinh",
   "next": {
-    "href": "/docs/api/ops/arctan/",
-    "label": "fnp.arctan"
+    "href": "/docs/api/arctan/",
+    "label": "flops.arctan"
   },
   "notes": "Element-wise inverse hyperbolic sine.",
   "notes_sections": [
@@ -569,8 +571,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/arcsin/",
-    "label": "fnp.arcsin"
+    "href": "/docs/api/arcsin/",
+    "label": "flops.arcsin"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.arcsinh.html",
@@ -585,7 +587,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.arcsinh(*args, **kwargs)",
+  "signature": "flops.arcsinh(*args, **kwargs)",
   "slug": "arcsinh",
   "summary": "Inverse hyperbolic sine element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

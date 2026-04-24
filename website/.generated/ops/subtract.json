@@ -354,12 +354,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.subtract(1.0, 4.0)"
+              "text": "flops.subtract(1.0, 4.0)"
             },
             {
               "kind": "output",
@@ -373,17 +373,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
+              "text": "x1 = flops.arange(9.0).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = fnp.arange(3.0)"
+              "text": "x2 = flops.arange(3.0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.subtract(x1, x2)"
+              "text": "flops.subtract(x1, x2)"
             },
             {
               "kind": "output",
@@ -419,7 +419,7 @@
               "href": "/docs/api/ops/subtract",
               "kind": "link",
               "target": "subtract",
-              "text": "fnp.subtract"
+              "text": "flops.subtract"
             },
             {
               "kind": "text",
@@ -433,12 +433,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
+              "text": "x1 = flops.arange(9.0).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = fnp.arange(3.0)"
+              "text": "x2 = flops.arange(3.0)"
             },
             {
               "kind": "input",
@@ -465,6 +465,7 @@
     }
   ],
   "canonical_name": "subtract",
+  "canonical_path": "subtract",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -482,19 +483,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.subtract(1.0, 4.0)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = fnp.arange(3.0)\n\nfnp.subtract(x1, x2)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = fnp.arange(3.0)\n\nx1 - x2",
+    "code": "import flopscope as flops\n\nflops.subtract(1.0, 4.0)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nflops.subtract(x1, x2)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nx1 - x2",
     "output": "-3.0\n\narray([[ 0.,  0.,  0.],\n       [ 3.,  3.,  3.],\n       [ 6.,  6.,  6.]])\n\narray([[0., 0., 0.],\n       [3., 3., 3.],\n       [6., 6., 6.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.subtract",
+  "flopscope_ref": "flops.subtract",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/ops/subtract/",
+  "href": "/docs/api/subtract/",
+  "legacy_href": "/docs/api/ops/subtract/",
   "module": "numpy",
   "name": "subtract",
   "next": {
-    "href": "/docs/api/ops/sum/",
-    "label": "fnp.sum"
+    "href": "/docs/api/sum/",
+    "label": "flops.sum"
   },
   "notes": "Element-wise subtraction.",
   "notes_sections": [
@@ -543,8 +545,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/std/",
-    "label": "fnp.std"
+    "href": "/docs/api/std/",
+    "label": "flops.std"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.subtract.html",
@@ -559,7 +561,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.subtract(*args, **kwargs)",
+  "signature": "flops.subtract(*args, **kwargs)",
   "slug": "subtract",
   "summary": "Subtract arguments, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

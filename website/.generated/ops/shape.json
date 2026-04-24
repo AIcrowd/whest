@@ -88,7 +88,7 @@
         {
           "links": [
             {
-              "description": "``len(a)`` is equivalent to ``fnp.shape(a)[0]`` for N-D arrays with ``N>=1``.",
+              "description": "``len(a)`` is equivalent to ``flops.shape(a)[0]`` for N-D arrays with ``N>=1``.",
               "description_inline": [
                 {
                   "kind": "code",
@@ -103,7 +103,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "shape(a)[0]",
-                  "text": "fnp.shape(a)[0]"
+                  "text": "flops.shape(a)[0]"
                 },
                 {
                   "kind": "text",
@@ -155,12 +155,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.shape(fnp.eye(3))"
+              "text": "flops.shape(flops.eye(3))"
             },
             {
               "kind": "output",
@@ -169,7 +169,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.shape([[1, 3]])"
+              "text": "flops.shape([[1, 3]])"
             },
             {
               "kind": "output",
@@ -178,7 +178,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.shape([0])"
+              "text": "flops.shape([0])"
             },
             {
               "kind": "output",
@@ -187,7 +187,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.shape(0)"
+              "text": "flops.shape(0)"
             },
             {
               "kind": "output",
@@ -201,7 +201,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([(1, 2), (3, 4), (5, 6)],"
+              "text": "a = flops.array([(1, 2), (3, 4), (5, 6)],"
             },
             {
               "kind": "input",
@@ -211,7 +211,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.shape(a)"
+              "text": "flops.shape(a)"
             },
             {
               "kind": "output",
@@ -234,6 +234,7 @@
     }
   ],
   "canonical_name": "shape",
+  "canonical_path": "shape",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -251,19 +252,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.shape(fnp.eye(3))\n\nfnp.shape([[1, 3]])\n\nfnp.shape([0])\n\nfnp.shape(0)\n\na = fnp.array([(1, 2), (3, 4), (5, 6)],\n             dtype=[('x', 'i4'), ('y', 'i4')])\n\nfnp.shape(a)\n\na.shape",
+    "code": "import flopscope as flops\n\nflops.shape(flops.eye(3))\n\nflops.shape([[1, 3]])\n\nflops.shape([0])\n\nflops.shape(0)\n\na = flops.array([(1, 2), (3, 4), (5, 6)],\n             dtype=[('x', 'i4'), ('y', 'i4')])\n\nflops.shape(a)\n\na.shape",
     "output": "(3, 3)\n\n(1, 2)\n\n(1,)\n\n()\n\n(3,)\n\n(3,)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.shape",
+  "flopscope_ref": "flops.shape",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1535",
-  "href": "/docs/api/ops/shape/",
+  "href": "/docs/api/shape/",
+  "legacy_href": "/docs/api/ops/shape/",
   "module": "numpy",
   "name": "shape",
   "next": {
-    "href": "/docs/api/ops/shares_memory/",
-    "label": "fnp.shares_memory"
+    "href": "/docs/api/shares-memory/",
+    "label": "flops.shares_memory"
   },
   "notes": "Return shape of array.",
   "notes_sections": [],
@@ -278,8 +280,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/setxor1d/",
-    "label": "fnp.setxor1d"
+    "href": "/docs/api/setxor1d/",
+    "label": "flops.setxor1d"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.shape.html",
@@ -295,7 +297,7 @@
   ],
   "see_also": [
     {
-      "description": "``len(a)`` is equivalent to ``fnp.shape(a)[0]`` for N-D arrays with ``N>=1``.",
+      "description": "``len(a)`` is equivalent to ``flops.shape(a)[0]`` for N-D arrays with ``N>=1``.",
       "description_inline": [
         {
           "kind": "code",
@@ -310,7 +312,7 @@
           "href": "",
           "kind": "link",
           "target": "shape(a)[0]",
-          "text": "fnp.shape(a)[0]"
+          "text": "flops.shape(a)[0]"
         },
         {
           "kind": "text",
@@ -350,7 +352,7 @@
       "unresolved": true
     }
   ],
-  "signature": "fnp.shape(a)",
+  "signature": "flops.shape(a)",
   "slug": "shape",
   "summary": "Return the shape of an array.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2118",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-svdvals/",
+  "detail_href": "/docs/api/linalg/svdvals/",
   "detail_json_href": "/api-data/ops/linalg-svdvals.json",
   "docs": {
     "sections": [
@@ -47,7 +47,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "svdvals(x)",
-                "text": "fnp.svdvals(x)"
+                "text": "flops.svdvals(x)"
               },
               {
                 "kind": "text",
@@ -58,7 +58,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "svd(x, compute_uv=False, hermitian=False)",
-                "text": "fnp.svd(x, compute_uv=False, hermitian=False)"
+                "text": "flops.svd(x, compute_uv=False, hermitian=False)"
               },
               {
                 "kind": "text",
@@ -169,7 +169,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linalg.svdvals([[1, 2, 3, 4, 5],"
+                "text": "flops.linalg.svdvals([[1, 2, 3, 4, 5],"
               },
               {
                 "kind": "input",
@@ -202,7 +202,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = fnp.linalg.svdvals([[1, 2, 3],"
+                "text": "s = flops.linalg.svdvals([[1, 2, 3],"
               },
               {
                 "kind": "input",
@@ -221,7 +221,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.count_nonzero(s > 1e-10)  # Matrix of rank 2"
+                "text": "flops.count_nonzero(s > 1e-10)  # Matrix of rank 2"
               },
               {
                 "kind": "output",
@@ -239,12 +239,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
-    "flopscope_ref": "fnp.linalg.svdvals",
+    "flopscope_ref": "flops.linalg.svdvals",
     "module": "numpy.linalg",
     "name": "linalg.svdvals",
     "notes": "Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch).",
     "numpy_ref": "np.linalg.svdvals",
-    "signature": "fnp.linalg.svdvals(x, /, *, k: 'int | None' = None)",
+    "signature": "flops.linalg.svdvals(x, /, *, k: 'int | None' = None)",
     "status": "supported",
     "summary": "Returns the singular values of a matrix (or a stack of matrices) ``x``. When x is a stack of matrices, the function will compute the singular values for each matrix in the stack.",
     "weight": 4.0

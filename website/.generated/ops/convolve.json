@@ -316,7 +316,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/polymul",
-              "label": "fnp.polymul",
+              "label": "flops.polymul",
               "original_target": "polymul",
               "role": "",
               "target": "polymul",
@@ -410,12 +410,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.convolve([1, 2, 3], [0, 1, 0.5])"
+              "text": "flops.convolve([1, 2, 3], [0, 1, 0.5])"
             },
             {
               "kind": "output",
@@ -438,7 +438,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.convolve([1,2,3],[0,1,0.5], 'same')"
+              "text": "flops.convolve([1,2,3],[0,1,0.5], 'same')"
             },
             {
               "kind": "output",
@@ -461,7 +461,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.convolve([1,2,3],[0,1,0.5], 'valid')"
+              "text": "flops.convolve([1,2,3],[0,1,0.5], 'valid')"
             },
             {
               "kind": "output",
@@ -475,6 +475,7 @@
     }
   ],
   "canonical_name": "convolve",
+  "canonical_path": "convolve",
   "category": "counted_custom",
   "cost_formula": "n * m",
   "cost_formula_latex": "$n \\cdot m$",
@@ -495,19 +496,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.convolve([1, 2, 3], [0, 1, 0.5])\n\nfnp.convolve([1,2,3],[0,1,0.5], 'same')\n\nfnp.convolve([1,2,3],[0,1,0.5], 'valid')",
+    "code": "import flopscope as flops\n\nflops.convolve([1, 2, 3], [0, 1, 0.5])\n\nflops.convolve([1,2,3],[0,1,0.5], 'same')\n\nflops.convolve([1,2,3],[0,1,0.5], 'valid')",
     "output": "array([0. , 1. , 2.5, 4. , 1.5])\n\narray([1. ,  2.5,  4. ])\n\narray([2.5])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.convolve",
+  "flopscope_ref": "flops.convolve",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1209",
-  "href": "/docs/api/ops/convolve/",
+  "href": "/docs/api/convolve/",
+  "legacy_href": "/docs/api/ops/convolve/",
   "module": "numpy",
   "name": "convolve",
   "next": {
-    "href": "/docs/api/ops/copy/",
-    "label": "fnp.copy"
+    "href": "/docs/api/copy/",
+    "label": "flops.copy"
   },
   "notes": "1-D discrete convolution.",
   "notes_sections": [
@@ -554,8 +556,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/conjugate/",
-    "label": "fnp.conjugate"
+    "href": "/docs/api/conjugate/",
+    "label": "flops.conjugate"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.convolve.html",
@@ -611,14 +613,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/polymul",
-      "label": "fnp.polymul",
+      "label": "flops.polymul",
       "original_target": "polymul",
       "role": "",
       "target": "polymul",
       "unresolved": false
     }
   ],
-  "signature": "fnp.convolve(a, v, mode='full')",
+  "signature": "flops.convolve(a, v, mode='full')",
   "slug": "convolve",
   "summary": "Returns the discrete, linear convolution of two one-dimensional sequences.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L772",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/histogram2d/",
+  "detail_href": "/docs/api/histogram2d/",
   "detail_json_href": "/api-data/ops/histogram2d.json",
   "docs": {
     "sections": [
@@ -514,7 +514,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/histogram",
-                "label": "fnp.histogram",
+                "label": "flops.histogram",
                 "original_target": "histogram",
                 "role": "",
                 "target": "histogram",
@@ -530,7 +530,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/histogramdd",
-                "label": "fnp.histogramdd",
+                "label": "flops.histogramdd",
                 "original_target": "histogramdd",
                 "role": "",
                 "target": "histogramdd",
@@ -631,7 +631,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -684,17 +684,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.random.normal(2, 1, 100)"
+                "text": "x = flops.random.normal(2, 1, 100)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.random.normal(1, 1, 100)"
+                "text": "y = flops.random.normal(1, 1, 100)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "H, xedges, yedges = fnp.histogram2d(x, y, bins=(xedges, yedges))"
+                "text": "H, xedges, yedges = flops.histogram2d(x, y, bins=(xedges, yedges))"
               },
               {
                 "kind": "input",
@@ -800,7 +800,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "X, Y = fnp.meshgrid(xedges, yedges)"
+                "text": "X, Y = flops.meshgrid(xedges, yedges)"
               },
               {
                 "kind": "input",
@@ -904,12 +904,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.linspace(1, 100, n)"
+                "text": "x = flops.linspace(1, 100, n)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = 2*fnp.log(x) + fnp.random.rand(n) - 0.5"
+                "text": "y = 2*flops.log(x) + flops.random.rand(n) - 0.5"
               },
               {
                 "kind": "input",
@@ -919,7 +919,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "H, yedges, xedges = fnp.histogram2d(y, x, bins=20)"
+                "text": "H, yedges, xedges = flops.histogram2d(y, x, bins=20)"
               }
             ],
             "type": "doctest_block"
@@ -985,7 +985,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ax1.plot(x, 2*fnp.log(x), 'k-')"
+                "text": "ax1.plot(x, 2*flops.log(x), 'k-')"
               },
               {
                 "kind": "input",
@@ -1035,7 +1035,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ax2.plot(x, 2*fnp.log(x), 'k-')"
+                "text": "ax2.plot(x, 2*flops.log(x), 'k-')"
               },
               {
                 "kind": "input",
@@ -1079,12 +1079,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.histogram2d",
+    "flopscope_ref": "flops.histogram2d",
     "module": "numpy",
     "name": "histogram2d",
     "notes": "2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by))).",
     "numpy_ref": "np.histogram2d",
-    "signature": "fnp.histogram2d(x, y, bins=10, range=None, density=None, weights=None)",
+    "signature": "flops.histogram2d(x, y, bins=10, range=None, density=None, weights=None)",
     "status": "supported",
     "summary": "Compute the bi-dimensional histogram of two data samples.",
     "weight": 1.0

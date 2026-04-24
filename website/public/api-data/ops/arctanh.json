@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/arctanh/",
+  "detail_href": "/docs/api/arctanh/",
   "detail_json_href": "/api-data/ops/arctanh.json",
   "docs": {
     "sections": [
@@ -481,12 +481,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.arctanh([0, -0.5])"
+                "text": "flops.arctanh([0, -0.5])"
               },
               {
                 "kind": "output",
@@ -504,12 +504,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.arctanh",
+    "flopscope_ref": "flops.arctanh",
     "module": "numpy",
     "name": "arctanh",
     "notes": "Element-wise inverse hyperbolic tangent.",
     "numpy_ref": "np.arctanh",
-    "signature": "fnp.arctanh(*args, **kwargs)",
+    "signature": "flops.arctanh(*args, **kwargs)",
     "status": "supported",
     "summary": "Inverse hyperbolic tangent element-wise.",
     "weight": 16.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/repeat/",
+  "detail_href": "/docs/api/repeat/",
   "detail_json_href": "/api-data/ops/repeat.json",
   "docs": {
     "sections": [
@@ -173,7 +173,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/tile",
-                "label": "fnp.tile",
+                "label": "flops.tile",
                 "original_target": "tile",
                 "role": "",
                 "target": "tile",
@@ -189,7 +189,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/unique",
-                "label": "fnp.unique",
+                "label": "flops.unique",
                 "original_target": "unique",
                 "role": "",
                 "target": "unique",
@@ -208,12 +208,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.repeat(3, 4)"
+                "text": "flops.repeat(3, 4)"
               },
               {
                 "kind": "output",
@@ -222,12 +222,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([[1,2],[3,4]])"
+                "text": "x = flops.array([[1,2],[3,4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.repeat(x, 2)"
+                "text": "flops.repeat(x, 2)"
               },
               {
                 "kind": "output",
@@ -236,7 +236,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.repeat(x, 3, axis=1)"
+                "text": "flops.repeat(x, 3, axis=1)"
               },
               {
                 "kind": "output",
@@ -249,7 +249,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.repeat(x, [1, 2], axis=0)"
+                "text": "flops.repeat(x, [1, 2], axis=0)"
               },
               {
                 "kind": "output",
@@ -275,12 +275,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.repeat",
+    "flopscope_ref": "flops.repeat",
     "module": "numpy",
     "name": "repeat",
     "notes": "Repeat elements of an array. Cost: numel(output).",
     "numpy_ref": "np.repeat",
-    "signature": "fnp.repeat(a, repeats, axis=None)",
+    "signature": "flops.repeat(a, repeats, axis=None)",
     "status": "supported",
     "summary": "Repeat each element of an array after themselves",
     "weight": 1.0

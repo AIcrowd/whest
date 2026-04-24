@@ -131,7 +131,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isinf",
-              "label": "fnp.isinf",
+              "label": "flops.isinf",
               "original_target": "isinf",
               "role": "",
               "target": "isinf",
@@ -142,7 +142,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isneginf",
-              "label": "fnp.isneginf",
+              "label": "flops.isneginf",
               "original_target": "isneginf",
               "role": "",
               "target": "isneginf",
@@ -153,7 +153,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isfinite",
-              "label": "fnp.isfinite",
+              "label": "flops.isfinite",
               "original_target": "isfinite",
               "role": "",
               "target": "isfinite",
@@ -164,7 +164,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isnan",
-              "label": "fnp.isnan",
+              "label": "flops.isnan",
               "original_target": "isnan",
               "role": "",
               "target": "isnan",
@@ -206,12 +206,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isposinf(fnp.inf)"
+              "text": "flops.isposinf(flops.inf)"
             },
             {
               "kind": "output",
@@ -220,7 +220,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isposinf(-fnp.inf)"
+              "text": "flops.isposinf(-flops.inf)"
             },
             {
               "kind": "output",
@@ -229,7 +229,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isposinf([-fnp.inf, 0., fnp.inf])"
+              "text": "flops.isposinf([-flops.inf, 0., flops.inf])"
             },
             {
               "kind": "output",
@@ -243,17 +243,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.array([-fnp.inf, 0., fnp.inf])"
+              "text": "x = flops.array([-flops.inf, 0., flops.inf])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = fnp.array([2, 2, 2])"
+              "text": "y = flops.array([2, 2, 2])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isposinf(x, y)"
+              "text": "flops.isposinf(x, y)"
             },
             {
               "kind": "output",
@@ -276,6 +276,7 @@
     }
   ],
   "canonical_name": "isposinf",
+  "canonical_path": "isposinf",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -286,19 +287,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.isposinf(fnp.inf)\n\nfnp.isposinf(-fnp.inf)\n\nfnp.isposinf([-fnp.inf, 0., fnp.inf])\n\nx = fnp.array([-fnp.inf, 0., fnp.inf])\n\ny = fnp.array([2, 2, 2])\n\nfnp.isposinf(x, y)\n\ny",
+    "code": "import flopscope as flops\n\nflops.isposinf(flops.inf)\n\nflops.isposinf(-flops.inf)\n\nflops.isposinf([-flops.inf, 0., flops.inf])\n\nx = flops.array([-flops.inf, 0., flops.inf])\n\ny = flops.array([2, 2, 2])\n\nflops.isposinf(x, y)\n\ny",
     "output": "True\n\nFalse\n\narray([False, False,  True])\n\narray([0, 0, 1])\n\narray([0, 0, 1])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.isposinf",
+  "flopscope_ref": "flops.isposinf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/isposinf/",
+  "href": "/docs/api/isposinf/",
+  "legacy_href": "/docs/api/ops/isposinf/",
   "module": "numpy",
   "name": "isposinf",
   "next": {
-    "href": "/docs/api/ops/isreal/",
-    "label": "fnp.isreal"
+    "href": "/docs/api/isreal/",
+    "label": "flops.isreal"
   },
   "notes": "Test for positive infinity element-wise.",
   "notes_sections": [
@@ -325,8 +327,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isneginf/",
-    "label": "fnp.isneginf"
+    "href": "/docs/api/isneginf/",
+    "label": "flops.isneginf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isposinf.html",
@@ -354,7 +356,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isinf",
-      "label": "fnp.isinf",
+      "label": "flops.isinf",
       "original_target": "isinf",
       "role": "",
       "target": "isinf",
@@ -365,7 +367,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isneginf",
-      "label": "fnp.isneginf",
+      "label": "flops.isneginf",
       "original_target": "isneginf",
       "role": "",
       "target": "isneginf",
@@ -376,7 +378,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isfinite",
-      "label": "fnp.isfinite",
+      "label": "flops.isfinite",
       "original_target": "isfinite",
       "role": "",
       "target": "isfinite",
@@ -387,14 +389,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isnan",
-      "label": "fnp.isnan",
+      "label": "flops.isnan",
       "original_target": "isnan",
       "role": "",
       "target": "isnan",
       "unresolved": false
     }
   ],
-  "signature": "fnp.isposinf(x, out=None)",
+  "signature": "flops.isposinf(x, out=None)",
   "slug": "isposinf",
   "summary": "Test element-wise for positive infinity, return result as bool array.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_ufunclike_impl.py#L70",

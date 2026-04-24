@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.norm.ppf",
+  "canonical_path": "stats/norm/ppf",
   "category": "counted_custom",
   "cost_formula": "40n",
   "cost_formula_latex": "$40n$",
@@ -170,14 +171,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.stats.norm.ppf",
+  "flopscope_ref": "flops.stats.norm.ppf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_norm.py#L88",
-  "href": "/docs/api/ops/stats-norm-ppf/",
+  "href": "/docs/api/stats/norm/ppf/",
+  "legacy_href": "/docs/api/ops/stats-norm-ppf/",
   "module": "flopscope.stats",
   "name": "stats.norm.ppf",
   "next": {
-    "href": "/docs/api/ops/stats-truncnorm-cdf/",
-    "label": "fnp.stats.truncnorm.cdf"
+    "href": "/docs/api/stats/truncnorm/cdf/",
+    "label": "flops.stats.truncnorm.cdf"
   },
   "notes": "Normal PPF (inverse CDF); cost = numel(input).",
   "notes_sections": [],
@@ -214,8 +216,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-norm-pdf/",
-    "label": "fnp.stats.norm.pdf"
+    "href": "/docs/api/stats/norm/pdf/",
+    "label": "flops.stats.norm.pdf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html",
@@ -229,7 +231,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.stats.norm.ppf(q, loc=0, scale=1)",
+  "signature": "flops.stats.norm.ppf(q, loc=0, scale=1)",
   "slug": "stats-norm-ppf",
   "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",

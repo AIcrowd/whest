@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-cauchy-cdf/",
+  "detail_href": "/docs/api/stats/cauchy/cdf/",
   "detail_json_href": "/api-data/ops/stats-cauchy-cdf.json",
   "docs": {
     "sections": [
@@ -163,12 +163,12 @@
     "category": "counted_custom",
     "cost_formula": "5n",
     "cost_formula_latex": "$5n$",
-    "flopscope_ref": "fnp.stats.cauchy.cdf",
+    "flopscope_ref": "flops.stats.cauchy.cdf",
     "module": "flopscope.stats",
     "name": "stats.cauchy.cdf",
     "notes": "Cauchy CDF; cost = numel(input).",
     "numpy_ref": "np.stats.cauchy.cdf",
-    "signature": "fnp.stats.cauchy.cdf(x, loc=0, scale=1)",
+    "signature": "flops.stats.cauchy.cdf(x, loc=0, scale=1)",
     "status": "supported",
     "summary": "Cumulative distribution function of the given RV.",
     "weight": 16.0

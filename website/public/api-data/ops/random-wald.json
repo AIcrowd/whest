@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-wald/",
+  "detail_href": "/docs/api/random/wald/",
   "detail_json_href": "/api-data/ops/random-wald.json",
   "docs": {
     "sections": [
@@ -90,7 +90,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.wald`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.wald`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -198,7 +198,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "fnp.broadcast(mean, scale).size"
+                        "text": "flops.broadcast(mean, scale).size"
                       },
                       {
                         "kind": "text",
@@ -259,7 +259,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "fnp.broadcast(mean, scale).size"
+                    "text": "flops.broadcast(mean, scale).size"
                   },
                   {
                     "kind": "text",
@@ -405,7 +405,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "h = plt.hist(fnp.random.wald(3, 2, 100000), bins=200, density=True)"
+                "text": "h = plt.hist(flops.random.wald(3, 2, 100000), bins=200, density=True)"
               },
               {
                 "kind": "input",
@@ -424,12 +424,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.wald",
+    "flopscope_ref": "flops.random.wald",
     "module": "numpy.random",
     "name": "random.wald",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.wald",
-    "signature": "fnp.random.wald(mean, scale, size=None)",
+    "signature": "flops.random.wald(mean, scale, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Wald, or inverse Gaussian, distribution.",
     "weight": 16.0

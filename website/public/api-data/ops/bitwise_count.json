@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/bitwise_count/",
+  "detail_href": "/docs/api/bitwise-count/",
   "detail_json_href": "/api-data/ops/bitwise_count.json",
   "docs": {
     "sections": [
@@ -312,26 +312,26 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.bitwise_count(1023)"
+                "text": "flops.bitwise_count(1023)"
               },
               {
                 "kind": "output",
-                "text": "fnp.uint8(10)"
+                "text": "flops.uint8(10)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([2**i - 1 for i in range(16)])"
+                "text": "a = flops.array([2**i - 1 for i in range(16)])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.bitwise_count(a)"
+                "text": "flops.bitwise_count(a)"
               },
               {
                 "kind": "output",
@@ -353,12 +353,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.bitwise_count",
+    "flopscope_ref": "flops.bitwise_count",
     "module": "numpy",
     "name": "bitwise_count",
     "notes": "Count set bits element-wise (popcount).",
     "numpy_ref": "np.bitwise_count",
-    "signature": "fnp.bitwise_count(*args, **kwargs)",
+    "signature": "flops.bitwise_count(*args, **kwargs)",
     "status": "supported",
     "summary": "Computes the number of 1-bits in the absolute value of ``x``. Analogous to the builtin `int.bit_count` or ``popcount`` in C++.",
     "weight": 1.0

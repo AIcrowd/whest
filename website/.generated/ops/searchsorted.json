@@ -319,7 +319,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/sort",
-              "label": "fnp.sort",
+              "label": "flops.sort",
               "original_target": "sort",
               "role": "",
               "target": "sort",
@@ -335,7 +335,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/histogram",
-              "label": "fnp.histogram",
+              "label": "flops.histogram",
               "original_target": "histogram",
               "role": "",
               "target": "histogram",
@@ -456,12 +456,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.searchsorted([11,12,13,14,15], 13)"
+              "text": "flops.searchsorted([11,12,13,14,15], 13)"
             },
             {
               "kind": "output",
@@ -470,7 +470,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.searchsorted([11,12,13,14,15], 13, side='right')"
+              "text": "flops.searchsorted([11,12,13,14,15], 13, side='right')"
             },
             {
               "kind": "output",
@@ -479,7 +479,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.searchsorted([11,12,13,14,15], [-10, 20, 12, 13])"
+              "text": "flops.searchsorted([11,12,13,14,15], [-10, 20, 12, 13])"
             },
             {
               "kind": "output",
@@ -526,12 +526,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([40, 10, 20, 30])"
+              "text": "a = flops.array([40, 10, 20, 30])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "sorter = fnp.argsort(a)"
+              "text": "sorter = flops.argsort(a)"
             },
             {
               "kind": "input",
@@ -545,7 +545,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "result = fnp.searchsorted(a, 25, sorter=sorter)"
+              "text": "result = flops.searchsorted(a, 25, sorter=sorter)"
             },
             {
               "kind": "input",
@@ -573,6 +573,7 @@
     }
   ],
   "canonical_name": "searchsorted",
+  "canonical_path": "searchsorted",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -588,19 +589,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.searchsorted([11,12,13,14,15], 13)\n\nfnp.searchsorted([11,12,13,14,15], 13, side='right')\n\nfnp.searchsorted([11,12,13,14,15], [-10, 20, 12, 13])\n\na = fnp.array([40, 10, 20, 30])\n\nsorter = fnp.argsort(a)\n\nsorter\n\nresult = fnp.searchsorted(a, 25, sorter=sorter)\n\nresult\n\na[sorter[result]]",
+    "code": "import flopscope as flops\n\nflops.searchsorted([11,12,13,14,15], 13)\n\nflops.searchsorted([11,12,13,14,15], 13, side='right')\n\nflops.searchsorted([11,12,13,14,15], [-10, 20, 12, 13])\n\na = flops.array([40, 10, 20, 30])\n\nsorter = flops.argsort(a)\n\nsorter\n\nresult = flops.searchsorted(a, 25, sorter=sorter)\n\nresult\n\na[sorter[result]]",
     "output": "2\n\n3\n\narray([0, 5, 1, 2])\n\narray([1, 2, 3, 0])  # Indices that would sort the array 'a'\n\n2\n\n30  # The element at index 2 of the sorted array is 30.",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.searchsorted",
+  "flopscope_ref": "flops.searchsorted",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L181",
-  "href": "/docs/api/ops/searchsorted/",
+  "href": "/docs/api/searchsorted/",
+  "legacy_href": "/docs/api/ops/searchsorted/",
   "module": "numpy",
   "name": "searchsorted",
   "next": {
-    "href": "/docs/api/ops/select/",
-    "label": "fnp.select"
+    "href": "/docs/api/select/",
+    "label": "flops.select"
   },
   "notes": "Binary search; cost = m*ceil(log2(n)).",
   "notes_sections": [
@@ -645,8 +647,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/row_stack/",
-    "label": "fnp.row_stack"
+    "href": "/docs/api/row-stack/",
+    "label": "flops.row_stack"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html",
@@ -671,7 +673,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/sort",
-      "label": "fnp.sort",
+      "label": "flops.sort",
       "original_target": "sort",
       "role": "",
       "target": "sort",
@@ -687,14 +689,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/histogram",
-      "label": "fnp.histogram",
+      "label": "flops.histogram",
       "original_target": "histogram",
       "role": "",
       "target": "histogram",
       "unresolved": false
     }
   ],
-  "signature": "fnp.searchsorted(a, v, side='left', sorter=None)",
+  "signature": "flops.searchsorted(a, v, side='left', sorter=None)",
   "slug": "searchsorted",
   "summary": "Find indices where elements should be inserted to maintain order.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1447",

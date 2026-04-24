@@ -496,7 +496,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/choose",
-              "label": "fnp.choose",
+              "label": "flops.choose",
               "original_target": "choose",
               "role": "",
               "target": "choose",
@@ -507,7 +507,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/select",
-              "label": "fnp.select",
+              "label": "flops.select",
               "original_target": "select",
               "role": "",
               "target": "select",
@@ -518,7 +518,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/where",
-              "label": "fnp.where",
+              "label": "flops.where",
               "original_target": "where",
               "role": "",
               "target": "where",
@@ -581,7 +581,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             }
           ],
           "type": "doctest_block"
@@ -616,12 +616,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.linspace(-2.5, 2.5, 6)"
+              "text": "x = flops.linspace(-2.5, 2.5, 6)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.piecewise(x, [x < 0, x >= 0], [-1, 1])"
+              "text": "flops.piecewise(x, [x < 0, x >= 0], [-1, 1])"
             },
             {
               "kind": "output",
@@ -676,7 +676,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])"
+              "text": "flops.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])"
             },
             {
               "kind": "output",
@@ -704,7 +704,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])"
+              "text": "flops.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])"
             },
             {
               "kind": "output",
@@ -718,6 +718,7 @@
     }
   ],
   "canonical_name": "piecewise",
+  "canonical_path": "piecewise",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -728,19 +729,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.linspace(-2.5, 2.5, 6)\n\nfnp.piecewise(x, [x < 0, x >= 0], [-1, 1])\n\nfnp.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])\n\ny = -2\n\nfnp.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])",
+    "code": "import flopscope as flops\n\nx = flops.linspace(-2.5, 2.5, 6)\n\nflops.piecewise(x, [x < 0, x >= 0], [-1, 1])\n\nflops.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])\n\ny = -2\n\nflops.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])",
     "output": "array([-1., -1., -1.,  1.,  1.,  1.])\n\narray([2.5,  1.5,  0.5,  0.5,  1.5,  2.5])\n\narray(2)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.piecewise",
+  "flopscope_ref": "flops.piecewise",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L344",
-  "href": "/docs/api/ops/piecewise/",
+  "href": "/docs/api/piecewise/",
+  "legacy_href": "/docs/api/ops/piecewise/",
   "module": "numpy",
   "name": "piecewise",
   "next": {
-    "href": "/docs/api/ops/place/",
-    "label": "fnp.place"
+    "href": "/docs/api/place/",
+    "label": "flops.place"
   },
   "notes": "Piecewise function. Cost: numel(input).",
   "notes_sections": [
@@ -805,8 +807,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/permute_dims/",
-    "label": "fnp.permute_dims"
+    "href": "/docs/api/permute-dims/",
+    "label": "flops.permute_dims"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.piecewise.html",
@@ -828,7 +830,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/choose",
-      "label": "fnp.choose",
+      "label": "flops.choose",
       "original_target": "choose",
       "role": "",
       "target": "choose",
@@ -839,7 +841,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/select",
-      "label": "fnp.select",
+      "label": "flops.select",
       "original_target": "select",
       "role": "",
       "target": "select",
@@ -850,14 +852,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/where",
-      "label": "fnp.where",
+      "label": "flops.where",
       "original_target": "where",
       "role": "",
       "target": "where",
       "unresolved": false
     }
   ],
-  "signature": "fnp.piecewise(x, condlist, funclist, *args, **kw)",
+  "signature": "flops.piecewise(x, condlist, funclist, *args, **kw)",
   "slug": "piecewise",
   "summary": "Evaluate a piecewise-defined function.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L658",

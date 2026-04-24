@@ -216,7 +216,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/linalg-cond",
-              "label": "fnp.linalg.cond",
+              "label": "flops.linalg.cond",
               "original_target": "numpy.linalg.cond",
               "role": "",
               "target": "linalg.cond",
@@ -232,7 +232,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/linalg-svd",
-              "label": "fnp.linalg.svd",
+              "label": "flops.linalg.svd",
               "original_target": "numpy.linalg.svd",
               "role": "",
               "target": "linalg.svd",
@@ -257,7 +257,7 @@
               "href": "",
               "kind": "link",
               "target": "linalg",
-              "text": "fnp.linalg"
+              "text": "flops.linalg"
             },
             {
               "kind": "text",
@@ -327,17 +327,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "from fnp.linalg import inv"
+              "text": "from flops.linalg import inv"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([[1., 2.], [3., 4.]])"
+              "text": "a = flops.array([[1., 2.], [3., 4.]])"
             },
             {
               "kind": "input",
@@ -347,7 +347,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(a @ ainv, fnp.eye(2))"
+              "text": "flops.allclose(a @ ainv, flops.eye(2))"
             },
             {
               "kind": "output",
@@ -356,7 +356,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.allclose(ainv @ a, fnp.eye(2))"
+              "text": "flops.allclose(ainv @ a, flops.eye(2))"
             },
             {
               "kind": "output",
@@ -379,7 +379,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ainv = inv(fnp.matrix(a))"
+              "text": "ainv = inv(flops.matrix(a))"
             },
             {
               "kind": "input",
@@ -411,7 +411,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([[[1., 2.], [3., 4.]], [[1, 3], [3, 5]]])"
+              "text": "a = flops.array([[[1., 2.], [3., 4.]], [[1, 3], [3, 5]]])"
             },
             {
               "kind": "input",
@@ -467,7 +467,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([[2,4,6],[2,0,2],[6,8,14]])"
+              "text": "a = flops.array([[2,4,6],[2,0,2],[6,8,14]])"
             },
             {
               "kind": "input",
@@ -517,7 +517,7 @@
               "href": "/docs/api/ops/linalg-cond",
               "kind": "link",
               "target": "linalg.cond",
-              "text": "fnp.linalg.cond"
+              "text": "flops.linalg.cond"
             },
             {
               "kind": "text",
@@ -563,7 +563,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "from fnp.linalg import cond"
+              "text": "from flops.linalg import cond"
             },
             {
               "kind": "input",
@@ -572,7 +572,7 @@
             },
             {
               "kind": "output",
-              "text": "fnp.float64(8.659885634118668e+17)  # may vary"
+              "text": "flops.float64(8.659885634118668e+17)  # may vary"
             }
           ],
           "type": "doctest_block"
@@ -591,7 +591,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "from fnp.linalg import svd"
+              "text": "from flops.linalg import svd"
             },
             {
               "kind": "input",
@@ -615,6 +615,7 @@
     }
   ],
   "canonical_name": "linalg.inv",
+  "canonical_path": "linalg/inv",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -635,23 +636,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfrom fnp.linalg import inv\n\na = fnp.array([[1., 2.], [3., 4.]])\n\nainv = inv(a)\n\nfnp.allclose(a @ ainv, fnp.eye(2))\n\nfnp.allclose(ainv @ a, fnp.eye(2))\n\nainv = inv(fnp.matrix(a))\n\nainv\n\na = fnp.array([[[1., 2.], [3., 4.]], [[1, 3], [3, 5]]])\n\ninv(a)\n\na = fnp.array([[2,4,6],[2,0,2],[6,8,14]])\n\ninv(a)  # No errors raised\n\na @ inv(a)\n\nfrom fnp.linalg import cond\n\ncond(a)\n\nfrom fnp.linalg import svd\n\nsigma = svd(a, compute_uv=False)  # Do not compute singular vectors\n\nsigma.max()/sigma.min()",
-    "output": "True\n\nTrue\n\nmatrix([[-2. ,  1. ],\n        [ 1.5, -0.5]])\n\narray([[[-2.  ,  1.  ],\n        [ 1.5 , -0.5 ]],\n       [[-1.25,  0.75],\n        [ 0.75, -0.25]]])\n\narray([[-1.12589991e+15, -5.62949953e+14,  5.62949953e+14],\n   [-1.12589991e+15, -5.62949953e+14,  5.62949953e+14],\n   [ 1.12589991e+15,  5.62949953e+14, -5.62949953e+14]])\n\narray([[ 0.   , -0.5  ,  0.   ],  # may vary\n       [-0.5  ,  0.625,  0.25 ],\n       [ 0.   ,  0.   ,  1.   ]])\n\nfnp.float64(8.659885634118668e+17)  # may vary\n\n8.659885634118668e+17  # may vary",
+    "code": "import flopscope as flops\n\nfrom flops.linalg import inv\n\na = flops.array([[1., 2.], [3., 4.]])\n\nainv = inv(a)\n\nflops.allclose(a @ ainv, flops.eye(2))\n\nflops.allclose(ainv @ a, flops.eye(2))\n\nainv = inv(flops.matrix(a))\n\nainv\n\na = flops.array([[[1., 2.], [3., 4.]], [[1, 3], [3, 5]]])\n\ninv(a)\n\na = flops.array([[2,4,6],[2,0,2],[6,8,14]])\n\ninv(a)  # No errors raised\n\na @ inv(a)\n\nfrom flops.linalg import cond\n\ncond(a)\n\nfrom flops.linalg import svd\n\nsigma = svd(a, compute_uv=False)  # Do not compute singular vectors\n\nsigma.max()/sigma.min()",
+    "output": "True\n\nTrue\n\nmatrix([[-2. ,  1. ],\n        [ 1.5, -0.5]])\n\narray([[[-2.  ,  1.  ],\n        [ 1.5 , -0.5 ]],\n       [[-1.25,  0.75],\n        [ 0.75, -0.25]]])\n\narray([[-1.12589991e+15, -5.62949953e+14,  5.62949953e+14],\n   [-1.12589991e+15, -5.62949953e+14,  5.62949953e+14],\n   [ 1.12589991e+15,  5.62949953e+14, -5.62949953e+14]])\n\narray([[ 0.   , -0.5  ,  0.   ],  # may vary\n       [-0.5  ,  0.625,  0.25 ],\n       [ 0.   ,  0.   ,  1.   ]])\n\nflops.float64(8.659885634118668e+17)  # may vary\n\n8.659885634118668e+17  # may vary",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.linalg.inv",
+  "flopscope_ref": "flops.linalg.inv",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L98",
-  "href": "/docs/api/ops/linalg-inv/",
+  "href": "/docs/api/linalg/inv/",
+  "legacy_href": "/docs/api/ops/linalg-inv/",
   "module": "numpy.linalg",
   "name": "linalg.inv",
   "next": {
-    "href": "/docs/api/ops/linalg-lstsq/",
-    "label": "fnp.linalg.lstsq"
+    "href": "/docs/api/linalg/lstsq/",
+    "label": "flops.linalg.lstsq"
   },
   "notes": "Matrix inverse. Cost: $n^3$ (LU + solve).",
   "notes_sections": [
-    "Broadcasting rules apply, see the `fnp.linalg` documentation for details.",
+    "Broadcasting rules apply, see the `flops.linalg` documentation for details.",
     "If `a` is detected to be singular, a `LinAlgError` is raised. If `a` is ill-conditioned, a `LinAlgError` may or may not be raised, and results may be inaccurate due to floating-point errors."
   ],
   "numpy_ref": "np.linalg.inv",
@@ -665,8 +667,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-eigvalsh/",
-    "label": "fnp.linalg.eigvalsh"
+    "href": "/docs/api/linalg/eigvalsh/",
+    "label": "flops.linalg.eigvalsh"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.inv.html",
@@ -706,7 +708,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/linalg-cond",
-      "label": "fnp.linalg.cond",
+      "label": "flops.linalg.cond",
       "original_target": "numpy.linalg.cond",
       "role": "",
       "target": "linalg.cond",
@@ -722,14 +724,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/linalg-svd",
-      "label": "fnp.linalg.svd",
+      "label": "flops.linalg.svd",
       "original_target": "numpy.linalg.svd",
       "role": "",
       "target": "linalg.svd",
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.inv(a)",
+  "signature": "flops.linalg.inv(a)",
   "slug": "linalg-inv",
   "summary": "Compute the inverse of a matrix.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L496",

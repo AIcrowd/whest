@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/array_equiv/",
+  "detail_href": "/docs/api/array-equiv/",
   "detail_json_href": "/api-data/ops/array_equiv.json",
   "docs": {
     "sections": [
@@ -104,12 +104,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equiv([1, 2], [1, 2])"
+                "text": "flops.array_equiv([1, 2], [1, 2])"
               },
               {
                 "kind": "output",
@@ -118,7 +118,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equiv([1, 2], [1, 3])"
+                "text": "flops.array_equiv([1, 2], [1, 3])"
               },
               {
                 "kind": "output",
@@ -141,7 +141,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equiv([1, 2], [[1, 2], [1, 2]])"
+                "text": "flops.array_equiv([1, 2], [[1, 2], [1, 2]])"
               },
               {
                 "kind": "output",
@@ -150,7 +150,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equiv([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]])"
+                "text": "flops.array_equiv([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]])"
               },
               {
                 "kind": "output",
@@ -164,7 +164,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equiv([1, 2], [[1, 2], [1, 3]])"
+                "text": "flops.array_equiv([1, 2], [[1, 2], [1, 3]])"
               },
               {
                 "kind": "output",
@@ -182,12 +182,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.array_equiv",
+    "flopscope_ref": "flops.array_equiv",
     "module": "numpy",
     "name": "array_equiv",
     "notes": "Element-wise equivalence; cost = numel(a).",
     "numpy_ref": "np.array_equiv",
-    "signature": "fnp.array_equiv(a1, a2)",
+    "signature": "flops.array_equiv(a1, a2)",
     "status": "supported",
     "summary": "Returns True if input arrays are shape consistent and all elements equal.",
     "weight": 1.0

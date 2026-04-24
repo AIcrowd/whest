@@ -85,7 +85,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.standard_exponential`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~flops.random.Generator.standard_exponential`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -232,7 +232,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "n = fnp.random.standard_exponential((3, 8000))"
+              "text": "n = flops.random.standard_exponential((3, 8000))"
             }
           ],
           "type": "doctest_block"
@@ -242,6 +242,7 @@
     }
   ],
   "canonical_name": "random.standard_exponential",
+  "canonical_path": "random/standard-exponential",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -252,19 +253,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "n = fnp.random.standard_exponential((3, 8000))",
+    "code": "n = flops.random.standard_exponential((3, 8000))",
     "output": "",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.standard_exponential",
+  "flopscope_ref": "flops.random.standard_exponential",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-standard_exponential/",
+  "href": "/docs/api/random/standard-exponential/",
+  "legacy_href": "/docs/api/ops/random-standard_exponential/",
   "module": "numpy.random",
   "name": "random.standard_exponential",
   "next": {
-    "href": "/docs/api/ops/random-standard_gamma/",
-    "label": "fnp.random.standard_gamma"
+    "href": "/docs/api/random/standard-gamma/",
+    "label": "flops.random.standard_gamma"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -281,8 +283,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_cauchy/",
-    "label": "fnp.random.standard_cauchy"
+    "href": "/docs/api/random/standard-cauchy/",
+    "label": "flops.random.standard_cauchy"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_exponential.html",
@@ -313,7 +315,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.standard_exponential(size=None)",
+  "signature": "flops.random.standard_exponential(size=None)",
   "slug": "random-standard_exponential",
   "summary": "Draw samples from the standard exponential distribution.",
   "upstream_source_url": "",

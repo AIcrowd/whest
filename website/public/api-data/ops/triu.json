@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/triu/",
+  "detail_href": "/docs/api/triu/",
   "detail_json_href": "/api-data/ops/triu.json",
   "docs": {
     "sections": [
@@ -95,7 +95,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/tril",
-                "label": "fnp.tril",
+                "label": "flops.tril",
                 "original_target": "tril",
                 "role": "",
                 "target": "tril",
@@ -114,12 +114,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.triu([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)"
+                "text": "flops.triu([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)"
               },
               {
                 "kind": "output",
@@ -145,7 +145,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.triu(fnp.arange(3*4*5).reshape(3, 4, 5))"
+                "text": "flops.triu(flops.arange(3*4*5).reshape(3, 4, 5))"
               },
               {
                 "kind": "output",
@@ -207,12 +207,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.triu",
+    "flopscope_ref": "flops.triu",
     "module": "numpy",
     "name": "triu",
     "notes": "Upper triangle of array.",
     "numpy_ref": "np.triu",
-    "signature": "fnp.triu(m, k=0)",
+    "signature": "flops.triu(m, k=0)",
     "status": "supported",
     "summary": "Upper triangle of an array.",
     "weight": 0.0

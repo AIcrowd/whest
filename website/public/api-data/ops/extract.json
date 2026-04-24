@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/extract/",
+  "detail_href": "/docs/api/extract/",
   "detail_json_href": "/api-data/ops/extract.json",
   "docs": {
     "sections": [
@@ -30,7 +30,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "compress(ravel(condition), ravel(arr))",
-                "text": "fnp.compress(ravel(condition), ravel(arr))"
+                "text": "flops.compress(ravel(condition), ravel(arr))"
               },
               {
                 "kind": "text",
@@ -49,7 +49,7 @@
                 "href": "/docs/api/ops/extract",
                 "kind": "link",
                 "target": "extract",
-                "text": "fnp.extract"
+                "text": "flops.extract"
               },
               {
                 "kind": "text",
@@ -261,7 +261,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/take",
-                "label": "fnp.take",
+                "label": "flops.take",
                 "original_target": "take",
                 "role": "",
                 "target": "take",
@@ -272,7 +272,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/put",
-                "label": "fnp.put",
+                "label": "flops.put",
                 "original_target": "put",
                 "role": "",
                 "target": "put",
@@ -283,7 +283,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/copyto",
-                "label": "fnp.copyto",
+                "label": "flops.copyto",
                 "original_target": "copyto",
                 "role": "",
                 "target": "copyto",
@@ -294,7 +294,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/compress",
-                "label": "fnp.compress",
+                "label": "flops.compress",
                 "original_target": "compress",
                 "role": "",
                 "target": "compress",
@@ -305,7 +305,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/place",
-                "label": "fnp.place",
+                "label": "flops.place",
                 "original_target": "place",
                 "role": "",
                 "target": "place",
@@ -324,12 +324,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = fnp.arange(12).reshape((3, 4))"
+                "text": "arr = flops.arange(12).reshape((3, 4))"
               },
               {
                 "kind": "input",
@@ -351,7 +351,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "condition = fnp.mod(arr, 3)==0"
+                "text": "condition = flops.mod(arr, 3)==0"
               },
               {
                 "kind": "input",
@@ -373,7 +373,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.extract(condition, arr)"
+                "text": "flops.extract(condition, arr)"
               },
               {
                 "kind": "output",
@@ -422,12 +422,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.extract",
+    "flopscope_ref": "flops.extract",
     "module": "numpy",
     "name": "extract",
     "notes": "Return elements satisfying condition. Cost: numel(input).",
     "numpy_ref": "np.extract",
-    "signature": "fnp.extract(condition, arr)",
+    "signature": "flops.extract(condition, arr)",
     "status": "supported",
     "summary": "Return the elements of an array that satisfy some condition.",
     "weight": 4.0

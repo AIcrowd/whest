@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-zipf/",
+  "detail_href": "/docs/api/random/zipf/",
   "detail_json_href": "/api-data/ops/random-zipf.json",
   "docs": {
     "sections": [
@@ -98,7 +98,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.zipf`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.zipf`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -173,7 +173,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "fnp.array(a).size"
+                        "text": "flops.array(a).size"
                       },
                       {
                         "kind": "text",
@@ -223,7 +223,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "fnp.array(a).size"
+                    "text": "flops.array(a).size"
                   },
                   {
                     "kind": "text",
@@ -405,7 +405,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = fnp.random.zipf(a, n)"
+                "text": "s = flops.random.zipf(a, n)"
               }
             ],
             "type": "doctest_block"
@@ -455,12 +455,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "count = fnp.bincount(s)"
+                "text": "count = flops.bincount(s)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "k = fnp.arange(1, s.max() + 1)"
+                "text": "k = flops.arange(1, s.max() + 1)"
               }
             ],
             "type": "doctest_block"
@@ -519,12 +519,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.zipf",
+    "flopscope_ref": "flops.random.zipf",
     "module": "numpy.random",
     "name": "random.zipf",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.zipf",
-    "signature": "fnp.random.zipf(a, size=None)",
+    "signature": "flops.random.zipf(a, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Zipf distribution.",
     "weight": 16.0

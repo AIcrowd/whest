@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/zeros_like/",
+  "detail_href": "/docs/api/zeros-like/",
   "detail_json_href": "/api-data/ops/zeros_like.json",
   "docs": {
     "sections": [
@@ -313,7 +313,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/empty_like",
-                "label": "fnp.empty_like",
+                "label": "flops.empty_like",
                 "original_target": "empty_like",
                 "role": "",
                 "target": "empty_like",
@@ -329,7 +329,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/ones_like",
-                "label": "fnp.ones_like",
+                "label": "flops.ones_like",
                 "original_target": "ones_like",
                 "role": "",
                 "target": "ones_like",
@@ -345,7 +345,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/full_like",
-                "label": "fnp.full_like",
+                "label": "flops.full_like",
                 "original_target": "full_like",
                 "role": "",
                 "target": "full_like",
@@ -361,7 +361,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/zeros",
-                "label": "fnp.zeros",
+                "label": "flops.zeros",
                 "original_target": "zeros",
                 "role": "",
                 "target": "zeros",
@@ -380,12 +380,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(6)"
+                "text": "x = flops.arange(6)"
               },
               {
                 "kind": "input",
@@ -408,7 +408,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.zeros_like(x)"
+                "text": "flops.zeros_like(x)"
               },
               {
                 "kind": "output",
@@ -426,7 +426,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.arange(3, dtype=float)"
+                "text": "y = flops.arange(3, dtype=float)"
               },
               {
                 "kind": "input",
@@ -440,7 +440,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.zeros_like(y)"
+                "text": "flops.zeros_like(y)"
               },
               {
                 "kind": "output",
@@ -458,12 +458,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.zeros_like",
+    "flopscope_ref": "flops.zeros_like",
     "module": "numpy",
     "name": "zeros_like",
     "notes": "Array of zeros with same shape/type as input.",
     "numpy_ref": "np.zeros_like",
-    "signature": "fnp.zeros_like(a, dtype=None, order='K', subok=True, shape=None, *, device=None)",
+    "signature": "flops.zeros_like(a, dtype=None, order='K', subok=True, shape=None, *, device=None)",
     "status": "supported",
     "summary": "Return an array of zeros with the same shape and type as a given array.",
     "weight": 0.0

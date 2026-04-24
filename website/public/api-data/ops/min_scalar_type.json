@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/min_scalar_type/",
+  "detail_href": "/docs/api/min-scalar-type/",
   "detail_json_href": "/api-data/ops/min_scalar_type.json",
   "docs": {
     "sections": [
@@ -122,7 +122,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/result_type",
-                "label": "fnp.result_type",
+                "label": "flops.result_type",
                 "original_target": "result_type",
                 "role": "",
                 "target": "result_type",
@@ -133,7 +133,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/promote_types",
-                "label": "fnp.promote_types",
+                "label": "flops.promote_types",
                 "original_target": "promote_types",
                 "role": "",
                 "target": "promote_types",
@@ -155,7 +155,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/can_cast",
-                "label": "fnp.can_cast",
+                "label": "flops.can_cast",
                 "original_target": "can_cast",
                 "role": "",
                 "target": "can_cast",
@@ -174,12 +174,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.min_scalar_type(10)"
+                "text": "flops.min_scalar_type(10)"
               },
               {
                 "kind": "output",
@@ -193,7 +193,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.min_scalar_type(-260)"
+                "text": "flops.min_scalar_type(-260)"
               },
               {
                 "kind": "output",
@@ -207,7 +207,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.min_scalar_type(3.1)"
+                "text": "flops.min_scalar_type(3.1)"
               },
               {
                 "kind": "output",
@@ -221,7 +221,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.min_scalar_type(1e50)"
+                "text": "flops.min_scalar_type(1e50)"
               },
               {
                 "kind": "output",
@@ -235,7 +235,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.min_scalar_type(fnp.arange(4,dtype='f8'))"
+                "text": "flops.min_scalar_type(flops.arange(4,dtype='f8'))"
               },
               {
                 "kind": "output",
@@ -253,12 +253,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.min_scalar_type",
+    "flopscope_ref": "flops.min_scalar_type",
     "module": "numpy",
     "name": "min_scalar_type",
     "notes": "Return the minimum scalar type for a value.",
     "numpy_ref": "np.min_scalar_type",
-    "signature": "fnp.min_scalar_type(*args, **kwargs)",
+    "signature": "flops.min_scalar_type(*args, **kwargs)",
     "status": "supported",
     "summary": "For scalar ``a``, returns the data type with the smallest size and smallest scalar kind which can hold its value.  For non-scalar array ``a``, returns the vector's dtype unmodified.",
     "weight": 0.0

@@ -500,7 +500,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/std",
-              "label": "fnp.std",
+              "label": "flops.std",
               "original_target": "std",
               "role": "",
               "target": "std",
@@ -516,7 +516,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/mean",
-              "label": "fnp.mean",
+              "label": "flops.mean",
               "original_target": "mean",
               "role": "",
               "target": "mean",
@@ -532,7 +532,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/var",
-              "label": "fnp.var",
+              "label": "flops.var",
               "original_target": "var",
               "role": "",
               "target": "var",
@@ -543,7 +543,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanstd",
-              "label": "fnp.nanstd",
+              "label": "flops.nanstd",
               "original_target": "nanstd",
               "role": "",
               "target": "nanstd",
@@ -554,7 +554,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanmean",
-              "label": "fnp.nanmean",
+              "label": "flops.nanmean",
               "original_target": "nanmean",
               "role": "",
               "target": "nanmean",
@@ -721,17 +721,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([[1, fnp.nan], [3, 4]])"
+              "text": "a = flops.array([[1, flops.nan], [3, 4]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.nanvar(a)"
+              "text": "flops.nanvar(a)"
             },
             {
               "kind": "output",
@@ -740,7 +740,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.nanvar(a, axis=0)"
+              "text": "flops.nanvar(a, axis=0)"
             },
             {
               "kind": "output",
@@ -749,7 +749,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.nanvar(a, axis=1)"
+              "text": "flops.nanvar(a, axis=1)"
             },
             {
               "kind": "output",
@@ -763,6 +763,7 @@
     }
   ],
   "canonical_name": "nanvar",
+  "canonical_path": "nanvar",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -773,19 +774,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[1, fnp.nan], [3, 4]])\n\nfnp.nanvar(a)\n\nfnp.nanvar(a, axis=0)\n\nfnp.nanvar(a, axis=1)",
+    "code": "import flopscope as flops\n\na = flops.array([[1, flops.nan], [3, 4]])\n\nflops.nanvar(a)\n\nflops.nanvar(a, axis=0)\n\nflops.nanvar(a, axis=1)",
     "output": "1.5555555555555554\n\narray([1.,  0.])\n\narray([0.,  0.25])  # may vary",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.nanvar",
+  "flopscope_ref": "flops.nanvar",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/ops/nanvar/",
+  "href": "/docs/api/nanvar/",
+  "legacy_href": "/docs/api/ops/nanvar/",
   "module": "numpy",
   "name": "nanvar",
   "next": {
-    "href": "/docs/api/ops/ndim/",
-    "label": "fnp.ndim"
+    "href": "/docs/api/ndim/",
+    "label": "flops.ndim"
   },
   "notes": "Variance ignoring NaNs.",
   "notes_sections": [
@@ -851,7 +853,7 @@
     },
     {
       "body": [
-        "Elements to include in the variance. See `~fnp.ufunc.reduce` for",
+        "Elements to include in the variance. See `~flops.ufunc.reduce` for",
         "details.",
         "",
         ".. versionadded:: 1.22.0"
@@ -883,8 +885,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nansum/",
-    "label": "fnp.nansum"
+    "href": "/docs/api/nansum/",
+    "label": "flops.nansum"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nanvar.html",
@@ -911,7 +913,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/std",
-      "label": "fnp.std",
+      "label": "flops.std",
       "original_target": "std",
       "role": "",
       "target": "std",
@@ -927,7 +929,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/mean",
-      "label": "fnp.mean",
+      "label": "flops.mean",
       "original_target": "mean",
       "role": "",
       "target": "mean",
@@ -943,7 +945,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/var",
-      "label": "fnp.var",
+      "label": "flops.var",
       "original_target": "var",
       "role": "",
       "target": "var",
@@ -954,7 +956,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanstd",
-      "label": "fnp.nanstd",
+      "label": "flops.nanstd",
       "original_target": "nanstd",
       "role": "",
       "target": "nanstd",
@@ -965,7 +967,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanmean",
-      "label": "fnp.nanmean",
+      "label": "flops.nanmean",
       "original_target": "nanmean",
       "role": "",
       "target": "nanmean",
@@ -983,7 +985,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
+  "signature": "flops.nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
   "slug": "nanvar",
   "summary": "Compute the variance along the specified axis, while ignoring NaNs.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L1715",

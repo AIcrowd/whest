@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/polyint/",
+  "detail_href": "/docs/api/polyint/",
   "detail_json_href": "/api-data/ops/polyint.json",
   "docs": {
     "sections": [
@@ -33,7 +33,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "polynomial",
-                    "text": "fnp.polynomial"
+                    "text": "flops.polynomial"
                   },
                   {
                     "kind": "text",
@@ -61,7 +61,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `fnp.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `flops.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
             "supported": true,
             "type": "directive_block"
           },
@@ -288,7 +288,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/polyder",
-                "label": "fnp.polyder",
+                "label": "flops.polyder",
                 "original_target": "polyder",
                 "role": "",
                 "target": "polyder",
@@ -332,7 +332,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -342,12 +342,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p = fnp.poly1d([1,1,1])"
+                "text": "p = flops.poly1d([1,1,1])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "P = fnp.polyint(p)"
+                "text": "P = flops.polyint(p)"
               },
               {
                 "kind": "input",
@@ -361,7 +361,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.polyder(P) == p"
+                "text": "flops.polyder(P) == p"
               },
               {
                 "kind": "output",
@@ -384,7 +384,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "P = fnp.polyint(p, 3)"
+                "text": "P = flops.polyint(p, 3)"
               },
               {
                 "kind": "input",
@@ -398,7 +398,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.polyder(P)(0)"
+                "text": "flops.polyder(P)(0)"
               },
               {
                 "kind": "output",
@@ -407,7 +407,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.polyder(P, 2)(0)"
+                "text": "flops.polyder(P, 2)(0)"
               },
               {
                 "kind": "output",
@@ -416,7 +416,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "P = fnp.polyint(p, 3, k=[6,5,3])"
+                "text": "P = flops.polyint(p, 3, k=[6,5,3])"
               },
               {
                 "kind": "input",
@@ -444,7 +444,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.polyder(P, 2)(0)"
+                "text": "flops.polyder(P, 2)(0)"
               },
               {
                 "kind": "output",
@@ -453,7 +453,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.polyder(P, 1)(0)"
+                "text": "flops.polyder(P, 1)(0)"
               },
               {
                 "kind": "output",
@@ -480,12 +480,12 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
-    "flopscope_ref": "fnp.polyint",
+    "flopscope_ref": "flops.polyint",
     "module": "flopscope._polynomial",
     "name": "polyint",
     "notes": "Integrate polynomial. Cost: n FLOPs.",
     "numpy_ref": "np.polyint",
-    "signature": "fnp.polyint(p, m=1, k=None)",
+    "signature": "flops.polyint(p, m=1, k=None)",
     "status": "supported",
     "summary": "Return an antiderivative (indefinite integral) of a polynomial.",
     "weight": 1.0

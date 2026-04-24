@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/arctan2/",
+  "detail_href": "/docs/api/arctan2/",
   "detail_json_href": "/api-data/ops/arctan2.json",
   "docs": {
     "sections": [
@@ -462,7 +462,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/arctan",
-                "label": "fnp.arctan",
+                "label": "flops.arctan",
                 "original_target": "arctan",
                 "role": "",
                 "target": "arctan",
@@ -473,7 +473,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/tan",
-                "label": "fnp.tan",
+                "label": "flops.tan",
                 "original_target": "tan",
                 "role": "",
                 "target": "tan",
@@ -484,7 +484,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/angle",
-                "label": "fnp.angle",
+                "label": "flops.angle",
                 "original_target": "angle",
                 "role": "",
                 "target": "angle",
@@ -569,7 +569,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -579,17 +579,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([-1, +1, +1, -1])"
+                "text": "x = flops.array([-1, +1, +1, -1])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.array([-1, -1, +1, +1])"
+                "text": "y = flops.array([-1, -1, +1, +1])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.arctan2(y, x) * 180 / fnp.pi"
+                "text": "flops.arctan2(y, x) * 180 / flops.pi"
               },
               {
                 "kind": "output",
@@ -639,7 +639,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.arctan2([1., -1.], [0., 0.])"
+                "text": "flops.arctan2([1., -1.], [0., 0.])"
               },
               {
                 "kind": "output",
@@ -648,7 +648,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.arctan2([0., 0., fnp.inf], [+0., -0., fnp.inf])"
+                "text": "flops.arctan2([0., 0., flops.inf], [+0., -0., flops.inf])"
               },
               {
                 "kind": "output",
@@ -666,12 +666,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.arctan2",
+    "flopscope_ref": "flops.arctan2",
     "module": "numpy",
     "name": "arctan2",
     "notes": "Element-wise arctan(y/x) considering quadrant.",
     "numpy_ref": "np.arctan2",
-    "signature": "fnp.arctan2(*args, **kwargs)",
+    "signature": "flops.arctan2(*args, **kwargs)",
     "status": "supported",
     "summary": "Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly.",
     "weight": 16.0

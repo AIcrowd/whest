@@ -81,7 +81,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.power`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.power`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -156,7 +156,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "fnp.array(a).size"
+                      "text": "flops.array(a).size"
                     },
                     {
                       "kind": "text",
@@ -206,7 +206,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "fnp.array(a).size"
+                  "text": "flops.array(a).size"
                 },
                 {
                   "kind": "text",
@@ -394,7 +394,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = fnp.random.power(a, samples)"
+              "text": "s = flops.random.power(a, samples)"
             }
           ],
           "type": "doctest_block"
@@ -423,7 +423,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.linspace(0, 1, 100)"
+              "text": "x = flops.linspace(0, 1, 100)"
             },
             {
               "kind": "input",
@@ -433,7 +433,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "normed_y = samples*fnp.diff(bins)[0]*y"
+              "text": "normed_y = samples*flops.diff(bins)[0]*y"
             },
             {
               "kind": "input",
@@ -467,17 +467,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rvs = fnp.random.power(5, 1000000)"
+              "text": "rvs = flops.random.power(5, 1000000)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rvsp = fnp.random.pareto(5, 1000000)"
+              "text": "rvsp = flops.random.pareto(5, 1000000)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "xx = fnp.linspace(0,1,100)"
+              "text": "xx = flops.linspace(0,1,100)"
             },
             {
               "kind": "input",
@@ -507,7 +507,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.title('fnp.random.power(5)')"
+              "text": "plt.title('flops.random.power(5)')"
             }
           ],
           "type": "doctest_block"
@@ -532,7 +532,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.title('inverse of 1 + fnp.random.pareto(5)')"
+              "text": "plt.title('inverse of 1 + flops.random.pareto(5)')"
             }
           ],
           "type": "doctest_block"
@@ -567,6 +567,7 @@
     }
   ],
   "canonical_name": "random.power",
+  "canonical_path": "random/power",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -586,19 +587,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "a = 5. # shape\n\nsamples = 1000\n\ns = fnp.random.power(a, samples)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, bins=30)\n\nx = fnp.linspace(0, 1, 100)\n\ny = a*x**(a-1.)\n\nnormed_y = samples*fnp.diff(bins)[0]*y\n\nplt.plot(x, normed_y)\n\nplt.show()\n\nfrom scipy import stats # doctest: +SKIP\n\nrvs = fnp.random.power(5, 1000000)\n\nrvsp = fnp.random.pareto(5, 1000000)\n\nxx = fnp.linspace(0,1,100)\n\npowpdf = stats.powerlaw.pdf(xx,5)  # doctest: +SKIP\n\nplt.figure()\n\nplt.hist(rvs, bins=50, density=True)\n\nplt.plot(xx,powpdf,'r-')  # doctest: +SKIP\n\nplt.title('fnp.random.power(5)')\n\nplt.figure()\n\nplt.hist(1./(1.+rvsp), bins=50, density=True)\n\nplt.plot(xx,powpdf,'r-')  # doctest: +SKIP\n\nplt.title('inverse of 1 + fnp.random.pareto(5)')\n\nplt.figure()\n\nplt.hist(1./(1.+rvsp), bins=50, density=True)\n\nplt.plot(xx,powpdf,'r-')  # doctest: +SKIP\n\nplt.title('inverse of stats.pareto(5)')",
+    "code": "a = 5. # shape\n\nsamples = 1000\n\ns = flops.random.power(a, samples)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, bins=30)\n\nx = flops.linspace(0, 1, 100)\n\ny = a*x**(a-1.)\n\nnormed_y = samples*flops.diff(bins)[0]*y\n\nplt.plot(x, normed_y)\n\nplt.show()\n\nfrom scipy import stats # doctest: +SKIP\n\nrvs = flops.random.power(5, 1000000)\n\nrvsp = flops.random.pareto(5, 1000000)\n\nxx = flops.linspace(0,1,100)\n\npowpdf = stats.powerlaw.pdf(xx,5)  # doctest: +SKIP\n\nplt.figure()\n\nplt.hist(rvs, bins=50, density=True)\n\nplt.plot(xx,powpdf,'r-')  # doctest: +SKIP\n\nplt.title('flops.random.power(5)')\n\nplt.figure()\n\nplt.hist(1./(1.+rvsp), bins=50, density=True)\n\nplt.plot(xx,powpdf,'r-')  # doctest: +SKIP\n\nplt.title('inverse of 1 + flops.random.pareto(5)')\n\nplt.figure()\n\nplt.hist(1./(1.+rvsp), bins=50, density=True)\n\nplt.plot(xx,powpdf,'r-')  # doctest: +SKIP\n\nplt.title('inverse of stats.pareto(5)')",
     "output": "",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.power",
+  "flopscope_ref": "flops.random.power",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-power/",
+  "href": "/docs/api/random/power/",
+  "legacy_href": "/docs/api/ops/random-power/",
   "module": "numpy.random",
   "name": "random.power",
   "next": {
-    "href": "/docs/api/ops/random-rand/",
-    "label": "fnp.random.rand"
+    "href": "/docs/api/random/rand/",
+    "label": "flops.random.rand"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -621,15 +623,15 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``a`` is a scalar.  Otherwise,",
-        "``fnp.array(a).size`` samples are drawn."
+        "``flops.array(a).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-poisson/",
-    "label": "fnp.random.poisson"
+    "href": "/docs/api/random/poisson/",
+    "label": "flops.random.poisson"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.power.html",
@@ -660,7 +662,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.power(a, size=None)",
+  "signature": "flops.random.power(a, size=None)",
   "slug": "random-power",
   "summary": "Draws samples in [0, 1] from a power distribution with positive exponent a - 1.",
   "upstream_source_url": "",

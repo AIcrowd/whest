@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/absolute/",
+  "detail_href": "/docs/api/absolute/",
   "detail_json_href": "/api-data/ops/absolute.json",
   "docs": {
     "sections": [
@@ -26,7 +26,7 @@
                 "href": "/docs/api/ops/absolute",
                 "kind": "link",
                 "target": "absolute",
-                "text": "fnp.abs"
+                "text": "flops.abs"
               },
               {
                 "kind": "text",
@@ -337,17 +337,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([-1.2, 1.2])"
+                "text": "x = flops.array([-1.2, 1.2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.absolute(x)"
+                "text": "flops.absolute(x)"
               },
               {
                 "kind": "output",
@@ -356,7 +356,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.absolute(1.2 + 1j)"
+                "text": "flops.absolute(1.2 + 1j)"
               },
               {
                 "kind": "output",
@@ -397,12 +397,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.linspace(start=-10, stop=10, num=101)"
+                "text": "x = flops.linspace(start=-10, stop=10, num=101)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(x, fnp.absolute(x))"
+                "text": "plt.plot(x, flops.absolute(x))"
               },
               {
                 "kind": "input",
@@ -426,12 +426,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xx = x + 1j * x[:, fnp.newaxis]"
+                "text": "xx = x + 1j * x[:, flops.newaxis]"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.imshow(fnp.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')"
+                "text": "plt.imshow(flops.abs(xx), extent=[-10, 10, -10, 10], cmap='gray')"
               },
               {
                 "kind": "input",
@@ -463,7 +463,7 @@
                 "href": "/docs/api/ops/absolute",
                 "kind": "link",
                 "target": "absolute",
-                "text": "fnp.absolute"
+                "text": "flops.absolute"
               },
               {
                 "kind": "text",
@@ -477,7 +477,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([-1.2, 1.2])"
+                "text": "x = flops.array([-1.2, 1.2])"
               },
               {
                 "kind": "input",
@@ -500,12 +500,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.absolute",
+    "flopscope_ref": "flops.absolute",
     "module": "numpy",
     "name": "absolute",
     "notes": "Element-wise absolute value.",
     "numpy_ref": "np.absolute",
-    "signature": "fnp.absolute(*args, **kwargs)",
+    "signature": "flops.absolute(*args, **kwargs)",
     "status": "supported",
     "summary": "Calculate the absolute value element-wise.",
     "weight": 1.0

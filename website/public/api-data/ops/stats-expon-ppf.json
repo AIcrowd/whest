@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-expon-ppf/",
+  "detail_href": "/docs/api/stats/expon/ppf/",
   "detail_json_href": "/api-data/ops/stats-expon-ppf.json",
   "docs": {
     "sections": [
@@ -163,12 +163,12 @@
     "category": "counted_custom",
     "cost_formula": "5n",
     "cost_formula_latex": "$5n$",
-    "flopscope_ref": "fnp.stats.expon.ppf",
+    "flopscope_ref": "flops.stats.expon.ppf",
     "module": "flopscope.stats",
     "name": "stats.expon.ppf",
     "notes": "Exponential PPF; cost = numel(input).",
     "numpy_ref": "np.stats.expon.ppf",
-    "signature": "fnp.stats.expon.ppf(q, loc=0, scale=1)",
+    "signature": "flops.stats.expon.ppf(q, loc=0, scale=1)",
     "status": "supported",
     "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
     "weight": 16.0

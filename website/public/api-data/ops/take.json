@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/take/",
+  "detail_href": "/docs/api/take/",
   "detail_json_href": "/api-data/ops/take.json",
   "docs": {
     "sections": [
@@ -30,7 +30,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "take(arr, indices, axis=3)",
-                "text": "fnp.take(arr, indices, axis=3)"
+                "text": "flops.take(arr, indices, axis=3)"
               },
               {
                 "kind": "text",
@@ -366,7 +366,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/compress",
-                "label": "fnp.compress",
+                "label": "flops.compress",
                 "original_target": "compress",
                 "role": "",
                 "target": "compress",
@@ -398,7 +398,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/take_along_axis",
-                "label": "fnp.take_along_axis",
+                "label": "flops.take_along_axis",
                 "original_target": "take_along_axis",
                 "role": "",
                 "target": "take_along_axis",
@@ -467,7 +467,7 @@
           },
           {
             "language": null,
-            "text": "out = fnp.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)",
+            "text": "out = flops.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)",
             "type": "literal_block"
           }
         ],
@@ -480,7 +480,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -495,7 +495,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.take(a, indices)"
+                "text": "flops.take(a, indices)"
               },
               {
                 "kind": "output",
@@ -526,7 +526,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array(a)"
+                "text": "a = flops.array(a)"
               },
               {
                 "kind": "input",
@@ -565,7 +565,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.take(a, [[0, 1], [2, 3]])"
+                "text": "flops.take(a, [[0, 1], [2, 3]])"
               },
               {
                 "kind": "output",
@@ -587,12 +587,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.take",
+    "flopscope_ref": "flops.take",
     "module": "numpy",
     "name": "take",
     "notes": "Take elements from array along axis. Cost: numel(output).",
     "numpy_ref": "np.take",
-    "signature": "fnp.take(a, indices, axis=None, out=None, mode='raise')",
+    "signature": "flops.take(a, indices, axis=None, out=None, mode='raise')",
     "status": "supported",
     "summary": "Take elements from an array along an axis.",
     "weight": 4.0

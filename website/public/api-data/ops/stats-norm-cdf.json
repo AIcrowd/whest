@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-norm-cdf/",
+  "detail_href": "/docs/api/stats/norm/cdf/",
   "detail_json_href": "/api-data/ops/stats-norm-cdf.json",
   "docs": {
     "sections": [
@@ -163,12 +163,12 @@
     "category": "counted_custom",
     "cost_formula": "20n",
     "cost_formula_latex": "$20n$",
-    "flopscope_ref": "fnp.stats.norm.cdf",
+    "flopscope_ref": "flops.stats.norm.cdf",
     "module": "flopscope.stats",
     "name": "stats.norm.cdf",
     "notes": "Normal CDF; cost = numel(input).",
     "numpy_ref": "np.stats.norm.cdf",
-    "signature": "fnp.stats.norm.cdf(x, loc=0, scale=1)",
+    "signature": "flops.stats.norm.cdf(x, loc=0, scale=1)",
     "status": "supported",
     "summary": "Cumulative distribution function of the given RV.",
     "weight": 16.0

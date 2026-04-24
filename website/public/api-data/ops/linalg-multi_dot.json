@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-multi_dot/",
+  "detail_href": "/docs/api/linalg/multi-dot/",
   "detail_json_href": "/api-data/ops/linalg-multi_dot.json",
   "docs": {
     "sections": [
@@ -34,7 +34,7 @@
                 "href": "/docs/api/ops/dot",
                 "kind": "link",
                 "target": "dot",
-                "text": "fnp.dot"
+                "text": "flops.dot"
               },
               {
                 "kind": "text",
@@ -87,7 +87,7 @@
           },
           {
             "language": null,
-            "text": "def multi_dot(arrays): return functools.reduce(fnp.dot, arrays)",
+            "text": "def multi_dot(arrays): return functools.reduce(flops.dot, arrays)",
             "type": "literal_block"
           }
         ],
@@ -211,7 +211,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/dot",
-                "label": "fnp.dot",
+                "label": "flops.dot",
                 "original_target": "numpy.dot",
                 "role": "",
                 "target": "dot",
@@ -305,7 +305,7 @@
           },
           {
             "language": null,
-            "text": ">>> import flopscope as fnp\n>>> from fnp.linalg import multi_dot\n>>> # Prepare some data\n>>> A = fnp.random.random((10000, 100))\n>>> B = fnp.random.random((100, 1000))\n>>> C = fnp.random.random((1000, 5))\n>>> D = fnp.random.random((5, 333))\n>>> # the actual dot multiplication\n>>> _ = multi_dot([A, B, C, D])",
+            "text": ">>> import flopscope as flops\n>>> from flops.linalg import multi_dot\n>>> # Prepare some data\n>>> A = flops.random.random((10000, 100))\n>>> B = flops.random.random((100, 1000))\n>>> C = flops.random.random((1000, 5))\n>>> D = flops.random.random((5, 333))\n>>> # the actual dot multiplication\n>>> _ = multi_dot([A, B, C, D])",
             "type": "literal_block"
           },
           {
@@ -319,7 +319,7 @@
           },
           {
             "language": null,
-            "text": ">>> _ = fnp.dot(fnp.dot(fnp.dot(A, B), C), D)\n>>> # or\n>>> _ = A.dot(B).dot(C).dot(D)",
+            "text": ">>> _ = flops.dot(flops.dot(flops.dot(A, B), C), D)\n>>> # or\n>>> _ = A.dot(B).dot(C).dot(D)",
             "type": "literal_block"
           }
         ],
@@ -331,12 +331,12 @@
     "category": "counted_custom",
     "cost_formula": "optimal chain cost",
     "cost_formula_latex": "optimal chain",
-    "flopscope_ref": "fnp.linalg.multi_dot",
+    "flopscope_ref": "flops.linalg.multi_dot",
     "module": "numpy.linalg",
     "name": "linalg.multi_dot",
     "notes": "Chain matmul. Cost: sum of optimal chain matmul costs (CLRS \u00a715.2).",
     "numpy_ref": "np.linalg.multi_dot",
-    "signature": "fnp.linalg.multi_dot(arrays, *, out=None)",
+    "signature": "flops.linalg.multi_dot(arrays, *, out=None)",
     "status": "supported",
     "summary": "Compute the dot product of two or more arrays in a single function call, while automatically selecting the fastest evaluation order.",
     "weight": 1.0

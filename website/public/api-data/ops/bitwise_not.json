@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/bitwise_not/",
+  "detail_href": "/docs/api/bitwise-not/",
   "detail_json_href": "/api-data/ops/bitwise_not.json",
   "docs": {
     "sections": [
@@ -325,7 +325,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bitwise_and",
-                "label": "fnp.bitwise_and",
+                "label": "flops.bitwise_and",
                 "original_target": "bitwise_and",
                 "role": "",
                 "target": "bitwise_and",
@@ -336,7 +336,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bitwise_or",
-                "label": "fnp.bitwise_or",
+                "label": "flops.bitwise_or",
                 "original_target": "bitwise_or",
                 "role": "",
                 "target": "bitwise_or",
@@ -347,7 +347,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bitwise_xor",
-                "label": "fnp.bitwise_xor",
+                "label": "flops.bitwise_xor",
                 "original_target": "bitwise_xor",
                 "role": "",
                 "target": "bitwise_xor",
@@ -358,7 +358,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_not",
-                "label": "fnp.logical_not",
+                "label": "flops.logical_not",
                 "original_target": "logical_not",
                 "role": "",
                 "target": "logical_not",
@@ -395,7 +395,7 @@
                 "href": "/docs/api/ops/bitwise_not",
                 "kind": "link",
                 "target": "bitwise_not",
-                "text": "fnp.bitwise_not"
+                "text": "flops.bitwise_not"
               },
               {
                 "kind": "text",
@@ -420,7 +420,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.bitwise_not is fnp.invert"
+                "text": "flops.bitwise_not is flops.invert"
               },
               {
                 "kind": "output",
@@ -449,7 +449,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -476,7 +476,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.invert(fnp.array(13, dtype=fnp.uint8))"
+                "text": "x = flops.invert(flops.array(13, dtype=flops.uint8))"
               },
               {
                 "kind": "input",
@@ -485,12 +485,12 @@
               },
               {
                 "kind": "output",
-                "text": "fnp.uint8(242)"
+                "text": "flops.uint8(242)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.binary_repr(x, width=8)"
+                "text": "flops.binary_repr(x, width=8)"
               },
               {
                 "kind": "output",
@@ -513,7 +513,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.invert(fnp.array(13, dtype=fnp.uint16))"
+                "text": "x = flops.invert(flops.array(13, dtype=flops.uint16))"
               },
               {
                 "kind": "input",
@@ -522,12 +522,12 @@
               },
               {
                 "kind": "output",
-                "text": "fnp.uint16(65522)"
+                "text": "flops.uint16(65522)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.binary_repr(x, width=16)"
+                "text": "flops.binary_repr(x, width=16)"
               },
               {
                 "kind": "output",
@@ -550,7 +550,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.invert(fnp.array([13], dtype=fnp.int8))"
+                "text": "flops.invert(flops.array([13], dtype=flops.int8))"
               },
               {
                 "kind": "output",
@@ -559,7 +559,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.binary_repr(-14, width=8)"
+                "text": "flops.binary_repr(-14, width=8)"
               },
               {
                 "kind": "output",
@@ -582,7 +582,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.invert(fnp.array([True, False]))"
+                "text": "flops.invert(flops.array([True, False]))"
               },
               {
                 "kind": "output",
@@ -610,7 +610,7 @@
                 "href": "/docs/api/ops/invert",
                 "kind": "link",
                 "target": "invert",
-                "text": "fnp.invert"
+                "text": "flops.invert"
               },
               {
                 "kind": "text",
@@ -624,7 +624,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = fnp.array([True, False])"
+                "text": "x1 = flops.array([True, False])"
               },
               {
                 "kind": "input",
@@ -647,12 +647,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.bitwise_not",
+    "flopscope_ref": "flops.bitwise_not",
     "module": "numpy",
     "name": "bitwise_not",
     "notes": "Element-wise bitwise NOT.",
     "numpy_ref": "np.bitwise_not",
-    "signature": "fnp.bitwise_not(*args, **kwargs)",
+    "signature": "flops.bitwise_not(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute bit-wise inversion, or bit-wise NOT, element-wise.",
     "weight": 1.0

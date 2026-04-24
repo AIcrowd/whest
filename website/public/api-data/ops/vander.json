@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/vander/",
+  "detail_href": "/docs/api/vander/",
   "detail_json_href": "/api-data/ops/vander.json",
   "docs": {
     "sections": [
@@ -313,12 +313,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([1, 2, 3, 5])"
+                "text": "x = flops.array([1, 2, 3, 5])"
               },
               {
                 "kind": "input",
@@ -328,7 +328,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.vander(x, N)"
+                "text": "flops.vander(x, N)"
               },
               {
                 "kind": "output",
@@ -354,7 +354,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.column_stack([x**(N-1-i) for i in range(N)])"
+                "text": "flops.column_stack([x**(N-1-i) for i in range(N)])"
               },
               {
                 "kind": "output",
@@ -380,12 +380,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([1, 2, 3, 5])"
+                "text": "x = flops.array([1, 2, 3, 5])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.vander(x)"
+                "text": "flops.vander(x)"
               },
               {
                 "kind": "output",
@@ -406,7 +406,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.vander(x, increasing=True)"
+                "text": "flops.vander(x, increasing=True)"
               },
               {
                 "kind": "output",
@@ -441,7 +441,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linalg.det(fnp.vander(x))"
+                "text": "flops.linalg.det(flops.vander(x))"
               },
               {
                 "kind": "output",
@@ -468,12 +468,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.vander",
+    "flopscope_ref": "flops.vander",
     "module": "numpy",
     "name": "vander",
     "notes": "Vandermonde matrix; cost = len(x)*(N-1).",
     "numpy_ref": "np.vander",
-    "signature": "fnp.vander(x, N=None, increasing=False)",
+    "signature": "flops.vander(x, N=None, increasing=False)",
     "status": "supported",
     "summary": "Generate a Vandermonde matrix.",
     "weight": 1.0

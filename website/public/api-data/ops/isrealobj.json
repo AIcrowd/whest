@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isrealobj/",
+  "detail_href": "/docs/api/isrealobj/",
   "detail_json_href": "/api-data/ops/isrealobj.json",
   "docs": {
     "sections": [
@@ -133,7 +133,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/iscomplexobj",
-                "label": "fnp.iscomplexobj",
+                "label": "flops.iscomplexobj",
                 "original_target": "iscomplexobj",
                 "role": "",
                 "target": "iscomplexobj",
@@ -144,7 +144,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isreal",
-                "label": "fnp.isreal",
+                "label": "flops.isreal",
                 "original_target": "isreal",
                 "role": "",
                 "target": "isreal",
@@ -172,7 +172,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isrealobj('A string')"
+                "text": "flops.isrealobj('A string')"
               },
               {
                 "kind": "output",
@@ -181,7 +181,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isrealobj(False)"
+                "text": "flops.isrealobj(False)"
               },
               {
                 "kind": "output",
@@ -190,7 +190,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isrealobj(None)"
+                "text": "flops.isrealobj(None)"
               },
               {
                 "kind": "output",
@@ -209,12 +209,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isrealobj(1)"
+                "text": "flops.isrealobj(1)"
               },
               {
                 "kind": "output",
@@ -223,7 +223,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isrealobj(1+0j)"
+                "text": "flops.isrealobj(1+0j)"
               },
               {
                 "kind": "output",
@@ -232,7 +232,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isrealobj([3, 1+0j, True])"
+                "text": "flops.isrealobj([3, 1+0j, True])"
               },
               {
                 "kind": "output",
@@ -250,12 +250,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.isrealobj",
+    "flopscope_ref": "flops.isrealobj",
     "module": "numpy",
     "name": "isrealobj",
     "notes": "Return True if x is a not complex type or array.",
     "numpy_ref": "np.isrealobj",
-    "signature": "fnp.isrealobj(x)",
+    "signature": "flops.isrealobj(x)",
     "status": "supported",
     "summary": "Return True if x is a not complex type or an array of complex numbers.",
     "weight": 1.0

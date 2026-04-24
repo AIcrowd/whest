@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-uniform-ppf/",
+  "detail_href": "/docs/api/stats/uniform/ppf/",
   "detail_json_href": "/api-data/ops/stats-uniform-ppf.json",
   "docs": {
     "sections": [
@@ -163,12 +163,12 @@
     "category": "counted_custom",
     "cost_formula": "3n",
     "cost_formula_latex": "$3n$",
-    "flopscope_ref": "fnp.stats.uniform.ppf",
+    "flopscope_ref": "flops.stats.uniform.ppf",
     "module": "flopscope.stats",
     "name": "stats.uniform.ppf",
     "notes": "Uniform PPF; cost = numel(input).",
     "numpy_ref": "np.stats.uniform.ppf",
-    "signature": "fnp.stats.uniform.ppf(q, loc=0, scale=1)",
+    "signature": "flops.stats.uniform.ppf(q, loc=0, scale=1)",
     "status": "supported",
     "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
     "weight": 1.0

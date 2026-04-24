@@ -212,22 +212,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([1, 2, 3, 2, 4, 1])"
+              "text": "a = flops.array([1, 2, 3, 2, 4, 1])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = fnp.array([3, 4, 5, 6])"
+              "text": "b = flops.array([3, 4, 5, 6])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.setdiff1d(a, b)"
+              "text": "flops.setdiff1d(a, b)"
             },
             {
               "kind": "output",
@@ -241,6 +241,7 @@
     }
   ],
   "canonical_name": "setdiff1d",
+  "canonical_path": "setdiff1d",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -251,19 +252,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([1, 2, 3, 2, 4, 1])\n\nb = fnp.array([3, 4, 5, 6])\n\nfnp.setdiff1d(a, b)",
+    "code": "import flopscope as flops\n\na = flops.array([1, 2, 3, 2, 4, 1])\n\nb = flops.array([3, 4, 5, 6])\n\nflops.setdiff1d(a, b)",
     "output": "array([1, 2])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.setdiff1d",
+  "flopscope_ref": "flops.setdiff1d",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L442",
-  "href": "/docs/api/ops/setdiff1d/",
+  "href": "/docs/api/setdiff1d/",
+  "legacy_href": "/docs/api/ops/setdiff1d/",
   "module": "numpy",
   "name": "setdiff1d",
   "next": {
-    "href": "/docs/api/ops/setxor1d/",
-    "label": "fnp.setxor1d"
+    "href": "/docs/api/setxor1d/",
+    "label": "flops.setxor1d"
   },
   "notes": "Set difference; cost = (n+m)*ceil(log2(n+m)).",
   "notes_sections": [],
@@ -293,8 +295,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/select/",
-    "label": "fnp.select"
+    "href": "/docs/api/select/",
+    "label": "flops.select"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.setdiff1d.html",
@@ -310,7 +312,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.setdiff1d(ar1, ar2, assume_unique=False)",
+  "signature": "flops.setdiff1d(ar1, ar2, assume_unique=False)",
   "slug": "setdiff1d",
   "summary": "Find the set difference of two arrays.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L1177",

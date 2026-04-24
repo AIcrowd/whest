@@ -27,6 +27,7 @@
     }
   ],
   "canonical_name": "random.random",
+  "canonical_path": "random/random",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -38,28 +39,29 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.random",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L177",
-  "href": "/docs/api/ops/random-random/",
+  "flopscope_ref": "flops.random.random",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L233",
+  "href": "/docs/api/random/random/",
+  "legacy_href": "/docs/api/ops/random-random/",
   "module": "numpy.random",
   "name": "random.random",
   "next": {
-    "href": "/docs/api/ops/random-random_integers/",
-    "label": "fnp.random.random_integers"
+    "href": "/docs/api/random/random-integers/",
+    "label": "flops.random.random_integers"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
   "numpy_ref": "np.random.random",
   "parameters": [],
   "previous": {
-    "href": "/docs/api/ops/random-randn/",
-    "label": "fnp.random.randn"
+    "href": "/docs/api/random/randn/",
+    "label": "flops.random.randn"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.random.html",
   "returns": [],
   "see_also": [],
-  "signature": "fnp.random.random(size=None)",
+  "signature": "flops.random.random(size=None)",
   "slug": "random-random",
   "summary": "Return random floats in the half-open interval [0.0, 1.0). Alias for `random_sample` to ease forward-porting to the new random API.",
   "upstream_source_url": "",

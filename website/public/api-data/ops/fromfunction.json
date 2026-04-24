@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fromfunction/",
+  "detail_href": "/docs/api/fromfunction/",
   "detail_json_href": "/api-data/ops/fromfunction.json",
   "docs": {
     "sections": [
@@ -476,7 +476,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/indices",
-                "label": "fnp.indices",
+                "label": "flops.indices",
                 "original_target": "indices",
                 "role": "",
                 "target": "indices",
@@ -487,7 +487,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/meshgrid",
-                "label": "fnp.meshgrid",
+                "label": "flops.meshgrid",
                 "original_target": "meshgrid",
                 "role": "",
                 "target": "meshgrid",
@@ -544,12 +544,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fromfunction(lambda i, j: i, (2, 2), dtype=float)"
+                "text": "flops.fromfunction(lambda i, j: i, (2, 2), dtype=float)"
               },
               {
                 "kind": "output",
@@ -567,7 +567,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fromfunction(lambda i, j: j, (2, 2), dtype=float)"
+                "text": "flops.fromfunction(lambda i, j: j, (2, 2), dtype=float)"
               },
               {
                 "kind": "output",
@@ -585,7 +585,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fromfunction(lambda i, j: i == j, (3, 3), dtype=int)"
+                "text": "flops.fromfunction(lambda i, j: i == j, (3, 3), dtype=int)"
               },
               {
                 "kind": "output",
@@ -607,7 +607,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fromfunction(lambda i, j: i + j, (3, 3), dtype=int)"
+                "text": "flops.fromfunction(lambda i, j: i + j, (3, 3), dtype=int)"
               },
               {
                 "kind": "output",
@@ -633,12 +633,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.fromfunction",
+    "flopscope_ref": "flops.fromfunction",
     "module": "numpy",
     "name": "fromfunction",
     "notes": "Construct array by executing function over each coordinate. Cost: numel(output).",
     "numpy_ref": "np.fromfunction",
-    "signature": "fnp.fromfunction(function, shape, *, dtype=<class 'float'>, like=None, **kwargs)",
+    "signature": "flops.fromfunction(function, shape, *, dtype=<class 'float'>, like=None, **kwargs)",
     "status": "supported",
     "summary": "Construct an array by executing a function over each coordinate.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/positive/",
+  "detail_href": "/docs/api/positive/",
   "detail_json_href": "/api-data/ops/positive.json",
   "docs": {
     "sections": [
@@ -144,7 +144,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -154,12 +154,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = fnp.array(([1., -1.]))"
+                "text": "x1 = flops.array(([1., -1.]))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.positive(x1)"
+                "text": "flops.positive(x1)"
               },
               {
                 "kind": "output",
@@ -187,7 +187,7 @@
                 "href": "/docs/api/ops/positive",
                 "kind": "link",
                 "target": "positive",
-                "text": "fnp.positive"
+                "text": "flops.positive"
               },
               {
                 "kind": "text",
@@ -201,7 +201,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = fnp.array(([1., -1.]))"
+                "text": "x1 = flops.array(([1., -1.]))"
               },
               {
                 "kind": "input",
@@ -224,12 +224,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.positive",
+    "flopscope_ref": "flops.positive",
     "module": "numpy",
     "name": "positive",
     "notes": "Element-wise unary plus (copy with sign preserved).",
     "numpy_ref": "np.positive",
-    "signature": "fnp.positive(*args, **kwargs)",
+    "signature": "flops.positive(*args, **kwargs)",
     "status": "supported",
     "summary": "Numerical positive, element-wise.",
     "weight": 1.0

@@ -81,7 +81,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.logistic`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.logistic`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -186,7 +186,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "fnp.broadcast(loc, scale).size"
+                      "text": "flops.broadcast(loc, scale).size"
                     },
                     {
                       "kind": "text",
@@ -244,7 +244,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "fnp.broadcast(loc, scale).size"
+                  "text": "flops.broadcast(loc, scale).size"
                 },
                 {
                   "kind": "text",
@@ -431,7 +431,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = fnp.random.logistic(loc, scale, 10000)"
+              "text": "s = flops.random.logistic(loc, scale, 10000)"
             },
             {
               "kind": "input",
@@ -465,7 +465,7 @@
             {
               "kind": "input",
               "prompt": "...",
-              "text": "return fnp.exp((loc-x)/scale)/(scale*(1+fnp.exp((loc-x)/scale))**2)"
+              "text": "return flops.exp((loc-x)/scale)/(scale*(1+flops.exp((loc-x)/scale))**2)"
             },
             {
               "kind": "input",
@@ -490,6 +490,7 @@
     }
   ],
   "canonical_name": "random.logistic",
+  "canonical_path": "random/logistic",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -513,19 +514,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "loc, scale = 10, 1\n\ns = fnp.random.logistic(loc, scale, 10000)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, bins=50)\n\ndef logist(x, loc, scale):\n    return fnp.exp((loc-x)/scale)/(scale*(1+fnp.exp((loc-x)/scale))**2)\n\nlgst_val = logist(bins, loc, scale)\n\nplt.plot(bins, lgst_val * count.max() / lgst_val.max())\n\nplt.show()",
+    "code": "loc, scale = 10, 1\n\ns = flops.random.logistic(loc, scale, 10000)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, bins=50)\n\ndef logist(x, loc, scale):\n    return flops.exp((loc-x)/scale)/(scale*(1+flops.exp((loc-x)/scale))**2)\n\nlgst_val = logist(bins, loc, scale)\n\nplt.plot(bins, lgst_val * count.max() / lgst_val.max())\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.logistic",
+  "flopscope_ref": "flops.random.logistic",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-logistic/",
+  "href": "/docs/api/random/logistic/",
+  "legacy_href": "/docs/api/ops/random-logistic/",
   "module": "numpy.random",
   "name": "random.logistic",
   "next": {
-    "href": "/docs/api/ops/random-lognormal/",
-    "label": "fnp.random.lognormal"
+    "href": "/docs/api/random/lognormal/",
+    "label": "flops.random.lognormal"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -556,15 +558,15 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``loc`` and ``scale`` are both scalars.",
-        "Otherwise, ``fnp.broadcast(loc, scale).size`` samples are drawn."
+        "Otherwise, ``flops.broadcast(loc, scale).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-laplace/",
-    "label": "fnp.random.laplace"
+    "href": "/docs/api/random/laplace/",
+    "label": "flops.random.laplace"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.logistic.html",
@@ -611,7 +613,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.logistic(loc=0.0, scale=1.0, size=None)",
+  "signature": "flops.random.logistic(loc=0.0, scale=1.0, size=None)",
   "slug": "random-logistic",
   "summary": "Draw samples from a logistic distribution.",
   "upstream_source_url": "",

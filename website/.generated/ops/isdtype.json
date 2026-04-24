@@ -233,7 +233,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/issubdtype",
-              "label": "fnp.issubdtype",
+              "label": "flops.issubdtype",
               "original_target": "issubdtype",
               "role": "",
               "target": "issubdtype",
@@ -252,12 +252,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isdtype(fnp.float32, fnp.float64)"
+              "text": "flops.isdtype(flops.float32, flops.float64)"
             },
             {
               "kind": "output",
@@ -266,7 +266,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isdtype(fnp.float32, \"real floating\")"
+              "text": "flops.isdtype(flops.float32, \"real floating\")"
             },
             {
               "kind": "output",
@@ -275,7 +275,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.isdtype(fnp.complex128, (\"real floating\", \"complex floating\"))"
+              "text": "flops.isdtype(flops.complex128, (\"real floating\", \"complex floating\"))"
             },
             {
               "kind": "output",
@@ -289,6 +289,7 @@
     }
   ],
   "canonical_name": "isdtype",
+  "canonical_path": "isdtype",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -299,19 +300,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.isdtype(fnp.float32, fnp.float64)\n\nfnp.isdtype(fnp.float32, \"real floating\")\n\nfnp.isdtype(fnp.complex128, (\"real floating\", \"complex floating\"))",
+    "code": "import flopscope as flops\n\nflops.isdtype(flops.float32, flops.float64)\n\nflops.isdtype(flops.float32, \"real floating\")\n\nflops.isdtype(flops.complex128, (\"real floating\", \"complex floating\"))",
     "output": "False\n\nTrue\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.isdtype",
+  "flopscope_ref": "flops.isdtype",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1232",
-  "href": "/docs/api/ops/isdtype/",
+  "href": "/docs/api/isdtype/",
+  "legacy_href": "/docs/api/ops/isdtype/",
   "module": "numpy",
   "name": "isdtype",
   "next": {
-    "href": "/docs/api/ops/isfinite/",
-    "label": "fnp.isfinite"
+    "href": "/docs/api/isfinite/",
+    "label": "flops.isfinite"
   },
   "notes": "Return True if array or dtype is of specified kind (NumPy 2.x).",
   "notes_sections": [],
@@ -340,8 +342,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/iscomplexobj/",
-    "label": "fnp.iscomplexobj"
+    "href": "/docs/api/iscomplexobj/",
+    "label": "flops.iscomplexobj"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isdtype.html",
@@ -358,14 +360,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/issubdtype",
-      "label": "fnp.issubdtype",
+      "label": "flops.issubdtype",
       "original_target": "issubdtype",
       "role": "",
       "target": "issubdtype",
       "unresolved": false
     }
   ],
-  "signature": "fnp.isdtype(dtype, kind)",
+  "signature": "flops.isdtype(dtype, kind)",
   "slug": "isdtype",
   "summary": "Determine if a provided dtype is of a specified data type ``kind``.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numerictypes.py#L381",

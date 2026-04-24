@@ -405,7 +405,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/any",
-              "label": "fnp.any",
+              "label": "flops.any",
               "original_target": "any",
               "role": "",
               "target": "any",
@@ -441,7 +441,7 @@
           "content_blocks": [],
           "directive": "versionchanged",
           "options": [],
-          "raw_source": ".. versionchanged:: 2.0\n   Before NumPy 2.0, ``all`` did not return booleans for object dtype\n   input arrays.\n   This behavior is still available via ``fnp.logical_and.reduce``.",
+          "raw_source": ".. versionchanged:: 2.0\n   Before NumPy 2.0, ``all`` did not return booleans for object dtype\n   input arrays.\n   This behavior is still available via ``flops.logical_and.reduce``.",
           "supported": true,
           "type": "directive_block",
           "version": "2.0"
@@ -456,12 +456,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.all([[True,False],[True,True]])"
+              "text": "flops.all([[True,False],[True,True]])"
             },
             {
               "kind": "output",
@@ -475,7 +475,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.all([[True,False],[True,True]], axis=0)"
+              "text": "flops.all([[True,False],[True,True]], axis=0)"
             },
             {
               "kind": "output",
@@ -489,7 +489,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.all([-1, 4, 5])"
+              "text": "flops.all([-1, 4, 5])"
             },
             {
               "kind": "output",
@@ -503,7 +503,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.all([1.0, fnp.nan])"
+              "text": "flops.all([1.0, flops.nan])"
             },
             {
               "kind": "output",
@@ -517,7 +517,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.all([[True, True], [False, True]], where=[[True], [False]])"
+              "text": "flops.all([[True, True], [False, True]], where=[[True], [False]])"
             },
             {
               "kind": "output",
@@ -531,12 +531,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "o=fnp.array(False)"
+              "text": "o=flops.array(False)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "z=fnp.all([-1, 4, 5], out=o)"
+              "text": "z=flops.all([-1, 4, 5], out=o)"
             },
             {
               "kind": "input",
@@ -555,6 +555,7 @@
     }
   ],
   "canonical_name": "all",
+  "canonical_path": "all",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -572,24 +573,25 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.all([[True,False],[True,True]])\n\nfnp.all([[True,False],[True,True]], axis=0)\n\nfnp.all([-1, 4, 5])\n\nfnp.all([1.0, fnp.nan])\n\nfnp.all([[True, True], [False, True]], where=[[True], [False]])\n\no=fnp.array(False)\n\nz=fnp.all([-1, 4, 5], out=o)\n\nid(z), id(o), z",
+    "code": "import flopscope as flops\n\nflops.all([[True,False],[True,True]])\n\nflops.all([[True,False],[True,True]], axis=0)\n\nflops.all([-1, 4, 5])\n\nflops.all([1.0, flops.nan])\n\nflops.all([[True, True], [False, True]], where=[[True], [False]])\n\no=flops.array(False)\n\nz=flops.all([-1, 4, 5], out=o)\n\nid(z), id(o), z",
     "output": "False\n\narray([ True, False])\n\nTrue\n\nTrue\n\nTrue\n\n(28293632, 28293632, array(True)) # may vary",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.all",
+  "flopscope_ref": "flops.all",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/ops/all/",
+  "href": "/docs/api/all/",
+  "legacy_href": "/docs/api/ops/all/",
   "module": "numpy",
   "name": "all",
   "next": {
-    "href": "/docs/api/ops/allclose/",
-    "label": "fnp.allclose"
+    "href": "/docs/api/allclose/",
+    "label": "flops.allclose"
   },
   "notes": "Test whether all array elements are true.",
   "notes_sections": [
     "Not a Number (NaN), positive infinity and negative infinity evaluate to `True` because these are not equal to zero.",
-    ".. versionchanged:: 2.0 Before NumPy 2.0, ``all`` did not return booleans for object dtype input arrays. This behavior is still available via ``fnp.logical_and.reduce``."
+    ".. versionchanged:: 2.0 Before NumPy 2.0, ``all`` did not return booleans for object dtype input arrays. This behavior is still available via ``flops.logical_and.reduce``."
   ],
   "numpy_ref": "np.all",
   "parameters": [
@@ -641,7 +643,7 @@
     {
       "body": [
         "Elements to include in checking for all `True` values.",
-        "See `~fnp.ufunc.reduce` for details.",
+        "See `~flops.ufunc.reduce` for details.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -650,8 +652,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/add/",
-    "label": "fnp.add"
+    "href": "/docs/api/add/",
+    "label": "flops.add"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.all.html",
@@ -692,14 +694,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/any",
-      "label": "fnp.any",
+      "label": "flops.any",
       "original_target": "any",
       "role": "",
       "target": "any",
       "unresolved": false
     }
   ],
-  "signature": "fnp.all(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
+  "signature": "flops.all(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
   "slug": "all",
   "summary": "Test whether all array elements along a given axis evaluate to True.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2589",

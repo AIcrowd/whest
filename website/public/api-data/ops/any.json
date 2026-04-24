@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/any/",
+  "detail_href": "/docs/api/any/",
   "detail_json_href": "/api-data/ops/any.json",
   "docs": {
     "sections": [
@@ -447,7 +447,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/all",
-                "label": "fnp.all",
+                "label": "flops.all",
                 "original_target": "all",
                 "role": "",
                 "target": "all",
@@ -483,7 +483,7 @@
             "content_blocks": [],
             "directive": "versionchanged",
             "options": [],
-            "raw_source": ".. versionchanged:: 2.0\n   Before NumPy 2.0, ``any`` did not return booleans for object dtype\n   input arrays.\n   This behavior is still available via ``fnp.logical_or.reduce``.",
+            "raw_source": ".. versionchanged:: 2.0\n   Before NumPy 2.0, ``any`` did not return booleans for object dtype\n   input arrays.\n   This behavior is still available via ``flops.logical_or.reduce``.",
             "supported": true,
             "type": "directive_block",
             "version": "2.0"
@@ -498,12 +498,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.any([[True, False], [True, True]])"
+                "text": "flops.any([[True, False], [True, True]])"
               },
               {
                 "kind": "output",
@@ -517,7 +517,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.any([[True,  False, True ],"
+                "text": "flops.any([[True,  False, True ],"
               },
               {
                 "kind": "input",
@@ -536,7 +536,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.any([-1, 0, 5])"
+                "text": "flops.any([-1, 0, 5])"
               },
               {
                 "kind": "output",
@@ -550,7 +550,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.any([[fnp.nan], [fnp.inf]], axis=1, keepdims=True)"
+                "text": "flops.any([[flops.nan], [flops.inf]], axis=1, keepdims=True)"
               },
               {
                 "kind": "output",
@@ -568,7 +568,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.any([[True, False], [False, False]], where=[[False], [True]])"
+                "text": "flops.any([[True, False], [False, False]], where=[[False], [True]])"
               },
               {
                 "kind": "output",
@@ -582,7 +582,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, 0, 0],"
+                "text": "a = flops.array([[1, 0, 0],"
               },
               {
                 "kind": "input",
@@ -597,7 +597,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.any(a, axis=0)"
+                "text": "flops.any(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -606,7 +606,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.any(a, axis=1)"
+                "text": "flops.any(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -620,12 +620,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "o=fnp.array(False)"
+                "text": "o=flops.array(False)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "z=fnp.any([-1, 4, 5], out=o)"
+                "text": "z=flops.any([-1, 4, 5], out=o)"
               },
               {
                 "kind": "input",
@@ -671,12 +671,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "fnp.any",
+    "flopscope_ref": "flops.any",
     "module": "numpy",
     "name": "any",
     "notes": "Test whether any array element is true.",
     "numpy_ref": "np.any",
-    "signature": "fnp.any(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
+    "signature": "flops.any(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
     "status": "supported",
     "summary": "Test whether any array element along a given axis evaluates to True.",
     "weight": 1.0

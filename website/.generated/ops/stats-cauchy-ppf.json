@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.cauchy.ppf",
+  "canonical_path": "stats/cauchy/ppf",
   "category": "counted_custom",
   "cost_formula": "5n",
   "cost_formula_latex": "$5n$",
@@ -170,14 +171,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.stats.cauchy.ppf",
+  "flopscope_ref": "flops.stats.cauchy.ppf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_cauchy.py#L54",
-  "href": "/docs/api/ops/stats-cauchy-ppf/",
+  "href": "/docs/api/stats/cauchy/ppf/",
+  "legacy_href": "/docs/api/ops/stats-cauchy-ppf/",
   "module": "flopscope.stats",
   "name": "stats.cauchy.ppf",
   "next": {
-    "href": "/docs/api/ops/stats-expon-cdf/",
-    "label": "fnp.stats.expon.cdf"
+    "href": "/docs/api/stats/expon/cdf/",
+    "label": "flops.stats.expon.cdf"
   },
   "notes": "Cauchy PPF; cost = numel(input).",
   "notes_sections": [],
@@ -214,8 +216,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-cauchy-pdf/",
-    "label": "fnp.stats.cauchy.pdf"
+    "href": "/docs/api/stats/cauchy/pdf/",
+    "label": "flops.stats.cauchy.pdf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.cauchy.html",
@@ -229,7 +231,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.stats.cauchy.ppf(q, loc=0, scale=1)",
+  "signature": "flops.stats.cauchy.ppf(q, loc=0, scale=1)",
   "slug": "stats-cauchy-ppf",
   "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isnan/",
+  "detail_href": "/docs/api/isnan/",
   "detail_json_href": "/api-data/ops/isnan.json",
   "docs": {
     "sections": [
@@ -286,7 +286,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isinf",
-                "label": "fnp.isinf",
+                "label": "flops.isinf",
                 "original_target": "isinf",
                 "role": "",
                 "target": "isinf",
@@ -297,7 +297,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isneginf",
-                "label": "fnp.isneginf",
+                "label": "flops.isneginf",
                 "original_target": "isneginf",
                 "role": "",
                 "target": "isneginf",
@@ -308,7 +308,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isposinf",
-                "label": "fnp.isposinf",
+                "label": "flops.isposinf",
                 "original_target": "isposinf",
                 "role": "",
                 "target": "isposinf",
@@ -319,7 +319,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isfinite",
-                "label": "fnp.isfinite",
+                "label": "flops.isfinite",
                 "original_target": "isfinite",
                 "role": "",
                 "target": "isfinite",
@@ -363,12 +363,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isnan(fnp.nan)"
+                "text": "flops.isnan(flops.nan)"
               },
               {
                 "kind": "output",
@@ -377,7 +377,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isnan(fnp.inf)"
+                "text": "flops.isnan(flops.inf)"
               },
               {
                 "kind": "output",
@@ -386,7 +386,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isnan([fnp.log(-1.),1.,fnp.log(0)])"
+                "text": "flops.isnan([flops.log(-1.),1.,flops.log(0)])"
               },
               {
                 "kind": "output",
@@ -404,12 +404,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.isnan",
+    "flopscope_ref": "flops.isnan",
     "module": "numpy",
     "name": "isnan",
     "notes": "Test for NaN element-wise. Cost: numel(input).",
     "numpy_ref": "np.isnan",
-    "signature": "fnp.isnan(*args, **kwargs)",
+    "signature": "flops.isnan(*args, **kwargs)",
     "status": "supported",
     "summary": "Test element-wise for NaN and return result as a boolean array.",
     "weight": 1.0

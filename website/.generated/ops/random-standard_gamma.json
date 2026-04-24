@@ -81,7 +81,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.standard_gamma`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~flops.random.Generator.standard_gamma`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -159,7 +159,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "fnp.array(shape).size"
+                      "text": "flops.array(shape).size"
                     },
                     {
                       "kind": "text",
@@ -212,7 +212,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "fnp.array(shape).size"
+                  "text": "flops.array(shape).size"
                 },
                 {
                   "kind": "text",
@@ -402,7 +402,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = fnp.random.standard_gamma(shape, 1000000)"
+              "text": "s = flops.random.standard_gamma(shape, 1000000)"
             }
           ],
           "type": "doctest_block"
@@ -436,7 +436,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = bins**(shape-1) * ((fnp.exp(-bins/scale))/  # doctest: +SKIP"
+              "text": "y = bins**(shape-1) * ((flops.exp(-bins/scale))/  # doctest: +SKIP"
             },
             {
               "kind": "input",
@@ -461,6 +461,7 @@
     }
   ],
   "canonical_name": "random.standard_gamma",
+  "canonical_path": "random/standard-gamma",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -480,19 +481,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "shape, scale = 2., 1. # mean and width\n\ns = fnp.random.standard_gamma(shape, 1000000)\n\nimport matplotlib.pyplot as plt\n\nimport scipy.special as sps  # doctest: +SKIP\n\ncount, bins, ignored = plt.hist(s, 50, density=True)\n\ny = bins**(shape-1) * ((fnp.exp(-bins/scale))/  # doctest: +SKIP\n                      (sps.gamma(shape) * scale**shape))\n\nplt.plot(bins, y, linewidth=2, color='r')  # doctest: +SKIP\n\nplt.show()",
+    "code": "shape, scale = 2., 1. # mean and width\n\ns = flops.random.standard_gamma(shape, 1000000)\n\nimport matplotlib.pyplot as plt\n\nimport scipy.special as sps  # doctest: +SKIP\n\ncount, bins, ignored = plt.hist(s, 50, density=True)\n\ny = bins**(shape-1) * ((flops.exp(-bins/scale))/  # doctest: +SKIP\n                      (sps.gamma(shape) * scale**shape))\n\nplt.plot(bins, y, linewidth=2, color='r')  # doctest: +SKIP\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.standard_gamma",
+  "flopscope_ref": "flops.random.standard_gamma",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-standard_gamma/",
+  "href": "/docs/api/random/standard-gamma/",
+  "legacy_href": "/docs/api/ops/random-standard_gamma/",
   "module": "numpy.random",
   "name": "random.standard_gamma",
   "next": {
-    "href": "/docs/api/ops/random-standard_normal/",
-    "label": "fnp.random.standard_normal"
+    "href": "/docs/api/random/standard-normal/",
+    "label": "flops.random.standard_normal"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -515,15 +517,15 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``shape`` is a scalar.  Otherwise,",
-        "``fnp.array(shape).size`` samples are drawn."
+        "``flops.array(shape).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_exponential/",
-    "label": "fnp.random.standard_exponential"
+    "href": "/docs/api/random/standard-exponential/",
+    "label": "flops.random.standard_exponential"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_gamma.html",
@@ -570,7 +572,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.standard_gamma(shape, size=None)",
+  "signature": "flops.random.standard_gamma(shape, size=None)",
   "slug": "random-standard_gamma",
   "summary": "Draw samples from a standard Gamma distribution.",
   "upstream_source_url": "",

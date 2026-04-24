@@ -38,7 +38,7 @@
         },
         {
           "language": null,
-          "text": "fnp.unique(x, equal_nan=False)",
+          "text": "flops.unique(x, equal_nan=False)",
           "type": "literal_block"
         }
       ],
@@ -124,7 +124,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/unique",
-              "label": "fnp.unique",
+              "label": "flops.unique",
               "original_target": "unique",
               "role": "",
               "target": "unique",
@@ -143,12 +143,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.unique_values([1, 1, 2])"
+              "text": "flops.unique_values([1, 1, 2])"
             },
             {
               "kind": "output",
@@ -162,6 +162,7 @@
     }
   ],
   "canonical_name": "unique_values",
+  "canonical_path": "unique-values",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -172,19 +173,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.unique_values([1, 1, 2])",
+    "code": "import flopscope as flops\n\nflops.unique_values([1, 1, 2])",
     "output": "array([1, 2])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.unique_values",
+  "flopscope_ref": "flops.unique_values",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L337",
-  "href": "/docs/api/ops/unique_values/",
+  "href": "/docs/api/unique-values/",
+  "legacy_href": "/docs/api/ops/unique_values/",
   "module": "numpy",
   "name": "unique_values",
   "next": {
-    "href": "/docs/api/ops/unpackbits/",
-    "label": "fnp.unpackbits"
+    "href": "/docs/api/unpackbits/",
+    "label": "flops.unpackbits"
   },
   "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
   "notes_sections": [],
@@ -199,8 +201,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unique_inverse/",
-    "label": "fnp.unique_inverse"
+    "href": "/docs/api/unique-inverse/",
+    "label": "flops.unique_inverse"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unique_values.html",
@@ -224,14 +226,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/unique",
-      "label": "fnp.unique",
+      "label": "flops.unique",
       "original_target": "unique",
       "role": "",
       "target": "unique",
       "unresolved": false
     }
   ],
-  "signature": "fnp.unique_values(x, /)",
+  "signature": "flops.unique_values(x, /)",
   "slug": "unique_values",
   "summary": "Returns the unique elements of an input array `x`.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L573",

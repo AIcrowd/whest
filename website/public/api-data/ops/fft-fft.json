@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fft-fft/",
+  "detail_href": "/docs/api/fft/fft/",
   "detail_json_href": "/api-data/ops/fft-fft.json",
   "docs": {
     "sections": [
@@ -170,7 +170,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "fnp.fft"
+                        "text": "flops.fft"
                       },
                       {
                         "kind": "text",
@@ -201,7 +201,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "fnp.fft"
+                    "text": "flops.fft"
                   },
                   {
                     "kind": "text",
@@ -394,7 +394,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
                 "href": "",
-                "label": "fnp.fft",
+                "label": "flops.fft",
                 "original_target": "numpy.fft",
                 "role": "",
                 "target": "fft",
@@ -540,7 +540,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "fnp.fft"
+                "text": "flops.fft"
               },
               {
                 "kind": "text",
@@ -569,12 +569,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fft.fft(fnp.exp(2j * fnp.pi * fnp.arange(8) / 8))"
+                "text": "flops.fft.fft(flops.exp(2j * flops.pi * flops.arange(8) / 8))"
               },
               {
                 "kind": "output",
@@ -606,7 +606,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "fnp.fft"
+                "text": "flops.fft"
               },
               {
                 "kind": "text",
@@ -625,17 +625,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "t = fnp.arange(256)"
+                "text": "t = flops.arange(256)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "sp = fnp.fft.fft(fnp.sin(t))"
+                "text": "sp = flops.fft.fft(flops.sin(t))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freq = fnp.fft.fftfreq(t.shape[-1])"
+                "text": "freq = flops.fft.fftfreq(t.shape[-1])"
               },
               {
                 "kind": "input",
@@ -663,12 +663,12 @@
     "category": "counted_custom",
     "cost_formula": "5n * ceil(log2(n))",
     "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
-    "flopscope_ref": "fnp.fft.fft",
+    "flopscope_ref": "flops.fft.fft",
     "module": "numpy.fft",
     "name": "fft.fft",
     "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.fft",
-    "signature": "fnp.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "flops.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the one-dimensional discrete Fourier Transform.",
     "weight": 1.0

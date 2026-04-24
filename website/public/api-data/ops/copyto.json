@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/copyto/",
+  "detail_href": "/docs/api/copyto/",
   "detail_json_href": "/api-data/ops/copyto.json",
   "docs": {
     "sections": [
@@ -275,12 +275,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = fnp.array([4, 5, 6])"
+                "text": "A = flops.array([4, 5, 6])"
               },
               {
                 "kind": "input",
@@ -290,7 +290,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.copyto(A, B)"
+                "text": "flops.copyto(A, B)"
               },
               {
                 "kind": "input",
@@ -309,7 +309,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = fnp.array([[1, 2, 3], [4, 5, 6]])"
+                "text": "A = flops.array([[1, 2, 3], [4, 5, 6]])"
               },
               {
                 "kind": "input",
@@ -319,7 +319,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.copyto(A, B)"
+                "text": "flops.copyto(A, B)"
               },
               {
                 "kind": "input",
@@ -346,12 +346,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.copyto",
+    "flopscope_ref": "flops.copyto",
     "module": "numpy",
     "name": "copyto",
     "notes": "Copy values from src to dst array. Cost: num copied.",
     "numpy_ref": "np.copyto",
-    "signature": "fnp.copyto(dst, src, casting='same_kind', where=True)",
+    "signature": "flops.copyto(dst, src, casting='same_kind', where=True)",
     "status": "supported",
     "summary": "Copies values from one array to another, broadcasting as necessary.",
     "weight": 1.0

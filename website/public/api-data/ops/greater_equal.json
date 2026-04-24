@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/greater_equal/",
+  "detail_href": "/docs/api/greater-equal/",
   "detail_json_href": "/api-data/ops/greater_equal.json",
   "docs": {
     "sections": [
@@ -350,7 +350,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/greater",
-                "label": "fnp.greater",
+                "label": "flops.greater",
                 "original_target": "greater",
                 "role": "",
                 "target": "greater",
@@ -361,7 +361,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/less",
-                "label": "fnp.less",
+                "label": "flops.less",
                 "original_target": "less",
                 "role": "",
                 "target": "less",
@@ -372,7 +372,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/less_equal",
-                "label": "fnp.less_equal",
+                "label": "flops.less_equal",
                 "original_target": "less_equal",
                 "role": "",
                 "target": "less_equal",
@@ -383,7 +383,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/equal",
-                "label": "fnp.equal",
+                "label": "flops.equal",
                 "original_target": "equal",
                 "role": "",
                 "target": "equal",
@@ -394,7 +394,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/not_equal",
-                "label": "fnp.not_equal",
+                "label": "flops.not_equal",
                 "original_target": "not_equal",
                 "role": "",
                 "target": "not_equal",
@@ -413,12 +413,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.greater_equal([4, 2, 1], [2, 2, 2])"
+                "text": "flops.greater_equal([4, 2, 1], [2, 2, 2])"
               },
               {
                 "kind": "output",
@@ -446,7 +446,7 @@
                 "href": "/docs/api/ops/greater_equal",
                 "kind": "link",
                 "target": "greater_equal",
-                "text": "fnp.greater_equal"
+                "text": "flops.greater_equal"
               },
               {
                 "kind": "text",
@@ -460,12 +460,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([4, 2, 1])"
+                "text": "a = flops.array([4, 2, 1])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.array([2, 2, 2])"
+                "text": "b = flops.array([2, 2, 2])"
               },
               {
                 "kind": "input",
@@ -488,12 +488,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.greater_equal",
+    "flopscope_ref": "flops.greater_equal",
     "module": "numpy",
     "name": "greater_equal",
     "notes": "Element-wise x1 >= x2.",
     "numpy_ref": "np.greater_equal",
-    "signature": "fnp.greater_equal(*args, **kwargs)",
+    "signature": "flops.greater_equal(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the truth value of (x1 >= x2) element-wise.",
     "weight": 1.0

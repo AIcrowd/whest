@@ -364,7 +364,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/absolute",
-              "label": "fnp.absolute",
+              "label": "flops.absolute",
               "original_target": "absolute",
               "role": "",
               "target": "absolute",
@@ -383,12 +383,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.fabs(-1)"
+              "text": "flops.fabs(-1)"
             },
             {
               "kind": "output",
@@ -397,7 +397,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.fabs([-1.2, 1.2])"
+              "text": "flops.fabs([-1.2, 1.2])"
             },
             {
               "kind": "output",
@@ -411,6 +411,7 @@
     }
   ],
   "canonical_name": "fabs",
+  "canonical_path": "fabs",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -428,19 +429,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.fabs(-1)\n\nfnp.fabs([-1.2, 1.2])",
+    "code": "import flopscope as flops\n\nflops.fabs(-1)\n\nflops.fabs([-1.2, 1.2])",
     "output": "1.0\n\narray([ 1.2,  1.2])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.fabs",
+  "flopscope_ref": "flops.fabs",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/fabs/",
+  "href": "/docs/api/fabs/",
+  "legacy_href": "/docs/api/ops/fabs/",
   "module": "numpy",
   "name": "fabs",
   "next": {
-    "href": "/docs/api/ops/fft-fft/",
-    "label": "fnp.fft.fft"
+    "href": "/docs/api/fft/fft/",
+    "label": "flops.fft.fft"
   },
   "notes": "Element-wise absolute value (always float).",
   "notes_sections": [],
@@ -486,8 +488,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/eye/",
-    "label": "fnp.eye"
+    "href": "/docs/api/eye/",
+    "label": "flops.eye"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fabs.html",
@@ -520,14 +522,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/absolute",
-      "label": "fnp.absolute",
+      "label": "flops.absolute",
       "original_target": "absolute",
       "role": "",
       "target": "absolute",
       "unresolved": false
     }
   ],
-  "signature": "fnp.fabs(*args, **kwargs)",
+  "signature": "flops.fabs(*args, **kwargs)",
   "slug": "fabs",
   "summary": "Compute the absolute values element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

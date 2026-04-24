@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nancumsum/",
+  "detail_href": "/docs/api/nancumsum/",
   "detail_json_href": "/api-data/ops/nancumsum.json",
   "docs": {
     "sections": [
@@ -337,7 +337,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/cumsum",
-                "label": "fnp.cumsum",
+                "label": "flops.cumsum",
                 "original_target": "numpy.cumsum",
                 "role": "",
                 "target": "cumsum",
@@ -353,7 +353,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/isnan",
-                "label": "fnp.isnan",
+                "label": "flops.isnan",
                 "original_target": "isnan",
                 "role": "",
                 "target": "isnan",
@@ -372,12 +372,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nancumsum(1)"
+                "text": "flops.nancumsum(1)"
               },
               {
                 "kind": "output",
@@ -386,7 +386,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nancumsum([1])"
+                "text": "flops.nancumsum([1])"
               },
               {
                 "kind": "output",
@@ -395,7 +395,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nancumsum([1, fnp.nan])"
+                "text": "flops.nancumsum([1, flops.nan])"
               },
               {
                 "kind": "output",
@@ -404,12 +404,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, 2], [3, fnp.nan]])"
+                "text": "a = flops.array([[1, 2], [3, flops.nan]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nancumsum(a)"
+                "text": "flops.nancumsum(a)"
               },
               {
                 "kind": "output",
@@ -418,7 +418,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nancumsum(a, axis=0)"
+                "text": "flops.nancumsum(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -431,7 +431,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nancumsum(a, axis=1)"
+                "text": "flops.nancumsum(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -453,12 +453,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "fnp.nancumsum",
+    "flopscope_ref": "flops.nancumsum",
     "module": "numpy",
     "name": "nancumsum",
     "notes": "Cumulative sum ignoring NaNs.",
     "numpy_ref": "np.nancumsum",
-    "signature": "fnp.nancumsum(a, axis=None, dtype=None, out=None)",
+    "signature": "flops.nancumsum(a, axis=None, dtype=None, out=None)",
     "status": "supported",
     "summary": "Return the cumulative sum of array elements over a given axis treating Not a Numbers (NaNs) as zero.  The cumulative sum does not change when NaNs are encountered and leading NaNs are replaced by zeros.",
     "weight": 1.0

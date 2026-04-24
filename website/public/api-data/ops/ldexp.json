@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/ldexp/",
+  "detail_href": "/docs/api/ldexp/",
   "detail_json_href": "/api-data/ops/ldexp.json",
   "docs": {
     "sections": [
@@ -402,7 +402,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/frexp",
-                "label": "fnp.frexp",
+                "label": "flops.frexp",
                 "original_target": "frexp",
                 "role": "",
                 "target": "frexp",
@@ -470,12 +470,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.ldexp(5, fnp.arange(4))"
+                "text": "flops.ldexp(5, flops.arange(4))"
               },
               {
                 "kind": "output",
@@ -489,12 +489,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(6)"
+                "text": "x = flops.arange(6)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.ldexp(*fnp.frexp(x))"
+                "text": "flops.ldexp(*flops.frexp(x))"
               },
               {
                 "kind": "output",
@@ -512,12 +512,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.ldexp",
+    "flopscope_ref": "flops.ldexp",
     "module": "numpy",
     "name": "ldexp",
     "notes": "Return x1 * 2**x2 element-wise.",
     "numpy_ref": "np.ldexp",
-    "signature": "fnp.ldexp(*args, **kwargs)",
+    "signature": "flops.ldexp(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns x1 * 2**x2, element-wise.",
     "weight": 1.0

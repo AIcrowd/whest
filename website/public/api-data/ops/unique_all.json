@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/unique_all/",
+  "detail_href": "/docs/api/unique-all/",
   "detail_json_href": "/api-data/ops/unique_all.json",
   "docs": {
     "sections": [
@@ -30,7 +30,7 @@
           },
           {
             "language": null,
-            "text": "fnp.unique(x, return_index=True, return_inverse=True,\n          return_counts=True, equal_nan=False)",
+            "text": "flops.unique(x, return_index=True, return_inverse=True,\n          return_counts=True, equal_nan=False)",
             "type": "literal_block"
           },
           {
@@ -191,7 +191,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/unique",
-                "label": "fnp.unique",
+                "label": "flops.unique",
                 "original_target": "unique",
                 "role": "",
                 "target": "unique",
@@ -210,7 +210,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -220,7 +220,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "uniq = fnp.unique_all(x)"
+                "text": "uniq = flops.unique_all(x)"
               },
               {
                 "kind": "input",
@@ -270,12 +270,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.unique_all",
+    "flopscope_ref": "flops.unique_all",
     "module": "numpy",
     "name": "unique_all",
     "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.unique_all",
-    "signature": "fnp.unique_all(x, /)",
+    "signature": "flops.unique_all(x, /)",
     "status": "supported",
     "summary": "Find the unique elements of an array, and counts, inverse, and indices.",
     "weight": 1.0

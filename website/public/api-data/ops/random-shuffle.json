@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-shuffle/",
+  "detail_href": "/docs/api/random/shuffle/",
   "detail_json_href": "/api-data/ops/random-shuffle.json",
   "docs": {
     "sections": [
@@ -81,7 +81,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.shuffle`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.shuffle`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -172,12 +172,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = fnp.arange(10)"
+                "text": "arr = flops.arange(10)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.random.shuffle(arr)"
+                "text": "flops.random.shuffle(arr)"
               },
               {
                 "kind": "input",
@@ -205,12 +205,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = fnp.arange(9).reshape((3, 3))"
+                "text": "arr = flops.arange(9).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.random.shuffle(arr)"
+                "text": "flops.random.shuffle(arr)"
               },
               {
                 "kind": "input",
@@ -241,12 +241,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.shuffle",
+    "flopscope_ref": "flops.random.shuffle",
     "module": "numpy.random",
     "name": "random.shuffle",
     "notes": "Shuffle; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.random.shuffle",
-    "signature": "fnp.random.shuffle(x)",
+    "signature": "flops.random.shuffle(x)",
     "status": "supported",
     "summary": "Modify a sequence in-place by shuffling its contents.",
     "weight": 1.0
@@ -254,7 +254,7 @@
   "schema_version": 1,
   "slug": "random-shuffle",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L223",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L279",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.shuffle.html"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/insert/",
+  "detail_href": "/docs/api/insert/",
   "detail_json_href": "/api-data/ops/insert.json",
   "docs": {
     "sections": [
@@ -452,7 +452,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/append",
-                "label": "fnp.append",
+                "label": "flops.append",
                 "original_target": "append",
                 "role": "",
                 "target": "append",
@@ -468,7 +468,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/concatenate",
-                "label": "fnp.concatenate",
+                "label": "flops.concatenate",
                 "original_target": "concatenate",
                 "role": "",
                 "target": "concatenate",
@@ -484,7 +484,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/delete",
-                "label": "fnp.delete",
+                "label": "flops.delete",
                 "original_target": "delete",
                 "role": "",
                 "target": "delete",
@@ -565,12 +565,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.arange(6).reshape(3, 2)"
+                "text": "a = flops.arange(6).reshape(3, 2)"
               },
               {
                 "kind": "input",
@@ -592,7 +592,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.insert(a, 1, 6)"
+                "text": "flops.insert(a, 1, 6)"
               },
               {
                 "kind": "output",
@@ -601,7 +601,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.insert(a, 1, 6, axis=1)"
+                "text": "flops.insert(a, 1, 6, axis=1)"
               },
               {
                 "kind": "output",
@@ -648,7 +648,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.insert(a, [1], [[7],[8],[9]], axis=1)"
+                "text": "flops.insert(a, [1], [[7],[8],[9]], axis=1)"
               },
               {
                 "kind": "output",
@@ -665,7 +665,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.insert(a, 1, [[7],[8],[9]], axis=1)"
+                "text": "flops.insert(a, 1, [[7],[8],[9]], axis=1)"
               },
               {
                 "kind": "output",
@@ -682,12 +682,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equal(fnp.insert(a, 1, [7, 8, 9], axis=1),"
+                "text": "flops.array_equal(flops.insert(a, 1, [7, 8, 9], axis=1),"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "fnp.insert(a, [1], [[7],[8],[9]], axis=1))"
+                "text": "flops.insert(a, [1], [[7],[8],[9]], axis=1))"
               },
               {
                 "kind": "output",
@@ -715,7 +715,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.insert(b, [2, 2], [6, 7])"
+                "text": "flops.insert(b, [2, 2], [6, 7])"
               },
               {
                 "kind": "output",
@@ -729,7 +729,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.insert(b, slice(2, 4), [7, 8])"
+                "text": "flops.insert(b, slice(2, 4), [7, 8])"
               },
               {
                 "kind": "output",
@@ -743,7 +743,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.insert(b, [2, 2], [7.13, False]) # type casting"
+                "text": "flops.insert(b, [2, 2], [7.13, False]) # type casting"
               },
               {
                 "kind": "output",
@@ -757,7 +757,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(8).reshape(2, 4)"
+                "text": "x = flops.arange(8).reshape(2, 4)"
               },
               {
                 "kind": "input",
@@ -767,7 +767,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.insert(x, idx, 999, axis=1)"
+                "text": "flops.insert(x, idx, 999, axis=1)"
               },
               {
                 "kind": "output",
@@ -789,12 +789,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.insert",
+    "flopscope_ref": "flops.insert",
     "module": "numpy",
     "name": "insert",
     "notes": "Insert values along axis before given indices. Cost: numel(values).",
     "numpy_ref": "np.insert",
-    "signature": "fnp.insert(arr, obj, values, axis=None)",
+    "signature": "flops.insert(arr, obj, values, axis=None)",
     "status": "supported",
     "summary": "Insert values along the given axis before the given indices.",
     "weight": 4.0

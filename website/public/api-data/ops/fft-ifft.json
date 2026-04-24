@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fft-ifft/",
+  "detail_href": "/docs/api/fft/ifft/",
   "detail_json_href": "/api-data/ops/fft-ifft.json",
   "docs": {
     "sections": [
@@ -54,7 +54,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "fnp.fft"
+                "text": "flops.fft"
               },
               {
                 "kind": "text",
@@ -156,7 +156,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "fnp.fft"
+                "text": "flops.fft"
               },
               {
                 "kind": "text",
@@ -299,7 +299,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "fnp.fft"
+                        "text": "flops.fft"
                       },
                       {
                         "kind": "text",
@@ -330,7 +330,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "fnp.fft"
+                    "text": "flops.fft"
                   },
                   {
                     "kind": "text",
@@ -523,7 +523,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
                 "href": "",
-                "label": "fnp.fft",
+                "label": "flops.fft",
                 "original_target": "numpy.fft",
                 "role": "",
                 "target": "fft",
@@ -628,12 +628,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.fft.ifft([0, 4, 0, 0])"
+                "text": "flops.fft.ifft([0, 4, 0, 0])"
               },
               {
                 "kind": "output",
@@ -661,22 +661,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "t = fnp.arange(400)"
+                "text": "t = flops.arange(400)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "n = fnp.zeros((400,), dtype=complex)"
+                "text": "n = flops.zeros((400,), dtype=complex)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "n[40:60] = fnp.exp(1j*fnp.random.uniform(0, 2*fnp.pi, (20,)))"
+                "text": "n[40:60] = flops.exp(1j*flops.random.uniform(0, 2*flops.pi, (20,)))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = fnp.fft.ifft(n)"
+                "text": "s = flops.fft.ifft(n)"
               },
               {
                 "kind": "input",
@@ -722,12 +722,12 @@
     "category": "counted_custom",
     "cost_formula": "5n * ceil(log2(n))",
     "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
-    "flopscope_ref": "fnp.fft.ifft",
+    "flopscope_ref": "flops.fft.ifft",
     "module": "numpy.fft",
     "name": "fft.ifft",
     "notes": "Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.ifft",
-    "signature": "fnp.fft.ifft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "flops.fft.ifft(a, n=None, axis=-1, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the one-dimensional inverse discrete Fourier Transform.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-truncnorm-cdf/",
+  "detail_href": "/docs/api/stats/truncnorm/cdf/",
   "detail_json_href": "/api-data/ops/stats-truncnorm-cdf.json",
   "docs": {
     "sections": [
@@ -163,12 +163,12 @@
     "category": "counted_custom",
     "cost_formula": "30n",
     "cost_formula_latex": "$30n$",
-    "flopscope_ref": "fnp.stats.truncnorm.cdf",
+    "flopscope_ref": "flops.stats.truncnorm.cdf",
     "module": "flopscope.stats",
     "name": "stats.truncnorm.cdf",
     "notes": "Truncated normal CDF; cost = numel(input).",
     "numpy_ref": "np.stats.truncnorm.cdf",
-    "signature": "fnp.stats.truncnorm.cdf(x, a, b, loc=0, scale=1)",
+    "signature": "flops.stats.truncnorm.cdf(x, a, b, loc=0, scale=1)",
     "status": "supported",
     "summary": "Cumulative distribution function of the given RV.",
     "weight": 16.0

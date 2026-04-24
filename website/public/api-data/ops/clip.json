@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/clip/",
+  "detail_href": "/docs/api/clip/",
   "detail_json_href": "/api-data/ops/clip.json",
   "docs": {
     "sections": [
@@ -44,7 +44,7 @@
               },
               {
                 "kind": "code",
-                "text": "fnp.minimum(a_max, fnp.maximum(a, a_min))"
+                "text": "flops.minimum(a_max, flops.maximum(a, a_min))"
               },
               {
                 "kind": "text",
@@ -646,12 +646,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.arange(10)"
+                "text": "a = flops.arange(10)"
               },
               {
                 "kind": "input",
@@ -665,7 +665,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.clip(a, 1, 8)"
+                "text": "flops.clip(a, 1, 8)"
               },
               {
                 "kind": "output",
@@ -674,7 +674,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.clip(a, 8, 1)"
+                "text": "flops.clip(a, 8, 1)"
               },
               {
                 "kind": "output",
@@ -683,7 +683,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.clip(a, 3, 6, out=a)"
+                "text": "flops.clip(a, 3, 6, out=a)"
               },
               {
                 "kind": "output",
@@ -701,7 +701,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.arange(10)"
+                "text": "a = flops.arange(10)"
               },
               {
                 "kind": "input",
@@ -715,7 +715,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)"
+                "text": "flops.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)"
               },
               {
                 "kind": "output",
@@ -733,12 +733,12 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "fnp.clip",
+    "flopscope_ref": "flops.clip",
     "module": "numpy",
     "name": "clip",
     "notes": "Clip array to [a_min, a_max] element-wise.",
     "numpy_ref": "np.clip",
-    "signature": "fnp.clip(a, a_min=<no value>, a_max=<no value>, out=None, *, min=<no value>, max=<no value>, **kwargs)",
+    "signature": "flops.clip(a, a_min=<no value>, a_max=<no value>, out=None, *, min=<no value>, max=<no value>, **kwargs)",
     "status": "supported",
     "summary": "Clip (limit) the values in an array.",
     "weight": 1.0

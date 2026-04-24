@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isdtype/",
+  "detail_href": "/docs/api/isdtype/",
   "detail_json_href": "/api-data/ops/isdtype.json",
   "docs": {
     "sections": [
@@ -233,7 +233,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/issubdtype",
-                "label": "fnp.issubdtype",
+                "label": "flops.issubdtype",
                 "original_target": "issubdtype",
                 "role": "",
                 "target": "issubdtype",
@@ -252,12 +252,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isdtype(fnp.float32, fnp.float64)"
+                "text": "flops.isdtype(flops.float32, flops.float64)"
               },
               {
                 "kind": "output",
@@ -266,7 +266,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isdtype(fnp.float32, \"real floating\")"
+                "text": "flops.isdtype(flops.float32, \"real floating\")"
               },
               {
                 "kind": "output",
@@ -275,7 +275,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.isdtype(fnp.complex128, (\"real floating\", \"complex floating\"))"
+                "text": "flops.isdtype(flops.complex128, (\"real floating\", \"complex floating\"))"
               },
               {
                 "kind": "output",
@@ -293,12 +293,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.isdtype",
+    "flopscope_ref": "flops.isdtype",
     "module": "numpy",
     "name": "isdtype",
     "notes": "Return True if array or dtype is of specified kind (NumPy 2.x).",
     "numpy_ref": "np.isdtype",
-    "signature": "fnp.isdtype(dtype, kind)",
+    "signature": "flops.isdtype(dtype, kind)",
     "status": "supported",
     "summary": "Determine if a provided dtype is of a specified data type ``kind``.",
     "weight": 0.0

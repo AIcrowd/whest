@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/matvec/",
+  "detail_href": "/docs/api/matvec/",
   "detail_json_href": "/api-data/ops/matvec.json",
   "docs": {
     "sections": [
@@ -98,7 +98,7 @@
               },
               {
                 "kind": "code",
-                "text": "fnp.vecmat(x2, x1.mT)"
+                "text": "flops.vecmat(x2, x1.mT)"
               },
               {
                 "kind": "text",
@@ -382,7 +382,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vecdot",
-                "label": "fnp.vecdot",
+                "label": "flops.vecdot",
                 "original_target": "vecdot",
                 "role": "",
                 "target": "vecdot",
@@ -398,7 +398,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vecmat",
-                "label": "fnp.vecmat",
+                "label": "flops.vecmat",
                 "original_target": "vecmat",
                 "role": "",
                 "target": "vecmat",
@@ -414,7 +414,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/matmul",
-                "label": "fnp.matmul",
+                "label": "flops.matmul",
                 "original_target": "matmul",
                 "role": "",
                 "target": "matmul",
@@ -430,7 +430,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/einsum",
-                "label": "fnp.einsum",
+                "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
@@ -458,7 +458,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[0., 1., 0.],"
+                "text": "a = flops.array([[0., 1., 0.],"
               },
               {
                 "kind": "input",
@@ -473,7 +473,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "v = fnp.array([[1., 0., 0.],"
+                "text": "v = flops.array([[1., 0., 0.],"
               },
               {
                 "kind": "input",
@@ -493,7 +493,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.matvec(a, v)"
+                "text": "flops.matvec(a, v)"
               },
               {
                 "kind": "output",
@@ -523,12 +523,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.matvec",
+    "flopscope_ref": "flops.matvec",
     "module": "numpy",
     "name": "matvec",
     "notes": "Matrix-vector product. Cost = output_size * contracted_axis.",
     "numpy_ref": "np.matvec",
-    "signature": "fnp.matvec(a, b, **kwargs)",
+    "signature": "flops.matvec(a, b, **kwargs)",
     "status": "supported",
     "summary": "Matrix-vector dot product of two arrays.",
     "weight": 1.0

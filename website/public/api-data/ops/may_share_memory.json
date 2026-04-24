@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/may_share_memory/",
+  "detail_href": "/docs/api/may-share-memory/",
   "detail_json_href": "/api-data/ops/may_share_memory.json",
   "docs": {
     "sections": [
@@ -174,7 +174,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/shares_memory",
-                "label": "fnp.shares_memory",
+                "label": "flops.shares_memory",
                 "original_target": "shares_memory",
                 "role": "",
                 "target": "shares_memory",
@@ -193,12 +193,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.may_share_memory(fnp.array([1,2]), fnp.array([5,8,9]))"
+                "text": "flops.may_share_memory(flops.array([1,2]), flops.array([5,8,9]))"
               },
               {
                 "kind": "output",
@@ -207,12 +207,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.zeros([3, 4])"
+                "text": "x = flops.zeros([3, 4])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.may_share_memory(x[:,0], x[:,1])"
+                "text": "flops.may_share_memory(x[:,0], x[:,1])"
               },
               {
                 "kind": "output",
@@ -230,12 +230,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.may_share_memory",
+    "flopscope_ref": "flops.may_share_memory",
     "module": "numpy",
     "name": "may_share_memory",
     "notes": "Determine if two arrays might share memory.",
     "numpy_ref": "np.may_share_memory",
-    "signature": "fnp.may_share_memory(*args, **kwargs)",
+    "signature": "flops.may_share_memory(*args, **kwargs)",
     "status": "supported",
     "summary": "Determine if two arrays might share memory",
     "weight": 0.0

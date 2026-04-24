@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linspace/",
+  "detail_href": "/docs/api/linspace/",
   "detail_json_href": "/api-data/ops/linspace.json",
   "docs": {
     "sections": [
@@ -66,7 +66,7 @@
             "content_blocks": [],
             "directive": "versionchanged",
             "options": [],
-            "raw_source": ".. versionchanged:: 1.20.0\n    Values are rounded towards ``-inf`` instead of ``0`` when an\n    integer ``dtype`` is specified. The old behavior can\n    still be obtained with ``fnp.linspace(start, stop, num).astype(int)``",
+            "raw_source": ".. versionchanged:: 1.20.0\n    Values are rounded towards ``-inf`` instead of ``0`` when an\n    integer ``dtype`` is specified. The old behavior can\n    still be obtained with ``flops.linspace(start, stop, num).astype(int)``",
             "supported": true,
             "type": "directive_block",
             "version": "1.20.0"
@@ -648,7 +648,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/arange",
-                "label": "fnp.arange",
+                "label": "flops.arange",
                 "original_target": "arange",
                 "role": "",
                 "target": "arange",
@@ -675,7 +675,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/geomspace",
-                "label": "fnp.geomspace",
+                "label": "flops.geomspace",
                 "original_target": "geomspace",
                 "role": "",
                 "target": "geomspace",
@@ -702,7 +702,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/logspace",
-                "label": "fnp.logspace",
+                "label": "flops.logspace",
                 "original_target": "logspace",
                 "role": "",
                 "target": "logspace",
@@ -732,12 +732,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linspace(2.0, 3.0, num=5)"
+                "text": "flops.linspace(2.0, 3.0, num=5)"
               },
               {
                 "kind": "output",
@@ -746,7 +746,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linspace(2.0, 3.0, num=5, endpoint=False)"
+                "text": "flops.linspace(2.0, 3.0, num=5, endpoint=False)"
               },
               {
                 "kind": "output",
@@ -755,7 +755,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linspace(2.0, 3.0, num=5, retstep=True)"
+                "text": "flops.linspace(2.0, 3.0, num=5, retstep=True)"
               },
               {
                 "kind": "output",
@@ -788,17 +788,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.zeros(N)"
+                "text": "y = flops.zeros(N)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = fnp.linspace(0, 10, N, endpoint=True)"
+                "text": "x1 = flops.linspace(0, 10, N, endpoint=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = fnp.linspace(0, 10, N, endpoint=False)"
+                "text": "x2 = flops.linspace(0, 10, N, endpoint=False)"
               },
               {
                 "kind": "input",
@@ -844,12 +844,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.linspace",
+    "flopscope_ref": "flops.linspace",
     "module": "numpy",
     "name": "linspace",
     "notes": "Return evenly spaced numbers over interval. Cost: numel(output).",
     "numpy_ref": "np.linspace",
-    "signature": "fnp.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, *, device=None)",
+    "signature": "flops.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, *, device=None)",
     "status": "supported",
     "summary": "Return evenly spaced numbers over a specified interval.",
     "weight": 1.0

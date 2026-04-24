@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nonzero/",
+  "detail_href": "/docs/api/nonzero/",
   "detail_json_href": "/api-data/ops/nonzero.json",
   "docs": {
     "sections": [
@@ -192,7 +192,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/flatnonzero",
-                "label": "fnp.flatnonzero",
+                "label": "flops.flatnonzero",
                 "original_target": "flatnonzero",
                 "role": "",
                 "target": "flatnonzero",
@@ -224,7 +224,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/count_nonzero",
-                "label": "fnp.count_nonzero",
+                "label": "flops.count_nonzero",
                 "original_target": "count_nonzero",
                 "role": "",
                 "target": "count_nonzero",
@@ -281,12 +281,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])"
+                "text": "x = flops.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])"
               },
               {
                 "kind": "input",
@@ -308,7 +308,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nonzero(x)"
+                "text": "flops.nonzero(x)"
               },
               {
                 "kind": "output",
@@ -322,7 +322,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x[fnp.nonzero(x)]"
+                "text": "x[flops.nonzero(x)]"
               },
               {
                 "kind": "output",
@@ -331,7 +331,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.transpose(fnp.nonzero(x))"
+                "text": "flops.transpose(flops.nonzero(x))"
               },
               {
                 "kind": "output",
@@ -383,7 +383,7 @@
               },
               {
                 "kind": "text",
-                "text": " > 3 is a\nboolean array and since False is interpreted as 0, fnp.nonzero(a > 3)\nyields the indices of the "
+                "text": " > 3 is a\nboolean array and since False is interpreted as 0, flops.nonzero(a > 3)\nyields the indices of the "
               },
               {
                 "kind": "code",
@@ -401,7 +401,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])"
+                "text": "a = flops.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])"
               },
               {
                 "kind": "input",
@@ -423,7 +423,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nonzero(a > 3)"
+                "text": "flops.nonzero(a > 3)"
               },
               {
                 "kind": "output",
@@ -454,7 +454,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a[fnp.nonzero(a > 3)]"
+                "text": "a[flops.nonzero(a > 3)]"
               },
               {
                 "kind": "output",
@@ -511,12 +511,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.nonzero",
+    "flopscope_ref": "flops.nonzero",
     "module": "numpy",
     "name": "nonzero",
     "notes": "Return indices of non-zero elements. Cost: numel(input).",
     "numpy_ref": "np.nonzero",
-    "signature": "fnp.nonzero(a)",
+    "signature": "flops.nonzero(a)",
     "status": "supported",
     "summary": "Return the indices of the elements that are non-zero.",
     "weight": 1.0

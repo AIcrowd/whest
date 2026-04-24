@@ -266,6 +266,7 @@
     }
   ],
   "canonical_name": "random.get_state",
+  "canonical_path": "random/get-state",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -277,14 +278,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.get_state",
+  "flopscope_ref": "flops.random.get_state",
   "flopscope_source_url": "",
-  "href": "/docs/api/ops/random-get_state/",
+  "href": "/docs/api/random/get-state/",
+  "legacy_href": "/docs/api/ops/random-get_state/",
   "module": "numpy.random",
   "name": "random.get_state",
   "next": {
-    "href": "/docs/api/ops/random-gumbel/",
-    "label": "fnp.random.gumbel"
+    "href": "/docs/api/random/gumbel/",
+    "label": "flops.random.gumbel"
   },
   "notes": "Return tuple representing internal state of generator.",
   "notes_sections": [
@@ -303,8 +305,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-geometric/",
-    "label": "fnp.random.geometric"
+    "href": "/docs/api/random/geometric/",
+    "label": "flops.random.geometric"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.get_state.html",
@@ -339,7 +341,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.get_state(legacy=True)",
+  "signature": "flops.random.get_state(legacy=True)",
   "slug": "random-get_state",
   "summary": "Return a tuple representing the internal state of the generator.",
   "upstream_source_url": "",

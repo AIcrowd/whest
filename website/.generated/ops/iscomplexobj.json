@@ -133,7 +133,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isrealobj",
-              "label": "fnp.isrealobj",
+              "label": "flops.isrealobj",
               "original_target": "isrealobj",
               "role": "",
               "target": "isrealobj",
@@ -144,7 +144,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/iscomplex",
-              "label": "fnp.iscomplex",
+              "label": "flops.iscomplex",
               "original_target": "iscomplex",
               "role": "",
               "target": "iscomplex",
@@ -163,12 +163,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.iscomplexobj(1)"
+              "text": "flops.iscomplexobj(1)"
             },
             {
               "kind": "output",
@@ -177,7 +177,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.iscomplexobj(1+0j)"
+              "text": "flops.iscomplexobj(1+0j)"
             },
             {
               "kind": "output",
@@ -186,7 +186,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.iscomplexobj([3, 1+0j, True])"
+              "text": "flops.iscomplexobj([3, 1+0j, True])"
             },
             {
               "kind": "output",
@@ -200,6 +200,7 @@
     }
   ],
   "canonical_name": "iscomplexobj",
+  "canonical_path": "iscomplexobj",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -210,19 +211,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.iscomplexobj(1)\n\nfnp.iscomplexobj(1+0j)\n\nfnp.iscomplexobj([3, 1+0j, True])",
+    "code": "import flopscope as flops\n\nflops.iscomplexobj(1)\n\nflops.iscomplexobj(1+0j)\n\nflops.iscomplexobj([3, 1+0j, True])",
     "output": "False\n\nTrue\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.iscomplexobj",
+  "flopscope_ref": "flops.iscomplexobj",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/iscomplexobj/",
+  "href": "/docs/api/iscomplexobj/",
+  "legacy_href": "/docs/api/ops/iscomplexobj/",
   "module": "numpy",
   "name": "iscomplexobj",
   "next": {
-    "href": "/docs/api/ops/isdtype/",
-    "label": "fnp.isdtype"
+    "href": "/docs/api/isdtype/",
+    "label": "flops.isdtype"
   },
   "notes": "Return True if input is a complex type or array.",
   "notes_sections": [],
@@ -237,8 +239,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/iscomplex/",
-    "label": "fnp.iscomplex"
+    "href": "/docs/api/iscomplex/",
+    "label": "flops.iscomplex"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iscomplexobj.html",
@@ -258,7 +260,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isrealobj",
-      "label": "fnp.isrealobj",
+      "label": "flops.isrealobj",
       "original_target": "isrealobj",
       "role": "",
       "target": "isrealobj",
@@ -269,14 +271,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/iscomplex",
-      "label": "fnp.iscomplex",
+      "label": "flops.iscomplex",
       "original_target": "iscomplex",
       "role": "",
       "target": "iscomplex",
       "unresolved": false
     }
   ],
-  "signature": "fnp.iscomplexobj(x)",
+  "signature": "flops.iscomplexobj(x)",
   "slug": "iscomplexobj",
   "summary": "Check for a complex type or an array of complex numbers.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L270",

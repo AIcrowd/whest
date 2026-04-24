@@ -90,12 +90,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.sort_complex([5, 3, 6, 2, 1])"
+              "text": "flops.sort_complex([5, 3, 6, 2, 1])"
             },
             {
               "kind": "output",
@@ -109,7 +109,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.sort_complex([1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j])"
+              "text": "flops.sort_complex([1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j])"
             },
             {
               "kind": "output",
@@ -123,6 +123,7 @@
     }
   ],
   "canonical_name": "sort_complex",
+  "canonical_path": "sort-complex",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -133,19 +134,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.sort_complex([5, 3, 6, 2, 1])\n\nfnp.sort_complex([1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j])",
+    "code": "import flopscope as flops\n\nflops.sort_complex([5, 3, 6, 2, 1])\n\nflops.sort_complex([1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j])",
     "output": "array([1.+0.j, 2.+0.j, 3.+0.j, 5.+0.j, 6.+0.j])\n\narray([1.+2.j,  2.-1.j,  3.-3.j,  3.-2.j,  3.+5.j])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.sort_complex",
+  "flopscope_ref": "flops.sort_complex",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L544",
-  "href": "/docs/api/ops/sort_complex/",
+  "href": "/docs/api/sort-complex/",
+  "legacy_href": "/docs/api/ops/sort_complex/",
   "module": "numpy",
   "name": "sort_complex",
   "next": {
-    "href": "/docs/api/ops/spacing/",
-    "label": "fnp.spacing"
+    "href": "/docs/api/spacing/",
+    "label": "flops.spacing"
   },
   "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
   "notes_sections": [],
@@ -160,8 +162,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sort/",
-    "label": "fnp.sort"
+    "href": "/docs/api/sort/",
+    "label": "flops.sort"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sort_complex.html",
@@ -175,7 +177,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.sort_complex(a)",
+  "signature": "flops.sort_complex(a)",
   "slug": "sort_complex",
   "summary": "Sort a complex array using the real part first, then the imaginary part.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1808",

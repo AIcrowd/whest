@@ -332,12 +332,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.tri(3, 5, 2, dtype=int)"
+              "text": "flops.tri(3, 5, 2, dtype=int)"
             },
             {
               "kind": "output",
@@ -359,7 +359,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.tri(3, 5, -1)"
+              "text": "flops.tri(3, 5, -1)"
             },
             {
               "kind": "output",
@@ -381,6 +381,7 @@
     }
   ],
   "canonical_name": "tri",
+  "canonical_path": "tri",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -391,19 +392,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.tri(3, 5, 2, dtype=int)\n\nfnp.tri(3, 5, -1)",
+    "code": "import flopscope as flops\n\nflops.tri(3, 5, 2, dtype=int)\n\nflops.tri(3, 5, -1)",
     "output": "array([[1, 1, 1, 0, 0],\n       [1, 1, 1, 1, 0],\n       [1, 1, 1, 1, 1]])\n\narray([[0.,  0.,  0.,  0.,  0.],\n       [1.,  0.,  0.,  0.,  0.],\n       [1.,  1.,  0.,  0.,  0.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.tri",
+  "flopscope_ref": "flops.tri",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1585",
-  "href": "/docs/api/ops/tri/",
+  "href": "/docs/api/tri/",
+  "legacy_href": "/docs/api/ops/tri/",
   "module": "numpy",
   "name": "tri",
   "next": {
-    "href": "/docs/api/ops/tril/",
-    "label": "fnp.tril"
+    "href": "/docs/api/tril/",
+    "label": "flops.tril"
   },
   "notes": "Array with ones at and below given diagonal.",
   "notes_sections": [],
@@ -455,8 +457,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/trapezoid/",
-    "label": "fnp.trapezoid"
+    "href": "/docs/api/trapezoid/",
+    "label": "flops.trapezoid"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.tri.html",
@@ -471,7 +473,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.tri(N, M=None, k=0, dtype=<class 'float'>, *, like=None)",
+  "signature": "flops.tri(N, M=None, k=0, dtype=<class 'float'>, *, like=None)",
   "slug": "tri",
   "summary": "An array with ones at and below the given diagonal and zeros elsewhere.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L376",

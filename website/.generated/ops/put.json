@@ -257,7 +257,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/putmask",
-              "label": "fnp.putmask",
+              "label": "flops.putmask",
               "original_target": "putmask",
               "role": "",
               "target": "putmask",
@@ -268,7 +268,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/place",
-              "label": "fnp.place",
+              "label": "flops.place",
               "original_target": "place",
               "role": "",
               "target": "place",
@@ -284,7 +284,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/put_along_axis",
-              "label": "fnp.put_along_axis",
+              "label": "flops.put_along_axis",
               "original_target": "put_along_axis",
               "role": "",
               "target": "put_along_axis",
@@ -303,17 +303,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.arange(5)"
+              "text": "a = flops.arange(5)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.put(a, [0, 2], [-44, -55])"
+              "text": "flops.put(a, [0, 2], [-44, -55])"
             },
             {
               "kind": "input",
@@ -332,12 +332,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.arange(5)"
+              "text": "a = flops.arange(5)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.put(a, 22, -5, mode='clip')"
+              "text": "flops.put(a, 22, -5, mode='clip')"
             },
             {
               "kind": "input",
@@ -356,6 +356,7 @@
     }
   ],
   "canonical_name": "put",
+  "canonical_path": "put",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -366,19 +367,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.arange(5)\n\nfnp.put(a, [0, 2], [-44, -55])\n\na\n\na = fnp.arange(5)\n\nfnp.put(a, 22, -5, mode='clip')\n\na",
+    "code": "import flopscope as flops\n\na = flops.arange(5)\n\nflops.put(a, [0, 2], [-44, -55])\n\na\n\na = flops.arange(5)\n\nflops.put(a, 22, -5, mode='clip')\n\na",
     "output": "array([-44,   1, -55,   3,   4])\n\narray([ 0,  1,  2,  3, -5])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.put",
+  "flopscope_ref": "flops.put",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1413",
-  "href": "/docs/api/ops/put/",
+  "href": "/docs/api/put/",
+  "legacy_href": "/docs/api/ops/put/",
   "module": "numpy",
   "name": "put",
   "next": {
-    "href": "/docs/api/ops/put_along_axis/",
-    "label": "fnp.put_along_axis"
+    "href": "/docs/api/put-along-axis/",
+    "label": "flops.put_along_axis"
   },
   "notes": "Replace elements at given flat indices. Cost: numel(input).",
   "notes_sections": [],
@@ -424,8 +426,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ptp/",
-    "label": "fnp.ptp"
+    "href": "/docs/api/ptp/",
+    "label": "flops.ptp"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.put.html",
@@ -436,7 +438,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/putmask",
-      "label": "fnp.putmask",
+      "label": "flops.putmask",
       "original_target": "putmask",
       "role": "",
       "target": "putmask",
@@ -447,7 +449,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/place",
-      "label": "fnp.place",
+      "label": "flops.place",
       "original_target": "place",
       "role": "",
       "target": "place",
@@ -463,14 +465,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/put_along_axis",
-      "label": "fnp.put_along_axis",
+      "label": "flops.put_along_axis",
       "original_target": "put_along_axis",
       "role": "",
       "target": "put_along_axis",
       "unresolved": false
     }
   ],
-  "signature": "fnp.put(a, ind, v, mode='raise')",
+  "signature": "flops.put(a, ind, v, mode='raise')",
   "slug": "put",
   "summary": "Replaces specified elements of an array with given values.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L513",

@@ -244,7 +244,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/concatenate",
-              "label": "fnp.concatenate",
+              "label": "flops.concatenate",
               "original_target": "concatenate",
               "role": "",
               "target": "concatenate",
@@ -260,7 +260,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/stack",
-              "label": "fnp.stack",
+              "label": "flops.stack",
               "original_target": "stack",
               "role": "",
               "target": "stack",
@@ -276,7 +276,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/block",
-              "label": "fnp.block",
+              "label": "flops.block",
               "original_target": "block",
               "role": "",
               "target": "block",
@@ -292,7 +292,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/vstack",
-              "label": "fnp.vstack",
+              "label": "flops.vstack",
               "original_target": "vstack",
               "role": "",
               "target": "vstack",
@@ -308,7 +308,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/dstack",
-              "label": "fnp.dstack",
+              "label": "flops.dstack",
               "original_target": "dstack",
               "role": "",
               "target": "dstack",
@@ -324,7 +324,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/column_stack",
-              "label": "fnp.column_stack",
+              "label": "flops.column_stack",
               "original_target": "column_stack",
               "role": "",
               "target": "column_stack",
@@ -340,7 +340,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/hsplit",
-              "label": "fnp.hsplit",
+              "label": "flops.hsplit",
               "original_target": "hsplit",
               "role": "",
               "target": "hsplit",
@@ -356,7 +356,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/unstack",
-              "label": "fnp.unstack",
+              "label": "flops.unstack",
               "original_target": "unstack",
               "role": "",
               "target": "unstack",
@@ -375,22 +375,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array((1,2,3))"
+              "text": "a = flops.array((1,2,3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = fnp.array((4,5,6))"
+              "text": "b = flops.array((4,5,6))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.hstack((a,b))"
+              "text": "flops.hstack((a,b))"
             },
             {
               "kind": "output",
@@ -399,17 +399,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([[1],[2],[3]])"
+              "text": "a = flops.array([[1],[2],[3]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = fnp.array([[4],[5],[6]])"
+              "text": "b = flops.array([[4],[5],[6]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.hstack((a,b))"
+              "text": "flops.hstack((a,b))"
             },
             {
               "kind": "output",
@@ -431,6 +431,7 @@
     }
   ],
   "canonical_name": "hstack",
+  "canonical_path": "hstack",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -441,19 +442,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array((1,2,3))\n\nb = fnp.array((4,5,6))\n\nfnp.hstack((a,b))\n\na = fnp.array([[1],[2],[3]])\n\nb = fnp.array([[4],[5],[6]])\n\nfnp.hstack((a,b))",
+    "code": "import flopscope as flops\n\na = flops.array((1,2,3))\n\nb = flops.array((4,5,6))\n\nflops.hstack((a,b))\n\na = flops.array([[1],[2],[3]])\n\nb = flops.array([[4],[5],[6]])\n\nflops.hstack((a,b))",
     "output": "array([1, 2, 3, 4, 5, 6])\n\narray([[1, 4],\n       [2, 5],\n       [3, 6]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.hstack",
+  "flopscope_ref": "flops.hstack",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L393",
-  "href": "/docs/api/ops/hstack/",
+  "href": "/docs/api/hstack/",
+  "legacy_href": "/docs/api/ops/hstack/",
   "module": "numpy",
   "name": "hstack",
   "next": {
-    "href": "/docs/api/ops/hypot/",
-    "label": "fnp.hypot"
+    "href": "/docs/api/hypot/",
+    "label": "flops.hypot"
   },
   "notes": "Stack arrays horizontally.",
   "notes_sections": [],
@@ -490,8 +492,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/hsplit/",
-    "label": "fnp.hsplit"
+    "href": "/docs/api/hsplit/",
+    "label": "flops.hsplit"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.hstack.html",
@@ -515,7 +517,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/concatenate",
-      "label": "fnp.concatenate",
+      "label": "flops.concatenate",
       "original_target": "concatenate",
       "role": "",
       "target": "concatenate",
@@ -531,7 +533,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/stack",
-      "label": "fnp.stack",
+      "label": "flops.stack",
       "original_target": "stack",
       "role": "",
       "target": "stack",
@@ -547,7 +549,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/block",
-      "label": "fnp.block",
+      "label": "flops.block",
       "original_target": "block",
       "role": "",
       "target": "block",
@@ -563,7 +565,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/vstack",
-      "label": "fnp.vstack",
+      "label": "flops.vstack",
       "original_target": "vstack",
       "role": "",
       "target": "vstack",
@@ -579,7 +581,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/dstack",
-      "label": "fnp.dstack",
+      "label": "flops.dstack",
       "original_target": "dstack",
       "role": "",
       "target": "dstack",
@@ -595,7 +597,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/column_stack",
-      "label": "fnp.column_stack",
+      "label": "flops.column_stack",
       "original_target": "column_stack",
       "role": "",
       "target": "column_stack",
@@ -611,7 +613,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/hsplit",
-      "label": "fnp.hsplit",
+      "label": "flops.hsplit",
       "original_target": "hsplit",
       "role": "",
       "target": "hsplit",
@@ -627,14 +629,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/unstack",
-      "label": "fnp.unstack",
+      "label": "flops.unstack",
       "original_target": "unstack",
       "role": "",
       "target": "unstack",
       "unresolved": false
     }
   ],
-  "signature": "fnp.hstack(tup, *, dtype=None, casting='same_kind')",
+  "signature": "flops.hstack(tup, *, dtype=None, casting='same_kind')",
   "slug": "hstack",
   "summary": "Stack arrays in sequence horizontally (column wise).",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L295",

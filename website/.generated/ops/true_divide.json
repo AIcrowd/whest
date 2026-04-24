@@ -419,12 +419,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.divide(2.0, 4.0)"
+              "text": "flops.divide(2.0, 4.0)"
             },
             {
               "kind": "output",
@@ -433,17 +433,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
+              "text": "x1 = flops.arange(9.0).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = fnp.arange(3.0)"
+              "text": "x2 = flops.arange(3.0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.divide(x1, x2)"
+              "text": "flops.divide(x1, x2)"
             },
             {
               "kind": "output",
@@ -479,7 +479,7 @@
               "href": "/docs/api/ops/divide",
               "kind": "link",
               "target": "divide",
-              "text": "fnp.divide"
+              "text": "flops.divide"
             },
             {
               "kind": "text",
@@ -493,12 +493,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
+              "text": "x1 = flops.arange(9.0).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = 2 * fnp.ones(3)"
+              "text": "x2 = 2 * flops.ones(3)"
             },
             {
               "kind": "input",
@@ -525,6 +525,7 @@
     }
   ],
   "canonical_name": "true_divide",
+  "canonical_path": "true-divide",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -542,19 +543,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.divide(2.0, 4.0)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = fnp.arange(3.0)\n\nfnp.divide(x1, x2)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = 2 * fnp.ones(3)\n\nx1 / x2",
+    "code": "import flopscope as flops\n\nflops.divide(2.0, 4.0)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nflops.divide(x1, x2)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = 2 * flops.ones(3)\n\nx1 / x2",
     "output": "0.5\n\narray([[nan, 1. , 1. ],\n       [inf, 4. , 2.5],\n       [inf, 7. , 4. ]])\n\narray([[0. , 0.5, 1. ],\n       [1.5, 2. , 2.5],\n       [3. , 3.5, 4. ]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.true_divide",
+  "flopscope_ref": "flops.true_divide",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/ops/true_divide/",
+  "href": "/docs/api/true-divide/",
+  "legacy_href": "/docs/api/ops/true_divide/",
   "module": "numpy",
   "name": "true_divide",
   "next": {
-    "href": "/docs/api/ops/trunc/",
-    "label": "fnp.trunc"
+    "href": "/docs/api/trunc/",
+    "label": "flops.trunc"
   },
   "notes": "Element-wise true division (explicit).",
   "notes_sections": [
@@ -611,8 +613,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/triu_indices_from/",
-    "label": "fnp.triu_indices_from"
+    "href": "/docs/api/triu-indices-from/",
+    "label": "flops.triu_indices_from"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.true_divide.html",
@@ -644,7 +646,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.true_divide(*args, **kwargs)",
+  "signature": "flops.true_divide(*args, **kwargs)",
   "slug": "true_divide",
   "summary": "Divide arguments element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

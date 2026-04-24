@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/choose/",
+  "detail_href": "/docs/api/choose/",
   "detail_json_href": "/api-data/ops/choose.json",
   "docs": {
     "sections": [
@@ -30,7 +30,7 @@
           },
           {
             "language": null,
-            "text": "fnp.choose(a,c) == fnp.array([c[a[I]][I] for I in fnp.ndindex(a.shape)])",
+            "text": "flops.choose(a,c) == flops.array([c[a[I]][I] for I in flops.ndindex(a.shape)])",
             "type": "literal_block"
           },
           {
@@ -735,7 +735,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/take_along_axis",
-                "label": "fnp.take_along_axis",
+                "label": "flops.take_along_axis",
                 "original_target": "numpy.take_along_axis",
                 "role": "",
                 "target": "take_along_axis",
@@ -776,7 +776,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -791,7 +791,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.choose([2, 3, 1, 0], choices"
+                "text": "flops.choose([2, 3, 1, 0], choices"
               },
               {
                 "kind": "input",
@@ -825,7 +825,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.choose([2, 4, 1, 0], choices, mode='clip') # 4 goes to 3 (4-1)"
+                "text": "flops.choose([2, 4, 1, 0], choices, mode='clip') # 4 goes to 3 (4-1)"
               },
               {
                 "kind": "output",
@@ -839,7 +839,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.choose([2, 4, 1, 0], choices, mode='wrap') # 4 goes to (4 mod 4)"
+                "text": "flops.choose([2, 4, 1, 0], choices, mode='wrap') # 4 goes to (4 mod 4)"
               },
               {
                 "kind": "output",
@@ -877,7 +877,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.choose(a, choices)"
+                "text": "flops.choose(a, choices)"
               },
               {
                 "kind": "output",
@@ -904,22 +904,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([0, 1]).reshape((2,1,1))"
+                "text": "a = flops.array([0, 1]).reshape((2,1,1))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c1 = fnp.array([1, 2, 3]).reshape((1,3,1))"
+                "text": "c1 = flops.array([1, 2, 3]).reshape((1,3,1))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c2 = fnp.array([-1, -2, -3, -4, -5]).reshape((1,1,5))"
+                "text": "c2 = flops.array([-1, -2, -3, -4, -5]).reshape((1,1,5))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.choose(a, (c1, c2)) # result is 2x3x5, res[0,:,:]=c1, res[1,:,:]=c2"
+                "text": "flops.choose(a, (c1, c2)) # result is 2x3x5, res[0,:,:]=c1, res[1,:,:]=c2"
               },
               {
                 "kind": "output",
@@ -957,12 +957,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.choose",
+    "flopscope_ref": "flops.choose",
     "module": "numpy",
     "name": "choose",
     "notes": "Construct array from index array and choices. Cost: numel(output).",
     "numpy_ref": "np.choose",
-    "signature": "fnp.choose(a, choices, out=None, mode='raise')",
+    "signature": "flops.choose(a, choices, out=None, mode='raise')",
     "status": "supported",
     "summary": "Construct an array from an index array and a list of arrays to choose from.",
     "weight": 4.0

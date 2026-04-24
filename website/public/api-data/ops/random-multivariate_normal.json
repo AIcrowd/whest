@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-multivariate_normal/",
+  "detail_href": "/docs/api/random/multivariate-normal/",
   "detail_json_href": "/api-data/ops/random-multivariate_normal.json",
   "docs": {
     "sections": [
@@ -81,7 +81,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.multivariate_normal`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~flops.random.Generator.multivariate_normal`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -619,7 +619,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x, y = fnp.random.multivariate_normal(mean, cov, 5000).T"
+                "text": "x, y = flops.random.multivariate_normal(mean, cov, 5000).T"
               },
               {
                 "kind": "input",
@@ -683,7 +683,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.random.multivariate_normal(mean, cov, (3, 3))"
+                "text": "x = flops.random.multivariate_normal(mean, cov, (3, 3))"
               },
               {
                 "kind": "input",
@@ -711,12 +711,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "cov = fnp.array([[6, -3], [-3, 3.5]])"
+                "text": "cov = flops.array([[6, -3], [-3, 3.5]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "pts = fnp.random.multivariate_normal([0, 0], cov, size=800)"
+                "text": "pts = flops.random.multivariate_normal([0, 0], cov, size=800)"
               }
             ],
             "type": "doctest_block"
@@ -744,7 +744,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.cov(pts.T)"
+                "text": "flops.cov(pts.T)"
               },
               {
                 "kind": "output",
@@ -757,7 +757,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.corrcoef(pts.T)[0, 1]"
+                "text": "flops.corrcoef(pts.T)[0, 1]"
               },
               {
                 "kind": "output",
@@ -814,12 +814,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.multivariate_normal",
+    "flopscope_ref": "flops.random.multivariate_normal",
     "module": "numpy.random",
     "name": "random.multivariate_normal",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.multivariate_normal",
-    "signature": "fnp.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
+    "signature": "flops.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
     "status": "supported",
     "summary": "Draw random samples from a multivariate normal distribution.",
     "weight": 16.0

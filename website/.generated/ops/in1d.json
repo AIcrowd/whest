@@ -180,7 +180,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "in1d(a, b, invert=True)",
-                      "text": "fnp.in1d(a, b, invert=True)"
+                      "text": "flops.in1d(a, b, invert=True)"
                     },
                     {
                       "kind": "text",
@@ -191,7 +191,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "invert(in1d(a, b))",
-                      "text": "fnp.invert(in1d(a, b))"
+                      "text": "flops.invert(in1d(a, b))"
                     },
                     {
                       "kind": "text",
@@ -228,7 +228,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "in1d(a, b, invert=True)",
-                  "text": "fnp.in1d(a, b, invert=True)"
+                  "text": "flops.in1d(a, b, invert=True)"
                 },
                 {
                   "kind": "text",
@@ -239,7 +239,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "invert(in1d(a, b))",
-                  "text": "fnp.invert(in1d(a, b))"
+                  "text": "flops.invert(in1d(a, b))"
                 },
                 {
                   "kind": "text",
@@ -466,7 +466,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/isin",
-              "label": "fnp.isin",
+              "label": "flops.isin",
               "original_target": "isin",
               "role": "",
               "target": "isin",
@@ -514,7 +514,7 @@
               "href": "",
               "kind": "link",
               "target": "array([item in b for item in a])",
-              "text": "fnp.array([item in b for item in a])"
+              "text": "flops.array([item in b for item in a])"
             },
             {
               "kind": "text",
@@ -606,12 +606,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "test = fnp.array([0, 1, 2, 5, 0])"
+              "text": "test = flops.array([0, 1, 2, 5, 0])"
             },
             {
               "kind": "input",
@@ -621,7 +621,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "mask = fnp.in1d(test, states)"
+              "text": "mask = flops.in1d(test, states)"
             },
             {
               "kind": "input",
@@ -644,7 +644,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "mask = fnp.in1d(test, states, invert=True)"
+              "text": "mask = flops.in1d(test, states, invert=True)"
             },
             {
               "kind": "input",
@@ -672,6 +672,7 @@
     }
   ],
   "canonical_name": "in1d",
+  "canonical_path": "in1d",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -682,23 +683,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\ntest = fnp.array([0, 1, 2, 5, 0])\n\nstates = [0, 2]\n\nmask = fnp.in1d(test, states)\n\nmask\n\ntest[mask]\n\nmask = fnp.in1d(test, states, invert=True)\n\nmask\n\ntest[mask]",
+    "code": "import flopscope as flops\n\ntest = flops.array([0, 1, 2, 5, 0])\n\nstates = [0, 2]\n\nmask = flops.in1d(test, states)\n\nmask\n\ntest[mask]\n\nmask = flops.in1d(test, states, invert=True)\n\nmask\n\ntest[mask]",
     "output": "array([ True, False,  True, False,  True])\n\narray([0, 2, 0])\n\narray([False,  True, False,  True, False])\n\narray([1, 5])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.in1d",
+  "flopscope_ref": "flops.in1d",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L369",
-  "href": "/docs/api/ops/in1d/",
+  "href": "/docs/api/in1d/",
+  "legacy_href": "/docs/api/ops/in1d/",
   "module": "numpy",
   "name": "in1d",
   "next": {
-    "href": "/docs/api/ops/indices/",
-    "label": "fnp.indices"
+    "href": "/docs/api/indices/",
+    "label": "flops.indices"
   },
   "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)). Removed in numpy 2.4; use `isin` instead.",
   "notes_sections": [
-    "`in1d` can be considered as an element-wise function version of the python keyword `in`, for 1-D sequences. ``in1d(a, b)`` is roughly equivalent to ``fnp.array([item in b for item in a])``. However, this idea fails if `ar2` is a set, or similar (non-sequence) container:  As ``ar2`` is converted to an array, in those cases ``asarray(ar2)`` is an object array rather than the expected array of contained values.",
+    "`in1d` can be considered as an element-wise function version of the python keyword `in`, for 1-D sequences. ``in1d(a, b)`` is roughly equivalent to ``flops.array([item in b for item in a])``. However, this idea fails if `ar2` is a set, or similar (non-sequence) container:  As ``ar2`` is converted to an array, in those cases ``asarray(ar2)`` is an object array rather than the expected array of contained values.",
     "Using ``kind='table'`` tends to be faster than `kind='sort'` if the following relationship is true: ``log10(len(ar2)) > (log10(max(ar2)-min(ar2)) - 2.27) / 0.927``, but may use greater memory. The default value for `kind` will be automatically selected based only on memory usage, so one may manually set ``kind='table'`` if memory constraints can be relaxed."
   ],
   "numpy_ref": "np.in1d",
@@ -729,8 +731,8 @@
       "body": [
         "If True, the values in the returned array are inverted (that is,",
         "False where an element of `ar1` is in `ar2` and True otherwise).",
-        "Default is False. ``fnp.in1d(a, b, invert=True)`` is equivalent",
-        "to (but is faster than) ``fnp.invert(in1d(a, b))``."
+        "Default is False. ``flops.in1d(a, b, invert=True)`` is equivalent",
+        "to (but is faster than) ``flops.invert(in1d(a, b))``."
       ],
       "name": "invert",
       "type": "bool, optional"
@@ -762,8 +764,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/imag/",
-    "label": "fnp.imag"
+    "href": "/docs/api/imag/",
+    "label": "flops.imag"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.in1d.html",
@@ -787,14 +789,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/isin",
-      "label": "fnp.isin",
+      "label": "flops.isin",
       "original_target": "isin",
       "role": "",
       "target": "isin",
       "unresolved": false
     }
   ],
-  "signature": "fnp.in1d(ar1, ar2, assume_unique=False, invert=False, *, kind=None)",
+  "signature": "flops.in1d(ar1, ar2, assume_unique=False, invert=False, *, kind=None)",
   "slug": "in1d",
   "summary": "Test whether each element of a 1-D array is also present in a second array.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L762",

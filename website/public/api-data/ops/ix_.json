@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/ix_/",
+  "detail_href": "/docs/api/ix-/",
   "detail_json_href": "/api-data/ops/ix_.json",
   "docs": {
     "sections": [
@@ -47,7 +47,7 @@
               },
               {
                 "kind": "code",
-                "text": "a[fnp.ix_([1,3],[2,5])]"
+                "text": "a[flops.ix_([1,3],[2,5])]"
               },
               {
                 "kind": "text",
@@ -84,7 +84,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "nonzero(boolean_sequence)",
-                        "text": "fnp.nonzero(boolean_sequence)"
+                        "text": "flops.nonzero(boolean_sequence)"
                       },
                       {
                         "kind": "text",
@@ -105,7 +105,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "nonzero(boolean_sequence)",
-                    "text": "fnp.nonzero(boolean_sequence)"
+                    "text": "flops.nonzero(boolean_sequence)"
                   },
                   {
                     "kind": "text",
@@ -186,7 +186,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/meshgrid",
-                "label": "fnp.meshgrid",
+                "label": "flops.meshgrid",
                 "original_target": "meshgrid",
                 "role": "",
                 "target": "meshgrid",
@@ -205,12 +205,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.arange(10).reshape(2, 5)"
+                "text": "a = flops.arange(10).reshape(2, 5)"
               },
               {
                 "kind": "input",
@@ -228,7 +228,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ixgrid = fnp.ix_([0, 1], [2, 4])"
+                "text": "ixgrid = flops.ix_([0, 1], [2, 4])"
               },
               {
                 "kind": "input",
@@ -273,7 +273,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ixgrid = fnp.ix_([True, True], [2, 4])"
+                "text": "ixgrid = flops.ix_([True, True], [2, 4])"
               },
               {
                 "kind": "input",
@@ -291,7 +291,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ixgrid = fnp.ix_([True, True], [False, False, True, False, True])"
+                "text": "ixgrid = flops.ix_([True, True], [False, False, True, False, True])"
               },
               {
                 "kind": "input",
@@ -318,12 +318,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.ix_",
+    "flopscope_ref": "flops.ix_",
     "module": "numpy",
     "name": "ix_",
     "notes": "Construct open mesh from multiple sequences. Cost: numel(output).",
     "numpy_ref": "np.ix_",
-    "signature": "fnp.ix_(*args)",
+    "signature": "flops.ix_(*args)",
     "status": "supported",
     "summary": "Construct an open mesh from multiple sequences.",
     "weight": 1.0

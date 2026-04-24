@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.logistic.cdf",
+  "canonical_path": "stats/logistic/cdf",
   "category": "counted_custom",
   "cost_formula": "5n",
   "cost_formula_latex": "$5n$",
@@ -170,14 +171,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.stats.logistic.cdf",
+  "flopscope_ref": "flops.stats.logistic.cdf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_logistic.py#L44",
-  "href": "/docs/api/ops/stats-logistic-cdf/",
+  "href": "/docs/api/stats/logistic/cdf/",
+  "legacy_href": "/docs/api/ops/stats-logistic-cdf/",
   "module": "flopscope.stats",
   "name": "stats.logistic.cdf",
   "next": {
-    "href": "/docs/api/ops/stats-logistic-pdf/",
-    "label": "fnp.stats.logistic.pdf"
+    "href": "/docs/api/stats/logistic/pdf/",
+    "label": "flops.stats.logistic.pdf"
   },
   "notes": "Logistic CDF; cost = numel(input).",
   "notes_sections": [],
@@ -214,8 +216,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-laplace-ppf/",
-    "label": "fnp.stats.laplace.ppf"
+    "href": "/docs/api/stats/laplace/ppf/",
+    "label": "flops.stats.laplace.ppf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.logistic.html",
@@ -229,7 +231,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.stats.logistic.cdf(x, loc=0, scale=1)",
+  "signature": "flops.stats.logistic.cdf(x, loc=0, scale=1)",
   "slug": "stats-logistic-cdf",
   "summary": "Cumulative distribution function of the given RV.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",

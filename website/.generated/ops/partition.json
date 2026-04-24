@@ -257,7 +257,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/argpartition",
-              "label": "fnp.argpartition",
+              "label": "flops.argpartition",
               "original_target": "argpartition",
               "role": "",
               "target": "argpartition",
@@ -273,7 +273,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/sort",
-              "label": "fnp.sort",
+              "label": "flops.sort",
               "original_target": "sort",
               "role": "",
               "target": "sort",
@@ -330,7 +330,7 @@
               "href": "",
               "kind": "link",
               "target": "nan",
-              "text": "fnp.nan"
+              "text": "flops.nan"
             },
             {
               "kind": "text",
@@ -341,7 +341,7 @@
               "href": "",
               "kind": "link",
               "target": "inf",
-              "text": "fnp.inf"
+              "text": "flops.inf"
             },
             {
               "kind": "text",
@@ -360,17 +360,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])"
+              "text": "a = flops.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "p = fnp.partition(a, 4)"
+              "text": "p = flops.partition(a, 4)"
             },
             {
               "kind": "input",
@@ -456,7 +456,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "p2 = fnp.partition(a, (4, 8))"
+              "text": "p2 = flops.partition(a, (4, 8))"
             },
             {
               "kind": "input",
@@ -557,6 +557,7 @@
     }
   ],
   "canonical_name": "partition",
+  "canonical_path": "partition",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -579,19 +580,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])\n\np = fnp.partition(a, 4)\n\np\n\np2 = fnp.partition(a, (4, 8))\n\np2",
+    "code": "import flopscope as flops\n\na = flops.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])\n\np = flops.partition(a, 4)\n\np\n\np2 = flops.partition(a, (4, 8))\n\np2",
     "output": "array([0, 1, 2, 1, 2, 5, 2, 3, 3, 6, 7, 7, 7, 7]) # may vary\n\narray([0, 1, 2, 1, 2, 3, 3, 2, 5, 6, 7, 7, 7, 7])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.partition",
+  "flopscope_ref": "flops.partition",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L113",
-  "href": "/docs/api/ops/partition/",
+  "href": "/docs/api/partition/",
+  "legacy_href": "/docs/api/ops/partition/",
   "module": "numpy",
   "name": "partition",
   "next": {
-    "href": "/docs/api/ops/percentile/",
-    "label": "fnp.percentile"
+    "href": "/docs/api/percentile/",
+    "label": "flops.percentile"
   },
   "notes": "Quickselect; cost = n per slice.",
   "notes_sections": [
@@ -599,7 +601,7 @@
     "================= ======= ============= ============ ======= kind            speed   worst case    work space  stable ================= ======= ============= ============ ======= 'introselect'        1        O(n)           0         no ================= ======= ============= ============ =======",
     "All the partition algorithms make temporary copies of the data when partitioning along any but the last axis.  Consequently, partitioning along the last axis is faster and uses less space than partitioning along any other axis.",
     "The sort order for complex numbers is lexicographic. If both the real and imaginary parts are non-nan then the order is determined by the real parts except when they are equal, in which case the order is determined by the imaginary parts.",
-    "The sort order of ``fnp.nan`` is bigger than ``fnp.inf``."
+    "The sort order of ``flops.nan`` is bigger than ``flops.inf``."
   ],
   "numpy_ref": "np.partition",
   "parameters": [
@@ -653,8 +655,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/pad/",
-    "label": "fnp.pad"
+    "href": "/docs/api/pad/",
+    "label": "flops.pad"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.partition.html",
@@ -694,7 +696,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/argpartition",
-      "label": "fnp.argpartition",
+      "label": "flops.argpartition",
       "original_target": "argpartition",
       "role": "",
       "target": "argpartition",
@@ -710,14 +712,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/sort",
-      "label": "fnp.sort",
+      "label": "flops.sort",
       "original_target": "sort",
       "role": "",
       "target": "sort",
       "unresolved": false
     }
   ],
-  "signature": "fnp.partition(a, kth, axis=-1, kind='introselect', order=None)",
+  "signature": "flops.partition(a, kth, axis=-1, kind='introselect', order=None)",
   "slug": "partition",
   "summary": "Return a partitioned copy of an array.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L758",

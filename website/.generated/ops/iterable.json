@@ -128,7 +128,7 @@
               "href": "",
               "kind": "link",
               "target": "iterable(obj)",
-              "text": "fnp.iterable(obj)"
+              "text": "flops.iterable(obj)"
             },
             {
               "kind": "text",
@@ -147,7 +147,7 @@
         },
         {
           "language": null,
-          "text": ">>> from collections.abc import Iterable\n>>> a = fnp.array(1.0)  # 0-dimensional numpy array\n>>> isinstance(a, Iterable)\nTrue\n>>> fnp.iterable(a)\nFalse",
+          "text": ">>> from collections.abc import Iterable\n>>> a = flops.array(1.0)  # 0-dimensional numpy array\n>>> isinstance(a, Iterable)\nTrue\n>>> flops.iterable(a)\nFalse",
           "type": "literal_block"
         }
       ],
@@ -160,12 +160,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.iterable([1, 2, 3])"
+              "text": "flops.iterable([1, 2, 3])"
             },
             {
               "kind": "output",
@@ -174,7 +174,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.iterable(2)"
+              "text": "flops.iterable(2)"
             },
             {
               "kind": "output",
@@ -188,6 +188,7 @@
     }
   ],
   "canonical_name": "iterable",
+  "canonical_path": "iterable",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -198,24 +199,25 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.iterable([1, 2, 3])\n\nfnp.iterable(2)",
+    "code": "import flopscope as flops\n\nflops.iterable([1, 2, 3])\n\nflops.iterable(2)",
     "output": "True\n\nFalse",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.iterable",
+  "flopscope_ref": "flops.iterable",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1272",
-  "href": "/docs/api/ops/iterable/",
+  "href": "/docs/api/iterable/",
+  "legacy_href": "/docs/api/ops/iterable/",
   "module": "numpy",
   "name": "iterable",
   "next": {
-    "href": "/docs/api/ops/ix_/",
-    "label": "fnp.ix_"
+    "href": "/docs/api/ix-/",
+    "label": "flops.ix_"
   },
   "notes": "Return True if object is iterable.",
   "notes_sections": [
-    "In most cases, the results of ``fnp.iterable(obj)`` are consistent with ``isinstance(obj, collections.abc.Iterable)``. One notable exception is the treatment of 0-dimensional arrays::",
-    ">>> from collections.abc import Iterable >>> a = fnp.array(1.0)  # 0-dimensional numpy array >>> isinstance(a, Iterable) True >>> fnp.iterable(a) False"
+    "In most cases, the results of ``flops.iterable(obj)`` are consistent with ``isinstance(obj, collections.abc.Iterable)``. One notable exception is the treatment of 0-dimensional arrays::",
+    ">>> from collections.abc import Iterable >>> a = flops.array(1.0)  # 0-dimensional numpy array >>> isinstance(a, Iterable) True >>> flops.iterable(a) False"
   ],
   "numpy_ref": "np.iterable",
   "parameters": [
@@ -228,8 +230,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/issubdtype/",
-    "label": "fnp.issubdtype"
+    "href": "/docs/api/issubdtype/",
+    "label": "flops.issubdtype"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iterable.html",
@@ -244,7 +246,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.iterable(y)",
+  "signature": "flops.iterable(y)",
   "slug": "iterable",
   "summary": "Check whether or not an object can be iterated over.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L339",

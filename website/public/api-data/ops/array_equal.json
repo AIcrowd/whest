@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/array_equal/",
+  "detail_href": "/docs/api/array-equal/",
   "detail_json_href": "/api-data/ops/array_equal.json",
   "docs": {
     "sections": [
@@ -135,7 +135,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/allclose",
-                "label": "fnp.allclose",
+                "label": "flops.allclose",
                 "original_target": "allclose",
                 "role": "",
                 "target": "allclose",
@@ -151,7 +151,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/array_equiv",
-                "label": "fnp.array_equiv",
+                "label": "flops.array_equiv",
                 "original_target": "array_equiv",
                 "role": "",
                 "target": "array_equiv",
@@ -170,7 +170,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -180,7 +180,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equal([1, 2], [1, 2])"
+                "text": "flops.array_equal([1, 2], [1, 2])"
               },
               {
                 "kind": "output",
@@ -194,7 +194,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equal(fnp.array([1, 2]), fnp.array([1, 2]))"
+                "text": "flops.array_equal(flops.array([1, 2]), flops.array([1, 2]))"
               },
               {
                 "kind": "output",
@@ -208,7 +208,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equal([1, 2], [1, 2, 3])"
+                "text": "flops.array_equal([1, 2], [1, 2, 3])"
               },
               {
                 "kind": "output",
@@ -222,7 +222,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equal([1, 2], [1, 4])"
+                "text": "flops.array_equal([1, 2], [1, 4])"
               },
               {
                 "kind": "output",
@@ -236,12 +236,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([1, fnp.nan])"
+                "text": "a = flops.array([1, flops.nan])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equal(a, a)"
+                "text": "flops.array_equal(a, a)"
               },
               {
                 "kind": "output",
@@ -255,7 +255,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equal(a, a, equal_nan=True)"
+                "text": "flops.array_equal(a, a, equal_nan=True)"
               },
               {
                 "kind": "output",
@@ -294,7 +294,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([1 + 1j])"
+                "text": "a = flops.array([1 + 1j])"
               },
               {
                 "kind": "input",
@@ -304,17 +304,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a.real = fnp.nan"
+                "text": "a.real = flops.nan"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b.imag = fnp.nan"
+                "text": "b.imag = flops.nan"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.array_equal(a, b, equal_nan=True)"
+                "text": "flops.array_equal(a, b, equal_nan=True)"
               },
               {
                 "kind": "output",
@@ -332,12 +332,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.array_equal",
+    "flopscope_ref": "flops.array_equal",
     "module": "numpy",
     "name": "array_equal",
     "notes": "Element-wise equality; cost = numel(a).",
     "numpy_ref": "np.array_equal",
-    "signature": "fnp.array_equal(a1, a2, equal_nan=False)",
+    "signature": "flops.array_equal(a1, a2, equal_nan=False)",
     "status": "supported",
     "summary": "True if two arrays have the same shape and elements, False otherwise.",
     "weight": 1.0

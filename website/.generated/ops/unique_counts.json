@@ -38,7 +38,7 @@
         },
         {
           "language": null,
-          "text": "fnp.unique(x, return_counts=True, equal_nan=False)",
+          "text": "flops.unique(x, return_counts=True, equal_nan=False)",
           "type": "literal_block"
         },
         {
@@ -165,7 +165,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/unique",
-              "label": "fnp.unique",
+              "label": "flops.unique",
               "original_target": "unique",
               "role": "",
               "target": "unique",
@@ -184,7 +184,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
@@ -194,7 +194,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "uniq = fnp.unique_counts(x)"
+              "text": "uniq = flops.unique_counts(x)"
             },
             {
               "kind": "input",
@@ -222,6 +222,7 @@
     }
   ],
   "canonical_name": "unique_counts",
+  "canonical_path": "unique-counts",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -232,19 +233,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = [1, 1, 2]\n\nuniq = fnp.unique_counts(x)\n\nuniq.values\n\nuniq.counts",
+    "code": "import flopscope as flops\n\nx = [1, 1, 2]\n\nuniq = flops.unique_counts(x)\n\nuniq.values\n\nuniq.counts",
     "output": "array([1, 2])\n\narray([2, 1])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.unique_counts",
+  "flopscope_ref": "flops.unique_counts",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L303",
-  "href": "/docs/api/ops/unique_counts/",
+  "href": "/docs/api/unique-counts/",
+  "legacy_href": "/docs/api/ops/unique_counts/",
   "module": "numpy",
   "name": "unique_counts",
   "next": {
-    "href": "/docs/api/ops/unique_inverse/",
-    "label": "fnp.unique_inverse"
+    "href": "/docs/api/unique-inverse/",
+    "label": "flops.unique_inverse"
   },
   "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
   "notes_sections": [],
@@ -259,8 +261,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unique_all/",
-    "label": "fnp.unique_all"
+    "href": "/docs/api/unique-all/",
+    "label": "flops.unique_all"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unique_counts.html",
@@ -287,14 +289,14 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/unique",
-      "label": "fnp.unique",
+      "label": "flops.unique",
       "original_target": "unique",
       "role": "",
       "target": "unique",
       "unresolved": false
     }
   ],
-  "signature": "fnp.unique_counts(x, /)",
+  "signature": "flops.unique_counts(x, /)",
   "slug": "unique_counts",
   "summary": "Find the unique elements and counts of an input array `x`.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L468",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-normal/",
+  "detail_href": "/docs/api/random/normal/",
   "detail_json_href": "/api-data/ops/random-normal.json",
   "docs": {
     "sections": [
@@ -106,7 +106,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.normal`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.normal`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -211,7 +211,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "fnp.broadcast(loc, scale).size"
+                        "text": "flops.broadcast(loc, scale).size"
                       },
                       {
                         "kind": "text",
@@ -269,7 +269,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "fnp.broadcast(loc, scale).size"
+                    "text": "flops.broadcast(loc, scale).size"
                   },
                   {
                     "kind": "text",
@@ -483,7 +483,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = fnp.random.normal(mu, sigma, 1000)"
+                "text": "s = flops.random.normal(mu, sigma, 1000)"
               }
             ],
             "type": "doctest_block"
@@ -502,7 +502,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "abs(mu - fnp.mean(s))"
+                "text": "abs(mu - flops.mean(s))"
               },
               {
                 "kind": "output",
@@ -516,7 +516,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "abs(sigma - fnp.std(s, ddof=1))"
+                "text": "abs(sigma - flops.std(s, ddof=1))"
               },
               {
                 "kind": "output",
@@ -549,12 +549,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(bins, 1/(sigma * fnp.sqrt(2 * fnp.pi)) *"
+                "text": "plt.plot(bins, 1/(sigma * flops.sqrt(2 * flops.pi)) *"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "fnp.exp( - (bins - mu)**2 / (2 * sigma**2) ),"
+                "text": "flops.exp( - (bins - mu)**2 / (2 * sigma**2) ),"
               },
               {
                 "kind": "input",
@@ -583,7 +583,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.random.normal(3, 2.5, size=(2, 4))"
+                "text": "flops.random.normal(3, 2.5, size=(2, 4))"
               },
               {
                 "kind": "output",
@@ -605,12 +605,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.normal",
+    "flopscope_ref": "flops.random.normal",
     "module": "numpy.random",
     "name": "random.normal",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.normal",
-    "signature": "fnp.random.normal(loc=0.0, scale=1.0, size=None)",
+    "signature": "flops.random.normal(loc=0.0, scale=1.0, size=None)",
     "status": "supported",
     "summary": "Draw random samples from a normal (Gaussian) distribution.",
     "weight": 16.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-matmul/",
+  "detail_href": "/docs/api/linalg/matmul/",
   "detail_json_href": "/api-data/ops/linalg-matmul.json",
   "docs": {
     "sections": [
@@ -26,12 +26,12 @@
                 "text": "This function is Array API compatible, contrary to\n"
               },
               {
-                "display_text": "fnp.matmul",
+                "display_text": "flops.matmul",
                 "explicit_title": false,
                 "external_url": "",
                 "href": "/docs/api/ops/matmul",
                 "kind": "role_reference",
-                "original_target": "fnp.matmul",
+                "original_target": "flops.matmul",
                 "role": "func",
                 "suppress_link": false,
                 "target": "matmul",
@@ -250,7 +250,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/matmul",
-                "label": "fnp.matmul",
+                "label": "flops.matmul",
                 "original_target": "numpy.matmul",
                 "role": "",
                 "target": "matmul",
@@ -278,7 +278,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, 0],"
+                "text": "a = flops.array([[1, 0],"
               },
               {
                 "kind": "input",
@@ -288,7 +288,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.array([[4, 1],"
+                "text": "b = flops.array([[4, 1],"
               },
               {
                 "kind": "input",
@@ -298,7 +298,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linalg.matmul(a, b)"
+                "text": "flops.linalg.matmul(a, b)"
               },
               {
                 "kind": "output",
@@ -325,7 +325,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, 0],"
+                "text": "a = flops.array([[1, 0],"
               },
               {
                 "kind": "input",
@@ -335,12 +335,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.array([1, 2])"
+                "text": "b = flops.array([1, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linalg.matmul(a, b)"
+                "text": "flops.linalg.matmul(a, b)"
               },
               {
                 "kind": "output",
@@ -349,7 +349,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linalg.matmul(b, a)"
+                "text": "flops.linalg.matmul(b, a)"
               },
               {
                 "kind": "output",
@@ -372,17 +372,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.arange(2 * 2 * 4).reshape((2, 2, 4))"
+                "text": "a = flops.arange(2 * 2 * 4).reshape((2, 2, 4))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.arange(2 * 2 * 4).reshape((2, 4, 2))"
+                "text": "b = flops.arange(2 * 2 * 4).reshape((2, 4, 2))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linalg.matmul(a,b).shape"
+                "text": "flops.linalg.matmul(a,b).shape"
               },
               {
                 "kind": "output",
@@ -391,7 +391,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linalg.matmul(a, b)[0, 1, 1]"
+                "text": "flops.linalg.matmul(a, b)[0, 1, 1]"
               },
               {
                 "kind": "output",
@@ -423,7 +423,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linalg.matmul([2j, 3j], [2j, 3j])"
+                "text": "flops.linalg.matmul([2j, 3j], [2j, 3j])"
               },
               {
                 "kind": "output",
@@ -446,7 +446,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.linalg.matmul([1,2], 3)"
+                "text": "flops.linalg.matmul([1,2], 3)"
               },
               {
                 "kind": "output",
@@ -471,14 +471,14 @@
   },
   "op": {
     "category": "counted_custom",
-    "cost_formula": "delegates to fnp.matmul",
+    "cost_formula": "delegates to flops.matmul",
     "cost_formula_latex": "delegates to `matmul`",
-    "flopscope_ref": "fnp.linalg.matmul",
+    "flopscope_ref": "flops.linalg.matmul",
     "module": "numpy.linalg",
     "name": "linalg.matmul",
     "notes": "Delegates to `we.matmul` which charges `m*k*n` FLOPs (FMA=1).",
     "numpy_ref": "np.linalg.matmul",
-    "signature": "fnp.linalg.matmul(x1, x2, /)",
+    "signature": "flops.linalg.matmul(x1, x2, /)",
     "status": "supported",
     "summary": "Computes the matrix product.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/kaiser/",
+  "detail_href": "/docs/api/kaiser/",
   "detail_json_href": "/api-data/ops/kaiser.json",
   "docs": {
     "sections": [
@@ -128,7 +128,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bartlett",
-                "label": "fnp.bartlett",
+                "label": "flops.bartlett",
                 "original_target": "bartlett",
                 "role": "",
                 "target": "bartlett",
@@ -139,7 +139,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/blackman",
-                "label": "fnp.blackman",
+                "label": "flops.blackman",
                 "original_target": "blackman",
                 "role": "",
                 "target": "blackman",
@@ -150,7 +150,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/hamming",
-                "label": "fnp.hamming",
+                "label": "flops.hamming",
                 "original_target": "hamming",
                 "role": "",
                 "target": "hamming",
@@ -161,7 +161,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/hanning",
-                "label": "fnp.hanning",
+                "label": "flops.hanning",
                 "original_target": "hanning",
                 "role": "",
                 "target": "hanning",
@@ -293,7 +293,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
@@ -303,7 +303,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.kaiser(12, 14)"
+                "text": "flops.kaiser(12, 14)"
               },
               {
                 "kind": "output",
@@ -338,7 +338,7 @@
             "content_blocks": [
               {
                 "language": "python",
-                "text": "import matplotlib.pyplot as plt\nfrom fnp.fft import fft, fftshift\nwindow = fnp.kaiser(51, 14)\nplt.plot(window)\nplt.title(\"Kaiser window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = fnp.abs(fftshift(A))\nfreq = fnp.linspace(-0.5, 0.5, len(A))\nresponse = 20 * fnp.log10(mag)\nresponse = fnp.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Kaiser window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
+                "text": "import matplotlib.pyplot as plt\nfrom flops.fft import fft, fftshift\nwindow = flops.kaiser(51, 14)\nplt.plot(window)\nplt.title(\"Kaiser window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = flops.abs(fftshift(A))\nfreq = flops.linspace(-0.5, 0.5, len(A))\nresponse = 20 * flops.log10(mag)\nresponse = flops.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Kaiser window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
                 "type": "literal_block"
               }
             ],
@@ -362,12 +362,12 @@
     "category": "counted_custom",
     "cost_formula": "3n",
     "cost_formula_latex": "$3n$",
-    "flopscope_ref": "fnp.kaiser",
+    "flopscope_ref": "flops.kaiser",
     "module": "flopscope._window",
     "name": "kaiser",
     "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample).",
     "numpy_ref": "np.kaiser",
-    "signature": "fnp.kaiser(M, beta)",
+    "signature": "flops.kaiser(M, beta)",
     "status": "supported",
     "summary": "Return the Kaiser window.",
     "weight": 16.0

@@ -1,0 +1,288 @@
+{
+  "aliases": [
+    "configure",
+    "flops.configure",
+    "flopscope.configure",
+    "fnp.configure",
+    "flopscope.numpy.configure"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Update flopscope global settings."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "False"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", suppress "
+                    },
+                    {
+                      "display_text": "SymmetryLossWarning",
+                      "explicit_title": false,
+                      "external_url": "",
+                      "href": "",
+                      "kind": "role_reference",
+                      "original_target": "flopscope.errors.SymmetryLossWarning",
+                      "role": "class",
+                      "suppress_link": false,
+                      "target": "errors.SymmetryLossWarning",
+                      "unresolved": true
+                    },
+                    {
+                      "kind": "text",
+                      "text": "\nwarnings.  Default "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If "
+                },
+                {
+                  "kind": "code",
+                  "text": "False"
+                },
+                {
+                  "kind": "text",
+                  "text": ", suppress "
+                },
+                {
+                  "display_text": "SymmetryLossWarning",
+                  "explicit_title": false,
+                  "external_url": "",
+                  "href": "",
+                  "kind": "role_reference",
+                  "original_target": "flopscope.errors.SymmetryLossWarning",
+                  "role": "class",
+                  "suppress_link": false,
+                  "target": "errors.SymmetryLossWarning",
+                  "unresolved": true
+                },
+                {
+                  "kind": "text",
+                  "text": "\nwarnings.  Default "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "symmetry_warnings",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", exploit inner (W-side) symmetry to reduce FLOP costs\nwhen all W-group labels are contracted at the same step.\nDefault "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": ", exploit inner (W-side) symmetry to reduce FLOP costs\nwhen all W-group labels are contracted at the same step.\nDefault "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "use_inner_symmetry",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Maximum number of entries in the einsum path cache.\nChanging this rebuilds the cache (old entries are discarded).\nDefault "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "4096"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Maximum number of entries in the einsum path cache.\nChanging this rebuilds the cache (old entries are discarded).\nDefault "
+                },
+                {
+                  "kind": "code",
+                  "text": "4096"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "einsum_path_cache_size",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Updates the in-process global configuration immediately."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "None",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Updates the in-process global configuration immediately."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.configure(einsum_path_cache_size=8192)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.configure(symmetry_warnings=False)"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "configure",
+  "canonical_path": "configure",
+  "display_name": "flops.configure",
+  "href": "/docs/api/configure/",
+  "import_path": "flops.configure",
+  "kind": "function",
+  "members": [],
+  "module": "flopscope._config",
+  "name": "configure",
+  "related_guides": [],
+  "signature": "flops.configure(**kwargs: 'object') -> 'None'",
+  "slug": "configure",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_config.py#L12",
+  "status_note": "",
+  "summary": "Update flopscope global settings.",
+  "upstream_source_url": ""
+}

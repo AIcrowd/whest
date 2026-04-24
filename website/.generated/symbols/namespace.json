@@ -1,0 +1,26 @@
+{
+  "aliases": [
+    "namespace",
+    "flops.namespace",
+    "flopscope.namespace",
+    "fnp.namespace",
+    "flopscope.numpy.namespace"
+  ],
+  "body_sections": [],
+  "canonical_name": "namespace",
+  "canonical_path": "namespace",
+  "display_name": "flops.namespace",
+  "href": "/docs/api/namespace/",
+  "import_path": "flops.namespace",
+  "kind": "function",
+  "members": [],
+  "module": "flopscope._budget",
+  "name": "namespace",
+  "related_guides": [],
+  "signature": "flops.namespace(name: 'str') -> '_NamespaceScope'",
+  "slug": "namespace",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_budget.py#L134",
+  "status_note": "",
+  "summary": "",
+  "upstream_source_url": ""
+}

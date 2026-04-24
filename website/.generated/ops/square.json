@@ -302,7 +302,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/linalg-matrix_power",
-              "label": "fnp.linalg.matrix_power",
+              "label": "flops.linalg.matrix_power",
               "original_target": "numpy.linalg.matrix_power",
               "role": "",
               "target": "linalg.matrix_power",
@@ -313,7 +313,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/sqrt",
-              "label": "fnp.sqrt",
+              "label": "flops.sqrt",
               "original_target": "sqrt",
               "role": "",
               "target": "sqrt",
@@ -324,7 +324,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/power",
-              "label": "fnp.power",
+              "label": "flops.power",
               "original_target": "power",
               "role": "",
               "target": "power",
@@ -343,12 +343,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.square([-1j, 1])"
+              "text": "flops.square([-1j, 1])"
             },
             {
               "kind": "output",
@@ -362,6 +362,7 @@
     }
   ],
   "canonical_name": "square",
+  "canonical_path": "square",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -379,19 +380,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.square([-1j, 1])",
+    "code": "import flopscope as flops\n\nflops.square([-1j, 1])",
     "output": "array([-1.-0.j,  1.+0.j])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.square",
+  "flopscope_ref": "flops.square",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/square/",
+  "href": "/docs/api/square/",
+  "legacy_href": "/docs/api/ops/square/",
   "module": "numpy",
   "name": "square",
   "next": {
-    "href": "/docs/api/ops/squeeze/",
-    "label": "fnp.squeeze"
+    "href": "/docs/api/squeeze/",
+    "label": "flops.squeeze"
   },
   "notes": "Element-wise x^2.",
   "notes_sections": [],
@@ -436,8 +438,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sqrt/",
-    "label": "fnp.sqrt"
+    "href": "/docs/api/sqrt/",
+    "label": "flops.sqrt"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.square.html",
@@ -457,7 +459,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/linalg-matrix_power",
-      "label": "fnp.linalg.matrix_power",
+      "label": "flops.linalg.matrix_power",
       "original_target": "numpy.linalg.matrix_power",
       "role": "",
       "target": "linalg.matrix_power",
@@ -468,7 +470,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/sqrt",
-      "label": "fnp.sqrt",
+      "label": "flops.sqrt",
       "original_target": "sqrt",
       "role": "",
       "target": "sqrt",
@@ -479,14 +481,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/power",
-      "label": "fnp.power",
+      "label": "flops.power",
       "original_target": "power",
       "role": "",
       "target": "power",
       "unresolved": false
     }
   ],
-  "signature": "fnp.square(*args, **kwargs)",
+  "signature": "flops.square(*args, **kwargs)",
   "slug": "square",
   "summary": "Return the element-wise square of the input.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/expand_dims/",
+  "detail_href": "/docs/api/expand-dims/",
   "detail_json_href": "/api-data/ops/expand_dims.json",
   "docs": {
     "sections": [
@@ -167,7 +167,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/squeeze",
-                "label": "fnp.squeeze",
+                "label": "flops.squeeze",
                 "original_target": "squeeze",
                 "role": "",
                 "target": "squeeze",
@@ -183,7 +183,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/reshape",
-                "label": "fnp.reshape",
+                "label": "flops.reshape",
                 "original_target": "reshape",
                 "role": "",
                 "target": "reshape",
@@ -194,7 +194,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/atleast_1d",
-                "label": "fnp.atleast_1d",
+                "label": "flops.atleast_1d",
                 "original_target": "atleast_1d",
                 "role": "",
                 "target": "atleast_1d",
@@ -205,7 +205,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/atleast_2d",
-                "label": "fnp.atleast_2d",
+                "label": "flops.atleast_2d",
                 "original_target": "atleast_2d",
                 "role": "",
                 "target": "atleast_2d",
@@ -216,7 +216,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/atleast_3d",
-                "label": "fnp.atleast_3d",
+                "label": "flops.atleast_3d",
                 "original_target": "atleast_3d",
                 "role": "",
                 "target": "atleast_3d",
@@ -235,12 +235,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.array([1, 2])"
+                "text": "x = flops.array([1, 2])"
               },
               {
                 "kind": "input",
@@ -262,7 +262,7 @@
               },
               {
                 "kind": "code",
-                "text": "x[fnp.newaxis, :]"
+                "text": "x[flops.newaxis, :]"
               },
               {
                 "kind": "text",
@@ -270,7 +270,7 @@
               },
               {
                 "kind": "code",
-                "text": "x[fnp.newaxis]"
+                "text": "x[flops.newaxis]"
               },
               {
                 "kind": "text",
@@ -284,7 +284,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.expand_dims(x, axis=0)"
+                "text": "y = flops.expand_dims(x, axis=0)"
               },
               {
                 "kind": "input",
@@ -315,7 +315,7 @@
               },
               {
                 "kind": "code",
-                "text": "x[:, fnp.newaxis]"
+                "text": "x[:, flops.newaxis]"
               },
               {
                 "kind": "text",
@@ -329,7 +329,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.expand_dims(x, axis=1)"
+                "text": "y = flops.expand_dims(x, axis=1)"
               },
               {
                 "kind": "input",
@@ -374,7 +374,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.expand_dims(x, axis=(0, 1))"
+                "text": "y = flops.expand_dims(x, axis=(0, 1))"
               },
               {
                 "kind": "input",
@@ -393,7 +393,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = fnp.expand_dims(x, axis=(2, 0))"
+                "text": "y = flops.expand_dims(x, axis=(2, 0))"
               },
               {
                 "kind": "input",
@@ -430,7 +430,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "newaxis",
-                "text": "fnp.newaxis"
+                "text": "flops.newaxis"
               },
               {
                 "kind": "text",
@@ -444,7 +444,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.newaxis is None"
+                "text": "flops.newaxis is None"
               },
               {
                 "kind": "output",
@@ -462,12 +462,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.expand_dims",
+    "flopscope_ref": "flops.expand_dims",
     "module": "numpy",
     "name": "expand_dims",
     "notes": "Insert new size-1 axis.",
     "numpy_ref": "np.expand_dims",
-    "signature": "fnp.expand_dims(a, axis)",
+    "signature": "flops.expand_dims(a, axis)",
     "status": "supported",
     "summary": "Expand the shape of an array.",
     "weight": 0.0

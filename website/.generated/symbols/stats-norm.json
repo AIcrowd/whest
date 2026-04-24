@@ -1,0 +1,93 @@
+{
+  "aliases": [
+    "stats.norm",
+    "flops.stats.norm",
+    "flopscope.stats.norm"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Normal (Gaussian) continuous random variable."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/stats/norm/",
+              "kind": "link",
+              "target": "stats.norm",
+              "text": "scipy.stats.norm"
+            },
+            {
+              "kind": "text",
+              "text": ".  Uses the standard "
+            },
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " /\n"
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": " parameterisation (mean and standard deviation)."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "stats.norm",
+  "canonical_path": "stats/norm",
+  "display_name": "flops.stats.norm",
+  "href": "/docs/api/stats/norm/",
+  "import_path": "flops.stats.norm",
+  "kind": "object",
+  "members": [
+    {
+      "href": "/docs/api/stats/norm/cdf/",
+      "label": "flops.stats.norm.cdf"
+    },
+    {
+      "href": "/docs/api/stats/norm/pdf/",
+      "label": "flops.stats.norm.pdf"
+    },
+    {
+      "href": "/docs/api/stats/norm/ppf/",
+      "label": "flops.stats.norm.ppf"
+    }
+  ],
+  "module": "flopscope.stats._norm",
+  "name": "stats.norm",
+  "related_guides": [],
+  "signature": "flops.stats.norm",
+  "slug": "stats-norm",
+  "source_url": "",
+  "status_note": "",
+  "summary": "Normal (Gaussian) continuous random variable.",
+  "upstream_source_url": ""
+}

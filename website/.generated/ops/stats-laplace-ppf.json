@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.laplace.ppf",
+  "canonical_path": "stats/laplace/ppf",
   "category": "counted_custom",
   "cost_formula": "5n",
   "cost_formula_latex": "$5n$",
@@ -170,14 +171,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.stats.laplace.ppf",
+  "flopscope_ref": "flops.stats.laplace.ppf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_laplace.py#L54",
-  "href": "/docs/api/ops/stats-laplace-ppf/",
+  "href": "/docs/api/stats/laplace/ppf/",
+  "legacy_href": "/docs/api/ops/stats-laplace-ppf/",
   "module": "flopscope.stats",
   "name": "stats.laplace.ppf",
   "next": {
-    "href": "/docs/api/ops/stats-logistic-cdf/",
-    "label": "fnp.stats.logistic.cdf"
+    "href": "/docs/api/stats/logistic/cdf/",
+    "label": "flops.stats.logistic.cdf"
   },
   "notes": "Laplace PPF; cost = numel(input).",
   "notes_sections": [],
@@ -214,8 +216,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-laplace-pdf/",
-    "label": "fnp.stats.laplace.pdf"
+    "href": "/docs/api/stats/laplace/pdf/",
+    "label": "flops.stats.laplace.pdf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.laplace.html",
@@ -229,7 +231,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.stats.laplace.ppf(q, loc=0, scale=1)",
+  "signature": "flops.stats.laplace.ppf(q, loc=0, scale=1)",
   "slug": "stats-laplace-ppf",
   "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",

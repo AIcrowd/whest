@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fft-rfftfreq/",
+  "detail_href": "/docs/api/fft/rfftfreq/",
   "detail_json_href": "/api-data/ops/fft-rfftfreq.json",
   "docs": {
     "sections": [
@@ -272,17 +272,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "signal = fnp.array([-2, 8, 6, 4, 1, 0, 3, 5, -3, 4], dtype=float)"
+                "text": "signal = flops.array([-2, 8, 6, 4, 1, 0, 3, 5, -3, 4], dtype=float)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fourier = fnp.fft.rfft(signal)"
+                "text": "fourier = flops.fft.rfft(signal)"
               },
               {
                 "kind": "input",
@@ -297,7 +297,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freq = fnp.fft.fftfreq(n, d=1./sample_rate)"
+                "text": "freq = flops.fft.fftfreq(n, d=1./sample_rate)"
               },
               {
                 "kind": "input",
@@ -311,7 +311,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freq = fnp.fft.rfftfreq(n, d=1./sample_rate)"
+                "text": "freq = flops.fft.rfftfreq(n, d=1./sample_rate)"
               },
               {
                 "kind": "input",
@@ -334,12 +334,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.fft.rfftfreq",
+    "flopscope_ref": "flops.fft.rfftfreq",
     "module": "numpy.fft",
     "name": "fft.rfftfreq",
     "notes": "Real FFT sample frequencies. No arithmetic; returns index array.",
     "numpy_ref": "np.fft.rfftfreq",
-    "signature": "fnp.fft.rfftfreq(n, d=1.0, device=None)",
+    "signature": "flops.fft.rfftfreq(n, d=1.0, device=None)",
     "status": "supported",
     "summary": "Return the Discrete Fourier Transform sample frequencies (for usage with rfft, irfft).",
     "weight": 0.0

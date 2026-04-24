@@ -170,7 +170,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "fnp.fft"
+                      "text": "flops.fft"
                     },
                     {
                       "kind": "text",
@@ -201,7 +201,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "fnp.fft"
+                  "text": "flops.fft"
                 },
                 {
                   "kind": "text",
@@ -394,7 +394,7 @@
               ],
               "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
               "href": "",
-              "label": "fnp.fft",
+              "label": "flops.fft",
               "original_target": "numpy.fft",
               "role": "",
               "target": "fft",
@@ -540,7 +540,7 @@
               "href": "",
               "kind": "link",
               "target": "fft",
-              "text": "fnp.fft"
+              "text": "flops.fft"
             },
             {
               "kind": "text",
@@ -569,12 +569,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.fft.fft(fnp.exp(2j * fnp.pi * fnp.arange(8) / 8))"
+              "text": "flops.fft.fft(flops.exp(2j * flops.pi * flops.arange(8) / 8))"
             },
             {
               "kind": "output",
@@ -606,7 +606,7 @@
               "href": "",
               "kind": "link",
               "target": "fft",
-              "text": "fnp.fft"
+              "text": "flops.fft"
             },
             {
               "kind": "text",
@@ -625,17 +625,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "t = fnp.arange(256)"
+              "text": "t = flops.arange(256)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "sp = fnp.fft.fft(fnp.sin(t))"
+              "text": "sp = flops.fft.fft(flops.sin(t))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "freq = fnp.fft.fftfreq(t.shape[-1])"
+              "text": "freq = flops.fft.fftfreq(t.shape[-1])"
             },
             {
               "kind": "input",
@@ -659,6 +659,7 @@
     }
   ],
   "canonical_name": "fft.fft",
+  "canonical_path": "fft/fft",
   "category": "counted_custom",
   "cost_formula": "5n * ceil(log2(n))",
   "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
@@ -674,24 +675,25 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.fft.fft(fnp.exp(2j * fnp.pi * fnp.arange(8) / 8))\n\nimport matplotlib.pyplot as plt\n\nt = fnp.arange(256)\n\nsp = fnp.fft.fft(fnp.sin(t))\n\nfreq = fnp.fft.fftfreq(t.shape[-1])\n\nplt.plot(freq, sp.real, freq, sp.imag)\n\nplt.show()",
+    "code": "import flopscope as flops\n\nflops.fft.fft(flops.exp(2j * flops.pi * flops.arange(8) / 8))\n\nimport matplotlib.pyplot as plt\n\nt = flops.arange(256)\n\nsp = flops.fft.fft(flops.sin(t))\n\nfreq = flops.fft.fftfreq(t.shape[-1])\n\nplt.plot(freq, sp.real, freq, sp.imag)\n\nplt.show()",
     "output": "array([-2.33486982e-16+1.14423775e-17j,  8.00000000e+00-1.25557246e-15j,\n        2.33486982e-16+2.33486982e-16j,  0.00000000e+00+1.22464680e-16j,\n       -1.14423775e-17+2.33486982e-16j,  0.00000000e+00+5.20784380e-16j,\n        1.14423775e-17+1.14423775e-17j,  0.00000000e+00+1.22464680e-16j])\n\n[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.fft.fft",
+  "flopscope_ref": "flops.fft.fft",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L166",
-  "href": "/docs/api/ops/fft-fft/",
+  "href": "/docs/api/fft/fft/",
+  "legacy_href": "/docs/api/ops/fft-fft/",
   "module": "numpy.fft",
   "name": "fft.fft",
   "next": {
-    "href": "/docs/api/ops/fft-fft2/",
-    "label": "fnp.fft.fft2"
+    "href": "/docs/api/fft/fft2/",
+    "label": "flops.fft.fft2"
   },
   "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
     "FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms.  The symmetry is highest when `n` is a power of 2, and the transform is therefore most efficient for these sizes.",
-    "The DFT is defined, with the conventions used in this implementation, in the documentation for the `fnp.fft` module."
+    "The DFT is defined, with the conventions used in this implementation, in the documentation for the `flops.fft` module."
   ],
   "numpy_ref": "np.fft.fft",
   "parameters": [
@@ -722,7 +724,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `fnp.fft`). Default is \"backward\".",
+        "Normalization mode (see `flops.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -745,8 +747,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fabs/",
-    "label": "fnp.fabs"
+    "href": "/docs/api/fabs/",
+    "label": "flops.fabs"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html",
@@ -771,7 +773,7 @@
       ],
       "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
       "href": "",
-      "label": "fnp.fft",
+      "label": "flops.fft",
       "original_target": "numpy.fft",
       "role": "",
       "target": "fft",
@@ -882,7 +884,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "flops.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
   "slug": "fft-fft",
   "summary": "Compute the one-dimensional discrete Fourier Transform.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L113",

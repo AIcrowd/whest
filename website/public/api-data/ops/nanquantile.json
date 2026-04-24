@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nanquantile/",
+  "detail_href": "/docs/api/nanquantile/",
   "detail_json_href": "/api-data/ops/nanquantile.json",
   "docs": {
     "sections": [
@@ -799,7 +799,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/quantile",
-                "label": "fnp.quantile",
+                "label": "flops.quantile",
                 "original_target": "quantile",
                 "role": "",
                 "target": "quantile",
@@ -810,7 +810,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanmean",
-                "label": "fnp.nanmean",
+                "label": "flops.nanmean",
                 "original_target": "nanmean",
                 "role": "",
                 "target": "nanmean",
@@ -821,7 +821,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanmedian",
-                "label": "fnp.nanmedian",
+                "label": "flops.nanmedian",
                 "original_target": "nanmedian",
                 "role": "",
                 "target": "nanmedian",
@@ -841,7 +841,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/nanmedian",
-                "label": "fnp.nanmedian",
+                "label": "flops.nanmedian",
                 "original_target": "nanmedian",
                 "role": "",
                 "target": "nanmedian",
@@ -857,7 +857,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/nanpercentile",
-                "label": "fnp.nanpercentile",
+                "label": "flops.nanpercentile",
                 "original_target": "nanpercentile",
                 "role": "",
                 "target": "nanpercentile",
@@ -882,7 +882,7 @@
                 "href": "/docs/api/ops/nanquantile",
                 "kind": "link",
                 "target": "nanquantile",
-                "text": "fnp.nanquantile"
+                "text": "flops.nanquantile"
               },
               {
                 "kind": "text",
@@ -893,7 +893,7 @@
                 "href": "/docs/api/ops/quantile",
                 "kind": "link",
                 "target": "quantile",
-                "text": "fnp.quantile"
+                "text": "flops.quantile"
               },
               {
                 "kind": "text",
@@ -904,7 +904,7 @@
                 "href": "/docs/api/ops/quantile",
                 "kind": "link",
                 "target": "quantile",
-                "text": "fnp.quantile"
+                "text": "flops.quantile"
               },
               {
                 "kind": "text",
@@ -933,17 +933,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[10., 7., 4.], [3., 2., 1.]])"
+                "text": "a = flops.array([[10., 7., 4.], [3., 2., 1.]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a[0][1] = fnp.nan"
+                "text": "a[0][1] = flops.nan"
               },
               {
                 "kind": "input",
@@ -961,16 +961,16 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.quantile(a, 0.5)"
+                "text": "flops.quantile(a, 0.5)"
               },
               {
                 "kind": "output",
-                "text": "fnp.float64(nan)"
+                "text": "flops.float64(nan)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanquantile(a, 0.5)"
+                "text": "flops.nanquantile(a, 0.5)"
               },
               {
                 "kind": "output",
@@ -979,7 +979,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanquantile(a, 0.5, axis=0)"
+                "text": "flops.nanquantile(a, 0.5, axis=0)"
               },
               {
                 "kind": "output",
@@ -988,7 +988,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanquantile(a, 0.5, axis=1, keepdims=True)"
+                "text": "flops.nanquantile(a, 0.5, axis=1, keepdims=True)"
               },
               {
                 "kind": "output",
@@ -1001,17 +1001,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "m = fnp.nanquantile(a, 0.5, axis=0)"
+                "text": "m = flops.nanquantile(a, 0.5, axis=0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out = fnp.zeros_like(m)"
+                "text": "out = flops.zeros_like(m)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanquantile(a, 0.5, axis=0, out=out)"
+                "text": "flops.nanquantile(a, 0.5, axis=0, out=out)"
               },
               {
                 "kind": "output",
@@ -1034,7 +1034,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanquantile(b, 0.5, axis=1, overwrite_input=True)"
+                "text": "flops.nanquantile(b, 0.5, axis=1, overwrite_input=True)"
               },
               {
                 "kind": "output",
@@ -1043,7 +1043,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "assert not fnp.all(a==b)"
+                "text": "assert not flops.all(a==b)"
               }
             ],
             "type": "doctest_block"
@@ -1057,12 +1057,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "fnp.nanquantile",
+    "flopscope_ref": "flops.nanquantile",
     "module": "numpy",
     "name": "nanquantile",
     "notes": "q-th quantile ignoring NaNs.",
     "numpy_ref": "np.nanquantile",
-    "signature": "fnp.nanquantile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=<no value>, *, weights=None, interpolation=None)",
+    "signature": "flops.nanquantile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=<no value>, *, weights=None, interpolation=None)",
     "status": "supported",
     "summary": "Compute the qth quantile of the data along the specified axis, while ignoring nan values. Returns the qth quantile(s) of the array elements.",
     "weight": 1.0

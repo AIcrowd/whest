@@ -27,7 +27,7 @@
             },
             {
               "kind": "code",
-              "text": "fnp.sin(x)/fnp.cos(x)"
+              "text": "flops.sin(x)/flops.cos(x)"
             },
             {
               "kind": "text",
@@ -334,7 +334,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
@@ -344,7 +344,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.tan(fnp.array([-pi,pi/2,pi]))"
+              "text": "flops.tan(flops.array([-pi,pi/2,pi]))"
             },
             {
               "kind": "output",
@@ -368,12 +368,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "out1 = fnp.array([0], dtype='d')"
+              "text": "out1 = flops.array([0], dtype='d')"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "out2 = fnp.cos([0.1], out1)"
+              "text": "out2 = flops.cos([0.1], out1)"
             },
             {
               "kind": "input",
@@ -397,7 +397,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.cos(fnp.zeros((3,3)),fnp.zeros((2,2)))"
+              "text": "flops.cos(flops.zeros((3,3)),flops.zeros((2,2)))"
             },
             {
               "kind": "output",
@@ -419,6 +419,7 @@
     }
   ],
   "canonical_name": "tan",
+  "canonical_path": "tan",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -436,19 +437,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfrom math import pi\n\nfnp.tan(fnp.array([-pi,pi/2,pi]))\n\nout1 = fnp.array([0], dtype='d')\n\nout2 = fnp.cos([0.1], out1)\n\nout2 is out1\n\nfnp.cos(fnp.zeros((3,3)),fnp.zeros((2,2)))",
+    "code": "import flopscope as flops\n\nfrom math import pi\n\nflops.tan(flops.array([-pi,pi/2,pi]))\n\nout1 = flops.array([0], dtype='d')\n\nout2 = flops.cos([0.1], out1)\n\nout2 is out1\n\nflops.cos(flops.zeros((3,3)),flops.zeros((2,2)))",
     "output": "array([  1.22460635e-16,   1.63317787e+16,  -1.22460635e-16])\n\nTrue\n\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nValueError: operands could not be broadcast together with shapes (3,3) (2,2)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.tan",
+  "flopscope_ref": "flops.tan",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ops/tan/",
+  "href": "/docs/api/tan/",
+  "legacy_href": "/docs/api/ops/tan/",
   "module": "numpy",
   "name": "tan",
   "next": {
-    "href": "/docs/api/ops/tanh/",
-    "label": "fnp.tanh"
+    "href": "/docs/api/tanh/",
+    "label": "flops.tanh"
   },
   "notes": "Element-wise tangent.",
   "notes_sections": [
@@ -495,8 +497,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/take_along_axis/",
-    "label": "fnp.take_along_axis"
+    "href": "/docs/api/take-along-axis/",
+    "label": "flops.take_along_axis"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.tan.html",
@@ -511,7 +513,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.tan(*args, **kwargs)",
+  "signature": "flops.tan(*args, **kwargs)",
   "slug": "tan",
   "summary": "Compute tangent element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

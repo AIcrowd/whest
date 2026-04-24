@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/lcm/",
+  "detail_href": "/docs/api/lcm/",
   "detail_json_href": "/api-data/ops/lcm.json",
   "docs": {
     "sections": [
@@ -157,7 +157,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/gcd",
-                "label": "fnp.gcd",
+                "label": "flops.gcd",
                 "original_target": "gcd",
                 "role": "",
                 "target": "gcd",
@@ -176,12 +176,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.lcm(12, 20)"
+                "text": "flops.lcm(12, 20)"
               },
               {
                 "kind": "output",
@@ -190,7 +190,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.lcm.reduce([3, 12, 20])"
+                "text": "flops.lcm.reduce([3, 12, 20])"
               },
               {
                 "kind": "output",
@@ -199,7 +199,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.lcm.reduce([40, 12, 20])"
+                "text": "flops.lcm.reduce([40, 12, 20])"
               },
               {
                 "kind": "output",
@@ -208,7 +208,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.lcm(fnp.arange(6), 20)"
+                "text": "flops.lcm(flops.arange(6), 20)"
               },
               {
                 "kind": "output",
@@ -226,12 +226,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.lcm",
+    "flopscope_ref": "flops.lcm",
     "module": "numpy",
     "name": "lcm",
     "notes": "Element-wise least common multiple.",
     "numpy_ref": "np.lcm",
-    "signature": "fnp.lcm(*args, **kwargs)",
+    "signature": "flops.lcm(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the lowest common multiple of ``|x1|`` and ``|x2|``",
     "weight": 16.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-matrix_rank/",
+  "detail_href": "/docs/api/linalg/matrix-rank/",
   "detail_json_href": "/api-data/ops/linalg-matrix_rank.json",
   "docs": {
     "sections": [
@@ -473,7 +473,7 @@
               },
               {
                 "kind": "code",
-                "text": "S.max() *\nfnp.finfo(A.dtype).eps / 2. * fnp.sqrt(m + n + 1.)"
+                "text": "S.max() *\nflops.finfo(A.dtype).eps / 2. * flops.sqrt(m + n + 1.)"
               },
               {
                 "kind": "text",
@@ -532,17 +532,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "from fnp.linalg import matrix_rank"
+                "text": "from flops.linalg import matrix_rank"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "matrix_rank(fnp.eye(4)) # Full rank matrix"
+                "text": "matrix_rank(flops.eye(4)) # Full rank matrix"
               },
               {
                 "kind": "output",
@@ -551,7 +551,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "I=fnp.eye(4); I[-1,-1] = 0. # rank deficient matrix"
+                "text": "I=flops.eye(4); I[-1,-1] = 0. # rank deficient matrix"
               },
               {
                 "kind": "input",
@@ -565,7 +565,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "matrix_rank(fnp.ones((4,))) # 1 dimension - rank 1 unless all 0"
+                "text": "matrix_rank(flops.ones((4,))) # 1 dimension - rank 1 unless all 0"
               },
               {
                 "kind": "output",
@@ -574,7 +574,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "matrix_rank(fnp.zeros((4,)))"
+                "text": "matrix_rank(flops.zeros((4,)))"
               },
               {
                 "kind": "output",
@@ -592,12 +592,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
-    "flopscope_ref": "fnp.linalg.matrix_rank",
+    "flopscope_ref": "flops.linalg.matrix_rank",
     "module": "numpy.linalg",
     "name": "linalg.matrix_rank",
     "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD).",
     "numpy_ref": "np.linalg.matrix_rank",
-    "signature": "fnp.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)",
+    "signature": "flops.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)",
     "status": "supported",
     "summary": "Return matrix rank of array using SVD method",
     "weight": 4.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/subtract/",
+  "detail_href": "/docs/api/subtract/",
   "detail_json_href": "/api-data/ops/subtract.json",
   "docs": {
     "sections": [
@@ -354,12 +354,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.subtract(1.0, 4.0)"
+                "text": "flops.subtract(1.0, 4.0)"
               },
               {
                 "kind": "output",
@@ -373,17 +373,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
+                "text": "x1 = flops.arange(9.0).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = fnp.arange(3.0)"
+                "text": "x2 = flops.arange(3.0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.subtract(x1, x2)"
+                "text": "flops.subtract(x1, x2)"
               },
               {
                 "kind": "output",
@@ -419,7 +419,7 @@
                 "href": "/docs/api/ops/subtract",
                 "kind": "link",
                 "target": "subtract",
-                "text": "fnp.subtract"
+                "text": "flops.subtract"
               },
               {
                 "kind": "text",
@@ -433,12 +433,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
+                "text": "x1 = flops.arange(9.0).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = fnp.arange(3.0)"
+                "text": "x2 = flops.arange(3.0)"
               },
               {
                 "kind": "input",
@@ -469,12 +469,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.subtract",
+    "flopscope_ref": "flops.subtract",
     "module": "numpy",
     "name": "subtract",
     "notes": "Element-wise subtraction.",
     "numpy_ref": "np.subtract",
-    "signature": "fnp.subtract(*args, **kwargs)",
+    "signature": "flops.subtract(*args, **kwargs)",
     "status": "supported",
     "summary": "Subtract arguments, element-wise.",
     "weight": 1.0

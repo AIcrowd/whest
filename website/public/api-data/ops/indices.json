@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/indices/",
+  "detail_href": "/docs/api/indices/",
   "detail_json_href": "/api-data/ops/indices.json",
   "docs": {
     "sections": [
@@ -217,7 +217,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/meshgrid",
-                "label": "fnp.meshgrid",
+                "label": "flops.meshgrid",
                 "original_target": "meshgrid",
                 "role": "",
                 "target": "meshgrid",
@@ -312,12 +312,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "grid = fnp.indices((2, 3))"
+                "text": "grid = flops.indices((2, 3))"
               },
               {
                 "kind": "input",
@@ -371,12 +371,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(20).reshape(5, 4)"
+                "text": "x = flops.arange(20).reshape(5, 4)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "row, col = fnp.indices((2, 3))"
+                "text": "row, col = flops.indices((2, 3))"
               },
               {
                 "kind": "input",
@@ -425,7 +425,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "i, j = fnp.indices((2, 3), sparse=True)"
+                "text": "i, j = flops.indices((2, 3), sparse=True)"
               },
               {
                 "kind": "input",
@@ -479,12 +479,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.indices",
+    "flopscope_ref": "flops.indices",
     "module": "numpy",
     "name": "indices",
     "notes": "Return array representing indices of a grid. Cost: numel(output).",
     "numpy_ref": "np.indices",
-    "signature": "fnp.indices(dimensions, dtype=<class 'int'>, sparse=False)",
+    "signature": "flops.indices(dimensions, dtype=<class 'int'>, sparse=False)",
     "status": "supported",
     "summary": "Return an array representing the indices of a grid.",
     "weight": 1.0

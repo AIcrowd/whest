@@ -164,7 +164,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "fnp.fft"
+                      "text": "flops.fft"
                     },
                     {
                       "kind": "text",
@@ -195,7 +195,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "fnp.fft"
+                  "text": "flops.fft"
                 },
                 {
                   "kind": "text",
@@ -396,22 +396,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.mgrid[:5, :5][0]"
+              "text": "a = flops.mgrid[:5, :5][0]"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = fnp.fft.rfft2(a)"
+              "text": "A = flops.fft.rfft2(a)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.fft.irfft2(A, s=a.shape)"
+              "text": "flops.fft.irfft2(A, s=a.shape)"
             },
             {
               "kind": "output",
@@ -441,6 +441,7 @@
     }
   ],
   "canonical_name": "fft.irfft2",
+  "canonical_path": "fft/irfft2",
   "category": "counted_custom",
   "cost_formula": "5(N/2) * ceil(log2(N))",
   "cost_formula_latex": "$5(N/2) \\cdot \\lceil\\log_2 N\\rceil$",
@@ -451,19 +452,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.mgrid[:5, :5][0]\n\nA = fnp.fft.rfft2(a)\n\nfnp.fft.irfft2(A, s=a.shape)",
+    "code": "import flopscope as flops\n\na = flops.mgrid[:5, :5][0]\n\nA = flops.fft.rfft2(a)\n\nflops.fft.irfft2(A, s=a.shape)",
     "output": "array([[0., 0., 0., 0., 0.],\n       [1., 1., 1., 1., 1.],\n       [2., 2., 2., 2., 2.],\n       [3., 3., 3., 3., 3.],\n       [4., 4., 4., 4., 4.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.fft.irfft2",
+  "flopscope_ref": "flops.fft.irfft2",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L307",
-  "href": "/docs/api/ops/fft-irfft2/",
+  "href": "/docs/api/fft/irfft2/",
+  "legacy_href": "/docs/api/ops/fft-irfft2/",
   "module": "numpy.fft",
   "name": "fft.irfft2",
   "next": {
-    "href": "/docs/api/ops/fft-irfftn/",
-    "label": "fnp.fft.irfftn"
+    "href": "/docs/api/fft/irfftn/",
+    "label": "flops.fft.irfftn"
   },
   "notes": "Inverse 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -515,7 +517,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `fnp.fft`). Default is \"backward\".",
+        "Normalization mode (see `flops.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -538,8 +540,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-irfft/",
-    "label": "fnp.fft.irfft"
+    "href": "/docs/api/fft/irfft/",
+    "label": "flops.fft.irfft"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.irfft2.html",
@@ -626,7 +628,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.irfft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
+  "signature": "flops.fft.irfft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
   "slug": "fft-irfft2",
   "summary": "Computes the inverse of `rfft2`.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1606",

@@ -108,7 +108,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/atleast_1d",
-              "label": "fnp.atleast_1d",
+              "label": "flops.atleast_1d",
               "original_target": "atleast_1d",
               "role": "",
               "target": "atleast_1d",
@@ -119,7 +119,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/atleast_3d",
-              "label": "fnp.atleast_3d",
+              "label": "flops.atleast_3d",
               "original_target": "atleast_3d",
               "role": "",
               "target": "atleast_3d",
@@ -138,12 +138,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.atleast_2d(3.0)"
+              "text": "flops.atleast_2d(3.0)"
             },
             {
               "kind": "output",
@@ -157,12 +157,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = fnp.arange(3.0)"
+              "text": "x = flops.arange(3.0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.atleast_2d(x)"
+              "text": "flops.atleast_2d(x)"
             },
             {
               "kind": "output",
@@ -171,7 +171,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.atleast_2d(x).base is x"
+              "text": "flops.atleast_2d(x).base is x"
             },
             {
               "kind": "output",
@@ -185,7 +185,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.atleast_2d(1, [1, 2], [[1, 2]])"
+              "text": "flops.atleast_2d(1, [1, 2], [[1, 2]])"
             },
             {
               "kind": "output",
@@ -199,6 +199,7 @@
     }
   ],
   "canonical_name": "atleast_2d",
+  "canonical_path": "atleast-2d",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -209,19 +210,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.atleast_2d(3.0)\n\nx = fnp.arange(3.0)\n\nfnp.atleast_2d(x)\n\nfnp.atleast_2d(x).base is x\n\nfnp.atleast_2d(1, [1, 2], [[1, 2]])",
+    "code": "import flopscope as flops\n\nflops.atleast_2d(3.0)\n\nx = flops.arange(3.0)\n\nflops.atleast_2d(x)\n\nflops.atleast_2d(x).base is x\n\nflops.atleast_2d(1, [1, 2], [[1, 2]])",
     "output": "array([[3.]])\n\narray([[0., 1., 2.]])\n\nTrue\n\n(array([[1]]), array([[1, 2]]), array([[1, 2]]))",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.atleast_2d",
+  "flopscope_ref": "flops.atleast_2d",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L786",
-  "href": "/docs/api/ops/atleast_2d/",
+  "href": "/docs/api/atleast-2d/",
+  "legacy_href": "/docs/api/ops/atleast_2d/",
   "module": "numpy",
   "name": "atleast_2d",
   "next": {
-    "href": "/docs/api/ops/atleast_3d/",
-    "label": "fnp.atleast_3d"
+    "href": "/docs/api/atleast-3d/",
+    "label": "flops.atleast_3d"
   },
   "notes": "View inputs as arrays with at least two dimensions.",
   "notes_sections": [],
@@ -238,8 +240,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/atleast_1d/",
-    "label": "fnp.atleast_1d"
+    "href": "/docs/api/atleast-1d/",
+    "label": "flops.atleast_1d"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.atleast_2d.html",
@@ -260,7 +262,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/atleast_1d",
-      "label": "fnp.atleast_1d",
+      "label": "flops.atleast_1d",
       "original_target": "atleast_1d",
       "role": "",
       "target": "atleast_1d",
@@ -271,14 +273,14 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/atleast_3d",
-      "label": "fnp.atleast_3d",
+      "label": "flops.atleast_3d",
       "original_target": "atleast_3d",
       "role": "",
       "target": "atleast_3d",
       "unresolved": false
     }
   ],
-  "signature": "fnp.atleast_2d(*arys)",
+  "signature": "flops.atleast_2d(*arys)",
   "slug": "atleast_2d",
   "summary": "View inputs as arrays with at least two dimensions.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L80",

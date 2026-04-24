@@ -111,7 +111,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.beta`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.beta`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -216,7 +216,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "fnp.broadcast(a, b).size"
+                      "text": "flops.broadcast(a, b).size"
                     },
                     {
                       "kind": "text",
@@ -274,7 +274,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "fnp.broadcast(a, b).size"
+                  "text": "flops.broadcast(a, b).size"
                 },
                 {
                   "kind": "text",
@@ -352,6 +352,7 @@
     }
   ],
   "canonical_name": "random.beta",
+  "canonical_path": "random/beta",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -363,14 +364,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.beta",
+  "flopscope_ref": "flops.random.beta",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-beta/",
+  "href": "/docs/api/random/beta/",
+  "legacy_href": "/docs/api/ops/random-beta/",
   "module": "numpy.random",
   "name": "random.beta",
   "next": {
-    "href": "/docs/api/ops/random-binomial/",
-    "label": "fnp.random.binomial"
+    "href": "/docs/api/random/binomial/",
+    "label": "flops.random.binomial"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -395,15 +397,15 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``a`` and ``b`` are both scalars.",
-        "Otherwise, ``fnp.broadcast(a, b).size`` samples are drawn."
+        "Otherwise, ``flops.broadcast(a, b).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/radians/",
-    "label": "fnp.radians"
+    "href": "/docs/api/radians/",
+    "label": "flops.radians"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.beta.html",
@@ -434,7 +436,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.beta(a, b, size=None)",
+  "signature": "flops.random.beta(a, b, size=None)",
   "slug": "random-beta",
   "summary": "Draw samples from a Beta distribution.",
   "upstream_source_url": "",

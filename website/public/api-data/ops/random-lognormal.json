@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-lognormal/",
+  "detail_href": "/docs/api/random/lognormal/",
   "detail_json_href": "/api-data/ops/random-lognormal.json",
   "docs": {
     "sections": [
@@ -81,7 +81,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.lognormal`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.lognormal`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -189,7 +189,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "fnp.broadcast(mean, sigma).size"
+                        "text": "flops.broadcast(mean, sigma).size"
                       },
                       {
                         "kind": "text",
@@ -250,7 +250,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "fnp.broadcast(mean, sigma).size"
+                    "text": "flops.broadcast(mean, sigma).size"
                   },
                   {
                     "kind": "text",
@@ -455,7 +455,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = fnp.random.lognormal(mu, sigma, 1000)"
+                "text": "s = flops.random.lognormal(mu, sigma, 1000)"
               }
             ],
             "type": "doctest_block"
@@ -489,17 +489,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.linspace(min(bins), max(bins), 10000)"
+                "text": "x = flops.linspace(min(bins), max(bins), 10000)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "pdf = (fnp.exp(-(fnp.log(x) - mu)**2 / (2 * sigma**2))"
+                "text": "pdf = (flops.exp(-(flops.log(x) - mu)**2 / (2 * sigma**2))"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "/ (x * sigma * fnp.sqrt(2 * fnp.pi)))"
+                "text": "/ (x * sigma * flops.sqrt(2 * flops.pi)))"
               }
             ],
             "type": "doctest_block"
@@ -558,12 +558,12 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "a = 10. + fnp.random.standard_normal(100)"
+                "text": "a = 10. + flops.random.standard_normal(100)"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "b.append(fnp.prod(a))"
+                "text": "b.append(flops.prod(a))"
               }
             ],
             "type": "doctest_block"
@@ -573,7 +573,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = fnp.array(b) / fnp.min(b) # scale values to be positive"
+                "text": "b = flops.array(b) / flops.min(b) # scale values to be positive"
               },
               {
                 "kind": "input",
@@ -583,12 +583,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "sigma = fnp.std(fnp.log(b))"
+                "text": "sigma = flops.std(flops.log(b))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "mu = fnp.mean(fnp.log(b))"
+                "text": "mu = flops.mean(flops.log(b))"
               }
             ],
             "type": "doctest_block"
@@ -598,17 +598,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.linspace(min(bins), max(bins), 10000)"
+                "text": "x = flops.linspace(min(bins), max(bins), 10000)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "pdf = (fnp.exp(-(fnp.log(x) - mu)**2 / (2 * sigma**2))"
+                "text": "pdf = (flops.exp(-(flops.log(x) - mu)**2 / (2 * sigma**2))"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "/ (x * sigma * fnp.sqrt(2 * fnp.pi)))"
+                "text": "/ (x * sigma * flops.sqrt(2 * flops.pi)))"
               }
             ],
             "type": "doctest_block"
@@ -637,12 +637,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.random.lognormal",
+    "flopscope_ref": "flops.random.lognormal",
     "module": "numpy.random",
     "name": "random.lognormal",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.lognormal",
-    "signature": "fnp.random.lognormal(mean=0.0, sigma=1.0, size=None)",
+    "signature": "flops.random.lognormal(mean=0.0, sigma=1.0, size=None)",
     "status": "supported",
     "summary": "Draw samples from a log-normal distribution.",
     "weight": 16.0

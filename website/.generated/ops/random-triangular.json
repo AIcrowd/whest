@@ -89,7 +89,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.triangular`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~flops.random.Generator.triangular`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -256,7 +256,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "fnp.broadcast(left, mode, right).size"
+                      "text": "flops.broadcast(left, mode, right).size"
                     },
                     {
                       "kind": "text",
@@ -322,7 +322,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "fnp.broadcast(left, mode, right).size"
+                  "text": "flops.broadcast(left, mode, right).size"
                 },
                 {
                   "kind": "text",
@@ -458,7 +458,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "h = plt.hist(fnp.random.triangular(-3, 0, 8, 100000), bins=200,"
+              "text": "h = plt.hist(flops.random.triangular(-3, 0, 8, 100000), bins=200,"
             },
             {
               "kind": "input",
@@ -478,6 +478,7 @@
     }
   ],
   "canonical_name": "random.triangular",
+  "canonical_path": "random/triangular",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -493,19 +494,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import matplotlib.pyplot as plt\n\nh = plt.hist(fnp.random.triangular(-3, 0, 8, 100000), bins=200,\n             density=True)\n\nplt.show()",
+    "code": "import matplotlib.pyplot as plt\n\nh = plt.hist(flops.random.triangular(-3, 0, 8, 100000), bins=200,\n             density=True)\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.random.triangular",
+  "flopscope_ref": "flops.random.triangular",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-triangular/",
+  "href": "/docs/api/random/triangular/",
+  "legacy_href": "/docs/api/ops/random-triangular/",
   "module": "numpy.random",
   "name": "random.triangular",
   "next": {
-    "href": "/docs/api/ops/random-uniform/",
-    "label": "fnp.random.uniform"
+    "href": "/docs/api/random/uniform/",
+    "label": "flops.random.uniform"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -542,7 +544,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``left``, ``mode``, and ``right``",
-        "are all scalars.  Otherwise, ``fnp.broadcast(left, mode, right).size``",
+        "are all scalars.  Otherwise, ``flops.broadcast(left, mode, right).size``",
         "samples are drawn."
       ],
       "name": "size",
@@ -550,8 +552,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_t/",
-    "label": "fnp.random.standard_t"
+    "href": "/docs/api/random/standard-t/",
+    "label": "flops.random.standard_t"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.triangular.html",
@@ -582,7 +584,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.triangular(left, mode, right, size=None)",
+  "signature": "flops.random.triangular(left, mode, right, size=None)",
   "slug": "random-triangular",
   "summary": "Draw samples from the triangular distribution over the interval ``[left, right]``.",
   "upstream_source_url": "",

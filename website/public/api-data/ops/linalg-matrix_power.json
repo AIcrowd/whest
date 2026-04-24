@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-matrix_power/",
+  "detail_href": "/docs/api/linalg/matrix-power/",
   "detail_json_href": "/api-data/ops/linalg-matrix_power.json",
   "docs": {
     "sections": [
@@ -245,17 +245,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "from fnp.linalg import matrix_power"
+                "text": "from flops.linalg import matrix_power"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "i = fnp.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit"
+                "text": "i = flops.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit"
               },
               {
                 "kind": "input",
@@ -313,7 +313,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "q = fnp.zeros((4, 4))"
+                "text": "q = flops.zeros((4, 4))"
               },
               {
                 "kind": "input",
@@ -349,7 +349,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "matrix_power(q, 2) # = -fnp.eye(4)"
+                "text": "matrix_power(q, 2) # = -flops.eye(4)"
               },
               {
                 "kind": "output",
@@ -379,12 +379,12 @@
     "category": "counted_custom",
     "cost_formula": "log2(k) * n^3",
     "cost_formula_latex": "$\\lfloor\\log_2 k\\rfloor \\cdot n^3$",
-    "flopscope_ref": "fnp.linalg.matrix_power",
+    "flopscope_ref": "flops.linalg.matrix_power",
     "module": "numpy.linalg",
     "name": "linalg.matrix_power",
     "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring).",
     "numpy_ref": "np.linalg.matrix_power",
-    "signature": "fnp.linalg.matrix_power(a, n)",
+    "signature": "flops.linalg.matrix_power(a, n)",
     "status": "supported",
     "summary": "Raise a square matrix to the (integer) power `n`.",
     "weight": 1.0

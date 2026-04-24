@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nanmean/",
+  "detail_href": "/docs/api/nanmean/",
   "detail_json_href": "/api-data/ops/nanmean.json",
   "docs": {
     "sections": [
@@ -445,7 +445,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/average",
-                "label": "fnp.average",
+                "label": "flops.average",
                 "original_target": "average",
                 "role": "",
                 "target": "average",
@@ -461,7 +461,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/mean",
-                "label": "fnp.mean",
+                "label": "flops.mean",
                 "original_target": "mean",
                 "role": "",
                 "target": "mean",
@@ -472,7 +472,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/var",
-                "label": "fnp.var",
+                "label": "flops.var",
                 "original_target": "var",
                 "role": "",
                 "target": "var",
@@ -483,7 +483,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanvar",
-                "label": "fnp.nanvar",
+                "label": "flops.nanvar",
                 "original_target": "nanvar",
                 "role": "",
                 "target": "nanvar",
@@ -541,17 +541,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, fnp.nan], [3, 4]])"
+                "text": "a = flops.array([[1, flops.nan], [3, 4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanmean(a)"
+                "text": "flops.nanmean(a)"
               },
               {
                 "kind": "output",
@@ -560,7 +560,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanmean(a, axis=0)"
+                "text": "flops.nanmean(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -569,7 +569,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.nanmean(a, axis=1)"
+                "text": "flops.nanmean(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -587,12 +587,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "fnp.nanmean",
+    "flopscope_ref": "flops.nanmean",
     "module": "numpy",
     "name": "nanmean",
     "notes": "Mean ignoring NaNs.",
     "numpy_ref": "np.nanmean",
-    "signature": "fnp.nanmean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)",
+    "signature": "flops.nanmean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)",
     "status": "supported",
     "summary": "Compute the arithmetic mean along the specified axis, ignoring NaNs.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/unique/",
+  "detail_href": "/docs/api/unique/",
   "detail_json_href": "/api-data/ops/unique.json",
   "docs": {
     "sections": [
@@ -486,7 +486,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/repeat",
-                "label": "fnp.repeat",
+                "label": "flops.repeat",
                 "original_target": "repeat",
                 "role": "",
                 "target": "repeat",
@@ -502,7 +502,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/sort",
-                "label": "fnp.sort",
+                "label": "flops.sort",
                 "original_target": "sort",
                 "role": "",
                 "target": "sort",
@@ -530,7 +530,7 @@
             "content_blocks": [],
             "directive": "versionchanged",
             "options": [],
-            "raw_source": ".. versionchanged:: 1.21\n    Like fnp.sort, NaN will sort to the end of the values.\n    For complex arrays all NaN values are considered equivalent\n    (no matter whether the NaN is in the real or imaginary part).\n    As the representant for the returned array the smallest one in the\n    lexicographical order is chosen - see fnp.sort for how the lexicographical\n    order is defined for complex arrays.",
+            "raw_source": ".. versionchanged:: 1.21\n    Like flops.sort, NaN will sort to the end of the values.\n    For complex arrays all NaN values are considered equivalent\n    (no matter whether the NaN is in the real or imaginary part).\n    As the representant for the returned array the smallest one in the\n    lexicographical order is chosen - see flops.sort for how the lexicographical\n    order is defined for complex arrays.",
             "supported": true,
             "type": "directive_block",
             "version": "1.21"
@@ -540,7 +540,7 @@
             "content_blocks": [],
             "directive": "versionchanged",
             "options": [],
-            "raw_source": ".. versionchanged:: 2.0\n    For multi-dimensional inputs, ``unique_inverse`` is reshaped\n    such that the input can be reconstructed using\n    ``fnp.take(unique, unique_inverse, axis=axis)``. The result is\n    now not 1-dimensional when ``axis=None``.\n\n    Note that in NumPy 2.0.0 a higher dimensional array was returned also\n    when ``axis`` was not ``None``.  This was reverted, but\n    ``inverse.reshape(-1)`` can be used to ensure compatibility with both\n    versions.",
+            "raw_source": ".. versionchanged:: 2.0\n    For multi-dimensional inputs, ``unique_inverse`` is reshaped\n    such that the input can be reconstructed using\n    ``flops.take(unique, unique_inverse, axis=axis)``. The result is\n    now not 1-dimensional when ``axis=None``.\n\n    Note that in NumPy 2.0.0 a higher dimensional array was returned also\n    when ``axis`` was not ``None``.  This was reverted, but\n    ``inverse.reshape(-1)`` can be used to ensure compatibility with both\n    versions.",
             "supported": true,
             "type": "directive_block",
             "version": "2.0"
@@ -555,12 +555,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.unique([1, 1, 2, 2, 3, 3])"
+                "text": "flops.unique([1, 1, 2, 2, 3, 3])"
               },
               {
                 "kind": "output",
@@ -569,12 +569,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, 1], [2, 3]])"
+                "text": "a = flops.array([[1, 1], [2, 3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.unique(a)"
+                "text": "flops.unique(a)"
               },
               {
                 "kind": "output",
@@ -597,12 +597,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([[1, 0, 0], [1, 0, 0], [2, 3, 4]])"
+                "text": "a = flops.array([[1, 0, 0], [1, 0, 0], [2, 3, 4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.unique(a, axis=0)"
+                "text": "flops.unique(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -625,12 +625,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array(['a', 'b', 'b', 'c', 'a'])"
+                "text": "a = flops.array(['a', 'b', 'b', 'c', 'a'])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "u, indices = fnp.unique(a, return_index=True)"
+                "text": "u, indices = flops.unique(a, return_index=True)"
               },
               {
                 "kind": "input",
@@ -676,12 +676,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([1, 2, 6, 4, 2, 3, 2])"
+                "text": "a = flops.array([1, 2, 6, 4, 2, 3, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "u, indices = fnp.unique(a, return_inverse=True)"
+                "text": "u, indices = flops.unique(a, return_inverse=True)"
               },
               {
                 "kind": "input",
@@ -727,12 +727,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.array([1, 2, 6, 4, 2, 3, 2])"
+                "text": "a = flops.array([1, 2, 6, 4, 2, 3, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "values, counts = fnp.unique(a, return_counts=True)"
+                "text": "values, counts = flops.unique(a, return_counts=True)"
               },
               {
                 "kind": "input",
@@ -755,7 +755,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.repeat(values, counts)"
+                "text": "flops.repeat(values, counts)"
               },
               {
                 "kind": "output",
@@ -773,12 +773,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.unique",
+    "flopscope_ref": "flops.unique",
     "module": "numpy",
     "name": "unique",
     "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.unique",
-    "signature": "fnp.unique(ar, return_index=False, return_inverse=False, return_counts=False, axis=None, *, equal_nan=True)",
+    "signature": "flops.unique(ar, return_index=False, return_inverse=False, return_counts=False, axis=None, *, equal_nan=True)",
     "status": "supported",
     "summary": "Find the unique elements of an array.",
     "weight": 1.0

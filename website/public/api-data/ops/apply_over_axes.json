@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/apply_over_axes/",
+  "detail_href": "/docs/api/apply-over-axes/",
   "detail_json_href": "/api-data/ops/apply_over_axes.json",
   "docs": {
     "sections": [
@@ -311,7 +311,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/apply_along_axis",
-                "label": "fnp.apply_along_axis",
+                "label": "flops.apply_along_axis",
                 "original_target": "apply_along_axis",
                 "role": "",
                 "target": "apply_along_axis",
@@ -344,12 +344,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = fnp.arange(24).reshape(2,3,4)"
+                "text": "a = flops.arange(24).reshape(2,3,4)"
               },
               {
                 "kind": "input",
@@ -397,7 +397,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.apply_over_axes(fnp.sum, a, [0,2])"
+                "text": "flops.apply_over_axes(flops.sum, a, [0,2])"
               },
               {
                 "kind": "output",
@@ -428,7 +428,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.sum(a, axis=(0,2), keepdims=True)"
+                "text": "flops.sum(a, axis=(0,2), keepdims=True)"
               },
               {
                 "kind": "output",
@@ -454,12 +454,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.apply_over_axes",
+    "flopscope_ref": "flops.apply_over_axes",
     "module": "numpy",
     "name": "apply_over_axes",
     "notes": "Apply function over multiple axes. Cost: numel(output).",
     "numpy_ref": "np.apply_over_axes",
-    "signature": "fnp.apply_over_axes(func, a, axes)",
+    "signature": "flops.apply_over_axes(func, a, axes)",
     "status": "supported",
     "summary": "Apply a function repeatedly over multiple axes.",
     "weight": 1.0

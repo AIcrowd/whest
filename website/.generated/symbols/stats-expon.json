@@ -1,0 +1,93 @@
+{
+  "aliases": [
+    "stats.expon",
+    "flops.stats.expon",
+    "flopscope.stats.expon"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Exponential continuous random variable."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/stats/expon/",
+              "kind": "link",
+              "target": "stats.expon",
+              "text": "scipy.stats.expon"
+            },
+            {
+              "kind": "text",
+              "text": ".  The PDF is\n"
+            },
+            {
+              "kind": "code",
+              "text": "(1/scale) * exp(-(x - loc) / scale)"
+            },
+            {
+              "kind": "text",
+              "text": " for "
+            },
+            {
+              "kind": "code",
+              "text": "x >= loc"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "stats.expon",
+  "canonical_path": "stats/expon",
+  "display_name": "flops.stats.expon",
+  "href": "/docs/api/stats/expon/",
+  "import_path": "flops.stats.expon",
+  "kind": "object",
+  "members": [
+    {
+      "href": "/docs/api/stats/expon/cdf/",
+      "label": "flops.stats.expon.cdf"
+    },
+    {
+      "href": "/docs/api/stats/expon/pdf/",
+      "label": "flops.stats.expon.pdf"
+    },
+    {
+      "href": "/docs/api/stats/expon/ppf/",
+      "label": "flops.stats.expon.ppf"
+    }
+  ],
+  "module": "flopscope.stats._expon",
+  "name": "stats.expon",
+  "related_guides": [],
+  "signature": "flops.stats.expon",
+  "slug": "stats-expon",
+  "source_url": "",
+  "status_note": "",
+  "summary": "Exponential continuous random variable.",
+  "upstream_source_url": ""
+}

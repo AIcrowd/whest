@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/empty/",
+  "detail_href": "/docs/api/empty/",
   "detail_json_href": "/api-data/ops/empty.json",
   "docs": {
     "sections": [
@@ -88,7 +88,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "int8",
-                        "text": "fnp.int8"
+                        "text": "flops.int8"
                       },
                       {
                         "kind": "text",
@@ -99,7 +99,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "float64",
-                        "text": "fnp.float64"
+                        "text": "flops.float64"
                       },
                       {
                         "kind": "text",
@@ -120,7 +120,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "int8",
-                    "text": "fnp.int8"
+                    "text": "flops.int8"
                   },
                   {
                     "kind": "text",
@@ -131,7 +131,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "float64",
-                    "text": "fnp.float64"
+                    "text": "flops.float64"
                   },
                   {
                     "kind": "text",
@@ -345,7 +345,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/empty_like",
-                "label": "fnp.empty_like",
+                "label": "flops.empty_like",
                 "original_target": "empty_like",
                 "role": "",
                 "target": "empty_like",
@@ -361,7 +361,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/ones",
-                "label": "fnp.ones",
+                "label": "flops.ones",
                 "original_target": "ones",
                 "role": "",
                 "target": "ones",
@@ -377,7 +377,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/zeros",
-                "label": "fnp.zeros",
+                "label": "flops.zeros",
                 "original_target": "zeros",
                 "role": "",
                 "target": "zeros",
@@ -393,7 +393,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/full",
-                "label": "fnp.full",
+                "label": "flops.full",
                 "original_target": "full",
                 "role": "",
                 "target": "full",
@@ -470,12 +470,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.empty([2, 2])"
+                "text": "flops.empty([2, 2])"
               },
               {
                 "kind": "output",
@@ -493,7 +493,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.empty([2, 2], dtype=int)"
+                "text": "flops.empty([2, 2], dtype=int)"
               },
               {
                 "kind": "output",
@@ -515,12 +515,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "fnp.empty",
+    "flopscope_ref": "flops.empty",
     "module": "numpy",
     "name": "empty",
     "notes": "Uninitialized array allocation.",
     "numpy_ref": "np.empty",
-    "signature": "fnp.empty(shape, dtype=<class 'float'>, **kwargs)",
+    "signature": "flops.empty(shape, dtype=<class 'float'>, **kwargs)",
     "status": "supported",
     "summary": "Return a new array of given shape and type, without initializing entries.",
     "weight": 0.0

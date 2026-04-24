@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-cauchy-ppf/",
+  "detail_href": "/docs/api/stats/cauchy/ppf/",
   "detail_json_href": "/api-data/ops/stats-cauchy-ppf.json",
   "docs": {
     "sections": [
@@ -163,12 +163,12 @@
     "category": "counted_custom",
     "cost_formula": "5n",
     "cost_formula_latex": "$5n$",
-    "flopscope_ref": "fnp.stats.cauchy.ppf",
+    "flopscope_ref": "flops.stats.cauchy.ppf",
     "module": "flopscope.stats",
     "name": "stats.cauchy.ppf",
     "notes": "Cauchy PPF; cost = numel(input).",
     "numpy_ref": "np.stats.cauchy.ppf",
-    "signature": "fnp.stats.cauchy.ppf(q, loc=0, scale=1)",
+    "signature": "flops.stats.cauchy.ppf(q, loc=0, scale=1)",
     "status": "supported",
     "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
     "weight": 16.0

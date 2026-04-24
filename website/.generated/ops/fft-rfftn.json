@@ -323,7 +323,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "fnp.fft"
+                      "text": "flops.fft"
                     },
                     {
                       "kind": "text",
@@ -354,7 +354,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "fnp.fft"
+                  "text": "flops.fft"
                 },
                 {
                   "kind": "text",
@@ -819,17 +819,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = fnp.ones((2, 2, 2))"
+              "text": "a = flops.ones((2, 2, 2))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.fft.rfftn(a)"
+              "text": "flops.fft.rfftn(a)"
             },
             {
               "kind": "output",
@@ -855,7 +855,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fnp.fft.rfftn(a, axes=(2, 0))"
+              "text": "flops.fft.rfftn(a, axes=(2, 0))"
             },
             {
               "kind": "output",
@@ -881,6 +881,7 @@
     }
   ],
   "canonical_name": "fft.rfftn",
+  "canonical_path": "fft/rfftn",
   "category": "counted_custom",
   "cost_formula": "5(N/2) * ceil(log2(N))",
   "cost_formula_latex": "$5(N/2) \\cdot \\lceil\\log_2 N\\rceil$",
@@ -891,19 +892,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.ones((2, 2, 2))\n\nfnp.fft.rfftn(a)\n\nfnp.fft.rfftn(a, axes=(2, 0))",
+    "code": "import flopscope as flops\n\na = flops.ones((2, 2, 2))\n\nflops.fft.rfftn(a)\n\nflops.fft.rfftn(a, axes=(2, 0))",
     "output": "array([[[8.+0.j,  0.+0.j], # may vary\n        [0.+0.j,  0.+0.j]],\n       [[0.+0.j,  0.+0.j],\n        [0.+0.j,  0.+0.j]]])\n\narray([[[4.+0.j,  0.+0.j], # may vary\n        [4.+0.j,  0.+0.j]],\n       [[0.+0.j,  0.+0.j],\n        [0.+0.j,  0.+0.j]]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "fnp.fft.rfftn",
+  "flopscope_ref": "flops.fft.rfftn",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L387",
-  "href": "/docs/api/ops/fft-rfftn/",
+  "href": "/docs/api/fft/rfftn/",
+  "legacy_href": "/docs/api/ops/fft-rfftn/",
   "module": "numpy.fft",
   "name": "fft.rfftn",
   "next": {
-    "href": "/docs/api/ops/fill_diagonal/",
-    "label": "fnp.fill_diagonal"
+    "href": "/docs/api/fill-diagonal/",
+    "label": "flops.fill_diagonal"
   },
   "notes": "N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -964,7 +966,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `fnp.fft`). Default is \"backward\".",
+        "Normalization mode (see `flops.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -988,8 +990,8 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-rfftfreq/",
-    "label": "fnp.fft.rfftfreq"
+    "href": "/docs/api/fft/rfftfreq/",
+    "label": "flops.fft.rfftfreq"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.rfftn.html",
@@ -1097,7 +1099,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.rfftn(a, s=None, axes=None, norm=None, out=None)",
+  "signature": "flops.fft.rfftn(a, s=None, axes=None, norm=None, out=None)",
   "slug": "fft-rfftn",
   "summary": "Compute the N-dimensional discrete Fourier Transform for real input.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1260",

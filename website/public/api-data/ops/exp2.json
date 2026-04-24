@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/exp2/",
+  "detail_href": "/docs/api/exp2/",
   "detail_json_href": "/api-data/ops/exp2.json",
   "docs": {
     "sections": [
@@ -302,7 +302,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/power",
-                "label": "fnp.power",
+                "label": "flops.power",
                 "original_target": "power",
                 "role": "",
                 "target": "power",
@@ -321,12 +321,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.exp2([2, 3])"
+                "text": "flops.exp2([2, 3])"
               },
               {
                 "kind": "output",
@@ -344,12 +344,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "fnp.exp2",
+    "flopscope_ref": "flops.exp2",
     "module": "numpy",
     "name": "exp2",
     "notes": "Element-wise 2^x.",
     "numpy_ref": "np.exp2",
-    "signature": "fnp.exp2(*args, **kwargs)",
+    "signature": "flops.exp2(*args, **kwargs)",
     "status": "supported",
     "summary": "Calculate `2**p` for all `p` in the input array.",
     "weight": 16.0

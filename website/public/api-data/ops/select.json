@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/select/",
+  "detail_href": "/docs/api/select/",
   "detail_json_href": "/api-data/ops/select.json",
   "docs": {
     "sections": [
@@ -237,7 +237,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/where",
-                "label": "fnp.where",
+                "label": "flops.where",
                 "original_target": "where",
                 "role": "",
                 "target": "where",
@@ -248,7 +248,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/take",
-                "label": "fnp.take",
+                "label": "flops.take",
                 "original_target": "take",
                 "role": "",
                 "target": "take",
@@ -259,7 +259,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/choose",
-                "label": "fnp.choose",
+                "label": "flops.choose",
                 "original_target": "choose",
                 "role": "",
                 "target": "choose",
@@ -270,7 +270,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/compress",
-                "label": "fnp.compress",
+                "label": "flops.compress",
                 "original_target": "compress",
                 "role": "",
                 "target": "compress",
@@ -281,7 +281,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/diag",
-                "label": "fnp.diag",
+                "label": "flops.diag",
                 "original_target": "diag",
                 "role": "",
                 "target": "diag",
@@ -292,7 +292,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/diagonal",
-                "label": "fnp.diagonal",
+                "label": "flops.diagonal",
                 "original_target": "diagonal",
                 "role": "",
                 "target": "diagonal",
@@ -311,7 +311,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope as flops"
               }
             ],
             "type": "doctest_block"
@@ -370,7 +370,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = fnp.arange(6)"
+                "text": "x = flops.arange(6)"
               },
               {
                 "kind": "input",
@@ -385,7 +385,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.select(condlist, choicelist, 42)"
+                "text": "flops.select(condlist, choicelist, 42)"
               },
               {
                 "kind": "output",
@@ -426,7 +426,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fnp.select(condlist, choicelist, 55)"
+                "text": "flops.select(condlist, choicelist, 55)"
               },
               {
                 "kind": "output",
@@ -444,12 +444,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "fnp.select",
+    "flopscope_ref": "flops.select",
     "module": "numpy",
     "name": "select",
     "notes": "Return array from list of choices based on conditions. Cost: numel(input).",
     "numpy_ref": "np.select",
-    "signature": "fnp.select(condlist, choicelist, default=0)",
+    "signature": "flops.select(condlist, choicelist, default=0)",
     "status": "supported",
     "summary": "Return an array drawn from elements in choicelist, depending on conditions.",
     "weight": 4.0
