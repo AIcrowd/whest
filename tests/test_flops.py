@@ -274,6 +274,16 @@ def test_public_reduction_cost_is_weighted(tmp_path):
     assert public_flops.reduction_cost("sum", input_shape=(4, 5), axis=None) == 61
 
 
+def test_public_reduction_cost_tuple_axis(tmp_path):
+    # (4, 5, 6) with axis=(0, 2): kept axis 1 has 5 outputs, each reduces 24.
+    # Analytical: 5 * (24 − 1) = 115. Weighted with weight=1.0: 115.
+    load_weights(_write_weights(tmp_path, {"sum": 1.0}), use_packaged_default=False)
+    assert (
+        public_flops.reduction_cost("sum", input_shape=(4, 5, 6), axis=(0, 2))
+        == 115
+    )
+
+
 def test_public_einsum_cost_is_weighted(tmp_path):
     load_weights(_write_weights(tmp_path, {"einsum": 2.0}), use_packaged_default=False)
     assert public_flops.einsum_cost("ij,jk->ik", shapes=[(3, 4), (4, 5)]) == 120

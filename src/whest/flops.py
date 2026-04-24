@@ -217,7 +217,7 @@ def reduction_cost(
     op_name: str,
     *,
     input_shape: tuple[int, ...],
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     symmetry_info: SymmetryInfo | None = None,
 ) -> int:
     """Weighted FLOP cost of a reduction operation.
@@ -228,11 +228,12 @@ def reduction_cost(
         Operation name used for weight lookup, e.g. ``"sum"`` or ``"max"``.
     input_shape : tuple of int
         Shape of the reduction input.
-    axis : int or None, optional
-        Reduction axis. Accepted for API consistency with the analytical helper.
+    axis : int, tuple of int, or None, optional
+        Reduction axis or axes. When a tuple is given, the cost is computed
+        with those axes treated as the reduced set.
     symmetry_info : SymmetryInfo or None, optional
-        If provided, only unique elements are counted analytically before the
-        operation weight is applied.
+        If provided, symmetry is used to count unique outputs and inputs
+        (see ``_flops.analytical_reduction_cost``).
 
     Returns
     -------
