@@ -20,17 +20,16 @@ from scripts.generate_api_docs import (
 
 def test_canonical_api_href_mirrors_import_path() -> None:
     assert canonical_api_href_for_name("einsum") == "/docs/api/einsum/"
-    assert canonical_api_href_for_name("random.symmetric") == "/docs/api/random/symmetric/"
+    assert (
+        canonical_api_href_for_name("random.symmetric") == "/docs/api/random/symmetric/"
+    )
     assert canonical_api_href_for_name("stats.norm") == "/docs/api/stats/norm/"
     assert canonical_api_href_for_name("stats.norm.pdf") == "/docs/api/stats/norm/pdf/"
     assert (
         canonical_api_href_for_name("flops.einsum_cost")
         == "/docs/api/flops/einsum-cost/"
     )
-    assert (
-        canonical_api_href_for_name("budget_summary")
-        == "/docs/api/budget-summary/"
-    )
+    assert canonical_api_href_for_name("budget_summary") == "/docs/api/budget-summary/"
 
 
 def test_public_api_surface_covers_new_symbol_namespaces() -> None:
@@ -43,8 +42,12 @@ def test_public_api_surface_covers_new_symbol_namespaces() -> None:
     assert "budget_summary" in surface
 
 
-def test_generated_public_api_routes_cover_surface_and_reserve_authored_namespaces() -> None:
-    routes = json.loads((ROOT / "website/.generated/public-api-routes.json").read_text())
+def test_generated_public_api_routes_cover_surface_and_reserve_authored_namespaces() -> (
+    None
+):
+    routes = json.loads(
+        (ROOT / "website/.generated/public-api-routes.json").read_text()
+    )
     refs = json.loads((ROOT / "website/.generated/public-api-refs.json").read_text())
     surface = collect_public_api_surface_names()
     namespace_roots = {"random", "stats", "flops", "testing"}
@@ -85,8 +88,8 @@ def test_generated_public_api_routes_cover_surface_and_reserve_authored_namespac
         "flops.einsum_cost",
         "testing.assert_allclose",
     ):
-        path_key = canonical_api_href_for_name(name).removeprefix("/docs/api/").strip(
-            "/"
+        path_key = (
+            canonical_api_href_for_name(name).removeprefix("/docs/api/").strip("/")
         )
         assert path_key in routes
         assert routes[path_key]["href"] == canonical_api_href_for_name(name)

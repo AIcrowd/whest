@@ -3838,7 +3838,9 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
 
     public_api_refs = json.loads(public_api_refs_path.read_text())
     missing_surface = sorted(
-        name for name in collect_public_api_surface_names() if name not in public_api_refs
+        name
+        for name in collect_public_api_surface_names()
+        if name not in public_api_refs
     )
     if missing_surface:
         print("\npublic-api-refs.json missing public API entries:")
