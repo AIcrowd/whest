@@ -1,7 +1,7 @@
-"""API surface parity tests: core library vs. whest-client.
+"""API surface parity tests: core library vs. flopscope-client.
 
 Loads modules from specific file paths using importlib so that both
-``src/whest`` (core) and ``whest-client/src/whest`` (client)
+``src/flopscope`` (core) and ``flopscope-client/src/flopscope`` (client)
 can be examined in the same process without namespace conflicts.
 """
 
@@ -21,7 +21,7 @@ import pytest
 _TEST_DIR = Path(__file__).resolve().parent
 ROOT = _TEST_DIR.parent
 CORE_SRC = ROOT / "src"
-CLIENT_SRC = ROOT / "whest-client" / "src"
+CLIENT_SRC = ROOT / "flopscope-client" / "src"
 
 
 # ---------------------------------------------------------------------------
@@ -43,12 +43,12 @@ def _load_module(file_path: Path, module_name: str) -> types.ModuleType:
 
 def _load_core(relative: str, alias: str) -> types.ModuleType:
     """Load a core module file relative to CORE_SRC."""
-    return _load_module(CORE_SRC / "whest" / relative, alias)
+    return _load_module(CORE_SRC / "flopscope" / relative, alias)
 
 
 def _load_client(relative: str, alias: str) -> types.ModuleType:
     """Load a client module file relative to CLIENT_SRC."""
-    return _load_module(CLIENT_SRC / "whest" / relative, alias)
+    return _load_module(CLIENT_SRC / "flopscope" / relative, alias)
 
 
 # ---------------------------------------------------------------------------
@@ -109,12 +109,12 @@ class TestErrorParity:
 
     # Names that are public exception/warning classes in the core module
     _EXPECTED_CORE_CLASSES = [
-        "WhestError",
+        "FlopscopeError",
         "BudgetExhaustedError",
         "NoBudgetContextError",
         "SymmetryError",
         "UnsupportedFunctionError",
-        "WhestWarning",
+        "FlopscopeWarning",
         "SymmetryLossWarning",
     ]
 
@@ -175,30 +175,34 @@ class TestErrorParity:
 
 
 class TestSubmoduleParity:
-    """Client has linalg, fft, random, stats submodule __init__.py files."""
+    """Client has matching numpy submodules (linalg/fft/random) plus top-level stats."""
 
-    _SUBMODULES = ["linalg", "fft", "random", "stats"]
+    _NUMPY_SUBMODULES = ["linalg", "fft", "random"]
+    _TOP_LEVEL_SUBMODULES = ["stats"]
+
+    def _submodule_paths(self, package_src):
+        for submod in self._NUMPY_SUBMODULES:
+            yield package_src / "flopscope" / "numpy" / submod / "__init__.py"
+        for submod in self._TOP_LEVEL_SUBMODULES:
+            yield package_src / "flopscope" / submod / "__init__.py"
 
     def test_client_submodule_init_files_exist(self):
-        for submod in self._SUBMODULES:
-            init_path = CLIENT_SRC / "whest" / submod / "__init__.py"
+        for init_path in self._submodule_paths(CLIENT_SRC):
             assert init_path.exists(), (
-                f"Client submodule whest/{submod}/__init__.py not found at {init_path}"
+                f"Client submodule init not found at {init_path}"
             )
 
     def test_core_submodule_init_files_exist(self):
-        for submod in self._SUBMODULES:
-            init_path = CORE_SRC / "whest" / submod / "__init__.py"
+        for init_path in self._submodule_paths(CORE_SRC):
             assert init_path.exists(), (
-                f"Core submodule whest/{submod}/__init__.py not found at {init_path}"
+                f"Core submodule init not found at {init_path}"
             )
 
     def test_client_submodule_init_files_are_non_empty(self):
-        for submod in self._SUBMODULES:
-            init_path = CLIENT_SRC / "whest" / submod / "__init__.py"
+        for init_path in self._submodule_paths(CLIENT_SRC):
             if init_path.exists():
                 assert init_path.stat().st_size > 0, (
-                    f"Client whest/{submod}/__init__.py exists but is empty"
+                    f"Client {init_path} exists but is empty"
                 )
 
 

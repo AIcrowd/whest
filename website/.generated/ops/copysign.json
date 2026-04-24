@@ -412,16 +412,48 @@
     {
       "blocks": [
         {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/sign",
+              "label": "fnp.sign",
+              "original_target": "sign",
+              "role": "",
+              "target": "sign",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/signbit",
+              "label": "fnp.signbit",
+              "original_target": "signbit",
+              "role": "",
+              "target": "signbit",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
           "lines": [
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.copysign(1.3, -1)"
+              "text": "fnp.copysign(1.3, -1)"
             },
             {
               "kind": "output",
@@ -430,7 +462,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "1/we.copysign(0, 1)"
+              "text": "1/fnp.copysign(0, 1)"
             },
             {
               "kind": "output",
@@ -439,7 +471,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "1/we.copysign(0, -1)"
+              "text": "1/fnp.copysign(0, -1)"
             },
             {
               "kind": "output",
@@ -453,7 +485,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.copysign([-1, 0, 1], -1.1)"
+              "text": "fnp.copysign([-1, 0, 1], -1.1)"
             },
             {
               "kind": "output",
@@ -462,7 +494,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.copysign([-1, 0, 1], we.arange(3)-1)"
+              "text": "fnp.copysign([-1, 0, 1], fnp.arange(3)-1)"
             },
             {
               "kind": "output",
@@ -493,16 +525,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.copysign(1.3, -1)\n\n1/we.copysign(0, 1)\n\n1/we.copysign(0, -1)\n\nwe.copysign([-1, 0, 1], -1.1)\n\nwe.copysign([-1, 0, 1], we.arange(3)-1)",
+    "code": "import flopscope as fnp\n\nfnp.copysign(1.3, -1)\n\n1/fnp.copysign(0, 1)\n\n1/fnp.copysign(0, -1)\n\nfnp.copysign([-1, 0, 1], -1.1)\n\nfnp.copysign([-1, 0, 1], fnp.arange(3)-1)",
     "output": "-1.3\n\ninf\n\n-inf\n\narray([-1., -0., -1.])\n\narray([-1.,  0.,  1.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.copysign",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
   "href": "/docs/api/ops/copysign/",
   "module": "numpy",
   "name": "copysign",
   "next": {
     "href": "/docs/api/ops/copyto/",
-    "label": "we.copyto"
+    "label": "fnp.copyto"
   },
   "notes": "Copy sign of x2 to magnitude of x1 element-wise.",
   "notes_sections": [],
@@ -557,7 +592,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/copy/",
-    "label": "we.copy"
+    "label": "fnp.copy"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.copysign.html",
@@ -571,13 +606,33 @@
       "type": "ndarray or scalar"
     }
   ],
-  "see_also": [],
-  "signature": "we.copysign(x, y)",
+  "see_also": [
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/sign",
+      "label": "fnp.sign",
+      "original_target": "sign",
+      "role": "",
+      "target": "sign",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/signbit",
+      "label": "fnp.signbit",
+      "original_target": "signbit",
+      "role": "",
+      "target": "signbit",
+      "unresolved": false
+    }
+  ],
+  "signature": "fnp.copysign(x, y)",
   "slug": "copysign",
   "summary": "Change the sign of x1 to that of x2, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.copysign",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

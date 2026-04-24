@@ -2,8 +2,9 @@
 
 import pytest
 
-import whest as we
-from whest._budget import BudgetContext, OpRecord
+import flopscope as flops
+import flopscope.numpy as fnp
+from flopscope._budget import BudgetContext, OpRecord
 
 
 def test_oprecord_has_namespace_field():
@@ -68,11 +69,11 @@ def test_summary_without_namespace():
 
 
 def test_namespace_scope_builds_dotted_paths():
-    with we.BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
-        with we.namespace("precompute"):
+    with flops.BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
+        with flops.namespace("precompute"):
             ctx.deduct("add", flop_cost=10, subscripts=None, shapes=())
-        with we.namespace("fallback"):
-            with we.namespace("sampling"):
+        with flops.namespace("fallback"):
+            with flops.namespace("sampling"):
                 ctx.deduct("mul", flop_cost=20, subscripts=None, shapes=())
 
     assert [rec.namespace for rec in ctx.op_log] == [
@@ -82,10 +83,10 @@ def test_namespace_scope_builds_dotted_paths():
 
 
 def test_budget_context_preserves_literal_root_namespace():
-    with we.BudgetContext(
+    with flops.BudgetContext(
         flop_budget=1000, namespace="predict..raw", quiet=True
     ) as ctx:
-        with we.namespace("precompute"):
+        with flops.namespace("precompute"):
             assert ctx.namespace == "predict..raw.precompute"
             ctx.deduct("add", flop_cost=10, subscripts=None, shapes=())
 
@@ -94,9 +95,9 @@ def test_budget_context_preserves_literal_root_namespace():
 
 
 def test_namespace_scope_restores_previous_namespace_after_exception():
-    with we.BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
+    with flops.BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
         with pytest.raises(RuntimeError, match="boom"):
-            with we.namespace("precompute"):
+            with flops.namespace("precompute"):
                 assert ctx.namespace == "predict.precompute"
                 raise RuntimeError("boom")
 
@@ -107,14 +108,14 @@ def test_namespace_scope_restores_previous_namespace_after_exception():
 
 
 def test_namespace_scope_requires_active_budget():
-    with pytest.raises(we.NoBudgetContextError):
-        with we.namespace("precompute"):
+    with pytest.raises(flops.NoBudgetContextError):
+        with flops.namespace("precompute"):
             pass
 
 
 @pytest.mark.parametrize("name", [None, 3, "", "   ", "a.b"])
 def test_namespace_scope_rejects_invalid_segment(name):
-    with we.BudgetContext(flop_budget=1000, quiet=True):
+    with flops.BudgetContext(flop_budget=1000, quiet=True):
         with pytest.raises(ValueError):
-            with we.namespace(name):  # type: ignore[arg-type]
+            with flops.namespace(name):  # type: ignore[arg-type]
                 pass

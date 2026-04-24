@@ -47,7 +47,7 @@
             },
             {
               "kind": "code",
-              "text": "a[we.ix_([1,3],[2,5])]"
+              "text": "a[fnp.ix_([1,3],[2,5])]"
             },
             {
               "kind": "text",
@@ -84,7 +84,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "nonzero(boolean_sequence)",
-                      "text": "we.nonzero(boolean_sequence)"
+                      "text": "fnp.nonzero(boolean_sequence)"
                     },
                     {
                       "kind": "text",
@@ -105,7 +105,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "nonzero(boolean_sequence)",
-                  "text": "we.nonzero(boolean_sequence)"
+                  "text": "fnp.nonzero(boolean_sequence)"
                 },
                 {
                   "kind": "text",
@@ -186,7 +186,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/meshgrid",
-              "label": "we.meshgrid",
+              "label": "fnp.meshgrid",
               "original_target": "meshgrid",
               "role": "",
               "target": "meshgrid",
@@ -205,12 +205,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(10).reshape(2, 5)"
+              "text": "a = fnp.arange(10).reshape(2, 5)"
             },
             {
               "kind": "input",
@@ -228,7 +228,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ixgrid = we.ix_([0, 1], [2, 4])"
+              "text": "ixgrid = fnp.ix_([0, 1], [2, 4])"
             },
             {
               "kind": "input",
@@ -273,7 +273,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ixgrid = we.ix_([True, True], [2, 4])"
+              "text": "ixgrid = fnp.ix_([True, True], [2, 4])"
             },
             {
               "kind": "input",
@@ -291,7 +291,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ixgrid = we.ix_([True, True], [False, False, True, False, True])"
+              "text": "ixgrid = fnp.ix_([True, True], [False, False, True, False, True])"
             },
             {
               "kind": "input",
@@ -324,16 +324,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.arange(10).reshape(2, 5)\n\na\n\nixgrid = we.ix_([0, 1], [2, 4])\n\nixgrid\n\nixgrid[0].shape, ixgrid[1].shape\n\na[ixgrid]\n\nixgrid = we.ix_([True, True], [2, 4])\n\na[ixgrid]\n\nixgrid = we.ix_([True, True], [False, False, True, False, True])\n\na[ixgrid]",
+    "code": "import flopscope as fnp\n\na = fnp.arange(10).reshape(2, 5)\n\na\n\nixgrid = fnp.ix_([0, 1], [2, 4])\n\nixgrid\n\nixgrid[0].shape, ixgrid[1].shape\n\na[ixgrid]\n\nixgrid = fnp.ix_([True, True], [2, 4])\n\na[ixgrid]\n\nixgrid = fnp.ix_([True, True], [False, False, True, False, True])\n\na[ixgrid]",
     "output": "array([[0, 1, 2, 3, 4],\n       [5, 6, 7, 8, 9]])\n\n(array([[0],\n       [1]]), array([[2, 4]]))\n\n((2, 1), (1, 2))\n\narray([[2, 4],\n       [7, 9]])\n\narray([[2, 4],\n       [7, 9]])\n\narray([[2, 4],\n       [7, 9]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.ix_",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1129",
   "href": "/docs/api/ops/ix_/",
   "module": "numpy",
   "name": "ix_",
   "next": {
     "href": "/docs/api/ops/kaiser/",
-    "label": "we.kaiser"
+    "label": "fnp.kaiser"
   },
   "notes": "Construct open mesh from multiple sequences. Cost: numel(output).",
   "notes_sections": [],
@@ -344,7 +347,7 @@
         "Each sequence should be of integer or boolean type.",
         "Boolean sequences will be interpreted as boolean masks for the",
         "corresponding dimension (equivalent to passing in",
-        "``we.nonzero(boolean_sequence)``)."
+        "``fnp.nonzero(boolean_sequence)``)."
       ],
       "name": "args",
       "type": "1-D sequences"
@@ -352,7 +355,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/iterable/",
-    "label": "we.iterable"
+    "label": "fnp.iterable"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ix_.html",
@@ -394,19 +397,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/meshgrid",
-      "label": "we.meshgrid",
+      "label": "fnp.meshgrid",
       "original_target": "meshgrid",
       "role": "",
       "target": "meshgrid",
       "unresolved": false
     }
   ],
-  "signature": "we.ix_(*args)",
+  "signature": "fnp.ix_(*args)",
   "slug": "ix_",
   "summary": "Construct an open mesh from multiple sequences.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_index_tricks_impl.py#L34",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.ix_",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1129"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_index_tricks_impl.py#L31",
+  "weight": 1.0
 }

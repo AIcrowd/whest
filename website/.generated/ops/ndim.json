@@ -129,7 +129,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/shape",
-              "label": "we.shape",
+              "label": "fnp.shape",
               "original_target": "shape",
               "role": "",
               "target": "shape",
@@ -164,12 +164,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ndim([[1,2,3],[4,5,6]])"
+              "text": "fnp.ndim([[1,2,3],[4,5,6]])"
             },
             {
               "kind": "output",
@@ -178,7 +178,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ndim(we.array([[1,2,3],[4,5,6]]))"
+              "text": "fnp.ndim(fnp.array([[1,2,3],[4,5,6]]))"
             },
             {
               "kind": "output",
@@ -187,7 +187,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ndim(1)"
+              "text": "fnp.ndim(1)"
             },
             {
               "kind": "output",
@@ -224,16 +224,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.ndim([[1,2,3],[4,5,6]])\n\nwe.ndim(we.array([[1,2,3],[4,5,6]]))\n\nwe.ndim(1)",
+    "code": "import flopscope as fnp\n\nfnp.ndim([[1,2,3],[4,5,6]])\n\nfnp.ndim(fnp.array([[1,2,3],[4,5,6]]))\n\nfnp.ndim(1)",
     "output": "2\n\n2\n\n0",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.ndim",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1187",
   "href": "/docs/api/ops/ndim/",
   "module": "numpy",
   "name": "ndim",
   "next": {
     "href": "/docs/api/ops/negative/",
-    "label": "we.negative"
+    "label": "fnp.negative"
   },
   "notes": "Return number of dimensions of array.",
   "notes_sections": [],
@@ -250,7 +253,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/nanvar/",
-    "label": "we.nanvar"
+    "label": "fnp.nanvar"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ndim.html",
@@ -290,7 +293,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/shape",
-      "label": "we.shape",
+      "label": "fnp.shape",
       "original_target": "shape",
       "role": "",
       "target": "shape",
@@ -313,12 +316,9 @@
       "unresolved": true
     }
   ],
-  "signature": "we.ndim(a)",
+  "signature": "fnp.ndim(a)",
   "slug": "ndim",
   "summary": "Return the number of dimensions of an array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3523",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.ndim",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1187"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L3482",
+  "weight": 0.0
 }

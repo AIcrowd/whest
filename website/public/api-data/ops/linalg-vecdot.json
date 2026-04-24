@@ -26,12 +26,12 @@
                 "text": "This function is restricted to arguments compatible with the Array API,\ncontrary to "
               },
               {
-                "display_text": "we.vecdot",
+                "display_text": "fnp.vecdot",
                 "explicit_title": false,
                 "external_url": "",
                 "href": "/docs/api/ops/vecdot",
                 "kind": "role_reference",
-                "original_target": "we.vecdot",
+                "original_target": "fnp.vecdot",
                 "role": "func",
                 "suppress_link": false,
                 "target": "vecdot",
@@ -262,7 +262,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/vecdot",
-                "label": "we.vecdot",
+                "label": "fnp.vecdot",
                 "original_target": "numpy.vecdot",
                 "role": "",
                 "target": "vecdot",
@@ -290,17 +290,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "v = we.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])"
+                "text": "v = fnp.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "n = we.array([0., 0.6, 0.8])"
+                "text": "n = fnp.array([0., 0.6, 0.8])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.vecdot(v, n)"
+                "text": "fnp.linalg.vecdot(v, n)"
               },
               {
                 "kind": "output",
@@ -316,22 +316,22 @@
   },
   "op": {
     "category": "counted_custom",
-    "cost_formula": "delegates to we.vecdot",
+    "cost_formula": "delegates to fnp.vecdot",
     "cost_formula_latex": "delegates to `vecdot`",
+    "flopscope_ref": "fnp.linalg.vecdot",
     "module": "numpy.linalg",
     "name": "linalg.vecdot",
     "notes": "Delegates to `we.vecdot` which charges `2*n` FLOPs.",
     "numpy_ref": "np.linalg.vecdot",
-    "signature": "we.linalg.vecdot(x1, x2, /, *, axis=-1)",
+    "signature": "fnp.linalg.vecdot(x1, x2, /, *, axis=-1)",
     "status": "supported",
     "summary": "Computes the vector dot product.",
-    "weight": 1.0,
-    "whest_ref": "we.linalg.vecdot"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "linalg-vecdot",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3583",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L3611"
   }
 }

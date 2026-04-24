@@ -1,14 +1,13 @@
 """End-to-end integration tests for equal-operand induced symmetry.
 
-Tests that we.einsum with repeated operands produces the expected symmetry-aware
+Tests that fnp.einsum with repeated operands produces the expected symmetry-aware
 FLOP costs. Uses hand-computed expected values.
 """
 
 import numpy as np
 
-import whest as we
-
-
+import flopscope as flops
+import flopscope.numpy as fnp
 class TestGramMatrixInduction:
     """einsum('ij,ik->jk', X, X) — the classic Gram matrix."""
 
@@ -19,14 +18,14 @@ class TestGramMatrixInduction:
         # symmetric unique = n * C(n+1,2) = 10 * 55 = 550
         # total = n * n = 100
         # cost = 1000 * 55/100 = 550
-        _, info_eq = we.einsum_path("ij,ik->jk", X, X)
+        _, info_eq = fnp.einsum_path("ij,ik->jk", X, X)
         assert info_eq.optimized_cost == 550
 
     def test_different_operands_dense_cost(self):
         n = 10
         X = np.ones((n, n))
         Y = np.ones((n, n))
-        _, info = we.einsum_path("ij,ik->jk", X, Y)
+        _, info = fnp.einsum_path("ij,ik->jk", X, Y)
         # Different operands → no induction → full dense (FMA=1)
         assert info.optimized_cost == 1000
 
@@ -43,14 +42,14 @@ class TestMatMulChainNoInducedSymmetry:
 
     The subgraph symmetry oracle correctly rejects this case: passing the
     same Python object does not imply the tensor values are symmetric.
-    Use we.as_symmetric() to declare symmetry explicitly — see
+    Use flops.as_symmetric() to declare symmetry explicitly — see
     TestSymmetricXMatMul below for the declared-symmetric case.
     """
 
     def test_plain_X_has_no_induced_symmetry(self):
         n = 10
         X = np.ones((n, n))
-        _, info = we.einsum_path("ij,jk->ik", X, X)
+        _, info = fnp.einsum_path("ij,jk->ik", X, X)
         # dense = n^3 = 1000 (FMA=1), no symmetry detected
         assert info.optimized_cost == 1000
 
@@ -61,7 +60,7 @@ class TestTripleProductInduction:
     def test_three_equal_operands_induce_s3(self):
         n = 10
         X = np.ones((n, n))
-        _, info = we.einsum_path("ij,ik,il->jkl", X, X, X)
+        _, info = fnp.einsum_path("ij,ik,il->jkl", X, X, X)
         # Path: (ik,ij->ikj) then (ikj,il->jkl), FMA=1.
         # Step 0: dense = n^3 = 1000, S2 savings: 1000 * 55/100 = 550.
         # Step 1: dense = n^4 = 10000, S3 savings: 10000 * 220/1000 = 2200.
@@ -75,7 +74,7 @@ class TestBlockOuterProductInduction:
     def test_block_s2_induction(self):
         n = 10
         X = np.ones((n, n, n))
-        _, info = we.einsum_path("ijk,ilm->jklm", X, X)
+        _, info = fnp.einsum_path("ijk,ilm->jklm", X, X)
         # Single step: ijk,ilm→jklm. dense = n^5 = 100000 (FMA=1).
         # Direct evaluation: output has G(2){j,k,l,m} from same-object
         # detection (block S2 on {j,k} and {l,m}).
@@ -94,8 +93,8 @@ class TestSymmetricXMatMul:
     def test_both_sources_apply(self):
         n = 10
         X_data = np.ones((n, n))
-        X = we.as_symmetric(X_data, symmetric_axes=(0, 1))
-        _, info = we.einsum_path("ij,jk->ik", X, X)
+        X = flops.as_symmetric(X_data, symmetric_axes=(0, 1))
+        _, info = fnp.einsum_path("ij,jk->ik", X, X)
         # dense = n^3 = 1000 (FMA=1)
         # Induced S2{i,k} on output → unique = C(11,2) = 55, total = 100
         # cost = 1000 * 55/100 = 550

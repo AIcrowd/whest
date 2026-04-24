@@ -104,12 +104,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equiv([1, 2], [1, 2])"
+              "text": "fnp.array_equiv([1, 2], [1, 2])"
             },
             {
               "kind": "output",
@@ -118,7 +118,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equiv([1, 2], [1, 3])"
+              "text": "fnp.array_equiv([1, 2], [1, 3])"
             },
             {
               "kind": "output",
@@ -141,7 +141,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equiv([1, 2], [[1, 2], [1, 2]])"
+              "text": "fnp.array_equiv([1, 2], [[1, 2], [1, 2]])"
             },
             {
               "kind": "output",
@@ -150,7 +150,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equiv([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]])"
+              "text": "fnp.array_equiv([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]])"
             },
             {
               "kind": "output",
@@ -164,7 +164,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equiv([1, 2], [[1, 2], [1, 3]])"
+              "text": "fnp.array_equiv([1, 2], [[1, 2], [1, 3]])"
             },
             {
               "kind": "output",
@@ -188,16 +188,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.array_equiv([1, 2], [1, 2])\n\nwe.array_equiv([1, 2], [1, 3])\n\nwe.array_equiv([1, 2], [[1, 2], [1, 2]])\n\nwe.array_equiv([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]])\n\nwe.array_equiv([1, 2], [[1, 2], [1, 3]])",
+    "code": "import flopscope as fnp\n\nfnp.array_equiv([1, 2], [1, 2])\n\nfnp.array_equiv([1, 2], [1, 3])\n\nfnp.array_equiv([1, 2], [[1, 2], [1, 2]])\n\nfnp.array_equiv([1, 2], [[1, 2, 1, 2], [1, 2, 1, 2]])\n\nfnp.array_equiv([1, 2], [[1, 2], [1, 3]])",
     "output": "True\n\nFalse\n\nTrue\n\nFalse\n\nFalse",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.array_equiv",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L76",
   "href": "/docs/api/ops/array_equiv/",
   "module": "numpy",
   "name": "array_equiv",
   "next": {
     "href": "/docs/api/ops/array_split/",
-    "label": "we.array_split"
+    "label": "fnp.array_split"
   },
   "notes": "Element-wise equivalence; cost = numel(a).",
   "notes_sections": [],
@@ -213,7 +216,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/array_equal/",
-    "label": "we.array_equal"
+    "label": "fnp.array_equal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.array_equiv.html",
@@ -227,12 +230,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.array_equiv(a1, a2)",
+  "signature": "fnp.array_equiv(a1, a2)",
   "slug": "array_equiv",
   "summary": "Returns True if input arrays are shape consistent and all elements equal.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2565",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.array_equiv",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L76"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L2625",
+  "weight": 1.0
 }

@@ -16,14 +16,14 @@ export default async function OperationDocPage({op}: {op: OperationDocRecord}) {
           sections={op.body_sections}
           headerSummary={op.summary}
           signature={op.signature}
-          whestSourceUrl={op.whest_source_url}
+          flopscopeSourceUrl={op.flopscope_source_url}
           upstreamSourceUrl={op.upstream_source_url}
         />
       ) : (
         <>
           <OperationDocSignature
             signature={op.signature}
-            whestSourceUrl={op.whest_source_url}
+            flopscopeSourceUrl={op.flopscope_source_url}
             upstreamSourceUrl={op.upstream_source_url}
           />
           <OperationDocSection title="Parameters" fields={op.parameters} />

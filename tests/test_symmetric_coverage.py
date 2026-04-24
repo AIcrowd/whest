@@ -1,4 +1,4 @@
-"""Coverage-focused tests for whest._symmetric.
+"""Coverage-focused tests for flopscope._symmetric.
 
 Targets uncovered lines to push coverage from ~74% toward ~95%.
 """
@@ -11,8 +11,8 @@ import warnings
 import numpy as np
 import pytest
 
-from whest._perm_group import PermutationGroup
-from whest._symmetric import (
+from flopscope._perm_group import PermutationGroup
+from flopscope._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
     _warn_symmetry_loss,
@@ -24,7 +24,7 @@ from whest._symmetric import (
     validate_symmetry,
     validate_symmetry_groups,
 )
-from whest.errors import SymmetryError, SymmetryLossWarning
+from flopscope.errors import SymmetryError, SymmetryLossWarning
 
 # ============================================================================
 # Helpers
@@ -757,7 +757,7 @@ class TestReductionsKeepdims:
 
 class TestWarnSymmetryLoss:
     def test_warning_emitted_when_enabled(self):
-        from whest._config import configure
+        from flopscope._config import configure
 
         configure(symmetry_warnings=True)
         try:
@@ -770,7 +770,7 @@ class TestWarnSymmetryLoss:
             configure(symmetry_warnings=False)
 
     def test_no_warning_when_disabled(self):
-        from whest._config import configure
+        from flopscope._config import configure
 
         configure(symmetry_warnings=False)
         with warnings.catch_warnings(record=True) as w:

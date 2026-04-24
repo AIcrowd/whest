@@ -328,7 +328,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/expm1",
-              "label": "we.expm1",
+              "label": "fnp.expm1",
               "original_target": "expm1",
               "role": "",
               "target": "expm1",
@@ -527,12 +527,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.log1p(1e-99)"
+              "text": "fnp.log1p(1e-99)"
             },
             {
               "kind": "output",
@@ -541,7 +541,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.log(1 + 1e-99)"
+              "text": "fnp.log(1 + 1e-99)"
             },
             {
               "kind": "output",
@@ -581,16 +581,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.log1p(1e-99)\n\nwe.log(1 + 1e-99)",
+    "code": "import flopscope as fnp\n\nfnp.log1p(1e-99)\n\nfnp.log(1 + 1e-99)",
     "output": "1e-99\n\n0.0",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.log1p",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/log1p/",
   "module": "numpy",
   "name": "log1p",
   "next": {
     "href": "/docs/api/ops/log2/",
-    "label": "we.log2"
+    "label": "fnp.log2"
   },
   "notes": "Element-wise log(1+x) (accurate near zero).",
   "notes_sections": [
@@ -641,7 +644,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/log10/",
-    "label": "we.log10"
+    "label": "fnp.log10"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.log1p.html",
@@ -681,19 +684,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/expm1",
-      "label": "we.expm1",
+      "label": "fnp.expm1",
       "original_target": "expm1",
       "role": "",
       "target": "expm1",
       "unresolved": false
     }
   ],
-  "signature": "we.log1p(x)",
+  "signature": "fnp.log1p(x)",
   "slug": "log1p",
   "summary": "Return the natural logarithm of one plus the input array, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.log1p",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

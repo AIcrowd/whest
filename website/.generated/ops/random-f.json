@@ -106,7 +106,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.f`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.f`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -211,7 +211,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(dfnum, dfden).size"
+                      "text": "fnp.broadcast(dfnum, dfden).size"
                     },
                     {
                       "kind": "text",
@@ -269,7 +269,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(dfnum, dfden).size"
+                  "text": "fnp.broadcast(dfnum, dfden).size"
                 },
                 {
                   "kind": "text",
@@ -450,7 +450,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.f(dfnum, dfden, 1000)"
+              "text": "s = fnp.random.f(dfnum, dfden, 1000)"
             }
           ],
           "type": "doctest_block"
@@ -469,7 +469,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sort(s)[-10]"
+              "text": "fnp.sort(s)[-10]"
             },
             {
               "kind": "output",
@@ -511,16 +511,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "dfnum = 1. # between group degrees of freedom\n\ndfden = 48. # within groups degrees of freedom\n\ns = we.random.f(dfnum, dfden, 1000)\n\nwe.sort(s)[-10]",
+    "code": "dfnum = 1. # between group degrees of freedom\n\ndfden = 48. # within groups degrees of freedom\n\ns = fnp.random.f(dfnum, dfden, 1000)\n\nfnp.sort(s)[-10]",
     "output": "7.61988120985 # random",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.f",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-f/",
   "module": "numpy.random",
   "name": "random.f",
   "next": {
     "href": "/docs/api/ops/random-gamma/",
-    "label": "we.random.gamma"
+    "label": "fnp.random.gamma"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -547,7 +550,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``dfnum`` and ``dfden`` are both scalars.",
-        "Otherwise, ``we.broadcast(dfnum, dfden).size`` samples are drawn."
+        "Otherwise, ``fnp.broadcast(dfnum, dfden).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -555,7 +558,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-exponential/",
-    "label": "we.random.exponential"
+    "label": "fnp.random.exponential"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.f.html",
@@ -602,12 +605,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.f(dfnum, dfden, size=None)",
+  "signature": "fnp.random.f(dfnum, dfden, size=None)",
   "slug": "random-f",
   "summary": "Draw samples from an F distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.f",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

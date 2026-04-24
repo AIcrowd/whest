@@ -192,7 +192,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/real",
-                "label": "we.real",
+                "label": "fnp.real",
                 "original_target": "real",
                 "role": "",
                 "target": "real",
@@ -203,7 +203,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/imag",
-                "label": "we.imag",
+                "label": "fnp.imag",
                 "original_target": "imag",
                 "role": "",
                 "target": "imag",
@@ -214,7 +214,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/angle",
-                "label": "we.angle",
+                "label": "fnp.angle",
                 "original_target": "angle",
                 "role": "",
                 "target": "angle",
@@ -232,7 +232,7 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Machine epsilon varies from machine to machine and between data types\nbut Python floats on most platforms have a machine epsilon equal to\n2.2204460492503131e-16.  You can use 'we.finfo(float).eps' to print\nout the machine epsilon for floats."
+                "text": "Machine epsilon varies from machine to machine and between data types\nbut Python floats on most platforms have a machine epsilon equal to\n2.2204460492503131e-16.  You can use 'fnp.finfo(float).eps' to print\nout the machine epsilon for floats."
               }
             ],
             "type": "paragraph"
@@ -247,12 +247,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.finfo(float).eps"
+                "text": "fnp.finfo(float).eps"
               },
               {
                 "kind": "output",
@@ -266,7 +266,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.real_if_close([2.1 + 4e-14j, 5.2 + 3e-15j], tol=1000)"
+                "text": "fnp.real_if_close([2.1 + 4e-14j, 5.2 + 3e-15j], tol=1000)"
               },
               {
                 "kind": "output",
@@ -275,7 +275,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.real_if_close([2.1 + 4e-13j, 5.2 + 3e-15j], tol=1000)"
+                "text": "fnp.real_if_close([2.1 + 4e-13j, 5.2 + 3e-15j], tol=1000)"
               },
               {
                 "kind": "output",
@@ -293,20 +293,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.real_if_close",
     "module": "numpy",
     "name": "real_if_close",
     "notes": "Return real array if imaginary part is negligible.",
     "numpy_ref": "np.real_if_close",
-    "signature": "we.real_if_close(a, tol=100)",
+    "signature": "fnp.real_if_close(a, tol=100)",
     "status": "supported",
     "summary": "If input is complex with all imaginary parts close to zero, return real parts.",
-    "weight": 1.0,
-    "whest_ref": "we.real_if_close"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "real_if_close",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L489",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_type_check_impl.py#L500"
   }
 }

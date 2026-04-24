@@ -190,20 +190,6 @@
         {
           "items": [
             {
-              "body_blocks": [],
-              "data_type": "When mode is 'reduced' or 'complete', the result will be a namedtuple with",
-              "inline": [],
-              "name": "",
-              "type": "field_list"
-            },
-            {
-              "body_blocks": [],
-              "data_type": "the attributes `Q` and `R`.",
-              "inline": [],
-              "name": "",
-              "type": "field_list"
-            },
-            {
               "body_blocks": [
                 {
                   "inline": [
@@ -259,7 +245,7 @@
                   "type": "paragraph"
                 }
               ],
-              "data_type": "ndarrays of we.double or we.cdouble, optional",
+              "data_type": "ndarrays of fnp.double or fnp.cdouble, optional",
               "inline": [
                 {
                   "kind": "text",
@@ -353,6 +339,31 @@
     },
     {
       "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "When mode is 'reduced' or 'complete', the result will be a namedtuple with\nthe attributes "
+            },
+            {
+              "kind": "code",
+              "text": "Q"
+            },
+            {
+              "kind": "text",
+              "text": " and "
+            },
+            {
+              "kind": "code",
+              "text": "R"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        },
         {
           "inline": [
             {
@@ -454,7 +465,7 @@
             },
             {
               "kind": "text",
-              "text": " default.\nThe 'raw' option was added so that LAPACK routines that can multiply\narrays by q using the Householder reflectors can be used. Note that in\nthis case the returned arrays are of type we.double or we.cdouble and\nthe h array is transposed to be FORTRAN compatible.  No routines using\nthe 'raw' return are currently exposed by numpy, but some are available\nin lapack_lite and just await the necessary work."
+              "text": " default.\nThe 'raw' option was added so that LAPACK routines that can multiply\narrays by q using the Householder reflectors can be used. Note that in\nthis case the returned arrays are of type fnp.double or fnp.cdouble and\nthe h array is transposed to be FORTRAN compatible.  No routines using\nthe 'raw' return are currently exposed by numpy, but some are available\nin lapack_lite and just await the necessary work."
             }
           ],
           "type": "paragraph"
@@ -469,12 +480,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rng = we.random.default_rng()"
+              "text": "rng = fnp.random.default_rng()"
             },
             {
               "kind": "input",
@@ -484,12 +495,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "Q, R = we.linalg.qr(a)"
+              "text": "Q, R = fnp.linalg.qr(a)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose(a, we.dot(Q, R))  # a does equal QR"
+              "text": "fnp.allclose(a, fnp.dot(Q, R))  # a does equal QR"
             },
             {
               "kind": "output",
@@ -498,12 +509,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "R2 = we.linalg.qr(a, mode='r')"
+              "text": "R2 = fnp.linalg.qr(a, mode='r')"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose(R, R2)  # mode='r' returns the same R as mode='full'"
+              "text": "fnp.allclose(R, R2)  # mode='r' returns the same R as mode='full'"
             },
             {
               "kind": "output",
@@ -512,12 +523,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input"
+              "text": "a = fnp.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "Q, R = we.linalg.qr(a)"
+              "text": "Q, R = fnp.linalg.qr(a)"
             },
             {
               "kind": "input",
@@ -540,7 +551,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose(a, we.matmul(Q, R))"
+              "text": "fnp.allclose(a, fnp.matmul(Q, R))"
             },
             {
               "kind": "output",
@@ -642,7 +653,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = we.array([[0, 1], [1, 1], [1, 1], [2, 1]])"
+              "text": "A = fnp.array([[0, 1], [1, 1], [1, 1], [2, 1]])"
             },
             {
               "kind": "input",
@@ -668,22 +679,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([1, 2, 2, 3])"
+              "text": "b = fnp.array([1, 2, 2, 3])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "Q, R = we.linalg.qr(A)"
+              "text": "Q, R = fnp.linalg.qr(A)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "p = we.dot(Q.T, b)"
+              "text": "p = fnp.dot(Q.T, b)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.dot(we.linalg.inv(R), p)"
+              "text": "fnp.dot(fnp.linalg.inv(R), p)"
             },
             {
               "kind": "output",
@@ -707,23 +718,27 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nrng = we.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nQ, R = we.linalg.qr(a)\n\nwe.allclose(a, we.dot(Q, R))  # a does equal QR\n\nR2 = we.linalg.qr(a, mode='r')\n\nwe.allclose(R, R2)  # mode='r' returns the same R as mode='full'\n\na = we.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input\n\nQ, R = we.linalg.qr(a)\n\nQ.shape\n\nR.shape\n\nwe.allclose(a, we.matmul(Q, R))\n\nA = we.array([[0, 1], [1, 1], [1, 1], [2, 1]])\n\nA\n\nb = we.array([1, 2, 2, 3])\n\nQ, R = we.linalg.qr(A)\n\np = we.dot(Q.T, b)\n\nwe.dot(we.linalg.inv(R), p)",
+    "code": "import flopscope as fnp\n\nrng = fnp.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nQ, R = fnp.linalg.qr(a)\n\nfnp.allclose(a, fnp.dot(Q, R))  # a does equal QR\n\nR2 = fnp.linalg.qr(a, mode='r')\n\nfnp.allclose(R, R2)  # mode='r' returns the same R as mode='full'\n\na = fnp.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input\n\nQ, R = fnp.linalg.qr(a)\n\nQ.shape\n\nR.shape\n\nfnp.allclose(a, fnp.matmul(Q, R))\n\nA = fnp.array([[0, 1], [1, 1], [1, 1], [2, 1]])\n\nA\n\nb = fnp.array([1, 2, 2, 3])\n\nQ, R = fnp.linalg.qr(A)\n\np = fnp.dot(Q.T, b)\n\nfnp.dot(fnp.linalg.inv(R), p)",
     "output": "True\n\nTrue\n\n(3, 2, 2)\n\n(3, 2, 2)\n\nTrue\n\narray([[0, 1],\n       [1, 1],\n       [1, 1],\n       [2, 1]])\n\narray([  1.,   1.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.qr",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L78",
   "href": "/docs/api/ops/linalg-qr/",
   "module": "numpy.linalg",
   "name": "linalg.qr",
   "next": {
     "href": "/docs/api/ops/linalg-slogdet/",
-    "label": "we.linalg.slogdet"
+    "label": "fnp.linalg.slogdet"
   },
   "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
   "notes_sections": [
+    "When mode is 'reduced' or 'complete', the result will be a namedtuple with the attributes ``Q`` and ``R``.",
     "This is an interface to the LAPACK routines ``dgeqrf``, ``zgeqrf``, ``dorgqr``, and ``zungqr``.",
     "For more information on the qr factorization, see for example: https://en.wikipedia.org/wiki/QR_factorization",
     "Subclasses of `ndarray` are preserved except for the 'raw' mode. So if `a` is of type `matrix`, all the return values will be matrices too.",
-    "New 'reduced', 'complete', and 'raw' options for mode were added in NumPy 1.8.0 and the old option 'full' was made an alias of 'reduced'.  In addition the options 'full' and 'economic' were deprecated.  Because 'full' was the previous default and 'reduced' is the new default, backward compatibility can be maintained by letting `mode` default. The 'raw' option was added so that LAPACK routines that can multiply arrays by q using the Householder reflectors can be used. Note that in this case the returned arrays are of type we.double or we.cdouble and the h array is transposed to be FORTRAN compatible.  No routines using the 'raw' return are currently exposed by numpy, but some are available in lapack_lite and just await the necessary work."
+    "New 'reduced', 'complete', and 'raw' options for mode were added in NumPy 1.8.0 and the old option 'full' was made an alias of 'reduced'.  In addition the options 'full' and 'economic' were deprecated.  Because 'full' was the previous default and 'reduced' is the new default, backward compatibility can be maintained by letting `mode` default. The 'raw' option was added so that LAPACK routines that can multiply arrays by q using the Householder reflectors can be used. Note that in this case the returned arrays are of type fnp.double or fnp.cdouble and the h array is transposed to be FORTRAN compatible.  No routines using the 'raw' return are currently exposed by numpy, but some are available in lapack_lite and just await the necessary work."
   ],
   "numpy_ref": "np.linalg.qr",
   "parameters": [
@@ -759,21 +774,11 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-pinv/",
-    "label": "we.linalg.pinv"
+    "label": "fnp.linalg.pinv"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html",
   "returns": [
-    {
-      "body": [],
-      "name": "",
-      "type": "When mode is 'reduced' or 'complete', the result will be a namedtuple with"
-    },
-    {
-      "body": [],
-      "name": "",
-      "type": "the attributes `Q` and `R`."
-    },
     {
       "body": [
         "A matrix with orthonormal columns. When mode = 'complete' the",
@@ -802,7 +807,7 @@
         "reflectors. In the deprecated  'economic' mode only h is returned."
       ],
       "name": "(h, tau)",
-      "type": "ndarrays of we.double or we.cdouble, optional"
+      "type": "ndarrays of fnp.double or fnp.cdouble, optional"
     }
   ],
   "see_also": [
@@ -839,12 +844,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.qr(a, mode='reduced')",
+  "signature": "fnp.linalg.qr(a, mode='reduced')",
   "slug": "linalg-qr",
   "summary": "Compute the qr factorization of a matrix.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L928",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.qr",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L78"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L965",
+  "weight": 4.0
 }

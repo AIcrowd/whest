@@ -1,5 +1,5 @@
 /* =========================================================================
-   Whest Design System — Core tokens
+   Flopscope Design System — Core tokens
    COPIED FROM /design-system/colors_and_type.css — DO NOT EDIT HERE.
    Update the source file and re-copy. The adapter layer lives in
    ./docs-surface.css.
@@ -11,7 +11,7 @@
 :root {
   /* ═══════════════════════════════════════════════════════════
      TIER 1 — Foundation  (cross-surface, required)
-     Brand coral + neutral scale. Every whest surface uses these.
+     Brand coral + neutral scale. Every flopscope surface uses these.
      ═══════════════════════════════════════════════════════════ */
   --coral:        #F0524D;
   --coral-hover:  #D23934;
@@ -64,7 +64,7 @@
   --op-10: #073B4C;
 
   /* ═══════════════════════════════════════════════════════════
-     TIER 3B — Whestbench extension  (surface-scoped)
+     TIER 3B — Flopscopebench extension  (surface-scoped)
      Estimator identity + circuit gate-type chart scale.
      ═══════════════════════════════════════════════════════════ */
   --wb-gt:        #292C2D;  /* = gray-900 */
@@ -87,7 +87,7 @@
 
   /* ═══════════════════════════════════════════════════════════
      TIER 3C — Docs / marketing extension  (surface-scoped)
-     Warm paper register. PUBLIC whest-docs site ONLY.
+     Warm paper register. PUBLIC flopscope-docs site ONLY.
      Do NOT import on technical explorer surfaces.
      ═══════════════════════════════════════════════════════════ */
   --docs-paper:      #FBF7F2;

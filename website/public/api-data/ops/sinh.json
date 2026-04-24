@@ -27,7 +27,7 @@
               },
               {
                 "kind": "code",
-                "text": "1/2 * (we.exp(x) - we.exp(-x))"
+                "text": "1/2 * (fnp.exp(x) - fnp.exp(-x))"
               },
               {
                 "kind": "text",
@@ -35,7 +35,7 @@
               },
               {
                 "kind": "code",
-                "text": "-1j * we.sin(1j*x)"
+                "text": "-1j * fnp.sin(1j*x)"
               },
               {
                 "kind": "text",
@@ -342,12 +342,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sinh(0)"
+                "text": "fnp.sinh(0)"
               },
               {
                 "kind": "output",
@@ -356,7 +356,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sinh(we.pi*1j/2)"
+                "text": "fnp.sinh(fnp.pi*1j/2)"
               },
               {
                 "kind": "output",
@@ -365,7 +365,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sinh(we.pi*1j) # (exact value is 0)"
+                "text": "fnp.sinh(fnp.pi*1j) # (exact value is 0)"
               },
               {
                 "kind": "output",
@@ -389,12 +389,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out1 = we.array([0], dtype='d')"
+                "text": "out1 = fnp.array([0], dtype='d')"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out2 = we.sinh([0.1], out1)"
+                "text": "out2 = fnp.sinh([0.1], out1)"
               },
               {
                 "kind": "input",
@@ -418,7 +418,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sinh(we.zeros((3,3)),we.zeros((2,2)))"
+                "text": "fnp.sinh(fnp.zeros((3,3)),fnp.zeros((2,2)))"
               },
               {
                 "kind": "output",
@@ -444,20 +444,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.sinh",
     "module": "numpy",
     "name": "sinh",
     "notes": "Element-wise hyperbolic sine.",
     "numpy_ref": "np.sinh",
-    "signature": "we.sinh(x)",
+    "signature": "fnp.sinh(x)",
     "status": "supported",
     "summary": "Hyperbolic sine, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.sinh"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "sinh",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

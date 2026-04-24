@@ -334,7 +334,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "float64",
-                        "text": "we.float64"
+                        "text": "fnp.float64"
                       },
                       {
                         "kind": "text",
@@ -371,7 +371,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "float64",
-                    "text": "we.float64"
+                    "text": "fnp.float64"
                   },
                   {
                     "kind": "text",
@@ -405,7 +405,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/mean",
-                "label": "we.mean",
+                "label": "fnp.mean",
                 "original_target": "mean",
                 "role": "",
                 "target": "mean",
@@ -416,7 +416,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/median",
-                "label": "we.median",
+                "label": "fnp.median",
                 "original_target": "median",
                 "role": "",
                 "target": "median",
@@ -427,7 +427,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/percentile",
-                "label": "we.percentile",
+                "label": "fnp.percentile",
                 "original_target": "percentile",
                 "role": "",
                 "target": "percentile",
@@ -532,17 +532,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[10.0, 7, 4], [3, 2, 1]])"
+                "text": "a = fnp.array([[10.0, 7, 4], [3, 2, 1]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a[0, 1] = we.nan"
+                "text": "a[0, 1] = fnp.nan"
               },
               {
                 "kind": "input",
@@ -560,16 +560,16 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.median(a)"
+                "text": "fnp.median(a)"
               },
               {
                 "kind": "output",
-                "text": "we.float64(nan)"
+                "text": "fnp.float64(nan)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmedian(a)"
+                "text": "fnp.nanmedian(a)"
               },
               {
                 "kind": "output",
@@ -578,7 +578,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmedian(a, axis=0)"
+                "text": "fnp.nanmedian(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -587,7 +587,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.median(a, axis=1)"
+                "text": "fnp.median(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -601,7 +601,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmedian(b, axis=1, overwrite_input=True)"
+                "text": "fnp.nanmedian(b, axis=1, overwrite_input=True)"
               },
               {
                 "kind": "output",
@@ -610,7 +610,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "assert not we.all(a==b)"
+                "text": "assert not fnp.all(a==b)"
               },
               {
                 "kind": "input",
@@ -620,7 +620,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmedian(b, axis=None, overwrite_input=True)"
+                "text": "fnp.nanmedian(b, axis=None, overwrite_input=True)"
               },
               {
                 "kind": "output",
@@ -629,7 +629,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "assert not we.all(a==b)"
+                "text": "assert not fnp.all(a==b)"
               }
             ],
             "type": "doctest_block"
@@ -643,20 +643,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.nanmedian",
     "module": "numpy",
     "name": "nanmedian",
     "notes": "Median ignoring NaNs.",
     "numpy_ref": "np.nanmedian",
-    "signature": "we.nanmedian(a, axis=None, out=None, overwrite_input=False, keepdims=<no value>)",
+    "signature": "fnp.nanmedian(a, axis=None, out=None, overwrite_input=False, keepdims=<no value>)",
     "status": "supported",
     "summary": "Compute the median along the specified axis, while ignoring NaNs.",
-    "weight": 1.0,
-    "whest_ref": "we.nanmedian"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "nanmedian",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L1127",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_nanfunctions_impl.py#L1125"
   }
 }

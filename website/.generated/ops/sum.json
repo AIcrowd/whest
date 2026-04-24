@@ -452,11 +452,11 @@
               "unresolved": true
             },
             {
-              "description": "``we.add.reduce`` equivalent function.",
+              "description": "``fnp.add.reduce`` equivalent function.",
               "description_inline": [
                 {
                   "kind": "code",
-                  "text": "we.add.reduce"
+                  "text": "fnp.add.reduce"
                 },
                 {
                   "kind": "text",
@@ -465,7 +465,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/add",
-              "label": "we.add",
+              "label": "fnp.add",
               "original_target": "add",
               "role": "",
               "target": "add",
@@ -481,7 +481,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/cumsum",
-              "label": "we.cumsum",
+              "label": "fnp.cumsum",
               "original_target": "cumsum",
               "role": "",
               "target": "cumsum",
@@ -497,7 +497,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/trapezoid",
-              "label": "we.trapezoid",
+              "label": "fnp.trapezoid",
               "original_target": "trapezoid",
               "role": "",
               "target": "trapezoid",
@@ -508,7 +508,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/mean",
-              "label": "we.mean",
+              "label": "fnp.mean",
               "original_target": "mean",
               "role": "",
               "target": "mean",
@@ -519,7 +519,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/average",
-              "label": "we.average",
+              "label": "fnp.average",
               "original_target": "average",
               "role": "",
               "target": "average",
@@ -556,7 +556,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sum([])"
+              "text": "fnp.sum([])"
             },
             {
               "kind": "output",
@@ -573,7 +573,7 @@
             },
             {
               "kind": "code",
-              "text": "we.add.reduce"
+              "text": "fnp.add.reduce"
             },
             {
               "kind": "text",
@@ -632,12 +632,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sum([0.5, 1.5])"
+              "text": "fnp.sum([0.5, 1.5])"
             },
             {
               "kind": "output",
@@ -646,16 +646,16 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sum([0.5, 0.7, 0.2, 1.5], dtype=we.int32)"
+              "text": "fnp.sum([0.5, 0.7, 0.2, 1.5], dtype=fnp.int32)"
             },
             {
               "kind": "output",
-              "text": "we.int32(1)"
+              "text": "fnp.int32(1)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sum([[0, 1], [0, 5]])"
+              "text": "fnp.sum([[0, 1], [0, 5]])"
             },
             {
               "kind": "output",
@@ -664,7 +664,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sum([[0, 1], [0, 5]], axis=0)"
+              "text": "fnp.sum([[0, 1], [0, 5]], axis=0)"
             },
             {
               "kind": "output",
@@ -673,7 +673,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sum([[0, 1], [0, 5]], axis=1)"
+              "text": "fnp.sum([[0, 1], [0, 5]], axis=1)"
             },
             {
               "kind": "output",
@@ -682,7 +682,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sum([[0, 1], [we.nan, 5]], where=[False, True], axis=1)"
+              "text": "fnp.sum([[0, 1], [fnp.nan, 5]], where=[False, True], axis=1)"
             },
             {
               "kind": "output",
@@ -705,11 +705,11 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ones(128, dtype=we.int8).sum(dtype=we.int8)"
+              "text": "fnp.ones(128, dtype=fnp.int8).sum(dtype=fnp.int8)"
             },
             {
               "kind": "output",
-              "text": "we.int8(-128)"
+              "text": "fnp.int8(-128)"
             }
           ],
           "type": "doctest_block"
@@ -728,7 +728,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sum([10], initial=5)"
+              "text": "fnp.sum([10], initial=5)"
             },
             {
               "kind": "output",
@@ -759,23 +759,26 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.sum([0.5, 1.5])\n\nwe.sum([0.5, 0.7, 0.2, 1.5], dtype=we.int32)\n\nwe.sum([[0, 1], [0, 5]])\n\nwe.sum([[0, 1], [0, 5]], axis=0)\n\nwe.sum([[0, 1], [0, 5]], axis=1)\n\nwe.sum([[0, 1], [we.nan, 5]], where=[False, True], axis=1)\n\nwe.ones(128, dtype=we.int8).sum(dtype=we.int8)\n\nwe.sum([10], initial=5)",
-    "output": "2.0\n\nwe.int32(1)\n\n6\n\narray([0, 6])\n\narray([1, 5])\n\narray([1., 5.])\n\nwe.int8(-128)\n\n15",
+    "code": "import flopscope as fnp\n\nfnp.sum([0.5, 1.5])\n\nfnp.sum([0.5, 0.7, 0.2, 1.5], dtype=fnp.int32)\n\nfnp.sum([[0, 1], [0, 5]])\n\nfnp.sum([[0, 1], [0, 5]], axis=0)\n\nfnp.sum([[0, 1], [0, 5]], axis=1)\n\nfnp.sum([[0, 1], [fnp.nan, 5]], where=[False, True], axis=1)\n\nfnp.ones(128, dtype=fnp.int8).sum(dtype=fnp.int8)\n\nfnp.sum([10], initial=5)",
+    "output": "2.0\n\nfnp.int32(1)\n\n6\n\narray([0, 6])\n\narray([1, 5])\n\narray([1., 5.])\n\nfnp.int8(-128)\n\n15",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.sum",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
   "href": "/docs/api/ops/sum/",
   "module": "numpy",
   "name": "sum",
   "next": {
     "href": "/docs/api/ops/swapaxes/",
-    "label": "we.swapaxes"
+    "label": "fnp.swapaxes"
   },
   "notes": "Sum of array elements.",
   "notes_sections": [
     "Arithmetic is modular when using integer types, and no error is raised on overflow.",
     "The sum of an empty array is the neutral element 0:",
-    ">>> we.sum([]) 0.0",
-    "For floating point numbers the numerical precision of sum (and ``we.add.reduce``) is in general limited by directly adding each number individually to the result causing rounding errors in every step. However, often numpy will use a  numerically better approach (partial pairwise summation) leading to improved precision in many use-cases. This improved precision is always provided when no ``axis`` is given. When ``axis`` is given, it will depend on which axis is summed. Technically, to provide the best speed possible, the improved precision is only used when the summation is along the fast axis in memory. Note that the exact precision may vary depending on other parameters. In contrast to NumPy, Python's ``math.fsum`` function uses a slower but more precise approach to summation. Especially when summing a large number of lower precision floating point numbers, such as ``float32``, numerical errors can become significant. In such cases it can be advisable to use `dtype=\"float64\"` to use a higher precision for the output."
+    ">>> fnp.sum([]) 0.0",
+    "For floating point numbers the numerical precision of sum (and ``fnp.add.reduce``) is in general limited by directly adding each number individually to the result causing rounding errors in every step. However, often numpy will use a  numerically better approach (partial pairwise summation) leading to improved precision in many use-cases. This improved precision is always provided when no ``axis`` is given. When ``axis`` is given, it will depend on which axis is summed. Technically, to provide the best speed possible, the improved precision is only used when the summation is along the fast axis in memory. Note that the exact precision may vary depending on other parameters. In contrast to NumPy, Python's ``math.fsum`` function uses a slower but more precise approach to summation. Especially when summing a large number of lower precision floating point numbers, such as ``float32``, numerical errors can become significant. In such cases it can be advisable to use `dtype=\"float64\"` to use a higher precision for the output."
   ],
   "numpy_ref": "np.sum",
   "parameters": [
@@ -836,14 +839,14 @@
     },
     {
       "body": [
-        "Starting value for the sum. See `~we.ufunc.reduce` for details."
+        "Starting value for the sum. See `~fnp.ufunc.reduce` for details."
       ],
       "name": "initial",
       "type": "scalar, optional"
     },
     {
       "body": [
-        "Elements to include in the sum. See `~we.ufunc.reduce` for details."
+        "Elements to include in the sum. See `~fnp.ufunc.reduce` for details."
       ],
       "name": "where",
       "type": "array_like of bool, optional"
@@ -851,7 +854,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/subtract/",
-    "label": "we.subtract"
+    "label": "fnp.subtract"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sum.html",
@@ -885,11 +888,11 @@
       "unresolved": true
     },
     {
-      "description": "``we.add.reduce`` equivalent function.",
+      "description": "``fnp.add.reduce`` equivalent function.",
       "description_inline": [
         {
           "kind": "code",
-          "text": "we.add.reduce"
+          "text": "fnp.add.reduce"
         },
         {
           "kind": "text",
@@ -898,7 +901,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/add",
-      "label": "we.add",
+      "label": "fnp.add",
       "original_target": "add",
       "role": "",
       "target": "add",
@@ -914,7 +917,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/cumsum",
-      "label": "we.cumsum",
+      "label": "fnp.cumsum",
       "original_target": "cumsum",
       "role": "",
       "target": "cumsum",
@@ -930,7 +933,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/trapezoid",
-      "label": "we.trapezoid",
+      "label": "fnp.trapezoid",
       "original_target": "trapezoid",
       "role": "",
       "target": "trapezoid",
@@ -941,7 +944,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/mean",
-      "label": "we.mean",
+      "label": "fnp.mean",
       "original_target": "mean",
       "role": "",
       "target": "mean",
@@ -952,19 +955,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/average",
-      "label": "we.average",
+      "label": "fnp.average",
       "original_target": "average",
       "role": "",
       "target": "average",
       "unresolved": false
     }
   ],
-  "signature": "we.sum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+  "signature": "fnp.sum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "sum",
   "summary": "Sum of array elements over a given axis.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2338",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.sum",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L2304",
+  "weight": 1.0
 }

@@ -1,9 +1,9 @@
 # tests/test_linalg_aliases.py
-"""Tests for linalg namespace aliases that delegate to top-level whest ops."""
+"""Tests for linalg namespace aliases that delegate to top-level flopscope ops."""
 
 import numpy
 
-from whest._budget import BudgetContext
+from flopscope._budget import BudgetContext
 
 
 class TestLinalgMatmul:
@@ -11,7 +11,7 @@ class TestLinalgMatmul:
         A = numpy.random.randn(4, 3)
         B = numpy.random.randn(3, 5)
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import matmul
+            from flopscope.numpy.linalg import matmul
 
             result = matmul(A, B)
             assert numpy.allclose(result, numpy.matmul(A, B))
@@ -20,13 +20,13 @@ class TestLinalgMatmul:
         A = numpy.random.randn(4, 3)
         B = numpy.random.randn(3, 5)
         with BudgetContext(flop_budget=10**6) as budget:
-            from whest.linalg import matmul
+            from flopscope.numpy.linalg import matmul
 
             matmul(A, B)
             assert budget.flops_used > 0
 
     def test_outside_context_uses_global_default(self):
-        from whest.linalg import matmul
+        from flopscope.numpy.linalg import matmul
 
         # Operations now auto-activate the global default budget instead of raising
         result = matmul(numpy.ones((2, 2)), numpy.ones((2, 2)))
@@ -38,7 +38,7 @@ class TestLinalgCross:
         a = numpy.array([1.0, 2.0, 3.0])
         b = numpy.array([4.0, 5.0, 6.0])
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import cross
+            from flopscope.numpy.linalg import cross
 
             result = cross(a, b)
             assert numpy.allclose(result, numpy.cross(a, b))
@@ -49,7 +49,7 @@ class TestLinalgOuter:
         a = numpy.array([1.0, 2.0, 3.0])
         b = numpy.array([4.0, 5.0])
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import outer
+            from flopscope.numpy.linalg import outer
 
             result = outer(a, b)
             assert numpy.allclose(result, numpy.outer(a, b))
@@ -60,7 +60,7 @@ class TestLinalgTensordot:
         A = numpy.random.randn(3, 4)
         B = numpy.random.randn(4, 5)
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import tensordot
+            from flopscope.numpy.linalg import tensordot
 
             result = tensordot(A, B, axes=1)
             assert numpy.allclose(result, numpy.tensordot(A, B, axes=1))
@@ -71,7 +71,7 @@ class TestLinalgVecdot:
         a = numpy.array([1.0, 2.0, 3.0])
         b = numpy.array([4.0, 5.0, 6.0])
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import vecdot
+            from flopscope.numpy.linalg import vecdot
 
             result = vecdot(a, b)
             assert numpy.allclose(result, numpy.vecdot(a, b))
@@ -81,7 +81,7 @@ class TestLinalgDiagonal:
     def test_result_matches_numpy(self):
         A = numpy.array([[1.0, 2.0], [3.0, 4.0]])
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import diagonal
+            from flopscope.numpy.linalg import diagonal
 
             result = diagonal(A)
             assert numpy.allclose(result, numpy.diagonal(A))
@@ -89,7 +89,7 @@ class TestLinalgDiagonal:
     def test_scan_cost(self):
         A = numpy.array([[1.0, 2.0], [3.0, 4.0]])
         with BudgetContext(flop_budget=10**6) as budget:
-            from whest.linalg import diagonal
+            from flopscope.numpy.linalg import diagonal
 
             diagonal(A)
             assert budget.flops_used == min(
@@ -101,7 +101,7 @@ class TestLinalgMatrixTranspose:
     def test_result_matches_numpy(self):
         A = numpy.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
         with BudgetContext(flop_budget=10**6):
-            from whest.linalg import matrix_transpose
+            from flopscope.numpy.linalg import matrix_transpose
 
             result = matrix_transpose(A)
             assert numpy.allclose(result, numpy.matrix_transpose(A))
@@ -109,7 +109,7 @@ class TestLinalgMatrixTranspose:
     def test_zero_cost(self):
         A = numpy.array([[1.0, 2.0], [3.0, 4.0]])
         with BudgetContext(flop_budget=10**6) as budget:
-            from whest.linalg import matrix_transpose
+            from flopscope.numpy.linalg import matrix_transpose
 
             matrix_transpose(A)
             assert budget.flops_used == 0

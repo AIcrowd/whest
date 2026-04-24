@@ -229,7 +229,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/take_along_axis",
-              "label": "we.take_along_axis",
+              "label": "fnp.take_along_axis",
               "original_target": "take_along_axis",
               "role": "",
               "target": "take_along_axis",
@@ -313,7 +313,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -332,7 +332,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[10, 30, 20], [60, 40, 50]])"
+              "text": "a = fnp.array([[10, 30, 20], [60, 40, 50]])"
             }
           ],
           "type": "doctest_block"
@@ -351,7 +351,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ai = we.argmax(a, axis=1, keepdims=True)"
+              "text": "ai = fnp.argmax(a, axis=1, keepdims=True)"
             },
             {
               "kind": "input",
@@ -369,7 +369,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.put_along_axis(a, ai, 99, axis=1)"
+              "text": "fnp.put_along_axis(a, ai, 99, axis=1)"
             },
             {
               "kind": "input",
@@ -402,16 +402,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[10, 30, 20], [60, 40, 50]])\n\nai = we.argmax(a, axis=1, keepdims=True)\n\nai\n\nwe.put_along_axis(a, ai, 99, axis=1)\n\na",
+    "code": "import flopscope as fnp\n\na = fnp.array([[10, 30, 20], [60, 40, 50]])\n\nai = fnp.argmax(a, axis=1, keepdims=True)\n\nai\n\nfnp.put_along_axis(a, ai, 99, axis=1)\n\na",
     "output": "array([[1],\n       [0]])\n\narray([[10, 99, 20],\n       [99, 40, 50]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.put_along_axis",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1275",
   "href": "/docs/api/ops/put_along_axis/",
   "module": "numpy",
   "name": "put_along_axis",
   "next": {
     "href": "/docs/api/ops/putmask/",
-    "label": "we.putmask"
+    "label": "fnp.putmask"
   },
   "notes": "Put values into destination array using indices. Cost: numel(input).",
   "notes_sections": [
@@ -458,7 +461,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/put/",
-    "label": "we.put"
+    "label": "fnp.put"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.put_along_axis.html",
@@ -474,19 +477,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/take_along_axis",
-      "label": "we.take_along_axis",
+      "label": "fnp.take_along_axis",
       "original_target": "take_along_axis",
       "role": "",
       "target": "take_along_axis",
       "unresolved": false
     }
   ],
-  "signature": "we.put_along_axis(arr, indices, values, axis, *args, **kwargs)",
+  "signature": "fnp.put_along_axis(arr, indices, values, axis, *args, **kwargs)",
   "slug": "put_along_axis",
   "summary": "Put values into the destination array by matching 1d index and data slices.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L182",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.put_along_axis",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1275"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L188",
+  "weight": 1.0
 }

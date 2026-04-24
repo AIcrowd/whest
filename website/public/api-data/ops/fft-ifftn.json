@@ -38,7 +38,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "we.fft"
+                "text": "fnp.fft"
               },
               {
                 "kind": "text",
@@ -343,7 +343,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "we.fft"
+                        "text": "fnp.fft"
                       },
                       {
                         "kind": "text",
@@ -374,7 +374,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "we.fft"
+                    "text": "fnp.fft"
                   },
                   {
                     "kind": "text",
@@ -653,7 +653,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
                 "href": "",
-                "label": "we.fft",
+                "label": "fnp.fft",
                 "original_target": "numpy.fft",
                 "role": "",
                 "target": "fft",
@@ -766,7 +766,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "we.fft"
+                "text": "fnp.fft"
               },
               {
                 "kind": "text",
@@ -810,17 +810,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.eye(4)"
+                "text": "a = fnp.eye(4)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.ifftn(we.fft.fftn(a, axes=(0,)), axes=(1,))"
+                "text": "fnp.fft.ifftn(fnp.fft.fftn(a, axes=(0,)), axes=(1,))"
               },
               {
                 "kind": "output",
@@ -860,17 +860,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "n = we.zeros((200,200), dtype=complex)"
+                "text": "n = fnp.zeros((200,200), dtype=complex)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "n[60:80, 20:40] = we.exp(1j*we.random.uniform(0, 2*we.pi, (20, 20)))"
+                "text": "n[60:80, 20:40] = fnp.exp(1j*fnp.random.uniform(0, 2*fnp.pi, (20, 20)))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "im = we.fft.ifftn(n).real"
+                "text": "im = fnp.fft.ifftn(n).real"
               },
               {
                 "kind": "input",
@@ -898,20 +898,20 @@
     "category": "counted_custom",
     "cost_formula": "5N * ceil(log2(N))",
     "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
+    "flopscope_ref": "fnp.fft.ifftn",
     "module": "numpy.fft",
     "name": "fft.ifftn",
     "notes": "Inverse N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.ifftn",
-    "signature": "we.fft.ifftn(a, s=None, axes=None, norm=None, out=None)",
+    "signature": "fnp.fft.ifftn(a, s=None, axes=None, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the N-dimensional inverse discrete Fourier Transform.",
-    "weight": 1.0,
-    "whest_ref": "we.fft.ifftn"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "fft-ifftn",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L881",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L362"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L362",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L887"
   }
 }

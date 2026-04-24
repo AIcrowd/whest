@@ -86,7 +86,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/split",
-              "label": "we.split",
+              "label": "fnp.split",
               "original_target": "split",
               "role": "",
               "target": "split",
@@ -105,12 +105,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(16.0).reshape(2, 2, 4)"
+              "text": "x = fnp.arange(16.0).reshape(2, 2, 4)"
             },
             {
               "kind": "input",
@@ -136,7 +136,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.dsplit(x, 2)"
+              "text": "fnp.dsplit(x, 2)"
             },
             {
               "kind": "output",
@@ -169,7 +169,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.dsplit(x, we.array([3, 6]))"
+              "text": "fnp.dsplit(x, fnp.array([3, 6]))"
             },
             {
               "kind": "output",
@@ -225,16 +225,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(16.0).reshape(2, 2, 4)\n\nx\n\nwe.dsplit(x, 2)\n\nwe.dsplit(x, we.array([3, 6]))",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(16.0).reshape(2, 2, 4)\n\nx\n\nfnp.dsplit(x, 2)\n\nfnp.dsplit(x, fnp.array([3, 6]))",
     "output": "array([[[ 0.,   1.,   2.,   3.],\n        [ 4.,   5.,   6.,   7.]],\n       [[ 8.,   9.,  10.,  11.],\n        [12.,  13.,  14.,  15.]]])\n\n[array([[[ 0.,  1.],\n        [ 4.,  5.]],\n       [[ 8.,  9.],\n        [12., 13.]]]), array([[[ 2.,  3.],\n        [ 6.,  7.]],\n       [[10., 11.],\n        [14., 15.]]])]\n\n[array([[[ 0.,   1.,   2.],\n        [ 4.,   5.,   6.]],\n       [[ 8.,   9.,  10.],\n        [12.,  13.,  14.]]]),\n array([[[ 3.],\n        [ 7.]],\n       [[11.],\n        [15.]]]),\narray([], shape=(2, 2, 0), dtype=float64)]",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.dsplit",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L875",
   "href": "/docs/api/ops/dsplit/",
   "module": "numpy",
   "name": "dsplit",
   "next": {
     "href": "/docs/api/ops/dstack/",
-    "label": "we.dstack"
+    "label": "fnp.dstack"
   },
   "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output).",
   "notes_sections": [],
@@ -242,7 +245,7 @@
   "parameters": [],
   "previous": {
     "href": "/docs/api/ops/dot/",
-    "label": "we.dot"
+    "label": "fnp.dot"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.dsplit.html",
@@ -258,19 +261,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/split",
-      "label": "we.split",
+      "label": "fnp.split",
       "original_target": "split",
       "role": "",
       "target": "split",
       "unresolved": false
     }
   ],
-  "signature": "we.dsplit(ary, indices_or_sections)",
+  "signature": "fnp.dsplit(ary, indices_or_sections)",
   "slug": "dsplit",
   "summary": "Split array into multiple sub-arrays along the 3rd axis (depth).",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1011",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.dsplit",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L875"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L1006",
+  "weight": 0.0
 }

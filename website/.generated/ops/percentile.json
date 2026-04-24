@@ -433,100 +433,6 @@
                     }
                   ],
                   "type": "paragraph"
-                },
-                {
-                  "items": [
-                    {
-                      "blocks": [
-                        {
-                          "inline": [
-                            {
-                              "kind": "text",
-                              "text": "An array of weights associated with the values in "
-                            },
-                            {
-                              "kind": "code",
-                              "text": "a"
-                            },
-                            {
-                              "kind": "text",
-                              "text": ". Each value in\n"
-                            },
-                            {
-                              "kind": "code",
-                              "text": "a"
-                            },
-                            {
-                              "kind": "text",
-                              "text": " contributes to the percentile according to its associated weight.\nThe weights array can either be 1-D (in which case its length must be\nthe size of "
-                            },
-                            {
-                              "kind": "code",
-                              "text": "a"
-                            },
-                            {
-                              "kind": "text",
-                              "text": " along the given axis) or of the same shape as "
-                            },
-                            {
-                              "kind": "code",
-                              "text": "a"
-                            },
-                            {
-                              "kind": "text",
-                              "text": ".\nIf "
-                            },
-                            {
-                              "kind": "code",
-                              "text": "weights=None"
-                            },
-                            {
-                              "kind": "text",
-                              "text": ", then all data in "
-                            },
-                            {
-                              "kind": "code",
-                              "text": "a"
-                            },
-                            {
-                              "kind": "text",
-                              "text": " are assumed to have a\nweight equal to one.\nOnly "
-                            },
-                            {
-                              "kind": "code",
-                              "text": "method=\"inverted_cdf\""
-                            },
-                            {
-                              "kind": "text",
-                              "text": " supports weights.\nSee the notes for more details."
-                            }
-                          ],
-                          "type": "paragraph"
-                        }
-                      ],
-                      "term_inline": [
-                        {
-                          "kind": "text",
-                          "text": "weights"
-                        },
-                        {
-                          "kind": "text",
-                          "text": "array_like, optional"
-                        }
-                      ]
-                    }
-                  ],
-                  "type": "definition_list"
-                },
-                {
-                  "argument_inline": [],
-                  "content_blocks": [],
-                  "directive": "versionadded",
-                  "options": [],
-                  "raw_source": ".. versionadded:: 2.0.0",
-                  "supported": true,
-                  "type": "directive_block",
-                  "version": "2.0.0"
                 }
               ],
               "data_type": "bool, optional",
@@ -553,7 +459,63 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Deprecated name for the method keyword argument."
+                      "text": "An array of weights associated with the values in "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "a"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ". Each value in\n"
+                    },
+                    {
+                      "kind": "code",
+                      "text": "a"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " contributes to the percentile according to its associated weight.\nThe weights array can either be 1-D (in which case its length must be\nthe size of "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "a"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " along the given axis) or of the same shape as "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "a"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ".\nIf "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "weights=None"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", then all data in "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "a"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " are assumed to have a\nweight equal to one.\nOnly "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "method=\"inverted_cdf\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": " supports weights.\nSee the notes for more details."
                     }
                   ],
                   "type": "paragraph"
@@ -561,22 +523,78 @@
                 {
                   "argument_inline": [],
                   "content_blocks": [],
-                  "directive": "deprecated",
+                  "directive": "versionadded",
                   "options": [],
-                  "raw_source": ".. deprecated:: 1.22.0",
+                  "raw_source": ".. versionadded:: 2.0.0",
                   "supported": true,
                   "type": "directive_block",
-                  "version": "1.22.0"
+                  "version": "2.0.0"
                 }
               ],
-              "data_type": "str, optional",
+              "data_type": "array_like, optional",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Deprecated name for the method keyword argument."
+                  "text": "An array of weights associated with the values in "
+                },
+                {
+                  "kind": "code",
+                  "text": "a"
+                },
+                {
+                  "kind": "text",
+                  "text": ". Each value in\n"
+                },
+                {
+                  "kind": "code",
+                  "text": "a"
+                },
+                {
+                  "kind": "text",
+                  "text": " contributes to the percentile according to its associated weight.\nThe weights array can either be 1-D (in which case its length must be\nthe size of "
+                },
+                {
+                  "kind": "code",
+                  "text": "a"
+                },
+                {
+                  "kind": "text",
+                  "text": " along the given axis) or of the same shape as "
+                },
+                {
+                  "kind": "code",
+                  "text": "a"
+                },
+                {
+                  "kind": "text",
+                  "text": ".\nIf "
+                },
+                {
+                  "kind": "code",
+                  "text": "weights=None"
+                },
+                {
+                  "kind": "text",
+                  "text": ", then all data in "
+                },
+                {
+                  "kind": "code",
+                  "text": "a"
+                },
+                {
+                  "kind": "text",
+                  "text": " are assumed to have a\nweight equal to one.\nOnly "
+                },
+                {
+                  "kind": "code",
+                  "text": "method=\"inverted_cdf\""
+                },
+                {
+                  "kind": "text",
+                  "text": " supports weights.\nSee the notes for more details."
                 }
               ],
-              "name": "interpolation",
+              "name": "weights",
               "type": "field_list"
             }
           ],
@@ -724,7 +742,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/mean",
-              "label": "we.mean",
+              "label": "fnp.mean",
               "original_target": "mean",
               "role": "",
               "target": "mean",
@@ -744,7 +762,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/median",
-              "label": "we.median",
+              "label": "fnp.median",
               "original_target": "median",
               "role": "",
               "target": "median",
@@ -755,7 +773,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanpercentile",
-              "label": "we.nanpercentile",
+              "label": "fnp.nanpercentile",
               "original_target": "nanpercentile",
               "role": "",
               "target": "nanpercentile",
@@ -771,7 +789,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/quantile",
-              "label": "we.quantile",
+              "label": "fnp.quantile",
               "original_target": "quantile",
               "role": "",
               "target": "quantile",
@@ -796,7 +814,7 @@
               "href": "/docs/api/ops/percentile",
               "kind": "link",
               "target": "percentile",
-              "text": "we.percentile"
+              "text": "fnp.percentile"
             },
             {
               "kind": "text",
@@ -815,7 +833,7 @@
               "href": "/docs/api/ops/quantile",
               "kind": "link",
               "target": "quantile",
-              "text": "we.quantile"
+              "text": "fnp.quantile"
             },
             {
               "kind": "text",
@@ -834,7 +852,7 @@
               "href": "/docs/api/ops/quantile",
               "kind": "link",
               "target": "quantile",
-              "text": "we.quantile"
+              "text": "fnp.quantile"
             },
             {
               "kind": "text",
@@ -863,12 +881,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[10, 7, 4], [3, 2, 1]])"
+              "text": "a = fnp.array([[10, 7, 4], [3, 2, 1]])"
             },
             {
               "kind": "input",
@@ -886,7 +904,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.percentile(a, 50)"
+              "text": "fnp.percentile(a, 50)"
             },
             {
               "kind": "output",
@@ -895,7 +913,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.percentile(a, 50, axis=0)"
+              "text": "fnp.percentile(a, 50, axis=0)"
             },
             {
               "kind": "output",
@@ -904,7 +922,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.percentile(a, 50, axis=1)"
+              "text": "fnp.percentile(a, 50, axis=1)"
             },
             {
               "kind": "output",
@@ -913,7 +931,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.percentile(a, 50, axis=1, keepdims=True)"
+              "text": "fnp.percentile(a, 50, axis=1, keepdims=True)"
             },
             {
               "kind": "output",
@@ -931,17 +949,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "m = we.percentile(a, 50, axis=0)"
+              "text": "m = fnp.percentile(a, 50, axis=0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "out = we.zeros_like(m)"
+              "text": "out = fnp.zeros_like(m)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.percentile(a, 50, axis=0, out=out)"
+              "text": "fnp.percentile(a, 50, axis=0, out=out)"
             },
             {
               "kind": "output",
@@ -969,7 +987,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.percentile(b, 50, axis=1, overwrite_input=True)"
+              "text": "fnp.percentile(b, 50, axis=1, overwrite_input=True)"
             },
             {
               "kind": "output",
@@ -978,7 +996,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "assert not we.all(a == b)"
+              "text": "assert not fnp.all(a == b)"
             }
           ],
           "type": "doctest_block"
@@ -997,7 +1015,7 @@
           "content_blocks": [
             {
               "language": "python",
-              "text": "import matplotlib.pyplot as plt\n\na = we.arange(4)\np = we.linspace(0, 100, 6001)\nax = plt.gca()\nlines = [\n    ('linear', '-', 'C0'),\n    ('inverted_cdf', ':', 'C1'),\n    # Almost the same as `inverted_cdf`:\n    ('averaged_inverted_cdf', '-.', 'C1'),\n    ('closest_observation', ':', 'C2'),\n    ('interpolated_inverted_cdf', '--', 'C1'),\n    ('hazen', '--', 'C3'),\n    ('weibull', '-.', 'C4'),\n    ('median_unbiased', '--', 'C5'),\n    ('normal_unbiased', '-.', 'C6'),\n    ]\nfor method, style, color in lines:\n    ax.plot(\n        p, we.percentile(a, p, method=method),\n        label=method, linestyle=style, color=color)\nax.set(\n    title='Percentiles for different methods and data: ' + str(a),\n    xlabel='Percentile',\n    ylabel='Estimated percentile value',\n    yticks=a)\nax.legend(bbox_to_anchor=(1.03, 1))\nplt.tight_layout()\nplt.show()",
+              "text": "import matplotlib.pyplot as plt\n\na = fnp.arange(4)\np = fnp.linspace(0, 100, 6001)\nax = plt.gca()\nlines = [\n    ('linear', '-', 'C0'),\n    ('inverted_cdf', ':', 'C1'),\n    # Almost the same as `inverted_cdf`:\n    ('averaged_inverted_cdf', '-.', 'C1'),\n    ('closest_observation', ':', 'C2'),\n    ('interpolated_inverted_cdf', '--', 'C1'),\n    ('hazen', '--', 'C3'),\n    ('weibull', '-.', 'C4'),\n    ('median_unbiased', '--', 'C5'),\n    ('normal_unbiased', '-.', 'C6'),\n    ]\nfor method, style, color in lines:\n    ax.plot(\n        p, fnp.percentile(a, p, method=method),\n        label=method, linestyle=style, color=color)\nax.set(\n    title='Percentiles for different methods and data: ' + str(a),\n    xlabel='Percentile',\n    ylabel='Estimated percentile value',\n    yticks=a)\nax.legend(bbox_to_anchor=(1.03, 1))\nplt.tight_layout()\nplt.show()",
               "type": "literal_block"
             }
           ],
@@ -1032,20 +1050,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[10, 7, 4], [3, 2, 1]])\n\na\n\nwe.percentile(a, 50)\n\nwe.percentile(a, 50, axis=0)\n\nwe.percentile(a, 50, axis=1)\n\nwe.percentile(a, 50, axis=1, keepdims=True)\n\nm = we.percentile(a, 50, axis=0)\n\nout = we.zeros_like(m)\n\nwe.percentile(a, 50, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nwe.percentile(b, 50, axis=1, overwrite_input=True)\n\nassert not we.all(a == b)",
+    "code": "import flopscope as fnp\n\na = fnp.array([[10, 7, 4], [3, 2, 1]])\n\na\n\nfnp.percentile(a, 50)\n\nfnp.percentile(a, 50, axis=0)\n\nfnp.percentile(a, 50, axis=1)\n\nfnp.percentile(a, 50, axis=1, keepdims=True)\n\nm = fnp.percentile(a, 50, axis=0)\n\nout = fnp.zeros_like(m)\n\nfnp.percentile(a, 50, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nfnp.percentile(b, 50, axis=1, overwrite_input=True)\n\nassert not fnp.all(a == b)",
     "output": "array([[10,  7,  4],\n       [ 3,  2,  1]])\n\n3.5\n\narray([6.5, 4.5, 2.5])\n\narray([7.,  2.])\n\narray([[7.],\n       [2.]])\n\narray([6.5, 4.5, 2.5])\n\narray([6.5, 4.5, 2.5])\n\narray([7.,  2.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.percentile",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
   "href": "/docs/api/ops/percentile/",
   "module": "numpy",
   "name": "percentile",
   "next": {
     "href": "/docs/api/ops/permute_dims/",
-    "label": "we.permute_dims"
+    "label": "fnp.permute_dims"
   },
   "notes": "q-th percentile of array elements.",
   "notes_sections": [
-    "The behavior of `we.percentile` with percentage `q` is that of `we.quantile` with argument ``q/100``. For more information, please see `we.quantile`."
+    "The behavior of `fnp.percentile` with percentage `q` is that of `fnp.quantile` with argument ``q/100``. For more information, please see `fnp.quantile`."
   ],
   "numpy_ref": "np.percentile",
   "parameters": [
@@ -1125,38 +1146,33 @@
     },
     {
       "body": [
-        "   If this is set to True, the axes which are reduced are left in",
-        "   the result as dimensions with size one. With this option, the",
-        "   result will broadcast correctly against the original array `a`.",
-        "",
-        "weights : array_like, optional",
-        "   An array of weights associated with the values in `a`. Each value in",
-        "   `a` contributes to the percentile according to its associated weight.",
-        "   The weights array can either be 1-D (in which case its length must be",
-        "   the size of `a` along the given axis) or of the same shape as `a`.",
-        "   If `weights=None`, then all data in `a` are assumed to have a",
-        "   weight equal to one.",
-        "   Only `method=\"inverted_cdf\"` supports weights.",
-        "   See the notes for more details.",
-        "",
-        "   .. versionadded:: 2.0.0"
+        "If this is set to True, the axes which are reduced are left in",
+        "the result as dimensions with size one. With this option, the",
+        "result will broadcast correctly against the original array `a`."
       ],
       "name": "keepdims",
       "type": "bool, optional"
     },
     {
       "body": [
-        "Deprecated name for the method keyword argument.",
+        "An array of weights associated with the values in `a`. Each value in",
+        "`a` contributes to the percentile according to its associated weight.",
+        "The weights array can either be 1-D (in which case its length must be",
+        "the size of `a` along the given axis) or of the same shape as `a`.",
+        "If `weights=None`, then all data in `a` are assumed to have a",
+        "weight equal to one.",
+        "Only `method=\"inverted_cdf\"` supports weights.",
+        "See the notes for more details.",
         "",
-        ".. deprecated:: 1.22.0"
+        ".. versionadded:: 2.0.0"
       ],
-      "name": "interpolation",
-      "type": "str, optional"
+      "name": "weights",
+      "type": "array_like, optional"
     }
   ],
   "previous": {
     "href": "/docs/api/ops/partition/",
-    "label": "we.partition"
+    "label": "fnp.partition"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.percentile.html",
@@ -1182,7 +1198,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/mean",
-      "label": "we.mean",
+      "label": "fnp.mean",
       "original_target": "mean",
       "role": "",
       "target": "mean",
@@ -1202,7 +1218,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/median",
-      "label": "we.median",
+      "label": "fnp.median",
       "original_target": "median",
       "role": "",
       "target": "median",
@@ -1213,7 +1229,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanpercentile",
-      "label": "we.nanpercentile",
+      "label": "fnp.nanpercentile",
       "original_target": "nanpercentile",
       "role": "",
       "target": "nanpercentile",
@@ -1229,19 +1245,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/quantile",
-      "label": "we.quantile",
+      "label": "fnp.quantile",
       "original_target": "quantile",
       "role": "",
       "target": "quantile",
       "unresolved": false
     }
   ],
-  "signature": "we.percentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
+  "signature": "fnp.percentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None)",
   "slug": "percentile",
   "summary": "Compute the q-th percentile of the data along the specified axis.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L4067",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.percentile",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L4052",
+  "weight": 1.0
 }

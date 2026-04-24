@@ -8,9 +8,9 @@ trapezoid, and uncovered symmetric / scalar paths in factory functions.
 import numpy
 import pytest
 
-import whest._pointwise as ops
-from whest._budget import BudgetContext
-from whest._symmetric import SymmetricTensor, as_symmetric
+import flopscope._pointwise as ops
+from flopscope._budget import BudgetContext
+from flopscope._symmetric import SymmetricTensor, as_symmetric
 
 # ---------------------------------------------------------------------------
 # Multi-output unary ops

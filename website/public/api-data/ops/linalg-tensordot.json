@@ -208,7 +208,15 @@
                               },
                               {
                                 "kind": "text",
-                                "text": ". Both elements array_like must be of the same length."
+                                "text": ". Both elements array_like must be of the same length.\nEach axis may appear at most once; repeated axes are not allowed.\nFor example, "
+                              },
+                              {
+                                "kind": "code",
+                                "text": "axes=([1, 1], [0, 0])"
+                              },
+                              {
+                                "kind": "text",
+                                "text": " is invalid."
                               }
                             ],
                             "type": "paragraph"
@@ -224,18 +232,21 @@
                 "inline": [],
                 "name": "axes",
                 "type": "field_list"
-              }
-            ],
-            "title": "Parameters",
-            "type": "field_list"
-          }
-        ],
-        "title": "Parameters"
-      },
-      {
-        "blocks": [
-          {
-            "items": [
+              },
+              {
+                "body_blocks": [],
+                "data_type": "",
+                "inline": [],
+                "name": "Returns",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [],
+                "data_type": "",
+                "inline": [],
+                "name": "-------",
+                "type": "field_list"
+              },
               {
                 "body_blocks": [
                   {
@@ -259,11 +270,11 @@
                 "type": "field_list"
               }
             ],
-            "title": "Returns",
+            "title": "Parameters",
             "type": "field_list"
           }
         ],
-        "title": "Returns"
+        "title": "Parameters"
       },
       {
         "blocks": [
@@ -274,7 +285,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/dot",
-                "label": "we.dot",
+                "label": "fnp.dot",
                 "original_target": "dot",
                 "role": "",
                 "target": "dot",
@@ -285,7 +296,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/einsum",
-                "label": "we.einsum",
+                "label": "fnp.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
@@ -491,11 +502,77 @@
                 "href": "/docs/api/ops/einsum",
                 "kind": "link",
                 "target": "einsum",
-                "text": "we.einsum"
+                "text": "fnp.einsum"
               },
               {
                 "kind": "text",
                 "text": "."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "For example, if "
+              },
+              {
+                "kind": "code",
+                "text": "a.shape == (2, 3, 4)"
+              },
+              {
+                "kind": "text",
+                "text": " and "
+              },
+              {
+                "kind": "code",
+                "text": "b.shape == (3, 4, 5)"
+              },
+              {
+                "kind": "text",
+                "text": ",\nthen "
+              },
+              {
+                "kind": "code",
+                "text": "axes=([1, 2], [0, 1])"
+              },
+              {
+                "kind": "text",
+                "text": " sums over the "
+              },
+              {
+                "kind": "code",
+                "text": "(3, 4)"
+              },
+              {
+                "kind": "text",
+                "text": " dimensions of\nboth arrays and produces an output of shape "
+              },
+              {
+                "kind": "code",
+                "text": "(2, 5)"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Each summation axis corresponds to a distinct contraction index; repeating\nan axis (for example "
+              },
+              {
+                "kind": "code",
+                "text": "axes=([1, 1], [0, 0])"
+              },
+              {
+                "kind": "text",
+                "text": ") is invalid."
               }
             ],
             "type": "paragraph"
@@ -528,17 +605,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a_0 = we.array([[1, 2], [3, 4]])"
+                "text": "a_0 = fnp.array([[1, 2], [3, 4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b_0 = we.array([[5, 6], [7, 8]])"
+                "text": "b_0 = fnp.array([[5, 6], [7, 8]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c_0 = we.tensordot(a_0, b_0, axes=0)"
+                "text": "c_0 = fnp.tensordot(a_0, b_0, axes=0)"
               },
               {
                 "kind": "input",
@@ -603,17 +680,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(60.).reshape(3,4,5)"
+                "text": "a = fnp.arange(60.).reshape(3,4,5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(24.).reshape(4,3,2)"
+                "text": "b = fnp.arange(24.).reshape(4,3,2)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.tensordot(a,b, axes=([1,0],[0,1]))"
+                "text": "c = fnp.tensordot(a,b, axes=([1,0],[0,1]))"
               },
               {
                 "kind": "input",
@@ -666,7 +743,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "d = we.zeros((5,2))"
+                "text": "d = fnp.zeros((5,2))"
               },
               {
                 "kind": "input",
@@ -735,22 +812,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array(range(1, 9))"
+                "text": "a = fnp.array(range(1, 9)).reshape((2, 2, 2))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a.shape = (2, 2, 2)"
+                "text": "A = fnp.array(('a', 'b', 'c', 'd'), dtype=object)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = we.array(('a', 'b', 'c', 'd'), dtype=object)"
-              },
-              {
-                "kind": "input",
-                "prompt": ">>>",
-                "text": "A.shape = (2, 2)"
+                "text": "A = A.reshape((2, 2))"
               },
               {
                 "kind": "input",
@@ -789,7 +861,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tensordot(a, A) # third argument default is 2 for double-contraction"
+                "text": "fnp.tensordot(a, A) # third argument default is 2 for double-contraction"
               },
               {
                 "kind": "output",
@@ -803,7 +875,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tensordot(a, A, 1)"
+                "text": "fnp.tensordot(a, A, 1)"
               },
               {
                 "kind": "output",
@@ -829,7 +901,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tensordot(a, A, 0) # tensor product (result too long to incl.)"
+                "text": "fnp.tensordot(a, A, 0) # tensor product (result too long to incl.)"
               },
               {
                 "kind": "output",
@@ -852,7 +924,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tensordot(a, A, (0, 1))"
+                "text": "fnp.tensordot(a, A, (0, 1))"
               },
               {
                 "kind": "output",
@@ -878,7 +950,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tensordot(a, A, (2, 1))"
+                "text": "fnp.tensordot(a, A, (2, 1))"
               },
               {
                 "kind": "output",
@@ -904,7 +976,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tensordot(a, A, ((0, 1), (0, 1)))"
+                "text": "fnp.tensordot(a, A, ((0, 1), (0, 1)))"
               },
               {
                 "kind": "output",
@@ -918,7 +990,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tensordot(a, A, ((2, 1), (1, 0)))"
+                "text": "fnp.tensordot(a, A, ((2, 1), (1, 0)))"
               },
               {
                 "kind": "output",
@@ -934,22 +1006,22 @@
   },
   "op": {
     "category": "counted_custom",
-    "cost_formula": "delegates to we.tensordot",
+    "cost_formula": "delegates to fnp.tensordot",
     "cost_formula_latex": "delegates to `tensordot`",
+    "flopscope_ref": "fnp.linalg.tensordot",
     "module": "numpy.linalg",
     "name": "linalg.tensordot",
     "notes": "Delegates to `we.tensordot` which charges FLOPs based on contraction.",
     "numpy_ref": "np.linalg.tensordot",
-    "signature": "we.linalg.tensordot(x1, x2, /, *, axes=2)",
+    "signature": "fnp.linalg.tensordot(x1, x2, /, *, axes=2)",
     "status": "supported",
     "summary": "Compute tensor dot product along specified axes.",
-    "weight": 1.0,
-    "whest_ref": "we.linalg.tensordot"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "linalg-tensordot",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3392",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L67"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L67",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L3415"
   }
 }

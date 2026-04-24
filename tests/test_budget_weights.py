@@ -6,11 +6,11 @@ from importlib import resources
 
 import pytest
 
-import whest._weights as weights_module
-from whest import flops as public_flops
-from whest._budget import BudgetContext
-from whest._weights import load_weights, reset_weights
-from whest.errors import BudgetExhaustedError
+import flopscope._weights as weights_module
+from flopscope import accounting as public_flops
+from flopscope._budget import BudgetContext
+from flopscope._weights import load_weights, reset_weights
+from flopscope.errors import BudgetExhaustedError
 
 
 @pytest.fixture(autouse=True)
@@ -27,7 +27,7 @@ def _write_weights(tmp_path, weights):
 
 
 def _packaged_weight(op_name):
-    resource = resources.files("whest").joinpath("data/default_weights.json")
+    resource = resources.files("flopscope").joinpath("data/default_weights.json")
     with resource.open("r", encoding="utf-8") as f:
         return json.load(f)["weights"][op_name]
 
@@ -71,8 +71,8 @@ def test_deduct_uses_packaged_default_when_explicitly_loaded():
 def test_public_helpers_match_runtime_deduction_under_default_import_config(
     monkeypatch,
 ):
-    monkeypatch.delenv("WHEST_WEIGHTS_FILE", raising=False)
-    monkeypatch.delenv("WHEST_DISABLE_WEIGHTS", raising=False)
+    monkeypatch.delenv("FLOPSCOPE_WEIGHTS_FILE", raising=False)
+    monkeypatch.delenv("FLOPSCOPE_DISABLE_WEIGHTS", raising=False)
     importlib.reload(weights_module)
 
     expected = public_flops.pointwise_cost("exp", shape=(2, 5))
@@ -83,7 +83,7 @@ def test_public_helpers_match_runtime_deduction_under_default_import_config(
 
 
 def test_deduct_disable_weights_ignores_packaged_default(monkeypatch):
-    monkeypatch.setenv("WHEST_DISABLE_WEIGHTS", "1")
+    monkeypatch.setenv("FLOPSCOPE_DISABLE_WEIGHTS", "1")
     load_weights(use_packaged_default=True)
     with BudgetContext(flop_budget=1_000_000) as budget:
         budget.deduct("exp", flop_cost=10, subscripts=None, shapes=((10,),))

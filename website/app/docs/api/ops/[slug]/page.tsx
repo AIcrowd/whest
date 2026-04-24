@@ -99,7 +99,7 @@ export default async function OperationPage(props: {
           : { enabled: false }
       }
     >
-      <DocsTitle>{op.whest_ref}</DocsTitle>
+      <DocsTitle>{op.flopscope_ref}</DocsTitle>
       <DocsBody>
         <OperationDocPage op={op} />
       </DocsBody>
@@ -119,7 +119,7 @@ export async function generateMetadata(props: {
   if (!op) notFound();
 
   return {
-    title: op.whest_ref,
+    title: op.flopscope_ref,
     description: op.summary || op.notes,
   };
 }

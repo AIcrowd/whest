@@ -2,7 +2,7 @@ export const STANDALONE_SYMMETRY_AWARE_EINSUM_URL = '/symmetry-aware-einsum-cont
 
 const LEGACY_DOCS_URL = '/docs/understanding/symmetry-explorer';
 const TOOL_NAME = 'Symmetry Aware Einsum Contractions';
-const UNDERSTANDING_FOLDER = 'Understanding whest';
+const UNDERSTANDING_FOLDER = 'Understanding flopscope';
 
 function createLaunchItem() {
   return {

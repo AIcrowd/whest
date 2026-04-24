@@ -432,7 +432,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/max",
-                "label": "we.max",
+                "label": "fnp.max",
                 "original_target": "amax",
                 "role": "",
                 "target": "max",
@@ -448,7 +448,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/nanmin",
-                "label": "we.nanmin",
+                "label": "fnp.nanmin",
                 "original_target": "nanmin",
                 "role": "",
                 "target": "nanmin",
@@ -464,7 +464,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/minimum",
-                "label": "we.minimum",
+                "label": "fnp.minimum",
                 "original_target": "minimum",
                 "role": "",
                 "target": "minimum",
@@ -480,7 +480,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/fmin",
-                "label": "we.fmin",
+                "label": "fnp.fmin",
                 "original_target": "fmin",
                 "role": "",
                 "target": "fmin",
@@ -496,7 +496,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/argmin",
-                "label": "we.argmin",
+                "label": "fnp.argmin",
                 "original_target": "argmin",
                 "role": "",
                 "target": "argmin",
@@ -507,7 +507,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanmax",
-                "label": "we.nanmax",
+                "label": "fnp.nanmax",
                 "original_target": "nanmax",
                 "role": "",
                 "target": "nanmax",
@@ -518,7 +518,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/maximum",
-                "label": "we.maximum",
+                "label": "fnp.maximum",
                 "original_target": "maximum",
                 "role": "",
                 "target": "maximum",
@@ -529,7 +529,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/fmax",
-                "label": "we.fmax",
+                "label": "fnp.fmax",
                 "original_target": "fmax",
                 "role": "",
                 "target": "fmax",
@@ -606,12 +606,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(4).reshape((2,2))"
+                "text": "a = fnp.arange(4).reshape((2,2))"
               },
               {
                 "kind": "input",
@@ -629,7 +629,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.min(a)           # Minimum of the flattened array"
+                "text": "fnp.min(a)           # Minimum of the flattened array"
               },
               {
                 "kind": "output",
@@ -638,7 +638,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.min(a, axis=0)   # Minima along the first axis"
+                "text": "fnp.min(a, axis=0)   # Minima along the first axis"
               },
               {
                 "kind": "output",
@@ -647,7 +647,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.min(a, axis=1)   # Minima along the second axis"
+                "text": "fnp.min(a, axis=1)   # Minima along the second axis"
               },
               {
                 "kind": "output",
@@ -656,7 +656,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.min(a, where=[False, True], initial=10, axis=0)"
+                "text": "fnp.min(a, where=[False, True], initial=10, axis=0)"
               },
               {
                 "kind": "output",
@@ -670,26 +670,26 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(5, dtype=float)"
+                "text": "b = fnp.arange(5, dtype=float)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b[2] = we.nan"
+                "text": "b[2] = fnp.nan"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.min(b)"
+                "text": "fnp.min(b)"
               },
               {
                 "kind": "output",
-                "text": "we.float64(nan)"
+                "text": "fnp.float64(nan)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.min(b, where=~we.isnan(b), initial=10)"
+                "text": "fnp.min(b, where=~fnp.isnan(b), initial=10)"
               },
               {
                 "kind": "output",
@@ -698,7 +698,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmin(b)"
+                "text": "fnp.nanmin(b)"
               },
               {
                 "kind": "output",
@@ -712,7 +712,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.min([[-50], [10]], axis=-1, initial=0)"
+                "text": "fnp.min([[-50], [10]], axis=-1, initial=0)"
               },
               {
                 "kind": "output",
@@ -752,7 +752,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.min([6], initial=5)"
+                "text": "fnp.min([6], initial=5)"
               },
               {
                 "kind": "output",
@@ -779,20 +779,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.min",
     "module": "numpy",
     "name": "min",
     "notes": "Minimum value of array.",
     "numpy_ref": "np.min",
-    "signature": "we.min(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+    "signature": "fnp.min(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
     "status": "supported",
     "summary": "Return the minimum of an array or minimum along an axis.",
-    "weight": 1.0,
-    "whest_ref": "we.min"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "min",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3190",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L3149"
   }
 }

@@ -391,12 +391,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng(12345)"
+                "text": "rng = fnp.random.default_rng(12345)"
               },
               {
                 "kind": "input",
@@ -455,12 +455,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng(12345)"
+                "text": "rng = fnp.random.default_rng(12345)"
               },
               {
                 "kind": "input",
@@ -483,7 +483,7 @@
               },
               {
                 "kind": "output",
-                "text": "<class 'we.int64'>"
+                "text": "<class 'fnp.int64'>"
               }
             ],
             "type": "doctest_block"
@@ -502,12 +502,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng(seed=42)"
+                "text": "rng = fnp.random.default_rng(seed=42)"
               },
               {
                 "kind": "input",
@@ -557,12 +557,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng(seed=42)"
+                "text": "rng = fnp.random.default_rng(seed=42)"
               },
               {
                 "kind": "input",
@@ -598,20 +598,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.random.default_rng",
     "module": "numpy.random",
     "name": "random.default_rng",
     "notes": "Construct a new Generator with default BitGenerator.",
     "numpy_ref": "np.random.default_rng",
-    "signature": "we.random.default_rng(seed=None)",
+    "signature": "fnp.random.default_rng(seed=None)",
     "status": "supported",
     "summary": "Construct a new Generator with the default BitGenerator (PCG64).",
-    "weight": 0.0,
-    "whest_ref": "we.random.default_rng"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "random-default_rng",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.default_rng.html",
-    "whest": null
+    "flopscope": null,
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.default_rng.html"
   }
 }

@@ -307,7 +307,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "we.fft"
+                      "text": "fnp.fft"
                     },
                     {
                       "kind": "text",
@@ -338,7 +338,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "we.fft"
+                  "text": "fnp.fft"
                 },
                 {
                   "kind": "text",
@@ -617,7 +617,7 @@
               ],
               "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
               "href": "",
-              "label": "we.fft",
+              "label": "fnp.fft",
               "original_target": "numpy.fft",
               "role": "",
               "target": "fft",
@@ -763,7 +763,7 @@
               "href": "",
               "kind": "link",
               "target": "fft",
-              "text": "we.fft"
+              "text": "fnp.fft"
             },
             {
               "kind": "text",
@@ -782,17 +782,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.mgrid[:3, :3, :3][0]"
+              "text": "a = fnp.mgrid[:3, :3, :3][0]"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.fftn(a, axes=(1, 2))"
+              "text": "fnp.fft.fftn(a, axes=(1, 2))"
             },
             {
               "kind": "output",
@@ -833,7 +833,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.fftn(a, (2, 2), axes=(0, 1))"
+              "text": "fnp.fft.fftn(a, (2, 2), axes=(0, 1))"
             },
             {
               "kind": "output",
@@ -864,27 +864,27 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "[X, Y] = we.meshgrid(2 * we.pi * we.arange(200) / 12,"
+              "text": "[X, Y] = fnp.meshgrid(2 * fnp.pi * fnp.arange(200) / 12,"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "2 * we.pi * we.arange(200) / 34)"
+              "text": "2 * fnp.pi * fnp.arange(200) / 34)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "S = we.sin(X) + we.cos(Y) + we.random.uniform(0, 1, X.shape)"
+              "text": "S = fnp.sin(X) + fnp.cos(Y) + fnp.random.uniform(0, 1, X.shape)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "FS = we.fft.fftn(S)"
+              "text": "FS = fnp.fft.fftn(S)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.imshow(we.log(we.abs(we.fft.fftshift(FS))**2))"
+              "text": "plt.imshow(fnp.log(fnp.abs(fnp.fft.fftshift(FS))**2))"
             },
             {
               "kind": "output",
@@ -913,21 +913,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.mgrid[:3, :3, :3][0]\n\nwe.fft.fftn(a, axes=(1, 2))\n\nwe.fft.fftn(a, (2, 2), axes=(0, 1))\n\nimport matplotlib.pyplot as plt\n\n[X, Y] = we.meshgrid(2 * we.pi * we.arange(200) / 12,\n                     2 * we.pi * we.arange(200) / 34)\n\nS = we.sin(X) + we.cos(Y) + we.random.uniform(0, 1, X.shape)\n\nFS = we.fft.fftn(S)\n\nplt.imshow(we.log(we.abs(we.fft.fftshift(FS))**2))\n\nplt.show()",
+    "code": "import flopscope as fnp\n\na = fnp.mgrid[:3, :3, :3][0]\n\nfnp.fft.fftn(a, axes=(1, 2))\n\nfnp.fft.fftn(a, (2, 2), axes=(0, 1))\n\nimport matplotlib.pyplot as plt\n\n[X, Y] = fnp.meshgrid(2 * fnp.pi * fnp.arange(200) / 12,\n                     2 * fnp.pi * fnp.arange(200) / 34)\n\nS = fnp.sin(X) + fnp.cos(Y) + fnp.random.uniform(0, 1, X.shape)\n\nFS = fnp.fft.fftn(S)\n\nplt.imshow(fnp.log(fnp.abs(fnp.fft.fftshift(FS))**2))\n\nplt.show()",
     "output": "array([[[ 0.+0.j,   0.+0.j,   0.+0.j], # may vary\n        [ 0.+0.j,   0.+0.j,   0.+0.j],\n        [ 0.+0.j,   0.+0.j,   0.+0.j]],\n       [[ 9.+0.j,   0.+0.j,   0.+0.j],\n        [ 0.+0.j,   0.+0.j,   0.+0.j],\n        [ 0.+0.j,   0.+0.j,   0.+0.j]],\n       [[18.+0.j,   0.+0.j,   0.+0.j],\n        [ 0.+0.j,   0.+0.j,   0.+0.j],\n        [ 0.+0.j,   0.+0.j,   0.+0.j]]])\n\narray([[[ 2.+0.j,  2.+0.j,  2.+0.j], # may vary\n        [ 0.+0.j,  0.+0.j,  0.+0.j]],\n       [[-2.+0.j, -2.+0.j, -2.+0.j],\n        [ 0.+0.j,  0.+0.j,  0.+0.j]]])\n\n<matplotlib.image.AxesImage object at 0x...>",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.fftn",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L337",
   "href": "/docs/api/ops/fft-fftn/",
   "module": "numpy.fft",
   "name": "fft.fftn",
   "next": {
     "href": "/docs/api/ops/fft-fftshift/",
-    "label": "we.fft.fftshift"
+    "label": "fnp.fft.fftshift"
   },
   "notes": "N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
     "The output, analogously to `fft`, contains the term for zero frequency in the low-order corner of all axes, the positive frequency terms in the first half of all axes, the term for the Nyquist frequency in the middle of all axes and the negative frequency terms in the second half of all axes, in order of decreasingly negative frequency.",
-    "See `we.fft` for details, definitions and conventions used."
+    "See `fnp.fft` for details, definitions and conventions used."
   ],
   "numpy_ref": "np.fft.fftn",
   "parameters": [
@@ -984,7 +987,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `we.fft`). Default is \"backward\".",
+        "Normalization mode (see `fnp.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -1009,7 +1012,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/fft-fftfreq/",
-    "label": "we.fft.fftfreq"
+    "label": "fnp.fft.fftfreq"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.fftn.html",
@@ -1035,7 +1038,7 @@
       ],
       "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
       "href": "",
-      "label": "we.fft",
+      "label": "fnp.fft",
       "original_target": "numpy.fft",
       "role": "",
       "target": "fft",
@@ -1146,12 +1149,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.fftn(a, s=None, axes=None, norm=None, out=None)",
+  "signature": "fnp.fft.fftn(a, s=None, axes=None, norm=None, out=None)",
   "slug": "fft-fftn",
   "summary": "Compute the N-dimensional discrete Fourier Transform.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L749",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.fftn",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L337"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L755",
+  "weight": 1.0
 }

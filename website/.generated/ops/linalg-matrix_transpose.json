@@ -135,7 +135,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/transpose",
-              "label": "we.transpose",
+              "label": "fnp.transpose",
               "original_target": "transpose",
               "role": "",
               "target": "transpose",
@@ -150,16 +150,41 @@
     {
       "blocks": [
         {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This function is an alias of "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/ops/matrix_transpose",
+              "kind": "link",
+              "target": "matrix_transpose",
+              "text": "fnp.matrix_transpose"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
           "lines": [
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.matrix_transpose([[1, 2], [3, 4]])"
+              "text": "fnp.matrix_transpose([[1, 2], [3, 4]])"
             },
             {
               "kind": "output",
@@ -177,7 +202,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])"
+              "text": "fnp.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])"
             },
             {
               "kind": "output",
@@ -213,19 +238,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.matrix_transpose([[1, 2], [3, 4]])\n\nwe.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])",
+    "code": "import flopscope as fnp\n\nfnp.matrix_transpose([[1, 2], [3, 4]])\n\nfnp.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])",
     "output": "array([[1, 3],\n       [2, 4]])\n\narray([[[1, 3],\n        [2, 4]],\n       [[5, 7],\n        [6, 8]]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.matrix_transpose",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L108",
   "href": "/docs/api/ops/linalg-matrix_transpose/",
   "module": "numpy.linalg",
   "name": "linalg.matrix_transpose",
   "next": {
     "href": "/docs/api/ops/linalg-multi_dot/",
-    "label": "we.linalg.multi_dot"
+    "label": "fnp.linalg.multi_dot"
   },
-  "notes": "Transpose view \u2014 delegates to whest.matrix_transpose. Cost: 0 FLOPs.",
-  "notes_sections": [],
+  "notes": "Transpose view \u2014 delegates to flopscope.matrix_transpose. Cost: 0 FLOPs.",
+  "notes_sections": [
+    "This function is an alias of `fnp.matrix_transpose`."
+  ],
   "numpy_ref": "np.linalg.matrix_transpose",
   "parameters": [
     {
@@ -239,7 +269,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-matrix_rank/",
-    "label": "we.linalg.matrix_rank"
+    "label": "fnp.linalg.matrix_rank"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_transpose.html",
@@ -264,19 +294,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/transpose",
-      "label": "we.transpose",
+      "label": "fnp.transpose",
       "original_target": "transpose",
       "role": "",
       "target": "transpose",
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.matrix_transpose(x, /)",
+  "signature": "fnp.linalg.matrix_transpose(x, /)",
   "slug": "linalg-matrix_transpose",
   "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3405",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.matrix_transpose",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L108"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L3428",
+  "weight": 0.0
 }

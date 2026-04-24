@@ -422,7 +422,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "matrix",
-                        "text": "we.matrix"
+                        "text": "fnp.matrix"
                       },
                       {
                         "kind": "text",
@@ -485,7 +485,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "matrix",
-                    "text": "we.matrix"
+                    "text": "fnp.matrix"
                   },
                   {
                     "kind": "text",
@@ -781,7 +781,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.ma.average"
+                        "text": "fnp.ma.average"
                       },
                       {
                         "kind": "text",
@@ -799,7 +799,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.ma.average"
+                    "text": "fnp.ma.average"
                   },
                   {
                     "kind": "text",
@@ -965,7 +965,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/mean",
-                "label": "we.mean",
+                "label": "fnp.mean",
                 "original_target": "mean",
                 "role": "",
                 "target": "mean",
@@ -997,7 +997,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/result_type",
-                "label": "we.result_type",
+                "label": "fnp.result_type",
                 "original_target": "numpy.result_type",
                 "role": "",
                 "target": "result_type",
@@ -1016,12 +1016,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "data = we.arange(1, 5)"
+                "text": "data = fnp.arange(1, 5)"
               },
               {
                 "kind": "input",
@@ -1035,7 +1035,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.average(data)"
+                "text": "fnp.average(data)"
               },
               {
                 "kind": "output",
@@ -1044,7 +1044,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.average(we.arange(1, 11), weights=we.arange(10, 0, -1))"
+                "text": "fnp.average(fnp.arange(1, 11), weights=fnp.arange(10, 0, -1))"
               },
               {
                 "kind": "output",
@@ -1058,7 +1058,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "data = we.arange(6).reshape((3, 2))"
+                "text": "data = fnp.arange(6).reshape((3, 2))"
               },
               {
                 "kind": "input",
@@ -1080,7 +1080,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.average(data, axis=1, weights=[1./4, 3./4])"
+                "text": "fnp.average(data, axis=1, weights=[1./4, 3./4])"
               },
               {
                 "kind": "output",
@@ -1089,7 +1089,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.average(data, weights=[1./4, 3./4])"
+                "text": "fnp.average(data, weights=[1./4, 3./4])"
               },
               {
                 "kind": "output",
@@ -1129,7 +1129,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.average(data, axis=1, keepdims=True)"
+                "text": "fnp.average(data, axis=1, keepdims=True)"
               },
               {
                 "kind": "output",
@@ -1151,7 +1151,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "data = we.arange(8).reshape((2, 2, 2))"
+                "text": "data = fnp.arange(8).reshape((2, 2, 2))"
               },
               {
                 "kind": "input",
@@ -1177,7 +1177,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.average(data, axis=(0, 1), weights=[[1./4, 3./4], [1., 1./2]])"
+                "text": "fnp.average(data, axis=(0, 1), weights=[[1./4, 3./4], [1., 1./2]])"
               },
               {
                 "kind": "output",
@@ -1186,7 +1186,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.average(data, axis=0, weights=[[1./4, 3./4], [1., 1./2]])"
+                "text": "fnp.average(data, axis=0, weights=[[1./4, 3./4], [1., 1./2]])"
               },
               {
                 "kind": "output",
@@ -1217,20 +1217,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.average",
     "module": "numpy",
     "name": "average",
     "notes": "Weighted average of array elements.",
     "numpy_ref": "np.average",
-    "signature": "we.average(a, axis=None, weights=None, returned=False, *, keepdims=<no value>)",
+    "signature": "fnp.average(a, axis=None, weights=None, returned=False, *, keepdims=<no value>)",
     "status": "supported",
     "summary": "Compute the weighted average along the specified axis.",
-    "weight": 1.0,
-    "whest_ref": "we.average"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "average",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L415",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L439"
   }
 }

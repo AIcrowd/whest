@@ -380,7 +380,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/arctan2",
-              "label": "we.arctan2",
+              "label": "fnp.arctan2",
               "original_target": "arctan2",
               "role": "",
               "target": "arctan2",
@@ -396,7 +396,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/angle",
-              "label": "we.angle",
+              "label": "fnp.angle",
               "original_target": "angle",
               "role": "",
               "target": "angle",
@@ -605,17 +605,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
-            }
-          ],
-          "type": "doctest_block"
-        },
-        {
-          "lines": [
+              "text": "import flopscope as fnp"
+            },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.arctan([0, 1])"
+              "text": "fnp.arctan([0, 1])"
             },
             {
               "kind": "output",
@@ -629,7 +624,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pi/4"
+              "text": "fnp.pi/4"
             },
             {
               "kind": "output",
@@ -657,12 +652,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linspace(-10, 10)"
+              "text": "x = fnp.linspace(-10, 10)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.plot(x, we.arctan(x))"
+              "text": "plt.plot(x, fnp.arctan(x))"
             },
             {
               "kind": "input",
@@ -699,16 +694,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.arctan([0, 1])\n\nwe.pi/4\n\nimport matplotlib.pyplot as plt\n\nx = we.linspace(-10, 10)\n\nplt.plot(x, we.arctan(x))\n\nplt.axis('tight')\n\nplt.show()",
+    "code": "import flopscope as fnp\n\nfnp.arctan([0, 1])\n\nfnp.pi/4\n\nimport matplotlib.pyplot as plt\n\nx = fnp.linspace(-10, 10)\n\nplt.plot(x, fnp.arctan(x))\n\nplt.axis('tight')\n\nplt.show()",
     "output": "array([ 0.        ,  0.78539816])\n\n0.78539816339744828",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.arctan",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/arctan/",
   "module": "numpy",
   "name": "arctan",
   "next": {
     "href": "/docs/api/ops/arctan2/",
-    "label": "we.arctan2"
+    "label": "fnp.arctan2"
   },
   "notes": "Element-wise inverse tangent.",
   "notes_sections": [
@@ -757,7 +755,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/arcsinh/",
-    "label": "we.arcsinh"
+    "label": "fnp.arcsinh"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.arctan.html",
@@ -807,7 +805,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/arctan2",
-      "label": "we.arctan2",
+      "label": "fnp.arctan2",
       "original_target": "arctan2",
       "role": "",
       "target": "arctan2",
@@ -823,19 +821,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/angle",
-      "label": "we.angle",
+      "label": "fnp.angle",
       "original_target": "angle",
       "role": "",
       "target": "angle",
       "unresolved": false
     }
   ],
-  "signature": "we.arctan(x)",
+  "signature": "fnp.arctan(x)",
   "slug": "arctan",
   "summary": "Trigonometric inverse tangent, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.arctan",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

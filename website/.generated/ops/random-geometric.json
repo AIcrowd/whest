@@ -121,7 +121,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.geometric`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.geometric`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -196,7 +196,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(p).size"
+                      "text": "fnp.array(p).size"
                     },
                     {
                       "kind": "text",
@@ -246,7 +246,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(p).size"
+                  "text": "fnp.array(p).size"
                 },
                 {
                   "kind": "text",
@@ -338,7 +338,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "z = we.random.geometric(p=0.35, size=10000)"
+              "text": "z = fnp.random.geometric(p=0.35, size=10000)"
             }
           ],
           "type": "doctest_block"
@@ -381,16 +381,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "z = we.random.geometric(p=0.35, size=10000)\n\n(z == 1).sum() / 10000.",
+    "code": "z = fnp.random.geometric(p=0.35, size=10000)\n\n(z == 1).sum() / 10000.",
     "output": "0.34889999999999999 #random",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.geometric",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-geometric/",
   "module": "numpy.random",
   "name": "random.geometric",
   "next": {
     "href": "/docs/api/ops/random-get_state/",
-    "label": "we.random.get_state"
+    "label": "fnp.random.get_state"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -408,7 +411,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``p`` is a scalar.  Otherwise,",
-        "``we.array(p).size`` samples are drawn."
+        "``fnp.array(p).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -416,7 +419,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-gamma/",
-    "label": "we.random.gamma"
+    "label": "fnp.random.gamma"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.geometric.html",
@@ -447,12 +450,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.geometric(p, size=None)",
+  "signature": "fnp.random.geometric(p, size=None)",
   "slug": "random-geometric",
   "summary": "Draw samples from the geometric distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.geometric",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

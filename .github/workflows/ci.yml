@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  WHEST_DOCS_ROOT: https://aicrowd.github.io/whest/docs
+  FLOPSCOPE_DOCS_ROOT: https://aicrowd.github.io/flopscope/docs
 
 jobs:
   lint:
@@ -61,7 +61,7 @@ jobs:
         run: uv pip install 'numpy~=${{ matrix.numpy-version }}.0'
 
       - name: Run tests with coverage
-        run: uv run pytest --cov=whest --cov-fail-under=85
+        run: uv run pytest --cov=flopscope --cov-fail-under=85
 
       - name: NumPy compatibility tests
         if: contains(fromJson('["2.2","2.3","2.4"]'), matrix.numpy-version)
@@ -111,11 +111,11 @@ jobs:
       - name: Install core + server dependencies
         run: |
           uv sync --all-extras
-          cd whest-server && uv sync
+          cd flopscope-server && uv sync
 
       - name: Run integration tests
         run: |
-          cd whest-client && uv run pytest tests/test_full_integration.py -v --tb=short
+          cd flopscope-client && uv run pytest tests/test_full_integration.py -v --tb=short
 
   website-tests:
     runs-on: ubuntu-latest

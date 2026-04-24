@@ -43,8 +43,8 @@ API_EXAMPLES_DIR = WEBSITE / "content" / "api-examples"
 DOCS = ROOT / "docs"
 API_DIR = DOCS / "api"
 REF_DIR = DOCS / "reference"
-WEIGHTS_PATH = ROOT / "src" / "whest" / "data" / "weights.json"
-WEIGHTS_CSV_PATH = ROOT / "src" / "whest" / "data" / "weights.csv"
+WEIGHTS_PATH = ROOT / "src" / "flopscope" / "data" / "weights.json"
+WEIGHTS_CSV_PATH = ROOT / "src" / "flopscope" / "data" / "weights.csv"
 
 # ---------------------------------------------------------------------------
 # Registry loading
@@ -53,44 +53,44 @@ WEIGHTS_CSV_PATH = ROOT / "src" / "whest" / "data" / "weights.csv"
 
 def load_registry() -> dict[str, dict]:
     sys.path.insert(0, str(ROOT / "src"))
-    from whest._registry import REGISTRY  # type: ignore
+    from flopscope._registry import REGISTRY  # type: ignore
 
     return REGISTRY
 
 
 # ---------------------------------------------------------------------------
-# Module mapping: which whest source modules cover which registry ops
+# Module mapping: which flopscope source modules cover which registry ops
 # ---------------------------------------------------------------------------
 
 # Maps (registry module, category prefix) → list of mkdocstrings directives
 # and the doc page they belong to.
 #
 # Existing pages (not generated):
-#   counted-ops.md  → ::: whest._pointwise, ::: whest._einsum.einsum
-#   free-ops.md     → ::: whest._free_ops
+#   counted-ops.md  → ::: flopscope._pointwise, ::: flopscope._einsum.einsum
+#   free-ops.md     → ::: flopscope._free_ops
 #
 # Generated pages:
 GENERATED_PAGES: dict[str, dict] = {
     "api/linalg.md": {
         "title": "Linear Algebra",
         "description": (
-            "Operations from `whest.linalg`. "
+            "Operations from `flopscope.numpy.linalg`. "
             "Cost formulas vary per operation — see each function's docstring."
         ),
         "directives": [
-            "whest.linalg._svd",
-            "whest.linalg._decompositions",
-            "whest.linalg._solvers",
-            "whest.linalg._properties",
-            "whest.linalg._compound",
-            "whest.linalg._aliases",
+            "flopscope.numpy.linalg._svd",
+            "flopscope.numpy.linalg._decompositions",
+            "flopscope.numpy.linalg._solvers",
+            "flopscope.numpy.linalg._properties",
+            "flopscope.numpy.linalg._compound",
+            "flopscope.numpy.linalg._aliases",
         ],
         "registry_modules": {"numpy.linalg"},
     },
     "api/fft.md": {
         "title": "FFT",
         "description": textwrap.dedent("""\
-            Fast Fourier Transform operations from `whest.fft`. All FFT
+            Fast Fourier Transform operations from `flopscope.numpy.fft`. All FFT
             transforms are counted. Real-valued transforms (`rfft`) cost roughly
             half of complex transforms.
 
@@ -110,41 +110,41 @@ GENERATED_PAGES: dict[str, dict] = {
             ## Examples
 
             ```python
-            import whest as we
-
-            with we.BudgetContext(flop_budget=1_000_000) as budget:
-                signal = we.random.randn(1024)    # free
-                spectrum = we.fft.fft(signal)     # 5 * 1024 * 10 = 51,200 FLOPs
-                freqs = we.fft.fftfreq(1024)      # free
+            import flopscope as flops
+            import flopscope.numpy as fnp
+            with flops.BudgetContext(flop_budget=1_000_000) as budget:
+                signal = fnp.random.randn(1024)    # free
+                spectrum = fnp.fft.fft(signal)     # 5 * 1024 * 10 = 51,200 FLOPs
+                freqs = fnp.fft.fftfreq(1024)      # free
                 print(f"FFT cost: {budget.flops_used:,}")  # 51,200
             ```
 
             ## API Reference
         """),
         "directives": [
-            "whest.fft._transforms",
-            "whest.fft._free",
+            "flopscope.numpy.fft._transforms",
+            "flopscope.numpy.fft._free",
         ],
         "registry_modules": {"numpy.fft"},
     },
     "api/random.md": {
         "title": "Random",
         "description": (
-            "Random number generation from `whest.random`. "
+            "Random number generation from `flopscope.numpy.random`. "
             "Sampling operations are **counted** — each sample costs "
             "`numel(output)` FLOPs, and shuffle/permutation costs "
             "`n * ceil(log2(n))` FLOPs. Only configuration helpers "
             "(`seed`, `get_state`, `set_state`, `default_rng`) are free (0 FLOPs)."
         ),
         "directives": [
-            "whest.random",
+            "flopscope.numpy.random",
         ],
         "registry_modules": {"numpy.random"},
     },
     "api/polynomial.md": {
         "title": "Polynomial",
         "description": textwrap.dedent("""\
-            Polynomial operations from `whest`. These wrap NumPy's polynomial
+            Polynomial operations from `flopscope`. These wrap NumPy's polynomial
             functions with FLOP counting.
 
             ## Cost Summary
@@ -162,26 +162,26 @@ GENERATED_PAGES: dict[str, dict] = {
             ## Examples
 
             ```python
-            import whest as we
-
-            with we.BudgetContext(flop_budget=1_000_000) as budget:
-                coeffs = we.array([1.0, -3.0, 2.0])  # x^2 - 3x + 2 (free)
-                x = we.linspace(0, 5, 100)            # free
-                y = we.polyval(coeffs, x)             # 2 * 100 * 2 = 400 FLOPs
+            import flopscope as flops
+            import flopscope.numpy as fnp
+            with flops.BudgetContext(flop_budget=1_000_000) as budget:
+                coeffs = fnp.array([1.0, -3.0, 2.0])  # x^2 - 3x + 2 (free)
+                x = fnp.linspace(0, 5, 100)            # free
+                y = fnp.polyval(coeffs, x)             # 2 * 100 * 2 = 400 FLOPs
                 print(f"polyval cost: {budget.flops_used}")  # 400
             ```
 
             ## API Reference
         """),
         "directives": [
-            "whest._polynomial",
+            "flopscope._polynomial",
         ],
-        "registry_modules": {"whest._polynomial"},
+        "registry_modules": {"flopscope._polynomial"},
     },
     "api/stats.md": {
         "title": "Statistical Distributions",
         "description": textwrap.dedent("""\
-            Statistical distributions from `whest.stats`. This submodule
+            Statistical distributions from `flopscope.stats`. This submodule
             provides a **subset of scipy.stats** — each distribution is a
             singleton with `.pdf()`, `.cdf()`, and `.ppf()` methods that
             match the scipy API exactly (same signatures, same numerical
@@ -209,14 +209,14 @@ GENERATED_PAGES: dict[str, dict] = {
             ## Examples
 
             ```python
-            import whest as we
-
-            with we.BudgetContext(flop_budget=1_000_000) as budget:
-                x = we.linspace(-3, 3, 1000)         # free
-                pdf_vals = we.stats.norm.pdf(x)       # 10 * 1000 = 10,000 FLOPs
-                cdf_vals = we.stats.norm.cdf(x)       # 20 * 1000 = 20,000 FLOPs
-                q = we.array([0.025, 0.975])           # free
-                bounds = we.stats.norm.ppf(q)          # 40 * 2 = 80 FLOPs
+            import flopscope as flops
+            import flopscope.numpy as fnp
+            with flops.BudgetContext(flop_budget=1_000_000) as budget:
+                x = fnp.linspace(-3, 3, 1000)         # free
+                pdf_vals = flops.stats.norm.pdf(x)       # 10 * 1000 = 10,000 FLOPs
+                cdf_vals = flops.stats.norm.cdf(x)       # 20 * 1000 = 20,000 FLOPs
+                q = fnp.array([0.025, 0.975])           # free
+                bounds = flops.stats.norm.ppf(q)          # 40 * 2 = 80 FLOPs
                 print(f"Total: {budget.flops_used:,}")  # 30,080
             ```
 
@@ -228,21 +228,21 @@ GENERATED_PAGES: dict[str, dict] = {
             ## API Reference
         """),
         "directives": [
-            "whest.stats._norm",
-            "whest.stats._uniform",
-            "whest.stats._expon",
-            "whest.stats._cauchy",
-            "whest.stats._logistic",
-            "whest.stats._laplace",
-            "whest.stats._lognorm",
-            "whest.stats._truncnorm",
+            "flopscope.stats._norm",
+            "flopscope.stats._uniform",
+            "flopscope.stats._expon",
+            "flopscope.stats._cauchy",
+            "flopscope.stats._logistic",
+            "flopscope.stats._laplace",
+            "flopscope.stats._lognorm",
+            "flopscope.stats._truncnorm",
         ],
         "registry_modules": set(),  # stats ops are not in the numpy registry
     },
     "api/window.md": {
         "title": "Window Functions",
         "description": textwrap.dedent("""\
-            Window function wrappers from `whest`. These generate window
+            Window function wrappers from `flopscope`. These generate window
             arrays used in signal processing (e.g., for windowed FFTs).
 
             ## Cost Summary
@@ -258,20 +258,20 @@ GENERATED_PAGES: dict[str, dict] = {
             ## Examples
 
             ```python
-            import whest as we
-
-            with we.BudgetContext(flop_budget=1_000_000) as budget:
-                win = we.hamming(256)   # 256 FLOPs
-                win2 = we.kaiser(256)   # 768 FLOPs (3 * 256)
+            import flopscope as flops
+            import flopscope.numpy as fnp
+            with flops.BudgetContext(flop_budget=1_000_000) as budget:
+                win = fnp.hamming(256)   # 256 FLOPs
+                win2 = fnp.kaiser(256)   # 768 FLOPs (3 * 256)
                 print(f"Window cost: {budget.flops_used}")  # 1024
             ```
 
             ## API Reference
         """),
         "directives": [
-            "whest._window",
+            "flopscope._window",
         ],
-        "registry_modules": {"whest._window"},
+        "registry_modules": {"flopscope._window"},
     },
 }
 
@@ -385,11 +385,11 @@ CUSTOM_COSTS: dict[str, tuple[str, str]] = {
     "linalg.eigh": ("n^3", r"$n^3$"),
     "linalg.eigvals": ("n^3", r"$n^3$"),
     "linalg.eigvalsh": ("n^3", r"$n^3$"),
-    "linalg.cross": ("delegates to we.cross", r"delegates to `cross`"),
-    "linalg.matmul": ("delegates to we.matmul", r"delegates to `matmul`"),
-    "linalg.outer": ("delegates to we.outer", r"delegates to `outer`"),
-    "linalg.tensordot": ("delegates to we.tensordot", r"delegates to `tensordot`"),
-    "linalg.vecdot": ("delegates to we.vecdot", r"delegates to `vecdot`"),
+    "linalg.cross": ("delegates to fnp.cross", r"delegates to `cross`"),
+    "linalg.matmul": ("delegates to fnp.matmul", r"delegates to `matmul`"),
+    "linalg.outer": ("delegates to fnp.outer", r"delegates to `outer`"),
+    "linalg.tensordot": ("delegates to fnp.tensordot", r"delegates to `tensordot`"),
+    "linalg.vecdot": ("delegates to fnp.vecdot", r"delegates to `vecdot`"),
     "linalg.solve": ("n^3", r"$n^3$"),
     "linalg.inv": ("n^3", r"$n^3$"),
     "linalg.lstsq": ("m * n * min(m,n)", r"$m \cdot n \cdot \min(m,n)$"),
@@ -486,7 +486,7 @@ class OperationDocRecord:
     href: str
     module: str
     area: str
-    whest_ref: str
+    flopscope_ref: str
     numpy_ref: str
     category: str
     display_type: str
@@ -499,7 +499,7 @@ class OperationDocRecord:
     summary: str = ""
     provenance_label: str = ""
     provenance_url: str = ""
-    whest_source_url: str = ""
+    flopscope_source_url: str = ""
     upstream_source_url: str = ""
     parameters: list[DocField] | None = None
     returns: list[DocField] | None = None
@@ -511,7 +511,7 @@ class OperationDocRecord:
     previous: OperationNavLink | None = None
     next: OperationNavLink | None = None
     api_docs_html: str = ""
-    whest_examples_html: str = ""
+    flopscope_examples_html: str = ""
 
 
 _WORKER_ALIAS_MAP: dict[str, str] | None = None
@@ -602,11 +602,11 @@ class PublicApiSymbolRecord:
 
 def normalize_area(module: str) -> str:
     """Map a registry module name to its doc area."""
-    if module in {"numpy", "whest"}:
+    if module in {"numpy", "flopscope"}:
         return "core"
     if module.startswith("numpy."):
         return module.removeprefix("numpy.")
-    if module == "whest.stats":
+    if module == "flopscope.stats":
         return "stats"
     return "core"
 
@@ -648,15 +648,15 @@ def display_type_for_category(category: str) -> str:
     return "custom"
 
 
-def whest_ref(name: str, module: str) -> str:
-    """Derive the whest call reference from an op name and registry module."""
+def flopscope_ref(name: str, module: str) -> str:
+    """Derive the flopscope call reference from an op name and registry module."""
     if module == "numpy.linalg":
-        return f"we.linalg.{name.removeprefix('linalg.')}"
+        return f"fnp.linalg.{name.removeprefix('linalg.')}"
     if module == "numpy.fft":
-        return f"we.fft.{name.removeprefix('fft.')}"
+        return f"fnp.fft.{name.removeprefix('fft.')}"
     if module == "numpy.random":
-        return f"we.random.{name.removeprefix('random.')}"
-    return f"we.{name}"
+        return f"fnp.random.{name.removeprefix('random.')}"
+    return f"fnp.{name}"
 
 
 def numpy_ref(name: str, module: str) -> str:
@@ -673,7 +673,7 @@ def numpy_ref(name: str, module: str) -> str:
 PUBLIC_SYMBOL_GUIDES: dict[str, list[tuple[str, str]]] = {
     "BudgetContext": [
         ("Budget Planning & Debugging", "/docs/guides/budget-planning"),
-        ("How whest works", "/docs/understanding/how-whest-works"),
+        ("How flopscope works", "/docs/understanding/how-flopscope-works"),
     ],
     "OpRecord": [("Budget Planning & Debugging", "/docs/guides/budget-planning")],
     "BudgetExhaustedError": [
@@ -715,8 +715,8 @@ NUMPY_REF_PATTERN = re.compile(r"\b(?:np|numpy)\.(?=[A-Za-z_])")
 
 
 def rewrite_api_refs(text: str) -> str:
-    """Rewrite NumPy API references to their whest equivalents."""
-    return NUMPY_REF_PATTERN.sub("we.", text)
+    """Rewrite NumPy API references to their flopscope equivalents."""
+    return NUMPY_REF_PATTERN.sub("fnp.", text)
 
 
 def _split_paragraphs(lines: list[str]) -> list[str]:
@@ -786,15 +786,15 @@ def _register_roles_from_text(text: str) -> None:
 
 def _normalize_reference_target(target: str) -> str:
     normalized = " ".join(target.strip().split())
-    if normalized.startswith("whest."):
-        return f"we.{normalized.removeprefix('whest.')}"
+    if normalized.startswith("flopscope."):
+        return f"fnp.{normalized.removeprefix('flopscope.')}"
     return normalized
 
 
 def _operation_candidate_from_target(target: str) -> str:
     normalized = _normalize_reference_target(target)
-    if normalized.startswith("we."):
-        return normalized.removeprefix("we.")
+    if normalized.startswith("fnp."):
+        return normalized.removeprefix("fnp.")
     if normalized.startswith("numpy."):
         return normalized.removeprefix("numpy.")
     if normalized.startswith("np."):
@@ -864,15 +864,15 @@ def _resolve_reference_destination(
     if candidate and candidate not in lookup_candidates:
         lookup_candidates.append(candidate)
     if (
-        normalized_target.startswith("we.")
-        and normalized_target.removeprefix("we.") not in lookup_candidates
+        normalized_target.startswith("fnp.")
+        and normalized_target.removeprefix("fnp.") not in lookup_candidates
     ):
-        lookup_candidates.append(normalized_target.removeprefix("we."))
+        lookup_candidates.append(normalized_target.removeprefix("fnp."))
     if (
-        normalized_target.startswith("whest.")
-        and normalized_target.removeprefix("whest.") not in lookup_candidates
+        normalized_target.startswith("flopscope.")
+        and normalized_target.removeprefix("flopscope.") not in lookup_candidates
     ):
-        lookup_candidates.append(normalized_target.removeprefix("whest."))
+        lookup_candidates.append(normalized_target.removeprefix("flopscope."))
 
     for lookup in lookup_candidates:
         ref = internal_refs.get(lookup)
@@ -926,7 +926,7 @@ def _linkish_inline_node(
     candidate = _operation_candidate_from_target(rewritten_target)
     canonical_candidate = resolve_canonical_name(candidate, alias_map or {})
     api_like = "." in rewritten_target or target.lstrip("~").startswith(
-        ("np.", "numpy.", "we.", "whest.", "scipy.")
+        ("np.", "numpy.", "fnp.", "flopscope.", "scipy.")
     )
     if canonical_candidate not in (supported_ops or set()) and not api_like:
         return None
@@ -1155,9 +1155,9 @@ def _is_prompt_line(line: str) -> tuple[bool, str | None]:
 
 
 def rewrite_example_text(text: str) -> str:
-    """Rewrite upstream NumPy example text to the current whest naming."""
+    """Rewrite upstream NumPy example text to the current flopscope naming."""
     rewritten = rewrite_api_refs(text)
-    rewritten = rewritten.replace("import numpy as np", "import whest as we")
+    rewritten = rewritten.replace("import numpy as np", "import flopscope as fnp")
     return rewritten
 
 
@@ -1967,10 +1967,10 @@ def _build_sections_for_doc(
 
 
 def derive_example_from_upstream(example_block: str) -> DocExample:
-    """Derive a single whest example from a doctest-style upstream snippet."""
+    """Derive a single flopscope example from a doctest-style upstream snippet."""
     parser = doctest.DocTestParser()
     parsed = parser.get_doctest(
-        textwrap.dedent(example_block).strip("\n"), {}, "whest-example", "", 0
+        textwrap.dedent(example_block).strip("\n"), {}, "flopscope-example", "", 0
     )
 
     code_parts: list[str] = []
@@ -2084,7 +2084,7 @@ def docs_url_for_operation(name: str, module: str) -> str:
             "https://numpy.org/doc/stable/reference/generated/"
             f"numpy.random.{name.removeprefix('random.')}.html"
         )
-    if module == "whest.stats":
+    if module == "flopscope.stats":
         dist_name = name.split(".")[1]
         return (
             "https://docs.scipy.org/doc/scipy/reference/generated/"
@@ -2182,7 +2182,7 @@ def _build_operation_record(
             "Parallel worker context not initialized; call _worker_init_operation_doc_context()"
         )
 
-    signature, parsed_doc, derived_example, whest_source_url, upstream_source_url = (
+    signature, parsed_doc, derived_example, flopscope_source_url, upstream_source_url = (
         build_structured_doc(
             name,
             module,
@@ -2199,7 +2199,7 @@ def _build_operation_record(
         href=detail_href_for_slug(slug_for_operation(name)),
         module=module,
         area=normalize_area(module),
-        whest_ref=whest_ref(name, module),
+        flopscope_ref=flopscope_ref(name, module),
         numpy_ref=numpy_ref(name, module),
         category=category,
         display_type=display_type_for_category(category),
@@ -2212,7 +2212,7 @@ def _build_operation_record(
         summary=parsed_doc.summary,
         provenance_label="Adapted from NumPy docs",
         provenance_url=docs_url_for_operation(name, module),
-        whest_source_url=whest_source_url,
+        flopscope_source_url=flopscope_source_url,
         upstream_source_url=upstream_source_url,
         parameters=parsed_doc.parameters,
         returns=parsed_doc.returns,
@@ -2222,38 +2222,39 @@ def _build_operation_record(
         body_sections=parsed_doc.sections,
         doc_coverage=parsed_doc.coverage,
         api_docs_html="",
-        whest_examples_html=owned_example_html,
+        flopscope_examples_html=owned_example_html,
     )
 
 
 def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]:
-    """Resolve the live whest object and its upstream NumPy/SciPy counterpart."""
+    """Resolve the live flopscope object and its upstream NumPy/SciPy counterpart."""
     import numpy as np
 
-    import whest as we
-
+    import flopscope as flops
+    import flopscope.numpy as fnp
     if module == "numpy.linalg":
         short_name = name.removeprefix("linalg.")
-        return getattr(we.linalg, short_name), getattr(np.linalg, short_name, None)
+        return getattr(fnp.linalg, short_name), getattr(np.linalg, short_name, None)
     if module == "numpy.fft":
         short_name = name.removeprefix("fft.")
-        return getattr(we.fft, short_name), getattr(np.fft, short_name, None)
+        return getattr(fnp.fft, short_name), getattr(np.fft, short_name, None)
     if module == "numpy.random":
         short_name = name.removeprefix("random.")
-        return getattr(we.random, short_name), getattr(np.random, short_name, None)
-    if module == "whest.stats":
+        return getattr(fnp.random, short_name), getattr(np.random, short_name, None)
+    if module == "flopscope.stats":
+        import flopscope as _flops_top
         try:
             from scipy import stats as scipy_stats
         except (
             Exception
         ):  # pragma: no cover - scipy availability is environment specific
             scipy_stats = None
-        return _resolve_attr(we, name), (
+        return _resolve_attr(_flops_top, name), (
             _resolve_attr(scipy_stats, name.removeprefix("stats."))
             if scipy_stats is not None
             else None
         )
-    return getattr(we, name), getattr(np, name, None)
+    return getattr(fnp, name), getattr(np, name, None)
 
 
 def _rewrite_doc_field(field: DocField) -> DocField:
@@ -2350,8 +2351,8 @@ def resolve_doc_link(
         )
 
     label = rewritten.label
-    if href and canonical_target in supported_ops and not label.startswith("we."):
-        label = f"we.{canonical_target}"
+    if href and canonical_target in supported_ops and not label.startswith("fnp."):
+        label = f"fnp.{canonical_target}"
 
     return DocLink(
         label=label,
@@ -2386,10 +2387,10 @@ def build_structured_doc(
     """Resolve live objects and build the structured doc model for one op."""
     import numpy as np
 
-    whest_obj, upstream_obj = resolve_live_objects(name, module)
+    flopscope_obj, upstream_obj = resolve_live_objects(name, module)
     alias_map = alias_map or {}
     supported_ops = supported_ops or set()
-    raw_doc = inspect.getdoc(upstream_obj) or inspect.getdoc(whest_obj) or ""
+    raw_doc = inspect.getdoc(upstream_obj) or inspect.getdoc(flopscope_obj) or ""
     parsed = _rewrite_parsed_doc(
         parse_numpy_docstring(raw_doc),
         alias_map=alias_map,
@@ -2402,13 +2403,13 @@ def build_structured_doc(
         example = derive_example_from_upstream(parsed.examples[0].code)
 
     try:
-        signature = f"{whest_ref(name, module)}{inspect.signature(whest_obj)}"
+        signature = f"{flopscope_ref(name, module)}{inspect.signature(flopscope_obj)}"
     except (TypeError, ValueError):
-        signature = f"{whest_ref(name, module)}(...)"
+        signature = f"{flopscope_ref(name, module)}(...)"
 
-    whest_source_url = _repo_source_url(
-        whest_obj,
-        repo_blob_root="https://github.com/AIcrowd/whest/blob/main",
+    flopscope_source_url = _repo_source_url(
+        flopscope_obj,
+        repo_blob_root="https://github.com/AIcrowd/flopscope/blob/main",
     )
 
     upstream_source_url = ""
@@ -2425,7 +2426,7 @@ def build_structured_doc(
                 f"v{np.__version__}/numpy/_core/code_generators/ufunc_docstrings.py"
             )
 
-    return signature, parsed, example, whest_source_url, upstream_source_url
+    return signature, parsed, example, flopscope_source_url, upstream_source_url
 
 
 def _public_symbol_kind(obj: object, canonical_name: str) -> str:
@@ -2441,11 +2442,11 @@ def _public_symbol_kind(obj: object, canonical_name: str) -> str:
 
 
 def _top_level_symbol_aliases(name: str) -> list[str]:
-    return [name, f"we.{name}", f"whest.{name}"]
+    return [name, f"fnp.{name}", f"flopscope.{name}"]
 
 
 def _flops_symbol_aliases(name: str) -> list[str]:
-    return [f"flops.{name}", f"we.flops.{name}", f"whest.flops.{name}", name]
+    return [f"flops.{name}", f"flops.accounting.{name}", f"flopscope.accounting.{name}", name]
 
 
 def _dedupe_aliases(values: list[str]) -> list[str]:
@@ -2535,8 +2536,8 @@ def _build_operation_internal_refs(
         }
         op_aliases = {
             name,
-            whest_ref(name, info["module"]),
-            whest_ref(name, info["module"]).replace("we.", "whest.", 1),
+            flopscope_ref(name, info["module"]),
+            flopscope_ref(name, info["module"]).replace("fnp.", "flopscope.", 1),
         }
         for alias in op_aliases:
             refs[alias] = entry
@@ -2547,16 +2548,16 @@ def build_public_api_symbol_records(
     registry: dict[str, dict], alias_map: dict[str, str]
 ) -> list[PublicApiSymbolRecord]:
     sys.path.insert(0, str(ROOT / "src"))
-    import whest as we
-
+    import flopscope as flops
+    import flopscope.numpy as fnp
     supported_ops = set(registry)
     symbol_specs: dict[str, dict[str, object]] = {}
     top_level_canonical_by_id: dict[int, str] = {}
 
-    for name in sorted(dir(we)):
+    for name in sorted(dir(fnp)):
         if name.startswith("_") or name in registry:
             continue
-        obj = getattr(we, name)
+        obj = getattr(fnp, name)
         if inspect.ismodule(obj):
             continue
         if not (inspect.isclass(obj) or callable(obj)):
@@ -2567,16 +2568,16 @@ def build_public_api_symbol_records(
             "canonical_name": name,
             "obj": obj,
             "kind": _public_symbol_kind(obj, name),
-            "module": getattr(obj, "__module__", "whest"),
-            "import_path": f"we.{name}",
+            "module": getattr(obj, "__module__", "flopscope"),
+            "import_path": f"fnp.{name}",
             "display_name": name,
             "aliases": _top_level_symbol_aliases(name),
         }
 
-    for name in getattr(we.flops, "__all__", []):
-        if not hasattr(we.flops, name):
+    for name in getattr(flops.accounting, "__all__", []):
+        if not hasattr(flops.accounting, name):
             continue
-        obj = getattr(we.flops, name)
+        obj = getattr(flops.accounting, name)
         canonical_name = top_level_canonical_by_id.get(id(obj), f"flops.{name}")
         aliases = _flops_symbol_aliases(name)
         if canonical_name in symbol_specs:
@@ -2589,9 +2590,9 @@ def build_public_api_symbol_records(
             "canonical_name": canonical_name,
             "obj": obj,
             "kind": _public_symbol_kind(obj, canonical_name),
-            "module": getattr(obj, "__module__", "whest.flops"),
-            "import_path": f"we.flops.{name}",
-            "display_name": f"we.flops.{name}",
+            "module": getattr(obj, "__module__", "flopscope.accounting"),
+            "import_path": f"flops.accounting.{name}",
+            "display_name": f"flops.accounting.{name}",
             "aliases": _dedupe_aliases(aliases),
         }
 
@@ -2630,7 +2631,7 @@ def build_public_api_symbol_records(
             aliases=_dedupe_aliases([canonical_name] + list(spec["aliases"])),
             source_url=_repo_source_url(
                 obj,
-                repo_blob_root="https://github.com/AIcrowd/whest/blob/main",
+                repo_blob_root="https://github.com/AIcrowd/flopscope/blob/main",
             ),
             related_guides=_related_guides_for_symbol(canonical_name),
             body_sections=parsed.sections or [],
@@ -2748,7 +2749,7 @@ def build_example_coverage(
         if name in overrides:
             example = overrides[name]
             coverage[name] = {
-                "has_whest_examples": True,
+                "has_flopscope_examples": True,
                 "has_inherited_examples": False,
                 "example_count": 1,
                 "example_sources": ["override"],
@@ -2763,7 +2764,7 @@ def build_example_coverage(
                 source = path.read_text()
                 example_count = len(EXAMPLE_FENCE_PATTERN.findall(source)) or 1
                 coverage[name] = {
-                    "has_whest_examples": True,
+                    "has_flopscope_examples": True,
                     "has_inherited_examples": False,
                     "example_count": example_count,
                     "example_sources": [str(path)],
@@ -2777,7 +2778,7 @@ def build_example_coverage(
             if example is None:
                 example = DocExample(code="", source="derived")
             coverage[name] = {
-                "has_whest_examples": False,
+                "has_flopscope_examples": False,
                 "has_inherited_examples": True,
                 "example_count": 1,
                 "example_sources": [provenance_url or "derived"],
@@ -2787,7 +2788,7 @@ def build_example_coverage(
             continue
 
         coverage[name] = {
-            "has_whest_examples": False,
+            "has_flopscope_examples": False,
             "has_inherited_examples": False,
             "example_count": 0,
             "example_sources": [],
@@ -2820,8 +2821,8 @@ def render_example_markdown_html(source: str) -> str:
     return "\n".join(rendered)
 
 
-def load_whest_example_html(name: str, example_root: Path) -> str:
-    """Load and render owned whest examples for a canonical operation."""
+def load_flopscope_example_html(name: str, example_root: Path) -> str:
+    """Load and render owned flopscope examples for a canonical operation."""
     path = example_file_for(name, example_root)
     if not path.exists():
         return ""
@@ -2899,7 +2900,7 @@ def build_operation_doc_records(
         )
 
         module = info["module"]
-        owned_example_html = load_whest_example_html(name, API_EXAMPLES_DIR)
+        owned_example_html = load_flopscope_example_html(name, API_EXAMPLES_DIR)
         tasks.append(
             (
                 name,
@@ -2944,13 +2945,13 @@ def build_operation_doc_records(
             previous = records[index - 1]
             record.previous = OperationNavLink(
                 href=previous.href,
-                label=previous.whest_ref,
+                label=previous.flopscope_ref,
             )
         if index + 1 < len(records):
             nxt = records[index + 1]
             record.next = OperationNavLink(
                 href=nxt.href,
-                label=nxt.whest_ref,
+                label=nxt.flopscope_ref,
             )
 
     return records
@@ -2959,7 +2960,7 @@ def build_operation_doc_records(
 def render_operation_stub(op: OperationDocRecord) -> str:
     """Render a generated standalone MDX page stub for one canonical operation."""
     return (
-        f'---\ntitle: "{op.whest_ref}"\n---\n\n<OperationDocPage name="{op.name}" />\n'
+        f'---\ntitle: "{op.flopscope_ref}"\n---\n\n<OperationDocPage name="{op.name}" />\n'
     )
 
 
@@ -2988,13 +2989,13 @@ def _serialize_public_op_payload(record: OperationDocRecord) -> dict[str, object
         "detail_href": record.href,
         "detail_json_href": detail_json_href_for_slug(record.slug),
         "source": {
-            "whest": record.whest_source_url or None,
+            "flopscope": record.flopscope_source_url or None,
             "numpy": record.upstream_source_url or record.provenance_url or None,
         },
         "op": {
             "name": record.name,
             "module": record.module,
-            "whest_ref": record.whest_ref,
+            "flopscope_ref": record.flopscope_ref,
             "numpy_ref": record.numpy_ref,
             "category": record.category,
             "status": "blocked" if record.category == "blacklisted" else "supported",
@@ -3049,13 +3050,13 @@ def write_operation_doc_artifacts(
         write_json(public_payload_dir / f"{record.slug}.json", public_payload)
         docs_manifest[record.name] = internal_payload
         refs_manifest[record.name] = {
-            "label": record.whest_ref,
+            "label": record.flopscope_ref,
             "href": record.href,
             "canonical_name": record.canonical_name,
         }
         for alias in record.aliases:
             refs_manifest[alias] = {
-                "label": record.whest_ref,
+                "label": record.flopscope_ref,
                 "href": record.href,
                 "canonical_name": record.canonical_name,
             }
@@ -3066,7 +3067,7 @@ def write_operation_doc_artifacts(
                 "detail_href": record.href,
                 "detail_json_href": detail_json_href_for_slug(record.slug),
                 "module": record.module,
-                "whest_ref": record.whest_ref,
+                "flopscope_ref": record.flopscope_ref,
                 "numpy_ref": record.numpy_ref,
                 "category": record.category,
                 "cost_formula": record.cost_formula,
@@ -3157,11 +3158,11 @@ def build_public_api_refs_manifest(
         entry = {
             "canonical_name": record.canonical_name,
             "href": record.href,
-            "label": record.whest_ref,
+            "label": record.flopscope_ref,
             "kind": "op",
-            "module": record.whest_ref.rsplit(".", 1)[0],
-            "source_url": record.whest_source_url,
-            "import_path": record.whest_ref,
+            "module": record.flopscope_ref.rsplit(".", 1)[0],
+            "source_url": record.flopscope_source_url,
+            "import_path": record.flopscope_ref,
         }
         namespace = (
             record.canonical_name.rsplit(".", 1)[0]
@@ -3171,14 +3172,14 @@ def build_public_api_refs_manifest(
         for alias in _dedupe_aliases([record.name] + list(record.aliases)):
             manifest[alias] = entry
             alias_import_path = (
-                f"we.{alias}"
+                f"fnp.{alias}"
                 if not namespace or "." in alias
-                else f"we.{namespace}.{alias}"
+                else f"fnp.{namespace}.{alias}"
             )
             manifest[alias_import_path] = entry
-            manifest[alias_import_path.replace("we.", "whest.", 1)] = entry
-        manifest[record.whest_ref] = entry
-        manifest[record.whest_ref.replace("we.", "whest.", 1)] = entry
+            manifest[alias_import_path.replace("fnp.", "flopscope.", 1)] = entry
+        manifest[record.flopscope_ref] = entry
+        manifest[record.flopscope_ref.replace("fnp.", "flopscope.", 1)] = entry
 
     for record in symbol_records:
         entry = {
@@ -3266,7 +3267,7 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
         HEADER,
         "# Operation Audit",
         "",
-        "Complete inventory of every NumPy operation and its whest status.",
+        "Complete inventory of every NumPy operation and its flopscope status.",
         "Generated from the operation registry (`_registry.py`).",
         "",
         "## Summary",
@@ -3285,12 +3286,12 @@ def generate_audit_page(registry: dict[str, dict]) -> None:
 
     lines.append("## All Operations")
     lines.append("")
-    lines.append("| Operation | whest | NumPy | Category | Cost | Status | Notes |")
+    lines.append("| Operation | flopscope | NumPy | Category | Cost | Status | Notes |")
     lines.append("|-----------|-----------|-------|----------|------|--------|-------|")
     for name, info in sorted(registry.items()):
         cat = info["category"]
         mod = info["module"]
-        me_ref = whest_ref(name, mod)
+        me_ref = flopscope_ref(name, mod)
         np_ref = numpy_ref(name, mod)
         _, latex = cost_for_op(name, cat)
         emoji = CATEGORY_EMOJI.get(cat, "")
@@ -3323,7 +3324,7 @@ def generate_ops_json(registry: dict[str, dict]) -> None:
             {
                 "name": name,
                 "module": mod,
-                "whest_ref": whest_ref(name, mod),
+                "flopscope_ref": flopscope_ref(name, mod),
                 "numpy_ref": numpy_ref(name, mod),
                 "category": cat,
                 "cost_formula": plain,
@@ -3360,7 +3361,7 @@ def generate_cheat_sheet(registry: dict[str, dict]) -> None:
         HEADER,
         "# FLOP Cost Cheat Sheet",
         "",
-        "> **whest is NOT NumPy.** All computation requires a `BudgetContext`.",
+        "> **flopscope is NOT NumPy.** All computation requires a `BudgetContext`.",
         "> Some operations cost FLOPs, some are free, and 32 are blocked entirely.",
         "",
         "## Key Constraints",
@@ -3428,9 +3429,9 @@ def update_counted_ops_page(registry: dict[str, dict]) -> None:
 
     additions = []
     for module_directive, _label in [
-        ("whest._polynomial", "polynomial"),
-        ("whest._window", "window"),
-        ("whest._unwrap", "unwrap"),
+        ("flopscope._polynomial", "polynomial"),
+        ("flopscope._window", "window"),
+        ("flopscope._unwrap", "unwrap"),
     ]:
         if f"::: {module_directive}" not in content:
             additions.append(f"\n::: {module_directive}")
@@ -3551,7 +3552,7 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
     abs_ref = op_refs.get("abs")
     if (
         not isinstance(abs_ref, dict)
-        or abs_ref.get("label") != "we.absolute"
+        or abs_ref.get("label") != "fnp.absolute"
         or abs_ref.get("href") != "/docs/api/ops/absolute/"
         or abs_ref.get("canonical_name") != "absolute"
     ):
@@ -3592,7 +3593,7 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Generate API reference data from the whest registry"
+        description="Generate API reference data from the flopscope registry"
     )
     parser.add_argument(
         "--verify", action="store_true", help="Verify coverage only (no generation)"

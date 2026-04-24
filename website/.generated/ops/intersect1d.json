@@ -288,12 +288,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])"
+              "text": "fnp.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])"
             },
             {
               "kind": "output",
@@ -321,7 +321,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "reduce(we.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
+              "text": "reduce(fnp.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
             },
             {
               "kind": "output",
@@ -344,17 +344,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([1, 1, 2, 3, 4])"
+              "text": "x = fnp.array([1, 1, 2, 3, 4])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.array([2, 1, 4, 6])"
+              "text": "y = fnp.array([2, 1, 4, 6])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "xy, x_ind, y_ind = we.intersect1d(x, y, return_indices=True)"
+              "text": "xy, x_ind, y_ind = fnp.intersect1d(x, y, return_indices=True)"
             },
             {
               "kind": "input",
@@ -392,16 +392,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])\n\nfrom functools import reduce\n\nreduce(we.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))\n\nx = we.array([1, 1, 2, 3, 4])\n\ny = we.array([2, 1, 4, 6])\n\nxy, x_ind, y_ind = we.intersect1d(x, y, return_indices=True)\n\nx_ind, y_ind\n\nxy, x[x_ind], y[y_ind]",
+    "code": "import flopscope as fnp\n\nfnp.intersect1d([1, 3, 4, 3], [3, 1, 2, 1])\n\nfrom functools import reduce\n\nreduce(fnp.intersect1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))\n\nx = fnp.array([1, 1, 2, 3, 4])\n\ny = fnp.array([2, 1, 4, 6])\n\nxy, x_ind, y_ind = fnp.intersect1d(x, y, return_indices=True)\n\nx_ind, y_ind\n\nxy, x[x_ind], y[y_ind]",
     "output": "array([1, 3])\n\narray([3])\n\n(array([0, 2, 4]), array([1, 0, 2]))\n\n(array([1, 2, 4]), array([1, 2, 4]), array([1, 2, 4]))",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.intersect1d",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L407",
   "href": "/docs/api/ops/intersect1d/",
   "module": "numpy",
   "name": "intersect1d",
   "next": {
     "href": "/docs/api/ops/invert/",
-    "label": "we.invert"
+    "label": "fnp.invert"
   },
   "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m)).",
   "notes_sections": [],
@@ -436,7 +439,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/interp/",
-    "label": "we.interp"
+    "label": "fnp.interp"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.intersect1d.html",
@@ -466,12 +469,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.intersect1d(ar1, ar2, assume_unique=False, return_indices=False)",
+  "signature": "fnp.intersect1d(ar1, ar2, assume_unique=False, return_indices=False)",
   "slug": "intersect1d",
   "summary": "Find the intersection of two arrays.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L617",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.intersect1d",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L407"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_arraysetops_impl.py#L666",
+  "weight": 1.0
 }

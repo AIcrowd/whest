@@ -36,7 +36,7 @@ function normalizeArea(module: string): Operation['area'] {
   if (module === 'numpy.linalg') return 'linalg';
   if (module === 'numpy.fft') return 'fft';
   if (module === 'numpy.random') return 'random';
-  if (module === 'whest.stats') return 'stats';
+  if (module === 'flopscope.stats') return 'stats';
   return 'core';
 }
 

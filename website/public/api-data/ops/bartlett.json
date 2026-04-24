@@ -106,7 +106,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/blackman",
-                "label": "we.blackman",
+                "label": "fnp.blackman",
                 "original_target": "blackman",
                 "role": "",
                 "target": "blackman",
@@ -117,7 +117,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/hamming",
-                "label": "we.hamming",
+                "label": "fnp.hamming",
                 "original_target": "hamming",
                 "role": "",
                 "target": "hamming",
@@ -128,7 +128,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/hanning",
-                "label": "we.hanning",
+                "label": "fnp.hanning",
                 "original_target": "hanning",
                 "role": "",
                 "target": "hanning",
@@ -139,7 +139,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/kaiser",
-                "label": "we.kaiser",
+                "label": "fnp.kaiser",
                 "original_target": "kaiser",
                 "role": "",
                 "target": "kaiser",
@@ -225,7 +225,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -235,7 +235,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bartlett(12)"
+                "text": "fnp.bartlett(12)"
               },
               {
                 "kind": "output",
@@ -266,7 +266,7 @@
             "content_blocks": [
               {
                 "language": "python",
-                "text": "import matplotlib.pyplot as plt\nfrom we.fft import fft, fftshift\nwindow = we.bartlett(51)\nplt.plot(window)\nplt.title(\"Bartlett window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = we.abs(fftshift(A))\nfreq = we.linspace(-0.5, 0.5, len(A))\nwith we.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * we.log10(mag)\nresponse = we.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Bartlett window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
+                "text": "import matplotlib.pyplot as plt\nfrom fnp.fft import fft, fftshift\nwindow = fnp.bartlett(51)\nplt.plot(window)\nplt.title(\"Bartlett window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = fnp.abs(fftshift(A))\nfreq = fnp.linspace(-0.5, 0.5, len(A))\nwith fnp.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * fnp.log10(mag)\nresponse = fnp.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Bartlett window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
                 "type": "literal_block"
               }
             ],
@@ -290,20 +290,20 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
-    "module": "whest._window",
+    "flopscope_ref": "fnp.bartlett",
+    "module": "flopscope._window",
     "name": "bartlett",
     "notes": "Bartlett window. Cost: n (one linear eval per sample).",
     "numpy_ref": "np.bartlett",
-    "signature": "we.bartlett(M)",
+    "signature": "fnp.bartlett(M)",
     "status": "supported",
     "summary": "Return the Bartlett window.",
-    "weight": 1.0,
-    "whest_ref": "we.bartlett"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "bartlett",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3158",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L33"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L33",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L3136"
   }
 }

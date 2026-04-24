@@ -83,7 +83,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/split",
-              "label": "we.split",
+              "label": "fnp.split",
               "original_target": "split",
               "role": "",
               "target": "split",
@@ -102,17 +102,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(8.0)"
+              "text": "x = fnp.arange(8.0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_split(x, 3)"
+              "text": "fnp.array_split(x, 3)"
             },
             {
               "kind": "output",
@@ -126,12 +126,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(9)"
+              "text": "x = fnp.arange(9)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_split(x, 4)"
+              "text": "fnp.array_split(x, 4)"
             },
             {
               "kind": "output",
@@ -155,16 +155,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(8.0)\n\nwe.array_split(x, 3)\n\nx = we.arange(9)\n\nwe.array_split(x, 4)",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(8.0)\n\nfnp.array_split(x, 3)\n\nx = fnp.arange(9)\n\nfnp.array_split(x, 4)",
     "output": "[array([0.,  1.,  2.]), array([3.,  4.,  5.]), array([6.,  7.])]\n\n[array([0, 1, 2]), array([3, 4]), array([5, 6]), array([7, 8])]",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.array_split",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L606",
   "href": "/docs/api/ops/array_split/",
   "module": "numpy",
   "name": "array_split",
   "next": {
     "href": "/docs/api/ops/asarray/",
-    "label": "we.asarray"
+    "label": "fnp.asarray"
   },
   "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output).",
   "notes_sections": [],
@@ -172,7 +175,7 @@
   "parameters": [],
   "previous": {
     "href": "/docs/api/ops/array_equiv/",
-    "label": "we.array_equiv"
+    "label": "fnp.array_equiv"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.array_split.html",
@@ -188,19 +191,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/split",
-      "label": "we.split",
+      "label": "fnp.split",
       "original_target": "split",
       "role": "",
       "target": "split",
       "unresolved": false
     }
   ],
-  "signature": "we.array_split(ary, indices_or_sections, axis=0)",
+  "signature": "fnp.array_split(ary, indices_or_sections, axis=0)",
   "slug": "array_split",
   "summary": "Split an array into multiple sub-arrays.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L742",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.array_split",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L606"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L737",
+  "weight": 0.0
 }

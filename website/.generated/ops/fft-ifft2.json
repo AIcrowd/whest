@@ -316,7 +316,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "we.fft"
+                      "text": "fnp.fft"
                     },
                     {
                       "kind": "text",
@@ -347,7 +347,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "we.fft"
+                  "text": "fnp.fft"
                 },
                 {
                   "kind": "text",
@@ -642,7 +642,7 @@
               ],
               "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
               "href": "",
-              "label": "we.fft",
+              "label": "fnp.fft",
               "original_target": "numpy.fft",
               "role": "",
               "target": "fft",
@@ -784,7 +784,7 @@
               "href": "",
               "kind": "link",
               "target": "fft",
-              "text": "we.fft"
+              "text": "fnp.fft"
             },
             {
               "kind": "text",
@@ -828,17 +828,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = 4 * we.eye(4)"
+              "text": "a = 4 * fnp.eye(4)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.ifft2(a)"
+              "text": "fnp.fft.ifft2(a)"
             },
             {
               "kind": "output",
@@ -874,21 +874,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = 4 * we.eye(4)\n\nwe.fft.ifft2(a)",
+    "code": "import flopscope as fnp\n\na = 4 * fnp.eye(4)\n\nfnp.fft.ifft2(a)",
     "output": "array([[1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j], # may vary\n       [0.+0.j,  0.+0.j,  0.+0.j,  1.+0.j],\n       [0.+0.j,  0.+0.j,  1.+0.j,  0.+0.j],\n       [0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.ifft2",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L259",
   "href": "/docs/api/ops/fft-ifft2/",
   "module": "numpy.fft",
   "name": "fft.ifft2",
   "next": {
     "href": "/docs/api/ops/fft-ifftn/",
-    "label": "we.fft.ifftn"
+    "label": "fnp.fft.ifftn"
   },
   "notes": "Inverse 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
     "`ifft2` is just `ifftn` with a different default for `axes`.",
-    "See `ifftn` for details and a plotting example, and `we.fft` for definition and conventions used.",
+    "See `ifftn` for details and a plotting example, and `fnp.fft` for definition and conventions used.",
     "Zero-padding, analogously with `ifft`, is performed by appending zeros to the input along the specified dimension.  Although this is the common approach, it might lead to surprising results.  If another form of zero padding is desired, it must be performed before `ifft2` is called."
   ],
   "numpy_ref": "np.fft.ifft2",
@@ -945,7 +948,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `we.fft`). Default is \"backward\".",
+        "Normalization mode (see `fnp.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -970,7 +973,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/fft-ifft/",
-    "label": "we.fft.ifft"
+    "label": "fnp.fft.ifft"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifft2.html",
@@ -995,7 +998,7 @@
       ],
       "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
       "href": "",
-      "label": "we.fft",
+      "label": "fnp.fft",
       "original_target": "numpy.fft",
       "role": "",
       "target": "fft",
@@ -1082,12 +1085,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.ifft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
+  "signature": "fnp.fft.ifft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
   "slug": "fft-ifft2",
   "summary": "Compute the 2-dimensional inverse discrete Fourier Transform.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1138",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.ifft2",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L259"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L1144",
+  "weight": 1.0
 }

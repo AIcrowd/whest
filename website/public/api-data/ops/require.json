@@ -303,7 +303,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/asarray",
-                "label": "we.asarray",
+                "label": "fnp.asarray",
                 "original_target": "asarray",
                 "role": "",
                 "target": "asarray",
@@ -400,12 +400,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(6).reshape(2,3)"
+                "text": "x = fnp.arange(6).reshape(2,3)"
               },
               {
                 "kind": "input",
@@ -444,7 +444,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.require(x, dtype=we.float32, requirements=['A', 'O', 'W', 'F'])"
+                "text": "y = fnp.require(x, dtype=fnp.float32, requirements=['A', 'O', 'W', 'F'])"
               },
               {
                 "kind": "input",
@@ -487,20 +487,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.require",
     "module": "numpy",
     "name": "require",
     "notes": "Return array that satisfies requirements.",
     "numpy_ref": "np.require",
-    "signature": "we.require(a, dtype=None, requirements=None, *, like=None)",
+    "signature": "fnp.require(a, dtype=None, requirements=None, *, like=None)",
     "status": "supported",
     "summary": "Return an ndarray of the provided type that satisfies requirements.",
-    "weight": 0.0,
-    "whest_ref": "we.require"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "require",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/_asarray.py#L27",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1313"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1313",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/_asarray.py#L22"
   }
 }

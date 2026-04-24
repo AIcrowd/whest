@@ -1,4 +1,4 @@
-const DEPLOY_BASE_PATH = '/whest';
+const DEPLOY_BASE_PATH = '/flopscope';
 
 export function withBasePath(href: string): string {
   if (!href) return process.env.NODE_ENV === 'production' ? DEPLOY_BASE_PATH : '/';

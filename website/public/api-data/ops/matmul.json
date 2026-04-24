@@ -263,7 +263,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vecdot",
-                "label": "we.vecdot",
+                "label": "fnp.vecdot",
                 "original_target": "vecdot",
                 "role": "",
                 "target": "vecdot",
@@ -279,7 +279,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/matvec",
-                "label": "we.matvec",
+                "label": "fnp.matvec",
                 "original_target": "matvec",
                 "role": "",
                 "target": "matvec",
@@ -295,7 +295,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vecmat",
-                "label": "we.vecmat",
+                "label": "fnp.vecmat",
                 "original_target": "vecmat",
                 "role": "",
                 "target": "vecmat",
@@ -311,7 +311,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/tensordot",
-                "label": "we.tensordot",
+                "label": "fnp.tensordot",
                 "original_target": "tensordot",
                 "role": "",
                 "target": "tensordot",
@@ -327,7 +327,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/einsum",
-                "label": "we.einsum",
+                "label": "fnp.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
@@ -343,7 +343,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/dot",
-                "label": "we.dot",
+                "label": "fnp.dot",
                 "original_target": "dot",
                 "role": "",
                 "target": "dot",
@@ -520,17 +520,17 @@
                       {
                         "kind": "input",
                         "prompt": ">>>",
-                        "text": "a = we.ones([9, 5, 7, 4])"
+                        "text": "a = fnp.ones([9, 5, 7, 4])"
                       },
                       {
                         "kind": "input",
                         "prompt": ">>>",
-                        "text": "c = we.ones([9, 5, 4, 3])"
+                        "text": "c = fnp.ones([9, 5, 4, 3])"
                       },
                       {
                         "kind": "input",
                         "prompt": ">>>",
-                        "text": "we.dot(a, c).shape"
+                        "text": "fnp.dot(a, c).shape"
                       },
                       {
                         "kind": "output",
@@ -539,7 +539,7 @@
                       {
                         "kind": "input",
                         "prompt": ">>>",
-                        "text": "we.matmul(a, c).shape"
+                        "text": "fnp.matmul(a, c).shape"
                       },
                       {
                         "kind": "output",
@@ -571,7 +571,7 @@
               },
               {
                 "kind": "text",
-                "text": " operator\nintroduced in Python 3.5 following "
+                "text": " operator\ndefined in "
               },
               {
                 "display_text": "465",
@@ -603,7 +603,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "linalg",
-                "text": "we.linalg"
+                "text": "fnp.linalg"
               },
               {
                 "kind": "text",
@@ -631,17 +631,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
-              }
-            ],
-            "type": "doctest_block"
-          },
-          {
-            "lines": [
+                "text": "import flopscope as fnp"
+              },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 0],"
+                "text": "a = fnp.array([[1, 0],"
               },
               {
                 "kind": "input",
@@ -651,7 +646,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([[4, 1],"
+                "text": "b = fnp.array([[4, 1],"
               },
               {
                 "kind": "input",
@@ -661,7 +656,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matmul(a, b)"
+                "text": "fnp.matmul(a, b)"
               },
               {
                 "kind": "output",
@@ -688,7 +683,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 0],"
+                "text": "a = fnp.array([[1, 0],"
               },
               {
                 "kind": "input",
@@ -698,12 +693,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([1, 2])"
+                "text": "b = fnp.array([1, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matmul(a, b)"
+                "text": "fnp.matmul(a, b)"
               },
               {
                 "kind": "output",
@@ -712,7 +707,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matmul(b, a)"
+                "text": "fnp.matmul(b, a)"
               },
               {
                 "kind": "output",
@@ -735,17 +730,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(2 * 2 * 4).reshape((2, 2, 4))"
+                "text": "a = fnp.arange(2 * 2 * 4).reshape((2, 2, 4))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(2 * 2 * 4).reshape((2, 4, 2))"
+                "text": "b = fnp.arange(2 * 2 * 4).reshape((2, 4, 2))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matmul(a,b).shape"
+                "text": "fnp.matmul(a,b).shape"
               },
               {
                 "kind": "output",
@@ -754,7 +749,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matmul(a, b)[0, 1, 1]"
+                "text": "fnp.matmul(a, b)[0, 1, 1]"
               },
               {
                 "kind": "output",
@@ -786,7 +781,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matmul([2j, 3j], [2j, 3j])"
+                "text": "fnp.matmul([2j, 3j], [2j, 3j])"
               },
               {
                 "kind": "output",
@@ -809,7 +804,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matmul([1,2], 3)"
+                "text": "fnp.matmul([1,2], 3)"
               },
               {
                 "kind": "output",
@@ -846,7 +841,7 @@
                 "href": "/docs/api/ops/matmul",
                 "kind": "link",
                 "target": "matmul",
-                "text": "we.matmul"
+                "text": "fnp.matmul"
               },
               {
                 "kind": "text",
@@ -860,12 +855,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.array([2j, 3j])"
+                "text": "x1 = fnp.array([2j, 3j])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.array([2j, 3j])"
+                "text": "x2 = fnp.array([2j, 3j])"
               },
               {
                 "kind": "input",
@@ -888,20 +883,20 @@
     "category": "counted_custom",
     "cost_formula": "m * k * n (FMA=1)",
     "cost_formula_latex": "$m \\cdot k \\cdot n$",
+    "flopscope_ref": "fnp.matmul",
     "module": "numpy",
     "name": "matmul",
     "notes": "Matrix multiplication; cost = M*K*N (FMA=1).",
     "numpy_ref": "np.matmul",
-    "signature": "we.matmul(a, b)",
+    "signature": "fnp.matmul(a, b)",
     "status": "supported",
     "summary": "Matrix product of two arrays.",
-    "weight": 1.0,
-    "whest_ref": "we.matmul"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "matmul",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L819"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L819",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

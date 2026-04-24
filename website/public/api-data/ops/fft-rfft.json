@@ -170,7 +170,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "we.fft"
+                        "text": "fnp.fft"
                       },
                       {
                         "kind": "text",
@@ -201,7 +201,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "we.fft"
+                    "text": "fnp.fft"
                   },
                   {
                     "kind": "text",
@@ -458,7 +458,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
                 "href": "",
-                "label": "we.fft",
+                "label": "fnp.fft",
                 "original_target": "numpy.fft",
                 "role": "",
                 "target": "fft",
@@ -670,12 +670,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.fft([0, 1, 0, 0])"
+                "text": "fnp.fft.fft([0, 1, 0, 0])"
               },
               {
                 "kind": "output",
@@ -684,7 +684,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.rfft([0, 1, 0, 0])"
+                "text": "fnp.fft.rfft([0, 1, 0, 0])"
               },
               {
                 "kind": "output",
@@ -727,20 +727,20 @@
     "category": "counted_custom",
     "cost_formula": "5(n/2) * ceil(log2(n))",
     "cost_formula_latex": "$5(n/2) \\cdot \\lceil\\log_2 n\\rceil$",
+    "flopscope_ref": "fnp.fft.rfft",
     "module": "numpy.fft",
     "name": "fft.rfft",
     "notes": "1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.rfft",
-    "signature": "we.fft.rfft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "fnp.fft.rfft(a, n=None, axis=-1, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the one-dimensional discrete Fourier Transform for real input.",
-    "weight": 1.0,
-    "whest_ref": "we.fft.rfft"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "fft-rfft",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L318",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L200"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L200",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L324"
   }
 }

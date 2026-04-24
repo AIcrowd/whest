@@ -299,7 +299,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/expm1",
-              "label": "we.expm1",
+              "label": "fnp.expm1",
               "original_target": "expm1",
               "role": "",
               "target": "expm1",
@@ -323,7 +323,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/exp2",
-              "label": "we.exp2",
+              "label": "fnp.exp2",
               "original_target": "exp2",
               "role": "",
               "target": "exp2",
@@ -477,7 +477,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -488,6 +488,11 @@
               "kind": "input",
               "prompt": ">>>",
               "text": "import matplotlib.pyplot as plt"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -497,17 +502,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linspace(-2*we.pi, 2*we.pi, 100)"
+              "text": "x = fnp.linspace(-2*fnp.pi, 2*fnp.pi, 100)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "xx = x + 1j * x[:, we.newaxis] # a + ib over complex plane"
+              "text": "xx = x + 1j * x[:, fnp.newaxis] # a + ib over complex plane"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "out = we.exp(xx)"
+              "text": "out = fnp.exp(xx)"
             }
           ],
           "type": "doctest_block"
@@ -522,12 +527,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.imshow(we.abs(out),"
+              "text": "plt.imshow(fnp.abs(out),"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "extent=[-2*we.pi, 2*we.pi, -2*we.pi, 2*we.pi], cmap='gray')"
+              "text": "extent=[-2*fnp.pi, 2*fnp.pi, -2*fnp.pi, 2*fnp.pi], cmap='gray')"
             },
             {
               "kind": "input",
@@ -547,12 +552,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.imshow(we.angle(out),"
+              "text": "plt.imshow(fnp.angle(out),"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "extent=[-2*we.pi, 2*we.pi, -2*we.pi, 2*we.pi], cmap='hsv')"
+              "text": "extent=[-2*fnp.pi, 2*fnp.pi, -2*fnp.pi, 2*fnp.pi], cmap='hsv')"
             },
             {
               "kind": "input",
@@ -598,16 +603,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nimport matplotlib.pyplot as plt\n\nx = we.linspace(-2*we.pi, 2*we.pi, 100)\n\nxx = x + 1j * x[:, we.newaxis] # a + ib over complex plane\n\nout = we.exp(xx)\n\nplt.subplot(121)\n\nplt.imshow(we.abs(out),\n           extent=[-2*we.pi, 2*we.pi, -2*we.pi, 2*we.pi], cmap='gray')\n\nplt.title('Magnitude of exp(x)')\n\nplt.subplot(122)\n\nplt.imshow(we.angle(out),\n           extent=[-2*we.pi, 2*we.pi, -2*we.pi, 2*we.pi], cmap='hsv')\n\nplt.title('Phase (angle) of exp(x)')\n\nplt.show()",
+    "code": "import flopscope as fnp\n\nimport matplotlib.pyplot as plt\n\nimport flopscope as fnp\n\nx = fnp.linspace(-2*fnp.pi, 2*fnp.pi, 100)\n\nxx = x + 1j * x[:, fnp.newaxis] # a + ib over complex plane\n\nout = fnp.exp(xx)\n\nplt.subplot(121)\n\nplt.imshow(fnp.abs(out),\n           extent=[-2*fnp.pi, 2*fnp.pi, -2*fnp.pi, 2*fnp.pi], cmap='gray')\n\nplt.title('Magnitude of exp(x)')\n\nplt.subplot(122)\n\nplt.imshow(fnp.angle(out),\n           extent=[-2*fnp.pi, 2*fnp.pi, -2*fnp.pi, 2*fnp.pi], cmap='hsv')\n\nplt.title('Phase (angle) of exp(x)')\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.exp",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/exp/",
   "module": "numpy",
   "name": "exp",
   "next": {
     "href": "/docs/api/ops/exp2/",
-    "label": "we.exp2"
+    "label": "fnp.exp2"
   },
   "notes": "Element-wise e^x.",
   "notes_sections": [
@@ -656,7 +664,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/equal/",
-    "label": "we.equal"
+    "label": "fnp.equal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.exp.html",
@@ -689,7 +697,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/expm1",
-      "label": "we.expm1",
+      "label": "fnp.expm1",
       "original_target": "expm1",
       "role": "",
       "target": "expm1",
@@ -713,19 +721,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/exp2",
-      "label": "we.exp2",
+      "label": "fnp.exp2",
       "original_target": "exp2",
       "role": "",
       "target": "exp2",
       "unresolved": false
     }
   ],
-  "signature": "we.exp(x)",
+  "signature": "fnp.exp(x)",
   "slug": "exp",
   "summary": "Calculate the exponential of all elements in the input array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.exp",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

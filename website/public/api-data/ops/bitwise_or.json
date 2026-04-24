@@ -324,7 +324,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_or",
-                "label": "we.logical_or",
+                "label": "fnp.logical_or",
                 "original_target": "logical_or",
                 "role": "",
                 "target": "logical_or",
@@ -335,7 +335,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bitwise_and",
-                "label": "we.bitwise_and",
+                "label": "fnp.bitwise_and",
                 "original_target": "bitwise_and",
                 "role": "",
                 "target": "bitwise_and",
@@ -346,7 +346,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bitwise_xor",
-                "label": "we.bitwise_xor",
+                "label": "fnp.bitwise_xor",
                 "original_target": "bitwise_xor",
                 "role": "",
                 "target": "bitwise_xor",
@@ -381,7 +381,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -424,7 +424,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bitwise_or(13, 16)"
+                "text": "fnp.bitwise_or(13, 16)"
               },
               {
                 "kind": "output",
@@ -433,7 +433,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.binary_repr(29)"
+                "text": "fnp.binary_repr(29)"
               },
               {
                 "kind": "output",
@@ -447,7 +447,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bitwise_or(32, 2)"
+                "text": "fnp.bitwise_or(32, 2)"
               },
               {
                 "kind": "output",
@@ -456,7 +456,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bitwise_or([33, 4], 1)"
+                "text": "fnp.bitwise_or([33, 4], 1)"
               },
               {
                 "kind": "output",
@@ -465,7 +465,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bitwise_or([33, 4], [1, 2])"
+                "text": "fnp.bitwise_or([33, 4], [1, 2])"
               },
               {
                 "kind": "output",
@@ -479,7 +479,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bitwise_or(we.array([2, 5, 255]), we.array([4, 4, 4]))"
+                "text": "fnp.bitwise_or(fnp.array([2, 5, 255]), fnp.array([4, 4, 4]))"
               },
               {
                 "kind": "output",
@@ -488,7 +488,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array([2, 5, 255]) | we.array([4, 4, 4])"
+                "text": "fnp.array([2, 5, 255]) | fnp.array([4, 4, 4])"
               },
               {
                 "kind": "output",
@@ -497,12 +497,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bitwise_or(we.array([2, 5, 255, 2147483647], dtype=we.int32),"
+                "text": "fnp.bitwise_or(fnp.array([2, 5, 255, 2147483647], dtype=fnp.int32),"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "we.array([4, 4, 4, 2147483647], dtype=we.int32))"
+                "text": "fnp.array([4, 4, 4, 2147483647], dtype=fnp.int32))"
               },
               {
                 "kind": "output",
@@ -511,7 +511,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bitwise_or([True, True], [False, True])"
+                "text": "fnp.bitwise_or([True, True], [False, True])"
               },
               {
                 "kind": "output",
@@ -539,7 +539,7 @@
                 "href": "/docs/api/ops/bitwise_or",
                 "kind": "link",
                 "target": "bitwise_or",
-                "text": "we.bitwise_or"
+                "text": "fnp.bitwise_or"
               },
               {
                 "kind": "text",
@@ -553,12 +553,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.array([2, 5, 255])"
+                "text": "x1 = fnp.array([2, 5, 255])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.array([4, 4, 4])"
+                "text": "x2 = fnp.array([4, 4, 4])"
               },
               {
                 "kind": "input",
@@ -581,20 +581,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.bitwise_or",
     "module": "numpy",
     "name": "bitwise_or",
     "notes": "Element-wise bitwise OR.",
     "numpy_ref": "np.bitwise_or",
-    "signature": "we.bitwise_or(x, y)",
+    "signature": "fnp.bitwise_or(x, y)",
     "status": "supported",
     "summary": "Compute the bit-wise OR of two arrays element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.bitwise_or"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "bitwise_or",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

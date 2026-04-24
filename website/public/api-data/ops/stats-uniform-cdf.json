@@ -163,20 +163,20 @@
     "category": "counted_custom",
     "cost_formula": "3n",
     "cost_formula_latex": "$3n$",
-    "module": "whest.stats",
+    "flopscope_ref": "fnp.stats.uniform.cdf",
+    "module": "flopscope.stats",
     "name": "stats.uniform.cdf",
     "notes": "Uniform CDF; cost = numel(input).",
     "numpy_ref": "np.stats.uniform.cdf",
-    "signature": "we.stats.uniform.cdf(x, loc=0, scale=1)",
+    "signature": "fnp.stats.uniform.cdf(x, loc=0, scale=1)",
     "status": "supported",
     "summary": "Cumulative distribution function of the given RV.",
-    "weight": 1.0,
-    "whest_ref": "we.stats.uniform.cdf"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "stats-uniform-cdf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_uniform.py#L57"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_uniform.py#L57",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2132"
   }
 }

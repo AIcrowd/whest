@@ -33,7 +33,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "polynomial",
-                    "text": "we.polynomial"
+                    "text": "fnp.polynomial"
                   },
                   {
                     "kind": "text",
@@ -61,7 +61,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `we.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `fnp.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
             "supported": true,
             "type": "directive_block"
           },
@@ -73,7 +73,7 @@
               },
               {
                 "kind": "code",
-                "text": "p(x) = p[0] * x**deg + ... + p[deg]"
+                "text": "p[0] * x**deg + ... + p[deg]"
               },
               {
                 "kind": "text",
@@ -138,7 +138,7 @@
               },
               {
                 "kind": "code",
-                "text": "Polynomial.fit <we.polynomial.polynomial.Polynomial.fit>"
+                "text": "Polynomial.fit <fnp.polynomial.polynomial.Polynomial.fit>"
               },
               {
                 "kind": "text",
@@ -550,56 +550,26 @@
                       {
                         "blocks": [
                           {
-                            "items": [
+                            "inline": [
                               {
-                                "blocks": [
-                                  {
-                                    "inline": [
-                                      {
-                                        "kind": "text",
-                                        "text": "coefficient matrix"
-                                      }
-                                    ],
-                                    "type": "paragraph"
-                                  }
-                                ],
-                                "term_inline": [
-                                  {
-                                    "kind": "text",
-                                    "text": "rank -- the effective rank of the scaled Vandermonde"
-                                  }
-                                ]
+                                "kind": "text",
+                                "text": "rank -- the effective rank of the scaled Vandermonde\ncoefficient matrix"
                               }
                             ],
-                            "type": "definition_list"
+                            "type": "paragraph"
                           }
                         ]
                       },
                       {
                         "blocks": [
                           {
-                            "items": [
+                            "inline": [
                               {
-                                "blocks": [
-                                  {
-                                    "inline": [
-                                      {
-                                        "kind": "text",
-                                        "text": "coefficient matrix"
-                                      }
-                                    ],
-                                    "type": "paragraph"
-                                  }
-                                ],
-                                "term_inline": [
-                                  {
-                                    "kind": "text",
-                                    "text": "singular_values -- singular values of the scaled Vandermonde"
-                                  }
-                                ]
+                                "kind": "text",
+                                "text": "singular_values -- singular values of the scaled Vandermonde\ncoefficient matrix"
                               }
                             ],
-                            "type": "definition_list"
+                            "type": "paragraph"
                           }
                         ]
                       },
@@ -639,7 +609,7 @@
                         "href": "/docs/api/ops/linalg-lstsq",
                         "kind": "link",
                         "target": "linalg.lstsq",
-                        "text": "we.linalg.lstsq"
+                        "text": "fnp.linalg.lstsq"
                       },
                       {
                         "kind": "text",
@@ -790,7 +760,7 @@
                       {
                         "kind": "input",
                         "prompt": ">>>",
-                        "text": "warnings.simplefilter('ignore', we.exceptions.RankWarning)"
+                        "text": "warnings.simplefilter('ignore', fnp.exceptions.RankWarning)"
                       }
                     ],
                     "type": "doctest_block"
@@ -835,7 +805,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/polyval",
-                "label": "we.polyval",
+                "label": "fnp.polyval",
                 "original_target": "polyval",
                 "role": "",
                 "target": "polyval",
@@ -851,7 +821,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/linalg-lstsq",
-                "label": "we.linalg.lstsq",
+                "label": "fnp.linalg.lstsq",
                 "original_target": "linalg.lstsq",
                 "role": "",
                 "target": "linalg.lstsq",
@@ -1017,7 +987,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -1027,17 +997,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([0.0, 1.0, 2.0, 3.0,  4.0,  5.0])"
+                "text": "x = fnp.array([0.0, 1.0, 2.0, 3.0,  4.0,  5.0])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.array([0.0, 0.8, 0.9, 0.1, -0.8, -1.0])"
+                "text": "y = fnp.array([0.0, 0.8, 0.9, 0.1, -0.8, -1.0])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "z = we.polyfit(x, y, 3)"
+                "text": "z = fnp.polyfit(x, y, 3)"
               },
               {
                 "kind": "input",
@@ -1073,7 +1043,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p = we.poly1d(z)"
+                "text": "p = fnp.poly1d(z)"
               },
               {
                 "kind": "input",
@@ -1124,12 +1094,12 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "warnings.simplefilter('ignore', we.exceptions.RankWarning)"
+                "text": "warnings.simplefilter('ignore', fnp.exceptions.RankWarning)"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "p30 = we.poly1d(we.polyfit(x, y, 30))"
+                "text": "p30 = fnp.poly1d(fnp.polyfit(x, y, 30))"
               },
               {
                 "kind": "input",
@@ -1185,7 +1155,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xp = we.linspace(-2, 6, 100)"
+                "text": "xp = fnp.linspace(-2, 6, 100)"
               },
               {
                 "kind": "input",
@@ -1218,20 +1188,20 @@
     "category": "counted_custom",
     "cost_formula": "2m * (deg+1)^2",
     "cost_formula_latex": "$2m \\cdot (\\text{deg}+1)^2$",
-    "module": "whest._polynomial",
+    "flopscope_ref": "fnp.polyfit",
+    "module": "flopscope._polynomial",
     "name": "polyfit",
     "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs.",
     "numpy_ref": "np.polyfit",
-    "signature": "we.polyfit(x, y, deg, rcond=None, full=False, w=None, cov=False)",
+    "signature": "fnp.polyfit(x, y, deg, rcond=None, full=False, w=None, cov=False)",
     "status": "supported",
     "summary": "Least squares polynomial fit.",
-    "weight": 1.0,
-    "whest_ref": "we.polyfit"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "polyfit",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L449",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L200"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L200",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_polynomial_impl.py#L458"
   }
 }

@@ -41,7 +41,7 @@
                     "href": "/docs/api/ops/may_share_memory",
                     "kind": "link",
                     "target": "may_share_memory",
-                    "text": "we.may_share_memory"
+                    "text": "fnp.may_share_memory"
                   },
                   {
                     "kind": "text",
@@ -53,7 +53,7 @@
             ],
             "directive": "warning",
             "options": [],
-            "raw_source": ".. warning::\n\n   This function can be exponentially slow for some inputs, unless\n   `max_work` is set to zero or a positive integer.\n   If in doubt, use `we.may_share_memory` instead.",
+            "raw_source": ".. warning::\n\n   This function can be exponentially slow for some inputs, unless\n   `max_work` is set to zero or a positive integer.\n   If in doubt, use `fnp.may_share_memory` instead.",
             "supported": true,
             "type": "directive_block"
           }
@@ -200,7 +200,7 @@
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "we.exceptions.TooHardError",
+                "data_type": "fnp.exceptions.TooHardError",
                 "inline": [
                   {
                     "kind": "text",
@@ -226,7 +226,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/may_share_memory",
-                "label": "we.may_share_memory",
+                "label": "fnp.may_share_memory",
                 "original_target": "may_share_memory",
                 "role": "",
                 "target": "may_share_memory",
@@ -245,17 +245,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([1, 2, 3, 4])"
+                "text": "x = fnp.array([1, 2, 3, 4])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.shares_memory(x, we.array([5, 6, 7]))"
+                "text": "fnp.shares_memory(x, fnp.array([5, 6, 7]))"
               },
               {
                 "kind": "output",
@@ -264,7 +264,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.shares_memory(x[::2], x)"
+                "text": "fnp.shares_memory(x[::2], x)"
               },
               {
                 "kind": "output",
@@ -273,7 +273,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.shares_memory(x[::2], x[1::2])"
+                "text": "fnp.shares_memory(x[::2], x[1::2])"
               },
               {
                 "kind": "output",
@@ -304,12 +304,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "from we.lib.stride_tricks import as_strided"
+                "text": "from fnp.lib.stride_tricks import as_strided"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.zeros([192163377], dtype=we.int8)"
+                "text": "x = fnp.zeros([192163377], dtype=fnp.int8)"
               },
               {
                 "kind": "input",
@@ -334,7 +334,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.shares_memory(x1, x2, max_work=1000)"
+                "text": "fnp.shares_memory(x1, x2, max_work=1000)"
               },
               {
                 "kind": "output",
@@ -347,7 +347,7 @@
               },
               {
                 "kind": "output",
-                "text": "we.exceptions.TooHardError: Exceeded max_work"
+                "text": "fnp.exceptions.TooHardError: Exceeded max_work"
               }
             ],
             "type": "doctest_block"
@@ -363,7 +363,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "shares_memory(x1, x2)",
-                "text": "we.shares_memory(x1, x2)"
+                "text": "fnp.shares_memory(x1, x2)"
               },
               {
                 "kind": "text",
@@ -389,20 +389,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.shares_memory",
     "module": "numpy",
     "name": "shares_memory",
     "notes": "Determine if two arrays share memory.",
     "numpy_ref": "np.shares_memory",
-    "signature": "we.shares_memory(*args, **kwargs)",
+    "signature": "fnp.shares_memory(*args, **kwargs)",
     "status": "supported",
     "summary": "Determine if two arrays share memory.",
-    "weight": 0.0,
-    "whest_ref": "we.shares_memory"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "shares_memory",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.shares_memory.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1392"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1392",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.shares_memory.html"
   }
 }

@@ -53,7 +53,7 @@
                             },
                             {
                               "kind": "code",
-                              "text": "histogramdd(we.array([p1, p2, p3]))"
+                              "text": "histogramdd(fnp.array([p1, p2, p3]))"
                             },
                             {
                               "kind": "text",
@@ -398,7 +398,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/histogram",
-              "label": "we.histogram",
+              "label": "fnp.histogram",
               "original_target": "histogram",
               "role": "",
               "target": "histogram",
@@ -414,7 +414,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/histogram2d",
-              "label": "we.histogram2d",
+              "label": "fnp.histogram2d",
               "original_target": "histogram2d",
               "role": "",
               "target": "histogram2d",
@@ -433,12 +433,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rng = we.random.default_rng()"
+              "text": "rng = fnp.random.default_rng()"
             },
             {
               "kind": "input",
@@ -448,7 +448,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "H, edges = we.histogramdd(r, bins = (5, 8, 4))"
+              "text": "H, edges = fnp.histogramdd(r, bins = (5, 8, 4))"
             },
             {
               "kind": "input",
@@ -477,16 +477,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nrng = we.random.default_rng()\n\nr = rng.normal(size=(100,3))\n\nH, edges = we.histogramdd(r, bins = (5, 8, 4))\n\nH.shape, edges[0].size, edges[1].size, edges[2].size",
+    "code": "import flopscope as fnp\n\nrng = fnp.random.default_rng()\n\nr = rng.normal(size=(100,3))\n\nH, edges = fnp.histogramdd(r, bins = (5, 8, 4))\n\nH.shape, edges[0].size, edges[1].size, edges[2].size",
     "output": "((5, 8, 4), 6, 9, 5)",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.histogramdd",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L175",
   "href": "/docs/api/ops/histogramdd/",
   "module": "numpy",
   "name": "histogramdd",
   "next": {
     "href": "/docs/api/ops/hsplit/",
-    "label": "we.hsplit"
+    "label": "fnp.hsplit"
   },
   "notes": "ND binning; cost = n*sum(ceil(log2(b_i))).",
   "notes_sections": [],
@@ -499,7 +502,7 @@
         "Note the unusual interpretation of sample when an array_like:",
         "",
         "* When an array, each row is a coordinate in a D-dimensional space -",
-        "  such as ``histogramdd(we.array([p1, p2, p3]))``.",
+        "  such as ``histogramdd(fnp.array([p1, p2, p3]))``.",
         "* When an array_like, each element is the list of values for single",
         "  coordinate - such as ``histogramdd((X, Y, Z))``.",
         "",
@@ -554,7 +557,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/histogram_bin_edges/",
-    "label": "we.histogram_bin_edges"
+    "label": "fnp.histogram_bin_edges"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.histogramdd.html",
@@ -586,7 +589,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/histogram",
-      "label": "we.histogram",
+      "label": "fnp.histogram",
       "original_target": "histogram",
       "role": "",
       "target": "histogram",
@@ -602,19 +605,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/histogram2d",
-      "label": "we.histogram2d",
+      "label": "fnp.histogram2d",
       "original_target": "histogram2d",
       "role": "",
       "target": "histogram2d",
       "unresolved": false
     }
   ],
-  "signature": "we.histogramdd(sample, bins=10, range=None, density=None, weights=None)",
+  "signature": "fnp.histogramdd(sample, bins=10, range=None, density=None, weights=None)",
   "slug": "histogramdd",
   "summary": "Compute the multidimensional histogram of some data.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_histograms_impl.py#L917",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.histogramdd",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L175"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_histograms_impl.py#L913",
+  "weight": 1.0
 }

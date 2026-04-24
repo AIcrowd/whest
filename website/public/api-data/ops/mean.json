@@ -442,7 +442,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/average",
-                "label": "we.average",
+                "label": "fnp.average",
                 "original_target": "average",
                 "role": "",
                 "target": "average",
@@ -453,7 +453,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/std",
-                "label": "we.std",
+                "label": "fnp.std",
                 "original_target": "std",
                 "role": "",
                 "target": "std",
@@ -464,7 +464,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/var",
-                "label": "we.var",
+                "label": "fnp.var",
                 "original_target": "var",
                 "role": "",
                 "target": "var",
@@ -475,7 +475,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanmean",
-                "label": "we.nanmean",
+                "label": "fnp.nanmean",
                 "original_target": "nanmean",
                 "role": "",
                 "target": "nanmean",
@@ -486,7 +486,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanstd",
-                "label": "we.nanstd",
+                "label": "fnp.nanstd",
                 "original_target": "nanstd",
                 "role": "",
                 "target": "nanstd",
@@ -497,7 +497,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanvar",
-                "label": "we.nanvar",
+                "label": "fnp.nanvar",
                 "original_target": "nanvar",
                 "role": "",
                 "target": "nanvar",
@@ -580,17 +580,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 2], [3, 4]])"
+                "text": "a = fnp.array([[1, 2], [3, 4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mean(a)"
+                "text": "fnp.mean(a)"
               },
               {
                 "kind": "output",
@@ -599,7 +599,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mean(a, axis=0)"
+                "text": "fnp.mean(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -608,7 +608,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mean(a, axis=1)"
+                "text": "fnp.mean(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -642,7 +642,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.zeros((2, 512*512), dtype=we.float32)"
+                "text": "a = fnp.zeros((2, 512*512), dtype=fnp.float32)"
               },
               {
                 "kind": "input",
@@ -657,11 +657,11 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mean(a)"
+                "text": "fnp.mean(a)"
               },
               {
                 "kind": "output",
-                "text": "we.float32(0.54999924)"
+                "text": "fnp.float32(0.54999924)"
               }
             ],
             "type": "doctest_block"
@@ -680,7 +680,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mean(a, dtype=we.float64)"
+                "text": "fnp.mean(a, dtype=fnp.float64)"
               },
               {
                 "kind": "output",
@@ -703,16 +703,16 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([1, 3], dtype=\"timedelta64[D]\")"
+                "text": "b = fnp.array([1, 3], dtype=\"timedelta64[D]\")"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mean(b)"
+                "text": "fnp.mean(b)"
               },
               {
                 "kind": "output",
-                "text": "we.timedelta64(2,'D')"
+                "text": "fnp.timedelta64(2,'D')"
               }
             ],
             "type": "doctest_block"
@@ -731,12 +731,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[5, 9, 13], [14, 10, 12], [11, 15, 19]])"
+                "text": "a = fnp.array([[5, 9, 13], [14, 10, 12], [11, 15, 19]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mean(a)"
+                "text": "fnp.mean(a)"
               },
               {
                 "kind": "output",
@@ -745,7 +745,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mean(a, where=[[True], [False], [False]])"
+                "text": "fnp.mean(a, where=[[True], [False], [False]])"
               },
               {
                 "kind": "output",
@@ -763,20 +763,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.mean",
     "module": "numpy",
     "name": "mean",
     "notes": "Arithmetic mean of array elements.",
     "numpy_ref": "np.mean",
-    "signature": "we.mean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)",
+    "signature": "fnp.mean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)",
     "status": "supported",
     "summary": "Compute the arithmetic mean along the specified axis.",
-    "weight": 1.0,
-    "whest_ref": "we.mean"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "mean",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3735",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L3699"
   }
 }

@@ -129,7 +129,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/shape",
-                "label": "we.shape",
+                "label": "fnp.shape",
                 "original_target": "shape",
                 "role": "",
                 "target": "shape",
@@ -164,12 +164,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ndim([[1,2,3],[4,5,6]])"
+                "text": "fnp.ndim([[1,2,3],[4,5,6]])"
               },
               {
                 "kind": "output",
@@ -178,7 +178,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ndim(we.array([[1,2,3],[4,5,6]]))"
+                "text": "fnp.ndim(fnp.array([[1,2,3],[4,5,6]]))"
               },
               {
                 "kind": "output",
@@ -187,7 +187,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ndim(1)"
+                "text": "fnp.ndim(1)"
               },
               {
                 "kind": "output",
@@ -205,20 +205,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.ndim",
     "module": "numpy",
     "name": "ndim",
     "notes": "Return number of dimensions of array.",
     "numpy_ref": "np.ndim",
-    "signature": "we.ndim(a)",
+    "signature": "fnp.ndim(a)",
     "status": "supported",
     "summary": "Return the number of dimensions of an array.",
-    "weight": 0.0,
-    "whest_ref": "we.ndim"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "ndim",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3523",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1187"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1187",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L3482"
   }
 }

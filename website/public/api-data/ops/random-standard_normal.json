@@ -72,7 +72,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.standard_normal`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.standard_normal`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -308,7 +308,7 @@
           },
           {
             "language": null,
-            "text": "mu + sigma * we.random.standard_normal(size=...)\nwe.random.normal(mu, sigma, size=...)",
+            "text": "mu + sigma * fnp.random.standard_normal(size=...)\nfnp.random.normal(mu, sigma, size=...)",
             "type": "literal_block"
           }
         ],
@@ -321,7 +321,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.standard_normal()"
+                "text": "fnp.random.standard_normal()"
               },
               {
                 "kind": "output",
@@ -335,7 +335,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.standard_normal(8000)"
+                "text": "s = fnp.random.standard_normal(8000)"
               },
               {
                 "kind": "input",
@@ -362,7 +362,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.standard_normal(size=(3, 4, 2))"
+                "text": "s = fnp.random.standard_normal(size=(3, 4, 2))"
               },
               {
                 "kind": "input",
@@ -390,7 +390,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "3 + 2.5 * we.random.standard_normal(size=(2, 4))"
+                "text": "3 + 2.5 * fnp.random.standard_normal(size=(2, 4))"
               },
               {
                 "kind": "output",
@@ -412,20 +412,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.standard_normal",
     "module": "numpy.random",
     "name": "random.standard_normal",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.standard_normal",
-    "signature": "we.random.standard_normal(size=None)",
+    "signature": "fnp.random.standard_normal(size=None)",
     "status": "supported",
     "summary": "Draw samples from a standard Normal distribution (mean=0, stdev=1).",
-    "weight": 16.0,
-    "whest_ref": "we.random.standard_normal"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-standard_normal",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_normal.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_normal.html"
   }
 }

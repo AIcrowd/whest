@@ -337,7 +337,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/cos",
-              "label": "we.cos",
+              "label": "fnp.cos",
               "original_target": "cos",
               "role": "",
               "target": "cos",
@@ -348,7 +348,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/arctan",
-              "label": "we.arctan",
+              "label": "fnp.arctan",
               "original_target": "arctan",
               "role": "",
               "target": "arctan",
@@ -359,7 +359,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/arcsin",
-              "label": "we.arcsin",
+              "label": "fnp.arcsin",
               "original_target": "arcsin",
               "role": "",
               "target": "arcsin",
@@ -573,7 +573,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -592,7 +592,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.arccos([1, -1])"
+              "text": "fnp.arccos([1, -1])"
             },
             {
               "kind": "output",
@@ -620,12 +620,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linspace(-1, 1, num=100)"
+              "text": "x = fnp.linspace(-1, 1, num=100)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.plot(x, we.arccos(x))"
+              "text": "plt.plot(x, fnp.arccos(x))"
             },
             {
               "kind": "input",
@@ -668,16 +668,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.arccos([1, -1])\n\nimport matplotlib.pyplot as plt\n\nx = we.linspace(-1, 1, num=100)\n\nplt.plot(x, we.arccos(x))\n\nplt.axis('tight')\n\nplt.show()",
+    "code": "import flopscope as fnp\n\nfnp.arccos([1, -1])\n\nimport matplotlib.pyplot as plt\n\nx = fnp.linspace(-1, 1, num=100)\n\nplt.plot(x, fnp.arccos(x))\n\nplt.axis('tight')\n\nplt.show()",
     "output": "array([ 0.        ,  3.14159265])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.arccos",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/arccos/",
   "module": "numpy",
   "name": "arccos",
   "next": {
     "href": "/docs/api/ops/arccosh/",
-    "label": "we.arccosh"
+    "label": "fnp.arccosh"
   },
   "notes": "Element-wise inverse cosine.",
   "notes_sections": [
@@ -729,7 +732,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/arange/",
-    "label": "we.arange"
+    "label": "fnp.arange"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.arccos.html",
@@ -750,7 +753,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/cos",
-      "label": "we.cos",
+      "label": "fnp.cos",
       "original_target": "cos",
       "role": "",
       "target": "cos",
@@ -761,7 +764,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/arctan",
-      "label": "we.arctan",
+      "label": "fnp.arctan",
       "original_target": "arctan",
       "role": "",
       "target": "arctan",
@@ -772,7 +775,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/arcsin",
-      "label": "we.arcsin",
+      "label": "fnp.arcsin",
       "original_target": "arcsin",
       "role": "",
       "target": "arcsin",
@@ -790,12 +793,9 @@
       "unresolved": true
     }
   ],
-  "signature": "we.arccos(x)",
+  "signature": "fnp.arccos(x)",
   "slug": "arccos",
   "summary": "Trigonometric inverse cosine, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.arccos",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

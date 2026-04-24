@@ -162,12 +162,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freqs = we.fft.fftfreq(9, d=1./9).reshape(3, 3)"
+                "text": "freqs = fnp.fft.fftfreq(9, d=1./9).reshape(3, 3)"
               },
               {
                 "kind": "input",
@@ -189,7 +189,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.ifftshift(we.fft.fftshift(freqs))"
+                "text": "fnp.fft.ifftshift(fnp.fft.fftshift(freqs))"
               },
               {
                 "kind": "output",
@@ -215,20 +215,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.fft.ifftshift",
     "module": "numpy.fft",
     "name": "fft.ifftshift",
     "notes": "Inverse of fftshift. No arithmetic; index reordering only.",
     "numpy_ref": "np.fft.ifftshift",
-    "signature": "we.fft.ifftshift(x, axes=None)",
+    "signature": "fnp.fft.ifftshift(x, axes=None)",
     "status": "supported",
     "summary": "The inverse of `fftshift`. Although identical for even-length `x`, the functions differ by one sample for odd-length `x`.",
-    "weight": 0.0,
-    "whest_ref": "we.fft.ifftshift"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "fft-ifftshift",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L77",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_free.py#L41"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L41",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_helper.py#L77"
   }
 }

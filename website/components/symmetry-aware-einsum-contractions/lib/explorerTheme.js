@@ -206,9 +206,9 @@ export const EXPLORER_THEME_PRESETS = [
     }),
   ),
   createExplorerTheme(
-    'whestbench-axis',
-    'Whestbench axis',
-    'Maps the explorer onto the whestbench coral↔slate axis, with quantities staying on the cool side.',
+    'flopscopebench-axis',
+    'Flopscopebench axis',
+    'Maps the explorer onto the flopscopebench coral↔slate axis, with quantities staying on the cool side.',
     createThemeRoles({
       summedSide: MID_SLATE,
       symmetryObject: DEEP_SLATE,
@@ -219,9 +219,9 @@ export const EXPLORER_THEME_PRESETS = [
     }),
   ),
   createExplorerTheme(
-    'whestbench-axis-blue',
-    'Whestbench axis blue',
-    'A stricter whestbench axis: black and coral lead, mean-prop blue replaces the gray lane, and warm-gray stays a restrained accent only.',
+    'flopscopebench-axis-blue',
+    'Flopscopebench axis blue',
+    'A stricter flopscopebench axis: black and coral lead, mean-prop blue replaces the gray lane, and warm-gray stays a restrained accent only.',
     createThemeRoles({
       summedSide: DEEP_SLATE,
       symmetryObject: DEEP_SLATE,
@@ -232,9 +232,9 @@ export const EXPLORER_THEME_PRESETS = [
     }),
   ),
   createExplorerTheme(
-    'whestbench-sampling',
-    'Whestbench sampling',
-    'Lets the whestbench sampling coral carry quantities and key math accents while symmetry stays on slate.',
+    'flopscopebench-sampling',
+    'Flopscopebench sampling',
+    'Lets the flopscopebench sampling coral carry quantities and key math accents while symmetry stays on slate.',
     createThemeRoles({
       summedSide: MID_SLATE,
       symmetryObject: DEEP_SLATE,
@@ -245,9 +245,9 @@ export const EXPLORER_THEME_PRESETS = [
     }),
   ),
   createExplorerTheme(
-    'whestbench-cov-prop',
-    'Whestbench cov-prop',
-    'Brings in the single warm-gray exception from whestbench for action and cost accents.',
+    'flopscopebench-cov-prop',
+    'Flopscopebench cov-prop',
+    'Brings in the single warm-gray exception from flopscopebench for action and cost accents.',
     createThemeRoles({
       summedSide: MID_SLATE,
       symmetryObject: DEEP_SLATE,
@@ -258,9 +258,9 @@ export const EXPLORER_THEME_PRESETS = [
     }),
   ),
   createExplorerTheme(
-    'whestbench-diverging',
-    'Whestbench diverging',
-    'Treats quantities as the positive end of the whestbench coral↔slate axis with pale structural surrounds.',
+    'flopscopebench-diverging',
+    'Flopscopebench diverging',
+    'Treats quantities as the positive end of the flopscopebench coral↔slate axis with pale structural surrounds.',
     createThemeRoles({
       summedSide: LIGHT_SLATE,
       symmetryObject: DEEP_SLATE,
@@ -272,8 +272,8 @@ export const EXPLORER_THEME_PRESETS = [
     }),
   ),
   createExplorerTheme(
-    'whestbench-verdict',
-    'Whestbench verdict',
+    'flopscopebench-verdict',
+    'Flopscopebench verdict',
     'Ground-truth ink leads, mean-prop slate carries structure, and the restrained warm-gray lane handles scored quantities.',
     createThemeRoles({
       summedSide: MID_SLATE,
@@ -286,9 +286,9 @@ export const EXPLORER_THEME_PRESETS = [
     }),
   ),
   createExplorerTheme(
-    'whestbench-scorecard',
-    'Whestbench scorecard',
-    'A scorecard-flavored editorial mode with coral accents, slate structure, and no hues outside the whestbench axis.',
+    'flopscopebench-scorecard',
+    'Flopscopebench scorecard',
+    'A scorecard-flavored editorial mode with coral accents, slate structure, and no hues outside the flopscopebench axis.',
     createThemeRoles({
       summedSide: DEEP_SLATE,
       symmetryObject: DEEP_SLATE,
@@ -300,8 +300,8 @@ export const EXPLORER_THEME_PRESETS = [
     }),
   ),
   createExplorerTheme(
-    'whestbench-sage',
-    'Whestbench sage',
+    'flopscopebench-sage',
+    'Flopscopebench sage',
     'An airy white-paper variant that stays strictly on the ground-truth / sampling / mean-prop axis with pale slate support.',
     createThemeRoles({
       summedSide: LIGHT_SLATE,
@@ -316,7 +316,7 @@ export const EXPLORER_THEME_PRESETS = [
   createExplorerTheme(
     'coral-slate-contrast',
     'Coral slate contrast',
-    'A sharp coral↔slate split that keeps the page paper-like while pushing the whestbench tension harder.',
+    'A sharp coral↔slate split that keeps the page paper-like while pushing the flopscopebench tension harder.',
     createThemeRoles({
       summedSide: DEEP_SLATE,
       symmetryObject: DEEP_SLATE,

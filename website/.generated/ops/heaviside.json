@@ -392,12 +392,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.heaviside([-1.5, 0, 2.0], 0.5)"
+              "text": "fnp.heaviside([-1.5, 0, 2.0], 0.5)"
             },
             {
               "kind": "output",
@@ -406,7 +406,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.heaviside([-1.5, 0, 2.0], 1)"
+              "text": "fnp.heaviside([-1.5, 0, 2.0], 1)"
             },
             {
               "kind": "output",
@@ -447,16 +447,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.heaviside([-1.5, 0, 2.0], 0.5)\n\nwe.heaviside([-1.5, 0, 2.0], 1)",
+    "code": "import flopscope as fnp\n\nfnp.heaviside([-1.5, 0, 2.0], 0.5)\n\nfnp.heaviside([-1.5, 0, 2.0], 1)",
     "output": "array([ 0. ,  0.5,  1. ])\n\narray([ 0.,  1.,  1.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.heaviside",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
   "href": "/docs/api/ops/heaviside/",
   "module": "numpy",
   "name": "heaviside",
   "next": {
     "href": "/docs/api/ops/histogram/",
-    "label": "we.histogram"
+    "label": "fnp.histogram"
   },
   "notes": "Heaviside step function element-wise.",
   "notes_sections": [],
@@ -511,7 +514,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/hanning/",
-    "label": "we.hanning"
+    "label": "fnp.hanning"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.heaviside.html",
@@ -526,12 +529,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.heaviside(x, y)",
+  "signature": "fnp.heaviside(x, y)",
   "slug": "heaviside",
   "summary": "Compute the Heaviside step function.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.heaviside",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

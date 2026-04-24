@@ -313,12 +313,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([1, 2, 3, 5])"
+                "text": "x = fnp.array([1, 2, 3, 5])"
               },
               {
                 "kind": "input",
@@ -328,7 +328,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.vander(x, N)"
+                "text": "fnp.vander(x, N)"
               },
               {
                 "kind": "output",
@@ -354,7 +354,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.column_stack([x**(N-1-i) for i in range(N)])"
+                "text": "fnp.column_stack([x**(N-1-i) for i in range(N)])"
               },
               {
                 "kind": "output",
@@ -380,12 +380,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([1, 2, 3, 5])"
+                "text": "x = fnp.array([1, 2, 3, 5])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.vander(x)"
+                "text": "fnp.vander(x)"
               },
               {
                 "kind": "output",
@@ -406,7 +406,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.vander(x, increasing=True)"
+                "text": "fnp.vander(x, increasing=True)"
               },
               {
                 "kind": "output",
@@ -441,7 +441,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.det(we.vander(x))"
+                "text": "fnp.linalg.det(fnp.vander(x))"
               },
               {
                 "kind": "output",
@@ -468,20 +468,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.vander",
     "module": "numpy",
     "name": "vander",
     "notes": "Vandermonde matrix; cost = len(x)*(N-1).",
     "numpy_ref": "np.vander",
-    "signature": "we.vander(x, N=None, increasing=False)",
+    "signature": "fnp.vander(x, N=None, increasing=False)",
     "status": "supported",
     "summary": "Generate a Vandermonde matrix.",
-    "weight": 1.0,
-    "whest_ref": "we.vander"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "vander",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L547",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L280"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L280",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L560"
   }
 }

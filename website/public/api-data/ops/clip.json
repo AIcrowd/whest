@@ -44,7 +44,7 @@
               },
               {
                 "kind": "code",
-                "text": "we.minimum(a_max, we.maximum(a, a_min))"
+                "text": "fnp.minimum(a_max, fnp.maximum(a, a_min))"
               },
               {
                 "kind": "text",
@@ -646,12 +646,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(10)"
+                "text": "a = fnp.arange(10)"
               },
               {
                 "kind": "input",
@@ -665,7 +665,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.clip(a, 1, 8)"
+                "text": "fnp.clip(a, 1, 8)"
               },
               {
                 "kind": "output",
@@ -674,7 +674,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.clip(a, 8, 1)"
+                "text": "fnp.clip(a, 8, 1)"
               },
               {
                 "kind": "output",
@@ -683,7 +683,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.clip(a, 3, 6, out=a)"
+                "text": "fnp.clip(a, 3, 6, out=a)"
               },
               {
                 "kind": "output",
@@ -701,7 +701,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(10)"
+                "text": "a = fnp.arange(10)"
               },
               {
                 "kind": "input",
@@ -715,7 +715,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)"
+                "text": "fnp.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)"
               },
               {
                 "kind": "output",
@@ -733,20 +733,20 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.clip",
     "module": "numpy",
     "name": "clip",
     "notes": "Clip array to [a_min, a_max] element-wise.",
     "numpy_ref": "np.clip",
-    "signature": "we.clip(a, a_min=<no value>, a_max=<no value>, out=None, *, min=<no value>, max=<no value>, **kwargs)",
+    "signature": "fnp.clip(a, a_min=<no value>, a_max=<no value>, out=None, *, min=<no value>, max=<no value>, **kwargs)",
     "status": "supported",
     "summary": "Clip (limit) the values in an array.",
-    "weight": 1.0,
-    "whest_ref": "we.clip"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "clip",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2241",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L655"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L655",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L2207"
   }
 }

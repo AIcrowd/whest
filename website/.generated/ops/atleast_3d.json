@@ -172,7 +172,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/atleast_1d",
-              "label": "we.atleast_1d",
+              "label": "fnp.atleast_1d",
               "original_target": "atleast_1d",
               "role": "",
               "target": "atleast_1d",
@@ -183,7 +183,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/atleast_2d",
-              "label": "we.atleast_2d",
+              "label": "fnp.atleast_2d",
               "original_target": "atleast_2d",
               "role": "",
               "target": "atleast_2d",
@@ -202,12 +202,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.atleast_3d(3.0)"
+              "text": "fnp.atleast_3d(3.0)"
             },
             {
               "kind": "output",
@@ -221,12 +221,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(3.0)"
+              "text": "x = fnp.arange(3.0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.atleast_3d(x).shape"
+              "text": "fnp.atleast_3d(x).shape"
             },
             {
               "kind": "output",
@@ -240,12 +240,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(12.0).reshape(4,3)"
+              "text": "x = fnp.arange(12.0).reshape(4,3)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.atleast_3d(x).shape"
+              "text": "fnp.atleast_3d(x).shape"
             },
             {
               "kind": "output",
@@ -254,7 +254,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.atleast_3d(x).base is x.base  # x is a reshape, so not base itself"
+              "text": "fnp.atleast_3d(x).base is x.base  # x is a reshape, so not base itself"
             },
             {
               "kind": "output",
@@ -268,7 +268,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "for arr in we.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):"
+              "text": "for arr in fnp.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):"
             },
             {
               "kind": "input",
@@ -318,16 +318,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.atleast_3d(3.0)\n\nx = we.arange(3.0)\n\nwe.atleast_3d(x).shape\n\nx = we.arange(12.0).reshape(4,3)\n\nwe.atleast_3d(x).shape\n\nwe.atleast_3d(x).base is x.base  # x is a reshape, so not base itself\n\nfor arr in we.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):\n    print(arr, arr.shape) # doctest: +SKIP",
+    "code": "import flopscope as fnp\n\nfnp.atleast_3d(3.0)\n\nx = fnp.arange(3.0)\n\nfnp.atleast_3d(x).shape\n\nx = fnp.arange(12.0).reshape(4,3)\n\nfnp.atleast_3d(x).shape\n\nfnp.atleast_3d(x).base is x.base  # x is a reshape, so not base itself\n\nfor arr in fnp.atleast_3d([1, 2], [[1, 2]], [[[1, 2]]]):\n    print(arr, arr.shape) # doctest: +SKIP",
     "output": "array([[[3.]]])\n\n(1, 3, 1)\n\n(4, 3, 1)\n\nTrue\n\n[[[1]\n  [2]]] (1, 2, 1)\n[[[1]\n  [2]]] (1, 2, 1)\n[[[1 2]]] (1, 1, 2)",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.atleast_3d",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L658",
   "href": "/docs/api/ops/atleast_3d/",
   "module": "numpy",
   "name": "atleast_3d",
   "next": {
     "href": "/docs/api/ops/average/",
-    "label": "we.average"
+    "label": "fnp.average"
   },
   "notes": "View inputs as arrays with at least three dimensions.",
   "notes_sections": [],
@@ -345,7 +348,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/atleast_2d/",
-    "label": "we.atleast_2d"
+    "label": "fnp.atleast_2d"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.atleast_3d.html",
@@ -368,7 +371,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/atleast_1d",
-      "label": "we.atleast_1d",
+      "label": "fnp.atleast_1d",
       "original_target": "atleast_1d",
       "role": "",
       "target": "atleast_1d",
@@ -379,19 +382,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/atleast_2d",
-      "label": "we.atleast_2d",
+      "label": "fnp.atleast_2d",
       "original_target": "atleast_2d",
       "role": "",
       "target": "atleast_2d",
       "unresolved": false
     }
   ],
-  "signature": "we.atleast_3d(*arys)",
+  "signature": "fnp.atleast_3d(*arys)",
   "slug": "atleast_3d",
   "summary": "View inputs as arrays with at least three dimensions.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L139",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.atleast_3d",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L658"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/shape_base.py#L137",
+  "weight": 0.0
 }

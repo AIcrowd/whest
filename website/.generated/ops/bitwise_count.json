@@ -312,26 +312,26 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_count(1023)"
+              "text": "fnp.bitwise_count(1023)"
             },
             {
               "kind": "output",
-              "text": "we.uint8(10)"
+              "text": "fnp.uint8(10)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([2**i - 1 for i in range(16)])"
+              "text": "a = fnp.array([2**i - 1 for i in range(16)])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_count(a)"
+              "text": "fnp.bitwise_count(a)"
             },
             {
               "kind": "output",
@@ -379,16 +379,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.bitwise_count(1023)\n\na = we.array([2**i - 1 for i in range(16)])\n\nwe.bitwise_count(a)",
-    "output": "we.uint8(10)\n\narray([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15],\n      dtype=uint8)",
+    "code": "import flopscope as fnp\n\nfnp.bitwise_count(1023)\n\na = fnp.array([2**i - 1 for i in range(16)])\n\nfnp.bitwise_count(a)",
+    "output": "fnp.uint8(10)\n\narray([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15],\n      dtype=uint8)",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.bitwise_count",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/bitwise_count/",
   "module": "numpy",
   "name": "bitwise_count",
   "next": {
     "href": "/docs/api/ops/bitwise_left_shift/",
-    "label": "we.bitwise_left_shift"
+    "label": "fnp.bitwise_left_shift"
   },
   "notes": "Count set bits element-wise (popcount).",
   "notes_sections": [],
@@ -434,7 +437,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/bitwise_and/",
-    "label": "we.bitwise_and"
+    "label": "fnp.bitwise_and"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_count.html",
@@ -450,12 +453,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.bitwise_count(x)",
+  "signature": "fnp.bitwise_count(x)",
   "slug": "bitwise_count",
   "summary": "Computes the number of 1-bits in the absolute value of ``x``. Analogous to the builtin `int.bit_count` or ``popcount`` in C++.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.bitwise_count",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

@@ -1,7 +1,7 @@
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import { whestLight, whestDark } from './lib/shiki-themes';
+import { flopscopeLight, flopscopeDark } from './lib/shiki-themes';
 
 export const docs = defineDocs({
   dir: 'content/docs',
@@ -17,9 +17,9 @@ export default defineConfig({
       // expects `settings` instead. The raw shape works at runtime.
       themes: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        light: whestLight as any,
+        light: flopscopeLight as any,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        dark: whestDark as any,
+        dark: flopscopeDark as any,
       },
     },
   },

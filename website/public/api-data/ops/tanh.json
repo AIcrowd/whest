@@ -27,7 +27,7 @@
               },
               {
                 "kind": "code",
-                "text": "we.sinh(x)/we.cosh(x)"
+                "text": "fnp.sinh(x)/fnp.cosh(x)"
               },
               {
                 "kind": "text",
@@ -35,7 +35,7 @@
               },
               {
                 "kind": "code",
-                "text": "-1j * we.tan(1j*x)"
+                "text": "-1j * fnp.tan(1j*x)"
               },
               {
                 "kind": "text",
@@ -343,12 +343,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tanh((0, we.pi*1j, we.pi*1j/2))"
+                "text": "fnp.tanh((0, fnp.pi*1j, fnp.pi*1j/2))"
               },
               {
                 "kind": "output",
@@ -372,12 +372,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out1 = we.array([0], dtype='d')"
+                "text": "out1 = fnp.array([0], dtype='d')"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out2 = we.tanh([0.1], out1)"
+                "text": "out2 = fnp.tanh([0.1], out1)"
               },
               {
                 "kind": "input",
@@ -401,7 +401,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tanh(we.zeros((3,3)),we.zeros((2,2)))"
+                "text": "fnp.tanh(fnp.zeros((3,3)),fnp.zeros((2,2)))"
               },
               {
                 "kind": "output",
@@ -427,20 +427,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.tanh",
     "module": "numpy",
     "name": "tanh",
     "notes": "Element-wise hyperbolic tangent.",
     "numpy_ref": "np.tanh",
-    "signature": "we.tanh(x)",
+    "signature": "fnp.tanh(x)",
     "status": "supported",
     "summary": "Compute hyperbolic tangent element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.tanh"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "tanh",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

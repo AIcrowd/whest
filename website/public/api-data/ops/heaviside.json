@@ -392,12 +392,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.heaviside([-1.5, 0, 2.0], 0.5)"
+                "text": "fnp.heaviside([-1.5, 0, 2.0], 0.5)"
               },
               {
                 "kind": "output",
@@ -406,7 +406,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.heaviside([-1.5, 0, 2.0], 1)"
+                "text": "fnp.heaviside([-1.5, 0, 2.0], 1)"
               },
               {
                 "kind": "output",
@@ -424,20 +424,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.heaviside",
     "module": "numpy",
     "name": "heaviside",
     "notes": "Heaviside step function element-wise.",
     "numpy_ref": "np.heaviside",
-    "signature": "we.heaviside(x, y)",
+    "signature": "fnp.heaviside(x, y)",
     "status": "supported",
     "summary": "Compute the Heaviside step function.",
-    "weight": 1.0,
-    "whest_ref": "we.heaviside"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "heaviside",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

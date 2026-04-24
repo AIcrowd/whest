@@ -2,11 +2,11 @@
 
 import numpy as np
 
-from whest._opt_einsum._symmetry import (
+from flopscope._opt_einsum._symmetry import (
     symmetric_flop_count,
     unique_elements,
 )
-from whest._perm_group import PermutationGroup
+from flopscope._perm_group import PermutationGroup
 
 
 def _s_group(*labels):
@@ -18,7 +18,7 @@ def _s_group(*labels):
 
 def _make_oracle(subscripts, operands=None, *, per_op_groups=None):
     """Helper: build a SubgraphSymmetryOracle from a subscript string."""
-    from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+    from flopscope._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
     input_str, output_str = (subscripts.split("->") + [""])[:2]
     parts = input_str.split(",")
@@ -89,7 +89,7 @@ class TestSymmetricFlopCount:
 
     def test_no_symmetry_matches_dense(self):
         """Without symmetry, symmetric_flop_count should equal flop_count."""
-        from whest._opt_einsum._helpers import flop_count
+        from flopscope._opt_einsum._helpers import flop_count
 
         size_dict = {"i": 10, "j": 10, "k": 10}
         idx = frozenset("ijk")
@@ -101,7 +101,7 @@ class TestSymmetricFlopCount:
 class TestSymmetryAwarePaths:
     def test_greedy_with_oracle(self):
         """Greedy path optimizer accepts and uses oracle."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         # ijk,ai,bj,ck->abc where ijk has S3
         sym = [_s_group("i", "j", "k")]
@@ -119,7 +119,7 @@ class TestSymmetryAwarePaths:
 
     def test_symmetry_aware_cost_less_than_dense(self):
         """Symmetry-aware total cost should be less than dense for symmetric inputs."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         args = ("ij,jk,ki->", (10, 10), (10, 10), (10, 10))
         kwargs = {"shapes": True, "optimize": "greedy"}
@@ -133,7 +133,7 @@ class TestSymmetryAwarePaths:
 
     def test_no_symmetry_matches_upstream(self):
         """With no symmetry info, results should match upstream dense path."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         path_no_sym, info_no_sym = contract_path(
             "ij,jk,kl->il",
@@ -157,7 +157,7 @@ class TestSymmetryAwarePaths:
 
     def test_optimal_with_oracle(self):
         """Optimal algorithm works with oracle."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         sym = [_s_group("i", "j")]
         oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
@@ -175,7 +175,7 @@ class TestSymmetryAwarePaths:
 
     def test_dp_with_oracle(self):
         """DP algorithm works with oracle (stubs symmetry, but doesn't crash)."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         sym = [_s_group("i", "j")]
         oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
@@ -193,7 +193,7 @@ class TestSymmetryAwarePaths:
 
     def test_branch_with_oracle(self):
         """Branch algorithm works with oracle."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         sym = [_s_group("i", "j")]
         oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
@@ -215,7 +215,7 @@ class TestSymmetricBlas:
 
     def test_gemm_with_symmetric_left_becomes_symm(self):
         """GEMM with symmetric left input -> SYMM."""
-        from whest._opt_einsum._blas import can_blas
+        from flopscope._opt_einsum._blas import can_blas
 
         # ij,jk->ik where ij is symmetric
         result = can_blas(
@@ -228,7 +228,7 @@ class TestSymmetricBlas:
 
     def test_gemm_with_symmetric_right_becomes_symm(self):
         """GEMM with symmetric right input -> SYMM."""
-        from whest._opt_einsum._blas import can_blas
+        from flopscope._opt_einsum._blas import can_blas
 
         result = can_blas(
             ["ij", "jk"],
@@ -240,7 +240,7 @@ class TestSymmetricBlas:
 
     def test_gemv_with_symmetric_matrix_becomes_symv(self):
         """GEMV with symmetric matrix -> SYMV."""
-        from whest._opt_einsum._blas import can_blas
+        from flopscope._opt_einsum._blas import can_blas
 
         result = can_blas(
             ["ijk", "ji"],
@@ -252,7 +252,7 @@ class TestSymmetricBlas:
 
     def test_dot_with_symmetric_becomes_sydt(self):
         """DOT with symmetric input -> SYDT."""
-        from whest._opt_einsum._blas import can_blas
+        from flopscope._opt_einsum._blas import can_blas
 
         result = can_blas(
             ["ij", "ij"],
@@ -264,14 +264,14 @@ class TestSymmetricBlas:
 
     def test_no_symmetry_unchanged(self):
         """Without symmetry, classification is unchanged."""
-        from whest._opt_einsum._blas import can_blas
+        from flopscope._opt_einsum._blas import can_blas
 
         result = can_blas(["ij", "jk"], "ik", frozenset("j"))
         assert result == "GEMM"
 
     def test_none_symmetries_unchanged(self):
         """Explicit None symmetries -> same as no symmetry."""
-        from whest._opt_einsum._blas import can_blas
+        from flopscope._opt_einsum._blas import can_blas
 
         result = can_blas(
             ["ij", "jk"],
@@ -283,7 +283,7 @@ class TestSymmetricBlas:
 
     def test_tdot_with_symmetry_unchanged(self):
         """TDOT doesn't have a symmetric variant -- stays TDOT."""
-        from whest._opt_einsum._blas import can_blas
+        from flopscope._opt_einsum._blas import can_blas
 
         result = can_blas(
             ["ijk", "lkj"],
@@ -295,7 +295,7 @@ class TestSymmetricBlas:
 
     def test_outer_with_symmetry_unchanged(self):
         """OUTER doesn't have a symmetric variant -- stays OUTER/EINSUM."""
-        from whest._opt_einsum._blas import can_blas
+        from flopscope._opt_einsum._blas import can_blas
 
         result = can_blas(
             ["i", "j"],
@@ -309,7 +309,7 @@ class TestSymmetricBlas:
 class TestStepInfoBlasType:
     def test_step_info_has_blas_type(self):
         """StepInfo should include blas_type field."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         _, info = contract_path(
             "ij,jk,kl->il",
@@ -324,7 +324,7 @@ class TestStepInfoBlasType:
 
     def test_blas_type_with_symmetric_oracle(self):
         """StepInfo should show SYMM/SYMV for symmetric inputs via oracle."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         sym = [_s_group("i", "j")]
         oracle = _make_oracle("ij,jk,kl->il", per_op_groups=[sym, None, None])
@@ -344,7 +344,7 @@ class TestStepInfoBlasType:
 class TestFixedSymmetricFlopCount:
     def test_s2_matvec_no_reduction(self):
         """S[ij](S2) * v[j] -> r[i]: summing j means S2 gives no reduction."""
-        from whest._opt_einsum._helpers import flop_count
+        from flopscope._opt_einsum._helpers import flop_count
 
         size_dict = {"i": 10, "j": 10}
         cost = symmetric_flop_count(
@@ -361,11 +361,11 @@ class TestFixedSymmetricFlopCount:
     def test_s3_contract_one_gives_s2_reduction(self):
         """T[ijk](S3) * A[ai] -> R[ajk](S2): i summed, j,k survive as S2.
 
-        The reduction comes solely from output symmetry: we compute only
+        The reduction comes solely from output symmetry: fnp compute only
         unique (j,k) pairs.  unique_output / total_output = C(11,2)/100
         = 55/100 = 0.55, so cost = 20000 * 55 // 100 = 11000.
         """
-        from whest._opt_einsum._helpers import flop_count
+        from flopscope._opt_einsum._helpers import flop_count
 
         size_dict = {"i": 10, "j": 10, "k": 10, "a": 10}
         cost = symmetric_flop_count(
@@ -431,7 +431,7 @@ class TestFixedSymmetricFlopCount:
 
     def test_output_indices_none_backward_compat(self):
         """When output_indices is None, equals no-symmetry flop_count."""
-        from whest._opt_einsum._helpers import flop_count
+        from flopscope._opt_einsum._helpers import flop_count
 
         size_dict = {"i": 10, "j": 10, "k": 10}
         cost_new = symmetric_flop_count(
@@ -466,7 +466,7 @@ class TestAllAlgorithmsOracleAware:
     """Each algorithm accepts a symmetry oracle."""
 
     def _run_algo(self, algo_name, oracle=None):
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         return contract_path(
             "ijk,ai,bj->abk",
@@ -501,7 +501,7 @@ class TestAllAlgorithmsOracleAware:
 
     def test_no_oracle_unchanged_all_algos(self):
         """Every algorithm produces identical results without oracle."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         args = ("ij,jk,kl->il", (2, 3), (3, 4), (4, 5))
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
@@ -513,7 +513,7 @@ class TestAllAlgorithmsOracleAware:
 
     def test_symmetric_cost_le_dense_all_algos(self):
         """Symmetric cost <= dense cost for all algorithms."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         args = ("ijk,ai,bj->abk", (5,) * 3, (5, 5), (5, 5))
         oracle = self._make_s3_oracle()
@@ -532,7 +532,7 @@ class TestExhaustiveSymmetryValidation:
 
     def test_all_algorithms_agree_on_small_problem(self):
         """For a small problem, optimal and dp should find the same cost."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         args = ("ij,jk,ki->", (5, 5), (5, 5), (5, 5))
         sym = [_s_group("i", "j")]
@@ -549,7 +549,7 @@ class TestExhaustiveSymmetryValidation:
 
     def test_symmetric_cost_le_dense_cost_all_algorithms(self):
         """For every algorithm, symmetric cost <= dense cost."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         args = ("ijk,ai,bj->abk", (5,) * 3, (5, 5), (5, 5))
         sym = [_s_group("i", "j", "k")]
@@ -565,7 +565,7 @@ class TestExhaustiveSymmetryValidation:
 
     def test_no_oracle_all_algorithms_unchanged(self):
         """Every algorithm produces identical results with/without None oracle."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         args = ("ij,jk,kl->il", (2, 3), (3, 4), (4, 5))
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
@@ -577,7 +577,7 @@ class TestExhaustiveSymmetryValidation:
 
     def test_slack_thread_example(self):
         """The ijk,ai,bj,ck->abc example from the Slack discussion."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         sym = [_s_group("i", "j", "k")]
         oracle = _make_oracle(
@@ -600,7 +600,7 @@ class TestExhaustiveSymmetryValidation:
 
     def test_mixed_symmetry_network(self):
         """Network with S2, S3, and dense tensors."""
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         sym_s3 = [_s_group("i", "j", "k")]
         sym_s2 = [_s_group("k", "l")]
@@ -617,14 +617,14 @@ class TestExhaustiveSymmetryValidation:
 
     def test_random_greedy_with_oracle(self):
         """RandomGreedy accepts oracle (ignores it as stub, doesn't crash)."""
-        from whest._opt_einsum._path_random import RandomGreedy
+        from flopscope._opt_einsum._path_random import RandomGreedy
 
         sym = [_s_group("i", "j")]
         oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
         rg = RandomGreedy(max_repeats=4)
         # Oracle is passed via contract_path, not directly to RandomGreedy
         # Test the public interface via contract_path
-        from whest._opt_einsum._contract import contract_path
+        from flopscope._opt_einsum._contract import contract_path
 
         path, info = contract_path(
             "ij,jk,ki->",
@@ -639,9 +639,9 @@ class TestExhaustiveSymmetryValidation:
 
     def test_end_to_end_numerical_correctness(self):
         """Symmetry-aware path produces numerically correct results."""
-        from whest._budget import BudgetContext
-        from whest._einsum import einsum
-        from whest._symmetric import as_symmetric
+        from flopscope._budget import BudgetContext
+        from flopscope._einsum import einsum
+        from flopscope._symmetric import as_symmetric
 
         n = 8
         T_data = np.random.RandomState(42).rand(n, n, n)
@@ -768,22 +768,22 @@ class TestInnerSymmetryFlops:
         """Global config use_inner_symmetry controls the reduction."""
         import numpy as np
 
-        import whest as we
-
+        import flopscope as flops
+        import flopscope.numpy as fnp
         n = 5
         T = np.random.randn(n, n, n, n)
         T = (T + T.transpose(1, 0, 2, 3)) / 2
-        Tsym = we.as_symmetric(T, symmetric_axes=[(0, 1)])
+        Tsym = flops.as_symmetric(T, symmetric_axes=[(0, 1)])
 
-        with we.BudgetContext(flop_budget=1e15):
-            _, info_on = we.einsum_path("abij,abkl->ijkl", Tsym, Tsym)
+        with flops.BudgetContext(flop_budget=1e15):
+            _, info_on = fnp.einsum_path("abij,abkl->ijkl", Tsym, Tsym)
 
-        we.configure(use_inner_symmetry=False)
+        flops.configure(use_inner_symmetry=False)
         try:
-            with we.BudgetContext(flop_budget=1e15):
-                _, info_off = we.einsum_path("abij,abkl->ijkl", Tsym, Tsym)
+            with flops.BudgetContext(flop_budget=1e15):
+                _, info_off = fnp.einsum_path("abij,abkl->ijkl", Tsym, Tsym)
         finally:
-            we.configure(use_inner_symmetry=True)
+            flops.configure(use_inner_symmetry=True)
 
         # With inner symmetry on, cost should be lower
         assert info_on.optimized_cost < info_off.optimized_cost

@@ -1,6 +1,6 @@
-"""Test that whest function signatures match numpy exactly.
+"""Test that flopscope function signatures match numpy exactly.
 
-Whest-only extensions (like svd.k) must be in the allowlist.
+Flopscope-only extensions (like svd.k) must be in the allowlist.
 Ufuncs are skipped since numpy ufuncs are C-level objects whose
 inspect.signature() returns (*args, **kwargs).
 """
@@ -10,16 +10,18 @@ import inspect
 import numpy as np
 import pytest
 
-import whest as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
-# Whest-only keyword extensions that numpy doesn't have
+fnp = fnp  # backwards-compat local alias for this test
+# Flopscope-only keyword extensions that numpy doesn't have
 ALLOWED_EXTRA_PARAMS = {
     "einsum": {"symmetric_axes", "symmetry", "subscripts"},
     "linalg.svd": {"k"},
     "linalg.svdvals": {"k"},
 }
 
-# Functions where whest intentionally differs (with reason)
+# Functions where flopscope intentionally differs (with reason)
 SKIP_FUNCTIONS = {
     # einsum_path has different optimizer interface
     "einsum_path",
@@ -27,7 +29,7 @@ SKIP_FUNCTIONS = {
 
 _NUMPY_GE_2_4 = tuple(int(x) for x in np.__version__.split(".")[:2]) >= (2, 4)
 if _NUMPY_GE_2_4:
-    # numpy 2.4 added C-level positional-only markers that whest's
+    # numpy 2.4 added C-level positional-only markers that flopscope's
     # (*args, **kwargs) wrappers can't match exactly.
     SKIP_FUNCTIONS |= {
         "dot",
@@ -39,13 +41,13 @@ if _NUMPY_GE_2_4:
     }
 
 
-def _iter_whest_functions():
-    """Yield (dotted_name, whest_fn, numpy_fn) for all comparable functions."""
+def _iter_flopscope_functions():
+    """Yield (dotted_name, flopscope_fn, numpy_fn) for all comparable functions."""
     # Top-level
-    for name in sorted(dir(we)):
+    for name in sorted(dir(fnp)):
         if name.startswith("_"):
             continue
-        we_fn = getattr(we, name, None)
+        we_fn = getattr(fnp, name, None)
         np_fn = getattr(np, name, None)
         if not callable(we_fn) or not callable(np_fn):
             continue
@@ -56,7 +58,7 @@ def _iter_whest_functions():
     # Submodules
     for submod in ["linalg", "fft", "random"]:
         np_sub = getattr(np, submod, None)
-        we_sub = getattr(we, submod, None)
+        we_sub = getattr(fnp, submod, None)
         if np_sub is None or we_sub is None:
             continue
         for name in sorted(dir(we_sub)):
@@ -84,12 +86,12 @@ def _get_param_names(sig):
     "dotted_name,we_fn,np_fn",
     [
         pytest.param(name, we_fn, np_fn, id=name)
-        for name, we_fn, np_fn in _iter_whest_functions()
+        for name, we_fn, np_fn in _iter_flopscope_functions()
         if name not in SKIP_FUNCTIONS
     ],
 )
 def test_signature_matches_numpy(dotted_name, we_fn, np_fn):
-    """whest function signature must be a superset of numpy's."""
+    """flopscope function signature must be a superset of numpy's."""
     try:
         np_sig = inspect.signature(np_fn)
     except (ValueError, TypeError):
@@ -97,7 +99,7 @@ def test_signature_matches_numpy(dotted_name, we_fn, np_fn):
     try:
         we_sig = inspect.signature(we_fn)
     except (ValueError, TypeError):
-        pytest.skip(f"Cannot inspect whest.{dotted_name}")
+        pytest.skip(f"Cannot inspect flopscope.{dotted_name}")
 
     np_params = _get_param_names(np_sig)
     we_params = _get_param_names(we_sig)
@@ -107,13 +109,13 @@ def test_signature_matches_numpy(dotted_name, we_fn, np_fn):
     unexpected_extra = (we_params - np_params) - allowed_extra
 
     assert not missing, (
-        f"whest.{dotted_name} is missing numpy params: {missing}\n"
+        f"flopscope.{dotted_name} is missing numpy params: {missing}\n"
         f"  numpy:  {np_sig}\n"
-        f"  whest:  {we_sig}"
+        f"  flopscope:  {we_sig}"
     )
     assert not unexpected_extra, (
-        f"whest.{dotted_name} has unexpected extra params: {unexpected_extra}\n"
+        f"flopscope.{dotted_name} has unexpected extra params: {unexpected_extra}\n"
         f"  (add to ALLOWED_EXTRA_PARAMS if intentional)\n"
         f"  numpy:  {np_sig}\n"
-        f"  whest:  {we_sig}"
+        f"  flopscope:  {we_sig}"
     )

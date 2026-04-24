@@ -332,12 +332,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.tri(3, 5, 2, dtype=int)"
+              "text": "fnp.tri(3, 5, 2, dtype=int)"
             },
             {
               "kind": "output",
@@ -359,7 +359,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.tri(3, 5, -1)"
+              "text": "fnp.tri(3, 5, -1)"
             },
             {
               "kind": "output",
@@ -391,16 +391,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.tri(3, 5, 2, dtype=int)\n\nwe.tri(3, 5, -1)",
+    "code": "import flopscope as fnp\n\nfnp.tri(3, 5, 2, dtype=int)\n\nfnp.tri(3, 5, -1)",
     "output": "array([[1, 1, 1, 0, 0],\n       [1, 1, 1, 1, 0],\n       [1, 1, 1, 1, 1]])\n\narray([[0.,  0.,  0.,  0.,  0.],\n       [1.,  0.,  0.,  0.,  0.],\n       [1.,  1.,  0.,  0.,  0.]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.tri",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1434",
   "href": "/docs/api/ops/tri/",
   "module": "numpy",
   "name": "tri",
   "next": {
     "href": "/docs/api/ops/tril/",
-    "label": "we.tril"
+    "label": "fnp.tril"
   },
   "notes": "Array with ones at and below given diagonal.",
   "notes_sections": [],
@@ -439,11 +442,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -453,7 +456,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/trapezoid/",
-    "label": "we.trapezoid"
+    "label": "fnp.trapezoid"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.tri.html",
@@ -468,12 +471,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.tri(N, M=None, k=0, dtype=<class 'float'>, *, like=None)",
+  "signature": "fnp.tri(N, M=None, k=0, dtype=<class 'float'>, *, like=None)",
   "slug": "tri",
   "summary": "An array with ones at and below the given diagonal and zeros elsewhere.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L376",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.tri",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1434"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L389",
+  "weight": 0.0
 }

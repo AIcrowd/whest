@@ -138,24 +138,6 @@
               {
                 "body_blocks": [
                   {
-                    "argument_inline": [],
-                    "content_blocks": [],
-                    "directive": "deprecated",
-                    "options": [],
-                    "raw_source": ".. deprecated:: 2.1\n    Replaced by ``shape`` argument. Retained for backward\n    compatibility.",
-                    "supported": true,
-                    "type": "directive_block",
-                    "version": "2.1"
-                  }
-                ],
-                "data_type": "int or tuple of ints",
-                "inline": [],
-                "name": "newshape",
-                "type": "field_list"
-              },
-              {
-                "body_blocks": [
-                  {
                     "inline": [
                       {
                         "kind": "text",
@@ -410,7 +392,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(6).reshape((3, 2))"
+                "text": "a = fnp.arange(6).reshape((3, 2))"
               },
               {
                 "kind": "input",
@@ -446,7 +428,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.reshape(a, (2, 3)) # C-like index ordering"
+                "text": "fnp.reshape(a, (2, 3)) # C-like index ordering"
               },
               {
                 "kind": "output",
@@ -459,7 +441,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.reshape(we.ravel(a), (2, 3)) # equivalent to C ravel then C reshape"
+                "text": "fnp.reshape(fnp.ravel(a), (2, 3)) # equivalent to C ravel then C reshape"
               },
               {
                 "kind": "output",
@@ -472,7 +454,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.reshape(a, (2, 3), order='F') # Fortran-like index ordering"
+                "text": "fnp.reshape(a, (2, 3), order='F') # Fortran-like index ordering"
               },
               {
                 "kind": "output",
@@ -485,7 +467,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.reshape(we.ravel(a, order='F'), (2, 3), order='F')"
+                "text": "fnp.reshape(fnp.ravel(a, order='F'), (2, 3), order='F')"
               },
               {
                 "kind": "output",
@@ -508,17 +490,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1,2,3], [4,5,6]])"
+                "text": "a = fnp.array([[1,2,3], [4,5,6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.reshape(a, 6)"
+                "text": "fnp.reshape(a, 6)"
               },
               {
                 "kind": "output",
@@ -527,7 +509,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.reshape(a, 6, order='F')"
+                "text": "fnp.reshape(a, 6, order='F')"
               },
               {
                 "kind": "output",
@@ -541,7 +523,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.reshape(a, (3,-1))       # the unspecified value is inferred to be 2"
+                "text": "fnp.reshape(a, (3,-1))       # the unspecified value is inferred to be 2"
               },
               {
                 "kind": "output",
@@ -567,20 +549,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.reshape",
     "module": "numpy",
     "name": "reshape",
     "notes": "Reshape array without copying.",
     "numpy_ref": "np.reshape",
-    "signature": "we.reshape(a, /, shape=None, order='C', *, newshape=None, copy=None)",
+    "signature": "fnp.reshape(a, /, shape, order='C', *, copy=None)",
     "status": "supported",
     "summary": "Gives a new shape to an array without changing its data.",
-    "weight": 0.0,
-    "whest_ref": "we.reshape"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "reshape",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L211",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L207"
   }
 }

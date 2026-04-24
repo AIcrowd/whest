@@ -200,7 +200,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/stack",
-                "label": "we.stack",
+                "label": "fnp.stack",
                 "original_target": "stack",
                 "role": "",
                 "target": "stack",
@@ -216,7 +216,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/concatenate",
-                "label": "we.concatenate",
+                "label": "fnp.concatenate",
                 "original_target": "concatenate",
                 "role": "",
                 "target": "concatenate",
@@ -232,7 +232,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/block",
-                "label": "we.block",
+                "label": "fnp.block",
                 "original_target": "block",
                 "role": "",
                 "target": "block",
@@ -248,7 +248,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/split",
-                "label": "we.split",
+                "label": "fnp.split",
                 "original_target": "split",
                 "role": "",
                 "target": "split",
@@ -310,7 +310,7 @@
               },
               {
                 "kind": "code",
-                "text": "tuple(we.moveaxis(x, axis, 0))"
+                "text": "tuple(fnp.moveaxis(x, axis, 0))"
               },
               {
                 "kind": "text",
@@ -329,12 +329,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = we.arange(24).reshape((2, 3, 4))"
+                "text": "arr = fnp.arange(24).reshape((2, 3, 4))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unstack(arr)"
+                "text": "fnp.unstack(arr)"
               },
               {
                 "kind": "output",
@@ -363,7 +363,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unstack(arr, axis=1)"
+                "text": "fnp.unstack(arr, axis=1)"
               },
               {
                 "kind": "output",
@@ -392,7 +392,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr2 = we.stack(we.unstack(arr, axis=1), axis=1)"
+                "text": "arr2 = fnp.stack(fnp.unstack(arr, axis=1), axis=1)"
               },
               {
                 "kind": "input",
@@ -406,11 +406,11 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.all(arr == arr2)"
+                "text": "fnp.all(arr == arr2)"
               },
               {
                 "kind": "output",
-                "text": "we.True_"
+                "text": "fnp.True_"
               }
             ],
             "type": "doctest_block"
@@ -424,20 +424,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.unstack",
     "module": "numpy",
     "name": "unstack",
     "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output).",
     "numpy_ref": "np.unstack",
-    "signature": "we.unstack(x, /, *, axis=0)",
+    "signature": "fnp.unstack(x, /, *, axis=0)",
     "status": "supported",
     "summary": "Split an array into a sequence of arrays along the given axis.",
-    "weight": 1.0,
-    "whest_ref": "we.unstack"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "unstack",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L473",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1528"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1528",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/shape_base.py#L471"
   }
 }

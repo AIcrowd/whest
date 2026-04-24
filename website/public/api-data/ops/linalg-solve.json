@@ -223,7 +223,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "linalg",
-                "text": "we.linalg"
+                "text": "fnp.linalg"
               },
               {
                 "kind": "text",
@@ -325,22 +325,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 2], [3, 5]])"
+                "text": "a = fnp.array([[1, 2], [3, 5]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([1, 2])"
+                "text": "b = fnp.array([1, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linalg.solve(a, b)"
+                "text": "x = fnp.linalg.solve(a, b)"
               },
               {
                 "kind": "input",
@@ -368,7 +368,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(we.dot(a, x), b)"
+                "text": "fnp.allclose(fnp.dot(a, x), b)"
               },
               {
                 "kind": "output",
@@ -386,20 +386,20 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
+    "flopscope_ref": "fnp.linalg.solve",
     "module": "numpy.linalg",
     "name": "linalg.solve",
     "notes": "Solve Ax=b. Cost: $n^3$.",
     "numpy_ref": "np.linalg.solve",
-    "signature": "we.linalg.solve(a, b)",
+    "signature": "fnp.linalg.solve(a, b)",
     "status": "supported",
     "summary": "Solve a linear matrix equation, or system of linear scalar equations.",
-    "weight": 4.0,
-    "whest_ref": "we.linalg.solve"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "linalg-solve",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L320",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L52"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L52",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L363"
   }
 }

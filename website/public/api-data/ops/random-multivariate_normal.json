@@ -81,7 +81,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.multivariate_normal`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.multivariate_normal`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -604,7 +604,7 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Diagonal covariance means that points are oriented along x or y-axis:"
+                "text": "Diagonal covariance means that the variables are independent, and the\nprobability density contours have their axes aligned with the coordinate axes:"
               }
             ],
             "type": "paragraph"
@@ -619,7 +619,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x, y = we.random.multivariate_normal(mean, cov, 5000).T"
+                "text": "x, y = fnp.random.multivariate_normal(mean, cov, 5000).T"
               },
               {
                 "kind": "input",
@@ -683,7 +683,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.random.multivariate_normal(mean, cov, (3, 3))"
+                "text": "x = fnp.random.multivariate_normal(mean, cov, (3, 3))"
               },
               {
                 "kind": "input",
@@ -711,12 +711,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "cov = we.array([[6, -3], [-3, 3.5]])"
+                "text": "cov = fnp.array([[6, -3], [-3, 3.5]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "pts = we.random.multivariate_normal([0, 0], cov, size=800)"
+                "text": "pts = fnp.random.multivariate_normal([0, 0], cov, size=800)"
               }
             ],
             "type": "doctest_block"
@@ -744,7 +744,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cov(pts.T)"
+                "text": "fnp.cov(pts.T)"
               },
               {
                 "kind": "output",
@@ -757,7 +757,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.corrcoef(pts.T)[0, 1]"
+                "text": "fnp.corrcoef(pts.T)[0, 1]"
               },
               {
                 "kind": "output",
@@ -814,20 +814,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.multivariate_normal",
     "module": "numpy.random",
     "name": "random.multivariate_normal",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.multivariate_normal",
-    "signature": "we.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
+    "signature": "fnp.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
     "status": "supported",
     "summary": "Draw random samples from a multivariate normal distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.multivariate_normal"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-multivariate_normal",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.multivariate_normal.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.multivariate_normal.html"
   }
 }

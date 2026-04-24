@@ -81,7 +81,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.standard_gamma`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.standard_gamma`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -159,7 +159,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.array(shape).size"
+                        "text": "fnp.array(shape).size"
                       },
                       {
                         "kind": "text",
@@ -212,7 +212,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.array(shape).size"
+                    "text": "fnp.array(shape).size"
                   },
                   {
                     "kind": "text",
@@ -402,7 +402,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.standard_gamma(shape, 1000000)"
+                "text": "s = fnp.random.standard_gamma(shape, 1000000)"
               }
             ],
             "type": "doctest_block"
@@ -436,7 +436,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = bins**(shape-1) * ((we.exp(-bins/scale))/  # doctest: +SKIP"
+                "text": "y = bins**(shape-1) * ((fnp.exp(-bins/scale))/  # doctest: +SKIP"
               },
               {
                 "kind": "input",
@@ -465,20 +465,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.standard_gamma",
     "module": "numpy.random",
     "name": "random.standard_gamma",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.standard_gamma",
-    "signature": "we.random.standard_gamma(shape, size=None)",
+    "signature": "fnp.random.standard_gamma(shape, size=None)",
     "status": "supported",
     "summary": "Draw samples from a standard Gamma distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.standard_gamma"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-standard_gamma",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_gamma.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_gamma.html"
   }
 }

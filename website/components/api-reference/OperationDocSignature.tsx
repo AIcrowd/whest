@@ -22,11 +22,11 @@ function parseSignature(signature: string) {
 
 export default function OperationDocSignature({
   signature,
-  whestSourceUrl,
+  flopscopeSourceUrl,
   upstreamSourceUrl,
 }: {
   signature?: string;
-  whestSourceUrl?: string;
+  flopscopeSourceUrl?: string;
   upstreamSourceUrl?: string;
 }) {
   if (!signature) {
@@ -43,16 +43,16 @@ export default function OperationDocSignature({
         ) : null}
         <span className={styles.docSignatureFunction}>{parsed.functionName}</span>
         <span className={styles.docSignatureParams}>{parsed.remainder}</span>
-        {(whestSourceUrl || upstreamSourceUrl) ? (
+        {(flopscopeSourceUrl || upstreamSourceUrl) ? (
           <span className={styles.docSignatureActions}>
-            {whestSourceUrl ? (
+            {flopscopeSourceUrl ? (
               <a
-                href={whestSourceUrl}
+                href={flopscopeSourceUrl}
                 target="_blank"
                 rel="noreferrer"
                 className={styles.docSourceLink}
               >
-                [whest source]
+                [flopscope source]
               </a>
             ) : null}
             {upstreamSourceUrl ? (

@@ -365,6 +365,86 @@
                     "inline": [
                       {
                         "kind": "text",
+                        "text": "Specifies the maximum number of dimensions to create when inferring\nshape from nested sequences. By default (ndmax=0), NumPy recurses\nthrough all nesting levels (up to the compile-time constant\n"
+                      },
+                      {
+                        "kind": "code",
+                        "text": "NPY_MAXDIMS"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ").\nSetting "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "ndmax"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " stops recursion at the specified depth, preserving\ndeeper nested structures as objects instead of promoting them to\nhigher-dimensional arrays. In this case, "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "dtype=object"
+                      },
+                      {
+                        "kind": "text",
+                        "text": " is required."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 2.4.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "2.4.0"
+                  }
+                ],
+                "data_type": "int, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "Specifies the maximum number of dimensions to create when inferring\nshape from nested sequences. By default (ndmax=0), NumPy recurses\nthrough all nesting levels (up to the compile-time constant\n"
+                  },
+                  {
+                    "kind": "code",
+                    "text": "NPY_MAXDIMS"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ").\nSetting "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "ndmax"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " stops recursion at the specified depth, preserving\ndeeper nested structures as objects instead of promoting them to\nhigher-dimensional arrays. In this case, "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "dtype=object"
+                  },
+                  {
+                    "kind": "text",
+                    "text": " is required."
+                  }
+                ],
+                "name": "ndmax",
+                "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
                         "text": "Reference object to allow the creation of arrays which are not\nNumPy arrays. If an array-like passed in as "
                       },
                       {
@@ -477,7 +557,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/empty_like",
-                "label": "we.empty_like",
+                "label": "fnp.empty_like",
                 "original_target": "empty_like",
                 "role": "",
                 "target": "empty_like",
@@ -493,7 +573,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/ones_like",
-                "label": "we.ones_like",
+                "label": "fnp.ones_like",
                 "original_target": "ones_like",
                 "role": "",
                 "target": "ones_like",
@@ -509,7 +589,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/zeros_like",
-                "label": "we.zeros_like",
+                "label": "fnp.zeros_like",
                 "original_target": "zeros_like",
                 "role": "",
                 "target": "zeros_like",
@@ -525,7 +605,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/full_like",
-                "label": "we.full_like",
+                "label": "fnp.full_like",
                 "original_target": "full_like",
                 "role": "",
                 "target": "full_like",
@@ -541,7 +621,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/empty",
-                "label": "we.empty",
+                "label": "fnp.empty",
                 "original_target": "empty",
                 "role": "",
                 "target": "empty",
@@ -557,7 +637,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/ones",
-                "label": "we.ones",
+                "label": "fnp.ones",
                 "original_target": "ones",
                 "role": "",
                 "target": "ones",
@@ -573,7 +653,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/zeros",
-                "label": "we.zeros",
+                "label": "fnp.zeros",
                 "original_target": "zeros",
                 "role": "",
                 "target": "zeros",
@@ -589,7 +669,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/full",
-                "label": "we.full",
+                "label": "fnp.full",
                 "original_target": "full",
                 "role": "",
                 "target": "full",
@@ -605,7 +685,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/copy",
-                "label": "we.copy",
+                "label": "fnp.copy",
                 "original_target": "copy",
                 "role": "",
                 "target": "copy",
@@ -646,12 +726,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array([1, 2, 3])"
+                "text": "fnp.array([1, 2, 3])"
               },
               {
                 "kind": "output",
@@ -674,7 +754,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array([1, 2, 3.0])"
+                "text": "fnp.array([1, 2, 3.0])"
               },
               {
                 "kind": "output",
@@ -697,7 +777,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array([[1, 2], [3, 4]])"
+                "text": "fnp.array([[1, 2], [3, 4]])"
               },
               {
                 "kind": "output",
@@ -724,7 +804,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array([1, 2, 3], ndmin=2)"
+                "text": "fnp.array([1, 2, 3], ndmin=2)"
               },
               {
                 "kind": "output",
@@ -747,7 +827,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array([1, 2, 3], dtype=complex)"
+                "text": "fnp.array([1, 2, 3], dtype=complex)"
               },
               {
                 "kind": "output",
@@ -770,7 +850,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([(1,2),(3,4)],dtype=[('a','<i4'),('b','<i4')])"
+                "text": "x = fnp.array([(1,2),(3,4)],dtype=[('a','<i4'),('b','<i4')])"
               },
               {
                 "kind": "input",
@@ -798,7 +878,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array(we.asmatrix('1 2; 3 4'))"
+                "text": "fnp.array(fnp.asmatrix('1 2; 3 4'))"
               },
               {
                 "kind": "output",
@@ -816,7 +896,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array(we.asmatrix('1 2; 3 4'), subok=True)"
+                "text": "fnp.array(fnp.asmatrix('1 2; 3 4'), subok=True)"
               },
               {
                 "kind": "output",
@@ -825,6 +905,83 @@
               {
                 "kind": "output",
                 "text": "        [3, 4]])"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Limiting the maximum dimensions with "
+              },
+              {
+                "kind": "code",
+                "text": "ndmax"
+              },
+              {
+                "kind": "text",
+                "text": ":"
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a = fnp.array([[1, 2], [3, 4]], dtype=object, ndmax=2)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a"
+              },
+              {
+                "kind": "output",
+                "text": "array([[1, 2],"
+              },
+              {
+                "kind": "output",
+                "text": "       [3, 4]], dtype=object)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "a.shape"
+              },
+              {
+                "kind": "output",
+                "text": "(2, 2)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b = fnp.array([[1, 2], [3, 4]], dtype=object, ndmax=1)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b"
+              },
+              {
+                "kind": "output",
+                "text": "array([list([1, 2]), list([3, 4])], dtype=object)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "b.shape"
+              },
+              {
+                "kind": "output",
+                "text": "(2,)"
               }
             ],
             "type": "doctest_block"
@@ -838,20 +995,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.array",
     "module": "numpy",
     "name": "array",
     "notes": "Create array from data. Cost: numel(input).",
     "numpy_ref": "np.array",
-    "signature": "we.array(object, dtype=None, **kwargs)",
+    "signature": "fnp.array(object, dtype=None, *, copy=True, order='K', subok=False, ndmin=0, ndmax=0, like=None)",
     "status": "supported",
     "summary": "Create an array.",
-    "weight": 1.0,
-    "whest_ref": "we.array"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "array",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.array.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L32"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L32",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.array.html"
   }
 }

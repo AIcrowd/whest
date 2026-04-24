@@ -483,12 +483,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.arctanh([0, -0.5])"
+              "text": "fnp.arctanh([0, -0.5])"
             },
             {
               "kind": "output",
@@ -534,16 +534,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.arctanh([0, -0.5])",
+    "code": "import flopscope as fnp\n\nfnp.arctanh([0, -0.5])",
     "output": "array([ 0.        , -0.54930614])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.arctanh",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/arctanh/",
   "module": "numpy",
   "name": "arctanh",
   "next": {
     "href": "/docs/api/ops/argmax/",
-    "label": "we.argmax"
+    "label": "fnp.argmax"
   },
   "notes": "Element-wise inverse hyperbolic tangent.",
   "notes_sections": [
@@ -594,7 +597,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/arctan2/",
-    "label": "we.arctan2"
+    "label": "fnp.arctan2"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.arctanh.html",
@@ -621,12 +624,9 @@
       "unresolved": true
     }
   ],
-  "signature": "we.arctanh(x)",
+  "signature": "fnp.arctanh(x)",
   "slug": "arctanh",
   "summary": "Inverse hyperbolic tangent element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.arctanh",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

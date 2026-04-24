@@ -3,9 +3,9 @@
 import numpy
 import pytest
 
-from whest._budget import BudgetContext
-from whest._einsum import einsum
-from whest._symmetric import SymmetricTensor, as_symmetric
+from flopscope._budget import BudgetContext
+from flopscope._einsum import einsum
+from flopscope._symmetric import SymmetricTensor, as_symmetric
 
 
 class TestEinsumSymmetricInput:
@@ -45,7 +45,7 @@ class TestEinsumSymmetricOutput:
             assert not isinstance(result, SymmetricTensor)
 
 
-from whest._perm_group import PermutationGroup
+from flopscope._perm_group import PermutationGroup
 
 
 class TestEinsumSymmetryParam:

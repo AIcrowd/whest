@@ -89,7 +89,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.chisquare`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.chisquare`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -164,7 +164,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(df).size"
+                      "text": "fnp.array(df).size"
                     },
                     {
                       "kind": "text",
@@ -214,7 +214,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(df).size"
+                  "text": "fnp.array(df).size"
                 },
                 {
                   "kind": "text",
@@ -475,7 +475,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.chisquare(2,4)"
+              "text": "fnp.random.chisquare(2,4)"
             },
             {
               "kind": "output",
@@ -504,16 +504,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.random.chisquare(2,4)",
+    "code": "fnp.random.chisquare(2,4)",
     "output": "array([ 1.89920014,  9.00867716,  3.13710533,  5.62318272]) # random",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.chisquare",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-chisquare/",
   "module": "numpy.random",
   "name": "random.chisquare",
   "next": {
     "href": "/docs/api/ops/random-choice/",
-    "label": "we.random.choice"
+    "label": "fnp.random.choice"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -540,7 +543,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``df`` is a scalar.  Otherwise,",
-        "``we.array(df).size`` samples are drawn."
+        "``fnp.array(df).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -548,7 +551,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-bytes/",
-    "label": "we.random.bytes"
+    "label": "fnp.random.bytes"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.chisquare.html",
@@ -579,12 +582,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.chisquare(df, size=None)",
+  "signature": "fnp.random.chisquare(df, size=None)",
   "slug": "random-chisquare",
   "summary": "Draw samples from a chi-square distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.chisquare",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

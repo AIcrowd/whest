@@ -257,7 +257,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -267,7 +267,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fromiter(iterable, float)"
+                "text": "fnp.fromiter(iterable, float)"
               },
               {
                 "kind": "output",
@@ -295,7 +295,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fromiter(iterable, dtype=we.dtype((int, 2)))"
+                "text": "fnp.fromiter(iterable, dtype=fnp.dtype((int, 2)))"
               },
               {
                 "kind": "output",
@@ -329,20 +329,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.fromiter",
     "module": "numpy",
     "name": "fromiter",
     "notes": "Create array from an iterable. Cost: numel(output).",
     "numpy_ref": "np.fromiter",
-    "signature": "we.fromiter(*args, **kwargs)",
+    "signature": "fnp.fromiter(iter, dtype, count=-1, *, like=None)",
     "status": "supported",
     "summary": "Create a new 1-dimensional array from an iterable object.",
-    "weight": 16.0,
-    "whest_ref": "we.fromiter"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "fromiter",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fromiter.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1016"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1016",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fromiter.html"
   }
 }

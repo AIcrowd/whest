@@ -196,7 +196,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "we.fft"
+                        "text": "fnp.fft"
                       },
                       {
                         "kind": "text",
@@ -227,7 +227,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "we.fft"
+                    "text": "fnp.fft"
                   },
                   {
                     "kind": "text",
@@ -690,17 +690,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "signal = we.array([1, 2, 3, 4, 3, 2])"
+                "text": "signal = fnp.array([1, 2, 3, 4, 3, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.fft(signal)"
+                "text": "fnp.fft.fft(signal)"
               },
               {
                 "kind": "output",
@@ -709,7 +709,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.hfft(signal[:4]) # Input first half of signal"
+                "text": "fnp.fft.hfft(signal[:4]) # Input first half of signal"
               },
               {
                 "kind": "output",
@@ -718,7 +718,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.hfft(signal, 6)  # Input entire signal and truncate"
+                "text": "fnp.fft.hfft(signal, 6)  # Input entire signal and truncate"
               },
               {
                 "kind": "output",
@@ -732,12 +732,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "signal = we.array([[1, 1.j], [-1.j, 2]])"
+                "text": "signal = fnp.array([[1, 1.j], [-1.j, 2]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.conj(signal.T) - signal   # check Hermitian symmetry"
+                "text": "fnp.conj(signal.T) - signal   # check Hermitian symmetry"
               },
               {
                 "kind": "output",
@@ -750,7 +750,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freq_spectrum = we.fft.hfft(signal)"
+                "text": "freq_spectrum = fnp.fft.hfft(signal)"
               },
               {
                 "kind": "input",
@@ -777,20 +777,20 @@
     "category": "counted_custom",
     "cost_formula": "5n * ceil(log2(n))",
     "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
+    "flopscope_ref": "fnp.fft.hfft",
     "module": "numpy.fft",
     "name": "fft.hfft",
     "notes": "FFT of Hermitian-symmetric signal. Cost: 5*n_out*ceil(log2(n_out)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.hfft",
-    "signature": "we.fft.hfft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "fnp.fft.hfft(a, n=None, axis=-1, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the FFT of a signal that has Hermitian symmetry, i.e., a real spectrum.",
-    "weight": 1.0,
-    "whest_ref": "we.fft.hfft"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "fft-hfft",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L523",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L452"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L452",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L529"
   }
 }

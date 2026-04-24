@@ -237,70 +237,6 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Has no effect, do not use."
-                      }
-                    ],
-                    "type": "paragraph"
-                  },
-                  {
-                    "argument_inline": [],
-                    "content_blocks": [],
-                    "directive": "deprecated",
-                    "options": [],
-                    "raw_source": ".. deprecated:: 1.10.0",
-                    "supported": true,
-                    "type": "directive_block",
-                    "version": "1.10.0"
-                  }
-                ],
-                "data_type": "_NoValue, optional",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "Has no effect, do not use."
-                  }
-                ],
-                "name": "bias",
-                "type": "field_list"
-              },
-              {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
-                        "text": "Has no effect, do not use."
-                      }
-                    ],
-                    "type": "paragraph"
-                  },
-                  {
-                    "argument_inline": [],
-                    "content_blocks": [],
-                    "directive": "deprecated",
-                    "options": [],
-                    "raw_source": ".. deprecated:: 1.10.0",
-                    "supported": true,
-                    "type": "directive_block",
-                    "version": "1.10.0"
-                  }
-                ],
-                "data_type": "_NoValue, optional",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "Has no effect, do not use."
-                  }
-                ],
-                "name": "ddof",
-                "type": "field_list"
-              },
-              {
-                "body_blocks": [
-                  {
-                    "inline": [
-                      {
-                        "kind": "text",
                         "text": "Data-type of the result. By default, the return data-type will have\nat least "
                       },
                       {
@@ -308,7 +244,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "float64",
-                        "text": "we.float64"
+                        "text": "fnp.float64"
                       },
                       {
                         "kind": "text",
@@ -339,7 +275,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "float64",
-                    "text": "we.float64"
+                    "text": "fnp.float64"
                   },
                   {
                     "kind": "text",
@@ -403,7 +339,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/cov",
-                "label": "we.cov",
+                "label": "fnp.cov",
                 "original_target": "cov",
                 "role": "",
                 "target": "cov",
@@ -425,31 +361,6 @@
               }
             ],
             "type": "paragraph"
-          },
-          {
-            "inline": [
-              {
-                "kind": "text",
-                "text": "This function accepts but discards arguments "
-              },
-              {
-                "kind": "code",
-                "text": "bias"
-              },
-              {
-                "kind": "text",
-                "text": " and "
-              },
-              {
-                "kind": "code",
-                "text": "ddof"
-              },
-              {
-                "kind": "text",
-                "text": ".  This is\nfor backwards compatibility with previous versions of this function.  These\narguments had no effect on the return values of the function and can be\nsafely ignored in this and previous versions of numpy."
-              }
-            ],
-            "type": "paragraph"
           }
         ],
         "title": "Notes"
@@ -461,7 +372,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -520,12 +431,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng(seed=42)"
+                "text": "rng = fnp.random.default_rng(seed=42)"
               },
               {
                 "kind": "input",
@@ -552,7 +463,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "R1 = we.corrcoef(xarr)"
+                "text": "R1 = fnp.corrcoef(xarr)"
               },
               {
                 "kind": "input",
@@ -634,7 +545,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "R2 = we.corrcoef(xarr, yarr)"
+                "text": "R2 = fnp.corrcoef(xarr, yarr)"
               },
               {
                 "kind": "input",
@@ -730,7 +641,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "R3 = we.corrcoef(xarr, yarr, rowvar=False)"
+                "text": "R3 = fnp.corrcoef(xarr, yarr, rowvar=False)"
               },
               {
                 "kind": "input",
@@ -797,20 +708,20 @@
     "category": "counted_custom",
     "cost_formula": "n^2 * m",
     "cost_formula_latex": "$n^2 \\cdot m$",
+    "flopscope_ref": "fnp.corrcoef",
     "module": "numpy",
     "name": "corrcoef",
     "notes": "Pearson correlation coefficients.",
     "numpy_ref": "np.corrcoef",
-    "signature": "we.corrcoef(x, y=None, rowvar=True, bias=<no value>, ddof=<no value>, *, dtype=None)",
+    "signature": "fnp.corrcoef(x, y=None, rowvar=True, *, dtype=None)",
     "status": "supported",
     "summary": "Return Pearson product-moment correlation coefficients.",
-    "weight": 1.0,
-    "whest_ref": "we.corrcoef"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "corrcoef",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L2903",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1128"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1128",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L2897"
   }
 }

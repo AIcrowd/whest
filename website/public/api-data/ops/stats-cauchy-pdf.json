@@ -155,20 +155,20 @@
     "category": "counted_custom",
     "cost_formula": "6n",
     "cost_formula_latex": "$6n$",
-    "module": "whest.stats",
+    "flopscope_ref": "fnp.stats.cauchy.pdf",
+    "module": "flopscope.stats",
     "name": "stats.cauchy.pdf",
     "notes": "Cauchy PDF; cost = numel(input).",
     "numpy_ref": "np.stats.cauchy.pdf",
-    "signature": "we.stats.cauchy.pdf(x, loc=0, scale=1)",
+    "signature": "fnp.stats.cauchy.pdf(x, loc=0, scale=1)",
     "status": "supported",
     "summary": "Probability density function at x of the given RV.",
-    "weight": 4.0,
-    "whest_ref": "we.stats.cauchy.pdf"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "stats-cauchy-pdf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_cauchy.py#L32"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_cauchy.py#L32",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2051"
   }
 }

@@ -212,22 +212,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2, 3, 2, 4, 1])"
+                "text": "a = fnp.array([1, 2, 3, 2, 4, 1])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([3, 4, 5, 6])"
+                "text": "b = fnp.array([3, 4, 5, 6])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.setdiff1d(a, b)"
+                "text": "fnp.setdiff1d(a, b)"
               },
               {
                 "kind": "output",
@@ -245,20 +245,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.setdiff1d",
     "module": "numpy",
     "name": "setdiff1d",
     "notes": "Set difference; cost = (n+m)*ceil(log2(n+m)).",
     "numpy_ref": "np.setdiff1d",
-    "signature": "we.setdiff1d(ar1, ar2, assume_unique=False)",
+    "signature": "fnp.setdiff1d(ar1, ar2, assume_unique=False)",
     "status": "supported",
     "summary": "Find the set difference of two arrays.",
-    "weight": 1.0,
-    "whest_ref": "we.setdiff1d"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "setdiff1d",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L1177",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L442"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L442",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_arraysetops_impl.py#L1120"
   }
 }

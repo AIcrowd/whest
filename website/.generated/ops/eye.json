@@ -329,7 +329,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/identity",
-              "label": "we.identity",
+              "label": "fnp.identity",
               "original_target": "identity",
               "role": "",
               "target": "identity",
@@ -345,7 +345,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/diag",
-              "label": "we.diag",
+              "label": "fnp.diag",
               "original_target": "diag",
               "role": "",
               "target": "diag",
@@ -364,12 +364,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.eye(2, dtype=int)"
+              "text": "fnp.eye(2, dtype=int)"
             },
             {
               "kind": "output",
@@ -382,7 +382,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.eye(3, k=1)"
+              "text": "fnp.eye(3, k=1)"
             },
             {
               "kind": "output",
@@ -414,16 +414,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.eye(2, dtype=int)\n\nwe.eye(3, k=1)",
+    "code": "import flopscope as fnp\n\nfnp.eye(2, dtype=int)\n\nfnp.eye(3, k=1)",
     "output": "array([[1, 0],\n       [0, 1]])\n\narray([[0.,  1.,  0.],\n       [0.,  0.,  1.],\n       [0.,  0.,  0.]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.eye",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L77",
   "href": "/docs/api/ops/eye/",
   "module": "numpy",
   "name": "eye",
   "next": {
     "href": "/docs/api/ops/fabs/",
-    "label": "we.fabs"
+    "label": "fnp.fabs"
   },
   "notes": "Create identity matrix.",
   "notes_sections": [],
@@ -479,11 +482,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -493,7 +496,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/extract/",
-    "label": "we.extract"
+    "label": "fnp.extract"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.eye.html",
@@ -518,7 +521,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/identity",
-      "label": "we.identity",
+      "label": "fnp.identity",
       "original_target": "identity",
       "role": "",
       "target": "identity",
@@ -534,19 +537,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/diag",
-      "label": "we.diag",
+      "label": "fnp.diag",
       "original_target": "diag",
       "role": "",
       "target": "diag",
       "unresolved": false
     }
   ],
-  "signature": "we.eye(N, M=None, k=0, dtype=<class 'float'>, order='C', *, device=None, like=None)",
+  "signature": "fnp.eye(N, M=None, k=0, dtype=<class 'float'>, order='C', *, device=None, like=None)",
   "slug": "eye",
   "summary": "Return a 2-D array with ones on the diagonal and zeros elsewhere.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L163",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.eye",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L77"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L176",
+  "weight": 0.0
 }

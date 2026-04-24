@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect only the shared libraries needed by Python + whest + pyzmq.
+"""Collect only the shared libraries needed by Python + flopscope + pyzmq.
 
 Imports all packages, finds loaded .so files, uses ldd to trace system
 library dependencies, then copies them into an output directory preserving
@@ -27,7 +27,7 @@ def main() -> None:
     import msgpack  # noqa: F401
     import zmq  # noqa: F401
 
-    import whest  # noqa: F401
+    import flopscope  # noqa: F401
 
     # Collect all loaded .so paths
     so_files = set()

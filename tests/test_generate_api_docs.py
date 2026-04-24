@@ -46,7 +46,7 @@ def test_per_op_detail_payloads_exist_for_index_entries():
         assert payload["detail_href"] == entry["detail_href"]
         assert payload["detail_json_href"] == entry["detail_json_href"]
         assert payload["op"]["name"] == name
-        assert payload["op"]["whest_ref"] == entry["whest_ref"]
+        assert payload["op"]["flopscope_ref"] == entry["flopscope_ref"]
         assert payload["docs"]["sections"], (
             f"{name} detail payload should contain docs sections"
         )

@@ -133,7 +133,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isrealobj",
-              "label": "we.isrealobj",
+              "label": "fnp.isrealobj",
               "original_target": "isrealobj",
               "role": "",
               "target": "isrealobj",
@@ -144,7 +144,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/iscomplex",
-              "label": "we.iscomplex",
+              "label": "fnp.iscomplex",
               "original_target": "iscomplex",
               "role": "",
               "target": "iscomplex",
@@ -163,12 +163,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.iscomplexobj(1)"
+              "text": "fnp.iscomplexobj(1)"
             },
             {
               "kind": "output",
@@ -177,7 +177,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.iscomplexobj(1+0j)"
+              "text": "fnp.iscomplexobj(1+0j)"
             },
             {
               "kind": "output",
@@ -186,7 +186,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.iscomplexobj([3, 1+0j, True])"
+              "text": "fnp.iscomplexobj([3, 1+0j, True])"
             },
             {
               "kind": "output",
@@ -210,16 +210,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.iscomplexobj(1)\n\nwe.iscomplexobj(1+0j)\n\nwe.iscomplexobj([3, 1+0j, True])",
+    "code": "import flopscope as fnp\n\nfnp.iscomplexobj(1)\n\nfnp.iscomplexobj(1+0j)\n\nfnp.iscomplexobj([3, 1+0j, True])",
     "output": "False\n\nTrue\n\nTrue",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.iscomplexobj",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/iscomplexobj/",
   "module": "numpy",
   "name": "iscomplexobj",
   "next": {
     "href": "/docs/api/ops/isdtype/",
-    "label": "we.isdtype"
+    "label": "fnp.isdtype"
   },
   "notes": "Return True if input is a complex type or array.",
   "notes_sections": [],
@@ -235,7 +238,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/iscomplex/",
-    "label": "we.iscomplex"
+    "label": "fnp.iscomplex"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iscomplexobj.html",
@@ -255,7 +258,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isrealobj",
-      "label": "we.isrealobj",
+      "label": "fnp.isrealobj",
       "original_target": "isrealobj",
       "role": "",
       "target": "isrealobj",
@@ -266,19 +269,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/iscomplex",
-      "label": "we.iscomplex",
+      "label": "fnp.iscomplex",
       "original_target": "iscomplex",
       "role": "",
       "target": "iscomplex",
       "unresolved": false
     }
   ],
-  "signature": "we.iscomplexobj(x)",
+  "signature": "fnp.iscomplexobj(x)",
   "slug": "iscomplexobj",
   "summary": "Check for a complex type or an array of complex numbers.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L270",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.iscomplexobj",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_type_check_impl.py#L270",
+  "weight": 1.0
 }

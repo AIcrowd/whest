@@ -336,7 +336,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "mask_func(we.ones((n, n)), k)"
+                        "text": "mask_func(fnp.ones((n, n)), k)"
                       },
                       {
                         "kind": "text",
@@ -362,7 +362,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "mask_func(we.ones((n, n)), k)"
+                    "text": "mask_func(fnp.ones((n, n)), k)"
                   },
                   {
                     "kind": "text",
@@ -388,7 +388,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/triu",
-                "label": "we.triu",
+                "label": "fnp.triu",
                 "original_target": "triu",
                 "role": "",
                 "target": "triu",
@@ -399,7 +399,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/tril",
-                "label": "we.tril",
+                "label": "fnp.tril",
                 "original_target": "tril",
                 "role": "",
                 "target": "tril",
@@ -410,7 +410,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/triu_indices",
-                "label": "we.triu_indices",
+                "label": "fnp.triu_indices",
                 "original_target": "triu_indices",
                 "role": "",
                 "target": "triu_indices",
@@ -421,7 +421,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/tril_indices",
-                "label": "we.tril_indices",
+                "label": "fnp.tril_indices",
                 "original_target": "tril_indices",
                 "role": "",
                 "target": "tril_indices",
@@ -440,7 +440,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -459,7 +459,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "iu = we.mask_indices(3, we.triu)"
+                "text": "iu = fnp.mask_indices(3, fnp.triu)"
               }
             ],
             "type": "doctest_block"
@@ -486,7 +486,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(9).reshape(3, 3)"
+                "text": "a = fnp.arange(9).reshape(3, 3)"
               },
               {
                 "kind": "input",
@@ -531,7 +531,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "iu1 = we.mask_indices(3, we.triu, 1)"
+                "text": "iu1 = fnp.mask_indices(3, fnp.triu, 1)"
               }
             ],
             "type": "doctest_block"
@@ -568,20 +568,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.mask_indices",
     "module": "numpy",
     "name": "mask_indices",
     "notes": "Return indices of mask for n x n array. Cost: numel(output).",
     "numpy_ref": "np.mask_indices",
-    "signature": "we.mask_indices(n, mask_func, k=0)",
+    "signature": "fnp.mask_indices(n, mask_func, k=0)",
     "status": "supported",
     "summary": "Return the indices to access (n, n) arrays, given a masking function.",
-    "weight": 4.0,
-    "whest_ref": "we.mask_indices"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "mask_indices",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L825",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1142"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1142",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L838"
   }
 }

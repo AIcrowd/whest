@@ -642,17 +642,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([0, 1, 2, 3])"
+                "text": "x = fnp.array([0, 1, 2, 3])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.array([-1, 0.2, 0.9, 2.1])"
+                "text": "y = fnp.array([-1, 0.2, 0.9, 2.1])"
               }
             ],
             "type": "doctest_block"
@@ -720,7 +720,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = we.vstack([x, we.ones(len(x))]).T"
+                "text": "A = fnp.vstack([x, fnp.ones(len(x))]).T"
               },
               {
                 "kind": "input",
@@ -751,7 +751,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "m, c = we.linalg.lstsq(A, y)[0]"
+                "text": "m, c = fnp.linalg.lstsq(A, y)[0]"
               },
               {
                 "kind": "input",
@@ -813,20 +813,20 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
+    "flopscope_ref": "fnp.linalg.lstsq",
     "module": "numpy.linalg",
     "name": "linalg.lstsq",
     "notes": "Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD).",
     "numpy_ref": "np.linalg.lstsq",
-    "signature": "we.linalg.lstsq(a, b, rcond=None)",
+    "signature": "fnp.linalg.lstsq(a, b, rcond=None)",
     "status": "supported",
     "summary": "Return the least-squares solution to a linear matrix equation.",
-    "weight": 4.0,
-    "whest_ref": "we.linalg.lstsq"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "linalg-lstsq",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2394",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L147"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L147",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L2417"
   }
 }

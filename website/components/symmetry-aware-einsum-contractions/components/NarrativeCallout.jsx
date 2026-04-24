@@ -1,7 +1,7 @@
 import InlineMathText from './InlineMathText.jsx';
 
 // NarrativeCallout — four tones, four distinct patterns from the
-// design-system reference (preview/components.html + Whest Einsum
+// design-system reference (preview/components.html + Flopscope Einsum
 // Explorer.html). The previous implementation wrapped all three in
 // the same shadcn Card shell (ExplorerSectionCard: ring-1 + border +
 // bg + CardHeader), which made short editorial observations read as

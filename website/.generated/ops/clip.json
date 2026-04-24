@@ -44,7 +44,7 @@
             },
             {
               "kind": "code",
-              "text": "we.minimum(a_max, we.maximum(a, a_min))"
+              "text": "fnp.minimum(a_max, fnp.maximum(a, a_min))"
             },
             {
               "kind": "text",
@@ -646,12 +646,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(10)"
+              "text": "a = fnp.arange(10)"
             },
             {
               "kind": "input",
@@ -665,7 +665,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.clip(a, 1, 8)"
+              "text": "fnp.clip(a, 1, 8)"
             },
             {
               "kind": "output",
@@ -674,7 +674,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.clip(a, 8, 1)"
+              "text": "fnp.clip(a, 8, 1)"
             },
             {
               "kind": "output",
@@ -683,7 +683,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.clip(a, 3, 6, out=a)"
+              "text": "fnp.clip(a, 3, 6, out=a)"
             },
             {
               "kind": "output",
@@ -701,7 +701,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(10)"
+              "text": "a = fnp.arange(10)"
             },
             {
               "kind": "input",
@@ -715,7 +715,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)"
+              "text": "fnp.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)"
             },
             {
               "kind": "output",
@@ -746,16 +746,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.arange(10)\n\na\n\nwe.clip(a, 1, 8)\n\nwe.clip(a, 8, 1)\n\nwe.clip(a, 3, 6, out=a)\n\na\n\na = we.arange(10)\n\na\n\nwe.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)",
+    "code": "import flopscope as fnp\n\na = fnp.arange(10)\n\na\n\nfnp.clip(a, 1, 8)\n\nfnp.clip(a, 8, 1)\n\nfnp.clip(a, 3, 6, out=a)\n\na\n\na = fnp.arange(10)\n\na\n\nfnp.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)",
     "output": "array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([1, 1, 2, 3, 4, 5, 6, 7, 8, 8])\n\narray([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])\n\narray([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])\n\narray([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])\n\narray([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.clip",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L655",
   "href": "/docs/api/ops/clip/",
   "module": "numpy",
   "name": "clip",
   "next": {
     "href": "/docs/api/ops/column_stack/",
-    "label": "we.column_stack"
+    "label": "fnp.column_stack"
   },
   "notes": "Clip array to [a_min, a_max] element-wise.",
   "notes_sections": [
@@ -811,7 +814,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/choose/",
-    "label": "we.choose"
+    "label": "fnp.choose"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.clip.html",
@@ -839,12 +842,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.clip(a, a_min=<no value>, a_max=<no value>, out=None, *, min=<no value>, max=<no value>, **kwargs)",
+  "signature": "fnp.clip(a, a_min=<no value>, a_max=<no value>, out=None, *, min=<no value>, max=<no value>, **kwargs)",
   "slug": "clip",
   "summary": "Clip (limit) the values in an array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2241",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.clip",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L655"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L2207",
+  "weight": 1.0
 }

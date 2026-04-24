@@ -3,7 +3,7 @@ import SymmetryAwareEinsumContractionsApp from '@/components/symmetry-aware-eins
 
 export const metadata: Metadata = {
   title: 'Symmetry Aware Einsum Contractions',
-  description: 'Interactive walkthrough of whest symmetry detection for einsum contractions.',
+  description: 'Interactive walkthrough of flopscope symmetry detection for einsum contractions.',
 };
 
 export default function Page() {

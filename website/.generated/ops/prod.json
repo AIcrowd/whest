@@ -461,12 +461,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([536870910, 536870910, 536870910, 536870910])"
+              "text": "x = fnp.array([536870910, 536870910, 536870910, 536870910])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(x)"
+              "text": "fnp.prod(x)"
             },
             {
               "kind": "output",
@@ -489,7 +489,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod([])"
+              "text": "fnp.prod([])"
             },
             {
               "kind": "output",
@@ -517,12 +517,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod([1.,2.])"
+              "text": "fnp.prod([1.,2.])"
             },
             {
               "kind": "output",
@@ -545,12 +545,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1., 2.], [3., 4.]])"
+              "text": "a = fnp.array([[1., 2.], [3., 4.]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(a)"
+              "text": "fnp.prod(a)"
             },
             {
               "kind": "output",
@@ -573,7 +573,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(a, axis=1)"
+              "text": "fnp.prod(a, axis=1)"
             },
             {
               "kind": "output",
@@ -582,7 +582,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(a, axis=0)"
+              "text": "fnp.prod(a, axis=0)"
             },
             {
               "kind": "output",
@@ -605,7 +605,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod([1., we.nan, 3.], where=[True, False, True])"
+              "text": "fnp.prod([1., fnp.nan, 3.], where=[True, False, True])"
             },
             {
               "kind": "output",
@@ -636,12 +636,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([1, 2, 3], dtype=we.uint8)"
+              "text": "x = fnp.array([1, 2, 3], dtype=fnp.uint8)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(x).dtype == we.uint"
+              "text": "fnp.prod(x).dtype == fnp.uint"
             },
             {
               "kind": "output",
@@ -672,12 +672,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([1, 2, 3], dtype=we.int8)"
+              "text": "x = fnp.array([1, 2, 3], dtype=fnp.int8)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod(x).dtype == int"
+              "text": "fnp.prod(x).dtype == int"
             },
             {
               "kind": "output",
@@ -700,7 +700,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.prod([1, 2], initial=5)"
+              "text": "fnp.prod([1, 2], initial=5)"
             },
             {
               "kind": "output",
@@ -731,23 +731,26 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.prod([1.,2.])\n\na = we.array([[1., 2.], [3., 4.]])\n\nwe.prod(a)\n\nwe.prod(a, axis=1)\n\nwe.prod(a, axis=0)\n\nwe.prod([1., we.nan, 3.], where=[True, False, True])\n\nx = we.array([1, 2, 3], dtype=we.uint8)\n\nwe.prod(x).dtype == we.uint\n\nx = we.array([1, 2, 3], dtype=we.int8)\n\nwe.prod(x).dtype == int\n\nwe.prod([1, 2], initial=5)",
+    "code": "import flopscope as fnp\n\nfnp.prod([1.,2.])\n\na = fnp.array([[1., 2.], [3., 4.]])\n\nfnp.prod(a)\n\nfnp.prod(a, axis=1)\n\nfnp.prod(a, axis=0)\n\nfnp.prod([1., fnp.nan, 3.], where=[True, False, True])\n\nx = fnp.array([1, 2, 3], dtype=fnp.uint8)\n\nfnp.prod(x).dtype == fnp.uint\n\nx = fnp.array([1, 2, 3], dtype=fnp.int8)\n\nfnp.prod(x).dtype == int\n\nfnp.prod([1, 2], initial=5)",
     "output": "2.0\n\n24.0\n\narray([  2.,  12.])\n\narray([3., 8.])\n\n3.0\n\nTrue\n\nTrue\n\n10",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.prod",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
   "href": "/docs/api/ops/prod/",
   "module": "numpy",
   "name": "prod",
   "next": {
     "href": "/docs/api/ops/promote_types/",
-    "label": "we.promote_types"
+    "label": "fnp.promote_types"
   },
   "notes": "Product of array elements.",
   "notes_sections": [
     "Arithmetic is modular when using integer types, and no error is raised on overflow.  That means that, on a 32-bit platform:",
-    ">>> x = we.array([536870910, 536870910, 536870910, 536870910]) >>> we.prod(x) 16 # may vary",
+    ">>> x = fnp.array([536870910, 536870910, 536870910, 536870910]) >>> fnp.prod(x) 16 # may vary",
     "The product of an empty array is the neutral element 1:",
-    ">>> we.prod([]) 1.0"
+    ">>> fnp.prod([]) 1.0"
   ],
   "numpy_ref": "np.prod",
   "parameters": [
@@ -810,7 +813,7 @@
     },
     {
       "body": [
-        "The starting value for this product. See `~we.ufunc.reduce`",
+        "The starting value for this product. See `~fnp.ufunc.reduce`",
         "for details."
       ],
       "name": "initial",
@@ -818,7 +821,7 @@
     },
     {
       "body": [
-        "Elements to include in the product. See `~we.ufunc.reduce`",
+        "Elements to include in the product. See `~fnp.ufunc.reduce`",
         "for details."
       ],
       "name": "where",
@@ -827,7 +830,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/power/",
-    "label": "we.power"
+    "label": "fnp.power"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.prod.html",
@@ -870,12 +873,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.prod(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+  "signature": "fnp.prod(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "prod",
   "summary": "Return the product of array elements over a given axis.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3328",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.prod",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L3287",
+  "weight": 1.0
 }

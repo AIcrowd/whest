@@ -164,7 +164,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "isin(a, b, invert=True)",
-                      "text": "we.isin(a, b, invert=True)"
+                      "text": "fnp.isin(a, b, invert=True)"
                     },
                     {
                       "kind": "text",
@@ -172,7 +172,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.invert(we.isin(a, b))"
+                      "text": "fnp.invert(fnp.isin(a, b))"
                     },
                     {
                       "kind": "text",
@@ -201,7 +201,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "isin(a, b, invert=True)",
-                  "text": "we.isin(a, b, invert=True)"
+                  "text": "fnp.isin(a, b, invert=True)"
                 },
                 {
                   "kind": "text",
@@ -209,7 +209,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.invert(we.isin(a, b))"
+                  "text": "fnp.invert(fnp.isin(a, b))"
                 },
                 {
                   "kind": "text",
@@ -474,7 +474,7 @@
               "href": "",
               "kind": "link",
               "target": "array([item in b for item in a])",
-              "text": "we.array([item in b for item in a])"
+              "text": "fnp.array([item in b for item in a])"
             },
             {
               "kind": "text",
@@ -606,12 +606,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "element = 2*we.arange(4).reshape((2, 2))"
+              "text": "element = 2*fnp.arange(4).reshape((2, 2))"
             },
             {
               "kind": "input",
@@ -634,7 +634,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "mask = we.isin(element, test_elements)"
+              "text": "mask = fnp.isin(element, test_elements)"
             },
             {
               "kind": "input",
@@ -686,7 +686,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nonzero(mask)"
+              "text": "fnp.nonzero(mask)"
             },
             {
               "kind": "output",
@@ -709,7 +709,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "mask = we.isin(element, test_elements, invert=True)"
+              "text": "mask = fnp.isin(element, test_elements, invert=True)"
             },
             {
               "kind": "input",
@@ -766,7 +766,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isin(element, test_set)"
+              "text": "fnp.isin(element, test_set)"
             },
             {
               "kind": "output",
@@ -793,7 +793,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isin(element, list(test_set))"
+              "text": "fnp.isin(element, list(test_set))"
             },
             {
               "kind": "output",
@@ -821,20 +821,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nelement = 2*we.arange(4).reshape((2, 2))\n\nelement\n\ntest_elements = [1, 2, 4, 8]\n\nmask = we.isin(element, test_elements)\n\nmask\n\nelement[mask]\n\nwe.nonzero(mask)\n\nmask = we.isin(element, test_elements, invert=True)\n\nmask\n\nelement[mask]\n\ntest_set = {1, 2, 4, 8}\n\nwe.isin(element, test_set)\n\nwe.isin(element, list(test_set))",
+    "code": "import flopscope as fnp\n\nelement = 2*fnp.arange(4).reshape((2, 2))\n\nelement\n\ntest_elements = [1, 2, 4, 8]\n\nmask = fnp.isin(element, test_elements)\n\nmask\n\nelement[mask]\n\nfnp.nonzero(mask)\n\nmask = fnp.isin(element, test_elements, invert=True)\n\nmask\n\nelement[mask]\n\ntest_set = {1, 2, 4, 8}\n\nfnp.isin(element, test_set)\n\nfnp.isin(element, list(test_set))",
     "output": "array([[0, 2],\n       [4, 6]])\n\narray([[False,  True],\n       [ True, False]])\n\narray([2, 4])\n\n(array([0, 1]), array([1, 0]))\n\narray([[ True, False],\n       [False,  True]])\n\narray([0, 6])\n\narray([[False, False],\n       [False, False]])\n\narray([[False,  True],\n       [ True, False]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.isin",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L390",
   "href": "/docs/api/ops/isin/",
   "module": "numpy",
   "name": "isin",
   "next": {
     "href": "/docs/api/ops/isinf/",
-    "label": "we.isinf"
+    "label": "fnp.isinf"
   },
   "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
   "notes_sections": [
-    "`isin` is an element-wise function version of the python keyword `in`. ``isin(a, b)`` is roughly equivalent to ``we.array([item in b for item in a])`` if `a` and `b` are 1-D sequences.",
+    "`isin` is an element-wise function version of the python keyword `in`. ``isin(a, b)`` is roughly equivalent to ``fnp.array([item in b for item in a])`` if `a` and `b` are 1-D sequences.",
     "`element` and `test_elements` are converted to arrays if they are not already. If `test_elements` is a set (or other non-sequence collection) it will be converted to an object array with one element, rather than an array of the values contained in `test_elements`. This is a consequence of the `array` constructor's way of handling non-sequence collections. Converting the set to a list usually gives the desired behavior.",
     "Using ``kind='table'`` tends to be faster than `kind='sort'` if the following relationship is true: ``log10(len(test_elements)) > (log10(max(test_elements)-min(test_elements)) - 2.27) / 0.927``, but may use greater memory. The default value for `kind` will be automatically selected based only on memory usage, so one may manually set ``kind='table'`` if memory constraints can be relaxed."
   ],
@@ -868,8 +871,8 @@
       "body": [
         "If True, the values in the returned array are inverted, as if",
         "calculating `element not in test_elements`. Default is False.",
-        "``we.isin(a, b, invert=True)`` is equivalent to (but faster",
-        "than) ``we.invert(we.isin(a, b))``."
+        "``fnp.isin(a, b, invert=True)`` is equivalent to (but faster",
+        "than) ``fnp.invert(fnp.isin(a, b))``."
       ],
       "name": "invert",
       "type": "bool, optional"
@@ -902,7 +905,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/isfortran/",
-    "label": "we.isfortran"
+    "label": "fnp.isfortran"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isin.html",
@@ -917,12 +920,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.isin(element, test_elements, assume_unique=False, invert=False, *, kind=None)",
+  "signature": "fnp.isin(element, test_elements, assume_unique=False, invert=False, *, kind=None)",
   "slug": "isin",
   "summary": "Calculates ``element in test_elements``, broadcasting over `element` only. Returns a boolean array of the same shape as `element` that is True where an element of `element` is in `test_elements` and False otherwise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L1015",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.isin",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L390"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_arraysetops_impl.py#L958",
+  "weight": 1.0
 }

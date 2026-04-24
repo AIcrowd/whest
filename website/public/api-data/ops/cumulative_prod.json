@@ -30,7 +30,7 @@
                 "href": "/docs/api/ops/cumprod",
                 "kind": "link",
                 "target": "cumprod",
-                "text": "we.cumprod"
+                "text": "fnp.cumprod"
               },
               {
                 "kind": "text",
@@ -409,12 +409,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2, 3])"
+                "text": "a = fnp.array([1, 2, 3])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cumulative_prod(a)  # intermediate results 1, 1*2"
+                "text": "fnp.cumulative_prod(a)  # intermediate results 1, 1*2"
               },
               {
                 "kind": "input",
@@ -428,12 +428,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2, 3, 4, 5, 6])"
+                "text": "a = fnp.array([1, 2, 3, 4, 5, 6])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cumulative_prod(a, dtype=float) # specify type of output"
+                "text": "fnp.cumulative_prod(a, dtype=float) # specify type of output"
               },
               {
                 "kind": "output",
@@ -464,12 +464,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([[1, 2, 3], [4, 5, 6]])"
+                "text": "b = fnp.array([[1, 2, 3], [4, 5, 6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cumulative_prod(b, axis=0)"
+                "text": "fnp.cumulative_prod(b, axis=0)"
               },
               {
                 "kind": "output",
@@ -504,7 +504,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cumulative_prod(b, axis=1)"
+                "text": "fnp.cumulative_prod(b, axis=1)"
               },
               {
                 "kind": "output",
@@ -526,20 +526,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.cumulative_prod",
     "module": "numpy",
     "name": "cumulative_prod",
     "notes": "Cumulative product (NumPy 2.x array API).",
     "numpy_ref": "np.cumulative_prod",
-    "signature": "we.cumulative_prod(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
+    "signature": "fnp.cumulative_prod(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
     "status": "supported",
     "summary": "Return the cumulative product of elements along a given axis.",
-    "weight": 1.0,
-    "whest_ref": "we.cumulative_prod"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "cumulative_prod",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2713",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L2672"
   }
 }

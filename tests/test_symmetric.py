@@ -6,15 +6,15 @@ import numpy
 import numpy as np
 import pytest
 
-from whest._budget import BudgetContext
-from whest._perm_group import PermutationGroup
-from whest._symmetric import (
+from flopscope._budget import BudgetContext
+from flopscope._perm_group import PermutationGroup
+from flopscope._symmetric import (
     SymmetricTensor,
     SymmetryInfo,
     as_symmetric,
     symmetrize,
 )
-from whest.errors import SymmetryError
+from flopscope.errors import SymmetryError
 
 
 class TestSymmetryInfo:
@@ -167,13 +167,12 @@ class TestSymmetricTensor:
 
 
 class TestPublicAPI:
-    def test_import_from_whest(self):
-        import whest as we
-
-        assert hasattr(we, "SymmetricTensor")
-        assert hasattr(we, "SymmetryInfo")
-        assert hasattr(we, "as_symmetric")
-        assert hasattr(we, "symmetrize")
+    def test_import_from_flopscope(self):
+        import flopscope as flops
+        assert hasattr(flops, "SymmetricTensor")
+        assert hasattr(flops, "SymmetryInfo")
+        assert hasattr(flops, "as_symmetric")
+        assert hasattr(flops, "symmetrize")
 
     def test_symmetrize(self):
         group = PermutationGroup.symmetric(2, axes=(0, 1))
@@ -191,15 +190,15 @@ class TestPublicAPI:
             symmetrize(np.ones((2, 3)), PermutationGroup.symmetric(2, axes=(0, 1)))
 
     def test_random_symmetric(self):
-        import whest as we
-
+        import flopscope as flops
+        import flopscope.numpy as fnp
         group = PermutationGroup.symmetric(2, axes=(0, 1))
-        S = we.random.symmetric((4, 4), group)
+        S = fnp.random.symmetric((4, 4), group)
         assert isinstance(S, SymmetricTensor)
         assert S.is_symmetric((0, 1))
 
     def test_import_symmetry_info_from_flops(self):
-        from whest.flops import SymmetryInfo
+        from flopscope.accounting import SymmetryInfo
 
         assert SymmetryInfo is not None
 
@@ -207,61 +206,61 @@ class TestPublicAPI:
 class TestEndToEnd:
     def test_covprop_workflow(self):
         """Simulate a covprop-like workflow: build covariance, do pointwise, solve."""
-        import whest as we
-
+        import flopscope as flops
+        import flopscope.numpy as fnp
         n, d = 5, 20
         X = numpy.random.randn(d, n)
 
         with BudgetContext(flop_budget=10**8, quiet=True) as budget:
             # Build symmetric covariance: X^T X -> symmetric
-            cov = we.einsum("ki,kj->ij", X, X, symmetric_axes=[(0, 1)])
+            cov = fnp.einsum("ki,kj->ij", X, X, symmetric_axes=[(0, 1)])
             assert isinstance(cov, SymmetricTensor)
             cov_cost = budget.flops_used
 
             # Pointwise on symmetric matrix — should get savings
             before = budget.flops_used
-            exp_cov = we.exp(cov)
+            exp_cov = fnp.exp(cov)
             pointwise_cost_actual = budget.flops_used - before
             assert isinstance(exp_cov, SymmetricTensor)
             assert pointwise_cost_actual == n * (n + 1) // 2  # 15
 
             # Solve with symmetric matrix — should use Cholesky cost
             # Make it positive definite first
-            cov_pd = cov + we.multiply(
-                we.as_symmetric(numpy.eye(n), symmetric_axes=(0, 1)),
+            cov_pd = cov + fnp.multiply(
+                flops.as_symmetric(numpy.eye(n), symmetric_axes=(0, 1)),
                 numpy.asarray(float(n)),
             )
             b = numpy.ones(n)
             before = budget.flops_used
-            x = we.linalg.solve(cov_pd, b)
+            x = fnp.linalg.solve(cov_pd, b)
             solve_cost_actual = budget.flops_used - before
             assert not isinstance(x, SymmetricTensor)
             assert solve_cost_actual == n**3  # simplified to n^3
 
     def test_symmetry_preserved_through_chain(self):
         """Chain of unary ops preserves symmetry."""
-        import whest as we
-
+        import flopscope as flops
+        import flopscope.numpy as fnp
         data = numpy.eye(4) + 0.5
-        S = we.as_symmetric(data, symmetric_axes=(0, 1))
+        S = flops.as_symmetric(data, symmetric_axes=(0, 1))
 
         with BudgetContext(flop_budget=10**8, quiet=True):
-            r1 = we.exp(S)
+            r1 = fnp.exp(S)
             assert isinstance(r1, SymmetricTensor)
-            r2 = we.log(r1)
+            r2 = fnp.log(r1)
             assert isinstance(r2, SymmetricTensor)
-            r3 = we.sqrt(we.abs(r2))
+            r3 = fnp.sqrt(fnp.abs(r2))
             assert isinstance(r3, SymmetricTensor)
 
     def test_symmetry_lost_on_matmul(self):
         """Matmul does not preserve symmetry."""
-        import whest as we
-
-        A = we.as_symmetric(numpy.eye(3), symmetric_axes=(0, 1))
+        import flopscope as flops
+        import flopscope.numpy as fnp
+        A = flops.as_symmetric(numpy.eye(3), symmetric_axes=(0, 1))
         B = numpy.ones((3, 3))
 
         with BudgetContext(flop_budget=10**8, quiet=True):
-            result = we.einsum("ij,jk->ik", A, B)
+            result = fnp.einsum("ij,jk->ik", A, B)
             assert not isinstance(result, SymmetricTensor)
 
 

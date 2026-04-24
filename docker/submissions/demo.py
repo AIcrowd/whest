@@ -1,12 +1,12 @@
 """
-Demo: A participant's submission that uses whest exactly like they would locally.
+Demo: A participant's submission that uses flopscope exactly like they would locally.
 This runs inside a container with NO numpy installed.
 """
 
-import whest as we
-
+import flopscope as flops
+import flopscope.numpy as fnp
 print("=" * 60)
-print("  Whest Client-Server Demo")
+print("  Flopscope Client-Server Demo")
 print("  (this container has NO numpy installed)")
 print("=" * 60)
 
@@ -18,16 +18,16 @@ try:
 except ImportError:
     print("\nConfirmed: numpy is NOT installed in this container")
 
-print(f"whest version: {we.__version__}")
+print(f"flopscope version: {flops.__version__}")
 print()
 
-with we.BudgetContext(flop_budget=1_000_000) as budget:
+with flops.BudgetContext(flop_budget=1_000_000) as budget:
     # ---- 1. Basic array creation ----
     print("--- 1. Array Creation ---")
-    x = we.zeros((4, 4))
+    x = fnp.zeros((4, 4))
     print(f"zeros(4,4) shape={x.shape} dtype={x.dtype}")
 
-    W = we.array(
+    W = fnp.array(
         [
             [1.0, 0.0, 0.0, 0.0],
             [0.0, 2.0, 0.0, 0.0],
@@ -45,18 +45,18 @@ with we.BudgetContext(flop_budget=1_000_000) as budget:
     output_dim = 16
 
     # Create random input and weights
-    x = we.random.randn(batch_size, input_dim)
-    W = we.random.randn(output_dim, input_dim)
-    b = we.zeros((output_dim,))
+    x = fnp.random.randn(batch_size, input_dim)
+    W = fnp.random.randn(output_dim, input_dim)
+    b = fnp.zeros((output_dim,))
 
     print(f"Input:   x.shape={x.shape}")
     print(f"Weights: W.shape={W.shape}")
     print(f"Bias:    b.shape={b.shape}")
 
     # Forward pass: y = ReLU(Wx + b)
-    h = we.einsum("oi,bi->bo", W, x)  # matrix multiply
-    h = we.add(h, b)  # add bias
-    y = we.maximum(h, we.zeros_like(h))  # ReLU
+    h = fnp.einsum("oi,bi->bo", W, x)  # matrix multiply
+    h = fnp.add(h, b)  # add bias
+    y = fnp.maximum(h, fnp.zeros_like(h))  # ReLU
 
     print(f"Output:  y.shape={y.shape}")
     print(f"FLOPs used: {budget.flops_used:,}")
@@ -64,8 +64,8 @@ with we.BudgetContext(flop_budget=1_000_000) as budget:
 
     # ---- 3. Python operators work! ----
     print("\n--- 3. Python Operators ---")
-    a = we.array([1.0, 2.0, 3.0, 4.0])
-    b = we.array([10.0, 20.0, 30.0, 40.0])
+    a = fnp.array([1.0, 2.0, 3.0, 4.0])
+    b = fnp.array([10.0, 20.0, 30.0, 40.0])
 
     print(f"a = {a}")
     print(f"b = {b}")
@@ -78,14 +78,14 @@ with we.BudgetContext(flop_budget=1_000_000) as budget:
     print("\n--- 4. Comparisons & Reductions ---")
     mask = a > 2.0
     print(f"a > 2.0 = {mask}")
-    print(f"sum(a) = {float(we.sum(a))}")
-    print(f"mean(a) = {float(we.mean(a))}")
+    print(f"sum(a) = {float(fnp.sum(a))}")
+    print(f"mean(a) = {float(fnp.mean(a))}")
     print(f"max(a) = {float(a.max())}")
     print(f"min(a) = {float(a.min())}")
 
     # ---- 5. Methods on arrays ----
     print("\n--- 5. Array Methods ---")
-    M = we.array([[1.0, 2.0], [3.0, 4.0]])
+    M = fnp.array([[1.0, 2.0], [3.0, 4.0]])
     print(f"M = {M}")
     print(f"M.T = {M.T}")
     print(f"M.reshape(4) = {M.reshape(4)}")
@@ -94,7 +94,7 @@ with we.BudgetContext(flop_budget=1_000_000) as budget:
 
     # ---- 6. Indexing ----
     print("\n--- 6. Indexing ---")
-    v = we.array([50.0, 40.0, 30.0, 20.0, 10.0])
+    v = fnp.array([50.0, 40.0, 30.0, 20.0, 10.0])
     print(f"v = {v}")
     print(f"v[0] = {v[0]}")
     print(f"v[-1] = {v[-1]}")
@@ -107,8 +107,8 @@ with we.BudgetContext(flop_budget=1_000_000) as budget:
 
     # ---- 8. SVD ----
     print("\n--- 8. Linear Algebra (SVD) ---")
-    A = we.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
-    U, S, Vt = we.linalg.svd(A)
+    A = fnp.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
+    U, S, Vt = fnp.linalg.svd(A)
     print(f"A.shape = {A.shape}")
     print(f"U.shape = {U.shape}")
     print(f"S = {S}")

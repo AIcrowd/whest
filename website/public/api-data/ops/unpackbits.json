@@ -297,7 +297,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/packbits",
-                "label": "we.packbits",
+                "label": "fnp.packbits",
                 "original_target": "packbits",
                 "role": "",
                 "target": "packbits",
@@ -316,12 +316,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[2], [7], [23]], dtype=we.uint8)"
+                "text": "a = fnp.array([[2], [7], [23]], dtype=fnp.uint8)"
               },
               {
                 "kind": "input",
@@ -343,7 +343,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.unpackbits(a, axis=1)"
+                "text": "b = fnp.unpackbits(a, axis=1)"
               },
               {
                 "kind": "input",
@@ -365,7 +365,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.unpackbits(a, axis=1, count=-3)"
+                "text": "c = fnp.unpackbits(a, axis=1, count=-3)"
               },
               {
                 "kind": "input",
@@ -392,12 +392,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p = we.packbits(b, axis=0)"
+                "text": "p = fnp.packbits(b, axis=0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unpackbits(p, axis=0)"
+                "text": "fnp.unpackbits(p, axis=0)"
               },
               {
                 "kind": "output",
@@ -434,7 +434,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array_equal(b, we.unpackbits(p, axis=0, count=b.shape[0]))"
+                "text": "fnp.array_equal(b, fnp.unpackbits(p, axis=0, count=b.shape[0]))"
               },
               {
                 "kind": "output",
@@ -452,20 +452,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.unpackbits",
     "module": "numpy",
     "name": "unpackbits",
     "notes": "Unpack elements of array into bits. Cost: numel(input).",
     "numpy_ref": "np.unpackbits",
-    "signature": "we.unpackbits(a, *args, **kwargs)",
+    "signature": "fnp.unpackbits(a, *args, **kwargs)",
     "status": "supported",
     "summary": "Unpacks elements of a uint8 array into a binary-valued output array.",
-    "weight": 1.0,
-    "whest_ref": "we.unpackbits"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "unpackbits",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unpackbits.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1497"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1497",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unpackbits.html"
   }
 }

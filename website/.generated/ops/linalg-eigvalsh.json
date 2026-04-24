@@ -255,7 +255,7 @@
               "href": "",
               "kind": "link",
               "target": "linalg",
-              "text": "we.linalg"
+              "text": "fnp.linalg"
             },
             {
               "kind": "text",
@@ -299,7 +299,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -309,7 +309,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, -2j], [2j, 5]])"
+              "text": "a = fnp.array([[1, -2j], [2j, 5]])"
             },
             {
               "kind": "input",
@@ -333,7 +333,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[5+2j, 9-2j], [0+2j, 2-1j]])"
+              "text": "a = fnp.array([[5+2j, 9-2j], [0+2j, 2-1j]])"
             },
             {
               "kind": "input",
@@ -361,7 +361,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])"
+              "text": "b = fnp.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])"
             },
             {
               "kind": "input",
@@ -389,11 +389,16 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "wa; wb"
+              "text": "wa"
             },
             {
               "kind": "output",
               "text": "array([1., 6.])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "wb"
             },
             {
               "kind": "output",
@@ -417,20 +422,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nfrom numpy import linalg as LA\n\na = we.array([[1, -2j], [2j, 5]])\n\nLA.eigvalsh(a)\n\na = we.array([[5+2j, 9-2j], [0+2j, 2-1j]])\n\na\n\nb = we.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])\n\nb\n\nwa = LA.eigvalsh(a)\n\nwb = LA.eigvals(b)\n\nwa; wb",
-    "output": "array([ 0.17157288,  5.82842712]) # may vary\n\narray([[5.+2.j, 9.-2.j],\n       [0.+2.j, 2.-1.j]])\n\narray([[5.+0.j, 0.-2.j],\n       [0.+2.j, 2.+0.j]])\n\narray([1., 6.])\narray([6.+0.j, 1.+0.j])",
+    "code": "import flopscope as fnp\n\nfrom numpy import linalg as LA\n\na = fnp.array([[1, -2j], [2j, 5]])\n\nLA.eigvalsh(a)\n\na = fnp.array([[5+2j, 9-2j], [0+2j, 2-1j]])\n\na\n\nb = fnp.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])\n\nb\n\nwa = LA.eigvalsh(a)\n\nwb = LA.eigvals(b)\n\nwa\n\nwb",
+    "output": "array([ 0.17157288,  5.82842712]) # may vary\n\narray([[5.+2.j, 9.-2.j],\n       [0.+2.j, 2.-1.j]])\n\narray([[5.+0.j, 0.-2.j],\n       [0.+2.j, 2.+0.j]])\n\narray([1., 6.])\n\narray([6.+0.j, 1.+0.j])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.eigvalsh",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L230",
   "href": "/docs/api/ops/linalg-eigvalsh/",
   "module": "numpy.linalg",
   "name": "linalg.eigvalsh",
   "next": {
     "href": "/docs/api/ops/linalg-inv/",
-    "label": "we.linalg.inv"
+    "label": "fnp.linalg.inv"
   },
   "notes": "Symmetric eigenvalues. Cost: $n^3$.",
   "notes_sections": [
-    "Broadcasting rules apply, see the `we.linalg` documentation for details.",
+    "Broadcasting rules apply, see the `fnp.linalg` documentation for details.",
     "The eigenvalues are computed using LAPACK routines ``_syevd``, ``_heevd``."
   ],
   "numpy_ref": "np.linalg.eigvalsh",
@@ -458,7 +466,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-eigvals/",
-    "label": "we.linalg.eigvals"
+    "label": "fnp.linalg.eigvals"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvalsh.html",
@@ -538,12 +546,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.eigvalsh(a, UPLO='L')",
+  "signature": "fnp.linalg.eigvalsh(a, UPLO='L')",
   "slug": "linalg-eigvalsh",
   "summary": "Compute the eigenvalues of a complex Hermitian or real symmetric matrix.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1229",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.eigvalsh",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L230"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L1265",
+  "weight": 4.0
 }

@@ -310,7 +310,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/sin",
-                "label": "we.sin",
+                "label": "fnp.sin",
                 "original_target": "sin",
                 "role": "",
                 "target": "sin",
@@ -321,7 +321,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/cos",
-                "label": "we.cos",
+                "label": "fnp.cos",
                 "original_target": "cos",
                 "role": "",
                 "target": "cos",
@@ -332,7 +332,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/arccos",
-                "label": "we.arccos",
+                "label": "fnp.arccos",
                 "original_target": "arccos",
                 "role": "",
                 "target": "arccos",
@@ -343,7 +343,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/tan",
-                "label": "we.tan",
+                "label": "fnp.tan",
                 "original_target": "tan",
                 "role": "",
                 "target": "tan",
@@ -354,7 +354,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/arctan",
-                "label": "we.arctan",
+                "label": "fnp.arctan",
                 "original_target": "arctan",
                 "role": "",
                 "target": "arctan",
@@ -365,7 +365,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/arctan2",
-                "label": "we.arctan2",
+                "label": "fnp.arctan2",
                 "original_target": "arctan2",
                 "role": "",
                 "target": "arctan2",
@@ -549,12 +549,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arcsin(1)     # pi/2"
+                "text": "fnp.arcsin(1)     # pi/2"
               },
               {
                 "kind": "output",
@@ -563,7 +563,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arcsin(-1)    # -pi/2"
+                "text": "fnp.arcsin(-1)    # -pi/2"
               },
               {
                 "kind": "output",
@@ -572,7 +572,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arcsin(0)"
+                "text": "fnp.arcsin(0)"
               },
               {
                 "kind": "output",
@@ -590,20 +590,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.arcsin",
     "module": "numpy",
     "name": "arcsin",
     "notes": "Element-wise inverse sine.",
     "numpy_ref": "np.arcsin",
-    "signature": "we.arcsin(x)",
+    "signature": "fnp.arcsin(x)",
     "status": "supported",
     "summary": "Inverse sine, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.arcsin"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "arcsin",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

@@ -415,7 +415,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/left_shift",
-                "label": "we.left_shift",
+                "label": "fnp.left_shift",
                 "original_target": "left_shift",
                 "role": "",
                 "target": "left_shift",
@@ -450,12 +450,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.binary_repr(10)"
+                "text": "fnp.binary_repr(10)"
               },
               {
                 "kind": "output",
@@ -464,7 +464,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.right_shift(10, 1)"
+                "text": "fnp.right_shift(10, 1)"
               },
               {
                 "kind": "output",
@@ -473,7 +473,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.binary_repr(5)"
+                "text": "fnp.binary_repr(5)"
               },
               {
                 "kind": "output",
@@ -487,7 +487,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.right_shift(10, [1,2,3])"
+                "text": "fnp.right_shift(10, [1,2,3])"
               },
               {
                 "kind": "output",
@@ -515,7 +515,7 @@
                 "href": "/docs/api/ops/right_shift",
                 "kind": "link",
                 "target": "right_shift",
-                "text": "we.right_shift"
+                "text": "fnp.right_shift"
               },
               {
                 "kind": "text",
@@ -534,7 +534,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.array([1,2,3])"
+                "text": "x2 = fnp.array([1,2,3])"
               },
               {
                 "kind": "input",
@@ -557,20 +557,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.right_shift",
     "module": "numpy",
     "name": "right_shift",
     "notes": "Element-wise right bit shift (legacy name).",
     "numpy_ref": "np.right_shift",
-    "signature": "we.right_shift(x, y)",
+    "signature": "fnp.right_shift(x, y)",
     "status": "supported",
     "summary": "Shift the bits of an integer to the right.",
-    "weight": 1.0,
-    "whest_ref": "we.right_shift"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "right_shift",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

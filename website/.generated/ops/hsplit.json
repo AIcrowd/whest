@@ -94,7 +94,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/split",
-              "label": "we.split",
+              "label": "fnp.split",
               "original_target": "split",
               "role": "",
               "target": "split",
@@ -113,12 +113,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(16.0).reshape(4, 4)"
+              "text": "x = fnp.arange(16.0).reshape(4, 4)"
             },
             {
               "kind": "input",
@@ -144,7 +144,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.hsplit(x, 2)"
+              "text": "fnp.hsplit(x, 2)"
             },
             {
               "kind": "output",
@@ -181,7 +181,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.hsplit(x, we.array([3, 6]))"
+              "text": "fnp.hsplit(x, fnp.array([3, 6]))"
             },
             {
               "kind": "output",
@@ -236,7 +236,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(8.0).reshape(2, 2, 2)"
+              "text": "x = fnp.arange(8.0).reshape(2, 2, 2)"
             },
             {
               "kind": "input",
@@ -262,7 +262,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.hsplit(x, 2)"
+              "text": "fnp.hsplit(x, 2)"
             },
             {
               "kind": "output",
@@ -297,12 +297,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([0, 1, 2, 3, 4, 5])"
+              "text": "x = fnp.array([0, 1, 2, 3, 4, 5])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.hsplit(x, 2)"
+              "text": "fnp.hsplit(x, 2)"
             },
             {
               "kind": "output",
@@ -326,16 +326,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(16.0).reshape(4, 4)\n\nx\n\nwe.hsplit(x, 2)\n\nwe.hsplit(x, we.array([3, 6]))\n\nx = we.arange(8.0).reshape(2, 2, 2)\n\nx\n\nwe.hsplit(x, 2)\n\nx = we.array([0, 1, 2, 3, 4, 5])\n\nwe.hsplit(x, 2)",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(16.0).reshape(4, 4)\n\nx\n\nfnp.hsplit(x, 2)\n\nfnp.hsplit(x, fnp.array([3, 6]))\n\nx = fnp.arange(8.0).reshape(2, 2, 2)\n\nx\n\nfnp.hsplit(x, 2)\n\nx = fnp.array([0, 1, 2, 3, 4, 5])\n\nfnp.hsplit(x, 2)",
     "output": "array([[ 0.,   1.,   2.,   3.],\n       [ 4.,   5.,   6.,   7.],\n       [ 8.,   9.,  10.,  11.],\n       [12.,  13.,  14.,  15.]])\n\n[array([[  0.,   1.],\n       [  4.,   5.],\n       [  8.,   9.],\n       [12.,  13.]]),\n array([[  2.,   3.],\n       [  6.,   7.],\n       [10.,  11.],\n       [14.,  15.]])]\n\n[array([[ 0.,   1.,   2.],\n       [ 4.,   5.,   6.],\n       [ 8.,   9.,  10.],\n       [12.,  13.,  14.]]),\n array([[ 3.],\n       [ 7.],\n       [11.],\n       [15.]]),\n array([], shape=(4, 0), dtype=float64)]\n\narray([[[0.,  1.],\n        [2.,  3.]],\n       [[4.,  5.],\n        [6.,  7.]]])\n\n[array([[[0.,  1.]],\n       [[4.,  5.]]]),\n array([[[2.,  3.]],\n       [[6.,  7.]]])]\n\n[array([0, 1, 2]), array([3, 4, 5])]",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.hsplit",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L297",
   "href": "/docs/api/ops/hsplit/",
   "module": "numpy",
   "name": "hsplit",
   "next": {
     "href": "/docs/api/ops/hstack/",
-    "label": "we.hstack"
+    "label": "fnp.hstack"
   },
   "notes": "Split array into columns.",
   "notes_sections": [],
@@ -343,7 +346,7 @@
   "parameters": [],
   "previous": {
     "href": "/docs/api/ops/histogramdd/",
-    "label": "we.histogramdd"
+    "label": "fnp.histogramdd"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.hsplit.html",
@@ -359,19 +362,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/split",
-      "label": "we.split",
+      "label": "fnp.split",
       "original_target": "split",
       "role": "",
       "target": "split",
       "unresolved": false
     }
   ],
-  "signature": "we.hsplit(ary, indices_or_sections)",
+  "signature": "fnp.hsplit(ary, indices_or_sections)",
   "slug": "hsplit",
   "summary": "Split an array into multiple sub-arrays horizontally (column-wise).",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L886",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.hsplit",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L297"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L881",
+  "weight": 0.0
 }

@@ -202,7 +202,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/ravel_multi_index",
-                "label": "we.ravel_multi_index",
+                "label": "fnp.ravel_multi_index",
                 "original_target": "ravel_multi_index",
                 "role": "",
                 "target": "ravel_multi_index",
@@ -221,12 +221,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unravel_index([22, 41, 37], (7,6))"
+                "text": "fnp.unravel_index([22, 41, 37], (7,6))"
               },
               {
                 "kind": "output",
@@ -235,7 +235,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unravel_index([31, 41, 13], (7,6), order='F')"
+                "text": "fnp.unravel_index([31, 41, 13], (7,6), order='F')"
               },
               {
                 "kind": "output",
@@ -249,7 +249,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unravel_index(1621, (6,7,8,9))"
+                "text": "fnp.unravel_index(1621, (6,7,8,9))"
               },
               {
                 "kind": "output",
@@ -267,20 +267,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.unravel_index",
     "module": "numpy",
     "name": "unravel_index",
     "notes": "Convert flat index to multi-dimensional index.",
     "numpy_ref": "np.unravel_index",
-    "signature": "we.unravel_index(*args, **kwargs)",
+    "signature": "fnp.unravel_index(indices, shape, order='C')",
     "status": "supported",
     "summary": "Converts a flat index or array of flat indices into a tuple of coordinate arrays.",
-    "weight": 0.0,
-    "whest_ref": "we.unravel_index"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "unravel_index",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unravel_index.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1518"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1518",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unravel_index.html"
   }
 }

@@ -243,7 +243,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/triu",
-                "label": "we.triu",
+                "label": "fnp.triu",
                 "original_target": "triu",
                 "role": "",
                 "target": "triu",
@@ -262,12 +262,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tril([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)"
+                "text": "fnp.tril([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)"
               },
               {
                 "kind": "output",
@@ -293,7 +293,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tril(we.arange(3*4*5).reshape(3, 4, 5))"
+                "text": "fnp.tril(fnp.arange(3*4*5).reshape(3, 4, 5))"
               },
               {
                 "kind": "output",
@@ -355,20 +355,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.tril",
     "module": "numpy",
     "name": "tril",
     "notes": "Lower triangle of array.",
     "numpy_ref": "np.tril",
-    "signature": "we.tril(m, k=0)",
+    "signature": "fnp.tril(m, k=0)",
     "status": "supported",
     "summary": "Lower triangle of an array.",
-    "weight": 0.0,
-    "whest_ref": "we.tril"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "tril",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L441",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L452"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L452",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L454"
   }
 }

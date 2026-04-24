@@ -113,7 +113,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.multinomial`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.multinomial`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           },
@@ -404,7 +404,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.multinomial(20, [1/6.]*6, size=1)"
+                "text": "fnp.random.multinomial(20, [1/6.]*6, size=1)"
               },
               {
                 "kind": "output",
@@ -436,7 +436,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.multinomial(20, [1/6.]*6, size=2)"
+                "text": "fnp.random.multinomial(20, [1/6.]*6, size=2)"
               },
               {
                 "kind": "output",
@@ -472,7 +472,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.multinomial(100, [1/7.]*5 + [2/7.])"
+                "text": "fnp.random.multinomial(100, [1/7.]*5 + [2/7.])"
               },
               {
                 "kind": "output",
@@ -495,7 +495,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.multinomial(100, [1.0 / 3, 2.0 / 3])  # RIGHT"
+                "text": "fnp.random.multinomial(100, [1.0 / 3, 2.0 / 3])  # RIGHT"
               },
               {
                 "kind": "output",
@@ -518,7 +518,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.multinomial(100, [1.0, 2.0])  # WRONG"
+                "text": "fnp.random.multinomial(100, [1.0, 2.0])  # WRONG"
               },
               {
                 "kind": "output",
@@ -540,20 +540,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.multinomial",
     "module": "numpy.random",
     "name": "random.multinomial",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.multinomial",
-    "signature": "we.random.multinomial(n, pvals, size=None)",
+    "signature": "fnp.random.multinomial(n, pvals, size=None)",
     "status": "supported",
     "summary": "Draw samples from a multinomial distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.multinomial"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-multinomial",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.multinomial.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.multinomial.html"
   }
 }

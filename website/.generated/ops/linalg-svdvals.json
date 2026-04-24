@@ -47,7 +47,7 @@
               "href": "",
               "kind": "link",
               "target": "svdvals(x)",
-              "text": "we.svdvals(x)"
+              "text": "fnp.svdvals(x)"
             },
             {
               "kind": "text",
@@ -58,7 +58,7 @@
               "href": "",
               "kind": "link",
               "target": "svd(x, compute_uv=False, hermitian=False)",
-              "text": "we.svd(x, compute_uv=False, hermitian=False)"
+              "text": "fnp.svd(x, compute_uv=False, hermitian=False)"
             },
             {
               "kind": "text",
@@ -169,7 +169,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.svdvals([[1, 2, 3, 4, 5],"
+              "text": "fnp.linalg.svdvals([[1, 2, 3, 4, 5],"
             },
             {
               "kind": "input",
@@ -202,7 +202,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.linalg.svdvals([[1, 2, 3],"
+              "text": "s = fnp.linalg.svdvals([[1, 2, 3],"
             },
             {
               "kind": "input",
@@ -221,7 +221,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.count_nonzero(s > 1e-10)  # Matrix of rank 2"
+              "text": "fnp.count_nonzero(s > 1e-10)  # Matrix of rank 2"
             },
             {
               "kind": "output",
@@ -245,16 +245,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.linalg.svdvals([[1, 2, 3, 4, 5],\n                   [1, 4, 9, 16, 25],\n                   [1, 8, 27, 64, 125]])\n\ns = we.linalg.svdvals([[1, 2, 3],\n                       [2, 4, 6],\n                       [-1, 1, -1]]); s\n\nwe.count_nonzero(s > 1e-10)  # Matrix of rank 2",
+    "code": "fnp.linalg.svdvals([[1, 2, 3, 4, 5],\n                   [1, 4, 9, 16, 25],\n                   [1, 8, 27, 64, 125]])\n\ns = fnp.linalg.svdvals([[1, 2, 3],\n                       [2, 4, 6],\n                       [-1, 1, -1]]); s\n\nfnp.count_nonzero(s > 1e-10)  # Matrix of rank 2",
     "output": "array([146.68862757,   5.57510612,   0.60393245])\n\narray([8.38434191e+00, 1.64402274e+00, 2.31534378e-16])\n\n2",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.svdvals",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L274",
   "href": "/docs/api/ops/linalg-svdvals/",
   "module": "numpy.linalg",
   "name": "linalg.svdvals",
   "next": {
     "href": "/docs/api/ops/linalg-tensordot/",
-    "label": "we.linalg.tensordot"
+    "label": "fnp.linalg.tensordot"
   },
   "notes": "Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch).",
   "notes_sections": [],
@@ -272,7 +275,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-svd/",
-    "label": "we.linalg.svd"
+    "label": "fnp.linalg.svd"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.svdvals.html",
@@ -304,12 +307,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.svdvals(x, /, *, k: 'int | None' = None)",
+  "signature": "fnp.linalg.svdvals(x, /, *, k: 'int | None' = None)",
   "slug": "linalg-svdvals",
   "summary": "Returns the singular values of a matrix (or a stack of matrices) ``x``. When x is a stack of matrices, the function will compute the singular values for each matrix in the stack.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1831",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.svdvals",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L274"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L1860",
+  "weight": 4.0
 }

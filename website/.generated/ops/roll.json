@@ -203,7 +203,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/rollaxis",
-              "label": "we.rollaxis",
+              "label": "fnp.rollaxis",
               "original_target": "rollaxis",
               "role": "",
               "target": "rollaxis",
@@ -236,17 +236,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(10)"
+              "text": "x = fnp.arange(10)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roll(x, 2)"
+              "text": "fnp.roll(x, 2)"
             },
             {
               "kind": "output",
@@ -255,7 +255,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roll(x, -2)"
+              "text": "fnp.roll(x, -2)"
             },
             {
               "kind": "output",
@@ -269,7 +269,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = we.reshape(x, (2, 5))"
+              "text": "x2 = fnp.reshape(x, (2, 5))"
             },
             {
               "kind": "input",
@@ -287,7 +287,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roll(x2, 1)"
+              "text": "fnp.roll(x2, 1)"
             },
             {
               "kind": "output",
@@ -300,7 +300,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roll(x2, -1)"
+              "text": "fnp.roll(x2, -1)"
             },
             {
               "kind": "output",
@@ -313,7 +313,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roll(x2, 1, axis=0)"
+              "text": "fnp.roll(x2, 1, axis=0)"
             },
             {
               "kind": "output",
@@ -326,7 +326,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roll(x2, -1, axis=0)"
+              "text": "fnp.roll(x2, -1, axis=0)"
             },
             {
               "kind": "output",
@@ -339,7 +339,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roll(x2, 1, axis=1)"
+              "text": "fnp.roll(x2, 1, axis=1)"
             },
             {
               "kind": "output",
@@ -352,7 +352,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roll(x2, -1, axis=1)"
+              "text": "fnp.roll(x2, -1, axis=1)"
             },
             {
               "kind": "output",
@@ -365,7 +365,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roll(x2, (1, 1), axis=(1, 0))"
+              "text": "fnp.roll(x2, (1, 1), axis=(1, 0))"
             },
             {
               "kind": "output",
@@ -378,7 +378,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roll(x2, (2, 1), axis=(1, 0))"
+              "text": "fnp.roll(x2, (2, 1), axis=(1, 0))"
             },
             {
               "kind": "output",
@@ -406,16 +406,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(10)\n\nwe.roll(x, 2)\n\nwe.roll(x, -2)\n\nx2 = we.reshape(x, (2, 5))\n\nx2\n\nwe.roll(x2, 1)\n\nwe.roll(x2, -1)\n\nwe.roll(x2, 1, axis=0)\n\nwe.roll(x2, -1, axis=0)\n\nwe.roll(x2, 1, axis=1)\n\nwe.roll(x2, -1, axis=1)\n\nwe.roll(x2, (1, 1), axis=(1, 0))\n\nwe.roll(x2, (2, 1), axis=(1, 0))",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(10)\n\nfnp.roll(x, 2)\n\nfnp.roll(x, -2)\n\nx2 = fnp.reshape(x, (2, 5))\n\nx2\n\nfnp.roll(x2, 1)\n\nfnp.roll(x2, -1)\n\nfnp.roll(x2, 1, axis=0)\n\nfnp.roll(x2, -1, axis=0)\n\nfnp.roll(x2, 1, axis=1)\n\nfnp.roll(x2, -1, axis=1)\n\nfnp.roll(x2, (1, 1), axis=(1, 0))\n\nfnp.roll(x2, (2, 1), axis=(1, 0))",
     "output": "array([8, 9, 0, 1, 2, 3, 4, 5, 6, 7])\n\narray([2, 3, 4, 5, 6, 7, 8, 9, 0, 1])\n\narray([[0, 1, 2, 3, 4],\n       [5, 6, 7, 8, 9]])\n\narray([[9, 0, 1, 2, 3],\n       [4, 5, 6, 7, 8]])\n\narray([[1, 2, 3, 4, 5],\n       [6, 7, 8, 9, 0]])\n\narray([[5, 6, 7, 8, 9],\n       [0, 1, 2, 3, 4]])\n\narray([[5, 6, 7, 8, 9],\n       [0, 1, 2, 3, 4]])\n\narray([[4, 0, 1, 2, 3],\n       [9, 5, 6, 7, 8]])\n\narray([[1, 2, 3, 4, 0],\n       [6, 7, 8, 9, 5]])\n\narray([[9, 5, 6, 7, 8],\n       [4, 0, 1, 2, 3]])\n\narray([[8, 9, 5, 6, 7],\n       [3, 4, 0, 1, 2]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.roll",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L416",
   "href": "/docs/api/ops/roll/",
   "module": "numpy",
   "name": "roll",
   "next": {
     "href": "/docs/api/ops/rollaxis/",
-    "label": "we.rollaxis"
+    "label": "fnp.rollaxis"
   },
   "notes": "Roll array elements along axis. Cost: numel(output).",
   "notes_sections": [
@@ -453,7 +456,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/rint/",
-    "label": "we.rint"
+    "label": "fnp.rint"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.roll.html",
@@ -477,19 +480,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/rollaxis",
-      "label": "we.rollaxis",
+      "label": "fnp.rollaxis",
       "original_target": "rollaxis",
       "role": "",
       "target": "rollaxis",
       "unresolved": false
     }
   ],
-  "signature": "we.roll(a, shift, axis=None)",
+  "signature": "fnp.roll(a, shift, axis=None)",
   "slug": "roll",
   "summary": "Roll array elements along a given axis.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1185",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.roll",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L416"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L1230",
+  "weight": 1.0
 }

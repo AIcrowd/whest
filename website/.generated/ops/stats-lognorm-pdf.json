@@ -161,12 +161,15 @@
     "unsupported_directives": []
   },
   "example": null,
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.stats.lognorm.pdf",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_lognorm.py#L43",
   "href": "/docs/api/ops/stats-lognorm-pdf/",
-  "module": "whest.stats",
+  "module": "flopscope.stats",
   "name": "stats.lognorm.pdf",
   "next": {
     "href": "/docs/api/ops/stats-lognorm-ppf/",
-    "label": "we.stats.lognorm.ppf"
+    "label": "fnp.stats.lognorm.ppf"
   },
   "notes": "Log-normal PDF; cost = numel(input).",
   "notes_sections": [],
@@ -204,7 +207,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/stats-lognorm-cdf/",
-    "label": "we.stats.lognorm.cdf"
+    "label": "fnp.stats.lognorm.cdf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html",
@@ -218,12 +221,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.stats.lognorm.pdf(x, s, loc=0, scale=1)",
+  "signature": "fnp.stats.lognorm.pdf(x, s, loc=0, scale=1)",
   "slug": "stats-lognorm-pdf",
   "summary": "Probability density function at x of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.stats.lognorm.pdf",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_lognorm.py#L43"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2051",
+  "weight": 16.0
 }

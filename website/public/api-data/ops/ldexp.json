@@ -402,7 +402,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/frexp",
-                "label": "we.frexp",
+                "label": "fnp.frexp",
                 "original_target": "frexp",
                 "role": "",
                 "target": "frexp",
@@ -470,12 +470,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ldexp(5, we.arange(4))"
+                "text": "fnp.ldexp(5, fnp.arange(4))"
               },
               {
                 "kind": "output",
@@ -489,12 +489,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(6)"
+                "text": "x = fnp.arange(6)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ldexp(*we.frexp(x))"
+                "text": "fnp.ldexp(*fnp.frexp(x))"
               },
               {
                 "kind": "output",
@@ -512,20 +512,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.ldexp",
     "module": "numpy",
     "name": "ldexp",
     "notes": "Return x1 * 2**x2 element-wise.",
     "numpy_ref": "np.ldexp",
-    "signature": "we.ldexp(x, y)",
+    "signature": "fnp.ldexp(x, y)",
     "status": "supported",
     "summary": "Returns x1 * 2**x2, element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.ldexp"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "ldexp",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

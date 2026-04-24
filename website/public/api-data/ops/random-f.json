@@ -106,7 +106,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.f`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.f`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -211,7 +211,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.broadcast(dfnum, dfden).size"
+                        "text": "fnp.broadcast(dfnum, dfden).size"
                       },
                       {
                         "kind": "text",
@@ -269,7 +269,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.broadcast(dfnum, dfden).size"
+                    "text": "fnp.broadcast(dfnum, dfden).size"
                   },
                   {
                     "kind": "text",
@@ -450,7 +450,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.f(dfnum, dfden, 1000)"
+                "text": "s = fnp.random.f(dfnum, dfden, 1000)"
               }
             ],
             "type": "doctest_block"
@@ -469,7 +469,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(s)[-10]"
+                "text": "fnp.sort(s)[-10]"
               },
               {
                 "kind": "output",
@@ -496,20 +496,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.f",
     "module": "numpy.random",
     "name": "random.f",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.f",
-    "signature": "we.random.f(dfnum, dfden, size=None)",
+    "signature": "fnp.random.f(dfnum, dfden, size=None)",
     "status": "supported",
     "summary": "Draw samples from an F distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.f"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-f",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.f.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.f.html"
   }
 }

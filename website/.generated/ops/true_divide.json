@@ -419,12 +419,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.divide(2.0, 4.0)"
+              "text": "fnp.divide(2.0, 4.0)"
             },
             {
               "kind": "output",
@@ -433,17 +433,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.arange(9.0).reshape((3, 3))"
+              "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = we.arange(3.0)"
+              "text": "x2 = fnp.arange(3.0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.divide(x1, x2)"
+              "text": "fnp.divide(x1, x2)"
             },
             {
               "kind": "output",
@@ -479,7 +479,7 @@
               "href": "/docs/api/ops/divide",
               "kind": "link",
               "target": "divide",
-              "text": "we.divide"
+              "text": "fnp.divide"
             },
             {
               "kind": "text",
@@ -493,12 +493,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.arange(9.0).reshape((3, 3))"
+              "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = 2 * we.ones(3)"
+              "text": "x2 = 2 * fnp.ones(3)"
             },
             {
               "kind": "input",
@@ -542,16 +542,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.divide(2.0, 4.0)\n\nx1 = we.arange(9.0).reshape((3, 3))\n\nx2 = we.arange(3.0)\n\nwe.divide(x1, x2)\n\nx1 = we.arange(9.0).reshape((3, 3))\n\nx2 = 2 * we.ones(3)\n\nx1 / x2",
+    "code": "import flopscope as fnp\n\nfnp.divide(2.0, 4.0)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = fnp.arange(3.0)\n\nfnp.divide(x1, x2)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = 2 * fnp.ones(3)\n\nx1 / x2",
     "output": "0.5\n\narray([[nan, 1. , 1. ],\n       [inf, 4. , 2.5],\n       [inf, 7. , 4. ]])\n\narray([[0. , 0.5, 1. ],\n       [1.5, 2. , 2.5],\n       [3. , 3.5, 4. ]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.true_divide",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
   "href": "/docs/api/ops/true_divide/",
   "module": "numpy",
   "name": "true_divide",
   "next": {
     "href": "/docs/api/ops/trunc/",
-    "label": "we.trunc"
+    "label": "fnp.trunc"
   },
   "notes": "Element-wise true division (explicit).",
   "notes_sections": [
@@ -609,7 +612,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/triu_indices_from/",
-    "label": "we.triu_indices_from"
+    "label": "fnp.triu_indices_from"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.true_divide.html",
@@ -641,12 +644,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.true_divide(x, y)",
+  "signature": "fnp.true_divide(x, y)",
   "slug": "true_divide",
   "summary": "Divide arguments element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.true_divide",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

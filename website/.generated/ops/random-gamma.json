@@ -100,7 +100,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.gamma`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.gamma`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -208,7 +208,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(shape, scale).size"
+                      "text": "fnp.broadcast(shape, scale).size"
                     },
                     {
                       "kind": "text",
@@ -269,7 +269,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(shape, scale).size"
+                  "text": "fnp.broadcast(shape, scale).size"
                 },
                 {
                   "kind": "text",
@@ -459,7 +459,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.gamma(shape, scale, 1000)"
+              "text": "s = fnp.random.gamma(shape, scale, 1000)"
             }
           ],
           "type": "doctest_block"
@@ -493,7 +493,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = bins**(shape-1)*(we.exp(-bins/scale) /  # doctest: +SKIP"
+              "text": "y = bins**(shape-1)*(fnp.exp(-bins/scale) /  # doctest: +SKIP"
             },
             {
               "kind": "input",
@@ -537,16 +537,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "shape, scale = 2., 2.  # mean=4, std=2*sqrt(2)\n\ns = we.random.gamma(shape, scale, 1000)\n\nimport matplotlib.pyplot as plt\n\nimport scipy.special as sps  # doctest: +SKIP\n\ncount, bins, ignored = plt.hist(s, 50, density=True)\n\ny = bins**(shape-1)*(we.exp(-bins/scale) /  # doctest: +SKIP\n                     (sps.gamma(shape)*scale**shape))\n\nplt.plot(bins, y, linewidth=2, color='r')  # doctest: +SKIP\n\nplt.show()",
+    "code": "shape, scale = 2., 2.  # mean=4, std=2*sqrt(2)\n\ns = fnp.random.gamma(shape, scale, 1000)\n\nimport matplotlib.pyplot as plt\n\nimport scipy.special as sps  # doctest: +SKIP\n\ncount, bins, ignored = plt.hist(s, 50, density=True)\n\ny = bins**(shape-1)*(fnp.exp(-bins/scale) /  # doctest: +SKIP\n                     (sps.gamma(shape)*scale**shape))\n\nplt.plot(bins, y, linewidth=2, color='r')  # doctest: +SKIP\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.gamma",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-gamma/",
   "module": "numpy.random",
   "name": "random.gamma",
   "next": {
     "href": "/docs/api/ops/random-geometric/",
-    "label": "we.random.geometric"
+    "label": "fnp.random.geometric"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -577,7 +580,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``shape`` and ``scale`` are both scalars.",
-        "Otherwise, ``we.broadcast(shape, scale).size`` samples are drawn."
+        "Otherwise, ``fnp.broadcast(shape, scale).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -585,7 +588,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-f/",
-    "label": "we.random.f"
+    "label": "fnp.random.f"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.gamma.html",
@@ -632,12 +635,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.gamma(shape, scale=1.0, size=None)",
+  "signature": "fnp.random.gamma(shape, scale=1.0, size=None)",
   "slug": "random-gamma",
   "summary": "Draw samples from a Gamma distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.gamma",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

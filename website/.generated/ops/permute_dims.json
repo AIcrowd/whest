@@ -27,7 +27,7 @@
             },
             {
               "kind": "code",
-              "text": "we.atleast_2d(a).T"
+              "text": "fnp.atleast_2d(a).T"
             },
             {
               "kind": "text",
@@ -35,7 +35,7 @@
             },
             {
               "kind": "code",
-              "text": "a[:, we.newaxis]"
+              "text": "a[:, fnp.newaxis]"
             },
             {
               "kind": "text",
@@ -229,7 +229,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/moveaxis",
-              "label": "we.moveaxis",
+              "label": "fnp.moveaxis",
               "original_target": "moveaxis",
               "role": "",
               "target": "moveaxis",
@@ -245,7 +245,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/argsort",
-              "label": "we.argsort",
+              "label": "fnp.argsort",
               "original_target": "argsort",
               "role": "",
               "target": "argsort",
@@ -294,12 +294,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 2], [3, 4]])"
+              "text": "a = fnp.array([[1, 2], [3, 4]])"
             },
             {
               "kind": "input",
@@ -317,7 +317,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.transpose(a)"
+              "text": "fnp.transpose(a)"
             },
             {
               "kind": "output",
@@ -335,7 +335,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([1, 2, 3, 4])"
+              "text": "a = fnp.array([1, 2, 3, 4])"
             },
             {
               "kind": "input",
@@ -349,7 +349,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.transpose(a)"
+              "text": "fnp.transpose(a)"
             },
             {
               "kind": "output",
@@ -363,12 +363,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.ones((1, 2, 3))"
+              "text": "a = fnp.ones((1, 2, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.transpose(a, (1, 0, 2)).shape"
+              "text": "fnp.transpose(a, (1, 0, 2)).shape"
             },
             {
               "kind": "output",
@@ -382,12 +382,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.ones((2, 3, 4, 5))"
+              "text": "a = fnp.ones((2, 3, 4, 5))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.transpose(a).shape"
+              "text": "fnp.transpose(a).shape"
             },
             {
               "kind": "output",
@@ -401,12 +401,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(3*4*5).reshape((3, 4, 5))"
+              "text": "a = fnp.arange(3*4*5).reshape((3, 4, 5))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.transpose(a, (-1, 0, -2)).shape"
+              "text": "fnp.transpose(a, (-1, 0, -2)).shape"
             },
             {
               "kind": "output",
@@ -437,16 +437,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[1, 2], [3, 4]])\n\na\n\nwe.transpose(a)\n\na = we.array([1, 2, 3, 4])\n\na\n\nwe.transpose(a)\n\na = we.ones((1, 2, 3))\n\nwe.transpose(a, (1, 0, 2)).shape\n\na = we.ones((2, 3, 4, 5))\n\nwe.transpose(a).shape\n\na = we.arange(3*4*5).reshape((3, 4, 5))\n\nwe.transpose(a, (-1, 0, -2)).shape",
+    "code": "import flopscope as fnp\n\na = fnp.array([[1, 2], [3, 4]])\n\na\n\nfnp.transpose(a)\n\na = fnp.array([1, 2, 3, 4])\n\na\n\nfnp.transpose(a)\n\na = fnp.ones((1, 2, 3))\n\nfnp.transpose(a, (1, 0, 2)).shape\n\na = fnp.ones((2, 3, 4, 5))\n\nfnp.transpose(a).shape\n\na = fnp.arange(3*4*5).reshape((3, 4, 5))\n\nfnp.transpose(a, (-1, 0, -2)).shape",
     "output": "array([[1, 2],\n       [3, 4]])\n\narray([[1, 3],\n       [2, 4]])\n\narray([1, 2, 3, 4])\n\narray([1, 2, 3, 4])\n\n(2, 1, 3)\n\n(5, 4, 3, 2)\n\n(5, 3, 4)",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.permute_dims",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1231",
   "href": "/docs/api/ops/permute_dims/",
   "module": "numpy",
   "name": "permute_dims",
   "next": {
     "href": "/docs/api/ops/piecewise/",
-    "label": "we.piecewise"
+    "label": "fnp.piecewise"
   },
   "notes": "Permute dimensions (NumPy 2.x array API).",
   "notes_sections": [
@@ -476,7 +479,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/percentile/",
-    "label": "we.percentile"
+    "label": "fnp.percentile"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.permute_dims.html",
@@ -516,7 +519,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/moveaxis",
-      "label": "we.moveaxis",
+      "label": "fnp.moveaxis",
       "original_target": "moveaxis",
       "role": "",
       "target": "moveaxis",
@@ -532,19 +535,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/argsort",
-      "label": "we.argsort",
+      "label": "fnp.argsort",
       "original_target": "argsort",
       "role": "",
       "target": "argsort",
       "unresolved": false
     }
   ],
-  "signature": "we.permute_dims(a, axes=None)",
+  "signature": "fnp.permute_dims(a, axes=None)",
   "slug": "permute_dims",
   "summary": "Returns an array with axes transposed.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L630",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.permute_dims",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1231"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L604",
+  "weight": 0.0
 }

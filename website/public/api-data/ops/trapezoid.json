@@ -367,7 +367,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/sum",
-                "label": "we.sum",
+                "label": "fnp.sum",
                 "original_target": "sum",
                 "role": "",
                 "target": "sum",
@@ -378,7 +378,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/cumsum",
-                "label": "we.cumsum",
+                "label": "fnp.cumsum",
                 "original_target": "cumsum",
                 "role": "",
                 "target": "cumsum",
@@ -458,7 +458,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -477,7 +477,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trapezoid([1, 2, 3])"
+                "text": "fnp.trapezoid([1, 2, 3])"
               },
               {
                 "kind": "output",
@@ -516,7 +516,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trapezoid([1, 2, 3], x=[4, 6, 8])"
+                "text": "fnp.trapezoid([1, 2, 3], x=[4, 6, 8])"
               },
               {
                 "kind": "output",
@@ -525,7 +525,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trapezoid([1, 2, 3], dx=2)"
+                "text": "fnp.trapezoid([1, 2, 3], dx=2)"
               },
               {
                 "kind": "output",
@@ -556,7 +556,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trapezoid([1, 2, 3], x=[8, 6, 4])"
+                "text": "fnp.trapezoid([1, 2, 3], x=[8, 6, 4])"
               },
               {
                 "kind": "output",
@@ -595,7 +595,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(0, 1, num=50)"
+                "text": "x = fnp.linspace(0, 1, num=50)"
               },
               {
                 "kind": "input",
@@ -605,7 +605,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trapezoid(y, x)"
+                "text": "fnp.trapezoid(y, x)"
               },
               {
                 "kind": "output",
@@ -628,12 +628,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "theta = we.linspace(0, 2 * we.pi, num=1000, endpoint=True)"
+                "text": "theta = fnp.linspace(0, 2 * fnp.pi, num=1000, endpoint=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trapezoid(we.cos(theta), x=we.sin(theta))"
+                "text": "fnp.trapezoid(fnp.cos(theta), x=fnp.sin(theta))"
               },
               {
                 "kind": "output",
@@ -649,7 +649,7 @@
                 "href": "/docs/api/ops/trapezoid",
                 "kind": "link",
                 "target": "trapezoid",
-                "text": "we.trapezoid"
+                "text": "fnp.trapezoid"
               },
               {
                 "kind": "text",
@@ -663,7 +663,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(6).reshape(2, 3)"
+                "text": "a = fnp.arange(6).reshape(2, 3)"
               },
               {
                 "kind": "input",
@@ -681,7 +681,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trapezoid(a, axis=0)"
+                "text": "fnp.trapezoid(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -690,7 +690,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trapezoid(a, axis=1)"
+                "text": "fnp.trapezoid(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -708,20 +708,20 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.trapezoid",
     "module": "numpy",
     "name": "trapezoid",
     "notes": "Integrate using the trapezoidal rule.",
     "numpy_ref": "np.trapezoid",
-    "signature": "we.trapezoid(y, x=None, dx=1.0, axis=-1)",
+    "signature": "fnp.trapezoid(y, x=None, dx=1.0, axis=-1)",
     "status": "supported",
     "summary": "Integrate along the given axis using the composite trapezoidal rule.",
-    "weight": 1.0,
-    "whest_ref": "we.trapezoid"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "trapezoid",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L4959",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1158"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1158",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L4910"
   }
 }

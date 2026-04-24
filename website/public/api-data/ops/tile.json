@@ -264,7 +264,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/repeat",
-                "label": "we.repeat",
+                "label": "fnp.repeat",
                 "original_target": "repeat",
                 "role": "",
                 "target": "repeat",
@@ -280,7 +280,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/broadcast_to",
-                "label": "we.broadcast_to",
+                "label": "fnp.broadcast_to",
                 "original_target": "broadcast_to",
                 "role": "",
                 "target": "broadcast_to",
@@ -299,17 +299,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([0, 1, 2])"
+                "text": "a = fnp.array([0, 1, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tile(a, 2)"
+                "text": "fnp.tile(a, 2)"
               },
               {
                 "kind": "output",
@@ -318,7 +318,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tile(a, (2, 2))"
+                "text": "fnp.tile(a, (2, 2))"
               },
               {
                 "kind": "output",
@@ -331,7 +331,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tile(a, (2, 1, 2))"
+                "text": "fnp.tile(a, (2, 1, 2))"
               },
               {
                 "kind": "output",
@@ -349,12 +349,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([[1, 2], [3, 4]])"
+                "text": "b = fnp.array([[1, 2], [3, 4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tile(b, 2)"
+                "text": "fnp.tile(b, 2)"
               },
               {
                 "kind": "output",
@@ -367,7 +367,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tile(b, (2, 1))"
+                "text": "fnp.tile(b, (2, 1))"
               },
               {
                 "kind": "output",
@@ -393,12 +393,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.array([1,2,3,4])"
+                "text": "c = fnp.array([1,2,3,4])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tile(c,(4,1))"
+                "text": "fnp.tile(c,(4,1))"
               },
               {
                 "kind": "output",
@@ -428,20 +428,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.tile",
     "module": "numpy",
     "name": "tile",
     "notes": "Repeat array by tiling. Cost: numel(output).",
     "numpy_ref": "np.tile",
-    "signature": "we.tile(A, reps)",
+    "signature": "fnp.tile(A, reps)",
     "status": "supported",
     "summary": "Construct an array by repeating A the number of times given by reps.",
-    "weight": 1.0,
-    "whest_ref": "we.tile"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "tile",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1204",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L375"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L375",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L1199"
   }
 }

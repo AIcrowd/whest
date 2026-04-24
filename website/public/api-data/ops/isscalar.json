@@ -121,7 +121,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/ndim",
-                "label": "we.ndim",
+                "label": "fnp.ndim",
                 "original_target": "ndim",
                 "role": "",
                 "target": "ndim",
@@ -179,7 +179,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "ndim(x) == 0",
-                "text": "we.ndim(x) == 0"
+                "text": "fnp.ndim(x) == 0"
               },
               {
                 "kind": "text",
@@ -227,8 +227,8 @@
             "type": "paragraph"
           },
           {
-            "raw_kind": "table",
-            "raw_text": "\n\n\n\n\n\nx\n\nisscalar(x)\n\nwe.ndim(x) == 0\n\nPEP 3141 numeric objects\n(including builtins)\n\nTrue\n\nTrue\n\nbuiltin string and buffer objects\n\nTrue\n\nTrue\n\nother builtin objects, like\npathlib.Path, Exception,\nthe result of re.compile\n\nFalse\n\nTrue\n\nthird-party objects like\nmatplotlib.figure.Figure\n\nFalse\n\nTrue\n\nzero-dimensional numpy arrays\n\nFalse\n\nTrue\n\nother numpy arrays\n\nFalse\n\nFalse\n\nlist, tuple, and other\nsequence objects\n\nFalse\n\nFalse",
+            "raw_kind": "system_message",
+            "raw_text": "<string>:11: (ERROR/3) Malformed table.\nRight border not aligned or missing.\n\n+------------------------------------+---------------+-------------------+\n| x                                  |``isscalar(x)``|``fnp.ndim(x) == 0``|\n+====================================+===============+===================+\n| PEP 3141 numeric objects           | ``True``      | ``True``          |\n| (including builtins)               |               |                   |\n+------------------------------------+---------------+-------------------+\n| builtin string and buffer objects  | ``True``      | ``True``          |\n+------------------------------------+---------------+-------------------+\n| other builtin objects, like        | ``False``     | ``True``          |\n| `pathlib.Path`, `Exception`,       |               |                   |\n| the result of `re.compile`         |               |                   |\n+------------------------------------+---------------+-------------------+\n| third-party objects like           | ``False``     | ``True``          |\n| `matplotlib.figure.Figure`         |               |                   |\n+------------------------------------+---------------+-------------------+\n| zero-dimensional numpy arrays      | ``False``     | ``True``          |\n+------------------------------------+---------------+-------------------+\n| other numpy arrays                 | ``False``     | ``False``         |\n+------------------------------------+---------------+-------------------+\n| `list`, `tuple`, and other         | ``False``     | ``False``         |\n| sequence objects                   |               |                   |\n+------------------------------------+---------------+-------------------+",
             "type": "raw_block"
           }
         ],
@@ -241,7 +241,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -251,7 +251,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isscalar(3.1)"
+                "text": "fnp.isscalar(3.1)"
               },
               {
                 "kind": "output",
@@ -265,7 +265,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isscalar(we.array(3.1))"
+                "text": "fnp.isscalar(fnp.array(3.1))"
               },
               {
                 "kind": "output",
@@ -279,7 +279,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isscalar([3.1])"
+                "text": "fnp.isscalar([3.1])"
               },
               {
                 "kind": "output",
@@ -293,7 +293,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isscalar(False)"
+                "text": "fnp.isscalar(False)"
               },
               {
                 "kind": "output",
@@ -307,7 +307,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isscalar('numpy')"
+                "text": "fnp.isscalar('numpy')"
               },
               {
                 "kind": "output",
@@ -335,7 +335,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isscalar(Fraction(5, 17))"
+                "text": "fnp.isscalar(Fraction(5, 17))"
               },
               {
                 "kind": "output",
@@ -349,7 +349,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isscalar(Number())"
+                "text": "fnp.isscalar(Number())"
               },
               {
                 "kind": "output",
@@ -367,20 +367,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.isscalar",
     "module": "numpy",
     "name": "isscalar",
     "notes": "Return True if input is a scalar.",
     "numpy_ref": "np.isscalar",
-    "signature": "we.isscalar(element)",
+    "signature": "fnp.isscalar(element)",
     "status": "supported",
     "summary": "Returns True if the type of `element` is a scalar type.",
-    "weight": 0.0,
-    "whest_ref": "we.isscalar"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "isscalar",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1927",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1105"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1105",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L1975"
   }
 }

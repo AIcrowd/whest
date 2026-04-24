@@ -34,7 +34,7 @@
               "href": "/docs/api/ops/dot",
               "kind": "link",
               "target": "dot",
-              "text": "we.dot"
+              "text": "fnp.dot"
             },
             {
               "kind": "text",
@@ -87,7 +87,7 @@
         },
         {
           "language": null,
-          "text": "def multi_dot(arrays): return functools.reduce(we.dot, arrays)",
+          "text": "def multi_dot(arrays): return functools.reduce(fnp.dot, arrays)",
           "type": "literal_block"
         }
       ],
@@ -211,7 +211,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/dot",
-              "label": "we.dot",
+              "label": "fnp.dot",
               "original_target": "numpy.dot",
               "role": "",
               "target": "dot",
@@ -247,7 +247,7 @@
             },
             {
               "kind": "math",
-              "latex": "A_{10x100}, B_{100x5}, C_{5x50}"
+              "latex": "A_{10 \\times 100}, B_{100 \\times 5}, C_{5 \\times 50}"
             },
             {
               "kind": "text",
@@ -305,7 +305,7 @@
         },
         {
           "language": null,
-          "text": ">>> import whest as we\n>>> from we.linalg import multi_dot\n>>> # Prepare some data\n>>> A = we.random.random((10000, 100))\n>>> B = we.random.random((100, 1000))\n>>> C = we.random.random((1000, 5))\n>>> D = we.random.random((5, 333))\n>>> # the actual dot multiplication\n>>> _ = multi_dot([A, B, C, D])",
+          "text": ">>> import flopscope as fnp\n>>> from fnp.linalg import multi_dot\n>>> # Prepare some data\n>>> A = fnp.random.random((10000, 100))\n>>> B = fnp.random.random((100, 1000))\n>>> C = fnp.random.random((1000, 5))\n>>> D = fnp.random.random((5, 333))\n>>> # the actual dot multiplication\n>>> _ = multi_dot([A, B, C, D])",
           "type": "literal_block"
         },
         {
@@ -319,7 +319,7 @@
         },
         {
           "language": null,
-          "text": ">>> _ = we.dot(we.dot(we.dot(A, B), C), D)\n>>> # or\n>>> _ = A.dot(B).dot(C).dot(D)",
+          "text": ">>> _ = fnp.dot(fnp.dot(fnp.dot(A, B), C), D)\n>>> # or\n>>> _ = A.dot(B).dot(C).dot(D)",
           "type": "literal_block"
         }
       ],
@@ -356,22 +356,25 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nfrom we.linalg import multi_dot\n\nA = we.random.random((10000, 100))\n\nB = we.random.random((100, 1000))\n\nC = we.random.random((1000, 5))\n\nD = we.random.random((5, 333))\n\n_ = multi_dot([A, B, C, D])\n\n_ = we.dot(we.dot(we.dot(A, B), C), D)\n\n_ = A.dot(B).dot(C).dot(D)",
+    "code": "import flopscope as fnp\n\nfrom fnp.linalg import multi_dot\n\nA = fnp.random.random((10000, 100))\n\nB = fnp.random.random((100, 1000))\n\nC = fnp.random.random((1000, 5))\n\nD = fnp.random.random((5, 333))\n\n_ = multi_dot([A, B, C, D])\n\n_ = fnp.dot(fnp.dot(fnp.dot(A, B), C), D)\n\n_ = A.dot(B).dot(C).dot(D)",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.multi_dot",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L63",
   "href": "/docs/api/ops/linalg-multi_dot/",
   "module": "numpy.linalg",
   "name": "linalg.multi_dot",
   "next": {
     "href": "/docs/api/ops/linalg-norm/",
-    "label": "we.linalg.norm"
+    "label": "fnp.linalg.norm"
   },
   "notes": "Chain matmul. Cost: sum of optimal chain matmul costs (CLRS \u00a715.2).",
   "notes_sections": [
     "The cost for a matrix multiplication can be calculated with the following function::",
     "def cost(A, B): return A.shape[0] * A.shape[1] * B.shape[1]",
-    "Assume we have three matrices :math:`A_{10x100}, B_{100x5}, C_{5x50}`.",
+    "Assume we have three matrices :math:`A_{10 \\times 100}, B_{100 \\times 5}, C_{5 \\times 50}`.",
     "The costs for the two different parenthesizations are as follows::",
     "cost((AB)C) = 10*100*5 + 10*5*50   = 5000 + 2500   = 7500 cost(A(BC)) = 10*100*50 + 100*5*50 = 50000 + 25000 = 75000"
   ],
@@ -401,7 +404,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-matrix_transpose/",
-    "label": "we.linalg.matrix_transpose"
+    "label": "fnp.linalg.matrix_transpose"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.multi_dot.html",
@@ -425,19 +428,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/dot",
-      "label": "we.dot",
+      "label": "fnp.dot",
       "original_target": "numpy.dot",
       "role": "",
       "target": "dot",
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.multi_dot(arrays, *, out=None)",
+  "signature": "fnp.linalg.multi_dot(arrays, *, out=None)",
   "slug": "linalg-multi_dot",
   "summary": "Compute the dot product of two or more arrays in a single function call, while automatically selecting the fastest evaluation order.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2841",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.multi_dot",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_compound.py#L63"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L2864",
+  "weight": 1.0
 }

@@ -117,7 +117,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/stack",
-                "label": "we.stack",
+                "label": "fnp.stack",
                 "original_target": "stack",
                 "role": "",
                 "target": "stack",
@@ -128,7 +128,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/hstack",
-                "label": "we.hstack",
+                "label": "fnp.hstack",
                 "original_target": "hstack",
                 "role": "",
                 "target": "hstack",
@@ -139,7 +139,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/vstack",
-                "label": "we.vstack",
+                "label": "fnp.vstack",
                 "original_target": "vstack",
                 "role": "",
                 "target": "vstack",
@@ -150,7 +150,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/concatenate",
-                "label": "we.concatenate",
+                "label": "fnp.concatenate",
                 "original_target": "concatenate",
                 "role": "",
                 "target": "concatenate",
@@ -169,34 +169,34 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array((1,2,3))"
+                "text": "a = fnp.array((1,2,3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array((2,3,4))"
+                "text": "b = fnp.array((4,5,6))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.column_stack((a,b))"
+                "text": "fnp.column_stack((a,b))"
               },
               {
                 "kind": "output",
-                "text": "array([[1, 2],"
+                "text": "array([[1, 4],"
               },
               {
                 "kind": "output",
-                "text": "       [2, 3],"
+                "text": "       [2, 5],"
               },
               {
                 "kind": "output",
-                "text": "       [3, 4]])"
+                "text": "       [3, 6]])"
               }
             ],
             "type": "doctest_block"
@@ -210,20 +210,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.column_stack",
     "module": "numpy",
     "name": "column_stack",
     "notes": "Stack 1-D arrays as columns into 2-D array.",
     "numpy_ref": "np.column_stack",
-    "signature": "we.column_stack(tup)",
+    "signature": "fnp.column_stack(tup)",
     "status": "supported",
     "summary": "Stack 1-D arrays as columns into a 2-D array.",
-    "weight": 0.0,
-    "whest_ref": "we.column_stack"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "column_stack",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L621",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L760"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L760",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L625"
   }
 }

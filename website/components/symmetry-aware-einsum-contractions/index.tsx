@@ -18,8 +18,8 @@ function SymmetryAwareEinsumContractionsLoading() {
           className="pointer-events-none absolute inset-[18%] rounded-full"
           style={{ border: '1px solid color-mix(in oklab, var(--coral) 18%, transparent)' }}
         />
-        <span className="whest-wordmark relative z-10 text-[38px] leading-none sm:text-[48px]" aria-label="Whest.">
-          Whest<span className="whest-wordmark__dot">.</span>
+        <span className="flopscope-wordmark relative z-10 text-[38px] leading-none sm:text-[48px]" aria-label="Flopscope.">
+          Flopscope<span className="flopscope-wordmark__dot">.</span>
         </span>
       </div>
     </div>

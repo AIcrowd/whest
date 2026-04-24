@@ -1100,6 +1100,11 @@
     "has_issues": true,
     "raw_blocks": [
       {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[CT]_"
+      },
+      {
         "kind": "citation",
         "raw_text": "CT\n\nCooley, James W., and John W. Tukey, 1965, \"An algorithm for the\nmachine calculation of complex Fourier series,\" Math. Comput.\n19: 297-301."
       }
@@ -1824,8 +1829,8 @@
     "has_issues": true,
     "raw_blocks": [
       {
-        "kind": "table",
-        "raw_text": "\n\n\n\n\n\nx\n\nisscalar(x)\n\nwe.ndim(x) == 0\n\nPEP 3141 numeric objects\n(including builtins)\n\nTrue\n\nTrue\n\nbuiltin string and buffer objects\n\nTrue\n\nTrue\n\nother builtin objects, like\npathlib.Path, Exception,\nthe result of re.compile\n\nFalse\n\nTrue\n\nthird-party objects like\nmatplotlib.figure.Figure\n\nFalse\n\nTrue\n\nzero-dimensional numpy arrays\n\nFalse\n\nTrue\n\nother numpy arrays\n\nFalse\n\nFalse\n\nlist, tuple, and other\nsequence objects\n\nFalse\n\nFalse"
+        "kind": "system_message",
+        "raw_text": "<string>:11: (ERROR/3) Malformed table.\nRight border not aligned or missing.\n\n+------------------------------------+---------------+-------------------+\n| x                                  |``isscalar(x)``|``fnp.ndim(x) == 0``|\n+====================================+===============+===================+\n| PEP 3141 numeric objects           | ``True``      | ``True``          |\n| (including builtins)               |               |                   |\n+------------------------------------+---------------+-------------------+\n| builtin string and buffer objects  | ``True``      | ``True``          |\n+------------------------------------+---------------+-------------------+\n| other builtin objects, like        | ``False``     | ``True``          |\n| `pathlib.Path`, `Exception`,       |               |                   |\n| the result of `re.compile`         |               |                   |\n+------------------------------------+---------------+-------------------+\n| third-party objects like           | ``False``     | ``True``          |\n| `matplotlib.figure.Figure`         |               |                   |\n+------------------------------------+---------------+-------------------+\n| zero-dimensional numpy arrays      | ``False``     | ``True``          |\n+------------------------------------+---------------+-------------------+\n| other numpy arrays                 | ``False``     | ``False``         |\n+------------------------------------+---------------+-------------------+\n| `list`, `tuple`, and other         | ``False``     | ``False``         |\n| sequence objects                   |               |                   |\n+------------------------------------+---------------+-------------------+"
       }
     ],
     "unresolved_references": [],
@@ -2083,6 +2088,16 @@
   "linalg.matrix_rank": {
     "has_issues": true,
     "raw_blocks": [
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[1]_"
+      },
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[2]_"
+      },
       {
         "kind": "footnote",
         "raw_text": "1\n\nMATLAB reference documentation, \"Rank\"\nhttps://www.mathworks.com/help/techdoc/ref/rank.html"
@@ -2754,16 +2769,7 @@
   },
   "nonzero": {
     "has_issues": true,
-    "raw_blocks": [
-      {
-        "kind": "system_message",
-        "raw_text": "<string>:4: (INFO/1) No directive entry for \"deprecated\" in module \"docutils.parsers.rst.languages.en\".\nTrying \"deprecated\" as canonical directive name."
-      },
-      {
-        "kind": "system_message",
-        "raw_text": "<string>:4: (ERROR/3) Unknown directive type \"deprecated\".\n\n.. deprecated:: 1.17.0\n\n   Use `atleast_1d` explicitly if this behavior is deliberate."
-      }
-    ],
+    "raw_blocks": [],
     "unresolved_references": [
       {
         "display_text": "ndarray.nonzero",
@@ -3911,9 +3917,16 @@
     "unsupported_directives": []
   },
   "result_type": {
-    "has_issues": false,
+    "has_issues": true,
     "raw_blocks": [],
-    "unresolved_references": [],
+    "unresolved_references": [
+      {
+        "display_text": "type promotion",
+        "original_target": "arrays.promotion",
+        "role": "ref",
+        "target": "arrays.promotion"
+      }
+    ],
     "unsupported_directives": []
   },
   "right_shift": {

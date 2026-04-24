@@ -85,7 +85,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.standard_exponential`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.standard_exponential`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -232,7 +232,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "n = we.random.standard_exponential((3, 8000))"
+              "text": "n = fnp.random.standard_exponential((3, 8000))"
             }
           ],
           "type": "doctest_block"
@@ -252,16 +252,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "n = we.random.standard_exponential((3, 8000))",
+    "code": "n = fnp.random.standard_exponential((3, 8000))",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.standard_exponential",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-standard_exponential/",
   "module": "numpy.random",
   "name": "random.standard_exponential",
   "next": {
     "href": "/docs/api/ops/random-standard_gamma/",
-    "label": "we.random.standard_gamma"
+    "label": "fnp.random.standard_gamma"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -279,7 +282,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-standard_cauchy/",
-    "label": "we.random.standard_cauchy"
+    "label": "fnp.random.standard_cauchy"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_exponential.html",
@@ -310,12 +313,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.standard_exponential(size=None)",
+  "signature": "fnp.random.standard_exponential(size=None)",
   "slug": "random-standard_exponential",
   "summary": "Draw samples from the standard exponential distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.standard_exponential",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

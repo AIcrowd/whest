@@ -128,7 +128,7 @@
               "href": "",
               "kind": "link",
               "target": "iterable(obj)",
-              "text": "we.iterable(obj)"
+              "text": "fnp.iterable(obj)"
             },
             {
               "kind": "text",
@@ -147,7 +147,7 @@
         },
         {
           "language": null,
-          "text": ">>> from collections.abc import Iterable\n>>> a = we.array(1.0)  # 0-dimensional numpy array\n>>> isinstance(a, Iterable)\nTrue\n>>> we.iterable(a)\nFalse",
+          "text": ">>> from collections.abc import Iterable\n>>> a = fnp.array(1.0)  # 0-dimensional numpy array\n>>> isinstance(a, Iterable)\nTrue\n>>> fnp.iterable(a)\nFalse",
           "type": "literal_block"
         }
       ],
@@ -160,12 +160,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.iterable([1, 2, 3])"
+              "text": "fnp.iterable([1, 2, 3])"
             },
             {
               "kind": "output",
@@ -174,7 +174,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.iterable(2)"
+              "text": "fnp.iterable(2)"
             },
             {
               "kind": "output",
@@ -198,21 +198,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.iterable([1, 2, 3])\n\nwe.iterable(2)",
+    "code": "import flopscope as fnp\n\nfnp.iterable([1, 2, 3])\n\nfnp.iterable(2)",
     "output": "True\n\nFalse",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.iterable",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1121",
   "href": "/docs/api/ops/iterable/",
   "module": "numpy",
   "name": "iterable",
   "next": {
     "href": "/docs/api/ops/ix_/",
-    "label": "we.ix_"
+    "label": "fnp.ix_"
   },
   "notes": "Return True if object is iterable.",
   "notes_sections": [
-    "In most cases, the results of ``we.iterable(obj)`` are consistent with ``isinstance(obj, collections.abc.Iterable)``. One notable exception is the treatment of 0-dimensional arrays::",
-    ">>> from collections.abc import Iterable >>> a = we.array(1.0)  # 0-dimensional numpy array >>> isinstance(a, Iterable) True >>> we.iterable(a) False"
+    "In most cases, the results of ``fnp.iterable(obj)`` are consistent with ``isinstance(obj, collections.abc.Iterable)``. One notable exception is the treatment of 0-dimensional arrays::",
+    ">>> from collections.abc import Iterable >>> a = fnp.array(1.0)  # 0-dimensional numpy array >>> isinstance(a, Iterable) True >>> fnp.iterable(a) False"
   ],
   "numpy_ref": "np.iterable",
   "parameters": [
@@ -226,7 +229,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/issubdtype/",
-    "label": "we.issubdtype"
+    "label": "fnp.issubdtype"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iterable.html",
@@ -241,12 +244,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.iterable(y)",
+  "signature": "fnp.iterable(y)",
   "slug": "iterable",
   "summary": "Check whether or not an object can be iterated over.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L339",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.iterable",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1121"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L363",
+  "weight": 0.0
 }

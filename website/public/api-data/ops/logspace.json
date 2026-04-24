@@ -477,7 +477,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/arange",
-                "label": "we.arange",
+                "label": "fnp.arange",
                 "original_target": "arange",
                 "role": "",
                 "target": "arange",
@@ -493,7 +493,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/linspace",
-                "label": "we.linspace",
+                "label": "fnp.linspace",
                 "original_target": "linspace",
                 "role": "",
                 "target": "linspace",
@@ -509,7 +509,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/geomspace",
-                "label": "we.geomspace",
+                "label": "fnp.geomspace",
                 "original_target": "geomspace",
                 "role": "",
                 "target": "geomspace",
@@ -548,7 +548,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.linspace(start, stop, num=num, endpoint=endpoint)"
+                "text": "y = fnp.linspace(start, stop, num=num, endpoint=endpoint)"
               },
               {
                 "kind": "input",
@@ -578,12 +578,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logspace(2.0, 3.0, num=4)"
+                "text": "fnp.logspace(2.0, 3.0, num=4)"
               },
               {
                 "kind": "output",
@@ -592,7 +592,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logspace(2.0, 3.0, num=4, endpoint=False)"
+                "text": "fnp.logspace(2.0, 3.0, num=4, endpoint=False)"
               },
               {
                 "kind": "output",
@@ -601,7 +601,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logspace(2.0, 3.0, num=4, base=2.0)"
+                "text": "fnp.logspace(2.0, 3.0, num=4, base=2.0)"
               },
               {
                 "kind": "output",
@@ -610,7 +610,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logspace(2.0, 3.0, num=4, base=[2.0, 3.0], axis=-1)"
+                "text": "fnp.logspace(2.0, 3.0, num=4, base=[2.0, 3.0], axis=-1)"
               },
               {
                 "kind": "output",
@@ -647,17 +647,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.logspace(0.1, 1, N, endpoint=True)"
+                "text": "x1 = fnp.logspace(0.1, 1, N, endpoint=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.logspace(0.1, 1, N, endpoint=False)"
+                "text": "x2 = fnp.logspace(0.1, 1, N, endpoint=False)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.zeros(N)"
+                "text": "y = fnp.zeros(N)"
               },
               {
                 "kind": "input",
@@ -703,20 +703,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.logspace",
     "module": "numpy",
     "name": "logspace",
     "notes": "Log-spaced generation; cost = num.",
     "numpy_ref": "np.logspace",
-    "signature": "we.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None, axis=0)",
+    "signature": "fnp.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None, axis=0)",
     "status": "supported",
     "summary": "Return numbers spaced evenly on a log scale.",
-    "weight": 1.0,
-    "whest_ref": "we.logspace"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "logspace",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/function_base.py#L195",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L256"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L256",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/function_base.py#L196"
   }
 }

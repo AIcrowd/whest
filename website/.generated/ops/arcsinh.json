@@ -462,12 +462,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.arcsinh(we.array([we.e, 10.0]))"
+              "text": "fnp.arcsinh(fnp.array([fnp.e, 10.0]))"
             },
             {
               "kind": "output",
@@ -507,16 +507,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.arcsinh(we.array([we.e, 10.0]))",
+    "code": "import flopscope as fnp\n\nfnp.arcsinh(fnp.array([fnp.e, 10.0]))",
     "output": "array([ 1.72538256,  2.99822295])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.arcsinh",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/arcsinh/",
   "module": "numpy",
   "name": "arcsinh",
   "next": {
     "href": "/docs/api/ops/arctan/",
-    "label": "we.arctan"
+    "label": "fnp.arctan"
   },
   "notes": "Element-wise inverse hyperbolic sine.",
   "notes_sections": [
@@ -567,7 +570,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/arcsin/",
-    "label": "we.arcsin"
+    "label": "fnp.arcsin"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.arcsinh.html",
@@ -582,12 +585,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.arcsinh(x)",
+  "signature": "fnp.arcsinh(x)",
   "slug": "arcsinh",
   "summary": "Inverse hyperbolic sine element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.arcsinh",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

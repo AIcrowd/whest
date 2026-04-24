@@ -5,12 +5,12 @@ from unittest.mock import patch
 
 import pytest
 
-from whest._budget import (
+from flopscope._budget import (
     BudgetContext,
     _reset_global_default,
     get_active_budget,
 )
-from whest._validation import require_budget
+from flopscope._validation import require_budget
 
 
 @pytest.fixture(autouse=True)
@@ -45,7 +45,7 @@ def test_explicit_context_overrides_global():
 
 def test_global_default_env_var():
     _reset_global_default()
-    with patch.dict(os.environ, {"WHEST_DEFAULT_BUDGET": "1e9"}):
+    with patch.dict(os.environ, {"FLOPSCOPE_DEFAULT_BUDGET": "1e9"}):
         budget = require_budget()
         assert budget.flop_budget == int(1e9)
 

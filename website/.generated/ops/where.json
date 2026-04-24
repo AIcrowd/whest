@@ -62,7 +62,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.asarray(condition).nonzero()"
+                  "text": "fnp.asarray(condition).nonzero()"
                 },
                 {
                   "kind": "text",
@@ -85,7 +85,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    When only `condition` is provided, this function is a shorthand for\n    ``we.asarray(condition).nonzero()``. Using `nonzero` directly should be\n    preferred, as it behaves correctly for subclasses. The rest of this\n    documentation covers only the case where all three arguments are\n    provided.",
+          "raw_source": ".. note::\n    When only `condition` is provided, this function is a shorthand for\n    ``fnp.asarray(condition).nonzero()``. Using `nonzero` directly should be\n    preferred, as it behaves correctly for subclasses. The rest of this\n    documentation covers only the case where all three arguments are\n    provided.",
           "supported": true,
           "type": "directive_block"
         }
@@ -317,7 +317,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/choose",
-              "label": "we.choose",
+              "label": "fnp.choose",
               "original_target": "choose",
               "role": "",
               "target": "choose",
@@ -333,7 +333,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/nonzero",
-              "label": "we.nonzero",
+              "label": "fnp.nonzero",
               "original_target": "nonzero",
               "role": "",
               "target": "nonzero",
@@ -382,12 +382,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(10)"
+              "text": "a = fnp.arange(10)"
             },
             {
               "kind": "input",
@@ -401,7 +401,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.where(a < 5, a, 10*a)"
+              "text": "fnp.where(a < 5, a, 10*a)"
             },
             {
               "kind": "output",
@@ -424,7 +424,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.where([[True, False], [True, True]],"
+              "text": "fnp.where([[True, False], [True, True]],"
             },
             {
               "kind": "input",
@@ -461,12 +461,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x, y = we.ogrid[:3, :4]"
+              "text": "x, y = fnp.ogrid[:3, :4]"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.where(x < y, x, 10 + y)  # both x and 10+y are broadcast"
+              "text": "fnp.where(x < y, x, 10 + y)  # both x and 10+y are broadcast"
             },
             {
               "kind": "output",
@@ -488,7 +488,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[0, 1, 2],"
+              "text": "a = fnp.array([[0, 1, 2],"
             },
             {
               "kind": "input",
@@ -503,7 +503,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.where(a < 4, a, -1)  # -1 is broadcast"
+              "text": "fnp.where(a < 4, a, -1)  # -1 is broadcast"
             },
             {
               "kind": "output",
@@ -535,16 +535,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.arange(10)\n\na\n\nwe.where(a < 5, a, 10*a)\n\nwe.where([[True, False], [True, True]],\n         [[1, 2], [3, 4]],\n         [[9, 8], [7, 6]])\n\nx, y = we.ogrid[:3, :4]\n\nwe.where(x < y, x, 10 + y)  # both x and 10+y are broadcast\n\na = we.array([[0, 1, 2],\n              [0, 2, 4],\n              [0, 3, 6]])\n\nwe.where(a < 4, a, -1)  # -1 is broadcast",
+    "code": "import flopscope as fnp\n\na = fnp.arange(10)\n\na\n\nfnp.where(a < 5, a, 10*a)\n\nfnp.where([[True, False], [True, True]],\n         [[1, 2], [3, 4]],\n         [[9, 8], [7, 6]])\n\nx, y = fnp.ogrid[:3, :4]\n\nfnp.where(x < y, x, 10 + y)  # both x and 10+y are broadcast\n\na = fnp.array([[0, 1, 2],\n              [0, 2, 4],\n              [0, 3, 6]])\n\nfnp.where(a < 4, a, -1)  # -1 is broadcast",
     "output": "array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([ 0,  1,  2,  3,  4, 50, 60, 70, 80, 90])\n\narray([[1, 8],\n       [3, 4]])\n\narray([[10,  0,  0,  0],\n       [10, 11,  1,  1],\n       [10, 11, 12,  2]])\n\narray([[ 0,  1,  2],\n       [ 0,  2, -1],\n       [ 0,  3, -1]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.where",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L357",
   "href": "/docs/api/ops/where/",
   "module": "numpy",
   "name": "where",
   "next": {
     "href": "/docs/api/ops/zeros/",
-    "label": "we.zeros"
+    "label": "fnp.zeros"
   },
   "notes": "Select elements based on condition. Cost: numel(input).",
   "notes_sections": [
@@ -571,7 +574,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/vstack/",
-    "label": "we.vstack"
+    "label": "fnp.vstack"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.where.html",
@@ -591,7 +594,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/choose",
-      "label": "we.choose",
+      "label": "fnp.choose",
       "original_target": "choose",
       "role": "",
       "target": "choose",
@@ -607,19 +610,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/nonzero",
-      "label": "we.nonzero",
+      "label": "fnp.nonzero",
       "original_target": "nonzero",
       "role": "",
       "target": "nonzero",
       "unresolved": false
     }
   ],
-  "signature": "we.where(condition, x=None, y=None)",
+  "signature": "fnp.where(condition, x=None, y=None)",
   "slug": "where",
   "summary": "Return elements chosen from `x` or `y` depending on `condition`.",
   "upstream_source_url": "",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.where",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L357"
+  "weight": 4.0
 }

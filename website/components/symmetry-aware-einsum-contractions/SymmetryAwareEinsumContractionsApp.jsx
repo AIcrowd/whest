@@ -363,7 +363,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
             (app/(home)/page.tsx). Uppercase kicker with leading rule +
             Newsreader display-serif headline ending in a coral period +
             Source Serif 4 italic lede. The same typographic rhythm the
-            reader sees at aicrowd.github.io/whest/ carries directly
+            reader sees at aicrowd.github.io/flopscope/ carries directly
             into the explorer so the two pages feel like one product. */}
         <header className="mx-auto flex w-full max-w-[1460px] flex-col px-6 pb-10 md:px-8 lg:px-10">
           <div
@@ -417,7 +417,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
               style={{ textAlign: 'justify' }}
             >
               <InlineMathText>
-                {`This page reports a direct indexed scalar-event count: multiplication-chain events for representative products plus direct output-bin update events. It is not whest’s general FMA FLOP convention, not wall-clock time, and not a contraction-path or memory-traffic model. The cost model uses orbit projections, not naive division by the group order, because one product orbit can touch several output bins.`}
+                {`This page reports a direct indexed scalar-event count: multiplication-chain events for representative products plus direct output-bin update events. It is not flopscope’s general FMA FLOP convention, not wall-clock time, and not a contraction-path or memory-traffic model. The cost model uses orbit projections, not naive division by the group order, because one product orbit can touch several output bins.`}
               </InlineMathText>
             </p>
             <p className="mt-2 text-[12.5px] leading-6 text-stone-600">

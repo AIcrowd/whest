@@ -426,7 +426,7 @@
               "href": "",
               "kind": "link",
               "target": "linalg",
-              "text": "we.linalg"
+              "text": "fnp.linalg"
             },
             {
               "kind": "text",
@@ -523,12 +523,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = we.array([[1,-2j],[2j,5]])"
+              "text": "A = fnp.array([[1,-2j],[2j,5]])"
             },
             {
               "kind": "input",
@@ -546,7 +546,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "L = we.linalg.cholesky(A)"
+              "text": "L = fnp.linalg.cholesky(A)"
             },
             {
               "kind": "input",
@@ -564,7 +564,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.dot(L, L.T.conj()) # verify that L * L.H = A"
+              "text": "fnp.dot(L, L.T.conj()) # verify that L * L.H = A"
             },
             {
               "kind": "output",
@@ -582,7 +582,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.cholesky(A) # an ndarray object is returned"
+              "text": "fnp.linalg.cholesky(A) # an ndarray object is returned"
             },
             {
               "kind": "output",
@@ -600,7 +600,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.cholesky(we.matrix(A))"
+              "text": "fnp.linalg.cholesky(fnp.matrix(A))"
             },
             {
               "kind": "output",
@@ -618,7 +618,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.cholesky(A, upper=True)"
+              "text": "fnp.linalg.cholesky(A, upper=True)"
             },
             {
               "kind": "output",
@@ -646,20 +646,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nA = we.array([[1,-2j],[2j,5]])\n\nA\n\nL = we.linalg.cholesky(A)\n\nL\n\nwe.dot(L, L.T.conj()) # verify that L * L.H = A\n\nA = [[1,-2j],[2j,5]] # what happens if A is only array_like?\n\nwe.linalg.cholesky(A) # an ndarray object is returned\n\nwe.linalg.cholesky(we.matrix(A))\n\nwe.linalg.cholesky(A, upper=True)",
+    "code": "import flopscope as fnp\n\nA = fnp.array([[1,-2j],[2j,5]])\n\nA\n\nL = fnp.linalg.cholesky(A)\n\nL\n\nfnp.dot(L, L.T.conj()) # verify that L * L.H = A\n\nA = [[1,-2j],[2j,5]] # what happens if A is only array_like?\n\nfnp.linalg.cholesky(A) # an ndarray object is returned\n\nfnp.linalg.cholesky(fnp.matrix(A))\n\nfnp.linalg.cholesky(A, upper=True)",
     "output": "array([[ 1.+0.j, -0.-2.j],\n       [ 0.+2.j,  5.+0.j]])\n\narray([[1.+0.j, 0.+0.j],\n       [0.+2.j, 1.+0.j]])\n\narray([[1.+0.j, 0.-2.j],\n       [0.+2.j, 5.+0.j]])\n\narray([[1.+0.j, 0.+0.j],\n       [0.+2.j, 1.+0.j]])\n\nmatrix([[ 1.+0.j,  0.+0.j],\n        [ 0.+2.j,  1.+0.j]])\n\narray([[1.-0.j, 0.-2.j],\n       [0.-0.j, 1.-0.j]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.cholesky",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L38",
   "href": "/docs/api/ops/linalg-cholesky/",
   "module": "numpy.linalg",
   "name": "linalg.cholesky",
   "next": {
     "href": "/docs/api/ops/linalg-cond/",
-    "label": "we.linalg.cond"
+    "label": "fnp.linalg.cond"
   },
   "notes": "Cholesky decomposition. Cost: $n^3$.",
   "notes_sections": [
-    "Broadcasting rules apply, see the `we.linalg` documentation for details.",
+    "Broadcasting rules apply, see the `fnp.linalg` documentation for details.",
     "The Cholesky decomposition is often used as a fast way of solving",
     ".. math:: A \\mathbf{x} = \\mathbf{b}",
     "(when `A` is both Hermitian/symmetric and positive-definite).",
@@ -690,7 +693,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/lexsort/",
-    "label": "we.lexsort"
+    "label": "fnp.lexsort"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.cholesky.html",
@@ -765,12 +768,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.cholesky(a, /, *, upper=False)",
+  "signature": "fnp.linalg.cholesky(a, /, *, upper=False)",
   "slug": "linalg-cholesky",
   "summary": "Cholesky decomposition.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L740",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.cholesky",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L778",
+  "weight": 4.0
 }

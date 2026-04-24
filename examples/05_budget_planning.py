@@ -3,8 +3,8 @@
 Run: uv run python examples/05_budget_planning.py
 """
 
-import whest as we
-
+import flopscope as flops
+import flopscope.numpy as fnp
 # Plan a two-layer forward pass
 width = 256
 budget_limit = 500_000
@@ -12,17 +12,17 @@ budget_limit = 500_000
 steps = [
     (
         "Layer 1: W1 @ x",
-        we.flops.einsum_cost("ij,j->i", shapes=[(width, width), (width,)]),
+        flops.accounting.einsum_cost("ij,j->i", shapes=[(width, width), (width,)]),
     ),
-    ("Layer 1: ReLU", we.flops.pointwise_cost("maximum", shape=(width,))),
+    ("Layer 1: ReLU", flops.accounting.pointwise_cost("maximum", shape=(width,))),
     (
         "Layer 2: W2 @ h1",
-        we.flops.einsum_cost("ij,j->i", shapes=[(width, width), (width,)]),
+        flops.accounting.einsum_cost("ij,j->i", shapes=[(width, width), (width,)]),
     ),
-    ("Layer 2: ReLU", we.flops.pointwise_cost("maximum", shape=(width,))),
+    ("Layer 2: ReLU", flops.accounting.pointwise_cost("maximum", shape=(width,))),
     (
         "Output: mean",
-        we.flops.reduction_cost("mean", input_shape=(width,)),
+        flops.accounting.reduction_cost("mean", input_shape=(width,)),
     ),
 ]
 
@@ -40,15 +40,15 @@ print(f"Fits in budget? {fits}")
 
 # Now execute it
 if total <= budget_limit:
-    with we.BudgetContext(flop_budget=budget_limit) as budget:
-        x = we.random.randn(width)
-        W1 = we.random.randn(width, width)
-        W2 = we.random.randn(width, width)
+    with flops.BudgetContext(flop_budget=budget_limit) as budget:
+        x = fnp.random.randn(width)
+        W1 = fnp.random.randn(width, width)
+        W2 = fnp.random.randn(width, width)
 
-        h1 = we.einsum("ij,j->i", W1, x)
-        h1 = we.maximum(h1, 0)
-        h2 = we.einsum("ij,j->i", W2, h1)
-        h2 = we.maximum(h2, 0)
-        result = we.mean(h2)
+        h1 = fnp.einsum("ij,j->i", W1, x)
+        h1 = fnp.maximum(h1, 0)
+        h2 = fnp.einsum("ij,j->i", W2, h1)
+        h2 = fnp.maximum(h2, 0)
+        result = fnp.mean(h2)
 
         print(f"\nActual usage: {budget.flops_used:,} / {budget_limit:,} FLOPs")

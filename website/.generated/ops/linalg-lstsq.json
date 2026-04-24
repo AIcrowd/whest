@@ -642,17 +642,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([0, 1, 2, 3])"
+              "text": "x = fnp.array([0, 1, 2, 3])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.array([-1, 0.2, 0.9, 2.1])"
+              "text": "y = fnp.array([-1, 0.2, 0.9, 2.1])"
             }
           ],
           "type": "doctest_block"
@@ -720,7 +720,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = we.vstack([x, we.ones(len(x))]).T"
+              "text": "A = fnp.vstack([x, fnp.ones(len(x))]).T"
             },
             {
               "kind": "input",
@@ -751,7 +751,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "m, c = we.linalg.lstsq(A, y)[0]"
+              "text": "m, c = fnp.linalg.lstsq(A, y)[0]"
             },
             {
               "kind": "input",
@@ -819,16 +819,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.array([0, 1, 2, 3])\n\ny = we.array([-1, 0.2, 0.9, 2.1])\n\nA = we.vstack([x, we.ones(len(x))]).T\n\nA\n\nm, c = we.linalg.lstsq(A, y)[0]\n\nm, c\n\nimport matplotlib.pyplot as plt\n\n_ = plt.plot(x, y, 'o', label='Original data', markersize=10)\n\n_ = plt.plot(x, m*x + c, 'r', label='Fitted line')\n\n_ = plt.legend()\n\nplt.show()",
+    "code": "import flopscope as fnp\n\nx = fnp.array([0, 1, 2, 3])\n\ny = fnp.array([-1, 0.2, 0.9, 2.1])\n\nA = fnp.vstack([x, fnp.ones(len(x))]).T\n\nA\n\nm, c = fnp.linalg.lstsq(A, y)[0]\n\nm, c\n\nimport matplotlib.pyplot as plt\n\n_ = plt.plot(x, y, 'o', label='Original data', markersize=10)\n\n_ = plt.plot(x, m*x + c, 'r', label='Fitted line')\n\n_ = plt.legend()\n\nplt.show()",
     "output": "array([[ 0.,  1.],\n       [ 1.,  1.],\n       [ 2.,  1.],\n       [ 3.,  1.]])\n\n(1.0 -0.95) # may vary",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.lstsq",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L147",
   "href": "/docs/api/ops/linalg-lstsq/",
   "module": "numpy.linalg",
   "name": "linalg.lstsq",
   "next": {
     "href": "/docs/api/ops/linalg-matmul/",
-    "label": "we.linalg.matmul"
+    "label": "fnp.linalg.matmul"
   },
   "notes": "Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD).",
   "notes_sections": [
@@ -871,7 +874,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-inv/",
-    "label": "we.linalg.inv"
+    "label": "fnp.linalg.inv"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.lstsq.html",
@@ -928,12 +931,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.lstsq(a, b, rcond=None)",
+  "signature": "fnp.linalg.lstsq(a, b, rcond=None)",
   "slug": "linalg-lstsq",
   "summary": "Return the least-squares solution to a linear matrix equation.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2394",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.lstsq",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L147"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L2417",
+  "weight": 4.0
 }

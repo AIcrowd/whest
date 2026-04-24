@@ -275,12 +275,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = we.array([4, 5, 6])"
+              "text": "A = fnp.array([4, 5, 6])"
             },
             {
               "kind": "input",
@@ -290,7 +290,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.copyto(A, B)"
+              "text": "fnp.copyto(A, B)"
             },
             {
               "kind": "input",
@@ -309,7 +309,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = we.array([[1, 2, 3], [4, 5, 6]])"
+              "text": "A = fnp.array([[1, 2, 3], [4, 5, 6]])"
             },
             {
               "kind": "input",
@@ -319,7 +319,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.copyto(A, B)"
+              "text": "fnp.copyto(A, B)"
             },
             {
               "kind": "input",
@@ -352,16 +352,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nA = we.array([4, 5, 6])\n\nB = [1, 2, 3]\n\nwe.copyto(A, B)\n\nA\n\nA = we.array([[1, 2, 3], [4, 5, 6]])\n\nB = [[4, 5, 6], [7, 8, 9]]\n\nwe.copyto(A, B)\n\nA",
+    "code": "import flopscope as fnp\n\nA = fnp.array([4, 5, 6])\n\nB = [1, 2, 3]\n\nfnp.copyto(A, B)\n\nA\n\nA = fnp.array([[1, 2, 3], [4, 5, 6]])\n\nB = [[4, 5, 6], [7, 8, 9]]\n\nfnp.copyto(A, B)\n\nA",
     "output": "array([1, 2, 3])\n\narray([[4, 5, 6],\n       [7, 8, 9]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.copyto",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L810",
   "href": "/docs/api/ops/copyto/",
   "module": "numpy",
   "name": "copyto",
   "next": {
     "href": "/docs/api/ops/corrcoef/",
-    "label": "we.corrcoef"
+    "label": "fnp.corrcoef"
   },
   "notes": "Copy values from src to dst array. Cost: num copied.",
   "notes_sections": [],
@@ -407,18 +410,15 @@
   ],
   "previous": {
     "href": "/docs/api/ops/copysign/",
-    "label": "we.copysign"
+    "label": "fnp.copysign"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.copyto.html",
   "returns": [],
   "see_also": [],
-  "signature": "we.copyto(dst, src, casting='same_kind', where=True)",
+  "signature": "fnp.copyto(dst, src, casting='same_kind', where=True)",
   "slug": "copyto",
   "summary": "Copies values from one array to another, broadcasting as necessary.",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.copyto",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L810"
+  "weight": 1.0
 }

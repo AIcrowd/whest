@@ -131,7 +131,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isinf",
-                "label": "we.isinf",
+                "label": "fnp.isinf",
                 "original_target": "isinf",
                 "role": "",
                 "target": "isinf",
@@ -142,7 +142,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isposinf",
-                "label": "we.isposinf",
+                "label": "fnp.isposinf",
                 "original_target": "isposinf",
                 "role": "",
                 "target": "isposinf",
@@ -153,7 +153,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isnan",
-                "label": "we.isnan",
+                "label": "fnp.isnan",
                 "original_target": "isnan",
                 "role": "",
                 "target": "isnan",
@@ -164,7 +164,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isfinite",
-                "label": "we.isfinite",
+                "label": "fnp.isfinite",
                 "original_target": "isfinite",
                 "role": "",
                 "target": "isfinite",
@@ -206,12 +206,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isneginf(-we.inf)"
+                "text": "fnp.isneginf(-fnp.inf)"
               },
               {
                 "kind": "output",
@@ -220,7 +220,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isneginf(we.inf)"
+                "text": "fnp.isneginf(fnp.inf)"
               },
               {
                 "kind": "output",
@@ -229,7 +229,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isneginf([-we.inf, 0., we.inf])"
+                "text": "fnp.isneginf([-fnp.inf, 0., fnp.inf])"
               },
               {
                 "kind": "output",
@@ -243,17 +243,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([-we.inf, 0., we.inf])"
+                "text": "x = fnp.array([-fnp.inf, 0., fnp.inf])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.array([2, 2, 2])"
+                "text": "y = fnp.array([2, 2, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isneginf(x, y)"
+                "text": "fnp.isneginf(x, y)"
               },
               {
                 "kind": "output",
@@ -280,20 +280,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.isneginf",
     "module": "numpy",
     "name": "isneginf",
     "notes": "Test for negative infinity element-wise.",
     "numpy_ref": "np.isneginf",
-    "signature": "we.isneginf(x, out=None)",
+    "signature": "fnp.isneginf(x, out=None)",
     "status": "supported",
     "summary": "Test element-wise for negative infinity, return result as bool array.",
-    "weight": 1.0,
-    "whest_ref": "we.isneginf"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "isneginf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_ufunclike_impl.py#L140",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_ufunclike_impl.py#L132"
   }
 }

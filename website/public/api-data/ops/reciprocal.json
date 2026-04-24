@@ -323,12 +323,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.reciprocal(2.)"
+                "text": "fnp.reciprocal(2.)"
               },
               {
                 "kind": "output",
@@ -337,7 +337,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.reciprocal([1, 2., 3.33])"
+                "text": "fnp.reciprocal([1, 2., 3.33])"
               },
               {
                 "kind": "output",
@@ -355,20 +355,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.reciprocal",
     "module": "numpy",
     "name": "reciprocal",
     "notes": "Element-wise 1/x.",
     "numpy_ref": "np.reciprocal",
-    "signature": "we.reciprocal(x)",
+    "signature": "fnp.reciprocal(x)",
     "status": "supported",
     "summary": "Return the reciprocal of the argument, element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.reciprocal"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "reciprocal",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

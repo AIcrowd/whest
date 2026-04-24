@@ -90,7 +90,7 @@
                       },
                       {
                         "kind": "text",
-                        "text": ", with dtype as we.float64."
+                        "text": ", with dtype as fnp.float64."
                       }
                     ],
                     "type": "paragraph"
@@ -108,7 +108,7 @@
                   },
                   {
                     "kind": "text",
-                    "text": ", with dtype as we.float64."
+                    "text": ", with dtype as fnp.float64."
                   }
                 ],
                 "name": "angle",
@@ -130,7 +130,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/arctan2",
-                "label": "we.arctan2",
+                "label": "fnp.arctan2",
                 "original_target": "arctan2",
                 "role": "",
                 "target": "arctan2",
@@ -141,7 +141,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/absolute",
-                "label": "we.absolute",
+                "label": "fnp.absolute",
                 "original_target": "absolute",
                 "role": "",
                 "target": "absolute",
@@ -196,12 +196,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.angle([1.0, 1.0j, 1+1j])               # in radians"
+                "text": "fnp.angle([1.0, 1.0j, 1+1j])               # in radians"
               },
               {
                 "kind": "output",
@@ -210,7 +210,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.angle(1+1j, deg=True)                  # in degrees"
+                "text": "fnp.angle(1+1j, deg=True)                  # in degrees"
               },
               {
                 "kind": "output",
@@ -219,7 +219,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.angle([0., -0., complex(0., -0.), complex(-0., -0.)])  # convention"
+                "text": "fnp.angle([0., -0., complex(0., -0.), complex(-0., -0.)])  # convention"
               },
               {
                 "kind": "output",
@@ -237,20 +237,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.angle",
     "module": "numpy",
     "name": "angle",
     "notes": "Return angle of complex argument element-wise.",
     "numpy_ref": "np.angle",
-    "signature": "we.angle(z, deg=False)",
+    "signature": "fnp.angle(z, deg=False)",
     "status": "supported",
     "summary": "Return the angle of the complex argument.",
-    "weight": 16.0,
-    "whest_ref": "we.angle"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "angle",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1649",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L1682"
   }
 }

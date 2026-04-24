@@ -316,7 +316,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "we.fft"
+                        "text": "fnp.fft"
                       },
                       {
                         "kind": "text",
@@ -347,7 +347,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "we.fft"
+                    "text": "fnp.fft"
                   },
                   {
                     "kind": "text",
@@ -642,7 +642,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
                 "href": "",
-                "label": "we.fft",
+                "label": "fnp.fft",
                 "original_target": "numpy.fft",
                 "role": "",
                 "target": "fft",
@@ -784,7 +784,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "we.fft"
+                "text": "fnp.fft"
               },
               {
                 "kind": "text",
@@ -828,17 +828,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = 4 * we.eye(4)"
+                "text": "a = 4 * fnp.eye(4)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.ifft2(a)"
+                "text": "fnp.fft.ifft2(a)"
               },
               {
                 "kind": "output",
@@ -868,20 +868,20 @@
     "category": "counted_custom",
     "cost_formula": "5N * ceil(log2(N))",
     "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
+    "flopscope_ref": "fnp.fft.ifft2",
     "module": "numpy.fft",
     "name": "fft.ifft2",
     "notes": "Inverse 2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.ifft2",
-    "signature": "we.fft.ifft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
+    "signature": "fnp.fft.ifft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the 2-dimensional inverse discrete Fourier Transform.",
-    "weight": 1.0,
-    "whest_ref": "we.fft.ifft2"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "fft-ifft2",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1138",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L259"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L259",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L1144"
   }
 }

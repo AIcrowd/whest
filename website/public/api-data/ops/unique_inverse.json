@@ -46,7 +46,7 @@
           },
           {
             "language": null,
-            "text": "we.unique(x, return_inverse=True, equal_nan=False)",
+            "text": "fnp.unique(x, return_inverse=True, equal_nan=False, sorted=False)",
             "type": "literal_block"
           },
           {
@@ -57,6 +57,25 @@
               }
             ],
             "type": "paragraph"
+          },
+          {
+            "argument_inline": [],
+            "content_blocks": [
+              {
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "This function currently always returns a sorted result, however,\nthis could change in any NumPy minor release."
+                  }
+                ],
+                "type": "paragraph"
+              }
+            ],
+            "directive": "note",
+            "options": [],
+            "raw_source": ".. note::\n    This function currently always returns a sorted result, however,\n    this could change in any NumPy minor release.",
+            "supported": true,
+            "type": "directive_block"
           }
         ],
         "title": "Extended Summary"
@@ -181,7 +200,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/unique",
-                "label": "we.unique",
+                "label": "fnp.unique",
                 "original_target": "unique",
                 "role": "",
                 "target": "unique",
@@ -200,7 +219,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -210,7 +229,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "uniq = we.unique_inverse(x)"
+                "text": "uniq = fnp.unique_inverse(x)"
               },
               {
                 "kind": "input",
@@ -242,20 +261,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.unique_inverse",
     "module": "numpy",
     "name": "unique_inverse",
     "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.unique_inverse",
-    "signature": "we.unique_inverse(x, /)",
+    "signature": "fnp.unique_inverse(x, /)",
     "status": "supported",
     "summary": "Find the unique elements of `x` and indices to reconstruct `x`.",
-    "weight": 1.0,
-    "whest_ref": "we.unique_inverse"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "unique_inverse",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L520",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L320"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L320",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_arraysetops_impl.py#L560"
   }
 }

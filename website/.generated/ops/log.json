@@ -327,7 +327,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/log10",
-              "label": "we.log10",
+              "label": "fnp.log10",
               "original_target": "log10",
               "role": "",
               "target": "log10",
@@ -338,7 +338,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/log2",
-              "label": "we.log2",
+              "label": "fnp.log2",
               "original_target": "log2",
               "role": "",
               "target": "log2",
@@ -349,7 +349,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/log1p",
-              "label": "we.log1p",
+              "label": "fnp.log1p",
               "original_target": "log1p",
               "role": "",
               "target": "log1p",
@@ -548,12 +548,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.log([1, we.e, we.e**2, 0])"
+              "text": "fnp.log([1, fnp.e, fnp.e**2, 0])"
             },
             {
               "kind": "output",
@@ -599,16 +599,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.log([1, we.e, we.e**2, 0])",
+    "code": "import flopscope as fnp\n\nfnp.log([1, fnp.e, fnp.e**2, 0])",
     "output": "array([  0.,   1.,   2., -inf])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.log",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/log/",
   "module": "numpy",
   "name": "log",
   "next": {
     "href": "/docs/api/ops/log10/",
-    "label": "we.log10"
+    "label": "fnp.log10"
   },
   "notes": "Element-wise natural logarithm.",
   "notes_sections": [
@@ -659,7 +662,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linspace/",
-    "label": "we.linspace"
+    "label": "fnp.linspace"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.log.html",
@@ -679,7 +682,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/log10",
-      "label": "we.log10",
+      "label": "fnp.log10",
       "original_target": "log10",
       "role": "",
       "target": "log10",
@@ -690,7 +693,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/log2",
-      "label": "we.log2",
+      "label": "fnp.log2",
       "original_target": "log2",
       "role": "",
       "target": "log2",
@@ -701,7 +704,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/log1p",
-      "label": "we.log1p",
+      "label": "fnp.log1p",
       "original_target": "log1p",
       "role": "",
       "target": "log1p",
@@ -719,12 +722,9 @@
       "unresolved": true
     }
   ],
-  "signature": "we.log(x)",
+  "signature": "fnp.log(x)",
   "slug": "log",
   "summary": "Natural logarithm, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.log",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

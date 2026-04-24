@@ -34,12 +34,12 @@
                 "text": "This function is Array API compatible, contrary to\n"
               },
               {
-                "display_text": "we.diagonal",
+                "display_text": "fnp.diagonal",
                 "explicit_title": false,
                 "external_url": "",
                 "href": "/docs/api/ops/diagonal",
                 "kind": "role_reference",
-                "original_target": "we.diagonal",
+                "original_target": "fnp.diagonal",
                 "role": "py:func",
                 "suppress_link": false,
                 "target": "diagonal",
@@ -173,7 +173,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/diagonal",
-                "label": "we.diagonal",
+                "label": "fnp.diagonal",
                 "original_target": "numpy.diagonal",
                 "role": "",
                 "target": "diagonal",
@@ -192,7 +192,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(4).reshape(2, 2); a"
+                "text": "a = fnp.arange(4).reshape(2, 2); a"
               },
               {
                 "kind": "output",
@@ -205,7 +205,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.diagonal(a)"
+                "text": "fnp.linalg.diagonal(a)"
               },
               {
                 "kind": "output",
@@ -228,7 +228,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(8).reshape(2, 2, 2); a"
+                "text": "a = fnp.arange(8).reshape(2, 2, 2); a"
               },
               {
                 "kind": "output",
@@ -249,7 +249,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.diagonal(a)"
+                "text": "fnp.linalg.diagonal(a)"
               },
               {
                 "kind": "output",
@@ -284,7 +284,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(9).reshape(3, 3)"
+                "text": "a = fnp.arange(9).reshape(3, 3)"
               },
               {
                 "kind": "input",
@@ -306,7 +306,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.diagonal(a, offset=1)  # First superdiagonal"
+                "text": "fnp.linalg.diagonal(a, offset=1)  # First superdiagonal"
               },
               {
                 "kind": "output",
@@ -315,7 +315,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.diagonal(a, offset=2)  # Second superdiagonal"
+                "text": "fnp.linalg.diagonal(a, offset=2)  # Second superdiagonal"
               },
               {
                 "kind": "output",
@@ -324,7 +324,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.diagonal(a, offset=-1)  # First subdiagonal"
+                "text": "fnp.linalg.diagonal(a, offset=-1)  # First subdiagonal"
               },
               {
                 "kind": "output",
@@ -333,7 +333,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.diagonal(a, offset=-2)  # Second subdiagonal"
+                "text": "fnp.linalg.diagonal(a, offset=-2)  # Second subdiagonal"
               },
               {
                 "kind": "output",
@@ -353,7 +353,7 @@
                 "href": "/docs/api/ops/flipud",
                 "kind": "link",
                 "target": "flipud",
-                "text": "we.flipud"
+                "text": "fnp.flipud"
               },
               {
                 "kind": "text",
@@ -364,7 +364,7 @@
                 "href": "/docs/api/ops/fliplr",
                 "kind": "link",
                 "target": "fliplr",
-                "text": "we.fliplr"
+                "text": "fnp.fliplr"
               },
               {
                 "kind": "text",
@@ -378,7 +378,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(9).reshape(3, 3)"
+                "text": "a = fnp.arange(9).reshape(3, 3)"
               },
               {
                 "kind": "input",
@@ -400,7 +400,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.diagonal(we.fliplr(a))  # Horizontal flip"
+                "text": "fnp.linalg.diagonal(fnp.fliplr(a))  # Horizontal flip"
               },
               {
                 "kind": "output",
@@ -409,7 +409,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.diagonal(we.flipud(a))  # Vertical flip"
+                "text": "fnp.linalg.diagonal(fnp.flipud(a))  # Vertical flip"
               },
               {
                 "kind": "output",
@@ -436,20 +436,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.linalg.diagonal",
     "module": "numpy.linalg",
     "name": "linalg.diagonal",
-    "notes": "View of diagonal \u2014 delegates to whest.diagonal. Cost: 0 FLOPs.",
+    "notes": "View of diagonal \u2014 delegates to flopscope.diagonal. Cost: 0 FLOPs.",
     "numpy_ref": "np.linalg.diagonal",
-    "signature": "we.linalg.diagonal(x, /, *, offset=0)",
+    "signature": "fnp.linalg.diagonal(x, /, *, offset=0)",
     "status": "supported",
     "summary": "Returns specified diagonals of a matrix (or a stack of matrices) ``x``.",
-    "weight": 0.0,
-    "whest_ref": "we.linalg.diagonal"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "linalg-diagonal",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3042",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L100"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L100",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L3065"
   }
 }

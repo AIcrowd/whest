@@ -173,7 +173,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/tile",
-              "label": "we.tile",
+              "label": "fnp.tile",
               "original_target": "tile",
               "role": "",
               "target": "tile",
@@ -189,7 +189,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/unique",
-              "label": "we.unique",
+              "label": "fnp.unique",
               "original_target": "unique",
               "role": "",
               "target": "unique",
@@ -208,12 +208,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.repeat(3, 4)"
+              "text": "fnp.repeat(3, 4)"
             },
             {
               "kind": "output",
@@ -222,12 +222,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([[1,2],[3,4]])"
+              "text": "x = fnp.array([[1,2],[3,4]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.repeat(x, 2)"
+              "text": "fnp.repeat(x, 2)"
             },
             {
               "kind": "output",
@@ -236,7 +236,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.repeat(x, 3, axis=1)"
+              "text": "fnp.repeat(x, 3, axis=1)"
             },
             {
               "kind": "output",
@@ -249,7 +249,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.repeat(x, [1, 2], axis=0)"
+              "text": "fnp.repeat(x, [1, 2], axis=0)"
             },
             {
               "kind": "output",
@@ -281,16 +281,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.repeat(3, 4)\n\nx = we.array([[1,2],[3,4]])\n\nwe.repeat(x, 2)\n\nwe.repeat(x, 3, axis=1)\n\nwe.repeat(x, [1, 2], axis=0)",
+    "code": "import flopscope as fnp\n\nfnp.repeat(3, 4)\n\nx = fnp.array([[1,2],[3,4]])\n\nfnp.repeat(x, 2)\n\nfnp.repeat(x, 3, axis=1)\n\nfnp.repeat(x, [1, 2], axis=0)",
     "output": "array([3, 3, 3, 3])\n\narray([1, 1, 2, 2, 3, 3, 4, 4])\n\narray([[1, 1, 1, 2, 2, 2],\n       [3, 3, 3, 4, 4, 4]])\n\narray([[1, 2],\n       [3, 4],\n       [3, 4]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.repeat",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L390",
   "href": "/docs/api/ops/repeat/",
   "module": "numpy",
   "name": "repeat",
   "next": {
     "href": "/docs/api/ops/require/",
-    "label": "we.require"
+    "label": "fnp.require"
   },
   "notes": "Repeat elements of an array. Cost: numel(output).",
   "notes_sections": [],
@@ -322,7 +325,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/remainder/",
-    "label": "we.remainder"
+    "label": "fnp.remainder"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.repeat.html",
@@ -347,7 +350,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/tile",
-      "label": "we.tile",
+      "label": "fnp.tile",
       "original_target": "tile",
       "role": "",
       "target": "tile",
@@ -363,19 +366,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/unique",
-      "label": "we.unique",
+      "label": "fnp.unique",
       "original_target": "unique",
       "role": "",
       "target": "unique",
       "unresolved": false
     }
   ],
-  "signature": "we.repeat(a, repeats, axis=None)",
+  "signature": "fnp.repeat(a, repeats, axis=None)",
   "slug": "repeat",
   "summary": "Repeat each element of an array after themselves",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L462",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.repeat",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L390"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L437",
+  "weight": 1.0
 }

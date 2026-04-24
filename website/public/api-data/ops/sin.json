@@ -286,7 +286,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/arcsin",
-                "label": "we.arcsin",
+                "label": "fnp.arcsin",
                 "original_target": "arcsin",
                 "role": "",
                 "target": "arcsin",
@@ -297,7 +297,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/sinh",
-                "label": "we.sinh",
+                "label": "fnp.sinh",
                 "original_target": "sinh",
                 "role": "",
                 "target": "sinh",
@@ -308,7 +308,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/cos",
-                "label": "we.cos",
+                "label": "fnp.cos",
                 "original_target": "cos",
                 "role": "",
                 "target": "cos",
@@ -397,7 +397,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -416,7 +416,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sin(we.pi/2.)"
+                "text": "fnp.sin(fnp.pi/2.)"
               },
               {
                 "kind": "output",
@@ -439,7 +439,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sin(we.array((0., 30., 45., 60., 90.)) * we.pi / 180. )"
+                "text": "fnp.sin(fnp.array((0., 30., 45., 60., 90.)) * fnp.pi / 180. )"
               },
               {
                 "kind": "output",
@@ -467,12 +467,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(-we.pi, we.pi, 201)"
+                "text": "x = fnp.linspace(-fnp.pi, fnp.pi, 201)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(x, we.sin(x))"
+                "text": "plt.plot(x, fnp.sin(x))"
               },
               {
                 "kind": "input",
@@ -506,20 +506,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.sin",
     "module": "numpy",
     "name": "sin",
     "notes": "Element-wise sine.",
     "numpy_ref": "np.sin",
-    "signature": "we.sin(x)",
+    "signature": "fnp.sin(x)",
     "status": "supported",
     "summary": "Trigonometric sine, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.sin"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "sin",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

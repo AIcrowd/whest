@@ -635,38 +635,6 @@
               ],
               "name": "weights",
               "type": "field_list"
-            },
-            {
-              "body_blocks": [
-                {
-                  "inline": [
-                    {
-                      "kind": "text",
-                      "text": "Deprecated name for the method keyword argument."
-                    }
-                  ],
-                  "type": "paragraph"
-                },
-                {
-                  "argument_inline": [],
-                  "content_blocks": [],
-                  "directive": "deprecated",
-                  "options": [],
-                  "raw_source": ".. deprecated:: 1.22.0",
-                  "supported": true,
-                  "type": "directive_block",
-                  "version": "1.22.0"
-                }
-              ],
-              "data_type": "str, optional",
-              "inline": [
-                {
-                  "kind": "text",
-                  "text": "Deprecated name for the method keyword argument."
-                }
-              ],
-              "name": "interpolation",
-              "type": "field_list"
             }
           ],
           "title": "Parameters",
@@ -813,7 +781,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanmean",
-              "label": "we.nanmean",
+              "label": "fnp.nanmean",
               "original_target": "nanmean",
               "role": "",
               "target": "nanmean",
@@ -833,7 +801,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/nanmedian",
-              "label": "we.nanmedian",
+              "label": "fnp.nanmedian",
               "original_target": "nanmedian",
               "role": "",
               "target": "nanmedian",
@@ -844,7 +812,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/percentile",
-              "label": "we.percentile",
+              "label": "fnp.percentile",
               "original_target": "percentile",
               "role": "",
               "target": "percentile",
@@ -855,7 +823,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/median",
-              "label": "we.median",
+              "label": "fnp.median",
               "original_target": "median",
               "role": "",
               "target": "median",
@@ -866,7 +834,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/mean",
-              "label": "we.mean",
+              "label": "fnp.mean",
               "original_target": "mean",
               "role": "",
               "target": "mean",
@@ -882,7 +850,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/nanquantile",
-              "label": "we.nanquantile",
+              "label": "fnp.nanquantile",
               "original_target": "nanquantile",
               "role": "",
               "target": "nanquantile",
@@ -907,7 +875,7 @@
               "href": "/docs/api/ops/nanpercentile",
               "kind": "link",
               "target": "nanpercentile",
-              "text": "we.nanpercentile"
+              "text": "fnp.nanpercentile"
             },
             {
               "kind": "text",
@@ -926,7 +894,7 @@
               "href": "/docs/api/ops/quantile",
               "kind": "link",
               "target": "quantile",
-              "text": "we.quantile"
+              "text": "fnp.quantile"
             },
             {
               "kind": "text",
@@ -945,7 +913,7 @@
               "href": "/docs/api/ops/quantile",
               "kind": "link",
               "target": "quantile",
-              "text": "we.quantile"
+              "text": "fnp.quantile"
             },
             {
               "kind": "text",
@@ -974,17 +942,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[10., 7., 4.], [3., 2., 1.]])"
+              "text": "a = fnp.array([[10., 7., 4.], [3., 2., 1.]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a[0][1] = we.nan"
+              "text": "a[0][1] = fnp.nan"
             },
             {
               "kind": "input",
@@ -1002,16 +970,16 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.percentile(a, 50)"
+              "text": "fnp.percentile(a, 50)"
             },
             {
               "kind": "output",
-              "text": "we.float64(nan)"
+              "text": "fnp.float64(nan)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanpercentile(a, 50)"
+              "text": "fnp.nanpercentile(a, 50)"
             },
             {
               "kind": "output",
@@ -1020,7 +988,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanpercentile(a, 50, axis=0)"
+              "text": "fnp.nanpercentile(a, 50, axis=0)"
             },
             {
               "kind": "output",
@@ -1029,7 +997,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanpercentile(a, 50, axis=1, keepdims=True)"
+              "text": "fnp.nanpercentile(a, 50, axis=1, keepdims=True)"
             },
             {
               "kind": "output",
@@ -1042,17 +1010,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "m = we.nanpercentile(a, 50, axis=0)"
+              "text": "m = fnp.nanpercentile(a, 50, axis=0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "out = we.zeros_like(m)"
+              "text": "out = fnp.zeros_like(m)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanpercentile(a, 50, axis=0, out=out)"
+              "text": "fnp.nanpercentile(a, 50, axis=0, out=out)"
             },
             {
               "kind": "output",
@@ -1080,7 +1048,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanpercentile(b, 50, axis=1, overwrite_input=True)"
+              "text": "fnp.nanpercentile(b, 50, axis=1, overwrite_input=True)"
             },
             {
               "kind": "output",
@@ -1089,7 +1057,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "assert not we.all(a==b)"
+              "text": "assert not fnp.all(a==b)"
             }
           ],
           "type": "doctest_block"
@@ -1119,20 +1087,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[10., 7., 4.], [3., 2., 1.]])\n\na[0][1] = we.nan\n\na\n\nwe.percentile(a, 50)\n\nwe.nanpercentile(a, 50)\n\nwe.nanpercentile(a, 50, axis=0)\n\nwe.nanpercentile(a, 50, axis=1, keepdims=True)\n\nm = we.nanpercentile(a, 50, axis=0)\n\nout = we.zeros_like(m)\n\nwe.nanpercentile(a, 50, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nwe.nanpercentile(b, 50, axis=1, overwrite_input=True)\n\nassert not we.all(a==b)",
-    "output": "array([[10.,  nan,   4.],\n      [ 3.,   2.,   1.]])\n\nwe.float64(nan)\n\n3.0\n\narray([6.5, 2. , 2.5])\n\narray([[7.],\n       [2.]])\n\narray([6.5, 2. , 2.5])\n\narray([6.5,  2. ,  2.5])\n\narray([7., 2.])",
+    "code": "import flopscope as fnp\n\na = fnp.array([[10., 7., 4.], [3., 2., 1.]])\n\na[0][1] = fnp.nan\n\na\n\nfnp.percentile(a, 50)\n\nfnp.nanpercentile(a, 50)\n\nfnp.nanpercentile(a, 50, axis=0)\n\nfnp.nanpercentile(a, 50, axis=1, keepdims=True)\n\nm = fnp.nanpercentile(a, 50, axis=0)\n\nout = fnp.zeros_like(m)\n\nfnp.nanpercentile(a, 50, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nfnp.nanpercentile(b, 50, axis=1, overwrite_input=True)\n\nassert not fnp.all(a==b)",
+    "output": "array([[10.,  nan,   4.],\n      [ 3.,   2.,   1.]])\n\nfnp.float64(nan)\n\n3.0\n\narray([6.5, 2. , 2.5])\n\narray([[7.],\n       [2.]])\n\narray([6.5, 2. , 2.5])\n\narray([6.5,  2. ,  2.5])\n\narray([7., 2.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.nanpercentile",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
   "href": "/docs/api/ops/nanpercentile/",
   "module": "numpy",
   "name": "nanpercentile",
   "next": {
     "href": "/docs/api/ops/nanprod/",
-    "label": "we.nanprod"
+    "label": "fnp.nanprod"
   },
   "notes": "q-th percentile ignoring NaNs.",
   "notes_sections": [
-    "The behavior of `we.nanpercentile` with percentage `q` is that of `we.quantile` with argument ``q/100`` (ignoring nan values). For more information, please see `we.quantile`."
+    "The behavior of `fnp.nanpercentile` with percentage `q` is that of `fnp.quantile` with argument ``q/100`` (ignoring nan values). For more information, please see `fnp.quantile`."
   ],
   "numpy_ref": "np.nanpercentile",
   "parameters": [
@@ -1241,20 +1212,11 @@
       ],
       "name": "weights",
       "type": "array_like, optional"
-    },
-    {
-      "body": [
-        "Deprecated name for the method keyword argument.",
-        "",
-        ".. deprecated:: 1.22.0"
-      ],
-      "name": "interpolation",
-      "type": "str, optional"
     }
   ],
   "previous": {
     "href": "/docs/api/ops/nanmin/",
-    "label": "we.nanmin"
+    "label": "fnp.nanmin"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nanpercentile.html",
@@ -1280,7 +1242,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanmean",
-      "label": "we.nanmean",
+      "label": "fnp.nanmean",
       "original_target": "nanmean",
       "role": "",
       "target": "nanmean",
@@ -1300,7 +1262,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/nanmedian",
-      "label": "we.nanmedian",
+      "label": "fnp.nanmedian",
       "original_target": "nanmedian",
       "role": "",
       "target": "nanmedian",
@@ -1311,7 +1273,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/percentile",
-      "label": "we.percentile",
+      "label": "fnp.percentile",
       "original_target": "percentile",
       "role": "",
       "target": "percentile",
@@ -1322,7 +1284,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/median",
-      "label": "we.median",
+      "label": "fnp.median",
       "original_target": "median",
       "role": "",
       "target": "median",
@@ -1333,7 +1295,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/mean",
-      "label": "we.mean",
+      "label": "fnp.mean",
       "original_target": "mean",
       "role": "",
       "target": "mean",
@@ -1349,19 +1311,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/nanquantile",
-      "label": "we.nanquantile",
+      "label": "fnp.nanquantile",
       "original_target": "nanquantile",
       "role": "",
       "target": "nanquantile",
       "unresolved": false
     }
   ],
-  "signature": "we.nanpercentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=<no value>, *, weights=None, interpolation=None)",
+  "signature": "fnp.nanpercentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=<no value>, *, weights=None)",
   "slug": "nanpercentile",
   "summary": "Compute the qth percentile of the data along the specified axis, while ignoring nan values.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L1228",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.nanpercentile",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_nanfunctions_impl.py#L1226",
+  "weight": 1.0
 }

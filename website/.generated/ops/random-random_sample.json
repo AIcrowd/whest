@@ -121,7 +121,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.random`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.random`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -297,7 +297,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.random_sample()"
+              "text": "fnp.random.random_sample()"
             },
             {
               "kind": "output",
@@ -306,7 +306,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "type(we.random.random_sample())"
+              "text": "type(fnp.random.random_sample())"
             },
             {
               "kind": "output",
@@ -315,7 +315,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.random_sample((5,))"
+              "text": "fnp.random.random_sample((5,))"
             },
             {
               "kind": "output",
@@ -338,7 +338,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "5 * we.random.random_sample((3, 2)) - 5"
+              "text": "5 * fnp.random.random_sample((3, 2)) - 5"
             },
             {
               "kind": "output",
@@ -370,16 +370,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.random.random_sample()\n\ntype(we.random.random_sample())\n\nwe.random.random_sample((5,))\n\n5 * we.random.random_sample((3, 2)) - 5",
+    "code": "fnp.random.random_sample()\n\ntype(fnp.random.random_sample())\n\nfnp.random.random_sample((5,))\n\n5 * fnp.random.random_sample((3, 2)) - 5",
     "output": "0.47108547995356098 # random\n\n<class 'float'>\n\narray([ 0.30220482,  0.86820401,  0.1654503 ,  0.11659149,  0.54323428]) # random\n\narray([[-3.99149989, -0.52338984], # random\n       [-2.99091858, -0.79479508],\n       [-1.23204345, -1.75224494]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.random_sample",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L177",
   "href": "/docs/api/ops/random-random_sample/",
   "module": "numpy.random",
   "name": "random.random_sample",
   "next": {
     "href": "/docs/api/ops/random-rayleigh/",
-    "label": "we.random.rayleigh"
+    "label": "fnp.random.rayleigh"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -397,7 +400,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-random_integers/",
-    "label": "we.random.random_integers"
+    "label": "fnp.random.random_integers"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.random_sample.html",
@@ -429,12 +432,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.random_sample(size=None)",
+  "signature": "fnp.random.random_sample(size=None)",
   "slug": "random-random_sample",
   "summary": "Return random floats in the half-open interval [0.0, 1.0).",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.random_sample",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L177"
+  "weight": 1.0
 }

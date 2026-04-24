@@ -26,7 +26,7 @@ title: Changelog
   instead of recomputing it. New public API: `we.clear_einsum_cache()`,
   `we.einsum_cache_info()`, and `we.configure(einsum_path_cache_size=N)`.
 
-- **Multi-version NumPy support.** whest now supports NumPy 2.0, 2.1, and 2.2
+- **Multi-version NumPy support.** flopscope now supports NumPy 2.0, 2.1, and 2.2
   (`>=2.0.0,<2.3.0`). Default install resolves to NumPy 2.2. Functions not available
   in older NumPy versions raise `UnsupportedFunctionError` with an actionable message
   at call time (not import time).
@@ -41,9 +41,9 @@ title: Changelog
 
 ### Changed
 
-- **Renamed package from `mechestim` to `whest`** to reflect the new challenge
+- **Renamed package from `mechestim` to `flopscope`** to reflect the new challenge
   name "ARC Whitebox Estimation Challenge". The import convention changes from
-  `import mechestim as me` to `import whest as we`.
+  `import mechestim as me` to `import flopscope as we`.
 
 - **Symmetric BLAS classification restored.** Pairwise contractions with
   symmetric inputs now correctly report `SYMM`, `SYMV`, or `SYDT` BLAS
@@ -129,13 +129,13 @@ Second release with unified einsum cost model, NumPy compatibility testing, and 
 
 - **Unified einsum cost model** — all einsum-like operations (einsum, dot, matmul, tensordot) now share a single cost model based on opt_einsum's contraction path optimizer
 - **Symmetry-aware path finding** — the opt_einsum path optimizer now factors symmetry savings into contraction ordering decisions, producing different (cheaper) paths for symmetric inputs
-- **NumPy compatibility test harness** — run NumPy's own test suite against whest via monkeypatching; 7,300+ tests passing across 7 NumPy test modules
+- **NumPy compatibility test harness** — run NumPy's own test suite against flopscope via monkeypatching; 7,300+ tests passing across 7 NumPy test modules
 - **Polynomial operations** — `polyval`, `polyfit`, `polymul`, `polydiv`, `polyadd`, `polysub`, `poly`, `roots`, `polyder`, `polyint` with analytical FLOP costs
 - **Window functions** — `bartlett`, `hamming`, `hanning`, `blackman`, `kaiser` with per-function cost formulas
 - **FFT module** — `fft`, `ifft`, `rfft`, `irfft`, `fft2`, `ifft2`, `fftn`, `ifftn`, `rfftn`, `irfftn` and free helpers (`fftfreq`, `rfftfreq`, `fftshift`, `ifftshift`)
-- **Client-server architecture** — `whest-client` and `whest-server` packages for sandboxed competition evaluation over ZMQ
+- **Client-server architecture** — `flopscope-client` and `flopscope-server` packages for sandboxed competition evaluation over ZMQ
 - **Global default budget** — a 1e15 FLOP budget auto-activates on first use, so explicit `BudgetContext` is no longer required for quick scripts
-- **`WHEST_DEFAULT_BUDGET` env var** — configure the global default budget amount
+- **`FLOPSCOPE_DEFAULT_BUDGET` env var** — configure the global default budget amount
 - **`budget_live()`** — Rich-based live-updating budget display context manager
 - **`einsum_path()`** — inspect contraction plans with per-step symmetry savings without spending budget
 - **90%+ test coverage gate** enforced in CI
@@ -147,7 +147,7 @@ Second release with unified einsum cost model, NumPy compatibility testing, and 
 
 ### Bug fixes
 
-- Accept scalars and array-likes in all whest functions
+- Accept scalars and array-likes in all flopscope functions
 - Fix symmetry-aware greedy algorithm to actually use symmetry in path selection
 - Fix `contract_path` cost reporting for output indices
 - Correctly handle `symmetric_dims` propagation through multi-step contraction paths
@@ -170,4 +170,4 @@ Initial release for warm-up round.
 - Free tensor creation and manipulation ops
 - Budget enforcement via BudgetContext
 - FLOP cost query API
-- NumPy-compatible API (`import whest as we`)
+- NumPy-compatible API (`import flopscope as we`)

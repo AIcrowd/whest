@@ -2,10 +2,10 @@
 title: "FLOP Counting Model"
 ---
 
-*Use this page to understand how whest counts FLOPs and why it uses analytical counting instead of runtime measurement.*
+*Use this page to understand how flopscope counts FLOPs and why it uses analytical counting instead of runtime measurement.*
 
 **You will learn:**
-- How whest computes FLOP costs analytically from tensor shapes
+- How flopscope computes FLOP costs analytically from tensor shapes
 - How cost formulas work for each operation category (einsum, linalg, FFT, etc.)
 - How symmetry savings and per-operation weights modify costs
 - How the FLOP multiplier and namespaces interact with the cost model
@@ -27,10 +27,10 @@ All cost formulae reflect this: a matrix multiply of dimensions
 
 ## How costs are computed
 
-whest computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
+flopscope computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
 
 1. You call a counted operation (e.g., `we.einsum('ij,j->i', W, x)`)
-2. whest computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
+2. flopscope computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
 3. The cost is checked against the remaining budget
 4. If within budget: the operation executes and the cost is deducted
 5. If over budget: `BudgetExhaustedError` is raised, the operation does **not** execute
@@ -38,10 +38,10 @@ whest computes FLOP costs **analytically from tensor shapes**, not by measuring 
 ## Cost formulas by category
 
 Each formula below gives the **analytical base cost**. In normal use,
-whest loads the packaged official per-operation
+flopscope loads the packaged official per-operation
 [weights](#per-operation-weights) automatically at import time, so the base
 cost is multiplied by the operation's weight to give the final deducted
-cost. Set `WHEST_DISABLE_WEIGHTS=1` if you want the pure analytical unit-cost
+cost. Set `FLOPSCOPE_DISABLE_WEIGHTS=1` if you want the pure analytical unit-cost
 model instead.
 
 | Category | Formula | Example |
@@ -125,7 +125,7 @@ for the algorithm walkthrough.
 ## Einsum cost model
 
 Every einsum — regardless of the number of operands — is decomposed into
-pairwise contraction steps along an optimal path (found via whest's
+pairwise contraction steps along an optimal path (found via flopscope's
 [opt_einsum fork](/docs/api/)).
 The total cost is the sum of per-step costs:
 
@@ -146,7 +146,7 @@ Each fused multiply-add (FMA) counts as 1 operation (see
 contraction step is simply the product of all index dimensions — there is
 no factor-of-2 distinction between inner products and outer products.
 
-When symmetry is present, whest reduces each step's cost based on
+When symmetry is present, flopscope reduces each step's cost based on
 the structure of the contraction.
 
 ### Symmetric contraction cost
@@ -253,9 +253,9 @@ Integer and bitwise operations (`bitwise_and`, `gcd`, `lcm`, etc.) use the
 do not retire `fp_arith_inst_retired` events. Their weights are derived from
 instruction counts normalized the same way as FP operations.
 
-Official weights are packaged with whest and enabled by default on import.
-Use `WHEST_WEIGHTS_FILE` to override them with a custom JSON file, or set
-`WHEST_DISABLE_WEIGHTS=1` to disable weighting entirely and fall back to
+Official weights are packaged with flopscope and enabled by default on import.
+Use `FLOPSCOPE_WEIGHTS_FILE` to override them with a custom JSON file, or set
+`FLOPSCOPE_DISABLE_WEIGHTS=1` to disable weighting entirely and fall back to
 unit weights (1.0 for all operations).
 
 ### How weights are applied
@@ -275,16 +275,16 @@ per-element cost, and both apply independently.
 ### Overriding or disabling packaged weights
 
 Normal imports load the packaged official weights automatically. To override
-them at import time, set `WHEST_WEIGHTS_FILE`:
+them at import time, set `FLOPSCOPE_WEIGHTS_FILE`:
 
 ```bash
-export WHEST_WEIGHTS_FILE=/path/to/weights.json
+export FLOPSCOPE_WEIGHTS_FILE=/path/to/weights.json
 ```
 
 To disable weighting entirely and use unit weights instead:
 
 ```bash
-export WHEST_DISABLE_WEIGHTS=1
+export FLOPSCOPE_DISABLE_WEIGHTS=1
 ```
 
 The JSON file must have a `"weights"` key mapping operation names to floats:

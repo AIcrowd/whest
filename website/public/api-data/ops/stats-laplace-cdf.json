@@ -163,20 +163,20 @@
     "category": "counted_custom",
     "cost_formula": "5n",
     "cost_formula_latex": "$5n$",
-    "module": "whest.stats",
+    "flopscope_ref": "fnp.stats.laplace.cdf",
+    "module": "flopscope.stats",
     "name": "stats.laplace.cdf",
     "notes": "Laplace CDF; cost = numel(input).",
     "numpy_ref": "np.stats.laplace.cdf",
-    "signature": "we.stats.laplace.cdf(x, loc=0, scale=1)",
+    "signature": "fnp.stats.laplace.cdf(x, loc=0, scale=1)",
     "status": "supported",
     "summary": "Cumulative distribution function of the given RV.",
-    "weight": 16.0,
-    "whest_ref": "we.stats.laplace.cdf"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "stats-laplace-cdf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_laplace.py#L43"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_laplace.py#L43",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2132"
   }
 }

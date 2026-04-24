@@ -327,7 +327,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log10",
-                "label": "we.log10",
+                "label": "fnp.log10",
                 "original_target": "log10",
                 "role": "",
                 "target": "log10",
@@ -338,7 +338,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log2",
-                "label": "we.log2",
+                "label": "fnp.log2",
                 "original_target": "log2",
                 "role": "",
                 "target": "log2",
@@ -349,7 +349,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log1p",
-                "label": "we.log1p",
+                "label": "fnp.log1p",
                 "original_target": "log1p",
                 "role": "",
                 "target": "log1p",
@@ -548,12 +548,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.log([1, we.e, we.e**2, 0])"
+                "text": "fnp.log([1, fnp.e, fnp.e**2, 0])"
               },
               {
                 "kind": "output",
@@ -571,20 +571,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.log",
     "module": "numpy",
     "name": "log",
     "notes": "Element-wise natural logarithm.",
     "numpy_ref": "np.log",
-    "signature": "we.log(x)",
+    "signature": "fnp.log(x)",
     "status": "supported",
     "summary": "Natural logarithm, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.log"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "log",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

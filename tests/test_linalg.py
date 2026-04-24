@@ -1,10 +1,10 @@
-"""Tests for whest.linalg.svd."""
+"""Tests for flopscope.numpy.linalg.svd."""
 
 import numpy
 import pytest
 
-from whest._budget import BudgetContext
-from whest.linalg import svd
+from flopscope._budget import BudgetContext
+from flopscope.numpy.linalg import svd
 
 
 def test_svd_full_result():
@@ -70,7 +70,7 @@ def test_svd_op_log():
 
 
 def test_linalg_unsupported():
-    from whest import linalg
+    from flopscope.numpy import linalg
 
     with pytest.raises(
         AttributeError,

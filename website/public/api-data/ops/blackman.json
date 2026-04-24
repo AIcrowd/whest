@@ -106,7 +106,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bartlett",
-                "label": "we.bartlett",
+                "label": "fnp.bartlett",
                 "original_target": "bartlett",
                 "role": "",
                 "target": "bartlett",
@@ -117,7 +117,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/hamming",
-                "label": "we.hamming",
+                "label": "fnp.hamming",
                 "original_target": "hamming",
                 "role": "",
                 "target": "hamming",
@@ -128,7 +128,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/hanning",
-                "label": "we.hanning",
+                "label": "fnp.hanning",
                 "original_target": "hanning",
                 "role": "",
                 "target": "hanning",
@@ -139,7 +139,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/kaiser",
-                "label": "we.kaiser",
+                "label": "fnp.kaiser",
                 "original_target": "kaiser",
                 "role": "",
                 "target": "kaiser",
@@ -210,7 +210,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -220,7 +220,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.blackman(12)"
+                "text": "fnp.blackman(12)"
               },
               {
                 "kind": "output",
@@ -255,7 +255,7 @@
             "content_blocks": [
               {
                 "language": "python",
-                "text": "import matplotlib.pyplot as plt\nfrom we.fft import fft, fftshift\nwindow = we.blackman(51)\nplt.plot(window)\nplt.title(\"Blackman window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()  # doctest: +SKIP\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = we.abs(fftshift(A))\nfreq = we.linspace(-0.5, 0.5, len(A))\nwith we.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * we.log10(mag)\nresponse = we.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Blackman window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
+                "text": "import matplotlib.pyplot as plt\nfrom fnp.fft import fft, fftshift\nwindow = fnp.blackman(51)\nplt.plot(window)\nplt.title(\"Blackman window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()  # doctest: +SKIP\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = fnp.abs(fftshift(A))\nfreq = fnp.linspace(-0.5, 0.5, len(A))\nwith fnp.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * fnp.log10(mag)\nresponse = fnp.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Blackman window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
                 "type": "literal_block"
               }
             ],
@@ -279,20 +279,20 @@
     "category": "counted_custom",
     "cost_formula": "3n",
     "cost_formula_latex": "$3n$",
-    "module": "whest._window",
+    "flopscope_ref": "fnp.blackman",
+    "module": "flopscope._window",
     "name": "blackman",
     "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
     "numpy_ref": "np.blackman",
-    "signature": "we.blackman(M)",
+    "signature": "fnp.blackman(M)",
     "status": "supported",
     "summary": "Return the Blackman window.",
-    "weight": 16.0,
-    "whest_ref": "we.blackman"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "blackman",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3058",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L64"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L64",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L3036"
   }
 }

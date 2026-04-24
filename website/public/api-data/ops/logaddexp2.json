@@ -345,7 +345,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/logaddexp",
-                "label": "we.logaddexp",
+                "label": "fnp.logaddexp",
                 "original_target": "logaddexp",
                 "role": "",
                 "target": "logaddexp",
@@ -364,22 +364,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "prob1 = we.log2(1e-50)"
+                "text": "prob1 = fnp.log2(1e-50)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "prob2 = we.log2(2.5e-50)"
+                "text": "prob2 = fnp.log2(2.5e-50)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "prob12 = we.logaddexp2(prob1, prob2)"
+                "text": "prob12 = fnp.logaddexp2(prob1, prob2)"
               },
               {
                 "kind": "input",
@@ -411,20 +411,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.logaddexp2",
     "module": "numpy",
     "name": "logaddexp2",
     "notes": "log2(2**x1 + 2**x2) element-wise.",
     "numpy_ref": "np.logaddexp2",
-    "signature": "we.logaddexp2(x, y)",
+    "signature": "fnp.logaddexp2(x, y)",
     "status": "supported",
     "summary": "Logarithm of the sum of exponentiations of the inputs in base-2.",
-    "weight": 16.0,
-    "whest_ref": "we.logaddexp2"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "logaddexp2",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

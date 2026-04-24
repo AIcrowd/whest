@@ -312,26 +312,26 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bitwise_count(1023)"
+                "text": "fnp.bitwise_count(1023)"
               },
               {
                 "kind": "output",
-                "text": "we.uint8(10)"
+                "text": "fnp.uint8(10)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([2**i - 1 for i in range(16)])"
+                "text": "a = fnp.array([2**i - 1 for i in range(16)])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bitwise_count(a)"
+                "text": "fnp.bitwise_count(a)"
               },
               {
                 "kind": "output",
@@ -353,20 +353,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.bitwise_count",
     "module": "numpy",
     "name": "bitwise_count",
     "notes": "Count set bits element-wise (popcount).",
     "numpy_ref": "np.bitwise_count",
-    "signature": "we.bitwise_count(x)",
+    "signature": "fnp.bitwise_count(x)",
     "status": "supported",
     "summary": "Computes the number of 1-bits in the absolute value of ``x``. Analogous to the builtin `int.bit_count` or ``popcount`` in C++.",
-    "weight": 1.0,
-    "whest_ref": "we.bitwise_count"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "bitwise_count",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

@@ -60,13 +60,13 @@ try:
 except Exception:
     check("can read /submission/", False)
 
-# Test 6: whest works
+# Test 6: flopscope works
 try:
-    import whest as we
-
-    check(f"whest loaded (v{we.__version__})", True)
+    import flopscope as flops
+    import flopscope.numpy as fnp
+    check(f"flopscope loaded (v{flops.__version__})", True)
 except Exception:
-    check("whest loaded", False)
+    check("flopscope loaded", False)
 
 # Test 7: allowed stdlib modules work
 try:

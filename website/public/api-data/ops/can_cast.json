@@ -218,7 +218,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/result_type",
-                "label": "we.result_type",
+                "label": "fnp.result_type",
                 "original_target": "result_type",
                 "role": "",
                 "target": "result_type",
@@ -261,12 +261,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.can_cast(we.int32, we.int64)"
+                "text": "fnp.can_cast(fnp.int32, fnp.int64)"
               },
               {
                 "kind": "output",
@@ -275,7 +275,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.can_cast(we.float64, complex)"
+                "text": "fnp.can_cast(fnp.float64, complex)"
               },
               {
                 "kind": "output",
@@ -284,7 +284,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.can_cast(complex, float)"
+                "text": "fnp.can_cast(complex, float)"
               },
               {
                 "kind": "output",
@@ -298,7 +298,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.can_cast('i8', 'f8')"
+                "text": "fnp.can_cast('i8', 'f8')"
               },
               {
                 "kind": "output",
@@ -307,7 +307,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.can_cast('i8', 'f4')"
+                "text": "fnp.can_cast('i8', 'f4')"
               },
               {
                 "kind": "output",
@@ -316,7 +316,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.can_cast('i4', 'S4')"
+                "text": "fnp.can_cast('i4', 'S4')"
               },
               {
                 "kind": "output",
@@ -334,20 +334,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.can_cast",
     "module": "numpy",
     "name": "can_cast",
     "notes": "Returns True if cast is safe.",
     "numpy_ref": "np.can_cast",
-    "signature": "we.can_cast(*args, **kwargs)",
+    "signature": "fnp.can_cast(from_, to, casting='safe')",
     "status": "supported",
     "summary": "Returns True if cast between data types can occur according to the casting rule.",
-    "weight": 0.0,
-    "whest_ref": "we.can_cast"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "can_cast",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.can_cast.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L739"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L739",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.can_cast.html"
   }
 }

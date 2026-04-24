@@ -474,12 +474,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.log10([1e-15, -3.])"
+                "text": "fnp.log10([1e-15, -3.])"
               },
               {
                 "kind": "output",
@@ -497,20 +497,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.log10",
     "module": "numpy",
     "name": "log10",
     "notes": "Element-wise base-10 logarithm.",
     "numpy_ref": "np.log10",
-    "signature": "we.log10(x)",
+    "signature": "fnp.log10(x)",
     "status": "supported",
     "summary": "Return the base 10 logarithm of the input array, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.log10"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "log10",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

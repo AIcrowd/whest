@@ -89,7 +89,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.logseries`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.logseries`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -164,7 +164,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.array(p).size"
+                        "text": "fnp.array(p).size"
                       },
                       {
                         "kind": "text",
@@ -214,7 +214,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.array(p).size"
+                    "text": "fnp.array(p).size"
                   },
                   {
                     "kind": "text",
@@ -390,7 +390,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.logseries(a, 10000)"
+                "text": "s = fnp.random.logseries(a, 10000)"
               },
               {
                 "kind": "input",
@@ -424,7 +424,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "return -p**k/(k*we.log(1-p))"
+                "text": "return -p**k/(k*fnp.log(1-p))"
               },
               {
                 "kind": "input",
@@ -453,20 +453,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.logseries",
     "module": "numpy.random",
     "name": "random.logseries",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.logseries",
-    "signature": "we.random.logseries(p, size=None)",
+    "signature": "fnp.random.logseries(p, size=None)",
     "status": "supported",
     "summary": "Draw samples from a logarithmic series distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.logseries"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-logseries",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.logseries.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.logseries.html"
   }
 }

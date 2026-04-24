@@ -122,7 +122,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/result_type",
-              "label": "we.result_type",
+              "label": "fnp.result_type",
               "original_target": "result_type",
               "role": "",
               "target": "result_type",
@@ -133,7 +133,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/promote_types",
-              "label": "we.promote_types",
+              "label": "fnp.promote_types",
               "original_target": "promote_types",
               "role": "",
               "target": "promote_types",
@@ -155,7 +155,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/can_cast",
-              "label": "we.can_cast",
+              "label": "fnp.can_cast",
               "original_target": "can_cast",
               "role": "",
               "target": "can_cast",
@@ -174,12 +174,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.min_scalar_type(10)"
+              "text": "fnp.min_scalar_type(10)"
             },
             {
               "kind": "output",
@@ -193,7 +193,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.min_scalar_type(-260)"
+              "text": "fnp.min_scalar_type(-260)"
             },
             {
               "kind": "output",
@@ -207,7 +207,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.min_scalar_type(3.1)"
+              "text": "fnp.min_scalar_type(3.1)"
             },
             {
               "kind": "output",
@@ -221,7 +221,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.min_scalar_type(1e50)"
+              "text": "fnp.min_scalar_type(1e50)"
             },
             {
               "kind": "output",
@@ -235,7 +235,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.min_scalar_type(we.arange(4,dtype='f8'))"
+              "text": "fnp.min_scalar_type(fnp.arange(4,dtype='f8'))"
             },
             {
               "kind": "output",
@@ -259,16 +259,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.min_scalar_type(10)\n\nwe.min_scalar_type(-260)\n\nwe.min_scalar_type(3.1)\n\nwe.min_scalar_type(1e50)\n\nwe.min_scalar_type(we.arange(4,dtype='f8'))",
+    "code": "import flopscope as fnp\n\nfnp.min_scalar_type(10)\n\nfnp.min_scalar_type(-260)\n\nfnp.min_scalar_type(3.1)\n\nfnp.min_scalar_type(1e50)\n\nfnp.min_scalar_type(fnp.arange(4,dtype='f8'))",
     "output": "dtype('uint8')\n\ndtype('int16')\n\ndtype('float16')\n\ndtype('float64')\n\ndtype('float64')",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.min_scalar_type",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1171",
   "href": "/docs/api/ops/min_scalar_type/",
   "module": "numpy",
   "name": "min_scalar_type",
   "next": {
     "href": "/docs/api/ops/minimum/",
-    "label": "we.minimum"
+    "label": "fnp.minimum"
   },
   "notes": "Return the minimum scalar type for a value.",
   "notes_sections": [],
@@ -284,7 +287,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/min/",
-    "label": "we.min"
+    "label": "fnp.min"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.min_scalar_type.html",
@@ -303,7 +306,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/result_type",
-      "label": "we.result_type",
+      "label": "fnp.result_type",
       "original_target": "result_type",
       "role": "",
       "target": "result_type",
@@ -314,7 +317,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/promote_types",
-      "label": "we.promote_types",
+      "label": "fnp.promote_types",
       "original_target": "promote_types",
       "role": "",
       "target": "promote_types",
@@ -336,19 +339,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/can_cast",
-      "label": "we.can_cast",
+      "label": "fnp.can_cast",
       "original_target": "can_cast",
       "role": "",
       "target": "can_cast",
       "unresolved": false
     }
   ],
-  "signature": "we.min_scalar_type(*args, **kwargs)",
+  "signature": "fnp.min_scalar_type(a, /)",
   "slug": "min_scalar_type",
   "summary": "For scalar ``a``, returns the data type with the smallest size and smallest scalar kind which can hold its value.  For non-scalar array ``a``, returns the vector's dtype unmodified.",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.min_scalar_type",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1171"
+  "weight": 0.0
 }

@@ -88,7 +88,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "int8",
-                        "text": "we.int8"
+                        "text": "fnp.int8"
                       },
                       {
                         "kind": "text",
@@ -99,7 +99,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "float64",
-                        "text": "we.float64"
+                        "text": "fnp.float64"
                       },
                       {
                         "kind": "text",
@@ -120,7 +120,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "int8",
-                    "text": "we.int8"
+                    "text": "fnp.int8"
                   },
                   {
                     "kind": "text",
@@ -131,7 +131,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "float64",
-                    "text": "we.float64"
+                    "text": "fnp.float64"
                   },
                   {
                     "kind": "text",
@@ -329,7 +329,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/ones_like",
-                "label": "we.ones_like",
+                "label": "fnp.ones_like",
                 "original_target": "ones_like",
                 "role": "",
                 "target": "ones_like",
@@ -345,7 +345,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/empty",
-                "label": "we.empty",
+                "label": "fnp.empty",
                 "original_target": "empty",
                 "role": "",
                 "target": "empty",
@@ -361,7 +361,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/zeros",
-                "label": "we.zeros",
+                "label": "fnp.zeros",
                 "original_target": "zeros",
                 "role": "",
                 "target": "zeros",
@@ -377,7 +377,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/full",
-                "label": "we.full",
+                "label": "fnp.full",
                 "original_target": "full",
                 "role": "",
                 "target": "full",
@@ -396,12 +396,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ones(5)"
+                "text": "fnp.ones(5)"
               },
               {
                 "kind": "output",
@@ -415,7 +415,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ones((5,), dtype=int)"
+                "text": "fnp.ones((5,), dtype=int)"
               },
               {
                 "kind": "output",
@@ -429,7 +429,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ones((2, 1))"
+                "text": "fnp.ones((2, 1))"
               },
               {
                 "kind": "output",
@@ -452,7 +452,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ones(s)"
+                "text": "fnp.ones(s)"
               },
               {
                 "kind": "output",
@@ -474,20 +474,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.ones",
     "module": "numpy",
     "name": "ones",
     "notes": "Create one-filled array.",
     "numpy_ref": "np.ones",
-    "signature": "we.ones(shape, dtype=None, order='C', *, device=None, like=None)",
+    "signature": "fnp.ones(shape, dtype=None, order='C', *, device=None, like=None)",
     "status": "supported",
     "summary": "Return a new array of given shape and type, filled with ones.",
-    "weight": 0.0,
-    "whest_ref": "we.ones"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "ones",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L137",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L56"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L56",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L170"
   }
 }

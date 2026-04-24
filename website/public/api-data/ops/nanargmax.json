@@ -186,7 +186,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/argmax",
-                "label": "we.argmax",
+                "label": "fnp.argmax",
                 "original_target": "argmax",
                 "role": "",
                 "target": "argmax",
@@ -197,7 +197,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanargmin",
-                "label": "we.nanargmin",
+                "label": "fnp.nanargmin",
                 "original_target": "nanargmin",
                 "role": "",
                 "target": "nanargmin",
@@ -216,17 +216,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[we.nan, 4], [2, 3]])"
+                "text": "a = fnp.array([[fnp.nan, 4], [2, 3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.argmax(a)"
+                "text": "fnp.argmax(a)"
               },
               {
                 "kind": "output",
@@ -235,7 +235,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanargmax(a)"
+                "text": "fnp.nanargmax(a)"
               },
               {
                 "kind": "output",
@@ -244,7 +244,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanargmax(a, axis=0)"
+                "text": "fnp.nanargmax(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -253,7 +253,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanargmax(a, axis=1)"
+                "text": "fnp.nanargmax(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -271,20 +271,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.nanargmax",
     "module": "numpy",
     "name": "nanargmax",
     "notes": "Index of maximum ignoring NaNs.",
     "numpy_ref": "np.nanargmax",
-    "signature": "we.nanargmax(a, axis=None, out=None, *, keepdims=<no value>)",
+    "signature": "fnp.nanargmax(a, axis=None, out=None, *, keepdims=<no value>)",
     "status": "supported",
     "summary": "Return the indices of the maximum values in the specified axis ignoring NaNs. For all-NaN slices ``ValueError`` is raised. Warning: the results cannot be trusted if a slice contains only NaNs and -Infs.",
-    "weight": 1.0,
-    "whest_ref": "we.nanargmax"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "nanargmax",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L572",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_nanfunctions_impl.py#L571"
   }
 }

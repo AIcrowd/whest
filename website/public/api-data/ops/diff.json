@@ -335,7 +335,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/gradient",
-                "label": "we.gradient",
+                "label": "fnp.gradient",
                 "original_target": "gradient",
                 "role": "",
                 "target": "gradient",
@@ -346,7 +346,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/ediff1d",
-                "label": "we.ediff1d",
+                "label": "fnp.ediff1d",
                 "original_target": "ediff1d",
                 "role": "",
                 "target": "ediff1d",
@@ -357,7 +357,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/cumsum",
-                "label": "we.cumsum",
+                "label": "fnp.cumsum",
                 "original_target": "cumsum",
                 "role": "",
                 "target": "cumsum",
@@ -410,12 +410,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "u8_arr = we.array([1, 0], dtype=we.uint8)"
+                "text": "u8_arr = fnp.array([1, 0], dtype=fnp.uint8)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.diff(u8_arr)"
+                "text": "fnp.diff(u8_arr)"
               },
               {
                 "kind": "output",
@@ -428,7 +428,7 @@
               },
               {
                 "kind": "output",
-                "text": "we.uint8(255)"
+                "text": "fnp.uint8(255)"
               }
             ],
             "type": "doctest_block"
@@ -447,12 +447,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "i16_arr = u8_arr.astype(we.int16)"
+                "text": "i16_arr = u8_arr.astype(fnp.int16)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.diff(i16_arr)"
+                "text": "fnp.diff(i16_arr)"
               },
               {
                 "kind": "output",
@@ -471,17 +471,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([1, 2, 4, 7, 0])"
+                "text": "x = fnp.array([1, 2, 4, 7, 0])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.diff(x)"
+                "text": "fnp.diff(x)"
               },
               {
                 "kind": "output",
@@ -490,7 +490,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.diff(x, n=2)"
+                "text": "fnp.diff(x, n=2)"
               },
               {
                 "kind": "output",
@@ -504,12 +504,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[1, 3, 6, 10], [0, 5, 6, 8]])"
+                "text": "x = fnp.array([[1, 3, 6, 10], [0, 5, 6, 8]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.diff(x)"
+                "text": "fnp.diff(x)"
               },
               {
                 "kind": "output",
@@ -522,7 +522,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.diff(x, axis=0)"
+                "text": "fnp.diff(x, axis=0)"
               },
               {
                 "kind": "output",
@@ -536,12 +536,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange('1066-10-13', '1066-10-16', dtype=we.datetime64)"
+                "text": "x = fnp.arange('1066-10-13', '1066-10-16', dtype=fnp.datetime64)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.diff(x)"
+                "text": "fnp.diff(x)"
               },
               {
                 "kind": "output",
@@ -559,20 +559,20 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.diff",
     "module": "numpy",
     "name": "diff",
     "notes": "n-th discrete difference along axis.",
     "numpy_ref": "np.diff",
-    "signature": "we.diff(a, n=1, axis=-1, prepend=<no value>, append=<no value>)",
+    "signature": "fnp.diff(a, n=1, axis=-1, prepend=<no value>, append=<no value>)",
     "status": "supported",
     "summary": "Calculate the n-th discrete difference along the given axis.",
-    "weight": 1.0,
-    "whest_ref": "we.diff"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "diff",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1369",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L998"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L998",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L1402"
   }
 }

@@ -338,12 +338,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.hypot(3*we.ones((3, 3)), 4*we.ones((3, 3)))"
+              "text": "fnp.hypot(3*fnp.ones((3, 3)), 4*fnp.ones((3, 3)))"
             },
             {
               "kind": "output",
@@ -374,7 +374,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.hypot(3*we.ones((3, 3)), [4])"
+              "text": "fnp.hypot(3*fnp.ones((3, 3)), [4])"
             },
             {
               "kind": "output",
@@ -413,16 +413,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.hypot(3*we.ones((3, 3)), 4*we.ones((3, 3)))\n\nwe.hypot(3*we.ones((3, 3)), [4])",
+    "code": "import flopscope as fnp\n\nfnp.hypot(3*fnp.ones((3, 3)), 4*fnp.ones((3, 3)))\n\nfnp.hypot(3*fnp.ones((3, 3)), [4])",
     "output": "array([[ 5.,  5.,  5.],\n       [ 5.,  5.,  5.],\n       [ 5.,  5.,  5.]])\n\narray([[ 5.,  5.,  5.],\n       [ 5.,  5.,  5.],\n       [ 5.,  5.,  5.]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.hypot",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
   "href": "/docs/api/ops/hypot/",
   "module": "numpy",
   "name": "hypot",
   "next": {
     "href": "/docs/api/ops/i0/",
-    "label": "we.i0"
+    "label": "fnp.i0"
   },
   "notes": "Element-wise Euclidean norm sqrt(x1^2 + x2^2).",
   "notes_sections": [],
@@ -470,7 +473,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/hstack/",
-    "label": "we.hstack"
+    "label": "fnp.hstack"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.hypot.html",
@@ -485,12 +488,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.hypot(x, y)",
+  "signature": "fnp.hypot(x, y)",
   "slug": "hypot",
   "summary": "Given the \"legs\" of a right triangle, return its hypotenuse.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.hypot",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

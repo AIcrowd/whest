@@ -67,16 +67,6 @@
                       }
                     ],
                     "type": "paragraph"
-                  },
-                  {
-                    "argument_inline": [],
-                    "content_blocks": [],
-                    "directive": "deprecated",
-                    "options": [],
-                    "raw_source": ".. deprecated:: 1.22.0\n    Passing booleans as index is deprecated.",
-                    "supported": true,
-                    "type": "directive_block",
-                    "version": "1.22.0"
                   }
                 ],
                 "data_type": "int or sequence of ints",
@@ -257,7 +247,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/argpartition",
-                "label": "we.argpartition",
+                "label": "fnp.argpartition",
                 "original_target": "argpartition",
                 "role": "",
                 "target": "argpartition",
@@ -273,7 +263,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/sort",
-                "label": "we.sort",
+                "label": "fnp.sort",
                 "original_target": "sort",
                 "role": "",
                 "target": "sort",
@@ -330,7 +320,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "nan",
-                "text": "we.nan"
+                "text": "fnp.nan"
               },
               {
                 "kind": "text",
@@ -341,7 +331,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "inf",
-                "text": "we.inf"
+                "text": "fnp.inf"
               },
               {
                 "kind": "text",
@@ -360,17 +350,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])"
+                "text": "a = fnp.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p = we.partition(a, 4)"
+                "text": "p = fnp.partition(a, 4)"
               },
               {
                 "kind": "input",
@@ -456,7 +446,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p2 = we.partition(a, (4, 8))"
+                "text": "p2 = fnp.partition(a, (4, 8))"
               },
               {
                 "kind": "input",
@@ -561,20 +551,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.partition",
     "module": "numpy",
     "name": "partition",
     "notes": "Quickselect; cost = n per slice.",
     "numpy_ref": "np.partition",
-    "signature": "we.partition(a, kth, axis=-1, kind='introselect', order=None)",
+    "signature": "fnp.partition(a, kth, axis=-1, kind='introselect', order=None)",
     "status": "supported",
     "summary": "Return a partitioned copy of an array.",
-    "weight": 1.0,
-    "whest_ref": "we.partition"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "partition",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L758",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L113"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L113",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L732"
   }
 }

@@ -407,7 +407,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/remainder",
-                "label": "we.remainder",
+                "label": "fnp.remainder",
                 "original_target": "remainder",
                 "role": "",
                 "target": "remainder",
@@ -418,7 +418,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/divide",
-                "label": "we.divide",
+                "label": "fnp.divide",
                 "original_target": "divide",
                 "role": "",
                 "target": "divide",
@@ -492,12 +492,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fmod([-3, -2, -1, 1, 2, 3], 2)"
+                "text": "fnp.fmod([-3, -2, -1, 1, 2, 3], 2)"
               },
               {
                 "kind": "output",
@@ -506,7 +506,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.remainder([-3, -2, -1, 1, 2, 3], 2)"
+                "text": "fnp.remainder([-3, -2, -1, 1, 2, 3], 2)"
               },
               {
                 "kind": "output",
@@ -520,7 +520,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fmod([5, 3], [2, 2.])"
+                "text": "fnp.fmod([5, 3], [2, 2.])"
               },
               {
                 "kind": "output",
@@ -529,7 +529,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(-3, 3).reshape(3, 2)"
+                "text": "a = fnp.arange(-3, 3).reshape(3, 2)"
               },
               {
                 "kind": "input",
@@ -551,7 +551,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fmod(a, [2,2])"
+                "text": "fnp.fmod(a, [2,2])"
               },
               {
                 "kind": "output",
@@ -577,20 +577,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.fmod",
     "module": "numpy",
     "name": "fmod",
     "notes": "Element-wise C-style fmod (remainder toward zero).",
     "numpy_ref": "np.fmod",
-    "signature": "we.fmod(x, y)",
+    "signature": "fnp.fmod(x, y)",
     "status": "supported",
     "summary": "Returns the element-wise remainder of division.",
-    "weight": 16.0,
-    "whest_ref": "we.fmod"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "fmod",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

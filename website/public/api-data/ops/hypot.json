@@ -338,12 +338,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.hypot(3*we.ones((3, 3)), 4*we.ones((3, 3)))"
+                "text": "fnp.hypot(3*fnp.ones((3, 3)), 4*fnp.ones((3, 3)))"
               },
               {
                 "kind": "output",
@@ -374,7 +374,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.hypot(3*we.ones((3, 3)), [4])"
+                "text": "fnp.hypot(3*fnp.ones((3, 3)), [4])"
               },
               {
                 "kind": "output",
@@ -400,20 +400,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.hypot",
     "module": "numpy",
     "name": "hypot",
     "notes": "Element-wise Euclidean norm sqrt(x1^2 + x2^2).",
     "numpy_ref": "np.hypot",
-    "signature": "we.hypot(x, y)",
+    "signature": "fnp.hypot(x, y)",
     "status": "supported",
     "summary": "Given the \"legs\" of a right triangle, return its hypotenuse.",
-    "weight": 16.0,
-    "whest_ref": "we.hypot"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "hypot",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

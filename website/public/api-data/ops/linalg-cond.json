@@ -92,7 +92,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "inf",
-                        "text": "we.inf"
+                        "text": "fnp.inf"
                       },
                       {
                         "kind": "text",
@@ -161,7 +161,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/linalg-norm",
-                "label": "we.linalg.norm",
+                "label": "fnp.linalg.norm",
                 "original_target": "numpy.linalg.norm",
                 "role": "",
                 "target": "linalg.norm",
@@ -236,7 +236,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -246,7 +246,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 0, -1], [0, 1, 0], [1, 0, 1]])"
+                "text": "a = fnp.array([[1, 0, -1], [0, 1, 0], [1, 0, 1]])"
               },
               {
                 "kind": "input",
@@ -286,7 +286,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.cond(a, we.inf)"
+                "text": "LA.cond(a, fnp.inf)"
               },
               {
                 "kind": "output",
@@ -295,7 +295,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.cond(a, -we.inf)"
+                "text": "LA.cond(a, -fnp.inf)"
               },
               {
                 "kind": "output",
@@ -363,20 +363,20 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
+    "flopscope_ref": "fnp.linalg.cond",
     "module": "numpy.linalg",
     "name": "linalg.cond",
     "notes": "Condition number. Cost: m*n*min(m,n) (via SVD).",
     "numpy_ref": "np.linalg.cond",
-    "signature": "we.linalg.cond(x, p=None)",
+    "signature": "fnp.linalg.cond(x, p=None)",
     "status": "supported",
     "summary": "Compute the condition number of a matrix.",
-    "weight": 4.0,
-    "whest_ref": "we.linalg.cond"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "linalg-cond",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1885",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L359"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L359",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L1914"
   }
 }

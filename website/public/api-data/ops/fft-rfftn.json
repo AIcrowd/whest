@@ -323,7 +323,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "we.fft"
+                        "text": "fnp.fft"
                       },
                       {
                         "kind": "text",
@@ -354,7 +354,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "we.fft"
+                    "text": "fnp.fft"
                   },
                   {
                     "kind": "text",
@@ -819,17 +819,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.ones((2, 2, 2))"
+                "text": "a = fnp.ones((2, 2, 2))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.rfftn(a)"
+                "text": "fnp.fft.rfftn(a)"
               },
               {
                 "kind": "output",
@@ -855,7 +855,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.rfftn(a, axes=(2, 0))"
+                "text": "fnp.fft.rfftn(a, axes=(2, 0))"
               },
               {
                 "kind": "output",
@@ -885,20 +885,20 @@
     "category": "counted_custom",
     "cost_formula": "5(N/2) * ceil(log2(N))",
     "cost_formula_latex": "$5(N/2) \\cdot \\lceil\\log_2 N\\rceil$",
+    "flopscope_ref": "fnp.fft.rfftn",
     "module": "numpy.fft",
     "name": "fft.rfftn",
     "notes": "N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.rfftn",
-    "signature": "we.fft.rfftn(a, s=None, axes=None, norm=None, out=None)",
+    "signature": "fnp.fft.rfftn(a, s=None, axes=None, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the N-dimensional discrete Fourier Transform for real input.",
-    "weight": 1.0,
-    "whest_ref": "we.fft.rfftn"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "fft-rfftn",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1260",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L387"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L387",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L1266"
   }
 }

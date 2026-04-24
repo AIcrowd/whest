@@ -174,7 +174,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/shares_memory",
-              "label": "we.shares_memory",
+              "label": "fnp.shares_memory",
               "original_target": "shares_memory",
               "role": "",
               "target": "shares_memory",
@@ -193,12 +193,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.may_share_memory(we.array([1,2]), we.array([5,8,9]))"
+              "text": "fnp.may_share_memory(fnp.array([1,2]), fnp.array([5,8,9]))"
             },
             {
               "kind": "output",
@@ -207,12 +207,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.zeros([3, 4])"
+              "text": "x = fnp.zeros([3, 4])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.may_share_memory(x[:,0], x[:,1])"
+              "text": "fnp.may_share_memory(x[:,0], x[:,1])"
             },
             {
               "kind": "output",
@@ -236,16 +236,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.may_share_memory(we.array([1,2]), we.array([5,8,9]))\n\nx = we.zeros([3, 4])\n\nwe.may_share_memory(x[:,0], x[:,1])",
+    "code": "import flopscope as fnp\n\nfnp.may_share_memory(fnp.array([1,2]), fnp.array([5,8,9]))\n\nx = fnp.zeros([3, 4])\n\nfnp.may_share_memory(x[:,0], x[:,1])",
     "output": "False\n\nTrue",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.may_share_memory",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1163",
   "href": "/docs/api/ops/may_share_memory/",
   "module": "numpy",
   "name": "may_share_memory",
   "next": {
     "href": "/docs/api/ops/mean/",
-    "label": "we.mean"
+    "label": "fnp.mean"
   },
   "notes": "Determine if two arrays might share memory.",
   "notes_sections": [],
@@ -270,7 +273,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/maximum/",
-    "label": "we.maximum"
+    "label": "fnp.maximum"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.may_share_memory.html",
@@ -287,19 +290,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/shares_memory",
-      "label": "we.shares_memory",
+      "label": "fnp.shares_memory",
       "original_target": "shares_memory",
       "role": "",
       "target": "shares_memory",
       "unresolved": false
     }
   ],
-  "signature": "we.may_share_memory(*args, **kwargs)",
+  "signature": "fnp.may_share_memory(a, b, /, max_work=0)",
   "slug": "may_share_memory",
   "summary": "Determine if two arrays might share memory",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.may_share_memory",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1163"
+  "weight": 0.0
 }

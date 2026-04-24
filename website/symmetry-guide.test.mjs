@@ -54,7 +54,7 @@ test('symmetry guide documents every declaration style', async () => {
   );
 });
 
-test('symmetry guide includes the Reynolds section and whest-only indexing examples', async () => {
+test('symmetry guide includes the Reynolds section and flopscope-only indexing examples', async () => {
   const source = await readSymmetryGuide();
 
   assert.match(source, /Generating example data with the Reynolds operator/);
@@ -100,7 +100,7 @@ test('symmetry guide documents the current unary pointwise caveat for non-full g
 test('symmetry guide representative propagation claims match runtime behavior', async () => {
   const stdout = await runPythonInRepo(`
 import json
-import whest as we
+import flopscope as we
 
 we.configure(symmetry_warnings=False)
 

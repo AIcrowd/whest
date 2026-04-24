@@ -275,7 +275,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/radians",
-                "label": "we.radians",
+                "label": "fnp.radians",
                 "original_target": "deg2rad",
                 "role": "",
                 "target": "radians",
@@ -294,7 +294,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -313,12 +313,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "deg = we.arange(12.) * 30."
+                "text": "deg = fnp.arange(12.) * 30."
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.radians(deg)"
+                "text": "fnp.radians(deg)"
               },
               {
                 "kind": "output",
@@ -340,12 +340,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out = we.zeros((deg.shape))"
+                "text": "out = fnp.zeros((deg.shape))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ret = we.radians(deg, out)"
+                "text": "ret = fnp.radians(deg, out)"
               },
               {
                 "kind": "input",
@@ -368,20 +368,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.radians",
     "module": "numpy",
     "name": "radians",
     "notes": "Convert degrees to radians element-wise.",
     "numpy_ref": "np.radians",
-    "signature": "we.radians(x)",
+    "signature": "fnp.radians(x)",
     "status": "supported",
     "summary": "Convert angles from degrees to radians.",
-    "weight": 1.0,
-    "whest_ref": "we.radians"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "radians",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

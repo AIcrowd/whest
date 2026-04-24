@@ -33,7 +33,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "polynomial",
-                  "text": "we.polynomial"
+                  "text": "fnp.polynomial"
                 },
                 {
                   "kind": "text",
@@ -61,7 +61,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `we.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+          "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `fnp.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
           "supported": true,
           "type": "directive_block"
         },
@@ -461,12 +461,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.polyval([3,0,1], 5)  # 3 * 5**2 + 0 * 5**1 + 1"
+              "text": "fnp.polyval([3,0,1], 5)  # 3 * 5**2 + 0 * 5**1 + 1"
             },
             {
               "kind": "output",
@@ -475,7 +475,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.polyval([3,0,1], we.poly1d(5))"
+              "text": "fnp.polyval([3,0,1], fnp.poly1d(5))"
             },
             {
               "kind": "output",
@@ -484,7 +484,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.polyval(we.poly1d([3,0,1]), 5)"
+              "text": "fnp.polyval(fnp.poly1d([3,0,1]), 5)"
             },
             {
               "kind": "output",
@@ -493,7 +493,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.polyval(we.poly1d([3,0,1]), we.poly1d(5))"
+              "text": "fnp.polyval(fnp.poly1d([3,0,1]), fnp.poly1d(5))"
             },
             {
               "kind": "output",
@@ -534,16 +534,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.polyval([3,0,1], 5)  # 3 * 5**2 + 0 * 5**1 + 1\n\nwe.polyval([3,0,1], we.poly1d(5))\n\nwe.polyval(we.poly1d([3,0,1]), 5)\n\nwe.polyval(we.poly1d([3,0,1]), we.poly1d(5))",
+    "code": "import flopscope as fnp\n\nfnp.polyval([3,0,1], 5)  # 3 * 5**2 + 0 * 5**1 + 1\n\nfnp.polyval([3,0,1], fnp.poly1d(5))\n\nfnp.polyval(fnp.poly1d([3,0,1]), 5)\n\nfnp.polyval(fnp.poly1d([3,0,1]), fnp.poly1d(5))",
     "output": "76\n\npoly1d([76])\n\n76\n\npoly1d([76])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.polyval",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L72",
   "href": "/docs/api/ops/polyval/",
-  "module": "whest._polynomial",
+  "module": "flopscope._polynomial",
   "name": "polyval",
   "next": {
     "href": "/docs/api/ops/positive/",
-    "label": "we.positive"
+    "label": "fnp.positive"
   },
   "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
   "notes_sections": [
@@ -572,7 +575,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/polysub/",
-    "label": "we.polysub"
+    "label": "fnp.polysub"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.polyval.html",
@@ -607,12 +610,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.polyval(p, x)",
+  "signature": "fnp.polyval(p, x)",
   "slug": "polyval",
   "summary": "Evaluate a polynomial at specific values.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L702",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.polyval",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L72"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_polynomial_impl.py#L711",
+  "weight": 1.0
 }

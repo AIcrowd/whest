@@ -144,7 +144,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -154,12 +154,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.array(([1., -1.]))"
+              "text": "x1 = fnp.array(([1., -1.]))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.positive(x1)"
+              "text": "fnp.positive(x1)"
             },
             {
               "kind": "output",
@@ -187,7 +187,7 @@
               "href": "/docs/api/ops/positive",
               "kind": "link",
               "target": "positive",
-              "text": "we.positive"
+              "text": "fnp.positive"
             },
             {
               "kind": "text",
@@ -201,7 +201,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.array(([1., -1.]))"
+              "text": "x1 = fnp.array(([1., -1.]))"
             },
             {
               "kind": "input",
@@ -230,16 +230,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx1 = we.array(([1., -1.]))\n\nwe.positive(x1)\n\nx1 = we.array(([1., -1.]))\n\n+x1",
+    "code": "import flopscope as fnp\n\nx1 = fnp.array(([1., -1.]))\n\nfnp.positive(x1)\n\nx1 = fnp.array(([1., -1.]))\n\n+x1",
     "output": "array([ 1., -1.])\n\narray([ 1., -1.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.positive",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/positive/",
   "module": "numpy",
   "name": "positive",
   "next": {
     "href": "/docs/api/ops/power/",
-    "label": "we.power"
+    "label": "fnp.power"
   },
   "notes": "Element-wise unary plus (copy with sign preserved).",
   "notes_sections": [
@@ -257,7 +260,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/polyval/",
-    "label": "we.polyval"
+    "label": "fnp.polyval"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.positive.html",
@@ -272,12 +275,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.positive(x)",
+  "signature": "fnp.positive(x)",
   "slug": "positive",
   "summary": "Numerical positive, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.positive",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

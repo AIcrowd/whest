@@ -275,12 +275,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = we.array([4, 5, 6])"
+                "text": "A = fnp.array([4, 5, 6])"
               },
               {
                 "kind": "input",
@@ -290,7 +290,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.copyto(A, B)"
+                "text": "fnp.copyto(A, B)"
               },
               {
                 "kind": "input",
@@ -309,7 +309,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = we.array([[1, 2, 3], [4, 5, 6]])"
+                "text": "A = fnp.array([[1, 2, 3], [4, 5, 6]])"
               },
               {
                 "kind": "input",
@@ -319,7 +319,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.copyto(A, B)"
+                "text": "fnp.copyto(A, B)"
               },
               {
                 "kind": "input",
@@ -346,20 +346,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.copyto",
     "module": "numpy",
     "name": "copyto",
     "notes": "Copy values from src to dst array. Cost: num copied.",
     "numpy_ref": "np.copyto",
-    "signature": "we.copyto(dst, src, casting='same_kind', where=True)",
+    "signature": "fnp.copyto(dst, src, casting='same_kind', where=True)",
     "status": "supported",
     "summary": "Copies values from one array to another, broadcasting as necessary.",
-    "weight": 1.0,
-    "whest_ref": "we.copyto"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "copyto",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.copyto.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L810"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L810",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.copyto.html"
   }
 }

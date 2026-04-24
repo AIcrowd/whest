@@ -388,7 +388,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "we.fft"
+                        "text": "fnp.fft"
                       },
                       {
                         "kind": "text",
@@ -419,7 +419,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "we.fft"
+                    "text": "fnp.fft"
                   },
                   {
                     "kind": "text",
@@ -925,12 +925,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.zeros((3, 2, 2))"
+                "text": "a = fnp.zeros((3, 2, 2))"
               },
               {
                 "kind": "input",
@@ -940,7 +940,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.irfftn(a)"
+                "text": "fnp.fft.irfftn(a)"
               },
               {
                 "kind": "output",
@@ -978,20 +978,20 @@
     "category": "counted_custom",
     "cost_formula": "5(N/2) * ceil(log2(N))",
     "cost_formula_latex": "$5(N/2) \\cdot \\lceil\\log_2 N\\rceil$",
+    "flopscope_ref": "fnp.fft.irfftn",
     "module": "numpy.fft",
     "name": "fft.irfftn",
     "notes": "Inverse N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.irfftn",
-    "signature": "we.fft.irfftn(a, s=None, axes=None, norm=None, out=None)",
+    "signature": "fnp.fft.irfftn(a, s=None, axes=None, norm=None, out=None)",
     "status": "supported",
     "summary": "Computes the inverse of `rfftn`.",
-    "weight": 1.0,
-    "whest_ref": "we.fft.irfftn"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "fft-irfftn",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1467",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L412"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L412",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L1473"
   }
 }

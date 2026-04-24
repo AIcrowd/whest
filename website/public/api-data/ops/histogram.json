@@ -598,7 +598,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/histogramdd",
-                "label": "we.histogramdd",
+                "label": "fnp.histogramdd",
                 "original_target": "histogramdd",
                 "role": "",
                 "target": "histogramdd",
@@ -609,7 +609,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bincount",
-                "label": "we.bincount",
+                "label": "fnp.bincount",
                 "original_target": "bincount",
                 "role": "",
                 "target": "bincount",
@@ -620,7 +620,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/searchsorted",
-                "label": "we.searchsorted",
+                "label": "fnp.searchsorted",
                 "original_target": "searchsorted",
                 "role": "",
                 "target": "searchsorted",
@@ -631,7 +631,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/digitize",
-                "label": "we.digitize",
+                "label": "fnp.digitize",
                 "original_target": "digitize",
                 "role": "",
                 "target": "digitize",
@@ -642,7 +642,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/histogram_bin_edges",
-                "label": "we.histogram_bin_edges",
+                "label": "fnp.histogram_bin_edges",
                 "original_target": "histogram_bin_edges",
                 "role": "",
                 "target": "histogram_bin_edges",
@@ -729,12 +729,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.histogram([1, 2, 1], bins=[0, 1, 2, 3])"
+                "text": "fnp.histogram([1, 2, 1], bins=[0, 1, 2, 3])"
               },
               {
                 "kind": "output",
@@ -743,7 +743,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.histogram(we.arange(4), bins=we.arange(5), density=True)"
+                "text": "fnp.histogram(fnp.arange(4), bins=fnp.arange(5), density=True)"
               },
               {
                 "kind": "output",
@@ -752,7 +752,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.histogram([[1, 2, 1], [1, 0, 1]], bins=[0,1,2,3])"
+                "text": "fnp.histogram([[1, 2, 1], [1, 0, 1]], bins=[0,1,2,3])"
               },
               {
                 "kind": "output",
@@ -766,12 +766,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(5)"
+                "text": "a = fnp.arange(5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "hist, bin_edges = we.histogram(a, density=True)"
+                "text": "hist, bin_edges = fnp.histogram(a, density=True)"
               },
               {
                 "kind": "input",
@@ -794,7 +794,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum(hist * we.diff(bin_edges))"
+                "text": "fnp.sum(hist * fnp.diff(bin_edges))"
               },
               {
                 "kind": "output",
@@ -817,7 +817,7 @@
             "content_blocks": [
               {
                 "language": "python",
-                "text": "import matplotlib.pyplot as plt\nimport whest as we\n\nrng = we.random.RandomState(10)  # deterministic random data\na = we.hstack((rng.normal(size=1000),\n               rng.normal(loc=5, scale=2, size=1000)))\nplt.hist(a, bins='auto')  # arguments are passed to we.histogram\nplt.title(\"Histogram with 'auto' bins\")\nplt.show()",
+                "text": "import matplotlib.pyplot as plt\nimport flopscope as fnp\n\nrng = fnp.random.RandomState(10)  # deterministic random data\na = fnp.hstack((rng.normal(size=1000),\n               rng.normal(loc=5, scale=2, size=1000)))\nplt.hist(a, bins='auto')  # arguments are passed to fnp.histogram\nplt.title(\"Histogram with 'auto' bins\")\nplt.show()",
                 "type": "literal_block"
               }
             ],
@@ -841,20 +841,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.histogram",
     "module": "numpy",
     "name": "histogram",
     "notes": "Binning; cost = n*ceil(log2(bins)).",
     "numpy_ref": "np.histogram",
-    "signature": "we.histogram(a, bins=10, range=None, density=None, weights=None)",
+    "signature": "fnp.histogram(a, bins=10, range=None, density=None, weights=None)",
     "status": "supported",
     "summary": "Compute the histogram of a dataset.",
-    "weight": 1.0,
-    "whest_ref": "we.histogram"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "histogram",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_histograms_impl.py#L689",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L105"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L105",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_histograms_impl.py#L685"
   }
 }

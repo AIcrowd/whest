@@ -86,7 +86,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/split",
-                "label": "we.split",
+                "label": "fnp.split",
                 "original_target": "split",
                 "role": "",
                 "target": "split",
@@ -105,12 +105,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(16.0).reshape(4, 4)"
+                "text": "x = fnp.arange(16.0).reshape(4, 4)"
               },
               {
                 "kind": "input",
@@ -136,7 +136,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.vsplit(x, 2)"
+                "text": "fnp.vsplit(x, 2)"
               },
               {
                 "kind": "output",
@@ -157,7 +157,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.vsplit(x, we.array([3, 6]))"
+                "text": "fnp.vsplit(x, fnp.array([3, 6]))"
               },
               {
                 "kind": "output",
@@ -196,7 +196,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(8.0).reshape(2, 2, 2)"
+                "text": "x = fnp.arange(8.0).reshape(2, 2, 2)"
               },
               {
                 "kind": "input",
@@ -222,7 +222,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.vsplit(x, 2)"
+                "text": "fnp.vsplit(x, 2)"
               },
               {
                 "kind": "output",
@@ -252,20 +252,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.vsplit",
     "module": "numpy",
     "name": "vsplit",
     "notes": "Split array into rows. Cost: numel(output).",
     "numpy_ref": "np.vsplit",
-    "signature": "we.vsplit(ary, indices_or_sections)",
+    "signature": "fnp.vsplit(ary, indices_or_sections)",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays vertically (row-wise).",
-    "weight": 0.0,
-    "whest_ref": "we.vsplit"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "vsplit",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L957",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L305"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L305",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L952"
   }
 }

@@ -445,7 +445,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/average",
-                "label": "we.average",
+                "label": "fnp.average",
                 "original_target": "average",
                 "role": "",
                 "target": "average",
@@ -461,7 +461,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/mean",
-                "label": "we.mean",
+                "label": "fnp.mean",
                 "original_target": "mean",
                 "role": "",
                 "target": "mean",
@@ -472,7 +472,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/var",
-                "label": "we.var",
+                "label": "fnp.var",
                 "original_target": "var",
                 "role": "",
                 "target": "var",
@@ -483,7 +483,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanvar",
-                "label": "we.nanvar",
+                "label": "fnp.nanvar",
                 "original_target": "nanvar",
                 "role": "",
                 "target": "nanvar",
@@ -541,17 +541,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, we.nan], [3, 4]])"
+                "text": "a = fnp.array([[1, fnp.nan], [3, 4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmean(a)"
+                "text": "fnp.nanmean(a)"
               },
               {
                 "kind": "output",
@@ -560,7 +560,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmean(a, axis=0)"
+                "text": "fnp.nanmean(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -569,7 +569,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmean(a, axis=1)"
+                "text": "fnp.nanmean(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -587,20 +587,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.nanmean",
     "module": "numpy",
     "name": "nanmean",
     "notes": "Mean ignoring NaNs.",
     "numpy_ref": "np.nanmean",
-    "signature": "we.nanmean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)",
+    "signature": "fnp.nanmean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)",
     "status": "supported",
     "summary": "Compute the arithmetic mean along the specified axis, ignoring NaNs.",
-    "weight": 1.0,
-    "whest_ref": "we.nanmean"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "nanmean",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L954",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_nanfunctions_impl.py#L952"
   }
 }

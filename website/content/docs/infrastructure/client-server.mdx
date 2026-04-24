@@ -3,32 +3,32 @@ title: "Client-Server Model"
 ---
 
 <Callout type="info">
-This page covers the client-server architecture used for **competition evaluation**, where participant code runs in an isolated container. For how whest wraps NumPy internally, see [How whest Works](/docs/understanding/how-whest-works).
+This page covers the client-server architecture used for **competition evaluation**, where participant code runs in an isolated container. For how flopscope wraps NumPy internally, see [How flopscope Works](/docs/understanding/how-flopscope-works).
 </Callout>
 
-*Use this page to understand how whest's client-server architecture works and why it exists.*
+*Use this page to understand how flopscope's client-server architecture works and why it exists.*
 
 **You will learn:**
-- Why whest uses a client-server model for competition evaluation
+- Why flopscope uses a client-server model for competition evaluation
 - How arrays, operations, and budgets flow between client and server
 - How to choose between the local library and client-server packages
 
 ## Why client-server?
 
-In competition evaluation, participant code runs in an **isolated container** that cannot import NumPy directly. This prevents participants from bypassing FLOP counting by calling NumPy functions outside whest.
+In competition evaluation, participant code runs in an **isolated container** that cannot import NumPy directly. This prevents participants from bypassing FLOP counting by calling NumPy functions outside flopscope.
 
 The client-server model enforces this isolation:
 
 <Mermaid chart={`graph LR
   subgraph participant ["Participant Container"]
     direction TB
-    p1["import whest as we"]
+    p1["import flopscope as we"]
     p2["No NumPy here!<br/>Only client proxy"]
   end
 
   subgraph server ["Server Container"]
     direction TB
-    s1["whest library<br/>(real NumPy)"]
+    s1["flopscope library<br/>(real NumPy)"]
     s2["Budget enforcement<br/>Array storage<br/>FLOP counting"]
   end
 
@@ -45,11 +45,11 @@ The client-server model enforces this isolation:
 
 ## How it works
 
-1. **Server** runs the real whest library backed by NumPy. It stores all arrays, enforces budgets, and counts FLOPs.
+1. **Server** runs the real flopscope library backed by NumPy. It stores all arrays, enforces budgets, and counts FLOPs.
 
-2. **Client** is a drop-in replacement (`import whest as we`) that proxies every operation to the server over ZMQ (msgpack-encoded messages).
+2. **Client** is a drop-in replacement (`import flopscope as we`) that proxies every operation to the server over ZMQ (msgpack-encoded messages).
 
-3. **Arrays stay on the server.** The client holds lightweight `RemoteArray` handles that reference server-side data. When you call `we.einsum(...)`, the client sends the operation and handle IDs to the server, which executes it and returns a new handle.
+3. **Arrays stay on the server.** The client holds lightweight `RemoteArray` handles that reference server-side data. When you call `fnp.einsum(...)`, the client sends the operation and handle IDs to the server, which executes it and returns a new handle.
 
 4. **Budget enforcement happens server-side.** The client cannot manipulate FLOP counts.
 
@@ -57,7 +57,7 @@ The client-server model enforces this isolation:
 
 - **Transport:** ZMQ (REQ/REP pattern)
 - **Serialization:** msgpack with binary-safe array payloads
-- **Default endpoint:** `ipc:///tmp/whest.sock` (configurable via `WHEST_SERVER_URL`)
+- **Default endpoint:** `ipc:///tmp/flopscope.sock` (configurable via `FLOPSCOPE_SERVER_URL`)
 - **Timeout:** 30 seconds per request
 
 ## API compatibility
@@ -66,12 +66,12 @@ Code written for the local library works unchanged with the client:
 
 ```python
 # This code works with BOTH the local library and the client
-import whest as we
-
-with we.BudgetContext(flop_budget=10**6) as budget:
-    x = we.zeros((256,))
-    W = we.random.randn(256, 256)
-    h = we.einsum('ij,j->i', W, x)
+import flopscope as flops
+import flopscope.numpy as fnp
+with flops.BudgetContext(flop_budget=10**6) as budget:
+    x = fnp.zeros((256,))
+    W = fnp.random.randn(256, 256)
+    h = fnp.einsum('ij,j->i', W, x)
     print(budget.summary())
 ```
 
@@ -79,16 +79,16 @@ with we.BudgetContext(flop_budget=10**6) as budget:
 
 | Use case | Package | Install path |
 |----------|---------|-------------|
-| Development, testing, research | `whest` (local library) | `uv add git+...` or `uv sync` from repo |
-| Competition evaluation, sandboxed environments | `whest-client` + `whest-server` | Docker containers |
+| Development, testing, research | `flopscope` (local library) | `uv add git+...` or `uv sync` from repo |
+| Competition evaluation, sandboxed environments | `flopscope-client` + `flopscope-server` | Docker containers |
 
 ## Three packages in this repo
 
 | Package | Location | Description |
 |---------|----------|-------------|
-| `whest` | `src/whest/` | Local library — full NumPy backend, direct execution |
-| `whest-client` | `whest-client/` | Client proxy — no NumPy dependency, forwards ops to server |
-| `whest-server` | `whest-server/` | Server — runs real whest, manages sessions and arrays |
+| `flopscope` | `src/flopscope/` | Local library — full NumPy backend, direct execution |
+| `flopscope-client` | `flopscope-client/` | Client proxy — no NumPy dependency, forwards ops to server |
+| `flopscope-server` | `flopscope-server/` | Server — runs real flopscope, manages sessions and arrays |
 
 ## Related pages
 

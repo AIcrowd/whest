@@ -235,7 +235,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/unpackbits",
-                "label": "we.unpackbits",
+                "label": "fnp.unpackbits",
                 "original_target": "unpackbits",
                 "role": "",
                 "target": "unpackbits",
@@ -254,12 +254,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[[1,0,1],"
+                "text": "a = fnp.array([[[1,0,1],"
               },
               {
                 "kind": "input",
@@ -279,7 +279,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.packbits(a, axis=-1)"
+                "text": "b = fnp.packbits(a, axis=-1)"
               },
               {
                 "kind": "input",
@@ -323,20 +323,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.packbits",
     "module": "numpy",
     "name": "packbits",
     "notes": "Pack elements of array into bits. Cost: numel(input).",
     "numpy_ref": "np.packbits",
-    "signature": "we.packbits(a, *args, **kwargs)",
+    "signature": "fnp.packbits(a, *args, **kwargs)",
     "status": "supported",
     "summary": "Packs the elements of a binary-valued array into bits in a uint8 array.",
-    "weight": 1.0,
-    "whest_ref": "we.packbits"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "packbits",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.packbits.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1210"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1210",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.packbits.html"
   }
 }

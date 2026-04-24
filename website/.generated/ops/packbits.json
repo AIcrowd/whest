@@ -235,7 +235,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/unpackbits",
-              "label": "we.unpackbits",
+              "label": "fnp.unpackbits",
               "original_target": "unpackbits",
               "role": "",
               "target": "unpackbits",
@@ -254,12 +254,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[[1,0,1],"
+              "text": "a = fnp.array([[[1,0,1],"
             },
             {
               "kind": "input",
@@ -279,7 +279,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.packbits(a, axis=-1)"
+              "text": "b = fnp.packbits(a, axis=-1)"
             },
             {
               "kind": "input",
@@ -329,16 +329,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[[1,0,1],\n               [0,1,0]],\n              [[1,1,0],\n               [0,0,1]]])\n\nb = we.packbits(a, axis=-1)\n\nb",
+    "code": "import flopscope as fnp\n\na = fnp.array([[[1,0,1],\n               [0,1,0]],\n              [[1,1,0],\n               [0,0,1]]])\n\nb = fnp.packbits(a, axis=-1)\n\nb",
     "output": "array([[[160],\n        [ 64]],\n       [[192],\n        [ 32]]], dtype=uint8)",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.packbits",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1210",
   "href": "/docs/api/ops/packbits/",
   "module": "numpy",
   "name": "packbits",
   "next": {
     "href": "/docs/api/ops/pad/",
-    "label": "we.pad"
+    "label": "fnp.pad"
   },
   "notes": "Pack elements of array into bits. Cost: numel(input).",
   "notes_sections": [],
@@ -373,7 +376,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/outer/",
-    "label": "we.outer"
+    "label": "fnp.outer"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.packbits.html",
@@ -400,19 +403,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/unpackbits",
-      "label": "we.unpackbits",
+      "label": "fnp.unpackbits",
       "original_target": "unpackbits",
       "role": "",
       "target": "unpackbits",
       "unresolved": false
     }
   ],
-  "signature": "we.packbits(a, *args, **kwargs)",
+  "signature": "fnp.packbits(a, *args, **kwargs)",
   "slug": "packbits",
   "summary": "Packs the elements of a binary-valued array into bits in a uint8 array.",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.packbits",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1210"
+  "weight": 1.0
 }

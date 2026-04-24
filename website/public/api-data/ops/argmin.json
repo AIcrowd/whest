@@ -259,7 +259,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/argmax",
-                "label": "we.argmax",
+                "label": "fnp.argmax",
                 "original_target": "argmax",
                 "role": "",
                 "target": "argmax",
@@ -275,7 +275,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/min",
-                "label": "we.min",
+                "label": "fnp.min",
                 "original_target": "amin",
                 "role": "",
                 "target": "min",
@@ -291,14 +291,14 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/unravel_index",
-                "label": "we.unravel_index",
+                "label": "fnp.unravel_index",
                 "original_target": "unravel_index",
                 "role": "",
                 "target": "unravel_index",
                 "unresolved": false
               },
               {
-                "description": "Apply ``we.expand_dims(index_array, axis)`` from argmin to an array as if by calling min.",
+                "description": "Apply ``fnp.expand_dims(index_array, axis)`` from argmin to an array as if by calling min.",
                 "description_inline": [
                   {
                     "kind": "text",
@@ -309,7 +309,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "expand_dims(index_array, axis)",
-                    "text": "we.expand_dims(index_array, axis)"
+                    "text": "fnp.expand_dims(index_array, axis)"
                   },
                   {
                     "kind": "text",
@@ -318,7 +318,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/take_along_axis",
-                "label": "we.take_along_axis",
+                "label": "fnp.take_along_axis",
                 "original_target": "take_along_axis",
                 "role": "",
                 "target": "take_along_axis",
@@ -351,12 +351,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(6).reshape(2,3) + 10"
+                "text": "a = fnp.arange(6).reshape(2,3) + 10"
               },
               {
                 "kind": "input",
@@ -374,7 +374,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.argmin(a)"
+                "text": "fnp.argmin(a)"
               },
               {
                 "kind": "output",
@@ -383,7 +383,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.argmin(a, axis=0)"
+                "text": "fnp.argmin(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -392,7 +392,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.argmin(a, axis=1)"
+                "text": "fnp.argmin(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -415,7 +415,16 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ind = we.unravel_index(we.argmin(a, axis=None), a.shape)"
+                "text": "a.flat[fnp.argmin(a)]"
+              },
+              {
+                "kind": "output",
+                "text": "10"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "ind = fnp.unravel_index(fnp.argmin(a, axis=None), a.shape)"
               },
               {
                 "kind": "input",
@@ -443,7 +452,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(6) + 10"
+                "text": "b = fnp.arange(6) + 10"
               },
               {
                 "kind": "input",
@@ -462,7 +471,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.argmin(b)  # Only the first occurrence is returned."
+                "text": "fnp.argmin(b)  # Only the first occurrence is returned."
               },
               {
                 "kind": "output",
@@ -476,22 +485,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[4,2,3], [1,0,3]])"
+                "text": "x = fnp.array([[4,2,3], [1,0,3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "index_array = we.argmin(x, axis=-1)"
+                "text": "index_array = fnp.argmin(x, axis=-1)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "# Same as we.amin(x, axis=-1, keepdims=True)"
+                "text": "# Same as fnp.amin(x, axis=-1, keepdims=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.take_along_axis(x, we.expand_dims(index_array, axis=-1), axis=-1)"
+                "text": "fnp.take_along_axis(x, fnp.expand_dims(index_array, axis=-1), axis=-1)"
               },
               {
                 "kind": "output",
@@ -504,12 +513,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "# Same as we.amax(x, axis=-1)"
+                "text": "# Same as fnp.amax(x, axis=-1)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.take_along_axis(x, we.expand_dims(index_array, axis=-1),"
+                "text": "fnp.take_along_axis(x, fnp.expand_dims(index_array, axis=-1),"
               },
               {
                 "kind": "input",
@@ -553,12 +562,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(24).reshape((2, 3, 4))"
+                "text": "x = fnp.arange(24).reshape((2, 3, 4))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "res = we.argmin(x, axis=1, keepdims=True)"
+                "text": "res = fnp.argmin(x, axis=1, keepdims=True)"
               },
               {
                 "kind": "input",
@@ -581,20 +590,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.argmin",
     "module": "numpy",
     "name": "argmin",
     "notes": "Index of minimum value.",
     "numpy_ref": "np.argmin",
-    "signature": "we.argmin(a, axis=None, out=None, *, keepdims=<no value>)",
+    "signature": "fnp.argmin(a, axis=None, out=None, *, keepdims=<no value>)",
     "status": "supported",
     "summary": "Returns the indices of the minimum values along an axis.",
-    "weight": 1.0,
-    "whest_ref": "we.argmin"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "argmin",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1349",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L1321"
   }
 }

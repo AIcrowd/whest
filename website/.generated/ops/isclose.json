@@ -340,7 +340,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/allclose",
-              "label": "we.allclose",
+              "label": "fnp.allclose",
               "original_target": "allclose",
               "role": "",
               "target": "allclose",
@@ -559,12 +559,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isclose([1e10,1e-7], [1.00001e10,1e-8])"
+              "text": "fnp.isclose([1e10,1e-7], [1.00001e10,1e-8])"
             },
             {
               "kind": "output",
@@ -578,7 +578,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isclose([1e10,1e-8], [1.00001e10,1e-9])"
+              "text": "fnp.isclose([1e10,1e-8], [1.00001e10,1e-9])"
             },
             {
               "kind": "output",
@@ -592,7 +592,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isclose([1e10,1e-8], [1.0001e10,1e-9])"
+              "text": "fnp.isclose([1e10,1e-8], [1.0001e10,1e-9])"
             },
             {
               "kind": "output",
@@ -606,7 +606,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isclose([1.0, we.nan], [1.0, we.nan])"
+              "text": "fnp.isclose([1.0, fnp.nan], [1.0, fnp.nan])"
             },
             {
               "kind": "output",
@@ -620,7 +620,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isclose([1.0, we.nan], [1.0, we.nan], equal_nan=True)"
+              "text": "fnp.isclose([1.0, fnp.nan], [1.0, fnp.nan], equal_nan=True)"
             },
             {
               "kind": "output",
@@ -634,7 +634,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isclose([1e-8, 1e-7], [0.0, 0.0])"
+              "text": "fnp.isclose([1e-8, 1e-7], [0.0, 0.0])"
             },
             {
               "kind": "output",
@@ -648,7 +648,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)"
+              "text": "fnp.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)"
             },
             {
               "kind": "output",
@@ -662,7 +662,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isclose([1e-10, 1e-10], [1e-20, 0.0])"
+              "text": "fnp.isclose([1e-10, 1e-10], [1e-20, 0.0])"
             },
             {
               "kind": "output",
@@ -676,7 +676,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)"
+              "text": "fnp.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)"
             },
             {
               "kind": "output",
@@ -707,16 +707,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.isclose([1e10,1e-7], [1.00001e10,1e-8])\n\nwe.isclose([1e10,1e-8], [1.00001e10,1e-9])\n\nwe.isclose([1e10,1e-8], [1.0001e10,1e-9])\n\nwe.isclose([1.0, we.nan], [1.0, we.nan])\n\nwe.isclose([1.0, we.nan], [1.0, we.nan], equal_nan=True)\n\nwe.isclose([1e-8, 1e-7], [0.0, 0.0])\n\nwe.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)\n\nwe.isclose([1e-10, 1e-10], [1e-20, 0.0])\n\nwe.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)",
+    "code": "import flopscope as fnp\n\nfnp.isclose([1e10,1e-7], [1.00001e10,1e-8])\n\nfnp.isclose([1e10,1e-8], [1.00001e10,1e-9])\n\nfnp.isclose([1e10,1e-8], [1.0001e10,1e-9])\n\nfnp.isclose([1.0, fnp.nan], [1.0, fnp.nan])\n\nfnp.isclose([1.0, fnp.nan], [1.0, fnp.nan], equal_nan=True)\n\nfnp.isclose([1e-8, 1e-7], [0.0, 0.0])\n\nfnp.isclose([1e-100, 1e-7], [0.0, 0.0], atol=0.0)\n\nfnp.isclose([1e-10, 1e-10], [1e-20, 0.0])\n\nfnp.isclose([1e-10, 1e-10], [1e-20, 0.999999e-10], atol=0.0)",
     "output": "array([ True, False])\n\narray([ True, True])\n\narray([False,  True])\n\narray([ True, False])\n\narray([ True, True])\n\narray([ True, False])\n\narray([False, False])\n\narray([ True,  True])\n\narray([False,  True])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.isclose",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L459",
   "href": "/docs/api/ops/isclose/",
   "module": "numpy",
   "name": "isclose",
   "next": {
     "href": "/docs/api/ops/iscomplex/",
-    "label": "we.iscomplex"
+    "label": "fnp.iscomplex"
   },
   "notes": "Element-wise approximate equality test.",
   "notes_sections": [
@@ -760,7 +763,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/invert/",
-    "label": "we.invert"
+    "label": "fnp.invert"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isclose.html",
@@ -781,7 +784,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/allclose",
-      "label": "we.allclose",
+      "label": "fnp.allclose",
       "original_target": "allclose",
       "role": "",
       "target": "allclose",
@@ -799,12 +802,9 @@
       "unresolved": true
     }
   ],
-  "signature": "we.isclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
+  "signature": "fnp.isclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
   "slug": "isclose",
   "summary": "Returns a boolean array where two arrays are element-wise equal within a tolerance.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2337",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.isclose",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L459"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L2384",
+  "weight": 1.0
 }

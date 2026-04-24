@@ -122,7 +122,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/bartlett",
-              "label": "we.bartlett",
+              "label": "fnp.bartlett",
               "original_target": "bartlett",
               "role": "",
               "target": "bartlett",
@@ -133,7 +133,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/blackman",
-              "label": "we.blackman",
+              "label": "fnp.blackman",
               "original_target": "blackman",
               "role": "",
               "target": "blackman",
@@ -144,7 +144,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/hamming",
-              "label": "we.hamming",
+              "label": "fnp.hamming",
               "original_target": "hamming",
               "role": "",
               "target": "hamming",
@@ -155,7 +155,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/kaiser",
-              "label": "we.kaiser",
+              "label": "fnp.kaiser",
               "original_target": "kaiser",
               "role": "",
               "target": "kaiser",
@@ -237,12 +237,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.hanning(12)"
+              "text": "fnp.hanning(12)"
             },
             {
               "kind": "output",
@@ -273,7 +273,7 @@
           "content_blocks": [
             {
               "language": "python",
-              "text": "import matplotlib.pyplot as plt\nfrom we.fft import fft, fftshift\nwindow = we.hanning(51)\nplt.plot(window)\nplt.title(\"Hann window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = we.abs(fftshift(A))\nfreq = we.linspace(-0.5, 0.5, len(A))\nwith we.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * we.log10(mag)\nresponse = we.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of the Hann window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
+              "text": "import matplotlib.pyplot as plt\nfrom fnp.fft import fft, fftshift\nwindow = fnp.hanning(51)\nplt.plot(window)\nplt.title(\"Hann window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = fnp.abs(fftshift(A))\nfreq = fnp.linspace(-0.5, 0.5, len(A))\nwith fnp.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * fnp.log10(mag)\nresponse = fnp.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of the Hann window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
               "type": "literal_block"
             }
           ],
@@ -320,16 +320,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.hanning(12)",
+    "code": "import flopscope as fnp\n\nfnp.hanning(12)",
     "output": "array([0.        , 0.07937323, 0.29229249, 0.57115742, 0.82743037,\n       0.97974649, 0.97974649, 0.82743037, 0.57115742, 0.29229249,\n       0.07937323, 0.        ])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.hanning",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L126",
   "href": "/docs/api/ops/hanning/",
-  "module": "whest._window",
+  "module": "flopscope._window",
   "name": "hanning",
   "next": {
     "href": "/docs/api/ops/heaviside/",
-    "label": "we.heaviside"
+    "label": "fnp.heaviside"
   },
   "notes": "Hanning window. Cost: n (one cosine per sample).",
   "notes_sections": [
@@ -351,7 +354,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/hamming/",
-    "label": "we.hamming"
+    "label": "fnp.hamming"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.hanning.html",
@@ -371,7 +374,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/bartlett",
-      "label": "we.bartlett",
+      "label": "fnp.bartlett",
       "original_target": "bartlett",
       "role": "",
       "target": "bartlett",
@@ -382,7 +385,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/blackman",
-      "label": "we.blackman",
+      "label": "fnp.blackman",
       "original_target": "blackman",
       "role": "",
       "target": "blackman",
@@ -393,7 +396,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/hamming",
-      "label": "we.hamming",
+      "label": "fnp.hamming",
       "original_target": "hamming",
       "role": "",
       "target": "hamming",
@@ -404,19 +407,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/kaiser",
-      "label": "we.kaiser",
+      "label": "fnp.kaiser",
       "original_target": "kaiser",
       "role": "",
       "target": "kaiser",
       "unresolved": false
     }
   ],
-  "signature": "we.hanning(M)",
+  "signature": "fnp.hanning(M)",
   "slug": "hanning",
   "summary": "Return the Hanning window.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3265",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.hanning",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L126"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L3243",
+  "weight": 16.0
 }

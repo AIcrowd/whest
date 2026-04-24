@@ -140,7 +140,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/real_if_close",
-                "label": "we.real_if_close",
+                "label": "fnp.real_if_close",
                 "original_target": "real_if_close",
                 "role": "",
                 "target": "real_if_close",
@@ -151,7 +151,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/imag",
-                "label": "we.imag",
+                "label": "fnp.imag",
                 "original_target": "imag",
                 "role": "",
                 "target": "imag",
@@ -162,7 +162,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/angle",
-                "label": "we.angle",
+                "label": "fnp.angle",
                 "original_target": "angle",
                 "role": "",
                 "target": "angle",
@@ -181,12 +181,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1+2j, 3+4j, 5+6j])"
+                "text": "a = fnp.array([1+2j, 3+4j, 5+6j])"
               },
               {
                 "kind": "input",
@@ -214,7 +214,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a.real = we.array([9, 8, 7])"
+                "text": "a.real = fnp.array([9, 8, 7])"
               },
               {
                 "kind": "input",
@@ -228,7 +228,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.real(1 + 1j)"
+                "text": "fnp.real(1 + 1j)"
               },
               {
                 "kind": "output",
@@ -246,20 +246,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.real",
     "module": "numpy",
     "name": "real",
     "notes": "Return real part of complex array.",
     "numpy_ref": "np.real",
-    "signature": "we.real(val)",
+    "signature": "fnp.real(val)",
     "status": "supported",
     "summary": "Return the real part of the complex argument.",
-    "weight": 1.0,
-    "whest_ref": "we.real"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "real",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L84",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_type_check_impl.py#L84"
   }
 }

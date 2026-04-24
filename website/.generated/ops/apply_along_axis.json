@@ -483,7 +483,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/apply_over_axes",
-              "label": "we.apply_over_axes",
+              "label": "fnp.apply_over_axes",
               "original_target": "apply_over_axes",
               "role": "",
               "target": "apply_over_axes",
@@ -502,7 +502,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -522,12 +522,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([[1,2,3], [4,5,6], [7,8,9]])"
+              "text": "b = fnp.array([[1,2,3], [4,5,6], [7,8,9]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.apply_along_axis(my_func, 0, b)"
+              "text": "fnp.apply_along_axis(my_func, 0, b)"
             },
             {
               "kind": "output",
@@ -536,7 +536,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.apply_along_axis(my_func, 1, b)"
+              "text": "fnp.apply_along_axis(my_func, 1, b)"
             },
             {
               "kind": "output",
@@ -575,12 +575,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([[8,1,7], [4,3,9], [5,2,6]])"
+              "text": "b = fnp.array([[8,1,7], [4,3,9], [5,2,6]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.apply_along_axis(sorted, 1, b)"
+              "text": "fnp.apply_along_axis(sorted, 1, b)"
             },
             {
               "kind": "output",
@@ -619,12 +619,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([[1,2,3], [4,5,6], [7,8,9]])"
+              "text": "b = fnp.array([[1,2,3], [4,5,6], [7,8,9]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.apply_along_axis(we.diag, -1, b)"
+              "text": "fnp.apply_along_axis(fnp.diag, -1, b)"
             },
             {
               "kind": "output",
@@ -680,16 +680,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\ndef my_func(a):\n    \"\"\"Average first and last element of a 1-D array\"\"\"\n    return (a[0] + a[-1]) * 0.5\n\nb = we.array([[1,2,3], [4,5,6], [7,8,9]])\n\nwe.apply_along_axis(my_func, 0, b)\n\nwe.apply_along_axis(my_func, 1, b)\n\nb = we.array([[8,1,7], [4,3,9], [5,2,6]])\n\nwe.apply_along_axis(sorted, 1, b)\n\nb = we.array([[1,2,3], [4,5,6], [7,8,9]])\n\nwe.apply_along_axis(we.diag, -1, b)",
+    "code": "import flopscope as fnp\n\ndef my_func(a):\n    \"\"\"Average first and last element of a 1-D array\"\"\"\n    return (a[0] + a[-1]) * 0.5\n\nb = fnp.array([[1,2,3], [4,5,6], [7,8,9]])\n\nfnp.apply_along_axis(my_func, 0, b)\n\nfnp.apply_along_axis(my_func, 1, b)\n\nb = fnp.array([[8,1,7], [4,3,9], [5,2,6]])\n\nfnp.apply_along_axis(sorted, 1, b)\n\nb = fnp.array([[1,2,3], [4,5,6], [7,8,9]])\n\nfnp.apply_along_axis(fnp.diag, -1, b)",
     "output": "array([4., 5., 6.])\n\narray([2.,  5.,  8.])\n\narray([[1, 7, 8],\n       [3, 4, 9],\n       [2, 5, 6]])\n\narray([[[1, 0, 0],\n        [0, 2, 0],\n        [0, 0, 3]],\n       [[4, 0, 0],\n        [0, 5, 0],\n        [0, 0, 6]],\n       [[7, 0, 0],\n        [0, 8, 0],\n        [0, 0, 9]]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.apply_along_axis",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L300",
   "href": "/docs/api/ops/apply_along_axis/",
   "module": "numpy",
   "name": "apply_along_axis",
   "next": {
     "href": "/docs/api/ops/apply_over_axes/",
-    "label": "we.apply_over_axes"
+    "label": "fnp.apply_over_axes"
   },
   "notes": "Apply function along axis. Cost: numel(output). Inner function costs tracked separately.",
   "notes_sections": [],
@@ -734,7 +737,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/append/",
-    "label": "we.append"
+    "label": "fnp.append"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.apply_along_axis.html",
@@ -762,19 +765,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/apply_over_axes",
-      "label": "we.apply_over_axes",
+      "label": "fnp.apply_over_axes",
       "original_target": "apply_over_axes",
       "role": "",
       "target": "apply_over_axes",
       "unresolved": false
     }
   ],
-  "signature": "we.apply_along_axis(func1d, axis, arr, *args, **kwargs)",
+  "signature": "fnp.apply_along_axis(func1d, axis, arr, *args, **kwargs)",
   "slug": "apply_along_axis",
   "summary": "Apply a function to 1-D slices along the given axis.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L274",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.apply_along_axis",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L300"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L278",
+  "weight": 4.0
 }

@@ -20,7 +20,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = path.resolve(__dirname, '..', 'out');
 const PUBLIC_DIR = path.resolve(__dirname, '..', 'public');
 const SITE_URL = 'https://aicrowd.github.io';
-const BASE_PATH = '/whest';
+const BASE_PATH = '/flopscope';
 
 /**
  * Section configuration mirroring the Docusaurus llmstxt plugin.
@@ -28,20 +28,20 @@ const BASE_PATH = '/whest';
  */
 const SECTIONS = {
   'Getting Started': {
-    'getting-started/installation': 'Install whest and verify setup',
+    'getting-started/installation': 'Install flopscope and verify setup',
     'getting-started/quickstart': 'Run your first FLOP-counted computation',
     'getting-started/competition': 'Everything you need to compete within a FLOP budget',
   },
   'Guides': {
-    'guides/migrate-from-numpy': 'Migrate existing NumPy code to whest',
+    'guides/migrate-from-numpy': 'Migrate existing NumPy code to flopscope',
     'guides/einsum': 'Einsum patterns, costs, and optimization',
     'guides/symmetry': 'Reduce FLOP costs with symmetric tensors',
     'guides/linalg': 'Linear algebra operations and costs',
     'guides/fft': 'FFT operations, real vs complex, and costs',
     'guides/budget-planning': 'Estimate costs and diagnose budget overruns',
   },
-  'Understanding whest': {
-    'understanding/how-whest-works': 'How whest wraps NumPy to count every FLOP',
+  'Understanding flopscope': {
+    'understanding/how-flopscope-works': 'How flopscope wraps NumPy to count every FLOP',
     'understanding/flop-counting-model': 'Analytical FLOP cost formulas and conventions',
     'understanding/operation-categories': 'Free vs counted vs blocked operations',
     'understanding/symmetry-detection': 'Subgraph symmetry detection algorithm deep dive',
@@ -52,7 +52,7 @@ const SECTIONS = {
   },
   'Infrastructure': {
     'infrastructure/client-server': 'Client-server architecture for competition evaluation',
-    'infrastructure/docker': 'Running whest with Docker',
+    'infrastructure/docker': 'Running flopscope with Docker',
   },
   'Development': {
     'development/contributing': 'Repository layout, local workflows, and test suite',
@@ -148,7 +148,7 @@ const llmsTxtLines = [];
 const llmsFullLines = [];
 
 // Header
-llmsTxtLines.push('# whest');
+llmsTxtLines.push('# flopscope');
 llmsTxtLines.push('');
 llmsTxtLines.push('> NumPy-compatible math primitives with FLOP counting');
 llmsTxtLines.push('');

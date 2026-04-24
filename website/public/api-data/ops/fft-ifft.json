@@ -54,7 +54,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "we.fft"
+                "text": "fnp.fft"
               },
               {
                 "kind": "text",
@@ -156,7 +156,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "fft",
-                "text": "we.fft"
+                "text": "fnp.fft"
               },
               {
                 "kind": "text",
@@ -299,7 +299,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "fft",
-                        "text": "we.fft"
+                        "text": "fnp.fft"
                       },
                       {
                         "kind": "text",
@@ -330,7 +330,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "fft",
-                    "text": "we.fft"
+                    "text": "fnp.fft"
                   },
                   {
                     "kind": "text",
@@ -523,7 +523,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
                 "href": "",
-                "label": "we.fft",
+                "label": "fnp.fft",
                 "original_target": "numpy.fft",
                 "role": "",
                 "target": "fft",
@@ -628,12 +628,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fft.ifft([0, 4, 0, 0])"
+                "text": "fnp.fft.ifft([0, 4, 0, 0])"
               },
               {
                 "kind": "output",
@@ -661,22 +661,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "t = we.arange(400)"
+                "text": "t = fnp.arange(400)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "n = we.zeros((400,), dtype=complex)"
+                "text": "n = fnp.zeros((400,), dtype=complex)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "n[40:60] = we.exp(1j*we.random.uniform(0, 2*we.pi, (20,)))"
+                "text": "n[40:60] = fnp.exp(1j*fnp.random.uniform(0, 2*fnp.pi, (20,)))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.fft.ifft(n)"
+                "text": "s = fnp.fft.ifft(n)"
               },
               {
                 "kind": "input",
@@ -722,20 +722,20 @@
     "category": "counted_custom",
     "cost_formula": "5n * ceil(log2(n))",
     "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
+    "flopscope_ref": "fnp.fft.ifft",
     "module": "numpy.fft",
     "name": "fft.ifft",
     "notes": "Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.ifft",
-    "signature": "we.fft.ifft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "fnp.fft.ifft(a, n=None, axis=-1, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the one-dimensional inverse discrete Fourier Transform.",
-    "weight": 1.0,
-    "whest_ref": "we.fft.ifft"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "fft-ifft",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L213",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L183"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L183",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L219"
   }
 }

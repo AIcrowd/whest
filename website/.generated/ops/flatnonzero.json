@@ -27,7 +27,7 @@
             },
             {
               "kind": "code",
-              "text": "we.nonzero(we.ravel(a))[0]"
+              "text": "fnp.nonzero(fnp.ravel(a))[0]"
             },
             {
               "kind": "text",
@@ -135,7 +135,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/nonzero",
-              "label": "we.nonzero",
+              "label": "fnp.nonzero",
               "original_target": "nonzero",
               "role": "",
               "target": "nonzero",
@@ -151,7 +151,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/ravel",
-              "label": "we.ravel",
+              "label": "fnp.ravel",
               "original_target": "ravel",
               "role": "",
               "target": "ravel",
@@ -170,12 +170,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(-2, 3)"
+              "text": "x = fnp.arange(-2, 3)"
             },
             {
               "kind": "input",
@@ -189,7 +189,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.flatnonzero(x)"
+              "text": "fnp.flatnonzero(x)"
             },
             {
               "kind": "output",
@@ -212,7 +212,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x.ravel()[we.flatnonzero(x)]"
+              "text": "x.ravel()[fnp.flatnonzero(x)]"
             },
             {
               "kind": "output",
@@ -236,16 +236,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(-2, 3)\n\nx\n\nwe.flatnonzero(x)\n\nx.ravel()[we.flatnonzero(x)]",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(-2, 3)\n\nx\n\nfnp.flatnonzero(x)\n\nx.ravel()[fnp.flatnonzero(x)]",
     "output": "array([-2, -1,  0,  1,  2])\n\narray([0, 1, 3, 4])\n\narray([-2, -1,  1,  2])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.flatnonzero",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L933",
   "href": "/docs/api/ops/flatnonzero/",
   "module": "numpy",
   "name": "flatnonzero",
   "next": {
     "href": "/docs/api/ops/flip/",
-    "label": "we.flip"
+    "label": "fnp.flip"
   },
   "notes": "Return indices of non-zero elements in flattened array. Cost: numel(input).",
   "notes_sections": [],
@@ -261,7 +264,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/fill_diagonal/",
-    "label": "we.fill_diagonal"
+    "label": "fnp.fill_diagonal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.flatnonzero.html",
@@ -286,7 +289,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/nonzero",
-      "label": "we.nonzero",
+      "label": "fnp.nonzero",
       "original_target": "nonzero",
       "role": "",
       "target": "nonzero",
@@ -302,19 +305,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/ravel",
-      "label": "we.ravel",
+      "label": "fnp.ravel",
       "original_target": "ravel",
       "role": "",
       "target": "ravel",
       "unresolved": false
     }
   ],
-  "signature": "we.flatnonzero(a)",
+  "signature": "fnp.flatnonzero(a)",
   "slug": "flatnonzero",
   "summary": "Return indices that are non-zero in the flattened version of a.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L646",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.flatnonzero",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L933"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L679",
+  "weight": 1.0
 }

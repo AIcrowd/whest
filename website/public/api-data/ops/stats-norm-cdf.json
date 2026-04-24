@@ -163,20 +163,20 @@
     "category": "counted_custom",
     "cost_formula": "20n",
     "cost_formula_latex": "$20n$",
-    "module": "whest.stats",
+    "flopscope_ref": "fnp.stats.norm.cdf",
+    "module": "flopscope.stats",
     "name": "stats.norm.cdf",
     "notes": "Normal CDF; cost = numel(input).",
     "numpy_ref": "np.stats.norm.cdf",
-    "signature": "we.stats.norm.cdf(x, loc=0, scale=1)",
+    "signature": "fnp.stats.norm.cdf(x, loc=0, scale=1)",
     "status": "supported",
     "summary": "Cumulative distribution function of the given RV.",
-    "weight": 16.0,
-    "whest_ref": "we.stats.norm.cdf"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "stats-norm-cdf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_norm.py#L63"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_norm.py#L63",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2132"
   }
 }

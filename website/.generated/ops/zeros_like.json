@@ -313,7 +313,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/empty_like",
-              "label": "we.empty_like",
+              "label": "fnp.empty_like",
               "original_target": "empty_like",
               "role": "",
               "target": "empty_like",
@@ -329,7 +329,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/ones_like",
-              "label": "we.ones_like",
+              "label": "fnp.ones_like",
               "original_target": "ones_like",
               "role": "",
               "target": "ones_like",
@@ -345,7 +345,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/full_like",
-              "label": "we.full_like",
+              "label": "fnp.full_like",
               "original_target": "full_like",
               "role": "",
               "target": "full_like",
@@ -361,7 +361,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/zeros",
-              "label": "we.zeros",
+              "label": "fnp.zeros",
               "original_target": "zeros",
               "role": "",
               "target": "zeros",
@@ -380,12 +380,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(6)"
+              "text": "x = fnp.arange(6)"
             },
             {
               "kind": "input",
@@ -408,7 +408,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros_like(x)"
+              "text": "fnp.zeros_like(x)"
             },
             {
               "kind": "output",
@@ -426,7 +426,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.arange(3, dtype=float)"
+              "text": "y = fnp.arange(3, dtype=float)"
             },
             {
               "kind": "input",
@@ -440,7 +440,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros_like(y)"
+              "text": "fnp.zeros_like(y)"
             },
             {
               "kind": "output",
@@ -464,10 +464,13 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(6)\n\nx = x.reshape((2, 3))\n\nx\n\nwe.zeros_like(x)\n\ny = we.arange(3, dtype=float)\n\ny\n\nwe.zeros_like(y)",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(6)\n\nx = x.reshape((2, 3))\n\nx\n\nfnp.zeros_like(x)\n\ny = fnp.arange(3, dtype=float)\n\ny\n\nfnp.zeros_like(y)",
     "output": "array([[0, 1, 2],\n       [3, 4, 5]])\n\narray([[0, 0, 0],\n       [0, 0, 0]])\n\narray([0., 1., 2.])\n\narray([0.,  0.,  0.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.zeros_like",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L140",
   "href": "/docs/api/ops/zeros_like/",
   "module": "numpy",
   "name": "zeros_like",
@@ -532,7 +535,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/zeros/",
-    "label": "we.zeros"
+    "label": "fnp.zeros"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.zeros_like.html",
@@ -556,7 +559,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/empty_like",
-      "label": "we.empty_like",
+      "label": "fnp.empty_like",
       "original_target": "empty_like",
       "role": "",
       "target": "empty_like",
@@ -572,7 +575,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/ones_like",
-      "label": "we.ones_like",
+      "label": "fnp.ones_like",
       "original_target": "ones_like",
       "role": "",
       "target": "ones_like",
@@ -588,7 +591,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/full_like",
-      "label": "we.full_like",
+      "label": "fnp.full_like",
       "original_target": "full_like",
       "role": "",
       "target": "full_like",
@@ -604,19 +607,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/zeros",
-      "label": "we.zeros",
+      "label": "fnp.zeros",
       "original_target": "zeros",
       "role": "",
       "target": "zeros",
       "unresolved": false
     }
   ],
-  "signature": "we.zeros_like(a, dtype=None, order='K', subok=True, shape=None, *, device=None)",
+  "signature": "fnp.zeros_like(a, dtype=None, order='K', subok=True, shape=None, *, device=None)",
   "slug": "zeros_like",
   "summary": "Return an array of zeros with the same shape and type as a given array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L64",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.zeros_like",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L140"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L97",
+  "weight": 0.0
 }

@@ -1,16 +1,16 @@
 # tests/test_benchmark_e2e.py
-"""End-to-end test: load weights JSON and verify whest applies them."""
+"""End-to-end test: load weights JSON and verify flopscope applies them."""
 
 import json
 import os
 import tempfile
 
-from whest._budget import BudgetContext
-from whest._weights import load_weights, reset_weights
+from flopscope._budget import BudgetContext
+from flopscope._weights import load_weights, reset_weights
 
 
 def test_e2e_weights_affect_budget():
-    """Full round trip: JSON -> load_weights -> whest budget uses them."""
+    """Full round trip: JSON -> load_weights -> flopscope budget uses them."""
     reset_weights()
 
     data = {"weights": {"exp": 10.0, "add": 1.0}}

@@ -124,7 +124,7 @@
                       "href": "/docs/api/ops/linalg-norm",
                       "kind": "link",
                       "target": "linalg.norm",
-                      "text": "we.linalg.norm"
+                      "text": "fnp.linalg.norm"
                     },
                     {
                       "kind": "text",
@@ -153,7 +153,7 @@
                   "href": "/docs/api/ops/linalg-norm",
                   "kind": "link",
                   "target": "linalg.norm",
-                  "text": "we.linalg.norm"
+                  "text": "fnp.linalg.norm"
                 },
                 {
                   "kind": "text",
@@ -184,7 +184,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/linalg-norm",
-              "label": "we.linalg.norm",
+              "label": "fnp.linalg.norm",
               "original_target": "numpy.linalg.norm",
               "role": "",
               "target": "linalg.norm",
@@ -208,7 +208,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(9) - 4"
+              "text": "a = fnp.arange(9) - 4"
             },
             {
               "kind": "input",
@@ -267,7 +267,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "LA.matrix_norm(b, ord=we.inf)"
+              "text": "LA.matrix_norm(b, ord=fnp.inf)"
             },
             {
               "kind": "output",
@@ -276,7 +276,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "LA.matrix_norm(b, ord=-we.inf)"
+              "text": "LA.matrix_norm(b, ord=-fnp.inf)"
             },
             {
               "kind": "output",
@@ -341,16 +341,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "from numpy import linalg as LA\n\na = we.arange(9) - 4\n\na\n\nb = a.reshape((3, 3))\n\nb\n\nLA.matrix_norm(b)\n\nLA.matrix_norm(b, ord='fro')\n\nLA.matrix_norm(b, ord=we.inf)\n\nLA.matrix_norm(b, ord=-we.inf)\n\nLA.matrix_norm(b, ord=1)\n\nLA.matrix_norm(b, ord=-1)\n\nLA.matrix_norm(b, ord=2)\n\nLA.matrix_norm(b, ord=-2)",
+    "code": "from numpy import linalg as LA\n\na = fnp.arange(9) - 4\n\na\n\nb = a.reshape((3, 3))\n\nb\n\nLA.matrix_norm(b)\n\nLA.matrix_norm(b, ord='fro')\n\nLA.matrix_norm(b, ord=fnp.inf)\n\nLA.matrix_norm(b, ord=-fnp.inf)\n\nLA.matrix_norm(b, ord=1)\n\nLA.matrix_norm(b, ord=-1)\n\nLA.matrix_norm(b, ord=2)\n\nLA.matrix_norm(b, ord=-2)",
     "output": "array([-4, -3, -2, ...,  2,  3,  4])\n\narray([[-4, -3, -2],\n       [-1,  0,  1],\n       [ 2,  3,  4]])\n\n7.745966692414834\n\n7.745966692414834\n\n9.0\n\n2.0\n\n7.0\n\n6.0\n\n7.3484692283495345\n\n1.8570331885190563e-016 # may vary",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.matrix_norm",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L310",
   "href": "/docs/api/ops/linalg-matrix_norm/",
   "module": "numpy.linalg",
   "name": "linalg.matrix_norm",
   "next": {
     "href": "/docs/api/ops/linalg-matrix_power/",
-    "label": "we.linalg.matrix_power"
+    "label": "fnp.linalg.matrix_power"
   },
   "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
   "notes_sections": [],
@@ -375,7 +378,7 @@
     {
       "body": [
         "The order of the norm. For details see the table under ``Notes``",
-        "in `we.linalg.norm`."
+        "in `fnp.linalg.norm`."
       ],
       "name": "ord",
       "type": "{1, -1, 2, -2, inf, -inf, 'fro', 'nuc'}, optional"
@@ -383,7 +386,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-matmul/",
-    "label": "we.linalg.matmul"
+    "label": "fnp.linalg.matmul"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_norm.html",
@@ -399,19 +402,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/linalg-norm",
-      "label": "we.linalg.norm",
+      "label": "fnp.linalg.norm",
       "original_target": "numpy.linalg.norm",
       "role": "",
       "target": "linalg.norm",
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.matrix_norm(x, ord='fro', keepdims=False)",
+  "signature": "fnp.linalg.matrix_norm(x, ord='fro', keepdims=False)",
   "slug": "linalg-matrix_norm",
   "summary": "Computes the matrix norm of a matrix (or a stack of matrices) ``x``.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3418",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.matrix_norm",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L310"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L3446",
+  "weight": 1.0
 }

@@ -92,7 +92,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "inf",
-                      "text": "we.inf"
+                      "text": "fnp.inf"
                     },
                     {
                       "kind": "text",
@@ -161,7 +161,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/linalg-norm",
-              "label": "we.linalg.norm",
+              "label": "fnp.linalg.norm",
               "original_target": "numpy.linalg.norm",
               "role": "",
               "target": "linalg.norm",
@@ -236,7 +236,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -246,7 +246,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 0, -1], [0, 1, 0], [1, 0, 1]])"
+              "text": "a = fnp.array([[1, 0, -1], [0, 1, 0], [1, 0, 1]])"
             },
             {
               "kind": "input",
@@ -286,7 +286,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "LA.cond(a, we.inf)"
+              "text": "LA.cond(a, fnp.inf)"
             },
             {
               "kind": "output",
@@ -295,7 +295,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "LA.cond(a, -we.inf)"
+              "text": "LA.cond(a, -fnp.inf)"
             },
             {
               "kind": "output",
@@ -383,16 +383,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nfrom numpy import linalg as LA\n\na = we.array([[1, 0, -1], [0, 1, 0], [1, 0, 1]])\n\na\n\nLA.cond(a)\n\nLA.cond(a, 'fro')\n\nLA.cond(a, we.inf)\n\nLA.cond(a, -we.inf)\n\nLA.cond(a, 1)\n\nLA.cond(a, -1)\n\nLA.cond(a, 2)\n\nLA.cond(a, -2)\n\n(min(LA.svd(a, compute_uv=False)) *\nmin(LA.svd(LA.inv(a), compute_uv=False)))",
+    "code": "import flopscope as fnp\n\nfrom numpy import linalg as LA\n\na = fnp.array([[1, 0, -1], [0, 1, 0], [1, 0, 1]])\n\na\n\nLA.cond(a)\n\nLA.cond(a, 'fro')\n\nLA.cond(a, fnp.inf)\n\nLA.cond(a, -fnp.inf)\n\nLA.cond(a, 1)\n\nLA.cond(a, -1)\n\nLA.cond(a, 2)\n\nLA.cond(a, -2)\n\n(min(LA.svd(a, compute_uv=False)) *\nmin(LA.svd(LA.inv(a), compute_uv=False)))",
     "output": "array([[ 1,  0, -1],\n       [ 0,  1,  0],\n       [ 1,  0,  1]])\n\n1.4142135623730951\n\n3.1622776601683795\n\n2.0\n\n1.0\n\n2.0\n\n1.0\n\n1.4142135623730951\n\n0.70710678118654746 # may vary\n\n0.70710678118654746 # may vary",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.cond",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L359",
   "href": "/docs/api/ops/linalg-cond/",
   "module": "numpy.linalg",
   "name": "linalg.cond",
   "next": {
     "href": "/docs/api/ops/linalg-cross/",
-    "label": "we.linalg.cross"
+    "label": "fnp.linalg.cross"
   },
   "notes": "Condition number. Cost: m*n*min(m,n) (via SVD).",
   "notes_sections": [
@@ -424,7 +427,7 @@
         "-2     smallest singular value",
         "=====  ============================",
         "",
-        "inf means the `we.inf` object, and the Frobenius norm is",
+        "inf means the `fnp.inf` object, and the Frobenius norm is",
         "the root-of-sum-of-squares norm."
       ],
       "name": "p",
@@ -433,7 +436,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-cholesky/",
-    "label": "we.linalg.cholesky"
+    "label": "fnp.linalg.cholesky"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.cond.html",
@@ -452,19 +455,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/linalg-norm",
-      "label": "we.linalg.norm",
+      "label": "fnp.linalg.norm",
       "original_target": "numpy.linalg.norm",
       "role": "",
       "target": "linalg.norm",
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.cond(x, p=None)",
+  "signature": "fnp.linalg.cond(x, p=None)",
   "slug": "linalg-cond",
   "summary": "Compute the condition number of a matrix.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1885",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.cond",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L359"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L1914",
+  "weight": 4.0
 }

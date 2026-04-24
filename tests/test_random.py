@@ -1,10 +1,10 @@
-"""Tests for whest.random counted wrappers."""
+"""Tests for flopscope.numpy.random counted wrappers."""
 
 import numpy
 
-from whest import random as merandom
-from whest._budget import BudgetContext
-from whest._flops import _ceil_log2
+from flopscope.numpy import random as merandom
+from flopscope._budget import BudgetContext
+from flopscope._flops import _ceil_log2
 
 
 class TestSeed:

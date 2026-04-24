@@ -448,12 +448,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sqrt([1,4,9])"
+              "text": "fnp.sqrt([1,4,9])"
             },
             {
               "kind": "output",
@@ -467,7 +467,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sqrt([4, -1, -3+4J])"
+              "text": "fnp.sqrt([4, -1, -3+4J])"
             },
             {
               "kind": "output",
@@ -481,7 +481,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sqrt([4, -1, we.inf])"
+              "text": "fnp.sqrt([4, -1, fnp.inf])"
             },
             {
               "kind": "output",
@@ -518,16 +518,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.sqrt([1,4,9])\n\nwe.sqrt([4, -1, -3+4J])\n\nwe.sqrt([4, -1, we.inf])",
+    "code": "import flopscope as fnp\n\nfnp.sqrt([1,4,9])\n\nfnp.sqrt([4, -1, -3+4J])\n\nfnp.sqrt([4, -1, fnp.inf])",
     "output": "array([ 1.,  2.,  3.])\n\narray([ 2.+0.j,  0.+1.j,  1.+2.j])\n\narray([ 2., nan, inf])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.sqrt",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/sqrt/",
   "module": "numpy",
   "name": "sqrt",
   "next": {
     "href": "/docs/api/ops/square/",
-    "label": "we.square"
+    "label": "fnp.square"
   },
   "notes": "Element-wise square root.",
   "notes_sections": [
@@ -575,7 +578,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/split/",
-    "label": "we.split"
+    "label": "fnp.split"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sqrt.html",
@@ -612,12 +615,9 @@
       "unresolved": true
     }
   ],
-  "signature": "we.sqrt(x)",
+  "signature": "fnp.sqrt(x)",
   "slug": "sqrt",
   "summary": "Return the non-negative square-root of an array, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.sqrt",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

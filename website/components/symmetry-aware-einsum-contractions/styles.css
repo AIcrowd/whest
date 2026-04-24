@@ -1751,7 +1751,7 @@
 
 .cost-item.highlight .cost-val { color: var(--coral); }
 
-/* Speedup callout — matches `.speedup` in design-system/Whest Einsum
+/* Speedup callout — matches `.speedup` in design-system/Flopscope Einsum
    Explorer.html: coral-light ground, big coral mono numeral, coral
    uppercase kicker underneath. The before-state was white card + coral
    border + green number, which broke the identity moment the reference

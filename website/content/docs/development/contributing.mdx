@@ -2,7 +2,7 @@
 title: "Contributor Guide"
 ---
 
-*Use this page when you are working on the whest repository itself rather than only consuming the published API.*
+*Use this page when you are working on the flopscope repository itself rather than only consuming the published API.*
 
 **You will learn:**
 - How the repository is organized across three packages
@@ -16,12 +16,12 @@ This repository contains three Python packages plus docs and Docker assets:
 
 | Path | Purpose |
 |------|---------|
-| `src/whest/` | Core library backed by NumPy |
-| `whest-client/src/whest/` | Client proxy used in sandboxed participant environments |
-| `whest-server/src/whest_server/` | ZMQ server that executes the real library |
+| `src/flopscope/` | Core library backed by NumPy |
+| `flopscope-client/src/flopscope/` | Client proxy used in sandboxed participant environments |
+| `flopscope-server/src/flopscope_server/` | ZMQ server that executes the real library |
 | `tests/` | Core library test suite |
-| `whest-client/tests/` | Client unit, integration, and adversarial tests |
-| `whest-server/tests/` | Server unit tests |
+| `flopscope-client/tests/` | Client unit, integration, and adversarial tests |
+| `flopscope-server/tests/` | Server unit tests |
 | `website/content/docs/` | Docs source for the published site |
 | `website/public/ops.json` | Generated slim API operation index consumed by `/docs/api` |
 | `website/public/api-data/ops/*.json` | Generated per-operation detail payloads for standalone op pages |
@@ -34,8 +34,8 @@ This repository contains three Python packages plus docs and Docker assets:
 For normal work on the core package, docs, and root test suite:
 
 ```bash
-git clone https://github.com/AIcrowd/whest.git
-cd whest
+git clone https://github.com/AIcrowd/flopscope.git
+cd flopscope
 make install
 ```
 
@@ -46,10 +46,10 @@ make install
 The root environment covers the core package, linting, docs, and the main test
 suite. The client and server each also have their own `pyproject.toml`.
 
-One important caveat: `whest-server` depends on the local `whest`
+One important caveat: `flopscope-server` depends on the local `flopscope`
 package, which is not resolved from a package index in a fresh source checkout.
 For server development, run commands from the repository root with
-`PYTHONPATH=src:whest-server/src` instead of relying on `cd whest-server
+`PYTHONPATH=src:flopscope-server/src` instead of relying on `cd flopscope-server
 && uv run ...`.
 
 ## Common commands
@@ -72,15 +72,15 @@ uv run pytest
 uv run mkdocs serve
 ```
 
-When running the local docs site and you want whest error messages to link to
+When running the local docs site and you want flopscope error messages to link to
 your local copy instead of the hosted site, set:
 
 ```bash
-export WHEST_DOCS_ROOT=http://localhost:3000/docs
+export FLOPSCOPE_DOCS_ROOT=http://localhost:3000/docs
 ```
 
-If `WHEST_DOCS_ROOT` is unset, whest falls back to the hosted docs at
-`https://aicrowd.github.io/whest/docs`.
+If `FLOPSCOPE_DOCS_ROOT` is unset, flopscope falls back to the hosted docs at
+`https://aicrowd.github.io/flopscope/docs`.
 
 ### Client package
 
@@ -88,7 +88,7 @@ The client package is independently installable, so its test suite can run via
 its own project file:
 
 ```bash
-uv run --project whest-client pytest whest-client/tests
+uv run --project flopscope-client pytest flopscope-client/tests
 ```
 
 Client integration and adversarial tests start a real server subprocess using
@@ -100,16 +100,16 @@ Run server tests from the repository root so the local core package is on
 `PYTHONPATH`:
 
 ```bash
-PYTHONPATH=src:whest-server/src \
-  uv run --with pyzmq --with msgpack pytest whest-server/tests
+PYTHONPATH=src:flopscope-server/src \
+  uv run --with pyzmq --with msgpack pytest flopscope-server/tests
 ```
 
 To launch the server manually from a source checkout:
 
 ```bash
-PYTHONPATH=src:whest-server/src \
+PYTHONPATH=src:flopscope-server/src \
   uv run --with pyzmq --with msgpack \
-  python -m whest_server --url ipc:///tmp/whest.sock
+  python -m flopscope_server --url ipc:///tmp/flopscope.sock
 ```
 
 ## Running client and server together without Docker
@@ -119,15 +119,15 @@ correctly:
 
 ```bash
 # Terminal 1
-PYTHONPATH=src:whest-server/src \
+PYTHONPATH=src:flopscope-server/src \
   uv run --with pyzmq --with msgpack \
-  python -m whest_server --url ipc:///tmp/whest.sock
+  python -m flopscope_server --url ipc:///tmp/flopscope.sock
 ```
 
 ```bash
 # Terminal 2
-export WHEST_SERVER_URL=ipc:///tmp/whest.sock
-PYTHONPATH=whest-client/src \
+export FLOPSCOPE_SERVER_URL=ipc:///tmp/flopscope.sock
+PYTHONPATH=flopscope-client/src \
   uv run --with pyzmq --with msgpack python your_script.py
 ```
 
@@ -151,39 +151,39 @@ uv run python scripts/generate_api_docs.py --verify
 
 ## NumPy Compatibility Testing
 
-whest's goal is to be a drop-in replacement for NumPy: `import whest as np` should work for all supported functions. To verify this, we run NumPy's own test suite against whest.
+flopscope's goal is to be a drop-in replacement for NumPy: `import flopscope as np` should work for all supported functions. To verify this, we run NumPy's own test suite against flopscope.
 
 ### How it works
 
-A pytest conftest at `tests/numpy_compat/conftest.py` monkeypatches numpy functions with their whest equivalents at session start. When we point pytest at NumPy's installed test files using `--pyargs`, every test that calls `np.sum(...)`, `np.mean(...)`, etc. actually calls whest's version.
+A pytest conftest at `tests/numpy_compat/conftest.py` monkeypatches numpy functions with their flopscope equivalents at session start. When we point pytest at NumPy's installed test files using `--pyargs`, every test that calls `np.sum(...)`, `np.mean(...)`, etc. actually calls flopscope's version.
 
 ```
-NumPy test file                conftest.py               whest
+NumPy test file                conftest.py               flopscope
   calls np.sum(x)  ──────>   np.sum = we.sum   ──────>  we.sum(x)
   asserts result              (monkeypatch)              (FLOP-counted)
 ```
 
 #### Avoiding infinite recursion
 
-whest functions internally call numpy (e.g., `we.dot` calls `_np.dot`). Since `_np` IS the numpy module, patching `numpy.dot = we.dot` would cause infinite recursion: `we.dot` → `_np.dot` → `numpy.dot` → `we.dot` → ...
+flopscope functions internally call numpy (e.g., `we.dot` calls `_np.dot`). Since `_np` IS the numpy module, patching `numpy.dot = we.dot` would cause infinite recursion: `we.dot` → `_np.dot` → `numpy.dot` → `we.dot` → ...
 
-We solve this by **freezing numpy before patching**: the conftest creates a snapshot of the numpy module (and its submodules like `numpy.linalg`, `numpy.fft`), then rebinds every whest module's `_np` reference to the frozen copy. Now whest's internal calls go to the original numpy functions, while the test suite sees whest's versions.
+We solve this by **freezing numpy before patching**: the conftest creates a snapshot of the numpy module (and its submodules like `numpy.linalg`, `numpy.fft`), then rebinds every flopscope module's `_np` reference to the frozen copy. Now flopscope's internal calls go to the original numpy functions, while the test suite sees flopscope's versions.
 
 ```python
 # Simplified flow in conftest.py:
 frozen_np = freeze_numpy()           # snapshot of original numpy
-rebind_whest_np(frozen_np)       # we._np → frozen copy
+rebind_flopscope_np(frozen_np)       # we._np → frozen copy
 patch_numpy()                        # np.sum = we.sum, etc.
 # Now: test calls np.sum → we.sum → frozen_np.sum (original) ✓
 ```
 
 ### What gets patched
 
-Of whest's 508 registered functions, most non-ufunc functions are patched onto numpy during testing. The only categories skipped:
+Of flopscope's 508 registered functions, most non-ufunc functions are patched onto numpy during testing. The only categories skipped:
 
 | Category | Count | Why skipped |
 |----------|-------|-------------|
-| Ufuncs | 101 | whest functions are plain callables, not ufuncs -- they lack `.reduce`, `.accumulate`, `.outer`, `.nargs`. Tests check these attributes at collection time. |
+| Ufuncs | 101 | flopscope functions are plain callables, not ufuncs -- they lack `.reduce`, `.accumulate`, `.outer`, `.nargs`. Tests check these attributes at collection time. |
 | Blacklisted | 32 | Intentionally unsupported |
 | `linalg.outer` | 1 | `we.linalg.outer` delegates to `np.outer` (not `np.linalg.outer`), which has different validation behavior |
 
@@ -233,12 +233,12 @@ Tests that fail due to known, accepted differences are tracked in `tests/numpy_c
 | Category | Meaning | Examples |
 |----------|---------|---------|
 | `NOT_IMPLEMENTED` | Function exists but lacks a kwarg or edge case | Missing `out=`, `where=`, `subok=` kwargs |
-| `UNSUPPORTED_DTYPE` | whest doesn't support this dtype | timedelta, object arrays |
+| `UNSUPPORTED_DTYPE` | flopscope doesn't support this dtype | timedelta, object arrays |
 | `UFUNC_INTERNALS` | Test relies on ufunc protocol | `.reduce`, `__array_ufunc__` |
 | `BUDGET_SIDE_EFFECT` | Test assumes no global state changes | Budget deduction during assertions |
 | `NUMPY_INTERNAL` | Test uses numpy internals | `_umath_tests`, internal type tables |
 
-The linalg suite has the most xfails (255) because whest's linalg wrappers don't support stacked/batched arrays, 0-size arrays, or some advanced kwargs that numpy's linalg tests exercise extensively.
+The linalg suite has the most xfails (255) because flopscope's linalg wrappers don't support stacked/batched arrays, 0-size arrays, or some advanced kwargs that numpy's linalg tests exercise extensively.
 
 #### Triaging new failures
 
@@ -251,8 +251,8 @@ The linalg suite has the most xfails (255) because whest's linalg wrappers don't
 
 We considered alternatives:
 
-- **Array subclass with `__array_ufunc__`**: Would intercept ufunc calls, but whest arrays are plain `numpy.ndarray` by design -- no custom tensor class.
-- **Running tests with `import whest as np`**: NumPy's test files import from `numpy._core`, `numpy.testing`, etc. -- can't redirect all internal imports.
+- **Array subclass with `__array_ufunc__`**: Would intercept ufunc calls, but flopscope arrays are plain `numpy.ndarray` by design -- no custom tensor class.
+- **Running tests with `import flopscope as np`**: NumPy's test files import from `numpy._core`, `numpy.testing`, etc. -- can't redirect all internal imports.
 - **Monkeypatching with frozen numpy**: Simple, works with NumPy's existing test infrastructure, tests exactly what users experience (same function signatures), and the frozen-numpy trick prevents infinite recursion.
 
 ## Related pages

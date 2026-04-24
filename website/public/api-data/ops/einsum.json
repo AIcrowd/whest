@@ -332,7 +332,7 @@
                         "href": "/docs/api/ops/einsum_path",
                         "kind": "link",
                         "target": "einsum_path",
-                        "text": "we.einsum_path"
+                        "text": "fnp.einsum_path"
                       },
                       {
                         "kind": "text",
@@ -343,7 +343,7 @@
                         "href": "/docs/api/ops/einsum_path",
                         "kind": "link",
                         "target": "einsum_path",
-                        "text": "we.einsum_path"
+                        "text": "fnp.einsum_path"
                       },
                       {
                         "kind": "text",
@@ -364,7 +364,7 @@
                     "href": "/docs/api/ops/einsum_path",
                     "kind": "link",
                     "target": "einsum_path",
-                    "text": "we.einsum_path"
+                    "text": "fnp.einsum_path"
                   },
                   {
                     "kind": "text",
@@ -375,7 +375,7 @@
                     "href": "/docs/api/ops/einsum_path",
                     "kind": "link",
                     "target": "einsum_path",
-                    "text": "we.einsum_path"
+                    "text": "fnp.einsum_path"
                   },
                   {
                     "kind": "text",
@@ -434,7 +434,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/einsum_path",
-                "label": "we.einsum_path",
+                "label": "fnp.einsum_path",
                 "original_target": "einsum_path",
                 "role": "",
                 "target": "einsum_path",
@@ -445,7 +445,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/dot",
-                "label": "we.dot",
+                "label": "fnp.dot",
                 "original_target": "dot",
                 "role": "",
                 "target": "dot",
@@ -456,7 +456,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/inner",
-                "label": "we.inner",
+                "label": "fnp.inner",
                 "original_target": "inner",
                 "role": "",
                 "target": "inner",
@@ -467,7 +467,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/outer",
-                "label": "we.outer",
+                "label": "fnp.outer",
                 "original_target": "outer",
                 "role": "",
                 "target": "outer",
@@ -478,7 +478,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/tensordot",
-                "label": "we.tensordot",
+                "label": "fnp.tensordot",
                 "original_target": "tensordot",
                 "role": "",
                 "target": "tensordot",
@@ -489,7 +489,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/linalg-multi_dot",
-                "label": "we.linalg.multi_dot",
+                "label": "fnp.linalg.multi_dot",
                 "original_target": "linalg.multi_dot",
                 "role": "",
                 "target": "linalg.multi_dot",
@@ -533,7 +533,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/einsum",
-                "label": "we.einsum",
+                "label": "fnp.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
@@ -598,12 +598,12 @@
                         "text": "Trace of an array, "
                       },
                       {
-                        "display_text": "we.trace",
+                        "display_text": "fnp.trace",
                         "explicit_title": false,
                         "external_url": "",
                         "href": "/docs/api/ops/trace",
                         "kind": "role_reference",
-                        "original_target": "we.trace",
+                        "original_target": "fnp.trace",
                         "role": "py:func",
                         "suppress_link": false,
                         "target": "trace",
@@ -627,12 +627,12 @@
                         "text": "Return a diagonal, "
                       },
                       {
-                        "display_text": "we.diag",
+                        "display_text": "fnp.diag",
                         "explicit_title": false,
                         "external_url": "",
                         "href": "/docs/api/ops/diag",
                         "kind": "role_reference",
-                        "original_target": "we.diag",
+                        "original_target": "fnp.diag",
                         "role": "py:func",
                         "suppress_link": false,
                         "target": "diag",
@@ -656,12 +656,12 @@
                         "text": "Array axis summations, "
                       },
                       {
-                        "display_text": "we.sum",
+                        "display_text": "fnp.sum",
                         "explicit_title": false,
                         "external_url": "",
                         "href": "/docs/api/ops/sum",
                         "kind": "role_reference",
-                        "original_target": "we.sum",
+                        "original_target": "fnp.sum",
                         "role": "py:func",
                         "suppress_link": false,
                         "target": "sum",
@@ -685,12 +685,12 @@
                         "text": "Transpositions and permutations, "
                       },
                       {
-                        "display_text": "we.transpose",
+                        "display_text": "fnp.transpose",
                         "explicit_title": false,
                         "external_url": "",
                         "href": "/docs/api/ops/transpose",
                         "kind": "role_reference",
-                        "original_target": "we.transpose",
+                        "original_target": "fnp.transpose",
                         "role": "py:func",
                         "suppress_link": false,
                         "target": "transpose",
@@ -714,12 +714,12 @@
                           {
                             "inline": [
                               {
-                                "display_text": "we.dot",
+                                "display_text": "fnp.dot",
                                 "explicit_title": false,
                                 "external_url": "",
                                 "href": "/docs/api/ops/dot",
                                 "kind": "role_reference",
-                                "original_target": "we.dot",
+                                "original_target": "fnp.dot",
                                 "role": "py:func",
                                 "suppress_link": false,
                                 "target": "dot",
@@ -739,12 +739,12 @@
                             "text": "Matrix multiplication and dot product, "
                           },
                           {
-                            "display_text": "we.matmul",
+                            "display_text": "fnp.matmul",
                             "explicit_title": false,
                             "external_url": "",
                             "href": "/docs/api/ops/matmul",
                             "kind": "role_reference",
-                            "original_target": "we.matmul",
+                            "original_target": "fnp.matmul",
                             "role": "py:func",
                             "suppress_link": false,
                             "target": "matmul",
@@ -766,12 +766,12 @@
                           {
                             "inline": [
                               {
-                                "display_text": "we.outer",
+                                "display_text": "fnp.outer",
                                 "explicit_title": false,
                                 "external_url": "",
                                 "href": "/docs/api/ops/outer",
                                 "kind": "role_reference",
-                                "original_target": "we.outer",
+                                "original_target": "fnp.outer",
                                 "role": "py:func",
                                 "suppress_link": false,
                                 "target": "outer",
@@ -791,12 +791,12 @@
                             "text": "Vector inner and outer products, "
                           },
                           {
-                            "display_text": "we.inner",
+                            "display_text": "fnp.inner",
                             "explicit_title": false,
                             "external_url": "",
                             "href": "/docs/api/ops/inner",
                             "kind": "role_reference",
-                            "original_target": "we.inner",
+                            "original_target": "fnp.inner",
                             "role": "py:func",
                             "suppress_link": false,
                             "target": "inner",
@@ -818,12 +818,12 @@
                           {
                             "inline": [
                               {
-                                "display_text": "we.multiply",
+                                "display_text": "fnp.multiply",
                                 "explicit_title": false,
                                 "external_url": "",
                                 "href": "/docs/api/ops/multiply",
                                 "kind": "role_reference",
-                                "original_target": "we.multiply",
+                                "original_target": "fnp.multiply",
                                 "role": "py:func",
                                 "suppress_link": false,
                                 "target": "multiply",
@@ -858,12 +858,12 @@
                         "text": "Tensor contractions, "
                       },
                       {
-                        "display_text": "we.tensordot",
+                        "display_text": "fnp.tensordot",
                         "explicit_title": false,
                         "external_url": "",
                         "href": "/docs/api/ops/tensordot",
                         "kind": "role_reference",
-                        "original_target": "we.tensordot",
+                        "original_target": "fnp.tensordot",
                         "role": "py:func",
                         "suppress_link": false,
                         "target": "tensordot",
@@ -887,12 +887,12 @@
                           {
                             "inline": [
                               {
-                                "display_text": "we.einsum_path",
+                                "display_text": "fnp.einsum_path",
                                 "explicit_title": false,
                                 "external_url": "",
                                 "href": "/docs/api/ops/einsum_path",
                                 "kind": "role_reference",
-                                "original_target": "we.einsum_path",
+                                "original_target": "fnp.einsum_path",
                                 "role": "py:func",
                                 "suppress_link": false,
                                 "target": "einsum_path",
@@ -933,19 +933,19 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('i,i', a, b)",
-                "text": "we.einsum('i,i', a, b)"
+                "text": "fnp.einsum('i,i', a, b)"
               },
               {
                 "kind": "text",
                 "text": "\nis equivalent to "
               },
               {
-                "display_text": "we.inner(a,b)",
+                "display_text": "fnp.inner(a,b)",
                 "explicit_title": true,
                 "external_url": "",
                 "href": "/docs/api/ops/inner",
                 "kind": "role_reference",
-                "original_target": "we.inner",
+                "original_target": "fnp.inner",
                 "role": "py:func",
                 "suppress_link": false,
                 "target": "inner",
@@ -960,7 +960,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('i', a)",
-                "text": "we.einsum('i', a)"
+                "text": "fnp.einsum('i', a)"
               },
               {
                 "kind": "text",
@@ -979,19 +979,19 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('ij,jk', a, b)",
-                "text": "we.einsum('ij,jk', a, b)"
+                "text": "fnp.einsum('ij,jk', a, b)"
               },
               {
                 "kind": "text",
                 "text": " describes traditional matrix multiplication\nand is equivalent to "
               },
               {
-                "display_text": "we.matmul(a,b)",
+                "display_text": "fnp.matmul(a,b)",
                 "explicit_title": true,
                 "external_url": "",
                 "href": "/docs/api/ops/matmul",
                 "kind": "role_reference",
-                "original_target": "we.matmul",
+                "original_target": "fnp.matmul",
                 "role": "py:func",
                 "suppress_link": false,
                 "target": "matmul",
@@ -1006,19 +1006,19 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('ii', a)",
-                "text": "we.einsum('ii', a)"
+                "text": "fnp.einsum('ii', a)"
               },
               {
                 "kind": "text",
                 "text": " is equivalent to\n"
               },
               {
-                "display_text": "we.trace(a)",
+                "display_text": "fnp.trace(a)",
                 "explicit_title": true,
                 "external_url": "",
                 "href": "/docs/api/ops/trace",
                 "kind": "role_reference",
-                "original_target": "we.trace",
+                "original_target": "fnp.trace",
                 "role": "py:func",
                 "suppress_link": false,
                 "target": "trace",
@@ -1050,7 +1050,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('ij', a)",
-                "text": "we.einsum('ij', a)"
+                "text": "fnp.einsum('ij', a)"
               },
               {
                 "kind": "text",
@@ -1061,7 +1061,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('ji', a)",
-                "text": "we.einsum('ji', a)"
+                "text": "fnp.einsum('ji', a)"
               },
               {
                 "kind": "text",
@@ -1072,7 +1072,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('ij,jk', a, b)",
-                "text": "we.einsum('ij,jk', a, b)"
+                "text": "fnp.einsum('ij,jk', a, b)"
               },
               {
                 "kind": "text",
@@ -1083,7 +1083,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('ij,jh', a, b)",
-                "text": "we.einsum('ij,jh', a, b)"
+                "text": "fnp.einsum('ij,jh', a, b)"
               },
               {
                 "kind": "text",
@@ -1111,19 +1111,19 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('i->', a)",
-                "text": "we.einsum('i->', a)"
+                "text": "fnp.einsum('i->', a)"
               },
               {
                 "kind": "text",
                 "text": " is like "
               },
               {
-                "display_text": "we.sum(a)",
+                "display_text": "fnp.sum(a)",
                 "explicit_title": true,
                 "external_url": "",
                 "href": "/docs/api/ops/sum",
                 "kind": "role_reference",
-                "original_target": "we.sum",
+                "original_target": "fnp.sum",
                 "role": "py:func",
                 "suppress_link": false,
                 "target": "sum",
@@ -1146,19 +1146,19 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('ii->i', a)",
-                "text": "we.einsum('ii->i', a)"
+                "text": "fnp.einsum('ii->i', a)"
               },
               {
                 "kind": "text",
                 "text": "\nis like "
               },
               {
-                "display_text": "we.diag(a)",
+                "display_text": "fnp.diag(a)",
                 "explicit_title": true,
                 "external_url": "",
                 "href": "/docs/api/ops/diag",
                 "kind": "role_reference",
-                "original_target": "we.diag",
+                "original_target": "fnp.diag",
                 "role": "py:func",
                 "suppress_link": false,
                 "target": "diag",
@@ -1192,7 +1192,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('ij,jh->ih', a, b)",
-                "text": "we.einsum('ij,jh->ih', a, b)"
+                "text": "fnp.einsum('ij,jh->ih', a, b)"
               },
               {
                 "kind": "text",
@@ -1209,7 +1209,7 @@
               },
               {
                 "kind": "code",
-                "text": "we.einsum('...ii->...i', a)"
+                "text": "fnp.einsum('...ii->...i', a)"
               },
               {
                 "kind": "text",
@@ -1217,19 +1217,19 @@
               },
               {
                 "kind": "code",
-                "text": "we.einsum('...i->...', a)"
+                "text": "fnp.einsum('...i->...', a)"
               },
               {
                 "kind": "text",
                 "text": " is like\n"
               },
               {
-                "display_text": "we.sum(a, axis=-1)",
+                "display_text": "fnp.sum(a, axis=-1)",
                 "explicit_title": true,
                 "external_url": "",
                 "href": "/docs/api/ops/sum",
                 "kind": "role_reference",
-                "original_target": "we.sum",
+                "original_target": "fnp.sum",
                 "role": "py:func",
                 "suppress_link": false,
                 "target": "sum",
@@ -1249,7 +1249,7 @@
               },
               {
                 "kind": "code",
-                "text": "we.einsum('i...i', a)"
+                "text": "fnp.einsum('i...i', a)"
               },
               {
                 "kind": "text",
@@ -1257,7 +1257,7 @@
               },
               {
                 "kind": "code",
-                "text": "we.einsum('ij...,jk...->ik...', a, b)"
+                "text": "fnp.einsum('ij...,jk...->ik...', a, b)"
               },
               {
                 "kind": "text",
@@ -1277,7 +1277,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('ii->i', a)",
-                "text": "we.einsum('ii->i', a)"
+                "text": "fnp.einsum('ii->i', a)"
               },
               {
                 "kind": "text",
@@ -1340,19 +1340,19 @@
               },
               {
                 "kind": "code",
-                "text": "we.einsum('ijk...->kji...', a)"
+                "text": "fnp.einsum('ijk...->kji...', a)"
               },
               {
                 "kind": "text",
                 "text": " will now\nhave the same effect as "
               },
               {
-                "display_text": "we.swapaxes(a, 0, 2)",
+                "display_text": "fnp.swapaxes(a, 0, 2)",
                 "explicit_title": true,
                 "external_url": "",
                 "href": "/docs/api/ops/swapaxes",
                 "kind": "role_reference",
-                "original_target": "we.swapaxes",
+                "original_target": "fnp.swapaxes",
                 "role": "py:func",
                 "suppress_link": false,
                 "target": "swapaxes",
@@ -1367,7 +1367,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "einsum('ii->i', a)",
-                "text": "we.einsum('ii->i', a)"
+                "text": "fnp.einsum('ii->i', a)"
               },
               {
                 "kind": "text",
@@ -1409,12 +1409,12 @@
                 "text": "See "
               },
               {
-                "display_text": "we.einsum_path",
+                "display_text": "fnp.einsum_path",
                 "explicit_title": false,
                 "external_url": "",
                 "href": "/docs/api/ops/einsum_path",
                 "kind": "role_reference",
-                "original_target": "we.einsum_path",
+                "original_target": "fnp.einsum_path",
                 "role": "py:func",
                 "suppress_link": false,
                 "target": "einsum_path",
@@ -1437,17 +1437,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(25).reshape(5,5)"
+                "text": "a = fnp.arange(25).reshape(5,5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(5)"
+                "text": "b = fnp.arange(5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.arange(6).reshape(2,3)"
+                "text": "c = fnp.arange(6).reshape(2,3)"
               }
             ],
             "type": "doctest_block"
@@ -1466,7 +1466,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('ii', a)"
+                "text": "fnp.einsum('ii', a)"
               },
               {
                 "kind": "output",
@@ -1475,7 +1475,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(a, [0,0])"
+                "text": "fnp.einsum(a, [0,0])"
               },
               {
                 "kind": "output",
@@ -1484,7 +1484,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trace(a)"
+                "text": "fnp.trace(a)"
               },
               {
                 "kind": "output",
@@ -1507,7 +1507,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('ii->i', a)"
+                "text": "fnp.einsum('ii->i', a)"
               },
               {
                 "kind": "output",
@@ -1516,7 +1516,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(a, [0,0], [0])"
+                "text": "fnp.einsum(a, [0,0], [0])"
               },
               {
                 "kind": "output",
@@ -1525,7 +1525,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.diag(a)"
+                "text": "fnp.diag(a)"
               },
               {
                 "kind": "output",
@@ -1548,7 +1548,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('ij->i', a)"
+                "text": "fnp.einsum('ij->i', a)"
               },
               {
                 "kind": "output",
@@ -1557,7 +1557,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(a, [0,1], [0])"
+                "text": "fnp.einsum(a, [0,1], [0])"
               },
               {
                 "kind": "output",
@@ -1566,7 +1566,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum(a, axis=1)"
+                "text": "fnp.sum(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -1589,7 +1589,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('...j->...', a)"
+                "text": "fnp.einsum('...j->...', a)"
               },
               {
                 "kind": "output",
@@ -1598,7 +1598,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(a, [Ellipsis,1], [Ellipsis])"
+                "text": "fnp.einsum(a, [Ellipsis,1], [Ellipsis])"
               },
               {
                 "kind": "output",
@@ -1621,7 +1621,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('ji', c)"
+                "text": "fnp.einsum('ji', c)"
               },
               {
                 "kind": "output",
@@ -1638,7 +1638,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('ij->ji', c)"
+                "text": "fnp.einsum('ij->ji', c)"
               },
               {
                 "kind": "output",
@@ -1655,7 +1655,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(c, [1,0])"
+                "text": "fnp.einsum(c, [1,0])"
               },
               {
                 "kind": "output",
@@ -1672,7 +1672,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.transpose(c)"
+                "text": "fnp.transpose(c)"
               },
               {
                 "kind": "output",
@@ -1703,7 +1703,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('i,i', b, b)"
+                "text": "fnp.einsum('i,i', b, b)"
               },
               {
                 "kind": "output",
@@ -1712,7 +1712,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(b, [0], b, [0])"
+                "text": "fnp.einsum(b, [0], b, [0])"
               },
               {
                 "kind": "output",
@@ -1721,7 +1721,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.inner(b,b)"
+                "text": "fnp.inner(b,b)"
               },
               {
                 "kind": "output",
@@ -1744,7 +1744,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('ij,j', a, b)"
+                "text": "fnp.einsum('ij,j', a, b)"
               },
               {
                 "kind": "output",
@@ -1753,7 +1753,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(a, [0,1], b, [1])"
+                "text": "fnp.einsum(a, [0,1], b, [1])"
               },
               {
                 "kind": "output",
@@ -1762,7 +1762,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.dot(a, b)"
+                "text": "fnp.dot(a, b)"
               },
               {
                 "kind": "output",
@@ -1771,7 +1771,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('...j,j', a, b)"
+                "text": "fnp.einsum('...j,j', a, b)"
               },
               {
                 "kind": "output",
@@ -1794,7 +1794,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('..., ...', 3, c)"
+                "text": "fnp.einsum('..., ...', 3, c)"
               },
               {
                 "kind": "output",
@@ -1807,7 +1807,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(',ij', 3, c)"
+                "text": "fnp.einsum(',ij', 3, c)"
               },
               {
                 "kind": "output",
@@ -1820,7 +1820,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(3, [Ellipsis], c, [Ellipsis])"
+                "text": "fnp.einsum(3, [Ellipsis], c, [Ellipsis])"
               },
               {
                 "kind": "output",
@@ -1833,7 +1833,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.multiply(3, c)"
+                "text": "fnp.multiply(3, c)"
               },
               {
                 "kind": "output",
@@ -1860,7 +1860,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('i,j', we.arange(2)+1, b)"
+                "text": "fnp.einsum('i,j', fnp.arange(2)+1, b)"
               },
               {
                 "kind": "output",
@@ -1873,7 +1873,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(we.arange(2)+1, [0], b, [1])"
+                "text": "fnp.einsum(fnp.arange(2)+1, [0], b, [1])"
               },
               {
                 "kind": "output",
@@ -1886,7 +1886,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.outer(we.arange(2)+1, b)"
+                "text": "fnp.outer(fnp.arange(2)+1, b)"
               },
               {
                 "kind": "output",
@@ -1913,17 +1913,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(60.).reshape(3,4,5)"
+                "text": "a = fnp.arange(60.).reshape(3,4,5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(24.).reshape(4,3,2)"
+                "text": "b = fnp.arange(24.).reshape(4,3,2)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('ijk,jil->kl', a, b)"
+                "text": "fnp.einsum('ijk,jil->kl', a, b)"
               },
               {
                 "kind": "output",
@@ -1948,7 +1948,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum(a, [0,1,2], b, [1,0,3], [2,3])"
+                "text": "fnp.einsum(a, [0,1,2], b, [1,0,3], [2,3])"
               },
               {
                 "kind": "output",
@@ -1973,7 +1973,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.tensordot(a,b, axes=([1,0],[0,1]))"
+                "text": "fnp.tensordot(a,b, axes=([1,0],[0,1]))"
               },
               {
                 "kind": "output",
@@ -2012,12 +2012,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.zeros((3, 3))"
+                "text": "a = fnp.zeros((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('ii->i', a)[:] = 1"
+                "text": "fnp.einsum('ii->i', a)[:] = 1"
               },
               {
                 "kind": "input",
@@ -2053,17 +2053,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(6).reshape((3,2))"
+                "text": "a = fnp.arange(6).reshape((3,2))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(12).reshape((4,3))"
+                "text": "b = fnp.arange(12).reshape((4,3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('ki,jk->ij', a, b)"
+                "text": "fnp.einsum('ki,jk->ij', a, b)"
               },
               {
                 "kind": "output",
@@ -2076,7 +2076,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('ki,...k->i...', a, b)"
+                "text": "fnp.einsum('ki,...k->i...', a, b)"
               },
               {
                 "kind": "output",
@@ -2089,7 +2089,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.einsum('k...,jk', a, b)"
+                "text": "fnp.einsum('k...,jk', a, b)"
               },
               {
                 "kind": "output",
@@ -2127,7 +2127,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.ones(64).reshape(2,4,8)"
+                "text": "a = fnp.ones(64).reshape(2,4,8)"
               }
             ],
             "type": "doctest_block"
@@ -2162,7 +2162,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "_ = we.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a)"
+                "text": "_ = fnp.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a)"
               }
             ],
             "type": "doctest_block"
@@ -2197,7 +2197,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "_ = we.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a,"
+                "text": "_ = fnp.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a,"
               },
               {
                 "kind": "input",
@@ -2237,7 +2237,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "_ = we.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize='greedy')"
+                "text": "_ = fnp.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize='greedy')"
               }
             ],
             "type": "doctest_block"
@@ -2267,7 +2267,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "path = we.einsum_path('ijk,ilm,njm,nlk,abc->',a,a,a,a,a,"
+                "text": "path = fnp.einsum_path('ijk,ilm,njm,nlk,abc->',a,a,a,a,a,"
               },
               {
                 "kind": "input",
@@ -2282,7 +2282,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "_ = we.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize=path)"
+                "text": "_ = fnp.einsum('ijk,ilm,njm,nlk,abc->',a,a,a,a,a, optimize=path)"
               }
             ],
             "type": "doctest_block"
@@ -2296,20 +2296,20 @@
     "category": "counted_custom",
     "cost_formula": "op_factor * product of all index dims",
     "cost_formula_latex": "$\\text{op\\_factor} \\cdot \\prod_i d_i$",
+    "flopscope_ref": "fnp.einsum",
     "module": "numpy",
     "name": "einsum",
     "notes": "Generalized Einstein summation.",
     "numpy_ref": "np.einsum",
-    "signature": "we.einsum(subscripts: 'str', *operands: '_np.ndarray', out=None, optimize: 'str | bool | list' = 'auto', symmetric_axes: 'list[tuple[int, ...]] | None' = None, symmetry: 'PermutationGroup | list[PermutationGroup] | None' = None, **kwargs) -> '_np.ndarray'",
+    "signature": "fnp.einsum(subscripts: 'str', *operands: '_np.ndarray', out=None, optimize: 'str | bool | list' = 'auto', symmetric_axes: 'list[tuple[int, ...]] | None' = None, symmetry: 'PermutationGroup | list[PermutationGroup] | None' = None, **kwargs) -> '_np.ndarray'",
     "status": "supported",
     "summary": "Evaluates the Einstein summation convention on the operands.",
-    "weight": 1.0,
-    "whest_ref": "we.einsum"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "einsum",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/einsumfunc.py#L1057",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L183"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L183",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/einsumfunc.py#L1244"
   }
 }

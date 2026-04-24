@@ -89,13 +89,56 @@
                     },
                     {
                       "kind": "text",
-                      "text": " is a shortcut for before = after = pad width\nfor all axes."
+                      "text": " is a shortcut for before = after = pad width\nfor all axes.\nIf a "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "dict"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", each key is an axis and its corresponding value is an "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "int"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " or\n"
+                    },
+                    {
+                      "kind": "code",
+                      "text": "int"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " pair describing the padding "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "(before, after)"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " or "
+                    },
+                    {
+                      "external_url": "",
+                      "href": "/docs/api/ops/pad",
+                      "kind": "link",
+                      "target": "pad",
+                      "text": "pad"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " width for\nthat axis."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "{sequence, array_like, int}",
+              "data_type": "{sequence, array_like, int, dict}",
               "inline": [
                 {
                   "kind": "text",
@@ -139,7 +182,50 @@
                 },
                 {
                   "kind": "text",
-                  "text": " is a shortcut for before = after = pad width\nfor all axes."
+                  "text": " is a shortcut for before = after = pad width\nfor all axes.\nIf a "
+                },
+                {
+                  "kind": "code",
+                  "text": "dict"
+                },
+                {
+                  "kind": "text",
+                  "text": ", each key is an axis and its corresponding value is an "
+                },
+                {
+                  "kind": "code",
+                  "text": "int"
+                },
+                {
+                  "kind": "text",
+                  "text": " or\n"
+                },
+                {
+                  "kind": "code",
+                  "text": "int"
+                },
+                {
+                  "kind": "text",
+                  "text": " pair describing the padding "
+                },
+                {
+                  "kind": "code",
+                  "text": "(before, after)"
+                },
+                {
+                  "kind": "text",
+                  "text": " or "
+                },
+                {
+                  "external_url": "",
+                  "href": "/docs/api/ops/pad",
+                  "kind": "link",
+                  "target": "pad",
+                  "text": "pad"
+                },
+                {
+                  "kind": "text",
+                  "text": " width for\nthat axis."
                 }
               ],
               "name": "pad_width",
@@ -931,7 +1017,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -941,7 +1027,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2, 3), 'constant', constant_values=(4, 6))"
+              "text": "fnp.pad(a, (2, 3), 'constant', constant_values=(4, 6))"
             },
             {
               "kind": "output",
@@ -955,7 +1041,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2, 3), 'edge')"
+              "text": "fnp.pad(a, (2, 3), 'edge')"
             },
             {
               "kind": "output",
@@ -969,7 +1055,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))"
+              "text": "fnp.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))"
             },
             {
               "kind": "output",
@@ -983,7 +1069,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2,), 'maximum')"
+              "text": "fnp.pad(a, (2,), 'maximum')"
             },
             {
               "kind": "output",
@@ -997,7 +1083,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2,), 'mean')"
+              "text": "fnp.pad(a, (2,), 'mean')"
             },
             {
               "kind": "output",
@@ -1011,7 +1097,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2,), 'median')"
+              "text": "fnp.pad(a, (2,), 'median')"
             },
             {
               "kind": "output",
@@ -1030,7 +1116,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, ((3, 2), (2, 3)), 'minimum')"
+              "text": "fnp.pad(a, ((3, 2), (2, 3)), 'minimum')"
             },
             {
               "kind": "output",
@@ -1073,7 +1159,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2, 3), 'reflect')"
+              "text": "fnp.pad(a, (2, 3), 'reflect')"
             },
             {
               "kind": "output",
@@ -1087,7 +1173,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2, 3), 'reflect', reflect_type='odd')"
+              "text": "fnp.pad(a, (2, 3), 'reflect', reflect_type='odd')"
             },
             {
               "kind": "output",
@@ -1101,7 +1187,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2, 3), 'symmetric')"
+              "text": "fnp.pad(a, (2, 3), 'symmetric')"
             },
             {
               "kind": "output",
@@ -1115,7 +1201,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2, 3), 'symmetric', reflect_type='odd')"
+              "text": "fnp.pad(a, (2, 3), 'symmetric', reflect_type='odd')"
             },
             {
               "kind": "output",
@@ -1129,7 +1215,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, (2, 3), 'wrap')"
+              "text": "fnp.pad(a, (2, 3), 'wrap')"
             },
             {
               "kind": "output",
@@ -1163,7 +1249,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(6)"
+              "text": "a = fnp.arange(6)"
             },
             {
               "kind": "input",
@@ -1173,7 +1259,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, 2, pad_with)"
+              "text": "fnp.pad(a, 2, pad_with)"
             },
             {
               "kind": "output",
@@ -1202,7 +1288,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.pad(a, 2, pad_with, padder=100)"
+              "text": "fnp.pad(a, 2, pad_with, padder=100)"
             },
             {
               "kind": "output",
@@ -1230,6 +1316,92 @@
             }
           ],
           "type": "doctest_block"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "a = fnp.arange(1, 7).reshape(2, 3)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "fnp.pad(a, {1: (1, 2)})"
+            },
+            {
+              "kind": "output",
+              "text": "array([[0, 1, 2, 3, 0, 0],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0, 4, 5, 6, 0, 0]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "fnp.pad(a, {-1: 2})"
+            },
+            {
+              "kind": "output",
+              "text": "array([[0, 0, 1, 2, 3, 0, 0],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0, 0, 4, 5, 6, 0, 0]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "fnp.pad(a, {0: (3, 0)})"
+            },
+            {
+              "kind": "output",
+              "text": "array([[0, 0, 0],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0, 0, 0],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0, 0, 0],"
+            },
+            {
+              "kind": "output",
+              "text": "       [1, 2, 3],"
+            },
+            {
+              "kind": "output",
+              "text": "       [4, 5, 6]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "fnp.pad(a, {0: (3, 0), 1: 2})"
+            },
+            {
+              "kind": "output",
+              "text": "array([[0, 0, 0, 0, 0, 0, 0],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0, 0, 0, 0, 0, 0, 0],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0, 0, 0, 0, 0, 0, 0],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0, 0, 1, 2, 3, 0, 0],"
+            },
+            {
+              "kind": "output",
+              "text": "       [0, 0, 4, 5, 6, 0, 0]])"
+            }
+          ],
+          "type": "doctest_block"
         }
       ],
       "title": "Examples"
@@ -1246,16 +1418,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = [1, 2, 3, 4, 5]\n\nwe.pad(a, (2, 3), 'constant', constant_values=(4, 6))\n\nwe.pad(a, (2, 3), 'edge')\n\nwe.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))\n\nwe.pad(a, (2,), 'maximum')\n\nwe.pad(a, (2,), 'mean')\n\nwe.pad(a, (2,), 'median')\n\na = [[1, 2], [3, 4]]\n\nwe.pad(a, ((3, 2), (2, 3)), 'minimum')\n\na = [1, 2, 3, 4, 5]\n\nwe.pad(a, (2, 3), 'reflect')\n\nwe.pad(a, (2, 3), 'reflect', reflect_type='odd')\n\nwe.pad(a, (2, 3), 'symmetric')\n\nwe.pad(a, (2, 3), 'symmetric', reflect_type='odd')\n\nwe.pad(a, (2, 3), 'wrap')\n\ndef pad_with(vector, pad_width, iaxis, kwargs):\n    pad_value = kwargs.get('padder', 10)\n    vector[:pad_width[0]] = pad_value\n    vector[-pad_width[1]:] = pad_value\n\na = we.arange(6)\n\na = a.reshape((2, 3))\n\nwe.pad(a, 2, pad_with)\n\nwe.pad(a, 2, pad_with, padder=100)",
-    "output": "array([4, 4, 1, ..., 6, 6, 6])\n\narray([1, 1, 1, ..., 5, 5, 5])\n\narray([ 5,  3,  1,  2,  3,  4,  5,  2, -1, -4])\n\narray([5, 5, 1, 2, 3, 4, 5, 5, 5])\n\narray([3, 3, 1, 2, 3, 4, 5, 3, 3])\n\narray([3, 3, 1, 2, 3, 4, 5, 3, 3])\n\narray([[1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [3, 3, 3, 4, 3, 3, 3],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1]])\n\narray([3, 2, 1, 2, 3, 4, 5, 4, 3, 2])\n\narray([-1,  0,  1,  2,  3,  4,  5,  6,  7,  8])\n\narray([2, 1, 1, 2, 3, 4, 5, 5, 4, 3])\n\narray([0, 1, 1, 2, 3, 4, 5, 5, 6, 7])\n\narray([4, 5, 1, 2, 3, 4, 5, 1, 2, 3])\n\narray([[10, 10, 10, 10, 10, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10],\n       [10, 10,  0,  1,  2, 10, 10],\n       [10, 10,  3,  4,  5, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10]])\n\narray([[100, 100, 100, 100, 100, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100],\n       [100, 100,   0,   1,   2, 100, 100],\n       [100, 100,   3,   4,   5, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100]])",
+    "code": "import flopscope as fnp\n\na = [1, 2, 3, 4, 5]\n\nfnp.pad(a, (2, 3), 'constant', constant_values=(4, 6))\n\nfnp.pad(a, (2, 3), 'edge')\n\nfnp.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))\n\nfnp.pad(a, (2,), 'maximum')\n\nfnp.pad(a, (2,), 'mean')\n\nfnp.pad(a, (2,), 'median')\n\na = [[1, 2], [3, 4]]\n\nfnp.pad(a, ((3, 2), (2, 3)), 'minimum')\n\na = [1, 2, 3, 4, 5]\n\nfnp.pad(a, (2, 3), 'reflect')\n\nfnp.pad(a, (2, 3), 'reflect', reflect_type='odd')\n\nfnp.pad(a, (2, 3), 'symmetric')\n\nfnp.pad(a, (2, 3), 'symmetric', reflect_type='odd')\n\nfnp.pad(a, (2, 3), 'wrap')\n\ndef pad_with(vector, pad_width, iaxis, kwargs):\n    pad_value = kwargs.get('padder', 10)\n    vector[:pad_width[0]] = pad_value\n    vector[-pad_width[1]:] = pad_value\n\na = fnp.arange(6)\n\na = a.reshape((2, 3))\n\nfnp.pad(a, 2, pad_with)\n\nfnp.pad(a, 2, pad_with, padder=100)\n\na = fnp.arange(1, 7).reshape(2, 3)\n\nfnp.pad(a, {1: (1, 2)})\n\nfnp.pad(a, {-1: 2})\n\nfnp.pad(a, {0: (3, 0)})\n\nfnp.pad(a, {0: (3, 0), 1: 2})",
+    "output": "array([4, 4, 1, ..., 6, 6, 6])\n\narray([1, 1, 1, ..., 5, 5, 5])\n\narray([ 5,  3,  1,  2,  3,  4,  5,  2, -1, -4])\n\narray([5, 5, 1, 2, 3, 4, 5, 5, 5])\n\narray([3, 3, 1, 2, 3, 4, 5, 3, 3])\n\narray([3, 3, 1, 2, 3, 4, 5, 3, 3])\n\narray([[1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [3, 3, 3, 4, 3, 3, 3],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1]])\n\narray([3, 2, 1, 2, 3, 4, 5, 4, 3, 2])\n\narray([-1,  0,  1,  2,  3,  4,  5,  6,  7,  8])\n\narray([2, 1, 1, 2, 3, 4, 5, 5, 4, 3])\n\narray([0, 1, 1, 2, 3, 4, 5, 5, 6, 7])\n\narray([4, 5, 1, 2, 3, 4, 5, 1, 2, 3])\n\narray([[10, 10, 10, 10, 10, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10],\n       [10, 10,  0,  1,  2, 10, 10],\n       [10, 10,  3,  4,  5, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10]])\n\narray([[100, 100, 100, 100, 100, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100],\n       [100, 100,   0,   1,   2, 100, 100],\n       [100, 100,   3,   4,   5, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100]])\n\narray([[0, 1, 2, 3, 0, 0],\n       [0, 4, 5, 6, 0, 0]])\n\narray([[0, 0, 1, 2, 3, 0, 0],\n       [0, 0, 4, 5, 6, 0, 0]])\n\narray([[0, 0, 0],\n       [0, 0, 0],\n       [0, 0, 0],\n       [1, 2, 3],\n       [4, 5, 6]])\n\narray([[0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 1, 2, 3, 0, 0],\n       [0, 0, 4, 5, 6, 0, 0]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.pad",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L429",
   "href": "/docs/api/ops/pad/",
   "module": "numpy",
   "name": "pad",
   "next": {
     "href": "/docs/api/ops/partition/",
-    "label": "we.partition"
+    "label": "fnp.partition"
   },
   "notes": "Pad array. Cost: numel(output).",
   "notes_sections": [
@@ -1282,10 +1457,13 @@
         "``(before, after)`` or ``((before, after),)`` yields same before",
         "and after pad for each axis.",
         "``(pad,)`` or ``int`` is a shortcut for before = after = pad width",
-        "for all axes."
+        "for all axes.",
+        "If a ``dict``, each key is an axis and its corresponding value is an ``int`` or",
+        "``int`` pair describing the padding ``(before, after)`` or ``pad`` width for",
+        "that axis."
       ],
       "name": "pad_width",
-      "type": "{sequence, array_like, int}"
+      "type": "{sequence, array_like, int, dict}"
     },
     {
       "body": [
@@ -1400,7 +1578,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/packbits/",
-    "label": "we.packbits"
+    "label": "fnp.packbits"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.pad.html",
@@ -1415,12 +1593,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.pad(array, pad_width, mode='constant', **kwargs)",
+  "signature": "fnp.pad(array, pad_width, mode='constant', **kwargs)",
   "slug": "pad",
   "summary": "Pad an array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraypad_impl.py#L545",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.pad",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L429"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_arraypad_impl.py#L546",
+  "weight": 1.0
 }

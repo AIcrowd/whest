@@ -27,7 +27,7 @@
               },
               {
                 "kind": "code",
-                "text": "1/2 * (we.exp(x) + we.exp(-x))"
+                "text": "1/2 * (fnp.exp(x) + fnp.exp(-x))"
               },
               {
                 "kind": "text",
@@ -38,7 +38,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "cos(1j*x)",
-                "text": "we.cos(1j*x)"
+                "text": "fnp.cos(1j*x)"
               },
               {
                 "kind": "text",
@@ -317,12 +317,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cosh(0)"
+                "text": "fnp.cosh(0)"
               },
               {
                 "kind": "output",
@@ -350,12 +350,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(-4, 4, 1000)"
+                "text": "x = fnp.linspace(-4, 4, 1000)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(x, we.cosh(x))"
+                "text": "plt.plot(x, fnp.cosh(x))"
               },
               {
                 "kind": "input",
@@ -374,20 +374,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.cosh",
     "module": "numpy",
     "name": "cosh",
     "notes": "Element-wise hyperbolic cosine.",
     "numpy_ref": "np.cosh",
-    "signature": "we.cosh(x)",
+    "signature": "fnp.cosh(x)",
     "status": "supported",
     "summary": "Hyperbolic cosine, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.cosh"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "cosh",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

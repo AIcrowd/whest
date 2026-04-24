@@ -293,7 +293,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/insert",
-                "label": "we.insert",
+                "label": "fnp.insert",
                 "original_target": "insert",
                 "role": "",
                 "target": "insert",
@@ -309,7 +309,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/append",
-                "label": "we.append",
+                "label": "fnp.append",
                 "original_target": "append",
                 "role": "",
                 "target": "append",
@@ -337,12 +337,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = we.arange(12) + 1"
+                "text": "arr = fnp.arange(12) + 1"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "mask = we.ones(len(arr), dtype=bool)"
+                "text": "mask = fnp.ones(len(arr), dtype=bool)"
               },
               {
                 "kind": "input",
@@ -368,7 +368,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "delete(arr, [0,2,4], axis=0)",
-                "text": "we.delete(arr, [0,2,4], axis=0)"
+                "text": "fnp.delete(arr, [0,2,4], axis=0)"
               },
               {
                 "kind": "text",
@@ -395,12 +395,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = we.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])"
+                "text": "arr = fnp.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])"
               },
               {
                 "kind": "input",
@@ -422,7 +422,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.delete(arr, 1, 0)"
+                "text": "fnp.delete(arr, 1, 0)"
               },
               {
                 "kind": "output",
@@ -440,7 +440,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.delete(arr, we.s_[::2], 1)"
+                "text": "fnp.delete(arr, fnp.s_[::2], 1)"
               },
               {
                 "kind": "output",
@@ -457,7 +457,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.delete(arr, [1,3,5], None)"
+                "text": "fnp.delete(arr, [1,3,5], None)"
               },
               {
                 "kind": "output",
@@ -475,20 +475,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.delete",
     "module": "numpy",
     "name": "delete",
     "notes": "Return array with sub-arrays deleted along axis. Cost: num deleted.",
     "numpy_ref": "np.delete",
-    "signature": "we.delete(arr, obj, axis=None)",
+    "signature": "fnp.delete(arr, obj, axis=None)",
     "status": "supported",
     "summary": "Return a new array with sub-arrays along an axis deleted. For a one dimensional array, this returns those entries not returned by `arr[obj]`.",
-    "weight": 1.0,
-    "whest_ref": "we.delete"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "delete",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5272",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L827"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L827",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L5205"
   }
 }

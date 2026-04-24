@@ -169,12 +169,15 @@
     "unsupported_directives": []
   },
   "example": null,
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.stats.cauchy.cdf",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_cauchy.py#L43",
   "href": "/docs/api/ops/stats-cauchy-cdf/",
-  "module": "whest.stats",
+  "module": "flopscope.stats",
   "name": "stats.cauchy.cdf",
   "next": {
     "href": "/docs/api/ops/stats-cauchy-pdf/",
-    "label": "we.stats.cauchy.pdf"
+    "label": "fnp.stats.cauchy.pdf"
   },
   "notes": "Cauchy CDF; cost = numel(input).",
   "notes_sections": [],
@@ -212,7 +215,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/stack/",
-    "label": "we.stack"
+    "label": "fnp.stack"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.cauchy.html",
@@ -226,12 +229,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.stats.cauchy.cdf(x, loc=0, scale=1)",
+  "signature": "fnp.stats.cauchy.cdf(x, loc=0, scale=1)",
   "slug": "stats-cauchy-cdf",
   "summary": "Cumulative distribution function of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.stats.cauchy.cdf",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_cauchy.py#L43"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2132",
+  "weight": 16.0
 }

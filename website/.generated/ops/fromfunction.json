@@ -476,7 +476,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/indices",
-              "label": "we.indices",
+              "label": "fnp.indices",
               "original_target": "indices",
               "role": "",
               "target": "indices",
@@ -487,7 +487,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/meshgrid",
-              "label": "we.meshgrid",
+              "label": "fnp.meshgrid",
               "original_target": "meshgrid",
               "role": "",
               "target": "meshgrid",
@@ -544,12 +544,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fromfunction(lambda i, j: i, (2, 2), dtype=float)"
+              "text": "fnp.fromfunction(lambda i, j: i, (2, 2), dtype=float)"
             },
             {
               "kind": "output",
@@ -567,7 +567,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fromfunction(lambda i, j: j, (2, 2), dtype=float)"
+              "text": "fnp.fromfunction(lambda i, j: j, (2, 2), dtype=float)"
             },
             {
               "kind": "output",
@@ -585,7 +585,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fromfunction(lambda i, j: i == j, (3, 3), dtype=int)"
+              "text": "fnp.fromfunction(lambda i, j: i == j, (3, 3), dtype=int)"
             },
             {
               "kind": "output",
@@ -607,7 +607,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fromfunction(lambda i, j: i + j, (3, 3), dtype=int)"
+              "text": "fnp.fromfunction(lambda i, j: i + j, (3, 3), dtype=int)"
             },
             {
               "kind": "output",
@@ -639,16 +639,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.fromfunction(lambda i, j: i, (2, 2), dtype=float)\n\nwe.fromfunction(lambda i, j: j, (2, 2), dtype=float)\n\nwe.fromfunction(lambda i, j: i == j, (3, 3), dtype=int)\n\nwe.fromfunction(lambda i, j: i + j, (3, 3), dtype=int)",
+    "code": "import flopscope as fnp\n\nfnp.fromfunction(lambda i, j: i, (2, 2), dtype=float)\n\nfnp.fromfunction(lambda i, j: j, (2, 2), dtype=float)\n\nfnp.fromfunction(lambda i, j: i == j, (3, 3), dtype=int)\n\nfnp.fromfunction(lambda i, j: i + j, (3, 3), dtype=int)",
     "output": "array([[0., 0.],\n       [1., 1.]])\n\narray([[0., 1.],\n       [0., 1.]])\n\narray([[ True, False, False],\n       [False,  True, False],\n       [False, False,  True]])\n\narray([[0, 1, 2],\n       [1, 2, 3],\n       [2, 3, 4]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fromfunction",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1003",
   "href": "/docs/api/ops/fromfunction/",
   "module": "numpy",
   "name": "fromfunction",
   "next": {
     "href": "/docs/api/ops/fromiter/",
-    "label": "we.fromiter"
+    "label": "fnp.fromiter"
   },
   "notes": "Construct array by executing function over each coordinate. Cost: numel(output).",
   "notes_sections": [
@@ -685,11 +688,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -699,7 +702,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/frombuffer/",
-    "label": "we.frombuffer"
+    "label": "fnp.frombuffer"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fromfunction.html",
@@ -721,7 +724,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/indices",
-      "label": "we.indices",
+      "label": "fnp.indices",
       "original_target": "indices",
       "role": "",
       "target": "indices",
@@ -732,19 +735,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/meshgrid",
-      "label": "we.meshgrid",
+      "label": "fnp.meshgrid",
       "original_target": "meshgrid",
       "role": "",
       "target": "meshgrid",
       "unresolved": false
     }
   ],
-  "signature": "we.fromfunction(function, shape, *, dtype=<class 'float'>, like=None, **kwargs)",
+  "signature": "fnp.fromfunction(function, shape, *, dtype=<class 'float'>, like=None, **kwargs)",
   "slug": "fromfunction",
   "summary": "Construct an array by executing a function over each coordinate.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1847",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fromfunction",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1003"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L1892",
+  "weight": 1.0
 }

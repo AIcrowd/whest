@@ -167,7 +167,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/squeeze",
-              "label": "we.squeeze",
+              "label": "fnp.squeeze",
               "original_target": "squeeze",
               "role": "",
               "target": "squeeze",
@@ -183,7 +183,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/reshape",
-              "label": "we.reshape",
+              "label": "fnp.reshape",
               "original_target": "reshape",
               "role": "",
               "target": "reshape",
@@ -194,7 +194,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/atleast_1d",
-              "label": "we.atleast_1d",
+              "label": "fnp.atleast_1d",
               "original_target": "atleast_1d",
               "role": "",
               "target": "atleast_1d",
@@ -205,7 +205,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/atleast_2d",
-              "label": "we.atleast_2d",
+              "label": "fnp.atleast_2d",
               "original_target": "atleast_2d",
               "role": "",
               "target": "atleast_2d",
@@ -216,7 +216,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/atleast_3d",
-              "label": "we.atleast_3d",
+              "label": "fnp.atleast_3d",
               "original_target": "atleast_3d",
               "role": "",
               "target": "atleast_3d",
@@ -235,12 +235,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([1, 2])"
+              "text": "x = fnp.array([1, 2])"
             },
             {
               "kind": "input",
@@ -262,7 +262,7 @@
             },
             {
               "kind": "code",
-              "text": "x[we.newaxis, :]"
+              "text": "x[fnp.newaxis, :]"
             },
             {
               "kind": "text",
@@ -270,7 +270,7 @@
             },
             {
               "kind": "code",
-              "text": "x[we.newaxis]"
+              "text": "x[fnp.newaxis]"
             },
             {
               "kind": "text",
@@ -284,7 +284,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.expand_dims(x, axis=0)"
+              "text": "y = fnp.expand_dims(x, axis=0)"
             },
             {
               "kind": "input",
@@ -315,7 +315,7 @@
             },
             {
               "kind": "code",
-              "text": "x[:, we.newaxis]"
+              "text": "x[:, fnp.newaxis]"
             },
             {
               "kind": "text",
@@ -329,7 +329,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.expand_dims(x, axis=1)"
+              "text": "y = fnp.expand_dims(x, axis=1)"
             },
             {
               "kind": "input",
@@ -374,7 +374,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.expand_dims(x, axis=(0, 1))"
+              "text": "y = fnp.expand_dims(x, axis=(0, 1))"
             },
             {
               "kind": "input",
@@ -393,7 +393,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.expand_dims(x, axis=(2, 0))"
+              "text": "y = fnp.expand_dims(x, axis=(2, 0))"
             },
             {
               "kind": "input",
@@ -430,7 +430,7 @@
               "href": "",
               "kind": "link",
               "target": "newaxis",
-              "text": "we.newaxis"
+              "text": "fnp.newaxis"
             },
             {
               "kind": "text",
@@ -444,7 +444,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.newaxis is None"
+              "text": "fnp.newaxis is None"
             },
             {
               "kind": "output",
@@ -468,16 +468,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.array([1, 2])\n\nx.shape\n\ny = we.expand_dims(x, axis=0)\n\ny\n\ny.shape\n\ny = we.expand_dims(x, axis=1)\n\ny\n\ny.shape\n\ny = we.expand_dims(x, axis=(0, 1))\n\ny\n\ny = we.expand_dims(x, axis=(2, 0))\n\ny\n\nwe.newaxis is None",
+    "code": "import flopscope as fnp\n\nx = fnp.array([1, 2])\n\nx.shape\n\ny = fnp.expand_dims(x, axis=0)\n\ny\n\ny.shape\n\ny = fnp.expand_dims(x, axis=1)\n\ny\n\ny.shape\n\ny = fnp.expand_dims(x, axis=(0, 1))\n\ny\n\ny = fnp.expand_dims(x, axis=(2, 0))\n\ny\n\nfnp.newaxis is None",
     "output": "(2,)\n\narray([[1, 2]])\n\n(1, 2)\n\narray([[1],\n       [2]])\n\n(2, 1)\n\narray([[[1, 2]]])\n\narray([[[1],\n        [2]]])\n\nTrue",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.expand_dims",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L328",
   "href": "/docs/api/ops/expand_dims/",
   "module": "numpy",
   "name": "expand_dims",
   "next": {
     "href": "/docs/api/ops/expm1/",
-    "label": "we.expm1"
+    "label": "fnp.expm1"
   },
   "notes": "Insert new size-1 axis.",
   "notes_sections": [],
@@ -505,7 +508,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/exp2/",
-    "label": "we.exp2"
+    "label": "fnp.exp2"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.expand_dims.html",
@@ -529,7 +532,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/squeeze",
-      "label": "we.squeeze",
+      "label": "fnp.squeeze",
       "original_target": "squeeze",
       "role": "",
       "target": "squeeze",
@@ -545,7 +548,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/reshape",
-      "label": "we.reshape",
+      "label": "fnp.reshape",
       "original_target": "reshape",
       "role": "",
       "target": "reshape",
@@ -556,7 +559,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/atleast_1d",
-      "label": "we.atleast_1d",
+      "label": "fnp.atleast_1d",
       "original_target": "atleast_1d",
       "role": "",
       "target": "atleast_1d",
@@ -567,7 +570,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/atleast_2d",
-      "label": "we.atleast_2d",
+      "label": "fnp.atleast_2d",
       "original_target": "atleast_2d",
       "role": "",
       "target": "atleast_2d",
@@ -578,19 +581,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/atleast_3d",
-      "label": "we.atleast_3d",
+      "label": "fnp.atleast_3d",
       "original_target": "atleast_3d",
       "role": "",
       "target": "atleast_3d",
       "unresolved": false
     }
   ],
-  "signature": "we.expand_dims(a, axis)",
+  "signature": "fnp.expand_dims(a, axis)",
   "slug": "expand_dims",
   "summary": "Expand the shape of an array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L511",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.expand_dims",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L328"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L515",
+  "weight": 0.0
 }

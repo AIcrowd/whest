@@ -104,12 +104,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.union1d([-1, 0, 1], [-2, 0, 2])"
+              "text": "fnp.union1d([-1, 0, 1], [-2, 0, 2])"
             },
             {
               "kind": "output",
@@ -137,7 +137,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "reduce(we.union1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
+              "text": "reduce(fnp.union1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))"
             },
             {
               "kind": "output",
@@ -161,16 +161,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.union1d([-1, 0, 1], [-2, 0, 2])\n\nfrom functools import reduce\n\nreduce(we.union1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))",
+    "code": "import flopscope as fnp\n\nfnp.union1d([-1, 0, 1], [-2, 0, 2])\n\nfrom functools import reduce\n\nreduce(fnp.union1d, ([1, 3, 4, 3], [3, 1, 2, 1], [6, 3, 4, 2]))",
     "output": "array([-2, -1,  0,  1,  2])\n\narray([1, 2, 3, 4, 6])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.union1d",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L426",
   "href": "/docs/api/ops/union1d/",
   "module": "numpy",
   "name": "union1d",
   "next": {
     "href": "/docs/api/ops/unique/",
-    "label": "we.unique"
+    "label": "fnp.unique"
   },
   "notes": "Set union; cost = (n+m)*ceil(log2(n+m)).",
   "notes_sections": [],
@@ -186,7 +189,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/typename/",
-    "label": "we.typename"
+    "label": "fnp.typename"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.union1d.html",
@@ -200,12 +203,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.union1d(ar1, ar2)",
+  "signature": "fnp.union1d(ar1, ar2)",
   "slug": "union1d",
   "summary": "Find the union of two arrays.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L1140",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.union1d",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L426"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_arraysetops_impl.py#L1083",
+  "weight": 1.0
 }

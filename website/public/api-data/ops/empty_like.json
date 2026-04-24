@@ -313,7 +313,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/ones_like",
-                "label": "we.ones_like",
+                "label": "fnp.ones_like",
                 "original_target": "ones_like",
                 "role": "",
                 "target": "ones_like",
@@ -329,7 +329,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/zeros_like",
-                "label": "we.zeros_like",
+                "label": "fnp.zeros_like",
                 "original_target": "zeros_like",
                 "role": "",
                 "target": "zeros_like",
@@ -345,7 +345,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/full_like",
-                "label": "we.full_like",
+                "label": "fnp.full_like",
                 "original_target": "full_like",
                 "role": "",
                 "target": "full_like",
@@ -361,7 +361,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/empty",
-                "label": "we.empty",
+                "label": "fnp.empty",
                 "original_target": "empty",
                 "role": "",
                 "target": "empty",
@@ -438,7 +438,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -448,7 +448,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.empty_like(a)"
+                "text": "fnp.empty_like(a)"
               },
               {
                 "kind": "output",
@@ -461,12 +461,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1., 2., 3.],[4.,5.,6.]])"
+                "text": "a = fnp.array([[1., 2., 3.],[4.,5.,6.]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.empty_like(a)"
+                "text": "fnp.empty_like(a)"
               },
               {
                 "kind": "output",
@@ -488,20 +488,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.empty_like",
     "module": "numpy",
     "name": "empty_like",
     "notes": "Uninitialized array with same shape/type as input.",
     "numpy_ref": "np.empty_like",
-    "signature": "we.empty_like(a, dtype=None, **kwargs)",
+    "signature": "fnp.empty_like(prototype, /, dtype=None, order='K', subok=True, shape=None, *, device=None)",
     "status": "supported",
     "summary": "Return a new array with the same shape and type as a given array.",
-    "weight": 0.0,
-    "whest_ref": "we.empty_like"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "empty_like",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.empty_like.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L185"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L185",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.empty_like.html"
   }
 }

@@ -30,7 +30,7 @@
                 "href": "/docs/api/ops/cumsum",
                 "kind": "link",
                 "target": "cumsum",
-                "text": "we.cumsum"
+                "text": "fnp.cumsum"
               },
               {
                 "kind": "text",
@@ -402,7 +402,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/sum",
-                "label": "we.sum",
+                "label": "fnp.sum",
                 "original_target": "sum",
                 "role": "",
                 "target": "sum",
@@ -418,7 +418,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/trapezoid",
-                "label": "we.trapezoid",
+                "label": "fnp.trapezoid",
                 "original_target": "trapezoid",
                 "role": "",
                 "target": "trapezoid",
@@ -434,7 +434,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/diff",
-                "label": "we.diff",
+                "label": "fnp.diff",
                 "original_target": "diff",
                 "role": "",
                 "target": "diff",
@@ -510,7 +510,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2, 3, 4, 5, 6])"
+                "text": "a = fnp.array([1, 2, 3, 4, 5, 6])"
               },
               {
                 "kind": "input",
@@ -524,7 +524,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cumulative_sum(a)"
+                "text": "fnp.cumulative_sum(a)"
               },
               {
                 "kind": "output",
@@ -533,7 +533,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cumulative_sum(a, dtype=float)  # specifies type of output value(s)"
+                "text": "fnp.cumulative_sum(a, dtype=float)  # specifies type of output value(s)"
               },
               {
                 "kind": "output",
@@ -547,12 +547,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([[1, 2, 3], [4, 5, 6]])"
+                "text": "b = fnp.array([[1, 2, 3], [4, 5, 6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cumulative_sum(b,axis=0)  # sum over rows for each of the 3 columns"
+                "text": "fnp.cumulative_sum(b,axis=0)  # sum over rows for each of the 3 columns"
               },
               {
                 "kind": "output",
@@ -565,7 +565,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cumulative_sum(b,axis=1)  # sum over columns for each of the 2 rows"
+                "text": "fnp.cumulative_sum(b,axis=1)  # sum over columns for each of the 2 rows"
               },
               {
                 "kind": "output",
@@ -600,12 +600,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.array([1, 2e-9, 3e-9] * 1000000)"
+                "text": "c = fnp.array([1, 2e-9, 3e-9] * 1000000)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cumulative_sum(c)[-1]"
+                "text": "fnp.cumulative_sum(c)[-1]"
               },
               {
                 "kind": "output",
@@ -632,20 +632,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.cumulative_sum",
     "module": "numpy",
     "name": "cumulative_sum",
     "notes": "Cumulative sum (NumPy 2.x array API).",
     "numpy_ref": "np.cumulative_sum",
-    "signature": "we.cumulative_sum(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
+    "signature": "fnp.cumulative_sum(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
     "status": "supported",
     "summary": "Return the cumulative sum of the elements along a given axis.",
-    "weight": 1.0,
-    "whest_ref": "we.cumulative_sum"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "cumulative_sum",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2790",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L2749"
   }
 }

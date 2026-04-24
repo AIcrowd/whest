@@ -217,12 +217,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mintypecode(['d', 'f', 'S'])"
+                "text": "fnp.mintypecode(['d', 'f', 'S'])"
               },
               {
                 "kind": "output",
@@ -231,12 +231,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([1.1, 2-3.j])"
+                "text": "x = fnp.array([1.1, 2-3.j])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mintypecode(x)"
+                "text": "fnp.mintypecode(x)"
               },
               {
                 "kind": "output",
@@ -250,7 +250,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mintypecode('abceh', default='G')"
+                "text": "fnp.mintypecode('abceh', default='G')"
               },
               {
                 "kind": "output",
@@ -268,20 +268,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.mintypecode",
     "module": "numpy",
     "name": "mintypecode",
     "notes": "Return minimum data type character that can satisfy all given types.",
     "numpy_ref": "np.mintypecode",
-    "signature": "we.mintypecode(typechars, typeset='GDFgdf', default='d')",
+    "signature": "fnp.mintypecode(typechars, typeset='GDFgdf', default='d')",
     "status": "supported",
     "summary": "Return the character for the minimum-size type to which given types can be safely cast.",
-    "weight": 0.0,
-    "whest_ref": "we.mintypecode"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "mintypecode",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L25",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1179"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1179",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_type_check_impl.py#L25"
   }
 }

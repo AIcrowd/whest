@@ -1,4 +1,4 @@
-"""Tests for numpy re-exports in whest.
+"""Tests for numpy re-exports in flopscope.
 
 Two categories:
 1. Parametrized identity tests — proves each re-export IS the numpy counterpart
@@ -10,8 +10,10 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-import whest as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
+fnp = fnp  # backwards-compat local alias for this test
 # ----- Parametrized identity tests -----
 
 NEW_EXPORTS = [
@@ -45,39 +47,39 @@ NEW_EXPORTS = [
 
 @pytest.mark.parametrize("name,expected", NEW_EXPORTS)
 def test_reexport_identity(name, expected):
-    """Every new whest export is identical to its numpy counterpart."""
-    actual = getattr(we, name)
-    assert actual is expected, f"we.{name} is {actual!r}, expected {expected!r}"
+    """Every new flopscope export is identical to its numpy counterpart."""
+    actual = getattr(fnp, name)
+    assert actual is expected, f"fnp.{name} is {actual!r}, expected {expected!r}"
 
 
 # ----- Functional: abstract dtype hierarchy -----
 
 
 def test_floating_type_check():
-    """we.floating correctly identifies float dtypes."""
-    assert np.issubdtype(we.float32, we.floating)
-    assert np.issubdtype(we.float64, we.floating)
-    assert not np.issubdtype(we.int32, we.floating)
+    """fnp.floating correctly identifies float dtypes."""
+    assert np.issubdtype(fnp.float32, fnp.floating)
+    assert np.issubdtype(fnp.float64, fnp.floating)
+    assert not np.issubdtype(fnp.int32, fnp.floating)
 
 
 def test_integer_type_check():
-    """we.integer correctly identifies integer dtypes."""
-    assert np.issubdtype(we.int32, we.integer)
-    assert np.issubdtype(we.uint32, we.integer)
-    assert not np.issubdtype(we.float32, we.integer)
+    """fnp.integer correctly identifies integer dtypes."""
+    assert np.issubdtype(fnp.int32, fnp.integer)
+    assert np.issubdtype(fnp.uint32, fnp.integer)
+    assert not np.issubdtype(fnp.float32, fnp.integer)
 
 
 def test_number_type_check():
-    """we.number is the parent of both floating and integer."""
-    assert np.issubdtype(we.float32, we.number)
-    assert np.issubdtype(we.int64, we.number)
-    assert np.issubdtype(we.complex64, we.number)
+    """fnp.number is the parent of both floating and integer."""
+    assert np.issubdtype(fnp.float32, fnp.number)
+    assert np.issubdtype(fnp.int64, fnp.number)
+    assert np.issubdtype(fnp.complex64, fnp.number)
 
 
 def test_dtype_construction():
-    """we.dtype constructs dtypes from strings or types."""
-    assert we.dtype("float32") == we.float32
-    assert we.dtype(we.int32).kind == "i"
+    """fnp.dtype constructs dtypes from strings or types."""
+    assert fnp.dtype("float32") == fnp.float32
+    assert fnp.dtype(fnp.int32).kind == "i"
 
 
 # ----- Functional: concrete dtypes -----
@@ -85,9 +87,9 @@ def test_dtype_construction():
 
 def test_uint_dtypes_usable():
     """The new uint dtypes can be used to create arrays."""
-    a16 = we.array([1, 2, 3], dtype=we.uint16)
-    a32 = we.array([1, 2, 3], dtype=we.uint32)
-    a64 = we.array([1, 2, 3], dtype=we.uint64)
+    a16 = fnp.array([1, 2, 3], dtype=fnp.uint16)
+    a32 = fnp.array([1, 2, 3], dtype=fnp.uint32)
+    a64 = fnp.array([1, 2, 3], dtype=fnp.uint64)
     assert a16.dtype == np.uint16
     assert a32.dtype == np.uint32
     assert a64.dtype == np.uint64
@@ -97,8 +99,8 @@ def test_uint_dtypes_usable():
 
 
 def test_finfo_float32():
-    """we.finfo returns sensible float32 metadata."""
-    info = we.finfo(we.float32)
+    """fnp.finfo returns sensible float32 metadata."""
+    info = fnp.finfo(fnp.float32)
     assert info.eps > 0
     assert info.max > 0
     assert info.tiny > 0
@@ -106,8 +108,8 @@ def test_finfo_float32():
 
 
 def test_iinfo_int32():
-    """we.iinfo returns sensible int32 metadata."""
-    info = we.iinfo(we.int32)
+    """fnp.iinfo returns sensible int32 metadata."""
+    info = fnp.iinfo(fnp.int32)
     assert info.min == -(2**31)
     assert info.max == 2**31 - 1
     assert info.bits == 32
@@ -117,42 +119,42 @@ def test_iinfo_int32():
 
 
 def test_errstate_suppresses_warnings():
-    """we.errstate can suppress numpy warnings in a block."""
-    a = we.array([1.0, 2.0, 3.0])
-    b = we.array([0.0, 0.0, 0.0])
-    with we.errstate(divide="ignore", invalid="ignore"):
-        with we.BudgetContext(flop_budget=int(1e9)):
+    """fnp.errstate can suppress numpy warnings in a block."""
+    a = fnp.array([1.0, 2.0, 3.0])
+    b = fnp.array([0.0, 0.0, 0.0])
+    with fnp.errstate(divide="ignore", invalid="ignore"):
+        with flops.BudgetContext(flop_budget=int(1e9)):
             result = a / b
     result_np = np.asarray(result)
     assert np.isinf(result_np[0]) or np.isnan(result_np[0])
 
 
 def test_geterr_seterr_roundtrip():
-    """we.geterr returns numpy's current error state, we.seterr updates it."""
-    original = we.geterr()
+    """fnp.geterr returns numpy's current error state, fnp.seterr updates it."""
+    original = fnp.geterr()
     try:
-        we.seterr(divide="ignore")
-        current = we.geterr()
+        fnp.seterr(divide="ignore")
+        current = fnp.geterr()
         assert current["divide"] == "ignore"
     finally:
-        we.seterr(**original)
+        fnp.seterr(**original)
 
 
 # ----- Functional: iteration utilities -----
 
 
 def test_ndindex_iterates_shape():
-    """we.ndindex iterates over all indices of a shape."""
-    indices = list(we.ndindex(2, 3))
+    """fnp.ndindex iterates over all indices of a shape."""
+    indices = list(fnp.ndindex(2, 3))
     assert len(indices) == 6
     assert indices[0] == (0, 0)
     assert indices[-1] == (1, 2)
 
 
 def test_ndenumerate_yields_index_and_value():
-    """we.ndenumerate yields (index, value) pairs."""
-    a = we.array([[1.0, 2.0], [3.0, 4.0]])
-    pairs = list(we.ndenumerate(a))
+    """fnp.ndenumerate yields (index, value) pairs."""
+    a = fnp.array([[1.0, 2.0], [3.0, 4.0]])
+    pairs = list(fnp.ndenumerate(a))
     assert len(pairs) == 4
     assert pairs[0] == ((0, 0), 1.0)
 
@@ -161,32 +163,32 @@ def test_ndenumerate_yields_index_and_value():
 
 
 def test_printoptions_context_manager():
-    """we.printoptions temporarily changes print formatting."""
-    a = we.array([1.234567891234])
-    with we.printoptions(precision=2):
+    """fnp.printoptions temporarily changes print formatting."""
+    a = fnp.array([1.234567891234])
+    with fnp.printoptions(precision=2):
         short = str(a)
-    with we.printoptions(precision=10):
+    with fnp.printoptions(precision=10):
         long = str(a)
     assert len(long) > len(short)
 
 
 def test_set_get_printoptions_roundtrip():
-    """we.set_printoptions changes state, we.get_printoptions returns it."""
-    original = we.get_printoptions()
+    """fnp.set_printoptions changes state, fnp.get_printoptions returns it."""
+    original = fnp.get_printoptions()
     try:
-        we.set_printoptions(precision=3)
-        current = we.get_printoptions()
+        fnp.set_printoptions(precision=3)
+        current = fnp.get_printoptions()
         assert current["precision"] == 3
     finally:
-        we.set_printoptions(**{k: v for k, v in original.items() if k != "legacy"})
+        fnp.set_printoptions(**{k: v for k, v in original.items() if k != "legacy"})
 
 
-# ----- Functional: we.typing submodule -----
+# ----- Functional: fnp.typing submodule -----
 
 
 def test_typing_submodule_has_NDArray():
-    """we.typing.NDArray is available."""
-    from whest.typing import ArrayLike, DTypeLike, NDArray
+    """fnp.typing.NDArray is available."""
+    from flopscope.numpy.typing import ArrayLike, DTypeLike, NDArray
 
     assert NDArray is not None
     assert ArrayLike is not None
@@ -194,20 +196,20 @@ def test_typing_submodule_has_NDArray():
 
 
 def test_typing_NDArray_is_numpy_NDArray():
-    """we.typing.NDArray is identical to numpy.typing.NDArray."""
+    """fnp.typing.NDArray is identical to numpy.typing.NDArray."""
     import numpy.typing as npt
 
-    assert we.typing.NDArray is npt.NDArray
+    assert fnp.typing.NDArray is npt.NDArray
 
 
-def test_typing_NDArray_accepts_whest_array():
-    """A function annotated with NDArray accepts WhestArray at runtime."""
-    from whest.typing import NDArray
+def test_typing_NDArray_accepts_flopscope_array():
+    """A function annotated with NDArray accepts FlopscopeArray at runtime."""
+    from flopscope.numpy.typing import NDArray
 
     def f(x: NDArray) -> NDArray:
         return x * 2
 
-    m = we.array([1.0, 2.0, 3.0])
-    with we.BudgetContext(flop_budget=int(1e9)):
+    m = fnp.array([1.0, 2.0, 3.0])
+    with flops.BudgetContext(flop_budget=int(1e9)):
         result = f(m)
-    assert isinstance(result, we.ndarray)
+    assert isinstance(result, fnp.ndarray)

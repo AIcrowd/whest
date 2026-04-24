@@ -88,7 +88,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "int8",
-                      "text": "we.int8"
+                      "text": "fnp.int8"
                     },
                     {
                       "kind": "text",
@@ -99,7 +99,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "float64",
-                      "text": "we.float64"
+                      "text": "fnp.float64"
                     },
                     {
                       "kind": "text",
@@ -120,7 +120,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "int8",
-                  "text": "we.int8"
+                  "text": "fnp.int8"
                 },
                 {
                   "kind": "text",
@@ -131,7 +131,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "float64",
-                  "text": "we.float64"
+                  "text": "fnp.float64"
                 },
                 {
                   "kind": "text",
@@ -147,7 +147,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in\nmemory."
+                      "text": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in memory."
                     }
                   ],
                   "type": "paragraph"
@@ -157,7 +157,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in\nmemory."
+                  "text": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in memory."
                 }
               ],
               "name": "order",
@@ -345,7 +345,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/empty_like",
-              "label": "we.empty_like",
+              "label": "fnp.empty_like",
               "original_target": "empty_like",
               "role": "",
               "target": "empty_like",
@@ -361,7 +361,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/ones",
-              "label": "we.ones",
+              "label": "fnp.ones",
               "original_target": "ones",
               "role": "",
               "target": "ones",
@@ -377,7 +377,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/zeros",
-              "label": "we.zeros",
+              "label": "fnp.zeros",
               "original_target": "zeros",
               "role": "",
               "target": "zeros",
@@ -393,7 +393,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/full",
-              "label": "we.full",
+              "label": "fnp.full",
               "original_target": "full",
               "role": "",
               "target": "full",
@@ -470,12 +470,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.empty([2, 2])"
+              "text": "fnp.empty([2, 2])"
             },
             {
               "kind": "output",
@@ -493,7 +493,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.empty([2, 2], dtype=int)"
+              "text": "fnp.empty([2, 2], dtype=int)"
             },
             {
               "kind": "output",
@@ -521,16 +521,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.empty([2, 2])\n\nwe.empty([2, 2], dtype=int)",
+    "code": "import flopscope as fnp\n\nfnp.empty([2, 2])\n\nfnp.empty([2, 2], dtype=int)",
     "output": "array([[ -9.74499359e+001,   6.69583040e-309],\n       [  2.13182611e-314,   3.06959433e-309]])         #uninitialized\n\narray([[-1073741821, -1067949133],\n       [  496041986,    19249760]])                     #uninitialized",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.empty",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L177",
   "href": "/docs/api/ops/empty/",
   "module": "numpy",
   "name": "empty",
   "next": {
     "href": "/docs/api/ops/empty_like/",
-    "label": "we.empty_like"
+    "label": "fnp.empty_like"
   },
   "notes": "Uninitialized array allocation.",
   "notes_sections": [
@@ -547,8 +550,8 @@
     },
     {
       "body": [
-        "Desired output data-type for the array, e.g, `we.int8`. Default is",
-        "`we.float64`."
+        "Desired output data-type for the array, e.g, `fnp.int8`. Default is",
+        "`fnp.float64`."
       ],
       "name": "dtype",
       "type": "data-type, optional"
@@ -556,8 +559,7 @@
     {
       "body": [
         "Whether to store multi-dimensional data in row-major",
-        "(C-style) or column-major (Fortran-style) order in",
-        "memory."
+        "(C-style) or column-major (Fortran-style) order in memory."
       ],
       "name": "order",
       "type": "{'C', 'F'}, optional, default: 'C'"
@@ -588,7 +590,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/einsum_path/",
-    "label": "we.einsum_path"
+    "label": "fnp.einsum_path"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.empty.html",
@@ -613,7 +615,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/empty_like",
-      "label": "we.empty_like",
+      "label": "fnp.empty_like",
       "original_target": "empty_like",
       "role": "",
       "target": "empty_like",
@@ -629,7 +631,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/ones",
-      "label": "we.ones",
+      "label": "fnp.ones",
       "original_target": "ones",
       "role": "",
       "target": "ones",
@@ -645,7 +647,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/zeros",
-      "label": "we.zeros",
+      "label": "fnp.zeros",
       "original_target": "zeros",
       "role": "",
       "target": "zeros",
@@ -661,19 +663,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/full",
-      "label": "we.full",
+      "label": "fnp.full",
       "original_target": "full",
       "role": "",
       "target": "full",
       "unresolved": false
     }
   ],
-  "signature": "we.empty(shape, dtype=<class 'float'>, **kwargs)",
+  "signature": "fnp.empty(shape, dtype=None, order='C', *, device=None, like=None)",
   "slug": "empty",
   "summary": "Return a new array of given shape and type, without initializing entries.",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.empty",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L177"
+  "weight": 0.0
 }

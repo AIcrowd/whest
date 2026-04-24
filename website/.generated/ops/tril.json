@@ -243,7 +243,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/triu",
-              "label": "we.triu",
+              "label": "fnp.triu",
               "original_target": "triu",
               "role": "",
               "target": "triu",
@@ -262,12 +262,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.tril([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)"
+              "text": "fnp.tril([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)"
             },
             {
               "kind": "output",
@@ -293,7 +293,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.tril(we.arange(3*4*5).reshape(3, 4, 5))"
+              "text": "fnp.tril(fnp.arange(3*4*5).reshape(3, 4, 5))"
             },
             {
               "kind": "output",
@@ -361,16 +361,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.tril([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)\n\nwe.tril(we.arange(3*4*5).reshape(3, 4, 5))",
+    "code": "import flopscope as fnp\n\nfnp.tril([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)\n\nfnp.tril(fnp.arange(3*4*5).reshape(3, 4, 5))",
     "output": "array([[ 0,  0,  0],\n       [ 4,  0,  0],\n       [ 7,  8,  0],\n       [10, 11, 12]])\n\narray([[[ 0,  0,  0,  0,  0],\n        [ 5,  6,  0,  0,  0],\n        [10, 11, 12,  0,  0],\n        [15, 16, 17, 18,  0]],\n       [[20,  0,  0,  0,  0],\n        [25, 26,  0,  0,  0],\n        [30, 31, 32,  0,  0],\n        [35, 36, 37, 38,  0]],\n       [[40,  0,  0,  0,  0],\n        [45, 46,  0,  0,  0],\n        [50, 51, 52,  0,  0],\n        [55, 56, 57, 58,  0]]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.tril",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L452",
   "href": "/docs/api/ops/tril/",
   "module": "numpy",
   "name": "tril",
   "next": {
     "href": "/docs/api/ops/tril_indices/",
-    "label": "we.tril_indices"
+    "label": "fnp.tril_indices"
   },
   "notes": "Lower triangle of array.",
   "notes_sections": [],
@@ -394,7 +397,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/tri/",
-    "label": "we.tri"
+    "label": "fnp.tri"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.tril.html",
@@ -418,19 +421,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/triu",
-      "label": "we.triu",
+      "label": "fnp.triu",
       "original_target": "triu",
       "role": "",
       "target": "triu",
       "unresolved": false
     }
   ],
-  "signature": "we.tril(m, k=0)",
+  "signature": "fnp.tril(m, k=0)",
   "slug": "tril",
   "summary": "Lower triangle of an array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L441",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.tril",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L452"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L454",
+  "weight": 0.0
 }

@@ -480,7 +480,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/histogram",
-              "label": "we.histogram",
+              "label": "fnp.histogram",
               "original_target": "histogram",
               "role": "",
               "target": "histogram",
@@ -537,7 +537,7 @@
             },
             {
               "kind": "code",
-              "text": "we.round(we.ceil(range / h))"
+              "text": "fnp.round(fnp.ceil(range / h))"
             },
             {
               "kind": "text",
@@ -690,17 +690,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr = we.array([0, 0, 0, 1, 2, 3, 3, 4, 5])"
+              "text": "arr = fnp.array([0, 0, 0, 1, 2, 3, 3, 4, 5])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.histogram_bin_edges(arr, bins='auto', range=(0, 1))"
+              "text": "fnp.histogram_bin_edges(arr, bins='auto', range=(0, 1))"
             },
             {
               "kind": "output",
@@ -709,7 +709,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.histogram_bin_edges(arr, bins=2)"
+              "text": "fnp.histogram_bin_edges(arr, bins=2)"
             },
             {
               "kind": "output",
@@ -732,7 +732,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.histogram_bin_edges(arr, [1, 2])"
+              "text": "fnp.histogram_bin_edges(arr, [1, 2])"
             },
             {
               "kind": "output",
@@ -755,7 +755,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "shared_bins = we.histogram_bin_edges(arr, bins='auto')"
+              "text": "shared_bins = fnp.histogram_bin_edges(arr, bins='auto')"
             },
             {
               "kind": "input",
@@ -774,17 +774,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "group_id = we.array([0, 1, 1, 0, 1, 1, 0, 1, 1])"
+              "text": "group_id = fnp.array([0, 1, 1, 0, 1, 1, 0, 1, 1])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "hist_0, _ = we.histogram(arr[group_id == 0], bins=shared_bins)"
+              "text": "hist_0, _ = fnp.histogram(arr[group_id == 0], bins=shared_bins)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "hist_1, _ = we.histogram(arr[group_id == 1], bins=shared_bins)"
+              "text": "hist_1, _ = fnp.histogram(arr[group_id == 1], bins=shared_bins)"
             }
           ],
           "type": "doctest_block"
@@ -821,12 +821,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "hist_0, bins_0 = we.histogram(arr[group_id == 0], bins='auto')"
+              "text": "hist_0, bins_0 = fnp.histogram(arr[group_id == 0], bins='auto')"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "hist_1, bins_1 = we.histogram(arr[group_id == 1], bins='auto')"
+              "text": "hist_1, bins_1 = fnp.histogram(arr[group_id == 1], bins='auto')"
             },
             {
               "kind": "input",
@@ -872,20 +872,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\narr = we.array([0, 0, 0, 1, 2, 3, 3, 4, 5])\n\nwe.histogram_bin_edges(arr, bins='auto', range=(0, 1))\n\nwe.histogram_bin_edges(arr, bins=2)\n\nwe.histogram_bin_edges(arr, [1, 2])\n\nshared_bins = we.histogram_bin_edges(arr, bins='auto')\n\nshared_bins\n\ngroup_id = we.array([0, 1, 1, 0, 1, 1, 0, 1, 1])\n\nhist_0, _ = we.histogram(arr[group_id == 0], bins=shared_bins)\n\nhist_1, _ = we.histogram(arr[group_id == 1], bins=shared_bins)\n\nhist_0; hist_1\n\nhist_0, bins_0 = we.histogram(arr[group_id == 0], bins='auto')\n\nhist_1, bins_1 = we.histogram(arr[group_id == 1], bins='auto')\n\nhist_0; hist_1\n\nbins_0; bins_1",
+    "code": "import flopscope as fnp\n\narr = fnp.array([0, 0, 0, 1, 2, 3, 3, 4, 5])\n\nfnp.histogram_bin_edges(arr, bins='auto', range=(0, 1))\n\nfnp.histogram_bin_edges(arr, bins=2)\n\nfnp.histogram_bin_edges(arr, [1, 2])\n\nshared_bins = fnp.histogram_bin_edges(arr, bins='auto')\n\nshared_bins\n\ngroup_id = fnp.array([0, 1, 1, 0, 1, 1, 0, 1, 1])\n\nhist_0, _ = fnp.histogram(arr[group_id == 0], bins=shared_bins)\n\nhist_1, _ = fnp.histogram(arr[group_id == 1], bins=shared_bins)\n\nhist_0; hist_1\n\nhist_0, bins_0 = fnp.histogram(arr[group_id == 0], bins='auto')\n\nhist_1, bins_1 = fnp.histogram(arr[group_id == 1], bins='auto')\n\nhist_0; hist_1\n\nbins_0; bins_1",
     "output": "array([0.  , 0.25, 0.5 , 0.75, 1.  ])\n\narray([0. , 2.5, 5. ])\n\narray([1, 2])\n\narray([0., 1., 2., 3., 4., 5.])\n\narray([1, 1, 0, 1, 0])\narray([2, 0, 1, 1, 2])\n\narray([1, 1, 1])\narray([2, 1, 1, 2])\n\narray([0., 1., 2., 3.])\narray([0.  , 1.25, 2.5 , 3.75, 5.  ])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.histogram_bin_edges",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L218",
   "href": "/docs/api/ops/histogram_bin_edges/",
   "module": "numpy",
   "name": "histogram_bin_edges",
   "next": {
     "href": "/docs/api/ops/histogramdd/",
-    "label": "we.histogramdd"
+    "label": "fnp.histogramdd"
   },
   "notes": "Bin edge computation; cost = numel(a).",
   "notes_sections": [
-    "The methods to estimate the optimal number of bins are well founded in literature, and are inspired by the choices R provides for histogram visualisation. Note that having the number of bins proportional to :math:`n^{1/3}` is asymptotically optimal, which is why it appears in most estimators. These are simply plug-in methods that give good starting points for number of bins. In the equations below, :math:`h` is the binwidth and :math:`n_h` is the number of bins. All estimators that compute bin counts are recast to bin width using the `ptp` of the data. The final bin count is obtained from ``we.round(we.ceil(range / h))``. The final bin width is often less than what is returned by the estimators below.",
+    "The methods to estimate the optimal number of bins are well founded in literature, and are inspired by the choices R provides for histogram visualisation. Note that having the number of bins proportional to :math:`n^{1/3}` is asymptotically optimal, which is why it appears in most estimators. These are simply plug-in methods that give good starting points for number of bins. In the equations below, :math:`h` is the binwidth and :math:`n_h` is the number of bins. All estimators that compute bin counts are recast to bin width using the `ptp` of the data. The final bin count is obtained from ``fnp.round(fnp.ceil(range / h))``. The final bin width is often less than what is returned by the estimators below.",
     "'auto' (minimum bin width of the 'sturges' and 'fd' estimators) A compromise to get a good value. For small datasets the Sturges value will usually be chosen, while larger datasets will usually default to FD.  Avoids the overly conservative behaviour of FD and Sturges for small and large datasets respectively. Switchover point is usually :math:`a.size \\approx 1000`.",
     "'fd' (Freedman Diaconis Estimator) .. math:: h = 2 \\frac{IQR}{n^{1/3}}",
     "The binwidth is proportional to the interquartile range (IQR) and inversely proportional to cube root of a.size. Can be too conservative for small datasets, but is quite good for large datasets. The IQR is very robust to outliers.",
@@ -992,7 +995,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/histogram2d/",
-    "label": "we.histogram2d"
+    "label": "fnp.histogram2d"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.histogram_bin_edges.html",
@@ -1011,19 +1014,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/histogram",
-      "label": "we.histogram",
+      "label": "fnp.histogram",
       "original_target": "histogram",
       "role": "",
       "target": "histogram",
       "unresolved": false
     }
   ],
-  "signature": "we.histogram_bin_edges(a, bins=10, range=None, weights=None)",
+  "signature": "fnp.histogram_bin_edges(a, bins=10, range=None, weights=None)",
   "slug": "histogram_bin_edges",
   "summary": "Function to calculate only the edges of the bins used by the `histogram` function.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_histograms_impl.py#L477",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.histogram_bin_edges",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L218"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_histograms_impl.py#L473",
+  "weight": 1.0
 }

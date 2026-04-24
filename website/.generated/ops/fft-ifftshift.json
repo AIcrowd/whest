@@ -162,12 +162,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "freqs = we.fft.fftfreq(9, d=1./9).reshape(3, 3)"
+              "text": "freqs = fnp.fft.fftfreq(9, d=1./9).reshape(3, 3)"
             },
             {
               "kind": "input",
@@ -189,7 +189,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.ifftshift(we.fft.fftshift(freqs))"
+              "text": "fnp.fft.ifftshift(fnp.fft.fftshift(freqs))"
             },
             {
               "kind": "output",
@@ -221,16 +221,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nfreqs = we.fft.fftfreq(9, d=1./9).reshape(3, 3)\n\nfreqs\n\nwe.fft.ifftshift(we.fft.fftshift(freqs))",
+    "code": "import flopscope as fnp\n\nfreqs = fnp.fft.fftfreq(9, d=1./9).reshape(3, 3)\n\nfreqs\n\nfnp.fft.ifftshift(fnp.fft.fftshift(freqs))",
     "output": "array([[ 0.,  1.,  2.],\n       [ 3.,  4., -4.],\n       [-3., -2., -1.]])\n\narray([[ 0.,  1.,  2.],\n       [ 3.,  4., -4.],\n       [-3., -2., -1.]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.ifftshift",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L41",
   "href": "/docs/api/ops/fft-ifftshift/",
   "module": "numpy.fft",
   "name": "fft.ifftshift",
   "next": {
     "href": "/docs/api/ops/fft-ihfft/",
-    "label": "we.fft.ihfft"
+    "label": "fnp.fft.ihfft"
   },
   "notes": "Inverse of fftshift. No arithmetic; index reordering only.",
   "notes_sections": [],
@@ -253,7 +256,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/fft-ifftn/",
-    "label": "we.fft.ifftn"
+    "label": "fnp.fft.ifftn"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifftshift.html",
@@ -284,12 +287,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.ifftshift(x, axes=None)",
+  "signature": "fnp.fft.ifftshift(x, axes=None)",
   "slug": "fft-ifftshift",
   "summary": "The inverse of `fftshift`. Although identical for even-length `x`, the functions differ by one sample for odd-length `x`.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L77",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.ifftshift",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_free.py#L41"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_helper.py#L77",
+  "weight": 0.0
 }

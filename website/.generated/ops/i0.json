@@ -238,12 +238,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.i0(0.)"
+              "text": "fnp.i0(0.)"
             },
             {
               "kind": "output",
@@ -252,7 +252,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.i0([0, 1, 2, 3])"
+              "text": "fnp.i0([0, 1, 2, 3])"
             },
             {
               "kind": "output",
@@ -304,16 +304,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.i0(0.)\n\nwe.i0([0, 1, 2, 3])",
+    "code": "import flopscope as fnp\n\nfnp.i0(0.)\n\nfnp.i0([0, 1, 2, 3])",
     "output": "array(1.0)\n\narray([1.        , 1.26606588, 2.2795853 , 4.88079259])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.i0",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/i0/",
   "module": "numpy",
   "name": "i0",
   "next": {
     "href": "/docs/api/ops/identity/",
-    "label": "we.identity"
+    "label": "fnp.identity"
   },
   "notes": "Modified Bessel function of order 0, element-wise.",
   "notes_sections": [
@@ -332,7 +335,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/hypot/",
-    "label": "we.hypot"
+    "label": "fnp.hypot"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.i0.html",
@@ -380,12 +383,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.i0(x)",
+  "signature": "fnp.i0(x)",
   "slug": "i0",
   "summary": "Modified Bessel function of the first kind, order 0.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3554",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.i0",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L3532",
+  "weight": 16.0
 }

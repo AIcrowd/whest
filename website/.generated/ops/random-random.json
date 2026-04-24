@@ -37,12 +37,15 @@
     "unsupported_directives": []
   },
   "example": null,
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.random",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L177",
   "href": "/docs/api/ops/random-random/",
   "module": "numpy.random",
   "name": "random.random",
   "next": {
     "href": "/docs/api/ops/random-random_integers/",
-    "label": "we.random.random_integers"
+    "label": "fnp.random.random_integers"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -50,18 +53,15 @@
   "parameters": [],
   "previous": {
     "href": "/docs/api/ops/random-randn/",
-    "label": "we.random.randn"
+    "label": "fnp.random.randn"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.random.html",
   "returns": [],
   "see_also": [],
-  "signature": "we.random.random(size=None)",
+  "signature": "fnp.random.random(size=None)",
   "slug": "random-random",
   "summary": "Return random floats in the half-open interval [0.0, 1.0). Alias for `random_sample` to ease forward-porting to the new random API.",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.random",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L177"
+  "weight": 1.0
 }

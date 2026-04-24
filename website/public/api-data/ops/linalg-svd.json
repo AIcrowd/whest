@@ -43,7 +43,7 @@
               },
               {
                 "kind": "code",
-                "text": "u @ we.diag(s) @ vh = (u * s) @ vh"
+                "text": "u @ fnp.diag(s) @ vh = (u * s) @ vh"
               },
               {
                 "kind": "text",
@@ -391,20 +391,6 @@
           {
             "items": [
               {
-                "body_blocks": [],
-                "data_type": "When `compute_uv` is True, the result is a namedtuple with the following",
-                "inline": [],
-                "name": "",
-                "type": "field_list"
-              },
-              {
-                "body_blocks": [],
-                "data_type": "attribute names:",
-                "inline": [],
-                "name": "",
-                "type": "field_list"
-              },
-              {
                 "body_blocks": [
                   {
                     "inline": [
@@ -718,6 +704,47 @@
             "inline": [
               {
                 "kind": "text",
+                "text": "When "
+              },
+              {
+                "kind": "code",
+                "text": "compute_uv"
+              },
+              {
+                "kind": "text",
+                "text": " is True, the result is a namedtuple with the following\nattribute names: "
+              },
+              {
+                "kind": "code",
+                "text": "U"
+              },
+              {
+                "kind": "text",
+                "text": ", "
+              },
+              {
+                "kind": "code",
+                "text": "S"
+              },
+              {
+                "kind": "text",
+                "text": ", and "
+              },
+              {
+                "kind": "code",
+                "text": "Vh"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
                 "text": "The decomposition is performed using LAPACK routine "
               },
               {
@@ -771,7 +798,7 @@
               },
               {
                 "kind": "math",
-                "latex": "S= \\mathtt{we.diag}(s)"
+                "latex": "S= \\mathtt{fnp.diag}(s)"
               },
               {
                 "kind": "text",
@@ -935,7 +962,7 @@
                 "href": "/docs/api/ops/matmul",
                 "kind": "link",
                 "target": "matmul",
-                "text": "we.matmul"
+                "text": "fnp.matmul"
               },
               {
                 "kind": "text",
@@ -987,12 +1014,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng()"
+                "text": "rng = fnp.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -1021,7 +1048,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "U, S, Vh = we.linalg.svd(a, full_matrices=True)"
+                "text": "U, S, Vh = fnp.linalg.svd(a, full_matrices=True)"
               },
               {
                 "kind": "input",
@@ -1035,7 +1062,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(a, we.dot(U[:, :6] * S, Vh))"
+                "text": "fnp.allclose(a, fnp.dot(U[:, :6] * S, Vh))"
               },
               {
                 "kind": "output",
@@ -1044,17 +1071,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "smat = we.zeros((9, 6), dtype=complex)"
+                "text": "smat = fnp.zeros((9, 6), dtype=complex)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "smat[:6, :6] = we.diag(S)"
+                "text": "smat[:6, :6] = fnp.diag(S)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(a, we.dot(U, we.dot(smat, Vh)))"
+                "text": "fnp.allclose(a, fnp.dot(U, fnp.dot(smat, Vh)))"
               },
               {
                 "kind": "output",
@@ -1077,7 +1104,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "U, S, Vh = we.linalg.svd(a, full_matrices=False)"
+                "text": "U, S, Vh = fnp.linalg.svd(a, full_matrices=False)"
               },
               {
                 "kind": "input",
@@ -1091,7 +1118,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(a, we.dot(U * S, Vh))"
+                "text": "fnp.allclose(a, fnp.dot(U * S, Vh))"
               },
               {
                 "kind": "output",
@@ -1100,12 +1127,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "smat = we.diag(S)"
+                "text": "smat = fnp.diag(S)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(a, we.dot(U, we.dot(smat, Vh)))"
+                "text": "fnp.allclose(a, fnp.dot(U, fnp.dot(smat, Vh)))"
               },
               {
                 "kind": "output",
@@ -1128,7 +1155,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "U, S, Vh = we.linalg.svd(b, full_matrices=True)"
+                "text": "U, S, Vh = fnp.linalg.svd(b, full_matrices=True)"
               },
               {
                 "kind": "input",
@@ -1142,7 +1169,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(b, we.matmul(U[..., :3] * S[..., None, :], Vh))"
+                "text": "fnp.allclose(b, fnp.matmul(U[..., :3] * S[..., None, :], Vh))"
               },
               {
                 "kind": "output",
@@ -1151,7 +1178,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(b, we.matmul(U[..., :3], S[..., None] * Vh))"
+                "text": "fnp.allclose(b, fnp.matmul(U[..., :3], S[..., None] * Vh))"
               },
               {
                 "kind": "output",
@@ -1174,7 +1201,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "U, S, Vh = we.linalg.svd(b, full_matrices=False)"
+                "text": "U, S, Vh = fnp.linalg.svd(b, full_matrices=False)"
               },
               {
                 "kind": "input",
@@ -1188,7 +1215,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(b, we.matmul(U * S[..., None, :], Vh))"
+                "text": "fnp.allclose(b, fnp.matmul(U * S[..., None, :], Vh))"
               },
               {
                 "kind": "output",
@@ -1197,7 +1224,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(b, we.matmul(U, S[..., None] * Vh))"
+                "text": "fnp.allclose(b, fnp.matmul(U, S[..., None] * Vh))"
               },
               {
                 "kind": "output",
@@ -1215,20 +1242,20 @@
     "category": "counted_custom",
     "cost_formula": "m * n * k",
     "cost_formula_latex": "$m \\cdot n \\cdot k$",
+    "flopscope_ref": "fnp.linalg.svd",
     "module": "numpy.linalg",
     "name": "linalg.svd",
     "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
     "numpy_ref": "np.linalg.svd",
-    "signature": "we.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
+    "signature": "fnp.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
     "status": "supported",
     "summary": "Singular Value Decomposition.",
-    "weight": 4.0,
-    "whest_ref": "we.linalg.svd"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "linalg-svd",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1639",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_svd.py#L27"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_svd.py#L27",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L1668"
   }
 }
