@@ -123,6 +123,7 @@
     }
   ],
   "canonical_name": "sort_complex",
+  "canonical_path": "sort-complex",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -137,11 +138,12 @@
     "output": "array([1.+0.j, 2.+0.j, 3.+0.j, 5.+0.j, 6.+0.j])\n\narray([1.+2.j,  2.-1.j,  3.-3.j,  3.-2.j,  3.+5.j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/sort_complex/",
+  "href": "/docs/api/sort-complex/",
+  "legacy_href": "/docs/api/ops/sort_complex/",
   "module": "numpy",
   "name": "sort_complex",
   "next": {
-    "href": "/docs/api/ops/spacing/",
+    "href": "/docs/api/spacing/",
     "label": "we.spacing"
   },
   "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
@@ -157,7 +159,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sort/",
+    "href": "/docs/api/sort/",
     "label": "we.sort"
   },
   "provenance_label": "Adapted from NumPy docs",

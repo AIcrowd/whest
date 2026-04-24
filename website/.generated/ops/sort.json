@@ -788,6 +788,7 @@
     }
   ],
   "canonical_name": "sort",
+  "canonical_path": "sort",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -844,11 +845,12 @@
     "output": "array([[1, 4],\n       [1, 3]])\n\narray([1, 1, 3, 4])\n\narray([[1, 1],\n       [3, 4]])\n\narray([('Galahad', 1.7, 38), ('Arthur', 1.8, 41),\n       ('Lancelot', 1.8999999999999999, 38)],\n      dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])\n\narray([('Galahad', 1.7, 38), ('Lancelot', 1.8999999999999999, 38),\n       ('Arthur', 1.8, 41)],\n      dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/sort/",
+  "href": "/docs/api/sort/",
+  "legacy_href": "/docs/api/ops/sort/",
   "module": "numpy",
   "name": "sort",
   "next": {
-    "href": "/docs/api/ops/sort_complex/",
+    "href": "/docs/api/sort-complex/",
     "label": "we.sort_complex"
   },
   "notes": "Comparison sort; cost = n*ceil(log2(n)) per slice.",
@@ -918,7 +920,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/size/",
+    "href": "/docs/api/size/",
     "label": "we.size"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -502,6 +502,7 @@
     }
   ],
   "canonical_name": "random.vonmises",
+  "canonical_path": "random/vonmises",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -525,11 +526,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-vonmises/",
+  "href": "/docs/api/random/vonmises/",
+  "legacy_href": "/docs/api/ops/random-vonmises/",
   "module": "numpy.random",
   "name": "random.vonmises",
   "next": {
-    "href": "/docs/api/ops/random-wald/",
+    "href": "/docs/api/random/wald/",
     "label": "we.random.wald"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -567,7 +569,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-uniform/",
+    "href": "/docs/api/random/uniform/",
     "label": "we.random.uniform"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -338,6 +338,7 @@
     }
   ],
   "canonical_name": "linalg.outer",
+  "canonical_path": "linalg/outer",
   "category": "counted_custom",
   "cost_formula": "delegates to we.outer",
   "cost_formula_latex": "delegates to `outer`",
@@ -352,11 +353,12 @@
     "output": "array([[-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.]])\n\narray([[0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j],\n       [0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j],\n       [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],\n       [0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j],\n       [0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j]])\n\narray([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],\n       [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],\n       [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],\n       [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],\n       [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])\n\narray([['a', 'aa', 'aaa'],\n       ['b', 'bb', 'bbb'],\n       ['c', 'cc', 'ccc']], dtype=object)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-outer/",
+  "href": "/docs/api/linalg/outer/",
+  "legacy_href": "/docs/api/ops/linalg-outer/",
   "module": "numpy.linalg",
   "name": "linalg.outer",
   "next": {
-    "href": "/docs/api/ops/linalg-pinv/",
+    "href": "/docs/api/linalg/pinv/",
     "label": "we.linalg.pinv"
   },
   "notes": "Delegates to `we.outer` which charges `m*n` FLOPs.",
@@ -381,7 +383,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-norm/",
+    "href": "/docs/api/linalg/norm/",
     "label": "we.linalg.norm"
   },
   "provenance_label": "Adapted from NumPy docs",

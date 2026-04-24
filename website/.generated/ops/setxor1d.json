@@ -155,6 +155,7 @@
     }
   ],
   "canonical_name": "setxor1d",
+  "canonical_path": "setxor1d",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -169,11 +170,12 @@
     "output": "array([1, 4, 5, 7])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/setxor1d/",
+  "href": "/docs/api/setxor1d/",
+  "legacy_href": "/docs/api/ops/setxor1d/",
   "module": "numpy",
   "name": "setxor1d",
   "next": {
-    "href": "/docs/api/ops/shape/",
+    "href": "/docs/api/shape/",
     "label": "we.shape"
   },
   "notes": "Symmetric set difference; cost = (n+m)*ceil(log2(n+m)).",
@@ -197,7 +199,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/setdiff1d/",
+    "href": "/docs/api/setdiff1d/",
     "label": "we.setdiff1d"
   },
   "provenance_label": "Adapted from NumPy docs",

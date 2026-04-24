@@ -454,6 +454,7 @@
     }
   ],
   "canonical_name": "ones_like",
+  "canonical_path": "ones-like",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -468,11 +469,12 @@
     "output": "array([[0, 1, 2],\n       [3, 4, 5]])\n\narray([[1, 1, 1],\n       [1, 1, 1]])\n\narray([0., 1., 2.])\n\narray([1.,  1.,  1.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ones_like/",
+  "href": "/docs/api/ones-like/",
+  "legacy_href": "/docs/api/ops/ones_like/",
   "module": "numpy",
   "name": "ones_like",
   "next": {
-    "href": "/docs/api/ops/outer/",
+    "href": "/docs/api/outer/",
     "label": "we.outer"
   },
   "notes": "Array of ones with same shape/type as input.",
@@ -534,7 +536,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ones/",
+    "href": "/docs/api/ones/",
     "label": "we.ones"
   },
   "provenance_label": "Adapted from NumPy docs",

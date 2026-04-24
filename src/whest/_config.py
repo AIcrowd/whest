@@ -25,6 +25,17 @@ def configure(**kwargs: object) -> None:
         Maximum number of entries in the einsum path cache.
         Changing this rebuilds the cache (old entries are discarded).
         Default ``4096``.
+
+    Returns
+    -------
+    None
+        Updates the in-process global configuration immediately.
+
+    Examples
+    --------
+    >>> import whest as we
+    >>> we.configure(einsum_path_cache_size=8192)
+    >>> we.configure(symmetry_warnings=False)
     """
     for key, value in kwargs.items():
         if key not in _SETTINGS:

@@ -527,6 +527,7 @@
     }
   ],
   "canonical_name": "arccosh",
+  "canonical_path": "arccosh",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -557,11 +558,12 @@
     "output": "array([ 1.65745445,  2.99322285])\n\n0.0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/arccosh/",
+  "href": "/docs/api/arccosh/",
+  "legacy_href": "/docs/api/ops/arccosh/",
   "module": "numpy",
   "name": "arccosh",
   "next": {
-    "href": "/docs/api/ops/arcsin/",
+    "href": "/docs/api/arcsin/",
     "label": "we.arcsin"
   },
   "notes": "Element-wise inverse hyperbolic cosine.",
@@ -611,7 +613,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/arccos/",
+    "href": "/docs/api/arccos/",
     "label": "we.arccos"
   },
   "provenance_label": "Adapted from NumPy docs",

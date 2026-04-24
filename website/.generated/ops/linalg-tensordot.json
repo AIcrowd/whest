@@ -932,6 +932,7 @@
     }
   ],
   "canonical_name": "linalg.tensordot",
+  "canonical_path": "linalg/tensordot",
   "category": "counted_custom",
   "cost_formula": "delegates to we.tensordot",
   "cost_formula_latex": "delegates to `tensordot`",
@@ -946,11 +947,12 @@
     "output": "(2, 2, 2, 2)\n\narray([[[[ 5,  6],\n         [ 7,  8]],\n        [[10, 12],\n         [14, 16]]],\n       [[[15, 18],\n         [21, 24]],\n        [[20, 24],\n         [28, 32]]]])\n\n(5, 2)\n\narray([[4400., 4730.],\n       [4532., 4874.],\n       [4664., 5018.],\n       [4796., 5162.],\n       [4928., 5306.]])\n\narray([[ True,  True],\n       [ True,  True],\n       [ True,  True],\n       [ True,  True],\n       [ True,  True]])\n\narray([[[1, 2],\n        [3, 4]],\n       [[5, 6],\n        [7, 8]]])\narray([['a', 'b'],\n       ['c', 'd']], dtype=object)\n\narray(['abbcccdddd', 'aaaaabbbbbbcccccccdddddddd'], dtype=object)\n\narray([[['acc', 'bdd'],\n        ['aaacccc', 'bbbdddd']],\n       [['aaaaacccccc', 'bbbbbdddddd'],\n        ['aaaaaaacccccccc', 'bbbbbbbdddddddd']]], dtype=object)\n\narray([[[[['a', 'b'],\n          ['c', 'd']],\n          ...\n\narray([[['abbbbb', 'cddddd'],\n        ['aabbbbbb', 'ccdddddd']],\n       [['aaabbbbbbb', 'cccddddddd'],\n        ['aaaabbbbbbbb', 'ccccdddddddd']]], dtype=object)\n\narray([[['abb', 'cdd'],\n        ['aaabbbb', 'cccdddd']],\n       [['aaaaabbbbbb', 'cccccdddddd'],\n        ['aaaaaaabbbbbbbb', 'cccccccdddddddd']]], dtype=object)\n\narray(['abbbcccccddddddd', 'aabbbbccccccdddddddd'], dtype=object)\n\narray(['acccbbdddd', 'aaaaacccccccbbbbbbdddddddd'], dtype=object)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-tensordot/",
+  "href": "/docs/api/linalg/tensordot/",
+  "legacy_href": "/docs/api/ops/linalg-tensordot/",
   "module": "numpy.linalg",
   "name": "linalg.tensordot",
   "next": {
-    "href": "/docs/api/ops/linalg-tensorinv/",
+    "href": "/docs/api/linalg/tensorinv/",
     "label": "we.linalg.tensorinv"
   },
   "notes": "Delegates to `we.tensordot` which charges FLOPs based on contraction.",
@@ -983,7 +985,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-svdvals/",
+    "href": "/docs/api/linalg/svdvals/",
     "label": "we.linalg.svdvals"
   },
   "provenance_label": "Adapted from NumPy docs",

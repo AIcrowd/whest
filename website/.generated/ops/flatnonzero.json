@@ -226,6 +226,7 @@
     }
   ],
   "canonical_name": "flatnonzero",
+  "canonical_path": "flatnonzero",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -240,11 +241,12 @@
     "output": "array([-2, -1,  0,  1,  2])\n\narray([0, 1, 3, 4])\n\narray([-2, -1,  1,  2])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/flatnonzero/",
+  "href": "/docs/api/flatnonzero/",
+  "legacy_href": "/docs/api/ops/flatnonzero/",
   "module": "numpy",
   "name": "flatnonzero",
   "next": {
-    "href": "/docs/api/ops/flip/",
+    "href": "/docs/api/flip/",
     "label": "we.flip"
   },
   "notes": "Return indices of non-zero elements in flattened array. Cost: numel(input).",
@@ -260,7 +262,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fill_diagonal/",
+    "href": "/docs/api/fill-diagonal/",
     "label": "we.fill_diagonal"
   },
   "provenance_label": "Adapted from NumPy docs",

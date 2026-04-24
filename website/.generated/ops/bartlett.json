@@ -286,6 +286,7 @@
     }
   ],
   "canonical_name": "bartlett",
+  "canonical_path": "bartlett",
   "category": "counted_custom",
   "cost_formula": "n",
   "cost_formula_latex": "$n$",
@@ -326,11 +327,12 @@
     "output": "array([ 0.        ,  0.18181818,  0.36363636,  0.54545455,  0.72727273, # may vary\n        0.90909091,  0.90909091,  0.72727273,  0.54545455,  0.36363636,\n        0.18181818,  0.        ])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bartlett/",
+  "href": "/docs/api/bartlett/",
+  "legacy_href": "/docs/api/ops/bartlett/",
   "module": "whest._window",
   "name": "bartlett",
   "next": {
-    "href": "/docs/api/ops/bincount/",
+    "href": "/docs/api/bincount/",
     "label": "we.bincount"
   },
   "notes": "Bartlett window. Cost: n (one linear eval per sample).",
@@ -351,7 +353,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/average/",
+    "href": "/docs/api/average/",
     "label": "we.average"
   },
   "provenance_label": "Adapted from NumPy docs",

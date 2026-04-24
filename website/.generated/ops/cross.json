@@ -943,6 +943,7 @@
     }
   ],
   "canonical_name": "cross",
+  "canonical_path": "cross",
   "category": "counted_custom",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -957,11 +958,12 @@
     "output": "array([-3,  6, -3])\n\narray([12, -6, -3])\n\narray([12, -6, -3])\n\narray(-3)\n\narray([[-3,  6, -3],\n       [ 3, -6,  3]])\n\narray([[-3,  3],\n       [ 6, -6],\n       [-3,  3]])\n\narray([[ -6,  12,  -6],\n       [  0,   0,   0],\n       [  6, -12,   6]])\n\narray([[-24,  48, -24],\n       [-30,  60, -30],\n       [-36,  72, -36]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/cross/",
+  "href": "/docs/api/cross/",
+  "legacy_href": "/docs/api/ops/cross/",
   "module": "numpy",
   "name": "cross",
   "next": {
-    "href": "/docs/api/ops/cumprod/",
+    "href": "/docs/api/cumprod/",
     "label": "we.cumprod"
   },
   "notes": "Cross product of two 3-D vectors.",
@@ -1019,7 +1021,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/cov/",
+    "href": "/docs/api/cov/",
     "label": "we.cov"
   },
   "provenance_label": "Adapted from NumPy docs",

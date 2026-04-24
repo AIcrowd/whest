@@ -519,6 +519,7 @@
     }
   ],
   "canonical_name": "full_like",
+  "canonical_path": "full-like",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -533,11 +534,12 @@
     "output": "array([1, 1, 1, 1, 1, 1])\n\narray([0, 0, 0, 0, 0, 0])\n\narray([0.1, 0.1, 0.1, 0.1, 0.1, 0.1])\n\narray([nan, nan, nan, nan, nan, nan])\n\narray([0.1, 0.1, 0.1, 0.1, 0.1, 0.1])\n\narray([[[  0,   0, 255],\n        [  0,   0, 255]],\n       [[  0,   0, 255],\n        [  0,   0, 255]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/full_like/",
+  "href": "/docs/api/full-like/",
+  "legacy_href": "/docs/api/ops/full_like/",
   "module": "numpy",
   "name": "full_like",
   "next": {
-    "href": "/docs/api/ops/gcd/",
+    "href": "/docs/api/gcd/",
     "label": "we.gcd"
   },
   "notes": "Array filled with scalar, same shape/type as input. Cost: numel(output).",
@@ -606,7 +608,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/full/",
+    "href": "/docs/api/full/",
     "label": "we.full"
   },
   "provenance_label": "Adapted from NumPy docs",

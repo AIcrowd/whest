@@ -336,6 +336,7 @@
     }
   ],
   "canonical_name": "promote_types",
+  "canonical_path": "promote-types",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -350,11 +351,12 @@
     "output": "dtype('float64')\n\ndtype('float64')\n\ndtype('complex128')\n\ndtype('S11')\n\ndtype('S6')\n\ndtype('S4')",
     "source": "derived"
   },
-  "href": "/docs/api/ops/promote_types/",
+  "href": "/docs/api/promote-types/",
+  "legacy_href": "/docs/api/ops/promote_types/",
   "module": "numpy",
   "name": "promote_types",
   "next": {
-    "href": "/docs/api/ops/ptp/",
+    "href": "/docs/api/ptp/",
     "label": "we.ptp"
   },
   "notes": "Return smallest type to which both types may be safely cast.",
@@ -382,7 +384,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/prod/",
+    "href": "/docs/api/prod/",
     "label": "we.prod"
   },
   "provenance_label": "Adapted from NumPy docs",

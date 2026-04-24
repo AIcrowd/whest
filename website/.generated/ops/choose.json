@@ -953,6 +953,7 @@
     }
   ],
   "canonical_name": "choose",
+  "canonical_path": "choose",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -974,11 +975,12 @@
     "output": "array([20, 31, 12,  3])\n\narray([20, 31, 12,  3])\n\narray([20,  1, 12,  3])\n\narray([[ 10, -10,  10],\n       [-10,  10, -10],\n       [ 10, -10,  10]])\n\narray([[[ 1,  1,  1,  1,  1],\n        [ 2,  2,  2,  2,  2],\n        [ 3,  3,  3,  3,  3]],\n       [[-1, -2, -3, -4, -5],\n        [-1, -2, -3, -4, -5],\n        [-1, -2, -3, -4, -5]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/choose/",
+  "href": "/docs/api/choose/",
+  "legacy_href": "/docs/api/ops/choose/",
   "module": "numpy",
   "name": "choose",
   "next": {
-    "href": "/docs/api/ops/clip/",
+    "href": "/docs/api/clip/",
     "label": "we.clip"
   },
   "notes": "Construct array from index array and choices. Cost: numel(output).",
@@ -1028,7 +1030,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ceil/",
+    "href": "/docs/api/ceil/",
     "label": "we.ceil"
   },
   "provenance_label": "Adapted from NumPy docs",

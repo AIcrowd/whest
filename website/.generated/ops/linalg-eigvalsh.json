@@ -407,6 +407,7 @@
     }
   ],
   "canonical_name": "linalg.eigvalsh",
+  "canonical_path": "linalg/eigvalsh",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -421,11 +422,12 @@
     "output": "array([ 0.17157288,  5.82842712]) # may vary\n\narray([[5.+2.j, 9.-2.j],\n       [0.+2.j, 2.-1.j]])\n\narray([[5.+0.j, 0.-2.j],\n       [0.+2.j, 2.+0.j]])\n\narray([1., 6.])\narray([6.+0.j, 1.+0.j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-eigvalsh/",
+  "href": "/docs/api/linalg/eigvalsh/",
+  "legacy_href": "/docs/api/ops/linalg-eigvalsh/",
   "module": "numpy.linalg",
   "name": "linalg.eigvalsh",
   "next": {
-    "href": "/docs/api/ops/linalg-inv/",
+    "href": "/docs/api/linalg/inv/",
     "label": "we.linalg.inv"
   },
   "notes": "Symmetric eigenvalues. Cost: $n^3$.",
@@ -457,7 +459,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-eigvals/",
+    "href": "/docs/api/linalg/eigvals/",
     "label": "we.linalg.eigvals"
   },
   "provenance_label": "Adapted from NumPy docs",

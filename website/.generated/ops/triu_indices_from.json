@@ -369,6 +369,7 @@
     }
   ],
   "canonical_name": "triu_indices_from",
+  "canonical_path": "triu-indices-from",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -383,11 +384,12 @@
     "output": "array([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])\n\n(array([0, 0, 0, 0, 1, 1, 1, 2, 2, 3]), array([0, 1, 2, 3, 1, 2, 3, 2, 3, 3]))\n\narray([ 0,  1,  2,  3,  5,  6,  7, 10, 11, 15])\n\n(array([0, 0, 0, 0, 1, 1, 1, 2, 2, 3]), array([0, 1, 2, 3, 1, 2, 3, 2, 3, 3]))\n\narray([ 1,  2,  3,  6,  7, 11])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/triu_indices_from/",
+  "href": "/docs/api/triu-indices-from/",
+  "legacy_href": "/docs/api/ops/triu_indices_from/",
   "module": "numpy",
   "name": "triu_indices_from",
   "next": {
-    "href": "/docs/api/ops/true_divide/",
+    "href": "/docs/api/true-divide/",
     "label": "we.true_divide"
   },
   "notes": "Return upper-triangle indices for given array.",
@@ -410,7 +412,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/triu_indices/",
+    "href": "/docs/api/triu-indices/",
     "label": "we.triu_indices"
   },
   "provenance_label": "Adapted from NumPy docs",

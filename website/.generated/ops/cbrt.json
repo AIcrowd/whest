@@ -351,6 +351,7 @@
     }
   ],
   "canonical_name": "cbrt",
+  "canonical_path": "cbrt",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -372,11 +373,12 @@
     "output": "array([ 1.,  2.,  3.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/cbrt/",
+  "href": "/docs/api/cbrt/",
+  "legacy_href": "/docs/api/ops/cbrt/",
   "module": "numpy",
   "name": "cbrt",
   "next": {
-    "href": "/docs/api/ops/ceil/",
+    "href": "/docs/api/ceil/",
     "label": "we.ceil"
   },
   "notes": "Element-wise cube root.",
@@ -422,7 +424,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/can_cast/",
+    "href": "/docs/api/can-cast/",
     "label": "we.can_cast"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -257,6 +257,7 @@
     }
   ],
   "canonical_name": "broadcast_arrays",
+  "canonical_path": "broadcast-arrays",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -271,11 +272,12 @@
     "output": "(array([[1, 2, 3],\n        [1, 2, 3]]),\n array([[4, 4, 4],\n        [5, 5, 5]]))\n\n[array([[1, 2, 3],\n        [1, 2, 3]]),\n array([[4, 4, 4],\n        [5, 5, 5]])]",
     "source": "derived"
   },
-  "href": "/docs/api/ops/broadcast_arrays/",
+  "href": "/docs/api/broadcast-arrays/",
+  "legacy_href": "/docs/api/ops/broadcast_arrays/",
   "module": "numpy",
   "name": "broadcast_arrays",
   "next": {
-    "href": "/docs/api/ops/broadcast_shapes/",
+    "href": "/docs/api/broadcast-shapes/",
     "label": "we.broadcast_shapes"
   },
   "notes": "Broadcast arrays against each other. Cost: numel(output).",
@@ -299,7 +301,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bmat/",
+    "href": "/docs/api/bmat/",
     "label": "we.bmat"
   },
   "provenance_label": "Adapted from NumPy docs",

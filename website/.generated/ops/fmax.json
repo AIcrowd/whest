@@ -529,6 +529,7 @@
     }
   ],
   "canonical_name": "fmax",
+  "canonical_path": "fmax",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -550,11 +551,12 @@
     "output": "array([ 2,  5,  4])\n\narray([[ 1. ,  2. ],\n       [ 0.5,  2. ]])\n\narray([ 0.,  0., nan])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fmax/",
+  "href": "/docs/api/fmax/",
+  "legacy_href": "/docs/api/ops/fmax/",
   "module": "numpy",
   "name": "fmax",
   "next": {
-    "href": "/docs/api/ops/fmin/",
+    "href": "/docs/api/fmin/",
     "label": "we.fmin"
   },
   "notes": "Element-wise maximum ignoring NaN.",
@@ -604,7 +606,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/floor_divide/",
+    "href": "/docs/api/floor-divide/",
     "label": "we.floor_divide"
   },
   "provenance_label": "Adapted from NumPy docs",

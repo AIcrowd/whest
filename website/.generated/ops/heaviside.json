@@ -420,6 +420,7 @@
     }
   ],
   "canonical_name": "heaviside",
+  "canonical_path": "heaviside",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -451,11 +452,12 @@
     "output": "array([ 0. ,  0.5,  1. ])\n\narray([ 0.,  1.,  1.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/heaviside/",
+  "href": "/docs/api/heaviside/",
+  "legacy_href": "/docs/api/ops/heaviside/",
   "module": "numpy",
   "name": "heaviside",
   "next": {
-    "href": "/docs/api/ops/histogram/",
+    "href": "/docs/api/histogram/",
     "label": "we.histogram"
   },
   "notes": "Heaviside step function element-wise.",
@@ -510,7 +512,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/hanning/",
+    "href": "/docs/api/hanning/",
     "label": "we.hanning"
   },
   "provenance_label": "Adapted from NumPy docs",

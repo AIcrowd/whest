@@ -1,0 +1,77 @@
+{
+  "aliases": [
+    "stats.laplace",
+    "we.stats.laplace",
+    "whest.stats.laplace"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Laplace (double-exponential) continuous random variable."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/stats/laplace/",
+              "kind": "link",
+              "target": "stats.laplace",
+              "text": "scipy.stats.laplace"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "stats.laplace",
+  "canonical_path": "stats/laplace",
+  "display_name": "we.stats.laplace",
+  "href": "/docs/api/stats/laplace/",
+  "import_path": "we.stats.laplace",
+  "kind": "object",
+  "members": [
+    {
+      "href": "/docs/api/stats/laplace/cdf/",
+      "label": "we.stats.laplace.cdf"
+    },
+    {
+      "href": "/docs/api/stats/laplace/pdf/",
+      "label": "we.stats.laplace.pdf"
+    },
+    {
+      "href": "/docs/api/stats/laplace/ppf/",
+      "label": "we.stats.laplace.ppf"
+    }
+  ],
+  "module": "whest.stats._laplace",
+  "name": "stats.laplace",
+  "related_guides": [],
+  "signature": "we.stats.laplace",
+  "slug": "stats-laplace",
+  "source_url": "",
+  "status_note": "",
+  "summary": "Laplace (double-exponential) continuous random variable.",
+  "upstream_source_url": ""
+}

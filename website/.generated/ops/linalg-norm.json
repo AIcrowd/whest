@@ -865,6 +865,7 @@
     }
   ],
   "canonical_name": "linalg.norm",
+  "canonical_path": "linalg/norm",
   "category": "counted_custom",
   "cost_formula": "depends on ord",
   "cost_formula_latex": "varies",
@@ -893,11 +894,12 @@
     "output": "array([-4, -3, -2, ...,  2,  3,  4])\n\narray([[-4, -3, -2],\n       [-1,  0,  1],\n       [ 2,  3,  4]])\n\n7.745966692414834\n\n7.745966692414834\n\n7.745966692414834\n\n4.0\n\n9.0\n\n0.0\n\n2.0\n\n20.0\n\n7.0\n\n-4.6566128774142013e-010\n\n6.0\n\n7.745966692414834\n\n7.3484692283495345\n\n0.0\n\n1.8570331885190563e-016 # may vary\n\n5.8480354764257312 # may vary\n\n0.0\n\narray([ 1.41421356,  2.23606798,  5.        ])\n\narray([ 3.74165739,  4.24264069])\n\narray([ 6.,  6.])\n\narray([  3.74165739,  11.22497216])\n\n(3.7416573867739413, 11.224972160321824)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-norm/",
+  "href": "/docs/api/linalg/norm/",
+  "legacy_href": "/docs/api/ops/linalg-norm/",
   "module": "numpy.linalg",
   "name": "linalg.norm",
   "next": {
-    "href": "/docs/api/ops/linalg-outer/",
+    "href": "/docs/api/linalg/outer/",
     "label": "we.linalg.outer"
   },
   "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
@@ -953,7 +955,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-multi_dot/",
+    "href": "/docs/api/linalg/multi-dot/",
     "label": "we.linalg.multi_dot"
   },
   "provenance_label": "Adapted from NumPy docs",

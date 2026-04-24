@@ -728,6 +728,7 @@
     }
   ],
   "canonical_name": "nanstd",
+  "canonical_path": "nanstd",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -742,11 +743,12 @@
     "output": "1.247219128924647\n\narray([1., 0.])\n\narray([0.,  0.5]) # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nanstd/",
+  "href": "/docs/api/nanstd/",
+  "legacy_href": "/docs/api/ops/nanstd/",
   "module": "numpy",
   "name": "nanstd",
   "next": {
-    "href": "/docs/api/ops/nansum/",
+    "href": "/docs/api/nansum/",
     "label": "we.nansum"
   },
   "notes": "Standard deviation ignoring NaNs.",
@@ -848,7 +850,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nanquantile/",
+    "href": "/docs/api/nanquantile/",
     "label": "we.nanquantile"
   },
   "provenance_label": "Adapted from NumPy docs",

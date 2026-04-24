@@ -353,6 +353,7 @@
     }
   ],
   "canonical_name": "rollaxis",
+  "canonical_path": "rollaxis",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -377,11 +378,12 @@
     "output": "(3, 6, 4, 5)\n\n(5, 3, 4, 6)\n\n(3, 5, 6, 4)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/rollaxis/",
+  "href": "/docs/api/rollaxis/",
+  "legacy_href": "/docs/api/ops/rollaxis/",
   "module": "numpy",
   "name": "rollaxis",
   "next": {
-    "href": "/docs/api/ops/roots/",
+    "href": "/docs/api/roots/",
     "label": "we.roots"
   },
   "notes": "Roll specified axis backwards. Cost: numel(output).",
@@ -441,7 +443,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/roll/",
+    "href": "/docs/api/roll/",
     "label": "we.roll"
   },
   "provenance_label": "Adapted from NumPy docs",

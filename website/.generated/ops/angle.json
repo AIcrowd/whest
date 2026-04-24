@@ -233,6 +233,7 @@
     }
   ],
   "canonical_name": "angle",
+  "canonical_path": "angle",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -247,11 +248,12 @@
     "output": "array([ 0.        ,  1.57079633,  0.78539816]) # may vary\n\n45.0\n\narray([ 0.        ,  3.14159265, -0.        , -3.14159265])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/angle/",
+  "href": "/docs/api/angle/",
+  "legacy_href": "/docs/api/ops/angle/",
   "module": "numpy",
   "name": "angle",
   "next": {
-    "href": "/docs/api/ops/any/",
+    "href": "/docs/api/any/",
     "label": "we.any"
   },
   "notes": "Return angle of complex argument element-wise.",
@@ -276,7 +278,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/allclose/",
+    "href": "/docs/api/allclose/",
     "label": "we.allclose"
   },
   "provenance_label": "Adapted from NumPy docs",

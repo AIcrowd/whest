@@ -1,0 +1,286 @@
+{
+  "aliases": [
+    "configure",
+    "we.configure",
+    "whest.configure"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Update whest global settings."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "False"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", suppress "
+                    },
+                    {
+                      "display_text": "SymmetryLossWarning",
+                      "explicit_title": false,
+                      "external_url": "",
+                      "href": "",
+                      "kind": "role_reference",
+                      "original_target": "whest.errors.SymmetryLossWarning",
+                      "role": "class",
+                      "suppress_link": false,
+                      "target": "errors.SymmetryLossWarning",
+                      "unresolved": true
+                    },
+                    {
+                      "kind": "text",
+                      "text": "\nwarnings.  Default "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If "
+                },
+                {
+                  "kind": "code",
+                  "text": "False"
+                },
+                {
+                  "kind": "text",
+                  "text": ", suppress "
+                },
+                {
+                  "display_text": "SymmetryLossWarning",
+                  "explicit_title": false,
+                  "external_url": "",
+                  "href": "",
+                  "kind": "role_reference",
+                  "original_target": "whest.errors.SymmetryLossWarning",
+                  "role": "class",
+                  "suppress_link": false,
+                  "target": "errors.SymmetryLossWarning",
+                  "unresolved": true
+                },
+                {
+                  "kind": "text",
+                  "text": "\nwarnings.  Default "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "symmetry_warnings",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", exploit inner (W-side) symmetry to reduce FLOP costs\nwhen all W-group labels are contracted at the same step.\nDefault "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": ", exploit inner (W-side) symmetry to reduce FLOP costs\nwhen all W-group labels are contracted at the same step.\nDefault "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "use_inner_symmetry",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Maximum number of entries in the einsum path cache.\nChanging this rebuilds the cache (old entries are discarded).\nDefault "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "4096"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Maximum number of entries in the einsum path cache.\nChanging this rebuilds the cache (old entries are discarded).\nDefault "
+                },
+                {
+                  "kind": "code",
+                  "text": "4096"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "einsum_path_cache_size",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Updates the in-process global configuration immediately."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "None",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Updates the in-process global configuration immediately."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.configure(einsum_path_cache_size=8192)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.configure(symmetry_warnings=False)"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "configure",
+  "canonical_path": "configure",
+  "display_name": "we.configure",
+  "href": "/docs/api/configure/",
+  "import_path": "we.configure",
+  "kind": "function",
+  "members": [],
+  "module": "whest._config",
+  "name": "configure",
+  "related_guides": [],
+  "signature": "we.configure(**kwargs: 'object') -> 'None'",
+  "slug": "configure",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_config.py#L12",
+  "status_note": "",
+  "summary": "Update whest global settings.",
+  "upstream_source_url": ""
+}

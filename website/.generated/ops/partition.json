@@ -557,6 +557,7 @@
     }
   ],
   "canonical_name": "partition",
+  "canonical_path": "partition",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -583,11 +584,12 @@
     "output": "array([0, 1, 2, 1, 2, 5, 2, 3, 3, 6, 7, 7, 7, 7]) # may vary\n\narray([0, 1, 2, 1, 2, 3, 3, 2, 5, 6, 7, 7, 7, 7])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/partition/",
+  "href": "/docs/api/partition/",
+  "legacy_href": "/docs/api/ops/partition/",
   "module": "numpy",
   "name": "partition",
   "next": {
-    "href": "/docs/api/ops/percentile/",
+    "href": "/docs/api/percentile/",
     "label": "we.percentile"
   },
   "notes": "Quickselect; cost = n per slice.",
@@ -650,7 +652,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/pad/",
+    "href": "/docs/api/pad/",
     "label": "we.pad"
   },
   "provenance_label": "Adapted from NumPy docs",

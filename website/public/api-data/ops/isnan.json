@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isnan/",
+  "detail_href": "/docs/api/isnan/",
   "detail_json_href": "/api-data/ops/isnan.json",
   "docs": {
     "sections": [
@@ -408,7 +408,7 @@
     "name": "isnan",
     "notes": "Test for NaN element-wise. Cost: numel(input).",
     "numpy_ref": "np.isnan",
-    "signature": "we.isnan(*args, **kwargs)",
+    "signature": "we.isnan(x, **kwargs)",
     "status": "supported",
     "summary": "Test element-wise for NaN and return result as a boolean array.",
     "weight": 1.0,

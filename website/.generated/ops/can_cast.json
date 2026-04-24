@@ -330,6 +330,7 @@
     }
   ],
   "canonical_name": "can_cast",
+  "canonical_path": "can-cast",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -344,11 +345,12 @@
     "output": "True\n\nTrue\n\nFalse\n\nTrue\n\nFalse\n\nFalse",
     "source": "derived"
   },
-  "href": "/docs/api/ops/can_cast/",
+  "href": "/docs/api/can-cast/",
+  "legacy_href": "/docs/api/ops/can_cast/",
   "module": "numpy",
   "name": "can_cast",
   "next": {
-    "href": "/docs/api/ops/cbrt/",
+    "href": "/docs/api/cbrt/",
     "label": "we.cbrt"
   },
   "notes": "Returns True if cast is safe.",
@@ -387,7 +389,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/broadcast_to/",
+    "href": "/docs/api/broadcast-to/",
     "label": "we.broadcast_to"
   },
   "provenance_label": "Adapted from NumPy docs",

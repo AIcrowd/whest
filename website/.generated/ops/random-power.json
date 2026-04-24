@@ -567,6 +567,7 @@
     }
   ],
   "canonical_name": "random.power",
+  "canonical_path": "random/power",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -590,11 +591,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-power/",
+  "href": "/docs/api/random/power/",
+  "legacy_href": "/docs/api/ops/random-power/",
   "module": "numpy.random",
   "name": "random.power",
   "next": {
-    "href": "/docs/api/ops/random-rand/",
+    "href": "/docs/api/random/rand/",
     "label": "we.random.rand"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -625,7 +627,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-poisson/",
+    "href": "/docs/api/random/poisson/",
     "label": "we.random.poisson"
   },
   "provenance_label": "Adapted from NumPy docs",

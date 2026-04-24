@@ -484,6 +484,7 @@
     }
   ],
   "canonical_name": "empty_like",
+  "canonical_path": "empty-like",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -498,11 +499,12 @@
     "output": "array([[-1073741821, -1073741821,           3],    # uninitialized\n       [          0,           0, -1073741821]])\n\narray([[ -2.00000715e+000,   1.48219694e-323,  -2.00000572e+000], # uninitialized\n       [  4.38791518e-305,  -2.00000715e+000,   4.17269252e-309]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/empty_like/",
+  "href": "/docs/api/empty-like/",
+  "legacy_href": "/docs/api/ops/empty_like/",
   "module": "numpy",
   "name": "empty_like",
   "next": {
-    "href": "/docs/api/ops/equal/",
+    "href": "/docs/api/equal/",
     "label": "we.equal"
   },
   "notes": "Uninitialized array with same shape/type as input.",
@@ -566,7 +568,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/empty/",
+    "href": "/docs/api/empty/",
     "label": "we.empty"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -319,6 +319,7 @@
     }
   ],
   "canonical_name": "packbits",
+  "canonical_path": "packbits",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -333,11 +334,12 @@
     "output": "array([[[160],\n        [ 64]],\n       [[192],\n        [ 32]]], dtype=uint8)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/packbits/",
+  "href": "/docs/api/packbits/",
+  "legacy_href": "/docs/api/ops/packbits/",
   "module": "numpy",
   "name": "packbits",
   "next": {
-    "href": "/docs/api/ops/pad/",
+    "href": "/docs/api/pad/",
     "label": "we.pad"
   },
   "notes": "Pack elements of array into bits. Cost: numel(input).",
@@ -372,7 +374,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/outer/",
+    "href": "/docs/api/outer/",
     "label": "we.outer"
   },
   "provenance_label": "Adapted from NumPy docs",

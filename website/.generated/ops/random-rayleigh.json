@@ -417,6 +417,7 @@
     }
   ],
   "canonical_name": "random.rayleigh",
+  "canonical_path": "random/rayleigh",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -440,11 +441,12 @@
     "output": "0.087300000000000003 # random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-rayleigh/",
+  "href": "/docs/api/random/rayleigh/",
+  "legacy_href": "/docs/api/ops/random-rayleigh/",
   "module": "numpy.random",
   "name": "random.rayleigh",
   "next": {
-    "href": "/docs/api/ops/random-seed/",
+    "href": "/docs/api/random/seed/",
     "label": "we.random.seed"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -474,7 +476,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-random_sample/",
+    "href": "/docs/api/random/random-sample/",
     "label": "we.random.random_sample"
   },
   "provenance_label": "Adapted from NumPy docs",

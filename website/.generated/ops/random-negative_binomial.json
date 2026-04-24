@@ -525,6 +525,7 @@
     }
   ],
   "canonical_name": "random.negative_binomial",
+  "canonical_path": "random/negative-binomial",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -548,11 +549,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-negative_binomial/",
+  "href": "/docs/api/random/negative-binomial/",
+  "legacy_href": "/docs/api/ops/random-negative_binomial/",
   "module": "numpy.random",
   "name": "random.negative_binomial",
   "next": {
-    "href": "/docs/api/ops/random-noncentral_chisquare/",
+    "href": "/docs/api/random/noncentral-chisquare/",
     "label": "we.random.noncentral_chisquare"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -590,7 +592,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-multivariate_normal/",
+    "href": "/docs/api/random/multivariate-normal/",
     "label": "we.random.multivariate_normal"
   },
   "provenance_label": "Adapted from NumPy docs",

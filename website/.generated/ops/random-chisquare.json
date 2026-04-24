@@ -489,6 +489,7 @@
     }
   ],
   "canonical_name": "random.chisquare",
+  "canonical_path": "random/chisquare",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -508,11 +509,12 @@
     "output": "array([ 1.89920014,  9.00867716,  3.13710533,  5.62318272]) # random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-chisquare/",
+  "href": "/docs/api/random/chisquare/",
+  "legacy_href": "/docs/api/ops/random-chisquare/",
   "module": "numpy.random",
   "name": "random.chisquare",
   "next": {
-    "href": "/docs/api/ops/random-choice/",
+    "href": "/docs/api/random/choice/",
     "label": "we.random.choice"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -547,7 +549,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-bytes/",
+    "href": "/docs/api/random/bytes/",
     "label": "we.random.bytes"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -1,0 +1,345 @@
+{
+  "aliases": [
+    "random.RandomState",
+    "we.random.RandomState",
+    "whest.random.RandomState"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Container for the slow Mersenne Twister pseudo-random number generator. Consider using a different BitGenerator with the Generator container instead."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "RandomState"
+            },
+            {
+              "kind": "text",
+              "text": " and "
+            },
+            {
+              "kind": "code",
+              "text": "Generator"
+            },
+            {
+              "kind": "text",
+              "text": " expose a number of methods for generating\nrandom numbers drawn from a variety of probability distributions. In\naddition to the distribution-specific arguments, each method takes a\nkeyword argument "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/size/",
+              "kind": "link",
+              "target": "size",
+              "text": "size"
+            },
+            {
+              "kind": "text",
+              "text": " that defaults to "
+            },
+            {
+              "kind": "code",
+              "text": "None"
+            },
+            {
+              "kind": "text",
+              "text": ". If "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/size/",
+              "kind": "link",
+              "target": "size",
+              "text": "size"
+            },
+            {
+              "kind": "text",
+              "text": " is "
+            },
+            {
+              "kind": "code",
+              "text": "None"
+            },
+            {
+              "kind": "text",
+              "text": ",\nthen a single value is generated and returned. If "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/size/",
+              "kind": "link",
+              "target": "size",
+              "text": "size"
+            },
+            {
+              "kind": "text",
+              "text": " is an integer,\nthen a 1-D array filled with generated values is returned. If "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/size/",
+              "kind": "link",
+              "target": "size",
+              "text": "size"
+            },
+            {
+              "kind": "text",
+              "text": " is a\ntuple, then an array with that shape is filled and returned."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "strong",
+              "text": "Compatibility Guarantee"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "A fixed bit generator using a fixed seed and a fixed series of calls to\n'RandomState' methods using the same parameters will always produce the\nsame results up to roundoff error except when the values were incorrect.\n"
+            },
+            {
+              "kind": "code",
+              "text": "RandomState"
+            },
+            {
+              "kind": "text",
+              "text": " is effectively frozen and will only receive updates that\nare required by changes in the internals of Numpy. More substantial\nchanges, including algorithmic improvements, are reserved for\n"
+            },
+            {
+              "kind": "code",
+              "text": "Generator"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Random seed used to initialize the pseudo-random number generator or\nan instantized BitGenerator.  If an integer or array, used as a seed for\nthe MT19937 BitGenerator. Values can be any integer between 0 and\n2**32 - 1 inclusive, an array (or other sequence) of such integers,\nor "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "None"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " (the default).  If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "seed"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " is "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "None"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", then the "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "MT19937"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "\nBitGenerator is initialized by reading data from "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "/dev/urandom"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "\n(or the Windows analogue) if available or seed from the clock\notherwise."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "{None, int, array_like, BitGenerator}, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Random seed used to initialize the pseudo-random number generator or\nan instantized BitGenerator.  If an integer or array, used as a seed for\nthe MT19937 BitGenerator. Values can be any integer between 0 and\n2**32 - 1 inclusive, an array (or other sequence) of such integers,\nor "
+                },
+                {
+                  "kind": "code",
+                  "text": "None"
+                },
+                {
+                  "kind": "text",
+                  "text": " (the default).  If "
+                },
+                {
+                  "kind": "code",
+                  "text": "seed"
+                },
+                {
+                  "kind": "text",
+                  "text": " is "
+                },
+                {
+                  "kind": "code",
+                  "text": "None"
+                },
+                {
+                  "kind": "text",
+                  "text": ", then the "
+                },
+                {
+                  "kind": "code",
+                  "text": "MT19937"
+                },
+                {
+                  "kind": "text",
+                  "text": "\nBitGenerator is initialized by reading data from "
+                },
+                {
+                  "kind": "code",
+                  "text": "/dev/urandom"
+                },
+                {
+                  "kind": "text",
+                  "text": "\n(or the Windows analogue) if available or seed from the clock\notherwise."
+                }
+              ],
+              "name": "seed",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.Generator.html",
+              "href": "",
+              "label": "Generator",
+              "original_target": "Generator",
+              "role": "",
+              "target": "Generator",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.MT19937.html",
+              "href": "",
+              "label": "MT19937",
+              "original_target": "MT19937",
+              "role": "",
+              "target": "MT19937",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.BitGenerator.html",
+              "href": "",
+              "label": "we.random.BitGenerator",
+              "original_target": "numpy.random.BitGenerator",
+              "role": "",
+              "target": "random.BitGenerator",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The Python stdlib module \"random\" also contains a Mersenne Twister\npseudo-random number generator with a number of methods that are similar\nto the ones available in "
+            },
+            {
+              "kind": "code",
+              "text": "RandomState"
+            },
+            {
+              "kind": "text",
+              "text": ". "
+            },
+            {
+              "kind": "code",
+              "text": "RandomState"
+            },
+            {
+              "kind": "text",
+              "text": ", besides being\nNumPy-aware, has the advantage that it provides a much larger number\nof probability distributions to choose from."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "random.RandomState",
+  "canonical_path": "random/random-state",
+  "display_name": "we.random.RandomState",
+  "href": "/docs/api/random/random-state/",
+  "import_path": "we.random.RandomState",
+  "kind": "class",
+  "members": [],
+  "module": "numpy.random.mtrand",
+  "name": "random.RandomState",
+  "related_guides": [],
+  "signature": "we.random.RandomState",
+  "slug": "random-random-state",
+  "source_url": "",
+  "status_note": "",
+  "summary": "Container for the slow Mersenne Twister pseudo-random number generator. Consider using a different BitGenerator with the Generator container instead.",
+  "upstream_source_url": ""
+}

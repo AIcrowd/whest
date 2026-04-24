@@ -260,6 +260,7 @@
     }
   ],
   "canonical_name": "argwhere",
+  "canonical_path": "argwhere",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -274,11 +275,12 @@
     "output": "array([[0, 1, 2],\n       [3, 4, 5]])\n\narray([[0, 2],\n       [1, 0],\n       [1, 1],\n       [1, 2]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/argwhere/",
+  "href": "/docs/api/argwhere/",
+  "legacy_href": "/docs/api/ops/argwhere/",
   "module": "numpy",
   "name": "argwhere",
   "next": {
-    "href": "/docs/api/ops/array/",
+    "href": "/docs/api/array/",
     "label": "we.array"
   },
   "notes": "Find indices of non-zero elements. Cost: numel(input).",
@@ -297,7 +299,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/argsort/",
+    "href": "/docs/api/argsort/",
     "label": "we.argsort"
   },
   "provenance_label": "Adapted from NumPy docs",

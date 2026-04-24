@@ -203,6 +203,7 @@
     }
   ],
   "canonical_name": "triu",
+  "canonical_path": "triu",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -217,11 +218,12 @@
     "output": "array([[ 1,  2,  3],\n       [ 4,  5,  6],\n       [ 0,  8,  9],\n       [ 0,  0, 12]])\n\narray([[[ 0,  1,  2,  3,  4],\n        [ 0,  6,  7,  8,  9],\n        [ 0,  0, 12, 13, 14],\n        [ 0,  0,  0, 18, 19]],\n       [[20, 21, 22, 23, 24],\n        [ 0, 26, 27, 28, 29],\n        [ 0,  0, 32, 33, 34],\n        [ 0,  0,  0, 38, 39]],\n       [[40, 41, 42, 43, 44],\n        [ 0, 46, 47, 48, 49],\n        [ 0,  0, 52, 53, 54],\n        [ 0,  0,  0, 58, 59]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/triu/",
+  "href": "/docs/api/triu/",
+  "legacy_href": "/docs/api/ops/triu/",
   "module": "numpy",
   "name": "triu",
   "next": {
-    "href": "/docs/api/ops/triu_indices/",
+    "href": "/docs/api/triu-indices/",
     "label": "we.triu_indices"
   },
   "notes": "Upper triangle of array.",
@@ -229,7 +231,7 @@
   "numpy_ref": "np.triu",
   "parameters": [],
   "previous": {
-    "href": "/docs/api/ops/trim_zeros/",
+    "href": "/docs/api/trim-zeros/",
     "label": "we.trim_zeros"
   },
   "provenance_label": "Adapted from NumPy docs",

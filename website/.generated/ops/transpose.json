@@ -420,6 +420,7 @@
     }
   ],
   "canonical_name": "transpose",
+  "canonical_path": "transpose",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -441,11 +442,12 @@
     "output": "array([[1, 2],\n       [3, 4]])\n\narray([[1, 3],\n       [2, 4]])\n\narray([1, 2, 3, 4])\n\narray([1, 2, 3, 4])\n\n(2, 1, 3)\n\n(5, 4, 3, 2)\n\n(5, 3, 4)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/transpose/",
+  "href": "/docs/api/transpose/",
+  "legacy_href": "/docs/api/ops/transpose/",
   "module": "numpy",
   "name": "transpose",
   "next": {
-    "href": "/docs/api/ops/trapezoid/",
+    "href": "/docs/api/trapezoid/",
     "label": "we.trapezoid"
   },
   "notes": "Permute array dimensions.",
@@ -475,7 +477,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/trace/",
+    "href": "/docs/api/trace/",
     "label": "we.trace"
   },
   "provenance_label": "Adapted from NumPy docs",

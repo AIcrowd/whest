@@ -699,6 +699,7 @@
     }
   ],
   "canonical_name": "linalg.eigh",
+  "canonical_path": "linalg/eigh",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -723,11 +724,12 @@
     "output": "array([[ 1.+0.j, -0.-2.j],\n       [ 0.+2.j,  5.+0.j]])\n\narray([0.17157288, 5.82842712])\n\narray([[-0.92387953+0.j        , -0.38268343+0.j        ], # may vary\n       [ 0.        +0.38268343j,  0.        -0.92387953j]])\n\narray([5.55111512e-17+0.0000000e+00j, 0.00000000e+00+1.2490009e-16j])\n\narray([0.+0.j, 0.+0.j])\n\nmatrix([[ 1.+0.j, -0.-2.j],\n        [ 0.+2.j,  5.+0.j]])\n\narray([0.17157288, 5.82842712])\n\nmatrix([[-0.92387953+0.j        , -0.38268343+0.j        ], # may vary\n        [ 0.        +0.38268343j,  0.        -0.92387953j]])\n\narray([[5.+2.j, 9.-2.j],\n       [0.+2.j, 2.-1.j]])\n\narray([[5.+0.j, 0.-2.j],\n       [0.+2.j, 2.+0.j]])\n\narray([1., 6.])\n\narray([6.+0.j, 1.+0.j])\n\narray([[-0.4472136 +0.j        , -0.89442719+0.j        ], # may vary\n       [ 0.        +0.89442719j,  0.        -0.4472136j ]])\n\narray([[ 0.89442719+0.j       , -0.        +0.4472136j],\n       [-0.        +0.4472136j,  0.89442719+0.j       ]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-eigh/",
+  "href": "/docs/api/linalg/eigh/",
+  "legacy_href": "/docs/api/ops/linalg-eigh/",
   "module": "numpy.linalg",
   "name": "linalg.eigh",
   "next": {
-    "href": "/docs/api/ops/linalg-eigvals/",
+    "href": "/docs/api/linalg/eigvals/",
     "label": "we.linalg.eigvals"
   },
   "notes": "Symmetric eigendecomposition. Cost: $n^3$.",
@@ -760,7 +762,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-eig/",
+    "href": "/docs/api/linalg/eig/",
     "label": "we.linalg.eig"
   },
   "provenance_label": "Adapted from NumPy docs",

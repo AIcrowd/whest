@@ -400,6 +400,7 @@
     }
   ],
   "canonical_name": "linalg.cross",
+  "canonical_path": "linalg/cross",
   "category": "counted_custom",
   "cost_formula": "delegates to we.cross",
   "cost_formula_latex": "delegates to `cross`",
@@ -414,11 +415,12 @@
     "output": "array([-3,  6, -3])\n\narray([[-3,  6, -3],\n       [ 3, -6,  3]])\n\narray([[-24,  6],\n       [ 18, 24],\n       [-6,  -18]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-cross/",
+  "href": "/docs/api/linalg/cross/",
+  "legacy_href": "/docs/api/ops/linalg-cross/",
   "module": "numpy.linalg",
   "name": "linalg.cross",
   "next": {
-    "href": "/docs/api/ops/linalg-det/",
+    "href": "/docs/api/linalg/det/",
     "label": "we.linalg.det"
   },
   "notes": "Delegates to `we.cross` which charges `numel(output)` FLOPs.",
@@ -452,7 +454,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-cond/",
+    "href": "/docs/api/linalg/cond/",
     "label": "we.linalg.cond"
   },
   "provenance_label": "Adapted from NumPy docs",

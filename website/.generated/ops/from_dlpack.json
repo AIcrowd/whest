@@ -327,6 +327,7 @@
     }
   ],
   "canonical_name": "from_dlpack",
+  "canonical_path": "from-dlpack",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -360,11 +361,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/from_dlpack/",
+  "href": "/docs/api/from-dlpack/",
+  "legacy_href": "/docs/api/ops/from_dlpack/",
   "module": "numpy",
   "name": "from_dlpack",
   "next": {
-    "href": "/docs/api/ops/frombuffer/",
+    "href": "/docs/api/frombuffer/",
     "label": "we.frombuffer"
   },
   "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output).",
@@ -403,7 +405,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/frexp/",
+    "href": "/docs/api/frexp/",
     "label": "we.frexp"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -1,0 +1,24 @@
+{
+  "aliases": [
+    "namespace",
+    "we.namespace",
+    "whest.namespace"
+  ],
+  "body_sections": [],
+  "canonical_name": "namespace",
+  "canonical_path": "namespace",
+  "display_name": "we.namespace",
+  "href": "/docs/api/namespace/",
+  "import_path": "we.namespace",
+  "kind": "function",
+  "members": [],
+  "module": "whest._budget",
+  "name": "namespace",
+  "related_guides": [],
+  "signature": "we.namespace(name: 'str') -> '_NamespaceScope'",
+  "slug": "namespace",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_budget.py#L134",
+  "status_note": "",
+  "summary": "",
+  "upstream_source_url": ""
+}

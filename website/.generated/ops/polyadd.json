@@ -342,6 +342,7 @@
     }
   ],
   "canonical_name": "polyadd",
+  "canonical_path": "polyadd",
   "category": "counted_custom",
   "cost_formula": "max(n1, n2)",
   "cost_formula_latex": "$\\max(n_1, n_2)$",
@@ -363,11 +364,12 @@
     "output": "array([9, 6, 6])\n\n1 x + 2\n\n2\n9 x + 5 x + 4\n\n2\n9 x + 6 x + 6",
     "source": "derived"
   },
-  "href": "/docs/api/ops/polyadd/",
+  "href": "/docs/api/polyadd/",
+  "legacy_href": "/docs/api/ops/polyadd/",
   "module": "whest._polynomial",
   "name": "polyadd",
   "next": {
-    "href": "/docs/api/ops/polyder/",
+    "href": "/docs/api/polyder/",
     "label": "we.polyder"
   },
   "notes": "Add two polynomials. Cost: max(n1, n2) FLOPs.",
@@ -383,7 +385,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/poly/",
+    "href": "/docs/api/poly/",
     "label": "we.poly"
   },
   "provenance_label": "Adapted from NumPy docs",

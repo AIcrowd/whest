@@ -242,6 +242,7 @@
     }
   ],
   "canonical_name": "real",
+  "canonical_path": "real",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -256,11 +257,12 @@
     "output": "array([1.,  3.,  5.])\n\narray([9.+2.j,  9.+4.j,  9.+6.j])\n\narray([9.+2.j,  8.+4.j,  7.+6.j])\n\n1.0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/real/",
+  "href": "/docs/api/real/",
+  "legacy_href": "/docs/api/ops/real/",
   "module": "numpy",
   "name": "real",
   "next": {
-    "href": "/docs/api/ops/real_if_close/",
+    "href": "/docs/api/real-if-close/",
     "label": "we.real_if_close"
   },
   "notes": "Return real part of complex array.",
@@ -276,7 +278,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ravel_multi_index/",
+    "href": "/docs/api/ravel-multi-index/",
     "label": "we.ravel_multi_index"
   },
   "provenance_label": "Adapted from NumPy docs",

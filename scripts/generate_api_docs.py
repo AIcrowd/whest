@@ -30,6 +30,7 @@ from pathlib import Path
 # Paths
 # ---------------------------------------------------------------------------
 ROOT = Path(__file__).resolve().parent.parent
+SRC_ROOT = (ROOT / "src").resolve()
 WEBSITE = ROOT / "website"
 PUBLIC_DIR = WEBSITE / "public"
 API_DATA_DIR = PUBLIC_DIR / "api-data" / "ops"
@@ -51,11 +52,39 @@ WEIGHTS_CSV_PATH = ROOT / "src" / "whest" / "data" / "weights.csv"
 # ---------------------------------------------------------------------------
 
 
-def load_registry() -> dict[str, dict]:
-    sys.path.insert(0, str(ROOT / "src"))
-    from whest._registry import REGISTRY  # type: ignore
+def _module_is_from_local_checkout(module: object | None) -> bool:
+    module_file = getattr(module, "__file__", None)
+    if not module_file:
+        return False
 
-    return REGISTRY
+    try:
+        return Path(module_file).resolve().is_relative_to(SRC_ROOT)
+    except OSError:
+        return False
+
+
+def _import_local_whest_module(module_name: str):
+    src_root = str(SRC_ROOT)
+    if src_root not in sys.path:
+        sys.path.insert(0, src_root)
+
+    root_module = sys.modules.get("whest")
+    if root_module is not None and not _module_is_from_local_checkout(root_module):
+        for name in list(sys.modules):
+            if name == "whest" or name.startswith("whest."):
+                sys.modules.pop(name, None)
+
+    module = importlib.import_module(module_name)
+    if not _module_is_from_local_checkout(module):
+        raise RuntimeError(
+            f"Failed to import {module_name} from local checkout under {SRC_ROOT}"
+        )
+    return module
+
+
+def load_registry() -> dict[str, dict]:
+    registry_module = _import_local_whest_module("whest._registry")
+    return registry_module.REGISTRY
 
 
 # ---------------------------------------------------------------------------
@@ -484,6 +513,8 @@ class OperationDocRecord:
     canonical_name: str
     slug: str
     href: str
+    canonical_path: str
+    legacy_href: str
     module: str
     area: str
     whest_ref: str
@@ -582,6 +613,7 @@ class PublicApiSymbolRecord:
     canonical_name: str
     slug: str
     href: str
+    canonical_path: str
     kind: str
     module: str
     import_path: str
@@ -592,6 +624,8 @@ class PublicApiSymbolRecord:
     source_url: str = ""
     upstream_source_url: str = ""
     related_guides: list[RelatedGuideLink] = field(default_factory=list)
+    members: list[OperationNavLink] = field(default_factory=list)
+    status_note: str = ""
     body_sections: list[dict] | None = None
 
 
@@ -617,7 +651,7 @@ def slug_for_operation(name: str) -> str:
 
 
 def detail_href_for_slug(slug: str) -> str:
-    """Return the canonical docs route for a generated operation page."""
+    """Return the legacy docs route for a generated operation page."""
     return f"/docs/api/ops/{slug}/"
 
 
@@ -629,12 +663,75 @@ def detail_json_href_for_slug(slug: str) -> str:
 CAMEL_BOUNDARY_RE = re.compile(r"(?<=[a-z0-9])(?=[A-Z])")
 
 
+def slug_for_api_segment(name: str) -> str:
+    """Return a URL-safe slug for one public API path segment."""
+    normalized = name.replace("_", "-")
+    normalized = CAMEL_BOUNDARY_RE.sub("-", normalized)
+    normalized = re.sub(r"-{2,}", "-", normalized)
+    return normalized.lower()
+
+
+def canonical_api_path_for_name(name: str) -> str:
+    """Return the canonical docs path key for a public API symbol."""
+    return "/".join(slug_for_api_segment(part) for part in name.split("."))
+
+
+def canonical_api_href_for_name(name: str) -> str:
+    """Return the canonical docs route for a public API symbol."""
+    return f"/docs/api/{canonical_api_path_for_name(name)}/"
+
+
 def slug_for_symbol(name: str) -> str:
     """Return a URL-safe slug for a public API symbol."""
     normalized = name.replace(".", "-").replace("_", "-")
     normalized = CAMEL_BOUNDARY_RE.sub("-", normalized)
     normalized = re.sub(r"-{2,}", "-", normalized)
     return normalized.lower()
+
+
+PUBLIC_API_TOP_LEVEL = (
+    "BudgetContext",
+    "Cycle",
+    "OpRecord",
+    "PathInfo",
+    "Permutation",
+    "PermutationGroup",
+    "StepInfo",
+    "SymmetricTensor",
+    "SymmetryInfo",
+    "as_symmetric",
+    "base_repr",
+    "binary_repr",
+    "broadcast",
+    "budget",
+    "budget_live",
+    "budget_reset",
+    "budget_summary",
+    "budget_summary_dict",
+    "clear_einsum_cache",
+    "configure",
+    "einsum_cache_info",
+    "errstate",
+    "finfo",
+    "fromfile",
+    "fromregex",
+    "fromstring",
+    "get_printoptions",
+    "geterr",
+    "iinfo",
+    "is_symmetric",
+    "isnat",
+    "namespace",
+    "ndenumerate",
+    "ndindex",
+    "nditer",
+    "printoptions",
+    "set_printoptions",
+    "seterr",
+    "symmetrize",
+)
+
+PUBLIC_API_MODULES = ("random", "stats", "flops", "testing")
 
 
 def display_type_for_category(category: str) -> str:
@@ -2196,7 +2293,9 @@ def _build_operation_record(
         name=name,
         canonical_name=name,
         slug=slug_for_operation(name),
-        href=detail_href_for_slug(slug_for_operation(name)),
+        href=canonical_api_href_for_name(name),
+        canonical_path=canonical_api_path_for_name(name),
+        legacy_href=detail_href_for_slug(slug_for_operation(name)),
         module=module,
         area=normalize_area(module),
         whest_ref=whest_ref(name, module),
@@ -2230,7 +2329,7 @@ def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]
     """Resolve the live whest object and its upstream NumPy/SciPy counterpart."""
     import numpy as np
 
-    import whest as we
+    we = _import_local_whest_module("whest")
 
     if module == "numpy.linalg":
         short_name = name.removeprefix("linalg.")
@@ -2435,6 +2534,8 @@ def _public_symbol_kind(obj: object, canonical_name: str) -> str:
         if issubclass(obj, Exception):
             return "error"
         return "class"
+    if not callable(obj):
+        return "object"
     if canonical_name.startswith("flops.") and canonical_name.endswith("_cost"):
         return "cost_helper"
     return "function"
@@ -2446,6 +2547,14 @@ def _top_level_symbol_aliases(name: str) -> list[str]:
 
 def _flops_symbol_aliases(name: str) -> list[str]:
     return [f"flops.{name}", f"we.flops.{name}", f"whest.flops.{name}", name]
+
+
+def _module_symbol_aliases(module_label: str, name: str) -> list[str]:
+    return [
+        f"{module_label}.{name}",
+        f"we.{module_label}.{name}",
+        f"whest.{module_label}.{name}",
+    ]
 
 
 def _dedupe_aliases(values: list[str]) -> list[str]:
@@ -2523,15 +2632,72 @@ def _related_guides_for_symbol(canonical_name: str) -> list[RelatedGuideLink]:
     return deduped
 
 
+def collect_public_api_surface_names() -> set[str]:
+    """Return the explicit public API surface that must have docs coverage."""
+    we = _import_local_whest_module("whest")
+
+    names = set(PUBLIC_API_TOP_LEVEL)
+    for module_label in PUBLIC_API_MODULES:
+        module = getattr(we, module_label)
+        exports = getattr(module, "__all__", None)
+        if exports is None:
+            raise RuntimeError(
+                f"{module.__name__} must define __all__ for API docs generation"
+            )
+        names.update(f"{module_label}.{name}" for name in exports)
+    return names
+
+
+def _public_symbol_member_links(
+    canonical_name: str,
+    registry: dict[str, dict],
+    alias_map: dict[str, str],
+) -> list[OperationNavLink]:
+    prefix = f"{canonical_name}."
+    if not canonical_name.startswith("stats."):
+        return []
+
+    children = sorted(
+        {
+            resolve_canonical_name(name, alias_map)
+            for name, info in registry.items()
+            if info["category"] != "blacklisted" and name.startswith(prefix)
+        }
+    )
+    return [
+        OperationNavLink(
+            href=canonical_api_href_for_name(name),
+            label=f"we.{name}",
+        )
+        for name in children
+    ]
+
+
+def _public_symbol_status_note(canonical_name: str, registry: dict[str, dict]) -> str:
+    info = registry.get(canonical_name)
+    if not info or info["category"] != "blacklisted":
+        return ""
+
+    return (
+        "This symbol is exported from whest, but it is excluded from the "
+        "operation registry and therefore does not appear in the operation "
+        "cost index."
+    )
+
+
 def _build_operation_internal_refs(
     registry: dict[str, dict], alias_map: dict[str, str]
 ) -> dict[str, dict[str, str]]:
     refs: dict[str, dict[str, str]] = {}
     for name, info in registry.items():
+        if info["category"] == "blacklisted":
+            continue
         canonical = resolve_canonical_name(name, alias_map)
+        if canonical != name:
+            continue
         entry = {
             "canonical_name": canonical,
-            "href": f"/docs/api/ops/{slug_for_operation(canonical)}",
+            "href": canonical_api_href_for_name(canonical),
         }
         op_aliases = {
             name,
@@ -2546,60 +2712,67 @@ def _build_operation_internal_refs(
 def build_public_api_symbol_records(
     registry: dict[str, dict], alias_map: dict[str, str]
 ) -> list[PublicApiSymbolRecord]:
-    sys.path.insert(0, str(ROOT / "src"))
-    import whest as we
+    we = _import_local_whest_module("whest")
 
-    supported_ops = set(registry)
+    supported_ops = {
+        name
+        for name, info in registry.items()
+        if info["category"] != "blacklisted"
+        and resolve_canonical_name(name, alias_map) == name
+    }
     symbol_specs: dict[str, dict[str, object]] = {}
-    top_level_canonical_by_id: dict[int, str] = {}
+    canonical_by_id: dict[int, str] = {}
 
-    for name in sorted(dir(we)):
-        if name.startswith("_") or name in registry:
-            continue
+    for name in PUBLIC_API_TOP_LEVEL:
         obj = getattr(we, name)
-        if inspect.ismodule(obj):
-            continue
-        if not (inspect.isclass(obj) or callable(obj)):
-            continue
-
-        top_level_canonical_by_id[id(obj)] = name
+        canonical_by_id[id(obj)] = name
         symbol_specs[name] = {
             "canonical_name": name,
             "obj": obj,
             "kind": _public_symbol_kind(obj, name),
             "module": getattr(obj, "__module__", "whest"),
             "import_path": f"we.{name}",
-            "display_name": name,
+            "display_name": f"we.{name}",
             "aliases": _top_level_symbol_aliases(name),
         }
 
-    for name in getattr(we.flops, "__all__", []):
-        if not hasattr(we.flops, name):
-            continue
-        obj = getattr(we.flops, name)
-        canonical_name = top_level_canonical_by_id.get(id(obj), f"flops.{name}")
-        aliases = _flops_symbol_aliases(name)
-        if canonical_name in symbol_specs:
-            symbol_specs[canonical_name]["aliases"] = _dedupe_aliases(
-                list(symbol_specs[canonical_name]["aliases"]) + aliases
-            )
-            continue
+    for module_label in PUBLIC_API_MODULES:
+        module = getattr(we, module_label)
+        exports = getattr(module, "__all__", [])
+        for name in exports:
+            canonical_name = f"{module_label}.{name}"
+            if canonical_name in supported_ops:
+                continue
 
-        symbol_specs[canonical_name] = {
-            "canonical_name": canonical_name,
-            "obj": obj,
-            "kind": _public_symbol_kind(obj, canonical_name),
-            "module": getattr(obj, "__module__", "whest.flops"),
-            "import_path": f"we.flops.{name}",
-            "display_name": f"we.flops.{name}",
-            "aliases": _dedupe_aliases(aliases),
-        }
+            obj = getattr(module, name)
+            canonical_from_id = canonical_by_id.get(id(obj), canonical_name)
+            aliases = (
+                _flops_symbol_aliases(name)
+                if module_label == "flops"
+                else _module_symbol_aliases(module_label, name)
+            )
+            if canonical_from_id in symbol_specs:
+                symbol_specs[canonical_from_id]["aliases"] = _dedupe_aliases(
+                    list(symbol_specs[canonical_from_id]["aliases"]) + aliases
+                )
+                continue
+
+            canonical_by_id[id(obj)] = canonical_from_id
+            symbol_specs[canonical_from_id] = {
+                "canonical_name": canonical_from_id,
+                "obj": obj,
+                "kind": _public_symbol_kind(obj, canonical_from_id),
+                "module": getattr(obj, "__module__", f"whest.{module_label}"),
+                "import_path": f"we.{canonical_name}",
+                "display_name": f"we.{canonical_name}",
+                "aliases": _dedupe_aliases(aliases),
+            }
 
     internal_refs = _build_operation_internal_refs(registry, alias_map)
     for spec in symbol_specs.values():
         entry = {
             "canonical_name": str(spec["canonical_name"]),
-            "href": f"/docs/api/symbols/{slug_for_symbol(str(spec['canonical_name']))}",
+            "href": canonical_api_href_for_name(str(spec["canonical_name"])),
         }
         for alias in spec["aliases"]:
             internal_refs[str(alias)] = entry
@@ -2620,7 +2793,8 @@ def build_public_api_symbol_records(
             name=canonical_name,
             canonical_name=canonical_name,
             slug=slug_for_symbol(canonical_name),
-            href=f"/docs/api/symbols/{slug_for_symbol(canonical_name)}",
+            href=canonical_api_href_for_name(canonical_name),
+            canonical_path=canonical_api_path_for_name(canonical_name),
             kind=str(spec["kind"]),
             module=str(spec["module"]),
             import_path=import_path,
@@ -2633,6 +2807,8 @@ def build_public_api_symbol_records(
                 repo_blob_root="https://github.com/AIcrowd/whest/blob/main",
             ),
             related_guides=_related_guides_for_symbol(canonical_name),
+            members=_public_symbol_member_links(canonical_name, registry, alias_map),
+            status_note=_public_symbol_status_note(canonical_name, registry),
             body_sections=parsed.sections or [],
         )
         records.append(record)
@@ -3063,6 +3239,7 @@ def write_operation_doc_artifacts(
             {
                 "name": record.name,
                 "slug": record.slug,
+                "canonical_path": record.canonical_path,
                 "detail_href": record.href,
                 "detail_json_href": detail_json_href_for_slug(record.slug),
                 "module": record.module,
@@ -3117,32 +3294,88 @@ def write_operation_doc_artifacts(
 def write_public_symbol_artifacts(
     records: list[PublicApiSymbolRecord], website_root: Path
 ) -> None:
-    """Emit standalone MDX stubs plus generated public-symbol payloads."""
-    symbol_docs_dir = website_root / "content" / "docs" / "api" / "symbols"
+    """Emit generated public-symbol payloads and static import metadata."""
     generated_dir = website_root / ".generated"
     symbol_docs_payload_dir = generated_dir / "symbols"
-    symbol_docs_dir.mkdir(parents=True, exist_ok=True)
     generated_dir.mkdir(parents=True, exist_ok=True)
     symbol_docs_payload_dir.mkdir(parents=True, exist_ok=True)
 
     expected_pages = {record.slug for record in records}
-    for existing_page in symbol_docs_dir.glob("*.mdx"):
-        if existing_page.stem not in expected_pages:
-            existing_page.unlink()
     for existing_payload in symbol_docs_payload_dir.glob("*.json"):
         if existing_payload.stem not in expected_pages:
             existing_payload.unlink()
 
     docs_manifest: dict[str, dict[str, object]] = {}
+    import_map_lines = [
+        "export const symbolDocImports: Record<string, () => Promise<{ default: unknown }>> = {",
+    ]
     for record in sorted(records, key=lambda symbol: symbol.name):
-        stub_path = symbol_docs_dir / f"{record.slug}.mdx"
-        stub_path.write_text(render_public_symbol_stub(record))
         write_json(symbol_docs_payload_dir / f"{record.slug}.json", asdict(record))
         docs_manifest[record.name] = asdict(record)
+        import_map_lines.append(
+            f'  "{record.slug}": () => import("./symbols/{record.slug}.json"),'
+        )
 
+    import_map_lines.extend(
+        [
+            "};",
+            "",
+            "export const symbolDocSlugs = [",
+            *[
+                f'  "{record.slug}",'
+                for record in sorted(records, key=lambda symbol: symbol.slug)
+            ],
+            "] as const;",
+            "",
+        ]
+    )
     write_json(generated_dir / "public-api-symbols.json", docs_manifest)
-    print(f"  Generated {len(records)} standalone public-symbol stubs")
+    (generated_dir / "symbol-doc-imports.ts").write_text("\n".join(import_map_lines))
     print(f"  Generated {generated_dir / 'public-api-symbols.json'}")
+    print(f"  Generated {generated_dir / 'symbol-doc-imports.ts'}")
+
+
+def write_public_api_route_artifacts(
+    operation_records: list[OperationDocRecord],
+    symbol_records: list[PublicApiSymbolRecord],
+    website_root: Path,
+) -> None:
+    """Emit canonical route manifests for generated public API pages."""
+    generated_dir = website_root / ".generated"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+
+    routes: dict[str, dict[str, str]] = {}
+    legacy_redirects: dict[str, str] = {}
+
+    for record in sorted(operation_records, key=lambda op: op.name):
+        routes[record.canonical_path] = {
+            "kind": "op",
+            "slug": record.slug,
+            "href": record.href,
+            "canonical_name": record.canonical_name,
+        }
+        legacy_redirects[record.slug] = record.href
+
+    for record in sorted(symbol_records, key=lambda symbol: symbol.name):
+        routes[record.canonical_path] = {
+            "kind": "symbol",
+            "slug": record.slug,
+            "href": record.href,
+            "canonical_name": record.canonical_name,
+        }
+
+    write_json(generated_dir / "public-api-routes.json", routes)
+    write_json(generated_dir / "legacy-op-redirects.json", legacy_redirects)
+    write_json(
+        generated_dir / "public-api-refs.json",
+        build_public_api_refs_manifest(
+            operation_records=operation_records,
+            symbol_records=symbol_records,
+        ),
+    )
+    print(f"  Generated {generated_dir / 'public-api-routes.json'}")
+    print(f"  Generated {generated_dir / 'legacy-op-redirects.json'}")
+    print(f"  Generated {generated_dir / 'public-api-refs.json'}")
 
 
 def build_public_api_refs_manifest(
@@ -3510,7 +3743,8 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
     missing_detail_fields = [
         op["name"]
         for op in operations
-        if not {"slug", "detail_href", "detail_json_href", "summary"} <= set(op)
+        if not {"slug", "canonical_path", "detail_href", "detail_json_href", "summary"}
+        <= set(op)
     ]
     if missing_detail_fields:
         print("\nops.json entries missing detail fields:")
@@ -3552,13 +3786,64 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
     if (
         not isinstance(abs_ref, dict)
         or abs_ref.get("label") != "we.absolute"
-        or abs_ref.get("href") != "/docs/api/ops/absolute/"
+        or abs_ref.get("href") != "/docs/api/absolute/"
         or abs_ref.get("canonical_name") != "absolute"
     ):
         print(
             "\nop-refs.json missing structured alias entry for "
-            "'abs' -> '/docs/api/ops/absolute/'"
+            "'abs' -> '/docs/api/absolute/'"
         )
+        return False
+
+    public_api_routes_path = GENERATED_DIR / "public-api-routes.json"
+    if not public_api_routes_path.exists():
+        print(f"\npublic-api-routes.json NOT FOUND at {public_api_routes_path}")
+        return False
+
+    legacy_redirects_path = GENERATED_DIR / "legacy-op-redirects.json"
+    if not legacy_redirects_path.exists():
+        print(f"\nlegacy-op-redirects.json NOT FOUND at {legacy_redirects_path}")
+        return False
+
+    public_api_refs_path = GENERATED_DIR / "public-api-refs.json"
+    if not public_api_refs_path.exists():
+        print(f"\npublic-api-refs.json NOT FOUND at {public_api_refs_path}")
+        return False
+
+    public_api_symbols_path = GENERATED_DIR / "public-api-symbols.json"
+    if not public_api_symbols_path.exists():
+        print(f"\npublic-api-symbols.json NOT FOUND at {public_api_symbols_path}")
+        return False
+
+    symbol_import_map_path = GENERATED_DIR / "symbol-doc-imports.ts"
+    if not symbol_import_map_path.exists():
+        print(f"\nGenerated symbol import map NOT FOUND at {symbol_import_map_path}")
+        return False
+
+    public_api_routes = json.loads(public_api_routes_path.read_text())
+    if public_api_routes.get("stats/norm", {}).get("href") != "/docs/api/stats/norm/":
+        print("\npublic-api-routes.json missing canonical entry for stats/norm")
+        return False
+    if (
+        public_api_routes.get("stats/norm/pdf", {}).get("href")
+        != "/docs/api/stats/norm/pdf/"
+    ):
+        print("\npublic-api-routes.json missing canonical entry for stats/norm/pdf")
+        return False
+
+    legacy_redirects = json.loads(legacy_redirects_path.read_text())
+    if legacy_redirects.get("einsum") != "/docs/api/einsum/":
+        print("\nlegacy-op-redirects.json missing redirect for einsum")
+        return False
+
+    public_api_refs = json.loads(public_api_refs_path.read_text())
+    missing_surface = sorted(
+        name for name in collect_public_api_surface_names() if name not in public_api_refs
+    )
+    if missing_surface:
+        print("\npublic-api-refs.json missing public API entries:")
+        for name in missing_surface[:20]:
+            print(f"  {name}")
         return False
 
     public_payload = API_DATA_DIR / "absolute.json"
@@ -3579,7 +3864,7 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         return False
 
     print(
-        "Generated operation doc manifests, static payloads, parser coverage, and example coverage are present."
+        "Generated operation and public API manifests, static payloads, parser coverage, and example coverage are present."
     )
 
     return True
@@ -3615,7 +3900,11 @@ def main():
     print("Generating API reference data...")
     worker_count = max(1, args.workers)
     records = build_operation_doc_records(registry, workers=worker_count)
+    alias_map = load_alias_map(registry)
+    symbol_records = build_public_api_symbol_records(registry, alias_map)
     write_operation_doc_artifacts(records, WEBSITE)
+    write_public_symbol_artifacts(symbol_records, WEBSITE)
+    write_public_api_route_artifacts(records, symbol_records, WEBSITE)
     write_op_doc_coverage_artifact(records, WEBSITE)
     example_coverage = build_example_coverage(records, API_EXAMPLES_DIR)
     write_example_coverage_artifact(example_coverage, WEBSITE)

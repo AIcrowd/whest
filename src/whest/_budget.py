@@ -469,9 +469,32 @@ def budget(
 ) -> BudgetContext:
     """Create a ``BudgetContext`` usable as a context manager or decorator.
 
-    This helper accepts the same arguments as ``BudgetContext(...)``,
-    including ``namespace=...`` for attribution and ``wall_time_limit_s=...``
-    for cooperative wall-clock limits.
+    This helper accepts the same arguments as ``BudgetContext(...)`` and is
+    convenient when you want a short, function-style entrypoint.
+
+    Parameters
+    ----------
+    flop_budget : int
+        Maximum number of FLOPs allowed inside the context.
+    flop_multiplier : float, optional
+        Multiplier applied to every charged FLOP cost. Default ``1.0``.
+    quiet : bool, optional
+        If ``True``, suppress the startup banner on context entry.
+    namespace : str or None, optional
+        Root namespace prefix for attribution.
+    wall_time_limit_s : float or None, optional
+        Cooperative wall-clock limit checked at operation boundaries.
+
+    Returns
+    -------
+    BudgetContext
+        A context manager that can also be used as a decorator.
+
+    Examples
+    --------
+    >>> import whest as we
+    >>> with we.budget(1_000):
+    ...     _ = we.add(we.array([1.0]), we.array([2.0]))
     """
     return BudgetContext(
         flop_budget=flop_budget,
@@ -628,6 +651,15 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
         ``"flops_remaining"``, ``"operations"``, ``"wall_time_s"``,
         ``"tracked_time_s"``, ``"untracked_time_s"``, and optionally
         ``"by_namespace"`` with exact attribution buckets.
+
+    Examples
+    --------
+    >>> import whest as we
+    >>> with we.BudgetContext(flop_budget=100):
+    ...     _ = we.add(we.array([1.0]), we.array([2.0]))
+    >>> summary = we.budget_summary_dict()
+    >>> sorted(summary)
+    ['flop_budget', 'flops_remaining', 'flops_used', 'operations', 'tracked_time_s', 'untracked_time_s', 'wall_time_s']
     """
     acc_copy = BudgetAccumulator()
     acc_copy._records = _snapshot_records()
@@ -635,7 +667,23 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
 
 
 def budget_reset() -> None:
-    """Clear all accumulated budget data. Core library only."""
+    """Clear accumulated session-wide budget data.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+        Removes all recorded budget summaries and resets live baselines for
+        active contexts.
+
+    Notes
+    -----
+    This is primarily useful in tests, notebooks, and long-lived processes
+    where you want a fresh session-wide summary.
+    """
     _accumulator.reset()
     for ctx in list(_all_budget_contexts):
         ctx._mark_reset_baseline()

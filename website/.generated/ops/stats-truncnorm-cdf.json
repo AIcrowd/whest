@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.truncnorm.cdf",
+  "canonical_path": "stats/truncnorm/cdf",
   "category": "counted_custom",
   "cost_formula": "30n",
   "cost_formula_latex": "$30n$",
@@ -169,11 +170,12 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/stats-truncnorm-cdf/",
+  "href": "/docs/api/stats/truncnorm/cdf/",
+  "legacy_href": "/docs/api/ops/stats-truncnorm-cdf/",
   "module": "whest.stats",
   "name": "stats.truncnorm.cdf",
   "next": {
-    "href": "/docs/api/ops/stats-truncnorm-pdf/",
+    "href": "/docs/api/stats/truncnorm/pdf/",
     "label": "we.stats.truncnorm.pdf"
   },
   "notes": "Truncated normal CDF; cost = numel(input).",
@@ -211,7 +213,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-norm-ppf/",
+    "href": "/docs/api/stats/norm/ppf/",
     "label": "we.stats.norm.ppf"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -229,7 +231,7 @@
   "signature": "we.stats.truncnorm.cdf(x, a, b, loc=0, scale=1)",
   "slug": "stats-truncnorm-cdf",
   "summary": "Cumulative distribution function of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2102",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.stats.truncnorm.cdf",

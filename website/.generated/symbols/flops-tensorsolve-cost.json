@@ -1,0 +1,200 @@
+{
+  "aliases": [
+    "flops.tensorsolve_cost",
+    "we.flops.tensorsolve_cost",
+    "whest.flops.tensorsolve_cost",
+    "tensorsolve_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/linalg/tensorsolve/",
+              "kind": "link",
+              "target": "linalg.tensorsolve",
+              "text": "linalg.tensorsolve"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of tensor solve."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Shape of the coefficient tensor."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Shape of the coefficient tensor."
+                }
+              ],
+              "name": "a_shape",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of leading indices for the solution. Default is 2."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int or None, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of leading indices for the solution. Default is 2."
+                }
+              ],
+              "name": "ind",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count: $n^3$ where $n$ = product of trailing dims."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count: $n^3$ where $n$ = product of trailing dims."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Reduces to a standard linear solve after reshaping."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.tensorsolve_cost",
+  "canonical_path": "flops/tensorsolve-cost",
+  "display_name": "we.flops.tensorsolve_cost",
+  "href": "/docs/api/flops/tensorsolve-cost/",
+  "import_path": "we.flops.tensorsolve_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.linalg._solvers",
+  "name": "flops.tensorsolve_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.flops.tensorsolve_cost(a_shape: 'tuple', ind: 'int | None' = None) -> 'int'",
+  "slug": "flops-tensorsolve-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L214",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``linalg.tensorsolve``.",
+  "upstream_source_url": ""
+}

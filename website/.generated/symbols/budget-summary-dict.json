@@ -1,0 +1,320 @@
+{
+  "aliases": [
+    "budget_summary_dict",
+    "we.budget_summary_dict",
+    "whest.budget_summary_dict"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Return aggregated budget data across all recorded contexts."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", include a "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"by_namespace\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": " key with per-namespace\nbreakdowns. Default "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "False"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": ", include a "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"by_namespace\""
+                },
+                {
+                  "kind": "text",
+                  "text": " key with per-namespace\nbreakdowns. Default "
+                },
+                {
+                  "kind": "code",
+                  "text": "False"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "by_namespace",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Dictionary with keys "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"flop_budget\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"flops_used\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": ",\n"
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"flops_remaining\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"operations\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"wall_time_s\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": ",\n"
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"tracked_time_s\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"untracked_time_s\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", and optionally\n"
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"by_namespace\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": " with exact attribution buckets."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "dict",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Dictionary with keys "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"flop_budget\""
+                },
+                {
+                  "kind": "text",
+                  "text": ", "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"flops_used\""
+                },
+                {
+                  "kind": "text",
+                  "text": ",\n"
+                },
+                {
+                  "kind": "code",
+                  "text": "\"flops_remaining\""
+                },
+                {
+                  "kind": "text",
+                  "text": ", "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"operations\""
+                },
+                {
+                  "kind": "text",
+                  "text": ", "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"wall_time_s\""
+                },
+                {
+                  "kind": "text",
+                  "text": ",\n"
+                },
+                {
+                  "kind": "code",
+                  "text": "\"tracked_time_s\""
+                },
+                {
+                  "kind": "text",
+                  "text": ", "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"untracked_time_s\""
+                },
+                {
+                  "kind": "text",
+                  "text": ", and optionally\n"
+                },
+                {
+                  "kind": "code",
+                  "text": "\"by_namespace\""
+                },
+                {
+                  "kind": "text",
+                  "text": " with exact attribution buckets."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "with we.BudgetContext(flop_budget=100):"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "_ = we.add(we.array([1.0]), we.array([2.0]))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "summary = we.budget_summary_dict()"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "sorted(summary)"
+            },
+            {
+              "kind": "output",
+              "text": "['flop_budget', 'flops_remaining', 'flops_used', 'operations', 'tracked_time_s', 'untracked_time_s', 'wall_time_s']"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "budget_summary_dict",
+  "canonical_path": "budget-summary-dict",
+  "display_name": "we.budget_summary_dict",
+  "href": "/docs/api/budget-summary-dict/",
+  "import_path": "we.budget_summary_dict",
+  "kind": "function",
+  "members": [],
+  "module": "whest._budget",
+  "name": "budget_summary_dict",
+  "related_guides": [],
+  "signature": "we.budget_summary_dict(by_namespace: 'bool' = False) -> 'dict'",
+  "slug": "budget-summary-dict",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_budget.py#L638",
+  "status_note": "",
+  "summary": "Return aggregated budget data across all recorded contexts.",
+  "upstream_source_url": ""
+}

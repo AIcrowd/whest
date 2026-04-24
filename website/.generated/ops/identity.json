@@ -289,6 +289,7 @@
     }
   ],
   "canonical_name": "identity",
+  "canonical_path": "identity",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -303,11 +304,12 @@
     "output": "array([[1.,  0.,  0.],\n       [0.,  1.,  0.],\n       [0.,  0.,  1.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/identity/",
+  "href": "/docs/api/identity/",
+  "legacy_href": "/docs/api/ops/identity/",
   "module": "numpy",
   "name": "identity",
   "next": {
-    "href": "/docs/api/ops/imag/",
+    "href": "/docs/api/imag/",
     "label": "we.imag"
   },
   "notes": "Create square identity matrix.",
@@ -330,11 +332,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -343,7 +345,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/i0/",
+    "href": "/docs/api/i0/",
     "label": "we.i0"
   },
   "provenance_label": "Adapted from NumPy docs",

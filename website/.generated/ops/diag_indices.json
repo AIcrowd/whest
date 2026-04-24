@@ -325,6 +325,7 @@
     }
   ],
   "canonical_name": "diag_indices",
+  "canonical_path": "diag-indices",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -339,11 +340,12 @@
     "output": "(array([0, 1, 2, 3]), array([0, 1, 2, 3]))\n\narray([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])\n\narray([[100,   1,   2,   3],\n       [  4, 100,   6,   7],\n       [  8,   9, 100,  11],\n       [ 12,  13,  14, 100]])\n\n(array([0, 1]), array([0, 1]), array([0, 1]))\n\narray([[[1, 0],\n        [0, 0]],\n       [[0, 0],\n        [0, 1]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/diag_indices/",
+  "href": "/docs/api/diag-indices/",
+  "legacy_href": "/docs/api/ops/diag_indices/",
   "module": "numpy",
   "name": "diag_indices",
   "next": {
-    "href": "/docs/api/ops/diag_indices_from/",
+    "href": "/docs/api/diag-indices-from/",
     "label": "we.diag_indices_from"
   },
   "notes": "Return indices to access main diagonal of n-D array.",
@@ -367,7 +369,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/diag/",
+    "href": "/docs/api/diag/",
     "label": "we.diag"
   },
   "provenance_label": "Adapted from NumPy docs",

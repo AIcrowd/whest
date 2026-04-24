@@ -1,0 +1,190 @@
+{
+  "aliases": [
+    "flops.fftn_cost",
+    "we.flops.fftn_cost",
+    "whest.flops.fftn_cost",
+    "fftn_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/fft/fftn/",
+              "kind": "link",
+              "target": "fft.fftn",
+              "text": "fft.fftn"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of an N-D complex FFT."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Transform shape along each axis."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Transform shape along each axis."
+                }
+              ],
+              "name": "shape",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count: 5 * N * sum(ceil(log2(d_i))), where N = prod(shape)."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count: 5 * N * sum(ceil(log2(d_i))), where N = prod(shape)."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The multi-dimensional FFT is computed as successive 1-D FFTs along each\naxis. The cost along axis "
+            },
+            {
+              "kind": "emphasis",
+              "text": "i"
+            },
+            {
+              "kind": "text",
+              "text": " is 5 * (N / d_i) * d_i * ceil(log2(d_i))\n= 5 * N * ceil(log2(d_i)). Summing over axes gives\n5 * N * sum(ceil(log2(d_i)))."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.fftn_cost",
+  "canonical_path": "flops/fftn-cost",
+  "display_name": "we.flops.fftn_cost",
+  "href": "/docs/api/flops/fftn-cost/",
+  "import_path": "we.flops.fftn_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.fft._transforms",
+  "name": "flops.fftn_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    },
+    {
+      "href": "/docs/guides/fft",
+      "title": "FFT Guide"
+    }
+  ],
+  "signature": "we.flops.fftn_cost(shape: 'tuple[int, ...]') -> 'int'",
+  "slug": "flops-fftn-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L64",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``fft.fftn``.",
+  "upstream_source_url": ""
+}

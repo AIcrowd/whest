@@ -454,6 +454,7 @@
     }
   ],
   "canonical_name": "random.exponential",
+  "canonical_path": "random/exponential",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -496,11 +497,12 @@
     "output": "0.08 # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-exponential/",
+  "href": "/docs/api/random/exponential/",
+  "legacy_href": "/docs/api/ops/random-exponential/",
   "module": "numpy.random",
   "name": "random.exponential",
   "next": {
-    "href": "/docs/api/ops/random-f/",
+    "href": "/docs/api/random/f/",
     "label": "we.random.f"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -527,7 +529,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-dirichlet/",
+    "href": "/docs/api/random/dirichlet/",
     "label": "we.random.dirichlet"
   },
   "provenance_label": "Adapted from NumPy docs",

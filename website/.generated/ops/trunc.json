@@ -410,6 +410,7 @@
     }
   ],
   "canonical_name": "trunc",
+  "canonical_path": "trunc",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -431,11 +432,12 @@
     "output": "array([-1., -1., -0.,  0.,  1.,  1.,  2.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/trunc/",
+  "href": "/docs/api/trunc/",
+  "legacy_href": "/docs/api/ops/trunc/",
   "module": "numpy",
   "name": "trunc",
   "next": {
-    "href": "/docs/api/ops/typename/",
+    "href": "/docs/api/typename/",
     "label": "we.typename"
   },
   "notes": "Truncate toward zero element-wise.",
@@ -481,7 +483,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/true_divide/",
+    "href": "/docs/api/true-divide/",
     "label": "we.true_divide"
   },
   "provenance_label": "Adapted from NumPy docs",

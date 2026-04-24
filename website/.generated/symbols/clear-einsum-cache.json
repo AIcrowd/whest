@@ -1,0 +1,120 @@
+{
+  "aliases": [
+    "clear_einsum_cache",
+    "we.clear_einsum_cache",
+    "whest.clear_einsum_cache"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Clear the einsum path cache."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [],
+              "data_type": "",
+              "inline": [],
+              "name": "None",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Discards all cached contraction paths."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "None",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Discards all cached contraction paths."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Discards all cached contraction paths. Subsequent "
+            },
+            {
+              "kind": "code",
+              "text": "einsum()"
+            },
+            {
+              "kind": "text",
+              "text": " and\n"
+            },
+            {
+              "kind": "code",
+              "text": "einsum_path()"
+            },
+            {
+              "kind": "text",
+              "text": " calls will recompute paths from scratch."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "clear_einsum_cache",
+  "canonical_path": "clear-einsum-cache",
+  "display_name": "we.clear_einsum_cache",
+  "href": "/docs/api/clear-einsum-cache/",
+  "import_path": "we.clear_einsum_cache",
+  "kind": "function",
+  "members": [],
+  "module": "whest._einsum",
+  "name": "clear_einsum_cache",
+  "related_guides": [],
+  "signature": "we.clear_einsum_cache()",
+  "slug": "clear-einsum-cache",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L148",
+  "status_note": "",
+  "summary": "Clear the einsum path cache.",
+  "upstream_source_url": ""
+}

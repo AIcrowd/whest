@@ -425,6 +425,7 @@
     }
   ],
   "canonical_name": "diag",
+  "canonical_path": "diag",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -439,11 +440,12 @@
     "output": "array([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n\narray([0, 4, 8])\n\narray([1, 5])\n\narray([3, 7])\n\narray([[0, 0, 0],\n       [0, 4, 0],\n       [0, 0, 8]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/diag/",
+  "href": "/docs/api/diag/",
+  "legacy_href": "/docs/api/ops/diag/",
   "module": "numpy",
   "name": "diag",
   "next": {
-    "href": "/docs/api/ops/diag_indices/",
+    "href": "/docs/api/diag-indices/",
     "label": "we.diag_indices"
   },
   "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal).",
@@ -470,7 +472,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/delete/",
+    "href": "/docs/api/delete/",
     "label": "we.delete"
   },
   "provenance_label": "Adapted from NumPy docs",

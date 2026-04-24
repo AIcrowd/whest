@@ -246,6 +246,7 @@
     }
   ],
   "canonical_name": "isrealobj",
+  "canonical_path": "isrealobj",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -260,11 +261,12 @@
     "output": "True\n\nFalse\n\nFalse",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isrealobj/",
+  "href": "/docs/api/isrealobj/",
+  "legacy_href": "/docs/api/ops/isrealobj/",
   "module": "numpy",
   "name": "isrealobj",
   "next": {
-    "href": "/docs/api/ops/isscalar/",
+    "href": "/docs/api/isscalar/",
     "label": "we.isscalar"
   },
   "notes": "Return True if x is a not complex type or array.",
@@ -283,7 +285,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isreal/",
+    "href": "/docs/api/isreal/",
     "label": "we.isreal"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -395,6 +395,7 @@
     }
   ],
   "canonical_name": "cumprod",
+  "canonical_path": "cumprod",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -409,11 +410,12 @@
     "output": "array([1, 2, 6])\n\narray([   1.,    2.,    6.,   24.,  120.,  720.])\n\narray([[ 1,  2,  3],\n       [ 4, 10, 18]])\n\narray([[  1,   2,   6],\n       [  4,  20, 120]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/cumprod/",
+  "href": "/docs/api/cumprod/",
+  "legacy_href": "/docs/api/ops/cumprod/",
   "module": "numpy",
   "name": "cumprod",
   "next": {
-    "href": "/docs/api/ops/cumsum/",
+    "href": "/docs/api/cumsum/",
     "label": "we.cumsum"
   },
   "notes": "Cumulative product of array elements.",
@@ -459,7 +461,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/cross/",
+    "href": "/docs/api/cross/",
     "label": "we.cross"
   },
   "provenance_label": "Adapted from NumPy docs",

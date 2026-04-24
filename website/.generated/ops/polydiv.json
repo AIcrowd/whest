@@ -416,6 +416,7 @@
     }
   ],
   "canonical_name": "polydiv",
+  "canonical_path": "polydiv",
   "category": "counted_custom",
   "cost_formula": "n1 * n2",
   "cost_formula_latex": "$n_1 \\cdot n_2$",
@@ -437,11 +438,12 @@
     "output": "(array([1.5 , 1.75]), array([0.25]))",
     "source": "derived"
   },
-  "href": "/docs/api/ops/polydiv/",
+  "href": "/docs/api/polydiv/",
+  "legacy_href": "/docs/api/ops/polydiv/",
   "module": "whest._polynomial",
   "name": "polydiv",
   "next": {
-    "href": "/docs/api/ops/polyfit/",
+    "href": "/docs/api/polyfit/",
     "label": "we.polyfit"
   },
   "notes": "Divide one polynomial by another. Cost: n1 * n2 FLOPs.",
@@ -466,7 +468,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/polyder/",
+    "href": "/docs/api/polyder/",
     "label": "we.polyder"
   },
   "provenance_label": "Adapted from NumPy docs",

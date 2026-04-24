@@ -1,0 +1,178 @@
+{
+  "aliases": [
+    "flops.hanning_cost",
+    "we.flops.hanning_cost",
+    "whest.flops.hanning_cost",
+    "hanning_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/hanning/",
+              "kind": "link",
+              "target": "hanning",
+              "text": "hanning"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of Hanning window generation."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Window length."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Window length."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count: n (FMA = 1 op)."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count: n (FMA = 1 op)."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "One FMA (cosine + scale) per sample, counted as 1 op under FMA=1."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.hanning_cost",
+  "canonical_path": "flops/hanning-cost",
+  "display_name": "we.flops.hanning_cost",
+  "href": "/docs/api/flops/hanning-cost/",
+  "import_path": "we.flops.hanning_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest._window",
+  "name": "flops.hanning_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.flops.hanning_cost(n: 'int') -> 'int'",
+  "slug": "flops-hanning-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L106",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``hanning``.",
+  "upstream_source_url": ""
+}

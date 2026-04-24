@@ -356,6 +356,7 @@
     }
   ],
   "canonical_name": "put",
+  "canonical_path": "put",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -370,11 +371,12 @@
     "output": "array([-44,   1, -55,   3,   4])\n\narray([ 0,  1,  2,  3, -5])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/put/",
+  "href": "/docs/api/put/",
+  "legacy_href": "/docs/api/ops/put/",
   "module": "numpy",
   "name": "put",
   "next": {
-    "href": "/docs/api/ops/put_along_axis/",
+    "href": "/docs/api/put-along-axis/",
     "label": "we.put_along_axis"
   },
   "notes": "Replace elements at given flat indices. Cost: numel(input).",
@@ -421,7 +423,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ptp/",
+    "href": "/docs/api/ptp/",
     "label": "we.ptp"
   },
   "provenance_label": "Adapted from NumPy docs",

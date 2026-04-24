@@ -1211,6 +1211,7 @@
     }
   ],
   "canonical_name": "linalg.svd",
+  "canonical_path": "linalg/svd",
   "category": "counted_custom",
   "cost_formula": "m * n * k",
   "cost_formula_latex": "$m \\cdot n \\cdot k$",
@@ -1232,11 +1233,12 @@
     "output": "((9, 9), (6,), (6, 6))\n\nTrue\n\nTrue\n\n((9, 6), (6,), (6, 6))\n\nTrue\n\nTrue\n\n((2, 7, 8, 8), (2, 7, 3), (2, 7, 3, 3))\n\nTrue\n\nTrue\n\n((2, 7, 8, 3), (2, 7, 3), (2, 7, 3, 3))\n\nTrue\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-svd/",
+  "href": "/docs/api/linalg/svd/",
+  "legacy_href": "/docs/api/ops/linalg-svd/",
   "module": "numpy.linalg",
   "name": "linalg.svd",
   "next": {
-    "href": "/docs/api/ops/linalg-svdvals/",
+    "href": "/docs/api/linalg/svdvals/",
     "label": "we.linalg.svdvals"
   },
   "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
@@ -1284,7 +1286,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-solve/",
+    "href": "/docs/api/linalg/solve/",
     "label": "we.linalg.solve"
   },
   "provenance_label": "Adapted from NumPy docs",

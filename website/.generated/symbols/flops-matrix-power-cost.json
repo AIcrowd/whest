@@ -1,0 +1,200 @@
+{
+  "aliases": [
+    "flops.matrix_power_cost",
+    "we.flops.matrix_power_cost",
+    "whest.flops.matrix_power_cost",
+    "matrix_power_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/linalg/matrix-power/",
+              "kind": "link",
+              "target": "linalg.matrix_power",
+              "text": "linalg.matrix_power"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of matrix power A**k."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Matrix dimension."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Matrix dimension."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Exponent."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Exponent."
+                }
+              ],
+              "name": "k",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Uses exponentiation by repeated squaring. For $k < 0$, adds $n^3$ for\nthe initial matrix inversion."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.matrix_power_cost",
+  "canonical_path": "flops/matrix-power-cost",
+  "display_name": "we.flops.matrix_power_cost",
+  "href": "/docs/api/flops/matrix-power-cost/",
+  "import_path": "we.flops.matrix_power_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.linalg._compound",
+  "name": "flops.matrix_power_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.flops.matrix_power_cost(n: 'int', k: 'int') -> 'int'",
+  "slug": "flops-matrix-power-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_compound.py#L81",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``linalg.matrix_power``.",
+  "upstream_source_url": ""
+}

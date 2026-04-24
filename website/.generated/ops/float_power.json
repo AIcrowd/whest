@@ -661,6 +661,7 @@
     }
   ],
   "canonical_name": "float_power",
+  "canonical_path": "float-power",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -682,11 +683,12 @@
     "output": "[0, 1, 2, 3, 4, 5]\n\narray([   0.,    1.,    8.,   27.,   64.,  125.])\n\narray([  0.,   1.,   8.,  27.,  16.,   5.])\n\narray([[1, 2, 3, 3, 2, 1],\n       [1, 2, 3, 3, 2, 1]])\n\narray([[  0.,   1.,   8.,  27.,  16.,   5.],\n       [  0.,   1.,   8.,  27.,  16.,   5.]])\n\narray([nan, nan])\n\narray([-1.83697020e-16-1.j, -1.46957616e-15-8.j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/float_power/",
+  "href": "/docs/api/float-power/",
+  "legacy_href": "/docs/api/ops/float_power/",
   "module": "numpy",
   "name": "float_power",
   "next": {
-    "href": "/docs/api/ops/floor/",
+    "href": "/docs/api/floor/",
     "label": "we.floor"
   },
   "notes": "Element-wise exponentiation in float64.",
@@ -741,7 +743,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/flipud/",
+    "href": "/docs/api/flipud/",
     "label": "we.flipud"
   },
   "provenance_label": "Adapted from NumPy docs",

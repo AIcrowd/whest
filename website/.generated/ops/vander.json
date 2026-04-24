@@ -464,6 +464,7 @@
     }
   ],
   "canonical_name": "vander",
+  "canonical_path": "vander",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -485,11 +486,12 @@
     "output": "array([[ 1,  1,  1],\n       [ 4,  2,  1],\n       [ 9,  3,  1],\n       [25,  5,  1]])\n\narray([[ 1,  1,  1],\n       [ 4,  2,  1],\n       [ 9,  3,  1],\n       [25,  5,  1]])\n\narray([[  1,   1,   1,   1],\n       [  8,   4,   2,   1],\n       [ 27,   9,   3,   1],\n       [125,  25,   5,   1]])\n\narray([[  1,   1,   1,   1],\n       [  1,   2,   4,   8],\n       [  1,   3,   9,  27],\n       [  1,   5,  25, 125]])\n\n48.000000000000043 # may vary\n\n48",
     "source": "derived"
   },
-  "href": "/docs/api/ops/vander/",
+  "href": "/docs/api/vander/",
+  "legacy_href": "/docs/api/ops/vander/",
   "module": "numpy",
   "name": "vander",
   "next": {
-    "href": "/docs/api/ops/var/",
+    "href": "/docs/api/var/",
     "label": "we.var"
   },
   "notes": "Vandermonde matrix; cost = len(x)*(N-1).",
@@ -521,7 +523,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unwrap/",
+    "href": "/docs/api/unwrap/",
     "label": "we.unwrap"
   },
   "provenance_label": "Adapted from NumPy docs",

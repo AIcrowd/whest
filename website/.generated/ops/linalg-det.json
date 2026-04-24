@@ -260,6 +260,7 @@
     }
   ],
   "canonical_name": "linalg.det",
+  "canonical_path": "linalg/det",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -274,11 +275,12 @@
     "output": "-2.0 # may vary\n\n(3, 2, 2)\n\narray([-2., -3., -8.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-det/",
+  "href": "/docs/api/linalg/det/",
+  "legacy_href": "/docs/api/ops/linalg-det/",
   "module": "numpy.linalg",
   "name": "linalg.det",
   "next": {
-    "href": "/docs/api/ops/linalg-diagonal/",
+    "href": "/docs/api/linalg/diagonal/",
     "label": "we.linalg.diagonal"
   },
   "notes": "Determinant. Cost: $n^3$.",
@@ -297,7 +299,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-cross/",
+    "href": "/docs/api/linalg/cross/",
     "label": "we.linalg.cross"
   },
   "provenance_label": "Adapted from NumPy docs",

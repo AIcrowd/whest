@@ -220,6 +220,7 @@
     }
   ],
   "canonical_name": "positive",
+  "canonical_path": "positive",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -234,11 +235,12 @@
     "output": "array([ 1., -1.])\n\narray([ 1., -1.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/positive/",
+  "href": "/docs/api/positive/",
+  "legacy_href": "/docs/api/ops/positive/",
   "module": "numpy",
   "name": "positive",
   "next": {
-    "href": "/docs/api/ops/power/",
+    "href": "/docs/api/power/",
     "label": "we.power"
   },
   "notes": "Element-wise unary plus (copy with sign preserved).",
@@ -256,7 +258,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/polyval/",
+    "href": "/docs/api/polyval/",
     "label": "we.polyval"
   },
   "provenance_label": "Adapted from NumPy docs",

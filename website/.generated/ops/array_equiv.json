@@ -178,6 +178,7 @@
     }
   ],
   "canonical_name": "array_equiv",
+  "canonical_path": "array-equiv",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -192,11 +193,12 @@
     "output": "True\n\nFalse\n\nTrue\n\nFalse\n\nFalse",
     "source": "derived"
   },
-  "href": "/docs/api/ops/array_equiv/",
+  "href": "/docs/api/array-equiv/",
+  "legacy_href": "/docs/api/ops/array_equiv/",
   "module": "numpy",
   "name": "array_equiv",
   "next": {
-    "href": "/docs/api/ops/array_split/",
+    "href": "/docs/api/array-split/",
     "label": "we.array_split"
   },
   "notes": "Element-wise equivalence; cost = numel(a).",
@@ -212,7 +214,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/array_equal/",
+    "href": "/docs/api/array-equal/",
     "label": "we.array_equal"
   },
   "provenance_label": "Adapted from NumPy docs",

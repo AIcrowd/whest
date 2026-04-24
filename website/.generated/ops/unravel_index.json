@@ -263,6 +263,7 @@
     }
   ],
   "canonical_name": "unravel_index",
+  "canonical_path": "unravel-index",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -277,11 +278,12 @@
     "output": "(array([3, 6, 6]), array([4, 5, 1]))\n\n(array([3, 6, 6]), array([4, 5, 1]))\n\n(3, 1, 4, 1)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/unravel_index/",
+  "href": "/docs/api/unravel-index/",
+  "legacy_href": "/docs/api/ops/unravel_index/",
   "module": "numpy",
   "name": "unravel_index",
   "next": {
-    "href": "/docs/api/ops/unstack/",
+    "href": "/docs/api/unstack/",
     "label": "we.unstack"
   },
   "notes": "Convert flat index to multi-dimensional index.",
@@ -314,7 +316,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unpackbits/",
+    "href": "/docs/api/unpackbits/",
     "label": "we.unpackbits"
   },
   "provenance_label": "Adapted from NumPy docs",

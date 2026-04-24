@@ -530,6 +530,7 @@
     }
   ],
   "canonical_name": "frexp",
+  "canonical_path": "frexp",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -551,11 +552,12 @@
     "output": "array([ 0.   ,  0.5  ,  0.5  ,  0.75 ,  0.5  ,  0.625,  0.75 ,  0.875,\n        0.5  ])\n\narray([0, 1, 2, 2, 3, 3, 3, 3, 4], dtype=int32)\n\narray([ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/frexp/",
+  "href": "/docs/api/frexp/",
+  "legacy_href": "/docs/api/ops/frexp/",
   "module": "numpy",
   "name": "frexp",
   "next": {
-    "href": "/docs/api/ops/from_dlpack/",
+    "href": "/docs/api/from-dlpack/",
     "label": "we.from_dlpack"
   },
   "notes": "Decompose x into mantissa and exponent element-wise.",
@@ -617,7 +619,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fmod/",
+    "href": "/docs/api/fmod/",
     "label": "we.fmod"
   },
   "provenance_label": "Adapted from NumPy docs",

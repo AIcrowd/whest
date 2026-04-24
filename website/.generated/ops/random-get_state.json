@@ -266,6 +266,7 @@
     }
   ],
   "canonical_name": "random.get_state",
+  "canonical_path": "random/get-state",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -276,11 +277,12 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/random-get_state/",
+  "href": "/docs/api/random/get-state/",
+  "legacy_href": "/docs/api/ops/random-get_state/",
   "module": "numpy.random",
   "name": "random.get_state",
   "next": {
-    "href": "/docs/api/ops/random-gumbel/",
+    "href": "/docs/api/random/gumbel/",
     "label": "we.random.gumbel"
   },
   "notes": "Return tuple representing internal state of generator.",
@@ -300,7 +302,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-geometric/",
+    "href": "/docs/api/random/geometric/",
     "label": "we.random.geometric"
   },
   "provenance_label": "Adapted from NumPy docs",

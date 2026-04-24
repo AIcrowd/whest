@@ -1,0 +1,216 @@
+{
+  "aliases": [
+    "geterr",
+    "we.geterr",
+    "whest.geterr"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Get the current way of handling floating-point errors."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "A dictionary with keys \"divide\", \"over\", \"under\", and \"invalid\",\nwhose values are from the strings \"ignore\", \"print\", \"log\", \"warn\",\n\"raise\", and \"call\". The keys represent possible floating-point\nexceptions, and the values define how these exceptions are handled."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "dict",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "A dictionary with keys \"divide\", \"over\", \"under\", and \"invalid\",\nwhose values are from the strings \"ignore\", \"print\", \"log\", \"warn\",\n\"raise\", and \"call\". The keys represent possible floating-point\nexceptions, and the values define how these exceptions are handled."
+                }
+              ],
+              "name": "res",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.geterrcall.html",
+              "href": "",
+              "label": "geterrcall",
+              "original_target": "geterrcall",
+              "role": "",
+              "target": "geterrcall",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/seterr/",
+              "label": "seterr",
+              "original_target": "seterr",
+              "role": "",
+              "target": "seterr",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.seterrcall.html",
+              "href": "",
+              "label": "seterrcall",
+              "original_target": "seterrcall",
+              "role": "",
+              "target": "seterrcall",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "For complete documentation of the types of floating-point exceptions and\ntreatment options, see "
+            },
+            {
+              "kind": "code",
+              "text": "seterr"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.geterr()"
+            },
+            {
+              "kind": "output",
+              "text": "{'divide': 'warn', 'over': 'warn', 'under': 'ignore', 'invalid': 'warn'}"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.arange(3.) / we.arange(3.)  # doctest: +SKIP"
+            },
+            {
+              "kind": "output",
+              "text": "array([nan,  1.,  1.])"
+            },
+            {
+              "kind": "output",
+              "text": "RuntimeWarning: invalid value encountered in divide"
+            }
+          ],
+          "type": "doctest_block"
+        },
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "oldsettings = we.seterr(all='warn', invalid='raise')"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.geterr()"
+            },
+            {
+              "kind": "output",
+              "text": "{'divide': 'warn', 'over': 'warn', 'under': 'warn', 'invalid': 'raise'}"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "we.arange(3.) / we.arange(3.)"
+            },
+            {
+              "kind": "output",
+              "text": "Traceback (most recent call last):"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": ""
+            },
+            {
+              "kind": "output",
+              "text": "FloatingPointError: invalid value encountered in divide"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "oldsettings = we.seterr(**oldsettings)  # restore original"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "geterr",
+  "canonical_path": "geterr",
+  "display_name": "we.geterr",
+  "href": "/docs/api/geterr/",
+  "import_path": "we.geterr",
+  "kind": "function",
+  "members": [],
+  "module": "numpy",
+  "name": "geterr",
+  "related_guides": [],
+  "signature": "we.geterr()",
+  "slug": "geterr",
+  "source_url": "",
+  "status_note": "This symbol is exported from whest, but it is excluded from the operation registry and therefore does not appear in the operation cost index.",
+  "summary": "Get the current way of handling floating-point errors.",
+  "upstream_source_url": ""
+}

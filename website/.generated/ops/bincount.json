@@ -523,6 +523,7 @@
     }
   ],
   "canonical_name": "bincount",
+  "canonical_path": "bincount",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -537,11 +538,12 @@
     "output": "array([1, 1, 1, 1, 1])\n\narray([1, 3, 1, 1, 0, 0, 0, 1])\n\nTrue\n\nTraceback (most recent call last):\n  ...\nTypeError: Cannot cast array data from dtype('float64') to dtype('int64')\naccording to the rule 'safe'\n\narray([ 0.3,  0.7,  1.1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bincount/",
+  "href": "/docs/api/bincount/",
+  "legacy_href": "/docs/api/ops/bincount/",
   "module": "numpy",
   "name": "bincount",
   "next": {
-    "href": "/docs/api/ops/bitwise_and/",
+    "href": "/docs/api/bitwise-and/",
     "label": "we.bitwise_and"
   },
   "notes": "Integer counting; cost = numel(x).",
@@ -571,7 +573,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bartlett/",
+    "href": "/docs/api/bartlett/",
     "label": "we.bartlett"
   },
   "provenance_label": "Adapted from NumPy docs",

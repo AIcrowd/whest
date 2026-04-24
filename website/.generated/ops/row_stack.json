@@ -468,6 +468,7 @@
     }
   ],
   "canonical_name": "row_stack",
+  "canonical_path": "row-stack",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -482,11 +483,12 @@
     "output": "array([[1, 2, 3],\n       [4, 5, 6]])\n\narray([[1],\n       [2],\n       [3],\n       [4],\n       [5],\n       [6]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/row_stack/",
+  "href": "/docs/api/row-stack/",
+  "legacy_href": "/docs/api/ops/row_stack/",
   "module": "numpy",
   "name": "row_stack",
   "next": {
-    "href": "/docs/api/ops/searchsorted/",
+    "href": "/docs/api/searchsorted/",
     "label": "we.searchsorted"
   },
   "notes": "Stack arrays vertically (alias for vstack).",
@@ -524,7 +526,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/rot90/",
+    "href": "/docs/api/rot90/",
     "label": "we.rot90"
   },
   "provenance_label": "Adapted from NumPy docs",

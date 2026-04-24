@@ -362,6 +362,7 @@
     }
   ],
   "canonical_name": "square",
+  "canonical_path": "square",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -383,11 +384,12 @@
     "output": "array([-1.-0.j,  1.+0.j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/square/",
+  "href": "/docs/api/square/",
+  "legacy_href": "/docs/api/ops/square/",
   "module": "numpy",
   "name": "square",
   "next": {
-    "href": "/docs/api/ops/squeeze/",
+    "href": "/docs/api/squeeze/",
     "label": "we.squeeze"
   },
   "notes": "Element-wise x^2.",
@@ -433,7 +435,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sqrt/",
+    "href": "/docs/api/sqrt/",
     "label": "we.sqrt"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -300,6 +300,7 @@
     }
   ],
   "canonical_name": "fliplr",
+  "canonical_path": "fliplr",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -314,11 +315,12 @@
     "output": "array([[1.,  0.,  0.],\n       [0.,  2.,  0.],\n       [0.,  0.,  3.]])\n\narray([[0.,  0.,  1.],\n       [0.,  2.,  0.],\n       [3.,  0.,  0.]])\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fliplr/",
+  "href": "/docs/api/fliplr/",
+  "legacy_href": "/docs/api/ops/fliplr/",
   "module": "numpy",
   "name": "fliplr",
   "next": {
-    "href": "/docs/api/ops/flipud/",
+    "href": "/docs/api/flipud/",
     "label": "we.flipud"
   },
   "notes": "Flip array left-right.",
@@ -336,7 +338,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/flip/",
+    "href": "/docs/api/flip/",
     "label": "we.flip"
   },
   "provenance_label": "Adapted from NumPy docs",

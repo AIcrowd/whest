@@ -349,6 +349,7 @@
     }
   ],
   "canonical_name": "bitwise_count",
+  "canonical_path": "bitwise-count",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -383,11 +384,12 @@
     "output": "we.uint8(10)\n\narray([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15],\n      dtype=uint8)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bitwise_count/",
+  "href": "/docs/api/bitwise-count/",
+  "legacy_href": "/docs/api/ops/bitwise_count/",
   "module": "numpy",
   "name": "bitwise_count",
   "next": {
-    "href": "/docs/api/ops/bitwise_left_shift/",
+    "href": "/docs/api/bitwise-left-shift/",
     "label": "we.bitwise_left_shift"
   },
   "notes": "Count set bits element-wise (popcount).",
@@ -433,7 +435,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bitwise_and/",
+    "href": "/docs/api/bitwise-and/",
     "label": "we.bitwise_and"
   },
   "provenance_label": "Adapted from NumPy docs",

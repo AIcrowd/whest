@@ -556,6 +556,7 @@
     }
   ],
   "canonical_name": "floor_divide",
+  "canonical_path": "floor-divide",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -577,11 +578,12 @@
     "output": "2\n\narray([ 0.,  0.,  1.,  1.])\n\narray([0., 0., 1., 1.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/floor_divide/",
+  "href": "/docs/api/floor-divide/",
+  "legacy_href": "/docs/api/ops/floor_divide/",
   "module": "numpy",
   "name": "floor_divide",
   "next": {
-    "href": "/docs/api/ops/fmax/",
+    "href": "/docs/api/fmax/",
     "label": "we.fmax"
   },
   "notes": "Element-wise floor division.",
@@ -636,7 +638,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/floor/",
+    "href": "/docs/api/floor/",
     "label": "we.floor"
   },
   "provenance_label": "Adapted from NumPy docs",

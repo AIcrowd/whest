@@ -449,6 +449,7 @@
     }
   ],
   "canonical_name": "random.logseries",
+  "canonical_path": "random/logseries",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -480,11 +481,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-logseries/",
+  "href": "/docs/api/random/logseries/",
+  "legacy_href": "/docs/api/ops/random-logseries/",
   "module": "numpy.random",
   "name": "random.logseries",
   "next": {
-    "href": "/docs/api/ops/random-multinomial/",
+    "href": "/docs/api/random/multinomial/",
     "label": "we.random.multinomial"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -515,7 +517,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-lognormal/",
+    "href": "/docs/api/random/lognormal/",
     "label": "we.random.lognormal"
   },
   "provenance_label": "Adapted from NumPy docs",

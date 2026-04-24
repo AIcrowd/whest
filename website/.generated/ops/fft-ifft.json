@@ -718,6 +718,7 @@
     }
   ],
   "canonical_name": "fft.ifft",
+  "canonical_path": "fft/ifft",
   "category": "counted_custom",
   "cost_formula": "5n * ceil(log2(n))",
   "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
@@ -732,11 +733,12 @@
     "output": "array([ 1.+0.j,  0.+1.j, -1.+0.j,  0.-1.j]) # may vary\n\n[<matplotlib.lines.Line2D object at ...>]\n\n[<matplotlib.lines.Line2D object at ...>]\n\n<matplotlib.legend.Legend object at ...>",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-ifft/",
+  "href": "/docs/api/fft/ifft/",
+  "legacy_href": "/docs/api/ops/fft-ifft/",
   "module": "numpy.fft",
   "name": "fft.ifft",
   "next": {
-    "href": "/docs/api/ops/fft-ifft2/",
+    "href": "/docs/api/fft/ifft2/",
     "label": "we.fft.ifft2"
   },
   "notes": "Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
@@ -796,7 +798,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-hfft/",
+    "href": "/docs/api/fft/hfft/",
     "label": "we.fft.hfft"
   },
   "provenance_label": "Adapted from NumPy docs",

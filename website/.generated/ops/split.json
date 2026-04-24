@@ -555,6 +555,7 @@
     }
   ],
   "canonical_name": "split",
+  "canonical_path": "split",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -569,11 +570,12 @@
     "output": "[array([0.,  1.,  2.]), array([3.,  4.,  5.]), array([6.,  7.,  8.])]\n\n[array([0.,  1.,  2.]),\n array([3.,  4.]),\n array([5.]),\n array([6.,  7.]),\n array([], dtype=float64)]",
     "source": "derived"
   },
-  "href": "/docs/api/ops/split/",
+  "href": "/docs/api/split/",
+  "legacy_href": "/docs/api/ops/split/",
   "module": "numpy",
   "name": "split",
   "next": {
-    "href": "/docs/api/ops/sqrt/",
+    "href": "/docs/api/sqrt/",
     "label": "we.sqrt"
   },
   "notes": "Split array into sub-arrays. Cost: numel(output).",
@@ -616,7 +618,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/spacing/",
+    "href": "/docs/api/spacing/",
     "label": "we.spacing"
   },
   "provenance_label": "Adapted from NumPy docs",

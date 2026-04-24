@@ -894,6 +894,7 @@
     }
   ],
   "canonical_name": "fft.ifftn",
+  "canonical_path": "fft/ifftn",
   "category": "counted_custom",
   "cost_formula": "5N * ceil(log2(N))",
   "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
@@ -908,11 +909,12 @@
     "output": "array([[1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j], # may vary\n       [0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j],\n       [0.+0.j,  0.+0.j,  1.+0.j,  0.+0.j],\n       [0.+0.j,  0.+0.j,  0.+0.j,  1.+0.j]])\n\n<matplotlib.image.AxesImage object at 0x...>",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-ifftn/",
+  "href": "/docs/api/fft/ifftn/",
+  "legacy_href": "/docs/api/ops/fft-ifftn/",
   "module": "numpy.fft",
   "name": "fft.ifftn",
   "next": {
-    "href": "/docs/api/ops/fft-ifftshift/",
+    "href": "/docs/api/fft/ifftshift/",
     "label": "we.fft.ifftshift"
   },
   "notes": "Inverse N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
@@ -999,7 +1001,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-ifft2/",
+    "href": "/docs/api/fft/ifft2/",
     "label": "we.fft.ifft2"
   },
   "provenance_label": "Adapted from NumPy docs",

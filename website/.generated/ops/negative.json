@@ -350,6 +350,7 @@
     }
   ],
   "canonical_name": "negative",
+  "canonical_path": "negative",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -371,11 +372,12 @@
     "output": "array([-1.,  1.])\n\narray([-1.,  1.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/negative/",
+  "href": "/docs/api/negative/",
+  "legacy_href": "/docs/api/ops/negative/",
   "module": "numpy",
   "name": "negative",
   "next": {
-    "href": "/docs/api/ops/nextafter/",
+    "href": "/docs/api/nextafter/",
     "label": "we.nextafter"
   },
   "notes": "Element-wise negation.",
@@ -421,7 +423,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ndim/",
+    "href": "/docs/api/ndim/",
     "label": "we.ndim"
   },
   "provenance_label": "Adapted from NumPy docs",

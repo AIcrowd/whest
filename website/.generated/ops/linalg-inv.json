@@ -615,6 +615,7 @@
     }
   ],
   "canonical_name": "linalg.inv",
+  "canonical_path": "linalg/inv",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -639,11 +640,12 @@
     "output": "True\n\nTrue\n\nmatrix([[-2. ,  1. ],\n        [ 1.5, -0.5]])\n\narray([[[-2.  ,  1.  ],\n        [ 1.5 , -0.5 ]],\n       [[-1.25,  0.75],\n        [ 0.75, -0.25]]])\n\narray([[-1.12589991e+15, -5.62949953e+14,  5.62949953e+14],\n   [-1.12589991e+15, -5.62949953e+14,  5.62949953e+14],\n   [ 1.12589991e+15,  5.62949953e+14, -5.62949953e+14]])\n\narray([[ 0.   , -0.5  ,  0.   ],  # may vary\n       [-0.5  ,  0.625,  0.25 ],\n       [ 0.   ,  0.   ,  1.   ]])\n\nwe.float64(8.659885634118668e+17)  # may vary\n\n8.659885634118668e+17  # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-inv/",
+  "href": "/docs/api/linalg/inv/",
+  "legacy_href": "/docs/api/ops/linalg-inv/",
   "module": "numpy.linalg",
   "name": "linalg.inv",
   "next": {
-    "href": "/docs/api/ops/linalg-lstsq/",
+    "href": "/docs/api/linalg/lstsq/",
     "label": "we.linalg.lstsq"
   },
   "notes": "Matrix inverse. Cost: $n^3$ (LU + solve).",
@@ -662,7 +664,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-eigvalsh/",
+    "href": "/docs/api/linalg/eigvalsh/",
     "label": "we.linalg.eigvalsh"
   },
   "provenance_label": "Adapted from NumPy docs",

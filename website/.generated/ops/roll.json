@@ -396,6 +396,7 @@
     }
   ],
   "canonical_name": "roll",
+  "canonical_path": "roll",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -410,11 +411,12 @@
     "output": "array([8, 9, 0, 1, 2, 3, 4, 5, 6, 7])\n\narray([2, 3, 4, 5, 6, 7, 8, 9, 0, 1])\n\narray([[0, 1, 2, 3, 4],\n       [5, 6, 7, 8, 9]])\n\narray([[9, 0, 1, 2, 3],\n       [4, 5, 6, 7, 8]])\n\narray([[1, 2, 3, 4, 5],\n       [6, 7, 8, 9, 0]])\n\narray([[5, 6, 7, 8, 9],\n       [0, 1, 2, 3, 4]])\n\narray([[5, 6, 7, 8, 9],\n       [0, 1, 2, 3, 4]])\n\narray([[4, 0, 1, 2, 3],\n       [9, 5, 6, 7, 8]])\n\narray([[1, 2, 3, 4, 0],\n       [6, 7, 8, 9, 5]])\n\narray([[9, 5, 6, 7, 8],\n       [4, 0, 1, 2, 3]])\n\narray([[8, 9, 5, 6, 7],\n       [3, 4, 0, 1, 2]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/roll/",
+  "href": "/docs/api/roll/",
+  "legacy_href": "/docs/api/ops/roll/",
   "module": "numpy",
   "name": "roll",
   "next": {
-    "href": "/docs/api/ops/rollaxis/",
+    "href": "/docs/api/rollaxis/",
     "label": "we.rollaxis"
   },
   "notes": "Roll array elements along axis. Cost: numel(output).",
@@ -452,7 +454,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/rint/",
+    "href": "/docs/api/rint/",
     "label": "we.rint"
   },
   "provenance_label": "Adapted from NumPy docs",

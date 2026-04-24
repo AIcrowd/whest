@@ -438,6 +438,7 @@
     }
   ],
   "canonical_name": "ptp",
+  "canonical_path": "ptp",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -452,11 +453,12 @@
     "output": "array([8, 6])\n\narray([2, 0, 5, 2])\n\n10\n\narray([ 126,  127, -128, -127], dtype=int8)\n\narray([126, 127, 128, 129], dtype=uint8)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ptp/",
+  "href": "/docs/api/ptp/",
+  "legacy_href": "/docs/api/ops/ptp/",
   "module": "numpy",
   "name": "ptp",
   "next": {
-    "href": "/docs/api/ops/put/",
+    "href": "/docs/api/put/",
     "label": "we.put"
   },
   "notes": "Peak-to-peak (max - min) range of array.",
@@ -507,7 +509,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/promote_types/",
+    "href": "/docs/api/promote-types/",
     "label": "we.promote_types"
   },
   "provenance_label": "Adapted from NumPy docs",

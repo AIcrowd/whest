@@ -382,6 +382,7 @@
     }
   ],
   "canonical_name": "intersect1d",
+  "canonical_path": "intersect1d",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -396,11 +397,12 @@
     "output": "array([1, 3])\n\narray([3])\n\n(array([0, 2, 4]), array([1, 0, 2]))\n\n(array([1, 2, 4]), array([1, 2, 4]), array([1, 2, 4]))",
     "source": "derived"
   },
-  "href": "/docs/api/ops/intersect1d/",
+  "href": "/docs/api/intersect1d/",
+  "legacy_href": "/docs/api/ops/intersect1d/",
   "module": "numpy",
   "name": "intersect1d",
   "next": {
-    "href": "/docs/api/ops/invert/",
+    "href": "/docs/api/invert/",
     "label": "we.invert"
   },
   "notes": "Set intersection; cost = (n+m)*ceil(log2(n+m)).",
@@ -435,7 +437,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/interp/",
+    "href": "/docs/api/interp/",
     "label": "we.interp"
   },
   "provenance_label": "Adapted from NumPy docs",

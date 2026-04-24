@@ -485,6 +485,7 @@
     }
   ],
   "canonical_name": "logical_and",
+  "canonical_path": "logical-and",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -506,11 +507,12 @@
     "output": "False\n\narray([False, False])\n\narray([False, False,  True,  True, False])\n\narray([False, False])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/logical_and/",
+  "href": "/docs/api/logical-and/",
+  "legacy_href": "/docs/api/ops/logical_and/",
   "module": "numpy",
   "name": "logical_and",
   "next": {
-    "href": "/docs/api/ops/logical_not/",
+    "href": "/docs/api/logical-not/",
     "label": "we.logical_not"
   },
   "notes": "Element-wise logical AND.",
@@ -558,7 +560,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/logaddexp2/",
+    "href": "/docs/api/logaddexp2/",
     "label": "we.logaddexp2"
   },
   "provenance_label": "Adapted from NumPy docs",

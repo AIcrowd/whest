@@ -734,6 +734,7 @@
     }
   ],
   "canonical_name": "mod",
+  "canonical_path": "mod",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -755,11 +756,12 @@
     "output": "array([0, 1])\n\narray([0, 1, 2, 3, 4, 0, 1])\n\narray([0, 1, 2, 3, 4, 0, 1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/mod/",
+  "href": "/docs/api/mod/",
+  "legacy_href": "/docs/api/ops/mod/",
   "module": "numpy",
   "name": "mod",
   "next": {
-    "href": "/docs/api/ops/modf/",
+    "href": "/docs/api/modf/",
     "label": "we.modf"
   },
   "notes": "Element-wise modulo.",
@@ -816,7 +818,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/mintypecode/",
+    "href": "/docs/api/mintypecode/",
     "label": "we.mintypecode"
   },
   "provenance_label": "Adapted from NumPy docs",

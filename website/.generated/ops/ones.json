@@ -470,6 +470,7 @@
     }
   ],
   "canonical_name": "ones",
+  "canonical_path": "ones",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -484,11 +485,12 @@
     "output": "array([1., 1., 1., 1., 1.])\n\narray([1, 1, 1, 1, 1])\n\narray([[1.],\n       [1.]])\n\narray([[1.,  1.],\n       [1.,  1.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ones/",
+  "href": "/docs/api/ones/",
+  "legacy_href": "/docs/api/ops/ones/",
   "module": "numpy",
   "name": "ones",
   "next": {
-    "href": "/docs/api/ops/ones_like/",
+    "href": "/docs/api/ones-like/",
     "label": "we.ones_like"
   },
   "notes": "Create one-filled array.",
@@ -531,11 +533,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -544,7 +546,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/not_equal/",
+    "href": "/docs/api/not-equal/",
     "label": "we.not_equal"
   },
   "provenance_label": "Adapted from NumPy docs",

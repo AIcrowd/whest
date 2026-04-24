@@ -530,6 +530,7 @@
     }
   ],
   "canonical_name": "unwrap",
+  "canonical_path": "unwrap",
   "category": "counted_custom",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -544,11 +545,12 @@
     "output": "array([ 0.        ,  0.78539816,  1.57079633,  5.49778714,  6.28318531]) # may vary\n\narray([ 0.        ,  0.78539816,  1.57079633, -0.78539816,  0.        ]) # may vary\n\narray([0, 1, 2, 3, 4])\n\narray([1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([2, 3, 4, 5, 6, 7, 8, 9])\n\narray([-180., -140., -100.,  -60.,  -20.,   20.,   60.,  100.,  140.,\n        180.,  220.,  260.,  300.,  340.,  380.,  420.,  460.,  500.,\n        540.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/unwrap/",
+  "href": "/docs/api/unwrap/",
+  "legacy_href": "/docs/api/ops/unwrap/",
   "module": "whest._unwrap",
   "name": "unwrap",
   "next": {
-    "href": "/docs/api/ops/vander/",
+    "href": "/docs/api/vander/",
     "label": "we.vander"
   },
   "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
@@ -593,7 +595,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unstack/",
+    "href": "/docs/api/unstack/",
     "label": "we.unstack"
   },
   "provenance_label": "Adapted from NumPy docs",

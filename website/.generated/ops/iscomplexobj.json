@@ -200,6 +200,7 @@
     }
   ],
   "canonical_name": "iscomplexobj",
+  "canonical_path": "iscomplexobj",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -214,11 +215,12 @@
     "output": "False\n\nTrue\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/iscomplexobj/",
+  "href": "/docs/api/iscomplexobj/",
+  "legacy_href": "/docs/api/ops/iscomplexobj/",
   "module": "numpy",
   "name": "iscomplexobj",
   "next": {
-    "href": "/docs/api/ops/isdtype/",
+    "href": "/docs/api/isdtype/",
     "label": "we.isdtype"
   },
   "notes": "Return True if input is a complex type or array.",
@@ -234,7 +236,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/iscomplex/",
+    "href": "/docs/api/iscomplex/",
     "label": "we.iscomplex"
   },
   "provenance_label": "Adapted from NumPy docs",

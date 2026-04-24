@@ -1,0 +1,98 @@
+{
+  "aliases": [
+    "flops.roots_cost",
+    "we.flops.roots_cost",
+    "whest.flops.roots_cost",
+    "roots_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/roots/",
+              "kind": "link",
+              "target": "roots",
+              "text": "roots"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nCost for roots: $n^3$ FLOPs (companion matrix eigendecomposition, simplified)."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "flops.roots_cost",
+  "canonical_path": "flops/roots-cost",
+  "display_name": "we.flops.roots_cost",
+  "href": "/docs/api/flops/roots-cost/",
+  "import_path": "we.flops.roots_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest._polynomial",
+  "name": "flops.roots_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.flops.roots_cost(n: 'int') -> 'int'",
+  "slug": "flops-roots-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L62",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``roots``.",
+  "upstream_source_url": ""
+}

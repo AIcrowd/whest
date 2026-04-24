@@ -1,0 +1,77 @@
+{
+  "aliases": [
+    "stats.logistic",
+    "we.stats.logistic",
+    "whest.stats.logistic"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Logistic continuous random variable."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/stats/logistic/",
+              "kind": "link",
+              "target": "stats.logistic",
+              "text": "scipy.stats.logistic"
+            },
+            {
+              "kind": "text",
+              "text": ".  The CDF is the sigmoid\nfunction; the PPF is the logit function."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "stats.logistic",
+  "canonical_path": "stats/logistic",
+  "display_name": "we.stats.logistic",
+  "href": "/docs/api/stats/logistic/",
+  "import_path": "we.stats.logistic",
+  "kind": "object",
+  "members": [
+    {
+      "href": "/docs/api/stats/logistic/cdf/",
+      "label": "we.stats.logistic.cdf"
+    },
+    {
+      "href": "/docs/api/stats/logistic/pdf/",
+      "label": "we.stats.logistic.pdf"
+    },
+    {
+      "href": "/docs/api/stats/logistic/ppf/",
+      "label": "we.stats.logistic.ppf"
+    }
+  ],
+  "module": "whest.stats._logistic",
+  "name": "stats.logistic",
+  "related_guides": [],
+  "signature": "we.stats.logistic",
+  "slug": "stats-logistic",
+  "source_url": "",
+  "status_note": "",
+  "summary": "Logistic continuous random variable.",
+  "upstream_source_url": ""
+}

@@ -809,6 +809,7 @@
     }
   ],
   "canonical_name": "linalg.lstsq",
+  "canonical_path": "linalg/lstsq",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -823,11 +824,12 @@
     "output": "array([[ 0.,  1.],\n       [ 1.,  1.],\n       [ 2.,  1.],\n       [ 3.,  1.]])\n\n(1.0 -0.95) # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-lstsq/",
+  "href": "/docs/api/linalg/lstsq/",
+  "legacy_href": "/docs/api/ops/linalg-lstsq/",
   "module": "numpy.linalg",
   "name": "linalg.lstsq",
   "next": {
-    "href": "/docs/api/ops/linalg-matmul/",
+    "href": "/docs/api/linalg/matmul/",
     "label": "we.linalg.matmul"
   },
   "notes": "Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD).",
@@ -870,7 +872,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-inv/",
+    "href": "/docs/api/linalg/inv/",
     "label": "we.linalg.inv"
   },
   "provenance_label": "Adapted from NumPy docs",

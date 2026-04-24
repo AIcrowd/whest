@@ -476,6 +476,7 @@
     }
   ],
   "canonical_name": "copysign",
+  "canonical_path": "copysign",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -497,11 +498,12 @@
     "output": "-1.3\n\ninf\n\n-inf\n\narray([-1., -0., -1.])\n\narray([-1.,  0.,  1.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/copysign/",
+  "href": "/docs/api/copysign/",
+  "legacy_href": "/docs/api/ops/copysign/",
   "module": "numpy",
   "name": "copysign",
   "next": {
-    "href": "/docs/api/ops/copyto/",
+    "href": "/docs/api/copyto/",
     "label": "we.copyto"
   },
   "notes": "Copy sign of x2 to magnitude of x1 element-wise.",
@@ -556,7 +558,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/copy/",
+    "href": "/docs/api/copy/",
     "label": "we.copy"
   },
   "provenance_label": "Adapted from NumPy docs",

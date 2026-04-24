@@ -62,6 +62,7 @@
     }
   ],
   "canonical_name": "random.seed",
+  "canonical_path": "random/seed",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -72,11 +73,12 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/random-seed/",
+  "href": "/docs/api/random/seed/",
+  "legacy_href": "/docs/api/ops/random-seed/",
   "module": "numpy.random",
   "name": "random.seed",
   "next": {
-    "href": "/docs/api/ops/random-set_state/",
+    "href": "/docs/api/random/set-state/",
     "label": "we.random.set_state"
   },
   "notes": "Seed random number generator.",
@@ -86,7 +88,7 @@
   "numpy_ref": "np.random.seed",
   "parameters": [],
   "previous": {
-    "href": "/docs/api/ops/random-rayleigh/",
+    "href": "/docs/api/random/rayleigh/",
     "label": "we.random.rayleigh"
   },
   "provenance_label": "Adapted from NumPy docs",

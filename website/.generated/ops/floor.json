@@ -460,6 +460,7 @@
     }
   ],
   "canonical_name": "floor",
+  "canonical_path": "floor",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -481,11 +482,12 @@
     "output": "array([-2., -2., -1.,  0.,  1.,  1.,  2.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/floor/",
+  "href": "/docs/api/floor/",
+  "legacy_href": "/docs/api/ops/floor/",
   "module": "numpy",
   "name": "floor",
   "next": {
-    "href": "/docs/api/ops/floor_divide/",
+    "href": "/docs/api/floor-divide/",
     "label": "we.floor_divide"
   },
   "notes": "Element-wise floor.",
@@ -533,7 +535,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/float_power/",
+    "href": "/docs/api/float-power/",
     "label": "we.float_power"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -359,6 +359,7 @@
     }
   ],
   "canonical_name": "linalg.cond",
+  "canonical_path": "linalg/cond",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -387,11 +388,12 @@
     "output": "array([[ 1,  0, -1],\n       [ 0,  1,  0],\n       [ 1,  0,  1]])\n\n1.4142135623730951\n\n3.1622776601683795\n\n2.0\n\n1.0\n\n2.0\n\n1.0\n\n1.4142135623730951\n\n0.70710678118654746 # may vary\n\n0.70710678118654746 # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-cond/",
+  "href": "/docs/api/linalg/cond/",
+  "legacy_href": "/docs/api/ops/linalg-cond/",
   "module": "numpy.linalg",
   "name": "linalg.cond",
   "next": {
-    "href": "/docs/api/ops/linalg-cross/",
+    "href": "/docs/api/linalg/cross/",
     "label": "we.linalg.cross"
   },
   "notes": "Condition number. Cost: m*n*min(m,n) (via SVD).",
@@ -432,7 +434,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-cholesky/",
+    "href": "/docs/api/linalg/cholesky/",
     "label": "we.linalg.cholesky"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -525,6 +525,7 @@
     }
   ],
   "canonical_name": "divide",
+  "canonical_path": "divide",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -546,11 +547,12 @@
     "output": "0.5\n\narray([[nan, 1. , 1. ],\n       [inf, 4. , 2.5],\n       [inf, 7. , 4. ]])\n\narray([[0. , 0.5, 1. ],\n       [1.5, 2. , 2.5],\n       [3. , 3.5, 4. ]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/divide/",
+  "href": "/docs/api/divide/",
+  "legacy_href": "/docs/api/ops/divide/",
   "module": "numpy",
   "name": "divide",
   "next": {
-    "href": "/docs/api/ops/dot/",
+    "href": "/docs/api/dot/",
     "label": "we.dot"
   },
   "notes": "Element-wise true division.",
@@ -608,7 +610,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/digitize/",
+    "href": "/docs/api/digitize/",
     "label": "we.digitize"
   },
   "provenance_label": "Adapted from NumPy docs",

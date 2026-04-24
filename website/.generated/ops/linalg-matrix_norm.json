@@ -331,6 +331,7 @@
     }
   ],
   "canonical_name": "linalg.matrix_norm",
+  "canonical_path": "linalg/matrix-norm",
   "category": "counted_custom",
   "cost_formula": "depends on ord",
   "cost_formula_latex": "varies",
@@ -345,11 +346,12 @@
     "output": "array([-4, -3, -2, ...,  2,  3,  4])\n\narray([[-4, -3, -2],\n       [-1,  0,  1],\n       [ 2,  3,  4]])\n\n7.745966692414834\n\n7.745966692414834\n\n9.0\n\n2.0\n\n7.0\n\n6.0\n\n7.3484692283495345\n\n1.8570331885190563e-016 # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-matrix_norm/",
+  "href": "/docs/api/linalg/matrix-norm/",
+  "legacy_href": "/docs/api/ops/linalg-matrix_norm/",
   "module": "numpy.linalg",
   "name": "linalg.matrix_norm",
   "next": {
-    "href": "/docs/api/ops/linalg-matrix_power/",
+    "href": "/docs/api/linalg/matrix-power/",
     "label": "we.linalg.matrix_power"
   },
   "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
@@ -382,7 +384,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-matmul/",
+    "href": "/docs/api/linalg/matmul/",
     "label": "we.linalg.matmul"
   },
   "provenance_label": "Adapted from NumPy docs",

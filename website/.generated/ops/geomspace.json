@@ -654,6 +654,7 @@
     }
   ],
   "canonical_name": "geomspace",
+  "canonical_path": "geomspace",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -668,11 +669,12 @@
     "output": "array([    1.,    10.,   100.,  1000.])\n\narray([   1.,   10.,  100.])\n\narray([   1.        ,    5.62341325,   31.6227766 ,  177.827941  ])\n\narray([   1.,    2.,    4.,    8.,   16.,   32.,   64.,  128.,  256.])\n\narray([  1,   2,   4,   7,  16,  32,  63, 127, 256])\n\narray([  1,   2,   4,   8,  16,  32,  64, 128, 256])\n\narray([1000.,  100.,   10.,    1.])\n\narray([-1000.,  -100.,   -10.,    -1.])\n\narray([0.   +1.j, 0.  +10.j, 0. +100.j, 0.+1000.j])\n\narray([-1.00000000e+00+1.22464680e-16j, -7.07106781e-01+7.07106781e-01j,\n        6.12323400e-17+1.00000000e+00j,  7.07106781e-01+7.07106781e-01j,\n        1.00000000e+00+0.00000000e+00j])\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n[0.5, 2000, 0, 3]",
     "source": "derived"
   },
-  "href": "/docs/api/ops/geomspace/",
+  "href": "/docs/api/geomspace/",
+  "legacy_href": "/docs/api/ops/geomspace/",
   "module": "numpy",
   "name": "geomspace",
   "next": {
-    "href": "/docs/api/ops/gradient/",
+    "href": "/docs/api/gradient/",
     "label": "we.gradient"
   },
   "notes": "Geometric-spaced generation; cost = num.",
@@ -734,7 +736,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/gcd/",
+    "href": "/docs/api/gcd/",
     "label": "we.gcd"
   },
   "provenance_label": "Adapted from NumPy docs",

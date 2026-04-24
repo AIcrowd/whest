@@ -334,6 +334,7 @@
     }
   ],
   "canonical_name": "result_type",
+  "canonical_path": "result-type",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -348,11 +349,12 @@
     "output": "dtype('int8')\n\ndtype('complex128')\n\ndtype('float64')",
     "source": "derived"
   },
-  "href": "/docs/api/ops/result_type/",
+  "href": "/docs/api/result-type/",
+  "legacy_href": "/docs/api/ops/result_type/",
   "module": "numpy",
   "name": "result_type",
   "next": {
-    "href": "/docs/api/ops/right_shift/",
+    "href": "/docs/api/right-shift/",
     "label": "we.right_shift"
   },
   "notes": "Return type that results from applying NumPy type promotion.",
@@ -374,7 +376,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/resize/",
+    "href": "/docs/api/resize/",
     "label": "we.resize"
   },
   "provenance_label": "Adapted from NumPy docs",

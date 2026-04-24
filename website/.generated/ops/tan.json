@@ -419,6 +419,7 @@
     }
   ],
   "canonical_name": "tan",
+  "canonical_path": "tan",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -440,11 +441,12 @@
     "output": "array([  1.22460635e-16,   1.63317787e+16,  -1.22460635e-16])\n\nTrue\n\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nValueError: operands could not be broadcast together with shapes (3,3) (2,2)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/tan/",
+  "href": "/docs/api/tan/",
+  "legacy_href": "/docs/api/ops/tan/",
   "module": "numpy",
   "name": "tan",
   "next": {
-    "href": "/docs/api/ops/tanh/",
+    "href": "/docs/api/tanh/",
     "label": "we.tanh"
   },
   "notes": "Element-wise tangent.",
@@ -492,7 +494,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/take_along_axis/",
+    "href": "/docs/api/take-along-axis/",
     "label": "we.take_along_axis"
   },
   "provenance_label": "Adapted from NumPy docs",

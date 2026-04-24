@@ -843,6 +843,7 @@
     }
   ],
   "canonical_name": "fft.irfft",
+  "canonical_path": "fft/irfft",
   "category": "counted_custom",
   "cost_formula": "5(n/2) * ceil(log2(n))",
   "cost_formula_latex": "$5(n/2) \\cdot \\lceil\\log_2 n\\rceil$",
@@ -857,11 +858,12 @@
     "output": "array([0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j]) # may vary\n\narray([0.,  1.,  0.,  0.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-irfft/",
+  "href": "/docs/api/fft/irfft/",
+  "legacy_href": "/docs/api/ops/fft-irfft/",
   "module": "numpy.fft",
   "name": "fft.irfft",
   "next": {
-    "href": "/docs/api/ops/fft-irfft2/",
+    "href": "/docs/api/fft/irfft2/",
     "label": "we.fft.irfft2"
   },
   "notes": "Inverse 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
@@ -924,7 +926,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-ihfft/",
+    "href": "/docs/api/fft/ihfft/",
     "label": "we.fft.ihfft"
   },
   "provenance_label": "Adapted from NumPy docs",

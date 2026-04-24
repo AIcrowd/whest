@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isinf/",
+  "detail_href": "/docs/api/isinf/",
   "detail_json_href": "/api-data/ops/isinf.json",
   "docs": {
     "sections": [
@@ -478,7 +478,7 @@
     "name": "isinf",
     "notes": "Test for infinity element-wise. Cost: numel(input).",
     "numpy_ref": "np.isinf",
-    "signature": "we.isinf(*args, **kwargs)",
+    "signature": "we.isinf(x, **kwargs)",
     "status": "supported",
     "summary": "Test element-wise for positive or negative infinity.",
     "weight": 1.0,

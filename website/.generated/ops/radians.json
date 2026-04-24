@@ -366,6 +366,7 @@
     }
   ],
   "canonical_name": "radians",
+  "canonical_path": "radians",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -387,11 +388,12 @@
     "output": "array([ 0.        ,  0.52359878,  1.04719755,  1.57079633,  2.0943951 ,\n        2.61799388,  3.14159265,  3.66519143,  4.1887902 ,  4.71238898,\n        5.23598776,  5.75958653])\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/radians/",
+  "href": "/docs/api/radians/",
+  "legacy_href": "/docs/api/ops/radians/",
   "module": "numpy",
   "name": "radians",
   "next": {
-    "href": "/docs/api/ops/random-beta/",
+    "href": "/docs/api/random/beta/",
     "label": "we.random.beta"
   },
   "notes": "Convert degrees to radians element-wise.",
@@ -437,7 +439,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/quantile/",
+    "href": "/docs/api/quantile/",
     "label": "we.quantile"
   },
   "provenance_label": "Adapted from NumPy docs",

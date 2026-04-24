@@ -1,0 +1,183 @@
+{
+  "aliases": [
+    "budget_live",
+    "we.budget_live",
+    "whest.budget_live"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Return a live-updating budget summary context manager."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", include the namespace breakdown in the live display.\nDefault "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "False"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": ", include the namespace breakdown in the live display.\nDefault "
+                },
+                {
+                  "kind": "code",
+                  "text": "False"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "by_namespace",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "A context manager that refreshes the session-wide budget summary while\nthe "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "with"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " block is active. When Rich is installed this is a\nlive-rendered display; otherwise it falls back to a plain-text summary\nprinted when the block exits."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "object",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "A context manager that refreshes the session-wide budget summary while\nthe "
+                },
+                {
+                  "kind": "code",
+                  "text": "with"
+                },
+                {
+                  "kind": "text",
+                  "text": " block is active. When Rich is installed this is a\nlive-rendered display; otherwise it falls back to a plain-text summary\nprinted when the block exits."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "with we.budget_live():"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "with we.BudgetContext(flop_budget=100):"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "_ = we.add(we.array([1.0]), we.array([2.0]))"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "budget_live",
+  "canonical_path": "budget-live",
+  "display_name": "we.budget_live",
+  "href": "/docs/api/budget-live/",
+  "import_path": "we.budget_live",
+  "kind": "function",
+  "members": [],
+  "module": "whest._display",
+  "name": "budget_live",
+  "related_guides": [],
+  "signature": "we.budget_live(by_namespace: 'bool' = False)",
+  "slug": "budget-live",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_display.py#L370",
+  "status_note": "",
+  "summary": "Return a live-updating budget summary context manager.",
+  "upstream_source_url": ""
+}

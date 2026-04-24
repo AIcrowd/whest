@@ -1,0 +1,346 @@
+{
+  "aliases": [
+    "as_symmetric",
+    "we.as_symmetric",
+    "whest.as_symmetric"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Wrap "
+            },
+            {
+              "kind": "emphasis",
+              "text": "data"
+            },
+            {
+              "kind": "text",
+              "text": " as a "
+            },
+            {
+              "display_text": "SymmetricTensor",
+              "explicit_title": false,
+              "external_url": "",
+              "href": "/docs/api/symmetric-tensor/",
+              "kind": "role_reference",
+              "original_target": "SymmetricTensor",
+              "role": "class",
+              "suppress_link": false,
+              "target": "SymmetricTensor",
+              "unresolved": false
+            },
+            {
+              "kind": "text",
+              "text": " after validating symmetry."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The tensor data."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "we.ndarray",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The tensor data."
+                }
+              ],
+              "name": "data",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "A single symmetry group "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "(0, 1)"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " or a list "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "[(0, 1), (2, 3)]"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ".\nMutually exclusive with "
+                    },
+                    {
+                      "kind": "emphasis",
+                      "text": "symmetry"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int or list of tuple of int, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "A single symmetry group "
+                },
+                {
+                  "kind": "code",
+                  "text": "(0, 1)"
+                },
+                {
+                  "kind": "text",
+                  "text": " or a list "
+                },
+                {
+                  "kind": "code",
+                  "text": "[(0, 1), (2, 3)]"
+                },
+                {
+                  "kind": "text",
+                  "text": ".\nMutually exclusive with "
+                },
+                {
+                  "kind": "emphasis",
+                  "text": "symmetry"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "symmetric_axes",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "One or more "
+                    },
+                    {
+                      "display_text": "PermutationGroup",
+                      "explicit_title": false,
+                      "external_url": "",
+                      "href": "/docs/api/permutation-group/",
+                      "kind": "role_reference",
+                      "original_target": "PermutationGroup",
+                      "role": "class",
+                      "suppress_link": false,
+                      "target": "PermutationGroup",
+                      "unresolved": false
+                    },
+                    {
+                      "kind": "text",
+                      "text": " objects (must have axes set).\nMutually exclusive with "
+                    },
+                    {
+                      "kind": "emphasis",
+                      "text": "symmetric_axes"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "PermutationGroup or list of PermutationGroup, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "One or more "
+                },
+                {
+                  "display_text": "PermutationGroup",
+                  "explicit_title": false,
+                  "external_url": "",
+                  "href": "/docs/api/permutation-group/",
+                  "kind": "role_reference",
+                  "original_target": "PermutationGroup",
+                  "role": "class",
+                  "suppress_link": false,
+                  "target": "PermutationGroup",
+                  "unresolved": false
+                },
+                {
+                  "kind": "text",
+                  "text": " objects (must have axes set).\nMutually exclusive with "
+                },
+                {
+                  "kind": "emphasis",
+                  "text": "symmetric_axes"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "symmetry",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [],
+              "data_type": "SymmetricTensor",
+              "inline": [],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If both "
+                    },
+                    {
+                      "kind": "emphasis",
+                      "text": "symmetric_axes"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " and "
+                    },
+                    {
+                      "kind": "emphasis",
+                      "text": "symmetry"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " are provided."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "ValueError",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If both "
+                },
+                {
+                  "kind": "emphasis",
+                  "text": "symmetric_axes"
+                },
+                {
+                  "kind": "text",
+                  "text": " and "
+                },
+                {
+                  "kind": "emphasis",
+                  "text": "symmetry"
+                },
+                {
+                  "kind": "text",
+                  "text": " are provided."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If the data does not satisfy the claimed symmetry."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "SymmetryError",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If the data does not satisfy the claimed symmetry."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Raises",
+          "type": "field_list"
+        }
+      ],
+      "title": "Raises"
+    }
+  ],
+  "canonical_name": "as_symmetric",
+  "canonical_path": "as-symmetric",
+  "display_name": "we.as_symmetric",
+  "href": "/docs/api/as-symmetric/",
+  "import_path": "we.as_symmetric",
+  "kind": "function",
+  "members": [],
+  "module": "whest._symmetric",
+  "name": "as_symmetric",
+  "related_guides": [
+    {
+      "href": "/docs/guides/symmetry",
+      "title": "Symmetry Savings"
+    }
+  ],
+  "signature": "we.as_symmetric(data: 'np.ndarray', symmetric_axes: 'tuple[int, ...] | list[tuple[int, ...]] | None' = None, *, symmetry: 'PermutationGroup | list | None' = None) -> 'SymmetricTensor'",
+  "slug": "as-symmetric",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_symmetric.py#L837",
+  "status_note": "",
+  "summary": "Wrap *data* as a :class:`SymmetricTensor` after validating symmetry.",
+  "upstream_source_url": ""
+}

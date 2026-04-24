@@ -328,6 +328,7 @@
     }
   ],
   "canonical_name": "array_equal",
+  "canonical_path": "array-equal",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -342,11 +343,12 @@
     "output": "True\n\nTrue\n\nFalse\n\nFalse\n\nFalse\n\nTrue\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/array_equal/",
+  "href": "/docs/api/array-equal/",
+  "legacy_href": "/docs/api/ops/array_equal/",
   "module": "numpy",
   "name": "array_equal",
   "next": {
-    "href": "/docs/api/ops/array_equiv/",
+    "href": "/docs/api/array-equiv/",
     "label": "we.array_equiv"
   },
   "notes": "Element-wise equality; cost = numel(a).",
@@ -371,7 +373,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/array/",
+    "href": "/docs/api/array/",
     "label": "we.array"
   },
   "provenance_label": "Adapted from NumPy docs",

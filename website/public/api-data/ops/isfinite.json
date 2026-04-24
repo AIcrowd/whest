@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isfinite/",
+  "detail_href": "/docs/api/isfinite/",
   "detail_json_href": "/api-data/ops/isfinite.json",
   "docs": {
     "sections": [
@@ -488,7 +488,7 @@
     "name": "isfinite",
     "notes": "Test for finite values element-wise. Cost: numel(input).",
     "numpy_ref": "np.isfinite",
-    "signature": "we.isfinite(*args, **kwargs)",
+    "signature": "we.isfinite(x, **kwargs)",
     "status": "supported",
     "summary": "Test element-wise for finiteness (not infinity and not Not a Number).",
     "weight": 1.0,

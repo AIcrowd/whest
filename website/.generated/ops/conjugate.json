@@ -402,6 +402,7 @@
     }
   ],
   "canonical_name": "conjugate",
+  "canonical_path": "conjugate",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -423,11 +424,12 @@
     "output": "(1-2j)\n\narray([[ 1.-1.j,  0.-0.j],\n       [ 0.-0.j,  1.-1.j]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/conjugate/",
+  "href": "/docs/api/conjugate/",
+  "legacy_href": "/docs/api/ops/conjugate/",
   "module": "numpy",
   "name": "conjugate",
   "next": {
-    "href": "/docs/api/ops/convolve/",
+    "href": "/docs/api/convolve/",
     "label": "we.convolve"
   },
   "notes": "Complex conjugate element-wise.",
@@ -476,7 +478,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/conj/",
+    "href": "/docs/api/conj/",
     "label": "we.conj"
   },
   "provenance_label": "Adapted from NumPy docs",

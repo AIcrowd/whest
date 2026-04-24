@@ -203,6 +203,7 @@
     }
   ],
   "canonical_name": "diag_indices_from",
+  "canonical_path": "diag-indices-from",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -217,11 +218,12 @@
     "output": "array([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])\n\n(array([0, 1, 2, 3]), array([0, 1, 2, 3]))\n\narray([ 0,  5, 10, 15])\n\n(array([0, 1, 2, 3]), array([0, 1, 2, 3]))",
     "source": "derived"
   },
-  "href": "/docs/api/ops/diag_indices_from/",
+  "href": "/docs/api/diag-indices-from/",
+  "legacy_href": "/docs/api/ops/diag_indices_from/",
   "module": "numpy",
   "name": "diag_indices_from",
   "next": {
-    "href": "/docs/api/ops/diagflat/",
+    "href": "/docs/api/diagflat/",
     "label": "we.diagflat"
   },
   "notes": "Return indices to access main diagonal of given array.",
@@ -235,7 +237,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/diag_indices/",
+    "href": "/docs/api/diag-indices/",
     "label": "we.diag_indices"
   },
   "provenance_label": "Adapted from NumPy docs",

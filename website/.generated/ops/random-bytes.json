@@ -208,6 +208,7 @@
     }
   ],
   "canonical_name": "random.bytes",
+  "canonical_path": "random/bytes",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -222,11 +223,12 @@
     "output": "b' eh\\x85\\x022SZ\\xbf\\xa4' #random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-bytes/",
+  "href": "/docs/api/random/bytes/",
+  "legacy_href": "/docs/api/ops/random-bytes/",
   "module": "numpy.random",
   "name": "random.bytes",
   "next": {
-    "href": "/docs/api/ops/random-chisquare/",
+    "href": "/docs/api/random/chisquare/",
     "label": "we.random.chisquare"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -242,7 +244,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-binomial/",
+    "href": "/docs/api/random/binomial/",
     "label": "we.random.binomial"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -281,5 +283,5 @@
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.random.bytes",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L417"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L473"
 }

@@ -211,6 +211,7 @@
     }
   ],
   "canonical_name": "fft.ifftshift",
+  "canonical_path": "fft/ifftshift",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -225,11 +226,12 @@
     "output": "array([[ 0.,  1.,  2.],\n       [ 3.,  4., -4.],\n       [-3., -2., -1.]])\n\narray([[ 0.,  1.,  2.],\n       [ 3.,  4., -4.],\n       [-3., -2., -1.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-ifftshift/",
+  "href": "/docs/api/fft/ifftshift/",
+  "legacy_href": "/docs/api/ops/fft-ifftshift/",
   "module": "numpy.fft",
   "name": "fft.ifftshift",
   "next": {
-    "href": "/docs/api/ops/fft-ihfft/",
+    "href": "/docs/api/fft/ihfft/",
     "label": "we.fft.ihfft"
   },
   "notes": "Inverse of fftshift. No arithmetic; index reordering only.",
@@ -252,7 +254,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-ifftn/",
+    "href": "/docs/api/fft/ifftn/",
     "label": "we.fft.ifftn"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -368,7 +368,29 @@ class _PlainTextLive:
 
 
 def budget_live(by_namespace: bool = False):
-    """Return a live-updating budget display context manager."""
+    """Return a live-updating budget summary context manager.
+
+    Parameters
+    ----------
+    by_namespace : bool, optional
+        If ``True``, include the namespace breakdown in the live display.
+        Default ``False``.
+
+    Returns
+    -------
+    object
+        A context manager that refreshes the session-wide budget summary while
+        the ``with`` block is active. When Rich is installed this is a
+        live-rendered display; otherwise it falls back to a plain-text summary
+        printed when the block exits.
+
+    Examples
+    --------
+    >>> import whest as we
+    >>> with we.budget_live():
+    ...     with we.BudgetContext(flop_budget=100):
+    ...         _ = we.add(we.array([1.0]), we.array([2.0]))
+    """
     try:
         from rich.live import Live
 
@@ -397,7 +419,28 @@ def budget_live(by_namespace: bool = False):
 
 
 def budget_summary(by_namespace: bool = False):
-    """Print or return the session-wide budget summary."""
+    """Render the session-wide budget summary.
+
+    Parameters
+    ----------
+    by_namespace : bool, optional
+        If ``True``, include the namespace breakdown in the rendered summary.
+        Default ``False``.
+
+    Returns
+    -------
+    object or None
+        In notebook-style environments, returns the Rich renderable or plain
+        text summary object. In a standard terminal, prints the summary and
+        returns ``None``.
+
+    Examples
+    --------
+    >>> import whest as we
+    >>> with we.BudgetContext(flop_budget=100):
+    ...     _ = we.add(we.array([1.0]), we.array([2.0]))
+    >>> we.budget_summary()
+    """
     result = render_budget_summary(by_namespace=by_namespace)
     try:
         _ = get_ipython  # noqa: F821

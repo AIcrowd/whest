@@ -564,6 +564,7 @@
     }
   ],
   "canonical_name": "mask_indices",
+  "canonical_path": "mask-indices",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -578,11 +579,12 @@
     "output": "array([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n\narray([0, 1, 2, 4, 5, 8])\n\narray([1, 2, 5])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/mask_indices/",
+  "href": "/docs/api/mask-indices/",
+  "legacy_href": "/docs/api/ops/mask_indices/",
   "module": "numpy",
   "name": "mask_indices",
   "next": {
-    "href": "/docs/api/ops/matmul/",
+    "href": "/docs/api/matmul/",
     "label": "we.matmul"
   },
   "notes": "Return indices of mask for n x n array. Cost: numel(output).",
@@ -616,7 +618,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/logspace/",
+    "href": "/docs/api/logspace/",
     "label": "we.logspace"
   },
   "provenance_label": "Adapted from NumPy docs",

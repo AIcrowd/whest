@@ -470,6 +470,7 @@
     }
   ],
   "canonical_name": "isinf",
+  "canonical_path": "isinf",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -491,11 +492,12 @@
     "output": "True\n\nFalse\n\nTrue\n\narray([ True,  True, False, False])\n\narray([1, 0, 1])\n\narray([1, 0, 1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isinf/",
+  "href": "/docs/api/isinf/",
+  "legacy_href": "/docs/api/ops/isinf/",
   "module": "numpy",
   "name": "isinf",
   "next": {
-    "href": "/docs/api/ops/isnan/",
+    "href": "/docs/api/isnan/",
     "label": "we.isnan"
   },
   "notes": "Test for infinity element-wise. Cost: numel(input).",
@@ -544,7 +546,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isin/",
+    "href": "/docs/api/isin/",
     "label": "we.isin"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -605,7 +607,7 @@
       "unresolved": false
     }
   ],
-  "signature": "we.isinf(*args, **kwargs)",
+  "signature": "we.isinf(x, **kwargs)",
   "slug": "isinf",
   "summary": "Test element-wise for positive or negative infinity.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

@@ -1,0 +1,128 @@
+{
+  "aliases": [
+    "SymmetryInfo",
+    "we.SymmetryInfo",
+    "whest.SymmetryInfo",
+    "flops.SymmetryInfo",
+    "we.flops.SymmetryInfo",
+    "whest.flops.SymmetryInfo"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Metadata about tensor symmetry groups."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Groups of dimension indices that are symmetric under permutation."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "list of tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Groups of dimension indices that are symmetric under permutation."
+                }
+              ],
+              "name": "symmetric_axes",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Full tensor shape."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Full tensor shape."
+                }
+              ],
+              "name": "shape",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "PermutationGroup objects carrying axis info. Auto-built from\nsymmetric_axes when not supplied."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "list of PermutationGroup, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "PermutationGroup objects carrying axis info. Auto-built from\nsymmetric_axes when not supplied."
+                }
+              ],
+              "name": "groups",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    }
+  ],
+  "canonical_name": "SymmetryInfo",
+  "canonical_path": "symmetry-info",
+  "display_name": "we.SymmetryInfo",
+  "href": "/docs/api/symmetry-info/",
+  "import_path": "we.SymmetryInfo",
+  "kind": "class",
+  "members": [],
+  "module": "whest._symmetric",
+  "name": "SymmetryInfo",
+  "related_guides": [
+    {
+      "href": "/docs/guides/symmetry",
+      "title": "Symmetry Savings"
+    },
+    {
+      "href": "/docs/understanding/symmetry-detection",
+      "title": "Symmetry Detection Deep Dive"
+    }
+  ],
+  "signature": "we.SymmetryInfo(symmetric_axes: 'list[tuple[int, ...]]' = <factory>, shape: 'tuple[int, ...]' = (), groups: 'list | None' = None) -> None",
+  "slug": "symmetry-info",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_symmetric.py#L15",
+  "status_note": "",
+  "summary": "Metadata about tensor symmetry groups.",
+  "upstream_source_url": ""
+}

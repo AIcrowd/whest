@@ -337,6 +337,7 @@
     }
   ],
   "canonical_name": "random.standard_cauchy",
+  "canonical_path": "random/standard-cauchy",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -364,11 +365,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-standard_cauchy/",
+  "href": "/docs/api/random/standard-cauchy/",
+  "legacy_href": "/docs/api/ops/random-standard_cauchy/",
   "module": "numpy.random",
   "name": "random.standard_cauchy",
   "next": {
-    "href": "/docs/api/ops/random-standard_exponential/",
+    "href": "/docs/api/random/standard-exponential/",
     "label": "we.random.standard_exponential"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -392,7 +394,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-shuffle/",
+    "href": "/docs/api/random/shuffle/",
     "label": "we.random.shuffle"
   },
   "provenance_label": "Adapted from NumPy docs",

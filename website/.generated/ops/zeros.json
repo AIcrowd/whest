@@ -440,6 +440,7 @@
     }
   ],
   "canonical_name": "zeros",
+  "canonical_path": "zeros",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -454,11 +455,12 @@
     "output": "array([ 0.,  0.,  0.,  0.,  0.])\n\narray([0, 0, 0, 0, 0])\n\narray([[ 0.],\n       [ 0.]])\n\narray([[ 0.,  0.],\n       [ 0.,  0.]])\n\narray([(0, 0), (0, 0)],\n      dtype=[('x', '<i4'), ('y', '<i4')])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/zeros/",
+  "href": "/docs/api/zeros/",
+  "legacy_href": "/docs/api/ops/zeros/",
   "module": "numpy",
   "name": "zeros",
   "next": {
-    "href": "/docs/api/ops/zeros_like/",
+    "href": "/docs/api/zeros-like/",
     "label": "we.zeros_like"
   },
   "notes": "Create zero-filled array.",
@@ -504,7 +506,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/where/",
+    "href": "/docs/api/where/",
     "label": "we.where"
   },
   "provenance_label": "Adapted from NumPy docs",

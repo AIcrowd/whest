@@ -424,6 +424,7 @@
     }
   ],
   "canonical_name": "trace",
+  "canonical_path": "trace",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -438,11 +439,12 @@
     "output": "3.0\n\narray([6, 8])\n\n(2, 3)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/trace/",
+  "href": "/docs/api/trace/",
+  "legacy_href": "/docs/api/ops/trace/",
   "module": "numpy",
   "name": "trace",
   "next": {
-    "href": "/docs/api/ops/transpose/",
+    "href": "/docs/api/transpose/",
     "label": "we.transpose"
   },
   "notes": "Diagonal sum; cost = min(n,m).",
@@ -494,7 +496,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/tile/",
+    "href": "/docs/api/tile/",
     "label": "we.tile"
   },
   "provenance_label": "Adapted from NumPy docs",

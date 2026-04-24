@@ -188,6 +188,7 @@
     }
   ],
   "canonical_name": "iterable",
+  "canonical_path": "iterable",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -202,11 +203,12 @@
     "output": "True\n\nFalse",
     "source": "derived"
   },
-  "href": "/docs/api/ops/iterable/",
+  "href": "/docs/api/iterable/",
+  "legacy_href": "/docs/api/ops/iterable/",
   "module": "numpy",
   "name": "iterable",
   "next": {
-    "href": "/docs/api/ops/ix_/",
+    "href": "/docs/api/ix-/",
     "label": "we.ix_"
   },
   "notes": "Return True if object is iterable.",
@@ -225,7 +227,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/issubdtype/",
+    "href": "/docs/api/issubdtype/",
     "label": "we.issubdtype"
   },
   "provenance_label": "Adapted from NumPy docs",

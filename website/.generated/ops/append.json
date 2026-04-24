@@ -581,6 +581,7 @@
     }
   ],
   "canonical_name": "append",
+  "canonical_path": "append",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -595,11 +596,12 @@
     "output": "array([1, 2, 3, ..., 7, 8, 9])\n\narray([[1, 2, 3],\n       [4, 5, 6],\n       [7, 8, 9]])\n\nTraceback (most recent call last):\n    ...\nValueError: all the input arrays must have same number of dimensions, but\nthe array at index 0 has 2 dimension(s) and the array at index 1 has 1\ndimension(s)\n\narray([1., 2.])\n\nfloat64",
     "source": "derived"
   },
-  "href": "/docs/api/ops/append/",
+  "href": "/docs/api/append/",
+  "legacy_href": "/docs/api/ops/append/",
   "module": "numpy",
   "name": "append",
   "next": {
-    "href": "/docs/api/ops/apply_along_axis/",
+    "href": "/docs/api/apply-along-axis/",
     "label": "we.apply_along_axis"
   },
   "notes": "Append values to end of array. Cost: numel(values).",
@@ -633,7 +635,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/any/",
+    "href": "/docs/api/any/",
     "label": "we.any"
   },
   "provenance_label": "Adapted from NumPy docs",

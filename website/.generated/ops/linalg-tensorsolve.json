@@ -406,6 +406,7 @@
     }
   ],
   "canonical_name": "linalg.tensorsolve",
+  "canonical_path": "linalg/tensorsolve",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -420,11 +421,12 @@
     "output": "(2, 3, 4)\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-tensorsolve/",
+  "href": "/docs/api/linalg/tensorsolve/",
+  "legacy_href": "/docs/api/ops/linalg-tensorsolve/",
   "module": "numpy.linalg",
   "name": "linalg.tensorsolve",
   "next": {
-    "href": "/docs/api/ops/linalg-trace/",
+    "href": "/docs/api/linalg/trace/",
     "label": "we.linalg.trace"
   },
   "notes": "Tensor solve. Cost: $n^3$ after reshape (delegates to solve).",
@@ -459,7 +461,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-tensorinv/",
+    "href": "/docs/api/linalg/tensorinv/",
     "label": "we.linalg.tensorinv"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -323,6 +323,7 @@
     }
   ],
   "canonical_name": "issubdtype",
+  "canonical_path": "issubdtype",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -344,11 +345,12 @@
     "output": "True\n\nFalse\n\nFalse\n\nTrue\n\nFalse\n\nFalse\n\nTrue\n\nTrue\n\nTrue\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/issubdtype/",
+  "href": "/docs/api/issubdtype/",
+  "legacy_href": "/docs/api/ops/issubdtype/",
   "module": "numpy",
   "name": "issubdtype",
   "next": {
-    "href": "/docs/api/ops/iterable/",
+    "href": "/docs/api/iterable/",
     "label": "we.iterable"
   },
   "notes": "Return True if first argument is lower in type hierarchy.",
@@ -364,7 +366,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isscalar/",
+    "href": "/docs/api/isscalar/",
     "label": "we.isscalar"
   },
   "provenance_label": "Adapted from NumPy docs",

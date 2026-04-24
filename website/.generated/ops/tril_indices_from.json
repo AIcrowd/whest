@@ -320,6 +320,7 @@
     }
   ],
   "canonical_name": "tril_indices_from",
+  "canonical_path": "tril-indices-from",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -334,11 +335,12 @@
     "output": "array([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])\n\n(array([0, 1, 1, 2, 2, 2, 3, 3, 3, 3]), array([0, 0, 1, 0, 1, 2, 0, 1, 2, 3]))\n\narray([ 0,  4,  5,  8,  9, 10, 12, 13, 14, 15])\n\n(array([0, 1, 1, 2, 2, 2, 3, 3, 3, 3]), array([0, 0, 1, 0, 1, 2, 0, 1, 2, 3]))\n\narray([ 0,  1,  4,  5,  6,  8,  9, 10, 11, 12, 13, 14, 15])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/tril_indices_from/",
+  "href": "/docs/api/tril-indices-from/",
+  "legacy_href": "/docs/api/ops/tril_indices_from/",
   "module": "numpy",
   "name": "tril_indices_from",
   "next": {
-    "href": "/docs/api/ops/trim_zeros/",
+    "href": "/docs/api/trim-zeros/",
     "label": "we.trim_zeros"
   },
   "notes": "Return lower-triangle indices for given array.",
@@ -362,7 +364,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/tril_indices/",
+    "href": "/docs/api/tril-indices/",
     "label": "we.tril_indices"
   },
   "provenance_label": "Adapted from NumPy docs",

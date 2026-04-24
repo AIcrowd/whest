@@ -515,6 +515,7 @@
     }
   ],
   "canonical_name": "random.zipf",
+  "canonical_path": "random/zipf",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -534,11 +535,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-zipf/",
+  "href": "/docs/api/random/zipf/",
+  "legacy_href": "/docs/api/ops/random-zipf/",
   "module": "numpy.random",
   "name": "random.zipf",
   "next": {
-    "href": "/docs/api/ops/ravel/",
+    "href": "/docs/api/ravel/",
     "label": "we.ravel"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -569,7 +571,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-weibull/",
+    "href": "/docs/api/random/weibull/",
     "label": "we.random.weibull"
   },
   "provenance_label": "Adapted from NumPy docs",

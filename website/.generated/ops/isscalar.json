@@ -363,6 +363,7 @@
     }
   ],
   "canonical_name": "isscalar",
+  "canonical_path": "isscalar",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -382,11 +383,12 @@
     "output": "True\n\nFalse\n\nFalse\n\nTrue\n\nTrue\n\nTrue\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isscalar/",
+  "href": "/docs/api/isscalar/",
+  "legacy_href": "/docs/api/ops/isscalar/",
   "module": "numpy",
   "name": "isscalar",
   "next": {
-    "href": "/docs/api/ops/issubdtype/",
+    "href": "/docs/api/issubdtype/",
     "label": "we.issubdtype"
   },
   "notes": "Return True if input is a scalar.",
@@ -406,7 +408,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isrealobj/",
+    "href": "/docs/api/isrealobj/",
     "label": "we.isrealobj"
   },
   "provenance_label": "Adapted from NumPy docs",

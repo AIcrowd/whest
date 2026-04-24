@@ -298,6 +298,7 @@
     }
   ],
   "canonical_name": "polysub",
+  "canonical_path": "polysub",
   "category": "counted_custom",
   "cost_formula": "max(n1, n2)",
   "cost_formula_latex": "$\\max(n_1, n_2)$",
@@ -319,11 +320,12 @@
     "output": "array([-1,  0,  2])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/polysub/",
+  "href": "/docs/api/polysub/",
+  "legacy_href": "/docs/api/ops/polysub/",
   "module": "whest._polynomial",
   "name": "polysub",
   "next": {
-    "href": "/docs/api/ops/polyval/",
+    "href": "/docs/api/polyval/",
     "label": "we.polyval"
   },
   "notes": "Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs.",
@@ -339,7 +341,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/polymul/",
+    "href": "/docs/api/polymul/",
     "label": "we.polymul"
   },
   "provenance_label": "Adapted from NumPy docs",

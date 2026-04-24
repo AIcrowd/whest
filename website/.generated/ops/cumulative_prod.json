@@ -522,6 +522,7 @@
     }
   ],
   "canonical_name": "cumulative_prod",
+  "canonical_path": "cumulative-prod",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -536,11 +537,12 @@
     "output": "array([1, 2, 6])\n\narray([   1.,    2.,    6.,   24.,  120.,  720.])\n\narray([[ 1,  2,  3],\n       [ 4, 10, 18]])\n\narray([[  1,   2,   6],\n       [  4,  20, 120]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/cumulative_prod/",
+  "href": "/docs/api/cumulative-prod/",
+  "legacy_href": "/docs/api/ops/cumulative_prod/",
   "module": "numpy",
   "name": "cumulative_prod",
   "next": {
-    "href": "/docs/api/ops/cumulative_sum/",
+    "href": "/docs/api/cumulative-sum/",
     "label": "we.cumulative_sum"
   },
   "notes": "Cumulative product (NumPy 2.x array API).",
@@ -598,7 +600,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/cumsum/",
+    "href": "/docs/api/cumsum/",
     "label": "we.cumsum"
   },
   "provenance_label": "Adapted from NumPy docs",

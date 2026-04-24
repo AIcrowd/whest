@@ -490,6 +490,7 @@
     }
   ],
   "canonical_name": "random.logistic",
+  "canonical_path": "random/logistic",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -517,11 +518,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-logistic/",
+  "href": "/docs/api/random/logistic/",
+  "legacy_href": "/docs/api/ops/random-logistic/",
   "module": "numpy.random",
   "name": "random.logistic",
   "next": {
-    "href": "/docs/api/ops/random-lognormal/",
+    "href": "/docs/api/random/lognormal/",
     "label": "we.random.lognormal"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -560,7 +562,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-laplace/",
+    "href": "/docs/api/random/laplace/",
     "label": "we.random.laplace"
   },
   "provenance_label": "Adapted from NumPy docs",

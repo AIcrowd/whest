@@ -643,6 +643,7 @@
     }
   ],
   "canonical_name": "invert",
+  "canonical_path": "invert",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -674,11 +675,12 @@
     "output": "we.uint8(242)\n\n'11110010'\n\nwe.uint16(65522)\n\n'1111111111110010'\n\narray([-14], dtype=int8)\n\n'11110010'\n\narray([False,  True])\n\narray([False,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/invert/",
+  "href": "/docs/api/invert/",
+  "legacy_href": "/docs/api/ops/invert/",
   "module": "numpy",
   "name": "invert",
   "next": {
-    "href": "/docs/api/ops/isclose/",
+    "href": "/docs/api/isclose/",
     "label": "we.isclose"
   },
   "notes": "Bitwise NOT element-wise.",
@@ -727,7 +729,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/intersect1d/",
+    "href": "/docs/api/intersect1d/",
     "label": "we.intersect1d"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -571,6 +571,7 @@
     }
   ],
   "canonical_name": "nan_to_num",
+  "canonical_path": "nan-to-num",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -585,11 +586,12 @@
     "output": "1.7976931348623157e+308\n\n-1.7976931348623157e+308\n\n0.0\n\narray([ 1.79769313e+308, -1.79769313e+308,  0.00000000e+000, # may vary\n       -1.28000000e+002,  1.28000000e+002])\n\narray([ 3.3333333e+07,  3.3333333e+07, -9.9990000e+03,\n       -1.2800000e+02,  1.2800000e+02])\n\narray([  1.79769313e+308,  -1.79769313e+308,   0.00000000e+000, # may vary\n     -1.28000000e+002,   1.28000000e+002])\n\narray([  1.79769313e+308 +0.00000000e+000j, # may vary\n         0.00000000e+000 +0.00000000e+000j,\n         0.00000000e+000 +1.79769313e+308j])\n\narray([222222.+111111.j, 111111.     +0.j, 111111.+222222.j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nan_to_num/",
+  "href": "/docs/api/nan-to-num/",
+  "legacy_href": "/docs/api/ops/nan_to_num/",
   "module": "numpy",
   "name": "nan_to_num",
   "next": {
-    "href": "/docs/api/ops/nanargmax/",
+    "href": "/docs/api/nanargmax/",
     "label": "we.nanargmax"
   },
   "notes": "Replace NaN/inf with finite numbers element-wise.",
@@ -643,7 +645,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/multiply/",
+    "href": "/docs/api/multiply/",
     "label": "we.multiply"
   },
   "provenance_label": "Adapted from NumPy docs",

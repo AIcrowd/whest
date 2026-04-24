@@ -640,6 +640,7 @@
     }
   ],
   "canonical_name": "linalg.pinv",
+  "canonical_path": "linalg/pinv",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -664,11 +665,12 @@
     "output": "True\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-pinv/",
+  "href": "/docs/api/linalg/pinv/",
+  "legacy_href": "/docs/api/ops/linalg-pinv/",
   "module": "numpy.linalg",
   "name": "linalg.pinv",
   "next": {
-    "href": "/docs/api/ops/linalg-qr/",
+    "href": "/docs/api/linalg/qr/",
     "label": "we.linalg.qr"
   },
   "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
@@ -718,7 +720,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-outer/",
+    "href": "/docs/api/linalg/outer/",
     "label": "we.linalg.outer"
   },
   "provenance_label": "Adapted from NumPy docs",

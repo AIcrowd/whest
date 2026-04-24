@@ -479,6 +479,7 @@
     }
   ],
   "canonical_name": "fft.ihfft",
+  "canonical_path": "fft/ihfft",
   "category": "counted_custom",
   "cost_formula": "5n * ceil(log2(n))",
   "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
@@ -493,11 +494,12 @@
     "output": "array([1.+0.j,  2.+0.j,  3.+0.j,  4.+0.j,  3.+0.j,  2.+0.j]) # may vary\n\narray([ 1.-0.j,  2.-0.j,  3.-0.j,  4.-0.j]) # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-ihfft/",
+  "href": "/docs/api/fft/ihfft/",
+  "legacy_href": "/docs/api/ops/fft-ihfft/",
   "module": "numpy.fft",
   "name": "fft.ihfft",
   "next": {
-    "href": "/docs/api/ops/fft-irfft/",
+    "href": "/docs/api/fft/irfft/",
     "label": "we.fft.irfft"
   },
   "notes": "Inverse FFT of Hermitian signal. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
@@ -558,7 +560,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-ifftshift/",
+    "href": "/docs/api/fft/ifftshift/",
     "label": "we.fft.ifftshift"
   },
   "provenance_label": "Adapted from NumPy docs",

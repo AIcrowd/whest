@@ -504,6 +504,7 @@
     }
   ],
   "canonical_name": "random.pareto",
+  "canonical_path": "random/pareto",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -540,11 +541,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-pareto/",
+  "href": "/docs/api/random/pareto/",
+  "legacy_href": "/docs/api/ops/random-pareto/",
   "module": "numpy.random",
   "name": "random.pareto",
   "next": {
-    "href": "/docs/api/ops/random-permutation/",
+    "href": "/docs/api/random/permutation/",
     "label": "we.random.permutation"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -575,7 +577,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-normal/",
+    "href": "/docs/api/random/normal/",
     "label": "we.random.normal"
   },
   "provenance_label": "Adapted from NumPy docs",

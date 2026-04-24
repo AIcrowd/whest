@@ -1,0 +1,206 @@
+{
+  "aliases": [
+    "einsum_cache_info",
+    "we.einsum_cache_info",
+    "whest.einsum_cache_info"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Return einsum path cache statistics."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [],
+              "data_type": "",
+              "inline": [],
+              "name": "None",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The standard "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "functools.lru_cache"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " statistics tuple with "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "hits"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ",\n"
+                    },
+                    {
+                      "kind": "code",
+                      "text": "misses"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "maxsize"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", and "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "currsize"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " fields."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "object",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The standard "
+                },
+                {
+                  "kind": "code",
+                  "text": "functools.lru_cache"
+                },
+                {
+                  "kind": "text",
+                  "text": " statistics tuple with "
+                },
+                {
+                  "kind": "code",
+                  "text": "hits"
+                },
+                {
+                  "kind": "text",
+                  "text": ",\n"
+                },
+                {
+                  "kind": "code",
+                  "text": "misses"
+                },
+                {
+                  "kind": "text",
+                  "text": ", "
+                },
+                {
+                  "kind": "code",
+                  "text": "maxsize"
+                },
+                {
+                  "kind": "text",
+                  "text": ", and "
+                },
+                {
+                  "kind": "code",
+                  "text": "currsize"
+                },
+                {
+                  "kind": "text",
+                  "text": " fields."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [],
+              "data_type": "Returns a named tuple with ``hits``, ``misses``, ``maxsize``, and",
+              "inline": [],
+              "name": "",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [],
+              "data_type": "``currsize`` fields (the standard ``functools.lru_cache`` statistics).",
+              "inline": [],
+              "name": "",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "info = we.einsum_cache_info()\nprint(f\"Cache hit rate: {info.hits / max(info.hits + info.misses, 1):.0%}\")"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "Example::",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "info = we.einsum_cache_info()\nprint(f\"Cache hit rate: {info.hits / max(info.hits + info.misses, 1):.0%}\")"
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    }
+  ],
+  "canonical_name": "einsum_cache_info",
+  "canonical_path": "einsum-cache-info",
+  "display_name": "we.einsum_cache_info",
+  "href": "/docs/api/einsum-cache-info/",
+  "import_path": "we.einsum_cache_info",
+  "kind": "function",
+  "members": [],
+  "module": "whest._einsum",
+  "name": "einsum_cache_info",
+  "related_guides": [],
+  "signature": "we.einsum_cache_info()",
+  "slug": "einsum-cache-info",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L168",
+  "status_note": "",
+  "summary": "Return einsum path cache statistics.",
+  "upstream_source_url": ""
+}

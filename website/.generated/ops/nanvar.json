@@ -763,6 +763,7 @@
     }
   ],
   "canonical_name": "nanvar",
+  "canonical_path": "nanvar",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -777,11 +778,12 @@
     "output": "1.5555555555555554\n\narray([1.,  0.])\n\narray([0.,  0.25])  # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nanvar/",
+  "href": "/docs/api/nanvar/",
+  "legacy_href": "/docs/api/ops/nanvar/",
   "module": "numpy",
   "name": "nanvar",
   "next": {
-    "href": "/docs/api/ops/ndim/",
+    "href": "/docs/api/ndim/",
     "label": "we.ndim"
   },
   "notes": "Variance ignoring NaNs.",
@@ -880,7 +882,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nansum/",
+    "href": "/docs/api/nansum/",
     "label": "we.nansum"
   },
   "provenance_label": "Adapted from NumPy docs",

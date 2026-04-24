@@ -507,6 +507,7 @@
     }
   ],
   "canonical_name": "nonzero",
+  "canonical_path": "nonzero",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -537,11 +538,12 @@
     "output": "array([[3, 0, 0],\n       [0, 4, 0],\n       [5, 6, 0]])\n\n(array([0, 1, 2, 2]), array([0, 1, 0, 1]))\n\narray([3, 4, 5, 6])\n\narray([[0, 0],\n       [1, 1],\n       [2, 0],\n       [2, 1]])\n\narray([[False, False, False],\n       [ True,  True,  True],\n       [ True,  True,  True]])\n\n(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))\n\narray([4, 5, 6, 7, 8, 9])\n\narray([4, 5, 6, 7, 8, 9])\n\n(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nonzero/",
+  "href": "/docs/api/nonzero/",
+  "legacy_href": "/docs/api/ops/nonzero/",
   "module": "numpy",
   "name": "nonzero",
   "next": {
-    "href": "/docs/api/ops/not_equal/",
+    "href": "/docs/api/not-equal/",
     "label": "we.not_equal"
   },
   "notes": "Return indices of non-zero elements. Cost: numel(input).",
@@ -559,7 +561,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nextafter/",
+    "href": "/docs/api/nextafter/",
     "label": "we.nextafter"
   },
   "provenance_label": "Adapted from NumPy docs",

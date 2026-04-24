@@ -836,6 +836,7 @@
     }
   ],
   "canonical_name": "argsort",
+  "canonical_path": "argsort",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -857,11 +858,12 @@
     "output": "array([1, 2, 0])\n\narray([[0, 3],\n       [2, 2]])\n\narray([[0, 1],\n       [1, 0]])\n\narray([[0, 2],\n       [2, 3]])\n\narray([[0, 1],\n       [0, 1]])\n\narray([[0, 3],\n       [2, 2]])\n\n(array([0, 1, 1, 0]), array([0, 0, 1, 1]))\n\narray([0, 2, 2, 3])\n\narray([(1, 0), (0, 1)],\n      dtype=[('x', '<i4'), ('y', '<i4')])\n\narray([1, 0])\n\narray([0, 1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/argsort/",
+  "href": "/docs/api/argsort/",
+  "legacy_href": "/docs/api/ops/argsort/",
   "module": "numpy",
   "name": "argsort",
   "next": {
-    "href": "/docs/api/ops/argwhere/",
+    "href": "/docs/api/argwhere/",
     "label": "we.argwhere"
   },
   "notes": "Indirect sort; cost = n*ceil(log2(n)) per slice.",
@@ -921,7 +923,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/argpartition/",
+    "href": "/docs/api/argpartition/",
     "label": "we.argpartition"
   },
   "provenance_label": "Adapted from NumPy docs",

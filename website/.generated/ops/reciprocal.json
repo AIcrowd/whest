@@ -351,6 +351,7 @@
     }
   ],
   "canonical_name": "reciprocal",
+  "canonical_path": "reciprocal",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -372,11 +373,12 @@
     "output": "0.5\n\narray([ 1.       ,  0.5      ,  0.3003003])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/reciprocal/",
+  "href": "/docs/api/reciprocal/",
+  "legacy_href": "/docs/api/ops/reciprocal/",
   "module": "numpy",
   "name": "reciprocal",
   "next": {
-    "href": "/docs/api/ops/remainder/",
+    "href": "/docs/api/remainder/",
     "label": "we.remainder"
   },
   "notes": "Element-wise 1/x.",
@@ -425,7 +427,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/real_if_close/",
+    "href": "/docs/api/real-if-close/",
     "label": "we.real_if_close"
   },
   "provenance_label": "Adapted from NumPy docs",

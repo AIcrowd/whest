@@ -1,0 +1,44 @@
+{
+  "aliases": [
+    "StepInfo",
+    "we.StepInfo",
+    "whest.StepInfo"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Per-step diagnostics for a contraction path."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    }
+  ],
+  "canonical_name": "StepInfo",
+  "canonical_path": "step-info",
+  "display_name": "we.StepInfo",
+  "href": "/docs/api/step-info/",
+  "import_path": "we.StepInfo",
+  "kind": "class",
+  "members": [],
+  "module": "whest._opt_einsum._contract",
+  "name": "StepInfo",
+  "related_guides": [
+    {
+      "href": "/docs/guides/einsum",
+      "title": "Einsum Guide"
+    }
+  ],
+  "signature": "we.StepInfo(subscript: str, flop_cost: int, input_shapes: list[tuple[int, ...]], output_shape: tuple[int, ...], input_groups: list[whest._perm_group.PermutationGroup | None], output_group: whest._perm_group.PermutationGroup | None, dense_flop_cost: int, symmetry_savings: float, blas_type: str | bool = False, inner_group: whest._perm_group.PermutationGroup | None = None, path_indices: tuple[int, ...] = (), inner_applied: bool = False, merged_subset: frozenset[int] | None = None) -> None",
+  "slug": "step-info",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_opt_einsum/_contract.py#L47",
+  "status_note": "",
+  "summary": "Per-step diagnostics for a contraction path.",
+  "upstream_source_url": ""
+}

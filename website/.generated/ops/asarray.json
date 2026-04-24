@@ -736,6 +736,7 @@
     }
   ],
   "canonical_name": "asarray",
+  "canonical_path": "asarray",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -750,11 +751,12 @@
     "output": "array([1, 2])\n\nTrue\n\nTrue\n\nFalse\n\nTrue\n\nFalse\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/asarray/",
+  "href": "/docs/api/asarray/",
+  "legacy_href": "/docs/api/ops/asarray/",
   "module": "numpy",
   "name": "asarray",
   "next": {
-    "href": "/docs/api/ops/asarray_chkfinite/",
+    "href": "/docs/api/asarray-chkfinite/",
     "label": "we.asarray_chkfinite"
   },
   "notes": "Convert input to array. Cost: numel(input).",
@@ -828,7 +830,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/array_split/",
+    "href": "/docs/api/array-split/",
     "label": "we.array_split"
   },
   "provenance_label": "Adapted from NumPy docs",

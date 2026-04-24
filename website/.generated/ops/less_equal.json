@@ -484,6 +484,7 @@
     }
   ],
   "canonical_name": "less_equal",
+  "canonical_path": "less-equal",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -505,11 +506,12 @@
     "output": "array([False,  True,  True])\n\narray([False,  True,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/less_equal/",
+  "href": "/docs/api/less-equal/",
+  "legacy_href": "/docs/api/ops/less_equal/",
   "module": "numpy",
   "name": "less_equal",
   "next": {
-    "href": "/docs/api/ops/lexsort/",
+    "href": "/docs/api/lexsort/",
     "label": "we.lexsort"
   },
   "notes": "Element-wise x1 <= x2.",
@@ -557,7 +559,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/less/",
+    "href": "/docs/api/less/",
     "label": "we.less"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -1,0 +1,104 @@
+{
+  "aliases": [
+    "budget_reset",
+    "we.budget_reset",
+    "whest.budget_reset"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Clear accumulated session-wide budget data."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [],
+              "data_type": "",
+              "inline": [],
+              "name": "None",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Removes all recorded budget summaries and resets live baselines for\nactive contexts."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "None",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Removes all recorded budget summaries and resets live baselines for\nactive contexts."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This is primarily useful in tests, notebooks, and long-lived processes\nwhere you want a fresh session-wide summary."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "budget_reset",
+  "canonical_path": "budget-reset",
+  "display_name": "we.budget_reset",
+  "href": "/docs/api/budget-reset/",
+  "import_path": "we.budget_reset",
+  "kind": "function",
+  "members": [],
+  "module": "whest._budget",
+  "name": "budget_reset",
+  "related_guides": [],
+  "signature": "we.budget_reset() -> 'None'",
+  "slug": "budget-reset",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_budget.py#L669",
+  "status_note": "",
+  "summary": "Clear accumulated session-wide budget data.",
+  "upstream_source_url": ""
+}

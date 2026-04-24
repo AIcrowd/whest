@@ -27,6 +27,7 @@
     }
   ],
   "canonical_name": "random.random",
+  "canonical_path": "random/random",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -37,11 +38,12 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/random-random/",
+  "href": "/docs/api/random/random/",
+  "legacy_href": "/docs/api/ops/random-random/",
   "module": "numpy.random",
   "name": "random.random",
   "next": {
-    "href": "/docs/api/ops/random-random_integers/",
+    "href": "/docs/api/random/random-integers/",
     "label": "we.random.random_integers"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -49,7 +51,7 @@
   "numpy_ref": "np.random.random",
   "parameters": [],
   "previous": {
-    "href": "/docs/api/ops/random-randn/",
+    "href": "/docs/api/random/randn/",
     "label": "we.random.randn"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -63,5 +65,5 @@
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.random.random",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L177"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L233"
 }

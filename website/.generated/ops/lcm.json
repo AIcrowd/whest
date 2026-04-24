@@ -222,6 +222,7 @@
     }
   ],
   "canonical_name": "lcm",
+  "canonical_path": "lcm",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -236,11 +237,12 @@
     "output": "60\n\n60\n\n120\n\narray([ 0, 20, 20, 60, 20, 20])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/lcm/",
+  "href": "/docs/api/lcm/",
+  "legacy_href": "/docs/api/ops/lcm/",
   "module": "numpy",
   "name": "lcm",
   "next": {
-    "href": "/docs/api/ops/ldexp/",
+    "href": "/docs/api/ldexp/",
     "label": "we.ldexp"
   },
   "notes": "Element-wise least common multiple.",
@@ -258,7 +260,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/kron/",
+    "href": "/docs/api/kron/",
     "label": "we.kron"
   },
   "provenance_label": "Adapted from NumPy docs",

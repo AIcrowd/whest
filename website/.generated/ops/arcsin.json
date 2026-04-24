@@ -588,6 +588,7 @@
     }
   ],
   "canonical_name": "arcsin",
+  "canonical_path": "arcsin",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -615,11 +616,12 @@
     "output": "1.5707963267948966\n\n-1.5707963267948966\n\n0.0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/arcsin/",
+  "href": "/docs/api/arcsin/",
+  "legacy_href": "/docs/api/ops/arcsin/",
   "module": "numpy",
   "name": "arcsin",
   "next": {
-    "href": "/docs/api/ops/arcsinh/",
+    "href": "/docs/api/arcsinh/",
     "label": "we.arcsinh"
   },
   "notes": "Element-wise inverse sine.",
@@ -670,7 +672,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/arccosh/",
+    "href": "/docs/api/arccosh/",
     "label": "we.arccosh"
   },
   "provenance_label": "Adapted from NumPy docs",

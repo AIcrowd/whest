@@ -458,6 +458,7 @@
     }
   ],
   "canonical_name": "expand_dims",
+  "canonical_path": "expand-dims",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -472,11 +473,12 @@
     "output": "(2,)\n\narray([[1, 2]])\n\n(1, 2)\n\narray([[1],\n       [2]])\n\n(2, 1)\n\narray([[[1, 2]]])\n\narray([[[1],\n        [2]]])\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/expand_dims/",
+  "href": "/docs/api/expand-dims/",
+  "legacy_href": "/docs/api/ops/expand_dims/",
   "module": "numpy",
   "name": "expand_dims",
   "next": {
-    "href": "/docs/api/ops/expm1/",
+    "href": "/docs/api/expm1/",
     "label": "we.expm1"
   },
   "notes": "Insert new size-1 axis.",
@@ -504,7 +506,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/exp2/",
+    "href": "/docs/api/exp2/",
     "label": "we.exp2"
   },
   "provenance_label": "Adapted from NumPy docs",

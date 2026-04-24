@@ -342,6 +342,7 @@
     }
   ],
   "canonical_name": "spacing",
+  "canonical_path": "spacing",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -363,11 +364,12 @@
     "output": "True",
     "source": "derived"
   },
-  "href": "/docs/api/ops/spacing/",
+  "href": "/docs/api/spacing/",
+  "legacy_href": "/docs/api/ops/spacing/",
   "module": "numpy",
   "name": "spacing",
   "next": {
-    "href": "/docs/api/ops/split/",
+    "href": "/docs/api/split/",
     "label": "we.split"
   },
   "notes": "Return ULP spacing for each element.",
@@ -416,7 +418,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sort_complex/",
+    "href": "/docs/api/sort-complex/",
     "label": "we.sort_complex"
   },
   "provenance_label": "Adapted from NumPy docs",

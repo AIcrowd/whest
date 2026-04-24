@@ -327,6 +327,7 @@
     }
   ],
   "canonical_name": "linalg.multi_dot",
+  "canonical_path": "linalg/multi-dot",
   "category": "counted_custom",
   "cost_formula": "optimal chain cost",
   "cost_formula_latex": "optimal chain",
@@ -360,11 +361,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-multi_dot/",
+  "href": "/docs/api/linalg/multi-dot/",
+  "legacy_href": "/docs/api/ops/linalg-multi_dot/",
   "module": "numpy.linalg",
   "name": "linalg.multi_dot",
   "next": {
-    "href": "/docs/api/ops/linalg-norm/",
+    "href": "/docs/api/linalg/norm/",
     "label": "we.linalg.norm"
   },
   "notes": "Chain matmul. Cost: sum of optimal chain matmul costs (CLRS \u00a715.2).",
@@ -400,7 +402,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-matrix_transpose/",
+    "href": "/docs/api/linalg/matrix-transpose/",
     "label": "we.linalg.matrix_transpose"
   },
   "provenance_label": "Adapted from NumPy docs",

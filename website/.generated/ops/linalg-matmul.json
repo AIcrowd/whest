@@ -469,6 +469,7 @@
     }
   ],
   "canonical_name": "linalg.matmul",
+  "canonical_path": "linalg/matmul",
   "category": "counted_custom",
   "cost_formula": "delegates to we.matmul",
   "cost_formula_latex": "delegates to `matmul`",
@@ -483,11 +484,12 @@
     "output": "array([[4, 1],\n       [2, 2]])\n\narray([1, 2])\n\narray([1, 2])\n\n(2, 2, 2)\n\n98\n\n98\n\n(-13+0j)\n\nTraceback (most recent call last):\n...\nValueError: matmul: Input operand 1 does not have enough dimensions ...",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-matmul/",
+  "href": "/docs/api/linalg/matmul/",
+  "legacy_href": "/docs/api/ops/linalg-matmul/",
   "module": "numpy.linalg",
   "name": "linalg.matmul",
   "next": {
-    "href": "/docs/api/ops/linalg-matrix_norm/",
+    "href": "/docs/api/linalg/matrix-norm/",
     "label": "we.linalg.matrix_norm"
   },
   "notes": "Delegates to `we.matmul` which charges `m*k*n` FLOPs (FMA=1).",
@@ -510,7 +512,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-lstsq/",
+    "href": "/docs/api/linalg/lstsq/",
     "label": "we.linalg.lstsq"
   },
   "provenance_label": "Adapted from NumPy docs",

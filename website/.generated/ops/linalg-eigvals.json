@@ -423,6 +423,7 @@
     }
   ],
   "canonical_name": "linalg.eigvals",
+  "canonical_path": "linalg/eigvals",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -437,11 +438,12 @@
     "output": "(1.0, 1.0, 0.0)\n\narray([-1.,  1.])\n\narray([ 1., -1.]) # random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-eigvals/",
+  "href": "/docs/api/linalg/eigvals/",
+  "legacy_href": "/docs/api/ops/linalg-eigvals/",
   "module": "numpy.linalg",
   "name": "linalg.eigvals",
   "next": {
-    "href": "/docs/api/ops/linalg-eigvalsh/",
+    "href": "/docs/api/linalg/eigvalsh/",
     "label": "we.linalg.eigvalsh"
   },
   "notes": "Eigenvalues only. Cost: $n^3$.",
@@ -460,7 +462,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-eigh/",
+    "href": "/docs/api/linalg/eigh/",
     "label": "we.linalg.eigh"
   },
   "provenance_label": "Adapted from NumPy docs",

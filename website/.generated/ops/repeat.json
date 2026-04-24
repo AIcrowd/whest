@@ -271,6 +271,7 @@
     }
   ],
   "canonical_name": "repeat",
+  "canonical_path": "repeat",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -285,11 +286,12 @@
     "output": "array([3, 3, 3, 3])\n\narray([1, 1, 2, 2, 3, 3, 4, 4])\n\narray([[1, 1, 1, 2, 2, 2],\n       [3, 3, 3, 4, 4, 4]])\n\narray([[1, 2],\n       [3, 4],\n       [3, 4]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/repeat/",
+  "href": "/docs/api/repeat/",
+  "legacy_href": "/docs/api/ops/repeat/",
   "module": "numpy",
   "name": "repeat",
   "next": {
-    "href": "/docs/api/ops/require/",
+    "href": "/docs/api/require/",
     "label": "we.require"
   },
   "notes": "Repeat elements of an array. Cost: numel(output).",
@@ -321,7 +323,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/remainder/",
+    "href": "/docs/api/remainder/",
     "label": "we.remainder"
   },
   "provenance_label": "Adapted from NumPy docs",

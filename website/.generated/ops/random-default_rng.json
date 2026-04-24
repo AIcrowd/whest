@@ -9,7 +9,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Construct a new Generator with the default BitGenerator (PCG64)."
+              "text": "default_rng(seed=None) Construct a new Generator with the default BitGenerator (PCG64)."
             }
           ],
           "type": "paragraph"
@@ -594,6 +594,7 @@
     }
   ],
   "canonical_name": "random.default_rng",
+  "canonical_path": "random/default-rng",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -608,11 +609,12 @@
     "output": "Generator(PCG64)\n\n0.22733602246716966\n\n<class 'float'>\n\narray([6, 2, 7])\n\n<class 'we.int64'>\n\nGenerator(PCG64)\n\narray([[0.77395605, 0.43887844, 0.85859792],\n       [0.69736803, 0.09417735, 0.97562235],\n       [0.7611397 , 0.78606431, 0.12811363]])\n\narray([[0.77395605, 0.43887844, 0.85859792],\n       [0.69736803, 0.09417735, 0.97562235],\n       [0.7611397 , 0.78606431, 0.12811363]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-default_rng/",
+  "href": "/docs/api/random/default-rng/",
+  "legacy_href": "/docs/api/ops/random-default_rng/",
   "module": "numpy.random",
   "name": "random.default_rng",
   "next": {
-    "href": "/docs/api/ops/random-dirichlet/",
+    "href": "/docs/api/random/dirichlet/",
     "label": "we.random.dirichlet"
   },
   "notes": "Construct a new Generator with default BitGenerator.",
@@ -638,7 +640,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-choice/",
+    "href": "/docs/api/random/choice/",
     "label": "we.random.choice"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -655,7 +657,7 @@
   "see_also": [],
   "signature": "we.random.default_rng(seed=None)",
   "slug": "random-default_rng",
-  "summary": "Construct a new Generator with the default BitGenerator (PCG64).",
+  "summary": "default_rng(seed=None) Construct a new Generator with the default BitGenerator (PCG64).",
   "upstream_source_url": "",
   "weight": 0.0,
   "whest_examples_html": "",

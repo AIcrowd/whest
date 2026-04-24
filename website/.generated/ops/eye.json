@@ -404,6 +404,7 @@
     }
   ],
   "canonical_name": "eye",
+  "canonical_path": "eye",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -418,11 +419,12 @@
     "output": "array([[1, 0],\n       [0, 1]])\n\narray([[0.,  1.,  0.],\n       [0.,  0.,  1.],\n       [0.,  0.,  0.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/eye/",
+  "href": "/docs/api/eye/",
+  "legacy_href": "/docs/api/ops/eye/",
   "module": "numpy",
   "name": "eye",
   "next": {
-    "href": "/docs/api/ops/fabs/",
+    "href": "/docs/api/fabs/",
     "label": "we.fabs"
   },
   "notes": "Create identity matrix.",
@@ -479,11 +481,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -492,7 +494,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/extract/",
+    "href": "/docs/api/extract/",
     "label": "we.extract"
   },
   "provenance_label": "Adapted from NumPy docs",

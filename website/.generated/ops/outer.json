@@ -468,6 +468,7 @@
     }
   ],
   "canonical_name": "outer",
+  "canonical_path": "outer",
   "category": "counted_custom",
   "cost_formula": "m * n",
   "cost_formula_latex": "$m \\cdot n$",
@@ -492,11 +493,12 @@
     "output": "array([[-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.]])\n\narray([[0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j],\n       [0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j],\n       [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],\n       [0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j],\n       [0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j]])\n\narray([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],\n       [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],\n       [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],\n       [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],\n       [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])\n\narray([['a', 'aa', 'aaa'],\n       ['b', 'bb', 'bbb'],\n       ['c', 'cc', 'ccc']], dtype=object)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/outer/",
+  "href": "/docs/api/outer/",
+  "legacy_href": "/docs/api/ops/outer/",
   "module": "numpy",
   "name": "outer",
   "next": {
-    "href": "/docs/api/ops/packbits/",
+    "href": "/docs/api/packbits/",
     "label": "we.packbits"
   },
   "notes": "Outer product of two vectors; cost = M*N.",
@@ -528,7 +530,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ones_like/",
+    "href": "/docs/api/ones-like/",
     "label": "we.ones_like"
   },
   "provenance_label": "Adapted from NumPy docs",

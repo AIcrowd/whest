@@ -367,6 +367,7 @@
     }
   ],
   "canonical_name": "polyder",
+  "canonical_path": "polyder",
   "category": "counted_custom",
   "cost_formula": "n",
   "cost_formula_latex": "$n$",
@@ -388,11 +389,12 @@
     "output": "poly1d([3, 2, 1])\n\n17.0\n\n17.007000999997857\n\npoly1d([6, 2])\n\npoly1d([6])\n\npoly1d([0])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/polyder/",
+  "href": "/docs/api/polyder/",
+  "legacy_href": "/docs/api/ops/polyder/",
   "module": "whest._polynomial",
   "name": "polyder",
   "next": {
-    "href": "/docs/api/ops/polydiv/",
+    "href": "/docs/api/polydiv/",
     "label": "we.polydiv"
   },
   "notes": "Differentiate polynomial. Cost: n FLOPs.",
@@ -416,7 +418,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/polyadd/",
+    "href": "/docs/api/polyadd/",
     "label": "we.polyadd"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-uniform-pdf/",
+  "detail_href": "/docs/api/stats/uniform/pdf/",
   "detail_json_href": "/api-data/ops/stats-uniform-pdf.json",
   "docs": {
     "sections": [
@@ -168,7 +168,7 @@
   "schema_version": 1,
   "slug": "stats-uniform-pdf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2021",
     "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_uniform.py#L32"
   }
 }

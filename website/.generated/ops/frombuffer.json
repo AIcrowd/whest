@@ -331,6 +331,7 @@
     }
   ],
   "canonical_name": "frombuffer",
+  "canonical_path": "frombuffer",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -352,11 +353,12 @@
     "output": "array([b'w', b'o', b'r', b'l', b'd'], dtype='|S1')\n\narray([1, 2], dtype=uint8)\n\narray([1, 2, 3], dtype=uint8)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/frombuffer/",
+  "href": "/docs/api/frombuffer/",
+  "legacy_href": "/docs/api/ops/frombuffer/",
   "module": "numpy",
   "name": "frombuffer",
   "next": {
-    "href": "/docs/api/ops/fromfunction/",
+    "href": "/docs/api/fromfunction/",
     "label": "we.fromfunction"
   },
   "notes": "Interpret buffer as 1-D array. Cost: numel(output).",
@@ -411,7 +413,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/from_dlpack/",
+    "href": "/docs/api/from-dlpack/",
     "label": "we.from_dlpack"
   },
   "provenance_label": "Adapted from NumPy docs",

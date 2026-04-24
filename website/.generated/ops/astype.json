@@ -366,6 +366,7 @@
     }
   ],
   "canonical_name": "astype",
+  "canonical_path": "astype",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -387,11 +388,12 @@
     "output": "array([1, 2, 3])\n\narray([1., 2., 3.])\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/astype/",
+  "href": "/docs/api/astype/",
+  "legacy_href": "/docs/api/ops/astype/",
   "module": "numpy",
   "name": "astype",
   "next": {
-    "href": "/docs/api/ops/atleast_1d/",
+    "href": "/docs/api/atleast-1d/",
     "label": "we.atleast_1d"
   },
   "notes": "Cast array to specified type.",
@@ -437,7 +439,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/asarray_chkfinite/",
+    "href": "/docs/api/asarray-chkfinite/",
     "label": "we.asarray_chkfinite"
   },
   "provenance_label": "Adapted from NumPy docs",

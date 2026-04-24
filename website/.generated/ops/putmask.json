@@ -388,6 +388,7 @@
     }
   ],
   "canonical_name": "putmask",
+  "canonical_path": "putmask",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -402,11 +403,12 @@
     "output": "array([[ 0,  1,  2],\n       [ 9, 16, 25]])\n\narray([  0,   1, -33, -44, -33])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/putmask/",
+  "href": "/docs/api/putmask/",
+  "legacy_href": "/docs/api/ops/putmask/",
   "module": "numpy",
   "name": "putmask",
   "next": {
-    "href": "/docs/api/ops/quantile/",
+    "href": "/docs/api/quantile/",
     "label": "we.quantile"
   },
   "notes": "Change elements of array based on condition and input values. Cost: numel(input).",
@@ -437,7 +439,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/put_along_axis/",
+    "href": "/docs/api/put-along-axis/",
     "label": "we.put_along_axis"
   },
   "provenance_label": "Adapted from NumPy docs",

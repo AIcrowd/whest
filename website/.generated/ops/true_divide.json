@@ -525,6 +525,7 @@
     }
   ],
   "canonical_name": "true_divide",
+  "canonical_path": "true-divide",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -546,11 +547,12 @@
     "output": "0.5\n\narray([[nan, 1. , 1. ],\n       [inf, 4. , 2.5],\n       [inf, 7. , 4. ]])\n\narray([[0. , 0.5, 1. ],\n       [1.5, 2. , 2.5],\n       [3. , 3.5, 4. ]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/true_divide/",
+  "href": "/docs/api/true-divide/",
+  "legacy_href": "/docs/api/ops/true_divide/",
   "module": "numpy",
   "name": "true_divide",
   "next": {
-    "href": "/docs/api/ops/trunc/",
+    "href": "/docs/api/trunc/",
     "label": "we.trunc"
   },
   "notes": "Element-wise true division (explicit).",
@@ -608,7 +610,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/triu_indices_from/",
+    "href": "/docs/api/triu-indices-from/",
     "label": "we.triu_indices_from"
   },
   "provenance_label": "Adapted from NumPy docs",

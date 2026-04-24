@@ -545,6 +545,7 @@
     }
   ],
   "canonical_name": "bitwise_xor",
+  "canonical_path": "bitwise-xor",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -566,11 +567,12 @@
     "output": "28\n\n'11100'\n\n26\n\narray([26,  6])\n\narray([26,  5])\n\narray([ True, False])\n\narray([ True, False])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bitwise_xor/",
+  "href": "/docs/api/bitwise-xor/",
+  "legacy_href": "/docs/api/ops/bitwise_xor/",
   "module": "numpy",
   "name": "bitwise_xor",
   "next": {
-    "href": "/docs/api/ops/blackman/",
+    "href": "/docs/api/blackman/",
     "label": "we.blackman"
   },
   "notes": "Element-wise bitwise XOR.",
@@ -618,7 +620,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bitwise_right_shift/",
+    "href": "/docs/api/bitwise-right-shift/",
     "label": "we.bitwise_right_shift"
   },
   "provenance_label": "Adapted from NumPy docs",

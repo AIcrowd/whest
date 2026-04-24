@@ -525,6 +525,7 @@
     }
   ],
   "canonical_name": "poly",
+  "canonical_path": "poly",
   "category": "counted_custom",
   "cost_formula": "n^2",
   "cost_formula_latex": "$n^2$",
@@ -565,11 +566,12 @@
     "output": "array([1., 0., 0., 0.])\n\narray([ 1.  ,  0.  , -0.25,  0.  ])\n\narray([ 1.        , -0.77086955,  0.08618131,  0.        ]) # random\n\narray([1.        , 0.        , 0.16666667])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/poly/",
+  "href": "/docs/api/poly/",
+  "legacy_href": "/docs/api/ops/poly/",
   "module": "whest._polynomial",
   "name": "poly",
   "next": {
-    "href": "/docs/api/ops/polyadd/",
+    "href": "/docs/api/polyadd/",
     "label": "we.polyadd"
   },
   "notes": "Polynomial from roots. Cost: $n^2$ FLOPs.",
@@ -590,7 +592,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/place/",
+    "href": "/docs/api/place/",
     "label": "we.place"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -226,6 +226,7 @@
     }
   ],
   "canonical_name": "may_share_memory",
+  "canonical_path": "may-share-memory",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -240,11 +241,12 @@
     "output": "False\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/may_share_memory/",
+  "href": "/docs/api/may-share-memory/",
+  "legacy_href": "/docs/api/ops/may_share_memory/",
   "module": "numpy",
   "name": "may_share_memory",
   "next": {
-    "href": "/docs/api/ops/mean/",
+    "href": "/docs/api/mean/",
     "label": "we.mean"
   },
   "notes": "Determine if two arrays might share memory.",
@@ -269,7 +271,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/maximum/",
+    "href": "/docs/api/maximum/",
     "label": "we.maximum"
   },
   "provenance_label": "Adapted from NumPy docs",

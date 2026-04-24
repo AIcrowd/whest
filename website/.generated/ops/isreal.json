@@ -294,6 +294,7 @@
     }
   ],
   "canonical_name": "isreal",
+  "canonical_path": "isreal",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -308,11 +309,12 @@
     "output": "array([False,  True,  True,  True,  True, False])\n\nFalse\n\narray([ True,  True,  True])\n\narray([ True,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isreal/",
+  "href": "/docs/api/isreal/",
+  "legacy_href": "/docs/api/ops/isreal/",
   "module": "numpy",
   "name": "isreal",
   "next": {
-    "href": "/docs/api/ops/isrealobj/",
+    "href": "/docs/api/isrealobj/",
     "label": "we.isrealobj"
   },
   "notes": "Test if element is real (imag == 0) element-wise.",
@@ -330,7 +332,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isposinf/",
+    "href": "/docs/api/isposinf/",
     "label": "we.isposinf"
   },
   "provenance_label": "Adapted from NumPy docs",

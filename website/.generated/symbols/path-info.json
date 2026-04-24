@@ -1,0 +1,44 @@
+{
+  "aliases": [
+    "PathInfo",
+    "we.PathInfo",
+    "whest.PathInfo"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Information about a contraction path with per-step symmetry diagnostics."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    }
+  ],
+  "canonical_name": "PathInfo",
+  "canonical_path": "path-info",
+  "display_name": "we.PathInfo",
+  "href": "/docs/api/path-info/",
+  "import_path": "we.PathInfo",
+  "kind": "class",
+  "members": [],
+  "module": "whest._opt_einsum._contract",
+  "name": "PathInfo",
+  "related_guides": [
+    {
+      "href": "/docs/guides/einsum",
+      "title": "Einsum Guide"
+    }
+  ],
+  "signature": "we.PathInfo(path: list[tuple[int, ...]], steps: list[whest._opt_einsum._contract.StepInfo], naive_cost: int, optimized_cost: int, largest_intermediate: int, speedup: float, input_subscripts: str = '', output_subscript: str = '', size_dict: dict[str, int] = <factory>, optimizer_used: str = '', contraction_list: list[tuple[typing.Any, frozenset[str], str, tuple[str, ...] | None, str | bool]] = <factory>, scale_list: list[int] = <factory>, size_list: list[int] = <factory>, _oe_naive_cost: int = 0, _oe_opt_cost: int = 0) -> None",
+  "slug": "path-info",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_opt_einsum/_contract.py#L103",
+  "status_note": "",
+  "summary": "Information about a contraction path with per-step symmetry diagnostics.",
+  "upstream_source_url": ""
+}

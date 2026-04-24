@@ -447,6 +447,7 @@
     }
   ],
   "canonical_name": "triu_indices",
+  "canonical_path": "triu-indices",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -461,11 +462,12 @@
     "output": "(array([0, 0, 0, 0, 1, 1, 1, 2, 2, 3]), array([0, 1, 2, 3, 1, 2, 3, 2, 3, 3]))\n\narray([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])\n\narray([ 0,  1,  2, ..., 10, 11, 15])\n\narray([[-1, -1, -1, -1],\n       [ 4, -1, -1, -1],\n       [ 8,  9, -1, -1],\n       [12, 13, 14, -1]])\n\narray([[ -1,  -1, -10, -10],\n       [  4,  -1,  -1, -10],\n       [  8,   9,  -1,  -1],\n       [ 12,  13,  14,  -1]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/triu_indices/",
+  "href": "/docs/api/triu-indices/",
+  "legacy_href": "/docs/api/ops/triu_indices/",
   "module": "numpy",
   "name": "triu_indices",
   "next": {
-    "href": "/docs/api/ops/triu_indices_from/",
+    "href": "/docs/api/triu-indices-from/",
     "label": "we.triu_indices_from"
   },
   "notes": "Return upper-triangle indices for n x n array.",
@@ -498,7 +500,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/triu/",
+    "href": "/docs/api/triu/",
     "label": "we.triu"
   },
   "provenance_label": "Adapted from NumPy docs",

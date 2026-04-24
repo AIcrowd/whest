@@ -756,6 +756,7 @@
     }
   ],
   "canonical_name": "diagonal",
+  "canonical_path": "diagonal",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -770,11 +771,12 @@
     "output": "array([[0, 1],\n       [2, 3]])\n\narray([0, 3])\n\narray([1])\n\narray([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])\n\narray([[0, 6],\n       [1, 7]])\n\narray([[0, 2],\n       [4, 6]])\n\narray([[1, 3],\n       [5, 7]])\n\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n\narray([2, 4, 6])\n\narray([6, 4, 2])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/diagonal/",
+  "href": "/docs/api/diagonal/",
+  "legacy_href": "/docs/api/ops/diagonal/",
   "module": "numpy",
   "name": "diagonal",
   "next": {
-    "href": "/docs/api/ops/diff/",
+    "href": "/docs/api/diff/",
     "label": "we.diff"
   },
   "notes": "Return specified diagonals. Cost: numel(input).",
@@ -814,7 +816,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/diagflat/",
+    "href": "/docs/api/diagflat/",
     "label": "we.diagflat"
   },
   "provenance_label": "Adapted from NumPy docs",

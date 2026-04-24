@@ -375,6 +375,7 @@
     }
   ],
   "canonical_name": "linalg.matrix_power",
+  "canonical_path": "linalg/matrix-power",
   "category": "counted_custom",
   "cost_formula": "log2(k) * n^3",
   "cost_formula_latex": "$\\lfloor\\log_2 k\\rfloor \\cdot n^3$",
@@ -389,11 +390,12 @@
     "output": "array([[ 0, -1],\n       [ 1,  0]])\n\narray([[1, 0],\n       [0, 1]])\n\narray([[ 0.,  1.],\n       [-1.,  0.]])\n\narray([[ 0., -1.,  0.,  0.],\n       [ 1.,  0.,  0.,  0.],\n       [ 0.,  0.,  0.,  1.],\n       [ 0.,  0., -1.,  0.]])\n\narray([[-1.,  0.,  0.,  0.],\n       [ 0., -1.,  0.,  0.],\n       [ 0.,  0., -1.,  0.],\n       [ 0.,  0.,  0., -1.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-matrix_power/",
+  "href": "/docs/api/linalg/matrix-power/",
+  "legacy_href": "/docs/api/ops/linalg-matrix_power/",
   "module": "numpy.linalg",
   "name": "linalg.matrix_power",
   "next": {
-    "href": "/docs/api/ops/linalg-matrix_rank/",
+    "href": "/docs/api/linalg/matrix-rank/",
     "label": "we.linalg.matrix_rank"
   },
   "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring).",
@@ -417,7 +419,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-matrix_norm/",
+    "href": "/docs/api/linalg/matrix-norm/",
     "label": "we.linalg.matrix_norm"
   },
   "provenance_label": "Adapted from NumPy docs",

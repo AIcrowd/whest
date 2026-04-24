@@ -433,6 +433,7 @@
     }
   ],
   "canonical_name": "stack",
+  "canonical_path": "stack",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -447,11 +448,12 @@
     "output": "(10, 3, 4)\n\n(3, 10, 4)\n\n(3, 4, 10)\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\narray([[1, 4],\n       [2, 5],\n       [3, 6]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/stack/",
+  "href": "/docs/api/stack/",
+  "legacy_href": "/docs/api/ops/stack/",
   "module": "numpy",
   "name": "stack",
   "next": {
-    "href": "/docs/api/ops/stats-cauchy-cdf/",
+    "href": "/docs/api/stats/cauchy/cdf/",
     "label": "we.stats.cauchy.cdf"
   },
   "notes": "Join arrays along new axis. Cost: numel(output).",
@@ -504,7 +506,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/squeeze/",
+    "href": "/docs/api/squeeze/",
     "label": "we.squeeze"
   },
   "provenance_label": "Adapted from NumPy docs",

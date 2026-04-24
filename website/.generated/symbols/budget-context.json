@@ -1,0 +1,217 @@
+{
+  "aliases": [
+    "BudgetContext",
+    "we.BudgetContext",
+    "whest.BudgetContext"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Context manager for FLOP budget enforcement."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Maximum number of FLOPs allowed. Must be > 0."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Maximum number of FLOPs allowed. Must be > 0."
+                }
+              ],
+              "name": "flop_budget",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Multiplier applied to all FLOP costs. Default 1."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "float, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Multiplier applied to all FLOP costs. Default 1."
+                }
+              ],
+              "name": "flop_multiplier",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "When "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "True"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", suppress the startup banner printed on context entry."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "bool, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "When "
+                },
+                {
+                  "kind": "code",
+                  "text": "True"
+                },
+                {
+                  "kind": "text",
+                  "text": ", suppress the startup banner printed on context entry."
+                }
+              ],
+              "name": "quiet",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Root namespace prefix used for operation attribution inside this\ncontext. Nested "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "we.namespace(...)"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " scopes append dotted segments."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "str | None, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Root namespace prefix used for operation attribution inside this\ncontext. Nested "
+                },
+                {
+                  "kind": "code",
+                  "text": "we.namespace(...)"
+                },
+                {
+                  "kind": "text",
+                  "text": " scopes append dotted segments."
+                }
+              ],
+              "name": "namespace",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Cooperative wall-clock limit for the entire context. The timer starts\nwhen the context is entered and is checked before and after each\ncounted NumPy call. If the deadline is exceeded, whest raises\n"
+                    },
+                    {
+                      "kind": "code",
+                      "text": "TimeExhaustedError"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " at the next operation boundary. This is a\ndiagnostic UX limit, not a hard preemptive kill."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "float | None, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Cooperative wall-clock limit for the entire context. The timer starts\nwhen the context is entered and is checked before and after each\ncounted NumPy call. If the deadline is exceeded, whest raises\n"
+                },
+                {
+                  "kind": "code",
+                  "text": "TimeExhaustedError"
+                },
+                {
+                  "kind": "text",
+                  "text": " at the next operation boundary. This is a\ndiagnostic UX limit, not a hard preemptive kill."
+                }
+              ],
+              "name": "wall_time_limit_s",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    }
+  ],
+  "canonical_name": "BudgetContext",
+  "canonical_path": "budget-context",
+  "display_name": "we.BudgetContext",
+  "href": "/docs/api/budget-context/",
+  "import_path": "we.BudgetContext",
+  "kind": "class",
+  "members": [],
+  "module": "whest._budget",
+  "name": "BudgetContext",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    },
+    {
+      "href": "/docs/understanding/how-whest-works",
+      "title": "How whest works"
+    }
+  ],
+  "signature": "we.BudgetContext(flop_budget: 'int', flop_multiplier: 'float' = 1.0, quiet: 'bool' = False, namespace: 'str | None' = None, wall_time_limit_s: 'float | None' = None)",
+  "slug": "budget-context",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_budget.py#L197",
+  "status_note": "",
+  "summary": "Context manager for FLOP budget enforcement.",
+  "upstream_source_url": ""
+}

@@ -577,6 +577,7 @@
     }
   ],
   "canonical_name": "argmin",
+  "canonical_path": "argmin",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -598,11 +599,12 @@
     "output": "array([[10, 11, 12],\n       [13, 14, 15]])\n\n0\n\narray([0, 0, 0])\n\narray([0, 0])\n\n(0, 0)\n\n10\n\narray([10, 11, 12, 13, 10, 15])\n\n0\n\narray([[2],\n       [0]])\n\narray([2, 0])\n\n(2, 1, 4)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/argmin/",
+  "href": "/docs/api/argmin/",
+  "legacy_href": "/docs/api/ops/argmin/",
   "module": "numpy",
   "name": "argmin",
   "next": {
-    "href": "/docs/api/ops/argpartition/",
+    "href": "/docs/api/argpartition/",
     "label": "we.argpartition"
   },
   "notes": "Index of minimum value.",
@@ -647,7 +649,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/argmax/",
+    "href": "/docs/api/argmax/",
     "label": "we.argmax"
   },
   "provenance_label": "Adapted from NumPy docs",

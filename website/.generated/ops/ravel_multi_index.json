@@ -328,6 +328,7 @@
     }
   ],
   "canonical_name": "ravel_multi_index",
+  "canonical_path": "ravel-multi-index",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -342,11 +343,12 @@
     "output": "array([22, 41, 37])\n\narray([31, 41, 13])\n\narray([22, 23, 19])\n\narray([12, 13, 13])\n\n1621",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ravel_multi_index/",
+  "href": "/docs/api/ravel-multi-index/",
+  "legacy_href": "/docs/api/ops/ravel_multi_index/",
   "module": "numpy",
   "name": "ravel_multi_index",
   "next": {
-    "href": "/docs/api/ops/real/",
+    "href": "/docs/api/real/",
     "label": "we.real"
   },
   "notes": "Convert multi-dimensional index to flat index.",
@@ -393,7 +395,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ravel/",
+    "href": "/docs/api/ravel/",
     "label": "we.ravel"
   },
   "provenance_label": "Adapted from NumPy docs",

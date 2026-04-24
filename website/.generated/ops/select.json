@@ -440,6 +440,7 @@
     }
   ],
   "canonical_name": "select",
+  "canonical_path": "select",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -454,11 +455,12 @@
     "output": "array([ 0,  1,  2, 42, 16, 25])\n\narray([ 0,  1,  2,  3,  4, 25])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/select/",
+  "href": "/docs/api/select/",
+  "legacy_href": "/docs/api/ops/select/",
   "module": "numpy",
   "name": "select",
   "next": {
-    "href": "/docs/api/ops/setdiff1d/",
+    "href": "/docs/api/setdiff1d/",
     "label": "we.setdiff1d"
   },
   "notes": "Return array from list of choices based on conditions. Cost: numel(input).",
@@ -491,7 +493,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/searchsorted/",
+    "href": "/docs/api/searchsorted/",
     "label": "we.searchsorted"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -325,6 +325,7 @@
     }
   ],
   "canonical_name": "fromiter",
+  "canonical_path": "fromiter",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -339,11 +340,12 @@
     "output": "array([  0.,   1.,   4.,   9.,  16.])\n\narray([[1, 2],\n       [2, 3],\n       [3, 4],\n       [4, 5],\n       [5, 6]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fromiter/",
+  "href": "/docs/api/fromiter/",
+  "legacy_href": "/docs/api/ops/fromiter/",
   "module": "numpy",
   "name": "fromiter",
   "next": {
-    "href": "/docs/api/ops/full/",
+    "href": "/docs/api/full/",
     "label": "we.full"
   },
   "notes": "Create array from an iterable. Cost: numel(output).",
@@ -393,7 +395,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fromfunction/",
+    "href": "/docs/api/fromfunction/",
     "label": "we.fromfunction"
   },
   "provenance_label": "Adapted from NumPy docs",

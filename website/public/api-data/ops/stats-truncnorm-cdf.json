@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-truncnorm-cdf/",
+  "detail_href": "/docs/api/stats/truncnorm/cdf/",
   "detail_json_href": "/api-data/ops/stats-truncnorm-cdf.json",
   "docs": {
     "sections": [
@@ -176,7 +176,7 @@
   "schema_version": 1,
   "slug": "stats-truncnorm-cdf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2102",
     "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_truncnorm.py#L84"
   }
 }

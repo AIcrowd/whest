@@ -498,6 +498,7 @@
     }
   ],
   "canonical_name": "absolute",
+  "canonical_path": "absolute",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -519,11 +520,12 @@
     "output": "array([ 1.2,  1.2])\n\n1.5620499351813308\n\narray([1.2, 1.2])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/absolute/",
+  "href": "/docs/api/absolute/",
+  "legacy_href": "/docs/api/ops/absolute/",
   "module": "numpy",
   "name": "absolute",
   "next": {
-    "href": "/docs/api/ops/add/",
+    "href": "/docs/api/add/",
     "label": "we.add"
   },
   "notes": "Element-wise absolute value.",

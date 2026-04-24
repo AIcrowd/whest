@@ -387,6 +387,7 @@
     }
   ],
   "canonical_name": "cos",
+  "canonical_path": "cos",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -408,11 +409,12 @@
     "output": "array([  1.00000000e+00,   6.12303177e-17,  -1.00000000e+00])\n\nTrue\n\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nValueError: operands could not be broadcast together with shapes (3,3) (2,2)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/cos/",
+  "href": "/docs/api/cos/",
+  "legacy_href": "/docs/api/ops/cos/",
   "module": "numpy",
   "name": "cos",
   "next": {
-    "href": "/docs/api/ops/cosh/",
+    "href": "/docs/api/cosh/",
     "label": "we.cosh"
   },
   "notes": "Element-wise cosine.",
@@ -460,7 +462,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/correlate/",
+    "href": "/docs/api/correlate/",
     "label": "we.correlate"
   },
   "provenance_label": "Adapted from NumPy docs",

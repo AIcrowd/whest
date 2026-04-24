@@ -807,6 +807,7 @@
     }
   ],
   "canonical_name": "interp",
+  "canonical_path": "interp",
   "category": "counted_custom",
   "cost_formula": "n * log(m)",
   "cost_formula_latex": "$n \\cdot \\log m$",
@@ -821,11 +822,12 @@
     "output": "1.0\n\narray([3.  , 3.  , 2.5 , 0.56, 0.  ])\n\n-99.0\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\narray([7.5 , 5.  , 8.75, 6.25, 3.  , 3.25, 3.5 , 3.75])\n\narray([0.+1.j , 1.+1.5j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/interp/",
+  "href": "/docs/api/interp/",
+  "legacy_href": "/docs/api/ops/interp/",
   "module": "numpy",
   "name": "interp",
   "next": {
-    "href": "/docs/api/ops/intersect1d/",
+    "href": "/docs/api/intersect1d/",
     "label": "we.intersect1d"
   },
   "notes": "1-D linear interpolation.",
@@ -880,7 +882,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/insert/",
+    "href": "/docs/api/insert/",
     "label": "we.insert"
   },
   "provenance_label": "Adapted from NumPy docs",

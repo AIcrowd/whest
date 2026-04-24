@@ -694,6 +694,7 @@
     }
   ],
   "canonical_name": "lexsort",
+  "canonical_path": "lexsort",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -715,11 +716,12 @@
     "output": "array([1, 2, 0])\n\n['Galilei, Galileo', 'Hertz, Gustav', 'Hertz, Heinrich']\n\narray([2, 0, 4, 6, 5, 3, 1])\n\n[(1, 0), (1, 9), (3, 0), (4, 1), (4, 2), (4, 4), (5, 4)]\n\narray([[2, 4, 6, 5, 1, 3, 0],\n       [0, 2, 4, 3, 5, 6, 1]])\n\narray([2, 0, 4, 6, 5, 3, 1])\n\narray([[2, 3, 0, 1],\n       [2, 0, 3, 1],\n       [1, 0, 3, 2]])\n\n[2 3 0 1]\n[2 0 3 1]\n[1 0 3 2]",
     "source": "derived"
   },
-  "href": "/docs/api/ops/lexsort/",
+  "href": "/docs/api/lexsort/",
+  "legacy_href": "/docs/api/ops/lexsort/",
   "module": "numpy",
   "name": "lexsort",
   "next": {
-    "href": "/docs/api/ops/linalg-cholesky/",
+    "href": "/docs/api/linalg/cholesky/",
     "label": "we.linalg.cholesky"
   },
   "notes": "Multi-key sort; cost = k*n*ceil(log2(n)).",
@@ -747,7 +749,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/less_equal/",
+    "href": "/docs/api/less-equal/",
     "label": "we.less_equal"
   },
   "provenance_label": "Adapted from NumPy docs",

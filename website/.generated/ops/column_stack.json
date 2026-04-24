@@ -206,6 +206,7 @@
     }
   ],
   "canonical_name": "column_stack",
+  "canonical_path": "column-stack",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -220,11 +221,12 @@
     "output": "array([[1, 2],\n       [2, 3],\n       [3, 4]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/column_stack/",
+  "href": "/docs/api/column-stack/",
+  "legacy_href": "/docs/api/ops/column_stack/",
   "module": "numpy",
   "name": "column_stack",
   "next": {
-    "href": "/docs/api/ops/common_type/",
+    "href": "/docs/api/common-type/",
     "label": "we.common_type"
   },
   "notes": "Stack 1-D arrays as columns into 2-D array.",
@@ -240,7 +242,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/clip/",
+    "href": "/docs/api/clip/",
     "label": "we.clip"
   },
   "provenance_label": "Adapted from NumPy docs",

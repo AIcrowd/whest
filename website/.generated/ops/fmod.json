@@ -573,6 +573,7 @@
     }
   ],
   "canonical_name": "fmod",
+  "canonical_path": "fmod",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -594,11 +595,12 @@
     "output": "array([-1,  0, -1,  1,  0,  1])\n\narray([1, 0, 1, 1, 0, 1])\n\narray([ 1.,  1.])\n\narray([[-3, -2],\n       [-1,  0],\n       [ 1,  2]])\n\narray([[-1,  0],\n       [-1,  0],\n       [ 1,  0]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fmod/",
+  "href": "/docs/api/fmod/",
+  "legacy_href": "/docs/api/ops/fmod/",
   "module": "numpy",
   "name": "fmod",
   "next": {
-    "href": "/docs/api/ops/frexp/",
+    "href": "/docs/api/frexp/",
     "label": "we.frexp"
   },
   "notes": "Element-wise C-style fmod (remainder toward zero).",
@@ -655,7 +657,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fmin/",
+    "href": "/docs/api/fmin/",
     "label": "we.fmin"
   },
   "provenance_label": "Adapted from NumPy docs",

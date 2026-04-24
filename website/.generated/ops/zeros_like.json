@@ -454,6 +454,7 @@
     }
   ],
   "canonical_name": "zeros_like",
+  "canonical_path": "zeros-like",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -468,7 +469,8 @@
     "output": "array([[0, 1, 2],\n       [3, 4, 5]])\n\narray([[0, 0, 0],\n       [0, 0, 0]])\n\narray([0., 1., 2.])\n\narray([0.,  0.,  0.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/zeros_like/",
+  "href": "/docs/api/zeros-like/",
+  "legacy_href": "/docs/api/ops/zeros_like/",
   "module": "numpy",
   "name": "zeros_like",
   "next": null,
@@ -531,7 +533,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/zeros/",
+    "href": "/docs/api/zeros/",
     "label": "we.zeros"
   },
   "provenance_label": "Adapted from NumPy docs",

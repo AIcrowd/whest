@@ -314,6 +314,7 @@
     }
   ],
   "canonical_name": "linalg.vecdot",
+  "canonical_path": "linalg/vecdot",
   "category": "counted_custom",
   "cost_formula": "delegates to we.vecdot",
   "cost_formula_latex": "delegates to `vecdot`",
@@ -328,11 +329,12 @@
     "output": "array([ 3.,  8., 10.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-vecdot/",
+  "href": "/docs/api/linalg/vecdot/",
+  "legacy_href": "/docs/api/ops/linalg-vecdot/",
   "module": "numpy.linalg",
   "name": "linalg.vecdot",
   "next": {
-    "href": "/docs/api/ops/linalg-vector_norm/",
+    "href": "/docs/api/linalg/vector-norm/",
     "label": "we.linalg.vector_norm"
   },
   "notes": "Delegates to `we.vecdot` which charges `2*n` FLOPs.",
@@ -362,7 +364,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-trace/",
+    "href": "/docs/api/linalg/trace/",
     "label": "we.linalg.trace"
   },
   "provenance_label": "Adapted from NumPy docs",

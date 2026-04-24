@@ -1,0 +1,190 @@
+{
+  "aliases": [
+    "flops.fft_cost",
+    "we.flops.fft_cost",
+    "whest.flops.fft_cost",
+    "fft_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/fft/fft/",
+              "kind": "link",
+              "target": "fft.fft",
+              "text": "fft.fft"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of a 1-D complex FFT."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Transform length."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Transform length."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count: 5 * n * ceil(log2(n))."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count: 5 * n * ceil(log2(n))."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Source: Cooley & Tukey (1965); Van Loan, "
+            },
+            {
+              "kind": "emphasis",
+              "text": "Computational Frameworks\nfor the FFT"
+            },
+            {
+              "kind": "text",
+              "text": " (1992), \u00a71.4. Assumes radix-2 Cooley-Tukey algorithm."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.fft_cost",
+  "canonical_path": "flops/fft-cost",
+  "display_name": "we.flops.fft_cost",
+  "href": "/docs/api/flops/fft-cost/",
+  "import_path": "we.flops.fft_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.fft._transforms",
+  "name": "flops.fft_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    },
+    {
+      "href": "/docs/guides/fft",
+      "title": "FFT Guide"
+    }
+  ],
+  "signature": "we.flops.fft_cost(n: 'int') -> 'int'",
+  "slug": "flops-fft-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L18",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``fft.fft``.",
+  "upstream_source_url": ""
+}

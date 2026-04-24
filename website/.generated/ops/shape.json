@@ -234,6 +234,7 @@
     }
   ],
   "canonical_name": "shape",
+  "canonical_path": "shape",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -255,11 +256,12 @@
     "output": "(3, 3)\n\n(1, 2)\n\n(1,)\n\n()\n\n(3,)\n\n(3,)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/shape/",
+  "href": "/docs/api/shape/",
+  "legacy_href": "/docs/api/ops/shape/",
   "module": "numpy",
   "name": "shape",
   "next": {
-    "href": "/docs/api/ops/shares_memory/",
+    "href": "/docs/api/shares-memory/",
     "label": "we.shares_memory"
   },
   "notes": "Return shape of array.",
@@ -275,7 +277,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/setxor1d/",
+    "href": "/docs/api/setxor1d/",
     "label": "we.setxor1d"
   },
   "provenance_label": "Adapted from NumPy docs",

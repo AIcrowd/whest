@@ -381,6 +381,7 @@
     }
   ],
   "canonical_name": "tri",
+  "canonical_path": "tri",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -395,11 +396,12 @@
     "output": "array([[1, 1, 1, 0, 0],\n       [1, 1, 1, 1, 0],\n       [1, 1, 1, 1, 1]])\n\narray([[0.,  0.,  0.,  0.,  0.],\n       [1.,  0.,  0.,  0.,  0.],\n       [1.,  1.,  0.,  0.,  0.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/tri/",
+  "href": "/docs/api/tri/",
+  "legacy_href": "/docs/api/ops/tri/",
   "module": "numpy",
   "name": "tri",
   "next": {
-    "href": "/docs/api/ops/tril/",
+    "href": "/docs/api/tril/",
     "label": "we.tril"
   },
   "notes": "Array with ones at and below given diagonal.",
@@ -439,11 +441,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -452,7 +454,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/trapezoid/",
+    "href": "/docs/api/trapezoid/",
     "label": "we.trapezoid"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -162,6 +162,7 @@
     }
   ],
   "canonical_name": "unique_values",
+  "canonical_path": "unique-values",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -176,11 +177,12 @@
     "output": "array([1, 2])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/unique_values/",
+  "href": "/docs/api/unique-values/",
+  "legacy_href": "/docs/api/ops/unique_values/",
   "module": "numpy",
   "name": "unique_values",
   "next": {
-    "href": "/docs/api/ops/unpackbits/",
+    "href": "/docs/api/unpackbits/",
     "label": "we.unpackbits"
   },
   "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
@@ -196,7 +198,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unique_inverse/",
+    "href": "/docs/api/unique-inverse/",
     "label": "we.unique_inverse"
   },
   "provenance_label": "Adapted from NumPy docs",

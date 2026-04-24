@@ -1,0 +1,44 @@
+{
+  "aliases": [
+    "OpRecord",
+    "we.OpRecord",
+    "whest.OpRecord"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Record of a single counted operation."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    }
+  ],
+  "canonical_name": "OpRecord",
+  "canonical_path": "op-record",
+  "display_name": "we.OpRecord",
+  "href": "/docs/api/op-record/",
+  "import_path": "we.OpRecord",
+  "kind": "class",
+  "members": [],
+  "module": "whest._budget",
+  "name": "OpRecord",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.OpRecord(op_name: ForwardRef('str'), subscripts: ForwardRef('str | None'), shapes: ForwardRef('tuple'), flop_cost: ForwardRef('int'), cumulative: ForwardRef('int'), namespace: ForwardRef('str | None') = None, timestamp: ForwardRef('float | None') = None, duration: ForwardRef('float | None') = None)",
+  "slug": "op-record",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_budget.py#L14",
+  "status_note": "",
+  "summary": "Record of a single counted operation.",
+  "upstream_source_url": ""
+}

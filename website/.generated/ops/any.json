@@ -667,6 +667,7 @@
     }
   ],
   "canonical_name": "any",
+  "canonical_path": "any",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -688,11 +689,12 @@
     "output": "True\n\narray([ True, False, True])\n\nTrue\n\narray([[ True],\n       [ True]])\n\nFalse\n\narray([ True, False,  True])\n\narray([ True,  True, False])\n\n(array(True), array(True))\n\nTrue\n\n(191614240, 191614240)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/any/",
+  "href": "/docs/api/any/",
+  "legacy_href": "/docs/api/ops/any/",
   "module": "numpy",
   "name": "any",
   "next": {
-    "href": "/docs/api/ops/append/",
+    "href": "/docs/api/append/",
     "label": "we.append"
   },
   "notes": "Test whether any array element is true.",
@@ -759,7 +761,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/angle/",
+    "href": "/docs/api/angle/",
     "label": "we.angle"
   },
   "provenance_label": "Adapted from NumPy docs",

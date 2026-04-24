@@ -235,6 +235,7 @@
     }
   ],
   "canonical_name": "broadcast_shapes",
+  "canonical_path": "broadcast-shapes",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -256,11 +257,12 @@
     "output": "(3, 2)\n\n(5, 6, 7)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/broadcast_shapes/",
+  "href": "/docs/api/broadcast-shapes/",
+  "legacy_href": "/docs/api/ops/broadcast_shapes/",
   "module": "numpy",
   "name": "broadcast_shapes",
   "next": {
-    "href": "/docs/api/ops/broadcast_to/",
+    "href": "/docs/api/broadcast-to/",
     "label": "we.broadcast_to"
   },
   "notes": "Compute broadcast shape from input shapes.",
@@ -276,7 +278,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/broadcast_arrays/",
+    "href": "/docs/api/broadcast-arrays/",
     "label": "we.broadcast_arrays"
   },
   "provenance_label": "Adapted from NumPy docs",

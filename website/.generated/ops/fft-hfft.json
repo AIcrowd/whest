@@ -773,6 +773,7 @@
     }
   ],
   "canonical_name": "fft.hfft",
+  "canonical_path": "fft/hfft",
   "category": "counted_custom",
   "cost_formula": "5n * ceil(log2(n))",
   "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
@@ -787,11 +788,12 @@
     "output": "array([15.+0.j,  -4.+0.j,   0.+0.j,  -1.-0.j,   0.+0.j,  -4.+0.j]) # may vary\n\narray([15.,  -4.,   0.,  -1.,   0.,  -4.])\n\narray([15.,  -4.,   0.,  -1.,   0.,  -4.])\n\narray([[ 0.-0.j,  -0.+0.j], # may vary\n       [ 0.+0.j,  0.-0.j]])\n\narray([[ 1.,  1.],\n       [ 2., -2.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-hfft/",
+  "href": "/docs/api/fft/hfft/",
+  "legacy_href": "/docs/api/ops/fft-hfft/",
   "module": "numpy.fft",
   "name": "fft.hfft",
   "next": {
-    "href": "/docs/api/ops/fft-ifft/",
+    "href": "/docs/api/fft/ifft/",
     "label": "we.fft.ifft"
   },
   "notes": "FFT of Hermitian-symmetric signal. Cost: 5*n_out*ceil(log2(n_out)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
@@ -854,7 +856,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-fftshift/",
+    "href": "/docs/api/fft/fftshift/",
     "label": "we.fft.fftshift"
   },
   "provenance_label": "Adapted from NumPy docs",

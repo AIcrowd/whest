@@ -502,6 +502,7 @@
     }
   ],
   "canonical_name": "sin",
+  "canonical_path": "sin",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -523,11 +524,12 @@
     "output": "1.0\n\narray([ 0.        ,  0.5       ,  0.70710678,  0.8660254 ,  1.        ])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/sin/",
+  "href": "/docs/api/sin/",
+  "legacy_href": "/docs/api/ops/sin/",
   "module": "numpy",
   "name": "sin",
   "next": {
-    "href": "/docs/api/ops/sinc/",
+    "href": "/docs/api/sinc/",
     "label": "we.sinc"
   },
   "notes": "Element-wise sine.",
@@ -575,7 +577,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/signbit/",
+    "href": "/docs/api/signbit/",
     "label": "we.signbit"
   },
   "provenance_label": "Adapted from NumPy docs",

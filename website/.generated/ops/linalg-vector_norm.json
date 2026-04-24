@@ -401,6 +401,7 @@
     }
   ],
   "canonical_name": "linalg.vector_norm",
+  "canonical_path": "linalg/vector-norm",
   "category": "counted_custom",
   "cost_formula": "numel",
   "cost_formula_latex": "$n$",
@@ -415,11 +416,12 @@
     "output": "array([1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([[1, 2, 3],\n       [4, 5, 6],\n       [7, 8, 9]])\n\n16.881943016134134\n\n9.0\n\n1.0\n\n9.0\n\n45.0\n\n0.3534857623790153\n\n16.881943016134134\n\n0.8058837395885292",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-vector_norm/",
+  "href": "/docs/api/linalg/vector-norm/",
+  "legacy_href": "/docs/api/ops/linalg-vector_norm/",
   "module": "numpy.linalg",
   "name": "linalg.vector_norm",
   "next": {
-    "href": "/docs/api/ops/linspace/",
+    "href": "/docs/api/linspace/",
     "label": "we.linspace"
   },
   "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm).",
@@ -463,7 +465,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-vecdot/",
+    "href": "/docs/api/linalg/vecdot/",
     "label": "we.linalg.vecdot"
   },
   "provenance_label": "Adapted from NumPy docs",

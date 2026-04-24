@@ -492,6 +492,7 @@
     }
   ],
   "canonical_name": "random.f",
+  "canonical_path": "random/f",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -515,11 +516,12 @@
     "output": "7.61988120985 # random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-f/",
+  "href": "/docs/api/random/f/",
+  "legacy_href": "/docs/api/ops/random-f/",
   "module": "numpy.random",
   "name": "random.f",
   "next": {
-    "href": "/docs/api/ops/random-gamma/",
+    "href": "/docs/api/random/gamma/",
     "label": "we.random.gamma"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -554,7 +556,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-exponential/",
+    "href": "/docs/api/random/exponential/",
     "label": "we.random.exponential"
   },
   "provenance_label": "Adapted from NumPy docs",

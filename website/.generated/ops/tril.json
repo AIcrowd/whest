@@ -351,6 +351,7 @@
     }
   ],
   "canonical_name": "tril",
+  "canonical_path": "tril",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -365,11 +366,12 @@
     "output": "array([[ 0,  0,  0],\n       [ 4,  0,  0],\n       [ 7,  8,  0],\n       [10, 11, 12]])\n\narray([[[ 0,  0,  0,  0,  0],\n        [ 5,  6,  0,  0,  0],\n        [10, 11, 12,  0,  0],\n        [15, 16, 17, 18,  0]],\n       [[20,  0,  0,  0,  0],\n        [25, 26,  0,  0,  0],\n        [30, 31, 32,  0,  0],\n        [35, 36, 37, 38,  0]],\n       [[40,  0,  0,  0,  0],\n        [45, 46,  0,  0,  0],\n        [50, 51, 52,  0,  0],\n        [55, 56, 57, 58,  0]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/tril/",
+  "href": "/docs/api/tril/",
+  "legacy_href": "/docs/api/ops/tril/",
   "module": "numpy",
   "name": "tril",
   "next": {
-    "href": "/docs/api/ops/tril_indices/",
+    "href": "/docs/api/tril-indices/",
     "label": "we.tril_indices"
   },
   "notes": "Lower triangle of array.",
@@ -393,7 +395,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/tri/",
+    "href": "/docs/api/tri/",
     "label": "we.tri"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -572,6 +572,7 @@
     }
   ],
   "canonical_name": "exp",
+  "canonical_path": "exp",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -602,11 +603,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/exp/",
+  "href": "/docs/api/exp/",
+  "legacy_href": "/docs/api/ops/exp/",
   "module": "numpy",
   "name": "exp",
   "next": {
-    "href": "/docs/api/ops/exp2/",
+    "href": "/docs/api/exp2/",
     "label": "we.exp2"
   },
   "notes": "Element-wise e^x.",
@@ -655,7 +657,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/equal/",
+    "href": "/docs/api/equal/",
     "label": "we.equal"
   },
   "provenance_label": "Adapted from NumPy docs",

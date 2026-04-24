@@ -249,6 +249,7 @@
     }
   ],
   "canonical_name": "min_scalar_type",
+  "canonical_path": "min-scalar-type",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -263,11 +264,12 @@
     "output": "dtype('uint8')\n\ndtype('int16')\n\ndtype('float16')\n\ndtype('float64')\n\ndtype('float64')",
     "source": "derived"
   },
-  "href": "/docs/api/ops/min_scalar_type/",
+  "href": "/docs/api/min-scalar-type/",
+  "legacy_href": "/docs/api/ops/min_scalar_type/",
   "module": "numpy",
   "name": "min_scalar_type",
   "next": {
-    "href": "/docs/api/ops/minimum/",
+    "href": "/docs/api/minimum/",
     "label": "we.minimum"
   },
   "notes": "Return the minimum scalar type for a value.",
@@ -283,7 +285,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/min/",
+    "href": "/docs/api/min/",
     "label": "we.min"
   },
   "provenance_label": "Adapted from NumPy docs",

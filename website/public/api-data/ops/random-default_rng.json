@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-default_rng/",
+  "detail_href": "/docs/api/random/default-rng/",
   "detail_json_href": "/api-data/ops/random-default_rng.json",
   "docs": {
     "sections": [
@@ -9,7 +9,7 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Construct a new Generator with the default BitGenerator (PCG64)."
+                "text": "default_rng(seed=None) Construct a new Generator with the default BitGenerator (PCG64)."
               }
             ],
             "type": "paragraph"
@@ -604,7 +604,7 @@
     "numpy_ref": "np.random.default_rng",
     "signature": "we.random.default_rng(seed=None)",
     "status": "supported",
-    "summary": "Construct a new Generator with the default BitGenerator (PCG64).",
+    "summary": "default_rng(seed=None) Construct a new Generator with the default BitGenerator (PCG64).",
     "weight": 0.0,
     "whest_ref": "we.random.default_rng"
   },

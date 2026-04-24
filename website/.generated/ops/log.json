@@ -567,6 +567,7 @@
     }
   ],
   "canonical_name": "log",
+  "canonical_path": "log",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -603,11 +604,12 @@
     "output": "array([  0.,   1.,   2., -inf])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/log/",
+  "href": "/docs/api/log/",
+  "legacy_href": "/docs/api/ops/log/",
   "module": "numpy",
   "name": "log",
   "next": {
-    "href": "/docs/api/ops/log10/",
+    "href": "/docs/api/log10/",
     "label": "we.log10"
   },
   "notes": "Element-wise natural logarithm.",
@@ -658,7 +660,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linspace/",
+    "href": "/docs/api/linspace/",
     "label": "we.linspace"
   },
   "provenance_label": "Adapted from NumPy docs",

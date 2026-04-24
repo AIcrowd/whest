@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-expon-ppf/",
+  "detail_href": "/docs/api/stats/expon/ppf/",
   "detail_json_href": "/api-data/ops/stats-expon-ppf.json",
   "docs": {
     "sections": [
@@ -176,7 +176,7 @@
   "schema_version": 1,
   "slug": "stats-expon-ppf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2272",
     "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_expon.py#L55"
   }
 }

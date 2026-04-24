@@ -810,6 +810,7 @@
     }
   ],
   "canonical_name": "random.multivariate_normal",
+  "canonical_path": "random/multivariate-normal",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -833,11 +834,12 @@
     "output": "(3, 3, 2)\n\narray([ 0.0326911 , -0.01280782])  # may vary\n\narray([[ 5.96202397, -2.85602287],\n       [-2.85602287,  3.47613949]])  # may vary\n\n-0.6273591314603949  # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-multivariate_normal/",
+  "href": "/docs/api/random/multivariate-normal/",
+  "legacy_href": "/docs/api/ops/random-multivariate_normal/",
   "module": "numpy.random",
   "name": "random.multivariate_normal",
   "next": {
-    "href": "/docs/api/ops/random-negative_binomial/",
+    "href": "/docs/api/random/negative-binomial/",
     "label": "we.random.negative_binomial"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -896,7 +898,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-multinomial/",
+    "href": "/docs/api/random/multinomial/",
     "label": "we.random.multinomial"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -352,6 +352,7 @@
     }
   ],
   "canonical_name": "random.beta",
+  "canonical_path": "random/beta",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -362,11 +363,12 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/random-beta/",
+  "href": "/docs/api/random/beta/",
+  "legacy_href": "/docs/api/ops/random-beta/",
   "module": "numpy.random",
   "name": "random.beta",
   "next": {
-    "href": "/docs/api/ops/random-binomial/",
+    "href": "/docs/api/random/binomial/",
     "label": "we.random.binomial"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -399,7 +401,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/radians/",
+    "href": "/docs/api/radians/",
     "label": "we.radians"
   },
   "provenance_label": "Adapted from NumPy docs",

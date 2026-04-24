@@ -553,6 +553,7 @@
     }
   ],
   "canonical_name": "bitwise_right_shift",
+  "canonical_path": "bitwise-right-shift",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -574,11 +575,12 @@
     "output": "'1010'\n\n5\n\n'101'\n\narray([5, 2, 1])\n\narray([5, 2, 1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bitwise_right_shift/",
+  "href": "/docs/api/bitwise-right-shift/",
+  "legacy_href": "/docs/api/ops/bitwise_right_shift/",
   "module": "numpy",
   "name": "bitwise_right_shift",
   "next": {
-    "href": "/docs/api/ops/bitwise_xor/",
+    "href": "/docs/api/bitwise-xor/",
     "label": "we.bitwise_xor"
   },
   "notes": "Element-wise right bit shift.",
@@ -633,7 +635,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bitwise_or/",
+    "href": "/docs/api/bitwise-or/",
     "label": "we.bitwise_or"
   },
   "provenance_label": "Adapted from NumPy docs",

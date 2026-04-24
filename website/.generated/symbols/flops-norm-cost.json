@@ -1,0 +1,256 @@
+{
+  "aliases": [
+    "flops.norm_cost",
+    "we.flops.norm_cost",
+    "whest.flops.norm_cost",
+    "norm_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/linalg/norm/",
+              "kind": "link",
+              "target": "linalg.norm",
+              "text": "linalg.norm"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of matrix or vector norm."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Shape of the input array (or effective shape along norm axes)."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Shape of the input array (or effective shape along norm axes)."
+                }
+              ],
+              "name": "shape",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Order of the norm."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "{None, 'fro', 'nuc', inf, -inf, int}, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Order of the norm."
+                }
+              ],
+              "name": "ord",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Cost depends on the "
+            },
+            {
+              "kind": "code",
+              "text": "ord"
+            },
+            {
+              "kind": "text",
+              "text": " parameter and input dimensionality."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "items": [
+            {
+              "blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Elementwise norms (Frobenius, L1, Linf, etc.): "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "numel"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " (weight=1 baked in)."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ]
+            },
+            {
+              "blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "SVD-based norms (2-norm, nuclear norm): "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "4 * m * n * min(m, n)"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "\n(weight=4 baked in, consistent with linalg.svd weight=4)."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ]
+            }
+          ],
+          "ordered": false,
+          "type": "list"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.norm_cost",
+  "canonical_path": "flops/norm-cost",
+  "display_name": "we.flops.norm_cost",
+  "href": "/docs/api/flops/norm-cost/",
+  "import_path": "we.flops.norm_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.linalg._properties",
+  "name": "flops.norm_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.flops.norm_cost(shape: 'tuple', ord=None) -> 'int'",
+  "slug": "flops-norm-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L145",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``linalg.norm``.",
+  "upstream_source_url": ""
+}

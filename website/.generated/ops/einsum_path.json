@@ -535,6 +535,7 @@
     }
   ],
   "canonical_name": "einsum_path",
+  "canonical_path": "einsum-path",
   "category": "counted_custom",
   "cost_formula": "0 (planning only)",
   "cost_formula_latex": "$0$",
@@ -549,11 +550,12 @@
     "output": "['einsum_path', (1, 2), (0, 1)]\n\nComplete contraction:  ij,jk,kl->il # may vary\n         Naive scaling:  4\n     Optimized scaling:  3\n      Naive FLOP count:  1.600e+02\n  Optimized FLOP count:  5.600e+01\n   Theoretical speedup:  2.857\n  Largest intermediate:  4.000e+00 elements\n-------------------------------------------------------------------------\nscaling                  current                                remaining\n-------------------------------------------------------------------------\n   3                   kl,jk->jl                                ij,jl->il\n   3                   jl,ij->il                                   il->il\n\n['einsum_path', (0, 2), (0, 3), (0, 2), (0, 1)]\n\nComplete contraction:  ea,fb,abcd,gc,hd->efgh # may vary\n         Naive scaling:  8\n     Optimized scaling:  5\n      Naive FLOP count:  8.000e+08\n  Optimized FLOP count:  8.000e+05\n   Theoretical speedup:  1000.000\n  Largest intermediate:  1.000e+04 elements\n--------------------------------------------------------------------------\nscaling                  current                                remaining\n--------------------------------------------------------------------------\n   5               abcd,ea->bcde                      fb,gc,hd,bcde->efgh\n   5               bcde,fb->cdef                         gc,hd,cdef->efgh\n   5               cdef,gc->defg                            hd,defg->efgh\n   5               defg,hd->efgh                               efgh->efgh",
     "source": "derived"
   },
-  "href": "/docs/api/ops/einsum_path/",
+  "href": "/docs/api/einsum-path/",
+  "legacy_href": "/docs/api/ops/einsum_path/",
   "module": "numpy",
   "name": "einsum_path",
   "next": {
-    "href": "/docs/api/ops/empty/",
+    "href": "/docs/api/empty/",
     "label": "we.empty"
   },
   "notes": "Optimize einsum contraction path (no numeric output).",
@@ -604,7 +606,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/einsum/",
+    "href": "/docs/api/einsum/",
     "label": "we.einsum"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -656,5 +658,5 @@
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.einsum_path",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L316"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L337"
 }

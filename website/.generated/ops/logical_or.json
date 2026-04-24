@@ -517,6 +517,7 @@
     }
   ],
   "canonical_name": "logical_or",
+  "canonical_path": "logical-or",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -538,11 +539,12 @@
     "output": "True\n\narray([ True, False])\n\narray([ True, False, False, False,  True])\n\narray([ True, False])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/logical_or/",
+  "href": "/docs/api/logical-or/",
+  "legacy_href": "/docs/api/ops/logical_or/",
   "module": "numpy",
   "name": "logical_or",
   "next": {
-    "href": "/docs/api/ops/logical_xor/",
+    "href": "/docs/api/logical-xor/",
     "label": "we.logical_xor"
   },
   "notes": "Element-wise logical OR.",
@@ -590,7 +592,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/logical_not/",
+    "href": "/docs/api/logical-not/",
     "label": "we.logical_not"
   },
   "provenance_label": "Adapted from NumPy docs",

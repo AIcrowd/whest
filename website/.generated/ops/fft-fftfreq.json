@@ -288,6 +288,7 @@
     }
   ],
   "canonical_name": "fft.fftfreq",
+  "canonical_path": "fft/fftfreq",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -302,11 +303,12 @@
     "output": "array([ 0.  ,  1.25,  2.5 , ..., -3.75, -2.5 , -1.25])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-fftfreq/",
+  "href": "/docs/api/fft/fftfreq/",
+  "legacy_href": "/docs/api/ops/fft-fftfreq/",
   "module": "numpy.fft",
   "name": "fft.fftfreq",
   "next": {
-    "href": "/docs/api/ops/fft-fftn/",
+    "href": "/docs/api/fft/fftn/",
     "label": "we.fft.fftn"
   },
   "notes": "FFT sample frequencies. No arithmetic; returns index array.",
@@ -339,7 +341,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-fft2/",
+    "href": "/docs/api/fft/fft2/",
     "label": "we.fft.fft2"
   },
   "provenance_label": "Adapted from NumPy docs",

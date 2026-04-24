@@ -360,6 +360,7 @@
     }
   ],
   "canonical_name": "random.random_sample",
+  "canonical_path": "random/random-sample",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -374,11 +375,12 @@
     "output": "0.47108547995356098 # random\n\n<class 'float'>\n\narray([ 0.30220482,  0.86820401,  0.1654503 ,  0.11659149,  0.54323428]) # random\n\narray([[-3.99149989, -0.52338984], # random\n       [-2.99091858, -0.79479508],\n       [-1.23204345, -1.75224494]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-random_sample/",
+  "href": "/docs/api/random/random-sample/",
+  "legacy_href": "/docs/api/ops/random-random_sample/",
   "module": "numpy.random",
   "name": "random.random_sample",
   "next": {
-    "href": "/docs/api/ops/random-rayleigh/",
+    "href": "/docs/api/random/rayleigh/",
     "label": "we.random.rayleigh"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -396,7 +398,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-random_integers/",
+    "href": "/docs/api/random/random-integers/",
     "label": "we.random.random_integers"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -436,5 +438,5 @@
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.random.random_sample",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L177"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L233"
 }

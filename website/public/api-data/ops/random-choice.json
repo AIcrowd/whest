@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-choice/",
+  "detail_href": "/docs/api/random/choice/",
   "detail_json_href": "/api-data/ops/random-choice.json",
   "docs": {
     "sections": [
@@ -614,6 +614,6 @@
   "slug": "random-choice",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.choice.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L240"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L296"
   }
 }

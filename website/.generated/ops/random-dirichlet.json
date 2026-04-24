@@ -540,6 +540,7 @@
     }
   ],
   "canonical_name": "random.dirichlet",
+  "canonical_path": "random/dirichlet",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -563,11 +564,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-dirichlet/",
+  "href": "/docs/api/random/dirichlet/",
+  "legacy_href": "/docs/api/ops/random-dirichlet/",
   "module": "numpy.random",
   "name": "random.dirichlet",
   "next": {
-    "href": "/docs/api/ops/random-exponential/",
+    "href": "/docs/api/random/exponential/",
     "label": "we.random.exponential"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -599,7 +601,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-default_rng/",
+    "href": "/docs/api/random/default-rng/",
     "label": "we.random.default_rng"
   },
   "provenance_label": "Adapted from NumPy docs",

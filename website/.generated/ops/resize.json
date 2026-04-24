@@ -316,6 +316,7 @@
     }
   ],
   "canonical_name": "resize",
+  "canonical_path": "resize",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -337,11 +338,12 @@
     "output": "array([[0, 1, 2],\n       [3, 0, 1]])\n\narray([[0, 1, 2, 3]])\n\narray([[0, 1, 2, 3],\n       [0, 1, 2, 3]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/resize/",
+  "href": "/docs/api/resize/",
+  "legacy_href": "/docs/api/ops/resize/",
   "module": "numpy",
   "name": "resize",
   "next": {
-    "href": "/docs/api/ops/result_type/",
+    "href": "/docs/api/result-type/",
     "label": "we.result_type"
   },
   "notes": "Return new array with given shape by repeating. Cost: numel(output).",
@@ -367,7 +369,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/reshape/",
+    "href": "/docs/api/reshape/",
     "label": "we.reshape"
   },
   "provenance_label": "Adapted from NumPy docs",

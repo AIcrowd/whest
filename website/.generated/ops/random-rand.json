@@ -204,6 +204,7 @@
     }
   ],
   "canonical_name": "random.rand",
+  "canonical_path": "random/rand",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -218,11 +219,12 @@
     "output": "array([[ 0.14022471,  0.96360618],  #random\n       [ 0.37601032,  0.25528411],  #random\n       [ 0.49313049,  0.94909878]]) #random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-rand/",
+  "href": "/docs/api/random/rand/",
+  "legacy_href": "/docs/api/ops/random-rand/",
   "module": "numpy.random",
   "name": "random.rand",
   "next": {
-    "href": "/docs/api/ops/random-randint/",
+    "href": "/docs/api/random/randint/",
     "label": "we.random.randint"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -239,7 +241,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-power/",
+    "href": "/docs/api/random/power/",
     "label": "we.random.power"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -385,6 +385,7 @@
     }
   ],
   "canonical_name": "shares_memory",
+  "canonical_path": "shares-memory",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -399,11 +400,12 @@
     "output": "False\n\nTrue\n\nFalse\n\nTraceback (most recent call last):\n...\nwe.exceptions.TooHardError: Exceeded max_work",
     "source": "derived"
   },
-  "href": "/docs/api/ops/shares_memory/",
+  "href": "/docs/api/shares-memory/",
+  "legacy_href": "/docs/api/ops/shares_memory/",
   "module": "numpy",
   "name": "shares_memory",
   "next": {
-    "href": "/docs/api/ops/sign/",
+    "href": "/docs/api/sign/",
     "label": "we.sign"
   },
   "notes": "Determine if two arrays share memory.",
@@ -436,7 +438,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/shape/",
+    "href": "/docs/api/shape/",
     "label": "we.shape"
   },
   "provenance_label": "Adapted from NumPy docs",

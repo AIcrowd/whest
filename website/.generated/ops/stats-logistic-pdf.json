@@ -151,6 +151,7 @@
     }
   ],
   "canonical_name": "stats.logistic.pdf",
+  "canonical_path": "stats/logistic/pdf",
   "category": "counted_custom",
   "cost_formula": "8n",
   "cost_formula_latex": "$8n$",
@@ -161,11 +162,12 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/stats-logistic-pdf/",
+  "href": "/docs/api/stats/logistic/pdf/",
+  "legacy_href": "/docs/api/ops/stats-logistic-pdf/",
   "module": "whest.stats",
   "name": "stats.logistic.pdf",
   "next": {
-    "href": "/docs/api/ops/stats-logistic-ppf/",
+    "href": "/docs/api/stats/logistic/ppf/",
     "label": "we.stats.logistic.ppf"
   },
   "notes": "Logistic PDF; cost = numel(input).",
@@ -203,7 +205,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-logistic-cdf/",
+    "href": "/docs/api/stats/logistic/cdf/",
     "label": "we.stats.logistic.cdf"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -221,7 +223,7 @@
   "signature": "we.stats.logistic.pdf(x, loc=0, scale=1)",
   "slug": "stats-logistic-pdf",
   "summary": "Probability density function at x of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2021",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.stats.logistic.pdf",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-shuffle/",
+  "detail_href": "/docs/api/random/shuffle/",
   "detail_json_href": "/api-data/ops/random-shuffle.json",
   "docs": {
     "sections": [
@@ -255,6 +255,6 @@
   "slug": "random-shuffle",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.shuffle.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L223"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L279"
   }
 }

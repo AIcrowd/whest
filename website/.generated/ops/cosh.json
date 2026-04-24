@@ -370,6 +370,7 @@
     }
   ],
   "canonical_name": "cosh",
+  "canonical_path": "cosh",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -391,11 +392,12 @@
     "output": "1.0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/cosh/",
+  "href": "/docs/api/cosh/",
+  "legacy_href": "/docs/api/ops/cosh/",
   "module": "numpy",
   "name": "cosh",
   "next": {
-    "href": "/docs/api/ops/count_nonzero/",
+    "href": "/docs/api/count-nonzero/",
     "label": "we.count_nonzero"
   },
   "notes": "Element-wise hyperbolic cosine.",
@@ -441,7 +443,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/cos/",
+    "href": "/docs/api/cos/",
     "label": "we.cos"
   },
   "provenance_label": "Adapted from NumPy docs",

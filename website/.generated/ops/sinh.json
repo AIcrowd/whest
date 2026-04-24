@@ -440,6 +440,7 @@
     }
   ],
   "canonical_name": "sinh",
+  "canonical_path": "sinh",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -461,11 +462,12 @@
     "output": "0.0\n\n1j\n\n1.2246063538223773e-016j\n\nTrue\n\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nValueError: operands could not be broadcast together with shapes (3,3) (2,2)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/sinh/",
+  "href": "/docs/api/sinh/",
+  "legacy_href": "/docs/api/ops/sinh/",
   "module": "numpy",
   "name": "sinh",
   "next": {
-    "href": "/docs/api/ops/size/",
+    "href": "/docs/api/size/",
     "label": "we.size"
   },
   "notes": "Element-wise hyperbolic sine.",
@@ -513,7 +515,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sinc/",
+    "href": "/docs/api/sinc/",
     "label": "we.sinc"
   },
   "provenance_label": "Adapted from NumPy docs",

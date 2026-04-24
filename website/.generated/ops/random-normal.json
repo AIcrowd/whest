@@ -601,6 +601,7 @@
     }
   ],
   "canonical_name": "random.normal",
+  "canonical_path": "random/normal",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -639,11 +640,12 @@
     "output": "0.0  # may vary\n\n0.1  # may vary\n\narray([[-4.49401501,  4.00950034, -1.81814867,  7.29718677],   # random\n       [ 0.39924804,  4.68456316,  4.99394529,  4.84057254]])  # random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-normal/",
+  "href": "/docs/api/random/normal/",
+  "legacy_href": "/docs/api/ops/random-normal/",
   "module": "numpy.random",
   "name": "random.normal",
   "next": {
-    "href": "/docs/api/ops/random-pareto/",
+    "href": "/docs/api/random/pareto/",
     "label": "we.random.pareto"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -682,7 +684,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-noncentral_f/",
+    "href": "/docs/api/random/noncentral-f/",
     "label": "we.random.noncentral_f"
   },
   "provenance_label": "Adapted from NumPy docs",

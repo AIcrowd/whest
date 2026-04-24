@@ -9,7 +9,12 @@ import type {OperationDocRecord} from './op-doc-types';
 export default async function OperationDocPage({op}: {op: OperationDocRecord}) {
   return (
     <>
-      <OperationDocHeader op={op} />
+      <OperationDocHeader
+        summary={op.summary}
+        provenanceLabel={op.provenance_label}
+        provenanceUrl={op.provenance_url}
+        provenanceRef={op.numpy_ref}
+      />
       <OperationDocOverlay op={op} />
       {op.body_sections && op.body_sections.length > 0 ? (
         <OperationDocBody

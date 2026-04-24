@@ -274,6 +274,7 @@
     }
   ],
   "canonical_name": "broadcast_to",
+  "canonical_path": "broadcast-to",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -288,11 +289,12 @@
     "output": "array([[1, 2, 3],\n       [1, 2, 3],\n       [1, 2, 3]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/broadcast_to/",
+  "href": "/docs/api/broadcast-to/",
+  "legacy_href": "/docs/api/ops/broadcast_to/",
   "module": "numpy",
   "name": "broadcast_to",
   "next": {
-    "href": "/docs/api/ops/can_cast/",
+    "href": "/docs/api/can-cast/",
     "label": "we.can_cast"
   },
   "notes": "Broadcast array to new shape. Cost: numel(output).",
@@ -324,7 +326,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/broadcast_shapes/",
+    "href": "/docs/api/broadcast-shapes/",
     "label": "we.broadcast_shapes"
   },
   "provenance_label": "Adapted from NumPy docs",

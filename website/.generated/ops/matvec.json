@@ -519,6 +519,7 @@
     }
   ],
   "canonical_name": "matvec",
+  "canonical_path": "matvec",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -540,11 +541,12 @@
     "output": "array([[ 0., -1.,  0.],\n       [ 1.,  0.,  0.],\n       [ 0.,  0.,  1.],\n       [ 6.,  0.,  8.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/matvec/",
+  "href": "/docs/api/matvec/",
+  "legacy_href": "/docs/api/ops/matvec/",
   "module": "numpy",
   "name": "matvec",
   "next": {
-    "href": "/docs/api/ops/max/",
+    "href": "/docs/api/max/",
     "label": "we.max"
   },
   "notes": "Matrix-vector product. Cost = output_size * contracted_axis.",
@@ -577,7 +579,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/matrix_transpose/",
+    "href": "/docs/api/matrix-transpose/",
     "label": "we.matrix_transpose"
   },
   "provenance_label": "Adapted from NumPy docs",

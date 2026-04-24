@@ -293,6 +293,7 @@
     }
   ],
   "canonical_name": "hanning",
+  "canonical_path": "hanning",
   "category": "counted_custom",
   "cost_formula": "n",
   "cost_formula_latex": "$n$",
@@ -324,11 +325,12 @@
     "output": "array([0.        , 0.07937323, 0.29229249, 0.57115742, 0.82743037,\n       0.97974649, 0.97974649, 0.82743037, 0.57115742, 0.29229249,\n       0.07937323, 0.        ])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/hanning/",
+  "href": "/docs/api/hanning/",
+  "legacy_href": "/docs/api/ops/hanning/",
   "module": "whest._window",
   "name": "hanning",
   "next": {
-    "href": "/docs/api/ops/heaviside/",
+    "href": "/docs/api/heaviside/",
     "label": "we.heaviside"
   },
   "notes": "Hanning window. Cost: n (one cosine per sample).",
@@ -350,7 +352,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/hamming/",
+    "href": "/docs/api/hamming/",
     "label": "we.hamming"
   },
   "provenance_label": "Adapted from NumPy docs",

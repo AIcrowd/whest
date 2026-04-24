@@ -289,6 +289,7 @@
     }
   ],
   "canonical_name": "real_if_close",
+  "canonical_path": "real-if-close",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -303,11 +304,12 @@
     "output": "2.2204460492503131e-16 # may vary\n\narray([2.1, 5.2])\n\narray([2.1+4.e-13j, 5.2 + 3e-15j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/real_if_close/",
+  "href": "/docs/api/real-if-close/",
+  "legacy_href": "/docs/api/ops/real_if_close/",
   "module": "numpy",
   "name": "real_if_close",
   "next": {
-    "href": "/docs/api/ops/reciprocal/",
+    "href": "/docs/api/reciprocal/",
     "label": "we.reciprocal"
   },
   "notes": "Return real array if imaginary part is negligible.",
@@ -334,7 +336,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/real/",
+    "href": "/docs/api/real/",
     "label": "we.real"
   },
   "provenance_label": "Adapted from NumPy docs",

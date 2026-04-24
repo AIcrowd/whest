@@ -639,6 +639,7 @@
     }
   ],
   "canonical_name": "nanmedian",
+  "canonical_path": "nanmedian",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -653,11 +654,12 @@
     "output": "array([[10., nan,  4.],\n       [ 3.,  2.,  1.]])\n\nwe.float64(nan)\n\n3.0\n\narray([6.5, 2. , 2.5])\n\narray([nan,  2.])\n\narray([7.,  2.])\n\n3.0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nanmedian/",
+  "href": "/docs/api/nanmedian/",
+  "legacy_href": "/docs/api/ops/nanmedian/",
   "module": "numpy",
   "name": "nanmedian",
   "next": {
-    "href": "/docs/api/ops/nanmin/",
+    "href": "/docs/api/nanmin/",
     "label": "we.nanmin"
   },
   "notes": "Median ignoring NaNs.",
@@ -721,7 +723,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nanmean/",
+    "href": "/docs/api/nanmean/",
     "label": "we.nanmean"
   },
   "provenance_label": "Adapted from NumPy docs",

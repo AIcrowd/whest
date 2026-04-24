@@ -570,6 +570,7 @@
     }
   ],
   "canonical_name": "take_along_axis",
+  "canonical_path": "take-along-axis",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -584,11 +585,12 @@
     "output": "array([[10, 20, 30],\n       [40, 50, 60]])\n\narray([[0, 2, 1],\n       [1, 2, 0]])\n\narray([[10, 20, 30],\n       [40, 50, 60]])\n\narray([[30],\n       [60]])\n\narray([[1],\n       [0]])\n\narray([[30],\n       [60]])\n\narray([[0, 1],\n       [1, 0]])\n\narray([[10, 30],\n       [40, 60]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/take_along_axis/",
+  "href": "/docs/api/take-along-axis/",
+  "legacy_href": "/docs/api/ops/take_along_axis/",
   "module": "numpy",
   "name": "take_along_axis",
   "next": {
-    "href": "/docs/api/ops/tan/",
+    "href": "/docs/api/tan/",
     "label": "we.tan"
   },
   "notes": "Take values from input array by matching 1-D index. Cost: numel(output).",
@@ -628,7 +630,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/take/",
+    "href": "/docs/api/take/",
     "label": "we.take"
   },
   "provenance_label": "Adapted from NumPy docs",

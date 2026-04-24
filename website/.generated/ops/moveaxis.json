@@ -273,6 +273,7 @@
     }
   ],
   "canonical_name": "moveaxis",
+  "canonical_path": "moveaxis",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -287,11 +288,12 @@
     "output": "(4, 5, 3)\n\n(5, 3, 4)\n\n(5, 4, 3)\n\n(5, 4, 3)\n\n(5, 4, 3)\n\n(5, 4, 3)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/moveaxis/",
+  "href": "/docs/api/moveaxis/",
+  "legacy_href": "/docs/api/ops/moveaxis/",
   "module": "numpy",
   "name": "moveaxis",
   "next": {
-    "href": "/docs/api/ops/multiply/",
+    "href": "/docs/api/multiply/",
     "label": "we.multiply"
   },
   "notes": "Move axes to new positions.",
@@ -322,7 +324,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/modf/",
+    "href": "/docs/api/modf/",
     "label": "we.modf"
   },
   "provenance_label": "Adapted from NumPy docs",

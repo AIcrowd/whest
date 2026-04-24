@@ -508,6 +508,7 @@
     }
   ],
   "canonical_name": "vecmat",
+  "canonical_path": "vecmat",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -529,11 +530,12 @@
     "output": "array([ 0.,  4., 0.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/vecmat/",
+  "href": "/docs/api/vecmat/",
+  "legacy_href": "/docs/api/ops/vecmat/",
   "module": "numpy",
   "name": "vecmat",
   "next": {
-    "href": "/docs/api/ops/vsplit/",
+    "href": "/docs/api/vsplit/",
     "label": "we.vsplit"
   },
   "notes": "Vector-matrix product. Cost = output_size * contracted_axis.",
@@ -566,7 +568,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/vecdot/",
+    "href": "/docs/api/vecdot/",
     "label": "we.vecdot"
   },
   "provenance_label": "Adapted from NumPy docs",

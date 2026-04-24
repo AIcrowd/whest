@@ -316,6 +316,7 @@
     }
   ],
   "canonical_name": "hsplit",
+  "canonical_path": "hsplit",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -330,11 +331,12 @@
     "output": "array([[ 0.,   1.,   2.,   3.],\n       [ 4.,   5.,   6.,   7.],\n       [ 8.,   9.,  10.,  11.],\n       [12.,  13.,  14.,  15.]])\n\n[array([[  0.,   1.],\n       [  4.,   5.],\n       [  8.,   9.],\n       [12.,  13.]]),\n array([[  2.,   3.],\n       [  6.,   7.],\n       [10.,  11.],\n       [14.,  15.]])]\n\n[array([[ 0.,   1.,   2.],\n       [ 4.,   5.,   6.],\n       [ 8.,   9.,  10.],\n       [12.,  13.,  14.]]),\n array([[ 3.],\n       [ 7.],\n       [11.],\n       [15.]]),\n array([], shape=(4, 0), dtype=float64)]\n\narray([[[0.,  1.],\n        [2.,  3.]],\n       [[4.,  5.],\n        [6.,  7.]]])\n\n[array([[[0.,  1.]],\n       [[4.,  5.]]]),\n array([[[2.,  3.]],\n       [[6.,  7.]]])]\n\n[array([0, 1, 2]), array([3, 4, 5])]",
     "source": "derived"
   },
-  "href": "/docs/api/ops/hsplit/",
+  "href": "/docs/api/hsplit/",
+  "legacy_href": "/docs/api/ops/hsplit/",
   "module": "numpy",
   "name": "hsplit",
   "next": {
-    "href": "/docs/api/ops/hstack/",
+    "href": "/docs/api/hstack/",
     "label": "we.hstack"
   },
   "notes": "Split array into columns.",
@@ -342,7 +344,7 @@
   "numpy_ref": "np.hsplit",
   "parameters": [],
   "previous": {
-    "href": "/docs/api/ops/histogramdd/",
+    "href": "/docs/api/histogramdd/",
     "label": "we.histogramdd"
   },
   "provenance_label": "Adapted from NumPy docs",

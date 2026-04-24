@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/einsum/",
+  "detail_href": "/docs/api/einsum/",
   "detail_json_href": "/api-data/ops/einsum.json",
   "docs": {
     "sections": [
@@ -2310,6 +2310,6 @@
   "slug": "einsum",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/einsumfunc.py#L1057",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L183"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L204"
   }
 }

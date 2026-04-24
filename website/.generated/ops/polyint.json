@@ -476,6 +476,7 @@
     }
   ],
   "canonical_name": "polyint",
+  "canonical_path": "polyint",
   "category": "counted_custom",
   "cost_formula": "n",
   "cost_formula_latex": "$n$",
@@ -503,11 +504,12 @@
     "output": "poly1d([ 0.33333333,  0.5       ,  1.        ,  0.        ]) # may vary\n\nTrue\n\n0.0\n\n0.0\n\n0.0\n\npoly1d([ 0.01666667,  0.04166667,  0.16666667,  3. ,  5. ,  3. ]) # may vary\n\n6.0\n\n5.0\n\n3.0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/polyint/",
+  "href": "/docs/api/polyint/",
+  "legacy_href": "/docs/api/ops/polyint/",
   "module": "whest._polynomial",
   "name": "polyint",
   "next": {
-    "href": "/docs/api/ops/polymul/",
+    "href": "/docs/api/polymul/",
     "label": "we.polymul"
   },
   "notes": "Integrate polynomial. Cost: n FLOPs.",
@@ -542,7 +544,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/polyfit/",
+    "href": "/docs/api/polyfit/",
     "label": "we.polyfit"
   },
   "provenance_label": "Adapted from NumPy docs",

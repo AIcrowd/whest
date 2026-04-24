@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.cauchy.cdf",
+  "canonical_path": "stats/cauchy/cdf",
   "category": "counted_custom",
   "cost_formula": "5n",
   "cost_formula_latex": "$5n$",
@@ -169,11 +170,12 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/stats-cauchy-cdf/",
+  "href": "/docs/api/stats/cauchy/cdf/",
+  "legacy_href": "/docs/api/ops/stats-cauchy-cdf/",
   "module": "whest.stats",
   "name": "stats.cauchy.cdf",
   "next": {
-    "href": "/docs/api/ops/stats-cauchy-pdf/",
+    "href": "/docs/api/stats/cauchy/pdf/",
     "label": "we.stats.cauchy.pdf"
   },
   "notes": "Cauchy CDF; cost = numel(input).",
@@ -211,7 +213,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stack/",
+    "href": "/docs/api/stack/",
     "label": "we.stack"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -229,7 +231,7 @@
   "signature": "we.stats.cauchy.cdf(x, loc=0, scale=1)",
   "slug": "stats-cauchy-cdf",
   "summary": "Cumulative distribution function of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2102",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.stats.cauchy.cdf",

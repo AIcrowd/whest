@@ -932,6 +932,7 @@
     }
   ],
   "canonical_name": "tensordot",
+  "canonical_path": "tensordot",
   "category": "counted_custom",
   "cost_formula": "product of contracted dims * output size",
   "cost_formula_latex": "$\\prod_i d_i$",
@@ -946,11 +947,12 @@
     "output": "(2, 2, 2, 2)\n\narray([[[[ 5,  6],\n         [ 7,  8]],\n        [[10, 12],\n         [14, 16]]],\n       [[[15, 18],\n         [21, 24]],\n        [[20, 24],\n         [28, 32]]]])\n\n(5, 2)\n\narray([[4400., 4730.],\n       [4532., 4874.],\n       [4664., 5018.],\n       [4796., 5162.],\n       [4928., 5306.]])\n\narray([[ True,  True],\n       [ True,  True],\n       [ True,  True],\n       [ True,  True],\n       [ True,  True]])\n\narray([[[1, 2],\n        [3, 4]],\n       [[5, 6],\n        [7, 8]]])\narray([['a', 'b'],\n       ['c', 'd']], dtype=object)\n\narray(['abbcccdddd', 'aaaaabbbbbbcccccccdddddddd'], dtype=object)\n\narray([[['acc', 'bdd'],\n        ['aaacccc', 'bbbdddd']],\n       [['aaaaacccccc', 'bbbbbdddddd'],\n        ['aaaaaaacccccccc', 'bbbbbbbdddddddd']]], dtype=object)\n\narray([[[[['a', 'b'],\n          ['c', 'd']],\n          ...\n\narray([[['abbbbb', 'cddddd'],\n        ['aabbbbbb', 'ccdddddd']],\n       [['aaabbbbbbb', 'cccddddddd'],\n        ['aaaabbbbbbbb', 'ccccdddddddd']]], dtype=object)\n\narray([[['abb', 'cdd'],\n        ['aaabbbb', 'cccdddd']],\n       [['aaaaabbbbbb', 'cccccdddddd'],\n        ['aaaaaaabbbbbbbb', 'cccccccdddddddd']]], dtype=object)\n\narray(['abbbcccccddddddd', 'aabbbbccccccdddddddd'], dtype=object)\n\narray(['acccbbdddd', 'aaaaacccccccbbbbbbdddddddd'], dtype=object)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/tensordot/",
+  "href": "/docs/api/tensordot/",
+  "legacy_href": "/docs/api/ops/tensordot/",
   "module": "numpy",
   "name": "tensordot",
   "next": {
-    "href": "/docs/api/ops/tile/",
+    "href": "/docs/api/tile/",
     "label": "we.tile"
   },
   "notes": "Tensor dot product along specified axes.",
@@ -983,7 +985,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/tanh/",
+    "href": "/docs/api/tanh/",
     "label": "we.tanh"
   },
   "provenance_label": "Adapted from NumPy docs",

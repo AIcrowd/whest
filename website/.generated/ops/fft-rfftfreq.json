@@ -330,6 +330,7 @@
     }
   ],
   "canonical_name": "fft.rfftfreq",
+  "canonical_path": "fft/rfftfreq",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -344,11 +345,12 @@
     "output": "array([  0.,  10.,  20., ..., -30., -20., -10.])\n\narray([  0.,  10.,  20.,  30.,  40.,  50.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-rfftfreq/",
+  "href": "/docs/api/fft/rfftfreq/",
+  "legacy_href": "/docs/api/ops/fft-rfftfreq/",
   "module": "numpy.fft",
   "name": "fft.rfftfreq",
   "next": {
-    "href": "/docs/api/ops/fft-rfftn/",
+    "href": "/docs/api/fft/rfftn/",
     "label": "we.fft.rfftn"
   },
   "notes": "Real FFT sample frequencies. No arithmetic; returns index array.",
@@ -381,7 +383,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-rfft2/",
+    "href": "/docs/api/fft/rfft2/",
     "label": "we.fft.rfft2"
   },
   "provenance_label": "Adapted from NumPy docs",

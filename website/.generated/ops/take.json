@@ -583,6 +583,7 @@
     }
   ],
   "canonical_name": "take",
+  "canonical_path": "take",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -604,11 +605,12 @@
     "output": "array([4, 3, 6])\n\narray([4, 3, 6])\n\narray([[4, 3],\n       [5, 7]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/take/",
+  "href": "/docs/api/take/",
+  "legacy_href": "/docs/api/ops/take/",
   "module": "numpy",
   "name": "take",
   "next": {
-    "href": "/docs/api/ops/take_along_axis/",
+    "href": "/docs/api/take-along-axis/",
     "label": "we.take_along_axis"
   },
   "notes": "Take elements from array along axis. Cost: numel(output).",
@@ -669,7 +671,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/swapaxes/",
+    "href": "/docs/api/swapaxes/",
     "label": "we.swapaxes"
   },
   "provenance_label": "Adapted from NumPy docs",

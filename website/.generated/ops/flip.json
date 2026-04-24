@@ -430,6 +430,7 @@
     }
   ],
   "canonical_name": "flip",
+  "canonical_path": "flip",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -444,11 +445,12 @@
     "output": "array([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])\n\narray([[[4, 5],\n        [6, 7]],\n       [[0, 1],\n        [2, 3]]])\n\narray([[[2, 3],\n        [0, 1]],\n       [[6, 7],\n        [4, 5]]])\n\narray([[[7, 6],\n        [5, 4]],\n       [[3, 2],\n        [1, 0]]])\n\narray([[[5, 4],\n        [7, 6]],\n       [[1, 0],\n        [3, 2]]])\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/flip/",
+  "href": "/docs/api/flip/",
+  "legacy_href": "/docs/api/ops/flip/",
   "module": "numpy",
   "name": "flip",
   "next": {
-    "href": "/docs/api/ops/fliplr/",
+    "href": "/docs/api/fliplr/",
     "label": "we.fliplr"
   },
   "notes": "Reverse order of elements along axis.",
@@ -482,7 +484,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/flatnonzero/",
+    "href": "/docs/api/flatnonzero/",
     "label": "we.flatnonzero"
   },
   "provenance_label": "Adapted from NumPy docs",

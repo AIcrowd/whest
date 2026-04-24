@@ -706,6 +706,7 @@
     }
   ],
   "canonical_name": "trapezoid",
+  "canonical_path": "trapezoid",
   "category": "counted_custom",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -734,11 +735,12 @@
     "output": "4.0\n\n8.0\n\n8.0\n\n-8.0\n\n0.33340274885464394\n\n3.141571941375841\n\narray([[0, 1, 2],\n       [3, 4, 5]])\n\narray([1.5, 2.5, 3.5])\n\narray([2.,  8.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/trapezoid/",
+  "href": "/docs/api/trapezoid/",
+  "legacy_href": "/docs/api/ops/trapezoid/",
   "module": "numpy",
   "name": "trapezoid",
   "next": {
-    "href": "/docs/api/ops/tri/",
+    "href": "/docs/api/tri/",
     "label": "we.tri"
   },
   "notes": "Integrate using the trapezoidal rule.",
@@ -779,7 +781,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/transpose/",
+    "href": "/docs/api/transpose/",
     "label": "we.transpose"
   },
   "provenance_label": "Adapted from NumPy docs",

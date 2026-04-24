@@ -1,0 +1,182 @@
+{
+  "aliases": [
+    "flops.hfft_cost",
+    "we.flops.hfft_cost",
+    "whest.flops.hfft_cost",
+    "hfft_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/fft/hfft/",
+              "kind": "link",
+              "target": "fft.hfft",
+              "text": "fft.hfft"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of a Hermitian FFT."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Output length."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Output length."
+                }
+              ],
+              "name": "n_out",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count: 5 * n_out * ceil(log2(n_out))."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count: 5 * n_out * ceil(log2(n_out))."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The Hermitian FFT computes the FFT of a signal with Hermitian symmetry,\nproducing real-valued output."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.hfft_cost",
+  "canonical_path": "flops/hfft-cost",
+  "display_name": "we.flops.hfft_cost",
+  "href": "/docs/api/flops/hfft-cost/",
+  "import_path": "we.flops.hfft_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.fft._transforms",
+  "name": "flops.hfft_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    },
+    {
+      "href": "/docs/guides/fft",
+      "title": "FFT Guide"
+    }
+  ],
+  "signature": "we.flops.hfft_cost(n_out: 'int') -> 'int'",
+  "slug": "flops-hfft-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L120",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``fft.hfft``.",
+  "upstream_source_url": ""
+}

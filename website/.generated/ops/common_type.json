@@ -177,6 +177,7 @@
     }
   ],
   "canonical_name": "common_type",
+  "canonical_path": "common-type",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -191,11 +192,12 @@
     "output": "<class 'we.float32'>\n\n<class 'we.float64'>\n\n<class 'we.complex128'>",
     "source": "derived"
   },
-  "href": "/docs/api/ops/common_type/",
+  "href": "/docs/api/common-type/",
+  "legacy_href": "/docs/api/ops/common_type/",
   "module": "numpy",
   "name": "common_type",
   "next": {
-    "href": "/docs/api/ops/compress/",
+    "href": "/docs/api/compress/",
     "label": "we.compress"
   },
   "notes": "Return scalar type common to all input arrays.",
@@ -211,7 +213,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/column_stack/",
+    "href": "/docs/api/column-stack/",
     "label": "we.column_stack"
   },
   "provenance_label": "Adapted from NumPy docs",

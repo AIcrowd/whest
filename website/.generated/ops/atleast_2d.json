@@ -199,6 +199,7 @@
     }
   ],
   "canonical_name": "atleast_2d",
+  "canonical_path": "atleast-2d",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -213,11 +214,12 @@
     "output": "array([[3.]])\n\narray([[0., 1., 2.]])\n\nTrue\n\n(array([[1]]), array([[1, 2]]), array([[1, 2]]))",
     "source": "derived"
   },
-  "href": "/docs/api/ops/atleast_2d/",
+  "href": "/docs/api/atleast-2d/",
+  "legacy_href": "/docs/api/ops/atleast_2d/",
   "module": "numpy",
   "name": "atleast_2d",
   "next": {
-    "href": "/docs/api/ops/atleast_3d/",
+    "href": "/docs/api/atleast-3d/",
     "label": "we.atleast_3d"
   },
   "notes": "View inputs as arrays with at least two dimensions.",
@@ -235,7 +237,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/atleast_1d/",
+    "href": "/docs/api/atleast-1d/",
     "label": "we.atleast_1d"
   },
   "provenance_label": "Adapted from NumPy docs",

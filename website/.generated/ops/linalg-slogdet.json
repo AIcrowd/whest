@@ -379,6 +379,7 @@
     }
   ],
   "canonical_name": "linalg.slogdet",
+  "canonical_path": "linalg/slogdet",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -393,11 +394,12 @@
     "output": "(-1, 0.69314718055994529) # may vary\n\n-2.0\n\n(3, 2, 2)\n\n(array([-1., -1., -1.]), array([ 0.69314718,  1.09861229,  2.07944154]))\n\narray([-2., -3., -8.])\n\n0.0\n\n(1, -1151.2925464970228)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-slogdet/",
+  "href": "/docs/api/linalg/slogdet/",
+  "legacy_href": "/docs/api/ops/linalg-slogdet/",
   "module": "numpy.linalg",
   "name": "linalg.slogdet",
   "next": {
-    "href": "/docs/api/ops/linalg-solve/",
+    "href": "/docs/api/linalg/solve/",
     "label": "we.linalg.solve"
   },
   "notes": "Sign + log determinant. Cost: $n^3$.",
@@ -416,7 +418,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-qr/",
+    "href": "/docs/api/linalg/qr/",
     "label": "we.linalg.qr"
   },
   "provenance_label": "Adapted from NumPy docs",

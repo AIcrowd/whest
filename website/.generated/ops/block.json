@@ -915,6 +915,7 @@
     }
   ],
   "canonical_name": "block",
+  "canonical_path": "block",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -929,11 +930,12 @@
     "output": "array([[2., 0., 0., 0., 0.],\n       [0., 2., 0., 0., 0.],\n       [1., 1., 3., 0., 0.],\n       [1., 1., 0., 3., 0.],\n       [1., 1., 0., 0., 3.]])\n\narray([1, 2, 3])\n\narray([ 1,  2,  3,  4,  5,  6, 10])\n\narray([[1, 1, 2, 2],\n       [1, 1, 2, 2]])\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\narray([[1, 1],\n       [1, 1],\n       [2, 2],\n       [2, 2]])\n\narray([0])\n\narray([1])\n\narray([[0]])\n\narray([[1]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/block/",
+  "href": "/docs/api/block/",
+  "legacy_href": "/docs/api/ops/block/",
   "module": "numpy",
   "name": "block",
   "next": {
-    "href": "/docs/api/ops/bmat/",
+    "href": "/docs/api/bmat/",
     "label": "we.bmat"
   },
   "notes": "Assemble ndarray from nested list of blocks. Cost: numel(output).",
@@ -963,7 +965,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/blackman/",
+    "href": "/docs/api/blackman/",
     "label": "we.blackman"
   },
   "provenance_label": "Adapted from NumPy docs",

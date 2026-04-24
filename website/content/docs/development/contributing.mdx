@@ -24,9 +24,12 @@ This repository contains three Python packages plus docs and Docker assets:
 | `whest-server/tests/` | Server unit tests |
 | `website/content/docs/` | Docs source for the published site |
 | `website/public/ops.json` | Generated slim API operation index consumed by `/docs/api` |
-| `website/public/api-data/ops/*.json` | Generated per-operation detail payloads for standalone op pages |
-| `website/.generated/op-doc-imports.ts` | Generated static import map used by `/docs/api/ops/<slug>/` |
-| `scripts/generate_api_docs.py` | Regenerates the API index, per-op payloads, and import map |
+| `website/public/api-data/ops/*.json` | Generated per-operation detail payloads for canonical operation pages |
+| `website/.generated/public-api-routes.json` | Generated canonical route manifest for `/docs/api/...` pages |
+| `website/.generated/op-doc-imports.ts` | Generated static import map for operation docs |
+| `website/.generated/symbol-doc-imports.ts` | Generated static import map for public helper and object docs |
+| `website/.generated/public-api-symbols.json` | Generated manifest of non-registry public API pages |
+| `scripts/generate_api_docs.py` | Regenerates API route manifests, per-operation payloads, and public symbol docs |
 | `docker/` | Local client-server and hardened evaluation images |
 
 ## Initial setup
@@ -137,8 +140,10 @@ using containers.
 ## Generated documentation
 
 Do not hand-edit `website/public/ops.json`,
-`website/public/api-data/ops/*.json`, or `website/.generated/op-doc-imports.ts`.
-The interactive API reference and standalone op pages consume those generated
+`website/public/api-data/ops/*.json`, `website/.generated/public-api-routes.json`,
+`website/.generated/op-doc-imports.ts`, `website/.generated/symbol-doc-imports.ts`,
+or `website/.generated/public-api-symbols.json`. The interactive API reference,
+canonical API pages, and legacy redirect routes consume those generated
 artifacts directly.
 
 Instead, update `scripts/generate_api_docs.py`, the relevant source docstrings,

@@ -1,0 +1,187 @@
+{
+  "aliases": [
+    "flops.pointwise_cost",
+    "we.flops.pointwise_cost",
+    "whest.flops.pointwise_cost",
+    "pointwise_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost of a pointwise operation."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Operation name used for weight lookup, e.g. "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"exp\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": " or "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"add\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "str",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Operation name used for weight lookup, e.g. "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"exp\""
+                },
+                {
+                  "kind": "text",
+                  "text": " or "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"add\""
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "op_name",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Output shape of the pointwise operation."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Output shape of the pointwise operation."
+                }
+              ],
+              "name": "shape",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If provided, only unique elements are counted analytically before the\noperation weight is applied."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "SymmetryInfo or None, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If provided, only unique elements are counted analytically before the\noperation weight is applied."
+                }
+              ],
+              "name": "symmetry_info",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    }
+  ],
+  "canonical_name": "flops.pointwise_cost",
+  "canonical_path": "flops/pointwise-cost",
+  "display_name": "we.flops.pointwise_cost",
+  "href": "/docs/api/flops/pointwise-cost/",
+  "import_path": "we.flops.pointwise_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.flops",
+  "name": "flops.pointwise_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.flops.pointwise_cost(op_name: 'str', *, shape: 'tuple[int, ...]', symmetry_info: 'SymmetryInfo | None' = None) -> 'int'",
+  "slug": "flops-pointwise-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/flops.py#L185",
+  "status_note": "",
+  "summary": "Weighted FLOP cost of a pointwise operation.",
+  "upstream_source_url": ""
+}

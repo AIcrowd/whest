@@ -432,6 +432,7 @@
     }
   ],
   "canonical_name": "linalg.diagonal",
+  "canonical_path": "linalg/diagonal",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -446,11 +447,12 @@
     "output": "array([[0, 1],\n       [2, 3]])\n\narray([0, 3])\n\narray([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])\n\narray([[0, 3],\n       [4, 7]])\n\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n\narray([1, 5])\n\narray([2])\n\narray([3, 7])\n\narray([6])\n\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n\narray([2, 4, 6])\n\narray([6, 4, 2])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-diagonal/",
+  "href": "/docs/api/linalg/diagonal/",
+  "legacy_href": "/docs/api/ops/linalg-diagonal/",
   "module": "numpy.linalg",
   "name": "linalg.diagonal",
   "next": {
-    "href": "/docs/api/ops/linalg-eig/",
+    "href": "/docs/api/linalg/eig/",
     "label": "we.linalg.eig"
   },
   "notes": "View of diagonal \u2014 delegates to whest.diagonal. Cost: 0 FLOPs.",
@@ -479,7 +481,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-det/",
+    "href": "/docs/api/linalg/det/",
     "label": "we.linalg.det"
   },
   "provenance_label": "Adapted from NumPy docs",

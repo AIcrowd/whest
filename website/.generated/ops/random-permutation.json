@@ -304,6 +304,7 @@
     }
   ],
   "canonical_name": "random.permutation",
+  "canonical_path": "random/permutation",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -318,11 +319,12 @@
     "output": "array([1, 7, 4, 3, 0, 9, 2, 5, 8, 6]) # random\n\narray([15,  1,  9,  4, 12]) # random\n\narray([[6, 7, 8], # random\n       [0, 1, 2],\n       [3, 4, 5]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-permutation/",
+  "href": "/docs/api/random/permutation/",
+  "legacy_href": "/docs/api/ops/random-permutation/",
   "module": "numpy.random",
   "name": "random.permutation",
   "next": {
-    "href": "/docs/api/ops/random-poisson/",
+    "href": "/docs/api/random/poisson/",
     "label": "we.random.poisson"
   },
   "notes": "Shuffle; cost = n*ceil(log2(n)).",
@@ -340,7 +342,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-pareto/",
+    "href": "/docs/api/random/pareto/",
     "label": "we.random.pareto"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -379,5 +381,5 @@
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.random.permutation",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L208"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L264"
 }

@@ -881,6 +881,7 @@
     }
   ],
   "canonical_name": "fft.rfftn",
+  "canonical_path": "fft/rfftn",
   "category": "counted_custom",
   "cost_formula": "5(N/2) * ceil(log2(N))",
   "cost_formula_latex": "$5(N/2) \\cdot \\lceil\\log_2 N\\rceil$",
@@ -895,11 +896,12 @@
     "output": "array([[[8.+0.j,  0.+0.j], # may vary\n        [0.+0.j,  0.+0.j]],\n       [[0.+0.j,  0.+0.j],\n        [0.+0.j,  0.+0.j]]])\n\narray([[[4.+0.j,  0.+0.j], # may vary\n        [4.+0.j,  0.+0.j]],\n       [[0.+0.j,  0.+0.j],\n        [0.+0.j,  0.+0.j]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-rfftn/",
+  "href": "/docs/api/fft/rfftn/",
+  "legacy_href": "/docs/api/ops/fft-rfftn/",
   "module": "numpy.fft",
   "name": "fft.rfftn",
   "next": {
-    "href": "/docs/api/ops/fill_diagonal/",
+    "href": "/docs/api/fill-diagonal/",
     "label": "we.fill_diagonal"
   },
   "notes": "N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
@@ -985,7 +987,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-rfftfreq/",
+    "href": "/docs/api/fft/rfftfreq/",
     "label": "we.fft.rfftfreq"
   },
   "provenance_label": "Adapted from NumPy docs",

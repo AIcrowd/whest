@@ -670,6 +670,7 @@
     }
   ],
   "canonical_name": "apply_along_axis",
+  "canonical_path": "apply-along-axis",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -684,11 +685,12 @@
     "output": "array([4., 5., 6.])\n\narray([2.,  5.,  8.])\n\narray([[1, 7, 8],\n       [3, 4, 9],\n       [2, 5, 6]])\n\narray([[[1, 0, 0],\n        [0, 2, 0],\n        [0, 0, 3]],\n       [[4, 0, 0],\n        [0, 5, 0],\n        [0, 0, 6]],\n       [[7, 0, 0],\n        [0, 8, 0],\n        [0, 0, 9]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/apply_along_axis/",
+  "href": "/docs/api/apply-along-axis/",
+  "legacy_href": "/docs/api/ops/apply_along_axis/",
   "module": "numpy",
   "name": "apply_along_axis",
   "next": {
-    "href": "/docs/api/ops/apply_over_axes/",
+    "href": "/docs/api/apply-over-axes/",
     "label": "we.apply_over_axes"
   },
   "notes": "Apply function along axis. Cost: numel(output). Inner function costs tracked separately.",
@@ -733,7 +735,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/append/",
+    "href": "/docs/api/append/",
     "label": "we.append"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -480,6 +480,7 @@
     }
   ],
   "canonical_name": "isfinite",
+  "canonical_path": "isfinite",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -501,11 +502,12 @@
     "output": "True\n\nTrue\n\nFalse\n\nFalse\n\nFalse\n\narray([False,  True, False])\n\narray([0, 1, 0])\n\narray([0, 1, 0])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isfinite/",
+  "href": "/docs/api/isfinite/",
+  "legacy_href": "/docs/api/ops/isfinite/",
   "module": "numpy",
   "name": "isfinite",
   "next": {
-    "href": "/docs/api/ops/isfortran/",
+    "href": "/docs/api/isfortran/",
     "label": "we.isfortran"
   },
   "notes": "Test for finite values element-wise. Cost: numel(input).",
@@ -554,7 +556,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isdtype/",
+    "href": "/docs/api/isdtype/",
     "label": "we.isdtype"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -616,7 +618,7 @@
       "unresolved": false
     }
   ],
-  "signature": "we.isfinite(*args, **kwargs)",
+  "signature": "we.isfinite(x, **kwargs)",
   "slug": "isfinite",
   "summary": "Test element-wise for finiteness (not infinity and not Not a Number).",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

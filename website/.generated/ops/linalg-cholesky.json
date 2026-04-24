@@ -636,6 +636,7 @@
     }
   ],
   "canonical_name": "linalg.cholesky",
+  "canonical_path": "linalg/cholesky",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -650,11 +651,12 @@
     "output": "array([[ 1.+0.j, -0.-2.j],\n       [ 0.+2.j,  5.+0.j]])\n\narray([[1.+0.j, 0.+0.j],\n       [0.+2.j, 1.+0.j]])\n\narray([[1.+0.j, 0.-2.j],\n       [0.+2.j, 5.+0.j]])\n\narray([[1.+0.j, 0.+0.j],\n       [0.+2.j, 1.+0.j]])\n\nmatrix([[ 1.+0.j,  0.+0.j],\n        [ 0.+2.j,  1.+0.j]])\n\narray([[1.-0.j, 0.-2.j],\n       [0.-0.j, 1.-0.j]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-cholesky/",
+  "href": "/docs/api/linalg/cholesky/",
+  "legacy_href": "/docs/api/ops/linalg-cholesky/",
   "module": "numpy.linalg",
   "name": "linalg.cholesky",
   "next": {
-    "href": "/docs/api/ops/linalg-cond/",
+    "href": "/docs/api/linalg/cond/",
     "label": "we.linalg.cond"
   },
   "notes": "Cholesky decomposition. Cost: $n^3$.",
@@ -689,7 +691,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/lexsort/",
+    "href": "/docs/api/lexsort/",
     "label": "we.lexsort"
   },
   "provenance_label": "Adapted from NumPy docs",

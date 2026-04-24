@@ -834,6 +834,7 @@
     }
   ],
   "canonical_name": "array",
+  "canonical_path": "array",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -853,11 +854,12 @@
     "output": "array([1, 2, 3])\n\narray([ 1.,  2.,  3.])\n\narray([[1, 2],\n       [3, 4]])\n\narray([[1, 2, 3]])\n\narray([ 1.+0.j,  2.+0.j,  3.+0.j])\n\narray([1, 3], dtype=int32)\n\narray([[1, 2],\n       [3, 4]])\n\nmatrix([[1, 2],\n        [3, 4]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/array/",
+  "href": "/docs/api/array/",
+  "legacy_href": "/docs/api/ops/array/",
   "module": "numpy",
   "name": "array",
   "next": {
-    "href": "/docs/api/ops/array_equal/",
+    "href": "/docs/api/array-equal/",
     "label": "we.array_equal"
   },
   "notes": "Create array from data. Cost: numel(input).",
@@ -954,7 +956,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/argwhere/",
+    "href": "/docs/api/argwhere/",
     "label": "we.argwhere"
   },
   "provenance_label": "Adapted from NumPy docs",

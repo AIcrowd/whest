@@ -1,0 +1,516 @@
+{
+  "aliases": [
+    "symmetrize",
+    "we.symmetrize",
+    "whest.symmetrize"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Project an array onto the invariant subspace of a permutation group."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This applies Reynolds symmetrization:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "R_G(T) = (1 / |G|) * sum_{g in G} g \u00b7 T"
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Input array to project."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "array_like",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Input array to project."
+                }
+              ],
+              "name": "data",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Symmetry group to average over. If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "group.axes"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " is "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "None"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ", axes are\ninterpreted as "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "tuple(range(group.degree))"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "PermutationGroup",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Symmetry group to average over. If "
+                },
+                {
+                  "kind": "code",
+                  "text": "group.axes"
+                },
+                {
+                  "kind": "text",
+                  "text": " is "
+                },
+                {
+                  "kind": "code",
+                  "text": "None"
+                },
+                {
+                  "kind": "text",
+                  "text": ", axes are\ninterpreted as "
+                },
+                {
+                  "kind": "code",
+                  "text": "tuple(range(group.degree))"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "group",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The projected tensor, validated and wrapped as a "
+                    },
+                    {
+                      "display_text": "SymmetricTensor",
+                      "explicit_title": false,
+                      "external_url": "",
+                      "href": "/docs/api/symmetric-tensor/",
+                      "kind": "role_reference",
+                      "original_target": "SymmetricTensor",
+                      "role": "class",
+                      "suppress_link": false,
+                      "target": "SymmetricTensor",
+                      "unresolved": false
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "SymmetricTensor",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The projected tensor, validated and wrapped as a "
+                },
+                {
+                  "display_text": "SymmetricTensor",
+                  "explicit_title": false,
+                  "external_url": "",
+                  "href": "/docs/api/symmetric-tensor/",
+                  "kind": "role_reference",
+                  "original_target": "SymmetricTensor",
+                  "role": "class",
+                  "suppress_link": false,
+                  "target": "SymmetricTensor",
+                  "unresolved": false
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "data"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " has incompatible dimensions for "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "group"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " axes or if the\nprojected result cannot be validated as symmetric for "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "group"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "SymmetryError",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If "
+                },
+                {
+                  "kind": "code",
+                  "text": "data"
+                },
+                {
+                  "kind": "text",
+                  "text": " has incompatible dimensions for "
+                },
+                {
+                  "kind": "code",
+                  "text": "group"
+                },
+                {
+                  "kind": "text",
+                  "text": " axes or if the\nprojected result cannot be validated as symmetric for "
+                },
+                {
+                  "kind": "code",
+                  "text": "group"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Raises",
+          "type": "field_list"
+        }
+      ],
+      "title": "Raises"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "symmetrize"
+            },
+            {
+              "kind": "text",
+              "text": " performs exact Reynolds averaging internally and then delegates\nto "
+            },
+            {
+              "display_text": "as_symmetric",
+              "explicit_title": false,
+              "external_url": "",
+              "href": "/docs/api/as-symmetric/",
+              "kind": "role_reference",
+              "original_target": "as_symmetric",
+              "role": "func",
+              "suppress_link": false,
+              "target": "as_symmetric",
+              "unresolved": false
+            },
+            {
+              "kind": "text",
+              "text": " so the result participates in downstream symmetry\ntracking and validation in the usual way."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Estimated FLOP cost is approximately:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "|G| * n_elem + n_elem"
+            },
+            {
+              "kind": "text",
+              "text": " for projection, plus validation from\n"
+            },
+            {
+              "kind": "code",
+              "text": "as_symmetric"
+            },
+            {
+              "kind": "text",
+              "text": ":"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "items": [
+            {
+              "blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "code",
+                      "text": "|G|"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " transposed add passes over "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "n_elem"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " elements"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ]
+            },
+            {
+              "blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "one final scaling pass"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ]
+            },
+            {
+              "blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "symmetry checks inside validation"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ]
+            }
+          ],
+          "ordered": false,
+          "type": "list"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "where "
+            },
+            {
+              "kind": "code",
+              "text": "|G|"
+            },
+            {
+              "kind": "text",
+              "text": " is the group order and "
+            },
+            {
+              "kind": "code",
+              "text": "n_elem = data.size"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The canonical pattern for generating random data with symmetry is:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.symmetric(shape, symmetry_group, distribution=...).html",
+              "href": "",
+              "kind": "link",
+              "target": "random.symmetric(shape, symmetry_group, distribution=...)",
+              "text": "we.random.symmetric(shape, symmetry_group, distribution=...)"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import whest as we"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "data = we.random.randn(4, 4)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "S = we.symmetrize(data, we.PermutationGroup.symmetric(2, axes=(0, 1)))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "S.is_symmetric((0, 1))"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "symmetrize",
+  "canonical_path": "symmetrize",
+  "display_name": "we.symmetrize",
+  "href": "/docs/api/symmetrize/",
+  "import_path": "we.symmetrize",
+  "kind": "function",
+  "members": [],
+  "module": "whest._symmetric",
+  "name": "symmetrize",
+  "related_guides": [],
+  "signature": "we.symmetrize(data: 'np.ndarray', group: 'PermutationGroup') -> 'SymmetricTensor'",
+  "slug": "symmetrize",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_symmetric.py#L117",
+  "status_note": "",
+  "summary": "Project an array onto the invariant subspace of a permutation group.",
+  "upstream_source_url": ""
+}

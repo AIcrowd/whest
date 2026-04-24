@@ -242,6 +242,7 @@
     }
   ],
   "canonical_name": "random.standard_exponential",
+  "canonical_path": "random/standard-exponential",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -256,11 +257,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-standard_exponential/",
+  "href": "/docs/api/random/standard-exponential/",
+  "legacy_href": "/docs/api/ops/random-standard_exponential/",
   "module": "numpy.random",
   "name": "random.standard_exponential",
   "next": {
-    "href": "/docs/api/ops/random-standard_gamma/",
+    "href": "/docs/api/random/standard-gamma/",
     "label": "we.random.standard_gamma"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -278,7 +280,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_cauchy/",
+    "href": "/docs/api/random/standard-cauchy/",
     "label": "we.random.standard_cauchy"
   },
   "provenance_label": "Adapted from NumPy docs",

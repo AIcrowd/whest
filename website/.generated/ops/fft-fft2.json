@@ -847,6 +847,7 @@
     }
   ],
   "canonical_name": "fft.fft2",
+  "canonical_path": "fft/fft2",
   "category": "counted_custom",
   "cost_formula": "5N * ceil(log2(N))",
   "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
@@ -861,11 +862,12 @@
     "output": "array([[ 50.  +0.j        ,   0.  +0.j        ,   0.  +0.j        , # may vary\n          0.  +0.j        ,   0.  +0.j        ],\n       [-12.5+17.20477401j,   0.  +0.j        ,   0.  +0.j        ,\n          0.  +0.j        ,   0.  +0.j        ],\n       [-12.5 +4.0614962j ,   0.  +0.j        ,   0.  +0.j        ,\n          0.  +0.j        ,   0.  +0.j        ],\n       [-12.5 -4.0614962j ,   0.  +0.j        ,   0.  +0.j        ,\n          0.  +0.j        ,   0.  +0.j        ],\n       [-12.5-17.20477401j,   0.  +0.j        ,   0.  +0.j        ,\n          0.  +0.j        ,   0.  +0.j        ]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-fft2/",
+  "href": "/docs/api/fft/fft2/",
+  "legacy_href": "/docs/api/ops/fft-fft2/",
   "module": "numpy.fft",
   "name": "fft.fft2",
   "next": {
-    "href": "/docs/api/ops/fft-fftfreq/",
+    "href": "/docs/api/fft/fftfreq/",
     "label": "we.fft.fftfreq"
   },
   "notes": "2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
@@ -953,7 +955,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-fft/",
+    "href": "/docs/api/fft/fft/",
     "label": "we.fft.fft"
   },
   "provenance_label": "Adapted from NumPy docs",

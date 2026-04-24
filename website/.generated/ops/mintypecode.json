@@ -264,6 +264,7 @@
     }
   ],
   "canonical_name": "mintypecode",
+  "canonical_path": "mintypecode",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -278,11 +279,12 @@
     "output": "'d'\n\n'D'\n\n'G'",
     "source": "derived"
   },
-  "href": "/docs/api/ops/mintypecode/",
+  "href": "/docs/api/mintypecode/",
+  "legacy_href": "/docs/api/ops/mintypecode/",
   "module": "numpy",
   "name": "mintypecode",
   "next": {
-    "href": "/docs/api/ops/mod/",
+    "href": "/docs/api/mod/",
     "label": "we.mod"
   },
   "notes": "Return minimum data type character that can satisfy all given types.",
@@ -315,7 +317,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/minimum/",
+    "href": "/docs/api/minimum/",
     "label": "we.minimum"
   },
   "provenance_label": "Adapted from NumPy docs",

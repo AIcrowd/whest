@@ -262,6 +262,7 @@
     }
   ],
   "canonical_name": "fft.fftshift",
+  "canonical_path": "fft/fftshift",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -276,11 +277,12 @@
     "output": "array([ 0.,  1.,  2., ..., -3., -2., -1.])\n\narray([-5., -4., -3., -2., -1.,  0.,  1.,  2.,  3.,  4.])\n\narray([[ 0.,  1.,  2.],\n       [ 3.,  4., -4.],\n       [-3., -2., -1.]])\n\narray([[ 2.,  0.,  1.],\n       [-4.,  3.,  4.],\n       [-1., -3., -2.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-fftshift/",
+  "href": "/docs/api/fft/fftshift/",
+  "legacy_href": "/docs/api/ops/fft-fftshift/",
   "module": "numpy.fft",
   "name": "fft.fftshift",
   "next": {
-    "href": "/docs/api/ops/fft-hfft/",
+    "href": "/docs/api/fft/hfft/",
     "label": "we.fft.hfft"
   },
   "notes": "Shift zero-frequency component to center. No arithmetic; index reordering only.",
@@ -303,7 +305,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-fftn/",
+    "href": "/docs/api/fft/fftn/",
     "label": "we.fft.fftn"
   },
   "provenance_label": "Adapted from NumPy docs",

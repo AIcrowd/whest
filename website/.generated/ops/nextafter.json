@@ -403,6 +403,7 @@
     }
   ],
   "canonical_name": "nextafter",
+  "canonical_path": "nextafter",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -424,11 +425,12 @@
     "output": "True\n\narray([ True,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nextafter/",
+  "href": "/docs/api/nextafter/",
+  "legacy_href": "/docs/api/ops/nextafter/",
   "module": "numpy",
   "name": "nextafter",
   "next": {
-    "href": "/docs/api/ops/nonzero/",
+    "href": "/docs/api/nonzero/",
     "label": "we.nonzero"
   },
   "notes": "Return next float after x1 toward x2 element-wise.",
@@ -483,7 +485,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/negative/",
+    "href": "/docs/api/negative/",
     "label": "we.negative"
   },
   "provenance_label": "Adapted from NumPy docs",

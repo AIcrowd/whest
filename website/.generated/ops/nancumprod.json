@@ -353,6 +353,7 @@
     }
   ],
   "canonical_name": "nancumprod",
+  "canonical_path": "nancumprod",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -367,11 +368,12 @@
     "output": "array([1])\n\narray([1])\n\narray([1.,  1.])\n\narray([1.,  2.,  6.,  6.])\n\narray([[1.,  2.],\n       [3.,  2.]])\n\narray([[1.,  2.],\n       [3.,  3.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nancumprod/",
+  "href": "/docs/api/nancumprod/",
+  "legacy_href": "/docs/api/ops/nancumprod/",
   "module": "numpy",
   "name": "nancumprod",
   "next": {
-    "href": "/docs/api/ops/nancumsum/",
+    "href": "/docs/api/nancumsum/",
     "label": "we.nancumsum"
   },
   "notes": "Cumulative product ignoring NaNs.",
@@ -415,7 +417,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nanargmin/",
+    "href": "/docs/api/nanargmin/",
     "label": "we.nanargmin"
   },
   "provenance_label": "Adapted from NumPy docs",

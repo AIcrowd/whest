@@ -672,6 +672,7 @@
     }
   ],
   "canonical_name": "in1d",
+  "canonical_path": "in1d",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -686,11 +687,12 @@
     "output": "array([ True, False,  True, False,  True])\n\narray([0, 2, 0])\n\narray([False,  True, False,  True, False])\n\narray([1, 5])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/in1d/",
+  "href": "/docs/api/in1d/",
+  "legacy_href": "/docs/api/ops/in1d/",
   "module": "numpy",
   "name": "in1d",
   "next": {
-    "href": "/docs/api/ops/indices/",
+    "href": "/docs/api/indices/",
     "label": "we.indices"
   },
   "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)). Removed in numpy 2.4; use `isin` instead.",
@@ -759,7 +761,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/imag/",
+    "href": "/docs/api/imag/",
     "label": "we.imag"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -538,6 +538,7 @@
     }
   ],
   "canonical_name": "maximum",
+  "canonical_path": "maximum",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -559,11 +560,12 @@
     "output": "array([2, 5, 4])\n\narray([[ 1. ,  2. ],\n       [ 0.5,  2. ]])\n\narray([nan, nan, nan])\n\ninf",
     "source": "derived"
   },
-  "href": "/docs/api/ops/maximum/",
+  "href": "/docs/api/maximum/",
+  "legacy_href": "/docs/api/ops/maximum/",
   "module": "numpy",
   "name": "maximum",
   "next": {
-    "href": "/docs/api/ops/may_share_memory/",
+    "href": "/docs/api/may-share-memory/",
     "label": "we.may_share_memory"
   },
   "notes": "Element-wise maximum (propagates NaN).",
@@ -613,7 +615,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/max/",
+    "href": "/docs/api/max/",
     "label": "we.max"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -732,6 +732,7 @@
     }
   ],
   "canonical_name": "power",
+  "canonical_path": "power",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -753,11 +754,12 @@
     "output": "[0, 1, 2, 3, 4, 5]\n\narray([  0,   1,   8,  27,  64, 125])\n\narray([  0.,   1.,   8.,  27.,  16.,   5.])\n\narray([[1, 2, 3, 3, 2, 1],\n       [1, 2, 3, 3, 2, 1]])\n\narray([[ 0,  1,  8, 27, 16,  5],\n       [ 0,  1,  8, 27, 16,  5]])\n\narray([ 0,  1,  8, 27, 16,  5])\n\narray([nan, nan])\n\narray([-1.83697020e-16-1.j, -1.46957616e-15-8.j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/power/",
+  "href": "/docs/api/power/",
+  "legacy_href": "/docs/api/ops/power/",
   "module": "numpy",
   "name": "power",
   "next": {
-    "href": "/docs/api/ops/prod/",
+    "href": "/docs/api/prod/",
     "label": "we.prod"
   },
   "notes": "Element-wise exponentiation x**y.",
@@ -812,7 +814,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/positive/",
+    "href": "/docs/api/positive/",
     "label": "we.positive"
   },
   "provenance_label": "Adapted from NumPy docs",

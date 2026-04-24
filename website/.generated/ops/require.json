@@ -483,6 +483,7 @@
     }
   ],
   "canonical_name": "require",
+  "canonical_path": "require",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -504,11 +505,12 @@
     "output": "C_CONTIGUOUS : True\n  F_CONTIGUOUS : False\n  OWNDATA : False\n  WRITEABLE : True\n  ALIGNED : True\n  WRITEBACKIFCOPY : False\n\nC_CONTIGUOUS : False\n  F_CONTIGUOUS : True\n  OWNDATA : True\n  WRITEABLE : True\n  ALIGNED : True\n  WRITEBACKIFCOPY : False",
     "source": "derived"
   },
-  "href": "/docs/api/ops/require/",
+  "href": "/docs/api/require/",
+  "legacy_href": "/docs/api/ops/require/",
   "module": "numpy",
   "name": "require",
   "next": {
-    "href": "/docs/api/ops/reshape/",
+    "href": "/docs/api/reshape/",
     "label": "we.reshape"
   },
   "notes": "Return array that satisfies requirements.",
@@ -549,11 +551,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -562,7 +564,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/repeat/",
+    "href": "/docs/api/repeat/",
     "label": "we.repeat"
   },
   "provenance_label": "Adapted from NumPy docs",

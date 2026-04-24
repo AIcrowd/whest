@@ -951,6 +951,7 @@
     }
   ],
   "canonical_name": "cov",
+  "canonical_path": "cov",
   "category": "counted_custom",
   "cost_formula": "n^2 * m",
   "cost_formula_latex": "$n^2 \\cdot m$",
@@ -965,11 +966,12 @@
     "output": "array([[0, 1, 2],\n       [2, 1, 0]])\n\narray([[ 1., -1.],\n       [-1.,  1.]])\n\narray([[11.71      , -4.286     ], # may vary\n       [-4.286     ,  2.144133]])\n\narray([[11.71      , -4.286     ], # may vary\n       [-4.286     ,  2.144133]])\n\narray(11.71)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/cov/",
+  "href": "/docs/api/cov/",
+  "legacy_href": "/docs/api/ops/cov/",
   "module": "numpy",
   "name": "cov",
   "next": {
-    "href": "/docs/api/ops/cross/",
+    "href": "/docs/api/cross/",
     "label": "we.cross"
   },
   "notes": "Covariance matrix.",
@@ -1058,7 +1060,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/count_nonzero/",
+    "href": "/docs/api/count-nonzero/",
     "label": "we.count_nonzero"
   },
   "provenance_label": "Adapted from NumPy docs",

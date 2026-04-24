@@ -508,6 +508,7 @@
     }
   ],
   "canonical_name": "ldexp",
+  "canonical_path": "ldexp",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -529,11 +530,12 @@
     "output": "array([ 5., 10., 20., 40.], dtype=float16)\n\narray([ 0.,  1.,  2.,  3.,  4.,  5.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ldexp/",
+  "href": "/docs/api/ldexp/",
+  "legacy_href": "/docs/api/ops/ldexp/",
   "module": "numpy",
   "name": "ldexp",
   "next": {
-    "href": "/docs/api/ops/left_shift/",
+    "href": "/docs/api/left-shift/",
     "label": "we.left_shift"
   },
   "notes": "Return x1 * 2**x2 element-wise.",
@@ -591,7 +593,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/lcm/",
+    "href": "/docs/api/lcm/",
     "label": "we.lcm"
   },
   "provenance_label": "Adapted from NumPy docs",

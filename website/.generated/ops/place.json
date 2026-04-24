@@ -370,6 +370,7 @@
     }
   ],
   "canonical_name": "place",
+  "canonical_path": "place",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -384,11 +385,12 @@
     "output": "array([[ 0,  1,  2],\n       [44, 55, 44]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/place/",
+  "href": "/docs/api/place/",
+  "legacy_href": "/docs/api/ops/place/",
   "module": "numpy",
   "name": "place",
   "next": {
-    "href": "/docs/api/ops/poly/",
+    "href": "/docs/api/poly/",
     "label": "we.poly"
   },
   "notes": "Change elements satisfying condition. Cost: numel(input).",
@@ -421,7 +423,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/piecewise/",
+    "href": "/docs/api/piecewise/",
     "label": "we.piecewise"
   },
   "provenance_label": "Adapted from NumPy docs",

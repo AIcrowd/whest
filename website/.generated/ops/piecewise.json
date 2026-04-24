@@ -718,6 +718,7 @@
     }
   ],
   "canonical_name": "piecewise",
+  "canonical_path": "piecewise",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -732,11 +733,12 @@
     "output": "array([-1., -1., -1.,  1.,  1.,  1.])\n\narray([2.5,  1.5,  0.5,  0.5,  1.5,  2.5])\n\narray(2)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/piecewise/",
+  "href": "/docs/api/piecewise/",
+  "legacy_href": "/docs/api/ops/piecewise/",
   "module": "numpy",
   "name": "piecewise",
   "next": {
-    "href": "/docs/api/ops/place/",
+    "href": "/docs/api/place/",
     "label": "we.place"
   },
   "notes": "Piecewise function. Cost: numel(input).",
@@ -802,7 +804,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/permute_dims/",
+    "href": "/docs/api/permute-dims/",
     "label": "we.permute_dims"
   },
   "provenance_label": "Adapted from NumPy docs",

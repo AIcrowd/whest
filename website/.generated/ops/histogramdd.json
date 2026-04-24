@@ -467,6 +467,7 @@
     }
   ],
   "canonical_name": "histogramdd",
+  "canonical_path": "histogramdd",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -481,11 +482,12 @@
     "output": "((5, 8, 4), 6, 9, 5)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/histogramdd/",
+  "href": "/docs/api/histogramdd/",
+  "legacy_href": "/docs/api/ops/histogramdd/",
   "module": "numpy",
   "name": "histogramdd",
   "next": {
-    "href": "/docs/api/ops/hsplit/",
+    "href": "/docs/api/hsplit/",
     "label": "we.hsplit"
   },
   "notes": "ND binning; cost = n*sum(ceil(log2(b_i))).",
@@ -553,7 +555,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/histogram_bin_edges/",
+    "href": "/docs/api/histogram-bin-edges/",
     "label": "we.histogram_bin_edges"
   },
   "provenance_label": "Adapted from NumPy docs",

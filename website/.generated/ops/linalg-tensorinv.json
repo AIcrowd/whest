@@ -372,6 +372,7 @@
     }
   ],
   "canonical_name": "linalg.tensorinv",
+  "canonical_path": "linalg/tensorinv",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -386,11 +387,12 @@
     "output": "(8, 3, 4, 6)\n\nTrue\n\n(8, 3, 24)\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-tensorinv/",
+  "href": "/docs/api/linalg/tensorinv/",
+  "legacy_href": "/docs/api/ops/linalg-tensorinv/",
   "module": "numpy.linalg",
   "name": "linalg.tensorinv",
   "next": {
-    "href": "/docs/api/ops/linalg-tensorsolve/",
+    "href": "/docs/api/linalg/tensorsolve/",
     "label": "we.linalg.tensorsolve"
   },
   "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv).",
@@ -415,7 +417,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-tensordot/",
+    "href": "/docs/api/linalg/tensordot/",
     "label": "we.linalg.tensordot"
   },
   "provenance_label": "Adapted from NumPy docs",

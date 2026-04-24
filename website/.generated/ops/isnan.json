@@ -400,6 +400,7 @@
     }
   ],
   "canonical_name": "isnan",
+  "canonical_path": "isnan",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -421,11 +422,12 @@
     "output": "True\n\nFalse\n\narray([ True, False, False])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isnan/",
+  "href": "/docs/api/isnan/",
+  "legacy_href": "/docs/api/ops/isnan/",
   "module": "numpy",
   "name": "isnan",
   "next": {
-    "href": "/docs/api/ops/isneginf/",
+    "href": "/docs/api/isneginf/",
     "label": "we.isneginf"
   },
   "notes": "Test for NaN element-wise. Cost: numel(input).",
@@ -473,7 +475,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isinf/",
+    "href": "/docs/api/isinf/",
     "label": "we.isinf"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -545,7 +547,7 @@
       "unresolved": false
     }
   ],
-  "signature": "we.isnan(*args, **kwargs)",
+  "signature": "we.isnan(x, **kwargs)",
   "slug": "isnan",
   "summary": "Test element-wise for NaN and return result as a boolean array.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",

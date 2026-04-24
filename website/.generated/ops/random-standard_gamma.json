@@ -461,6 +461,7 @@
     }
   ],
   "canonical_name": "random.standard_gamma",
+  "canonical_path": "random/standard-gamma",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -484,11 +485,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-standard_gamma/",
+  "href": "/docs/api/random/standard-gamma/",
+  "legacy_href": "/docs/api/ops/random-standard_gamma/",
   "module": "numpy.random",
   "name": "random.standard_gamma",
   "next": {
-    "href": "/docs/api/ops/random-standard_normal/",
+    "href": "/docs/api/random/standard-normal/",
     "label": "we.random.standard_normal"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -519,7 +521,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_exponential/",
+    "href": "/docs/api/random/standard-exponential/",
     "label": "we.random.standard_exponential"
   },
   "provenance_label": "Adapted from NumPy docs",

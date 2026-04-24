@@ -235,6 +235,7 @@
     }
   ],
   "canonical_name": "linalg.svdvals",
+  "canonical_path": "linalg/svdvals",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -249,11 +250,12 @@
     "output": "array([146.68862757,   5.57510612,   0.60393245])\n\narray([8.38434191e+00, 1.64402274e+00, 2.31534378e-16])\n\n2",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-svdvals/",
+  "href": "/docs/api/linalg/svdvals/",
+  "legacy_href": "/docs/api/ops/linalg-svdvals/",
   "module": "numpy.linalg",
   "name": "linalg.svdvals",
   "next": {
-    "href": "/docs/api/ops/linalg-tensordot/",
+    "href": "/docs/api/linalg/tensordot/",
     "label": "we.linalg.tensordot"
   },
   "notes": "Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch).",
@@ -271,7 +273,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-svd/",
+    "href": "/docs/api/linalg/svd/",
     "label": "we.linalg.svd"
   },
   "provenance_label": "Adapted from NumPy docs",

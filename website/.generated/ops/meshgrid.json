@@ -750,6 +750,7 @@
     }
   ],
   "canonical_name": "meshgrid",
+  "canonical_path": "meshgrid",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -771,11 +772,12 @@
     "output": "array([[0. , 0.5, 1. ],\n       [0. , 0.5, 1. ]])\n\narray([[0.,  0.,  0.],\n       [1.,  1.,  1.]])\n\narray([[0. ,  0.5,  1. ]])\n\narray([[0.],\n       [1.]])\n\n((101, 101), (101, 101), (101, 101))\n\n((1, 101), (101, 1), (101, 101))\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/meshgrid/",
+  "href": "/docs/api/meshgrid/",
+  "legacy_href": "/docs/api/ops/meshgrid/",
   "module": "numpy",
   "name": "meshgrid",
   "next": {
-    "href": "/docs/api/ops/min/",
+    "href": "/docs/api/min/",
     "label": "we.min"
   },
   "notes": "Coordinate matrices from coordinate vectors. Cost: numel(output).",
@@ -830,7 +832,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/median/",
+    "href": "/docs/api/median/",
     "label": "we.median"
   },
   "provenance_label": "Adapted from NumPy docs",

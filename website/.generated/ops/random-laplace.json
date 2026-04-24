@@ -497,6 +497,7 @@
     }
   ],
   "canonical_name": "random.laplace",
+  "canonical_path": "random/laplace",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -528,11 +529,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-laplace/",
+  "href": "/docs/api/random/laplace/",
+  "legacy_href": "/docs/api/ops/random-laplace/",
   "module": "numpy.random",
   "name": "random.laplace",
   "next": {
-    "href": "/docs/api/ops/random-logistic/",
+    "href": "/docs/api/random/logistic/",
     "label": "we.random.logistic"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -570,7 +572,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-hypergeometric/",
+    "href": "/docs/api/random/hypergeometric/",
     "label": "we.random.hypergeometric"
   },
   "provenance_label": "Adapted from NumPy docs",

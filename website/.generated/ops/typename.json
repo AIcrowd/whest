@@ -234,6 +234,7 @@
     }
   ],
   "canonical_name": "typename",
+  "canonical_path": "typename",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -248,11 +249,12 @@
     "output": "S1  :  character\n?  :  bool\nB  :  unsigned char\nD  :  complex double precision\nG  :  complex long double precision\nF  :  complex single precision\nI  :  unsigned integer\nH  :  unsigned short\nL  :  unsigned long integer\nO  :  object\nQ  :  unsigned long long integer\nS  :  string\nU  :  unicode\nV  :  void\nb  :  signed char\nd  :  double precision\ng  :  long precision\nf  :  single precision\ni  :  integer\nh  :  short\nl  :  long integer\nq  :  long long integer",
     "source": "derived"
   },
-  "href": "/docs/api/ops/typename/",
+  "href": "/docs/api/typename/",
+  "legacy_href": "/docs/api/ops/typename/",
   "module": "numpy",
   "name": "typename",
   "next": {
-    "href": "/docs/api/ops/union1d/",
+    "href": "/docs/api/union1d/",
     "label": "we.union1d"
   },
   "notes": "Return description of given data type code.",
@@ -268,7 +270,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/trunc/",
+    "href": "/docs/api/trunc/",
     "label": "we.trunc"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -468,6 +468,7 @@
     }
   ],
   "canonical_name": "vstack",
+  "canonical_path": "vstack",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -482,11 +483,12 @@
     "output": "array([[1, 2, 3],\n       [4, 5, 6]])\n\narray([[1],\n       [2],\n       [3],\n       [4],\n       [5],\n       [6]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/vstack/",
+  "href": "/docs/api/vstack/",
+  "legacy_href": "/docs/api/ops/vstack/",
   "module": "numpy",
   "name": "vstack",
   "next": {
-    "href": "/docs/api/ops/where/",
+    "href": "/docs/api/where/",
     "label": "we.where"
   },
   "notes": "Stack arrays vertically. Cost: numel(output).",
@@ -524,7 +526,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/vsplit/",
+    "href": "/docs/api/vsplit/",
     "label": "we.vsplit"
   },
   "provenance_label": "Adapted from NumPy docs",

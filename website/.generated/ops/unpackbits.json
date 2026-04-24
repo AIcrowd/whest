@@ -448,6 +448,7 @@
     }
   ],
   "canonical_name": "unpackbits",
+  "canonical_path": "unpackbits",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -462,11 +463,12 @@
     "output": "array([[ 2],\n       [ 7],\n       [23]], dtype=uint8)\n\narray([[0, 0, 0, 0, 0, 0, 1, 0],\n       [0, 0, 0, 0, 0, 1, 1, 1],\n       [0, 0, 0, 1, 0, 1, 1, 1]], dtype=uint8)\n\narray([[0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0],\n       [0, 0, 0, 1, 0]], dtype=uint8)\n\narray([[0, 0, 0, 0, 0, 0, 1, 0],\n       [0, 0, 0, 0, 0, 1, 1, 1],\n       [0, 0, 0, 1, 0, 1, 1, 1],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0]], dtype=uint8)\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/unpackbits/",
+  "href": "/docs/api/unpackbits/",
+  "legacy_href": "/docs/api/ops/unpackbits/",
   "module": "numpy",
   "name": "unpackbits",
   "next": {
-    "href": "/docs/api/ops/unravel_index/",
+    "href": "/docs/api/unravel-index/",
     "label": "we.unravel_index"
   },
   "notes": "Unpack elements of array into bits. Cost: numel(input).",
@@ -514,7 +516,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unique_values/",
+    "href": "/docs/api/unique-values/",
     "label": "we.unique_values"
   },
   "provenance_label": "Adapted from NumPy docs",

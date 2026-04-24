@@ -6,3 +6,8 @@ FLOP budget.
 """
 
 from numpy.testing import assert_allclose, assert_array_equal  # noqa: F401
+
+__all__ = [
+    "assert_allclose",
+    "assert_array_equal",
+]

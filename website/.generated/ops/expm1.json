@@ -410,6 +410,7 @@
     }
   ],
   "canonical_name": "expm1",
+  "canonical_path": "expm1",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -431,11 +432,12 @@
     "output": "1.00000000005e-10\n\n1.000000082740371e-10",
     "source": "derived"
   },
-  "href": "/docs/api/ops/expm1/",
+  "href": "/docs/api/expm1/",
+  "legacy_href": "/docs/api/ops/expm1/",
   "module": "numpy",
   "name": "expm1",
   "next": {
-    "href": "/docs/api/ops/extract/",
+    "href": "/docs/api/extract/",
     "label": "we.extract"
   },
   "notes": "Element-wise e^x - 1 (accurate near zero).",
@@ -483,7 +485,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/expand_dims/",
+    "href": "/docs/api/expand-dims/",
     "label": "we.expand_dims"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -424,6 +424,7 @@
     }
   ],
   "canonical_name": "tile",
+  "canonical_path": "tile",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -438,11 +439,12 @@
     "output": "array([0, 1, 2, 0, 1, 2])\n\narray([[0, 1, 2, 0, 1, 2],\n       [0, 1, 2, 0, 1, 2]])\n\narray([[[0, 1, 2, 0, 1, 2]],\n       [[0, 1, 2, 0, 1, 2]]])\n\narray([[1, 2, 1, 2],\n       [3, 4, 3, 4]])\n\narray([[1, 2],\n       [3, 4],\n       [1, 2],\n       [3, 4]])\n\narray([[1, 2, 3, 4],\n       [1, 2, 3, 4],\n       [1, 2, 3, 4],\n       [1, 2, 3, 4]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/tile/",
+  "href": "/docs/api/tile/",
+  "legacy_href": "/docs/api/ops/tile/",
   "module": "numpy",
   "name": "tile",
   "next": {
-    "href": "/docs/api/ops/trace/",
+    "href": "/docs/api/trace/",
     "label": "we.trace"
   },
   "notes": "Repeat array by tiling. Cost: numel(output).",
@@ -465,7 +467,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/tensordot/",
+    "href": "/docs/api/tensordot/",
     "label": "we.tensordot"
   },
   "provenance_label": "Adapted from NumPy docs",

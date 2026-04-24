@@ -41,7 +41,7 @@ export default function FilterBar({
         <input
           type="text"
           className={styles.searchInput}
-          placeholder="Search by name, ref, or notes..."
+          placeholder="Search the public API by name, path, or notes..."
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
         />

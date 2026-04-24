@@ -396,6 +396,7 @@
     }
   ],
   "canonical_name": "hypot",
+  "canonical_path": "hypot",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -417,11 +418,12 @@
     "output": "array([[ 5.,  5.,  5.],\n       [ 5.,  5.,  5.],\n       [ 5.,  5.,  5.]])\n\narray([[ 5.,  5.,  5.],\n       [ 5.,  5.,  5.],\n       [ 5.,  5.,  5.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/hypot/",
+  "href": "/docs/api/hypot/",
+  "legacy_href": "/docs/api/ops/hypot/",
   "module": "numpy",
   "name": "hypot",
   "next": {
-    "href": "/docs/api/ops/i0/",
+    "href": "/docs/api/i0/",
     "label": "we.i0"
   },
   "notes": "Element-wise Euclidean norm sqrt(x1^2 + x2^2).",
@@ -469,7 +471,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/hstack/",
+    "href": "/docs/api/hstack/",
     "label": "we.hstack"
   },
   "provenance_label": "Adapted from NumPy docs",

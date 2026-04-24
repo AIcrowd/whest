@@ -714,6 +714,7 @@
     }
   ],
   "canonical_name": "prod",
+  "canonical_path": "prod",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -735,11 +736,12 @@
     "output": "2.0\n\n24.0\n\narray([  2.,  12.])\n\narray([3., 8.])\n\n3.0\n\nTrue\n\nTrue\n\n10",
     "source": "derived"
   },
-  "href": "/docs/api/ops/prod/",
+  "href": "/docs/api/prod/",
+  "legacy_href": "/docs/api/ops/prod/",
   "module": "numpy",
   "name": "prod",
   "next": {
-    "href": "/docs/api/ops/promote_types/",
+    "href": "/docs/api/promote-types/",
     "label": "we.promote_types"
   },
   "notes": "Product of array elements.",
@@ -826,7 +828,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/power/",
+    "href": "/docs/api/power/",
     "label": "we.power"
   },
   "provenance_label": "Adapted from NumPy docs",

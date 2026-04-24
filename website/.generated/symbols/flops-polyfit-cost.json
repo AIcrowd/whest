@@ -1,0 +1,98 @@
+{
+  "aliases": [
+    "flops.polyfit_cost",
+    "we.flops.polyfit_cost",
+    "whest.flops.polyfit_cost",
+    "polyfit_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/polyfit/",
+              "kind": "link",
+              "target": "polyfit",
+              "text": "polyfit"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nCost for polyfit: 2 * m * (deg+1)^2 FLOPs."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "flops.polyfit_cost",
+  "canonical_path": "flops/polyfit-cost",
+  "display_name": "we.flops.polyfit_cost",
+  "href": "/docs/api/flops/polyfit-cost/",
+  "import_path": "we.flops.polyfit_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest._polynomial",
+  "name": "flops.polyfit_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.flops.polyfit_cost(m: 'int', deg: 'int') -> 'int'",
+  "slug": "flops-polyfit-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L52",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``polyfit``.",
+  "upstream_source_url": ""
+}

@@ -166,6 +166,9 @@ export interface OperationDocRecord {
   name: string;
   canonical_name: string;
   slug: string;
+  href: string;
+  canonical_path: string;
+  legacy_href: string;
   module: string;
   whest_ref: string;
   numpy_ref: string;
@@ -203,6 +206,7 @@ export interface PublicApiSymbolRecord {
   canonical_name: string;
   slug: string;
   href: string;
+  canonical_path: string;
   kind: string;
   module: string;
   import_path: string;
@@ -213,5 +217,7 @@ export interface PublicApiSymbolRecord {
   source_url?: string;
   upstream_source_url?: string;
   related_guides?: RelatedGuideLink[];
+  members?: OperationNavLink[];
+  status_note?: string;
   body_sections?: DocSection[];
 }

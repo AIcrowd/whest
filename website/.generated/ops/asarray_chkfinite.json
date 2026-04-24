@@ -445,6 +445,7 @@
     }
   ],
   "canonical_name": "asarray_chkfinite",
+  "canonical_path": "asarray-chkfinite",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -459,11 +460,12 @@
     "output": "array([1., 2.])\n\nValueError",
     "source": "derived"
   },
-  "href": "/docs/api/ops/asarray_chkfinite/",
+  "href": "/docs/api/asarray-chkfinite/",
+  "legacy_href": "/docs/api/ops/asarray_chkfinite/",
   "module": "numpy",
   "name": "asarray_chkfinite",
   "next": {
-    "href": "/docs/api/ops/astype/",
+    "href": "/docs/api/astype/",
     "label": "we.astype"
   },
   "notes": "Convert to array, raising if NaN or inf. Cost: numel(input).",
@@ -500,7 +502,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/asarray/",
+    "href": "/docs/api/asarray/",
     "label": "we.asarray"
   },
   "provenance_label": "Adapted from NumPy docs",

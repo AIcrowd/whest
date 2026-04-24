@@ -1,0 +1,93 @@
+{
+  "aliases": [
+    "stats.norm",
+    "we.stats.norm",
+    "whest.stats.norm"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Normal (Gaussian) continuous random variable."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/stats/norm/",
+              "kind": "link",
+              "target": "stats.norm",
+              "text": "scipy.stats.norm"
+            },
+            {
+              "kind": "text",
+              "text": ".  Uses the standard "
+            },
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " /\n"
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": " parameterisation (mean and standard deviation)."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "stats.norm",
+  "canonical_path": "stats/norm",
+  "display_name": "we.stats.norm",
+  "href": "/docs/api/stats/norm/",
+  "import_path": "we.stats.norm",
+  "kind": "object",
+  "members": [
+    {
+      "href": "/docs/api/stats/norm/cdf/",
+      "label": "we.stats.norm.cdf"
+    },
+    {
+      "href": "/docs/api/stats/norm/pdf/",
+      "label": "we.stats.norm.pdf"
+    },
+    {
+      "href": "/docs/api/stats/norm/ppf/",
+      "label": "we.stats.norm.ppf"
+    }
+  ],
+  "module": "whest.stats._norm",
+  "name": "stats.norm",
+  "related_guides": [],
+  "signature": "we.stats.norm",
+  "slug": "stats-norm",
+  "source_url": "",
+  "status_note": "",
+  "summary": "Normal (Gaussian) continuous random variable.",
+  "upstream_source_url": ""
+}

@@ -555,6 +555,7 @@
     }
   ],
   "canonical_name": "log1p",
+  "canonical_path": "log1p",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -585,11 +586,12 @@
     "output": "1e-99\n\n0.0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/log1p/",
+  "href": "/docs/api/log1p/",
+  "legacy_href": "/docs/api/ops/log1p/",
   "module": "numpy",
   "name": "log1p",
   "next": {
-    "href": "/docs/api/ops/log2/",
+    "href": "/docs/api/log2/",
     "label": "we.log2"
   },
   "notes": "Element-wise log(1+x) (accurate near zero).",
@@ -640,7 +642,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/log10/",
+    "href": "/docs/api/log10/",
     "label": "we.log10"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -409,6 +409,7 @@
     }
   ],
   "canonical_name": "copy",
+  "canonical_path": "copy",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -436,11 +437,12 @@
     "output": "True\n\nFalse\n\nTrue\n\narray([3, 2, 3])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/copy/",
+  "href": "/docs/api/copy/",
+  "legacy_href": "/docs/api/ops/copy/",
   "module": "numpy",
   "name": "copy",
   "next": {
-    "href": "/docs/api/ops/copysign/",
+    "href": "/docs/api/copysign/",
     "label": "we.copysign"
   },
   "notes": "Return array copy.",
@@ -480,7 +482,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/convolve/",
+    "href": "/docs/api/convolve/",
     "label": "we.convolve"
   },
   "provenance_label": "Adapted from NumPy docs",

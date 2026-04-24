@@ -578,6 +578,7 @@
     }
   ],
   "canonical_name": "random.random_integers",
+  "canonical_path": "random/random-integers",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -592,11 +593,12 @@
     "output": "4 # random\n\n<class 'we.int64'>\n\narray([[5, 4], # random\n       [3, 3],\n       [4, 5]])\n\narray([ 0.625,  1.25 ,  0.625,  0.625,  2.5  ]) # random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-random_integers/",
+  "href": "/docs/api/random/random-integers/",
+  "legacy_href": "/docs/api/ops/random-random_integers/",
   "module": "numpy.random",
   "name": "random.random_integers",
   "next": {
-    "href": "/docs/api/ops/random-random_sample/",
+    "href": "/docs/api/random/random-sample/",
     "label": "we.random.random_sample"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -634,7 +636,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-random/",
+    "href": "/docs/api/random/random/",
     "label": "we.random.random"
   },
   "provenance_label": "Adapted from NumPy docs",

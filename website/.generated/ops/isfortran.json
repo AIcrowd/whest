@@ -309,6 +309,7 @@
     }
   ],
   "canonical_name": "isfortran",
+  "canonical_path": "isfortran",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -323,11 +324,12 @@
     "output": "array([[1, 2, 3],\n       [4, 5, 6]])\n\nFalse\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\nTrue\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\nFalse\n\narray([[1, 4],\n       [2, 5],\n       [3, 6]])\n\nTrue\n\nFalse",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isfortran/",
+  "href": "/docs/api/isfortran/",
+  "legacy_href": "/docs/api/ops/isfortran/",
   "module": "numpy",
   "name": "isfortran",
   "next": {
-    "href": "/docs/api/ops/isin/",
+    "href": "/docs/api/isin/",
     "label": "we.isin"
   },
   "notes": "Return True if array is Fortran contiguous.",
@@ -343,7 +345,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isfinite/",
+    "href": "/docs/api/isfinite/",
     "label": "we.isfinite"
   },
   "provenance_label": "Adapted from NumPy docs",

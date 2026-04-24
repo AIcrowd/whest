@@ -596,6 +596,7 @@
     }
   ],
   "canonical_name": "random.choice",
+  "canonical_path": "random/choice",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -610,11 +611,12 @@
     "output": "array([0, 3, 4]) # random\n\narray([3, 3, 0]) # random\n\narray([3,1,0]) # random\n\narray([2, 3, 0]) # random\n\narray(['pooh', 'pooh', 'pooh', 'Christopher', 'piglet'], # random\n      dtype='<U11')",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-choice/",
+  "href": "/docs/api/random/choice/",
+  "legacy_href": "/docs/api/ops/random-choice/",
   "module": "numpy.random",
   "name": "random.choice",
   "next": {
-    "href": "/docs/api/ops/random-default_rng/",
+    "href": "/docs/api/random/default-rng/",
     "label": "we.random.default_rng"
   },
   "notes": "Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not.",
@@ -660,7 +662,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-chisquare/",
+    "href": "/docs/api/random/chisquare/",
     "label": "we.random.chisquare"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -732,5 +734,5 @@
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.random.choice",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L240"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L296"
 }

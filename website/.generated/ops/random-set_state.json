@@ -317,6 +317,7 @@
     }
   ],
   "canonical_name": "random.set_state",
+  "canonical_path": "random/set-state",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -337,11 +338,12 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/random-set_state/",
+  "href": "/docs/api/random/set-state/",
+  "legacy_href": "/docs/api/ops/random-set_state/",
   "module": "numpy.random",
   "name": "random.set_state",
   "next": {
-    "href": "/docs/api/ops/random-shuffle/",
+    "href": "/docs/api/random/shuffle/",
     "label": "we.random.shuffle"
   },
   "notes": "Set internal state of generator.",
@@ -369,7 +371,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-seed/",
+    "href": "/docs/api/random/seed/",
     "label": "we.random.seed"
   },
   "provenance_label": "Adapted from NumPy docs",

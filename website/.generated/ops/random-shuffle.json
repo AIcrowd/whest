@@ -237,6 +237,7 @@
     }
   ],
   "canonical_name": "random.shuffle",
+  "canonical_path": "random/shuffle",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -251,11 +252,12 @@
     "output": "[1 7 5 2 9 4 3 6 0 8] # random\n\narray([[3, 4, 5], # random\n       [6, 7, 8],\n       [0, 1, 2]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-shuffle/",
+  "href": "/docs/api/random/shuffle/",
+  "legacy_href": "/docs/api/ops/random-shuffle/",
   "module": "numpy.random",
   "name": "random.shuffle",
   "next": {
-    "href": "/docs/api/ops/random-standard_cauchy/",
+    "href": "/docs/api/random/standard-cauchy/",
     "label": "we.random.standard_cauchy"
   },
   "notes": "Shuffle; cost = n*ceil(log2(n)).",
@@ -271,7 +273,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-set_state/",
+    "href": "/docs/api/random/set-state/",
     "label": "we.random.set_state"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -308,5 +310,5 @@
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.random.shuffle",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L223"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L279"
 }

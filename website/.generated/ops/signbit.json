@@ -312,6 +312,7 @@
     }
   ],
   "canonical_name": "signbit",
+  "canonical_path": "signbit",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -333,11 +334,12 @@
     "output": "True\n\narray([False,  True, False])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/signbit/",
+  "href": "/docs/api/signbit/",
+  "legacy_href": "/docs/api/ops/signbit/",
   "module": "numpy",
   "name": "signbit",
   "next": {
-    "href": "/docs/api/ops/sin/",
+    "href": "/docs/api/sin/",
     "label": "we.sin"
   },
   "notes": "Returns True for elements with negative sign bit.",
@@ -383,7 +385,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sign/",
+    "href": "/docs/api/sign/",
     "label": "we.sign"
   },
   "provenance_label": "Adapted from NumPy docs",

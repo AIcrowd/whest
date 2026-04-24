@@ -315,6 +315,7 @@
     }
   ],
   "canonical_name": "bmat",
+  "canonical_path": "bmat",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -329,11 +330,12 @@
     "output": "matrix([[1, 1, 2, 2],\n        [1, 1, 2, 2],\n        [3, 4, 7, 8],\n        [5, 6, 9, 0]])\n\nmatrix([[1, 1, 2, 2],\n        [1, 1, 2, 2],\n        [3, 4, 7, 8],\n        [5, 6, 9, 0]])\n\nmatrix([[1, 1, 2, 2],\n        [1, 1, 2, 2],\n        [3, 4, 7, 8],\n        [5, 6, 9, 0]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bmat/",
+  "href": "/docs/api/bmat/",
+  "legacy_href": "/docs/api/ops/bmat/",
   "module": "numpy",
   "name": "bmat",
   "next": {
-    "href": "/docs/api/ops/broadcast_arrays/",
+    "href": "/docs/api/broadcast-arrays/",
     "label": "we.broadcast_arrays"
   },
   "notes": "Build matrix from nested list of matrices. Cost: numel(output).",
@@ -366,7 +368,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/block/",
+    "href": "/docs/api/block/",
     "label": "we.block"
   },
   "provenance_label": "Adapted from NumPy docs",

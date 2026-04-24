@@ -267,6 +267,7 @@
     }
   ],
   "canonical_name": "nanargmax",
+  "canonical_path": "nanargmax",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -281,11 +282,12 @@
     "output": "0\n\n1\n\narray([1, 0])\n\narray([1, 1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nanargmax/",
+  "href": "/docs/api/nanargmax/",
+  "legacy_href": "/docs/api/ops/nanargmax/",
   "module": "numpy",
   "name": "nanargmax",
   "next": {
-    "href": "/docs/api/ops/nanargmin/",
+    "href": "/docs/api/nanargmin/",
     "label": "we.nanargmin"
   },
   "notes": "Index of maximum ignoring NaNs.",
@@ -329,7 +331,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nan_to_num/",
+    "href": "/docs/api/nan-to-num/",
     "label": "we.nan_to_num"
   },
   "provenance_label": "Adapted from NumPy docs",

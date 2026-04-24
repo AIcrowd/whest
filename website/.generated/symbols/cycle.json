@@ -1,0 +1,63 @@
+{
+  "aliases": [
+    "Cycle",
+    "we.Cycle",
+    "whest.Cycle"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Composable cycle builder, matching sympy's Cycle API."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Build permutations by composing disjoint or overlapping cycles:"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "language": null,
+          "text": "Cycle(0, 2)(1, 3)     # \u2192 (0 2)(1 3)\nPermutation(Cycle(0, 2)(1, 3))  # \u2192 Permutation([2, 3, 0, 1])",
+          "type": "literal_block"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "Cycle",
+  "canonical_path": "cycle",
+  "display_name": "we.Cycle",
+  "href": "/docs/api/cycle/",
+  "import_path": "we.Cycle",
+  "kind": "class",
+  "members": [],
+  "module": "whest._perm_group",
+  "name": "Cycle",
+  "related_guides": [
+    {
+      "href": "/docs/guides/symmetry",
+      "title": "Symmetry Savings"
+    }
+  ],
+  "signature": "we.Cycle(*cycle: 'int') -> 'None'",
+  "slug": "cycle",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_perm_group.py#L23",
+  "status_note": "",
+  "summary": "Composable cycle builder, matching sympy's Cycle API.",
+  "upstream_source_url": ""
+}

@@ -466,6 +466,7 @@
     }
   ],
   "canonical_name": "full",
+  "canonical_path": "full",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -480,11 +481,12 @@
     "output": "array([[inf, inf],\n       [inf, inf]])\n\narray([[10, 10],\n       [10, 10]])\n\narray([[1, 2],\n       [1, 2]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/full/",
+  "href": "/docs/api/full/",
+  "legacy_href": "/docs/api/ops/full/",
   "module": "numpy",
   "name": "full",
   "next": {
-    "href": "/docs/api/ops/full_like/",
+    "href": "/docs/api/full-like/",
     "label": "we.full_like"
   },
   "notes": "Create array filled with scalar value. Cost: num copied.",
@@ -533,11 +535,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -546,7 +548,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fromiter/",
+    "href": "/docs/api/fromiter/",
     "label": "we.fromiter"
   },
   "provenance_label": "Adapted from NumPy docs",

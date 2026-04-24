@@ -148,6 +148,17 @@ def _rebuild_einsum_cache():
 def clear_einsum_cache():
     """Clear the einsum path cache.
 
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    None
+        Discards all cached contraction paths.
+
+    Notes
+    -----
     Discards all cached contraction paths. Subsequent ``einsum()`` and
     ``einsum_path()`` calls will recompute paths from scratch.
     """
@@ -156,6 +167,16 @@ def clear_einsum_cache():
 
 def einsum_cache_info():
     """Return einsum path cache statistics.
+
+    Parameters
+    ----------
+    None
+
+    Returns
+    -------
+    object
+        The standard ``functools.lru_cache`` statistics tuple with ``hits``,
+        ``misses``, ``maxsize``, and ``currsize`` fields.
 
     Returns a named tuple with ``hits``, ``misses``, ``maxsize``, and
     ``currsize`` fields (the standard ``functools.lru_cache`` statistics).

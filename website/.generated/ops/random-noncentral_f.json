@@ -487,6 +487,7 @@
     }
   ],
   "canonical_name": "random.noncentral_f",
+  "canonical_path": "random/noncentral-f",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -510,11 +511,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-noncentral_f/",
+  "href": "/docs/api/random/noncentral-f/",
+  "legacy_href": "/docs/api/ops/random-noncentral_f/",
   "module": "numpy.random",
   "name": "random.noncentral_f",
   "next": {
-    "href": "/docs/api/ops/random-normal/",
+    "href": "/docs/api/random/normal/",
     "label": "we.random.normal"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -558,7 +560,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-noncentral_chisquare/",
+    "href": "/docs/api/random/noncentral-chisquare/",
     "label": "we.random.noncentral_chisquare"
   },
   "provenance_label": "Adapted from NumPy docs",

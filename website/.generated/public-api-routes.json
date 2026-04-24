@@ -1,0 +1,3320 @@
+{
+  "absolute": {
+    "canonical_name": "absolute",
+    "href": "/docs/api/absolute/",
+    "kind": "op",
+    "slug": "absolute"
+  },
+  "add": {
+    "canonical_name": "add",
+    "href": "/docs/api/add/",
+    "kind": "op",
+    "slug": "add"
+  },
+  "all": {
+    "canonical_name": "all",
+    "href": "/docs/api/all/",
+    "kind": "op",
+    "slug": "all"
+  },
+  "allclose": {
+    "canonical_name": "allclose",
+    "href": "/docs/api/allclose/",
+    "kind": "op",
+    "slug": "allclose"
+  },
+  "angle": {
+    "canonical_name": "angle",
+    "href": "/docs/api/angle/",
+    "kind": "op",
+    "slug": "angle"
+  },
+  "any": {
+    "canonical_name": "any",
+    "href": "/docs/api/any/",
+    "kind": "op",
+    "slug": "any"
+  },
+  "append": {
+    "canonical_name": "append",
+    "href": "/docs/api/append/",
+    "kind": "op",
+    "slug": "append"
+  },
+  "apply-along-axis": {
+    "canonical_name": "apply_along_axis",
+    "href": "/docs/api/apply-along-axis/",
+    "kind": "op",
+    "slug": "apply_along_axis"
+  },
+  "apply-over-axes": {
+    "canonical_name": "apply_over_axes",
+    "href": "/docs/api/apply-over-axes/",
+    "kind": "op",
+    "slug": "apply_over_axes"
+  },
+  "arange": {
+    "canonical_name": "arange",
+    "href": "/docs/api/arange/",
+    "kind": "op",
+    "slug": "arange"
+  },
+  "arccos": {
+    "canonical_name": "arccos",
+    "href": "/docs/api/arccos/",
+    "kind": "op",
+    "slug": "arccos"
+  },
+  "arccosh": {
+    "canonical_name": "arccosh",
+    "href": "/docs/api/arccosh/",
+    "kind": "op",
+    "slug": "arccosh"
+  },
+  "arcsin": {
+    "canonical_name": "arcsin",
+    "href": "/docs/api/arcsin/",
+    "kind": "op",
+    "slug": "arcsin"
+  },
+  "arcsinh": {
+    "canonical_name": "arcsinh",
+    "href": "/docs/api/arcsinh/",
+    "kind": "op",
+    "slug": "arcsinh"
+  },
+  "arctan": {
+    "canonical_name": "arctan",
+    "href": "/docs/api/arctan/",
+    "kind": "op",
+    "slug": "arctan"
+  },
+  "arctan2": {
+    "canonical_name": "arctan2",
+    "href": "/docs/api/arctan2/",
+    "kind": "op",
+    "slug": "arctan2"
+  },
+  "arctanh": {
+    "canonical_name": "arctanh",
+    "href": "/docs/api/arctanh/",
+    "kind": "op",
+    "slug": "arctanh"
+  },
+  "argmax": {
+    "canonical_name": "argmax",
+    "href": "/docs/api/argmax/",
+    "kind": "op",
+    "slug": "argmax"
+  },
+  "argmin": {
+    "canonical_name": "argmin",
+    "href": "/docs/api/argmin/",
+    "kind": "op",
+    "slug": "argmin"
+  },
+  "argpartition": {
+    "canonical_name": "argpartition",
+    "href": "/docs/api/argpartition/",
+    "kind": "op",
+    "slug": "argpartition"
+  },
+  "argsort": {
+    "canonical_name": "argsort",
+    "href": "/docs/api/argsort/",
+    "kind": "op",
+    "slug": "argsort"
+  },
+  "argwhere": {
+    "canonical_name": "argwhere",
+    "href": "/docs/api/argwhere/",
+    "kind": "op",
+    "slug": "argwhere"
+  },
+  "array": {
+    "canonical_name": "array",
+    "href": "/docs/api/array/",
+    "kind": "op",
+    "slug": "array"
+  },
+  "array-equal": {
+    "canonical_name": "array_equal",
+    "href": "/docs/api/array-equal/",
+    "kind": "op",
+    "slug": "array_equal"
+  },
+  "array-equiv": {
+    "canonical_name": "array_equiv",
+    "href": "/docs/api/array-equiv/",
+    "kind": "op",
+    "slug": "array_equiv"
+  },
+  "array-split": {
+    "canonical_name": "array_split",
+    "href": "/docs/api/array-split/",
+    "kind": "op",
+    "slug": "array_split"
+  },
+  "as-symmetric": {
+    "canonical_name": "as_symmetric",
+    "href": "/docs/api/as-symmetric/",
+    "kind": "symbol",
+    "slug": "as-symmetric"
+  },
+  "asarray": {
+    "canonical_name": "asarray",
+    "href": "/docs/api/asarray/",
+    "kind": "op",
+    "slug": "asarray"
+  },
+  "asarray-chkfinite": {
+    "canonical_name": "asarray_chkfinite",
+    "href": "/docs/api/asarray-chkfinite/",
+    "kind": "op",
+    "slug": "asarray_chkfinite"
+  },
+  "astype": {
+    "canonical_name": "astype",
+    "href": "/docs/api/astype/",
+    "kind": "op",
+    "slug": "astype"
+  },
+  "atleast-1d": {
+    "canonical_name": "atleast_1d",
+    "href": "/docs/api/atleast-1d/",
+    "kind": "op",
+    "slug": "atleast_1d"
+  },
+  "atleast-2d": {
+    "canonical_name": "atleast_2d",
+    "href": "/docs/api/atleast-2d/",
+    "kind": "op",
+    "slug": "atleast_2d"
+  },
+  "atleast-3d": {
+    "canonical_name": "atleast_3d",
+    "href": "/docs/api/atleast-3d/",
+    "kind": "op",
+    "slug": "atleast_3d"
+  },
+  "average": {
+    "canonical_name": "average",
+    "href": "/docs/api/average/",
+    "kind": "op",
+    "slug": "average"
+  },
+  "bartlett": {
+    "canonical_name": "bartlett",
+    "href": "/docs/api/bartlett/",
+    "kind": "op",
+    "slug": "bartlett"
+  },
+  "base-repr": {
+    "canonical_name": "base_repr",
+    "href": "/docs/api/base-repr/",
+    "kind": "symbol",
+    "slug": "base-repr"
+  },
+  "binary-repr": {
+    "canonical_name": "binary_repr",
+    "href": "/docs/api/binary-repr/",
+    "kind": "symbol",
+    "slug": "binary-repr"
+  },
+  "bincount": {
+    "canonical_name": "bincount",
+    "href": "/docs/api/bincount/",
+    "kind": "op",
+    "slug": "bincount"
+  },
+  "bitwise-and": {
+    "canonical_name": "bitwise_and",
+    "href": "/docs/api/bitwise-and/",
+    "kind": "op",
+    "slug": "bitwise_and"
+  },
+  "bitwise-count": {
+    "canonical_name": "bitwise_count",
+    "href": "/docs/api/bitwise-count/",
+    "kind": "op",
+    "slug": "bitwise_count"
+  },
+  "bitwise-left-shift": {
+    "canonical_name": "bitwise_left_shift",
+    "href": "/docs/api/bitwise-left-shift/",
+    "kind": "op",
+    "slug": "bitwise_left_shift"
+  },
+  "bitwise-not": {
+    "canonical_name": "bitwise_not",
+    "href": "/docs/api/bitwise-not/",
+    "kind": "op",
+    "slug": "bitwise_not"
+  },
+  "bitwise-or": {
+    "canonical_name": "bitwise_or",
+    "href": "/docs/api/bitwise-or/",
+    "kind": "op",
+    "slug": "bitwise_or"
+  },
+  "bitwise-right-shift": {
+    "canonical_name": "bitwise_right_shift",
+    "href": "/docs/api/bitwise-right-shift/",
+    "kind": "op",
+    "slug": "bitwise_right_shift"
+  },
+  "bitwise-xor": {
+    "canonical_name": "bitwise_xor",
+    "href": "/docs/api/bitwise-xor/",
+    "kind": "op",
+    "slug": "bitwise_xor"
+  },
+  "blackman": {
+    "canonical_name": "blackman",
+    "href": "/docs/api/blackman/",
+    "kind": "op",
+    "slug": "blackman"
+  },
+  "block": {
+    "canonical_name": "block",
+    "href": "/docs/api/block/",
+    "kind": "op",
+    "slug": "block"
+  },
+  "bmat": {
+    "canonical_name": "bmat",
+    "href": "/docs/api/bmat/",
+    "kind": "op",
+    "slug": "bmat"
+  },
+  "broadcast": {
+    "canonical_name": "broadcast",
+    "href": "/docs/api/broadcast/",
+    "kind": "symbol",
+    "slug": "broadcast"
+  },
+  "broadcast-arrays": {
+    "canonical_name": "broadcast_arrays",
+    "href": "/docs/api/broadcast-arrays/",
+    "kind": "op",
+    "slug": "broadcast_arrays"
+  },
+  "broadcast-shapes": {
+    "canonical_name": "broadcast_shapes",
+    "href": "/docs/api/broadcast-shapes/",
+    "kind": "op",
+    "slug": "broadcast_shapes"
+  },
+  "broadcast-to": {
+    "canonical_name": "broadcast_to",
+    "href": "/docs/api/broadcast-to/",
+    "kind": "op",
+    "slug": "broadcast_to"
+  },
+  "budget": {
+    "canonical_name": "budget",
+    "href": "/docs/api/budget/",
+    "kind": "symbol",
+    "slug": "budget"
+  },
+  "budget-context": {
+    "canonical_name": "BudgetContext",
+    "href": "/docs/api/budget-context/",
+    "kind": "symbol",
+    "slug": "budget-context"
+  },
+  "budget-live": {
+    "canonical_name": "budget_live",
+    "href": "/docs/api/budget-live/",
+    "kind": "symbol",
+    "slug": "budget-live"
+  },
+  "budget-reset": {
+    "canonical_name": "budget_reset",
+    "href": "/docs/api/budget-reset/",
+    "kind": "symbol",
+    "slug": "budget-reset"
+  },
+  "budget-summary": {
+    "canonical_name": "budget_summary",
+    "href": "/docs/api/budget-summary/",
+    "kind": "symbol",
+    "slug": "budget-summary"
+  },
+  "budget-summary-dict": {
+    "canonical_name": "budget_summary_dict",
+    "href": "/docs/api/budget-summary-dict/",
+    "kind": "symbol",
+    "slug": "budget-summary-dict"
+  },
+  "can-cast": {
+    "canonical_name": "can_cast",
+    "href": "/docs/api/can-cast/",
+    "kind": "op",
+    "slug": "can_cast"
+  },
+  "cbrt": {
+    "canonical_name": "cbrt",
+    "href": "/docs/api/cbrt/",
+    "kind": "op",
+    "slug": "cbrt"
+  },
+  "ceil": {
+    "canonical_name": "ceil",
+    "href": "/docs/api/ceil/",
+    "kind": "op",
+    "slug": "ceil"
+  },
+  "choose": {
+    "canonical_name": "choose",
+    "href": "/docs/api/choose/",
+    "kind": "op",
+    "slug": "choose"
+  },
+  "clear-einsum-cache": {
+    "canonical_name": "clear_einsum_cache",
+    "href": "/docs/api/clear-einsum-cache/",
+    "kind": "symbol",
+    "slug": "clear-einsum-cache"
+  },
+  "clip": {
+    "canonical_name": "clip",
+    "href": "/docs/api/clip/",
+    "kind": "op",
+    "slug": "clip"
+  },
+  "column-stack": {
+    "canonical_name": "column_stack",
+    "href": "/docs/api/column-stack/",
+    "kind": "op",
+    "slug": "column_stack"
+  },
+  "common-type": {
+    "canonical_name": "common_type",
+    "href": "/docs/api/common-type/",
+    "kind": "op",
+    "slug": "common_type"
+  },
+  "compress": {
+    "canonical_name": "compress",
+    "href": "/docs/api/compress/",
+    "kind": "op",
+    "slug": "compress"
+  },
+  "concatenate": {
+    "canonical_name": "concatenate",
+    "href": "/docs/api/concatenate/",
+    "kind": "op",
+    "slug": "concatenate"
+  },
+  "configure": {
+    "canonical_name": "configure",
+    "href": "/docs/api/configure/",
+    "kind": "symbol",
+    "slug": "configure"
+  },
+  "conj": {
+    "canonical_name": "conj",
+    "href": "/docs/api/conj/",
+    "kind": "op",
+    "slug": "conj"
+  },
+  "conjugate": {
+    "canonical_name": "conjugate",
+    "href": "/docs/api/conjugate/",
+    "kind": "op",
+    "slug": "conjugate"
+  },
+  "convolve": {
+    "canonical_name": "convolve",
+    "href": "/docs/api/convolve/",
+    "kind": "op",
+    "slug": "convolve"
+  },
+  "copy": {
+    "canonical_name": "copy",
+    "href": "/docs/api/copy/",
+    "kind": "op",
+    "slug": "copy"
+  },
+  "copysign": {
+    "canonical_name": "copysign",
+    "href": "/docs/api/copysign/",
+    "kind": "op",
+    "slug": "copysign"
+  },
+  "copyto": {
+    "canonical_name": "copyto",
+    "href": "/docs/api/copyto/",
+    "kind": "op",
+    "slug": "copyto"
+  },
+  "corrcoef": {
+    "canonical_name": "corrcoef",
+    "href": "/docs/api/corrcoef/",
+    "kind": "op",
+    "slug": "corrcoef"
+  },
+  "correlate": {
+    "canonical_name": "correlate",
+    "href": "/docs/api/correlate/",
+    "kind": "op",
+    "slug": "correlate"
+  },
+  "cos": {
+    "canonical_name": "cos",
+    "href": "/docs/api/cos/",
+    "kind": "op",
+    "slug": "cos"
+  },
+  "cosh": {
+    "canonical_name": "cosh",
+    "href": "/docs/api/cosh/",
+    "kind": "op",
+    "slug": "cosh"
+  },
+  "count-nonzero": {
+    "canonical_name": "count_nonzero",
+    "href": "/docs/api/count-nonzero/",
+    "kind": "op",
+    "slug": "count_nonzero"
+  },
+  "cov": {
+    "canonical_name": "cov",
+    "href": "/docs/api/cov/",
+    "kind": "op",
+    "slug": "cov"
+  },
+  "cross": {
+    "canonical_name": "cross",
+    "href": "/docs/api/cross/",
+    "kind": "op",
+    "slug": "cross"
+  },
+  "cumprod": {
+    "canonical_name": "cumprod",
+    "href": "/docs/api/cumprod/",
+    "kind": "op",
+    "slug": "cumprod"
+  },
+  "cumsum": {
+    "canonical_name": "cumsum",
+    "href": "/docs/api/cumsum/",
+    "kind": "op",
+    "slug": "cumsum"
+  },
+  "cumulative-prod": {
+    "canonical_name": "cumulative_prod",
+    "href": "/docs/api/cumulative-prod/",
+    "kind": "op",
+    "slug": "cumulative_prod"
+  },
+  "cumulative-sum": {
+    "canonical_name": "cumulative_sum",
+    "href": "/docs/api/cumulative-sum/",
+    "kind": "op",
+    "slug": "cumulative_sum"
+  },
+  "cycle": {
+    "canonical_name": "Cycle",
+    "href": "/docs/api/cycle/",
+    "kind": "symbol",
+    "slug": "cycle"
+  },
+  "degrees": {
+    "canonical_name": "degrees",
+    "href": "/docs/api/degrees/",
+    "kind": "op",
+    "slug": "degrees"
+  },
+  "delete": {
+    "canonical_name": "delete",
+    "href": "/docs/api/delete/",
+    "kind": "op",
+    "slug": "delete"
+  },
+  "diag": {
+    "canonical_name": "diag",
+    "href": "/docs/api/diag/",
+    "kind": "op",
+    "slug": "diag"
+  },
+  "diag-indices": {
+    "canonical_name": "diag_indices",
+    "href": "/docs/api/diag-indices/",
+    "kind": "op",
+    "slug": "diag_indices"
+  },
+  "diag-indices-from": {
+    "canonical_name": "diag_indices_from",
+    "href": "/docs/api/diag-indices-from/",
+    "kind": "op",
+    "slug": "diag_indices_from"
+  },
+  "diagflat": {
+    "canonical_name": "diagflat",
+    "href": "/docs/api/diagflat/",
+    "kind": "op",
+    "slug": "diagflat"
+  },
+  "diagonal": {
+    "canonical_name": "diagonal",
+    "href": "/docs/api/diagonal/",
+    "kind": "op",
+    "slug": "diagonal"
+  },
+  "diff": {
+    "canonical_name": "diff",
+    "href": "/docs/api/diff/",
+    "kind": "op",
+    "slug": "diff"
+  },
+  "digitize": {
+    "canonical_name": "digitize",
+    "href": "/docs/api/digitize/",
+    "kind": "op",
+    "slug": "digitize"
+  },
+  "divide": {
+    "canonical_name": "divide",
+    "href": "/docs/api/divide/",
+    "kind": "op",
+    "slug": "divide"
+  },
+  "dot": {
+    "canonical_name": "dot",
+    "href": "/docs/api/dot/",
+    "kind": "op",
+    "slug": "dot"
+  },
+  "dsplit": {
+    "canonical_name": "dsplit",
+    "href": "/docs/api/dsplit/",
+    "kind": "op",
+    "slug": "dsplit"
+  },
+  "dstack": {
+    "canonical_name": "dstack",
+    "href": "/docs/api/dstack/",
+    "kind": "op",
+    "slug": "dstack"
+  },
+  "ediff1d": {
+    "canonical_name": "ediff1d",
+    "href": "/docs/api/ediff1d/",
+    "kind": "op",
+    "slug": "ediff1d"
+  },
+  "einsum": {
+    "canonical_name": "einsum",
+    "href": "/docs/api/einsum/",
+    "kind": "op",
+    "slug": "einsum"
+  },
+  "einsum-cache-info": {
+    "canonical_name": "einsum_cache_info",
+    "href": "/docs/api/einsum-cache-info/",
+    "kind": "symbol",
+    "slug": "einsum-cache-info"
+  },
+  "einsum-path": {
+    "canonical_name": "einsum_path",
+    "href": "/docs/api/einsum-path/",
+    "kind": "op",
+    "slug": "einsum_path"
+  },
+  "empty": {
+    "canonical_name": "empty",
+    "href": "/docs/api/empty/",
+    "kind": "op",
+    "slug": "empty"
+  },
+  "empty-like": {
+    "canonical_name": "empty_like",
+    "href": "/docs/api/empty-like/",
+    "kind": "op",
+    "slug": "empty_like"
+  },
+  "equal": {
+    "canonical_name": "equal",
+    "href": "/docs/api/equal/",
+    "kind": "op",
+    "slug": "equal"
+  },
+  "errstate": {
+    "canonical_name": "errstate",
+    "href": "/docs/api/errstate/",
+    "kind": "symbol",
+    "slug": "errstate"
+  },
+  "exp": {
+    "canonical_name": "exp",
+    "href": "/docs/api/exp/",
+    "kind": "op",
+    "slug": "exp"
+  },
+  "exp2": {
+    "canonical_name": "exp2",
+    "href": "/docs/api/exp2/",
+    "kind": "op",
+    "slug": "exp2"
+  },
+  "expand-dims": {
+    "canonical_name": "expand_dims",
+    "href": "/docs/api/expand-dims/",
+    "kind": "op",
+    "slug": "expand_dims"
+  },
+  "expm1": {
+    "canonical_name": "expm1",
+    "href": "/docs/api/expm1/",
+    "kind": "op",
+    "slug": "expm1"
+  },
+  "extract": {
+    "canonical_name": "extract",
+    "href": "/docs/api/extract/",
+    "kind": "op",
+    "slug": "extract"
+  },
+  "eye": {
+    "canonical_name": "eye",
+    "href": "/docs/api/eye/",
+    "kind": "op",
+    "slug": "eye"
+  },
+  "fabs": {
+    "canonical_name": "fabs",
+    "href": "/docs/api/fabs/",
+    "kind": "op",
+    "slug": "fabs"
+  },
+  "fft/fft": {
+    "canonical_name": "fft.fft",
+    "href": "/docs/api/fft/fft/",
+    "kind": "op",
+    "slug": "fft-fft"
+  },
+  "fft/fft2": {
+    "canonical_name": "fft.fft2",
+    "href": "/docs/api/fft/fft2/",
+    "kind": "op",
+    "slug": "fft-fft2"
+  },
+  "fft/fftfreq": {
+    "canonical_name": "fft.fftfreq",
+    "href": "/docs/api/fft/fftfreq/",
+    "kind": "op",
+    "slug": "fft-fftfreq"
+  },
+  "fft/fftn": {
+    "canonical_name": "fft.fftn",
+    "href": "/docs/api/fft/fftn/",
+    "kind": "op",
+    "slug": "fft-fftn"
+  },
+  "fft/fftshift": {
+    "canonical_name": "fft.fftshift",
+    "href": "/docs/api/fft/fftshift/",
+    "kind": "op",
+    "slug": "fft-fftshift"
+  },
+  "fft/hfft": {
+    "canonical_name": "fft.hfft",
+    "href": "/docs/api/fft/hfft/",
+    "kind": "op",
+    "slug": "fft-hfft"
+  },
+  "fft/ifft": {
+    "canonical_name": "fft.ifft",
+    "href": "/docs/api/fft/ifft/",
+    "kind": "op",
+    "slug": "fft-ifft"
+  },
+  "fft/ifft2": {
+    "canonical_name": "fft.ifft2",
+    "href": "/docs/api/fft/ifft2/",
+    "kind": "op",
+    "slug": "fft-ifft2"
+  },
+  "fft/ifftn": {
+    "canonical_name": "fft.ifftn",
+    "href": "/docs/api/fft/ifftn/",
+    "kind": "op",
+    "slug": "fft-ifftn"
+  },
+  "fft/ifftshift": {
+    "canonical_name": "fft.ifftshift",
+    "href": "/docs/api/fft/ifftshift/",
+    "kind": "op",
+    "slug": "fft-ifftshift"
+  },
+  "fft/ihfft": {
+    "canonical_name": "fft.ihfft",
+    "href": "/docs/api/fft/ihfft/",
+    "kind": "op",
+    "slug": "fft-ihfft"
+  },
+  "fft/irfft": {
+    "canonical_name": "fft.irfft",
+    "href": "/docs/api/fft/irfft/",
+    "kind": "op",
+    "slug": "fft-irfft"
+  },
+  "fft/irfft2": {
+    "canonical_name": "fft.irfft2",
+    "href": "/docs/api/fft/irfft2/",
+    "kind": "op",
+    "slug": "fft-irfft2"
+  },
+  "fft/irfftn": {
+    "canonical_name": "fft.irfftn",
+    "href": "/docs/api/fft/irfftn/",
+    "kind": "op",
+    "slug": "fft-irfftn"
+  },
+  "fft/rfft": {
+    "canonical_name": "fft.rfft",
+    "href": "/docs/api/fft/rfft/",
+    "kind": "op",
+    "slug": "fft-rfft"
+  },
+  "fft/rfft2": {
+    "canonical_name": "fft.rfft2",
+    "href": "/docs/api/fft/rfft2/",
+    "kind": "op",
+    "slug": "fft-rfft2"
+  },
+  "fft/rfftfreq": {
+    "canonical_name": "fft.rfftfreq",
+    "href": "/docs/api/fft/rfftfreq/",
+    "kind": "op",
+    "slug": "fft-rfftfreq"
+  },
+  "fft/rfftn": {
+    "canonical_name": "fft.rfftn",
+    "href": "/docs/api/fft/rfftn/",
+    "kind": "op",
+    "slug": "fft-rfftn"
+  },
+  "fill-diagonal": {
+    "canonical_name": "fill_diagonal",
+    "href": "/docs/api/fill-diagonal/",
+    "kind": "op",
+    "slug": "fill_diagonal"
+  },
+  "finfo": {
+    "canonical_name": "finfo",
+    "href": "/docs/api/finfo/",
+    "kind": "symbol",
+    "slug": "finfo"
+  },
+  "flatnonzero": {
+    "canonical_name": "flatnonzero",
+    "href": "/docs/api/flatnonzero/",
+    "kind": "op",
+    "slug": "flatnonzero"
+  },
+  "flip": {
+    "canonical_name": "flip",
+    "href": "/docs/api/flip/",
+    "kind": "op",
+    "slug": "flip"
+  },
+  "fliplr": {
+    "canonical_name": "fliplr",
+    "href": "/docs/api/fliplr/",
+    "kind": "op",
+    "slug": "fliplr"
+  },
+  "flipud": {
+    "canonical_name": "flipud",
+    "href": "/docs/api/flipud/",
+    "kind": "op",
+    "slug": "flipud"
+  },
+  "float-power": {
+    "canonical_name": "float_power",
+    "href": "/docs/api/float-power/",
+    "kind": "op",
+    "slug": "float_power"
+  },
+  "floor": {
+    "canonical_name": "floor",
+    "href": "/docs/api/floor/",
+    "kind": "op",
+    "slug": "floor"
+  },
+  "floor-divide": {
+    "canonical_name": "floor_divide",
+    "href": "/docs/api/floor-divide/",
+    "kind": "op",
+    "slug": "floor_divide"
+  },
+  "flops/bartlett-cost": {
+    "canonical_name": "flops.bartlett_cost",
+    "href": "/docs/api/flops/bartlett-cost/",
+    "kind": "symbol",
+    "slug": "flops-bartlett-cost"
+  },
+  "flops/blackman-cost": {
+    "canonical_name": "flops.blackman_cost",
+    "href": "/docs/api/flops/blackman-cost/",
+    "kind": "symbol",
+    "slug": "flops-blackman-cost"
+  },
+  "flops/cholesky-cost": {
+    "canonical_name": "flops.cholesky_cost",
+    "href": "/docs/api/flops/cholesky-cost/",
+    "kind": "symbol",
+    "slug": "flops-cholesky-cost"
+  },
+  "flops/cond-cost": {
+    "canonical_name": "flops.cond_cost",
+    "href": "/docs/api/flops/cond-cost/",
+    "kind": "symbol",
+    "slug": "flops-cond-cost"
+  },
+  "flops/det-cost": {
+    "canonical_name": "flops.det_cost",
+    "href": "/docs/api/flops/det-cost/",
+    "kind": "symbol",
+    "slug": "flops-det-cost"
+  },
+  "flops/eig-cost": {
+    "canonical_name": "flops.eig_cost",
+    "href": "/docs/api/flops/eig-cost/",
+    "kind": "symbol",
+    "slug": "flops-eig-cost"
+  },
+  "flops/eigh-cost": {
+    "canonical_name": "flops.eigh_cost",
+    "href": "/docs/api/flops/eigh-cost/",
+    "kind": "symbol",
+    "slug": "flops-eigh-cost"
+  },
+  "flops/eigvals-cost": {
+    "canonical_name": "flops.eigvals_cost",
+    "href": "/docs/api/flops/eigvals-cost/",
+    "kind": "symbol",
+    "slug": "flops-eigvals-cost"
+  },
+  "flops/eigvalsh-cost": {
+    "canonical_name": "flops.eigvalsh_cost",
+    "href": "/docs/api/flops/eigvalsh-cost/",
+    "kind": "symbol",
+    "slug": "flops-eigvalsh-cost"
+  },
+  "flops/einsum-cost": {
+    "canonical_name": "flops.einsum_cost",
+    "href": "/docs/api/flops/einsum-cost/",
+    "kind": "symbol",
+    "slug": "flops-einsum-cost"
+  },
+  "flops/fft-cost": {
+    "canonical_name": "flops.fft_cost",
+    "href": "/docs/api/flops/fft-cost/",
+    "kind": "symbol",
+    "slug": "flops-fft-cost"
+  },
+  "flops/fftn-cost": {
+    "canonical_name": "flops.fftn_cost",
+    "href": "/docs/api/flops/fftn-cost/",
+    "kind": "symbol",
+    "slug": "flops-fftn-cost"
+  },
+  "flops/hamming-cost": {
+    "canonical_name": "flops.hamming_cost",
+    "href": "/docs/api/flops/hamming-cost/",
+    "kind": "symbol",
+    "slug": "flops-hamming-cost"
+  },
+  "flops/hanning-cost": {
+    "canonical_name": "flops.hanning_cost",
+    "href": "/docs/api/flops/hanning-cost/",
+    "kind": "symbol",
+    "slug": "flops-hanning-cost"
+  },
+  "flops/hfft-cost": {
+    "canonical_name": "flops.hfft_cost",
+    "href": "/docs/api/flops/hfft-cost/",
+    "kind": "symbol",
+    "slug": "flops-hfft-cost"
+  },
+  "flops/inv-cost": {
+    "canonical_name": "flops.inv_cost",
+    "href": "/docs/api/flops/inv-cost/",
+    "kind": "symbol",
+    "slug": "flops-inv-cost"
+  },
+  "flops/kaiser-cost": {
+    "canonical_name": "flops.kaiser_cost",
+    "href": "/docs/api/flops/kaiser-cost/",
+    "kind": "symbol",
+    "slug": "flops-kaiser-cost"
+  },
+  "flops/lstsq-cost": {
+    "canonical_name": "flops.lstsq_cost",
+    "href": "/docs/api/flops/lstsq-cost/",
+    "kind": "symbol",
+    "slug": "flops-lstsq-cost"
+  },
+  "flops/matrix-norm-cost": {
+    "canonical_name": "flops.matrix_norm_cost",
+    "href": "/docs/api/flops/matrix-norm-cost/",
+    "kind": "symbol",
+    "slug": "flops-matrix-norm-cost"
+  },
+  "flops/matrix-power-cost": {
+    "canonical_name": "flops.matrix_power_cost",
+    "href": "/docs/api/flops/matrix-power-cost/",
+    "kind": "symbol",
+    "slug": "flops-matrix-power-cost"
+  },
+  "flops/matrix-rank-cost": {
+    "canonical_name": "flops.matrix_rank_cost",
+    "href": "/docs/api/flops/matrix-rank-cost/",
+    "kind": "symbol",
+    "slug": "flops-matrix-rank-cost"
+  },
+  "flops/multi-dot-cost": {
+    "canonical_name": "flops.multi_dot_cost",
+    "href": "/docs/api/flops/multi-dot-cost/",
+    "kind": "symbol",
+    "slug": "flops-multi-dot-cost"
+  },
+  "flops/norm-cost": {
+    "canonical_name": "flops.norm_cost",
+    "href": "/docs/api/flops/norm-cost/",
+    "kind": "symbol",
+    "slug": "flops-norm-cost"
+  },
+  "flops/pinv-cost": {
+    "canonical_name": "flops.pinv_cost",
+    "href": "/docs/api/flops/pinv-cost/",
+    "kind": "symbol",
+    "slug": "flops-pinv-cost"
+  },
+  "flops/pointwise-cost": {
+    "canonical_name": "flops.pointwise_cost",
+    "href": "/docs/api/flops/pointwise-cost/",
+    "kind": "symbol",
+    "slug": "flops-pointwise-cost"
+  },
+  "flops/poly-cost": {
+    "canonical_name": "flops.poly_cost",
+    "href": "/docs/api/flops/poly-cost/",
+    "kind": "symbol",
+    "slug": "flops-poly-cost"
+  },
+  "flops/polyadd-cost": {
+    "canonical_name": "flops.polyadd_cost",
+    "href": "/docs/api/flops/polyadd-cost/",
+    "kind": "symbol",
+    "slug": "flops-polyadd-cost"
+  },
+  "flops/polyder-cost": {
+    "canonical_name": "flops.polyder_cost",
+    "href": "/docs/api/flops/polyder-cost/",
+    "kind": "symbol",
+    "slug": "flops-polyder-cost"
+  },
+  "flops/polydiv-cost": {
+    "canonical_name": "flops.polydiv_cost",
+    "href": "/docs/api/flops/polydiv-cost/",
+    "kind": "symbol",
+    "slug": "flops-polydiv-cost"
+  },
+  "flops/polyfit-cost": {
+    "canonical_name": "flops.polyfit_cost",
+    "href": "/docs/api/flops/polyfit-cost/",
+    "kind": "symbol",
+    "slug": "flops-polyfit-cost"
+  },
+  "flops/polyint-cost": {
+    "canonical_name": "flops.polyint_cost",
+    "href": "/docs/api/flops/polyint-cost/",
+    "kind": "symbol",
+    "slug": "flops-polyint-cost"
+  },
+  "flops/polymul-cost": {
+    "canonical_name": "flops.polymul_cost",
+    "href": "/docs/api/flops/polymul-cost/",
+    "kind": "symbol",
+    "slug": "flops-polymul-cost"
+  },
+  "flops/polysub-cost": {
+    "canonical_name": "flops.polysub_cost",
+    "href": "/docs/api/flops/polysub-cost/",
+    "kind": "symbol",
+    "slug": "flops-polysub-cost"
+  },
+  "flops/polyval-cost": {
+    "canonical_name": "flops.polyval_cost",
+    "href": "/docs/api/flops/polyval-cost/",
+    "kind": "symbol",
+    "slug": "flops-polyval-cost"
+  },
+  "flops/qr-cost": {
+    "canonical_name": "flops.qr_cost",
+    "href": "/docs/api/flops/qr-cost/",
+    "kind": "symbol",
+    "slug": "flops-qr-cost"
+  },
+  "flops/reduction-cost": {
+    "canonical_name": "flops.reduction_cost",
+    "href": "/docs/api/flops/reduction-cost/",
+    "kind": "symbol",
+    "slug": "flops-reduction-cost"
+  },
+  "flops/rfft-cost": {
+    "canonical_name": "flops.rfft_cost",
+    "href": "/docs/api/flops/rfft-cost/",
+    "kind": "symbol",
+    "slug": "flops-rfft-cost"
+  },
+  "flops/rfftn-cost": {
+    "canonical_name": "flops.rfftn_cost",
+    "href": "/docs/api/flops/rfftn-cost/",
+    "kind": "symbol",
+    "slug": "flops-rfftn-cost"
+  },
+  "flops/roots-cost": {
+    "canonical_name": "flops.roots_cost",
+    "href": "/docs/api/flops/roots-cost/",
+    "kind": "symbol",
+    "slug": "flops-roots-cost"
+  },
+  "flops/slogdet-cost": {
+    "canonical_name": "flops.slogdet_cost",
+    "href": "/docs/api/flops/slogdet-cost/",
+    "kind": "symbol",
+    "slug": "flops-slogdet-cost"
+  },
+  "flops/solve-cost": {
+    "canonical_name": "flops.solve_cost",
+    "href": "/docs/api/flops/solve-cost/",
+    "kind": "symbol",
+    "slug": "flops-solve-cost"
+  },
+  "flops/svd-cost": {
+    "canonical_name": "flops.svd_cost",
+    "href": "/docs/api/flops/svd-cost/",
+    "kind": "symbol",
+    "slug": "flops-svd-cost"
+  },
+  "flops/svdvals-cost": {
+    "canonical_name": "flops.svdvals_cost",
+    "href": "/docs/api/flops/svdvals-cost/",
+    "kind": "symbol",
+    "slug": "flops-svdvals-cost"
+  },
+  "flops/tensorinv-cost": {
+    "canonical_name": "flops.tensorinv_cost",
+    "href": "/docs/api/flops/tensorinv-cost/",
+    "kind": "symbol",
+    "slug": "flops-tensorinv-cost"
+  },
+  "flops/tensorsolve-cost": {
+    "canonical_name": "flops.tensorsolve_cost",
+    "href": "/docs/api/flops/tensorsolve-cost/",
+    "kind": "symbol",
+    "slug": "flops-tensorsolve-cost"
+  },
+  "flops/trace-cost": {
+    "canonical_name": "flops.trace_cost",
+    "href": "/docs/api/flops/trace-cost/",
+    "kind": "symbol",
+    "slug": "flops-trace-cost"
+  },
+  "flops/unwrap-cost": {
+    "canonical_name": "flops.unwrap_cost",
+    "href": "/docs/api/flops/unwrap-cost/",
+    "kind": "symbol",
+    "slug": "flops-unwrap-cost"
+  },
+  "flops/vector-norm-cost": {
+    "canonical_name": "flops.vector_norm_cost",
+    "href": "/docs/api/flops/vector-norm-cost/",
+    "kind": "symbol",
+    "slug": "flops-vector-norm-cost"
+  },
+  "fmax": {
+    "canonical_name": "fmax",
+    "href": "/docs/api/fmax/",
+    "kind": "op",
+    "slug": "fmax"
+  },
+  "fmin": {
+    "canonical_name": "fmin",
+    "href": "/docs/api/fmin/",
+    "kind": "op",
+    "slug": "fmin"
+  },
+  "fmod": {
+    "canonical_name": "fmod",
+    "href": "/docs/api/fmod/",
+    "kind": "op",
+    "slug": "fmod"
+  },
+  "frexp": {
+    "canonical_name": "frexp",
+    "href": "/docs/api/frexp/",
+    "kind": "op",
+    "slug": "frexp"
+  },
+  "from-dlpack": {
+    "canonical_name": "from_dlpack",
+    "href": "/docs/api/from-dlpack/",
+    "kind": "op",
+    "slug": "from_dlpack"
+  },
+  "frombuffer": {
+    "canonical_name": "frombuffer",
+    "href": "/docs/api/frombuffer/",
+    "kind": "op",
+    "slug": "frombuffer"
+  },
+  "fromfile": {
+    "canonical_name": "fromfile",
+    "href": "/docs/api/fromfile/",
+    "kind": "symbol",
+    "slug": "fromfile"
+  },
+  "fromfunction": {
+    "canonical_name": "fromfunction",
+    "href": "/docs/api/fromfunction/",
+    "kind": "op",
+    "slug": "fromfunction"
+  },
+  "fromiter": {
+    "canonical_name": "fromiter",
+    "href": "/docs/api/fromiter/",
+    "kind": "op",
+    "slug": "fromiter"
+  },
+  "fromregex": {
+    "canonical_name": "fromregex",
+    "href": "/docs/api/fromregex/",
+    "kind": "symbol",
+    "slug": "fromregex"
+  },
+  "fromstring": {
+    "canonical_name": "fromstring",
+    "href": "/docs/api/fromstring/",
+    "kind": "symbol",
+    "slug": "fromstring"
+  },
+  "full": {
+    "canonical_name": "full",
+    "href": "/docs/api/full/",
+    "kind": "op",
+    "slug": "full"
+  },
+  "full-like": {
+    "canonical_name": "full_like",
+    "href": "/docs/api/full-like/",
+    "kind": "op",
+    "slug": "full_like"
+  },
+  "gcd": {
+    "canonical_name": "gcd",
+    "href": "/docs/api/gcd/",
+    "kind": "op",
+    "slug": "gcd"
+  },
+  "geomspace": {
+    "canonical_name": "geomspace",
+    "href": "/docs/api/geomspace/",
+    "kind": "op",
+    "slug": "geomspace"
+  },
+  "get-printoptions": {
+    "canonical_name": "get_printoptions",
+    "href": "/docs/api/get-printoptions/",
+    "kind": "symbol",
+    "slug": "get-printoptions"
+  },
+  "geterr": {
+    "canonical_name": "geterr",
+    "href": "/docs/api/geterr/",
+    "kind": "symbol",
+    "slug": "geterr"
+  },
+  "gradient": {
+    "canonical_name": "gradient",
+    "href": "/docs/api/gradient/",
+    "kind": "op",
+    "slug": "gradient"
+  },
+  "greater": {
+    "canonical_name": "greater",
+    "href": "/docs/api/greater/",
+    "kind": "op",
+    "slug": "greater"
+  },
+  "greater-equal": {
+    "canonical_name": "greater_equal",
+    "href": "/docs/api/greater-equal/",
+    "kind": "op",
+    "slug": "greater_equal"
+  },
+  "hamming": {
+    "canonical_name": "hamming",
+    "href": "/docs/api/hamming/",
+    "kind": "op",
+    "slug": "hamming"
+  },
+  "hanning": {
+    "canonical_name": "hanning",
+    "href": "/docs/api/hanning/",
+    "kind": "op",
+    "slug": "hanning"
+  },
+  "heaviside": {
+    "canonical_name": "heaviside",
+    "href": "/docs/api/heaviside/",
+    "kind": "op",
+    "slug": "heaviside"
+  },
+  "histogram": {
+    "canonical_name": "histogram",
+    "href": "/docs/api/histogram/",
+    "kind": "op",
+    "slug": "histogram"
+  },
+  "histogram-bin-edges": {
+    "canonical_name": "histogram_bin_edges",
+    "href": "/docs/api/histogram-bin-edges/",
+    "kind": "op",
+    "slug": "histogram_bin_edges"
+  },
+  "histogram2d": {
+    "canonical_name": "histogram2d",
+    "href": "/docs/api/histogram2d/",
+    "kind": "op",
+    "slug": "histogram2d"
+  },
+  "histogramdd": {
+    "canonical_name": "histogramdd",
+    "href": "/docs/api/histogramdd/",
+    "kind": "op",
+    "slug": "histogramdd"
+  },
+  "hsplit": {
+    "canonical_name": "hsplit",
+    "href": "/docs/api/hsplit/",
+    "kind": "op",
+    "slug": "hsplit"
+  },
+  "hstack": {
+    "canonical_name": "hstack",
+    "href": "/docs/api/hstack/",
+    "kind": "op",
+    "slug": "hstack"
+  },
+  "hypot": {
+    "canonical_name": "hypot",
+    "href": "/docs/api/hypot/",
+    "kind": "op",
+    "slug": "hypot"
+  },
+  "i0": {
+    "canonical_name": "i0",
+    "href": "/docs/api/i0/",
+    "kind": "op",
+    "slug": "i0"
+  },
+  "identity": {
+    "canonical_name": "identity",
+    "href": "/docs/api/identity/",
+    "kind": "op",
+    "slug": "identity"
+  },
+  "iinfo": {
+    "canonical_name": "iinfo",
+    "href": "/docs/api/iinfo/",
+    "kind": "symbol",
+    "slug": "iinfo"
+  },
+  "imag": {
+    "canonical_name": "imag",
+    "href": "/docs/api/imag/",
+    "kind": "op",
+    "slug": "imag"
+  },
+  "in1d": {
+    "canonical_name": "in1d",
+    "href": "/docs/api/in1d/",
+    "kind": "op",
+    "slug": "in1d"
+  },
+  "indices": {
+    "canonical_name": "indices",
+    "href": "/docs/api/indices/",
+    "kind": "op",
+    "slug": "indices"
+  },
+  "inner": {
+    "canonical_name": "inner",
+    "href": "/docs/api/inner/",
+    "kind": "op",
+    "slug": "inner"
+  },
+  "insert": {
+    "canonical_name": "insert",
+    "href": "/docs/api/insert/",
+    "kind": "op",
+    "slug": "insert"
+  },
+  "interp": {
+    "canonical_name": "interp",
+    "href": "/docs/api/interp/",
+    "kind": "op",
+    "slug": "interp"
+  },
+  "intersect1d": {
+    "canonical_name": "intersect1d",
+    "href": "/docs/api/intersect1d/",
+    "kind": "op",
+    "slug": "intersect1d"
+  },
+  "invert": {
+    "canonical_name": "invert",
+    "href": "/docs/api/invert/",
+    "kind": "op",
+    "slug": "invert"
+  },
+  "is-symmetric": {
+    "canonical_name": "is_symmetric",
+    "href": "/docs/api/is-symmetric/",
+    "kind": "symbol",
+    "slug": "is-symmetric"
+  },
+  "isclose": {
+    "canonical_name": "isclose",
+    "href": "/docs/api/isclose/",
+    "kind": "op",
+    "slug": "isclose"
+  },
+  "iscomplex": {
+    "canonical_name": "iscomplex",
+    "href": "/docs/api/iscomplex/",
+    "kind": "op",
+    "slug": "iscomplex"
+  },
+  "iscomplexobj": {
+    "canonical_name": "iscomplexobj",
+    "href": "/docs/api/iscomplexobj/",
+    "kind": "op",
+    "slug": "iscomplexobj"
+  },
+  "isdtype": {
+    "canonical_name": "isdtype",
+    "href": "/docs/api/isdtype/",
+    "kind": "op",
+    "slug": "isdtype"
+  },
+  "isfinite": {
+    "canonical_name": "isfinite",
+    "href": "/docs/api/isfinite/",
+    "kind": "op",
+    "slug": "isfinite"
+  },
+  "isfortran": {
+    "canonical_name": "isfortran",
+    "href": "/docs/api/isfortran/",
+    "kind": "op",
+    "slug": "isfortran"
+  },
+  "isin": {
+    "canonical_name": "isin",
+    "href": "/docs/api/isin/",
+    "kind": "op",
+    "slug": "isin"
+  },
+  "isinf": {
+    "canonical_name": "isinf",
+    "href": "/docs/api/isinf/",
+    "kind": "op",
+    "slug": "isinf"
+  },
+  "isnan": {
+    "canonical_name": "isnan",
+    "href": "/docs/api/isnan/",
+    "kind": "op",
+    "slug": "isnan"
+  },
+  "isnat": {
+    "canonical_name": "isnat",
+    "href": "/docs/api/isnat/",
+    "kind": "symbol",
+    "slug": "isnat"
+  },
+  "isneginf": {
+    "canonical_name": "isneginf",
+    "href": "/docs/api/isneginf/",
+    "kind": "op",
+    "slug": "isneginf"
+  },
+  "isposinf": {
+    "canonical_name": "isposinf",
+    "href": "/docs/api/isposinf/",
+    "kind": "op",
+    "slug": "isposinf"
+  },
+  "isreal": {
+    "canonical_name": "isreal",
+    "href": "/docs/api/isreal/",
+    "kind": "op",
+    "slug": "isreal"
+  },
+  "isrealobj": {
+    "canonical_name": "isrealobj",
+    "href": "/docs/api/isrealobj/",
+    "kind": "op",
+    "slug": "isrealobj"
+  },
+  "isscalar": {
+    "canonical_name": "isscalar",
+    "href": "/docs/api/isscalar/",
+    "kind": "op",
+    "slug": "isscalar"
+  },
+  "issubdtype": {
+    "canonical_name": "issubdtype",
+    "href": "/docs/api/issubdtype/",
+    "kind": "op",
+    "slug": "issubdtype"
+  },
+  "iterable": {
+    "canonical_name": "iterable",
+    "href": "/docs/api/iterable/",
+    "kind": "op",
+    "slug": "iterable"
+  },
+  "ix-": {
+    "canonical_name": "ix_",
+    "href": "/docs/api/ix-/",
+    "kind": "op",
+    "slug": "ix_"
+  },
+  "kaiser": {
+    "canonical_name": "kaiser",
+    "href": "/docs/api/kaiser/",
+    "kind": "op",
+    "slug": "kaiser"
+  },
+  "kron": {
+    "canonical_name": "kron",
+    "href": "/docs/api/kron/",
+    "kind": "op",
+    "slug": "kron"
+  },
+  "lcm": {
+    "canonical_name": "lcm",
+    "href": "/docs/api/lcm/",
+    "kind": "op",
+    "slug": "lcm"
+  },
+  "ldexp": {
+    "canonical_name": "ldexp",
+    "href": "/docs/api/ldexp/",
+    "kind": "op",
+    "slug": "ldexp"
+  },
+  "left-shift": {
+    "canonical_name": "left_shift",
+    "href": "/docs/api/left-shift/",
+    "kind": "op",
+    "slug": "left_shift"
+  },
+  "less": {
+    "canonical_name": "less",
+    "href": "/docs/api/less/",
+    "kind": "op",
+    "slug": "less"
+  },
+  "less-equal": {
+    "canonical_name": "less_equal",
+    "href": "/docs/api/less-equal/",
+    "kind": "op",
+    "slug": "less_equal"
+  },
+  "lexsort": {
+    "canonical_name": "lexsort",
+    "href": "/docs/api/lexsort/",
+    "kind": "op",
+    "slug": "lexsort"
+  },
+  "linalg/cholesky": {
+    "canonical_name": "linalg.cholesky",
+    "href": "/docs/api/linalg/cholesky/",
+    "kind": "op",
+    "slug": "linalg-cholesky"
+  },
+  "linalg/cond": {
+    "canonical_name": "linalg.cond",
+    "href": "/docs/api/linalg/cond/",
+    "kind": "op",
+    "slug": "linalg-cond"
+  },
+  "linalg/cross": {
+    "canonical_name": "linalg.cross",
+    "href": "/docs/api/linalg/cross/",
+    "kind": "op",
+    "slug": "linalg-cross"
+  },
+  "linalg/det": {
+    "canonical_name": "linalg.det",
+    "href": "/docs/api/linalg/det/",
+    "kind": "op",
+    "slug": "linalg-det"
+  },
+  "linalg/diagonal": {
+    "canonical_name": "linalg.diagonal",
+    "href": "/docs/api/linalg/diagonal/",
+    "kind": "op",
+    "slug": "linalg-diagonal"
+  },
+  "linalg/eig": {
+    "canonical_name": "linalg.eig",
+    "href": "/docs/api/linalg/eig/",
+    "kind": "op",
+    "slug": "linalg-eig"
+  },
+  "linalg/eigh": {
+    "canonical_name": "linalg.eigh",
+    "href": "/docs/api/linalg/eigh/",
+    "kind": "op",
+    "slug": "linalg-eigh"
+  },
+  "linalg/eigvals": {
+    "canonical_name": "linalg.eigvals",
+    "href": "/docs/api/linalg/eigvals/",
+    "kind": "op",
+    "slug": "linalg-eigvals"
+  },
+  "linalg/eigvalsh": {
+    "canonical_name": "linalg.eigvalsh",
+    "href": "/docs/api/linalg/eigvalsh/",
+    "kind": "op",
+    "slug": "linalg-eigvalsh"
+  },
+  "linalg/inv": {
+    "canonical_name": "linalg.inv",
+    "href": "/docs/api/linalg/inv/",
+    "kind": "op",
+    "slug": "linalg-inv"
+  },
+  "linalg/lstsq": {
+    "canonical_name": "linalg.lstsq",
+    "href": "/docs/api/linalg/lstsq/",
+    "kind": "op",
+    "slug": "linalg-lstsq"
+  },
+  "linalg/matmul": {
+    "canonical_name": "linalg.matmul",
+    "href": "/docs/api/linalg/matmul/",
+    "kind": "op",
+    "slug": "linalg-matmul"
+  },
+  "linalg/matrix-norm": {
+    "canonical_name": "linalg.matrix_norm",
+    "href": "/docs/api/linalg/matrix-norm/",
+    "kind": "op",
+    "slug": "linalg-matrix_norm"
+  },
+  "linalg/matrix-power": {
+    "canonical_name": "linalg.matrix_power",
+    "href": "/docs/api/linalg/matrix-power/",
+    "kind": "op",
+    "slug": "linalg-matrix_power"
+  },
+  "linalg/matrix-rank": {
+    "canonical_name": "linalg.matrix_rank",
+    "href": "/docs/api/linalg/matrix-rank/",
+    "kind": "op",
+    "slug": "linalg-matrix_rank"
+  },
+  "linalg/matrix-transpose": {
+    "canonical_name": "linalg.matrix_transpose",
+    "href": "/docs/api/linalg/matrix-transpose/",
+    "kind": "op",
+    "slug": "linalg-matrix_transpose"
+  },
+  "linalg/multi-dot": {
+    "canonical_name": "linalg.multi_dot",
+    "href": "/docs/api/linalg/multi-dot/",
+    "kind": "op",
+    "slug": "linalg-multi_dot"
+  },
+  "linalg/norm": {
+    "canonical_name": "linalg.norm",
+    "href": "/docs/api/linalg/norm/",
+    "kind": "op",
+    "slug": "linalg-norm"
+  },
+  "linalg/outer": {
+    "canonical_name": "linalg.outer",
+    "href": "/docs/api/linalg/outer/",
+    "kind": "op",
+    "slug": "linalg-outer"
+  },
+  "linalg/pinv": {
+    "canonical_name": "linalg.pinv",
+    "href": "/docs/api/linalg/pinv/",
+    "kind": "op",
+    "slug": "linalg-pinv"
+  },
+  "linalg/qr": {
+    "canonical_name": "linalg.qr",
+    "href": "/docs/api/linalg/qr/",
+    "kind": "op",
+    "slug": "linalg-qr"
+  },
+  "linalg/slogdet": {
+    "canonical_name": "linalg.slogdet",
+    "href": "/docs/api/linalg/slogdet/",
+    "kind": "op",
+    "slug": "linalg-slogdet"
+  },
+  "linalg/solve": {
+    "canonical_name": "linalg.solve",
+    "href": "/docs/api/linalg/solve/",
+    "kind": "op",
+    "slug": "linalg-solve"
+  },
+  "linalg/svd": {
+    "canonical_name": "linalg.svd",
+    "href": "/docs/api/linalg/svd/",
+    "kind": "op",
+    "slug": "linalg-svd"
+  },
+  "linalg/svdvals": {
+    "canonical_name": "linalg.svdvals",
+    "href": "/docs/api/linalg/svdvals/",
+    "kind": "op",
+    "slug": "linalg-svdvals"
+  },
+  "linalg/tensordot": {
+    "canonical_name": "linalg.tensordot",
+    "href": "/docs/api/linalg/tensordot/",
+    "kind": "op",
+    "slug": "linalg-tensordot"
+  },
+  "linalg/tensorinv": {
+    "canonical_name": "linalg.tensorinv",
+    "href": "/docs/api/linalg/tensorinv/",
+    "kind": "op",
+    "slug": "linalg-tensorinv"
+  },
+  "linalg/tensorsolve": {
+    "canonical_name": "linalg.tensorsolve",
+    "href": "/docs/api/linalg/tensorsolve/",
+    "kind": "op",
+    "slug": "linalg-tensorsolve"
+  },
+  "linalg/trace": {
+    "canonical_name": "linalg.trace",
+    "href": "/docs/api/linalg/trace/",
+    "kind": "op",
+    "slug": "linalg-trace"
+  },
+  "linalg/vecdot": {
+    "canonical_name": "linalg.vecdot",
+    "href": "/docs/api/linalg/vecdot/",
+    "kind": "op",
+    "slug": "linalg-vecdot"
+  },
+  "linalg/vector-norm": {
+    "canonical_name": "linalg.vector_norm",
+    "href": "/docs/api/linalg/vector-norm/",
+    "kind": "op",
+    "slug": "linalg-vector_norm"
+  },
+  "linspace": {
+    "canonical_name": "linspace",
+    "href": "/docs/api/linspace/",
+    "kind": "op",
+    "slug": "linspace"
+  },
+  "log": {
+    "canonical_name": "log",
+    "href": "/docs/api/log/",
+    "kind": "op",
+    "slug": "log"
+  },
+  "log10": {
+    "canonical_name": "log10",
+    "href": "/docs/api/log10/",
+    "kind": "op",
+    "slug": "log10"
+  },
+  "log1p": {
+    "canonical_name": "log1p",
+    "href": "/docs/api/log1p/",
+    "kind": "op",
+    "slug": "log1p"
+  },
+  "log2": {
+    "canonical_name": "log2",
+    "href": "/docs/api/log2/",
+    "kind": "op",
+    "slug": "log2"
+  },
+  "logaddexp": {
+    "canonical_name": "logaddexp",
+    "href": "/docs/api/logaddexp/",
+    "kind": "op",
+    "slug": "logaddexp"
+  },
+  "logaddexp2": {
+    "canonical_name": "logaddexp2",
+    "href": "/docs/api/logaddexp2/",
+    "kind": "op",
+    "slug": "logaddexp2"
+  },
+  "logical-and": {
+    "canonical_name": "logical_and",
+    "href": "/docs/api/logical-and/",
+    "kind": "op",
+    "slug": "logical_and"
+  },
+  "logical-not": {
+    "canonical_name": "logical_not",
+    "href": "/docs/api/logical-not/",
+    "kind": "op",
+    "slug": "logical_not"
+  },
+  "logical-or": {
+    "canonical_name": "logical_or",
+    "href": "/docs/api/logical-or/",
+    "kind": "op",
+    "slug": "logical_or"
+  },
+  "logical-xor": {
+    "canonical_name": "logical_xor",
+    "href": "/docs/api/logical-xor/",
+    "kind": "op",
+    "slug": "logical_xor"
+  },
+  "logspace": {
+    "canonical_name": "logspace",
+    "href": "/docs/api/logspace/",
+    "kind": "op",
+    "slug": "logspace"
+  },
+  "mask-indices": {
+    "canonical_name": "mask_indices",
+    "href": "/docs/api/mask-indices/",
+    "kind": "op",
+    "slug": "mask_indices"
+  },
+  "matmul": {
+    "canonical_name": "matmul",
+    "href": "/docs/api/matmul/",
+    "kind": "op",
+    "slug": "matmul"
+  },
+  "matrix-transpose": {
+    "canonical_name": "matrix_transpose",
+    "href": "/docs/api/matrix-transpose/",
+    "kind": "op",
+    "slug": "matrix_transpose"
+  },
+  "matvec": {
+    "canonical_name": "matvec",
+    "href": "/docs/api/matvec/",
+    "kind": "op",
+    "slug": "matvec"
+  },
+  "max": {
+    "canonical_name": "max",
+    "href": "/docs/api/max/",
+    "kind": "op",
+    "slug": "max"
+  },
+  "maximum": {
+    "canonical_name": "maximum",
+    "href": "/docs/api/maximum/",
+    "kind": "op",
+    "slug": "maximum"
+  },
+  "may-share-memory": {
+    "canonical_name": "may_share_memory",
+    "href": "/docs/api/may-share-memory/",
+    "kind": "op",
+    "slug": "may_share_memory"
+  },
+  "mean": {
+    "canonical_name": "mean",
+    "href": "/docs/api/mean/",
+    "kind": "op",
+    "slug": "mean"
+  },
+  "median": {
+    "canonical_name": "median",
+    "href": "/docs/api/median/",
+    "kind": "op",
+    "slug": "median"
+  },
+  "meshgrid": {
+    "canonical_name": "meshgrid",
+    "href": "/docs/api/meshgrid/",
+    "kind": "op",
+    "slug": "meshgrid"
+  },
+  "min": {
+    "canonical_name": "min",
+    "href": "/docs/api/min/",
+    "kind": "op",
+    "slug": "min"
+  },
+  "min-scalar-type": {
+    "canonical_name": "min_scalar_type",
+    "href": "/docs/api/min-scalar-type/",
+    "kind": "op",
+    "slug": "min_scalar_type"
+  },
+  "minimum": {
+    "canonical_name": "minimum",
+    "href": "/docs/api/minimum/",
+    "kind": "op",
+    "slug": "minimum"
+  },
+  "mintypecode": {
+    "canonical_name": "mintypecode",
+    "href": "/docs/api/mintypecode/",
+    "kind": "op",
+    "slug": "mintypecode"
+  },
+  "mod": {
+    "canonical_name": "mod",
+    "href": "/docs/api/mod/",
+    "kind": "op",
+    "slug": "mod"
+  },
+  "modf": {
+    "canonical_name": "modf",
+    "href": "/docs/api/modf/",
+    "kind": "op",
+    "slug": "modf"
+  },
+  "moveaxis": {
+    "canonical_name": "moveaxis",
+    "href": "/docs/api/moveaxis/",
+    "kind": "op",
+    "slug": "moveaxis"
+  },
+  "multiply": {
+    "canonical_name": "multiply",
+    "href": "/docs/api/multiply/",
+    "kind": "op",
+    "slug": "multiply"
+  },
+  "namespace": {
+    "canonical_name": "namespace",
+    "href": "/docs/api/namespace/",
+    "kind": "symbol",
+    "slug": "namespace"
+  },
+  "nan-to-num": {
+    "canonical_name": "nan_to_num",
+    "href": "/docs/api/nan-to-num/",
+    "kind": "op",
+    "slug": "nan_to_num"
+  },
+  "nanargmax": {
+    "canonical_name": "nanargmax",
+    "href": "/docs/api/nanargmax/",
+    "kind": "op",
+    "slug": "nanargmax"
+  },
+  "nanargmin": {
+    "canonical_name": "nanargmin",
+    "href": "/docs/api/nanargmin/",
+    "kind": "op",
+    "slug": "nanargmin"
+  },
+  "nancumprod": {
+    "canonical_name": "nancumprod",
+    "href": "/docs/api/nancumprod/",
+    "kind": "op",
+    "slug": "nancumprod"
+  },
+  "nancumsum": {
+    "canonical_name": "nancumsum",
+    "href": "/docs/api/nancumsum/",
+    "kind": "op",
+    "slug": "nancumsum"
+  },
+  "nanmax": {
+    "canonical_name": "nanmax",
+    "href": "/docs/api/nanmax/",
+    "kind": "op",
+    "slug": "nanmax"
+  },
+  "nanmean": {
+    "canonical_name": "nanmean",
+    "href": "/docs/api/nanmean/",
+    "kind": "op",
+    "slug": "nanmean"
+  },
+  "nanmedian": {
+    "canonical_name": "nanmedian",
+    "href": "/docs/api/nanmedian/",
+    "kind": "op",
+    "slug": "nanmedian"
+  },
+  "nanmin": {
+    "canonical_name": "nanmin",
+    "href": "/docs/api/nanmin/",
+    "kind": "op",
+    "slug": "nanmin"
+  },
+  "nanpercentile": {
+    "canonical_name": "nanpercentile",
+    "href": "/docs/api/nanpercentile/",
+    "kind": "op",
+    "slug": "nanpercentile"
+  },
+  "nanprod": {
+    "canonical_name": "nanprod",
+    "href": "/docs/api/nanprod/",
+    "kind": "op",
+    "slug": "nanprod"
+  },
+  "nanquantile": {
+    "canonical_name": "nanquantile",
+    "href": "/docs/api/nanquantile/",
+    "kind": "op",
+    "slug": "nanquantile"
+  },
+  "nanstd": {
+    "canonical_name": "nanstd",
+    "href": "/docs/api/nanstd/",
+    "kind": "op",
+    "slug": "nanstd"
+  },
+  "nansum": {
+    "canonical_name": "nansum",
+    "href": "/docs/api/nansum/",
+    "kind": "op",
+    "slug": "nansum"
+  },
+  "nanvar": {
+    "canonical_name": "nanvar",
+    "href": "/docs/api/nanvar/",
+    "kind": "op",
+    "slug": "nanvar"
+  },
+  "ndenumerate": {
+    "canonical_name": "ndenumerate",
+    "href": "/docs/api/ndenumerate/",
+    "kind": "symbol",
+    "slug": "ndenumerate"
+  },
+  "ndim": {
+    "canonical_name": "ndim",
+    "href": "/docs/api/ndim/",
+    "kind": "op",
+    "slug": "ndim"
+  },
+  "ndindex": {
+    "canonical_name": "ndindex",
+    "href": "/docs/api/ndindex/",
+    "kind": "symbol",
+    "slug": "ndindex"
+  },
+  "nditer": {
+    "canonical_name": "nditer",
+    "href": "/docs/api/nditer/",
+    "kind": "symbol",
+    "slug": "nditer"
+  },
+  "negative": {
+    "canonical_name": "negative",
+    "href": "/docs/api/negative/",
+    "kind": "op",
+    "slug": "negative"
+  },
+  "nextafter": {
+    "canonical_name": "nextafter",
+    "href": "/docs/api/nextafter/",
+    "kind": "op",
+    "slug": "nextafter"
+  },
+  "nonzero": {
+    "canonical_name": "nonzero",
+    "href": "/docs/api/nonzero/",
+    "kind": "op",
+    "slug": "nonzero"
+  },
+  "not-equal": {
+    "canonical_name": "not_equal",
+    "href": "/docs/api/not-equal/",
+    "kind": "op",
+    "slug": "not_equal"
+  },
+  "ones": {
+    "canonical_name": "ones",
+    "href": "/docs/api/ones/",
+    "kind": "op",
+    "slug": "ones"
+  },
+  "ones-like": {
+    "canonical_name": "ones_like",
+    "href": "/docs/api/ones-like/",
+    "kind": "op",
+    "slug": "ones_like"
+  },
+  "op-record": {
+    "canonical_name": "OpRecord",
+    "href": "/docs/api/op-record/",
+    "kind": "symbol",
+    "slug": "op-record"
+  },
+  "outer": {
+    "canonical_name": "outer",
+    "href": "/docs/api/outer/",
+    "kind": "op",
+    "slug": "outer"
+  },
+  "packbits": {
+    "canonical_name": "packbits",
+    "href": "/docs/api/packbits/",
+    "kind": "op",
+    "slug": "packbits"
+  },
+  "pad": {
+    "canonical_name": "pad",
+    "href": "/docs/api/pad/",
+    "kind": "op",
+    "slug": "pad"
+  },
+  "partition": {
+    "canonical_name": "partition",
+    "href": "/docs/api/partition/",
+    "kind": "op",
+    "slug": "partition"
+  },
+  "path-info": {
+    "canonical_name": "PathInfo",
+    "href": "/docs/api/path-info/",
+    "kind": "symbol",
+    "slug": "path-info"
+  },
+  "percentile": {
+    "canonical_name": "percentile",
+    "href": "/docs/api/percentile/",
+    "kind": "op",
+    "slug": "percentile"
+  },
+  "permutation": {
+    "canonical_name": "Permutation",
+    "href": "/docs/api/permutation/",
+    "kind": "symbol",
+    "slug": "permutation"
+  },
+  "permutation-group": {
+    "canonical_name": "PermutationGroup",
+    "href": "/docs/api/permutation-group/",
+    "kind": "symbol",
+    "slug": "permutation-group"
+  },
+  "permute-dims": {
+    "canonical_name": "permute_dims",
+    "href": "/docs/api/permute-dims/",
+    "kind": "op",
+    "slug": "permute_dims"
+  },
+  "piecewise": {
+    "canonical_name": "piecewise",
+    "href": "/docs/api/piecewise/",
+    "kind": "op",
+    "slug": "piecewise"
+  },
+  "place": {
+    "canonical_name": "place",
+    "href": "/docs/api/place/",
+    "kind": "op",
+    "slug": "place"
+  },
+  "poly": {
+    "canonical_name": "poly",
+    "href": "/docs/api/poly/",
+    "kind": "op",
+    "slug": "poly"
+  },
+  "polyadd": {
+    "canonical_name": "polyadd",
+    "href": "/docs/api/polyadd/",
+    "kind": "op",
+    "slug": "polyadd"
+  },
+  "polyder": {
+    "canonical_name": "polyder",
+    "href": "/docs/api/polyder/",
+    "kind": "op",
+    "slug": "polyder"
+  },
+  "polydiv": {
+    "canonical_name": "polydiv",
+    "href": "/docs/api/polydiv/",
+    "kind": "op",
+    "slug": "polydiv"
+  },
+  "polyfit": {
+    "canonical_name": "polyfit",
+    "href": "/docs/api/polyfit/",
+    "kind": "op",
+    "slug": "polyfit"
+  },
+  "polyint": {
+    "canonical_name": "polyint",
+    "href": "/docs/api/polyint/",
+    "kind": "op",
+    "slug": "polyint"
+  },
+  "polymul": {
+    "canonical_name": "polymul",
+    "href": "/docs/api/polymul/",
+    "kind": "op",
+    "slug": "polymul"
+  },
+  "polysub": {
+    "canonical_name": "polysub",
+    "href": "/docs/api/polysub/",
+    "kind": "op",
+    "slug": "polysub"
+  },
+  "polyval": {
+    "canonical_name": "polyval",
+    "href": "/docs/api/polyval/",
+    "kind": "op",
+    "slug": "polyval"
+  },
+  "positive": {
+    "canonical_name": "positive",
+    "href": "/docs/api/positive/",
+    "kind": "op",
+    "slug": "positive"
+  },
+  "power": {
+    "canonical_name": "power",
+    "href": "/docs/api/power/",
+    "kind": "op",
+    "slug": "power"
+  },
+  "printoptions": {
+    "canonical_name": "printoptions",
+    "href": "/docs/api/printoptions/",
+    "kind": "symbol",
+    "slug": "printoptions"
+  },
+  "prod": {
+    "canonical_name": "prod",
+    "href": "/docs/api/prod/",
+    "kind": "op",
+    "slug": "prod"
+  },
+  "promote-types": {
+    "canonical_name": "promote_types",
+    "href": "/docs/api/promote-types/",
+    "kind": "op",
+    "slug": "promote_types"
+  },
+  "ptp": {
+    "canonical_name": "ptp",
+    "href": "/docs/api/ptp/",
+    "kind": "op",
+    "slug": "ptp"
+  },
+  "put": {
+    "canonical_name": "put",
+    "href": "/docs/api/put/",
+    "kind": "op",
+    "slug": "put"
+  },
+  "put-along-axis": {
+    "canonical_name": "put_along_axis",
+    "href": "/docs/api/put-along-axis/",
+    "kind": "op",
+    "slug": "put_along_axis"
+  },
+  "putmask": {
+    "canonical_name": "putmask",
+    "href": "/docs/api/putmask/",
+    "kind": "op",
+    "slug": "putmask"
+  },
+  "quantile": {
+    "canonical_name": "quantile",
+    "href": "/docs/api/quantile/",
+    "kind": "op",
+    "slug": "quantile"
+  },
+  "radians": {
+    "canonical_name": "radians",
+    "href": "/docs/api/radians/",
+    "kind": "op",
+    "slug": "radians"
+  },
+  "random/beta": {
+    "canonical_name": "random.beta",
+    "href": "/docs/api/random/beta/",
+    "kind": "op",
+    "slug": "random-beta"
+  },
+  "random/binomial": {
+    "canonical_name": "random.binomial",
+    "href": "/docs/api/random/binomial/",
+    "kind": "op",
+    "slug": "random-binomial"
+  },
+  "random/bytes": {
+    "canonical_name": "random.bytes",
+    "href": "/docs/api/random/bytes/",
+    "kind": "op",
+    "slug": "random-bytes"
+  },
+  "random/chisquare": {
+    "canonical_name": "random.chisquare",
+    "href": "/docs/api/random/chisquare/",
+    "kind": "op",
+    "slug": "random-chisquare"
+  },
+  "random/choice": {
+    "canonical_name": "random.choice",
+    "href": "/docs/api/random/choice/",
+    "kind": "op",
+    "slug": "random-choice"
+  },
+  "random/default-rng": {
+    "canonical_name": "random.default_rng",
+    "href": "/docs/api/random/default-rng/",
+    "kind": "op",
+    "slug": "random-default_rng"
+  },
+  "random/dirichlet": {
+    "canonical_name": "random.dirichlet",
+    "href": "/docs/api/random/dirichlet/",
+    "kind": "op",
+    "slug": "random-dirichlet"
+  },
+  "random/exponential": {
+    "canonical_name": "random.exponential",
+    "href": "/docs/api/random/exponential/",
+    "kind": "op",
+    "slug": "random-exponential"
+  },
+  "random/f": {
+    "canonical_name": "random.f",
+    "href": "/docs/api/random/f/",
+    "kind": "op",
+    "slug": "random-f"
+  },
+  "random/gamma": {
+    "canonical_name": "random.gamma",
+    "href": "/docs/api/random/gamma/",
+    "kind": "op",
+    "slug": "random-gamma"
+  },
+  "random/geometric": {
+    "canonical_name": "random.geometric",
+    "href": "/docs/api/random/geometric/",
+    "kind": "op",
+    "slug": "random-geometric"
+  },
+  "random/get-state": {
+    "canonical_name": "random.get_state",
+    "href": "/docs/api/random/get-state/",
+    "kind": "op",
+    "slug": "random-get_state"
+  },
+  "random/gumbel": {
+    "canonical_name": "random.gumbel",
+    "href": "/docs/api/random/gumbel/",
+    "kind": "op",
+    "slug": "random-gumbel"
+  },
+  "random/hypergeometric": {
+    "canonical_name": "random.hypergeometric",
+    "href": "/docs/api/random/hypergeometric/",
+    "kind": "op",
+    "slug": "random-hypergeometric"
+  },
+  "random/laplace": {
+    "canonical_name": "random.laplace",
+    "href": "/docs/api/random/laplace/",
+    "kind": "op",
+    "slug": "random-laplace"
+  },
+  "random/logistic": {
+    "canonical_name": "random.logistic",
+    "href": "/docs/api/random/logistic/",
+    "kind": "op",
+    "slug": "random-logistic"
+  },
+  "random/lognormal": {
+    "canonical_name": "random.lognormal",
+    "href": "/docs/api/random/lognormal/",
+    "kind": "op",
+    "slug": "random-lognormal"
+  },
+  "random/logseries": {
+    "canonical_name": "random.logseries",
+    "href": "/docs/api/random/logseries/",
+    "kind": "op",
+    "slug": "random-logseries"
+  },
+  "random/multinomial": {
+    "canonical_name": "random.multinomial",
+    "href": "/docs/api/random/multinomial/",
+    "kind": "op",
+    "slug": "random-multinomial"
+  },
+  "random/multivariate-normal": {
+    "canonical_name": "random.multivariate_normal",
+    "href": "/docs/api/random/multivariate-normal/",
+    "kind": "op",
+    "slug": "random-multivariate_normal"
+  },
+  "random/negative-binomial": {
+    "canonical_name": "random.negative_binomial",
+    "href": "/docs/api/random/negative-binomial/",
+    "kind": "op",
+    "slug": "random-negative_binomial"
+  },
+  "random/noncentral-chisquare": {
+    "canonical_name": "random.noncentral_chisquare",
+    "href": "/docs/api/random/noncentral-chisquare/",
+    "kind": "op",
+    "slug": "random-noncentral_chisquare"
+  },
+  "random/noncentral-f": {
+    "canonical_name": "random.noncentral_f",
+    "href": "/docs/api/random/noncentral-f/",
+    "kind": "op",
+    "slug": "random-noncentral_f"
+  },
+  "random/normal": {
+    "canonical_name": "random.normal",
+    "href": "/docs/api/random/normal/",
+    "kind": "op",
+    "slug": "random-normal"
+  },
+  "random/pareto": {
+    "canonical_name": "random.pareto",
+    "href": "/docs/api/random/pareto/",
+    "kind": "op",
+    "slug": "random-pareto"
+  },
+  "random/permutation": {
+    "canonical_name": "random.permutation",
+    "href": "/docs/api/random/permutation/",
+    "kind": "op",
+    "slug": "random-permutation"
+  },
+  "random/poisson": {
+    "canonical_name": "random.poisson",
+    "href": "/docs/api/random/poisson/",
+    "kind": "op",
+    "slug": "random-poisson"
+  },
+  "random/power": {
+    "canonical_name": "random.power",
+    "href": "/docs/api/random/power/",
+    "kind": "op",
+    "slug": "random-power"
+  },
+  "random/rand": {
+    "canonical_name": "random.rand",
+    "href": "/docs/api/random/rand/",
+    "kind": "op",
+    "slug": "random-rand"
+  },
+  "random/randint": {
+    "canonical_name": "random.randint",
+    "href": "/docs/api/random/randint/",
+    "kind": "op",
+    "slug": "random-randint"
+  },
+  "random/randn": {
+    "canonical_name": "random.randn",
+    "href": "/docs/api/random/randn/",
+    "kind": "op",
+    "slug": "random-randn"
+  },
+  "random/random": {
+    "canonical_name": "random.random",
+    "href": "/docs/api/random/random/",
+    "kind": "op",
+    "slug": "random-random"
+  },
+  "random/random-integers": {
+    "canonical_name": "random.random_integers",
+    "href": "/docs/api/random/random-integers/",
+    "kind": "op",
+    "slug": "random-random_integers"
+  },
+  "random/random-sample": {
+    "canonical_name": "random.random_sample",
+    "href": "/docs/api/random/random-sample/",
+    "kind": "op",
+    "slug": "random-random_sample"
+  },
+  "random/random-state": {
+    "canonical_name": "random.RandomState",
+    "href": "/docs/api/random/random-state/",
+    "kind": "symbol",
+    "slug": "random-random-state"
+  },
+  "random/ranf": {
+    "canonical_name": "random.ranf",
+    "href": "/docs/api/random/ranf/",
+    "kind": "symbol",
+    "slug": "random-ranf"
+  },
+  "random/rayleigh": {
+    "canonical_name": "random.rayleigh",
+    "href": "/docs/api/random/rayleigh/",
+    "kind": "op",
+    "slug": "random-rayleigh"
+  },
+  "random/sample": {
+    "canonical_name": "random.sample",
+    "href": "/docs/api/random/sample/",
+    "kind": "symbol",
+    "slug": "random-sample"
+  },
+  "random/seed": {
+    "canonical_name": "random.seed",
+    "href": "/docs/api/random/seed/",
+    "kind": "op",
+    "slug": "random-seed"
+  },
+  "random/seed-sequence": {
+    "canonical_name": "random.SeedSequence",
+    "href": "/docs/api/random/seed-sequence/",
+    "kind": "symbol",
+    "slug": "random-seed-sequence"
+  },
+  "random/set-state": {
+    "canonical_name": "random.set_state",
+    "href": "/docs/api/random/set-state/",
+    "kind": "op",
+    "slug": "random-set_state"
+  },
+  "random/shuffle": {
+    "canonical_name": "random.shuffle",
+    "href": "/docs/api/random/shuffle/",
+    "kind": "op",
+    "slug": "random-shuffle"
+  },
+  "random/standard-cauchy": {
+    "canonical_name": "random.standard_cauchy",
+    "href": "/docs/api/random/standard-cauchy/",
+    "kind": "op",
+    "slug": "random-standard_cauchy"
+  },
+  "random/standard-exponential": {
+    "canonical_name": "random.standard_exponential",
+    "href": "/docs/api/random/standard-exponential/",
+    "kind": "op",
+    "slug": "random-standard_exponential"
+  },
+  "random/standard-gamma": {
+    "canonical_name": "random.standard_gamma",
+    "href": "/docs/api/random/standard-gamma/",
+    "kind": "op",
+    "slug": "random-standard_gamma"
+  },
+  "random/standard-normal": {
+    "canonical_name": "random.standard_normal",
+    "href": "/docs/api/random/standard-normal/",
+    "kind": "op",
+    "slug": "random-standard_normal"
+  },
+  "random/standard-t": {
+    "canonical_name": "random.standard_t",
+    "href": "/docs/api/random/standard-t/",
+    "kind": "op",
+    "slug": "random-standard_t"
+  },
+  "random/symmetric": {
+    "canonical_name": "random.symmetric",
+    "href": "/docs/api/random/symmetric/",
+    "kind": "symbol",
+    "slug": "random-symmetric"
+  },
+  "random/triangular": {
+    "canonical_name": "random.triangular",
+    "href": "/docs/api/random/triangular/",
+    "kind": "op",
+    "slug": "random-triangular"
+  },
+  "random/uniform": {
+    "canonical_name": "random.uniform",
+    "href": "/docs/api/random/uniform/",
+    "kind": "op",
+    "slug": "random-uniform"
+  },
+  "random/vonmises": {
+    "canonical_name": "random.vonmises",
+    "href": "/docs/api/random/vonmises/",
+    "kind": "op",
+    "slug": "random-vonmises"
+  },
+  "random/wald": {
+    "canonical_name": "random.wald",
+    "href": "/docs/api/random/wald/",
+    "kind": "op",
+    "slug": "random-wald"
+  },
+  "random/weibull": {
+    "canonical_name": "random.weibull",
+    "href": "/docs/api/random/weibull/",
+    "kind": "op",
+    "slug": "random-weibull"
+  },
+  "random/zipf": {
+    "canonical_name": "random.zipf",
+    "href": "/docs/api/random/zipf/",
+    "kind": "op",
+    "slug": "random-zipf"
+  },
+  "ravel": {
+    "canonical_name": "ravel",
+    "href": "/docs/api/ravel/",
+    "kind": "op",
+    "slug": "ravel"
+  },
+  "ravel-multi-index": {
+    "canonical_name": "ravel_multi_index",
+    "href": "/docs/api/ravel-multi-index/",
+    "kind": "op",
+    "slug": "ravel_multi_index"
+  },
+  "real": {
+    "canonical_name": "real",
+    "href": "/docs/api/real/",
+    "kind": "op",
+    "slug": "real"
+  },
+  "real-if-close": {
+    "canonical_name": "real_if_close",
+    "href": "/docs/api/real-if-close/",
+    "kind": "op",
+    "slug": "real_if_close"
+  },
+  "reciprocal": {
+    "canonical_name": "reciprocal",
+    "href": "/docs/api/reciprocal/",
+    "kind": "op",
+    "slug": "reciprocal"
+  },
+  "remainder": {
+    "canonical_name": "remainder",
+    "href": "/docs/api/remainder/",
+    "kind": "op",
+    "slug": "remainder"
+  },
+  "repeat": {
+    "canonical_name": "repeat",
+    "href": "/docs/api/repeat/",
+    "kind": "op",
+    "slug": "repeat"
+  },
+  "require": {
+    "canonical_name": "require",
+    "href": "/docs/api/require/",
+    "kind": "op",
+    "slug": "require"
+  },
+  "reshape": {
+    "canonical_name": "reshape",
+    "href": "/docs/api/reshape/",
+    "kind": "op",
+    "slug": "reshape"
+  },
+  "resize": {
+    "canonical_name": "resize",
+    "href": "/docs/api/resize/",
+    "kind": "op",
+    "slug": "resize"
+  },
+  "result-type": {
+    "canonical_name": "result_type",
+    "href": "/docs/api/result-type/",
+    "kind": "op",
+    "slug": "result_type"
+  },
+  "right-shift": {
+    "canonical_name": "right_shift",
+    "href": "/docs/api/right-shift/",
+    "kind": "op",
+    "slug": "right_shift"
+  },
+  "rint": {
+    "canonical_name": "rint",
+    "href": "/docs/api/rint/",
+    "kind": "op",
+    "slug": "rint"
+  },
+  "roll": {
+    "canonical_name": "roll",
+    "href": "/docs/api/roll/",
+    "kind": "op",
+    "slug": "roll"
+  },
+  "rollaxis": {
+    "canonical_name": "rollaxis",
+    "href": "/docs/api/rollaxis/",
+    "kind": "op",
+    "slug": "rollaxis"
+  },
+  "roots": {
+    "canonical_name": "roots",
+    "href": "/docs/api/roots/",
+    "kind": "op",
+    "slug": "roots"
+  },
+  "rot90": {
+    "canonical_name": "rot90",
+    "href": "/docs/api/rot90/",
+    "kind": "op",
+    "slug": "rot90"
+  },
+  "row-stack": {
+    "canonical_name": "row_stack",
+    "href": "/docs/api/row-stack/",
+    "kind": "op",
+    "slug": "row_stack"
+  },
+  "searchsorted": {
+    "canonical_name": "searchsorted",
+    "href": "/docs/api/searchsorted/",
+    "kind": "op",
+    "slug": "searchsorted"
+  },
+  "select": {
+    "canonical_name": "select",
+    "href": "/docs/api/select/",
+    "kind": "op",
+    "slug": "select"
+  },
+  "set-printoptions": {
+    "canonical_name": "set_printoptions",
+    "href": "/docs/api/set-printoptions/",
+    "kind": "symbol",
+    "slug": "set-printoptions"
+  },
+  "setdiff1d": {
+    "canonical_name": "setdiff1d",
+    "href": "/docs/api/setdiff1d/",
+    "kind": "op",
+    "slug": "setdiff1d"
+  },
+  "seterr": {
+    "canonical_name": "seterr",
+    "href": "/docs/api/seterr/",
+    "kind": "symbol",
+    "slug": "seterr"
+  },
+  "setxor1d": {
+    "canonical_name": "setxor1d",
+    "href": "/docs/api/setxor1d/",
+    "kind": "op",
+    "slug": "setxor1d"
+  },
+  "shape": {
+    "canonical_name": "shape",
+    "href": "/docs/api/shape/",
+    "kind": "op",
+    "slug": "shape"
+  },
+  "shares-memory": {
+    "canonical_name": "shares_memory",
+    "href": "/docs/api/shares-memory/",
+    "kind": "op",
+    "slug": "shares_memory"
+  },
+  "sign": {
+    "canonical_name": "sign",
+    "href": "/docs/api/sign/",
+    "kind": "op",
+    "slug": "sign"
+  },
+  "signbit": {
+    "canonical_name": "signbit",
+    "href": "/docs/api/signbit/",
+    "kind": "op",
+    "slug": "signbit"
+  },
+  "sin": {
+    "canonical_name": "sin",
+    "href": "/docs/api/sin/",
+    "kind": "op",
+    "slug": "sin"
+  },
+  "sinc": {
+    "canonical_name": "sinc",
+    "href": "/docs/api/sinc/",
+    "kind": "op",
+    "slug": "sinc"
+  },
+  "sinh": {
+    "canonical_name": "sinh",
+    "href": "/docs/api/sinh/",
+    "kind": "op",
+    "slug": "sinh"
+  },
+  "size": {
+    "canonical_name": "size",
+    "href": "/docs/api/size/",
+    "kind": "op",
+    "slug": "size"
+  },
+  "sort": {
+    "canonical_name": "sort",
+    "href": "/docs/api/sort/",
+    "kind": "op",
+    "slug": "sort"
+  },
+  "sort-complex": {
+    "canonical_name": "sort_complex",
+    "href": "/docs/api/sort-complex/",
+    "kind": "op",
+    "slug": "sort_complex"
+  },
+  "spacing": {
+    "canonical_name": "spacing",
+    "href": "/docs/api/spacing/",
+    "kind": "op",
+    "slug": "spacing"
+  },
+  "split": {
+    "canonical_name": "split",
+    "href": "/docs/api/split/",
+    "kind": "op",
+    "slug": "split"
+  },
+  "sqrt": {
+    "canonical_name": "sqrt",
+    "href": "/docs/api/sqrt/",
+    "kind": "op",
+    "slug": "sqrt"
+  },
+  "square": {
+    "canonical_name": "square",
+    "href": "/docs/api/square/",
+    "kind": "op",
+    "slug": "square"
+  },
+  "squeeze": {
+    "canonical_name": "squeeze",
+    "href": "/docs/api/squeeze/",
+    "kind": "op",
+    "slug": "squeeze"
+  },
+  "stack": {
+    "canonical_name": "stack",
+    "href": "/docs/api/stack/",
+    "kind": "op",
+    "slug": "stack"
+  },
+  "stats/cauchy": {
+    "canonical_name": "stats.cauchy",
+    "href": "/docs/api/stats/cauchy/",
+    "kind": "symbol",
+    "slug": "stats-cauchy"
+  },
+  "stats/cauchy/cdf": {
+    "canonical_name": "stats.cauchy.cdf",
+    "href": "/docs/api/stats/cauchy/cdf/",
+    "kind": "op",
+    "slug": "stats-cauchy-cdf"
+  },
+  "stats/cauchy/pdf": {
+    "canonical_name": "stats.cauchy.pdf",
+    "href": "/docs/api/stats/cauchy/pdf/",
+    "kind": "op",
+    "slug": "stats-cauchy-pdf"
+  },
+  "stats/cauchy/ppf": {
+    "canonical_name": "stats.cauchy.ppf",
+    "href": "/docs/api/stats/cauchy/ppf/",
+    "kind": "op",
+    "slug": "stats-cauchy-ppf"
+  },
+  "stats/expon": {
+    "canonical_name": "stats.expon",
+    "href": "/docs/api/stats/expon/",
+    "kind": "symbol",
+    "slug": "stats-expon"
+  },
+  "stats/expon/cdf": {
+    "canonical_name": "stats.expon.cdf",
+    "href": "/docs/api/stats/expon/cdf/",
+    "kind": "op",
+    "slug": "stats-expon-cdf"
+  },
+  "stats/expon/pdf": {
+    "canonical_name": "stats.expon.pdf",
+    "href": "/docs/api/stats/expon/pdf/",
+    "kind": "op",
+    "slug": "stats-expon-pdf"
+  },
+  "stats/expon/ppf": {
+    "canonical_name": "stats.expon.ppf",
+    "href": "/docs/api/stats/expon/ppf/",
+    "kind": "op",
+    "slug": "stats-expon-ppf"
+  },
+  "stats/laplace": {
+    "canonical_name": "stats.laplace",
+    "href": "/docs/api/stats/laplace/",
+    "kind": "symbol",
+    "slug": "stats-laplace"
+  },
+  "stats/laplace/cdf": {
+    "canonical_name": "stats.laplace.cdf",
+    "href": "/docs/api/stats/laplace/cdf/",
+    "kind": "op",
+    "slug": "stats-laplace-cdf"
+  },
+  "stats/laplace/pdf": {
+    "canonical_name": "stats.laplace.pdf",
+    "href": "/docs/api/stats/laplace/pdf/",
+    "kind": "op",
+    "slug": "stats-laplace-pdf"
+  },
+  "stats/laplace/ppf": {
+    "canonical_name": "stats.laplace.ppf",
+    "href": "/docs/api/stats/laplace/ppf/",
+    "kind": "op",
+    "slug": "stats-laplace-ppf"
+  },
+  "stats/logistic": {
+    "canonical_name": "stats.logistic",
+    "href": "/docs/api/stats/logistic/",
+    "kind": "symbol",
+    "slug": "stats-logistic"
+  },
+  "stats/logistic/cdf": {
+    "canonical_name": "stats.logistic.cdf",
+    "href": "/docs/api/stats/logistic/cdf/",
+    "kind": "op",
+    "slug": "stats-logistic-cdf"
+  },
+  "stats/logistic/pdf": {
+    "canonical_name": "stats.logistic.pdf",
+    "href": "/docs/api/stats/logistic/pdf/",
+    "kind": "op",
+    "slug": "stats-logistic-pdf"
+  },
+  "stats/logistic/ppf": {
+    "canonical_name": "stats.logistic.ppf",
+    "href": "/docs/api/stats/logistic/ppf/",
+    "kind": "op",
+    "slug": "stats-logistic-ppf"
+  },
+  "stats/lognorm": {
+    "canonical_name": "stats.lognorm",
+    "href": "/docs/api/stats/lognorm/",
+    "kind": "symbol",
+    "slug": "stats-lognorm"
+  },
+  "stats/lognorm/cdf": {
+    "canonical_name": "stats.lognorm.cdf",
+    "href": "/docs/api/stats/lognorm/cdf/",
+    "kind": "op",
+    "slug": "stats-lognorm-cdf"
+  },
+  "stats/lognorm/pdf": {
+    "canonical_name": "stats.lognorm.pdf",
+    "href": "/docs/api/stats/lognorm/pdf/",
+    "kind": "op",
+    "slug": "stats-lognorm-pdf"
+  },
+  "stats/lognorm/ppf": {
+    "canonical_name": "stats.lognorm.ppf",
+    "href": "/docs/api/stats/lognorm/ppf/",
+    "kind": "op",
+    "slug": "stats-lognorm-ppf"
+  },
+  "stats/norm": {
+    "canonical_name": "stats.norm",
+    "href": "/docs/api/stats/norm/",
+    "kind": "symbol",
+    "slug": "stats-norm"
+  },
+  "stats/norm/cdf": {
+    "canonical_name": "stats.norm.cdf",
+    "href": "/docs/api/stats/norm/cdf/",
+    "kind": "op",
+    "slug": "stats-norm-cdf"
+  },
+  "stats/norm/pdf": {
+    "canonical_name": "stats.norm.pdf",
+    "href": "/docs/api/stats/norm/pdf/",
+    "kind": "op",
+    "slug": "stats-norm-pdf"
+  },
+  "stats/norm/ppf": {
+    "canonical_name": "stats.norm.ppf",
+    "href": "/docs/api/stats/norm/ppf/",
+    "kind": "op",
+    "slug": "stats-norm-ppf"
+  },
+  "stats/truncnorm": {
+    "canonical_name": "stats.truncnorm",
+    "href": "/docs/api/stats/truncnorm/",
+    "kind": "symbol",
+    "slug": "stats-truncnorm"
+  },
+  "stats/truncnorm/cdf": {
+    "canonical_name": "stats.truncnorm.cdf",
+    "href": "/docs/api/stats/truncnorm/cdf/",
+    "kind": "op",
+    "slug": "stats-truncnorm-cdf"
+  },
+  "stats/truncnorm/pdf": {
+    "canonical_name": "stats.truncnorm.pdf",
+    "href": "/docs/api/stats/truncnorm/pdf/",
+    "kind": "op",
+    "slug": "stats-truncnorm-pdf"
+  },
+  "stats/truncnorm/ppf": {
+    "canonical_name": "stats.truncnorm.ppf",
+    "href": "/docs/api/stats/truncnorm/ppf/",
+    "kind": "op",
+    "slug": "stats-truncnorm-ppf"
+  },
+  "stats/uniform": {
+    "canonical_name": "stats.uniform",
+    "href": "/docs/api/stats/uniform/",
+    "kind": "symbol",
+    "slug": "stats-uniform"
+  },
+  "stats/uniform/cdf": {
+    "canonical_name": "stats.uniform.cdf",
+    "href": "/docs/api/stats/uniform/cdf/",
+    "kind": "op",
+    "slug": "stats-uniform-cdf"
+  },
+  "stats/uniform/pdf": {
+    "canonical_name": "stats.uniform.pdf",
+    "href": "/docs/api/stats/uniform/pdf/",
+    "kind": "op",
+    "slug": "stats-uniform-pdf"
+  },
+  "stats/uniform/ppf": {
+    "canonical_name": "stats.uniform.ppf",
+    "href": "/docs/api/stats/uniform/ppf/",
+    "kind": "op",
+    "slug": "stats-uniform-ppf"
+  },
+  "std": {
+    "canonical_name": "std",
+    "href": "/docs/api/std/",
+    "kind": "op",
+    "slug": "std"
+  },
+  "step-info": {
+    "canonical_name": "StepInfo",
+    "href": "/docs/api/step-info/",
+    "kind": "symbol",
+    "slug": "step-info"
+  },
+  "subtract": {
+    "canonical_name": "subtract",
+    "href": "/docs/api/subtract/",
+    "kind": "op",
+    "slug": "subtract"
+  },
+  "sum": {
+    "canonical_name": "sum",
+    "href": "/docs/api/sum/",
+    "kind": "op",
+    "slug": "sum"
+  },
+  "swapaxes": {
+    "canonical_name": "swapaxes",
+    "href": "/docs/api/swapaxes/",
+    "kind": "op",
+    "slug": "swapaxes"
+  },
+  "symmetric-tensor": {
+    "canonical_name": "SymmetricTensor",
+    "href": "/docs/api/symmetric-tensor/",
+    "kind": "symbol",
+    "slug": "symmetric-tensor"
+  },
+  "symmetrize": {
+    "canonical_name": "symmetrize",
+    "href": "/docs/api/symmetrize/",
+    "kind": "symbol",
+    "slug": "symmetrize"
+  },
+  "symmetry-info": {
+    "canonical_name": "SymmetryInfo",
+    "href": "/docs/api/symmetry-info/",
+    "kind": "symbol",
+    "slug": "symmetry-info"
+  },
+  "take": {
+    "canonical_name": "take",
+    "href": "/docs/api/take/",
+    "kind": "op",
+    "slug": "take"
+  },
+  "take-along-axis": {
+    "canonical_name": "take_along_axis",
+    "href": "/docs/api/take-along-axis/",
+    "kind": "op",
+    "slug": "take_along_axis"
+  },
+  "tan": {
+    "canonical_name": "tan",
+    "href": "/docs/api/tan/",
+    "kind": "op",
+    "slug": "tan"
+  },
+  "tanh": {
+    "canonical_name": "tanh",
+    "href": "/docs/api/tanh/",
+    "kind": "op",
+    "slug": "tanh"
+  },
+  "tensordot": {
+    "canonical_name": "tensordot",
+    "href": "/docs/api/tensordot/",
+    "kind": "op",
+    "slug": "tensordot"
+  },
+  "testing/assert-allclose": {
+    "canonical_name": "testing.assert_allclose",
+    "href": "/docs/api/testing/assert-allclose/",
+    "kind": "symbol",
+    "slug": "testing-assert-allclose"
+  },
+  "testing/assert-array-equal": {
+    "canonical_name": "testing.assert_array_equal",
+    "href": "/docs/api/testing/assert-array-equal/",
+    "kind": "symbol",
+    "slug": "testing-assert-array-equal"
+  },
+  "tile": {
+    "canonical_name": "tile",
+    "href": "/docs/api/tile/",
+    "kind": "op",
+    "slug": "tile"
+  },
+  "trace": {
+    "canonical_name": "trace",
+    "href": "/docs/api/trace/",
+    "kind": "op",
+    "slug": "trace"
+  },
+  "transpose": {
+    "canonical_name": "transpose",
+    "href": "/docs/api/transpose/",
+    "kind": "op",
+    "slug": "transpose"
+  },
+  "trapezoid": {
+    "canonical_name": "trapezoid",
+    "href": "/docs/api/trapezoid/",
+    "kind": "op",
+    "slug": "trapezoid"
+  },
+  "tri": {
+    "canonical_name": "tri",
+    "href": "/docs/api/tri/",
+    "kind": "op",
+    "slug": "tri"
+  },
+  "tril": {
+    "canonical_name": "tril",
+    "href": "/docs/api/tril/",
+    "kind": "op",
+    "slug": "tril"
+  },
+  "tril-indices": {
+    "canonical_name": "tril_indices",
+    "href": "/docs/api/tril-indices/",
+    "kind": "op",
+    "slug": "tril_indices"
+  },
+  "tril-indices-from": {
+    "canonical_name": "tril_indices_from",
+    "href": "/docs/api/tril-indices-from/",
+    "kind": "op",
+    "slug": "tril_indices_from"
+  },
+  "trim-zeros": {
+    "canonical_name": "trim_zeros",
+    "href": "/docs/api/trim-zeros/",
+    "kind": "op",
+    "slug": "trim_zeros"
+  },
+  "triu": {
+    "canonical_name": "triu",
+    "href": "/docs/api/triu/",
+    "kind": "op",
+    "slug": "triu"
+  },
+  "triu-indices": {
+    "canonical_name": "triu_indices",
+    "href": "/docs/api/triu-indices/",
+    "kind": "op",
+    "slug": "triu_indices"
+  },
+  "triu-indices-from": {
+    "canonical_name": "triu_indices_from",
+    "href": "/docs/api/triu-indices-from/",
+    "kind": "op",
+    "slug": "triu_indices_from"
+  },
+  "true-divide": {
+    "canonical_name": "true_divide",
+    "href": "/docs/api/true-divide/",
+    "kind": "op",
+    "slug": "true_divide"
+  },
+  "trunc": {
+    "canonical_name": "trunc",
+    "href": "/docs/api/trunc/",
+    "kind": "op",
+    "slug": "trunc"
+  },
+  "typename": {
+    "canonical_name": "typename",
+    "href": "/docs/api/typename/",
+    "kind": "op",
+    "slug": "typename"
+  },
+  "union1d": {
+    "canonical_name": "union1d",
+    "href": "/docs/api/union1d/",
+    "kind": "op",
+    "slug": "union1d"
+  },
+  "unique": {
+    "canonical_name": "unique",
+    "href": "/docs/api/unique/",
+    "kind": "op",
+    "slug": "unique"
+  },
+  "unique-all": {
+    "canonical_name": "unique_all",
+    "href": "/docs/api/unique-all/",
+    "kind": "op",
+    "slug": "unique_all"
+  },
+  "unique-counts": {
+    "canonical_name": "unique_counts",
+    "href": "/docs/api/unique-counts/",
+    "kind": "op",
+    "slug": "unique_counts"
+  },
+  "unique-inverse": {
+    "canonical_name": "unique_inverse",
+    "href": "/docs/api/unique-inverse/",
+    "kind": "op",
+    "slug": "unique_inverse"
+  },
+  "unique-values": {
+    "canonical_name": "unique_values",
+    "href": "/docs/api/unique-values/",
+    "kind": "op",
+    "slug": "unique_values"
+  },
+  "unpackbits": {
+    "canonical_name": "unpackbits",
+    "href": "/docs/api/unpackbits/",
+    "kind": "op",
+    "slug": "unpackbits"
+  },
+  "unravel-index": {
+    "canonical_name": "unravel_index",
+    "href": "/docs/api/unravel-index/",
+    "kind": "op",
+    "slug": "unravel_index"
+  },
+  "unstack": {
+    "canonical_name": "unstack",
+    "href": "/docs/api/unstack/",
+    "kind": "op",
+    "slug": "unstack"
+  },
+  "unwrap": {
+    "canonical_name": "unwrap",
+    "href": "/docs/api/unwrap/",
+    "kind": "op",
+    "slug": "unwrap"
+  },
+  "vander": {
+    "canonical_name": "vander",
+    "href": "/docs/api/vander/",
+    "kind": "op",
+    "slug": "vander"
+  },
+  "var": {
+    "canonical_name": "var",
+    "href": "/docs/api/var/",
+    "kind": "op",
+    "slug": "var"
+  },
+  "vdot": {
+    "canonical_name": "vdot",
+    "href": "/docs/api/vdot/",
+    "kind": "op",
+    "slug": "vdot"
+  },
+  "vecdot": {
+    "canonical_name": "vecdot",
+    "href": "/docs/api/vecdot/",
+    "kind": "op",
+    "slug": "vecdot"
+  },
+  "vecmat": {
+    "canonical_name": "vecmat",
+    "href": "/docs/api/vecmat/",
+    "kind": "op",
+    "slug": "vecmat"
+  },
+  "vsplit": {
+    "canonical_name": "vsplit",
+    "href": "/docs/api/vsplit/",
+    "kind": "op",
+    "slug": "vsplit"
+  },
+  "vstack": {
+    "canonical_name": "vstack",
+    "href": "/docs/api/vstack/",
+    "kind": "op",
+    "slug": "vstack"
+  },
+  "where": {
+    "canonical_name": "where",
+    "href": "/docs/api/where/",
+    "kind": "op",
+    "slug": "where"
+  },
+  "zeros": {
+    "canonical_name": "zeros",
+    "href": "/docs/api/zeros/",
+    "kind": "op",
+    "slug": "zeros"
+  },
+  "zeros-like": {
+    "canonical_name": "zeros_like",
+    "href": "/docs/api/zeros-like/",
+    "kind": "op",
+    "slug": "zeros_like"
+  }
+}

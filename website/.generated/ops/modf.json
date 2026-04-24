@@ -435,6 +435,7 @@
     }
   ],
   "canonical_name": "modf",
+  "canonical_path": "modf",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -456,11 +457,12 @@
     "output": "(array([ 0. ,  0.5]), array([ 0.,  3.]))\n\n(-0.5, -0)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/modf/",
+  "href": "/docs/api/modf/",
+  "legacy_href": "/docs/api/ops/modf/",
   "module": "numpy",
   "name": "modf",
   "next": {
-    "href": "/docs/api/ops/moveaxis/",
+    "href": "/docs/api/moveaxis/",
     "label": "we.moveaxis"
   },
   "notes": "Return fractional and integral parts element-wise.",
@@ -508,7 +510,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/mod/",
+    "href": "/docs/api/mod/",
     "label": "we.mod"
   },
   "provenance_label": "Adapted from NumPy docs",

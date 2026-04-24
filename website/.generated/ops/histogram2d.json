@@ -1075,6 +1075,7 @@
     }
   ],
   "canonical_name": "histogram2d",
+  "canonical_path": "histogram2d",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -1120,11 +1121,12 @@
     "output": "<matplotlib.image.AxesImage object at 0x...>\n\n<matplotlib.collections.QuadMesh object at 0x...>",
     "source": "derived"
   },
-  "href": "/docs/api/ops/histogram2d/",
+  "href": "/docs/api/histogram2d/",
+  "legacy_href": "/docs/api/ops/histogram2d/",
   "module": "numpy",
   "name": "histogram2d",
   "next": {
-    "href": "/docs/api/ops/histogram_bin_edges/",
+    "href": "/docs/api/histogram-bin-edges/",
     "label": "we.histogram_bin_edges"
   },
   "notes": "2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by))).",
@@ -1198,7 +1200,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/histogram/",
+    "href": "/docs/api/histogram/",
     "label": "we.histogram"
   },
   "provenance_label": "Adapted from NumPy docs",

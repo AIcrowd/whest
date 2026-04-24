@@ -1014,6 +1014,7 @@
     }
   ],
   "canonical_name": "var",
+  "canonical_path": "var",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -1028,11 +1029,12 @@
     "output": "1.25\n\narray([1.,  1.])\n\narray([0.25,  0.25])\n\nwe.float32(0.20250003)\n\n0.20249999932944759 # may vary\n\n0.2025\n\n6.833333333333333 # may vary\n\n4.0\n\n#doctest: +SKIP\nPercentage execution time saved 32%",
     "source": "derived"
   },
-  "href": "/docs/api/ops/var/",
+  "href": "/docs/api/var/",
+  "legacy_href": "/docs/api/ops/var/",
   "module": "numpy",
   "name": "var",
   "next": {
-    "href": "/docs/api/ops/vdot/",
+    "href": "/docs/api/vdot/",
     "label": "we.vdot"
   },
   "notes": "Variance; cost_multiplier=2 (two passes).",
@@ -1146,7 +1148,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/vander/",
+    "href": "/docs/api/vander/",
     "label": "we.vander"
   },
   "provenance_label": "Adapted from NumPy docs",

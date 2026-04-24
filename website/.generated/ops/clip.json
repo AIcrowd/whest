@@ -729,6 +729,7 @@
     }
   ],
   "canonical_name": "clip",
+  "canonical_path": "clip",
   "category": "counted_custom",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -750,11 +751,12 @@
     "output": "array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([1, 1, 2, 3, 4, 5, 6, 7, 8, 8])\n\narray([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])\n\narray([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])\n\narray([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])\n\narray([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/clip/",
+  "href": "/docs/api/clip/",
+  "legacy_href": "/docs/api/ops/clip/",
   "module": "numpy",
   "name": "clip",
   "next": {
-    "href": "/docs/api/ops/column_stack/",
+    "href": "/docs/api/column-stack/",
     "label": "we.column_stack"
   },
   "notes": "Clip array to [a_min, a_max] element-wise.",
@@ -810,7 +812,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/choose/",
+    "href": "/docs/api/choose/",
     "label": "we.choose"
   },
   "provenance_label": "Adapted from NumPy docs",

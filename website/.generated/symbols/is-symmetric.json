@@ -1,0 +1,211 @@
+{
+  "aliases": [
+    "is_symmetric",
+    "we.is_symmetric",
+    "whest.is_symmetric"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Check whether "
+            },
+            {
+              "kind": "emphasis",
+              "text": "data"
+            },
+            {
+              "kind": "text",
+              "text": " is symmetric along the given axes."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The tensor data."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "we.ndarray",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The tensor data."
+                }
+              ],
+              "name": "data",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "A single symmetry group "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "(0, 1)"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " or a list "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "[(0, 1), (2, 3)]"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int or list of tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "A single symmetry group "
+                },
+                {
+                  "kind": "code",
+                  "text": "(0, 1)"
+                },
+                {
+                  "kind": "text",
+                  "text": " or a list "
+                },
+                {
+                  "kind": "code",
+                  "text": "[(0, 1), (2, 3)]"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "symmetric_axes",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Tolerances passed to "
+                    },
+                    {
+                      "display_text": "we.allclose",
+                      "explicit_title": false,
+                      "external_url": "",
+                      "href": "/docs/api/allclose/",
+                      "kind": "role_reference",
+                      "original_target": "we.allclose",
+                      "role": "func",
+                      "suppress_link": false,
+                      "target": "allclose",
+                      "unresolved": false
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "float",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Tolerances passed to "
+                },
+                {
+                  "display_text": "we.allclose",
+                  "explicit_title": false,
+                  "external_url": "",
+                  "href": "/docs/api/allclose/",
+                  "kind": "role_reference",
+                  "original_target": "we.allclose",
+                  "role": "func",
+                  "suppress_link": false,
+                  "target": "allclose",
+                  "unresolved": false
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "atol, rtol",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [],
+              "data_type": "bool",
+              "inline": [],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    }
+  ],
+  "canonical_name": "is_symmetric",
+  "canonical_path": "is-symmetric",
+  "display_name": "we.is_symmetric",
+  "href": "/docs/api/is-symmetric/",
+  "import_path": "we.is_symmetric",
+  "kind": "function",
+  "members": [],
+  "module": "whest._symmetric",
+  "name": "is_symmetric",
+  "related_guides": [
+    {
+      "href": "/docs/guides/symmetry",
+      "title": "Symmetry Savings"
+    }
+  ],
+  "signature": "we.is_symmetric(data: 'np.ndarray', symmetric_axes: 'tuple[int, ...] | list[tuple[int, ...]]', *, atol: 'float' = 1e-06, rtol: 'float' = 1e-05) -> 'bool'",
+  "slug": "is-symmetric",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_symmetric.py#L231",
+  "status_note": "",
+  "summary": "Check whether *data* is symmetric along the given axes.",
+  "upstream_source_url": ""
+}

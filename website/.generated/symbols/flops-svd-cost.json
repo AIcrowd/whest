@@ -1,0 +1,226 @@
+{
+  "aliases": [
+    "flops.svd_cost",
+    "we.flops.svd_cost",
+    "whest.flops.svd_cost",
+    "svd_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/linalg/svd/",
+              "kind": "link",
+              "target": "linalg.svd",
+              "text": "linalg.svd"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of a (truncated) SVD."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of rows."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of rows."
+                }
+              ],
+              "name": "m",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of columns."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of columns."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of singular values/vectors to compute. Defaults to min(m, n)."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int or None, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of singular values/vectors to compute. Defaults to min(m, n)."
+                }
+              ],
+              "name": "k",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count: m * n * k."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count: m * n * k."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Based on Golub-Reinsch bidiagonalization."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.svd_cost",
+  "canonical_path": "flops/svd-cost",
+  "display_name": "we.flops.svd_cost",
+  "href": "/docs/api/flops/svd-cost/",
+  "import_path": "we.flops.svd_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest._flops",
+  "name": "flops.svd_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    },
+    {
+      "href": "/docs/guides/linalg",
+      "title": "Linear Algebra Guide"
+    }
+  ],
+  "signature": "we.flops.svd_cost(m: 'int', n: 'int', k: 'int | None' = None) -> 'int'",
+  "slug": "flops-svd-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_flops.py#L165",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``linalg.svd``.",
+  "upstream_source_url": ""
+}

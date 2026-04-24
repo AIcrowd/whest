@@ -619,6 +619,7 @@
     }
   ],
   "canonical_name": "bitwise_left_shift",
+  "canonical_path": "bitwise-left-shift",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -646,11 +647,12 @@
     "output": "'101'\n\n20\n\n'10100'\n\narray([10, 20, 40])\n\n510 <class 'we.int64'>\n\n254 <class 'we.uint8'>\n\narray([10, 20, 40])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bitwise_left_shift/",
+  "href": "/docs/api/bitwise-left-shift/",
+  "legacy_href": "/docs/api/ops/bitwise_left_shift/",
   "module": "numpy",
   "name": "bitwise_left_shift",
   "next": {
-    "href": "/docs/api/ops/bitwise_not/",
+    "href": "/docs/api/bitwise-not/",
     "label": "we.bitwise_not"
   },
   "notes": "Element-wise left bit shift.",
@@ -705,7 +707,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bitwise_count/",
+    "href": "/docs/api/bitwise-count/",
     "label": "we.bitwise_count"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -321,6 +321,7 @@
     }
   ],
   "canonical_name": "trim_zeros",
+  "canonical_path": "trim-zeros",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -335,11 +336,12 @@
     "output": "array([1, 2, 3, 0, 2, 1])\n\narray([0, 0, 0, ..., 0, 2, 1])\n\narray([[0, 2, 3],\n       [1, 0, 3]])\n\narray([[0, 2, 3],\n       [1, 0, 3],\n       [0, 0, 0]])\n\n[1, 2]",
     "source": "derived"
   },
-  "href": "/docs/api/ops/trim_zeros/",
+  "href": "/docs/api/trim-zeros/",
+  "legacy_href": "/docs/api/ops/trim_zeros/",
   "module": "numpy",
   "name": "trim_zeros",
   "next": {
-    "href": "/docs/api/ops/triu/",
+    "href": "/docs/api/triu/",
     "label": "we.triu"
   },
   "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed.",
@@ -379,7 +381,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/tril_indices_from/",
+    "href": "/docs/api/tril-indices-from/",
     "label": "we.tril_indices_from"
   },
   "provenance_label": "Adapted from NumPy docs",

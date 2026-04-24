@@ -392,6 +392,7 @@
     }
   ],
   "canonical_name": "put_along_axis",
+  "canonical_path": "put-along-axis",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -406,11 +407,12 @@
     "output": "array([[1],\n       [0]])\n\narray([[10, 99, 20],\n       [99, 40, 50]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/put_along_axis/",
+  "href": "/docs/api/put-along-axis/",
+  "legacy_href": "/docs/api/ops/put_along_axis/",
   "module": "numpy",
   "name": "put_along_axis",
   "next": {
-    "href": "/docs/api/ops/putmask/",
+    "href": "/docs/api/putmask/",
     "label": "we.putmask"
   },
   "notes": "Put values into destination array using indices. Cost: numel(input).",
@@ -457,7 +459,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/put/",
+    "href": "/docs/api/put/",
     "label": "we.put"
   },
   "provenance_label": "Adapted from NumPy docs",

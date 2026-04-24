@@ -588,6 +588,7 @@
     }
   ],
   "canonical_name": "linalg.matrix_rank",
+  "canonical_path": "linalg/matrix-rank",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -611,11 +612,12 @@
     "output": "4\n\n3\n\n1\n\n0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-matrix_rank/",
+  "href": "/docs/api/linalg/matrix-rank/",
+  "legacy_href": "/docs/api/ops/linalg-matrix_rank/",
   "module": "numpy.linalg",
   "name": "linalg.matrix_rank",
   "next": {
-    "href": "/docs/api/ops/linalg-matrix_transpose/",
+    "href": "/docs/api/linalg/matrix-transpose/",
     "label": "we.linalg.matrix_transpose"
   },
   "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD).",
@@ -665,7 +667,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-matrix_power/",
+    "href": "/docs/api/linalg/matrix-power/",
     "label": "we.linalg.matrix_power"
   },
   "provenance_label": "Adapted from NumPy docs",

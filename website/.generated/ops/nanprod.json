@@ -530,6 +530,7 @@
     }
   ],
   "canonical_name": "nanprod",
+  "canonical_path": "nanprod",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -544,11 +545,12 @@
     "output": "1\n\n1\n\n1.0\n\n6.0\n\narray([3., 2.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nanprod/",
+  "href": "/docs/api/nanprod/",
+  "legacy_href": "/docs/api/ops/nanprod/",
   "module": "numpy",
   "name": "nanprod",
   "next": {
-    "href": "/docs/api/ops/nanquantile/",
+    "href": "/docs/api/nanquantile/",
     "label": "we.nanquantile"
   },
   "notes": "Product ignoring NaNs.",
@@ -625,7 +627,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nanpercentile/",
+    "href": "/docs/api/nanpercentile/",
     "label": "we.nanpercentile"
   },
   "provenance_label": "Adapted from NumPy docs",

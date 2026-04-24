@@ -1213,6 +1213,7 @@
     }
   ],
   "canonical_name": "average",
+  "canonical_path": "average",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -1234,11 +1235,12 @@
     "output": "array([1, 2, 3, 4])\n\n2.5\n\n4.0\n\narray([[0, 1],\n       [2, 3],\n       [4, 5]])\n\narray([0.75, 2.75, 4.75])\n\nTraceback (most recent call last):\n    ...\nTypeError: Axis must be specified when shapes of a and weights differ.\n\narray([[0.5],\n       [2.5],\n       [4.5]])\n\narray([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])\n\narray([3.4, 4.4])\n\nTraceback (most recent call last):\n    ...\nValueError: Shape of weights must be consistent\nwith shape of a along specified axis.",
     "source": "derived"
   },
-  "href": "/docs/api/ops/average/",
+  "href": "/docs/api/average/",
+  "legacy_href": "/docs/api/ops/average/",
   "module": "numpy",
   "name": "average",
   "next": {
-    "href": "/docs/api/ops/bartlett/",
+    "href": "/docs/api/bartlett/",
     "label": "we.bartlett"
   },
   "notes": "Weighted average of array elements.",
@@ -1310,7 +1312,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/atleast_3d/",
+    "href": "/docs/api/atleast-3d/",
     "label": "we.atleast_3d"
   },
   "provenance_label": "Adapted from NumPy docs",

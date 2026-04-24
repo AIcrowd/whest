@@ -497,6 +497,7 @@
     }
   ],
   "canonical_name": "not_equal",
+  "canonical_path": "not-equal",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -518,11 +519,12 @@
     "output": "array([False,  True])\n\narray([[False,  True],\n       [False,  True]])\n\narray([False,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/not_equal/",
+  "href": "/docs/api/not-equal/",
+  "legacy_href": "/docs/api/ops/not_equal/",
   "module": "numpy",
   "name": "not_equal",
   "next": {
-    "href": "/docs/api/ops/ones/",
+    "href": "/docs/api/ones/",
     "label": "we.ones"
   },
   "notes": "Element-wise x1 != x2.",
@@ -570,7 +572,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nonzero/",
+    "href": "/docs/api/nonzero/",
     "label": "we.nonzero"
   },
   "provenance_label": "Adapted from NumPy docs",

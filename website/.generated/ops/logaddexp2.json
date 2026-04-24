@@ -407,6 +407,7 @@
     }
   ],
   "canonical_name": "logaddexp2",
+  "canonical_path": "logaddexp2",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -428,11 +429,12 @@
     "output": "(-166.09640474436813, -164.77447664948076, -164.28904982231052)\n\n3.4999999999999914e-50",
     "source": "derived"
   },
-  "href": "/docs/api/ops/logaddexp2/",
+  "href": "/docs/api/logaddexp2/",
+  "legacy_href": "/docs/api/ops/logaddexp2/",
   "module": "numpy",
   "name": "logaddexp2",
   "next": {
-    "href": "/docs/api/ops/logical_and/",
+    "href": "/docs/api/logical-and/",
     "label": "we.logical_and"
   },
   "notes": "log2(2**x1 + 2**x2) element-wise.",
@@ -480,7 +482,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/logaddexp/",
+    "href": "/docs/api/logaddexp/",
     "label": "we.logaddexp"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -314,6 +314,7 @@
     }
   ],
   "canonical_name": "flipud",
+  "canonical_path": "flipud",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -328,11 +329,12 @@
     "output": "array([[1.,  0.,  0.],\n       [0.,  2.,  0.],\n       [0.,  0.,  3.]])\n\narray([[0.,  0.,  3.],\n       [0.,  2.,  0.],\n       [1.,  0.,  0.]])\n\nTrue\n\narray([2, 1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/flipud/",
+  "href": "/docs/api/flipud/",
+  "legacy_href": "/docs/api/ops/flipud/",
   "module": "numpy",
   "name": "flipud",
   "next": {
-    "href": "/docs/api/ops/float_power/",
+    "href": "/docs/api/float-power/",
     "label": "we.float_power"
   },
   "notes": "Flip array up-down.",
@@ -350,7 +352,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fliplr/",
+    "href": "/docs/api/fliplr/",
     "label": "we.fliplr"
   },
   "provenance_label": "Adapted from NumPy docs",

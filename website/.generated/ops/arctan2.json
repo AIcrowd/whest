@@ -664,6 +664,7 @@
     }
   ],
   "canonical_name": "arctan2",
+  "canonical_path": "arctan2",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -699,11 +700,12 @@
     "output": "array([-135.,  -45.,   45.,  135.])\n\narray([ 1.57079633, -1.57079633])\n\narray([0.        , 3.14159265, 0.78539816])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/arctan2/",
+  "href": "/docs/api/arctan2/",
+  "legacy_href": "/docs/api/ops/arctan2/",
   "module": "numpy",
   "name": "arctan2",
   "next": {
-    "href": "/docs/api/ops/arctanh/",
+    "href": "/docs/api/arctanh/",
     "label": "we.arctanh"
   },
   "notes": "Element-wise arctan(y/x) considering quadrant.",
@@ -762,7 +764,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/arctan/",
+    "href": "/docs/api/arctan/",
     "label": "we.arctan"
   },
   "provenance_label": "Adapted from NumPy docs",

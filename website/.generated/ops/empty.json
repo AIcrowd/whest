@@ -511,6 +511,7 @@
     }
   ],
   "canonical_name": "empty",
+  "canonical_path": "empty",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -525,11 +526,12 @@
     "output": "array([[ -9.74499359e+001,   6.69583040e-309],\n       [  2.13182611e-314,   3.06959433e-309]])         #uninitialized\n\narray([[-1073741821, -1067949133],\n       [  496041986,    19249760]])                     #uninitialized",
     "source": "derived"
   },
-  "href": "/docs/api/ops/empty/",
+  "href": "/docs/api/empty/",
+  "legacy_href": "/docs/api/ops/empty/",
   "module": "numpy",
   "name": "empty",
   "next": {
-    "href": "/docs/api/ops/empty_like/",
+    "href": "/docs/api/empty-like/",
     "label": "we.empty_like"
   },
   "notes": "Uninitialized array allocation.",
@@ -587,7 +589,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/einsum_path/",
+    "href": "/docs/api/einsum-path/",
     "label": "we.einsum_path"
   },
   "provenance_label": "Adapted from NumPy docs",

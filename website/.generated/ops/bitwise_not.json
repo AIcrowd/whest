@@ -645,6 +645,7 @@
     }
   ],
   "canonical_name": "bitwise_not",
+  "canonical_path": "bitwise-not",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -676,11 +677,12 @@
     "output": "we.uint8(242)\n\n'11110010'\n\nwe.uint16(65522)\n\n'1111111111110010'\n\narray([-14], dtype=int8)\n\n'11110010'\n\narray([False,  True])\n\narray([False,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bitwise_not/",
+  "href": "/docs/api/bitwise-not/",
+  "legacy_href": "/docs/api/ops/bitwise_not/",
   "module": "numpy",
   "name": "bitwise_not",
   "next": {
-    "href": "/docs/api/ops/bitwise_or/",
+    "href": "/docs/api/bitwise-or/",
     "label": "we.bitwise_or"
   },
   "notes": "Element-wise bitwise NOT.",
@@ -729,7 +731,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bitwise_left_shift/",
+    "href": "/docs/api/bitwise-left-shift/",
     "label": "we.bitwise_left_shift"
   },
   "provenance_label": "Adapted from NumPy docs",

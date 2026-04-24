@@ -201,6 +201,7 @@
     }
   ],
   "canonical_name": "ndim",
+  "canonical_path": "ndim",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -228,11 +229,12 @@
     "output": "2\n\n2\n\n0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ndim/",
+  "href": "/docs/api/ndim/",
+  "legacy_href": "/docs/api/ops/ndim/",
   "module": "numpy",
   "name": "ndim",
   "next": {
-    "href": "/docs/api/ops/negative/",
+    "href": "/docs/api/negative/",
     "label": "we.negative"
   },
   "notes": "Return number of dimensions of array.",
@@ -249,7 +251,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nanvar/",
+    "href": "/docs/api/nanvar/",
     "label": "we.nanvar"
   },
   "provenance_label": "Adapted from NumPy docs",

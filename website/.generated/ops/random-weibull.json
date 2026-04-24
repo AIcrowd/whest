@@ -577,6 +577,7 @@
     }
   ],
   "canonical_name": "random.weibull",
+  "canonical_path": "random/weibull",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -604,11 +605,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-weibull/",
+  "href": "/docs/api/random/weibull/",
+  "legacy_href": "/docs/api/ops/random-weibull/",
   "module": "numpy.random",
   "name": "random.weibull",
   "next": {
-    "href": "/docs/api/ops/random-zipf/",
+    "href": "/docs/api/random/zipf/",
     "label": "we.random.zipf"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -641,7 +643,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-wald/",
+    "href": "/docs/api/random/wald/",
     "label": "we.random.wald"
   },
   "provenance_label": "Adapted from NumPy docs",

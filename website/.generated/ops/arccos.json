@@ -645,6 +645,7 @@
     }
   ],
   "canonical_name": "arccos",
+  "canonical_path": "arccos",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -672,11 +673,12 @@
     "output": "array([ 0.        ,  3.14159265])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/arccos/",
+  "href": "/docs/api/arccos/",
+  "legacy_href": "/docs/api/ops/arccos/",
   "module": "numpy",
   "name": "arccos",
   "next": {
-    "href": "/docs/api/ops/arccosh/",
+    "href": "/docs/api/arccosh/",
     "label": "we.arccosh"
   },
   "notes": "Element-wise inverse cosine.",
@@ -728,7 +730,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/arange/",
+    "href": "/docs/api/arange/",
     "label": "we.arange"
   },
   "provenance_label": "Adapted from NumPy docs",

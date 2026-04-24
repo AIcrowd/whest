@@ -362,6 +362,7 @@
     }
   ],
   "canonical_name": "polymul",
+  "canonical_path": "polymul",
   "category": "counted_custom",
   "cost_formula": "n1 * n2",
   "cost_formula_latex": "$n_1 \\cdot n_2$",
@@ -383,11 +384,12 @@
     "output": "array([ 9, 23, 38, 17,  3])\n\n2\n1 x + 2 x + 3\n\n2\n9 x + 5 x + 1\n\n4      3      2\n9 x + 23 x + 38 x + 17 x + 3",
     "source": "derived"
   },
-  "href": "/docs/api/ops/polymul/",
+  "href": "/docs/api/polymul/",
+  "legacy_href": "/docs/api/ops/polymul/",
   "module": "whest._polynomial",
   "name": "polymul",
   "next": {
-    "href": "/docs/api/ops/polysub/",
+    "href": "/docs/api/polysub/",
     "label": "we.polysub"
   },
   "notes": "Multiply polynomials. Cost: n1 * n2 FLOPs.",
@@ -403,7 +405,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/polyint/",
+    "href": "/docs/api/polyint/",
     "label": "we.polyint"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -884,6 +884,7 @@
     }
   ],
   "canonical_name": "matmul",
+  "canonical_path": "matmul",
   "category": "counted_custom",
   "cost_formula": "m * k * n (FMA=1)",
   "cost_formula_latex": "$m \\cdot k \\cdot n$",
@@ -905,11 +906,12 @@
     "output": "array([[4, 1],\n       [2, 2]])\n\narray([1, 2])\n\narray([1, 2])\n\n(2, 2, 2)\n\n98\n\n98\n\n(-13+0j)\n\nTraceback (most recent call last):\n...\nValueError: matmul: Input operand 1 does not have enough dimensions ...\n\n(-13+0j)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/matmul/",
+  "href": "/docs/api/matmul/",
+  "legacy_href": "/docs/api/ops/matmul/",
   "module": "numpy",
   "name": "matmul",
   "next": {
-    "href": "/docs/api/ops/matrix_transpose/",
+    "href": "/docs/api/matrix-transpose/",
     "label": "we.matrix_transpose"
   },
   "notes": "Matrix multiplication; cost = M*K*N (FMA=1).",
@@ -950,7 +952,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/mask_indices/",
+    "href": "/docs/api/mask-indices/",
     "label": "we.mask_indices"
   },
   "provenance_label": "Adapted from NumPy docs",

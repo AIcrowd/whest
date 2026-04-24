@@ -342,6 +342,7 @@
     }
   ],
   "canonical_name": "copyto",
+  "canonical_path": "copyto",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -356,11 +357,12 @@
     "output": "array([1, 2, 3])\n\narray([[4, 5, 6],\n       [7, 8, 9]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/copyto/",
+  "href": "/docs/api/copyto/",
+  "legacy_href": "/docs/api/ops/copyto/",
   "module": "numpy",
   "name": "copyto",
   "next": {
-    "href": "/docs/api/ops/corrcoef/",
+    "href": "/docs/api/corrcoef/",
     "label": "we.corrcoef"
   },
   "notes": "Copy values from src to dst array. Cost: num copied.",
@@ -406,7 +408,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/copysign/",
+    "href": "/docs/api/copysign/",
     "label": "we.copysign"
   },
   "provenance_label": "Adapted from NumPy docs",

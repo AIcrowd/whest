@@ -340,6 +340,7 @@
     }
   ],
   "canonical_name": "exp2",
+  "canonical_path": "exp2",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -361,11 +362,12 @@
     "output": "array([ 4.,  8.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/exp2/",
+  "href": "/docs/api/exp2/",
+  "legacy_href": "/docs/api/ops/exp2/",
   "module": "numpy",
   "name": "exp2",
   "next": {
-    "href": "/docs/api/ops/expand_dims/",
+    "href": "/docs/api/expand-dims/",
     "label": "we.expand_dims"
   },
   "notes": "Element-wise 2^x.",
@@ -411,7 +413,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/exp/",
+    "href": "/docs/api/exp/",
     "label": "we.exp"
   },
   "provenance_label": "Adapted from NumPy docs",

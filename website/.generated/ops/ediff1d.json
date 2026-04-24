@@ -278,6 +278,7 @@
     }
   ],
   "canonical_name": "ediff1d",
+  "canonical_path": "ediff1d",
   "category": "counted_custom",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -292,11 +293,12 @@
     "output": "array([ 1,  2,  3, -7])\n\narray([-99,   1,   2, ...,  -7,  88,  99])\n\narray([ 1,  2, -3,  5, 18])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ediff1d/",
+  "href": "/docs/api/ediff1d/",
+  "legacy_href": "/docs/api/ops/ediff1d/",
   "module": "numpy",
   "name": "ediff1d",
   "next": {
-    "href": "/docs/api/ops/einsum/",
+    "href": "/docs/api/einsum/",
     "label": "we.einsum"
   },
   "notes": "Differences between consecutive elements.",
@@ -328,7 +330,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/dstack/",
+    "href": "/docs/api/dstack/",
     "label": "we.dstack"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -507,6 +507,7 @@
     }
   ],
   "canonical_name": "random.noncentral_chisquare",
+  "canonical_path": "random/noncentral-chisquare",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -526,11 +527,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-noncentral_chisquare/",
+  "href": "/docs/api/random/noncentral-chisquare/",
+  "legacy_href": "/docs/api/ops/random-noncentral_chisquare/",
   "module": "numpy.random",
   "name": "random.noncentral_chisquare",
   "next": {
-    "href": "/docs/api/ops/random-noncentral_f/",
+    "href": "/docs/api/random/noncentral-f/",
     "label": "we.random.noncentral_f"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -567,7 +569,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-negative_binomial/",
+    "href": "/docs/api/random/negative-binomial/",
     "label": "we.random.negative_binomial"
   },
   "provenance_label": "Adapted from NumPy docs",

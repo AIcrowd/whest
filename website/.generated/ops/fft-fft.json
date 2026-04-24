@@ -659,6 +659,7 @@
     }
   ],
   "canonical_name": "fft.fft",
+  "canonical_path": "fft/fft",
   "category": "counted_custom",
   "cost_formula": "5n * ceil(log2(n))",
   "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
@@ -678,11 +679,12 @@
     "output": "array([-2.33486982e-16+1.14423775e-17j,  8.00000000e+00-1.25557246e-15j,\n        2.33486982e-16+2.33486982e-16j,  0.00000000e+00+1.22464680e-16j,\n       -1.14423775e-17+2.33486982e-16j,  0.00000000e+00+5.20784380e-16j,\n        1.14423775e-17+1.14423775e-17j,  0.00000000e+00+1.22464680e-16j])\n\n[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-fft/",
+  "href": "/docs/api/fft/fft/",
+  "legacy_href": "/docs/api/ops/fft-fft/",
   "module": "numpy.fft",
   "name": "fft.fft",
   "next": {
-    "href": "/docs/api/ops/fft-fft2/",
+    "href": "/docs/api/fft/fft2/",
     "label": "we.fft.fft2"
   },
   "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
@@ -742,7 +744,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fabs/",
+    "href": "/docs/api/fabs/",
     "label": "we.fabs"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -289,6 +289,7 @@
     }
   ],
   "canonical_name": "isdtype",
+  "canonical_path": "isdtype",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -303,11 +304,12 @@
     "output": "False\n\nTrue\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isdtype/",
+  "href": "/docs/api/isdtype/",
+  "legacy_href": "/docs/api/ops/isdtype/",
   "module": "numpy",
   "name": "isdtype",
   "next": {
-    "href": "/docs/api/ops/isfinite/",
+    "href": "/docs/api/isfinite/",
     "label": "we.isfinite"
   },
   "notes": "Return True if array or dtype is of specified kind (NumPy 2.x).",
@@ -337,7 +339,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/iscomplexobj/",
+    "href": "/docs/api/iscomplexobj/",
     "label": "we.iscomplexobj"
   },
   "provenance_label": "Adapted from NumPy docs",

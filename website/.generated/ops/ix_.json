@@ -314,6 +314,7 @@
     }
   ],
   "canonical_name": "ix_",
+  "canonical_path": "ix-",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -328,11 +329,12 @@
     "output": "array([[0, 1, 2, 3, 4],\n       [5, 6, 7, 8, 9]])\n\n(array([[0],\n       [1]]), array([[2, 4]]))\n\n((2, 1), (1, 2))\n\narray([[2, 4],\n       [7, 9]])\n\narray([[2, 4],\n       [7, 9]])\n\narray([[2, 4],\n       [7, 9]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ix_/",
+  "href": "/docs/api/ix-/",
+  "legacy_href": "/docs/api/ops/ix_/",
   "module": "numpy",
   "name": "ix_",
   "next": {
-    "href": "/docs/api/ops/kaiser/",
+    "href": "/docs/api/kaiser/",
     "label": "we.kaiser"
   },
   "notes": "Construct open mesh from multiple sequences. Cost: numel(output).",
@@ -351,7 +353,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/iterable/",
+    "href": "/docs/api/iterable/",
     "label": "we.iterable"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -1236,6 +1236,7 @@
     }
   ],
   "canonical_name": "pad",
+  "canonical_path": "pad",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -1250,11 +1251,12 @@
     "output": "array([4, 4, 1, ..., 6, 6, 6])\n\narray([1, 1, 1, ..., 5, 5, 5])\n\narray([ 5,  3,  1,  2,  3,  4,  5,  2, -1, -4])\n\narray([5, 5, 1, 2, 3, 4, 5, 5, 5])\n\narray([3, 3, 1, 2, 3, 4, 5, 3, 3])\n\narray([3, 3, 1, 2, 3, 4, 5, 3, 3])\n\narray([[1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [3, 3, 3, 4, 3, 3, 3],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1]])\n\narray([3, 2, 1, 2, 3, 4, 5, 4, 3, 2])\n\narray([-1,  0,  1,  2,  3,  4,  5,  6,  7,  8])\n\narray([2, 1, 1, 2, 3, 4, 5, 5, 4, 3])\n\narray([0, 1, 1, 2, 3, 4, 5, 5, 6, 7])\n\narray([4, 5, 1, 2, 3, 4, 5, 1, 2, 3])\n\narray([[10, 10, 10, 10, 10, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10],\n       [10, 10,  0,  1,  2, 10, 10],\n       [10, 10,  3,  4,  5, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10]])\n\narray([[100, 100, 100, 100, 100, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100],\n       [100, 100,   0,   1,   2, 100, 100],\n       [100, 100,   3,   4,   5, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/pad/",
+  "href": "/docs/api/pad/",
+  "legacy_href": "/docs/api/ops/pad/",
   "module": "numpy",
   "name": "pad",
   "next": {
-    "href": "/docs/api/ops/partition/",
+    "href": "/docs/api/partition/",
     "label": "we.partition"
   },
   "notes": "Pad array. Cost: numel(output).",
@@ -1399,7 +1401,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/packbits/",
+    "href": "/docs/api/packbits/",
     "label": "we.packbits"
   },
   "provenance_label": "Adapted from NumPy docs",

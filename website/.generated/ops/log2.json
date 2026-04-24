@@ -543,6 +543,7 @@
     }
   ],
   "canonical_name": "log2",
+  "canonical_path": "log2",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -570,11 +571,12 @@
     "output": "array([-inf,   0.,   1.,   4.])\n\narray([ 0.+2.26618007j,  0.+0.j        ,  1.+0.j        ,  2.+2.26618007j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/log2/",
+  "href": "/docs/api/log2/",
+  "legacy_href": "/docs/api/ops/log2/",
   "module": "numpy",
   "name": "log2",
   "next": {
-    "href": "/docs/api/ops/logaddexp/",
+    "href": "/docs/api/logaddexp/",
     "label": "we.logaddexp"
   },
   "notes": "Element-wise base-2 logarithm.",
@@ -625,7 +627,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/log1p/",
+    "href": "/docs/api/log1p/",
     "label": "we.log1p"
   },
   "provenance_label": "Adapted from NumPy docs",

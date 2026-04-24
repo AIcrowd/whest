@@ -840,6 +840,7 @@
     }
   ],
   "canonical_name": "linspace",
+  "canonical_path": "linspace",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -854,11 +855,12 @@
     "output": "array([2.  , 2.25, 2.5 , 2.75, 3.  ])\n\narray([2. ,  2.2,  2.4,  2.6,  2.8])\n\n(array([2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n(-0.5, 1)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linspace/",
+  "href": "/docs/api/linspace/",
+  "legacy_href": "/docs/api/ops/linspace/",
   "module": "numpy",
   "name": "linspace",
   "next": {
-    "href": "/docs/api/ops/log/",
+    "href": "/docs/api/log/",
     "label": "we.log"
   },
   "notes": "Return evenly spaced numbers over interval. Cost: numel(output).",
@@ -936,7 +938,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-vector_norm/",
+    "href": "/docs/api/linalg/vector-norm/",
     "label": "we.linalg.vector_norm"
   },
   "provenance_label": "Adapted from NumPy docs",

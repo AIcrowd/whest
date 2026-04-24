@@ -378,6 +378,7 @@
     }
   ],
   "canonical_name": "degrees",
+  "canonical_path": "degrees",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -399,11 +400,12 @@
     "output": "array([   0.,   30.,   60.,   90.,  120.,  150.,  180.,  210.,  240.,\n        270.,  300.,  330.])\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/degrees/",
+  "href": "/docs/api/degrees/",
+  "legacy_href": "/docs/api/ops/degrees/",
   "module": "numpy",
   "name": "degrees",
   "next": {
-    "href": "/docs/api/ops/delete/",
+    "href": "/docs/api/delete/",
     "label": "we.delete"
   },
   "notes": "Convert radians to degrees element-wise.",
@@ -449,7 +451,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/cumulative_sum/",
+    "href": "/docs/api/cumulative-sum/",
     "label": "we.cumulative_sum"
   },
   "provenance_label": "Adapted from NumPy docs",

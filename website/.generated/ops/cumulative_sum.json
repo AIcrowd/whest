@@ -628,6 +628,7 @@
     }
   ],
   "canonical_name": "cumulative_sum",
+  "canonical_path": "cumulative-sum",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -642,11 +643,12 @@
     "output": "array([1, 2, 3, 4, 5, 6])\n\narray([ 1,  3,  6, 10, 15, 21])\n\narray([  1.,   3.,   6.,  10.,  15.,  21.])\n\narray([[1, 2, 3],\n       [5, 7, 9]])\n\narray([[ 1,  3,  6],\n       [ 4,  9, 15]])\n\n1000000.0050045159\n\n1000000.0050000029",
     "source": "derived"
   },
-  "href": "/docs/api/ops/cumulative_sum/",
+  "href": "/docs/api/cumulative-sum/",
+  "legacy_href": "/docs/api/ops/cumulative_sum/",
   "module": "numpy",
   "name": "cumulative_sum",
   "next": {
-    "href": "/docs/api/ops/degrees/",
+    "href": "/docs/api/degrees/",
     "label": "we.degrees"
   },
   "notes": "Cumulative sum (NumPy 2.x array API).",
@@ -705,7 +707,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/cumulative_prod/",
+    "href": "/docs/api/cumulative-prod/",
     "label": "we.cumulative_prod"
   },
   "provenance_label": "Adapted from NumPy docs",

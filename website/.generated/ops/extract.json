@@ -418,6 +418,7 @@
     }
   ],
   "canonical_name": "extract",
+  "canonical_path": "extract",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -432,11 +433,12 @@
     "output": "array([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11]])\n\narray([[ True, False, False,  True],\n       [False, False,  True, False],\n       [False,  True, False, False]])\n\narray([0, 3, 6, 9])\n\narray([0, 3, 6, 9])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/extract/",
+  "href": "/docs/api/extract/",
+  "legacy_href": "/docs/api/ops/extract/",
   "module": "numpy",
   "name": "extract",
   "next": {
-    "href": "/docs/api/ops/eye/",
+    "href": "/docs/api/eye/",
     "label": "we.eye"
   },
   "notes": "Return elements satisfying condition. Cost: numel(input).",
@@ -460,7 +462,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/expm1/",
+    "href": "/docs/api/expm1/",
     "label": "we.expm1"
   },
   "provenance_label": "Adapted from NumPy docs",

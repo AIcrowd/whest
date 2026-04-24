@@ -904,6 +904,7 @@
     }
   ],
   "canonical_name": "arange",
+  "canonical_path": "arange",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -932,11 +933,12 @@
     "output": "array([0, 1, 2])\n\narray([ 0.,  1.,  2.])\n\narray([3, 4, 5, 6])\n\narray([3, 5])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/arange/",
+  "href": "/docs/api/arange/",
+  "legacy_href": "/docs/api/ops/arange/",
   "module": "numpy",
   "name": "arange",
   "next": {
-    "href": "/docs/api/ops/arccos/",
+    "href": "/docs/api/arccos/",
     "label": "we.arccos"
   },
   "notes": "Return evenly spaced values in given interval. Cost: numel(output).",
@@ -1003,7 +1005,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/apply_over_axes/",
+    "href": "/docs/api/apply-over-axes/",
     "label": "we.apply_over_axes"
   },
   "provenance_label": "Adapted from NumPy docs",

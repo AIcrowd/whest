@@ -734,6 +734,7 @@
     }
   ],
   "canonical_name": "remainder",
+  "canonical_path": "remainder",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -755,11 +756,12 @@
     "output": "array([0, 1])\n\narray([0, 1, 2, 3, 4, 0, 1])\n\narray([0, 1, 2, 3, 4, 0, 1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/remainder/",
+  "href": "/docs/api/remainder/",
+  "legacy_href": "/docs/api/ops/remainder/",
   "module": "numpy",
   "name": "remainder",
   "next": {
-    "href": "/docs/api/ops/repeat/",
+    "href": "/docs/api/repeat/",
     "label": "we.repeat"
   },
   "notes": "Element-wise remainder (same as mod).",
@@ -816,7 +818,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/reciprocal/",
+    "href": "/docs/api/reciprocal/",
     "label": "we.reciprocal"
   },
   "provenance_label": "Adapted from NumPy docs",

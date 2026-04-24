@@ -691,6 +691,7 @@
     }
   ],
   "canonical_name": "random.hypergeometric",
+  "canonical_path": "random/hypergeometric",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -718,11 +719,12 @@
     "output": "# number of good, number of bad, and number of samples\n\n#   note that it is very unlikely to grab both bad items\n\n#   answer = 0.003 ... pretty unlikely!",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-hypergeometric/",
+  "href": "/docs/api/random/hypergeometric/",
+  "legacy_href": "/docs/api/ops/random-hypergeometric/",
   "module": "numpy.random",
   "name": "random.hypergeometric",
   "next": {
-    "href": "/docs/api/ops/random-laplace/",
+    "href": "/docs/api/random/laplace/",
     "label": "we.random.laplace"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -771,7 +773,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-gumbel/",
+    "href": "/docs/api/random/gumbel/",
     "label": "we.random.gumbel"
   },
   "provenance_label": "Adapted from NumPy docs",

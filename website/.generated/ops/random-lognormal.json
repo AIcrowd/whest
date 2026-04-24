@@ -633,6 +633,7 @@
     }
   ],
   "canonical_name": "random.lognormal",
+  "canonical_path": "random/lognormal",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -656,11 +657,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-lognormal/",
+  "href": "/docs/api/random/lognormal/",
+  "legacy_href": "/docs/api/ops/random-lognormal/",
   "module": "numpy.random",
   "name": "random.lognormal",
   "next": {
-    "href": "/docs/api/ops/random-logseries/",
+    "href": "/docs/api/random/logseries/",
     "label": "we.random.logseries"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -698,7 +700,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-logistic/",
+    "href": "/docs/api/random/logistic/",
     "label": "we.random.logistic"
   },
   "provenance_label": "Adapted from NumPy docs",

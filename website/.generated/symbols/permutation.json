@@ -1,0 +1,78 @@
+{
+  "aliases": [
+    "Permutation",
+    "we.Permutation",
+    "whest.Permutation"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "A permutation on {0, 1, ..., n-1} in array form."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "_array_form[i]"
+            },
+            {
+              "kind": "text",
+              "text": " is the image of "
+            },
+            {
+              "kind": "code",
+              "text": "i"
+            },
+            {
+              "kind": "text",
+              "text": " under the permutation.\nSame convention as "
+            },
+            {
+              "kind": "code",
+              "text": "sympy.combinatorics.Permutation"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "Permutation",
+  "canonical_path": "permutation",
+  "display_name": "we.Permutation",
+  "href": "/docs/api/permutation/",
+  "import_path": "we.Permutation",
+  "kind": "class",
+  "members": [],
+  "module": "whest._perm_group",
+  "name": "Permutation",
+  "related_guides": [
+    {
+      "href": "/docs/guides/symmetry",
+      "title": "Symmetry Savings"
+    }
+  ],
+  "signature": "we.Permutation(array_form: 'list[int] | tuple[int, ...] | Cycle', size: 'int | None' = None) -> 'None'",
+  "slug": "permutation",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_perm_group.py#L70",
+  "status_note": "",
+  "summary": "A permutation on {0, 1, ..., n-1} in array form.",
+  "upstream_source_url": ""
+}

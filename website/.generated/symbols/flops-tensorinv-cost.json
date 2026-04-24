@@ -1,0 +1,200 @@
+{
+  "aliases": [
+    "flops.tensorinv_cost",
+    "we.flops.tensorinv_cost",
+    "whest.flops.tensorinv_cost",
+    "tensorinv_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/linalg/tensorinv/",
+              "kind": "link",
+              "target": "linalg.tensorinv",
+              "text": "linalg.tensorinv"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of tensor inverse."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Shape of the input tensor."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Shape of the input tensor."
+                }
+              ],
+              "name": "a_shape",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of leading indices. Default is 2."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of leading indices. Default is 2."
+                }
+              ],
+              "name": "ind",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count: $n^3$ where $n$ = product of leading dims."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count: $n^3$ where $n$ = product of leading dims."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Reduces to a standard matrix inverse after reshaping."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.tensorinv_cost",
+  "canonical_path": "flops/tensorinv-cost",
+  "display_name": "we.flops.tensorinv_cost",
+  "href": "/docs/api/flops/tensorinv-cost/",
+  "import_path": "we.flops.tensorinv_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.linalg._solvers",
+  "name": "flops.tensorinv_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.flops.tensorinv_cost(a_shape: 'tuple', ind: 'int' = 2) -> 'int'",
+  "slug": "flops-tensorinv-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L262",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``linalg.tensorinv``.",
+  "upstream_source_url": ""
+}

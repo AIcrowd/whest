@@ -555,6 +555,7 @@
     }
   ],
   "canonical_name": "all",
+  "canonical_path": "all",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -576,11 +577,12 @@
     "output": "False\n\narray([ True, False])\n\nTrue\n\nTrue\n\nTrue\n\n(28293632, 28293632, array(True)) # may vary",
     "source": "derived"
   },
-  "href": "/docs/api/ops/all/",
+  "href": "/docs/api/all/",
+  "legacy_href": "/docs/api/ops/all/",
   "module": "numpy",
   "name": "all",
   "next": {
-    "href": "/docs/api/ops/allclose/",
+    "href": "/docs/api/allclose/",
     "label": "we.allclose"
   },
   "notes": "Test whether all array elements are true.",
@@ -647,7 +649,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/add/",
+    "href": "/docs/api/add/",
     "label": "we.add"
   },
   "provenance_label": "Adapted from NumPy docs",

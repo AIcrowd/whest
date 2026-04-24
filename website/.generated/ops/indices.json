@@ -475,6 +475,7 @@
     }
   ],
   "canonical_name": "indices",
+  "canonical_path": "indices",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -489,11 +490,12 @@
     "output": "(2, 2, 3)\n\narray([[0, 0, 0],\n       [1, 1, 1]])\n\narray([[0, 1, 2],\n       [0, 1, 2]])\n\narray([[0, 1, 2],\n       [4, 5, 6]])\n\n(2, 1)\n\n(1, 3)\n\narray([[0],\n       [1]])\n\narray([[0, 1, 2]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/indices/",
+  "href": "/docs/api/indices/",
+  "legacy_href": "/docs/api/ops/indices/",
   "module": "numpy",
   "name": "indices",
   "next": {
-    "href": "/docs/api/ops/inner/",
+    "href": "/docs/api/inner/",
     "label": "we.inner"
   },
   "notes": "Return array representing indices of a grid. Cost: numel(output).",
@@ -528,7 +530,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/in1d/",
+    "href": "/docs/api/in1d/",
     "label": "we.in1d"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -706,6 +706,7 @@
     }
   ],
   "canonical_name": "nanmax",
+  "canonical_path": "nanmax",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -720,11 +721,12 @@
     "output": "3.0\n\narray([3.,  2.])\n\narray([2.,  3.])\n\n2.0\n\ninf",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nanmax/",
+  "href": "/docs/api/nanmax/",
+  "legacy_href": "/docs/api/ops/nanmax/",
   "module": "numpy",
   "name": "nanmax",
   "next": {
-    "href": "/docs/api/ops/nanmean/",
+    "href": "/docs/api/nanmean/",
     "label": "we.nanmean"
   },
   "notes": "Maximum ignoring NaNs.",
@@ -795,7 +797,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nancumsum/",
+    "href": "/docs/api/nancumsum/",
     "label": "we.nancumsum"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -685,6 +685,7 @@
     }
   ],
   "canonical_name": "random.uniform",
+  "canonical_path": "random/uniform",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -699,11 +700,12 @@
     "output": "True\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-uniform/",
+  "href": "/docs/api/random/uniform/",
+  "legacy_href": "/docs/api/ops/random-uniform/",
   "module": "numpy.random",
   "name": "random.uniform",
   "next": {
-    "href": "/docs/api/ops/random-vonmises/",
+    "href": "/docs/api/random/vonmises/",
     "label": "we.random.vonmises"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -747,7 +749,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-triangular/",
+    "href": "/docs/api/random/triangular/",
     "label": "we.random.triangular"
   },
   "provenance_label": "Adapted from NumPy docs",

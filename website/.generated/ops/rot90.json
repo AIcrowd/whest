@@ -357,6 +357,7 @@
     }
   ],
   "canonical_name": "rot90",
+  "canonical_path": "rot90",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -371,11 +372,12 @@
     "output": "array([[1, 2],\n       [3, 4]])\n\narray([[2, 4],\n       [1, 3]])\n\narray([[4, 3],\n       [2, 1]])\n\narray([[[1, 3],\n        [0, 2]],\n       [[5, 7],\n        [4, 6]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/rot90/",
+  "href": "/docs/api/rot90/",
+  "legacy_href": "/docs/api/ops/rot90/",
   "module": "numpy",
   "name": "rot90",
   "next": {
-    "href": "/docs/api/ops/row_stack/",
+    "href": "/docs/api/row-stack/",
     "label": "we.row_stack"
   },
   "notes": "Rotate array 90 degrees.",
@@ -409,7 +411,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/roots/",
+    "href": "/docs/api/roots/",
     "label": "we.roots"
   },
   "provenance_label": "Adapted from NumPy docs",

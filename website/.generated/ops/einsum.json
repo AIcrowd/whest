@@ -2292,6 +2292,7 @@
     }
   ],
   "canonical_name": "einsum",
+  "canonical_path": "einsum",
   "category": "counted_custom",
   "cost_formula": "op_factor * product of all index dims",
   "cost_formula_latex": "$\\text{op\\_factor} \\cdot \\prod_i d_i$",
@@ -2317,11 +2318,12 @@
     "output": "60\n\n60\n\n60\n\narray([ 0,  6, 12, 18, 24])\n\narray([ 0,  6, 12, 18, 24])\n\narray([ 0,  6, 12, 18, 24])\n\narray([ 10,  35,  60,  85, 110])\n\narray([ 10,  35,  60,  85, 110])\n\narray([ 10,  35,  60,  85, 110])\n\narray([ 10,  35,  60,  85, 110])\n\narray([ 10,  35,  60,  85, 110])\n\narray([[0, 3],\n       [1, 4],\n       [2, 5]])\n\narray([[0, 3],\n       [1, 4],\n       [2, 5]])\n\narray([[0, 3],\n       [1, 4],\n       [2, 5]])\n\narray([[0, 3],\n       [1, 4],\n       [2, 5]])\n\n30\n\n30\n\n30\n\narray([ 30,  80, 130, 180, 230])\n\narray([ 30,  80, 130, 180, 230])\n\narray([ 30,  80, 130, 180, 230])\n\narray([ 30,  80, 130, 180, 230])\n\narray([[ 0,  3,  6],\n       [ 9, 12, 15]])\n\narray([[ 0,  3,  6],\n       [ 9, 12, 15]])\n\narray([[ 0,  3,  6],\n       [ 9, 12, 15]])\n\narray([[ 0,  3,  6],\n       [ 9, 12, 15]])\n\narray([[0, 1, 2, 3, 4],\n       [0, 2, 4, 6, 8]])\n\narray([[0, 1, 2, 3, 4],\n       [0, 2, 4, 6, 8]])\n\narray([[0, 1, 2, 3, 4],\n       [0, 2, 4, 6, 8]])\n\narray([[4400., 4730.],\n       [4532., 4874.],\n       [4664., 5018.],\n       [4796., 5162.],\n       [4928., 5306.]])\n\narray([[4400., 4730.],\n       [4532., 4874.],\n       [4664., 5018.],\n       [4796., 5162.],\n       [4928., 5306.]])\n\narray([[4400., 4730.],\n       [4532., 4874.],\n       [4664., 5018.],\n       [4796., 5162.],\n       [4928., 5306.]])\n\narray([[1., 0., 0.],\n       [0., 1., 0.],\n       [0., 0., 1.]])\n\narray([[10, 28, 46, 64],\n       [13, 40, 67, 94]])\n\narray([[10, 28, 46, 64],\n       [13, 40, 67, 94]])\n\narray([[10, 28, 46, 64],\n       [13, 40, 67, 94]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/einsum/",
+  "href": "/docs/api/einsum/",
+  "legacy_href": "/docs/api/ops/einsum/",
   "module": "numpy",
   "name": "einsum",
   "next": {
-    "href": "/docs/api/ops/einsum_path/",
+    "href": "/docs/api/einsum-path/",
     "label": "we.einsum_path"
   },
   "notes": "Generalized Einstein summation.",
@@ -2416,7 +2418,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ediff1d/",
+    "href": "/docs/api/ediff1d/",
     "label": "we.ediff1d"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -2549,5 +2551,5 @@
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.einsum",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L183"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L204"
 }

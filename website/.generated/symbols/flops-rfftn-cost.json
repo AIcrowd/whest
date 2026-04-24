@@ -1,0 +1,182 @@
+{
+  "aliases": [
+    "flops.rfftn_cost",
+    "we.flops.rfftn_cost",
+    "whest.flops.rfftn_cost",
+    "rfftn_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/fft/rfftn/",
+              "kind": "link",
+              "target": "fft.rfftn",
+              "text": "fft.rfftn"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of an N-D real FFT."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Transform shape along each axis."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Transform shape along each axis."
+                }
+              ],
+              "name": "shape",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count: 5 * (N // 2) * sum(ceil(log2(d_i))), where N = prod(shape)."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count: 5 * (N // 2) * sum(ceil(log2(d_i))), where N = prod(shape)."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Exploits conjugate symmetry along the last axis, roughly halving\nthe work compared to a full complex N-D FFT."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.rfftn_cost",
+  "canonical_path": "flops/rfftn-cost",
+  "display_name": "we.flops.rfftn_cost",
+  "href": "/docs/api/flops/rfftn-cost/",
+  "import_path": "we.flops.rfftn_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.fft._transforms",
+  "name": "flops.rfftn_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    },
+    {
+      "href": "/docs/guides/fft",
+      "title": "FFT Guide"
+    }
+  ],
+  "signature": "we.flops.rfftn_cost(shape: 'tuple[int, ...]') -> 'int'",
+  "slug": "flops-rfftn-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L93",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``fft.rfftn``.",
+  "upstream_source_url": ""
+}

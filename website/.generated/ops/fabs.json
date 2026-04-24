@@ -411,6 +411,7 @@
     }
   ],
   "canonical_name": "fabs",
+  "canonical_path": "fabs",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -432,11 +433,12 @@
     "output": "1.0\n\narray([ 1.2,  1.2])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fabs/",
+  "href": "/docs/api/fabs/",
+  "legacy_href": "/docs/api/ops/fabs/",
   "module": "numpy",
   "name": "fabs",
   "next": {
-    "href": "/docs/api/ops/fft-fft/",
+    "href": "/docs/api/fft/fft/",
     "label": "we.fft.fft"
   },
   "notes": "Element-wise absolute value (always float).",
@@ -483,7 +485,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/eye/",
+    "href": "/docs/api/eye/",
     "label": "we.eye"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -320,6 +320,7 @@
     }
   ],
   "canonical_name": "kron",
+  "canonical_path": "kron",
   "category": "counted_custom",
   "cost_formula": "m1*m2 * n1*n2",
   "cost_formula_latex": "$m_1 m_2 \\cdot n_1 n_2$",
@@ -334,11 +335,12 @@
     "output": "array([  5,   6,   7, ..., 500, 600, 700])\n\narray([  5,  50, 500, ...,   7,  70, 700])\n\narray([[1.,  1.,  0.,  0.],\n       [1.,  1.,  0.,  0.],\n       [0.,  0.,  1.,  1.],\n       [0.,  0.,  1.,  1.]])\n\n(2, 10, 6, 20)\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/kron/",
+  "href": "/docs/api/kron/",
+  "legacy_href": "/docs/api/ops/kron/",
   "module": "numpy",
   "name": "kron",
   "next": {
-    "href": "/docs/api/ops/lcm/",
+    "href": "/docs/api/lcm/",
     "label": "we.lcm"
   },
   "notes": "Kronecker product; cost proportional to output size.",
@@ -359,7 +361,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/kaiser/",
+    "href": "/docs/api/kaiser/",
     "label": "we.kaiser"
   },
   "provenance_label": "Adapted from NumPy docs",

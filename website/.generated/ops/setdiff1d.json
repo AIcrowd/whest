@@ -241,6 +241,7 @@
     }
   ],
   "canonical_name": "setdiff1d",
+  "canonical_path": "setdiff1d",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -255,11 +256,12 @@
     "output": "array([1, 2])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/setdiff1d/",
+  "href": "/docs/api/setdiff1d/",
+  "legacy_href": "/docs/api/ops/setdiff1d/",
   "module": "numpy",
   "name": "setdiff1d",
   "next": {
-    "href": "/docs/api/ops/setxor1d/",
+    "href": "/docs/api/setxor1d/",
     "label": "we.setxor1d"
   },
   "notes": "Set difference; cost = (n+m)*ceil(log2(n+m)).",
@@ -290,7 +292,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/select/",
+    "href": "/docs/api/select/",
     "label": "we.select"
   },
   "provenance_label": "Adapted from NumPy docs",

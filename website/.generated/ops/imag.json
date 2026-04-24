@@ -228,6 +228,7 @@
     }
   ],
   "canonical_name": "imag",
+  "canonical_path": "imag",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -242,11 +243,12 @@
     "output": "array([2.,  4.,  6.])\n\narray([1. +8.j,  3.+10.j,  5.+12.j])\n\n1.0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/imag/",
+  "href": "/docs/api/imag/",
+  "legacy_href": "/docs/api/ops/imag/",
   "module": "numpy",
   "name": "imag",
   "next": {
-    "href": "/docs/api/ops/in1d/",
+    "href": "/docs/api/in1d/",
     "label": "we.in1d"
   },
   "notes": "Return imaginary part of complex array.",
@@ -262,7 +264,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/identity/",
+    "href": "/docs/api/identity/",
     "label": "we.identity"
   },
   "provenance_label": "Adapted from NumPy docs",

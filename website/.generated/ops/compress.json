@@ -458,6 +458,7 @@
     }
   ],
   "canonical_name": "compress",
+  "canonical_path": "compress",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -479,11 +480,12 @@
     "output": "array([[1, 2],\n       [3, 4],\n       [5, 6]])\n\narray([[3, 4]])\n\narray([[3, 4],\n       [5, 6]])\n\narray([[2],\n       [4],\n       [6]])\n\narray([2])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/compress/",
+  "href": "/docs/api/compress/",
+  "legacy_href": "/docs/api/ops/compress/",
   "module": "numpy",
   "name": "compress",
   "next": {
-    "href": "/docs/api/ops/concatenate/",
+    "href": "/docs/api/concatenate/",
     "label": "we.concatenate"
   },
   "notes": "Return selected slices along axis. Cost: numel(input).",
@@ -524,7 +526,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/common_type/",
+    "href": "/docs/api/common-type/",
     "label": "we.common_type"
   },
   "provenance_label": "Adapted from NumPy docs",

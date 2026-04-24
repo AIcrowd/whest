@@ -1,0 +1,209 @@
+{
+  "aliases": [
+    "flops.reduction_cost",
+    "we.flops.reduction_cost",
+    "whest.flops.reduction_cost",
+    "reduction_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost of a reduction operation."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Operation name used for weight lookup, e.g. "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"sum\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": " or "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"max\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "str",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Operation name used for weight lookup, e.g. "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"sum\""
+                },
+                {
+                  "kind": "text",
+                  "text": " or "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"max\""
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "op_name",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Shape of the reduction input."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Shape of the reduction input."
+                }
+              ],
+              "name": "input_shape",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Reduction axis. Accepted for API consistency with the analytical helper."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int or None, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Reduction axis. Accepted for API consistency with the analytical helper."
+                }
+              ],
+              "name": "axis",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "If provided, only unique elements are counted analytically before the\noperation weight is applied."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "SymmetryInfo or None, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "If provided, only unique elements are counted analytically before the\noperation weight is applied."
+                }
+              ],
+              "name": "symmetry_info",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    }
+  ],
+  "canonical_name": "flops.reduction_cost",
+  "canonical_path": "flops/reduction-cost",
+  "display_name": "we.flops.reduction_cost",
+  "href": "/docs/api/flops/reduction-cost/",
+  "import_path": "we.flops.reduction_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.flops",
+  "name": "flops.reduction_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.flops.reduction_cost(op_name: 'str', *, input_shape: 'tuple[int, ...]', axis: 'int | None' = None, symmetry_info: 'SymmetryInfo | None' = None) -> 'int'",
+  "slug": "flops-reduction-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/flops.py#L216",
+  "status_note": "",
+  "summary": "Weighted FLOP cost of a reduction operation.",
+  "upstream_source_url": ""
+}

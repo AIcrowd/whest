@@ -500,6 +500,7 @@
     }
   ],
   "canonical_name": "vecdot",
+  "canonical_path": "vecdot",
   "category": "counted_binary",
   "cost_formula": "n",
   "cost_formula_latex": "$n$",
@@ -521,11 +522,12 @@
     "output": "array([ 3.,  8., 10.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/vecdot/",
+  "href": "/docs/api/vecdot/",
+  "legacy_href": "/docs/api/ops/vecdot/",
   "module": "numpy",
   "name": "vecdot",
   "next": {
-    "href": "/docs/api/ops/vecmat/",
+    "href": "/docs/api/vecmat/",
     "label": "we.vecmat"
   },
   "notes": "Vector dot product along last axis.",
@@ -558,7 +560,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/vdot/",
+    "href": "/docs/api/vdot/",
     "label": "we.vdot"
   },
   "provenance_label": "Adapted from NumPy docs",

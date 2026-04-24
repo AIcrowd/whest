@@ -478,6 +478,7 @@
     }
   ],
   "canonical_name": "random.triangular",
+  "canonical_path": "random/triangular",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -497,11 +498,12 @@
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-triangular/",
+  "href": "/docs/api/random/triangular/",
+  "legacy_href": "/docs/api/ops/random-triangular/",
   "module": "numpy.random",
   "name": "random.triangular",
   "next": {
-    "href": "/docs/api/ops/random-uniform/",
+    "href": "/docs/api/random/uniform/",
     "label": "we.random.uniform"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -547,7 +549,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_t/",
+    "href": "/docs/api/random/standard-t/",
     "label": "we.random.standard_t"
   },
   "provenance_label": "Adapted from NumPy docs",

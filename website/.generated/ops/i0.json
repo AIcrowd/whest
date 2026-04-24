@@ -266,6 +266,7 @@
     }
   ],
   "canonical_name": "i0",
+  "canonical_path": "i0",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -308,11 +309,12 @@
     "output": "array(1.0)\n\narray([1.        , 1.26606588, 2.2795853 , 4.88079259])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/i0/",
+  "href": "/docs/api/i0/",
+  "legacy_href": "/docs/api/ops/i0/",
   "module": "numpy",
   "name": "i0",
   "next": {
-    "href": "/docs/api/ops/identity/",
+    "href": "/docs/api/identity/",
     "label": "we.identity"
   },
   "notes": "Modified Bessel function of order 0, element-wise.",
@@ -331,7 +333,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/hypot/",
+    "href": "/docs/api/hypot/",
     "label": "we.hypot"
   },
   "provenance_label": "Adapted from NumPy docs",

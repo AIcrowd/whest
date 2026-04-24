@@ -697,6 +697,7 @@
     }
   ],
   "canonical_name": "linalg.qr",
+  "canonical_path": "linalg/qr",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -711,11 +712,12 @@
     "output": "True\n\nTrue\n\n(3, 2, 2)\n\n(3, 2, 2)\n\nTrue\n\narray([[0, 1],\n       [1, 1],\n       [1, 1],\n       [2, 1]])\n\narray([  1.,   1.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-qr/",
+  "href": "/docs/api/linalg/qr/",
+  "legacy_href": "/docs/api/ops/linalg-qr/",
   "module": "numpy.linalg",
   "name": "linalg.qr",
   "next": {
-    "href": "/docs/api/ops/linalg-slogdet/",
+    "href": "/docs/api/linalg/slogdet/",
     "label": "we.linalg.slogdet"
   },
   "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
@@ -758,7 +760,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-pinv/",
+    "href": "/docs/api/linalg/pinv/",
     "label": "we.linalg.pinv"
   },
   "provenance_label": "Adapted from NumPy docs",

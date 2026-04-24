@@ -160,6 +160,7 @@
     }
   ],
   "canonical_name": "iscomplex",
+  "canonical_path": "iscomplex",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -174,11 +175,12 @@
     "output": "array([ True, False, False, False, False,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/iscomplex/",
+  "href": "/docs/api/iscomplex/",
+  "legacy_href": "/docs/api/ops/iscomplex/",
   "module": "numpy",
   "name": "iscomplex",
   "next": {
-    "href": "/docs/api/ops/iscomplexobj/",
+    "href": "/docs/api/iscomplexobj/",
     "label": "we.iscomplexobj"
   },
   "notes": "Test if element is complex element-wise.",
@@ -194,7 +196,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isclose/",
+    "href": "/docs/api/isclose/",
     "label": "we.isclose"
   },
   "provenance_label": "Adapted from NumPy docs",

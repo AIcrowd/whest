@@ -554,6 +554,7 @@
     }
   ],
   "canonical_name": "bitwise_and",
+  "canonical_path": "bitwise-and",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -575,11 +576,12 @@
     "output": "1\n\n12\n\n'1100'\n\narray([12,  1])\n\narray([0, 1])\n\narray([ 2,  4, 16])\n\narray([False,  True])\n\narray([ 2,  4, 16])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bitwise_and/",
+  "href": "/docs/api/bitwise-and/",
+  "legacy_href": "/docs/api/ops/bitwise_and/",
   "module": "numpy",
   "name": "bitwise_and",
   "next": {
-    "href": "/docs/api/ops/bitwise_count/",
+    "href": "/docs/api/bitwise-count/",
     "label": "we.bitwise_count"
   },
   "notes": "Element-wise bitwise AND.",
@@ -627,7 +629,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bincount/",
+    "href": "/docs/api/bincount/",
     "label": "we.bincount"
   },
   "provenance_label": "Adapted from NumPy docs",

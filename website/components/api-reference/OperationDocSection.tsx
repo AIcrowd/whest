@@ -6,11 +6,22 @@ import Latex from '../shared/Latex';
 import styles from './styles.module.css';
 import type {DocField, DocLink} from './op-doc-types';
 
-type OperationDocSectionTitle = 'Parameters' | 'Returns' | 'See also' | 'Notes';
+type OperationDocSectionTitle =
+  | 'Parameters'
+  | 'Returns'
+  | 'See also'
+  | 'Members'
+  | 'Related guides'
+  | 'Notes';
 
 type OperationDocSectionProps =
   | {title: 'Parameters' | 'Returns'; fields: DocField[]; links?: never; paragraphs?: never}
-  | {title: 'See also'; fields?: never; links: DocLink[]; paragraphs?: never}
+  | {
+      title: 'See also' | 'Members' | 'Related guides';
+      fields?: never;
+      links: DocLink[];
+      paragraphs?: never;
+    }
   | {title: 'Notes'; fields?: never; links?: never; paragraphs: string[]};
 
 const INLINE_PATTERN = /:math:`([^`]+)`|``([^`]+)``|`([^`]+)`|\*([^*]+)\*/g;
@@ -118,8 +129,13 @@ function renderNotes(paragraphs: string[]) {
   return rendered;
 }
 
-function renderLink(link: DocLink) {
-  const label = link.href ? (link.label.startsWith('we.') ? link.label : `we.${link.label}`) : link.label;
+function renderLink(link: DocLink, prefixWhestLabel: boolean) {
+  const label =
+    link.href && prefixWhestLabel
+      ? link.label.startsWith('we.')
+        ? link.label
+        : `we.${link.label}`
+      : link.label;
 
   return (
     <OperationDocLink
@@ -139,7 +155,12 @@ export default function OperationDocSection(props: OperationDocSectionProps) {
     return null;
   }
 
-  if (title === 'See also' && props.links.length === 0) {
+  if (
+    (title === 'See also' ||
+      title === 'Members' ||
+      title === 'Related guides') &&
+    props.links.length === 0
+  ) {
     return null;
   }
 
@@ -161,11 +182,13 @@ export default function OperationDocSection(props: OperationDocSectionProps) {
         />
       ) : null}
 
-      {title === 'See also' ? (
+      {title === 'See also' ||
+      title === 'Members' ||
+      title === 'Related guides' ? (
         <ul className={styles.docLinkList}>
           {props.links.map((link) => (
             <li key={`${link.target}-${link.external_url ?? ''}`}>
-              {renderLink(link)}
+              {renderLink(link, title !== 'Related guides')}
               {link.description ? (
                 <span className={styles.docLinkDescription}> {renderInlineMarkup(link.description)}</span>
               ) : null}

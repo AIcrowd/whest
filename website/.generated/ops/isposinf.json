@@ -276,6 +276,7 @@
     }
   ],
   "canonical_name": "isposinf",
+  "canonical_path": "isposinf",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -290,11 +291,12 @@
     "output": "True\n\nFalse\n\narray([False, False,  True])\n\narray([0, 0, 1])\n\narray([0, 0, 1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isposinf/",
+  "href": "/docs/api/isposinf/",
+  "legacy_href": "/docs/api/ops/isposinf/",
   "module": "numpy",
   "name": "isposinf",
   "next": {
-    "href": "/docs/api/ops/isreal/",
+    "href": "/docs/api/isreal/",
     "label": "we.isreal"
   },
   "notes": "Test for positive infinity element-wise.",
@@ -322,7 +324,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isneginf/",
+    "href": "/docs/api/isneginf/",
     "label": "we.isneginf"
   },
   "provenance_label": "Adapted from NumPy docs",

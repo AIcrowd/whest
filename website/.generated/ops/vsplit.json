@@ -248,6 +248,7 @@
     }
   ],
   "canonical_name": "vsplit",
+  "canonical_path": "vsplit",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -262,11 +263,12 @@
     "output": "array([[ 0.,   1.,   2.,   3.],\n       [ 4.,   5.,   6.,   7.],\n       [ 8.,   9.,  10.,  11.],\n       [12.,  13.,  14.,  15.]])\n\n[array([[0., 1., 2., 3.],\n        [4., 5., 6., 7.]]),\n array([[ 8.,  9., 10., 11.],\n        [12., 13., 14., 15.]])]\n\n[array([[ 0.,  1.,  2.,  3.],\n        [ 4.,  5.,  6.,  7.],\n        [ 8.,  9., 10., 11.]]),\n array([[12., 13., 14., 15.]]),\n array([], shape=(0, 4), dtype=float64)]\n\narray([[[0.,  1.],\n        [2.,  3.]],\n       [[4.,  5.],\n        [6.,  7.]]])\n\n[array([[[0., 1.],\n         [2., 3.]]]),\n array([[[4., 5.],\n         [6., 7.]]])]",
     "source": "derived"
   },
-  "href": "/docs/api/ops/vsplit/",
+  "href": "/docs/api/vsplit/",
+  "legacy_href": "/docs/api/ops/vsplit/",
   "module": "numpy",
   "name": "vsplit",
   "next": {
-    "href": "/docs/api/ops/vstack/",
+    "href": "/docs/api/vstack/",
     "label": "we.vstack"
   },
   "notes": "Split array into rows. Cost: numel(output).",
@@ -274,7 +276,7 @@
   "numpy_ref": "np.vsplit",
   "parameters": [],
   "previous": {
-    "href": "/docs/api/ops/vecmat/",
+    "href": "/docs/api/vecmat/",
     "label": "we.vecmat"
   },
   "provenance_label": "Adapted from NumPy docs",

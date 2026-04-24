@@ -690,6 +690,7 @@
     }
   ],
   "canonical_name": "isclose",
+  "canonical_path": "isclose",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -711,11 +712,12 @@
     "output": "array([ True, False])\n\narray([ True, True])\n\narray([False,  True])\n\narray([ True, False])\n\narray([ True, True])\n\narray([ True, False])\n\narray([False, False])\n\narray([ True,  True])\n\narray([False,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isclose/",
+  "href": "/docs/api/isclose/",
+  "legacy_href": "/docs/api/ops/isclose/",
   "module": "numpy",
   "name": "isclose",
   "next": {
-    "href": "/docs/api/ops/iscomplex/",
+    "href": "/docs/api/iscomplex/",
     "label": "we.iscomplex"
   },
   "notes": "Element-wise approximate equality test.",
@@ -759,7 +761,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/invert/",
+    "href": "/docs/api/invert/",
     "label": "we.invert"
   },
   "provenance_label": "Adapted from NumPy docs",

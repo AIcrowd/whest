@@ -266,6 +266,7 @@
     }
   ],
   "canonical_name": "unique_all",
+  "canonical_path": "unique-all",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -280,11 +281,12 @@
     "output": "array([1, 2])\n\narray([0, 2])\n\narray([0, 0, 1])\n\narray([2, 1])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/unique_all/",
+  "href": "/docs/api/unique-all/",
+  "legacy_href": "/docs/api/ops/unique_all/",
   "module": "numpy",
   "name": "unique_all",
   "next": {
-    "href": "/docs/api/ops/unique_counts/",
+    "href": "/docs/api/unique-counts/",
     "label": "we.unique_counts"
   },
   "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
@@ -300,7 +302,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unique/",
+    "href": "/docs/api/unique/",
     "label": "we.unique"
   },
   "provenance_label": "Adapted from NumPy docs",

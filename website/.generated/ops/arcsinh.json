@@ -481,6 +481,7 @@
     }
   ],
   "canonical_name": "arcsinh",
+  "canonical_path": "arcsinh",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -511,11 +512,12 @@
     "output": "array([ 1.72538256,  2.99822295])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/arcsinh/",
+  "href": "/docs/api/arcsinh/",
+  "legacy_href": "/docs/api/ops/arcsinh/",
   "module": "numpy",
   "name": "arcsinh",
   "next": {
-    "href": "/docs/api/ops/arctan/",
+    "href": "/docs/api/arctan/",
     "label": "we.arctan"
   },
   "notes": "Element-wise inverse hyperbolic sine.",
@@ -566,7 +568,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/arcsin/",
+    "href": "/docs/api/arcsin/",
     "label": "we.arcsin"
   },
   "provenance_label": "Adapted from NumPy docs",

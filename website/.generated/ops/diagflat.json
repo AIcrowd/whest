@@ -255,6 +255,7 @@
     }
   ],
   "canonical_name": "diagflat",
+  "canonical_path": "diagflat",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -269,11 +270,12 @@
     "output": "array([[1, 0, 0, 0],\n       [0, 2, 0, 0],\n       [0, 0, 3, 0],\n       [0, 0, 0, 4]])\n\narray([[0, 1, 0],\n       [0, 0, 2],\n       [0, 0, 0]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/diagflat/",
+  "href": "/docs/api/diagflat/",
+  "legacy_href": "/docs/api/ops/diagflat/",
   "module": "numpy",
   "name": "diagflat",
   "next": {
-    "href": "/docs/api/ops/diagonal/",
+    "href": "/docs/api/diagonal/",
     "label": "we.diagonal"
   },
   "notes": "Create diagonal array from flattened input. Cost: len(v).",
@@ -299,7 +301,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/diag_indices_from/",
+    "href": "/docs/api/diag-indices-from/",
     "label": "we.diag_indices_from"
   },
   "provenance_label": "Adapted from NumPy docs",

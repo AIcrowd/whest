@@ -215,6 +215,7 @@
     }
   ],
   "canonical_name": "dsplit",
+  "canonical_path": "dsplit",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -229,11 +230,12 @@
     "output": "array([[[ 0.,   1.,   2.,   3.],\n        [ 4.,   5.,   6.,   7.]],\n       [[ 8.,   9.,  10.,  11.],\n        [12.,  13.,  14.,  15.]]])\n\n[array([[[ 0.,  1.],\n        [ 4.,  5.]],\n       [[ 8.,  9.],\n        [12., 13.]]]), array([[[ 2.,  3.],\n        [ 6.,  7.]],\n       [[10., 11.],\n        [14., 15.]]])]\n\n[array([[[ 0.,   1.,   2.],\n        [ 4.,   5.,   6.]],\n       [[ 8.,   9.,  10.],\n        [12.,  13.,  14.]]]),\n array([[[ 3.],\n        [ 7.]],\n       [[11.],\n        [15.]]]),\narray([], shape=(2, 2, 0), dtype=float64)]",
     "source": "derived"
   },
-  "href": "/docs/api/ops/dsplit/",
+  "href": "/docs/api/dsplit/",
+  "legacy_href": "/docs/api/ops/dsplit/",
   "module": "numpy",
   "name": "dsplit",
   "next": {
-    "href": "/docs/api/ops/dstack/",
+    "href": "/docs/api/dstack/",
     "label": "we.dstack"
   },
   "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output).",
@@ -241,7 +243,7 @@
   "numpy_ref": "np.dsplit",
   "parameters": [],
   "previous": {
-    "href": "/docs/api/ops/dot/",
+    "href": "/docs/api/dot/",
     "label": "we.dot"
   },
   "provenance_label": "Adapted from NumPy docs",

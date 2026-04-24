@@ -1099,6 +1099,7 @@
     }
   ],
   "canonical_name": "nanpercentile",
+  "canonical_path": "nanpercentile",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -1123,11 +1124,12 @@
     "output": "array([[10.,  nan,   4.],\n      [ 3.,   2.,   1.]])\n\nwe.float64(nan)\n\n3.0\n\narray([6.5, 2. , 2.5])\n\narray([[7.],\n       [2.]])\n\narray([6.5, 2. , 2.5])\n\narray([6.5,  2. ,  2.5])\n\narray([7., 2.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nanpercentile/",
+  "href": "/docs/api/nanpercentile/",
+  "legacy_href": "/docs/api/ops/nanpercentile/",
   "module": "numpy",
   "name": "nanpercentile",
   "next": {
-    "href": "/docs/api/ops/nanprod/",
+    "href": "/docs/api/nanprod/",
     "label": "we.nanprod"
   },
   "notes": "q-th percentile ignoring NaNs.",
@@ -1253,7 +1255,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nanmin/",
+    "href": "/docs/api/nanmin/",
     "label": "we.nanmin"
   },
   "provenance_label": "Adapted from NumPy docs",

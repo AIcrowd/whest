@@ -626,6 +626,7 @@
     }
   ],
   "canonical_name": "random.randint",
+  "canonical_path": "random/randint",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -640,11 +641,12 @@
     "output": "array([1, 0, 0, 0, 1, 1, 0, 0, 1, 0]) # random\n\narray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])\n\narray([[4, 0, 2, 1], # random\n       [3, 2, 2, 0]])\n\narray([2, 2, 9]) # random\n\narray([9, 8, 7]) # random\n\narray([[ 8,  6,  9,  7], # random\n       [ 1, 16,  9, 12]], dtype=uint8)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-randint/",
+  "href": "/docs/api/random/randint/",
+  "legacy_href": "/docs/api/ops/random-randint/",
   "module": "numpy.random",
   "name": "random.randint",
   "next": {
-    "href": "/docs/api/ops/random-randn/",
+    "href": "/docs/api/random/randn/",
     "label": "we.random.randn"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -695,7 +697,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-rand/",
+    "href": "/docs/api/random/rand/",
     "label": "we.random.rand"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -484,6 +484,7 @@
     }
   ],
   "canonical_name": "greater",
+  "canonical_path": "greater",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -505,11 +506,12 @@
     "output": "array([ True, False])\n\narray([ True, False])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/greater/",
+  "href": "/docs/api/greater/",
+  "legacy_href": "/docs/api/ops/greater/",
   "module": "numpy",
   "name": "greater",
   "next": {
-    "href": "/docs/api/ops/greater_equal/",
+    "href": "/docs/api/greater-equal/",
     "label": "we.greater_equal"
   },
   "notes": "Element-wise x1 > x2.",
@@ -557,7 +559,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/gradient/",
+    "href": "/docs/api/gradient/",
     "label": "we.gradient"
   },
   "provenance_label": "Adapted from NumPy docs",

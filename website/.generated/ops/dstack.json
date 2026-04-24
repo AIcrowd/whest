@@ -380,6 +380,7 @@
     }
   ],
   "canonical_name": "dstack",
+  "canonical_path": "dstack",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -394,11 +395,12 @@
     "output": "array([[[1, 2],\n        [2, 3],\n        [3, 4]]])\n\narray([[[1, 2]],\n       [[2, 3]],\n       [[3, 4]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/dstack/",
+  "href": "/docs/api/dstack/",
+  "legacy_href": "/docs/api/ops/dstack/",
   "module": "numpy",
   "name": "dstack",
   "next": {
-    "href": "/docs/api/ops/ediff1d/",
+    "href": "/docs/api/ediff1d/",
     "label": "we.ediff1d"
   },
   "notes": "Stack arrays depth-wise (along third axis). Cost: numel(output).",
@@ -415,7 +417,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/dsplit/",
+    "href": "/docs/api/dsplit/",
     "label": "we.dsplit"
   },
   "provenance_label": "Adapted from NumPy docs",

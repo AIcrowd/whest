@@ -495,6 +495,7 @@
     }
   ],
   "canonical_name": "random.binomial",
+  "canonical_path": "random/binomial",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -530,11 +531,12 @@
     "output": "# result of flipping a coin 10 times, tested 1000 times.\n\n# answer = 0.38885, or 38%.",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-binomial/",
+  "href": "/docs/api/random/binomial/",
+  "legacy_href": "/docs/api/ops/random-binomial/",
   "module": "numpy.random",
   "name": "random.binomial",
   "next": {
-    "href": "/docs/api/ops/random-bytes/",
+    "href": "/docs/api/random/bytes/",
     "label": "we.random.bytes"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -573,7 +575,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-beta/",
+    "href": "/docs/api/random/beta/",
     "label": "we.random.beta"
   },
   "provenance_label": "Adapted from NumPy docs",

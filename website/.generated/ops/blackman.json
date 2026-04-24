@@ -275,6 +275,7 @@
     }
   ],
   "canonical_name": "blackman",
+  "canonical_path": "blackman",
   "category": "counted_custom",
   "cost_formula": "3n",
   "cost_formula_latex": "$3n$",
@@ -289,11 +290,12 @@
     "output": "array([-1.38777878e-17,   3.26064346e-02,   1.59903635e-01, # may vary\n        4.14397981e-01,   7.36045180e-01,   9.67046769e-01,\n        9.67046769e-01,   7.36045180e-01,   4.14397981e-01,\n        1.59903635e-01,   3.26064346e-02,  -1.38777878e-17])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/blackman/",
+  "href": "/docs/api/blackman/",
+  "legacy_href": "/docs/api/ops/blackman/",
   "module": "whest._window",
   "name": "blackman",
   "next": {
-    "href": "/docs/api/ops/block/",
+    "href": "/docs/api/block/",
     "label": "we.block"
   },
   "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
@@ -314,7 +316,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bitwise_xor/",
+    "href": "/docs/api/bitwise-xor/",
     "label": "we.bitwise_xor"
   },
   "provenance_label": "Adapted from NumPy docs",

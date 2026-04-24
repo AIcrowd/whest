@@ -1,0 +1,66 @@
+{
+  "aliases": [
+    "PermutationGroup",
+    "we.PermutationGroup",
+    "whest.PermutationGroup"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "A permutation group on {0, ..., n-1} defined by generators."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Same generator-based design as "
+            },
+            {
+              "kind": "code",
+              "text": "sympy.combinatorics.PermutationGroup"
+            },
+            {
+              "kind": "text",
+              "text": ".\nFor the small groups in einsum symmetry (typically < 100 elements), all\nelements are enumerated via Dimino's algorithm."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "PermutationGroup",
+  "canonical_path": "permutation-group",
+  "display_name": "we.PermutationGroup",
+  "href": "/docs/api/permutation-group/",
+  "import_path": "we.PermutationGroup",
+  "kind": "class",
+  "members": [],
+  "module": "whest._perm_group",
+  "name": "PermutationGroup",
+  "related_guides": [
+    {
+      "href": "/docs/guides/symmetry",
+      "title": "Symmetry Savings"
+    }
+  ],
+  "signature": "we.PermutationGroup(*generators: 'Permutation', axes: 'tuple[int, ...] | None' = None) -> 'None'",
+  "slug": "permutation-group",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_perm_group.py#L244",
+  "status_note": "",
+  "summary": "A permutation group on {0, ..., n-1} defined by generators.",
+  "upstream_source_url": ""
+}

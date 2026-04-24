@@ -523,6 +523,7 @@
     }
   ],
   "canonical_name": "random.standard_t",
+  "canonical_path": "random/standard-t",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -551,11 +552,12 @@
     "output": "6753.636363636364\n\n1142.1232221373727\n\n-2.8207540608310198\n\n0.018318  #random < 0.05, statistic is in critical region",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-standard_t/",
+  "href": "/docs/api/random/standard-t/",
+  "legacy_href": "/docs/api/ops/random-standard_t/",
   "module": "numpy.random",
   "name": "random.standard_t",
   "next": {
-    "href": "/docs/api/ops/random-triangular/",
+    "href": "/docs/api/random/triangular/",
     "label": "we.random.triangular"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -586,7 +588,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_normal/",
+    "href": "/docs/api/random/standard-normal/",
     "label": "we.random.standard_normal"
   },
   "provenance_label": "Adapted from NumPy docs",

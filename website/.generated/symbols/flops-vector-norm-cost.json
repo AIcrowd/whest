@@ -1,0 +1,200 @@
+{
+  "aliases": [
+    "flops.vector_norm_cost",
+    "we.flops.vector_norm_cost",
+    "whest.flops.vector_norm_cost",
+    "vector_norm_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/linalg/vector-norm/",
+              "kind": "link",
+              "target": "linalg.vector_norm",
+              "text": "linalg.vector_norm"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of vector norm."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Shape of the input array (or effective shape along norm axes)."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Shape of the input array (or effective shape along norm axes)."
+                }
+              ],
+              "name": "shape",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Order of the norm."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "{None, inf, -inf, int, float}, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Order of the norm."
+                }
+              ],
+              "name": "ord",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Most norms cost n FLOPs (one pass over elements). General p-norms\ncost 2n due to exponentiation."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.vector_norm_cost",
+  "canonical_path": "flops/vector-norm-cost",
+  "display_name": "we.flops.vector_norm_cost",
+  "href": "/docs/api/flops/vector-norm-cost/",
+  "import_path": "we.flops.vector_norm_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.linalg._properties",
+  "name": "flops.vector_norm_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "we.flops.vector_norm_cost(shape: 'tuple', ord=None) -> 'int'",
+  "slug": "flops-vector-norm-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L223",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``linalg.vector_norm``.",
+  "upstream_source_url": ""
+}

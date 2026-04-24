@@ -1,0 +1,77 @@
+{
+  "aliases": [
+    "stats.cauchy",
+    "we.stats.cauchy",
+    "whest.stats.cauchy"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Cauchy (Lorentz) continuous random variable."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/stats/cauchy/",
+              "kind": "link",
+              "target": "stats.cauchy",
+              "text": "scipy.stats.cauchy"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "stats.cauchy",
+  "canonical_path": "stats/cauchy",
+  "display_name": "we.stats.cauchy",
+  "href": "/docs/api/stats/cauchy/",
+  "import_path": "we.stats.cauchy",
+  "kind": "object",
+  "members": [
+    {
+      "href": "/docs/api/stats/cauchy/cdf/",
+      "label": "we.stats.cauchy.cdf"
+    },
+    {
+      "href": "/docs/api/stats/cauchy/pdf/",
+      "label": "we.stats.cauchy.pdf"
+    },
+    {
+      "href": "/docs/api/stats/cauchy/ppf/",
+      "label": "we.stats.cauchy.ppf"
+    }
+  ],
+  "module": "whest.stats._cauchy",
+  "name": "stats.cauchy",
+  "related_guides": [],
+  "signature": "we.stats.cauchy",
+  "slug": "stats-cauchy",
+  "source_url": "",
+  "status_note": "",
+  "summary": "Cauchy (Lorentz) continuous random variable.",
+  "upstream_source_url": ""
+}

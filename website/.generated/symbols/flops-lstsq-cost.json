@@ -1,0 +1,212 @@
+{
+  "aliases": [
+    "flops.lstsq_cost",
+    "we.flops.lstsq_cost",
+    "whest.flops.lstsq_cost",
+    "lstsq_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost estimate for "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/linalg/lstsq/",
+              "kind": "link",
+              "target": "linalg.lstsq",
+              "text": "linalg.lstsq"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "whest._weights"
+            },
+            {
+              "kind": "text",
+              "text": ". The final value is floored with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget accounting."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Analytical formula:\nFLOP cost of least-squares solution."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of rows."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of rows."
+                }
+              ],
+              "name": "m",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of columns."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of columns."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Estimated FLOP count: m * n * min(m, n)."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Estimated FLOP count: m * n * min(m, n)."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "NumPy uses LAPACK "
+            },
+            {
+              "kind": "code",
+              "text": "gelsd"
+            },
+            {
+              "kind": "text",
+              "text": " (SVD-based) by default."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.lstsq_cost",
+  "canonical_path": "flops/lstsq-cost",
+  "display_name": "we.flops.lstsq_cost",
+  "href": "/docs/api/flops/lstsq-cost/",
+  "import_path": "we.flops.lstsq_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "whest.linalg._solvers",
+  "name": "flops.lstsq_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    },
+    {
+      "href": "/docs/guides/linalg",
+      "title": "Linear Algebra Guide"
+    }
+  ],
+  "signature": "we.flops.lstsq_cost(m: 'int', n: 'int') -> 'int'",
+  "slug": "flops-lstsq-cost",
+  "source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L125",
+  "status_note": "",
+  "summary": "Weighted FLOP cost estimate for ``linalg.lstsq``.",
+  "upstream_source_url": ""
+}

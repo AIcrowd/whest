@@ -438,6 +438,7 @@
     }
   ],
   "canonical_name": "sign",
+  "canonical_path": "sign",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -459,11 +460,12 @@
     "output": "array([-1.,  1.])\n\n0\n\narray([0.6-0.8j, 0. +1.j ])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/sign/",
+  "href": "/docs/api/sign/",
+  "legacy_href": "/docs/api/ops/sign/",
   "module": "numpy",
   "name": "sign",
   "next": {
-    "href": "/docs/api/ops/signbit/",
+    "href": "/docs/api/signbit/",
     "label": "we.signbit"
   },
   "notes": "Element-wise sign function.",
@@ -511,7 +513,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/shares_memory/",
+    "href": "/docs/api/shares-memory/",
     "label": "we.shares_memory"
   },
   "provenance_label": "Adapted from NumPy docs",

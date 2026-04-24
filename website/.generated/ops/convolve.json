@@ -475,6 +475,7 @@
     }
   ],
   "canonical_name": "convolve",
+  "canonical_path": "convolve",
   "category": "counted_custom",
   "cost_formula": "n * m",
   "cost_formula_latex": "$n \\cdot m$",
@@ -499,11 +500,12 @@
     "output": "array([0. , 1. , 2.5, 4. , 1.5])\n\narray([1. ,  2.5,  4. ])\n\narray([2.5])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/convolve/",
+  "href": "/docs/api/convolve/",
+  "legacy_href": "/docs/api/ops/convolve/",
   "module": "numpy",
   "name": "convolve",
   "next": {
-    "href": "/docs/api/ops/copy/",
+    "href": "/docs/api/copy/",
     "label": "we.copy"
   },
   "notes": "1-D discrete convolution.",
@@ -551,7 +553,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/conjugate/",
+    "href": "/docs/api/conjugate/",
     "label": "we.conjugate"
   },
   "provenance_label": "Adapted from NumPy docs",

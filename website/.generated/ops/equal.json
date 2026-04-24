@@ -507,6 +507,7 @@
     }
   ],
   "canonical_name": "equal",
+  "canonical_path": "equal",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -528,11 +529,12 @@
     "output": "array([ True,  True, False])\n\narray([ True])\n\narray([ True,  True, False])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/equal/",
+  "href": "/docs/api/equal/",
+  "legacy_href": "/docs/api/ops/equal/",
   "module": "numpy",
   "name": "equal",
   "next": {
-    "href": "/docs/api/ops/exp/",
+    "href": "/docs/api/exp/",
     "label": "we.exp"
   },
   "notes": "Element-wise x1 == x2.",
@@ -580,7 +582,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/empty_like/",
+    "href": "/docs/api/empty-like/",
     "label": "we.empty_like"
   },
   "provenance_label": "Adapted from NumPy docs",

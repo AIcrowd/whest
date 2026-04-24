@@ -406,6 +406,7 @@
     }
   ],
   "canonical_name": "logical_not",
+  "canonical_path": "logical-not",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -427,11 +428,12 @@
     "output": "False\n\narray([False,  True,  True, False])\n\narray([False, False, False,  True,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/logical_not/",
+  "href": "/docs/api/logical-not/",
+  "legacy_href": "/docs/api/ops/logical_not/",
   "module": "numpy",
   "name": "logical_not",
   "next": {
-    "href": "/docs/api/ops/logical_or/",
+    "href": "/docs/api/logical-or/",
     "label": "we.logical_or"
   },
   "notes": "Element-wise logical NOT.",
@@ -477,7 +479,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/logical_and/",
+    "href": "/docs/api/logical-and/",
     "label": "we.logical_and"
   },
   "provenance_label": "Adapted from NumPy docs",

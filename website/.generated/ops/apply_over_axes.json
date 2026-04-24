@@ -450,6 +450,7 @@
     }
   ],
   "canonical_name": "apply_over_axes",
+  "canonical_path": "apply-over-axes",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -464,11 +465,12 @@
     "output": "array([[[ 0,  1,  2,  3],\n        [ 4,  5,  6,  7],\n        [ 8,  9, 10, 11]],\n       [[12, 13, 14, 15],\n        [16, 17, 18, 19],\n        [20, 21, 22, 23]]])\n\narray([[[ 60],\n        [ 92],\n        [124]]])\n\narray([[[ 60],\n        [ 92],\n        [124]]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/apply_over_axes/",
+  "href": "/docs/api/apply-over-axes/",
+  "legacy_href": "/docs/api/ops/apply_over_axes/",
   "module": "numpy",
   "name": "apply_over_axes",
   "next": {
-    "href": "/docs/api/ops/arange/",
+    "href": "/docs/api/arange/",
     "label": "we.arange"
   },
   "notes": "Apply function over multiple axes. Cost: numel(output).",
@@ -500,7 +502,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/apply_along_axis/",
+    "href": "/docs/api/apply-along-axis/",
     "label": "we.apply_along_axis"
   },
   "provenance_label": "Adapted from NumPy docs",

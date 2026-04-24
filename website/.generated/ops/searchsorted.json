@@ -573,6 +573,7 @@
     }
   ],
   "canonical_name": "searchsorted",
+  "canonical_path": "searchsorted",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -592,11 +593,12 @@
     "output": "2\n\n3\n\narray([0, 5, 1, 2])\n\narray([1, 2, 3, 0])  # Indices that would sort the array 'a'\n\n2\n\n30  # The element at index 2 of the sorted array is 30.",
     "source": "derived"
   },
-  "href": "/docs/api/ops/searchsorted/",
+  "href": "/docs/api/searchsorted/",
+  "legacy_href": "/docs/api/ops/searchsorted/",
   "module": "numpy",
   "name": "searchsorted",
   "next": {
-    "href": "/docs/api/ops/select/",
+    "href": "/docs/api/select/",
     "label": "we.select"
   },
   "notes": "Binary search; cost = m*ceil(log2(n)).",
@@ -642,7 +644,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/row_stack/",
+    "href": "/docs/api/row-stack/",
     "label": "we.row_stack"
   },
   "provenance_label": "Adapted from NumPy docs",

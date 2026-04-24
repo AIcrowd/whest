@@ -358,6 +358,7 @@
     }
   ],
   "canonical_name": "kaiser",
+  "canonical_path": "kaiser",
   "category": "counted_custom",
   "cost_formula": "3n",
   "cost_formula_latex": "$3n$",
@@ -389,11 +390,12 @@
     "output": "array([7.72686684e-06, 3.46009194e-03, 4.65200189e-02, # may vary\n        2.29737120e-01, 5.99885316e-01, 9.45674898e-01,\n        9.45674898e-01, 5.99885316e-01, 2.29737120e-01,\n        4.65200189e-02, 3.46009194e-03, 7.72686684e-06])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/kaiser/",
+  "href": "/docs/api/kaiser/",
+  "legacy_href": "/docs/api/ops/kaiser/",
   "module": "whest._window",
   "name": "kaiser",
   "next": {
-    "href": "/docs/api/ops/kron/",
+    "href": "/docs/api/kron/",
     "label": "we.kron"
   },
   "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample).",
@@ -428,7 +430,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ix_/",
+    "href": "/docs/api/ix-/",
     "label": "we.ix_"
   },
   "provenance_label": "Adapted from NumPy docs",

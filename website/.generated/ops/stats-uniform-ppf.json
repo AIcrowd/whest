@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.uniform.ppf",
+  "canonical_path": "stats/uniform/ppf",
   "category": "counted_custom",
   "cost_formula": "3n",
   "cost_formula_latex": "$3n$",
@@ -169,11 +170,12 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/stats-uniform-ppf/",
+  "href": "/docs/api/stats/uniform/ppf/",
+  "legacy_href": "/docs/api/ops/stats-uniform-ppf/",
   "module": "whest.stats",
   "name": "stats.uniform.ppf",
   "next": {
-    "href": "/docs/api/ops/std/",
+    "href": "/docs/api/std/",
     "label": "we.std"
   },
   "notes": "Uniform PPF; cost = numel(input).",
@@ -211,7 +213,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-uniform-pdf/",
+    "href": "/docs/api/stats/uniform/pdf/",
     "label": "we.stats.uniform.pdf"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -229,7 +231,7 @@
   "signature": "we.stats.uniform.ppf(q, loc=0, scale=1)",
   "slug": "stats-uniform-ppf",
   "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2272",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.stats.uniform.ppf",

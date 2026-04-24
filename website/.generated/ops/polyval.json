@@ -507,6 +507,7 @@
     }
   ],
   "canonical_name": "polyval",
+  "canonical_path": "polyval",
   "category": "counted_custom",
   "cost_formula": "m * deg (FMA=1)",
   "cost_formula_latex": "$m \\cdot \\text{deg}$",
@@ -538,11 +539,12 @@
     "output": "76\n\npoly1d([76])\n\n76\n\npoly1d([76])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/polyval/",
+  "href": "/docs/api/polyval/",
+  "legacy_href": "/docs/api/ops/polyval/",
   "module": "whest._polynomial",
   "name": "polyval",
   "next": {
-    "href": "/docs/api/ops/positive/",
+    "href": "/docs/api/positive/",
     "label": "we.positive"
   },
   "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
@@ -571,7 +573,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/polysub/",
+    "href": "/docs/api/polysub/",
     "label": "we.polysub"
   },
   "provenance_label": "Adapted from NumPy docs",

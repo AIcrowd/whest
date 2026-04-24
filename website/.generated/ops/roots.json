@@ -350,6 +350,7 @@
     }
   ],
   "canonical_name": "roots",
+  "canonical_path": "roots",
   "category": "counted_custom",
   "cost_formula": "10n^3",
   "cost_formula_latex": "$10n^3$",
@@ -381,11 +382,12 @@
     "output": "array([-0.3125+0.46351241j, -0.3125-0.46351241j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/roots/",
+  "href": "/docs/api/roots/",
+  "legacy_href": "/docs/api/ops/roots/",
   "module": "whest._polynomial",
   "name": "roots",
   "next": {
-    "href": "/docs/api/ops/rot90/",
+    "href": "/docs/api/rot90/",
     "label": "we.rot90"
   },
   "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
@@ -403,7 +405,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/rollaxis/",
+    "href": "/docs/api/rollaxis/",
     "label": "we.rollaxis"
   },
   "provenance_label": "Adapted from NumPy docs",

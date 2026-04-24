@@ -492,6 +492,7 @@
     }
   ],
   "canonical_name": "logical_xor",
+  "canonical_path": "logical-xor",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -513,11 +514,12 @@
     "output": "True\n\narray([False,  True,  True, False])\n\narray([ True, False, False, False,  True])\n\narray([[ True, False],\n       [False,  True]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/logical_xor/",
+  "href": "/docs/api/logical-xor/",
+  "legacy_href": "/docs/api/ops/logical_xor/",
   "module": "numpy",
   "name": "logical_xor",
   "next": {
-    "href": "/docs/api/ops/logspace/",
+    "href": "/docs/api/logspace/",
     "label": "we.logspace"
   },
   "notes": "Element-wise logical XOR.",
@@ -565,7 +567,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/logical_or/",
+    "href": "/docs/api/logical-or/",
     "label": "we.logical_or"
   },
   "provenance_label": "Adapted from NumPy docs",

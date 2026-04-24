@@ -699,6 +699,7 @@
     }
   ],
   "canonical_name": "logspace",
+  "canonical_path": "logspace",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -713,11 +714,12 @@
     "output": "array([ 100.        ,  215.443469  ,  464.15888336, 1000.        ])\n\narray([100.        ,  177.827941  ,  316.22776602,  562.34132519])\n\narray([4.        ,  5.0396842 ,  6.34960421,  8.        ])\n\narray([[ 4.        ,  5.0396842 ,  6.34960421,  8.        ],\n       [ 9.        , 12.98024613, 18.72075441, 27.        ]])\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n(-0.5, 1)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/logspace/",
+  "href": "/docs/api/logspace/",
+  "legacy_href": "/docs/api/ops/logspace/",
   "module": "numpy",
   "name": "logspace",
   "next": {
-    "href": "/docs/api/ops/mask_indices/",
+    "href": "/docs/api/mask-indices/",
     "label": "we.mask_indices"
   },
   "notes": "Log-spaced generation; cost = num.",
@@ -790,7 +792,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/logical_xor/",
+    "href": "/docs/api/logical-xor/",
     "label": "we.logical_xor"
   },
   "provenance_label": "Adapted from NumPy docs",

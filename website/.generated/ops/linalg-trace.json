@@ -359,6 +359,7 @@
     }
   ],
   "canonical_name": "linalg.trace",
+  "canonical_path": "linalg/trace",
   "category": "counted_custom",
   "cost_formula": "n",
   "cost_formula_latex": "$n$",
@@ -373,11 +374,12 @@
     "output": "3.0\n\narray([3, 11])\n\n(3, 2)\n\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n\n6\n\n2\n\n10\n\n6",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-trace/",
+  "href": "/docs/api/linalg/trace/",
+  "legacy_href": "/docs/api/ops/linalg-trace/",
   "module": "numpy.linalg",
   "name": "linalg.trace",
   "next": {
-    "href": "/docs/api/ops/linalg-vecdot/",
+    "href": "/docs/api/linalg/vecdot/",
     "label": "we.linalg.vecdot"
   },
   "notes": "Matrix trace. Cost: n (sum of diagonal elements).",
@@ -413,7 +415,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-tensorsolve/",
+    "href": "/docs/api/linalg/tensorsolve/",
     "label": "we.linalg.tensorsolve"
   },
   "provenance_label": "Adapted from NumPy docs",

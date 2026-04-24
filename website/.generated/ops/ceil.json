@@ -413,6 +413,7 @@
     }
   ],
   "canonical_name": "ceil",
+  "canonical_path": "ceil",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -434,11 +435,12 @@
     "output": "array([-1., -1., -0.,  1.,  2.,  2.,  2.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ceil/",
+  "href": "/docs/api/ceil/",
+  "legacy_href": "/docs/api/ops/ceil/",
   "module": "numpy",
   "name": "ceil",
   "next": {
-    "href": "/docs/api/ops/choose/",
+    "href": "/docs/api/choose/",
     "label": "we.choose"
   },
   "notes": "Element-wise ceiling.",
@@ -484,7 +486,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/cbrt/",
+    "href": "/docs/api/cbrt/",
     "label": "we.cbrt"
   },
   "provenance_label": "Adapted from NumPy docs",

@@ -151,6 +151,7 @@
     }
   ],
   "canonical_name": "union1d",
+  "canonical_path": "union1d",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -165,11 +166,12 @@
     "output": "array([-2, -1,  0,  1,  2])\n\narray([1, 2, 3, 4, 6])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/union1d/",
+  "href": "/docs/api/union1d/",
+  "legacy_href": "/docs/api/ops/union1d/",
   "module": "numpy",
   "name": "union1d",
   "next": {
-    "href": "/docs/api/ops/unique/",
+    "href": "/docs/api/unique/",
     "label": "we.unique"
   },
   "notes": "Set union; cost = (n+m)*ceil(log2(n+m)).",
@@ -185,7 +187,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/typename/",
+    "href": "/docs/api/typename/",
     "label": "we.typename"
   },
   "provenance_label": "Adapted from NumPy docs",

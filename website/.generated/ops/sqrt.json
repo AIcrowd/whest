@@ -495,6 +495,7 @@
     }
   ],
   "canonical_name": "sqrt",
+  "canonical_path": "sqrt",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -522,11 +523,12 @@
     "output": "array([ 1.,  2.,  3.])\n\narray([ 2.+0.j,  0.+1.j,  1.+2.j])\n\narray([ 2., nan, inf])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/sqrt/",
+  "href": "/docs/api/sqrt/",
+  "legacy_href": "/docs/api/ops/sqrt/",
   "module": "numpy",
   "name": "sqrt",
   "next": {
-    "href": "/docs/api/ops/square/",
+    "href": "/docs/api/square/",
     "label": "we.square"
   },
   "notes": "Element-wise square root.",
@@ -574,7 +576,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/split/",
+    "href": "/docs/api/split/",
     "label": "we.split"
   },
   "provenance_label": "Adapted from NumPy docs",

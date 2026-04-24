@@ -159,6 +159,7 @@
     }
   ],
   "canonical_name": "stats.logistic.cdf",
+  "canonical_path": "stats/logistic/cdf",
   "category": "counted_custom",
   "cost_formula": "5n",
   "cost_formula_latex": "$5n$",
@@ -169,11 +170,12 @@
     "unsupported_directives": []
   },
   "example": null,
-  "href": "/docs/api/ops/stats-logistic-cdf/",
+  "href": "/docs/api/stats/logistic/cdf/",
+  "legacy_href": "/docs/api/ops/stats-logistic-cdf/",
   "module": "whest.stats",
   "name": "stats.logistic.cdf",
   "next": {
-    "href": "/docs/api/ops/stats-logistic-pdf/",
+    "href": "/docs/api/stats/logistic/pdf/",
     "label": "we.stats.logistic.pdf"
   },
   "notes": "Logistic CDF; cost = numel(input).",
@@ -211,7 +213,7 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-laplace-ppf/",
+    "href": "/docs/api/stats/laplace/ppf/",
     "label": "we.stats.laplace.ppf"
   },
   "provenance_label": "Adapted from NumPy docs",
@@ -229,7 +231,7 @@
   "signature": "we.stats.logistic.cdf(x, loc=0, scale=1)",
   "slug": "stats-logistic-cdf",
   "summary": "Cumulative distribution function of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2102",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.stats.logistic.cdf",
