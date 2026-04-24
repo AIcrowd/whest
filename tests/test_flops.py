@@ -159,8 +159,8 @@ def test_analytical_reduction_cost_tuple_axis_full():
 def test_analytical_reduction_cost_axis_sym_preserving():
     # sym(5,5,10) with symmetric axes (0,1) reducing axis=2.
     # K = {0,1} preserves the S_2 symmetry → 15 unique outputs.
-    # R = {2} is disjoint from sym group's axes (0,1), so that group is NOT
-    # inner-clean (g.axes ⊂ K). u_R = 10 (no inner savings).
+    # Inner-clean requires g.axes ⊆ R. Here g.axes = {0,1} ⊄ R = {2},
+    # so the group is output-only, not inner-clean. u_R = 10 (no inner savings).
     # Cost = 15 * (10 − 1) = 135.
     info = SymmetryInfo(symmetric_axes=[(0, 1)], shape=(5, 5, 10))
     assert (
