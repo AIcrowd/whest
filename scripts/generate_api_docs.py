@@ -68,7 +68,7 @@ def _import_local_flopscope_module(module_name: str):
     if src_root not in sys.path:
         sys.path.insert(0, src_root)
 
-    root_module = sys.modules.get('flopscope')
+    root_module = sys.modules.get("flopscope")
     if root_module is not None and not _module_is_from_local_checkout(root_module):
         for name in list(sys.modules):
             if name == "flopscope" or name.startswith("flopscope."):
@@ -2296,14 +2296,18 @@ def _build_operation_record(
             "Parallel worker context not initialized; call _worker_init_operation_doc_context()"
         )
 
-    signature, parsed_doc, derived_example, flopscope_source_url, upstream_source_url = (
-        build_structured_doc(
-            name,
-            module,
-            owned_example_html,
-            alias_map=alias_map,
-            supported_ops=supported_ops,
-        )
+    (
+        signature,
+        parsed_doc,
+        derived_example,
+        flopscope_source_url,
+        upstream_source_url,
+    ) = build_structured_doc(
+        name,
+        module,
+        owned_example_html,
+        alias_map=alias_map,
+        supported_ops=supported_ops,
     )
     cost_plain, cost_latex = cost_for_op(name, category)
     return OperationDocRecord(
@@ -3181,9 +3185,7 @@ def build_operation_doc_records(
 
 def render_operation_stub(op: OperationDocRecord) -> str:
     """Render a generated standalone MDX page stub for one canonical operation."""
-    return (
-        f'---\ntitle: "{op.flopscope_ref}"\n---\n\n<OperationDocPage name="{op.name}" />\n'
-    )
+    return f'---\ntitle: "{op.flopscope_ref}"\n---\n\n<OperationDocPage name="{op.name}" />\n'
 
 
 def render_public_symbol_stub(symbol: PublicApiSymbolRecord) -> str:
@@ -3885,7 +3887,9 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
 
     public_api_refs = json.loads(public_api_refs_path.read_text())
     missing_surface = sorted(
-        name for name in collect_public_api_surface_names() if name not in public_api_refs
+        name
+        for name in collect_public_api_surface_names()
+        if name not in public_api_refs
     )
     if missing_surface:
         print("\npublic-api-refs.json missing public API entries:")
