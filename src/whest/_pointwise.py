@@ -273,9 +273,9 @@ def _counted_reduction(
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
     cost_desc = (
-        f"numel(input) * {cost_multiplier} FLOPs"
+        f"(numel(input) - 1) * {cost_multiplier} FLOPs"
         if cost_multiplier > 1
-        else "numel(input) FLOPs"
+        else "numel(input) - 1 FLOPs"
     )
     if extra_output:
         cost_desc += " + numel(output)"

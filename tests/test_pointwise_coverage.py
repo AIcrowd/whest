@@ -282,7 +282,7 @@ class TestReductionSymmetric:
         # axis 0 is in group (0,1); remaining single axis => group lost
 
     def test_std_on_symmetric_tensor(self):
-        """std() (cost_multiplier=2, extra_output=True) on a symmetric tensor."""
+        """std() (weight=2.0, extra_output=True) on a symmetric tensor."""
         st = _make_symmetric_3d(4)
         with BudgetContext(flop_budget=10**6):
             result = std(st, axis=2)
@@ -784,7 +784,7 @@ class TestReductionNonArray:
         with BudgetContext(flop_budget=10**6) as budget:
             result = sum([1.0, 2.0, 3.0])
         assert numpy.isclose(result, 6.0)
-        assert budget.flops_used == 3
+        assert budget.flops_used == 2  # 3 inputs − 1
 
     def test_argmax_on_list(self):
         with BudgetContext(flop_budget=10**6):

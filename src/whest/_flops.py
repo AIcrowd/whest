@@ -6,7 +6,10 @@ import math
 from collections import Counter
 from typing import TYPE_CHECKING
 
+from whest._symmetric import propagate_symmetry_reduce
+
 if TYPE_CHECKING:
+    from whest._perm_group import PermutationGroup
     from whest._symmetric import SymmetryInfo
 
 
@@ -121,39 +124,163 @@ def analytical_pointwise_cost(
     return max(result, 1)
 
 
+def _normalize_axis(
+    axis: int | tuple[int, ...] | None, ndim: int
+) -> tuple[int, ...] | None:
+    """Return normalized reduction axes as a sorted tuple, or None for full reduction.
+
+    Raises
+    ------
+    ValueError
+        If ``axis`` is not ``None`` but ``ndim == 0`` (scalar input has no axes).
+    """
+    if axis is None:
+        return None
+    if ndim == 0:
+        raise ValueError(
+            f"axis={axis!r} is out of bounds for scalar input (ndim=0); "
+            "use axis=None for full reduction of a scalar"
+        )
+    if isinstance(axis, int):
+        axis = (axis,)
+    normalized = tuple(sorted(a % ndim for a in axis))
+    return normalized
+
+
+def _compute_output_unique_count(
+    groups: list[PermutationGroup] | None,
+    input_shape: tuple[int, ...],
+    reduced_axes: tuple[int, ...] | None,
+) -> int:
+    """Number of unique outputs after reducing ``reduced_axes`` of ``input_shape``.
+
+    Uses ``propagate_symmetry_reduce`` to obtain the surviving output symmetry
+    groups, then multiplies Burnside counts (over symmetric axes) by free-axis
+    sizes (kept non-symmetric axes).
+    """
+    ndim = len(input_shape)
+    if reduced_axes is None:
+        # Full reduction → scalar output.
+        return 1
+    kept_axes = [d for d in range(ndim) if d not in set(reduced_axes)]
+    if not kept_axes:
+        return 1
+
+    # Propagate to get the surviving output symmetry groups.
+    # (Operates on input-axis numbering internally; returns output-axis numbering.)
+    out_groups = None
+    if groups:
+        out_groups = propagate_symmetry_reduce(
+            groups, ndim, reduced_axes, keepdims=False
+        )
+
+    # Output shape in output-axis numbering.
+    output_shape = tuple(input_shape[d] for d in kept_axes)
+
+    # Sum Burnside unique counts over the output groups; multiply free-dim sizes.
+    accounted: set[int] = set()
+    total = 1
+    if out_groups:
+        for group in out_groups:
+            axes = group.axes
+            if axes is None:
+                continue
+            size_dict = {i: output_shape[axes[i]] for i in range(group.degree)}
+            total *= group.burnside_unique_count(size_dict)
+            accounted.update(axes)
+    for i, size in enumerate(output_shape):
+        if i not in accounted:
+            total *= size
+    return total
+
+
+def _compute_R_unique_count(
+    groups: list[PermutationGroup] | None,
+    input_shape: tuple[int, ...],
+    reduced_axes: tuple[int, ...] | None,
+) -> int:
+    """Number of unique inputs feeding one output slice.
+
+    Only **inner-clean** sym groups (``g.axes ⊆ R``) contribute input-side
+    savings — they act entirely within the reduced axes and combine equivalent
+    values. Split groups (spanning both R and K) and output-only groups
+    (``g.axes ⊆ K``) contribute no savings here.
+
+    When ``reduced_axes is None`` (full reduction), every axis is treated as
+    reduced, so ``u_R`` equals the total number of unique input elements.
+    """
+    ndim = len(input_shape)
+    if reduced_axes is None:
+        reduced_axes = tuple(range(ndim))
+    reduced_set = set(reduced_axes)
+
+    accounted: set[int] = set()
+    total = 1
+    if groups:
+        for group in groups:
+            axes = group.axes
+            if axes is None:
+                continue
+            axes_set = set(axes)
+            if not axes_set.issubset(reduced_set):
+                # Not inner-clean: either output-only (g.axes ⊆ K) — doesn't
+                # touch reduced axes — or split. Neither contributes to u_R.
+                continue
+            size_dict = {i: input_shape[axes[i]] for i in range(group.degree)}
+            total *= group.burnside_unique_count(size_dict)
+            accounted.update(axes)
+    for d in reduced_axes:
+        if d not in accounted:
+            total *= input_shape[d]
+    return total
+
+
 def analytical_reduction_cost(
     input_shape: tuple[int, ...],
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     symmetry_info: SymmetryInfo | None = None,
 ) -> int:
     """FLOP cost of a reduction operation.
+
+    The cost of a reduction is the number of accumulations performed:
+    for each output, the first input value is a free copy, and the remaining
+    ``u_R − 1`` values are accumulated in. Total cost:
+
+    .. math::
+
+        \\text{cost} = \\text{unique\\_out} \\times (u_R - 1)
+
+    where ``unique_out`` is the number of unique outputs (accounting for
+    output-side symmetry) and ``u_R`` is the number of unique inputs feeding
+    one output slice (accounting for inner-clean input symmetry).
 
     Parameters
     ----------
     input_shape : tuple of int
         Shape of the input array.
-    axis : int or None, optional
-        Axis along which to reduce. If None, reduce over all elements.
+    axis : int, tuple of int, or None, optional
+        Axis or axes along which to reduce. If None, reduce over all elements.
     symmetry_info : SymmetryInfo or None, optional
-        If provided, only unique elements are counted.
+        If provided, symmetry is used to count unique outputs and unique
+        per-output inputs. Only inner-clean groups (g.axes ⊆ reduced axes)
+        contribute per-output input savings; split groups do not.
 
     Returns
     -------
     int
-        Estimated FLOP count (one per element).
-
-    Notes
-    -----
-    The ``axis`` parameter is accepted for API consistency but does not
-    affect the result: a reduction always touches every element regardless
-    of which axis is reduced, so the cost is always ``prod(input_shape)``.
+        Estimated FLOP count. Clamped to a minimum of 1 for degenerate shapes
+        (scalar, size-1 axis, empty shape) so every reduction registers at
+        least 1 flop for budget tracking purposes.
     """
-    if symmetry_info is not None:
-        return max(symmetry_info.unique_elements, 1)
-    result = 1
-    for dim in input_shape:
-        result *= dim
-    return max(result, 1)
+    ndim = len(input_shape)
+    reduced_axes = _normalize_axis(axis, ndim)
+    groups = symmetry_info.groups if symmetry_info is not None else None
+
+    unique_out = _compute_output_unique_count(groups, input_shape, reduced_axes)
+    u_R = _compute_R_unique_count(groups, input_shape, reduced_axes)
+
+    cost = unique_out * (u_R - 1)
+    return max(cost, 1)
 
 
 # Backward-compatible internal aliases. The public weighted API lives in
