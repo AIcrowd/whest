@@ -12,7 +12,6 @@ for name in list(sys.modules):
         sys.modules.pop(name, None)
 
 import whest as we
-
 from scripts.generate_api_docs import (
     canonical_api_href_for_name,
     collect_public_api_surface_names,
