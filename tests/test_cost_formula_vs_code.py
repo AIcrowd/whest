@@ -265,7 +265,7 @@ _REDUCTION_NUMEL = [
     "nansum",
     "median",
     "nanmedian",
-    # mean/std/var also cost numel(input) per sheet
+    # mean/std/var also cost numel(input) − 1 per sheet
     "mean",
     "average",
     "nanmean",

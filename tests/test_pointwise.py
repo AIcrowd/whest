@@ -76,7 +76,7 @@ def test_sum_full():
     x = numpy.ones((5, 3))
     with BudgetContext(flop_budget=10**6) as budget:
         result = sum(x)
-        assert budget.flops_used == 14
+        assert budget.flops_used == 14  # 5*3 − 1
     assert float(result) == 15.0
 
 
@@ -85,7 +85,7 @@ def test_sum_axis():
     with BudgetContext(flop_budget=10**6) as budget:
         result = sum(x, axis=0)
         assert result.shape == (3,)
-        assert budget.flops_used == 12
+        assert budget.flops_used == 12  # 3 outputs × (5−1)
 
 
 def test_mean_cost():
