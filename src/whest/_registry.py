@@ -674,12 +674,12 @@ REGISTRY: dict[str, dict] = {
     "std": {
         "category": "counted_reduction",
         "module": "numpy",
-        "notes": "Standard deviation; cost_multiplier=2 (two passes).",
+        "notes": "Standard deviation; weight=2.0 accounts for two-pass algorithm.",
     },
     "var": {
         "category": "counted_reduction",
         "module": "numpy",
-        "notes": "Variance; cost_multiplier=2 (two passes).",
+        "notes": "Variance; weight=2.0 accounts for two-pass algorithm.",
     },
     "argmax": {
         "category": "counted_reduction",

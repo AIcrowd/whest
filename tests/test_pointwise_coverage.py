@@ -282,7 +282,7 @@ class TestReductionSymmetric:
         # axis 0 is in group (0,1); remaining single axis => group lost
 
     def test_std_on_symmetric_tensor(self):
-        """std() (cost_multiplier=2, extra_output=True) on a symmetric tensor."""
+        """std() (weight=2.0, extra_output=True) on a symmetric tensor."""
         st = _make_symmetric_3d(4)
         with BudgetContext(flop_budget=10**6):
             result = std(st, axis=2)
