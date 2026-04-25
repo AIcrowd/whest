@@ -255,10 +255,10 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
             do not reimplement. */}
         <Link
           href="/"
-          aria-label="Flopscope."
+          aria-label="flopscope."
           className="flopscope-wordmark mr-4 shrink-0 text-[20px] no-underline"
         >
-          Flopscope<span className="flopscope-wordmark__dot">.</span>
+          <span className="flopscope-wordmark__flop">flop</span>scope<span className="flopscope-wordmark__dot">.</span>
         </Link>
         <nav className="flex shrink-0 items-center gap-1 overflow-x-auto pb-1 md:pb-0">
           {EXPLORER_ACTS.map((act, idx) => {
