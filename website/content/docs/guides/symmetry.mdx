@@ -17,7 +17,7 @@ title: "Symmetry Savings"
 Many tensors contain repeated structure. A symmetric matrix has only
 `n * (n + 1) / 2` unique elements instead of `n^2`, and higher-order tensors
 with permutation symmetry can shrink the effective element count even more.
-When flopscope knows a tensor's symmetry, it charges FLOPs based on unique elements
+When Flopscope knows a tensor's symmetry, it charges FLOPs based on unique elements
 instead of dense ones.
 
 | Operation | Dense cost | Symmetry-aware cost | Why it drops |
@@ -48,7 +48,7 @@ with flops.BudgetContext(flop_budget=10**6) as budget:
     print(budget.flops_used)
 ```
 
-`flops.as_symmetric()` validates the data first. After that, flopscope propagates
+`flops.as_symmetric()` validates the data first. After that, Flopscope propagates
 symmetry metadata algebraically through many operations. Unary pointwise ops preserve symmetry-aware costs and keep the same symmetric axes. For non-full groups such as `C_k` or `D_k`, the current implementation widens the metadata to full symmetry on those axes. Slicing, reductions, and binary pointwise ops can weaken it or remove it entirely.
 
 ## How to declare symmetry

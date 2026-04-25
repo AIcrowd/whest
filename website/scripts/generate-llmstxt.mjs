@@ -41,7 +41,7 @@ const SECTIONS = {
     'guides/budget-planning': 'Estimate costs and diagnose budget overruns',
   },
   'Understanding flopscope': {
-    'understanding/how-flopscope-works': 'How flopscope wraps NumPy to count every FLOP',
+    'understanding/how-flopscope-works': 'How Flopscope wraps NumPy to count every FLOP',
     'understanding/flop-counting-model': 'Analytical FLOP cost formulas and conventions',
     'understanding/operation-categories': 'Free vs counted vs blocked operations',
     'understanding/symmetry-detection': 'Subgraph symmetry detection algorithm deep dive',

@@ -12,7 +12,7 @@ title: "Budget Planning & Debugging"
 
 ## Estimate before running
 
-flopscope provides cost query functions that compute FLOP costs from shapes without executing anything or touching the budget. Use these to plan before committing FLOPs:
+Flopscope provides cost query functions that compute FLOP costs from shapes without executing anything or touching the budget. Use these to plan before committing FLOPs:
 
 ```python
 import flopscope as flops
@@ -124,7 +124,7 @@ with flops.BudgetContext(
 print(budget.summary())
 ```
 
-When the time limit is exceeded, flopscope raises `TimeExhaustedError` at the next
+When the time limit is exceeded, Flopscope raises `TimeExhaustedError` at the next
 operation boundary. The summary exposes three timing views:
 
 - `wall_time_s`: total elapsed time for the context

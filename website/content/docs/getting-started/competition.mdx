@@ -26,7 +26,7 @@ with flops.BudgetContext(flop_budget=50_000_000, namespace="solver") as budget:
     result = fnp.sum(h)
 ```
 
-If your code exceeds the budget, flopscope raises `BudgetExhaustedError` *before* the offending operation executes. The error message includes the cost of the failed operation and the remaining budget.
+If your code exceeds the budget, Flopscope raises `BudgetExhaustedError` *before* the offending operation executes. The error message includes the cost of the failed operation and the remaining budget.
 
 The `namespace` parameter sets the root namespace prefix for that budget context. Nested `flops.namespace(...)` scopes extend it with dotted segments, but they do not create child budgets or split the FLOP limit into separate pools.
 
@@ -59,7 +59,7 @@ with flops.BudgetContext(flop_budget=10**9, wall_time_limit_s=60.0) as budget:
     ...
 ```
 
-If the wall-clock time is exceeded, flopscope raises `TimeExhaustedError`. The timer starts when the context is entered and is checked after each counted operation.
+If the wall-clock time is exceeded, Flopscope raises `TimeExhaustedError`. The timer starts when the context is entered and is checked after each counted operation.
 
 What `wall_time_limit_s` does and does not do:
 

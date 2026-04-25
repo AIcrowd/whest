@@ -60,7 +60,7 @@ For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 - Indices: i=256, j=256, k=256
 - Cost: 256 x 256 x 256 = 16,777,216
 
-For multi-operand einsums (3+ tensors), flopscope automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
+For multi-operand einsums (3+ tensors), Flopscope automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
 
 When symmetric tensors are involved, each step's cost is further reduced by the ratio of unique output elements to total output elements. See [Symmetry Savings](/docs/guides/symmetry/) for the full practical guide.
 
@@ -154,7 +154,7 @@ print(f"Matmul cost: {cost:,}")  # 16,777,216
 
 ## Custom contraction paths
 
-By default flopscope finds the optimal contraction order automatically. You can override this by passing an explicit path — a list of int-tuples specifying which operand positions to contract at each step:
+By default Flopscope finds the optimal contraction order automatically. You can override this by passing an explicit path — a list of int-tuples specifying which operand positions to contract at each step:
 
 ```python
 import flopscope as flops
