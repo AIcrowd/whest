@@ -448,6 +448,18 @@
   color: var(--coral);
 }
 
+/* H1 title for an operation page: namespace prefix muted, function name in
+   coral. Inherits font/size from the surrounding DocsTitle. */
+.docTitleNamespace {
+  color: var(--api-signature-muted);
+  font-weight: inherit;
+}
+
+.docTitleFunction {
+  color: var(--coral);
+  font-weight: inherit;
+}
+
 .docSignatureParams {
   font-weight: 400;
   color: var(--api-signature-ink);
