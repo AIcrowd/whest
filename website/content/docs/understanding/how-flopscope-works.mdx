@@ -1,8 +1,8 @@
 ---
-title: "How flopscope Works"
+title: "How Flopscope Works"
 ---
 
-*Understand how flopscope wraps NumPy to count every FLOP.*
+*Understand how Flopscope wraps NumPy to count every FLOP.*
 
 **You will learn:**
 - The wrapping pattern that makes `import flopscope as we` a drop-in for NumPy
@@ -53,7 +53,7 @@ Each FMA (fused multiply-add) counts as 1 operation, not 2. A matrix multiply of
 
 Every deduction is recorded as an `OpRecord` in the budget's operation log, capturing the operation name, input shapes, FLOP cost, and cumulative total. This log powers the budget summary and debugging tools.
 
-If no explicit `BudgetContext` is active, flopscope automatically creates a global default context with a budget of 1e15 FLOPs (configurable via the `FLOPSCOPE_DEFAULT_BUDGET` environment variable). This means bare calls outside any `with` block still work and still count FLOPs.
+If no explicit `BudgetContext` is active, Flopscope automatically creates a global default context with a budget of 1e15 FLOPs (configurable via the `FLOPSCOPE_DEFAULT_BUDGET` environment variable). This means bare calls outside any `with` block still work and still count FLOPs.
 
 ### The flow of a single call
 

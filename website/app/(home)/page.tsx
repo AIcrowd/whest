@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'flopscope',
+  title: 'Flopscope',
   description:
     'A NumPy-compatible math library that counts every FLOP analytically, so compute budgets stop being guesswork.',
 };
