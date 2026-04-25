@@ -372,6 +372,7 @@ def compare(
     # Determine which registered functions are actually importable
     import flopscope as flops
     import flopscope.numpy as fnp
+
     implemented_names = set()
     for name in registry:
         parts = name.split(".")

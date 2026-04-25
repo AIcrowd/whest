@@ -5,6 +5,8 @@ import pytest
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
+
 def test_simple_mlp_forward_pass():
     """Simulate a participant doing a forward pass through a small MLP."""
     numpy.random.seed(42)

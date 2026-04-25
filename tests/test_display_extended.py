@@ -162,7 +162,7 @@ def test_budget_summary_plain_text_prints(capsys):
 
 def test_budget_summary_by_namespace_prints_section_only_when_requested(capsys):
     import flopscope as flops
-    import flopscope.numpy as fnp
+
     with BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
         with flops.namespace("precompute"):
             with ctx.deduct("op1", flop_cost=100, subscripts=None, shapes=()):

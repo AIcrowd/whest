@@ -19,7 +19,7 @@ import inspect as _inspect
 import numpy as _np
 import numpy.random as _npr
 
-from flopscope._flops import _ceil_log2, sort_cost
+from flopscope._flops import sort_cost
 from flopscope._perm_group import PermutationGroup
 from flopscope._validation import require_budget
 

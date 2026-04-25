@@ -20,9 +20,6 @@ import importlib as _importlib
 
 import numpy as _np
 
-# --- Flopscope array type, re-exposed under the numpy-shaped name ---
-from flopscope._ndarray import FlopscopeArray as ndarray  # noqa: F401
-
 # --- Counting, histogram & generation ops (counted) ---
 from flopscope._counting_ops import (  # noqa: F401
     allclose,
@@ -42,12 +39,35 @@ from flopscope._counting_ops import (  # noqa: F401
     vander,
 )
 
+# --- dtype utilities ---
+from flopscope._dtypes import (  # noqa: F401
+    dtype,
+    floating,
+    integer,
+    number,
+    uint16,
+    uint32,
+    uint64,
+)
+
 # --- Einsum ---
 from flopscope._einsum import (  # noqa: F401
     clear_einsum_cache,
     einsum,
     einsum_cache_info,
     einsum_path,
+)
+from flopscope._errstate import (  # noqa: F401
+    broadcast,
+    errstate,
+    get_printoptions,
+    geterr,
+    ndenumerate,
+    ndindex,
+    nditer,
+    printoptions,
+    set_printoptions,
+    seterr,
 )
 
 # --- Free ops ---
@@ -181,6 +201,9 @@ from flopscope._free_ops import (  # noqa: F401
     zeros,
     zeros_like,
 )
+
+# --- Flopscope array type, re-exposed under the numpy-shaped name ---
+from flopscope._ndarray import FlopscopeArray as ndarray  # noqa: F401
 
 # --- Pointwise (counted) ---
 from flopscope._pointwise import (  # noqa: F401
@@ -397,6 +420,7 @@ from flopscope._sorting_ops import (  # noqa: F401
     unique_inverse,
     unique_values,
 )
+from flopscope._type_info import finfo, iinfo  # noqa: F401
 
 # --- Unwrap (counted) ---
 from flopscope._unwrap import unwrap  # noqa: F401
@@ -408,30 +432,6 @@ from flopscope._window import (  # noqa: F401
     hamming,
     hanning,
     kaiser,
-)
-
-# --- dtype utilities ---
-from flopscope._dtypes import (  # noqa: F401
-    dtype,
-    floating,
-    integer,
-    number,
-    uint16,
-    uint32,
-    uint64,
-)
-from flopscope._type_info import finfo, iinfo  # noqa: F401
-from flopscope._errstate import (  # noqa: F401
-    broadcast,
-    errstate,
-    get_printoptions,
-    geterr,
-    ndenumerate,
-    ndindex,
-    nditer,
-    printoptions,
-    set_printoptions,
-    seterr,
 )
 
 # --- Numpy constants ---
@@ -458,10 +458,14 @@ complex128 = _np.complex128
 # registry as a known-classified op) raises AttributeError. We intentionally
 # do NOT fall through to ``numpy`` — silently exposing uncounted numpy ops
 # would defeat the purpose of FLOP accounting.
-from flopscope._registry import make_module_getattr as _make_module_getattr
+from flopscope._registry import (  # noqa: E402
+    make_module_getattr as _make_module_getattr,
+)
 
 _LAZY_SUBMODULES = frozenset({"linalg", "fft", "random", "testing", "typing"})
-_registry_getattr = _make_module_getattr(module_prefix="", module_label="flopscope.numpy")
+_registry_getattr = _make_module_getattr(
+    module_prefix="", module_label="flopscope.numpy"
+)
 
 
 def __getattr__(name: str):

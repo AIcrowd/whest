@@ -9,6 +9,7 @@ Run: uv run python examples/09_linalg_and_fft.py
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
 # ---------------------------------------------------------------------------
 # 1. Decomposition cost comparison
 # ---------------------------------------------------------------------------

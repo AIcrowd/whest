@@ -3,7 +3,6 @@
 import pytest
 
 import flopscope as flops
-import flopscope.numpy as fnp
 from flopscope._budget import BudgetContext, OpRecord
 
 

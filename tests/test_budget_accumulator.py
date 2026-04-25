@@ -36,7 +36,7 @@ def test_budget_summary_dict_unlabeled():
 
 def test_budget_summary_dict_by_namespace():
     import flopscope as flops
-    import flopscope.numpy as fnp
+
     with BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
         with ctx.deduct("mul", flop_cost=10, subscripts=None, shapes=()):
             pass
@@ -78,7 +78,7 @@ def test_budget_summary_dict_by_namespace():
 
 def test_budget_summary_dict_by_namespace_uses_nested_op_namespace():
     import flopscope as flops
-    import flopscope.numpy as fnp
+
     with BudgetContext(flop_budget=1000, namespace="predict..raw", quiet=True) as ctx:
         with flops.namespace("precompute"):
             ctx.deduct("add", flop_cost=25, subscripts=None, shapes=())
@@ -119,7 +119,6 @@ def test_budget_reset():
 
 def test_budget_summary_dict_does_not_double_count_reused_decorator_context():
     import flopscope as flops
-    import flopscope.numpy as fnp
     from flopscope._budget import get_active_budget
 
     seen_totals = []
@@ -146,7 +145,6 @@ def test_reused_decorator_context_resets_live_timing_state_between_calls():
     import time
 
     import flopscope as flops
-    import flopscope.numpy as fnp
     from flopscope._budget import get_active_budget
 
     budget_ctx = flops.budget(flop_budget=5000, namespace="dec", quiet=True)

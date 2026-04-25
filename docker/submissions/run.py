@@ -64,6 +64,7 @@ except Exception:
 try:
     import flopscope as flops
     import flopscope.numpy as fnp
+
     check(f"flopscope loaded (v{flops.__version__})", True)
 except Exception:
     check("flopscope loaded", False)

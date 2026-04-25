@@ -123,7 +123,7 @@ def test_time_exhausted_error_attributes():
 
 
 def test_time_exhausted_error_is_flopscope_error():
-    from flopscope.errors import TimeExhaustedError, FlopscopeError
+    from flopscope.errors import FlopscopeError, TimeExhaustedError
 
     err = TimeExhaustedError("add", elapsed_s=2.0, limit_s=1.0)
     assert isinstance(err, FlopscopeError)
@@ -170,7 +170,9 @@ def test_budget_context_total_tracked_time():
     import flopscope
 
     with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
-        _ = flopscope.numpy.add(flopscope.numpy.ones((1000,)), flopscope.numpy.ones((1000,)))
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((1000,)), flopscope.numpy.ones((1000,))
+        )
     assert b.total_tracked_time >= 0
     assert b.total_tracked_time <= b.wall_time_s
 
@@ -179,7 +181,9 @@ def test_budget_context_untracked_time():
     import flopscope
 
     with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
-        _ = flopscope.numpy.add(flopscope.numpy.ones((1000,)), flopscope.numpy.ones((1000,)))
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((1000,)), flopscope.numpy.ones((1000,))
+        )
         _time.sleep(0.01)
     assert b.untracked_time is not None
     assert b.untracked_time >= 0
@@ -246,7 +250,9 @@ def test_durations_populated_across_op_types():
 
     with flopscope.BudgetContext(flop_budget=int(1e12)) as b:
         a = flopscope.numpy.array([1.0, 2.0, 3.0])  # free_ops (charged)
-        c = flopscope.numpy.add(a, flopscope.numpy.ones((3,)))  # pointwise binary (Task 3)
+        c = flopscope.numpy.add(
+            a, flopscope.numpy.ones((3,))
+        )  # pointwise binary (Task 3)
         d = flopscope.numpy.exp(c)  # pointwise unary (Task 3)
         e = flopscope.numpy.sum(d)  # reduction (Task 3)
         f = flopscope.numpy.concatenate([a, c])  # free_ops (charged)
@@ -287,8 +293,12 @@ def test_namespace_record_includes_time():
     import flopscope
 
     flopscope.budget_reset()
-    with flopscope.BudgetContext(flop_budget=int(1e9), namespace="test", quiet=True) as b:
-        _ = flopscope.numpy.add(flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,)))
+    with flopscope.BudgetContext(
+        flop_budget=int(1e9), namespace="test", quiet=True
+    ) as b:
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+        )
     data = flopscope.budget_summary_dict(by_namespace=True)
     assert "wall_time_s" in data
     assert data["wall_time_s"] is not None
@@ -305,7 +315,9 @@ def test_summary_includes_time_section():
     import flopscope
 
     with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
-        _ = flopscope.numpy.add(flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,)))
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+        )
     summary = b.summary()
     assert "Wall time:" in summary
     assert "Tracked time:" in summary
@@ -338,9 +350,13 @@ def test_thread_isolation_time_tracking():
     def worker(name, sleep_time):
         _reset_global_default()
         with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
-            _ = flopscope.numpy.add(flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,)))
+            _ = flopscope.numpy.add(
+                flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+            )
             _time.sleep(sleep_time)
-            _ = flopscope.numpy.add(flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,)))
+            _ = flopscope.numpy.add(
+                flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+            )
         results[name] = b.wall_time_s
 
     t1 = threading.Thread(target=worker, args=("fast", 0.01))
@@ -436,7 +452,9 @@ def test_post_op_deadline_check():
     from flopscope.errors import TimeExhaustedError
 
     with pytest.raises(TimeExhaustedError) as exc_info:
-        with flopscope.BudgetContext(flop_budget=int(1e15), wall_time_limit_s=0.05) as b:
+        with flopscope.BudgetContext(
+            flop_budget=int(1e15), wall_time_limit_s=0.05
+        ) as b:
             a = flopscope.numpy.ones((10,))
             timer = b.deduct("test_op", flop_cost=1, subscripts=None, shapes=((10,),))
             with timer:

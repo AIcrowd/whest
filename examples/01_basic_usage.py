@@ -5,6 +5,7 @@ Run: uv run python examples/01_basic_usage.py
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=10_000_000) as budget:
     # Free operations (0 FLOPs)
     W = fnp.ones((256, 256))

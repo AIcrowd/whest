@@ -1,7 +1,8 @@
 """Tests for numpy docstring inheritance."""
 
-import flopscope as flops
 import flopscope.numpy as fnp
+
+
 def test_counted_unary_has_flopscope_cost():
     doc = fnp.exp.__doc__
     assert doc is not None

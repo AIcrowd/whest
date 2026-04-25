@@ -53,11 +53,18 @@ from flopscope._budget import (  # noqa: F401,E402
 from flopscope._config import configure  # noqa: F401,E402
 from flopscope._display import budget_live, budget_summary  # noqa: F401,E402
 
+# --- Array type (flopscope-specific) ---
+from flopscope._ndarray import FlopscopeArray  # noqa: F401,E402
+
 # --- Path optimization types ---
 from flopscope._opt_einsum import PathInfo, StepInfo  # noqa: F401,E402
 
 # --- Permutation groups ---
-from flopscope._perm_group import Cycle, Permutation, PermutationGroup  # noqa: F401,E402
+from flopscope._perm_group import (  # noqa: F401,E402
+    Cycle,
+    Permutation,
+    PermutationGroup,
+)
 
 # --- Symmetric tensor ---
 from flopscope._symmetric import (  # noqa: F401,E402
@@ -67,9 +74,6 @@ from flopscope._symmetric import (  # noqa: F401,E402
     is_symmetric,
     symmetrize,
 )
-
-# --- Array type (flopscope-specific) ---
-from flopscope._ndarray import FlopscopeArray  # noqa: F401,E402
 
 # --- Errors ---
 from flopscope.errors import (  # noqa: F401,E402

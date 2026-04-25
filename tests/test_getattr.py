@@ -2,10 +2,11 @@
 
 import pytest
 
-import flopscope as flops
 import flopscope.numpy as fnp
 
 fnp = fnp  # backwards-compat local alias for this test
+
+
 def test_blacklisted_top_level_gives_notes():
     from flopscope._registry import REGISTRY
 

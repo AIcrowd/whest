@@ -4,11 +4,11 @@ import pytest
 
 from flopscope.errors import (
     BudgetExhaustedError,
-    NoBudgetContextError,
-    SymmetryError,
     FlopscopeError,
     FlopscopeServerError,
     FlopscopeWarning,
+    NoBudgetContextError,
+    SymmetryError,
     raise_from_response,
 )
 

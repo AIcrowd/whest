@@ -483,7 +483,10 @@ with flops.BudgetContext(flop_budget=10**9) as budget:
     test("triu_indices_from", fnp.triu_indices_from, MATRIX)
     test("indices", fnp.indices, (2, 3))
     test(
-        "ix_", fnp.ix_, fnp.array([0, 1], dtype="int64"), fnp.array([0, 1], dtype="int64")
+        "ix_",
+        fnp.ix_,
+        fnp.array([0, 1], dtype="int64"),
+        fnp.array([0, 1], dtype="int64"),
     )
     test("unravel_index", fnp.unravel_index, 5, (3, 3))
     test(
@@ -500,8 +503,12 @@ with flops.BudgetContext(flop_budget=10**9) as budget:
 
     print("\n--- Free Ops: Misc ---")
 
-    test("lexsort", fnp.lexsort, (fnp.array([1.0, 2.0, 1.0]), fnp.array([3.0, 1.0, 2.0])))
-    test("digitize", fnp.digitize, fnp.array([0.5, 1.5, 2.5]), fnp.array([1.0, 2.0, 3.0]))
+    test(
+        "lexsort", fnp.lexsort, (fnp.array([1.0, 2.0, 1.0]), fnp.array([3.0, 1.0, 2.0]))
+    )
+    test(
+        "digitize", fnp.digitize, fnp.array([0.5, 1.5, 2.5]), fnp.array([1.0, 2.0, 3.0])
+    )
     test("bincount", fnp.bincount, fnp.array([0, 1, 1, 2, 3, 3, 3], dtype="int64"))
     test("packbits", fnp.packbits, fnp.array([1, 0, 1, 1, 0, 0, 0, 1], dtype="uint8"))
     test("unpackbits", fnp.unpackbits, fnp.array([177], dtype="uint8"))
@@ -560,7 +567,9 @@ with flops.BudgetContext(flop_budget=10**9) as budget:
 
     print("\n--- Free Ops: Matrix Transpose / Permute ---")
 
-    test("matrix_transpose", fnp.matrix_transpose, fnp.array([[[1.0, 2.0], [3.0, 4.0]]]))
+    test(
+        "matrix_transpose", fnp.matrix_transpose, fnp.array([[[1.0, 2.0], [3.0, 4.0]]])
+    )
     test("permute_dims", fnp.permute_dims, MATRIX, (1, 0))
 
     print("\n--- Free Ops: Unique Variants ---")
@@ -606,7 +615,10 @@ with flops.BudgetContext(flop_budget=10**9) as budget:
         3,
     )
     test(
-        "histogramdd", fnp.histogramdd, fnp.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]]), 3
+        "histogramdd",
+        fnp.histogramdd,
+        fnp.array([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]]),
+        3,
     )
 
     # ── 6. RANDOM submodule ───────────────────────────────────────────

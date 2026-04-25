@@ -5,6 +5,7 @@ This runs inside a container with NO numpy installed.
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
 print("=" * 60)
 print("  Flopscope Client-Server Demo")
 print("  (this container has NO numpy installed)")

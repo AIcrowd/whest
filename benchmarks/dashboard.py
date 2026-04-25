@@ -146,7 +146,9 @@ def _render_terminal_rich(
         f"Mode      : {mode}"
         + (" (wall-clock proxy)" if mode == "timing" else " (hardware counters)"),
     ]
-    console.print(Panel("\n".join(header_lines), title="flopscope FLOP Weight Benchmark"))
+    console.print(
+        Panel("\n".join(header_lines), title="flopscope FLOP Weight Benchmark")
+    )
 
     categories = _categorize_weights(weights)
 

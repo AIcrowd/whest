@@ -409,64 +409,64 @@ class TestFlopscopeArrayReverseOps:
     """Cover lines for __radd__, __rsub__, __rmul__, etc."""
 
     def test_radd(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1.0, 2.0, 3.0])
             result = 5.0 + arr  # triggers __radd__
             numpy.testing.assert_array_equal(result, [6.0, 7.0, 8.0])
 
     def test_rsub(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1.0, 2.0, 3.0])
             result = 10.0 - arr  # triggers __rsub__
             numpy.testing.assert_array_equal(result, [9.0, 8.0, 7.0])
 
     def test_rmul(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1.0, 2.0, 3.0])
             result = 2.0 * arr  # triggers __rmul__
             numpy.testing.assert_array_equal(result, [2.0, 4.0, 6.0])
 
     def test_rtruediv(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1.0, 2.0, 3.0])
             result = 6.0 / arr  # triggers __rtruediv__
             numpy.testing.assert_array_equal(result, [6.0, 3.0, 2.0])
 
     def test_rfloordiv(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1.0, 2.0, 3.0])
             result = 7.0 // arr  # triggers __rfloordiv__
             numpy.testing.assert_array_equal(result, [7.0, 3.0, 2.0])
 
     def test_rmod(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1.0, 2.0, 3.0])
             result = 7.0 % arr  # triggers __rmod__
             numpy.testing.assert_array_equal(result, [0.0, 1.0, 1.0])
 
     def test_rpow(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1.0, 2.0, 3.0])
             result = 2.0**arr  # triggers __rpow__
             numpy.testing.assert_array_equal(result, [2.0, 4.0, 8.0])
 
     def test_rmatmul(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             a = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             b = numpy.array([[5.0, 6.0], [7.0, 8.0]])
@@ -481,64 +481,64 @@ class TestFlopscopeArrayInPlaceOps:
     """Cover lines for __iadd__, __isub__, __imul__, etc."""
 
     def test_iadd(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1.0, 2.0, 3.0])
             arr += 1.0
             numpy.testing.assert_array_equal(arr, [2.0, 3.0, 4.0])
 
     def test_isub(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([10.0, 20.0, 30.0])
             arr -= 5.0
             numpy.testing.assert_array_equal(arr, [5.0, 15.0, 25.0])
 
     def test_imul(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1.0, 2.0, 3.0])
             arr *= 3.0
             numpy.testing.assert_array_equal(arr, [3.0, 6.0, 9.0])
 
     def test_itruediv(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([10.0, 20.0, 30.0])
             arr /= 10.0
             numpy.testing.assert_array_equal(arr, [1.0, 2.0, 3.0])
 
     def test_ifloordiv(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([10.0, 21.0, 35.0])
             arr //= 10.0
             numpy.testing.assert_array_equal(arr, [1.0, 2.0, 3.0])
 
     def test_imod(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([10.0, 21.0, 35.0])
             arr %= 10.0
             numpy.testing.assert_array_equal(arr, [0.0, 1.0, 5.0])
 
     def test_ipow(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([2.0, 3.0, 4.0])
             arr **= 2.0
             numpy.testing.assert_array_equal(arr, [4.0, 9.0, 16.0])
 
     def test_imatmul(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([[1.0, 0.0], [0.0, 1.0]])
             arr @= numpy.array([[2.0, 3.0], [4.0, 5.0]])
@@ -549,56 +549,56 @@ class TestFlopscopeArrayBitwiseOps:
     """Cover reverse/in-place bitwise and shift operators."""
 
     def test_rand(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([0b1010, 0b1100], dtype=numpy.int32)
             result = numpy.int32(0b1111) & arr
             numpy.testing.assert_array_equal(result, [0b1010, 0b1100])
 
     def test_iand(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([0b1010, 0b1100], dtype=numpy.int32)
             arr &= numpy.int32(0b1010)
             numpy.testing.assert_array_equal(arr, [0b1010, 0b1000])
 
     def test_ror(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([0b1010, 0b0001], dtype=numpy.int32)
             result = numpy.int32(0b0100) | arr
             numpy.testing.assert_array_equal(result, [0b1110, 0b0101])
 
     def test_ior(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([0b1010, 0b0001], dtype=numpy.int32)
             arr |= numpy.int32(0b0100)
             numpy.testing.assert_array_equal(arr, [0b1110, 0b0101])
 
     def test_rxor(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([0b1010, 0b1100], dtype=numpy.int32)
             result = numpy.int32(0b1111) ^ arr
             numpy.testing.assert_array_equal(result, [0b0101, 0b0011])
 
     def test_ixor(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([0b1010, 0b1100], dtype=numpy.int32)
             arr ^= numpy.int32(0b1111)
             numpy.testing.assert_array_equal(arr, [0b0101, 0b0011])
 
     def test_rlshift(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1, 2], dtype=numpy.int32)
             result = numpy.int32(1).__lshift__(arr)
@@ -609,24 +609,24 @@ class TestFlopscopeArrayBitwiseOps:
             numpy.testing.assert_array_equal(result2, [4, 8])
 
     def test_ilshift(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1, 2], dtype=numpy.int32)
             arr <<= numpy.int32(2)
             numpy.testing.assert_array_equal(arr, [4, 8])
 
     def test_rrshift(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([4, 8], dtype=numpy.int32)
             result = arr >> numpy.int32(1)
             numpy.testing.assert_array_equal(result, [2, 4])
 
     def test_irshift(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([4, 8], dtype=numpy.int32)
             arr >>= numpy.int32(1)
@@ -752,8 +752,8 @@ class TestRandomChoice:
     """Cover lines 223-234: choice with replace=False."""
 
     def test_choice_without_replacement(self):
-        from flopscope.numpy import random as merandom
         from flopscope._flops import sort_cost
+        from flopscope.numpy import random as merandom
 
         n = 20
         with BudgetContext(flop_budget=10**6) as budget:

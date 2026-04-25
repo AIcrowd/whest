@@ -104,7 +104,7 @@ def _reset_client():
 
 def _import_we():
     import flopscope as flops
-    import flopscope.numpy as fnp
+
     return fnp
 
 
@@ -1652,7 +1652,9 @@ def test_place():
     fnp = _import_we()
     with flops.BudgetContext(flop_budget=10**9):
         arr = fnp.array([1.0, 2.0, 3.0, 4.0])
-        fnp.place(arr, fnp.array([True, False, True, False], dtype="bool"), [99.0, 88.0])
+        fnp.place(
+            arr, fnp.array([True, False, True, False], dtype="bool"), [99.0, 88.0]
+        )
 
 
 def test_putmask():
@@ -1809,7 +1811,10 @@ _RANDOM_SIMPLE = [
     ("random.lognormal", lambda fnp: fnp.random.lognormal(0.0, 1.0, (3,))),
     ("random.logseries", lambda fnp: fnp.random.logseries(0.9, (3,))),
     ("random.multinomial", lambda fnp: fnp.random.multinomial(10, [0.5, 0.3, 0.2])),
-    ("random.negative_binomial", lambda fnp: fnp.random.negative_binomial(5, 0.5, (3,))),
+    (
+        "random.negative_binomial",
+        lambda fnp: fnp.random.negative_binomial(5, 0.5, (3,)),
+    ),
     (
         "random.noncentral_chisquare",
         lambda fnp: fnp.random.noncentral_chisquare(2, 1.0, (3,)),
@@ -1832,7 +1837,9 @@ _RANDOM_SIMPLE = [
     ("random.dirichlet", lambda fnp: fnp.random.dirichlet([1.0, 1.0, 1.0])),
     (
         "random.multivariate_normal",
-        lambda fnp: fnp.random.multivariate_normal([0.0, 0.0], [[1.0, 0.0], [0.0, 1.0]]),
+        lambda fnp: fnp.random.multivariate_normal(
+            [0.0, 0.0], [[1.0, 0.0], [0.0, 1.0]]
+        ),
     ),
     ("random.f", lambda fnp: fnp.random.f(5, 10, (3,))),
     ("random.hypergeometric", lambda fnp: fnp.random.hypergeometric(10, 5, 7, (3,))),

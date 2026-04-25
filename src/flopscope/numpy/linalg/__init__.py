@@ -100,4 +100,6 @@ __all__ = [
     "matrix_power",
 ]
 
-__getattr__ = _make_module_getattr(module_prefix="linalg.", module_label="flopscope.numpy.linalg")
+__getattr__ = _make_module_getattr(
+    module_prefix="linalg.", module_label="flopscope.numpy.linalg"
+)

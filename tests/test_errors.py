@@ -6,12 +6,12 @@ import pytest
 
 from flopscope.errors import (
     BudgetExhaustedError,
+    FlopscopeError,
+    FlopscopeWarning,
     NoBudgetContextError,
     SymmetryError,
     TimeExhaustedError,
     UnsupportedFunctionError,
-    FlopscopeError,
-    FlopscopeWarning,
 )
 
 
@@ -56,8 +56,9 @@ def test_error_docs_links_use_hosted_fallback(monkeypatch):
     assert "https://aicrowd.github.io/flopscope/docs/guides/budget-planning" in str(
         TimeExhaustedError("matmul", elapsed_s=1.5, limit_s=1.0)
     )
-    assert "https://aicrowd.github.io/flopscope/docs/getting-started/competition" in str(
-        NoBudgetContextError()
+    assert (
+        "https://aicrowd.github.io/flopscope/docs/getting-started/competition"
+        in str(NoBudgetContextError())
     )
     assert "https://aicrowd.github.io/flopscope/docs/guides/symmetry" in str(
         SymmetryError(axes=(0, 1), max_deviation=0.5)

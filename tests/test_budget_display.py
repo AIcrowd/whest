@@ -5,7 +5,6 @@ from unittest.mock import patch
 import pytest
 
 import flopscope as flops
-import flopscope.numpy as fnp
 from flopscope._budget import BudgetContext
 from flopscope._display import _plain_text_summary, budget_live, render_budget_summary
 

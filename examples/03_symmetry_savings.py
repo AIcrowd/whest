@@ -5,6 +5,7 @@ Run: uv run python examples/03_symmetry_savings.py
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
 # With symmetry: x passed twice (same object)
 with flops.BudgetContext(flop_budget=10**8) as budget:
     x = fnp.ones((10, 256))

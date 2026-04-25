@@ -29,8 +29,13 @@ class TestTopLevelSurfaceIsFlopscopeOnly:
     @pytest.mark.parametrize(
         "name",
         [
-            "BudgetContext", "configure", "SymmetricTensor", "PermutationGroup",
-            "FlopscopeArray", "FlopscopeError", "budget",
+            "BudgetContext",
+            "configure",
+            "SymmetricTensor",
+            "PermutationGroup",
+            "FlopscopeArray",
+            "FlopscopeError",
+            "budget",
         ],
     )
     def test_flopscope_primitives_are_on_top_level(self, name):
@@ -65,6 +70,7 @@ class TestFlopscopeNumpyExposesCountedSurface:
 class TestFlopscopeNumpySubmodules:
     def test_linalg_subpackage_wired(self):
         import flopscope.numpy.linalg as fnp_linalg
+
         assert fnp.linalg is fnp_linalg
         assert callable(fnp.linalg.svd)
 
@@ -80,6 +86,7 @@ class TestFlopscopeNumpySubmodules:
 
     def test_typing_subpackage(self):
         from flopscope.numpy.typing import NDArray
+
         assert NDArray is not None
 
 

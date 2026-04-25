@@ -188,15 +188,11 @@ class TestSubmoduleParity:
 
     def test_client_submodule_init_files_exist(self):
         for init_path in self._submodule_paths(CLIENT_SRC):
-            assert init_path.exists(), (
-                f"Client submodule init not found at {init_path}"
-            )
+            assert init_path.exists(), f"Client submodule init not found at {init_path}"
 
     def test_core_submodule_init_files_exist(self):
         for init_path in self._submodule_paths(CORE_SRC):
-            assert init_path.exists(), (
-                f"Core submodule init not found at {init_path}"
-            )
+            assert init_path.exists(), f"Core submodule init not found at {init_path}"
 
     def test_client_submodule_init_files_are_non_empty(self):
         for init_path in self._submodule_paths(CLIENT_SRC):

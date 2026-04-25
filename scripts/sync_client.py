@@ -20,7 +20,9 @@ _HEADER = """\
 # Regenerate: uv run scripts/sync_client.py
 """
 
-_CLIENT_SRC = Path(__file__).resolve().parent.parent / "flopscope-client" / "src" / "flopscope"
+_CLIENT_SRC = (
+    Path(__file__).resolve().parent.parent / "flopscope-client" / "src" / "flopscope"
+)
 
 
 def _generate_registry_data() -> str:
@@ -127,7 +129,9 @@ def _generate_errors() -> str:
     _FLOPSCOPE_ERROR_NAMES = [
         name
         for name, base, _ in _CLASSES
-        if "Warning" not in name and name != "FlopscopeError" and name != "FlopscopeServerError"
+        if "Warning" not in name
+        and name != "FlopscopeError"
+        and name != "FlopscopeServerError"
     ]
 
     lines = [
@@ -275,7 +279,9 @@ def _generate_linalg_init() -> str:
     )
 
     lines = [_HEADER]
-    lines.append('"""flopscope.numpy.linalg \u2014 linear algebra submodule proxy."""\n\n')
+    lines.append(
+        '"""flopscope.numpy.linalg \u2014 linear algebra submodule proxy."""\n\n'
+    )
     lines.append("from __future__ import annotations\n\n")
     lines.append("from flopscope._connection import get_connection\n")
     lines.append("from flopscope._getattr import make_module_getattr\n")
@@ -308,7 +314,9 @@ def _generate_linalg_init() -> str:
         lines.append(f"{op} = _make_linalg_proxy({op!r})\n")
 
     lines.append("\n# Fall-through for blacklisted / unknown names\n")
-    lines.append('__getattr__ = make_module_getattr("linalg.", "flopscope.numpy.linalg")\n')
+    lines.append(
+        '__getattr__ = make_module_getattr("linalg.", "flopscope.numpy.linalg")\n'
+    )
 
     return "".join(lines)
 

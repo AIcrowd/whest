@@ -3,7 +3,6 @@
 import numpy
 import pytest
 
-import flopscope as flops
 import flopscope.numpy as fnp
 
 fnp = fnp  # backwards-compat local alias for this test

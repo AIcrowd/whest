@@ -7,8 +7,8 @@ from importlib import resources
 import pytest
 
 import flopscope as flops
-import flopscope.numpy as fnp
 import flopscope._weights as weights_module
+import flopscope.numpy as fnp
 from flopscope._weights import get_weight, load_weights, reset_weights
 
 

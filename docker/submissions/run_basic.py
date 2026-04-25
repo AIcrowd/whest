@@ -2,6 +2,7 @@
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=10_000_000) as budget:
     W = fnp.ones((256, 256))
     x = fnp.ones((256,))

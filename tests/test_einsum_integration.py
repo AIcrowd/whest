@@ -421,7 +421,7 @@ class TestSymmetricBlasClassification:
         """einsum('ij,jk->ik', X, X) with X declared symmetric should
         report blas_type='SYMM' on the single contraction step, not 'GEMM'."""
         import flopscope as flops
-        import flopscope.numpy as fnp
+
         n = 10
         X = flops.as_symmetric(numpy.ones((n, n)), symmetric_axes=(0, 1))
         _, info = einsum_path("ij,jk->ik", X, X)

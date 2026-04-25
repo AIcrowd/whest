@@ -299,8 +299,8 @@ def test_roots_no_budget():
 
 
 def test_import_from_flopscope():
-    import flopscope as flops
     import flopscope.numpy as fnp
+
     assert hasattr(fnp, "polyval")
     assert hasattr(fnp, "polyadd")
     assert hasattr(fnp, "polysub")

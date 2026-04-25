@@ -83,8 +83,6 @@ def _reset_client():
 
 class TestDataIntegrity:
     def test_3d_nested_list_roundtrip(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         data = [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array(data)
@@ -93,8 +91,6 @@ class TestDataIntegrity:
             assert result == [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
 
     def test_float32_dtype_preserved(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1.0, 2.0, 3.0], dtype="float32")
             assert a.dtype == "float32"
@@ -102,16 +98,12 @@ class TestDataIntegrity:
             assert values == [1.0, 2.0, 3.0]
 
     def test_int64_dtype_inferred(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1, 2, 3])
             assert a.dtype == "int64"
             assert a.tolist() == [1, 2, 3]
 
     def test_very_small_numbers(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1e-300, 2e-300, 3e-300])
             values = a.tolist()
@@ -120,8 +112,6 @@ class TestDataIntegrity:
             assert abs(values[2] - 3e-300) < 1e-310
 
     def test_very_large_numbers(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1e300, 2e300, 3e300])
             values = a.tolist()
@@ -130,8 +120,6 @@ class TestDataIntegrity:
             assert values[2] == 3e300
 
     def test_inf_and_nan_survive(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([float("inf"), float("-inf"), float("nan")])
             values = a.tolist()
@@ -140,8 +128,6 @@ class TestDataIntegrity:
             assert math.isnan(values[2])
 
     def test_negative_zero(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([-0.0])
             values = a.tolist()
@@ -150,8 +136,6 @@ class TestDataIntegrity:
             assert math.copysign(1.0, values[0]) == -1.0
 
     def test_0d_scalar_array(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array(42.0)
             assert a.shape == ()
@@ -160,8 +144,6 @@ class TestDataIntegrity:
             assert result == 42.0
 
     def test_empty_array(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([])
             assert a.shape == (0,)
@@ -176,8 +158,6 @@ class TestDataIntegrity:
 
 class TestOperationChains:
     def test_exp_log_roundtrip(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.ones((100,))
             y = fnp.exp(fnp.log(x))
@@ -186,8 +166,6 @@ class TestOperationChains:
                 assert abs(v - 1.0) < 1e-10, f"exp(log(1)) = {v}, expected 1.0"
 
     def test_sum_axis_0(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1, 2], [3, 4]])
             y = fnp.sum(x, axis=0)
@@ -195,8 +173,6 @@ class TestOperationChains:
             assert y.tolist() == [4, 6]
 
     def test_sum_axis_1(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1, 2], [3, 4]])
             y = fnp.sum(x, axis=1)
@@ -204,8 +180,6 @@ class TestOperationChains:
             assert y.tolist() == [3, 7]
 
     def test_einsum_matvec(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             W = fnp.array([[1, 0], [0, 1]])
             x = fnp.array([3, 4])
@@ -213,8 +187,6 @@ class TestOperationChains:
             assert y.tolist() == [3, 4]
 
     def test_chain_10_operations(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=10_000_000):
             x = fnp.ones((10,))
             x = fnp.exp(x)  # e^1
@@ -236,8 +208,6 @@ class TestOperationChains:
 
 class TestOperators:
     def test_add_two_remote_arrays(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             y = fnp.array([10.0, 20.0, 30.0])
@@ -245,32 +215,24 @@ class TestOperators:
             assert z.tolist() == [11.0, 22.0, 33.0]
 
     def test_scalar_left_multiply(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             z = 2.0 * x
             assert z.tolist() == [2.0, 4.0, 6.0]
 
     def test_scalar_right_multiply(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             z = x * 2.0
             assert z.tolist() == [2.0, 4.0, 6.0]
 
     def test_radd(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             z = 2.0 + x
             assert z.tolist() == [3.0, 4.0, 5.0]
 
     def test_sub_differs_from_rsub(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             a = x - 2.0
@@ -279,8 +241,6 @@ class TestOperators:
             assert b.tolist() == [1.0, 0.0, -1.0]
 
     def test_pow_differs_from_rpow(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             a = x**2
@@ -292,8 +252,6 @@ class TestOperators:
             assert abs(b_vals[2] - 8.0) < 1e-10
 
     def test_floordiv_and_rfloordiv(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([5.0, 7.0, 9.0])
             a = x // 2
@@ -304,8 +262,6 @@ class TestOperators:
             assert b.tolist() == [0.0, 0.0, 0.0]
 
     def test_neg_and_abs(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, -2.0, 3.0])
             neg = -x
@@ -314,8 +270,6 @@ class TestOperators:
             assert absneg.tolist() == [1.0, 2.0, 3.0]
 
     def test_matmul_operator(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             A = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             B = fnp.array([[5.0, 6.0], [7.0, 8.0]])
@@ -325,8 +279,6 @@ class TestOperators:
             assert C.tolist() == [[19.0, 22.0], [43.0, 50.0]]
 
     def test_comparison_returns_array(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([0.1, 0.6, 0.3, 0.8])
             mask = x > 0.5
@@ -338,8 +290,6 @@ class TestOperators:
             assert values == [False, True, False, True]
 
     def test_chained_arithmetic(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0])
             y = fnp.array([3.0, 4.0])
@@ -355,8 +305,6 @@ class TestOperators:
 
 class TestRemoteArrayMethods:
     def test_shape_dtype_ndim_size_nbytes(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.zeros((3, 4))
             assert x.shape == (3, 4)
@@ -366,8 +314,6 @@ class TestRemoteArrayMethods:
             assert x.nbytes == 96  # 12 * 8 bytes
 
     def test_transpose_2d(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
             t = x.T
@@ -375,8 +321,6 @@ class TestRemoteArrayMethods:
             assert t.tolist() == [[1.0, 4.0], [2.0, 5.0], [3.0, 6.0]]
 
     def test_reshape_with_args(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
             y = x.reshape(2, 3)
@@ -384,8 +328,6 @@ class TestRemoteArrayMethods:
             assert y.tolist() == [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]
 
     def test_reshape_with_tuple(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
             y = x.reshape((2, 3))
@@ -393,46 +335,34 @@ class TestRemoteArrayMethods:
             assert y.tolist() == [[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]
 
     def test_sum_no_axis(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             s = x.sum()
             assert float(s) == 10.0
 
     def test_sum_with_axis(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             s = x.sum(axis=0)
             assert s.tolist() == [4.0, 6.0]
 
     def test_mean(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0, 4.0])
             m = x.mean()
             assert float(m) == 2.5
 
     def test_max(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([3.0, 1.0, 4.0, 1.0, 5.0])
             assert float(x.max()) == 5.0
 
     def test_min(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([3.0, 1.0, 4.0, 1.0, 5.0])
             assert float(x.min()) == 1.0
 
     def test_flatten(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             f = x.flatten()
@@ -440,8 +370,6 @@ class TestRemoteArrayMethods:
             assert f.tolist() == [1.0, 2.0, 3.0, 4.0]
 
     def test_copy_different_handle(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             y = x.copy()
@@ -449,8 +377,6 @@ class TestRemoteArrayMethods:
             assert y.tolist() == x.tolist()
 
     def test_astype(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             y = x.astype("float32")
@@ -458,8 +384,6 @@ class TestRemoteArrayMethods:
             assert y.tolist() == [1.0, 2.0, 3.0]
 
     def test_tolist_nested(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             result = x.tolist()
@@ -468,8 +392,6 @@ class TestRemoteArrayMethods:
             assert result == [[1.0, 2.0], [3.0, 4.0]]
 
     def test_dot(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             y = fnp.array([4.0, 5.0, 6.0])
@@ -485,8 +407,6 @@ class TestRemoteArrayMethods:
 
 class TestIndexing:
     def test_1d_integer_index_returns_scalar(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([10.0, 20.0, 30.0])
             val = x[0]
@@ -494,8 +414,6 @@ class TestIndexing:
             assert float(val) == 10.0
 
     def test_2d_integer_index_returns_1d(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             row = x[0]
@@ -505,8 +423,6 @@ class TestIndexing:
             assert row.tolist() == [1.0, 2.0]
 
     def test_slice_returns_remote_array(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([10.0, 20.0, 30.0, 40.0, 50.0])
             sliced = x[1:3]
@@ -517,24 +433,18 @@ class TestIndexing:
             assert sliced.tolist() == [20.0, 30.0]
 
     def test_negative_indexing(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([10.0, 20.0, 30.0])
             val = x[-1]
             assert float(val) == 30.0
 
     def test_tuple_indexing_2d(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
             val = x[0, 1]
             assert float(val) == 2.0
 
     def test_fancy_indexing_argsort(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([3.0, 1.0, 2.0])
             idx = fnp.argsort(x)
@@ -549,8 +459,6 @@ class TestIndexing:
 
 class TestIterationAndDataAccess:
     def test_list_of_1d_array(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([10.0, 20.0, 30.0])
             values = list(x)
@@ -561,16 +469,12 @@ class TestIterationAndDataAccess:
             assert float(values[2]) == 30.0
 
     def test_comprehension_1d(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([10.0, 20.0, 30.0])
             values = list(x)
             assert len(values) == 3
 
     def test_iterate_2d_rows(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             rows = []
@@ -579,22 +483,16 @@ class TestIterationAndDataAccess:
             assert rows == [[1.0, 2.0], [3.0, 4.0]]
 
     def test_float_conversion_scalar_array(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([42.0])
             assert float(x) == 42.0
 
     def test_int_conversion_scalar_array(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([42.0])
             assert int(x) == 42
 
     def test_bool_conversion_scalar_array(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0])
             assert bool(x) is True
@@ -602,23 +500,17 @@ class TestIterationAndDataAccess:
             assert bool(y) is False
 
     def test_print_does_not_crash(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             s = str(x)
             assert "1.0" in s
 
     def test_len_returns_first_dimension(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]])
             assert len(x) == 2
 
     def test_fstring_works(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             s = f"value: {x}"
@@ -632,42 +524,30 @@ class TestIterationAndDataAccess:
 
 class TestErrorCases:
     def test_operation_outside_budget_context_raises(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with pytest.raises((flops.NoBudgetContextError, flops.FlopscopeServerError)):
             fnp.ones((3,))
 
     def test_budget_exhaustion_raises(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1):
             a = fnp.ones((100,))
             with pytest.raises(flops.BudgetExhaustedError):
                 fnp.exp(a)
 
     def test_blacklisted_function_raises_attribute_error(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with pytest.raises(AttributeError, match="blacklisted"):
             _ = fnp.save
 
     def test_unknown_function_raises_attribute_error(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with pytest.raises(AttributeError):
             _ = fnp.nonexistent_function_xyz_12345
 
     def test_setitem_raises_type_error(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             with pytest.raises(TypeError, match="immutable"):
                 x[0] = 5
 
     def test_bool_multi_element_raises_value_error(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             with pytest.raises(ValueError):
@@ -681,8 +561,6 @@ class TestErrorCases:
 
 class TestBudgetTracking:
     def test_flops_used_increments(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=10_000_000) as ctx:
             a = fnp.ones((10,))
             _ = fnp.exp(a)
@@ -696,8 +574,6 @@ class TestBudgetTracking:
             assert flops_after_second > flops_after_exp
 
     def test_flops_remaining_decreases(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         budget = 10_000_000
         with flops.BudgetContext(flop_budget=budget) as ctx:
             a = fnp.ones((10,))
@@ -707,8 +583,6 @@ class TestBudgetTracking:
             assert ctx.flops_remaining == budget - ctx.flops_used
 
     def test_summary_returns_string_with_numbers(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000) as ctx:
             _ = fnp.ones((10,))
             _ = fnp.exp(fnp.ones((10,)))
@@ -725,8 +599,6 @@ class TestBudgetTracking:
 
 class TestEdgeCases:
     def test_large_array_without_fetch(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=10_000_000):
             z = fnp.zeros((10000,))
             assert z.shape == (10000,)
@@ -735,8 +607,6 @@ class TestEdgeCases:
             assert float(s) == 0.0
 
     def test_many_operations_without_fetch(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=100_000_000):
             x = fnp.ones((10,))
             for _ in range(50):
@@ -747,8 +617,6 @@ class TestEdgeCases:
                 assert abs(v - 1.0) < 1e-6, f"After 50 exp/log cycles: {v}"
 
     def test_create_many_arrays(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=100_000_000):
             arrays = []
             for i in range(100):

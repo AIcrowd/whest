@@ -123,7 +123,9 @@ def load_weights(path: str | None = None, *, use_packaged_default: bool = True) 
     if _weights_disabled():
         return
 
-    override_path = path if path is not None else os.environ.get("FLOPSCOPE_WEIGHTS_FILE")
+    override_path = (
+        path if path is not None else os.environ.get("FLOPSCOPE_WEIGHTS_FILE")
+    )
 
     if override_path is not None:
         try:

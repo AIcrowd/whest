@@ -5,6 +5,7 @@ Run: uv run python examples/05_budget_planning.py
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
 # Plan a two-layer forward pass
 width = 256
 budget_limit = 500_000

@@ -5,6 +5,7 @@ Run: uv run python examples/04_svd_usage.py
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=10**8) as budget:
     A = fnp.random.randn(256, 256)
 

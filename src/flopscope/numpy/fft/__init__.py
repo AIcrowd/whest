@@ -50,4 +50,6 @@ __all__ = [
     "ifftshift",
 ]
 
-__getattr__ = _make_module_getattr(module_prefix="fft.", module_label="flopscope.numpy.fft")
+__getattr__ = _make_module_getattr(
+    module_prefix="fft.", module_label="flopscope.numpy.fft"
+)

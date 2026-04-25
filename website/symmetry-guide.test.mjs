@@ -50,7 +50,7 @@ test('symmetry guide documents every declaration style', async () => {
   );
   assert.match(
     source,
-    /we\.PermutationGroup\(\s*[\s\S]*we\.Permutation\(we\.Cycle\(0, 2\)\(1, 3\)\)/,
+    /flops\.PermutationGroup\(\s*[\s\S]*flops\.Permutation\(flops\.Cycle\(0, 2\)\(1, 3\)\)/,
   );
 });
 
@@ -58,8 +58,8 @@ test('symmetry guide includes the Reynolds section and flopscope-only indexing e
   const source = await readSymmetryGuide();
 
   assert.match(source, /Generating example data with the Reynolds operator/);
-  assert.match(source, /we\.newaxis/);
-  assert.match(source, /we\.array\(\[0, 1\]\)/);
+  assert.match(source, /fnp\.newaxis/);
+  assert.match(source, /fnp\.array\(\[0, 1\]\)/);
 });
 
 test('symmetry guide avoids overclaiming Reynolds helper exactness', async () => {
@@ -94,63 +94,64 @@ test('symmetry guide documents the current unary pointwise caveat for non-full g
   assert.doesNotMatch(source, /unary pointwise ops keep the same groups/);
   assert.match(source, /Unary pointwise ops preserve symmetry-aware costs and keep the same symmetric axes/);
   assert.match(source, /non-full groups such as `C_k` or `D_k`, the current implementation widens the metadata to full symmetry on those axes/);
-  assert.match(source, /`we\.exp\(c3_tensor\)` still gets symmetry-aware cost savings, but the result is currently tagged as full symmetry on `\(0, 1, 2\)`/);
+  assert.match(source, /`fnp\.exp\(c3_tensor\)` still gets symmetry-aware cost savings, but the result is currently tagged as full symmetry on `\(0, 1, 2\)`/);
 });
 
 test('symmetry guide representative propagation claims match runtime behavior', async () => {
   const stdout = await runPythonInRepo(`
 import json
-import flopscope as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
-we.configure(symmetry_warnings=False)
+flops.configure(symmetry_warnings=False)
 
 def symmetrize_with_group(shape, symmetry_group):
-    raw_data = we.random.randn(*shape)
+    raw_data = fnp.random.randn(*shape)
     group_axes = (
         symmetry_group.axes
         if symmetry_group.axes is not None
         else tuple(range(symmetry_group.degree))
     )
-    accumulated = we.zeros_like(raw_data)
+    accumulated = fnp.zeros_like(raw_data)
 
     for group_element in symmetry_group.elements():
         axis_permutation = list(range(len(shape)))
         for group_index, tensor_axis in enumerate(group_axes):
             axis_permutation[tensor_axis] = group_axes[group_element.array_form[group_index]]
-        accumulated = accumulated + we.transpose(raw_data, axis_permutation)
+        accumulated = accumulated + fnp.transpose(raw_data, axis_permutation)
 
-    return we.as_symmetric(
+    return flops.as_symmetric(
         accumulated / symmetry_group.order(),
         symmetry=symmetry_group,
     )
 
-s2_matrix = we.as_symmetric(
-    we.ones((6, 6)),
+s2_matrix = flops.as_symmetric(
+    fnp.ones((6, 6)),
     symmetric_axes=(0, 1),
 )
 row_slice = s2_matrix[0]
-advanced_index_slice = s2_matrix[we.array([0, 1])]
+advanced_index_slice = s2_matrix[fnp.array([0, 1])]
 
-s3_group = we.PermutationGroup.symmetric(3, axes=(0, 1, 2))
-c3_group = we.PermutationGroup.cyclic(3, axes=(0, 1, 2))
-c4_group = we.PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
+s3_group = flops.PermutationGroup.symmetric(3, axes=(0, 1, 2))
+c3_group = flops.PermutationGroup.cyclic(3, axes=(0, 1, 2))
+c4_group = flops.PermutationGroup.cyclic(4, axes=(0, 1, 2, 3))
 
 s3_tensor = symmetrize_with_group((4, 4, 4), s3_group)
 c3_tensor = symmetrize_with_group((4, 4, 4), c3_group)
 c4_tensor = symmetrize_with_group((4, 4, 4, 4), c4_group)
-d4_group = we.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
+d4_group = flops.PermutationGroup.dihedral(4, axes=(0, 1, 2, 3))
 d4_tensor = symmetrize_with_group((4, 4, 4, 4), d4_group)
 
 s3_slice = s3_tensor[:, :, 0]
 c3_slice = c3_tensor[:, :, 0]
-c4_reduced = we.sum(c4_tensor, axis=(1, 3))
-intersection_tensor = we.add(s3_tensor, c3_tensor)
-unary_c3 = we.exp(c3_tensor)
-unary_d4 = we.exp(d4_tensor)
+c4_reduced = fnp.sum(c4_tensor, axis=(1, 3))
+intersection_tensor = fnp.add(s3_tensor, c3_tensor)
+unary_c3 = fnp.exp(c3_tensor)
+unary_d4 = fnp.exp(d4_tensor)
 
-with we.BudgetContext(flop_budget=10**8) as budget:
-    repeated_input = we.ones((5, 3))
-    repeated_einsum = we.einsum(
+with flops.BudgetContext(flop_budget=10**8) as budget:
+    repeated_input = fnp.ones((5, 3))
+    repeated_einsum = fnp.einsum(
         'ki,kj->ij',
         repeated_input,
         repeated_input,
@@ -158,10 +159,10 @@ with we.BudgetContext(flop_budget=10**8) as budget:
     )
     repeated_einsum_cost = budget.flops_used
 
-with we.BudgetContext(flop_budget=10**8) as budget:
-    distinct_left = we.ones((5, 3))
-    distinct_right = we.ones((5, 3))
-    distinct_einsum = we.einsum(
+with flops.BudgetContext(flop_budget=10**8) as budget:
+    distinct_left = fnp.ones((5, 3))
+    distinct_right = fnp.ones((5, 3))
+    distinct_einsum = fnp.einsum(
         'ki,kj->ij',
         distinct_left,
         distinct_right,
@@ -169,22 +170,22 @@ with we.BudgetContext(flop_budget=10**8) as budget:
     )
     distinct_einsum_cost = budget.flops_used
 
-left_tensor = we.as_symmetric(
-    we.ones((3, 3, 5, 5)),
+left_tensor = flops.as_symmetric(
+    fnp.ones((3, 3, 5, 5)),
     symmetric_axes=[(0, 1), (2, 3)],
 )
-right_tensor = we.as_symmetric(
-    we.ones((3, 3, 5, 5)),
+right_tensor = flops.as_symmetric(
+    fnp.ones((3, 3, 5, 5)),
     symmetric_axes=[(0, 1)],
 )
-shared_group_tensor = we.add(left_tensor, right_tensor)
+shared_group_tensor = fnp.add(left_tensor, right_tensor)
 
-stretched_s2_tensor = we.as_symmetric(
-    we.ones((1, 1, 4)),
-    symmetry=we.PermutationGroup.symmetric(2, axes=(0, 1)),
+stretched_s2_tensor = flops.as_symmetric(
+    fnp.ones((1, 1, 4)),
+    symmetry=flops.PermutationGroup.symmetric(2, axes=(0, 1)),
 )
-plain_tensor = we.ones((3, 3, 4))
-broadcast_sum = we.add(stretched_s2_tensor, plain_tensor)
+plain_tensor = fnp.ones((3, 3, 4))
+broadcast_sum = fnp.add(stretched_s2_tensor, plain_tensor)
 
 print(json.dumps({
     "row_slice_type": type(row_slice).__name__,

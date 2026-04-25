@@ -2,9 +2,9 @@
 
 import numpy
 
-from flopscope.numpy import random as merandom
 from flopscope._budget import BudgetContext
 from flopscope._flops import _ceil_log2
+from flopscope.numpy import random as merandom
 
 
 class TestSeed:

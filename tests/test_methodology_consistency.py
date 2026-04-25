@@ -18,7 +18,6 @@ from pathlib import Path
 
 import numpy as np
 
-import flopscope as flops
 import flopscope.numpy as fnp
 from flopscope._budget import BudgetContext
 

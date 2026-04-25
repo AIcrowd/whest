@@ -452,7 +452,9 @@ class RemoteArray(metaclass=_RemoteArrayMeta):
         return _result_from_response(resp)
 
     def __setitem__(self, key, value):
-        raise TypeError("flopscope arrays are immutable. Cannot assign to array elements.")
+        raise TypeError(
+            "flopscope arrays are immutable. Cannot assign to array elements."
+        )
 
     # -- operator overloads (dispatch to server) ----------------------------
 

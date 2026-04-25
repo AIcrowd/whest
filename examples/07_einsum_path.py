@@ -9,6 +9,7 @@ Run: uv run python examples/07_einsum_path.py
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
 # ---------------------------------------------------------------------------
 # 1. Path analysis for a three-matrix chain multiply
 # ---------------------------------------------------------------------------

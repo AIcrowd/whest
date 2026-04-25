@@ -17,6 +17,7 @@ def handler():
 def test_resolve_permutation(handler):
     import flopscope as flops
     import flopscope.numpy as fnp
+
     arg = {"__permutation__": [2, 0, 1]}
     result = handler._resolve_arg(arg)
     assert isinstance(result, flops.Permutation)
@@ -26,6 +27,7 @@ def test_resolve_permutation(handler):
 def test_resolve_perm_group(handler):
     import flopscope as flops
     import flopscope.numpy as fnp
+
     arg = {
         "__perm_group__": {
             "generators": [[1, 0, 2], [0, 2, 1]],
@@ -41,6 +43,7 @@ def test_resolve_perm_group(handler):
 def test_pack_symmetric_tensor(handler):
     import flopscope as flops
     import flopscope.numpy as fnp
+
     arr = np.array([[1.0, 2.0], [2.0, 3.0]])
     st = flops.as_symmetric(arr, symmetric_axes=[[0, 1]])
     result = handler._pack_result(st)

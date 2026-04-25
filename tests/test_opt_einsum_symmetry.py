@@ -770,6 +770,7 @@ class TestInnerSymmetryFlops:
 
         import flopscope as flops
         import flopscope.numpy as fnp
+
         n = 5
         T = np.random.randn(n, n, n, n)
         T = (T + T.transpose(1, 0, 2, 3)) / 2

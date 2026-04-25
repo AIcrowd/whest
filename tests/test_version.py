@@ -4,8 +4,6 @@ import re
 import warnings
 
 import flopscope as flops
-import flopscope.numpy as fnp
-
 from flopscope._budget import BudgetContext
 from flopscope._registry import REGISTRY_META
 
@@ -67,5 +65,7 @@ def test_numpy_version_in_range_no_warning():
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
         check_numpy_version(range_str)
-        flopscope_warnings = [x for x in w if issubclass(x.category, flops.FlopscopeWarning)]
+        flopscope_warnings = [
+            x for x in w if issubclass(x.category, flops.FlopscopeWarning)
+        ]
         assert len(flopscope_warnings) == 0

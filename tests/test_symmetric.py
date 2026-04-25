@@ -169,6 +169,7 @@ class TestSymmetricTensor:
 class TestPublicAPI:
     def test_import_from_flopscope(self):
         import flopscope as flops
+
         assert hasattr(flops, "SymmetricTensor")
         assert hasattr(flops, "SymmetryInfo")
         assert hasattr(flops, "as_symmetric")
@@ -190,8 +191,8 @@ class TestPublicAPI:
             symmetrize(np.ones((2, 3)), PermutationGroup.symmetric(2, axes=(0, 1)))
 
     def test_random_symmetric(self):
-        import flopscope as flops
         import flopscope.numpy as fnp
+
         group = PermutationGroup.symmetric(2, axes=(0, 1))
         S = fnp.random.symmetric((4, 4), group)
         assert isinstance(S, SymmetricTensor)
@@ -208,6 +209,7 @@ class TestEndToEnd:
         """Simulate a covprop-like workflow: build covariance, do pointwise, solve."""
         import flopscope as flops
         import flopscope.numpy as fnp
+
         n, d = 5, 20
         X = numpy.random.randn(d, n)
 
@@ -241,6 +243,7 @@ class TestEndToEnd:
         """Chain of unary ops preserves symmetry."""
         import flopscope as flops
         import flopscope.numpy as fnp
+
         data = numpy.eye(4) + 0.5
         S = flops.as_symmetric(data, symmetric_axes=(0, 1))
 
@@ -256,6 +259,7 @@ class TestEndToEnd:
         """Matmul does not preserve symmetry."""
         import flopscope as flops
         import flopscope.numpy as fnp
+
         A = flops.as_symmetric(numpy.eye(3), symmetric_axes=(0, 1))
         B = numpy.ones((3, 3))
 

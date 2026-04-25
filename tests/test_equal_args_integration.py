@@ -8,6 +8,8 @@ import numpy as np
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
+
 class TestGramMatrixInduction:
     """einsum('ij,ik->jk', X, X) — the classic Gram matrix."""
 

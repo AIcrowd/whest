@@ -5,6 +5,7 @@ Run: uv run python examples/02_einsum_patterns.py
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
 patterns = [
     ("Matrix-vector", "ij,j->i", [(256, 256), (256,)]),
     ("Matrix multiply", "ij,jk->ik", [(256, 256), (256, 256)]),

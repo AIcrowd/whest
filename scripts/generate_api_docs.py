@@ -2182,14 +2182,18 @@ def _build_operation_record(
             "Parallel worker context not initialized; call _worker_init_operation_doc_context()"
         )
 
-    signature, parsed_doc, derived_example, flopscope_source_url, upstream_source_url = (
-        build_structured_doc(
-            name,
-            module,
-            owned_example_html,
-            alias_map=alias_map,
-            supported_ops=supported_ops,
-        )
+    (
+        signature,
+        parsed_doc,
+        derived_example,
+        flopscope_source_url,
+        upstream_source_url,
+    ) = build_structured_doc(
+        name,
+        module,
+        owned_example_html,
+        alias_map=alias_map,
+        supported_ops=supported_ops,
     )
     cost_plain, cost_latex = cost_for_op(name, category)
     return OperationDocRecord(
@@ -2232,6 +2236,7 @@ def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]
 
     import flopscope as flops
     import flopscope.numpy as fnp
+
     if module == "numpy.linalg":
         short_name = name.removeprefix("linalg.")
         return getattr(fnp.linalg, short_name), getattr(np.linalg, short_name, None)
@@ -2243,6 +2248,7 @@ def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]
         return getattr(fnp.random, short_name), getattr(np.random, short_name, None)
     if module == "flopscope.stats":
         import flopscope as _flops_top
+
         try:
             from scipy import stats as scipy_stats
         except (
@@ -2446,7 +2452,12 @@ def _top_level_symbol_aliases(name: str) -> list[str]:
 
 
 def _flops_symbol_aliases(name: str) -> list[str]:
-    return [f"flops.{name}", f"flops.accounting.{name}", f"flopscope.accounting.{name}", name]
+    return [
+        f"flops.{name}",
+        f"flops.accounting.{name}",
+        f"flopscope.accounting.{name}",
+        name,
+    ]
 
 
 def _dedupe_aliases(values: list[str]) -> list[str]:
@@ -2550,6 +2561,7 @@ def build_public_api_symbol_records(
     sys.path.insert(0, str(ROOT / "src"))
     import flopscope as flops
     import flopscope.numpy as fnp
+
     supported_ops = set(registry)
     symbol_specs: dict[str, dict[str, object]] = {}
     top_level_canonical_by_id: dict[int, str] = {}
@@ -2959,9 +2971,7 @@ def build_operation_doc_records(
 
 def render_operation_stub(op: OperationDocRecord) -> str:
     """Render a generated standalone MDX page stub for one canonical operation."""
-    return (
-        f'---\ntitle: "{op.flopscope_ref}"\n---\n\n<OperationDocPage name="{op.name}" />\n'
-    )
+    return f'---\ntitle: "{op.flopscope_ref}"\n---\n\n<OperationDocPage name="{op.name}" />\n'
 
 
 def render_public_symbol_stub(symbol: PublicApiSymbolRecord) -> str:

@@ -354,7 +354,9 @@ class TestFlopsLocal:
 
     def test_reduction_cost(self):
         assert flops.accounting.reduction_cost("sum", input_shape=(3, 4), axis=0) == 12
-        assert flops.accounting.reduction_cost("mean", input_shape=(3, 4), axis=None) == 12
+        assert (
+            flops.accounting.reduction_cost("mean", input_shape=(3, 4), axis=None) == 12
+        )
         assert flops.accounting.reduction_cost("max", input_shape=(10,)) == 10
 
     def test_einsum_cost_is_callable(self):

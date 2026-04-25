@@ -206,14 +206,12 @@ del _op_name
 # Submodules: linalg, fft, random
 # ---------------------------------------------------------------------------
 
-from flopscope.numpy import fft, linalg, random  # noqa: E402,F401
-
 # ---------------------------------------------------------------------------
 # Strict __getattr__: no transparent fallback to raw numpy. Unsupported
 # names raise AttributeError so participants notice immediately rather than
 # silently dispatch to an uncounted numpy operation.
 # ---------------------------------------------------------------------------
-
 from flopscope._getattr import make_module_getattr as _make_module_getattr  # noqa: E402
+from flopscope.numpy import fft, linalg, random  # noqa: E402,F401
 
 __getattr__ = _make_module_getattr("", "flopscope.numpy")

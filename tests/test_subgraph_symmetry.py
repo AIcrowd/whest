@@ -730,6 +730,7 @@ class TestGroupDisplay:
     def test_s2_displays_as_s2(self):
         import flopscope as flops
         import flopscope.numpy as fnp
+
         with flops.BudgetContext(flop_budget=10**9, quiet=True):
             X = np.ones((5, 3))
             _, info = fnp.einsum_path("ij,ik->jk", X, X)
@@ -739,6 +740,7 @@ class TestGroupDisplay:
     def test_trace_a_cubed_shows_c3(self):
         import flopscope as flops
         import flopscope.numpy as fnp
+
         with flops.BudgetContext(flop_budget=10**9, quiet=True):
             A = np.ones((5, 5))
             _, info = fnp.einsum_path("ij,jk,ki->", A, A, A)

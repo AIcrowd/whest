@@ -91,8 +91,6 @@ def _reset_client():
 
 class TestBasicOps:
     def test_zeros_and_fetch(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             z = fnp.zeros((3, 4))
             assert z.shape == (3, 4)
@@ -103,16 +101,12 @@ class TestBasicOps:
             assert all(v == 0.0 for row in values for v in row)
 
     def test_ones(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             o = fnp.ones((5,))
             values = o.tolist()
             assert values == [1.0, 1.0, 1.0, 1.0, 1.0]
 
     def test_array_from_list(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1.0, 2.0, 3.0])
             assert a.shape == (3,)
@@ -126,8 +120,6 @@ class TestBasicOps:
 
 class TestCountedOps:
     def test_exp(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000) as ctx:
             o = fnp.ones((3,))
             result = fnp.exp(o)
@@ -139,8 +131,6 @@ class TestCountedOps:
             assert ctx.flops_used > 0
 
     def test_add(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             o = fnp.ones((4,))
             result = fnp.add(o, o)
@@ -148,8 +138,6 @@ class TestCountedOps:
             assert values == [2.0, 2.0, 2.0, 2.0]
 
     def test_sum_reduction(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1.0, 2.0, 3.0])
             s = fnp.sum(a)
@@ -163,8 +151,6 @@ class TestCountedOps:
 
 class TestOperators:
     def test_add_operator(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0])
             y = fnp.array([3.0, 4.0])
@@ -172,24 +158,18 @@ class TestOperators:
             assert z.tolist() == [4.0, 6.0]
 
     def test_mul_scalar(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             z = x * 2.0
             assert z.tolist() == [2.0, 4.0, 6.0]
 
     def test_neg(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, -2.0, 3.0])
             z = -x
             assert z.tolist() == [-1.0, 2.0, -3.0]
 
     def test_matmul(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             # 2x2 identity matrix
             ident = fnp.eye(2)
@@ -205,8 +185,6 @@ class TestOperators:
 
 class TestTransparency:
     def test_print_shows_values(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([1.0, 2.0, 3.0])
             r = repr(x)
@@ -214,31 +192,23 @@ class TestTransparency:
             assert "1.0" in r
 
     def test_iteration(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([10.0, 20.0, 30.0])
             values = list(x)
             assert values == [10.0, 20.0, 30.0]
 
     def test_indexing(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([10.0, 20.0, 30.0])
             assert x[0] == 10.0
             assert x[2] == 30.0
 
     def test_len(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             assert len(x) == 2
 
     def test_float_conversion(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([42.0])
             assert float(x) == 42.0
@@ -251,8 +221,6 @@ class TestTransparency:
 
 class TestEinsum:
     def test_einsum_matvec(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             ident = fnp.eye(3)
             v = fnp.array([1.0, 2.0, 3.0])
@@ -267,29 +235,21 @@ class TestEinsum:
 
 class TestErrors:
     def test_budget_exhausted(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1):
             a = fnp.ones((100,))
             with pytest.raises(flops.BudgetExhaustedError):
                 fnp.exp(a)
 
     def test_no_budget_context(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         # Operations outside a BudgetContext should raise NoBudgetContextError
         with pytest.raises((flops.NoBudgetContextError, flops.FlopscopeServerError)):
             fnp.ones((3,))
 
     def test_blacklisted_function(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with pytest.raises(AttributeError, match="blacklisted"):
             _ = fnp.save
 
     def test_unknown_function(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with pytest.raises(AttributeError):
             _ = fnp.nonexistent_function_xyz
 
@@ -301,8 +261,6 @@ class TestErrors:
 
 class TestBudgetTracking:
     def test_flops_tracked(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000) as ctx:
             a = fnp.ones((10,))
             _ = fnp.exp(a)
@@ -310,8 +268,6 @@ class TestBudgetTracking:
             assert ctx.flops_used > 0
 
     def test_summary(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000) as ctx:
             _ = fnp.ones((10,))
             _ = fnp.exp(fnp.ones((10,)))

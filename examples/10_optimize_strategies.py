@@ -11,6 +11,7 @@ import time
 
 import flopscope as flops
 import flopscope.numpy as fnp
+
 # ---------------------------------------------------------------------------
 # 1. Set up a 5-operand contraction (big enough for strategies to differ)
 # ---------------------------------------------------------------------------

@@ -27,7 +27,9 @@ _SERVER_SRC = os.path.join(_WORKTREE, "flopscope-server", "src")
 _REAL_SRC = os.path.join(_WORKTREE, "src")
 # Prefer the server's own venv (which has msgpack/pyzmq) for the server subprocess;
 # fall back to the worktree root venv if it doesn't exist.
-_SERVER_VENV_PYTHON = os.path.join(_WORKTREE, "flopscope-server", ".venv", "bin", "python")
+_SERVER_VENV_PYTHON = os.path.join(
+    _WORKTREE, "flopscope-server", ".venv", "bin", "python"
+)
 _ROOT_VENV_PYTHON = os.path.join(_WORKTREE, ".venv", "bin", "python")
 _VENV_PYTHON = (
     _SERVER_VENV_PYTHON if os.path.exists(_SERVER_VENV_PYTHON) else _ROOT_VENV_PYTHON
@@ -91,8 +93,6 @@ def _reset_client():
 
 class TestPointwise:
     def test_add_lists(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1, 2, 3])
             b = fnp.array([4, 5, 6])
@@ -100,8 +100,6 @@ class TestPointwise:
             assert result.tolist() == [5, 7, 9]
 
     def test_add_floats(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1.0, 2.0, 3.0])
             b = fnp.array([4.0, 5.0, 6.0])
@@ -109,8 +107,6 @@ class TestPointwise:
             assert result.tolist() == [5.0, 7.0, 9.0]
 
     def test_subtract(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([10.0, 20.0, 30.0])
             b = fnp.array([1.0, 2.0, 3.0])
@@ -118,8 +114,6 @@ class TestPointwise:
             assert result.tolist() == [9.0, 18.0, 27.0]
 
     def test_multiply(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([2.0, 3.0, 4.0])
             b = fnp.array([5.0, 6.0, 7.0])
@@ -129,8 +123,6 @@ class TestPointwise:
     def test_exp(self):
         import math
 
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([0.0, 1.0])
             result = fnp.exp(a)
@@ -146,40 +138,30 @@ class TestPointwise:
 
 class TestReduction:
     def test_sum_1d(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1.0, 2.0, 3.0])
             result = fnp.sum(a)
             assert float(result) == 6.0
 
     def test_sum_returns_scalar(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1, 2, 3])
             result = fnp.sum(a)
             assert float(result) == 6.0
 
     def test_sum_2d_axis0(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             result = fnp.sum(a, axis=0)
             assert result.tolist() == [4.0, 6.0]
 
     def test_sum_2d_axis1(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             result = fnp.sum(a, axis=1)
             assert result.tolist() == [3.0, 7.0]
 
     def test_mean(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1.0, 2.0, 3.0, 4.0])
             result = fnp.mean(a)
@@ -193,8 +175,6 @@ class TestReduction:
 
 class TestLinalg:
     def test_svd_diagonal(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             A = fnp.array([[1.0, 0.0], [0.0, 2.0]])
             U, S, Vh = fnp.linalg.svd(A)
@@ -203,8 +183,6 @@ class TestLinalg:
             assert abs(sv[1] - 1.0) < 1e-10
 
     def test_svd_shapes(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             A = fnp.array([[1.0, 0.0], [0.0, 2.0]])
             U, S, Vh = fnp.linalg.svd(A)
@@ -213,8 +191,6 @@ class TestLinalg:
             assert Vh.shape == (2, 2)
 
     def test_norm(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             # L2 norm of [3, 4] = 5
             a = fnp.array([3.0, 4.0])
@@ -222,8 +198,6 @@ class TestLinalg:
             assert abs(float(result) - 5.0) < 1e-10
 
     def test_dot_matmul(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             A = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             B = fnp.array([[5.0, 6.0], [7.0, 8.0]])
@@ -238,15 +212,11 @@ class TestLinalg:
 
 class TestRandom:
     def test_normal_shape(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             result = fnp.random.normal(size=[100])
             assert result.shape == (100,)
 
     def test_normal_values_are_floats(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             result = fnp.random.normal(size=[10])
             vals = result.tolist()
@@ -254,15 +224,11 @@ class TestRandom:
             assert all(isinstance(v, float) for v in vals)
 
     def test_uniform_shape(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             result = fnp.random.uniform(size=[50])
             assert result.shape == (50,)
 
     def test_uniform_range(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             result = fnp.random.uniform(size=[100])
             vals = result.tolist()
@@ -276,8 +242,6 @@ class TestRandom:
 
 class TestStats:
     def test_norm_pdf_at_zero(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([0.0])
             result = flops.stats.norm.pdf(x)
@@ -286,8 +250,6 @@ class TestStats:
             assert abs(val - 0.3989422804014327) < 1e-6
 
     def test_norm_cdf_at_zero(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([0.0])
             result = flops.stats.norm.cdf(x)
@@ -296,8 +258,6 @@ class TestStats:
             assert abs(val - 0.5) < 1e-10
 
     def test_expon_pdf_at_zero(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([0.0])
             result = flops.stats.expon.pdf(x)
@@ -306,16 +266,12 @@ class TestStats:
             assert abs(val - 1.0) < 1e-10
 
     def test_norm_pdf_shape(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([0.0, 1.0, -1.0])
             result = flops.stats.norm.pdf(x)
             assert result.shape == (3,)
 
     def test_norm_cdf_monotone(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             x = fnp.array([-1.0, 0.0, 1.0])
             result = flops.stats.norm.cdf(x)
@@ -330,8 +286,6 @@ class TestStats:
 
 class TestEinsum:
     def test_matmul_2x2(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             A = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             B = fnp.array([[5.0, 6.0], [7.0, 8.0]])
@@ -340,8 +294,6 @@ class TestEinsum:
             assert C.tolist() == [[19.0, 22.0], [43.0, 50.0]]
 
     def test_matmul_identity(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             A = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             eye = fnp.array([[1.0, 0.0], [0.0, 1.0]])
@@ -349,8 +301,6 @@ class TestEinsum:
             assert C.tolist() == [[1.0, 2.0], [3.0, 4.0]]
 
     def test_dot_product(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1.0, 2.0, 3.0])
             b = fnp.array([4.0, 5.0, 6.0])
@@ -359,8 +309,6 @@ class TestEinsum:
             assert float(result) == 32.0
 
     def test_outer_product(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             a = fnp.array([1.0, 2.0])
             b = fnp.array([3.0, 4.0])
@@ -369,8 +317,6 @@ class TestEinsum:
             assert result.tolist() == [[3.0, 4.0], [6.0, 8.0]]
 
     def test_trace(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1_000_000):
             A = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             trace = fnp.einsum("ii->", A)
@@ -384,8 +330,6 @@ class TestEinsum:
 
 class TestErrorPropagation:
     def test_budget_exhausted_on_matmul(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1):
             A = fnp.array([[1.0, 2.0], [3.0, 4.0]])
             B = fnp.array([[5.0, 6.0], [7.0, 8.0]])
@@ -393,8 +337,6 @@ class TestErrorPropagation:
                 fnp.einsum("ij,jk->ik", A, B)
 
     def test_budget_exhausted_error_type(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with flops.BudgetContext(flop_budget=1):
             a = fnp.array([1.0, 2.0, 3.0])
             b = fnp.array([4.0, 5.0, 6.0])
@@ -404,15 +346,11 @@ class TestErrorPropagation:
                     fnp.add(a, b)
 
     def test_no_budget_context_raises(self):
-        import flopscope as flops
-        import flopscope.numpy as fnp
         with pytest.raises((flops.NoBudgetContextError, flops.FlopscopeServerError)):
             fnp.array([1.0, 2.0, 3.0])
 
     def test_budget_context_isolates_errors(self):
         """Verify a new context works after a previous one exhausted budget."""
-        import flopscope as flops
-        import flopscope.numpy as fnp
         # First context: exhaust budget
         try:
             with flops.BudgetContext(flop_budget=1):

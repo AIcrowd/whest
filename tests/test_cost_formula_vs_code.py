@@ -786,7 +786,10 @@ class TestStats:
         assert _cost_of(flopscope.stats.norm.cdf, numpy.random.rand(100)) == 100
 
     def test_norm_ppf(self, we):
-        assert _cost_of(flopscope.stats.norm.ppf, numpy.random.rand(100) * 0.98 + 0.01) == 100
+        assert (
+            _cost_of(flopscope.stats.norm.ppf, numpy.random.rand(100) * 0.98 + 0.01)
+            == 100
+        )
 
     def test_uniform_pdf(self, we):
         assert _cost_of(flopscope.stats.uniform.pdf, numpy.random.rand(100)) == 100
@@ -808,17 +811,25 @@ class TestStats:
 
     def test_laplace_ppf(self, we):
         assert (
-            _cost_of(flopscope.stats.laplace.ppf, numpy.random.rand(100) * 0.98 + 0.01) == 100
+            _cost_of(flopscope.stats.laplace.ppf, numpy.random.rand(100) * 0.98 + 0.01)
+            == 100
         )
 
     def test_lognorm_pdf(self, we):
         assert (
-            _cost_of(flopscope.stats.lognorm.pdf, numpy.abs(numpy.random.rand(100)) + 0.1, 0.5)
+            _cost_of(
+                flopscope.stats.lognorm.pdf,
+                numpy.abs(numpy.random.rand(100)) + 0.1,
+                0.5,
+            )
             == 100
         )
 
     def test_truncnorm_cdf(self, we):
-        assert _cost_of(flopscope.stats.truncnorm.cdf, numpy.random.rand(100), -2, 2) == 100
+        assert (
+            _cost_of(flopscope.stats.truncnorm.cdf, numpy.random.rand(100), -2, 2)
+            == 100
+        )
 
     def test_scalar_input(self, we):
         """Scalar input should charge 1 FLOP."""
