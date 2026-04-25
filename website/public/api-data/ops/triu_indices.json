@@ -158,7 +158,7 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "The row and column indices, respectively. The row indices are sorted\nin non-decreasing order, and the correspdonding column indices are\nstrictly increasing for each row."
+                        "text": "The row and column indices, respectively. The row indices are sorted\nin non-decreasing order, and the corresponding column indices are\nstrictly increasing for each row."
                       }
                     ],
                     "type": "paragraph"
@@ -168,7 +168,7 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "The row and column indices, respectively. The row indices are sorted\nin non-decreasing order, and the correspdonding column indices are\nstrictly increasing for each row."
+                    "text": "The row and column indices, respectively. The row indices are sorted\nin non-decreasing order, and the corresponding column indices are\nstrictly increasing for each row."
                   }
                 ],
                 "name": "inds",
@@ -195,7 +195,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/tril_indices",
-                "label": "we.tril_indices",
+                "label": "fnp.tril_indices",
                 "original_target": "tril_indices",
                 "role": "",
                 "target": "tril_indices",
@@ -211,7 +211,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/mask_indices",
-                "label": "we.mask_indices",
+                "label": "fnp.mask_indices",
                 "original_target": "mask_indices",
                 "role": "",
                 "target": "mask_indices",
@@ -222,7 +222,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/triu",
-                "label": "we.triu",
+                "label": "fnp.triu",
                 "original_target": "triu",
                 "role": "",
                 "target": "triu",
@@ -233,7 +233,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/tril",
-                "label": "we.tril",
+                "label": "fnp.tril",
                 "original_target": "tril",
                 "role": "",
                 "target": "tril",
@@ -252,7 +252,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -271,7 +271,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "iu1 = we.triu_indices(4)"
+                "text": "iu1 = fnp.triu_indices(4)"
               },
               {
                 "kind": "input",
@@ -308,7 +308,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(16).reshape(4, 4)"
+                "text": "a = fnp.arange(16).reshape(4, 4)"
               },
               {
                 "kind": "input",
@@ -411,7 +411,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "iu2 = we.triu_indices(4, 2)"
+                "text": "iu2 = fnp.triu_indices(4, 2)"
               },
               {
                 "kind": "input",
@@ -451,20 +451,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.triu_indices",
     "module": "numpy",
     "name": "triu_indices",
     "notes": "Return upper-triangle indices for n x n array.",
     "numpy_ref": "np.triu_indices",
-    "signature": "we.triu_indices(n, k=0, m=None)",
+    "signature": "fnp.triu_indices(n, k=0, m=None)",
     "status": "supported",
     "summary": "Return the indices for the upper-triangle of an (n, m) array.",
-    "weight": 0.0,
-    "whest_ref": "we.triu_indices"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "triu_indices",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L1041",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1473"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1473",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L1054"
   }
 }

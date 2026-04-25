@@ -597,12 +597,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rng = we.random.default_rng()"
+              "text": "rng = fnp.random.default_rng()"
             },
             {
               "kind": "input",
@@ -612,12 +612,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "B = we.linalg.pinv(a)"
+              "text": "B = fnp.linalg.pinv(a)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose(a, we.dot(a, we.dot(B, a)))"
+              "text": "fnp.allclose(a, fnp.dot(a, fnp.dot(B, a)))"
             },
             {
               "kind": "output",
@@ -626,7 +626,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose(B, we.dot(B, we.dot(a, B)))"
+              "text": "fnp.allclose(B, fnp.dot(B, fnp.dot(a, B)))"
             },
             {
               "kind": "output",
@@ -660,16 +660,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nrng = we.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nB = we.linalg.pinv(a)\n\nwe.allclose(a, we.dot(a, we.dot(B, a)))\n\nwe.allclose(B, we.dot(B, we.dot(a, B)))",
+    "code": "import flopscope as fnp\n\nrng = fnp.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nB = fnp.linalg.pinv(a)\n\nfnp.allclose(a, fnp.dot(a, fnp.dot(B, a)))\n\nfnp.allclose(B, fnp.dot(B, fnp.dot(a, B)))",
     "output": "True\n\nTrue",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.pinv",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L189",
   "href": "/docs/api/ops/linalg-pinv/",
   "module": "numpy.linalg",
   "name": "linalg.pinv",
   "next": {
     "href": "/docs/api/ops/linalg-qr/",
-    "label": "we.linalg.qr"
+    "label": "fnp.linalg.qr"
   },
   "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
   "notes_sections": [
@@ -719,7 +722,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-outer/",
-    "label": "we.linalg.outer"
+    "label": "fnp.linalg.outer"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.pinv.html",
@@ -767,12 +770,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
+  "signature": "fnp.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
   "slug": "linalg-pinv",
   "summary": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2128",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.pinv",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L189"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L2153",
+  "weight": 4.0
 }

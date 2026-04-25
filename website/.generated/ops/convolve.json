@@ -316,7 +316,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/polymul",
-              "label": "we.polymul",
+              "label": "fnp.polymul",
               "original_target": "polymul",
               "role": "",
               "target": "polymul",
@@ -410,12 +410,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.convolve([1, 2, 3], [0, 1, 0.5])"
+              "text": "fnp.convolve([1, 2, 3], [0, 1, 0.5])"
             },
             {
               "kind": "output",
@@ -438,7 +438,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.convolve([1,2,3],[0,1,0.5], 'same')"
+              "text": "fnp.convolve([1,2,3],[0,1,0.5], 'same')"
             },
             {
               "kind": "output",
@@ -461,7 +461,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.convolve([1,2,3],[0,1,0.5], 'valid')"
+              "text": "fnp.convolve([1,2,3],[0,1,0.5], 'valid')"
             },
             {
               "kind": "output",
@@ -495,16 +495,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.convolve([1, 2, 3], [0, 1, 0.5])\n\nwe.convolve([1,2,3],[0,1,0.5], 'same')\n\nwe.convolve([1,2,3],[0,1,0.5], 'valid')",
+    "code": "import flopscope as fnp\n\nfnp.convolve([1, 2, 3], [0, 1, 0.5])\n\nfnp.convolve([1,2,3],[0,1,0.5], 'same')\n\nfnp.convolve([1,2,3],[0,1,0.5], 'valid')",
     "output": "array([0. , 1. , 2.5, 4. , 1.5])\n\narray([1. ,  2.5,  4. ])\n\narray([2.5])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.convolve",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1067",
   "href": "/docs/api/ops/convolve/",
   "module": "numpy",
   "name": "convolve",
   "next": {
     "href": "/docs/api/ops/copy/",
-    "label": "we.copy"
+    "label": "fnp.copy"
   },
   "notes": "1-D discrete convolution.",
   "notes_sections": [
@@ -552,7 +555,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/conjugate/",
-    "label": "we.conjugate"
+    "label": "fnp.conjugate"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.convolve.html",
@@ -608,19 +611,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/polymul",
-      "label": "we.polymul",
+      "label": "fnp.polymul",
       "original_target": "polymul",
       "role": "",
       "target": "polymul",
       "unresolved": false
     }
   ],
-  "signature": "we.convolve(a, v, mode='full')",
+  "signature": "fnp.convolve(a, v, mode='full')",
   "slug": "convolve",
   "summary": "Returns the discrete, linear convolution of two one-dimensional sequences.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L772",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.convolve",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1067"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L805",
+  "weight": 1.0
 }

@@ -24,7 +24,7 @@ export default function ApiReference({operations}: ApiReferenceProps): React.Rea
     return operations.filter((op) => {
       // text search
       if (q) {
-        const haystack = `${op.name} ${op.whest_ref} ${op.numpy_ref} ${op.notes}`.toLowerCase();
+        const haystack = `${op.name} ${op.flopscope_ref} ${op.numpy_ref} ${op.notes}`.toLowerCase();
         if (!haystack.includes(q)) return false;
       }
       // cost filter

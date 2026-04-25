@@ -154,7 +154,7 @@
               "href": "",
               "kind": "link",
               "target": "linalg",
-              "text": "we.linalg"
+              "text": "fnp.linalg"
             },
             {
               "kind": "text",
@@ -199,17 +199,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 2], [3, 4]])"
+              "text": "a = fnp.array([[1, 2], [3, 4]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.det(a)"
+              "text": "fnp.linalg.det(a)"
             },
             {
               "kind": "output",
@@ -232,7 +232,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([ [[1, 2], [3, 4]], [[1, 2], [2, 1]], [[1, 3], [3, 1]] ])"
+              "text": "a = fnp.array([ [[1, 2], [3, 4]], [[1, 2], [2, 1]], [[1, 3], [3, 1]] ])"
             },
             {
               "kind": "input",
@@ -246,7 +246,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.det(a)"
+              "text": "fnp.linalg.det(a)"
             },
             {
               "kind": "output",
@@ -270,20 +270,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[1, 2], [3, 4]])\n\nwe.linalg.det(a)\n\na = we.array([ [[1, 2], [3, 4]], [[1, 2], [2, 1]], [[1, 3], [3, 1]] ])\n\na.shape\n\nwe.linalg.det(a)",
+    "code": "import flopscope as fnp\n\na = fnp.array([[1, 2], [3, 4]])\n\nfnp.linalg.det(a)\n\na = fnp.array([ [[1, 2], [3, 4]], [[1, 2], [2, 1]], [[1, 3], [3, 1]] ])\n\na.shape\n\nfnp.linalg.det(a)",
     "output": "-2.0 # may vary\n\n(3, 2, 2)\n\narray([-2., -3., -8.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.det",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L79",
   "href": "/docs/api/ops/linalg-det/",
   "module": "numpy.linalg",
   "name": "linalg.det",
   "next": {
     "href": "/docs/api/ops/linalg-diagonal/",
-    "label": "we.linalg.diagonal"
+    "label": "fnp.linalg.diagonal"
   },
   "notes": "Determinant. Cost: $n^3$.",
   "notes_sections": [
-    "Broadcasting rules apply, see the `we.linalg` documentation for details.",
+    "Broadcasting rules apply, see the `fnp.linalg` documentation for details.",
     "The determinant is computed via LU factorization using the LAPACK routine ``z/dgetrf``."
   ],
   "numpy_ref": "np.linalg.det",
@@ -298,7 +301,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-cross/",
-    "label": "we.linalg.cross"
+    "label": "fnp.linalg.cross"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.det.html",
@@ -345,12 +348,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.det(a)",
+  "signature": "fnp.linalg.det(a)",
   "slug": "linalg-det",
   "summary": "Compute the determinant of an array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2331",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.det",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L79"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L2355",
+  "weight": 4.0
 }

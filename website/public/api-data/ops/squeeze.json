@@ -208,7 +208,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/expand_dims",
-                "label": "we.expand_dims",
+                "label": "fnp.expand_dims",
                 "original_target": "expand_dims",
                 "role": "",
                 "target": "expand_dims",
@@ -224,7 +224,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/reshape",
-                "label": "we.reshape",
+                "label": "fnp.reshape",
                 "original_target": "reshape",
                 "role": "",
                 "target": "reshape",
@@ -243,12 +243,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[[0], [1], [2]]])"
+                "text": "x = fnp.array([[[0], [1], [2]]])"
               },
               {
                 "kind": "input",
@@ -262,7 +262,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.squeeze(x).shape"
+                "text": "fnp.squeeze(x).shape"
               },
               {
                 "kind": "output",
@@ -271,7 +271,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.squeeze(x, axis=0).shape"
+                "text": "fnp.squeeze(x, axis=0).shape"
               },
               {
                 "kind": "output",
@@ -280,7 +280,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.squeeze(x, axis=1).shape"
+                "text": "fnp.squeeze(x, axis=1).shape"
               },
               {
                 "kind": "output",
@@ -302,7 +302,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.squeeze(x, axis=2).shape"
+                "text": "fnp.squeeze(x, axis=2).shape"
               },
               {
                 "kind": "output",
@@ -311,7 +311,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[1234]])"
+                "text": "x = fnp.array([[1234]])"
               },
               {
                 "kind": "input",
@@ -325,7 +325,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.squeeze(x)"
+                "text": "fnp.squeeze(x)"
               },
               {
                 "kind": "output",
@@ -334,7 +334,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.squeeze(x).shape"
+                "text": "fnp.squeeze(x).shape"
               },
               {
                 "kind": "output",
@@ -343,7 +343,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.squeeze(x)[()]"
+                "text": "fnp.squeeze(x)[()]"
               },
               {
                 "kind": "output",
@@ -361,20 +361,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.squeeze",
     "module": "numpy",
     "name": "squeeze",
     "notes": "Remove size-1 dimensions.",
     "numpy_ref": "np.squeeze",
-    "signature": "we.squeeze(a, axis=None)",
+    "signature": "fnp.squeeze(a, axis=None)",
     "status": "supported",
     "summary": "Remove axes of length one from `a`.",
-    "weight": 0.0,
-    "whest_ref": "we.squeeze"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "squeeze",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1621",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L320"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L320",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L1596"
   }
 }

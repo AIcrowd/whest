@@ -129,7 +129,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.integers`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.integers`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -311,7 +311,7 @@
                             "href": "",
                             "kind": "link",
                             "target": "intp",
-                            "text": "we.intp"
+                            "text": "fnp.intp"
                           },
                           {
                             "kind": "text",
@@ -331,7 +331,7 @@
                     ],
                     "directive": "warning",
                     "options": [],
-                    "raw_source": ".. warning::\n  This function defaults to the C-long dtype, which is 32bit on windows\n  and otherwise 64bit on 64bit platforms (and 32bit on 32bit ones).\n  Since NumPy 2.0, NumPy's default integer is 32bit on 32bit platforms\n  and 64bit on 64bit platforms.  Which corresponds to `we.intp`.\n  (`dtype=int` is not the same as in most NumPy functions.)",
+                    "raw_source": ".. warning::\n  This function defaults to the C-long dtype, which is 32bit on windows\n  and otherwise 64bit on 64bit platforms (and 32bit on 32bit ones).\n  Since NumPy 2.0, NumPy's default integer is 32bit on 32bit platforms\n  and 64bit on 64bit platforms.  Which corresponds to `fnp.intp`.\n  (`dtype=int` is not the same as in most NumPy functions.)",
                     "supported": true,
                     "type": "directive_block"
                   }
@@ -503,7 +503,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.randint(2, size=10)"
+                "text": "fnp.random.randint(2, size=10)"
               },
               {
                 "kind": "output",
@@ -512,7 +512,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.randint(1, size=10)"
+                "text": "fnp.random.randint(1, size=10)"
               },
               {
                 "kind": "output",
@@ -535,7 +535,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.randint(5, size=(2, 4))"
+                "text": "fnp.random.randint(5, size=(2, 4))"
               },
               {
                 "kind": "output",
@@ -562,7 +562,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.randint(1, [3, 5, 10])"
+                "text": "fnp.random.randint(1, [3, 5, 10])"
               },
               {
                 "kind": "output",
@@ -585,7 +585,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.randint([1, 5, 7], 10)"
+                "text": "fnp.random.randint([1, 5, 7], 10)"
               },
               {
                 "kind": "output",
@@ -608,7 +608,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.randint([1, 3, 5, 7], [[10], [20]], dtype=we.uint8)"
+                "text": "fnp.random.randint([1, 3, 5, 7], [[10], [20]], dtype=fnp.uint8)"
               },
               {
                 "kind": "output",
@@ -630,20 +630,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.randint",
     "module": "numpy.random",
     "name": "random.randint",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.randint",
-    "signature": "we.random.randint(low, high=None, size=None, dtype=<class 'int'>)",
+    "signature": "fnp.random.randint(low, high=None, size=None, dtype=<class 'int'>)",
     "status": "supported",
     "summary": "Return random integers from `low` (inclusive) to `high` (exclusive).",
-    "weight": 1.0,
-    "whest_ref": "we.random.randint"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "random-randint",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.randint.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.randint.html"
   }
 }

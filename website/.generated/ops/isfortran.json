@@ -135,7 +135,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "we.array allows to specify whether the array is written in C-contiguous\norder (last index varies the fastest), or FORTRAN-contiguous order in\nmemory (first index varies the fastest)."
+              "text": "fnp.array allows to specify whether the array is written in C-contiguous\norder (last index varies the fastest), or FORTRAN-contiguous order in\nmemory (first index varies the fastest)."
             }
           ],
           "type": "paragraph"
@@ -145,12 +145,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 2, 3], [4, 5, 6]], order='C')"
+              "text": "a = fnp.array([[1, 2, 3], [4, 5, 6]], order='C')"
             },
             {
               "kind": "input",
@@ -168,7 +168,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfortran(a)"
+              "text": "fnp.isfortran(a)"
             },
             {
               "kind": "output",
@@ -182,7 +182,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([[1, 2, 3], [4, 5, 6]], order='F')"
+              "text": "b = fnp.array([[1, 2, 3], [4, 5, 6]], order='F')"
             },
             {
               "kind": "input",
@@ -200,7 +200,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfortran(b)"
+              "text": "fnp.isfortran(b)"
             },
             {
               "kind": "output",
@@ -223,7 +223,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 2, 3], [4, 5, 6]], order='C')"
+              "text": "a = fnp.array([[1, 2, 3], [4, 5, 6]], order='C')"
             },
             {
               "kind": "input",
@@ -241,7 +241,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfortran(a)"
+              "text": "fnp.isfortran(a)"
             },
             {
               "kind": "output",
@@ -272,7 +272,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfortran(b)"
+              "text": "fnp.isfortran(b)"
             },
             {
               "kind": "output",
@@ -295,7 +295,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfortran(we.array([1, 2], order='F'))"
+              "text": "fnp.isfortran(fnp.array([1, 2], order='F'))"
             },
             {
               "kind": "output",
@@ -319,16 +319,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[1, 2, 3], [4, 5, 6]], order='C')\n\na\n\nwe.isfortran(a)\n\nb = we.array([[1, 2, 3], [4, 5, 6]], order='F')\n\nb\n\nwe.isfortran(b)\n\na = we.array([[1, 2, 3], [4, 5, 6]], order='C')\n\na\n\nwe.isfortran(a)\n\nb = a.T\n\nb\n\nwe.isfortran(b)\n\nwe.isfortran(we.array([1, 2], order='F'))",
+    "code": "import flopscope as fnp\n\na = fnp.array([[1, 2, 3], [4, 5, 6]], order='C')\n\na\n\nfnp.isfortran(a)\n\nb = fnp.array([[1, 2, 3], [4, 5, 6]], order='F')\n\nb\n\nfnp.isfortran(b)\n\na = fnp.array([[1, 2, 3], [4, 5, 6]], order='C')\n\na\n\nfnp.isfortran(a)\n\nb = a.T\n\nb\n\nfnp.isfortran(b)\n\nfnp.isfortran(fnp.array([1, 2], order='F'))",
     "output": "array([[1, 2, 3],\n       [4, 5, 6]])\n\nFalse\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\nTrue\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\nFalse\n\narray([[1, 4],\n       [2, 5],\n       [3, 6]])\n\nTrue\n\nFalse",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.isfortran",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1089",
   "href": "/docs/api/ops/isfortran/",
   "module": "numpy",
   "name": "isfortran",
   "next": {
     "href": "/docs/api/ops/isin/",
-    "label": "we.isin"
+    "label": "fnp.isin"
   },
   "notes": "Return True if array is Fortran contiguous.",
   "notes_sections": [],
@@ -344,7 +347,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/isfinite/",
-    "label": "we.isfinite"
+    "label": "fnp.isfinite"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isfortran.html",
@@ -358,12 +361,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.isfortran(a)",
+  "signature": "fnp.isfortran(a)",
   "slug": "isfortran",
   "summary": "Check if the array is Fortran contiguous but *not* C contiguous.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L520",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.isfortran",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1089"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L553",
+  "weight": 0.0
 }

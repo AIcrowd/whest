@@ -280,16 +280,48 @@
     {
       "blocks": [
         {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/sign",
+              "label": "fnp.sign",
+              "original_target": "sign",
+              "role": "",
+              "target": "sign",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/copysign",
+              "label": "fnp.copysign",
+              "original_target": "copysign",
+              "role": "",
+              "target": "copysign",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
           "lines": [
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.signbit(-1.2)"
+              "text": "fnp.signbit(-1.2)"
             },
             {
               "kind": "output",
@@ -298,7 +330,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.signbit(we.array([1, -2.3, 2.1]))"
+              "text": "fnp.signbit(fnp.array([1, -2.3, 2.1]))"
             },
             {
               "kind": "output",
@@ -329,16 +361,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.signbit(-1.2)\n\nwe.signbit(we.array([1, -2.3, 2.1]))",
+    "code": "import flopscope as fnp\n\nfnp.signbit(-1.2)\n\nfnp.signbit(fnp.array([1, -2.3, 2.1]))",
     "output": "True\n\narray([False,  True, False])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.signbit",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/signbit/",
   "module": "numpy",
   "name": "signbit",
   "next": {
     "href": "/docs/api/ops/sin/",
-    "label": "we.sin"
+    "label": "fnp.sin"
   },
   "notes": "Returns True for elements with negative sign bit.",
   "notes_sections": [],
@@ -384,7 +419,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/sign/",
-    "label": "we.sign"
+    "label": "fnp.sign"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.signbit.html",
@@ -398,13 +433,33 @@
       "type": "ndarray of bool"
     }
   ],
-  "see_also": [],
-  "signature": "we.signbit(x)",
+  "see_also": [
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/sign",
+      "label": "fnp.sign",
+      "original_target": "sign",
+      "role": "",
+      "target": "sign",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/copysign",
+      "label": "fnp.copysign",
+      "original_target": "copysign",
+      "role": "",
+      "target": "copysign",
+      "unresolved": false
+    }
+  ],
+  "signature": "fnp.signbit(x)",
   "slug": "signbit",
   "summary": "Returns element-wise True where signbit is set (less than zero).",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.signbit",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

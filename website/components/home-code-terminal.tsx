@@ -15,7 +15,7 @@ import { motion, useInView } from 'motion/react';
 import { cn } from '@/lib/utils';
 
 // =========================================================================
-// HomeCodeTerminal — Whest Design System "paper" code block.
+// HomeCodeTerminal — Flopscope Design System "paper" code block.
 // Pure-white canvas, 1px gray-200 border, 8px radius. Replaces the old
 // #071018 dark terminal with traffic-light chrome.
 //

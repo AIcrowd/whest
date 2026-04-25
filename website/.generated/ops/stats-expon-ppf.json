@@ -169,12 +169,15 @@
     "unsupported_directives": []
   },
   "example": null,
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.stats.expon.ppf",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_expon.py#L55",
   "href": "/docs/api/ops/stats-expon-ppf/",
-  "module": "whest.stats",
+  "module": "flopscope.stats",
   "name": "stats.expon.ppf",
   "next": {
     "href": "/docs/api/ops/stats-laplace-cdf/",
-    "label": "we.stats.laplace.cdf"
+    "label": "fnp.stats.laplace.cdf"
   },
   "notes": "Exponential PPF; cost = numel(input).",
   "notes_sections": [],
@@ -212,7 +215,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/stats-expon-pdf/",
-    "label": "we.stats.expon.pdf"
+    "label": "fnp.stats.expon.pdf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.expon.html",
@@ -226,12 +229,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.stats.expon.ppf(q, loc=0, scale=1)",
+  "signature": "fnp.stats.expon.ppf(q, loc=0, scale=1)",
   "slug": "stats-expon-ppf",
   "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.stats.expon.ppf",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_expon.py#L55"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2302",
+  "weight": 16.0
 }

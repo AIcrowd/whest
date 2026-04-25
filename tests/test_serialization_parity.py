@@ -4,9 +4,9 @@ Verifies that objects survive the client-encode → server-decode cycle by
 importing client and server code directly (no ZMQ/network required).
 
 Path setup:
-- Core: src/  (package: whest, found via root pyproject.toml)
-- Client: whest-client/src/  (loaded with importlib for client-specific modules)
-- Server: whest-server/src/  (added to sys.path for whest_server)
+- Core: src/  (package: flopscope, found via root pyproject.toml)
+- Client: flopscope-client/src/  (loaded with importlib for client-specific modules)
+- Server: flopscope-server/src/  (added to sys.path for flopscope_server)
 """
 
 from __future__ import annotations
@@ -19,23 +19,23 @@ import numpy as np
 import pytest
 
 # ---------------------------------------------------------------------------
-# Path setup: add whest-server/src so whest_server is importable
+# Path setup: add flopscope-server/src so flopscope_server is importable
 # ---------------------------------------------------------------------------
 
 _ROOT = Path(__file__).parent.parent
-_SERVER_SRC = str(_ROOT / "whest-server" / "src")
-_CLIENT_SRC = str(_ROOT / "whest-client" / "src")
+_SERVER_SRC = str(_ROOT / "flopscope-server" / "src")
+_CLIENT_SRC = str(_ROOT / "flopscope-client" / "src")
 
 if _SERVER_SRC not in sys.path:
     sys.path.insert(0, _SERVER_SRC)
 
 
 # ---------------------------------------------------------------------------
-# Import server modules (whest_server uses sys.path above)
+# Import server modules (flopscope_server uses sys.path above)
 # ---------------------------------------------------------------------------
 
-from whest_server._request_handler import RequestHandler  # noqa: E402
-from whest_server._session import Session  # noqa: E402
+from flopscope_server._request_handler import RequestHandler  # noqa: E402
+from flopscope_server._session import Session  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Load client-specific modules via importlib (avoid package name collision)
@@ -43,10 +43,10 @@ from whest_server._session import Session  # noqa: E402
 
 
 def _load_client_module(rel_path: str, module_name: str):
-    """Load a module from whest-client/src using importlib.
+    """Load a module from flopscope-client/src using importlib.
 
     The loaded module is registered in sys.modules under *module_name* so
-    that intra-package imports (e.g. ``from whest._math_compat import ...``)
+    that intra-package imports (e.g. ``from flopscope._math_compat import ...``)
     resolve correctly within the client package namespace.
     """
     if module_name in sys.modules:
@@ -61,18 +61,18 @@ def _load_client_module(rel_path: str, module_name: str):
 
 
 # Load client sub-modules in dependency order so internal imports resolve.
-# Each is registered under its canonical dotted name inside the whest package
+# Each is registered under its canonical dotted name inside the flopscope package
 # that the core already occupies, but these sub-modules don't exist in core so
 # there's no collision risk.
-_load_client_module("whest/_constants.py", "whest._constants")
-_load_client_module("whest/_math_compat.py", "whest._math_compat")
-_load_client_module("whest/_symmetric_info.py", "whest._symmetric_info")
-_load_client_module("whest/_perm_group.py", "whest._perm_group")
+_load_client_module("flopscope/_constants.py", "flopscope._constants")
+_load_client_module("flopscope/_math_compat.py", "flopscope._math_compat")
+_load_client_module("flopscope/_symmetric_info.py", "flopscope._symmetric_info")
+_load_client_module("flopscope/_perm_group.py", "flopscope._perm_group")
 _client_remote_array = _load_client_module(
-    "whest/_remote_array.py", "whest._remote_array"
+    "flopscope/_remote_array.py", "flopscope._remote_array"
 )
 # Re-load perm_group so we have a local reference (it may already be cached)
-_client_perm_group = sys.modules["whest._perm_group"]
+_client_perm_group = sys.modules["flopscope._perm_group"]
 
 _encode_arg = _client_remote_array._encode_arg
 _result_from_response = _client_remote_array._result_from_response
@@ -83,10 +83,10 @@ ClientCycle = _client_perm_group.Cycle
 
 
 # ---------------------------------------------------------------------------
-# Core whest (from root pyproject.toml / src/)
+# Core flopscope (from root pyproject.toml / src/)
 # ---------------------------------------------------------------------------
 
-import whest as we  # noqa: E402
+import flopscope as we  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Fixtures: create a fresh session + handler for each test
@@ -121,7 +121,7 @@ class TestPermutationRoundTrip:
         assert "__permutation__" in encoded
         assert encoded["__permutation__"] == [2, 0, 1]
 
-        # Server resolves it back to a whest Permutation
+        # Server resolves it back to a flopscope Permutation
         _, handler = handler_session
         resolved = handler._resolve_arg(encoded)
 

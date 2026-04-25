@@ -398,7 +398,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/remainder",
-              "label": "we.remainder",
+              "label": "fnp.remainder",
               "original_target": "remainder",
               "role": "",
               "target": "remainder",
@@ -414,7 +414,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/floor_divide",
-              "label": "we.floor_divide",
+              "label": "fnp.floor_divide",
               "original_target": "divmod",
               "role": "",
               "target": "floor_divide",
@@ -430,7 +430,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/divide",
-              "label": "we.divide",
+              "label": "fnp.divide",
               "original_target": "divide",
               "role": "",
               "target": "divide",
@@ -446,7 +446,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/floor",
-              "label": "we.floor",
+              "label": "fnp.floor",
               "original_target": "floor",
               "role": "",
               "target": "floor",
@@ -462,7 +462,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/ceil",
-              "label": "we.ceil",
+              "label": "fnp.ceil",
               "original_target": "ceil",
               "role": "",
               "target": "ceil",
@@ -481,12 +481,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.floor_divide(7,3)"
+              "text": "fnp.floor_divide(7,3)"
             },
             {
               "kind": "output",
@@ -495,7 +495,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.floor_divide([1., 2., 3., 4.], 2.5)"
+              "text": "fnp.floor_divide([1., 2., 3., 4.], 2.5)"
             },
             {
               "kind": "output",
@@ -523,7 +523,7 @@
               "href": "/docs/api/ops/floor_divide",
               "kind": "link",
               "target": "floor_divide",
-              "text": "we.floor_divide"
+              "text": "fnp.floor_divide"
             },
             {
               "kind": "text",
@@ -537,7 +537,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.array([1., 2., 3., 4.])"
+              "text": "x1 = fnp.array([1., 2., 3., 4.])"
             },
             {
               "kind": "input",
@@ -573,16 +573,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.floor_divide(7,3)\n\nwe.floor_divide([1., 2., 3., 4.], 2.5)\n\nx1 = we.array([1., 2., 3., 4.])\n\nx1 // 2.5",
+    "code": "import flopscope as fnp\n\nfnp.floor_divide(7,3)\n\nfnp.floor_divide([1., 2., 3., 4.], 2.5)\n\nx1 = fnp.array([1., 2., 3., 4.])\n\nx1 // 2.5",
     "output": "2\n\narray([ 0.,  0.,  1.,  1.])\n\narray([0., 0., 1., 1.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.floor_divide",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
   "href": "/docs/api/ops/floor_divide/",
   "module": "numpy",
   "name": "floor_divide",
   "next": {
     "href": "/docs/api/ops/fmax/",
-    "label": "we.fmax"
+    "label": "fnp.fmax"
   },
   "notes": "Element-wise floor division.",
   "notes_sections": [],
@@ -637,7 +640,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/floor/",
-    "label": "we.floor"
+    "label": "fnp.floor"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.floor_divide.html",
@@ -662,7 +665,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/remainder",
-      "label": "we.remainder",
+      "label": "fnp.remainder",
       "original_target": "remainder",
       "role": "",
       "target": "remainder",
@@ -678,7 +681,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/floor_divide",
-      "label": "we.floor_divide",
+      "label": "fnp.floor_divide",
       "original_target": "divmod",
       "role": "",
       "target": "floor_divide",
@@ -694,7 +697,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/divide",
-      "label": "we.divide",
+      "label": "fnp.divide",
       "original_target": "divide",
       "role": "",
       "target": "divide",
@@ -710,7 +713,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/floor",
-      "label": "we.floor",
+      "label": "fnp.floor",
       "original_target": "floor",
       "role": "",
       "target": "floor",
@@ -726,19 +729,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/ceil",
-      "label": "we.ceil",
+      "label": "fnp.ceil",
       "original_target": "ceil",
       "role": "",
       "target": "ceil",
       "unresolved": false
     }
   ],
-  "signature": "we.floor_divide(x, y)",
+  "signature": "fnp.floor_divide(x, y)",
   "slug": "floor_divide",
   "summary": "Return the largest integer smaller or equal to the division of the inputs. It is equivalent to the Python ``//`` operator and pairs with the Python ``%`` (`remainder`), function so that ``a = a % b + b * (a // b)`` up to roundoff.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.floor_divide",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

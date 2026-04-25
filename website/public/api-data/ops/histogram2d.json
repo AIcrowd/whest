@@ -514,7 +514,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/histogram",
-                "label": "we.histogram",
+                "label": "fnp.histogram",
                 "original_target": "histogram",
                 "role": "",
                 "target": "histogram",
@@ -530,7 +530,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/histogramdd",
-                "label": "we.histogramdd",
+                "label": "fnp.histogramdd",
                 "original_target": "histogramdd",
                 "role": "",
                 "target": "histogramdd",
@@ -631,7 +631,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -684,17 +684,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.random.normal(2, 1, 100)"
+                "text": "x = fnp.random.normal(2, 1, 100)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.random.normal(1, 1, 100)"
+                "text": "y = fnp.random.normal(1, 1, 100)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "H, xedges, yedges = we.histogram2d(x, y, bins=(xedges, yedges))"
+                "text": "H, xedges, yedges = fnp.histogram2d(x, y, bins=(xedges, yedges))"
               },
               {
                 "kind": "input",
@@ -800,7 +800,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "X, Y = we.meshgrid(xedges, yedges)"
+                "text": "X, Y = fnp.meshgrid(xedges, yedges)"
               },
               {
                 "kind": "input",
@@ -904,12 +904,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(1, 100, n)"
+                "text": "x = fnp.linspace(1, 100, n)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = 2*we.log(x) + we.random.rand(n) - 0.5"
+                "text": "y = 2*fnp.log(x) + fnp.random.rand(n) - 0.5"
               },
               {
                 "kind": "input",
@@ -919,7 +919,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "H, yedges, xedges = we.histogram2d(y, x, bins=20)"
+                "text": "H, yedges, xedges = fnp.histogram2d(y, x, bins=20)"
               }
             ],
             "type": "doctest_block"
@@ -985,7 +985,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ax1.plot(x, 2*we.log(x), 'k-')"
+                "text": "ax1.plot(x, 2*fnp.log(x), 'k-')"
               },
               {
                 "kind": "input",
@@ -1035,7 +1035,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ax2.plot(x, 2*we.log(x), 'k-')"
+                "text": "ax2.plot(x, 2*fnp.log(x), 'k-')"
               },
               {
                 "kind": "input",
@@ -1079,20 +1079,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.histogram2d",
     "module": "numpy",
     "name": "histogram2d",
     "notes": "2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by))).",
     "numpy_ref": "np.histogram2d",
-    "signature": "we.histogram2d(x, y, bins=10, range=None, density=None, weights=None)",
+    "signature": "fnp.histogram2d(x, y, bins=10, range=None, density=None, weights=None)",
     "status": "supported",
     "summary": "Compute the bi-dimensional histogram of two data samples.",
-    "weight": 1.0,
-    "whest_ref": "we.histogram2d"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "histogram2d",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L655",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L130"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L130",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L668"
   }
 }

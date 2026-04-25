@@ -114,7 +114,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.pareto`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.pareto`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -189,7 +189,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(a).size"
+                      "text": "fnp.array(a).size"
                     },
                     {
                       "kind": "text",
@@ -239,7 +239,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(a).size"
+                  "text": "fnp.array(a).size"
                 },
                 {
                   "kind": "text",
@@ -455,7 +455,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = (we.random.pareto(a, 1000) + 1) * m"
+              "text": "s = (fnp.random.pareto(a, 1000) + 1) * m"
             }
           ],
           "type": "doctest_block"
@@ -536,16 +536,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "a, m = 3., 2.  # shape and mode\n\ns = (we.random.pareto(a, 1000) + 1) * m\n\nimport matplotlib.pyplot as plt\n\ncount, bins, _ = plt.hist(s, 100, density=True)\n\nfit = a*m**a / bins**(a+1)\n\nplt.plot(bins, max(count)*fit/max(fit), linewidth=2, color='r')\n\nplt.show()",
+    "code": "a, m = 3., 2.  # shape and mode\n\ns = (fnp.random.pareto(a, 1000) + 1) * m\n\nimport matplotlib.pyplot as plt\n\ncount, bins, _ = plt.hist(s, 100, density=True)\n\nfit = a*m**a / bins**(a+1)\n\nplt.plot(bins, max(count)*fit/max(fit), linewidth=2, color='r')\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.pareto",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-pareto/",
   "module": "numpy.random",
   "name": "random.pareto",
   "next": {
     "href": "/docs/api/ops/random-permutation/",
-    "label": "we.random.permutation"
+    "label": "fnp.random.permutation"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -568,7 +571,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``a`` is a scalar.  Otherwise,",
-        "``we.array(a).size`` samples are drawn."
+        "``fnp.array(a).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -576,7 +579,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-normal/",
-    "label": "we.random.normal"
+    "label": "fnp.random.normal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.pareto.html",
@@ -639,12 +642,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.pareto(a, size=None)",
+  "signature": "fnp.random.pareto(a, size=None)",
   "slug": "random-pareto",
   "summary": "Draw samples from a Pareto II or Lomax distribution with specified shape.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.pareto",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

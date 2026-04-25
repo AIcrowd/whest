@@ -331,7 +331,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/diag",
-                "label": "we.diag",
+                "label": "fnp.diag",
                 "original_target": "diag",
                 "role": "",
                 "target": "diag",
@@ -342,7 +342,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/diagonal",
-                "label": "we.diagonal",
+                "label": "fnp.diagonal",
                 "original_target": "diagonal",
                 "role": "",
                 "target": "diagonal",
@@ -353,7 +353,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/diagflat",
-                "label": "we.diagflat",
+                "label": "fnp.diagflat",
                 "original_target": "diagflat",
                 "role": "",
                 "target": "diagflat",
@@ -372,12 +372,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trace(we.eye(3))"
+                "text": "fnp.trace(fnp.eye(3))"
               },
               {
                 "kind": "output",
@@ -386,12 +386,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(8).reshape((2,2,2))"
+                "text": "a = fnp.arange(8).reshape((2,2,2))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trace(a)"
+                "text": "fnp.trace(a)"
               },
               {
                 "kind": "output",
@@ -405,12 +405,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(24).reshape((2,2,2,3))"
+                "text": "a = fnp.arange(24).reshape((2,2,2,3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trace(a).shape"
+                "text": "fnp.trace(a).shape"
               },
               {
                 "kind": "output",
@@ -428,20 +428,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.trace",
     "module": "numpy",
     "name": "trace",
     "notes": "Diagonal sum; cost = min(n,m).",
     "numpy_ref": "np.trace",
-    "signature": "we.trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None)",
+    "signature": "fnp.trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None)",
     "status": "supported",
     "summary": "Return the sum along diagonals of the array.",
-    "weight": 1.0,
-    "whest_ref": "we.trace"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "trace",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1831",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L23"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L23",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L1806"
   }
 }

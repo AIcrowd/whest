@@ -351,7 +351,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/empty_like",
-              "label": "we.empty_like",
+              "label": "fnp.empty_like",
               "original_target": "empty_like",
               "role": "",
               "target": "empty_like",
@@ -367,7 +367,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/ones_like",
-              "label": "we.ones_like",
+              "label": "fnp.ones_like",
               "original_target": "ones_like",
               "role": "",
               "target": "ones_like",
@@ -383,7 +383,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/zeros_like",
-              "label": "we.zeros_like",
+              "label": "fnp.zeros_like",
               "original_target": "zeros_like",
               "role": "",
               "target": "zeros_like",
@@ -399,7 +399,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/full",
-              "label": "we.full",
+              "label": "fnp.full",
               "original_target": "full",
               "role": "",
               "target": "full",
@@ -418,17 +418,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(6, dtype=int)"
+              "text": "x = fnp.arange(6, dtype=int)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.full_like(x, 1)"
+              "text": "fnp.full_like(x, 1)"
             },
             {
               "kind": "output",
@@ -437,7 +437,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.full_like(x, 0.1)"
+              "text": "fnp.full_like(x, 0.1)"
             },
             {
               "kind": "output",
@@ -446,7 +446,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.full_like(x, 0.1, dtype=we.double)"
+              "text": "fnp.full_like(x, 0.1, dtype=fnp.double)"
             },
             {
               "kind": "output",
@@ -455,7 +455,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.full_like(x, we.nan, dtype=we.double)"
+              "text": "fnp.full_like(x, fnp.nan, dtype=fnp.double)"
             },
             {
               "kind": "output",
@@ -469,12 +469,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.arange(6, dtype=we.double)"
+              "text": "y = fnp.arange(6, dtype=fnp.double)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.full_like(y, 0.1)"
+              "text": "fnp.full_like(y, 0.1)"
             },
             {
               "kind": "output",
@@ -488,12 +488,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.zeros([2, 2, 3], dtype=int)"
+              "text": "y = fnp.zeros([2, 2, 3], dtype=int)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.full_like(y, [0, 0, 255])"
+              "text": "fnp.full_like(y, [0, 0, 255])"
             },
             {
               "kind": "output",
@@ -529,16 +529,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(6, dtype=int)\n\nwe.full_like(x, 1)\n\nwe.full_like(x, 0.1)\n\nwe.full_like(x, 0.1, dtype=we.double)\n\nwe.full_like(x, we.nan, dtype=we.double)\n\ny = we.arange(6, dtype=we.double)\n\nwe.full_like(y, 0.1)\n\ny = we.zeros([2, 2, 3], dtype=int)\n\nwe.full_like(y, [0, 0, 255])",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(6, dtype=int)\n\nfnp.full_like(x, 1)\n\nfnp.full_like(x, 0.1)\n\nfnp.full_like(x, 0.1, dtype=fnp.double)\n\nfnp.full_like(x, fnp.nan, dtype=fnp.double)\n\ny = fnp.arange(6, dtype=fnp.double)\n\nfnp.full_like(y, 0.1)\n\ny = fnp.zeros([2, 2, 3], dtype=int)\n\nfnp.full_like(y, [0, 0, 255])",
     "output": "array([1, 1, 1, 1, 1, 1])\n\narray([0, 0, 0, 0, 0, 0])\n\narray([0.1, 0.1, 0.1, 0.1, 0.1, 0.1])\n\narray([nan, nan, nan, nan, nan, nan])\n\narray([0.1, 0.1, 0.1, 0.1, 0.1, 0.1])\n\narray([[[  0,   0, 255],\n        [  0,   0, 255]],\n       [[  0,   0, 255],\n        [  0,   0, 255]]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.full_like",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L162",
   "href": "/docs/api/ops/full_like/",
   "module": "numpy",
   "name": "full_like",
   "next": {
     "href": "/docs/api/ops/gcd/",
-    "label": "we.gcd"
+    "label": "fnp.gcd"
   },
   "notes": "Array filled with scalar, same shape/type as input. Cost: numel(output).",
   "notes_sections": [],
@@ -607,7 +610,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/full/",
-    "label": "we.full"
+    "label": "fnp.full"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.full_like.html",
@@ -631,7 +634,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/empty_like",
-      "label": "we.empty_like",
+      "label": "fnp.empty_like",
       "original_target": "empty_like",
       "role": "",
       "target": "empty_like",
@@ -647,7 +650,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/ones_like",
-      "label": "we.ones_like",
+      "label": "fnp.ones_like",
       "original_target": "ones_like",
       "role": "",
       "target": "ones_like",
@@ -663,7 +666,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/zeros_like",
-      "label": "we.zeros_like",
+      "label": "fnp.zeros_like",
       "original_target": "zeros_like",
       "role": "",
       "target": "zeros_like",
@@ -679,19 +682,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/full",
-      "label": "we.full",
+      "label": "fnp.full",
       "original_target": "full",
       "role": "",
       "target": "full",
       "unresolved": false
     }
   ],
-  "signature": "we.full_like(a, fill_value, dtype=None, order='K', subok=True, shape=None, *, device=None)",
+  "signature": "fnp.full_like(a, fill_value, dtype=None, order='K', subok=True, shape=None, *, device=None)",
   "slug": "full_like",
   "summary": "Return a full array with the same shape and type as a given array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L367",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.full_like",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L162"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L400",
+  "weight": 1.0
 }

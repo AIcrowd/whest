@@ -6,7 +6,7 @@ import math
 
 import pytest
 
-from whest._perm_group import Cycle, Permutation, PermutationGroup
+from flopscope._perm_group import Cycle, Permutation, PermutationGroup
 
 
 class TestPermutation:

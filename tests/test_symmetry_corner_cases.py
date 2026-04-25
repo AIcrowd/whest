@@ -10,8 +10,9 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-import whest as we
-from whest._perm_group import PermutationGroup
+import flopscope as flops
+import flopscope.numpy as fnp
+from flopscope._perm_group import PermutationGroup
 
 
 def _symmetrize(shape, group):
@@ -25,7 +26,7 @@ def _symmetrize(shape, group):
         for i in range(len(axes)):
             perm[axes[i]] = axes[af[i]]
         total = total + np.transpose(data, perm)
-    return we.as_symmetric(total / group.order(), symmetry=group)
+    return flops.as_symmetric(total / group.order(), symmetry=group)
 
 
 def _detect_order(expr, *operands):
@@ -34,7 +35,7 @@ def _detect_order(expr, *operands):
     Multi-operand contractions are decomposed into pairwise steps; the full
     symmetry may only appear in the final step that combines all operands.
     """
-    _, info = we.einsum_path(expr, *operands)
+    _, info = fnp.einsum_path(expr, *operands)
     max_order = 1
     for step in info.steps:
         if step.output_group:
@@ -57,31 +58,31 @@ class TestIdenticalOperands:
 
     def test_matmul_no_symmetry(self):
         """A·A = einsum('ij,jk->ik', A, A): different subscript structure, trivial."""
-        A = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
         assert _detect_order("ij,jk->ik", A, A) == 1
 
     def test_gram_matrix_s2(self):
         """X^T X = einsum('ia,ib->ab', X, X): swapping operands swaps a↔b → S2."""
-        X = we.random.randn(N, N)
+        X = fnp.random.randn(N, N)
         assert _detect_order("ia,ib->ab", X, X) == 2
-        result = we.einsum("ia,ib->ab", X, X)
+        result = fnp.einsum("ia,ib->ab", X, X)
         assert np.allclose(result, result.T)
 
     def test_vector_outer_s2(self):
         """v⊗v = einsum('i,j->ij', v, v): S2{i,j}."""
-        v = we.random.randn(N)
+        v = fnp.random.randn(N)
         assert _detect_order("i,j->ij", v, v) == 2
-        result = we.einsum("i,j->ij", v, v)
+        result = fnp.einsum("i,j->ij", v, v)
         assert np.allclose(result, result.T)
 
     def test_triple_outer_s3(self):
         """v⊗v⊗v = einsum('i,j,k->ijk', v, v, v): S3{i,j,k}, order 6."""
-        v = we.random.randn(N)
+        v = fnp.random.randn(N)
         assert _detect_order("i,j,k->ijk", v, v, v) == 6
 
     def test_quad_outer_s4(self):
         """v⊗v⊗v⊗v: S4{i,j,k,l}, order 24."""
-        v = we.random.randn(N)
+        v = fnp.random.randn(N)
         assert _detect_order("i,j,k,l->ijkl", v, v, v, v) == 24
 
     def test_directed_triangle_c3(self):
@@ -90,17 +91,17 @@ class TestIdenticalOperands:
         The cyclic permutation of operands (ij,jk,ki)→(jk,ki,ij) is valid,
         but reflections are not (would require reversing the chain direction).
         """
-        A = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
         assert _detect_order("ij,jk,ki->ijk", A, A, A) == 3
 
     def test_directed_4_cycle_c4(self):
         """einsum('ij,jk,kl,li->ijkl', A, A, A, A): C4, order 4."""
-        A = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
         assert _detect_order("ij,jk,kl,li->ijkl", A, A, A, A) == 4
 
     def test_block_outer_product(self):
         """einsum('ab,cd->abcd', X, X): block swap (a,b)↔(c,d), order 2."""
-        X = we.random.randn(N, N)
+        X = fnp.random.randn(N, N)
         assert _detect_order("ab,cd->abcd", X, X) == 2
 
     def test_hadamard_no_symmetry(self):
@@ -109,9 +110,9 @@ class TestIdenticalOperands:
         Swapping operands gives identity π (same subscripts), so trivial.
         A²[i,j] ≠ A²[j,i] in general.
         """
-        A = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
         assert _detect_order("ij,ij->ij", A, A) == 1
-        result = we.einsum("ij,ij->ij", A, A)
+        result = fnp.einsum("ij,ij->ij", A, A)
         assert not np.allclose(result, result.T)
 
 
@@ -122,7 +123,7 @@ class TestDeclaredSymmetryNonIdentical:
         """S·W where S has S2: no output symmetry (non-identical operands, no
         identical-operand source)."""
         S = _symmetrize((N, N), PermutationGroup.symmetric(2, axes=(0, 1)))
-        W = we.random.randn(N, N)
+        W = fnp.random.randn(N, N)
         assert _detect_order("ij,jk->ik", S, W) == 1
 
     def test_c3_contraction(self):
@@ -132,7 +133,7 @@ class TestDeclaredSymmetryNonIdentical:
         C3 generator on T's axes, which induces C3{i,j,k} on the output.
         """
         T = _symmetrize((N, N, N, N), PermutationGroup.cyclic(3, axes=(1, 2, 3)))
-        W = we.random.randn(N, N)
+        W = fnp.random.randn(N, N)
         assert _detect_order("aijk,ab->ijkb", T, W) == 3
 
     def test_d4_contraction(self):
@@ -143,7 +144,7 @@ class TestDeclaredSymmetryNonIdentical:
         T = _symmetrize(
             (N, N, N, N, N), PermutationGroup.dihedral(4, axes=(1, 2, 3, 4))
         )
-        W = we.random.randn(N, N)
+        W = fnp.random.randn(N, N)
         assert _detect_order("aijkl,ab->ijklb", T, W) == 8
 
 
@@ -159,7 +160,7 @@ class TestDeclaredPlusIdentical:
         """
         S = _symmetrize((N, N), PermutationGroup.symmetric(2, axes=(0, 1)))
         assert _detect_order("ij,jk->ik", S, S) == 2
-        result = we.einsum("ij,jk->ik", S, S)
+        result = fnp.einsum("ij,jk->ik", S, S)
         assert np.allclose(result, result.T)
 
     def test_undirected_4_cycle_d4(self):
@@ -179,7 +180,7 @@ class TestDeclaredPlusIdentical:
         """
         T = _symmetrize((N, N, N), PermutationGroup.cyclic(3, axes=(0, 1, 2)))
         assert _detect_order("ijk,jki->ik", T, T) == 1
-        result = we.einsum("ijk,jki->ik", T, T)
+        result = fnp.einsum("ijk,jki->ik", T, T)
         assert not np.allclose(result, result.T)
 
     def test_symmetric_triangle_s3(self):
@@ -197,17 +198,17 @@ class TestWSideSymmetry:
 
     def test_trace_aa_s2(self):
         """Tr(A·A) = einsum('ij,ji->', A, A): W-side S2{i,j}, order 2."""
-        A = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
         assert _detect_order("ij,ji->", A, A) == 2
 
     def test_trace_aaa_c3(self):
         """Tr(A·A·A) = einsum('ij,jk,ki->', A, A, A): W-side C3{i,j,k}."""
-        A = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
         assert _detect_order("ij,jk,ki->", A, A, A) == 3
 
     def test_trace_aaaa_c4(self):
         """Tr(A^4) = einsum('ij,jk,kl,li->', A, A, A, A): W-side C4."""
-        A = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
         assert _detect_order("ij,jk,kl,li->", A, A, A, A) == 4
 
     def test_partial_trace_trivial(self):
@@ -216,7 +217,7 @@ class TestWSideSymmetry:
         C3 rotates i→j→k→i, mapping free label to summed — invalid.
         No V→V and W→W respecting permutation exists.
         """
-        A = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
         assert _detect_order("ij,jk,ki->i", A, A, A) == 1
 
     def test_frobenius_inner_product_w_s2(self):
@@ -228,7 +229,7 @@ class TestWSideSymmetry:
         Detected via Source C: coordinated axis relabeling across all
         identical operands with the same subscript pattern.
         """
-        A = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
         assert _detect_order("ij,ij->", A, A) == 2
 
 
@@ -237,14 +238,14 @@ class TestMixedOperands:
 
     def test_aba_chain(self):
         """A·B·A: A appears twice but B breaks the chain."""
-        A = we.random.randn(N, N)
-        B = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
+        B = fnp.random.randn(N, N)
         assert _detect_order("ij,jk,kl->il", A, B, A) == 1
 
     def test_abab_alternating(self):
         """A·B·A·B: two pairs but interleaved — no swap is valid."""
-        A = we.random.randn(N, N)
-        B = we.random.randn(N, N)
+        A = fnp.random.randn(N, N)
+        B = fnp.random.randn(N, N)
         assert _detect_order("ij,jk,kl,lm->im", A, B, A, B) == 1
 
     def test_diagonal_extraction(self):

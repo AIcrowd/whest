@@ -276,7 +276,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/moveaxis",
-              "label": "we.moveaxis",
+              "label": "fnp.moveaxis",
               "original_target": "moveaxis",
               "role": "",
               "target": "moveaxis",
@@ -292,7 +292,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/roll",
-              "label": "we.roll",
+              "label": "fnp.roll",
               "original_target": "roll",
               "role": "",
               "target": "roll",
@@ -311,17 +311,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.ones((3,4,5,6))"
+              "text": "a = fnp.ones((3,4,5,6))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.rollaxis(a, 3, 1).shape"
+              "text": "fnp.rollaxis(a, 3, 1).shape"
             },
             {
               "kind": "output",
@@ -330,7 +330,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.rollaxis(a, 2).shape"
+              "text": "fnp.rollaxis(a, 2).shape"
             },
             {
               "kind": "output",
@@ -339,7 +339,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.rollaxis(a, 1, 4).shape"
+              "text": "fnp.rollaxis(a, 1, 4).shape"
             },
             {
               "kind": "output",
@@ -373,16 +373,19 @@
     ]
   },
   "example": {
-    "code": "import whest as we\n\na = we.ones((3,4,5,6))\n\nwe.rollaxis(a, 3, 1).shape\n\nwe.rollaxis(a, 2).shape\n\nwe.rollaxis(a, 1, 4).shape",
+    "code": "import flopscope as fnp\n\na = fnp.ones((3,4,5,6))\n\nfnp.rollaxis(a, 3, 1).shape\n\nfnp.rollaxis(a, 2).shape\n\nfnp.rollaxis(a, 1, 4).shape",
     "output": "(3, 6, 4, 5)\n\n(5, 3, 4, 6)\n\n(3, 5, 6, 4)",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.rollaxis",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1342",
   "href": "/docs/api/ops/rollaxis/",
   "module": "numpy",
   "name": "rollaxis",
   "next": {
     "href": "/docs/api/ops/roots/",
-    "label": "we.roots"
+    "label": "fnp.roots"
   },
   "notes": "Roll specified axis backwards. Cost: numel(output).",
   "notes_sections": [],
@@ -442,7 +445,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/roll/",
-    "label": "we.roll"
+    "label": "fnp.roll"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.rollaxis.html",
@@ -468,7 +471,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/moveaxis",
-      "label": "we.moveaxis",
+      "label": "fnp.moveaxis",
       "original_target": "moveaxis",
       "role": "",
       "target": "moveaxis",
@@ -484,19 +487,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/roll",
-      "label": "we.roll",
+      "label": "fnp.roll",
       "original_target": "roll",
       "role": "",
       "target": "roll",
       "unresolved": false
     }
   ],
-  "signature": "we.rollaxis(a, axis, start=0)",
+  "signature": "fnp.rollaxis(a, axis, start=0)",
   "slug": "rollaxis",
   "summary": "Roll the specified axis backwards, until it lies in a given position.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1295",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.rollaxis",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1342"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L1340",
+  "weight": 0.0
 }

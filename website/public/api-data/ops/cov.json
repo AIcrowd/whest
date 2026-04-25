@@ -27,7 +27,7 @@
               },
               {
                 "kind": "math",
-                "latex": "X = [x_1, x_2, ... x_N]^T"
+                "latex": "X = [x_1, x_2, ..., x_N]^T"
               },
               {
                 "kind": "text",
@@ -547,7 +547,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "float64",
-                        "text": "we.float64"
+                        "text": "fnp.float64"
                       },
                       {
                         "kind": "text",
@@ -578,7 +578,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "float64",
-                    "text": "we.float64"
+                    "text": "fnp.float64"
                   },
                   {
                     "kind": "text",
@@ -642,7 +642,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/corrcoef",
-                "label": "we.corrcoef",
+                "label": "fnp.corrcoef",
                 "original_target": "corrcoef",
                 "role": "",
                 "target": "corrcoef",
@@ -691,7 +691,7 @@
           },
           {
             "language": null,
-            "text": ">>> m = we.arange(10, dtype=we.float64)\n>>> f = we.arange(10) * 2\n>>> a = we.arange(10) ** 2.\n>>> ddof = 1\n>>> w = f * a\n>>> v1 = we.sum(w)\n>>> v2 = we.sum(w * a)\n>>> m -= we.sum(m * w, axis=None, keepdims=True) / v1\n>>> cov = we.dot(m * w, m.T) * v1 / (v1**2 - ddof * v2)",
+            "text": ">>> m = fnp.arange(10, dtype=fnp.float64)\n>>> f = fnp.arange(10) * 2\n>>> a = fnp.arange(10) ** 2.\n>>> ddof = 1\n>>> w = f * a\n>>> v1 = fnp.sum(w)\n>>> v2 = fnp.sum(w * a)\n>>> m -= fnp.sum(m * w, axis=None, keepdims=True) / v1\n>>> cov = fnp.dot(m * w, m.T) * v1 / (v1**2 - ddof * v2)",
             "type": "literal_block"
           },
           {
@@ -718,7 +718,7 @@
               },
               {
                 "kind": "code",
-                "text": "1 / (we.sum(f) - ddof)"
+                "text": "1 / (fnp.sum(f) - ddof)"
               },
               {
                 "kind": "text",
@@ -737,7 +737,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -772,7 +772,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[0, 2], [1, 1], [2, 0]]).T"
+                "text": "x = fnp.array([[0, 2], [1, 1], [2, 0]]).T"
               },
               {
                 "kind": "input",
@@ -820,7 +820,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cov(x)"
+                "text": "fnp.cov(x)"
               },
               {
                 "kind": "output",
@@ -906,12 +906,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "X = we.stack((x, y), axis=0)"
+                "text": "X = fnp.stack((x, y), axis=0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cov(X)"
+                "text": "fnp.cov(X)"
               },
               {
                 "kind": "output",
@@ -924,7 +924,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cov(x, y)"
+                "text": "fnp.cov(x, y)"
               },
               {
                 "kind": "output",
@@ -937,7 +937,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cov(x)"
+                "text": "fnp.cov(x)"
               },
               {
                 "kind": "output",
@@ -955,20 +955,20 @@
     "category": "counted_custom",
     "cost_formula": "n^2 * m",
     "cost_formula_latex": "$n^2 \\cdot m$",
+    "flopscope_ref": "fnp.cov",
     "module": "numpy",
     "name": "cov",
     "notes": "Covariance matrix.",
     "numpy_ref": "np.cov",
-    "signature": "we.cov(m, y=None, rowvar=True, bias=False, ddof=None, fweights=None, aweights=None, *, dtype=None)",
+    "signature": "fnp.cov(m, y=None, rowvar=True, bias=False, ddof=None, fweights=None, aweights=None, *, dtype=None)",
     "status": "supported",
     "summary": "Estimate a covariance matrix, given data and weights.",
-    "weight": 1.0,
-    "whest_ref": "we.cov"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "cov",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L2680",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1143"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1143",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L2674"
   }
 }

@@ -115,7 +115,7 @@
                           "inline": [
                             {
                               "kind": "code",
-                              "text": "we.array(fill_value).dtype"
+                              "text": "fnp.array(fill_value).dtype"
                             },
                             {
                               "kind": "text",
@@ -345,7 +345,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/full_like",
-              "label": "we.full_like",
+              "label": "fnp.full_like",
               "original_target": "full_like",
               "role": "",
               "target": "full_like",
@@ -361,7 +361,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/empty",
-              "label": "we.empty",
+              "label": "fnp.empty",
               "original_target": "empty",
               "role": "",
               "target": "empty",
@@ -377,7 +377,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/ones",
-              "label": "we.ones",
+              "label": "fnp.ones",
               "original_target": "ones",
               "role": "",
               "target": "ones",
@@ -393,7 +393,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/zeros",
-              "label": "we.zeros",
+              "label": "fnp.zeros",
               "original_target": "zeros",
               "role": "",
               "target": "zeros",
@@ -412,12 +412,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.full((2, 2), we.inf)"
+              "text": "fnp.full((2, 2), fnp.inf)"
             },
             {
               "kind": "output",
@@ -430,7 +430,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.full((2, 2), 10)"
+              "text": "fnp.full((2, 2), 10)"
             },
             {
               "kind": "output",
@@ -448,7 +448,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.full((2, 2), [1, 2])"
+              "text": "fnp.full((2, 2), [1, 2])"
             },
             {
               "kind": "output",
@@ -476,16 +476,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.full((2, 2), we.inf)\n\nwe.full((2, 2), 10)\n\nwe.full((2, 2), [1, 2])",
+    "code": "import flopscope as fnp\n\nfnp.full((2, 2), fnp.inf)\n\nfnp.full((2, 2), 10)\n\nfnp.full((2, 2), [1, 2])",
     "output": "array([[inf, inf],\n       [inf, inf]])\n\narray([[10, 10],\n       [10, 10]])\n\narray([[1, 2],\n       [1, 2]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.full",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L64",
   "href": "/docs/api/ops/full/",
   "module": "numpy",
   "name": "full",
   "next": {
     "href": "/docs/api/ops/full_like/",
-    "label": "we.full_like"
+    "label": "fnp.full_like"
   },
   "notes": "Create array filled with scalar value. Cost: num copied.",
   "notes_sections": [],
@@ -508,7 +511,7 @@
     {
       "body": [
         "The desired data-type for the array  The default, None, means",
-        " ``we.array(fill_value).dtype``."
+        " ``fnp.array(fill_value).dtype``."
       ],
       "name": "dtype",
       "type": "data-type, optional"
@@ -533,11 +536,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -547,7 +550,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/fromiter/",
-    "label": "we.fromiter"
+    "label": "fnp.fromiter"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.full.html",
@@ -571,7 +574,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/full_like",
-      "label": "we.full_like",
+      "label": "fnp.full_like",
       "original_target": "full_like",
       "role": "",
       "target": "full_like",
@@ -587,7 +590,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/empty",
-      "label": "we.empty",
+      "label": "fnp.empty",
       "original_target": "empty",
       "role": "",
       "target": "empty",
@@ -603,7 +606,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/ones",
-      "label": "we.ones",
+      "label": "fnp.ones",
       "original_target": "ones",
       "role": "",
       "target": "ones",
@@ -619,19 +622,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/zeros",
-      "label": "we.zeros",
+      "label": "fnp.zeros",
       "original_target": "zeros",
       "role": "",
       "target": "zeros",
       "unresolved": false
     }
   ],
-  "signature": "we.full(shape, fill_value, dtype=None, order='C', *, device=None, like=None)",
+  "signature": "fnp.full(shape, fill_value, dtype=None, order='C', *, device=None, like=None)",
   "slug": "full",
   "summary": "Return a new array of given shape and type, filled with `fill_value`.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L290",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.full",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L64"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L323",
+  "weight": 1.0
 }

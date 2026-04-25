@@ -245,17 +245,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "from we.linalg import matrix_power"
+              "text": "from fnp.linalg import matrix_power"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "i = we.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit"
+              "text": "i = fnp.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit"
             },
             {
               "kind": "input",
@@ -313,7 +313,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "q = we.zeros((4, 4))"
+              "text": "q = fnp.zeros((4, 4))"
             },
             {
               "kind": "input",
@@ -349,7 +349,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "matrix_power(q, 2) # = -we.eye(4)"
+              "text": "matrix_power(q, 2) # = -fnp.eye(4)"
             },
             {
               "kind": "output",
@@ -385,16 +385,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nfrom we.linalg import matrix_power\n\ni = we.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit\n\nmatrix_power(i, 3) # should = -i\n\nmatrix_power(i, 0)\n\nmatrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements\n\nq = we.zeros((4, 4))\n\nq[0:2, 0:2] = -i\n\nq[2:4, 2:4] = i\n\nq # one of the three quaternion units not equal to 1\n\nmatrix_power(q, 2) # = -we.eye(4)",
+    "code": "import flopscope as fnp\n\nfrom fnp.linalg import matrix_power\n\ni = fnp.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit\n\nmatrix_power(i, 3) # should = -i\n\nmatrix_power(i, 0)\n\nmatrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements\n\nq = fnp.zeros((4, 4))\n\nq[0:2, 0:2] = -i\n\nq[2:4, 2:4] = i\n\nq # one of the three quaternion units not equal to 1\n\nmatrix_power(q, 2) # = -fnp.eye(4)",
     "output": "array([[ 0, -1],\n       [ 1,  0]])\n\narray([[1, 0],\n       [0, 1]])\n\narray([[ 0.,  1.],\n       [-1.,  0.]])\n\narray([[ 0., -1.,  0.,  0.],\n       [ 1.,  0.,  0.,  0.],\n       [ 0.,  0.,  0.,  1.],\n       [ 0.,  0., -1.,  0.]])\n\narray([[-1.,  0.,  0.,  0.],\n       [ 0., -1.,  0.,  0.],\n       [ 0.,  0., -1.,  0.],\n       [ 0.,  0.,  0., -1.]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.matrix_power",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L109",
   "href": "/docs/api/ops/linalg-matrix_power/",
   "module": "numpy.linalg",
   "name": "linalg.matrix_power",
   "next": {
     "href": "/docs/api/ops/linalg-matrix_rank/",
-    "label": "we.linalg.matrix_rank"
+    "label": "fnp.linalg.matrix_rank"
   },
   "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring).",
   "notes_sections": [],
@@ -418,7 +421,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-matrix_norm/",
-    "label": "we.linalg.matrix_norm"
+    "label": "fnp.linalg.matrix_norm"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_power.html",
@@ -435,12 +438,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.linalg.matrix_power(a, n)",
+  "signature": "fnp.linalg.matrix_power(a, n)",
   "slug": "linalg-matrix_power",
   "summary": "Raise a square matrix to the (integer) power `n`.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L617",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.matrix_power",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_compound.py#L109"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L656",
+  "weight": 1.0
 }

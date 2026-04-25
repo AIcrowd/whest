@@ -106,7 +106,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isreal",
-              "label": "we.isreal",
+              "label": "fnp.isreal",
               "original_target": "isreal",
               "role": "",
               "target": "isreal",
@@ -122,7 +122,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/iscomplexobj",
-              "label": "we.iscomplexobj",
+              "label": "fnp.iscomplexobj",
               "original_target": "iscomplexobj",
               "role": "",
               "target": "iscomplexobj",
@@ -141,12 +141,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])"
+              "text": "fnp.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])"
             },
             {
               "kind": "output",
@@ -170,16 +170,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])",
+    "code": "import flopscope as fnp\n\nfnp.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])",
     "output": "array([ True, False, False, False, False,  True])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.iscomplex",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/iscomplex/",
   "module": "numpy",
   "name": "iscomplex",
   "next": {
     "href": "/docs/api/ops/iscomplexobj/",
-    "label": "we.iscomplexobj"
+    "label": "fnp.iscomplexobj"
   },
   "notes": "Test if element is complex element-wise.",
   "notes_sections": [],
@@ -195,7 +198,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/isclose/",
-    "label": "we.isclose"
+    "label": "fnp.isclose"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iscomplex.html",
@@ -214,7 +217,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isreal",
-      "label": "we.isreal",
+      "label": "fnp.isreal",
       "original_target": "isreal",
       "role": "",
       "target": "isreal",
@@ -230,19 +233,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/iscomplexobj",
-      "label": "we.iscomplexobj",
+      "label": "fnp.iscomplexobj",
       "original_target": "iscomplexobj",
       "role": "",
       "target": "iscomplexobj",
       "unresolved": false
     }
   ],
-  "signature": "we.iscomplex(x)",
+  "signature": "fnp.iscomplex(x)",
   "slug": "iscomplex",
   "summary": "Returns a bool array, where True if input element is complex.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L175",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.iscomplex",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_type_check_impl.py#L175",
+  "weight": 1.0
 }

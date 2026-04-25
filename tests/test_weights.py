@@ -6,8 +6,8 @@ from importlib import resources
 
 import pytest
 
-import whest._weights as weights_module
-from whest._weights import get_weight, load_weights, reset_weights
+import flopscope._weights as weights_module
+from flopscope._weights import get_weight, load_weights, reset_weights
 
 
 @pytest.fixture(autouse=True)
@@ -26,7 +26,7 @@ def _write_weights(tmp_path, weights):
 
 
 def _packaged_weight(op_name):
-    resource = resources.files("whest").joinpath("data/default_weights.json")
+    resource = resources.files("flopscope").joinpath("data/default_weights.json")
     with resource.open("r", encoding="utf-8") as f:
         return json.load(f)["weights"][op_name]
 
@@ -47,7 +47,7 @@ def test_load_weights_from_file(tmp_path):
 
 def test_load_weights_from_env_var(monkeypatch, tmp_path):
     path = _write_weights(tmp_path, {"sqrt": 3.8})
-    monkeypatch.setenv("WHEST_WEIGHTS_FILE", path)
+    monkeypatch.setenv("FLOPSCOPE_WEIGHTS_FILE", path)
     load_weights()
     assert get_weight("sqrt") == 3.8
 
@@ -122,14 +122,14 @@ def test_invalid_weight_values_warn_and_fall_back_to_packaged_default(tmp_path):
 
 
 def test_disable_weights_env_takes_precedence(monkeypatch):
-    monkeypatch.setenv("WHEST_DISABLE_WEIGHTS", "1")
+    monkeypatch.setenv("FLOPSCOPE_DISABLE_WEIGHTS", "1")
     load_weights(use_packaged_default=True)
     assert get_weight("exp") == 1.0
 
 
 def test_import_time_autoload_uses_packaged_default(monkeypatch):
-    monkeypatch.delenv("WHEST_WEIGHTS_FILE", raising=False)
-    monkeypatch.delenv("WHEST_DISABLE_WEIGHTS", raising=False)
+    monkeypatch.delenv("FLOPSCOPE_WEIGHTS_FILE", raising=False)
+    monkeypatch.delenv("FLOPSCOPE_DISABLE_WEIGHTS", raising=False)
     importlib.reload(weights_module)
     assert weights_module.get_weight("exp") == _packaged_weight("exp")
     assert weights_module.get_weight("linalg.cholesky") == _packaged_weight(
@@ -139,16 +139,16 @@ def test_import_time_autoload_uses_packaged_default(monkeypatch):
 
 def test_import_time_autoload_reads_env_override(monkeypatch, tmp_path):
     path = _write_weights(tmp_path, {"sqrt": 3.8})
-    monkeypatch.setenv("WHEST_WEIGHTS_FILE", path)
-    monkeypatch.delenv("WHEST_DISABLE_WEIGHTS", raising=False)
+    monkeypatch.setenv("FLOPSCOPE_WEIGHTS_FILE", path)
+    monkeypatch.delenv("FLOPSCOPE_DISABLE_WEIGHTS", raising=False)
     importlib.reload(weights_module)
     assert weights_module.get_weight("sqrt") == 3.8
     assert weights_module.get_weight("exp") == 1.0
 
 
 def test_import_time_autoload_can_be_disabled(monkeypatch):
-    monkeypatch.delenv("WHEST_WEIGHTS_FILE", raising=False)
-    monkeypatch.setenv("WHEST_DISABLE_WEIGHTS", "1")
+    monkeypatch.delenv("FLOPSCOPE_WEIGHTS_FILE", raising=False)
+    monkeypatch.setenv("FLOPSCOPE_DISABLE_WEIGHTS", "1")
     importlib.reload(weights_module)
     assert weights_module.get_weight("exp") == 1.0
 

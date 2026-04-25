@@ -542,7 +542,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -552,7 +552,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(9) - 4"
+                "text": "a = fnp.arange(9) - 4"
               },
               {
                 "kind": "input",
@@ -620,7 +620,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.norm(a, we.inf)"
+                "text": "LA.norm(a, fnp.inf)"
               },
               {
                 "kind": "output",
@@ -629,7 +629,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.norm(b, we.inf)"
+                "text": "LA.norm(b, fnp.inf)"
               },
               {
                 "kind": "output",
@@ -638,7 +638,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.norm(a, -we.inf)"
+                "text": "LA.norm(a, -fnp.inf)"
               },
               {
                 "kind": "output",
@@ -647,7 +647,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.norm(b, -we.inf)"
+                "text": "LA.norm(b, -fnp.inf)"
               },
               {
                 "kind": "output",
@@ -778,7 +778,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.array([[ 1, 2, 3],"
+                "text": "c = fnp.array([[ 1, 2, 3],"
               },
               {
                 "kind": "input",
@@ -837,7 +837,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "m = we.arange(8).reshape(2,2,2)"
+                "text": "m = fnp.arange(8).reshape(2,2,2)"
               },
               {
                 "kind": "input",
@@ -869,20 +869,20 @@
     "category": "counted_custom",
     "cost_formula": "depends on ord",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.linalg.norm",
     "module": "numpy.linalg",
     "name": "linalg.norm",
     "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     "numpy_ref": "np.linalg.norm",
-    "signature": "we.linalg.norm(x, ord=None, axis=None, keepdims=False)",
+    "signature": "fnp.linalg.norm(x, ord=None, axis=None, keepdims=False)",
     "status": "supported",
     "summary": "Matrix or vector norm.",
-    "weight": 1.0,
-    "whest_ref": "we.linalg.norm"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "linalg-norm",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2575",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L188"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L188",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L2598"
   }
 }

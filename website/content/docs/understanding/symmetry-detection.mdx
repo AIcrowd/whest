@@ -2,7 +2,7 @@
 title: "Symmetry Detection Deep Dive"
 ---
 
-*Contributor-level walkthrough of whest's symmetry detection algorithm.*
+*Contributor-level walkthrough of flopscope's symmetry detection algorithm.*
 
 **You will learn:**
 - How the bipartite graph is constructed from einsum subscripts
@@ -10,7 +10,7 @@ title: "Symmetry Detection Deep Dive"
 - How the sigma-loop derives label permutations from row permutations
 - How Burnside's lemma counts unique elements for exact FLOP reduction
 
-**TL;DR:** whest detects when an einsum expression has symmetry that allows computing fewer FLOPs. It does this by building a bipartite graph from the einsum subscripts, finding column permutations that preserve the graph structure, and using group theory to count how many unique terms exist. The savings can be dramatic -- a symmetric matrix multiplication can cost half as many FLOPs.
+**TL;DR:** flopscope detects when an einsum expression has symmetry that allows computing fewer FLOPs. It does this by building a bipartite graph from the einsum subscripts, finding column permutations that preserve the graph structure, and using group theory to count how many unique terms exist. The savings can be dramatic -- a symmetric matrix multiplication can cost half as many FLOPs.
 
 ## The problem
 
@@ -152,7 +152,7 @@ This property makes the subset key canonical. The oracle stores results in a
 subsequent calls with the same subset.
 
 ```python
-from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+from flopscope._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
 # One oracle per contract_path call
 oracle = SubgraphSymmetryOracle(

@@ -111,7 +111,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -131,7 +131,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "print(typechar, ' : ', we.typename(typechar))"
+                "text": "print(typechar, ' : ', fnp.typename(typechar))"
               },
               {
                 "kind": "input",
@@ -238,20 +238,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.typename",
     "module": "numpy",
     "name": "typename",
     "notes": "Return description of given data type code.",
     "numpy_ref": "np.typename",
-    "signature": "we.typename(char)",
+    "signature": "fnp.typename(char)",
     "status": "supported",
     "summary": "Return a description for the given data type code.",
-    "weight": 0.0,
-    "whest_ref": "we.typename"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "typename",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L574",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1489"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1489",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_type_check_impl.py#L585"
   }
 }

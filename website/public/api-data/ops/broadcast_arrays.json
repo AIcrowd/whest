@@ -151,7 +151,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/broadcast_to",
-                "label": "we.broadcast_to",
+                "label": "fnp.broadcast_to",
                 "original_target": "broadcast_to",
                 "role": "",
                 "target": "broadcast_to",
@@ -162,7 +162,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/broadcast_shapes",
-                "label": "we.broadcast_shapes",
+                "label": "fnp.broadcast_shapes",
                 "original_target": "broadcast_shapes",
                 "role": "",
                 "target": "broadcast_shapes",
@@ -181,22 +181,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[1,2,3]])"
+                "text": "x = fnp.array([[1,2,3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.array([[4],[5]])"
+                "text": "y = fnp.array([[4],[5]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.broadcast_arrays(x, y)"
+                "text": "fnp.broadcast_arrays(x, y)"
               },
               {
                 "kind": "output",
@@ -231,7 +231,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "[we.array(a) for a in we.broadcast_arrays(x, y)]"
+                "text": "[fnp.array(a) for a in fnp.broadcast_arrays(x, y)]"
               },
               {
                 "kind": "output",
@@ -261,20 +261,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.broadcast_arrays",
     "module": "numpy",
     "name": "broadcast_arrays",
     "notes": "Broadcast arrays against each other. Cost: numel(output).",
     "numpy_ref": "np.broadcast_arrays",
-    "signature": "we.broadcast_arrays(*args, subok=False)",
+    "signature": "fnp.broadcast_arrays(*args, subok=False)",
     "status": "supported",
     "summary": "Broadcast any number of arrays against each other.",
-    "weight": 0.0,
-    "whest_ref": "we.broadcast_arrays"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "broadcast_arrays",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_stride_tricks_impl.py#L481",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L718"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L718",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_stride_tricks_impl.py#L514"
   }
 }

@@ -90,12 +90,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort_complex([5, 3, 6, 2, 1])"
+                "text": "fnp.sort_complex([5, 3, 6, 2, 1])"
               },
               {
                 "kind": "output",
@@ -109,7 +109,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort_complex([1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j])"
+                "text": "fnp.sort_complex([1 + 2j, 2 - 1j, 3 - 2j, 3 - 3j, 3 + 5j])"
               },
               {
                 "kind": "output",
@@ -127,20 +127,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.sort_complex",
     "module": "numpy",
     "name": "sort_complex",
     "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
     "numpy_ref": "np.sort_complex",
-    "signature": "we.sort_complex(a)",
+    "signature": "fnp.sort_complex(a)",
     "status": "supported",
     "summary": "Sort a complex array using the real part first, then the imaginary part.",
-    "weight": 1.0,
-    "whest_ref": "we.sort_complex"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "sort_complex",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1808",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L432"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L432",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L1859"
   }
 }

@@ -26,12 +26,12 @@
               "text": "This function is Array API compatible, contrary to\n"
             },
             {
-              "display_text": "we.matmul",
+              "display_text": "fnp.matmul",
               "explicit_title": false,
               "external_url": "",
               "href": "/docs/api/ops/matmul",
               "kind": "role_reference",
-              "original_target": "we.matmul",
+              "original_target": "fnp.matmul",
               "role": "func",
               "suppress_link": false,
               "target": "matmul",
@@ -250,7 +250,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/matmul",
-              "label": "we.matmul",
+              "label": "fnp.matmul",
               "original_target": "numpy.matmul",
               "role": "",
               "target": "matmul",
@@ -278,7 +278,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 0],"
+              "text": "a = fnp.array([[1, 0],"
             },
             {
               "kind": "input",
@@ -288,7 +288,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([[4, 1],"
+              "text": "b = fnp.array([[4, 1],"
             },
             {
               "kind": "input",
@@ -298,7 +298,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.matmul(a, b)"
+              "text": "fnp.linalg.matmul(a, b)"
             },
             {
               "kind": "output",
@@ -325,7 +325,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 0],"
+              "text": "a = fnp.array([[1, 0],"
             },
             {
               "kind": "input",
@@ -335,12 +335,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([1, 2])"
+              "text": "b = fnp.array([1, 2])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.matmul(a, b)"
+              "text": "fnp.linalg.matmul(a, b)"
             },
             {
               "kind": "output",
@@ -349,7 +349,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.matmul(b, a)"
+              "text": "fnp.linalg.matmul(b, a)"
             },
             {
               "kind": "output",
@@ -372,17 +372,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(2 * 2 * 4).reshape((2, 2, 4))"
+              "text": "a = fnp.arange(2 * 2 * 4).reshape((2, 2, 4))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.arange(2 * 2 * 4).reshape((2, 4, 2))"
+              "text": "b = fnp.arange(2 * 2 * 4).reshape((2, 4, 2))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.matmul(a,b).shape"
+              "text": "fnp.linalg.matmul(a,b).shape"
             },
             {
               "kind": "output",
@@ -391,7 +391,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.matmul(a, b)[0, 1, 1]"
+              "text": "fnp.linalg.matmul(a, b)[0, 1, 1]"
             },
             {
               "kind": "output",
@@ -423,7 +423,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.matmul([2j, 3j], [2j, 3j])"
+              "text": "fnp.linalg.matmul([2j, 3j], [2j, 3j])"
             },
             {
               "kind": "output",
@@ -446,7 +446,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.matmul([1,2], 3)"
+              "text": "fnp.linalg.matmul([1,2], 3)"
             },
             {
               "kind": "output",
@@ -470,7 +470,7 @@
   ],
   "canonical_name": "linalg.matmul",
   "category": "counted_custom",
-  "cost_formula": "delegates to we.matmul",
+  "cost_formula": "delegates to fnp.matmul",
   "cost_formula_latex": "delegates to `matmul`",
   "display_type": "custom",
   "doc_coverage": {
@@ -479,16 +479,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "a = we.array([[1, 0],\n              [0, 1]])\n\nb = we.array([[4, 1],\n              [2, 2]])\n\nwe.linalg.matmul(a, b)\n\na = we.array([[1, 0],\n              [0, 1]])\n\nb = we.array([1, 2])\n\nwe.linalg.matmul(a, b)\n\nwe.linalg.matmul(b, a)\n\na = we.arange(2 * 2 * 4).reshape((2, 2, 4))\n\nb = we.arange(2 * 2 * 4).reshape((2, 4, 2))\n\nwe.linalg.matmul(a,b).shape\n\nwe.linalg.matmul(a, b)[0, 1, 1]\n\nsum(a[0, 1, :] * b[0 , :, 1])\n\nwe.linalg.matmul([2j, 3j], [2j, 3j])\n\nwe.linalg.matmul([1,2], 3)",
+    "code": "a = fnp.array([[1, 0],\n              [0, 1]])\n\nb = fnp.array([[4, 1],\n              [2, 2]])\n\nfnp.linalg.matmul(a, b)\n\na = fnp.array([[1, 0],\n              [0, 1]])\n\nb = fnp.array([1, 2])\n\nfnp.linalg.matmul(a, b)\n\nfnp.linalg.matmul(b, a)\n\na = fnp.arange(2 * 2 * 4).reshape((2, 2, 4))\n\nb = fnp.arange(2 * 2 * 4).reshape((2, 4, 2))\n\nfnp.linalg.matmul(a,b).shape\n\nfnp.linalg.matmul(a, b)[0, 1, 1]\n\nsum(a[0, 1, :] * b[0 , :, 1])\n\nfnp.linalg.matmul([2j, 3j], [2j, 3j])\n\nfnp.linalg.matmul([1,2], 3)",
     "output": "array([[4, 1],\n       [2, 2]])\n\narray([1, 2])\n\narray([1, 2])\n\n(2, 2, 2)\n\n98\n\n98\n\n(-13+0j)\n\nTraceback (most recent call last):\n...\nValueError: matmul: Input operand 1 does not have enough dimensions ...",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.matmul",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L16",
   "href": "/docs/api/ops/linalg-matmul/",
   "module": "numpy.linalg",
   "name": "linalg.matmul",
   "next": {
     "href": "/docs/api/ops/linalg-matrix_norm/",
-    "label": "we.linalg.matrix_norm"
+    "label": "fnp.linalg.matrix_norm"
   },
   "notes": "Delegates to `we.matmul` which charges `m*k*n` FLOPs (FMA=1).",
   "notes_sections": [],
@@ -511,7 +514,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-lstsq/",
-    "label": "we.linalg.lstsq"
+    "label": "fnp.linalg.lstsq"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matmul.html",
@@ -531,19 +534,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/matmul",
-      "label": "we.matmul",
+      "label": "fnp.matmul",
       "original_target": "numpy.matmul",
       "role": "",
       "target": "matmul",
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.matmul(x1, x2, /)",
+  "signature": "fnp.linalg.matmul(x1, x2, /)",
   "slug": "linalg-matmul",
   "summary": "Computes the matrix product.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3302",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.matmul",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L16"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L3325",
+  "weight": 1.0
 }

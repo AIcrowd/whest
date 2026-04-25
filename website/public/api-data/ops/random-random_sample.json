@@ -118,7 +118,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.random`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.random`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -294,7 +294,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.random_sample()"
+                "text": "fnp.random.random_sample()"
               },
               {
                 "kind": "output",
@@ -303,7 +303,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "type(we.random.random_sample())"
+                "text": "type(fnp.random.random_sample())"
               },
               {
                 "kind": "output",
@@ -312,7 +312,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.random_sample((5,))"
+                "text": "fnp.random.random_sample((5,))"
               },
               {
                 "kind": "output",
@@ -335,7 +335,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "5 * we.random.random_sample((3, 2)) - 5"
+                "text": "5 * fnp.random.random_sample((3, 2)) - 5"
               },
               {
                 "kind": "output",
@@ -361,20 +361,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.random_sample",
     "module": "numpy.random",
     "name": "random.random_sample",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.random_sample",
-    "signature": "we.random.random_sample(size=None)",
+    "signature": "fnp.random.random_sample(size=None)",
     "status": "supported",
     "summary": "Return random floats in the half-open interval [0.0, 1.0).",
-    "weight": 1.0,
-    "whest_ref": "we.random.random_sample"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "random-random_sample",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.random_sample.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L177"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L177",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.random_sample.html"
   }
 }

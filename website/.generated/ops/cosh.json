@@ -27,7 +27,7 @@
             },
             {
               "kind": "code",
-              "text": "1/2 * (we.exp(x) + we.exp(-x))"
+              "text": "1/2 * (fnp.exp(x) + fnp.exp(-x))"
             },
             {
               "kind": "text",
@@ -38,7 +38,7 @@
               "href": "",
               "kind": "link",
               "target": "cos(1j*x)",
-              "text": "we.cos(1j*x)"
+              "text": "fnp.cos(1j*x)"
             },
             {
               "kind": "text",
@@ -317,12 +317,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.cosh(0)"
+              "text": "fnp.cosh(0)"
             },
             {
               "kind": "output",
@@ -350,12 +350,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linspace(-4, 4, 1000)"
+              "text": "x = fnp.linspace(-4, 4, 1000)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.plot(x, we.cosh(x))"
+              "text": "plt.plot(x, fnp.cosh(x))"
             },
             {
               "kind": "input",
@@ -387,16 +387,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.cosh(0)\n\nimport matplotlib.pyplot as plt\n\nx = we.linspace(-4, 4, 1000)\n\nplt.plot(x, we.cosh(x))\n\nplt.show()",
+    "code": "import flopscope as fnp\n\nfnp.cosh(0)\n\nimport matplotlib.pyplot as plt\n\nx = fnp.linspace(-4, 4, 1000)\n\nplt.plot(x, fnp.cosh(x))\n\nplt.show()",
     "output": "1.0",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.cosh",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/cosh/",
   "module": "numpy",
   "name": "cosh",
   "next": {
     "href": "/docs/api/ops/count_nonzero/",
-    "label": "we.count_nonzero"
+    "label": "fnp.count_nonzero"
   },
   "notes": "Element-wise hyperbolic cosine.",
   "notes_sections": [],
@@ -442,7 +445,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/cos/",
-    "label": "we.cos"
+    "label": "fnp.cos"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cosh.html",
@@ -457,12 +460,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.cosh(x)",
+  "signature": "fnp.cosh(x)",
   "slug": "cosh",
   "summary": "Hyperbolic cosine, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.cosh",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

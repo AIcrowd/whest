@@ -452,7 +452,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/append",
-              "label": "we.append",
+              "label": "fnp.append",
               "original_target": "append",
               "role": "",
               "target": "append",
@@ -468,7 +468,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/concatenate",
-              "label": "we.concatenate",
+              "label": "fnp.concatenate",
               "original_target": "concatenate",
               "role": "",
               "target": "concatenate",
@@ -484,7 +484,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/delete",
-              "label": "we.delete",
+              "label": "fnp.delete",
               "original_target": "delete",
               "role": "",
               "target": "delete",
@@ -565,12 +565,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(6).reshape(3, 2)"
+              "text": "a = fnp.arange(6).reshape(3, 2)"
             },
             {
               "kind": "input",
@@ -592,7 +592,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.insert(a, 1, 6)"
+              "text": "fnp.insert(a, 1, 6)"
             },
             {
               "kind": "output",
@@ -601,7 +601,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.insert(a, 1, 6, axis=1)"
+              "text": "fnp.insert(a, 1, 6, axis=1)"
             },
             {
               "kind": "output",
@@ -648,7 +648,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.insert(a, [1], [[7],[8],[9]], axis=1)"
+              "text": "fnp.insert(a, [1], [[7],[8],[9]], axis=1)"
             },
             {
               "kind": "output",
@@ -665,7 +665,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.insert(a, 1, [[7],[8],[9]], axis=1)"
+              "text": "fnp.insert(a, 1, [[7],[8],[9]], axis=1)"
             },
             {
               "kind": "output",
@@ -682,12 +682,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equal(we.insert(a, 1, [7, 8, 9], axis=1),"
+              "text": "fnp.array_equal(fnp.insert(a, 1, [7, 8, 9], axis=1),"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "we.insert(a, [1], [[7],[8],[9]], axis=1))"
+              "text": "fnp.insert(a, [1], [[7],[8],[9]], axis=1))"
             },
             {
               "kind": "output",
@@ -715,7 +715,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.insert(b, [2, 2], [6, 7])"
+              "text": "fnp.insert(b, [2, 2], [6, 7])"
             },
             {
               "kind": "output",
@@ -729,7 +729,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.insert(b, slice(2, 4), [7, 8])"
+              "text": "fnp.insert(b, slice(2, 4), [7, 8])"
             },
             {
               "kind": "output",
@@ -743,7 +743,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.insert(b, [2, 2], [7.13, False]) # type casting"
+              "text": "fnp.insert(b, [2, 2], [7.13, False]) # type casting"
             },
             {
               "kind": "output",
@@ -757,7 +757,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(8).reshape(2, 4)"
+              "text": "x = fnp.arange(8).reshape(2, 4)"
             },
             {
               "kind": "input",
@@ -767,7 +767,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.insert(x, idx, 999, axis=1)"
+              "text": "fnp.insert(x, idx, 999, axis=1)"
             },
             {
               "kind": "output",
@@ -802,16 +802,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.arange(6).reshape(3, 2)\n\na\n\nwe.insert(a, 1, 6)\n\nwe.insert(a, 1, 6, axis=1)\n\nwe.insert(a, [1], [[7],[8],[9]], axis=1)\n\nwe.insert(a, 1, [[7],[8],[9]], axis=1)\n\nwe.array_equal(we.insert(a, 1, [7, 8, 9], axis=1),\n               we.insert(a, [1], [[7],[8],[9]], axis=1))\n\nb = a.flatten()\n\nb\n\nwe.insert(b, [2, 2], [6, 7])\n\nwe.insert(b, slice(2, 4), [7, 8])\n\nwe.insert(b, [2, 2], [7.13, False]) # type casting\n\nx = we.arange(8).reshape(2, 4)\n\nidx = (1, 3)\n\nwe.insert(x, idx, 999, axis=1)",
+    "code": "import flopscope as fnp\n\na = fnp.arange(6).reshape(3, 2)\n\na\n\nfnp.insert(a, 1, 6)\n\nfnp.insert(a, 1, 6, axis=1)\n\nfnp.insert(a, [1], [[7],[8],[9]], axis=1)\n\nfnp.insert(a, 1, [[7],[8],[9]], axis=1)\n\nfnp.array_equal(fnp.insert(a, 1, [7, 8, 9], axis=1),\n               fnp.insert(a, [1], [[7],[8],[9]], axis=1))\n\nb = a.flatten()\n\nb\n\nfnp.insert(b, [2, 2], [6, 7])\n\nfnp.insert(b, slice(2, 4), [7, 8])\n\nfnp.insert(b, [2, 2], [7.13, False]) # type casting\n\nx = fnp.arange(8).reshape(2, 4)\n\nidx = (1, 3)\n\nfnp.insert(x, idx, 999, axis=1)",
     "output": "array([[0, 1],\n       [2, 3],\n       [4, 5]])\n\narray([0, 6, 1, 2, 3, 4, 5])\n\narray([[0, 6, 1],\n       [2, 6, 3],\n       [4, 6, 5]])\n\narray([[0, 7, 1],\n       [2, 8, 3],\n       [4, 9, 5]])\n\narray([[0, 7, 8, 9, 1],\n       [2, 7, 8, 9, 3],\n       [4, 7, 8, 9, 5]])\n\nTrue\n\narray([0, 1, 2, 3, 4, 5])\n\narray([0, 1, 6, 7, 2, 3, 4, 5])\n\narray([0, 1, 7, 2, 8, 3, 4, 5])\n\narray([0, 1, 7, 0, 2, 3, 4, 5])\n\narray([[  0, 999,   1,   2, 999,   3],\n       [  4, 999,   5,   6, 999,   7]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.insert",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1068",
   "href": "/docs/api/ops/insert/",
   "module": "numpy",
   "name": "insert",
   "next": {
     "href": "/docs/api/ops/interp/",
-    "label": "we.interp"
+    "label": "fnp.interp"
   },
   "notes": "Insert values along axis before given indices. Cost: numel(values).",
   "notes_sections": [
@@ -863,7 +866,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/inner/",
-    "label": "we.inner"
+    "label": "fnp.inner"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.insert.html",
@@ -889,7 +892,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/append",
-      "label": "we.append",
+      "label": "fnp.append",
       "original_target": "append",
       "role": "",
       "target": "append",
@@ -905,7 +908,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/concatenate",
-      "label": "we.concatenate",
+      "label": "fnp.concatenate",
       "original_target": "concatenate",
       "role": "",
       "target": "concatenate",
@@ -921,19 +924,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/delete",
-      "label": "we.delete",
+      "label": "fnp.delete",
       "original_target": "delete",
       "role": "",
       "target": "delete",
       "unresolved": false
     }
   ],
-  "signature": "we.insert(arr, obj, values, axis=None)",
+  "signature": "fnp.insert(arr, obj, values, axis=None)",
   "slug": "insert",
   "summary": "Insert values along the given axis before the given indices.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5456",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.insert",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1068"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L5389",
+  "weight": 4.0
 }

@@ -71,15 +71,7 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Memory layout.  'A' and 'K' depend on the order of input array a.\n'C' row-major (C-style),\n'F' column-major (Fortran-style) memory representation.\n'A' (any) means 'F' if "
-                      },
-                      {
-                        "kind": "code",
-                        "text": "a"
-                      },
-                      {
-                        "kind": "text",
-                        "text": " is Fortran contiguous, 'C' otherwise\n'K' (keep) preserve input order\nDefaults to 'K'."
+                        "text": "The memory layout of the output.\n'C' gives a row-major layout (C-style),\n'F' gives a column-major layout (Fortran-style).\n'C' and 'F' will copy if needed to ensure the output format.\n'A' (any) is equivalent to 'F' if input a is non-contiguous or Fortran-contiguous, otherwise, it is equivalent to 'C'.\nUnlike 'C' or 'F', 'A' does not ensure that the result is contiguous.\n'K' (keep) is the default and preserves the input order for the output."
                       }
                     ],
                     "type": "paragraph"
@@ -89,15 +81,7 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Memory layout.  'A' and 'K' depend on the order of input array a.\n'C' row-major (C-style),\n'F' column-major (Fortran-style) memory representation.\n'A' (any) means 'F' if "
-                  },
-                  {
-                    "kind": "code",
-                    "text": "a"
-                  },
-                  {
-                    "kind": "text",
-                    "text": " is Fortran contiguous, 'C' otherwise\n'K' (keep) preserve input order\nDefaults to 'K'."
+                    "text": "The memory layout of the output.\n'C' gives a row-major layout (C-style),\n'F' gives a column-major layout (Fortran-style).\n'C' and 'F' will copy if needed to ensure the output format.\n'A' (any) is equivalent to 'F' if input a is non-contiguous or Fortran-contiguous, otherwise, it is equivalent to 'C'.\nUnlike 'C' or 'F', 'A' does not ensure that the result is contiguous.\n'K' (keep) is the default and preserves the input order for the output."
                   }
                 ],
                 "name": "order",
@@ -525,7 +509,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/asarray_chkfinite",
-                "label": "we.asarray_chkfinite",
+                "label": "fnp.asarray_chkfinite",
                 "original_target": "asarray_chkfinite",
                 "role": "",
                 "target": "asarray_chkfinite",
@@ -541,7 +525,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/fromiter",
-                "label": "we.fromiter",
+                "label": "fnp.fromiter",
                 "original_target": "fromiter",
                 "role": "",
                 "target": "fromiter",
@@ -557,7 +541,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/fromfunction",
-                "label": "we.fromfunction",
+                "label": "fnp.fromfunction",
                 "original_target": "fromfunction",
                 "role": "",
                 "target": "fromfunction",
@@ -590,12 +574,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.asarray(a)"
+                "text": "fnp.asarray(a)"
               },
               {
                 "kind": "output",
@@ -618,12 +602,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2])"
+                "text": "a = fnp.array([1, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.asarray(a) is a"
+                "text": "fnp.asarray(a) is a"
               },
               {
                 "kind": "output",
@@ -654,12 +638,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2], dtype=we.float32)"
+                "text": "a = fnp.array([1, 2], dtype=fnp.float32)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.shares_memory(we.asarray(a, dtype=we.float32), a)"
+                "text": "fnp.shares_memory(fnp.asarray(a, dtype=fnp.float32), a)"
               },
               {
                 "kind": "output",
@@ -668,7 +652,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.shares_memory(we.asarray(a, dtype=we.float64), a)"
+                "text": "fnp.shares_memory(fnp.asarray(a, dtype=fnp.float64), a)"
               },
               {
                 "kind": "output",
@@ -699,7 +683,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "issubclass(we.recarray, we.ndarray)"
+                "text": "issubclass(fnp.recarray, fnp.ndarray)"
               },
               {
                 "kind": "output",
@@ -708,12 +692,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([(1., 2), (3., 4)], dtype='f4,i4').view(we.recarray)"
+                "text": "a = fnp.array([(1., 2), (3., 4)], dtype='f4,i4').view(fnp.recarray)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.asarray(a) is a"
+                "text": "fnp.asarray(a) is a"
               },
               {
                 "kind": "output",
@@ -722,7 +706,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.asanyarray(a) is a"
+                "text": "fnp.asanyarray(a) is a"
               },
               {
                 "kind": "output",
@@ -740,20 +724,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.asarray",
     "module": "numpy",
     "name": "asarray",
     "notes": "Convert input to array. Cost: numel(input).",
     "numpy_ref": "np.asarray",
-    "signature": "we.asarray(a, dtype=None, **kwargs)",
+    "signature": "fnp.asarray(a, dtype=None, order=None, *, device=None, copy=None, like=None)",
     "status": "supported",
     "summary": "Convert the input to an array.",
-    "weight": 0.0,
-    "whest_ref": "we.asarray"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "asarray",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.asarray.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L517"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L517",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.asarray.html"
   }
 }

@@ -317,7 +317,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.from_dlpack(x)  # doctest: +SKIP"
+                "text": "y = fnp.from_dlpack(x)  # doctest: +SKIP"
               }
             ],
             "type": "doctest_block"
@@ -331,20 +331,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.from_dlpack",
     "module": "numpy",
     "name": "from_dlpack",
     "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output).",
     "numpy_ref": "np.from_dlpack",
-    "signature": "we.from_dlpack(*args, **kwargs)",
+    "signature": "fnp.from_dlpack(x, /, *, device=None, copy=None)",
     "status": "supported",
     "summary": "Create a NumPy array from an object implementing the ``__dlpack__`` protocol. Generally, the returned NumPy array is a view of the input object. See [1]_ and [2]_ for more details.",
-    "weight": 0.0,
-    "whest_ref": "we.from_dlpack"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "from_dlpack",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.from_dlpack.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L964"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L964",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.from_dlpack.html"
   }
 }

@@ -163,20 +163,20 @@
     "category": "counted_custom",
     "cost_formula": "45n",
     "cost_formula_latex": "$45n$",
-    "module": "whest.stats",
+    "flopscope_ref": "fnp.stats.lognorm.ppf",
+    "module": "flopscope.stats",
     "name": "stats.lognorm.ppf",
     "notes": "Log-normal PPF; cost = numel(input).",
     "numpy_ref": "np.stats.lognorm.ppf",
-    "signature": "we.stats.lognorm.ppf(q, s, loc=0, scale=1)",
+    "signature": "fnp.stats.lognorm.ppf(q, s, loc=0, scale=1)",
     "status": "supported",
     "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
-    "weight": 16.0,
-    "whest_ref": "we.stats.lognorm.ppf"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "stats-lognorm-ppf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_lognorm.py#L81"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_lognorm.py#L81",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2302"
   }
 }

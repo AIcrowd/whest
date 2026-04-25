@@ -113,7 +113,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.negative_binomial`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.negative_binomial`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -218,7 +218,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(n, p).size"
+                      "text": "fnp.broadcast(n, p).size"
                     },
                     {
                       "kind": "text",
@@ -276,7 +276,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(n, p).size"
+                  "text": "fnp.broadcast(n, p).size"
                 },
                 {
                   "kind": "text",
@@ -500,7 +500,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.negative_binomial(1, 0.1, 100000)"
+              "text": "s = fnp.random.negative_binomial(1, 0.1, 100000)"
             },
             {
               "kind": "input",
@@ -544,16 +544,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "s = we.random.negative_binomial(1, 0.1, 100000)\n\nfor i in range(1, 11): # doctest: +SKIP\n   probability = sum(s<i) / 100000.\n   print(i, \"wells drilled, probability of one success =\", probability)",
+    "code": "s = fnp.random.negative_binomial(1, 0.1, 100000)\n\nfor i in range(1, 11): # doctest: +SKIP\n   probability = sum(s<i) / 100000.\n   print(i, \"wells drilled, probability of one success =\", probability)",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.negative_binomial",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-negative_binomial/",
   "module": "numpy.random",
   "name": "random.negative_binomial",
   "next": {
     "href": "/docs/api/ops/random-noncentral_chisquare/",
-    "label": "we.random.noncentral_chisquare"
+    "label": "fnp.random.noncentral_chisquare"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -583,7 +586,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``n`` and ``p`` are both scalars.",
-        "Otherwise, ``we.broadcast(n, p).size`` samples are drawn."
+        "Otherwise, ``fnp.broadcast(n, p).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -591,7 +594,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-multivariate_normal/",
-    "label": "we.random.multivariate_normal"
+    "label": "fnp.random.multivariate_normal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.negative_binomial.html",
@@ -634,12 +637,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.negative_binomial(n, p, size=None)",
+  "signature": "fnp.random.negative_binomial(n, p, size=None)",
   "slug": "random-negative_binomial",
   "summary": "Draw samples from a negative binomial distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.negative_binomial",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

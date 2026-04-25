@@ -81,7 +81,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.power`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.power`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -156,7 +156,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.array(a).size"
+                        "text": "fnp.array(a).size"
                       },
                       {
                         "kind": "text",
@@ -206,7 +206,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.array(a).size"
+                    "text": "fnp.array(a).size"
                   },
                   {
                     "kind": "text",
@@ -394,7 +394,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.power(a, samples)"
+                "text": "s = fnp.random.power(a, samples)"
               }
             ],
             "type": "doctest_block"
@@ -423,7 +423,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(0, 1, 100)"
+                "text": "x = fnp.linspace(0, 1, 100)"
               },
               {
                 "kind": "input",
@@ -433,7 +433,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "normed_y = samples*we.diff(bins)[0]*y"
+                "text": "normed_y = samples*fnp.diff(bins)[0]*y"
               },
               {
                 "kind": "input",
@@ -467,17 +467,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rvs = we.random.power(5, 1000000)"
+                "text": "rvs = fnp.random.power(5, 1000000)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rvsp = we.random.pareto(5, 1000000)"
+                "text": "rvsp = fnp.random.pareto(5, 1000000)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xx = we.linspace(0,1,100)"
+                "text": "xx = fnp.linspace(0,1,100)"
               },
               {
                 "kind": "input",
@@ -507,7 +507,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.title('we.random.power(5)')"
+                "text": "plt.title('fnp.random.power(5)')"
               }
             ],
             "type": "doctest_block"
@@ -532,7 +532,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.title('inverse of 1 + we.random.pareto(5)')"
+                "text": "plt.title('inverse of 1 + fnp.random.pareto(5)')"
               }
             ],
             "type": "doctest_block"
@@ -571,20 +571,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.power",
     "module": "numpy.random",
     "name": "random.power",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.power",
-    "signature": "we.random.power(a, size=None)",
+    "signature": "fnp.random.power(a, size=None)",
     "status": "supported",
     "summary": "Draws samples in [0, 1] from a power distribution with positive exponent a - 1.",
-    "weight": 16.0,
-    "whest_ref": "we.random.power"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-power",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.power.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.power.html"
   }
 }

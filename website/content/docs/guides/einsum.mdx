@@ -2,7 +2,7 @@
 title: "Einsum Patterns"
 ---
 
-*Use this page to understand `we.einsum` -- the core computation primitive in whest.*
+*Use this page to understand `fnp.einsum` -- the core computation primitive in flopscope.*
 
 **You will learn:**
 - How to write common einsum patterns and understand their FLOP costs
@@ -17,28 +17,28 @@ title: "Einsum Patterns"
 ## Common patterns
 
 ```python
-import whest as we
-
-with we.BudgetContext(flop_budget=10**8) as budget:
-    A = we.ones((256, 256))
-    B = we.ones((256, 256))
-    x = we.ones((256,))
+import flopscope as flops
+import flopscope.numpy as fnp
+with flops.BudgetContext(flop_budget=10**8) as budget:
+    A = fnp.ones((256, 256))
+    B = fnp.ones((256, 256))
+    x = fnp.ones((256,))
 
     # Matrix-vector multiply: cost = m × k
-    y = we.einsum('ij,j->i', A, x)           # 256 × 256 = 65,536 FLOPs
+    y = fnp.einsum('ij,j->i', A, x)           # 256 × 256 = 65,536 FLOPs
 
     # Matrix multiply: cost = m × k × n
-    C = we.einsum('ij,jk->ik', A, B)         # 256 × 256 × 256 = 16,777,216 FLOPs
+    C = fnp.einsum('ij,jk->ik', A, B)         # 256 × 256 × 256 = 16,777,216 FLOPs
 
     # Outer product: cost = i × j
-    outer = we.einsum('i,j->ij', x, x)       # 256 × 256 = 65,536 FLOPs
+    outer = fnp.einsum('i,j->ij', x, x)       # 256 × 256 = 65,536 FLOPs
 
     # Trace: cost = i
-    tr = we.einsum('ii->', A)                 # 256 FLOPs
+    tr = fnp.einsum('ii->', A)                 # 256 FLOPs
 
     # Batched matmul: cost = b × m × k × n
-    batch = we.ones((4, 256, 256))
-    out = we.einsum('bij,bjk->bik', batch, batch)  # 4 × 256 × 256 × 256 FLOPs
+    batch = fnp.ones((4, 256, 256))
+    out = fnp.einsum('bij,bjk->bik', batch, batch)  # 4 × 256 × 256 × 256 FLOPs
 
     print(budget.summary())
 ```
@@ -60,36 +60,36 @@ For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 - Indices: i=256, j=256, k=256
 - Cost: 256 x 256 x 256 = 16,777,216
 
-For multi-operand einsums (3+ tensors), whest automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
+For multi-operand einsums (3+ tensors), Flopscope automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
 
 When symmetric tensors are involved, each step's cost is further reduced by the ratio of unique output elements to total output elements. See [Symmetry Savings](/docs/guides/symmetry/) for the full practical guide.
 
-## we.dot and we.matmul
+## fnp.dot and fnp.matmul
 
-`we.dot(A, B)` and `we.matmul(A, B)` are equivalent to the corresponding einsum and have the same FLOP cost.
+`fnp.dot(A, B)` and `fnp.matmul(A, B)` are equivalent to the corresponding einsum and have the same FLOP cost.
 
 ## Symmetric tensors
 
 There are two separate symmetry declarations — one for inputs, one for outputs:
 
-**Input symmetry** — wrap with `we.as_symmetric()` before passing to einsum. The optimizer automatically uses symmetry to choose the best contraction order and charges reduced costs:
+**Input symmetry** — wrap with `flops.as_symmetric()` before passing to einsum. The optimizer automatically uses symmetry to choose the best contraction order and charges reduced costs:
 
 ```python
-with we.BudgetContext(flop_budget=10**8) as budget:
-    S = we.as_symmetric(we.eye(10), symmetric_axes=(0, 1))  # 55 unique elements
-    v = we.ones((10,))
+with flops.BudgetContext(flop_budget=10**8) as budget:
+    S = flops.as_symmetric(fnp.eye(10), symmetric_axes=(0, 1))  # 55 unique elements
+    v = fnp.ones((10,))
 
-    result = we.einsum('ij,j->i', S, v)  # cost reduced by input symmetry
+    result = fnp.einsum('ij,j->i', S, v)  # cost reduced by input symmetry
 ```
 
 **Output symmetry** — pass `symmetric_axes` to `einsum()` to declare that the result is symmetric. This wraps the output as a `SymmetricTensor` so downstream operations benefit from reduced costs. It does NOT affect the cost of this einsum — it's a declaration about the result's structure:
 
 ```python
-with we.BudgetContext(flop_budget=10**8) as budget:
-    X = we.random.randn(100, 10)
+with flops.BudgetContext(flop_budget=10**8) as budget:
+    X = fnp.random.randn(100, 10)
 
     # X^T X is always symmetric — declare output axes (0,1) as symmetric
-    C = we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
+    C = fnp.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])
 
     print(type(C))  # <class 'SymmetricTensor'>
     # C can now be passed to other operations with automatic cost savings
@@ -99,18 +99,18 @@ For the full symmetry guide, see [Symmetry Savings](/docs/guides/symmetry/).
 
 ## Inspecting costs
 
-`we.einsum_path()` previews the contraction plan without executing the contraction itself. Planning is cheap: it records a nominal 1-FLOP `einsum_path` event, but none of the contraction FLOPs are spent.
+`fnp.einsum_path()` previews the contraction plan without executing the contraction itself. Planning is cheap: it records a nominal 1-FLOP `einsum_path` event, but none of the contraction FLOPs are spent.
 
 ```python
-import whest as we
-
+import flopscope as flops
+import flopscope.numpy as fnp
 n = 10
-T = we.as_symmetric(we.ones((n, n, n)), symmetric_axes=(0, 1, 2))
-A = we.random.randn(n, n)
-B = we.random.randn(n, n)
-C = we.random.randn(n, n)
+T = flops.as_symmetric(fnp.ones((n, n, n)), symmetric_axes=(0, 1, 2))
+A = fnp.random.randn(n, n)
+B = fnp.random.randn(n, n)
+C = fnp.random.randn(n, n)
 
-path, info = we.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
+path, info = fnp.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
 
 print(f"Path: {path}")
 print(info)
@@ -123,8 +123,8 @@ print(f"Optimizer used: {info.optimizer_used}")
 ```text
 Path: [(0, 1), (0, 2), (0, 1)]
   Complete contraction:  ijk,ai,bj,ck->abc
-      Naive cost (whest):  3,000,000
-  Optimized cost (whest):  25,500
+      Naive cost (flopscope):  3,000,000
+  Optimized cost (flopscope):  25,500
                      Speedup:  117.647x
        Largest intermediate:  1,000 elements
                 Index sizes:  a=b=c=i=j=k=10
@@ -145,81 +145,81 @@ The printed table gives you the contraction order, naive-vs-optimized FLOP count
 
 For per-step debugging, call `print(info.format_table(verbose=True))`. The verbose view adds indented rows with the merged operand subset, the intermediate output shape, and the running cumulative cost.
 
-`we.flops.einsum_cost()` returns the same cost that `einsum()` would deduct — one source of truth:
+`flops.accounting.einsum_cost()` returns the same cost that `einsum()` would deduct — one source of truth:
 
 ```python
-cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+cost = flops.accounting.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
 print(f"Matmul cost: {cost:,}")  # 16,777,216
 ```
 
 ## Custom contraction paths
 
-By default whest finds the optimal contraction order automatically. You can override this by passing an explicit path — a list of int-tuples specifying which operand positions to contract at each step:
+By default Flopscope finds the optimal contraction order automatically. You can override this by passing an explicit path — a list of int-tuples specifying which operand positions to contract at each step:
 
 ```python
-import whest as we
-
-A = we.ones((3, 4))
-B = we.ones((4, 5))
-C = we.ones((5, 6))
+import flopscope as flops
+import flopscope.numpy as fnp
+A = fnp.ones((3, 4))
+B = fnp.ones((4, 5))
+C = fnp.ones((5, 6))
 
 # Plan first, execute later
-path, info = we.einsum_path('ij,jk,kl->il', A, B, C)
+path, info = fnp.einsum_path('ij,jk,kl->il', A, B, C)
 print(f"Optimal path: {path}")  # e.g. [(0, 1), (0, 1)]
 
 # Execute with the planned path
-with we.BudgetContext(flop_budget=10**8) as budget:
-    result = we.einsum('ij,jk,kl->il', A, B, C, optimize=path)
+with flops.BudgetContext(flop_budget=10**8) as budget:
+    result = fnp.einsum('ij,jk,kl->il', A, B, C, optimize=path)
 ```
 
 You can also specify a completely custom path. Each tuple names the positions (in the current operand list) to contract; the result is appended to the end:
 
 ```python
 # Force B×C first (positions 1,2), then A×result (positions 0,1)
-result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(1, 2), (0, 1)])
+result = fnp.einsum('ij,jk,kl->il', A, B, C, optimize=[(1, 2), (0, 1)])
 
 # Force A×B first (positions 0,1), then result×C (positions 0,1)
-result = we.einsum('ij,jk,kl->il', A, B, C, optimize=[(0, 1), (0, 1)])
+result = fnp.einsum('ij,jk,kl->il', A, B, C, optimize=[(0, 1), (0, 1)])
 ```
 
-Different paths may have different FLOP costs. Use `we.einsum_path()` to compare — it returns the plan without executing the contraction.
+Different paths may have different FLOP costs. Use `fnp.einsum_path()` to compare — it returns the plan without executing the contraction.
 
 ## Path caching
 
 Contraction paths are cached automatically in a module-level LRU cache.
-When you call `we.einsum()` with the same subscripts, shapes, optimizer,
+When you call `fnp.einsum()` with the same subscripts, shapes, optimizer,
 and symmetry structure, the path is reused from cache instead of being
 recomputed. This makes repeated einsums in loops essentially free in
 path-finding overhead:
 
 ```python
-with we.BudgetContext(flop_budget=10**9) as budget:
+with flops.BudgetContext(flop_budget=10**9) as budget:
     for i in range(1000):
-        y = we.einsum('ij,j->i', A, x)  # path computed once, reused 999 times
+        y = fnp.einsum('ij,j->i', A, x)  # path computed once, reused 999 times
 ```
 
-`we.einsum_path()` shares the same cache, so planning a path warms the
-cache for subsequent `we.einsum()` calls and vice versa.
+`fnp.einsum_path()` shares the same cache, so planning a path warms the
+cache for subsequent `fnp.einsum()` calls and vice versa.
 
 ### Cache management
 
 ```python
 # Inspect cache statistics
-info = we.einsum_cache_info()
+info = fnp.einsum_cache_info()
 print(f"Hits: {info.hits}, Misses: {info.misses}, Size: {info.currsize}/{info.maxsize}")
 
 # Clear the cache (e.g., to free memory or force recomputation)
-we.clear_einsum_cache()
+fnp.clear_einsum_cache()
 
 # Change the cache size (default 4096 entries, rebuilds the cache)
-we.configure(einsum_path_cache_size=8192)
+flops.configure(einsum_path_cache_size=8192)
 ```
 
 ## Common pitfalls
 
 **Symptom:** Unexpectedly high FLOP cost
 
-**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `we.flops.einsum_cost()` or `we.einsum_path()` to preview costs before executing.
+**Fix:** Check all index dimensions. A subscript like `'ijkl,jklm->im'` multiplies all five dimension sizes together. Use `flops.accounting.einsum_cost()` or `fnp.einsum_path()` to preview costs before executing.
 
 ## Related pages
 

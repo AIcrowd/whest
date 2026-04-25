@@ -169,12 +169,15 @@
     "unsupported_directives": []
   },
   "example": null,
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.stats.norm.cdf",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_norm.py#L63",
   "href": "/docs/api/ops/stats-norm-cdf/",
-  "module": "whest.stats",
+  "module": "flopscope.stats",
   "name": "stats.norm.cdf",
   "next": {
     "href": "/docs/api/ops/stats-norm-pdf/",
-    "label": "we.stats.norm.pdf"
+    "label": "fnp.stats.norm.pdf"
   },
   "notes": "Normal CDF; cost = numel(input).",
   "notes_sections": [],
@@ -212,7 +215,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/stats-lognorm-ppf/",
-    "label": "we.stats.lognorm.ppf"
+    "label": "fnp.stats.lognorm.ppf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html",
@@ -226,12 +229,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.stats.norm.cdf(x, loc=0, scale=1)",
+  "signature": "fnp.stats.norm.cdf(x, loc=0, scale=1)",
   "slug": "stats-norm-cdf",
   "summary": "Cumulative distribution function of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.stats.norm.cdf",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_norm.py#L63"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2132",
+  "weight": 16.0
 }

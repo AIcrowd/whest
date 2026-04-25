@@ -254,7 +254,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/place",
-              "label": "we.place",
+              "label": "fnp.place",
               "original_target": "place",
               "role": "",
               "target": "place",
@@ -265,7 +265,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/put",
-              "label": "we.put",
+              "label": "fnp.put",
               "original_target": "put",
               "role": "",
               "target": "put",
@@ -276,7 +276,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/take",
-              "label": "we.take",
+              "label": "fnp.take",
               "original_target": "take",
               "role": "",
               "target": "take",
@@ -287,7 +287,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/copyto",
-              "label": "we.copyto",
+              "label": "fnp.copyto",
               "original_target": "copyto",
               "role": "",
               "target": "copyto",
@@ -306,17 +306,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(6).reshape(2, 3)"
+              "text": "x = fnp.arange(6).reshape(2, 3)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.putmask(x, x>2, x**2)"
+              "text": "fnp.putmask(x, x>2, x**2)"
             },
             {
               "kind": "input",
@@ -364,12 +364,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(5)"
+              "text": "x = fnp.arange(5)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.putmask(x, x>1, [-33, -44])"
+              "text": "fnp.putmask(x, x>1, [-33, -44])"
             },
             {
               "kind": "input",
@@ -398,16 +398,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(6).reshape(2, 3)\n\nwe.putmask(x, x>2, x**2)\n\nx\n\nx = we.arange(5)\n\nwe.putmask(x, x>1, [-33, -44])\n\nx",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(6).reshape(2, 3)\n\nfnp.putmask(x, x>2, x**2)\n\nx\n\nx = fnp.arange(5)\n\nfnp.putmask(x, x>1, [-33, -44])\n\nx",
     "output": "array([[ 0,  1,  2],\n       [ 9, 16, 25]])\n\narray([  0,   1, -33, -44, -33])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.putmask",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1290",
   "href": "/docs/api/ops/putmask/",
   "module": "numpy",
   "name": "putmask",
   "next": {
     "href": "/docs/api/ops/quantile/",
-    "label": "we.quantile"
+    "label": "fnp.quantile"
   },
   "notes": "Change elements of array based on condition and input values. Cost: numel(input).",
   "notes_sections": [],
@@ -438,7 +441,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/put_along_axis/",
-    "label": "we.put_along_axis"
+    "label": "fnp.put_along_axis"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.putmask.html",
@@ -449,7 +452,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/place",
-      "label": "we.place",
+      "label": "fnp.place",
       "original_target": "place",
       "role": "",
       "target": "place",
@@ -460,7 +463,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/put",
-      "label": "we.put",
+      "label": "fnp.put",
       "original_target": "put",
       "role": "",
       "target": "put",
@@ -471,7 +474,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/take",
-      "label": "we.take",
+      "label": "fnp.take",
       "original_target": "take",
       "role": "",
       "target": "take",
@@ -482,19 +485,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/copyto",
-      "label": "we.copyto",
+      "label": "fnp.copyto",
       "original_target": "copyto",
       "role": "",
       "target": "copyto",
       "unresolved": false
     }
   ],
-  "signature": "we.putmask(a, mask, values, *args, **kwargs)",
+  "signature": "fnp.putmask(a, mask, values, *args, **kwargs)",
   "slug": "putmask",
   "summary": "Changes elements of an array based on conditional and input values.",
   "upstream_source_url": "",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.putmask",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1290"
+  "weight": 4.0
 }

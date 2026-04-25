@@ -33,7 +33,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "polynomial",
-                    "text": "we.polynomial"
+                    "text": "fnp.polynomial"
                   },
                   {
                     "kind": "text",
@@ -61,7 +61,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `we.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+            "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `fnp.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -186,7 +186,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/polyint",
-                "label": "we.polyint",
+                "label": "fnp.polyint",
                 "original_target": "polyint",
                 "role": "",
                 "target": "polyint",
@@ -238,7 +238,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -248,12 +248,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p = we.poly1d([1,1,1,1])"
+                "text": "p = fnp.poly1d([1,1,1,1])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p2 = we.polyder(p)"
+                "text": "p2 = fnp.polyder(p)"
               },
               {
                 "kind": "input",
@@ -335,7 +335,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.polyder(p, 2)"
+                "text": "fnp.polyder(p, 2)"
               },
               {
                 "kind": "output",
@@ -344,7 +344,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.polyder(p, 3)"
+                "text": "fnp.polyder(p, 3)"
               },
               {
                 "kind": "output",
@@ -353,7 +353,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.polyder(p, 4)"
+                "text": "fnp.polyder(p, 4)"
               },
               {
                 "kind": "output",
@@ -371,20 +371,20 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
-    "module": "whest._polynomial",
+    "flopscope_ref": "fnp.polyder",
+    "module": "flopscope._polynomial",
     "name": "polyder",
     "notes": "Differentiate polynomial. Cost: n FLOPs.",
     "numpy_ref": "np.polyder",
-    "signature": "we.polyder(p, m=1)",
+    "signature": "fnp.polyder(p, m=1)",
     "status": "supported",
     "summary": "Return the derivative of the specified order of a polynomial.",
-    "weight": 1.0,
-    "whest_ref": "we.polyder"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "polyder",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L367",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L133"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L133",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_polynomial_impl.py#L375"
   }
 }

@@ -155,20 +155,20 @@
     "category": "counted_custom",
     "cost_formula": "15n",
     "cost_formula_latex": "$15n$",
-    "module": "whest.stats",
+    "flopscope_ref": "fnp.stats.lognorm.pdf",
+    "module": "flopscope.stats",
     "name": "stats.lognorm.pdf",
     "notes": "Log-normal PDF; cost = numel(input).",
     "numpy_ref": "np.stats.lognorm.pdf",
-    "signature": "we.stats.lognorm.pdf(x, s, loc=0, scale=1)",
+    "signature": "fnp.stats.lognorm.pdf(x, s, loc=0, scale=1)",
     "status": "supported",
     "summary": "Probability density function at x of the given RV.",
-    "weight": 16.0,
-    "whest_ref": "we.stats.lognorm.pdf"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "stats-lognorm-pdf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_lognorm.py#L43"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_lognorm.py#L43",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2051"
   }
 }

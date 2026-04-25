@@ -299,7 +299,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/expm1",
-                "label": "we.expm1",
+                "label": "fnp.expm1",
                 "original_target": "expm1",
                 "role": "",
                 "target": "expm1",
@@ -323,7 +323,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/exp2",
-                "label": "we.exp2",
+                "label": "fnp.exp2",
                 "original_target": "exp2",
                 "role": "",
                 "target": "exp2",
@@ -477,7 +477,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -488,6 +488,11 @@
                 "kind": "input",
                 "prompt": ">>>",
                 "text": "import matplotlib.pyplot as plt"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -497,17 +502,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(-2*we.pi, 2*we.pi, 100)"
+                "text": "x = fnp.linspace(-2*fnp.pi, 2*fnp.pi, 100)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xx = x + 1j * x[:, we.newaxis] # a + ib over complex plane"
+                "text": "xx = x + 1j * x[:, fnp.newaxis] # a + ib over complex plane"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out = we.exp(xx)"
+                "text": "out = fnp.exp(xx)"
               }
             ],
             "type": "doctest_block"
@@ -522,12 +527,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.imshow(we.abs(out),"
+                "text": "plt.imshow(fnp.abs(out),"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "extent=[-2*we.pi, 2*we.pi, -2*we.pi, 2*we.pi], cmap='gray')"
+                "text": "extent=[-2*fnp.pi, 2*fnp.pi, -2*fnp.pi, 2*fnp.pi], cmap='gray')"
               },
               {
                 "kind": "input",
@@ -547,12 +552,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.imshow(we.angle(out),"
+                "text": "plt.imshow(fnp.angle(out),"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "extent=[-2*we.pi, 2*we.pi, -2*we.pi, 2*we.pi], cmap='hsv')"
+                "text": "extent=[-2*fnp.pi, 2*fnp.pi, -2*fnp.pi, 2*fnp.pi], cmap='hsv')"
               },
               {
                 "kind": "input",
@@ -576,20 +581,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.exp",
     "module": "numpy",
     "name": "exp",
     "notes": "Element-wise e^x.",
     "numpy_ref": "np.exp",
-    "signature": "we.exp(x)",
+    "signature": "fnp.exp(x)",
     "status": "supported",
     "summary": "Calculate the exponential of all elements in the input array.",
-    "weight": 16.0,
-    "whest_ref": "we.exp"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "exp",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

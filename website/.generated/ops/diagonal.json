@@ -145,7 +145,7 @@
             },
             {
               "kind": "code",
-              "text": "we.diagonal(a).copy()"
+              "text": "fnp.diagonal(a).copy()"
             },
             {
               "kind": "text",
@@ -156,7 +156,7 @@
               "href": "",
               "kind": "link",
               "target": "diagonal(a)",
-              "text": "we.diagonal(a)"
+              "text": "fnp.diagonal(a)"
             },
             {
               "kind": "text",
@@ -476,7 +476,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/diag",
-              "label": "we.diag",
+              "label": "fnp.diag",
               "original_target": "diag",
               "role": "",
               "target": "diag",
@@ -492,7 +492,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/diagflat",
-              "label": "we.diagflat",
+              "label": "fnp.diagflat",
               "original_target": "diagflat",
               "role": "",
               "target": "diagflat",
@@ -508,7 +508,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/trace",
-              "label": "we.trace",
+              "label": "fnp.trace",
               "original_target": "trace",
               "role": "",
               "target": "trace",
@@ -527,12 +527,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(4).reshape(2,2)"
+              "text": "a = fnp.arange(4).reshape(2,2)"
             },
             {
               "kind": "input",
@@ -582,7 +582,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(8).reshape(2,2,2); a"
+              "text": "a = fnp.arange(8).reshape(2,2,2); a"
             },
             {
               "kind": "output",
@@ -677,7 +677,7 @@
               "href": "/docs/api/ops/flipud",
               "kind": "link",
               "target": "flipud",
-              "text": "we.flipud"
+              "text": "fnp.flipud"
             },
             {
               "kind": "text",
@@ -688,7 +688,7 @@
               "href": "/docs/api/ops/fliplr",
               "kind": "link",
               "target": "fliplr",
-              "text": "we.fliplr"
+              "text": "fnp.fliplr"
             },
             {
               "kind": "text",
@@ -702,7 +702,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(9).reshape(3, 3)"
+              "text": "a = fnp.arange(9).reshape(3, 3)"
             },
             {
               "kind": "input",
@@ -724,7 +724,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fliplr(a).diagonal()  # Horizontal flip"
+              "text": "fnp.fliplr(a).diagonal()  # Horizontal flip"
             },
             {
               "kind": "output",
@@ -733,7 +733,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.flipud(a).diagonal()  # Vertical flip"
+              "text": "fnp.flipud(a).diagonal()  # Vertical flip"
             },
             {
               "kind": "output",
@@ -766,16 +766,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.arange(4).reshape(2,2)\n\na\n\na.diagonal()\n\na.diagonal(1)\n\na = we.arange(8).reshape(2,2,2); a\n\na.diagonal(0,  # Main diagonals of two arrays created by skipping\n           0,  # across the outer(left)-most axis last and\n           1)  # the \"middle\" (row) axis first.\n\na[:,:,0]  # main diagonal is [0 6]\n\na[:,:,1]  # main diagonal is [1 7]\n\na = we.arange(9).reshape(3, 3)\n\na\n\nwe.fliplr(a).diagonal()  # Horizontal flip\n\nwe.flipud(a).diagonal()  # Vertical flip",
+    "code": "import flopscope as fnp\n\na = fnp.arange(4).reshape(2,2)\n\na\n\na.diagonal()\n\na.diagonal(1)\n\na = fnp.arange(8).reshape(2,2,2); a\n\na.diagonal(0,  # Main diagonals of two arrays created by skipping\n           0,  # across the outer(left)-most axis last and\n           1)  # the \"middle\" (row) axis first.\n\na[:,:,0]  # main diagonal is [0 6]\n\na[:,:,1]  # main diagonal is [1 7]\n\na = fnp.arange(9).reshape(3, 3)\n\na\n\nfnp.fliplr(a).diagonal()  # Horizontal flip\n\nfnp.flipud(a).diagonal()  # Vertical flip",
     "output": "array([[0, 1],\n       [2, 3]])\n\narray([0, 3])\n\narray([1])\n\narray([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])\n\narray([[0, 6],\n       [1, 7]])\n\narray([[0, 2],\n       [4, 6]])\n\narray([[1, 3],\n       [5, 7]])\n\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n\narray([2, 4, 6])\n\narray([6, 4, 2])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.diagonal",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L460",
   "href": "/docs/api/ops/diagonal/",
   "module": "numpy",
   "name": "diagonal",
   "next": {
     "href": "/docs/api/ops/diff/",
-    "label": "we.diff"
+    "label": "fnp.diff"
   },
   "notes": "Return specified diagonals. Cost: numel(input).",
   "notes_sections": [],
@@ -815,7 +818,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/diagflat/",
-    "label": "we.diagflat"
+    "label": "fnp.diagflat"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html",
@@ -846,7 +849,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/diag",
-      "label": "we.diag",
+      "label": "fnp.diag",
       "original_target": "diag",
       "role": "",
       "target": "diag",
@@ -862,7 +865,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/diagflat",
-      "label": "we.diagflat",
+      "label": "fnp.diagflat",
       "original_target": "diagflat",
       "role": "",
       "target": "diagflat",
@@ -878,19 +881,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/trace",
-      "label": "we.trace",
+      "label": "fnp.trace",
       "original_target": "trace",
       "role": "",
       "target": "trace",
       "unresolved": false
     }
   ],
-  "signature": "we.diagonal(a, offset=0, axis1=0, axis2=1)",
+  "signature": "fnp.diagonal(a, offset=0, axis1=0, axis2=1)",
   "slug": "diagonal",
   "summary": "Return specified diagonals.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1695",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.diagonal",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L460"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L1670",
+  "weight": 1.0
 }

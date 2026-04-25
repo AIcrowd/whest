@@ -143,7 +143,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/flipud",
-              "label": "we.flipud",
+              "label": "fnp.flipud",
               "original_target": "flipud",
               "role": "",
               "target": "flipud",
@@ -159,7 +159,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/flip",
-              "label": "we.flip",
+              "label": "fnp.flip",
               "original_target": "flip",
               "role": "",
               "target": "flip",
@@ -175,7 +175,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/rot90",
-              "label": "we.rot90",
+              "label": "fnp.rot90",
               "original_target": "rot90",
               "role": "",
               "target": "rot90",
@@ -208,7 +208,7 @@
               "href": "",
               "kind": "link",
               "target": "flip(m, axis=1)",
-              "text": "we.flip(m, axis=1)"
+              "text": "fnp.flip(m, axis=1)"
             },
             {
               "kind": "text",
@@ -227,12 +227,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = we.diag([1.,2.,3.])"
+              "text": "A = fnp.diag([1.,2.,3.])"
             },
             {
               "kind": "input",
@@ -254,7 +254,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fliplr(A)"
+              "text": "fnp.fliplr(A)"
             },
             {
               "kind": "output",
@@ -276,7 +276,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rng = we.random.default_rng()"
+              "text": "rng = fnp.random.default_rng()"
             },
             {
               "kind": "input",
@@ -286,7 +286,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.all(we.fliplr(A) == A[:,::-1,...])"
+              "text": "fnp.all(fnp.fliplr(A) == A[:,::-1,...])"
             },
             {
               "kind": "output",
@@ -310,20 +310,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nA = we.diag([1.,2.,3.])\n\nA\n\nwe.fliplr(A)\n\nrng = we.random.default_rng()\n\nA = rng.normal(size=(2,3,5))\n\nwe.all(we.fliplr(A) == A[:,::-1,...])",
+    "code": "import flopscope as fnp\n\nA = fnp.diag([1.,2.,3.])\n\nA\n\nfnp.fliplr(A)\n\nrng = fnp.random.default_rng()\n\nA = rng.normal(size=(2,3,5))\n\nfnp.all(fnp.fliplr(A) == A[:,::-1,...])",
     "output": "array([[1.,  0.,  0.],\n       [0.,  2.,  0.],\n       [0.,  0.,  3.]])\n\narray([[0.,  0.,  1.],\n       [0.,  2.,  0.],\n       [3.,  0.,  0.]])\n\nTrue",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fliplr",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L948",
   "href": "/docs/api/ops/fliplr/",
   "module": "numpy",
   "name": "fliplr",
   "next": {
     "href": "/docs/api/ops/flipud/",
-    "label": "we.flipud"
+    "label": "fnp.flipud"
   },
   "notes": "Flip array left-right.",
   "notes_sections": [
-    "Equivalent to ``m[:,::-1]`` or ``we.flip(m, axis=1)``. Requires the array to be at least 2-D."
+    "Equivalent to ``m[:,::-1]`` or ``fnp.flip(m, axis=1)``. Requires the array to be at least 2-D."
   ],
   "numpy_ref": "np.fliplr",
   "parameters": [
@@ -337,7 +340,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/flip/",
-    "label": "we.flip"
+    "label": "fnp.flip"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fliplr.html",
@@ -362,7 +365,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/flipud",
-      "label": "we.flipud",
+      "label": "fnp.flipud",
       "original_target": "flipud",
       "role": "",
       "target": "flipud",
@@ -378,7 +381,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/flip",
-      "label": "we.flip",
+      "label": "fnp.flip",
       "original_target": "flip",
       "role": "",
       "target": "flip",
@@ -394,19 +397,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/rot90",
-      "label": "we.rot90",
+      "label": "fnp.rot90",
       "original_target": "rot90",
       "role": "",
       "target": "rot90",
       "unresolved": false
     }
   ],
-  "signature": "we.fliplr(m)",
+  "signature": "fnp.fliplr(m)",
   "slug": "fliplr",
   "summary": "Reverse the order of elements along axis 1 (left/right).",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L49",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fliplr",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L948"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L62",
+  "weight": 0.0
 }

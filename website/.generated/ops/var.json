@@ -522,7 +522,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/std",
-              "label": "we.std",
+              "label": "fnp.std",
               "original_target": "std",
               "role": "",
               "target": "std",
@@ -533,7 +533,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/mean",
-              "label": "we.mean",
+              "label": "fnp.mean",
               "original_target": "mean",
               "role": "",
               "target": "mean",
@@ -544,7 +544,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanmean",
-              "label": "we.nanmean",
+              "label": "fnp.nanmean",
               "original_target": "nanmean",
               "role": "",
               "target": "nanmean",
@@ -555,7 +555,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanstd",
-              "label": "we.nanstd",
+              "label": "fnp.nanstd",
               "original_target": "nanstd",
               "role": "",
               "target": "nanstd",
@@ -566,7 +566,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanvar",
-              "label": "we.nanvar",
+              "label": "fnp.nanvar",
               "original_target": "nanvar",
               "role": "",
               "target": "nanvar",
@@ -788,17 +788,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 2], [3, 4]])"
+              "text": "a = fnp.array([[1, 2], [3, 4]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.var(a)"
+              "text": "fnp.var(a)"
             },
             {
               "kind": "output",
@@ -807,7 +807,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.var(a, axis=0)"
+              "text": "fnp.var(a, axis=0)"
             },
             {
               "kind": "output",
@@ -816,7 +816,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.var(a, axis=1)"
+              "text": "fnp.var(a, axis=1)"
             },
             {
               "kind": "output",
@@ -839,7 +839,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.zeros((2, 512*512), dtype=we.float32)"
+              "text": "a = fnp.zeros((2, 512*512), dtype=fnp.float32)"
             },
             {
               "kind": "input",
@@ -854,11 +854,11 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.var(a)"
+              "text": "fnp.var(a)"
             },
             {
               "kind": "output",
-              "text": "we.float32(0.20250003)"
+              "text": "fnp.float32(0.20250003)"
             }
           ],
           "type": "doctest_block"
@@ -877,7 +877,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.var(a, dtype=we.float64)"
+              "text": "fnp.var(a, dtype=fnp.float64)"
             },
             {
               "kind": "output",
@@ -909,12 +909,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])"
+              "text": "a = fnp.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.var(a)"
+              "text": "fnp.var(a)"
             },
             {
               "kind": "output",
@@ -923,7 +923,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.var(a, where=[[True], [True], [False]])"
+              "text": "fnp.var(a, where=[[True], [True], [False]])"
             },
             {
               "kind": "output",
@@ -946,7 +946,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -961,12 +961,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])"
+              "text": "a = fnp.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "mean = we.mean(a, axis=1, keepdims=True)"
+              "text": "mean = fnp.mean(a, axis=1, keepdims=True)"
             },
             {
               "kind": "input",
@@ -986,12 +986,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "t1 = timeit(\"var = we.var(a, axis=1, mean=mean)\", globals=g, number=n)"
+              "text": "t1 = timeit(\"var = fnp.var(a, axis=1, mean=mean)\", globals=g, number=n)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "t2 = timeit(\"var = we.var(a, axis=1)\", globals=g, number=n)"
+              "text": "t2 = timeit(\"var = fnp.var(a, axis=1)\", globals=g, number=n)"
             },
             {
               "kind": "input",
@@ -1024,16 +1024,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[1, 2], [3, 4]])\n\nwe.var(a)\n\nwe.var(a, axis=0)\n\nwe.var(a, axis=1)\n\na = we.zeros((2, 512*512), dtype=we.float32)\n\na[0, :] = 1.0\n\na[1, :] = 0.1\n\nwe.var(a)\n\nwe.var(a, dtype=we.float64)\n\n((1-0.55)**2 + (0.1-0.55)**2)/2\n\na = we.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nwe.var(a)\n\nwe.var(a, where=[[True], [True], [False]])\n\nimport whest as we\n\nfrom timeit import timeit\n\na = we.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nmean = we.mean(a, axis=1, keepdims=True)\n\ng = globals()\n\nn = 10000\n\nt1 = timeit(\"var = we.var(a, axis=1, mean=mean)\", globals=g, number=n)\n\nt2 = timeit(\"var = we.var(a, axis=1)\", globals=g, number=n)\n\nprint(f'Percentage execution time saved {100*(t2-t1)/t2:.0f}%')",
-    "output": "1.25\n\narray([1.,  1.])\n\narray([0.25,  0.25])\n\nwe.float32(0.20250003)\n\n0.20249999932944759 # may vary\n\n0.2025\n\n6.833333333333333 # may vary\n\n4.0\n\n#doctest: +SKIP\nPercentage execution time saved 32%",
+    "code": "import flopscope as fnp\n\na = fnp.array([[1, 2], [3, 4]])\n\nfnp.var(a)\n\nfnp.var(a, axis=0)\n\nfnp.var(a, axis=1)\n\na = fnp.zeros((2, 512*512), dtype=fnp.float32)\n\na[0, :] = 1.0\n\na[1, :] = 0.1\n\nfnp.var(a)\n\nfnp.var(a, dtype=fnp.float64)\n\n((1-0.55)**2 + (0.1-0.55)**2)/2\n\na = fnp.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nfnp.var(a)\n\nfnp.var(a, where=[[True], [True], [False]])\n\nimport flopscope as fnp\n\nfrom timeit import timeit\n\na = fnp.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nmean = fnp.mean(a, axis=1, keepdims=True)\n\ng = globals()\n\nn = 10000\n\nt1 = timeit(\"var = fnp.var(a, axis=1, mean=mean)\", globals=g, number=n)\n\nt2 = timeit(\"var = fnp.var(a, axis=1)\", globals=g, number=n)\n\nprint(f'Percentage execution time saved {100*(t2-t1)/t2:.0f}%')",
+    "output": "1.25\n\narray([1.,  1.])\n\narray([0.25,  0.25])\n\nfnp.float32(0.20250003)\n\n0.20249999932944759 # may vary\n\n0.2025\n\n6.833333333333333 # may vary\n\n4.0\n\n#doctest: +SKIP\nPercentage execution time saved 32%",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.var",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
   "href": "/docs/api/ops/var/",
   "module": "numpy",
   "name": "var",
   "next": {
     "href": "/docs/api/ops/vdot/",
-    "label": "we.vdot"
+    "label": "fnp.vdot"
   },
   "notes": "Variance; cost_multiplier=2 (two passes).",
   "notes_sections": [
@@ -1114,7 +1117,7 @@
     },
     {
       "body": [
-        "Elements to include in the variance. See `~we.ufunc.reduce` for",
+        "Elements to include in the variance. See `~fnp.ufunc.reduce` for",
         "details.",
         "",
         ".. versionadded:: 1.20.0"
@@ -1147,7 +1150,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/vander/",
-    "label": "we.vander"
+    "label": "fnp.vander"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.var.html",
@@ -1167,7 +1170,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/std",
-      "label": "we.std",
+      "label": "fnp.std",
       "original_target": "std",
       "role": "",
       "target": "std",
@@ -1178,7 +1181,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/mean",
-      "label": "we.mean",
+      "label": "fnp.mean",
       "original_target": "mean",
       "role": "",
       "target": "mean",
@@ -1189,7 +1192,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanmean",
-      "label": "we.nanmean",
+      "label": "fnp.nanmean",
       "original_target": "nanmean",
       "role": "",
       "target": "nanmean",
@@ -1200,7 +1203,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanstd",
-      "label": "we.nanstd",
+      "label": "fnp.nanstd",
       "original_target": "nanstd",
       "role": "",
       "target": "nanstd",
@@ -1211,7 +1214,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanvar",
-      "label": "we.nanvar",
+      "label": "fnp.nanvar",
       "original_target": "nanvar",
       "role": "",
       "target": "nanvar",
@@ -1229,12 +1232,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.var(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
+  "signature": "fnp.var(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
   "slug": "var",
   "summary": "Compute the variance along the specified axis.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L4073",
-  "weight": 2.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.var",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L4037",
+  "weight": 2.0
 }

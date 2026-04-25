@@ -1,6 +1,6 @@
 """Tests for BudgetAccumulator and budget_summary_dict()."""
 
-from whest._budget import (
+from flopscope._budget import (
     BudgetContext,
     NamespaceRecord,
     budget_reset,
@@ -35,16 +35,16 @@ def test_budget_summary_dict_unlabeled():
 
 
 def test_budget_summary_dict_by_namespace():
-    import whest as we
+    import flopscope as flops
 
     with BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
         with ctx.deduct("mul", flop_cost=10, subscripts=None, shapes=()):
             pass
-        with we.namespace("precompute"):
+        with flops.namespace("precompute"):
             with ctx.deduct("add", flop_cost=25, subscripts=None, shapes=()):
                 pass
     with BudgetContext(flop_budget=500, namespace="predict", quiet=True) as ctx:
-        with we.namespace("precompute"):
+        with flops.namespace("precompute"):
             with ctx.deduct("add", flop_cost=15, subscripts=None, shapes=()):
                 pass
     with BudgetContext(flop_budget=250, quiet=True) as ctx:
@@ -77,10 +77,10 @@ def test_budget_summary_dict_by_namespace():
 
 
 def test_budget_summary_dict_by_namespace_uses_nested_op_namespace():
-    import whest as we
+    import flopscope as flops
 
     with BudgetContext(flop_budget=1000, namespace="predict..raw", quiet=True) as ctx:
-        with we.namespace("precompute"):
+        with flops.namespace("precompute"):
             ctx.deduct("add", flop_cost=25, subscripts=None, shapes=())
 
     data = budget_summary_dict(by_namespace=True)
@@ -118,22 +118,22 @@ def test_budget_reset():
 
 
 def test_budget_summary_dict_does_not_double_count_reused_decorator_context():
-    import whest as we
-    from whest._budget import get_active_budget
+    import flopscope as flops
+    from flopscope._budget import get_active_budget
 
     seen_totals = []
 
-    @we.budget(flop_budget=5000, namespace="dec", quiet=True)
+    @flops.budget(flop_budget=5000, namespace="dec", quiet=True)
     def compute():
         ctx = get_active_budget()
         assert ctx is not None
         ctx.deduct("add", flop_cost=10, subscripts=None, shapes=())
-        seen_totals.append(we.budget_summary_dict()["flops_used"])
+        seen_totals.append(flops.budget_summary_dict()["flops_used"])
 
     compute()
     compute()
 
-    data = we.budget_summary_dict()
+    data = flops.budget_summary_dict()
     assert seen_totals == [10, 20]
     assert data["flop_budget"] == 5000
     assert data["flops_used"] == 20
@@ -144,10 +144,10 @@ def test_budget_summary_dict_does_not_double_count_reused_decorator_context():
 def test_reused_decorator_context_resets_live_timing_state_between_calls():
     import time
 
-    import whest as we
-    from whest._budget import get_active_budget
+    import flopscope as flops
+    from flopscope._budget import get_active_budget
 
-    budget_ctx = we.budget(flop_budget=5000, namespace="dec", quiet=True)
+    budget_ctx = flops.budget(flop_budget=5000, namespace="dec", quiet=True)
     seen_ctx_wall_times = []
     seen_context_live_wall_times = []
     seen_global_live_wall_times = []
@@ -162,7 +162,7 @@ def test_reused_decorator_context_resets_live_timing_state_between_calls():
             pass
 
         seen_context_live_wall_times.append(ctx.summary_dict()["wall_time_s"])
-        seen_global_live_wall_times.append(we.budget_summary_dict()["wall_time_s"])
+        seen_global_live_wall_times.append(flops.budget_summary_dict()["wall_time_s"])
 
         if post_sleep_s:
             time.sleep(post_sleep_s)

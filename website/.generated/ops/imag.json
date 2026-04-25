@@ -140,7 +140,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/real",
-              "label": "we.real",
+              "label": "fnp.real",
               "original_target": "real",
               "role": "",
               "target": "real",
@@ -151,7 +151,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/angle",
-              "label": "we.angle",
+              "label": "fnp.angle",
               "original_target": "angle",
               "role": "",
               "target": "angle",
@@ -162,7 +162,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/real_if_close",
-              "label": "we.real_if_close",
+              "label": "fnp.real_if_close",
               "original_target": "real_if_close",
               "role": "",
               "target": "real_if_close",
@@ -181,12 +181,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([1+2j, 3+4j, 5+6j])"
+              "text": "a = fnp.array([1+2j, 3+4j, 5+6j])"
             },
             {
               "kind": "input",
@@ -200,7 +200,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a.imag = we.array([8, 10, 12])"
+              "text": "a.imag = fnp.array([8, 10, 12])"
             },
             {
               "kind": "input",
@@ -214,7 +214,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.imag(1 + 1j)"
+              "text": "fnp.imag(1 + 1j)"
             },
             {
               "kind": "output",
@@ -238,16 +238,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([1+2j, 3+4j, 5+6j])\n\na.imag\n\na.imag = we.array([8, 10, 12])\n\na\n\nwe.imag(1 + 1j)",
+    "code": "import flopscope as fnp\n\na = fnp.array([1+2j, 3+4j, 5+6j])\n\na.imag\n\na.imag = fnp.array([8, 10, 12])\n\na\n\nfnp.imag(1 + 1j)",
     "output": "array([2.,  4.,  6.])\n\narray([1. +8.j,  3.+10.j,  5.+12.j])\n\n1.0",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.imag",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/imag/",
   "module": "numpy",
   "name": "imag",
   "next": {
     "href": "/docs/api/ops/in1d/",
-    "label": "we.in1d"
+    "label": "fnp.in1d"
   },
   "notes": "Return imaginary part of complex array.",
   "notes_sections": [],
@@ -263,7 +266,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/identity/",
-    "label": "we.identity"
+    "label": "fnp.identity"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.imag.html",
@@ -284,7 +287,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/real",
-      "label": "we.real",
+      "label": "fnp.real",
       "original_target": "real",
       "role": "",
       "target": "real",
@@ -295,7 +298,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/angle",
-      "label": "we.angle",
+      "label": "fnp.angle",
       "original_target": "angle",
       "role": "",
       "target": "angle",
@@ -306,19 +309,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/real_if_close",
-      "label": "we.real_if_close",
+      "label": "fnp.real_if_close",
       "original_target": "real_if_close",
       "role": "",
       "target": "real_if_close",
       "unresolved": false
     }
   ],
-  "signature": "we.imag(val)",
+  "signature": "fnp.imag(val)",
   "slug": "imag",
   "summary": "Return the imaginary part of the complex argument.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L131",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.imag",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_type_check_impl.py#L131",
+  "weight": 1.0
 }

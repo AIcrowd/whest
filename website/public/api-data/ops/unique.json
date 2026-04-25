@@ -317,6 +317,54 @@
                 ],
                 "name": "equal_nan",
                 "type": "field_list"
+              },
+              {
+                "body_blocks": [
+                  {
+                    "inline": [
+                      {
+                        "kind": "text",
+                        "text": "If True, the unique elements are sorted. Elements may be sorted in\npractice even if "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "sorted=False"
+                      },
+                      {
+                        "kind": "text",
+                        "text": ", but this could change without\nnotice."
+                      }
+                    ],
+                    "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 2.3",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "2.3"
+                  }
+                ],
+                "data_type": "bool, optional",
+                "inline": [
+                  {
+                    "kind": "text",
+                    "text": "If True, the unique elements are sorted. Elements may be sorted in\npractice even if "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "sorted=False"
+                  },
+                  {
+                    "kind": "text",
+                    "text": ", but this could change without\nnotice."
+                  }
+                ],
+                "name": "sorted",
+                "type": "field_list"
               }
             ],
             "title": "Parameters",
@@ -486,7 +534,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/repeat",
-                "label": "we.repeat",
+                "label": "fnp.repeat",
                 "original_target": "repeat",
                 "role": "",
                 "target": "repeat",
@@ -502,7 +550,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/sort",
-                "label": "we.sort",
+                "label": "fnp.sort",
                 "original_target": "sort",
                 "role": "",
                 "target": "sort",
@@ -530,7 +578,7 @@
             "content_blocks": [],
             "directive": "versionchanged",
             "options": [],
-            "raw_source": ".. versionchanged:: 1.21\n    Like we.sort, NaN will sort to the end of the values.\n    For complex arrays all NaN values are considered equivalent\n    (no matter whether the NaN is in the real or imaginary part).\n    As the representant for the returned array the smallest one in the\n    lexicographical order is chosen - see we.sort for how the lexicographical\n    order is defined for complex arrays.",
+            "raw_source": ".. versionchanged:: 1.21\n    Like fnp.sort, NaN will sort to the end of the values.\n    For complex arrays all NaN values are considered equivalent\n    (no matter whether the NaN is in the real or imaginary part).\n    As the representant for the returned array the smallest one in the\n    lexicographical order is chosen - see fnp.sort for how the lexicographical\n    order is defined for complex arrays.",
             "supported": true,
             "type": "directive_block",
             "version": "1.21"
@@ -540,7 +588,7 @@
             "content_blocks": [],
             "directive": "versionchanged",
             "options": [],
-            "raw_source": ".. versionchanged:: 2.0\n    For multi-dimensional inputs, ``unique_inverse`` is reshaped\n    such that the input can be reconstructed using\n    ``we.take(unique, unique_inverse, axis=axis)``. The result is\n    now not 1-dimensional when ``axis=None``.\n\n    Note that in NumPy 2.0.0 a higher dimensional array was returned also\n    when ``axis`` was not ``None``.  This was reverted, but\n    ``inverse.reshape(-1)`` can be used to ensure compatibility with both\n    versions.",
+            "raw_source": ".. versionchanged:: 2.0\n    For multi-dimensional inputs, ``unique_inverse`` is reshaped\n    such that the input can be reconstructed using\n    ``fnp.take(unique, unique_inverse, axis=axis)``. The result is\n    now not 1-dimensional when ``axis=None``.\n\n    Note that in NumPy 2.0.0 a higher dimensional array was returned also\n    when ``axis`` was not ``None``.  This was reverted, but\n    ``inverse.reshape(-1)`` can be used to ensure compatibility with both\n    versions.",
             "supported": true,
             "type": "directive_block",
             "version": "2.0"
@@ -555,12 +603,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unique([1, 1, 2, 2, 3, 3])"
+                "text": "fnp.unique([1, 1, 2, 2, 3, 3])"
               },
               {
                 "kind": "output",
@@ -569,12 +617,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 1], [2, 3]])"
+                "text": "a = fnp.array([[1, 1], [2, 3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unique(a)"
+                "text": "fnp.unique(a)"
               },
               {
                 "kind": "output",
@@ -597,12 +645,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 0, 0], [1, 0, 0], [2, 3, 4]])"
+                "text": "a = fnp.array([[1, 0, 0], [1, 0, 0], [2, 3, 4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unique(a, axis=0)"
+                "text": "fnp.unique(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -625,12 +673,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array(['a', 'b', 'b', 'c', 'a'])"
+                "text": "a = fnp.array(['a', 'b', 'b', 'c', 'a'])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "u, indices = we.unique(a, return_index=True)"
+                "text": "u, indices = fnp.unique(a, return_index=True)"
               },
               {
                 "kind": "input",
@@ -676,12 +724,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2, 6, 4, 2, 3, 2])"
+                "text": "a = fnp.array([1, 2, 6, 4, 2, 3, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "u, indices = we.unique(a, return_inverse=True)"
+                "text": "u, indices = fnp.unique(a, return_inverse=True)"
               },
               {
                 "kind": "input",
@@ -727,12 +775,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2, 6, 4, 2, 3, 2])"
+                "text": "a = fnp.array([1, 2, 6, 4, 2, 3, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "values, counts = we.unique(a, return_counts=True)"
+                "text": "values, counts = fnp.unique(a, return_counts=True)"
               },
               {
                 "kind": "input",
@@ -755,7 +803,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.repeat(values, counts)"
+                "text": "fnp.repeat(values, counts)"
               },
               {
                 "kind": "output",
@@ -773,20 +821,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.unique",
     "module": "numpy",
     "name": "unique",
     "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.unique",
-    "signature": "we.unique(ar, return_index=False, return_inverse=False, return_counts=False, axis=None, *, equal_nan=True)",
+    "signature": "fnp.unique(ar, return_index=False, return_inverse=False, return_counts=False, axis=None, *, equal_nan=True, sorted=True)",
     "status": "supported",
     "summary": "Find the unique elements of an array.",
-    "weight": 1.0,
-    "whest_ref": "we.unique"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "unique",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L145",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L254"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L254",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_arraysetops_impl.py#L145"
   }
 }

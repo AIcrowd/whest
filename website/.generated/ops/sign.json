@@ -359,6 +359,38 @@
     {
       "blocks": [
         {
+          "links": [
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/signbit",
+              "label": "fnp.signbit",
+              "original_target": "signbit",
+              "role": "",
+              "target": "signbit",
+              "unresolved": false
+            },
+            {
+              "description": "",
+              "description_inline": [],
+              "external_url": "",
+              "href": "/docs/api/ops/copysign",
+              "label": "fnp.copysign",
+              "original_target": "copysign",
+              "role": "",
+              "target": "copysign",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
           "inline": [
             {
               "kind": "text",
@@ -401,12 +433,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sign([-5., 4.5])"
+              "text": "fnp.sign([-5., 4.5])"
             },
             {
               "kind": "output",
@@ -415,7 +447,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sign(0)"
+              "text": "fnp.sign(0)"
             },
             {
               "kind": "output",
@@ -424,7 +456,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sign([3-4j, 8j])"
+              "text": "fnp.sign([3-4j, 8j])"
             },
             {
               "kind": "output",
@@ -455,16 +487,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.sign([-5., 4.5])\n\nwe.sign(0)\n\nwe.sign([3-4j, 8j])",
+    "code": "import flopscope as fnp\n\nfnp.sign([-5., 4.5])\n\nfnp.sign(0)\n\nfnp.sign([3-4j, 8j])",
     "output": "array([-1.,  1.])\n\n0\n\narray([0.6-0.8j, 0. +1.j ])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.sign",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/sign/",
   "module": "numpy",
   "name": "sign",
   "next": {
     "href": "/docs/api/ops/signbit/",
-    "label": "we.signbit"
+    "label": "fnp.signbit"
   },
   "notes": "Element-wise sign function.",
   "notes_sections": [
@@ -512,7 +547,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/shares_memory/",
-    "label": "we.shares_memory"
+    "label": "fnp.shares_memory"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sign.html",
@@ -526,13 +561,33 @@
       "type": "ndarray"
     }
   ],
-  "see_also": [],
-  "signature": "we.sign(x)",
+  "see_also": [
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/signbit",
+      "label": "fnp.signbit",
+      "original_target": "signbit",
+      "role": "",
+      "target": "signbit",
+      "unresolved": false
+    },
+    {
+      "description": "",
+      "description_inline": [],
+      "external_url": "",
+      "href": "/docs/api/ops/copysign",
+      "label": "fnp.copysign",
+      "original_target": "copysign",
+      "role": "",
+      "target": "copysign",
+      "unresolved": false
+    }
+  ],
+  "signature": "fnp.sign(x)",
   "slug": "sign",
   "summary": "Returns an element-wise indication of the sign of a number.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.sign",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

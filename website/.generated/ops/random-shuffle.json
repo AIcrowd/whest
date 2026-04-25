@@ -81,7 +81,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.shuffle`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.shuffle`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -172,12 +172,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr = we.arange(10)"
+              "text": "arr = fnp.arange(10)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.shuffle(arr)"
+              "text": "fnp.random.shuffle(arr)"
             },
             {
               "kind": "input",
@@ -205,12 +205,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr = we.arange(9).reshape((3, 3))"
+              "text": "arr = fnp.arange(9).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.shuffle(arr)"
+              "text": "fnp.random.shuffle(arr)"
             },
             {
               "kind": "input",
@@ -247,16 +247,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "arr = we.arange(10)\n\nwe.random.shuffle(arr)\n\narr\n\narr = we.arange(9).reshape((3, 3))\n\nwe.random.shuffle(arr)\n\narr",
+    "code": "arr = fnp.arange(10)\n\nfnp.random.shuffle(arr)\n\narr\n\narr = fnp.arange(9).reshape((3, 3))\n\nfnp.random.shuffle(arr)\n\narr",
     "output": "[1 7 5 2 9 4 3 6 0 8] # random\n\narray([[3, 4, 5], # random\n       [6, 7, 8],\n       [0, 1, 2]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.shuffle",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L223",
   "href": "/docs/api/ops/random-shuffle/",
   "module": "numpy.random",
   "name": "random.shuffle",
   "next": {
     "href": "/docs/api/ops/random-standard_cauchy/",
-    "label": "we.random.standard_cauchy"
+    "label": "fnp.random.standard_cauchy"
   },
   "notes": "Shuffle; cost = n*ceil(log2(n)).",
   "notes_sections": [],
@@ -272,7 +275,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-set_state/",
-    "label": "we.random.set_state"
+    "label": "fnp.random.set_state"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.shuffle.html",
@@ -301,12 +304,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.shuffle(x)",
+  "signature": "fnp.random.shuffle(x)",
   "slug": "random-shuffle",
   "summary": "Modify a sequence in-place by shuffling its contents.",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.shuffle",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L223"
+  "weight": 1.0
 }

@@ -477,7 +477,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/nanmin",
-              "label": "we.nanmin",
+              "label": "fnp.nanmin",
               "original_target": "nanmin",
               "role": "",
               "target": "nanmin",
@@ -493,7 +493,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/max",
-              "label": "we.max",
+              "label": "fnp.max",
               "original_target": "amax",
               "role": "",
               "target": "max",
@@ -509,7 +509,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/fmax",
-              "label": "we.fmax",
+              "label": "fnp.fmax",
               "original_target": "fmax",
               "role": "",
               "target": "fmax",
@@ -525,7 +525,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/maximum",
-              "label": "we.maximum",
+              "label": "fnp.maximum",
               "original_target": "maximum",
               "role": "",
               "target": "maximum",
@@ -541,7 +541,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/isnan",
-              "label": "we.isnan",
+              "label": "fnp.isnan",
               "original_target": "isnan",
               "role": "",
               "target": "isnan",
@@ -557,7 +557,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/isfinite",
-              "label": "we.isfinite",
+              "label": "fnp.isfinite",
               "original_target": "isfinite",
               "role": "",
               "target": "isfinite",
@@ -568,7 +568,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/min",
-              "label": "we.min",
+              "label": "fnp.min",
               "original_target": "amin",
               "role": "",
               "target": "min",
@@ -579,7 +579,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/fmin",
-              "label": "we.fmin",
+              "label": "fnp.fmin",
               "original_target": "fmin",
               "role": "",
               "target": "fmin",
@@ -590,7 +590,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/minimum",
-              "label": "we.minimum",
+              "label": "fnp.minimum",
               "original_target": "minimum",
               "role": "",
               "target": "minimum",
@@ -617,7 +617,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "If the input has a integer type the function is equivalent to we.max."
+              "text": "If the input has a integer type the function is equivalent to fnp.max."
             }
           ],
           "type": "paragraph"
@@ -632,17 +632,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 2], [3, we.nan]])"
+              "text": "a = fnp.array([[1, 2], [3, fnp.nan]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanmax(a)"
+              "text": "fnp.nanmax(a)"
             },
             {
               "kind": "output",
@@ -651,7 +651,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanmax(a, axis=0)"
+              "text": "fnp.nanmax(a, axis=0)"
             },
             {
               "kind": "output",
@@ -660,7 +660,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanmax(a, axis=1)"
+              "text": "fnp.nanmax(a, axis=1)"
             },
             {
               "kind": "output",
@@ -683,7 +683,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanmax([1, 2, we.nan, -we.inf])"
+              "text": "fnp.nanmax([1, 2, fnp.nan, -fnp.inf])"
             },
             {
               "kind": "output",
@@ -692,7 +692,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanmax([1, 2, we.nan, we.inf])"
+              "text": "fnp.nanmax([1, 2, fnp.nan, fnp.inf])"
             },
             {
               "kind": "output",
@@ -716,21 +716,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[1, 2], [3, we.nan]])\n\nwe.nanmax(a)\n\nwe.nanmax(a, axis=0)\n\nwe.nanmax(a, axis=1)\n\nwe.nanmax([1, 2, we.nan, -we.inf])\n\nwe.nanmax([1, 2, we.nan, we.inf])",
+    "code": "import flopscope as fnp\n\na = fnp.array([[1, 2], [3, fnp.nan]])\n\nfnp.nanmax(a)\n\nfnp.nanmax(a, axis=0)\n\nfnp.nanmax(a, axis=1)\n\nfnp.nanmax([1, 2, fnp.nan, -fnp.inf])\n\nfnp.nanmax([1, 2, fnp.nan, fnp.inf])",
     "output": "3.0\n\narray([3.,  2.])\n\narray([2.,  3.])\n\n2.0\n\ninf",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.nanmax",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
   "href": "/docs/api/ops/nanmax/",
   "module": "numpy",
   "name": "nanmax",
   "next": {
     "href": "/docs/api/ops/nanmean/",
-    "label": "we.nanmean"
+    "label": "fnp.nanmean"
   },
   "notes": "Maximum ignoring NaNs.",
   "notes_sections": [
     "NumPy uses the IEEE Standard for Binary Floating-Point for Arithmetic (IEEE 754). This means that Not a Number is not equivalent to infinity. Positive infinity is treated as a very large number and negative infinity is treated as a very small (i.e. negative) number.",
-    "If the input has a integer type the function is equivalent to we.max."
+    "If the input has a integer type the function is equivalent to fnp.max."
   ],
   "numpy_ref": "np.nanmax",
   "parameters": [
@@ -776,7 +779,7 @@
     {
       "body": [
         "The minimum value of an output element. Must be present to allow",
-        "computation on empty slice. See `~we.ufunc.reduce` for details.",
+        "computation on empty slice. See `~fnp.ufunc.reduce` for details.",
         "",
         ".. versionadded:: 1.22.0"
       ],
@@ -785,7 +788,7 @@
     },
     {
       "body": [
-        "Elements to compare for the maximum. See `~we.ufunc.reduce`",
+        "Elements to compare for the maximum. See `~fnp.ufunc.reduce`",
         "for details.",
         "",
         ".. versionadded:: 1.22.0"
@@ -796,7 +799,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/nancumsum/",
-    "label": "we.nancumsum"
+    "label": "fnp.nancumsum"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nanmax.html",
@@ -822,7 +825,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/nanmin",
-      "label": "we.nanmin",
+      "label": "fnp.nanmin",
       "original_target": "nanmin",
       "role": "",
       "target": "nanmin",
@@ -838,7 +841,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/max",
-      "label": "we.max",
+      "label": "fnp.max",
       "original_target": "amax",
       "role": "",
       "target": "max",
@@ -854,7 +857,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/fmax",
-      "label": "we.fmax",
+      "label": "fnp.fmax",
       "original_target": "fmax",
       "role": "",
       "target": "fmax",
@@ -870,7 +873,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/maximum",
-      "label": "we.maximum",
+      "label": "fnp.maximum",
       "original_target": "maximum",
       "role": "",
       "target": "maximum",
@@ -886,7 +889,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/isnan",
-      "label": "we.isnan",
+      "label": "fnp.isnan",
       "original_target": "isnan",
       "role": "",
       "target": "isnan",
@@ -902,7 +905,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/isfinite",
-      "label": "we.isfinite",
+      "label": "fnp.isfinite",
       "original_target": "isfinite",
       "role": "",
       "target": "isfinite",
@@ -913,7 +916,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/min",
-      "label": "we.min",
+      "label": "fnp.min",
       "original_target": "amin",
       "role": "",
       "target": "min",
@@ -924,7 +927,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/fmin",
-      "label": "we.fmin",
+      "label": "fnp.fmin",
       "original_target": "fmin",
       "role": "",
       "target": "fmin",
@@ -935,19 +938,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/minimum",
-      "label": "we.minimum",
+      "label": "fnp.minimum",
       "original_target": "minimum",
       "role": "",
       "target": "minimum",
       "unresolved": false
     }
   ],
-  "signature": "we.nanmax(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+  "signature": "fnp.nanmax(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "nanmax",
   "summary": "Return the maximum of an array or maximum along an axis, ignoring any NaNs.  When all-NaN slices are encountered a ``RuntimeWarning`` is raised and NaN is returned for that slice.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L383",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.nanmax",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_nanfunctions_impl.py#L382",
+  "weight": 1.0
 }

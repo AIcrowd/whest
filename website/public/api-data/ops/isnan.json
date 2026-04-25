@@ -286,7 +286,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isinf",
-                "label": "we.isinf",
+                "label": "fnp.isinf",
                 "original_target": "isinf",
                 "role": "",
                 "target": "isinf",
@@ -297,7 +297,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isneginf",
-                "label": "we.isneginf",
+                "label": "fnp.isneginf",
                 "original_target": "isneginf",
                 "role": "",
                 "target": "isneginf",
@@ -308,7 +308,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isposinf",
-                "label": "we.isposinf",
+                "label": "fnp.isposinf",
                 "original_target": "isposinf",
                 "role": "",
                 "target": "isposinf",
@@ -319,7 +319,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isfinite",
-                "label": "we.isfinite",
+                "label": "fnp.isfinite",
                 "original_target": "isfinite",
                 "role": "",
                 "target": "isfinite",
@@ -363,12 +363,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isnan(we.nan)"
+                "text": "fnp.isnan(fnp.nan)"
               },
               {
                 "kind": "output",
@@ -377,7 +377,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isnan(we.inf)"
+                "text": "fnp.isnan(fnp.inf)"
               },
               {
                 "kind": "output",
@@ -386,7 +386,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isnan([we.log(-1.),1.,we.log(0)])"
+                "text": "fnp.isnan([fnp.log(-1.),1.,fnp.log(0)])"
               },
               {
                 "kind": "output",
@@ -404,20 +404,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.isnan",
     "module": "numpy",
     "name": "isnan",
     "notes": "Test for NaN element-wise. Cost: numel(input).",
     "numpy_ref": "np.isnan",
-    "signature": "we.isnan(*args, **kwargs)",
+    "signature": "fnp.isnan(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True, signature=None)",
     "status": "supported",
     "summary": "Test element-wise for NaN and return result as a boolean array.",
-    "weight": 1.0,
-    "whest_ref": "we.isnan"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "isnan",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L533"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L533",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

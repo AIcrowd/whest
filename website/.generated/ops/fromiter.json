@@ -257,7 +257,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -267,7 +267,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fromiter(iterable, float)"
+              "text": "fnp.fromiter(iterable, float)"
             },
             {
               "kind": "output",
@@ -295,7 +295,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fromiter(iterable, dtype=we.dtype((int, 2)))"
+              "text": "fnp.fromiter(iterable, dtype=fnp.dtype((int, 2)))"
             },
             {
               "kind": "output",
@@ -335,16 +335,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\niterable = (x*x for x in range(5))\n\nwe.fromiter(iterable, float)\n\niterable = ((x+1, x+2) for x in range(5))\n\nwe.fromiter(iterable, dtype=we.dtype((int, 2)))",
+    "code": "import flopscope as fnp\n\niterable = (x*x for x in range(5))\n\nfnp.fromiter(iterable, float)\n\niterable = ((x+1, x+2) for x in range(5))\n\nfnp.fromiter(iterable, dtype=fnp.dtype((int, 2)))",
     "output": "array([  0.,   1.,   4.,   9.,  16.])\n\narray([[1, 2],\n       [2, 3],\n       [3, 4],\n       [4, 5],\n       [5, 6]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fromiter",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1016",
   "href": "/docs/api/ops/fromiter/",
   "module": "numpy",
   "name": "fromiter",
   "next": {
     "href": "/docs/api/ops/full/",
-    "label": "we.full"
+    "label": "fnp.full"
   },
   "notes": "Create array from an iterable. Cost: numel(output).",
   "notes_sections": [
@@ -394,7 +397,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/fromfunction/",
-    "label": "we.fromfunction"
+    "label": "fnp.fromfunction"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fromiter.html",
@@ -408,12 +411,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.fromiter(*args, **kwargs)",
+  "signature": "fnp.fromiter(iter, dtype, count=-1, *, like=None)",
   "slug": "fromiter",
   "summary": "Create a new 1-dimensional array from an iterable object.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fromiter",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1016"
+  "weight": 16.0
 }

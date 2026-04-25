@@ -49,7 +49,18 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Data-type of the returned array; default: float."
+                        "text": "Data-type of the returned array.  Default is "
+                      },
+                      {
+                        "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.float64.html",
+                        "href": "",
+                        "kind": "link",
+                        "target": "float64",
+                        "text": "fnp.float64"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
@@ -59,7 +70,18 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Data-type of the returned array; default: float."
+                    "text": "Data-type of the returned array.  Default is "
+                  },
+                  {
+                    "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.float64.html",
+                    "href": "",
+                    "kind": "link",
+                    "target": "float64",
+                    "text": "fnp.float64"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "dtype",
@@ -253,7 +275,7 @@
           },
           {
             "language": null,
-            "text": ">>> dt = we.dtype(int)\n>>> dt = dt.newbyteorder('>')\n>>> we.frombuffer(buf, dtype=dt) # doctest: +SKIP",
+            "text": ">>> dt = fnp.dtype(int)\n>>> dt = dt.newbyteorder('>')\n>>> fnp.frombuffer(buf, dtype=dt) # doctest: +SKIP",
             "type": "literal_block"
           },
           {
@@ -284,7 +306,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -294,7 +316,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.frombuffer(s, dtype='S1', count=5, offset=6)"
+                "text": "fnp.frombuffer(s, dtype='S1', count=5, offset=6)"
               },
               {
                 "kind": "output",
@@ -308,7 +330,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.frombuffer(b'\\x01\\x02', dtype=we.uint8)"
+                "text": "fnp.frombuffer(b'\\x01\\x02', dtype=fnp.uint8)"
               },
               {
                 "kind": "output",
@@ -317,7 +339,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.frombuffer(b'\\x01\\x02\\x03\\x04\\x05', dtype=we.uint8, count=3)"
+                "text": "fnp.frombuffer(b'\\x01\\x02\\x03\\x04\\x05', dtype=fnp.uint8, count=3)"
               },
               {
                 "kind": "output",
@@ -335,20 +357,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.frombuffer",
     "module": "numpy",
     "name": "frombuffer",
     "notes": "Interpret buffer as 1-D array. Cost: numel(output).",
     "numpy_ref": "np.frombuffer",
-    "signature": "we.frombuffer(*args, **kwargs)",
+    "signature": "fnp.frombuffer(buffer, dtype=None, count=-1, offset=0, *, like=None)",
     "status": "supported",
     "summary": "Interpret a buffer as a 1-dimensional array.",
-    "weight": 0.0,
-    "whest_ref": "we.frombuffer"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "frombuffer",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.frombuffer.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L977"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L977",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.frombuffer.html"
   }
 }

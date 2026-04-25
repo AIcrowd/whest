@@ -3,8 +3,8 @@
 import numpy
 import pytest
 
-from whest._budget import BudgetContext
-from whest._pointwise import (
+from flopscope._budget import BudgetContext
+from flopscope._pointwise import (
     add,
     argmax,
     clip,

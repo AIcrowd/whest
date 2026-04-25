@@ -174,7 +174,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/shares_memory",
-                "label": "we.shares_memory",
+                "label": "fnp.shares_memory",
                 "original_target": "shares_memory",
                 "role": "",
                 "target": "shares_memory",
@@ -193,12 +193,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.may_share_memory(we.array([1,2]), we.array([5,8,9]))"
+                "text": "fnp.may_share_memory(fnp.array([1,2]), fnp.array([5,8,9]))"
               },
               {
                 "kind": "output",
@@ -207,12 +207,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.zeros([3, 4])"
+                "text": "x = fnp.zeros([3, 4])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.may_share_memory(x[:,0], x[:,1])"
+                "text": "fnp.may_share_memory(x[:,0], x[:,1])"
               },
               {
                 "kind": "output",
@@ -230,20 +230,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.may_share_memory",
     "module": "numpy",
     "name": "may_share_memory",
     "notes": "Determine if two arrays might share memory.",
     "numpy_ref": "np.may_share_memory",
-    "signature": "we.may_share_memory(*args, **kwargs)",
+    "signature": "fnp.may_share_memory(a, b, /, max_work=0)",
     "status": "supported",
     "summary": "Determine if two arrays might share memory",
-    "weight": 0.0,
-    "whest_ref": "we.may_share_memory"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "may_share_memory",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.may_share_memory.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1163"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1163",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.may_share_memory.html"
   }
 }

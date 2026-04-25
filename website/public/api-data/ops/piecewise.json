@@ -207,7 +207,7 @@
                       },
                       {
                         "kind": "text",
-                        "text": " wherever its corresponding\ncondition is True.  It should take a 1d array as input and give an 1d\narray or a scalar value as output.  If, instead of a callable,\na scalar is provided then a constant function ("
+                        "text": " wherever its corresponding\ncondition is True.  It should take a 1d array as input and give a 1d\narray or a scalar value as output.  If, instead of a callable,\na scalar is provided then a constant function ("
                       },
                       {
                         "kind": "code",
@@ -233,7 +233,7 @@
                   },
                   {
                     "kind": "text",
-                    "text": " wherever its corresponding\ncondition is True.  It should take a 1d array as input and give an 1d\narray or a scalar value as output.  If, instead of a callable,\na scalar is provided then a constant function ("
+                    "text": " wherever its corresponding\ncondition is True.  It should take a 1d array as input and give a 1d\narray or a scalar value as output.  If, instead of a callable,\na scalar is provided then a constant function ("
                   },
                   {
                     "kind": "code",
@@ -496,7 +496,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/choose",
-                "label": "we.choose",
+                "label": "fnp.choose",
                 "original_target": "choose",
                 "role": "",
                 "target": "choose",
@@ -507,7 +507,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/select",
-                "label": "we.select",
+                "label": "fnp.select",
                 "original_target": "select",
                 "role": "",
                 "target": "select",
@@ -518,7 +518,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/where",
-                "label": "we.where",
+                "label": "fnp.where",
                 "original_target": "where",
                 "role": "",
                 "target": "where",
@@ -581,7 +581,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -616,12 +616,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(-2.5, 2.5, 6)"
+                "text": "x = fnp.linspace(-2.5, 2.5, 6)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.piecewise(x, [x < 0, x >= 0], [-1, 1])"
+                "text": "fnp.piecewise(x, [x < 0, x >= 0], [-1, 1])"
               },
               {
                 "kind": "output",
@@ -676,7 +676,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])"
+                "text": "fnp.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])"
               },
               {
                 "kind": "output",
@@ -704,7 +704,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])"
+                "text": "fnp.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])"
               },
               {
                 "kind": "output",
@@ -722,20 +722,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.piecewise",
     "module": "numpy",
     "name": "piecewise",
     "notes": "Piecewise function. Cost: numel(input).",
     "numpy_ref": "np.piecewise",
-    "signature": "we.piecewise(x, condlist, funclist, *args, **kw)",
+    "signature": "fnp.piecewise(x, condlist, funclist, *args, **kw)",
     "status": "supported",
     "summary": "Evaluate a piecewise-defined function.",
-    "weight": 4.0,
-    "whest_ref": "we.piecewise"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "piecewise",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L658",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L344"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L344",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L685"
   }
 }

@@ -366,7 +366,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_and",
-                "label": "we.logical_and",
+                "label": "fnp.logical_and",
                 "original_target": "logical_and",
                 "role": "",
                 "target": "logical_and",
@@ -377,7 +377,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_not",
-                "label": "we.logical_not",
+                "label": "fnp.logical_not",
                 "original_target": "logical_not",
                 "role": "",
                 "target": "logical_not",
@@ -388,7 +388,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_xor",
-                "label": "we.logical_xor",
+                "label": "fnp.logical_xor",
                 "original_target": "logical_xor",
                 "role": "",
                 "target": "logical_xor",
@@ -399,7 +399,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bitwise_or",
-                "label": "we.bitwise_or",
+                "label": "fnp.bitwise_or",
                 "original_target": "bitwise_or",
                 "role": "",
                 "target": "bitwise_or",
@@ -418,12 +418,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_or(True, False)"
+                "text": "fnp.logical_or(True, False)"
               },
               {
                 "kind": "output",
@@ -432,7 +432,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_or([True, False], [False, False])"
+                "text": "fnp.logical_or([True, False], [False, False])"
               },
               {
                 "kind": "output",
@@ -446,12 +446,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(5)"
+                "text": "x = fnp.arange(5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_or(x < 1, x > 3)"
+                "text": "fnp.logical_or(x < 1, x > 3)"
               },
               {
                 "kind": "output",
@@ -479,7 +479,7 @@
                 "href": "/docs/api/ops/logical_or",
                 "kind": "link",
                 "target": "logical_or",
-                "text": "we.logical_or"
+                "text": "fnp.logical_or"
               },
               {
                 "kind": "text",
@@ -493,12 +493,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([True, False])"
+                "text": "a = fnp.array([True, False])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([False, False])"
+                "text": "b = fnp.array([False, False])"
               },
               {
                 "kind": "input",
@@ -521,20 +521,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.logical_or",
     "module": "numpy",
     "name": "logical_or",
     "notes": "Element-wise logical OR.",
     "numpy_ref": "np.logical_or",
-    "signature": "we.logical_or(x, y)",
+    "signature": "fnp.logical_or(x, y)",
     "status": "supported",
     "summary": "Compute the truth value of x1 OR x2 element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.logical_or"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "logical_or",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

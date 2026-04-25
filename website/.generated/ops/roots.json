@@ -33,7 +33,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "polynomial",
-                  "text": "we.polynomial"
+                  "text": "fnp.polynomial"
                 },
                 {
                   "kind": "text",
@@ -61,7 +61,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `we.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+          "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `fnp.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
           "supported": true,
           "type": "directive_block"
         },
@@ -227,7 +227,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/poly",
-              "label": "we.poly",
+              "label": "fnp.poly",
               "original_target": "poly",
               "role": "",
               "target": "poly",
@@ -243,7 +243,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/polyval",
-              "label": "we.polyval",
+              "label": "fnp.polyval",
               "original_target": "polyval",
               "role": "",
               "target": "polyval",
@@ -259,7 +259,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/polyfit",
-              "label": "we.polyfit",
+              "label": "fnp.polyfit",
               "original_target": "polyfit",
               "role": "",
               "target": "polyfit",
@@ -326,7 +326,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -336,7 +336,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.roots(coeff)"
+              "text": "fnp.roots(coeff)"
             },
             {
               "kind": "output",
@@ -377,16 +377,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\ncoeff = [3.2, 2, 1]\n\nwe.roots(coeff)",
+    "code": "import flopscope as fnp\n\ncoeff = [3.2, 2, 1]\n\nfnp.roots(coeff)",
     "output": "array([-0.3125+0.46351241j, -0.3125-0.46351241j])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.roots",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L233",
   "href": "/docs/api/ops/roots/",
-  "module": "whest._polynomial",
+  "module": "flopscope._polynomial",
   "name": "roots",
   "next": {
     "href": "/docs/api/ops/rot90/",
-    "label": "we.rot90"
+    "label": "fnp.rot90"
   },
   "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
   "notes_sections": [
@@ -404,7 +407,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/rollaxis/",
-    "label": "we.rollaxis"
+    "label": "fnp.rollaxis"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.roots.html",
@@ -428,7 +431,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/poly",
-      "label": "we.poly",
+      "label": "fnp.poly",
       "original_target": "poly",
       "role": "",
       "target": "poly",
@@ -444,7 +447,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/polyval",
-      "label": "we.polyval",
+      "label": "fnp.polyval",
       "original_target": "polyval",
       "role": "",
       "target": "polyval",
@@ -460,7 +463,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/polyfit",
-      "label": "we.polyfit",
+      "label": "fnp.polyfit",
       "original_target": "polyfit",
       "role": "",
       "target": "polyfit",
@@ -483,12 +486,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.roots(p)",
+  "signature": "fnp.roots(p)",
   "slug": "roots",
   "summary": "Return the roots of a polynomial with coefficients given in p.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L163",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.roots",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L233"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_polynomial_impl.py#L170",
+  "weight": 16.0
 }

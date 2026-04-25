@@ -49,17 +49,27 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Axis along which the elements are counted.  By default, give\nthe total number of elements."
+                        "text": "Axis or axes along which the elements are counted.  By default, give\nthe total number of elements."
                       }
                     ],
                     "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionchanged",
+                    "options": [],
+                    "raw_source": ".. versionchanged:: 2.4\n   Extended to accept multiple axes.",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "2.4"
                   }
                 ],
-                "data_type": "int, optional",
+                "data_type": "None or int or tuple of ints, optional",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Axis along which the elements are counted.  By default, give\nthe total number of elements."
+                    "text": "Axis or axes along which the elements are counted.  By default, give\nthe total number of elements."
                   }
                 ],
                 "name": "axis",
@@ -119,7 +129,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/shape",
-                "label": "we.shape",
+                "label": "fnp.shape",
                 "original_target": "shape",
                 "role": "",
                 "target": "shape",
@@ -170,17 +180,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1,2,3],[4,5,6]])"
+                "text": "a = fnp.array([[1,2,3],[4,5,6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.size(a)"
+                "text": "fnp.size(a)"
               },
               {
                 "kind": "output",
@@ -189,7 +199,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.size(a,1)"
+                "text": "fnp.size(a,axis=1)"
               },
               {
                 "kind": "output",
@@ -198,11 +208,20 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.size(a,0)"
+                "text": "fnp.size(a,axis=0)"
               },
               {
                 "kind": "output",
                 "text": "2"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "fnp.size(a,axis=(0,1))"
+              },
+              {
+                "kind": "output",
+                "text": "6"
               }
             ],
             "type": "doctest_block"
@@ -216,20 +235,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.size",
     "module": "numpy",
     "name": "size",
     "notes": "Return number of elements in array.",
     "numpy_ref": "np.size",
-    "signature": "we.size(a, axis=None)",
+    "signature": "fnp.size(a, axis=None)",
     "status": "supported",
     "summary": "Return the number of elements along a given axis.",
-    "weight": 0.0,
-    "whest_ref": "we.size"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "size",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3566",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1400"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1400",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L3525"
   }
 }

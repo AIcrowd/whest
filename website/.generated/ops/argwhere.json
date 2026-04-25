@@ -124,7 +124,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/where",
-              "label": "we.where",
+              "label": "fnp.where",
               "original_target": "where",
               "role": "",
               "target": "where",
@@ -135,7 +135,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nonzero",
-              "label": "we.nonzero",
+              "label": "fnp.nonzero",
               "original_target": "nonzero",
               "role": "",
               "target": "nonzero",
@@ -156,7 +156,7 @@
               "href": "",
               "kind": "link",
               "target": "argwhere(a)",
-              "text": "we.argwhere(a)"
+              "text": "fnp.argwhere(a)"
             },
             {
               "kind": "text",
@@ -164,7 +164,7 @@
             },
             {
               "kind": "code",
-              "text": "we.transpose(we.nonzero(a))"
+              "text": "fnp.transpose(fnp.nonzero(a))"
             },
             {
               "kind": "text",
@@ -211,12 +211,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(6).reshape(2,3)"
+              "text": "x = fnp.arange(6).reshape(2,3)"
             },
             {
               "kind": "input",
@@ -234,7 +234,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.argwhere(x>1)"
+              "text": "fnp.argwhere(x>1)"
             },
             {
               "kind": "output",
@@ -270,20 +270,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(6).reshape(2,3)\n\nx\n\nwe.argwhere(x>1)",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(6).reshape(2,3)\n\nx\n\nfnp.argwhere(x>1)",
     "output": "array([[0, 1, 2],\n       [3, 4, 5]])\n\narray([[0, 2],\n       [1, 0],\n       [1, 1],\n       [1, 2]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.argwhere",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L591",
   "href": "/docs/api/ops/argwhere/",
   "module": "numpy",
   "name": "argwhere",
   "next": {
     "href": "/docs/api/ops/array/",
-    "label": "we.array"
+    "label": "fnp.array"
   },
   "notes": "Find indices of non-zero elements. Cost: numel(input).",
   "notes_sections": [
-    "``we.argwhere(a)`` is almost the same as ``we.transpose(we.nonzero(a))``, but produces a result of the correct shape for a 0D array.",
+    "``fnp.argwhere(a)`` is almost the same as ``fnp.transpose(fnp.nonzero(a))``, but produces a result of the correct shape for a 0D array.",
     "The output of ``argwhere`` is not suitable for indexing arrays. For this purpose use ``nonzero(a)`` instead."
   ],
   "numpy_ref": "np.argwhere",
@@ -298,7 +301,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/argsort/",
-    "label": "we.argsort"
+    "label": "fnp.argsort"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.argwhere.html",
@@ -319,7 +322,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/where",
-      "label": "we.where",
+      "label": "fnp.where",
       "original_target": "where",
       "role": "",
       "target": "where",
@@ -330,19 +333,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nonzero",
-      "label": "we.nonzero",
+      "label": "fnp.nonzero",
       "original_target": "nonzero",
       "role": "",
       "target": "nonzero",
       "unresolved": false
     }
   ],
-  "signature": "we.argwhere(a)",
+  "signature": "fnp.argwhere(a)",
   "slug": "argwhere",
   "summary": "Find the indices of array elements that are non-zero, grouped by element.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L591",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.argwhere",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L591"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L624",
+  "weight": 4.0
 }

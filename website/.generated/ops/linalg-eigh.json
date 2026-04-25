@@ -340,7 +340,7 @@
               "href": "",
               "kind": "link",
               "target": "linalg",
-              "text": "we.linalg"
+              "text": "fnp.linalg"
             },
             {
               "kind": "text",
@@ -451,7 +451,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -461,7 +461,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, -2j], [2j, 5]])"
+              "text": "a = fnp.array([[1, -2j], [2j, 5]])"
             },
             {
               "kind": "input",
@@ -511,7 +511,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "(we.dot(a, eigenvectors[:, 0]) -"
+              "text": "(fnp.dot(a, eigenvectors[:, 0]) -"
             },
             {
               "kind": "input",
@@ -525,7 +525,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "(we.dot(a, eigenvectors[:, 1]) -"
+              "text": "(fnp.dot(a, eigenvectors[:, 1]) -"
             },
             {
               "kind": "input",
@@ -544,7 +544,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "A = we.matrix(a) # what happens if input is a matrix object"
+              "text": "A = fnp.matrix(a) # what happens if input is a matrix object"
             },
             {
               "kind": "input",
@@ -599,7 +599,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[5+2j, 9-2j], [0+2j, 2-1j]])"
+              "text": "a = fnp.array([[5+2j, 9-2j], [0+2j, 2-1j]])"
             },
             {
               "kind": "input",
@@ -622,7 +622,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])"
+              "text": "b = fnp.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])"
             },
             {
               "kind": "input",
@@ -719,20 +719,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nfrom numpy import linalg as LA\n\na = we.array([[1, -2j], [2j, 5]])\n\na\n\neigenvalues, eigenvectors = LA.eigh(a)\n\neigenvalues\n\neigenvectors\n\n(we.dot(a, eigenvectors[:, 0]) -\neigenvalues[0] * eigenvectors[:, 0])  # verify 1st eigenval/vec pair\n\n(we.dot(a, eigenvectors[:, 1]) -\neigenvalues[1] * eigenvectors[:, 1])  # verify 2nd eigenval/vec pair\n\nA = we.matrix(a) # what happens if input is a matrix object\n\nA\n\neigenvalues, eigenvectors = LA.eigh(A)\n\neigenvalues\n\neigenvectors\n\na = we.array([[5+2j, 9-2j], [0+2j, 2-1j]])\n\na\n\nb = we.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])\n\nb\n\nwa, va = LA.eigh(a)\n\nwb, vb = LA.eig(b)\n\nwa\n\nwb\n\nva\n\nvb",
+    "code": "import flopscope as fnp\n\nfrom numpy import linalg as LA\n\na = fnp.array([[1, -2j], [2j, 5]])\n\na\n\neigenvalues, eigenvectors = LA.eigh(a)\n\neigenvalues\n\neigenvectors\n\n(fnp.dot(a, eigenvectors[:, 0]) -\neigenvalues[0] * eigenvectors[:, 0])  # verify 1st eigenval/vec pair\n\n(fnp.dot(a, eigenvectors[:, 1]) -\neigenvalues[1] * eigenvectors[:, 1])  # verify 2nd eigenval/vec pair\n\nA = fnp.matrix(a) # what happens if input is a matrix object\n\nA\n\neigenvalues, eigenvectors = LA.eigh(A)\n\neigenvalues\n\neigenvectors\n\na = fnp.array([[5+2j, 9-2j], [0+2j, 2-1j]])\n\na\n\nb = fnp.array([[5.+0.j, 0.-2.j], [0.+2.j, 2.-0.j]])\n\nb\n\nwa, va = LA.eigh(a)\n\nwb, vb = LA.eig(b)\n\nwa\n\nwb\n\nva\n\nvb",
     "output": "array([[ 1.+0.j, -0.-2.j],\n       [ 0.+2.j,  5.+0.j]])\n\narray([0.17157288, 5.82842712])\n\narray([[-0.92387953+0.j        , -0.38268343+0.j        ], # may vary\n       [ 0.        +0.38268343j,  0.        -0.92387953j]])\n\narray([5.55111512e-17+0.0000000e+00j, 0.00000000e+00+1.2490009e-16j])\n\narray([0.+0.j, 0.+0.j])\n\nmatrix([[ 1.+0.j, -0.-2.j],\n        [ 0.+2.j,  5.+0.j]])\n\narray([0.17157288, 5.82842712])\n\nmatrix([[-0.92387953+0.j        , -0.38268343+0.j        ], # may vary\n        [ 0.        +0.38268343j,  0.        -0.92387953j]])\n\narray([[5.+2.j, 9.-2.j],\n       [0.+2.j, 2.-1.j]])\n\narray([[5.+0.j, 0.-2.j],\n       [0.+2.j, 2.+0.j]])\n\narray([1., 6.])\n\narray([6.+0.j, 1.+0.j])\n\narray([[-0.4472136 +0.j        , -0.89442719+0.j        ], # may vary\n       [ 0.        +0.89442719j,  0.        -0.4472136j ]])\n\narray([[ 0.89442719+0.j       , -0.        +0.4472136j],\n       [-0.        +0.4472136j,  0.89442719+0.j       ]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.eigh",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L154",
   "href": "/docs/api/ops/linalg-eigh/",
   "module": "numpy.linalg",
   "name": "linalg.eigh",
   "next": {
     "href": "/docs/api/ops/linalg-eigvals/",
-    "label": "we.linalg.eigvals"
+    "label": "fnp.linalg.eigvals"
   },
   "notes": "Symmetric eigendecomposition. Cost: $n^3$.",
   "notes_sections": [
-    "Broadcasting rules apply, see the `we.linalg` documentation for details.",
+    "Broadcasting rules apply, see the `fnp.linalg` documentation for details.",
     "The eigenvalues/eigenvectors are computed using LAPACK routines ``_syevd``, ``_heevd``.",
     "The eigenvalues of real symmetric or complex Hermitian matrices are always real. [1]_ The array `eigenvalues` of (column) eigenvectors is unitary and `a`, `eigenvalues`, and `eigenvectors` satisfy the equations ``dot(a, eigenvectors[:, i]) = eigenvalues[i] * eigenvectors[:, i]``."
   ],
@@ -761,7 +764,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-eig/",
-    "label": "we.linalg.eig"
+    "label": "fnp.linalg.eig"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigh.html",
@@ -855,12 +858,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.eigh(a, UPLO='L')",
+  "signature": "fnp.linalg.eigh(a, UPLO='L')",
   "slug": "linalg-eigh",
   "summary": "Return the eigenvalues and eigenvectors of a complex Hermitian (conjugate symmetric) or a real symmetric matrix.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1485",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.eigh",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L154"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L1515",
+  "weight": 4.0
 }

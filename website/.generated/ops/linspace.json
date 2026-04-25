@@ -66,7 +66,7 @@
           "content_blocks": [],
           "directive": "versionchanged",
           "options": [],
-          "raw_source": ".. versionchanged:: 1.20.0\n    Values are rounded towards ``-inf`` instead of ``0`` when an\n    integer ``dtype`` is specified. The old behavior can\n    still be obtained with ``we.linspace(start, stop, num).astype(int)``",
+          "raw_source": ".. versionchanged:: 1.20.0\n    Values are rounded towards ``-inf`` instead of ``0`` when an\n    integer ``dtype`` is specified. The old behavior can\n    still be obtained with ``fnp.linspace(start, stop, num).astype(int)``",
           "supported": true,
           "type": "directive_block",
           "version": "1.20.0"
@@ -648,7 +648,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/arange",
-              "label": "we.arange",
+              "label": "fnp.arange",
               "original_target": "arange",
               "role": "",
               "target": "arange",
@@ -675,7 +675,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/geomspace",
-              "label": "we.geomspace",
+              "label": "fnp.geomspace",
               "original_target": "geomspace",
               "role": "",
               "target": "geomspace",
@@ -702,7 +702,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/logspace",
-              "label": "we.logspace",
+              "label": "fnp.logspace",
               "original_target": "logspace",
               "role": "",
               "target": "logspace",
@@ -732,12 +732,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linspace(2.0, 3.0, num=5)"
+              "text": "fnp.linspace(2.0, 3.0, num=5)"
             },
             {
               "kind": "output",
@@ -746,7 +746,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linspace(2.0, 3.0, num=5, endpoint=False)"
+              "text": "fnp.linspace(2.0, 3.0, num=5, endpoint=False)"
             },
             {
               "kind": "output",
@@ -755,7 +755,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linspace(2.0, 3.0, num=5, retstep=True)"
+              "text": "fnp.linspace(2.0, 3.0, num=5, retstep=True)"
             },
             {
               "kind": "output",
@@ -788,17 +788,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.zeros(N)"
+              "text": "y = fnp.zeros(N)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.linspace(0, 10, N, endpoint=True)"
+              "text": "x1 = fnp.linspace(0, 10, N, endpoint=True)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = we.linspace(0, 10, N, endpoint=False)"
+              "text": "x2 = fnp.linspace(0, 10, N, endpoint=False)"
             },
             {
               "kind": "input",
@@ -850,16 +850,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.linspace(2.0, 3.0, num=5)\n\nwe.linspace(2.0, 3.0, num=5, endpoint=False)\n\nwe.linspace(2.0, 3.0, num=5, retstep=True)\n\nimport matplotlib.pyplot as plt\n\nN = 8\n\ny = we.zeros(N)\n\nx1 = we.linspace(0, 10, N, endpoint=True)\n\nx2 = we.linspace(0, 10, N, endpoint=False)\n\nplt.plot(x1, y, 'o')\n\nplt.plot(x2, y + 0.5, 'o')\n\nplt.ylim([-0.5, 1])\n\nplt.show()",
+    "code": "import flopscope as fnp\n\nfnp.linspace(2.0, 3.0, num=5)\n\nfnp.linspace(2.0, 3.0, num=5, endpoint=False)\n\nfnp.linspace(2.0, 3.0, num=5, retstep=True)\n\nimport matplotlib.pyplot as plt\n\nN = 8\n\ny = fnp.zeros(N)\n\nx1 = fnp.linspace(0, 10, N, endpoint=True)\n\nx2 = fnp.linspace(0, 10, N, endpoint=False)\n\nplt.plot(x1, y, 'o')\n\nplt.plot(x2, y + 0.5, 'o')\n\nplt.ylim([-0.5, 1])\n\nplt.show()",
     "output": "array([2.  , 2.25, 2.5 , 2.75, 3.  ])\n\narray([2. ,  2.2,  2.4,  2.6,  2.8])\n\n(array([2.  ,  2.25,  2.5 ,  2.75,  3.  ]), 0.25)\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n(-0.5, 1)",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linspace",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L128",
   "href": "/docs/api/ops/linspace/",
   "module": "numpy",
   "name": "linspace",
   "next": {
     "href": "/docs/api/ops/log/",
-    "label": "we.log"
+    "label": "fnp.log"
   },
   "notes": "Return evenly spaced numbers over interval. Cost: numel(output).",
   "notes_sections": [],
@@ -937,7 +940,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-vector_norm/",
-    "label": "we.linalg.vector_norm"
+    "label": "fnp.linalg.vector_norm"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linspace.html",
@@ -983,7 +986,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/arange",
-      "label": "we.arange",
+      "label": "fnp.arange",
       "original_target": "arange",
       "role": "",
       "target": "arange",
@@ -1010,7 +1013,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/geomspace",
-      "label": "we.geomspace",
+      "label": "fnp.geomspace",
       "original_target": "geomspace",
       "role": "",
       "target": "geomspace",
@@ -1037,7 +1040,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/logspace",
-      "label": "we.logspace",
+      "label": "fnp.logspace",
       "original_target": "logspace",
       "role": "",
       "target": "logspace",
@@ -1055,12 +1058,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, *, device=None)",
+  "signature": "fnp.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, *, device=None)",
   "slug": "linspace",
   "summary": "Return evenly spaced numbers over a specified interval.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/function_base.py#L25",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linspace",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L128"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/function_base.py#L27",
+  "weight": 1.0
 }

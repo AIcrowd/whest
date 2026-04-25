@@ -311,7 +311,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/apply_along_axis",
-                "label": "we.apply_along_axis",
+                "label": "fnp.apply_along_axis",
                 "original_target": "apply_along_axis",
                 "role": "",
                 "target": "apply_along_axis",
@@ -344,12 +344,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(24).reshape(2,3,4)"
+                "text": "a = fnp.arange(24).reshape(2,3,4)"
               },
               {
                 "kind": "input",
@@ -397,7 +397,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.apply_over_axes(we.sum, a, [0,2])"
+                "text": "fnp.apply_over_axes(fnp.sum, a, [0,2])"
               },
               {
                 "kind": "output",
@@ -428,7 +428,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum(a, axis=(0,2), keepdims=True)"
+                "text": "fnp.sum(a, axis=(0,2), keepdims=True)"
               },
               {
                 "kind": "output",
@@ -454,20 +454,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.apply_over_axes",
     "module": "numpy",
     "name": "apply_over_axes",
     "notes": "Apply function over multiple axes. Cost: numel(output).",
     "numpy_ref": "np.apply_over_axes",
-    "signature": "we.apply_over_axes(func, a, axes)",
+    "signature": "fnp.apply_over_axes(func, a, axes)",
     "status": "supported",
     "summary": "Apply a function repeatedly over multiple axes.",
-    "weight": 1.0,
-    "whest_ref": "we.apply_over_axes"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "apply_over_axes",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L419",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L322"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L322",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L423"
   }
 }

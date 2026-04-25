@@ -71,15 +71,7 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Memory layout.  'A' and 'K' depend on the order of input array a.\n'C' row-major (C-style),\n'F' column-major (Fortran-style) memory representation.\n'A' (any) means 'F' if "
-                      },
-                      {
-                        "kind": "code",
-                        "text": "a"
-                      },
-                      {
-                        "kind": "text",
-                        "text": " is Fortran contiguous, 'C' otherwise\n'K' (keep) preserve input order\nDefaults to 'C'."
+                        "text": "The memory layout of the output.\n'C' gives a row-major layout (C-style),\n'F' gives a column-major layout (Fortran-style).\n'C' and 'F' will copy if needed to ensure the output format.\n'A' (any) is equivalent to 'F' if input a is non-contiguous or\nFortran-contiguous, otherwise, it is equivalent to 'C'.\nUnlike 'C' or 'F', 'A' does not ensure that the result is contiguous.\n'K' (keep) preserves the input order for the output.\n'C' is the default."
                       }
                     ],
                     "type": "paragraph"
@@ -89,15 +81,7 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Memory layout.  'A' and 'K' depend on the order of input array a.\n'C' row-major (C-style),\n'F' column-major (Fortran-style) memory representation.\n'A' (any) means 'F' if "
-                  },
-                  {
-                    "kind": "code",
-                    "text": "a"
-                  },
-                  {
-                    "kind": "text",
-                    "text": " is Fortran contiguous, 'C' otherwise\n'K' (keep) preserve input order\nDefaults to 'C'."
+                    "text": "The memory layout of the output.\n'C' gives a row-major layout (C-style),\n'F' gives a column-major layout (Fortran-style).\n'C' and 'F' will copy if needed to ensure the output format.\n'A' (any) is equivalent to 'F' if input a is non-contiguous or\nFortran-contiguous, otherwise, it is equivalent to 'C'.\nUnlike 'C' or 'F', 'A' does not ensure that the result is contiguous.\n'K' (keep) preserves the input order for the output.\n'C' is the default."
                   }
                 ],
                 "name": "order",
@@ -238,7 +222,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/asarray",
-                "label": "we.asarray",
+                "label": "fnp.asarray",
                 "original_target": "asarray",
                 "role": "",
                 "target": "asarray",
@@ -302,7 +286,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/fromiter",
-                "label": "we.fromiter",
+                "label": "fnp.fromiter",
                 "original_target": "fromiter",
                 "role": "",
                 "target": "fromiter",
@@ -318,7 +302,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/fromfunction",
-                "label": "we.fromfunction",
+                "label": "fnp.fromfunction",
                 "original_target": "fromfunction",
                 "role": "",
                 "target": "fromfunction",
@@ -337,7 +321,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -383,7 +367,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.asarray_chkfinite(a, dtype=float)"
+                "text": "fnp.asarray_chkfinite(a, dtype=float)"
               },
               {
                 "kind": "output",
@@ -406,7 +390,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = [1, 2, we.inf]"
+                "text": "a = [1, 2, fnp.inf]"
               },
               {
                 "kind": "input",
@@ -416,7 +400,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "we.asarray_chkfinite(a)"
+                "text": "fnp.asarray_chkfinite(a)"
               },
               {
                 "kind": "input",
@@ -449,20 +433,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.asarray_chkfinite",
     "module": "numpy",
     "name": "asarray_chkfinite",
     "notes": "Convert to array, raising if NaN or inf. Cost: numel(input).",
     "numpy_ref": "np.asarray_chkfinite",
-    "signature": "we.asarray_chkfinite(a, dtype=None, order=None)",
+    "signature": "fnp.asarray_chkfinite(a, dtype=None, order=None)",
     "status": "supported",
     "summary": "Convert the input to an array, checking for NaNs or Infs.",
-    "weight": 1.0,
-    "whest_ref": "we.asarray_chkfinite"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "asarray_chkfinite",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L579",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L621"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L621",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L603"
   }
 }

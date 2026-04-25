@@ -8,7 +8,7 @@ import styles from './styles.module.css';
 export interface Operation {
   name: string;
   module: string;
-  whest_ref: string;
+  flopscope_ref: string;
   numpy_ref: string;
   category: string;
   cost_formula: string;
@@ -24,7 +24,7 @@ export interface Operation {
 }
 
 export default function OperationRow({op}: {op: Operation}): React.ReactElement {
-  const opLabel = <span className={styles.opLink}>{op.whest_ref}</span>;
+  const opLabel = <span className={styles.opLink}>{op.flopscope_ref}</span>;
 
   return (
     <tr className={styles.opRow}>

@@ -285,7 +285,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/array_split",
-                "label": "we.array_split",
+                "label": "fnp.array_split",
                 "original_target": "array_split",
                 "role": "",
                 "target": "array_split",
@@ -301,7 +301,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/split",
-                "label": "we.split",
+                "label": "fnp.split",
                 "original_target": "split",
                 "role": "",
                 "target": "split",
@@ -317,7 +317,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/hsplit",
-                "label": "we.hsplit",
+                "label": "fnp.hsplit",
                 "original_target": "hsplit",
                 "role": "",
                 "target": "hsplit",
@@ -333,7 +333,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vsplit",
-                "label": "we.vsplit",
+                "label": "fnp.vsplit",
                 "original_target": "vsplit",
                 "role": "",
                 "target": "vsplit",
@@ -349,7 +349,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/dsplit",
-                "label": "we.dsplit",
+                "label": "fnp.dsplit",
                 "original_target": "dsplit",
                 "role": "",
                 "target": "dsplit",
@@ -365,7 +365,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/stack",
-                "label": "we.stack",
+                "label": "fnp.stack",
                 "original_target": "stack",
                 "role": "",
                 "target": "stack",
@@ -381,7 +381,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/block",
-                "label": "we.block",
+                "label": "fnp.block",
                 "original_target": "block",
                 "role": "",
                 "target": "block",
@@ -397,7 +397,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/hstack",
-                "label": "we.hstack",
+                "label": "fnp.hstack",
                 "original_target": "hstack",
                 "role": "",
                 "target": "hstack",
@@ -413,7 +413,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vstack",
-                "label": "we.vstack",
+                "label": "fnp.vstack",
                 "original_target": "vstack",
                 "role": "",
                 "target": "vstack",
@@ -429,7 +429,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/dstack",
-                "label": "we.dstack",
+                "label": "fnp.dstack",
                 "original_target": "dstack",
                 "role": "",
                 "target": "dstack",
@@ -445,7 +445,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/column_stack",
-                "label": "we.column_stack",
+                "label": "fnp.column_stack",
                 "original_target": "column_stack",
                 "role": "",
                 "target": "column_stack",
@@ -486,22 +486,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 2], [3, 4]])"
+                "text": "a = fnp.array([[1, 2], [3, 4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([[5, 6]])"
+                "text": "b = fnp.array([[5, 6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.concatenate((a, b), axis=0)"
+                "text": "fnp.concatenate((a, b), axis=0)"
               },
               {
                 "kind": "output",
@@ -518,7 +518,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.concatenate((a, b.T), axis=1)"
+                "text": "fnp.concatenate((a, b.T), axis=1)"
               },
               {
                 "kind": "output",
@@ -531,7 +531,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.concatenate((a, b), axis=None)"
+                "text": "fnp.concatenate((a, b), axis=None)"
               },
               {
                 "kind": "output",
@@ -554,17 +554,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.ma.arange(3)"
+                "text": "a = fnp.ma.arange(3)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a[1] = we.ma.masked"
+                "text": "a[1] = fnp.ma.masked"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(2, 5)"
+                "text": "b = fnp.arange(2, 5)"
               },
               {
                 "kind": "input",
@@ -595,7 +595,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.concatenate([a, b])"
+                "text": "fnp.concatenate([a, b])"
               },
               {
                 "kind": "output",
@@ -612,7 +612,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ma.concatenate([a, b])"
+                "text": "fnp.ma.concatenate([a, b])"
               },
               {
                 "kind": "output",
@@ -638,20 +638,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.concatenate",
     "module": "numpy",
     "name": "concatenate",
     "notes": "Join arrays along axis. Cost: numel(output).",
     "numpy_ref": "np.concatenate",
-    "signature": "we.concatenate(arrays, axis=0, **kwargs)",
+    "signature": "fnp.concatenate(arrays, /, axis=0, out=None, *, dtype=None, casting='same_kind')",
     "status": "supported",
     "summary": "Join a sequence of arrays along an existing axis.",
-    "weight": 1.0,
-    "whest_ref": "we.concatenate"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "concatenate",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L238"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L238",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html"
   }
 }

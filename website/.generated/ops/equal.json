@@ -350,7 +350,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/not_equal",
-              "label": "we.not_equal",
+              "label": "fnp.not_equal",
               "original_target": "not_equal",
               "role": "",
               "target": "not_equal",
@@ -361,7 +361,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/greater_equal",
-              "label": "we.greater_equal",
+              "label": "fnp.greater_equal",
               "original_target": "greater_equal",
               "role": "",
               "target": "greater_equal",
@@ -372,7 +372,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/less_equal",
-              "label": "we.less_equal",
+              "label": "fnp.less_equal",
               "original_target": "less_equal",
               "role": "",
               "target": "less_equal",
@@ -383,7 +383,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/greater",
-              "label": "we.greater",
+              "label": "fnp.greater",
               "original_target": "greater",
               "role": "",
               "target": "greater",
@@ -394,7 +394,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/less",
-              "label": "we.less",
+              "label": "fnp.less",
               "original_target": "less",
               "role": "",
               "target": "less",
@@ -413,12 +413,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.equal([0, 1, 3], we.arange(3))"
+              "text": "fnp.equal([0, 1, 3], fnp.arange(3))"
             },
             {
               "kind": "output",
@@ -441,7 +441,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.equal(1, we.ones(1))"
+              "text": "fnp.equal(1, fnp.ones(1))"
             },
             {
               "kind": "output",
@@ -469,7 +469,7 @@
               "href": "/docs/api/ops/equal",
               "kind": "link",
               "target": "equal",
-              "text": "we.equal"
+              "text": "fnp.equal"
             },
             {
               "kind": "text",
@@ -483,12 +483,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([2, 4, 6])"
+              "text": "a = fnp.array([2, 4, 6])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([2, 4, 2])"
+              "text": "b = fnp.array([2, 4, 2])"
             },
             {
               "kind": "input",
@@ -524,16 +524,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.equal([0, 1, 3], we.arange(3))\n\nwe.equal(1, we.ones(1))\n\na = we.array([2, 4, 6])\n\nb = we.array([2, 4, 2])\n\na == b",
+    "code": "import flopscope as fnp\n\nfnp.equal([0, 1, 3], fnp.arange(3))\n\nfnp.equal(1, fnp.ones(1))\n\na = fnp.array([2, 4, 6])\n\nb = fnp.array([2, 4, 2])\n\na == b",
     "output": "array([ True,  True, False])\n\narray([ True])\n\narray([ True,  True, False])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.equal",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
   "href": "/docs/api/ops/equal/",
   "module": "numpy",
   "name": "equal",
   "next": {
     "href": "/docs/api/ops/exp/",
-    "label": "we.exp"
+    "label": "fnp.exp"
   },
   "notes": "Element-wise x1 == x2.",
   "notes_sections": [],
@@ -581,7 +584,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/empty_like/",
-    "label": "we.empty_like"
+    "label": "fnp.empty_like"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.equal.html",
@@ -602,7 +605,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/not_equal",
-      "label": "we.not_equal",
+      "label": "fnp.not_equal",
       "original_target": "not_equal",
       "role": "",
       "target": "not_equal",
@@ -613,7 +616,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/greater_equal",
-      "label": "we.greater_equal",
+      "label": "fnp.greater_equal",
       "original_target": "greater_equal",
       "role": "",
       "target": "greater_equal",
@@ -624,7 +627,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/less_equal",
-      "label": "we.less_equal",
+      "label": "fnp.less_equal",
       "original_target": "less_equal",
       "role": "",
       "target": "less_equal",
@@ -635,7 +638,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/greater",
-      "label": "we.greater",
+      "label": "fnp.greater",
       "original_target": "greater",
       "role": "",
       "target": "greater",
@@ -646,19 +649,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/less",
-      "label": "we.less",
+      "label": "fnp.less",
       "original_target": "less",
       "role": "",
       "target": "less",
       "unresolved": false
     }
   ],
-  "signature": "we.equal(x, y)",
+  "signature": "fnp.equal(x, y)",
   "slug": "equal",
   "summary": "Return (x1 == x2) element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.equal",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

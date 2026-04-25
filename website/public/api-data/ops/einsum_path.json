@@ -249,7 +249,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/einsum",
-                "label": "we.einsum",
+                "label": "fnp.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
@@ -260,7 +260,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/linalg-multi_dot",
-                "label": "we.linalg.multi_dot",
+                "label": "fnp.linalg.multi_dot",
                 "original_target": "linalg.multi_dot",
                 "role": "",
                 "target": "linalg.multi_dot",
@@ -334,27 +334,27 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.seed(123)"
+                "text": "fnp.random.seed(123)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.random.rand(2, 2)"
+                "text": "a = fnp.random.rand(2, 2)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.random.rand(2, 5)"
+                "text": "b = fnp.random.rand(2, 5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.random.rand(5, 2)"
+                "text": "c = fnp.random.rand(5, 2)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "path_info = we.einsum_path('ij,jk,kl->il', a, b, c, optimize='greedy')"
+                "text": "path_info = fnp.einsum_path('ij,jk,kl->il', a, b, c, optimize='greedy')"
               },
               {
                 "kind": "input",
@@ -435,17 +435,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "I = we.random.rand(10, 10, 10, 10)"
+                "text": "I = fnp.random.rand(10, 10, 10, 10)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "C = we.random.rand(10, 10)"
+                "text": "C = fnp.random.rand(10, 10)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "path_info = we.einsum_path('ea,fb,abcd,gc,hd->efgh', C, C, I, C, C,"
+                "text": "path_info = fnp.einsum_path('ea,fb,abcd,gc,hd->efgh', C, C, I, C, C,"
               },
               {
                 "kind": "input",
@@ -539,20 +539,20 @@
     "category": "counted_custom",
     "cost_formula": "0 (planning only)",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.einsum_path",
     "module": "numpy",
     "name": "einsum_path",
     "notes": "Optimize einsum contraction path (no numeric output).",
     "numpy_ref": "np.einsum_path",
-    "signature": "we.einsum_path(subscripts: 'str', *operands, optimize: 'str | bool | list' = 'auto')",
+    "signature": "fnp.einsum_path(subscripts: 'str', *operands, optimize: 'str | bool | list' = 'auto')",
     "status": "supported",
     "summary": "Evaluates the lowest cost contraction order for an einsum expression by considering the creation of intermediate arrays.",
-    "weight": 1.0,
-    "whest_ref": "we.einsum_path"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "einsum_path",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/einsumfunc.py#L742",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L316"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L316",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/einsumfunc.py#L634"
   }
 }

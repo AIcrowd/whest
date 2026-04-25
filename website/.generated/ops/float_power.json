@@ -440,7 +440,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/power",
-              "label": "we.power",
+              "label": "fnp.power",
               "original_target": "power",
               "role": "",
               "target": "power",
@@ -459,7 +459,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -492,7 +492,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.float_power(x1, 3)"
+              "text": "fnp.float_power(x1, 3)"
             },
             {
               "kind": "output",
@@ -520,7 +520,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.float_power(x1, x2)"
+              "text": "fnp.float_power(x1, x2)"
             },
             {
               "kind": "output",
@@ -543,7 +543,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = we.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])"
+              "text": "x2 = fnp.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])"
             },
             {
               "kind": "input",
@@ -561,7 +561,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.float_power(x1, x2)"
+              "text": "fnp.float_power(x1, x2)"
             },
             {
               "kind": "output",
@@ -596,17 +596,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x3 = we.array([-1, -4])"
+              "text": "x3 = fnp.array([-1, -4])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "with we.errstate(invalid='ignore'):"
+              "text": "with fnp.errstate(invalid='ignore'):"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "p = we.float_power(x3, 1.5)"
+              "text": "p = fnp.float_power(x3, 1.5)"
             },
             {
               "kind": "input",
@@ -647,7 +647,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.float_power(x3, 1.5, dtype=complex)"
+              "text": "fnp.float_power(x3, 1.5, dtype=complex)"
             },
             {
               "kind": "output",
@@ -678,16 +678,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx1 = range(6)\n\nx1\n\nwe.float_power(x1, 3)\n\nx2 = [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]\n\nwe.float_power(x1, x2)\n\nx2 = we.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])\n\nx2\n\nwe.float_power(x1, x2)\n\nx3 = we.array([-1, -4])\n\nwith we.errstate(invalid='ignore'):\n    p = we.float_power(x3, 1.5)\n\np\n\nwe.float_power(x3, 1.5, dtype=complex)",
+    "code": "import flopscope as fnp\n\nx1 = range(6)\n\nx1\n\nfnp.float_power(x1, 3)\n\nx2 = [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]\n\nfnp.float_power(x1, x2)\n\nx2 = fnp.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])\n\nx2\n\nfnp.float_power(x1, x2)\n\nx3 = fnp.array([-1, -4])\n\nwith fnp.errstate(invalid='ignore'):\n    p = fnp.float_power(x3, 1.5)\n\np\n\nfnp.float_power(x3, 1.5, dtype=complex)",
     "output": "[0, 1, 2, 3, 4, 5]\n\narray([   0.,    1.,    8.,   27.,   64.,  125.])\n\narray([  0.,   1.,   8.,  27.,  16.,   5.])\n\narray([[1, 2, 3, 3, 2, 1],\n       [1, 2, 3, 3, 2, 1]])\n\narray([[  0.,   1.,   8.,  27.,  16.,   5.],\n       [  0.,   1.,   8.,  27.,  16.,   5.]])\n\narray([nan, nan])\n\narray([-1.83697020e-16-1.j, -1.46957616e-15-8.j])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.float_power",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
   "href": "/docs/api/ops/float_power/",
   "module": "numpy",
   "name": "float_power",
   "next": {
     "href": "/docs/api/ops/floor/",
-    "label": "we.floor"
+    "label": "fnp.floor"
   },
   "notes": "Element-wise exponentiation in float64.",
   "notes_sections": [],
@@ -742,7 +745,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/flipud/",
-    "label": "we.flipud"
+    "label": "fnp.flipud"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.float_power.html",
@@ -767,19 +770,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/power",
-      "label": "we.power",
+      "label": "fnp.power",
       "original_target": "power",
       "role": "",
       "target": "power",
       "unresolved": false
     }
   ],
-  "signature": "we.float_power(x, y)",
+  "signature": "fnp.float_power(x, y)",
   "slug": "float_power",
   "summary": "First array elements raised to powers from second array, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.float_power",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

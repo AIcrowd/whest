@@ -1,13 +1,13 @@
-"""Conftest that monkeypatches numpy with whest for compatibility testing.
+"""Conftest that monkeypatches numpy with flopscope for compatibility testing.
 
-This lets us run NumPy's own test suite against whest to verify
+This lets us run NumPy's own test suite against flopscope to verify
 that our interface matches NumPy's. Tests that fail due to known
 divergences are listed in xfails.py.
 
 Key trick: before patching numpy, we freeze a copy of the original
-numpy module and rebind whest's internal `_np` references to it.
+numpy module and rebind flopscope's internal `_np` references to it.
 This breaks the infinite recursion that would otherwise occur when
-whest functions call _np.func() → numpy.func() → we.func() → ...
+flopscope functions call _np.func() → numpy.func() → we.func() → ...
 """
 
 import fnmatch
@@ -18,8 +18,8 @@ import types
 import numpy as np
 import pytest
 
-from whest._budget import _reset_global_default, budget_reset
-from whest._registry import REGISTRY
+from flopscope._budget import _reset_global_default, budget_reset
+from flopscope._registry import REGISTRY
 
 from .xfails import XFAIL_PATTERNS
 
@@ -60,35 +60,35 @@ class _NonDescriptor:
 # Functions we monkeypatch onto numpy
 _PATCHED: dict[str, object] = {}
 
-# whest modules whose _np we rebind, with their originals
+# flopscope modules whose _np we rebind, with their originals
 _REBOUND: dict[str, object] = {}
 
-# All whest submodules that import numpy as _np
-_WHEST_MODULES_WITH_NP = [
-    "whest._pointwise",
-    "whest._free_ops",
-    "whest._sorting_ops",
-    "whest._counting_ops",
-    "whest._einsum",
-    "whest._polynomial",
-    "whest._unwrap",
-    "whest._window",
-    "whest._version_check",
-    "whest.__init__",
-    "whest.fft._transforms",
-    "whest.fft._free",
-    "whest.linalg._decompositions",
-    "whest.linalg._properties",
-    "whest.linalg._solvers",
-    "whest.linalg._compound",
-    "whest.linalg._svd",
-    "whest.linalg._aliases",
-    "whest.random",
+# All flopscope submodules that import numpy as _np
+_FLOPSCOPE_MODULES_WITH_NP = [
+    "flopscope._pointwise",
+    "flopscope._free_ops",
+    "flopscope._sorting_ops",
+    "flopscope._counting_ops",
+    "flopscope._einsum",
+    "flopscope._polynomial",
+    "flopscope._unwrap",
+    "flopscope._window",
+    "flopscope._version_check",
+    "flopscope.__init__",
+    "flopscope.numpy.fft._transforms",
+    "flopscope.numpy.fft._free",
+    "flopscope.numpy.linalg._decompositions",
+    "flopscope.numpy.linalg._properties",
+    "flopscope.numpy.linalg._solvers",
+    "flopscope.numpy.linalg._compound",
+    "flopscope.numpy.linalg._svd",
+    "flopscope.numpy.linalg._aliases",
+    "flopscope.numpy.random",
 ]
 
 # Modules that also import numpy.random as _npr
-_WHEST_MODULES_WITH_NPR = [
-    "whest.random",
+_FLOPSCOPE_MODULES_WITH_NPR = [
+    "flopscope.numpy.random",
 ]
 
 
@@ -109,11 +109,11 @@ def _snapshot_numpy_module(source_np):
 _ORIGINAL_NUMPY = _snapshot_numpy_module(np)
 
 
-def _current_whest():
-    """Return the currently imported whest module, reimporting if needed."""
-    mod = sys.modules.get("whest")
+def _current_flopscope():
+    """Return the currently imported flopscope module, reimporting if needed."""
+    mod = sys.modules.get("flopscope")
     if mod is None:
-        mod = importlib.import_module("whest")
+        mod = importlib.import_module("flopscope")
     return mod
 
 
@@ -126,9 +126,9 @@ def _freeze_numpy():
     return _snapshot_numpy_module(_ORIGINAL_NUMPY)
 
 
-def _rebind_whest_np(frozen_np):
-    """Replace _np in all whest modules with the frozen copy."""
-    for mod_name in _WHEST_MODULES_WITH_NP:
+def _rebind_flopscope_np(frozen_np):
+    """Replace _np in all flopscope modules with the frozen copy."""
+    for mod_name in _FLOPSCOPE_MODULES_WITH_NP:
         mod = sys.modules.get(mod_name)
         if mod is None:
             mod = importlib.import_module(mod_name)
@@ -136,7 +136,7 @@ def _rebind_whest_np(frozen_np):
             _REBOUND[mod_name] = mod._np
             mod._np = frozen_np
     # Also rebind _npr (numpy.random) in modules that use it
-    for mod_name in _WHEST_MODULES_WITH_NPR:
+    for mod_name in _FLOPSCOPE_MODULES_WITH_NPR:
         mod = sys.modules.get(mod_name)
         if mod is None:
             mod = importlib.import_module(mod_name)
@@ -145,8 +145,8 @@ def _rebind_whest_np(frozen_np):
             mod._npr = frozen_np.random
 
 
-def _restore_whest_np():
-    """Restore original _np references in whest modules."""
+def _restore_flopscope_np():
+    """Restore original _np references in flopscope modules."""
     for key, original in _REBOUND.items():
         if key.endswith("._npr"):
             mod_name = key[: -len("._npr")]
@@ -161,20 +161,20 @@ def _restore_whest_np():
 
 
 def _patch_numpy():
-    """Replace numpy functions with whest equivalents.
+    """Replace numpy functions with flopscope equivalents.
 
     Patches all non-blacklisted functions from the registry, including
     ufuncs, custom ops, submodule functions, and free ops. The frozen
     numpy copy prevents infinite recursion.
     """
-    we = _current_whest()
+    we = _current_flopscope()
 
     for name, meta in REGISTRY.items():
         cat = meta["category"]
         if cat == "blacklisted":
             continue
 
-        # Resolve the whest function
+        # Resolve the flopscope function
         parts = name.split(".")
         try:
             if len(parts) == 1:
@@ -202,7 +202,7 @@ def _patch_numpy():
         except (AttributeError, TypeError):
             pass
 
-        # Skip functions where whest delegates to a different numpy function
+        # Skip functions where flopscope delegates to a different numpy function
         # than the one being patched (e.g., we.linalg.outer → np.outer, not
         # np.linalg.outer). Patching causes collection-time errors in tests that
         # check the real np.linalg.outer's behaviour at class-definition time.
@@ -257,16 +257,16 @@ def reset_budget():
 
 
 def pytest_configure(config):
-    """Freeze numpy, rebind whest internals, then patch."""
+    """Freeze numpy, rebind flopscope internals, then patch."""
     frozen = _freeze_numpy()
-    _rebind_whest_np(frozen)
+    _rebind_flopscope_np(frozen)
     _patch_numpy()
 
 
 def pytest_unconfigure(config):
     """Restore everything."""
     _unpatch_numpy()
-    _restore_whest_np()
+    _restore_flopscope_np()
 
 
 def pytest_collection_modifyitems(config, items):

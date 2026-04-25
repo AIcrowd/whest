@@ -26,12 +26,12 @@
               "text": "This function is restricted to arguments compatible with the Array API,\ncontrary to "
             },
             {
-              "display_text": "we.vecdot",
+              "display_text": "fnp.vecdot",
               "explicit_title": false,
               "external_url": "",
               "href": "/docs/api/ops/vecdot",
               "kind": "role_reference",
-              "original_target": "we.vecdot",
+              "original_target": "fnp.vecdot",
               "role": "func",
               "suppress_link": false,
               "target": "vecdot",
@@ -262,7 +262,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/vecdot",
-              "label": "we.vecdot",
+              "label": "fnp.vecdot",
               "original_target": "numpy.vecdot",
               "role": "",
               "target": "vecdot",
@@ -290,17 +290,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "v = we.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])"
+              "text": "v = fnp.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "n = we.array([0., 0.6, 0.8])"
+              "text": "n = fnp.array([0., 0.6, 0.8])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.vecdot(v, n)"
+              "text": "fnp.linalg.vecdot(v, n)"
             },
             {
               "kind": "output",
@@ -315,7 +315,7 @@
   ],
   "canonical_name": "linalg.vecdot",
   "category": "counted_custom",
-  "cost_formula": "delegates to we.vecdot",
+  "cost_formula": "delegates to fnp.vecdot",
   "cost_formula_latex": "delegates to `vecdot`",
   "display_type": "custom",
   "doc_coverage": {
@@ -324,16 +324,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "v = we.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])\n\nn = we.array([0., 0.6, 0.8])\n\nwe.linalg.vecdot(v, n)",
+    "code": "v = fnp.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])\n\nn = fnp.array([0., 0.6, 0.8])\n\nfnp.linalg.vecdot(v, n)",
     "output": "array([ 3.,  8., 10.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.vecdot",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L82",
   "href": "/docs/api/ops/linalg-vecdot/",
   "module": "numpy.linalg",
   "name": "linalg.vecdot",
   "next": {
     "href": "/docs/api/ops/linalg-vector_norm/",
-    "label": "we.linalg.vector_norm"
+    "label": "fnp.linalg.vector_norm"
   },
   "notes": "Delegates to `we.vecdot` which charges `2*n` FLOPs.",
   "notes_sections": [],
@@ -363,7 +366,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-trace/",
-    "label": "we.linalg.trace"
+    "label": "fnp.linalg.trace"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.vecdot.html",
@@ -382,19 +385,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/vecdot",
-      "label": "we.vecdot",
+      "label": "fnp.vecdot",
       "original_target": "numpy.vecdot",
       "role": "",
       "target": "vecdot",
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.vecdot(x1, x2, /, *, axis=-1)",
+  "signature": "fnp.linalg.vecdot(x1, x2, /, *, axis=-1)",
   "slug": "linalg-vecdot",
   "summary": "Computes the vector dot product.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3583",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.vecdot",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L3611",
+  "weight": 1.0
 }

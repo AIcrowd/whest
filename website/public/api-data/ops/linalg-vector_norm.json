@@ -194,7 +194,7 @@
                         "href": "/docs/api/ops/linalg-norm",
                         "kind": "link",
                         "target": "linalg.norm",
-                        "text": "we.linalg.norm"
+                        "text": "fnp.linalg.norm"
                       },
                       {
                         "kind": "text",
@@ -223,7 +223,7 @@
                     "href": "/docs/api/ops/linalg-norm",
                     "kind": "link",
                     "target": "linalg.norm",
-                    "text": "we.linalg.norm"
+                    "text": "fnp.linalg.norm"
                   },
                   {
                     "kind": "text",
@@ -254,7 +254,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/linalg-norm",
-                "label": "we.linalg.norm",
+                "label": "fnp.linalg.norm",
                 "original_target": "numpy.linalg.norm",
                 "role": "",
                 "target": "linalg.norm",
@@ -278,7 +278,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(9) + 1"
+                "text": "a = fnp.arange(9) + 1"
               },
               {
                 "kind": "input",
@@ -328,7 +328,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.vector_norm(b, ord=we.inf)"
+                "text": "LA.vector_norm(b, ord=fnp.inf)"
               },
               {
                 "kind": "output",
@@ -337,7 +337,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.vector_norm(b, ord=-we.inf)"
+                "text": "LA.vector_norm(b, ord=-fnp.inf)"
               },
               {
                 "kind": "output",
@@ -405,20 +405,20 @@
     "category": "counted_custom",
     "cost_formula": "numel",
     "cost_formula_latex": "$n$",
+    "flopscope_ref": "fnp.linalg.vector_norm",
     "module": "numpy.linalg",
     "name": "linalg.vector_norm",
     "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm).",
     "numpy_ref": "np.linalg.vector_norm",
-    "signature": "we.linalg.vector_norm(x, ord=2, axis=None, keepdims=False)",
+    "signature": "fnp.linalg.vector_norm(x, ord=2, axis=None, keepdims=False)",
     "status": "supported",
     "summary": "Computes the vector norm of a vector (or batch of vectors) ``x``.",
-    "weight": 1.0,
-    "whest_ref": "we.linalg.vector_norm"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "linalg-vector_norm",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3481",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L251"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L251",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L3509"
   }
 }

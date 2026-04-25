@@ -97,7 +97,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.uniform`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.uniform`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -218,7 +218,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(low, high).size"
+                      "text": "fnp.broadcast(low, high).size"
                     },
                     {
                       "kind": "text",
@@ -276,7 +276,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(low, high).size"
+                  "text": "fnp.broadcast(low, high).size"
                 },
                 {
                   "kind": "text",
@@ -576,7 +576,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.float32(5*0.99999999)"
+              "text": "x = fnp.float32(5*0.99999999)"
             },
             {
               "kind": "input",
@@ -585,7 +585,7 @@
             },
             {
               "kind": "output",
-              "text": "we.float32(5.0)"
+              "text": "fnp.float32(5.0)"
             }
           ],
           "type": "doctest_block"
@@ -609,7 +609,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.uniform(-1,0,1000)"
+              "text": "s = fnp.random.uniform(-1,0,1000)"
             }
           ],
           "type": "doctest_block"
@@ -628,7 +628,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.all(s >= -1)"
+              "text": "fnp.all(s >= -1)"
             },
             {
               "kind": "output",
@@ -637,7 +637,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.all(s < 0)"
+              "text": "fnp.all(s < 0)"
             },
             {
               "kind": "output",
@@ -670,7 +670,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.plot(bins, we.ones_like(bins), linewidth=2, color='r')"
+              "text": "plt.plot(bins, fnp.ones_like(bins), linewidth=2, color='r')"
             },
             {
               "kind": "input",
@@ -695,16 +695,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "s = we.random.uniform(-1,0,1000)\n\nwe.all(s >= -1)\n\nwe.all(s < 0)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, 15, density=True)\n\nplt.plot(bins, we.ones_like(bins), linewidth=2, color='r')\n\nplt.show()",
+    "code": "s = fnp.random.uniform(-1,0,1000)\n\nfnp.all(s >= -1)\n\nfnp.all(s < 0)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, 15, density=True)\n\nplt.plot(bins, fnp.ones_like(bins), linewidth=2, color='r')\n\nplt.show()",
     "output": "True\n\nTrue",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.uniform",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-uniform/",
   "module": "numpy.random",
   "name": "random.uniform",
   "next": {
     "href": "/docs/api/ops/random-vonmises/",
-    "label": "we.random.vonmises"
+    "label": "fnp.random.vonmises"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -712,7 +715,7 @@
     ".. math:: p(x) = \\frac{1}{b - a}",
     "anywhere within the interval ``[a, b)``, and zero elsewhere.",
     "When ``high`` == ``low``, values of ``low`` will be returned. If ``high`` < ``low``, the results are officially undefined and may eventually raise an error, i.e. do not rely on this function to behave when passed arguments satisfying that inequality condition. The ``high`` limit may be included in the returned array of floats due to floating-point rounding in the equation ``low + (high-low) * random_sample()``. For example:",
-    ">>> x = we.float32(5*0.99999999) >>> x we.float32(5.0)"
+    ">>> x = fnp.float32(5*0.99999999) >>> x fnp.float32(5.0)"
   ],
   "numpy_ref": "np.random.uniform",
   "parameters": [
@@ -740,7 +743,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``low`` and ``high`` are both scalars.",
-        "Otherwise, ``we.broadcast(low, high).size`` samples are drawn."
+        "Otherwise, ``fnp.broadcast(low, high).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -748,7 +751,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-triangular/",
-    "label": "we.random.triangular"
+    "label": "fnp.random.triangular"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.uniform.html",
@@ -899,12 +902,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.uniform(low=0.0, high=1.0, size=None)",
+  "signature": "fnp.random.uniform(low=0.0, high=1.0, size=None)",
   "slug": "random-uniform",
   "summary": "Draw samples from a uniform distribution.",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.uniform",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 1.0
 }

@@ -30,7 +30,7 @@
           },
           {
             "language": null,
-            "text": "we.choose(a,c) == we.array([c[a[I]][I] for I in we.ndindex(a.shape)])",
+            "text": "fnp.choose(a,c) == fnp.array([c[a[I]][I] for I in fnp.ndindex(a.shape)])",
             "type": "literal_block"
           },
           {
@@ -735,7 +735,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/take_along_axis",
-                "label": "we.take_along_axis",
+                "label": "fnp.take_along_axis",
                 "original_target": "numpy.take_along_axis",
                 "role": "",
                 "target": "take_along_axis",
@@ -776,7 +776,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -791,7 +791,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.choose([2, 3, 1, 0], choices"
+                "text": "fnp.choose([2, 3, 1, 0], choices"
               },
               {
                 "kind": "input",
@@ -825,7 +825,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.choose([2, 4, 1, 0], choices, mode='clip') # 4 goes to 3 (4-1)"
+                "text": "fnp.choose([2, 4, 1, 0], choices, mode='clip') # 4 goes to 3 (4-1)"
               },
               {
                 "kind": "output",
@@ -839,7 +839,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.choose([2, 4, 1, 0], choices, mode='wrap') # 4 goes to (4 mod 4)"
+                "text": "fnp.choose([2, 4, 1, 0], choices, mode='wrap') # 4 goes to (4 mod 4)"
               },
               {
                 "kind": "output",
@@ -877,7 +877,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.choose(a, choices)"
+                "text": "fnp.choose(a, choices)"
               },
               {
                 "kind": "output",
@@ -904,22 +904,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([0, 1]).reshape((2,1,1))"
+                "text": "a = fnp.array([0, 1]).reshape((2,1,1))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c1 = we.array([1, 2, 3]).reshape((1,3,1))"
+                "text": "c1 = fnp.array([1, 2, 3]).reshape((1,3,1))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c2 = we.array([-1, -2, -3, -4, -5]).reshape((1,1,5))"
+                "text": "c2 = fnp.array([-1, -2, -3, -4, -5]).reshape((1,1,5))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.choose(a, (c1, c2)) # result is 2x3x5, res[0,:,:]=c1, res[1,:,:]=c2"
+                "text": "fnp.choose(a, (c1, c2)) # result is 2x3x5, res[0,:,:]=c1, res[1,:,:]=c2"
               },
               {
                 "kind": "output",
@@ -957,20 +957,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.choose",
     "module": "numpy",
     "name": "choose",
     "notes": "Construct array from index array and choices. Cost: numel(output).",
     "numpy_ref": "np.choose",
-    "signature": "we.choose(a, choices, out=None, mode='raise')",
+    "signature": "fnp.choose(a, choices, out=None, mode='raise')",
     "status": "supported",
     "summary": "Construct an array from an index array and a list of arrays to choose from.",
-    "weight": 4.0,
-    "whest_ref": "we.choose"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "choose",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L333",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L747"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L747",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L308"
   }
 }

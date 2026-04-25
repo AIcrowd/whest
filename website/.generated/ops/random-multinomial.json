@@ -113,7 +113,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.multinomial`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.multinomial`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         },
@@ -404,7 +404,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.multinomial(20, [1/6.]*6, size=1)"
+              "text": "fnp.random.multinomial(20, [1/6.]*6, size=1)"
             },
             {
               "kind": "output",
@@ -436,7 +436,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.multinomial(20, [1/6.]*6, size=2)"
+              "text": "fnp.random.multinomial(20, [1/6.]*6, size=2)"
             },
             {
               "kind": "output",
@@ -472,7 +472,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.multinomial(100, [1/7.]*5 + [2/7.])"
+              "text": "fnp.random.multinomial(100, [1/7.]*5 + [2/7.])"
             },
             {
               "kind": "output",
@@ -495,7 +495,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.multinomial(100, [1.0 / 3, 2.0 / 3])  # RIGHT"
+              "text": "fnp.random.multinomial(100, [1.0 / 3, 2.0 / 3])  # RIGHT"
             },
             {
               "kind": "output",
@@ -518,7 +518,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.multinomial(100, [1.0, 2.0])  # WRONG"
+              "text": "fnp.random.multinomial(100, [1.0, 2.0])  # WRONG"
             },
             {
               "kind": "output",
@@ -546,16 +546,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.random.multinomial(20, [1/6.]*6, size=1)\n\nwe.random.multinomial(20, [1/6.]*6, size=2)\n\nwe.random.multinomial(100, [1/7.]*5 + [2/7.])\n\nwe.random.multinomial(100, [1.0 / 3, 2.0 / 3])  # RIGHT\n\nwe.random.multinomial(100, [1.0, 2.0])  # WRONG",
+    "code": "fnp.random.multinomial(20, [1/6.]*6, size=1)\n\nfnp.random.multinomial(20, [1/6.]*6, size=2)\n\nfnp.random.multinomial(100, [1/7.]*5 + [2/7.])\n\nfnp.random.multinomial(100, [1.0 / 3, 2.0 / 3])  # RIGHT\n\nfnp.random.multinomial(100, [1.0, 2.0])  # WRONG",
     "output": "array([[4, 1, 7, 5, 2, 1]]) # random\n\narray([[3, 4, 3, 3, 4, 3], # random\n       [2, 4, 3, 4, 0, 7]])\n\narray([11, 16, 14, 17, 16, 26]) # random\n\narray([38, 62]) # random\n\nTraceback (most recent call last):\nValueError: pvals < 0, pvals > 1 or pvals contains NaNs",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.multinomial",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-multinomial/",
   "module": "numpy.random",
   "name": "random.multinomial",
   "next": {
     "href": "/docs/api/ops/random-multivariate_normal/",
-    "label": "we.random.multivariate_normal"
+    "label": "fnp.random.multivariate_normal"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -590,7 +593,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-logseries/",
-    "label": "we.random.logseries"
+    "label": "fnp.random.logseries"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.multinomial.html",
@@ -625,12 +628,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.multinomial(n, pvals, size=None)",
+  "signature": "fnp.random.multinomial(n, pvals, size=None)",
   "slug": "random-multinomial",
   "summary": "Draw samples from a multinomial distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.multinomial",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

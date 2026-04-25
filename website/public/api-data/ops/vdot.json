@@ -296,7 +296,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/dot",
-                "label": "we.dot",
+                "label": "fnp.dot",
                 "original_target": "dot",
                 "role": "",
                 "target": "dot",
@@ -315,22 +315,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1+2j,3+4j])"
+                "text": "a = fnp.array([1+2j,3+4j])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([5+6j,7+8j])"
+                "text": "b = fnp.array([5+6j,7+8j])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.vdot(a, b)"
+                "text": "fnp.vdot(a, b)"
               },
               {
                 "kind": "output",
@@ -339,7 +339,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.vdot(b, a)"
+                "text": "fnp.vdot(b, a)"
               },
               {
                 "kind": "output",
@@ -362,17 +362,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 4], [5, 6]])"
+                "text": "a = fnp.array([[1, 4], [5, 6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([[4, 1], [2, 2]])"
+                "text": "b = fnp.array([[4, 1], [2, 2]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.vdot(a, b)"
+                "text": "fnp.vdot(a, b)"
               },
               {
                 "kind": "output",
@@ -381,7 +381,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.vdot(b, a)"
+                "text": "fnp.vdot(b, a)"
               },
               {
                 "kind": "output",
@@ -408,20 +408,20 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
+    "flopscope_ref": "fnp.vdot",
     "module": "numpy",
     "name": "vdot",
     "notes": "Dot product with conjugation; cost = N (FMA=1).",
     "numpy_ref": "np.vdot",
-    "signature": "we.vdot(a, b)",
+    "signature": "fnp.vdot(a, b)",
     "status": "supported",
     "summary": "Return the dot product of two vectors.",
-    "weight": 1.0,
-    "whest_ref": "we.vdot"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "vdot",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.vdot.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L936"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L936",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.vdot.html"
   }
 }

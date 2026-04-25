@@ -86,7 +86,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/split",
-              "label": "we.split",
+              "label": "fnp.split",
               "original_target": "split",
               "role": "",
               "target": "split",
@@ -105,12 +105,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(16.0).reshape(4, 4)"
+              "text": "x = fnp.arange(16.0).reshape(4, 4)"
             },
             {
               "kind": "input",
@@ -136,7 +136,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.vsplit(x, 2)"
+              "text": "fnp.vsplit(x, 2)"
             },
             {
               "kind": "output",
@@ -157,7 +157,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.vsplit(x, we.array([3, 6]))"
+              "text": "fnp.vsplit(x, fnp.array([3, 6]))"
             },
             {
               "kind": "output",
@@ -196,7 +196,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(8.0).reshape(2, 2, 2)"
+              "text": "x = fnp.arange(8.0).reshape(2, 2, 2)"
             },
             {
               "kind": "input",
@@ -222,7 +222,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.vsplit(x, 2)"
+              "text": "fnp.vsplit(x, 2)"
             },
             {
               "kind": "output",
@@ -258,16 +258,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(16.0).reshape(4, 4)\n\nx\n\nwe.vsplit(x, 2)\n\nwe.vsplit(x, we.array([3, 6]))\n\nx = we.arange(8.0).reshape(2, 2, 2)\n\nx\n\nwe.vsplit(x, 2)",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(16.0).reshape(4, 4)\n\nx\n\nfnp.vsplit(x, 2)\n\nfnp.vsplit(x, fnp.array([3, 6]))\n\nx = fnp.arange(8.0).reshape(2, 2, 2)\n\nx\n\nfnp.vsplit(x, 2)",
     "output": "array([[ 0.,   1.,   2.,   3.],\n       [ 4.,   5.,   6.,   7.],\n       [ 8.,   9.,  10.,  11.],\n       [12.,  13.,  14.,  15.]])\n\n[array([[0., 1., 2., 3.],\n        [4., 5., 6., 7.]]),\n array([[ 8.,  9., 10., 11.],\n        [12., 13., 14., 15.]])]\n\n[array([[ 0.,  1.,  2.,  3.],\n        [ 4.,  5.,  6.,  7.],\n        [ 8.,  9., 10., 11.]]),\n array([[12., 13., 14., 15.]]),\n array([], shape=(0, 4), dtype=float64)]\n\narray([[[0.,  1.],\n        [2.,  3.]],\n       [[4.,  5.],\n        [6.,  7.]]])\n\n[array([[[0., 1.],\n         [2., 3.]]]),\n array([[[4., 5.],\n         [6., 7.]]])]",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.vsplit",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L305",
   "href": "/docs/api/ops/vsplit/",
   "module": "numpy",
   "name": "vsplit",
   "next": {
     "href": "/docs/api/ops/vstack/",
-    "label": "we.vstack"
+    "label": "fnp.vstack"
   },
   "notes": "Split array into rows. Cost: numel(output).",
   "notes_sections": [],
@@ -275,7 +278,7 @@
   "parameters": [],
   "previous": {
     "href": "/docs/api/ops/vecmat/",
-    "label": "we.vecmat"
+    "label": "fnp.vecmat"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.vsplit.html",
@@ -291,19 +294,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/split",
-      "label": "we.split",
+      "label": "fnp.split",
       "original_target": "split",
       "role": "",
       "target": "split",
       "unresolved": false
     }
   ],
-  "signature": "we.vsplit(ary, indices_or_sections)",
+  "signature": "fnp.vsplit(ary, indices_or_sections)",
   "slug": "vsplit",
   "summary": "Split an array into multiple sub-arrays vertically (row-wise).",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L957",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.vsplit",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L305"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L952",
+  "weight": 0.0
 }

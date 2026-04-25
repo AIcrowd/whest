@@ -267,7 +267,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "we.fft"
+                      "text": "fnp.fft"
                     },
                     {
                       "kind": "text",
@@ -298,7 +298,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "we.fft"
+                  "text": "fnp.fft"
                 },
                 {
                   "kind": "text",
@@ -571,7 +571,7 @@
               ],
               "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
               "href": "",
-              "label": "we.fft",
+              "label": "fnp.fft",
               "original_target": "numpy.fft",
               "role": "",
               "target": "fft",
@@ -790,12 +790,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.ifft([1, -1j, -1, 1j])"
+              "text": "fnp.fft.ifft([1, -1j, -1, 1j])"
             },
             {
               "kind": "output",
@@ -804,7 +804,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.irfft([1, -1j, -1])"
+              "text": "fnp.fft.irfft([1, -1j, -1])"
             },
             {
               "kind": "output",
@@ -853,16 +853,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.fft.ifft([1, -1j, -1, 1j])\n\nwe.fft.irfft([1, -1j, -1])",
+    "code": "import flopscope as fnp\n\nfnp.fft.ifft([1, -1j, -1, 1j])\n\nfnp.fft.irfft([1, -1j, -1])",
     "output": "array([0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j]) # may vary\n\narray([0.,  1.,  0.,  0.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.irfft",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L217",
   "href": "/docs/api/ops/fft-irfft/",
   "module": "numpy.fft",
   "name": "fft.irfft",
   "next": {
     "href": "/docs/api/ops/fft-irfft2/",
-    "label": "we.fft.irfft2"
+    "label": "fnp.fft.irfft2"
   },
   "notes": "Inverse 1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -901,7 +904,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `we.fft`). Default is \"backward\".",
+        "Normalization mode (see `fnp.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -925,7 +928,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/fft-ihfft/",
-    "label": "we.fft.ihfft"
+    "label": "fnp.fft.ihfft"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.irfft.html",
@@ -953,7 +956,7 @@
       ],
       "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
       "href": "",
-      "label": "we.fft",
+      "label": "fnp.fft",
       "original_target": "numpy.fft",
       "role": "",
       "target": "fft",
@@ -1040,12 +1043,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.irfft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.irfft(a, n=None, axis=-1, norm=None, out=None)",
   "slug": "fft-irfft",
   "summary": "Computes the inverse of `rfft`.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L415",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.irfft",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L217"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L421",
+  "weight": 1.0
 }

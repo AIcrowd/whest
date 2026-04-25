@@ -1,13 +1,13 @@
 # NumPy Compatibility Test Harness
 
-Runs NumPy's own test suite with whest monkeypatched in.
+Runs NumPy's own test suite with flopscope monkeypatched in.
 
 ## How it works
 
-`conftest.py` freezes the original numpy module, rebinds whest's internal
-`_np` references to the frozen copy, then patches most non-ufunc whest
-functions onto numpy. This lets NumPy's tests call whest's versions while
-whest internally calls unpatched numpy (avoiding infinite recursion).
+`conftest.py` freezes the original numpy module, rebinds flopscope's internal
+`_np` references to the frozen copy, then patches most non-ufunc flopscope
+functions onto numpy. This lets NumPy's tests call flopscope's versions while
+flopscope internally calls unpatched numpy (avoiding infinite recursion).
 
 Ufuncs (101) and blacklisted ops (32) are skipped. Everything else -- free ops,
 counted custom ops, submodule functions (linalg, fft, random) -- is patched.

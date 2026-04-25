@@ -272,17 +272,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "signal = we.array([-2, 8, 6, 4, 1, 0, 3, 5, -3, 4], dtype=float)"
+                "text": "signal = fnp.array([-2, 8, 6, 4, 1, 0, 3, 5, -3, 4], dtype=float)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fourier = we.fft.rfft(signal)"
+                "text": "fourier = fnp.fft.rfft(signal)"
               },
               {
                 "kind": "input",
@@ -297,7 +297,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freq = we.fft.fftfreq(n, d=1./sample_rate)"
+                "text": "freq = fnp.fft.fftfreq(n, d=1./sample_rate)"
               },
               {
                 "kind": "input",
@@ -311,7 +311,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freq = we.fft.rfftfreq(n, d=1./sample_rate)"
+                "text": "freq = fnp.fft.rfftfreq(n, d=1./sample_rate)"
               },
               {
                 "kind": "input",
@@ -334,20 +334,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.fft.rfftfreq",
     "module": "numpy.fft",
     "name": "fft.rfftfreq",
     "notes": "Real FFT sample frequencies. No arithmetic; returns index array.",
     "numpy_ref": "np.fft.rfftfreq",
-    "signature": "we.fft.rfftfreq(n, d=1.0, device=None)",
+    "signature": "fnp.fft.rfftfreq(n, d=1.0, device=None)",
     "status": "supported",
     "summary": "Return the Discrete Fourier Transform sample frequencies (for usage with rfft, irfft).",
-    "weight": 0.0,
-    "whest_ref": "we.fft.rfftfreq"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "fft-rfftfreq",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L180",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_free.py#L22"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L22",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_helper.py#L180"
   }
 }

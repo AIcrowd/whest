@@ -67,16 +67,6 @@
                     }
                   ],
                   "type": "paragraph"
-                },
-                {
-                  "argument_inline": [],
-                  "content_blocks": [],
-                  "directive": "deprecated",
-                  "options": [],
-                  "raw_source": ".. deprecated:: 1.22.0\n    Passing booleans as index is deprecated.",
-                  "supported": true,
-                  "type": "directive_block",
-                  "version": "1.22.0"
                 }
               ],
               "data_type": "int or sequence of ints",
@@ -257,7 +247,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/argpartition",
-              "label": "we.argpartition",
+              "label": "fnp.argpartition",
               "original_target": "argpartition",
               "role": "",
               "target": "argpartition",
@@ -273,7 +263,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/sort",
-              "label": "we.sort",
+              "label": "fnp.sort",
               "original_target": "sort",
               "role": "",
               "target": "sort",
@@ -330,7 +320,7 @@
               "href": "",
               "kind": "link",
               "target": "nan",
-              "text": "we.nan"
+              "text": "fnp.nan"
             },
             {
               "kind": "text",
@@ -341,7 +331,7 @@
               "href": "",
               "kind": "link",
               "target": "inf",
-              "text": "we.inf"
+              "text": "fnp.inf"
             },
             {
               "kind": "text",
@@ -360,17 +350,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])"
+              "text": "a = fnp.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "p = we.partition(a, 4)"
+              "text": "p = fnp.partition(a, 4)"
             },
             {
               "kind": "input",
@@ -456,7 +446,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "p2 = we.partition(a, (4, 8))"
+              "text": "p2 = fnp.partition(a, (4, 8))"
             },
             {
               "kind": "input",
@@ -579,16 +569,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])\n\np = we.partition(a, 4)\n\np\n\np2 = we.partition(a, (4, 8))\n\np2",
+    "code": "import flopscope as fnp\n\na = fnp.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])\n\np = fnp.partition(a, 4)\n\np\n\np2 = fnp.partition(a, (4, 8))\n\np2",
     "output": "array([0, 1, 2, 1, 2, 5, 2, 3, 3, 6, 7, 7, 7, 7]) # may vary\n\narray([0, 1, 2, 1, 2, 3, 3, 2, 5, 6, 7, 7, 7, 7])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.partition",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L113",
   "href": "/docs/api/ops/partition/",
   "module": "numpy",
   "name": "partition",
   "next": {
     "href": "/docs/api/ops/percentile/",
-    "label": "we.percentile"
+    "label": "fnp.percentile"
   },
   "notes": "Quickselect; cost = n per slice.",
   "notes_sections": [
@@ -596,7 +589,7 @@
     "================= ======= ============= ============ ======= kind            speed   worst case    work space  stable ================= ======= ============= ============ ======= 'introselect'        1        O(n)           0         no ================= ======= ============= ============ =======",
     "All the partition algorithms make temporary copies of the data when partitioning along any but the last axis.  Consequently, partitioning along the last axis is faster and uses less space than partitioning along any other axis.",
     "The sort order for complex numbers is lexicographic. If both the real and imaginary parts are non-nan then the order is determined by the real parts except when they are equal, in which case the order is determined by the imaginary parts.",
-    "The sort order of ``we.nan`` is bigger than ``we.inf``."
+    "The sort order of ``fnp.nan`` is bigger than ``fnp.inf``."
   ],
   "numpy_ref": "np.partition",
   "parameters": [
@@ -614,10 +607,7 @@
         "will be moved before it and all equal or greater elements behind",
         "it. The order of all elements in the partitions is undefined. If",
         "provided with a sequence of k-th it will partition all elements",
-        "indexed by k-th  of them into their sorted position at once.",
-        "",
-        ".. deprecated:: 1.22.0",
-        "    Passing booleans as index is deprecated."
+        "indexed by k-th  of them into their sorted position at once."
       ],
       "name": "kth",
       "type": "int or sequence of ints"
@@ -651,7 +641,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/pad/",
-    "label": "we.pad"
+    "label": "fnp.pad"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.partition.html",
@@ -691,7 +681,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/argpartition",
-      "label": "we.argpartition",
+      "label": "fnp.argpartition",
       "original_target": "argpartition",
       "role": "",
       "target": "argpartition",
@@ -707,19 +697,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/sort",
-      "label": "we.sort",
+      "label": "fnp.sort",
       "original_target": "sort",
       "role": "",
       "target": "sort",
       "unresolved": false
     }
   ],
-  "signature": "we.partition(a, kth, axis=-1, kind='introselect', order=None)",
+  "signature": "fnp.partition(a, kth, axis=-1, kind='introselect', order=None)",
   "slug": "partition",
   "summary": "Return a partitioned copy of an array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L758",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.partition",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L113"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L732",
+  "weight": 1.0
 }

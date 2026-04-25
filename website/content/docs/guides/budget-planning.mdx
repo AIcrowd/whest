@@ -12,39 +12,39 @@ title: "Budget Planning & Debugging"
 
 ## Estimate before running
 
-whest provides cost query functions that compute FLOP costs from shapes without executing anything or touching the budget. Use these to plan before committing FLOPs:
+Flopscope provides cost query functions that compute FLOP costs from shapes without executing anything or touching the budget. Use these to plan before committing FLOPs:
 
 ```python
-import whest as we
-
+import flopscope as flops
+import flopscope.numpy as fnp
 # Einsum cost
-cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+cost = flops.accounting.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
 print(f"Matmul cost: {cost:,}")         # 16,777,216 (256^3, FMA=1)
 
 # SVD cost
-cost = we.flops.svd_cost(m=256, n=256, k=10)
+cost = flops.accounting.svd_cost(m=256, n=256, k=10)
 print(f"SVD cost: {cost:,}")            # 655,360
 
 # Pointwise cost (unary/binary ops like exp, add, multiply)
-cost = we.flops.pointwise_cost("exp", shape=(256, 256))
+cost = flops.accounting.pointwise_cost("exp", shape=(256, 256))
 print(f"Pointwise cost: {cost:,}")      # 65,536
 
 # Reduction cost (sum, mean, max, etc.)
-cost = we.flops.reduction_cost("sum", input_shape=(256, 256))
+cost = flops.accounting.reduction_cost("sum", input_shape=(256, 256))
 print(f"Reduction cost: {cost:,}")      # 65,536
 ```
 
-For multi-operand einsums (3+ operands), use `we.einsum_path()` to see the step-by-step contraction breakdown with per-step costs and symmetry savings:
+For multi-operand einsums (3+ operands), use `fnp.einsum_path()` to see the step-by-step contraction breakdown with per-step costs and symmetry savings:
 
 ```python
-path, info = we.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
+path, info = fnp.einsum_path('ijk,ai,bj,ck->abc', T, A, B, C)
 print(f"Optimized cost: {info.optimized_cost:,}")
 print(f"Naive cost:     {info.naive_cost:,}")
 print(f"Speedup:        {info.speedup:.1f}x")
 print(info)  # full per-step table
 ```
 
-`we.einsum_path()` does not execute the contraction, but it does record a nominal 1-FLOP planning event so the path query itself is still visible in the operation log.
+`fnp.einsum_path()` does not execute the contraction, but it does record a nominal 1-FLOP planning event so the path query itself is still visible in the operation log.
 
 ### Budget breakdown example
 
@@ -52,9 +52,9 @@ Plan a multi-step computation before executing:
 
 ```python
 steps = [
-    ("einsum ij,j->i", we.flops.einsum_cost('ij,j->i', shapes=[(256, 256), (256,)])),
-    ("ReLU (maximum)", we.flops.pointwise_cost("maximum", shape=(256,))),
-    ("sum reduction", we.flops.reduction_cost("sum", input_shape=(256,))),
+    ("einsum ij,j->i", flops.accounting.einsum_cost('ij,j->i', shapes=[(256, 256), (256,)])),
+    ("ReLU (maximum)", flops.accounting.pointwise_cost("maximum", shape=(256,))),
+    ("sum reduction", flops.accounting.reduction_cost("sum", input_shape=(256,))),
 ]
 
 total = sum(cost for _, cost in steps)
@@ -68,24 +68,24 @@ print(f"{'Total':<20} {total:>12,}")
 
 ## Read the budget summary
 
-Call `we.budget_summary()` after your computation for a human-readable breakdown, or `budget.summary()` inside a context. Pass `by_namespace=True` when you want dotted namespace attribution:
+Call `flops.budget_summary()` after your computation for a human-readable breakdown, or `budget.summary()` inside a context. Pass `by_namespace=True` when you want dotted namespace attribution:
 
 ```python
-with we.BudgetContext(flop_budget=10_000_000) as budget:
-    A = we.ones((256, 256))
-    x = we.ones((256,))
-    h = we.einsum('ij,j->i', A, x)
-    h = we.exp(h)
-    h = we.sum(h)
+with flops.BudgetContext(flop_budget=10_000_000) as budget:
+    A = fnp.ones((256, 256))
+    x = fnp.ones((256,))
+    h = fnp.einsum('ij,j->i', A, x)
+    h = fnp.exp(h)
+    h = fnp.sum(h)
     print(budget.summary())
 ```
 
 The summary shows cost per operation type, sorted by highest cost first. Look for operations consuming a disproportionate share of the budget. When you opt into `by_namespace=True`, the display adds a namespace breakdown for the exact dotted paths recorded in that run.
 
-For programmatic analysis, use `we.budget_summary_dict()`:
+For programmatic analysis, use `flops.budget_summary_dict()`:
 
 ```python
-data = we.budget_summary_dict()
+data = flops.budget_summary_dict()
 print(f"Budget: {data['flop_budget']:,}")
 print(f"Used:   {data['flops_used']:,}")
 print(f"Left:   {data['flops_remaining']:,}")
@@ -93,14 +93,14 @@ for op_name, op_data in data["operations"].items():
     print(f"  {op_name}: {op_data['flop_cost']:,} ({op_data['calls']} calls)")
 ```
 
-Use `we.budget_summary_dict(by_namespace=True)` for exact per-namespace breakdowns keyed by the full dotted path:
+Use `flops.budget_summary_dict(by_namespace=True)` for exact per-namespace breakdowns keyed by the full dotted path:
 
 ```python
-with we.BudgetContext(flop_budget=1000, namespace="predict") as budget:
-    x = we.ones((1,))
-    with we.namespace("fallback"):
-        with we.namespace("sampling"):
-            sample = we.add(x, 1)
+with flops.BudgetContext(flop_budget=1000, namespace="predict") as budget:
+    x = fnp.ones((1,))
+    with flops.namespace("fallback"):
+        with flops.namespace("sampling"):
+            sample = fnp.add(x, 1)
 
 data = budget.summary_dict(by_namespace=True)
 print(data["by_namespace"]["predict.fallback.sampling"]["flops_used"])
@@ -113,7 +113,7 @@ slow in practice. Use `wall_time_limit_s` on the same `BudgetContext` when you
 want a cooperative wall-clock deadline in addition to the FLOP cap:
 
 ```python
-with we.BudgetContext(
+with flops.BudgetContext(
     flop_budget=10_000_000,
     wall_time_limit_s=2.0,
     namespace="predict",
@@ -124,7 +124,7 @@ with we.BudgetContext(
 print(budget.summary())
 ```
 
-When the time limit is exceeded, whest raises `TimeExhaustedError` at the next
+When the time limit is exceeded, Flopscope raises `TimeExhaustedError` at the next
 operation boundary. The summary exposes three timing views:
 
 - `wall_time_s`: total elapsed time for the context
@@ -132,7 +132,7 @@ operation boundary. The summary exposes three timing views:
 - `untracked_time_s`: everything else in the context (`wall_time_s - tracked_time_s`)
 
 Use `budget.summary()` when you want the current context's timings, and
-`we.budget_summary()` when you want the accumulated session/global view.
+`flops.budget_summary()` when you want the accumulated session/global view.
 
 ## Diagnose overruns
 
@@ -159,8 +159,8 @@ Look for the operation where `cumulative` jumps sharply -- that is your most exp
 For real-time monitoring during long computations, use the live budget display:
 
 ```python
-with we.budget_live():
-    with we.BudgetContext(flop_budget=10**8, namespace="training") as budget:
+with flops.budget_live():
+    with flops.BudgetContext(flop_budget=10**8, namespace="training") as budget:
         for i in range(100):
             # ... computation ...
             pass
@@ -173,7 +173,7 @@ Once you have identified the expensive operations, apply these strategies:
 
 1. **Reduce dimensions.** If `random.randn(1024, 1024)` is too expensive, try smaller arrays. A 512x512 matrix costs 1/4 the FLOPs of a 1024x1024 matrix for a matmul.
 
-2. **Exploit symmetry.** If operands are symmetric, use `we.as_symmetric()` to halve pointwise costs and significantly reduce einsum costs. See [Symmetry Savings](/docs/guides/symmetry).
+2. **Exploit symmetry.** If operands are symmetric, use `flops.as_symmetric()` to halve pointwise costs and significantly reduce einsum costs. See [Symmetry Savings](/docs/guides/symmetry).
 
 3. **Use cheaper operations.** A matrix-vector product costs `m*n` FLOPs, while a matrix-matrix product costs `m*n*k`. Avoid computing full matrix products when you only need a few rows or a single vector result.
 
@@ -182,12 +182,12 @@ Once you have identified the expensive operations, apply these strategies:
 5. **Split into phases.** Use namespaces to attribute different phases without splitting the FLOP budget into child budgets:
 
 ```python
-with we.BudgetContext(flop_budget=10**8, namespace="solver") as budget:
-    with we.namespace("init"):
+with flops.BudgetContext(flop_budget=10**8, namespace="solver") as budget:
+    with flops.namespace("init"):
         # initialization
         ...
 
-    with we.namespace("solve"):
+    with flops.namespace("solve"):
         # main computation
         ...
 

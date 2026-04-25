@@ -217,7 +217,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/meshgrid",
-              "label": "we.meshgrid",
+              "label": "fnp.meshgrid",
               "original_target": "meshgrid",
               "role": "",
               "target": "meshgrid",
@@ -312,12 +312,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "grid = we.indices((2, 3))"
+              "text": "grid = fnp.indices((2, 3))"
             },
             {
               "kind": "input",
@@ -371,12 +371,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(20).reshape(5, 4)"
+              "text": "x = fnp.arange(20).reshape(5, 4)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "row, col = we.indices((2, 3))"
+              "text": "row, col = fnp.indices((2, 3))"
             },
             {
               "kind": "input",
@@ -425,7 +425,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "i, j = we.indices((2, 3), sparse=True)"
+              "text": "i, j = fnp.indices((2, 3), sparse=True)"
             },
             {
               "kind": "input",
@@ -485,16 +485,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\ngrid = we.indices((2, 3))\n\ngrid.shape\n\ngrid[0]        # row indices\n\ngrid[1]        # column indices\n\nx = we.arange(20).reshape(5, 4)\n\nrow, col = we.indices((2, 3))\n\nx[row, col]\n\ni, j = we.indices((2, 3), sparse=True)\n\ni.shape\n\nj.shape\n\ni        # row indices\n\nj        # column indices",
+    "code": "import flopscope as fnp\n\ngrid = fnp.indices((2, 3))\n\ngrid.shape\n\ngrid[0]        # row indices\n\ngrid[1]        # column indices\n\nx = fnp.arange(20).reshape(5, 4)\n\nrow, col = fnp.indices((2, 3))\n\nx[row, col]\n\ni, j = fnp.indices((2, 3), sparse=True)\n\ni.shape\n\nj.shape\n\ni        # row indices\n\nj        # column indices",
     "output": "(2, 2, 3)\n\narray([[0, 0, 0],\n       [1, 1, 1]])\n\narray([[0, 1, 2],\n       [0, 1, 2]])\n\narray([[0, 1, 2],\n       [4, 5, 6]])\n\n(2, 1)\n\n(1, 3)\n\narray([[0],\n       [1]])\n\narray([[0, 1, 2]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.indices",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1055",
   "href": "/docs/api/ops/indices/",
   "module": "numpy",
   "name": "indices",
   "next": {
     "href": "/docs/api/ops/inner/",
-    "label": "we.inner"
+    "label": "fnp.inner"
   },
   "notes": "Return array representing indices of a grid. Cost: numel(output).",
   "notes_sections": [
@@ -529,7 +532,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/in1d/",
-    "label": "we.in1d"
+    "label": "fnp.in1d"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.indices.html",
@@ -576,19 +579,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/meshgrid",
-      "label": "we.meshgrid",
+      "label": "fnp.meshgrid",
       "original_target": "meshgrid",
       "role": "",
       "target": "meshgrid",
       "unresolved": false
     }
   ],
-  "signature": "we.indices(dimensions, dtype=<class 'int'>, sparse=False)",
+  "signature": "fnp.indices(dimensions, dtype=<class 'int'>, sparse=False)",
   "slug": "indices",
   "summary": "Return an array representing the indices of a grid.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1745",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.indices",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1055"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L1790",
+  "weight": 1.0
 }

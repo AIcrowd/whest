@@ -249,7 +249,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array(a, copy=True)  #doctest: +SKIP"
+              "text": "fnp.array(a, copy=True)  #doctest: +SKIP"
             }
           ],
           "type": "doctest_block"
@@ -281,7 +281,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -300,7 +300,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([1, 2, 3])"
+              "text": "x = fnp.array([1, 2, 3])"
             },
             {
               "kind": "input",
@@ -310,7 +310,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "z = we.copy(x)"
+              "text": "z = fnp.copy(x)"
             }
           ],
           "type": "doctest_block"
@@ -356,7 +356,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Note that, we.copy clears previously set WRITEABLE=False flag."
+              "text": "Note that, fnp.copy clears previously set WRITEABLE=False flag."
             }
           ],
           "type": "paragraph"
@@ -366,7 +366,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([1, 2, 3])"
+              "text": "a = fnp.array([1, 2, 3])"
             },
             {
               "kind": "input",
@@ -376,7 +376,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.copy(a)"
+              "text": "b = fnp.copy(a)"
             },
             {
               "kind": "input",
@@ -432,21 +432,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.array([1, 2, 3])\n\ny = x\n\nz = we.copy(x)\n\nx[0] = 10\n\nx[0] == y[0]\n\nx[0] == z[0]\n\na = we.array([1, 2, 3])\n\na.flags[\"WRITEABLE\"] = False\n\nb = we.copy(a)\n\nb.flags[\"WRITEABLE\"]\n\nb[0] = 3\n\nb",
+    "code": "import flopscope as fnp\n\nx = fnp.array([1, 2, 3])\n\ny = x\n\nz = fnp.copy(x)\n\nx[0] = 10\n\nx[0] == y[0]\n\nx[0] == z[0]\n\na = fnp.array([1, 2, 3])\n\na.flags[\"WRITEABLE\"] = False\n\nb = fnp.copy(a)\n\nb.flags[\"WRITEABLE\"]\n\nb[0] = 3\n\nb",
     "output": "True\n\nFalse\n\nTrue\n\narray([3, 2, 3])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.copy",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L349",
   "href": "/docs/api/ops/copy/",
   "module": "numpy",
   "name": "copy",
   "next": {
     "href": "/docs/api/ops/copysign/",
-    "label": "we.copysign"
+    "label": "fnp.copysign"
   },
   "notes": "Return array copy.",
   "notes_sections": [
     "This is equivalent to:",
-    ">>> we.array(a, copy=True)  #doctest: +SKIP",
+    ">>> fnp.array(a, copy=True)  #doctest: +SKIP",
     "The copy made of the data is shallow, i.e., for arrays with object dtype, the new array will point to the same objects. See Examples from `ndarray.copy`."
   ],
   "numpy_ref": "np.copy",
@@ -481,7 +484,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/convolve/",
-    "label": "we.convolve"
+    "label": "fnp.convolve"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.copy.html",
@@ -512,12 +515,9 @@
       "unresolved": true
     }
   ],
-  "signature": "we.copy(a, order='K', subok=False)",
+  "signature": "fnp.copy(a, order='K', subok=False)",
   "slug": "copy",
   "summary": "Return an array copy of the given object.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L898",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.copy",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L349"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L924",
+  "weight": 0.0
 }

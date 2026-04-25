@@ -241,7 +241,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/tensordot",
-                "label": "we.tensordot",
+                "label": "fnp.tensordot",
                 "original_target": "numpy.tensordot",
                 "role": "",
                 "target": "tensordot",
@@ -271,22 +271,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.eye(4*6)"
+                "text": "a = fnp.eye(4*6).reshape((4, 6, 8, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a.shape = (4, 6, 8, 3)"
-              },
-              {
-                "kind": "input",
-                "prompt": ">>>",
-                "text": "ainv = we.linalg.tensorinv(a, ind=2)"
+                "text": "ainv = fnp.linalg.tensorinv(a, ind=2)"
               },
               {
                 "kind": "input",
@@ -300,7 +295,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng()"
+                "text": "rng = fnp.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -310,7 +305,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(we.tensordot(ainv, b), we.linalg.tensorsolve(a, b))"
+                "text": "fnp.allclose(fnp.tensordot(ainv, b), fnp.linalg.tensorsolve(a, b))"
               },
               {
                 "kind": "output",
@@ -324,17 +319,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.eye(4*6)"
+                "text": "a = fnp.eye(4*6).reshape((24, 8, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a.shape = (24, 8, 3)"
-              },
-              {
-                "kind": "input",
-                "prompt": ">>>",
-                "text": "ainv = we.linalg.tensorinv(a, ind=1)"
+                "text": "ainv = fnp.linalg.tensorinv(a, ind=1)"
               },
               {
                 "kind": "input",
@@ -348,7 +338,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng()"
+                "text": "rng = fnp.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -358,7 +348,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(we.tensordot(ainv, b, 1), we.linalg.tensorsolve(a, b))"
+                "text": "fnp.allclose(fnp.tensordot(ainv, b, 1), fnp.linalg.tensorsolve(a, b))"
               },
               {
                 "kind": "output",
@@ -376,20 +366,20 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
+    "flopscope_ref": "fnp.linalg.tensorinv",
     "module": "numpy.linalg",
     "name": "linalg.tensorinv",
     "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv).",
     "numpy_ref": "np.linalg.tensorinv",
-    "signature": "we.linalg.tensorinv(a, ind=2)",
+    "signature": "fnp.linalg.tensorinv(a, ind=2)",
     "status": "supported",
     "summary": "Compute the 'inverse' of an N-dimensional array.",
-    "weight": 4.0,
-    "whest_ref": "we.linalg.tensorinv"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "linalg-tensorinv",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L419",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L287"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L287",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L461"
   }
 }

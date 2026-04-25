@@ -152,7 +152,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/diff",
-                "label": "we.diff",
+                "label": "fnp.diff",
                 "original_target": "diff",
                 "role": "",
                 "target": "diff",
@@ -163,7 +163,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/gradient",
-                "label": "we.gradient",
+                "label": "fnp.gradient",
                 "original_target": "gradient",
                 "role": "",
                 "target": "gradient",
@@ -212,17 +212,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([1, 2, 4, 7, 0])"
+                "text": "x = fnp.array([1, 2, 4, 7, 0])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ediff1d(x)"
+                "text": "fnp.ediff1d(x)"
               },
               {
                 "kind": "output",
@@ -236,7 +236,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ediff1d(x, to_begin=-99, to_end=we.array([88, 99]))"
+                "text": "fnp.ediff1d(x, to_begin=-99, to_end=fnp.array([88, 99]))"
               },
               {
                 "kind": "output",
@@ -264,7 +264,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ediff1d(y)"
+                "text": "fnp.ediff1d(y)"
               },
               {
                 "kind": "output",
@@ -282,20 +282,20 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.ediff1d",
     "module": "numpy",
     "name": "ediff1d",
     "notes": "Differences between consecutive elements.",
     "numpy_ref": "np.ediff1d",
-    "signature": "we.ediff1d(ary, to_end=None, to_begin=None)",
+    "signature": "fnp.ediff1d(ary, to_end=None, to_begin=None)",
     "status": "supported",
     "summary": "The differences between consecutive elements of an array.",
-    "weight": 1.0,
-    "whest_ref": "we.ediff1d"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "ediff1d",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L41",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1039"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1039",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_arraysetops_impl.py#L40"
   }
 }

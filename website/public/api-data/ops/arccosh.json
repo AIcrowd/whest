@@ -286,7 +286,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/cosh",
-                "label": "we.cosh",
+                "label": "fnp.cosh",
                 "original_target": "cosh",
                 "role": "",
                 "target": "cosh",
@@ -297,7 +297,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/arcsinh",
-                "label": "we.arcsinh",
+                "label": "fnp.arcsinh",
                 "original_target": "arcsinh",
                 "role": "",
                 "target": "arcsinh",
@@ -308,7 +308,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/sinh",
-                "label": "we.sinh",
+                "label": "fnp.sinh",
                 "original_target": "sinh",
                 "role": "",
                 "target": "sinh",
@@ -319,7 +319,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/arctanh",
-                "label": "we.arctanh",
+                "label": "fnp.arctanh",
                 "original_target": "arctanh",
                 "role": "",
                 "target": "arctanh",
@@ -330,7 +330,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/tanh",
-                "label": "we.tanh",
+                "label": "fnp.tanh",
                 "original_target": "tanh",
                 "role": "",
                 "target": "tanh",
@@ -497,12 +497,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arccosh([we.e, 10.0])"
+                "text": "fnp.arccosh([fnp.e, 10.0])"
               },
               {
                 "kind": "output",
@@ -511,7 +511,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arccosh(1)"
+                "text": "fnp.arccosh(1)"
               },
               {
                 "kind": "output",
@@ -529,20 +529,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.arccosh",
     "module": "numpy",
     "name": "arccosh",
     "notes": "Element-wise inverse hyperbolic cosine.",
     "numpy_ref": "np.arccosh",
-    "signature": "we.arccosh(x)",
+    "signature": "fnp.arccosh(x)",
     "status": "supported",
     "summary": "Inverse hyperbolic cosine, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.arccosh"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "arccosh",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

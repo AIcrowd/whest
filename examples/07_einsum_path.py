@@ -1,23 +1,24 @@
 """Contraction path analysis with einsum_path.
 
-``we.einsum_path`` computes the optimal contraction order *without*
+``fnp.einsum_path`` computes the optimal contraction order *without*
 executing or spending any budget.  It returns a ``(path, PathInfo)``
-tuple that you can inspect and later feed back to ``we.einsum``.
+tuple that you can inspect and later feed back to ``fnp.einsum``.
 
 Run: uv run python examples/07_einsum_path.py
 """
 
-import whest as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
 # ---------------------------------------------------------------------------
 # 1. Path analysis for a three-matrix chain multiply
 # ---------------------------------------------------------------------------
 n = 200
-A = we.random.randn(n, n)
-B = we.random.randn(n, n)
-C = we.random.randn(n, n)
+A = fnp.random.randn(n, n)
+B = fnp.random.randn(n, n)
+C = fnp.random.randn(n, n)
 
-path, info = we.einsum_path("ij,jk,kl->il", A, B, C)
+path, info = fnp.einsum_path("ij,jk,kl->il", A, B, C)
 
 print("=== Three-matrix chain: ij,jk,kl->il ===\n")
 print(info.format_table(verbose=True))
@@ -34,11 +35,11 @@ print(f"Speedup:          {info.speedup:.1f}x")
 
 print("\n=== Same-object detection: ij,ik->jk ===\n")
 
-X = we.random.randn(100, 100)
-Y = we.random.randn(100, 100)  # different object, same shape
+X = fnp.random.randn(100, 100)
+Y = fnp.random.randn(100, 100)  # different object, same shape
 
-_, info_same = we.einsum_path("ij,ik->jk", X, X)  # same object twice
-_, info_diff = we.einsum_path("ij,ik->jk", X, Y)  # two different objects
+_, info_same = fnp.einsum_path("ij,ik->jk", X, X)  # same object twice
+_, info_diff = fnp.einsum_path("ij,ik->jk", X, Y)  # two different objects
 
 print(f"Same object (X, X):  {info_same.optimized_cost:>10,} FLOPs")
 print(f"Diff objects (X, Y): {info_diff.optimized_cost:>10,} FLOPs")
@@ -52,8 +53,8 @@ print(f"Symmetry savings:    {savings:.0%}")
 
 print("\n=== Execute with pre-computed path ===\n")
 
-with we.BudgetContext(flop_budget=10**9) as budget:
-    result = we.einsum("ij,jk,kl->il", A, B, C, optimize=path)
+with flops.BudgetContext(flop_budget=10**9) as budget:
+    result = fnp.einsum("ij,jk,kl->il", A, B, C, optimize=path)
 
 print(f"Result shape:  {result.shape}")
 print(f"FLOPs used:    {budget.flops_used:,}")

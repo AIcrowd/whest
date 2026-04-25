@@ -347,7 +347,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "take_along_axis(a, index_array, axis=axis)",
-                      "text": "we.take_along_axis(a, index_array, axis=axis)"
+                      "text": "fnp.take_along_axis(a, index_array, axis=axis)"
                     },
                     {
                       "kind": "text",
@@ -416,7 +416,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "take_along_axis(a, index_array, axis=axis)",
-                  "text": "we.take_along_axis(a, index_array, axis=axis)"
+                  "text": "fnp.take_along_axis(a, index_array, axis=axis)"
                 },
                 {
                   "kind": "text",
@@ -455,7 +455,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/sort",
-              "label": "we.sort",
+              "label": "fnp.sort",
               "original_target": "sort",
               "role": "",
               "target": "sort",
@@ -471,7 +471,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/lexsort",
-              "label": "we.lexsort",
+              "label": "fnp.lexsort",
               "original_target": "lexsort",
               "role": "",
               "target": "lexsort",
@@ -503,7 +503,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/argpartition",
-              "label": "we.argpartition",
+              "label": "fnp.argpartition",
               "original_target": "argpartition",
               "role": "",
               "target": "argpartition",
@@ -527,7 +527,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/take_along_axis",
-              "label": "we.take_along_axis",
+              "label": "fnp.take_along_axis",
               "original_target": "take_along_axis",
               "role": "",
               "target": "take_along_axis",
@@ -611,17 +611,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([3, 1, 2])"
+              "text": "x = fnp.array([3, 1, 2])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.argsort(x)"
+              "text": "fnp.argsort(x)"
             },
             {
               "kind": "output",
@@ -644,7 +644,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([[0, 3], [2, 2]])"
+              "text": "x = fnp.array([[0, 3], [2, 2]])"
             },
             {
               "kind": "input",
@@ -667,7 +667,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ind = we.argsort(x, axis=0)  # sorts along first axis (down)"
+              "text": "ind = fnp.argsort(x, axis=0)  # sorts along first axis (down)"
             },
             {
               "kind": "input",
@@ -685,7 +685,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.take_along_axis(x, ind, axis=0)  # same as we.sort(x, axis=0)"
+              "text": "fnp.take_along_axis(x, ind, axis=0)  # same as fnp.sort(x, axis=0)"
             },
             {
               "kind": "output",
@@ -703,7 +703,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ind = we.argsort(x, axis=1)  # sorts along last axis (across)"
+              "text": "ind = fnp.argsort(x, axis=1)  # sorts along last axis (across)"
             },
             {
               "kind": "input",
@@ -721,7 +721,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.take_along_axis(x, ind, axis=1)  # same as we.sort(x, axis=1)"
+              "text": "fnp.take_along_axis(x, ind, axis=1)  # same as fnp.sort(x, axis=1)"
             },
             {
               "kind": "output",
@@ -748,7 +748,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ind = we.unravel_index(we.argsort(x, axis=None), x.shape)"
+              "text": "ind = fnp.unravel_index(fnp.argsort(x, axis=None), x.shape)"
             },
             {
               "kind": "input",
@@ -762,7 +762,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x[ind]  # same as we.sort(x, axis=None)"
+              "text": "x[ind]  # same as fnp.sort(x, axis=None)"
             },
             {
               "kind": "output",
@@ -785,7 +785,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([(1, 0), (0, 1)], dtype=[('x', '<i4'), ('y', '<i4')])"
+              "text": "x = fnp.array([(1, 0), (0, 1)], dtype=[('x', '<i4'), ('y', '<i4')])"
             },
             {
               "kind": "input",
@@ -808,7 +808,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.argsort(x, order=('x','y'))"
+              "text": "fnp.argsort(x, order=('x','y'))"
             },
             {
               "kind": "output",
@@ -822,7 +822,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.argsort(x, order=('y','x'))"
+              "text": "fnp.argsort(x, order=('y','x'))"
             },
             {
               "kind": "output",
@@ -853,16 +853,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.array([3, 1, 2])\n\nwe.argsort(x)\n\nx = we.array([[0, 3], [2, 2]])\n\nx\n\nind = we.argsort(x, axis=0)  # sorts along first axis (down)\n\nind\n\nwe.take_along_axis(x, ind, axis=0)  # same as we.sort(x, axis=0)\n\nind = we.argsort(x, axis=1)  # sorts along last axis (across)\n\nind\n\nwe.take_along_axis(x, ind, axis=1)  # same as we.sort(x, axis=1)\n\nind = we.unravel_index(we.argsort(x, axis=None), x.shape)\n\nind\n\nx[ind]  # same as we.sort(x, axis=None)\n\nx = we.array([(1, 0), (0, 1)], dtype=[('x', '<i4'), ('y', '<i4')])\n\nx\n\nwe.argsort(x, order=('x','y'))\n\nwe.argsort(x, order=('y','x'))",
+    "code": "import flopscope as fnp\n\nx = fnp.array([3, 1, 2])\n\nfnp.argsort(x)\n\nx = fnp.array([[0, 3], [2, 2]])\n\nx\n\nind = fnp.argsort(x, axis=0)  # sorts along first axis (down)\n\nind\n\nfnp.take_along_axis(x, ind, axis=0)  # same as fnp.sort(x, axis=0)\n\nind = fnp.argsort(x, axis=1)  # sorts along last axis (across)\n\nind\n\nfnp.take_along_axis(x, ind, axis=1)  # same as fnp.sort(x, axis=1)\n\nind = fnp.unravel_index(fnp.argsort(x, axis=None), x.shape)\n\nind\n\nx[ind]  # same as fnp.sort(x, axis=None)\n\nx = fnp.array([(1, 0), (0, 1)], dtype=[('x', '<i4'), ('y', '<i4')])\n\nx\n\nfnp.argsort(x, order=('x','y'))\n\nfnp.argsort(x, order=('y','x'))",
     "output": "array([1, 2, 0])\n\narray([[0, 3],\n       [2, 2]])\n\narray([[0, 1],\n       [1, 0]])\n\narray([[0, 2],\n       [2, 3]])\n\narray([[0, 1],\n       [0, 1]])\n\narray([[0, 3],\n       [2, 2]])\n\n(array([0, 1, 1, 0]), array([0, 0, 1, 1]))\n\narray([0, 2, 2, 3])\n\narray([(1, 0), (0, 1)],\n      dtype=[('x', '<i4'), ('y', '<i4')])\n\narray([1, 0])\n\narray([0, 1])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.argsort",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L65",
   "href": "/docs/api/ops/argsort/",
   "module": "numpy",
   "name": "argsort",
   "next": {
     "href": "/docs/api/ops/argwhere/",
-    "label": "we.argwhere"
+    "label": "fnp.argwhere"
   },
   "notes": "Indirect sort; cost = n*ceil(log2(n)) per slice.",
   "notes_sections": [
@@ -922,7 +925,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/argpartition/",
-    "label": "we.argpartition"
+    "label": "fnp.argpartition"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.argsort.html",
@@ -931,7 +934,7 @@
       "body": [
         "Array of indices that sort `a` along the specified `axis`.",
         "If `a` is one-dimensional, ``a[index_array]`` yields a sorted `a`.",
-        "More generally, ``we.take_along_axis(a, index_array, axis=axis)``",
+        "More generally, ``fnp.take_along_axis(a, index_array, axis=axis)``",
         "always yields the sorted `a`, irrespective of dimensionality."
       ],
       "name": "index_array",
@@ -949,7 +952,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/sort",
-      "label": "we.sort",
+      "label": "fnp.sort",
       "original_target": "sort",
       "role": "",
       "target": "sort",
@@ -965,7 +968,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/lexsort",
-      "label": "we.lexsort",
+      "label": "fnp.lexsort",
       "original_target": "lexsort",
       "role": "",
       "target": "lexsort",
@@ -997,7 +1000,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/argpartition",
-      "label": "we.argpartition",
+      "label": "fnp.argpartition",
       "original_target": "argpartition",
       "role": "",
       "target": "argpartition",
@@ -1021,19 +1024,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/take_along_axis",
-      "label": "we.take_along_axis",
+      "label": "fnp.take_along_axis",
       "original_target": "take_along_axis",
       "role": "",
       "target": "take_along_axis",
       "unresolved": false
     }
   ],
-  "signature": "we.argsort(a, axis=-1, kind=None, order=None, *, stable=None)",
+  "signature": "fnp.argsort(a, axis=-1, kind=None, order=None, *, stable=None)",
   "slug": "argsort",
   "summary": "Returns the indices that would sort an array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1130",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.argsort",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L65"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L1100",
+  "weight": 1.0
 }

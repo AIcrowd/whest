@@ -423,7 +423,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/right_shift",
-                "label": "we.right_shift",
+                "label": "fnp.right_shift",
                 "original_target": "right_shift",
                 "role": "",
                 "target": "right_shift",
@@ -458,12 +458,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.binary_repr(5)"
+                "text": "fnp.binary_repr(5)"
               },
               {
                 "kind": "output",
@@ -472,7 +472,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.left_shift(5, 2)"
+                "text": "fnp.left_shift(5, 2)"
               },
               {
                 "kind": "output",
@@ -481,7 +481,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.binary_repr(20)"
+                "text": "fnp.binary_repr(20)"
               },
               {
                 "kind": "output",
@@ -495,7 +495,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.left_shift(5, [1,2,3])"
+                "text": "fnp.left_shift(5, [1,2,3])"
               },
               {
                 "kind": "output",
@@ -534,7 +534,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.left_shift(we.uint8(255), we.int64(1))  # Expect 254"
+                "text": "a = fnp.left_shift(fnp.uint8(255), fnp.int64(1))  # Expect 254"
               },
               {
                 "kind": "input",
@@ -543,12 +543,12 @@
               },
               {
                 "kind": "output",
-                "text": "510 <class 'we.int64'>"
+                "text": "510 <class 'fnp.int64'>"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.left_shift(we.uint8(255), we.uint8(1))"
+                "text": "b = fnp.left_shift(fnp.uint8(255), fnp.uint8(1))"
               },
               {
                 "kind": "input",
@@ -557,7 +557,7 @@
               },
               {
                 "kind": "output",
-                "text": "254 <class 'we.uint8'>"
+                "text": "254 <class 'fnp.uint8'>"
               }
             ],
             "type": "doctest_block"
@@ -581,7 +581,7 @@
                 "href": "/docs/api/ops/left_shift",
                 "kind": "link",
                 "target": "left_shift",
-                "text": "we.left_shift"
+                "text": "fnp.left_shift"
               },
               {
                 "kind": "text",
@@ -600,7 +600,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.array([1, 2, 3])"
+                "text": "x2 = fnp.array([1, 2, 3])"
               },
               {
                 "kind": "input",
@@ -623,20 +623,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.left_shift",
     "module": "numpy",
     "name": "left_shift",
     "notes": "Element-wise left bit shift (legacy name).",
     "numpy_ref": "np.left_shift",
-    "signature": "we.left_shift(x, y)",
+    "signature": "fnp.left_shift(x, y)",
     "status": "supported",
     "summary": "Shift the bits of an integer to the left.",
-    "weight": 1.0,
-    "whest_ref": "we.left_shift"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "left_shift",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

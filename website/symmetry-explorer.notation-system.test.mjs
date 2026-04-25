@@ -122,14 +122,14 @@ test('explorer themes expose the approved page-wide alternatives with a stable r
       'deep-info-ledger',
       'warm-exception',
       'muted-amber',
-      'whestbench-axis',
-      'whestbench-axis-blue',
-      'whestbench-sampling',
-      'whestbench-cov-prop',
-      'whestbench-diverging',
-      'whestbench-verdict',
-      'whestbench-scorecard',
-      'whestbench-sage',
+      'flopscopebench-axis',
+      'flopscopebench-axis-blue',
+      'flopscopebench-sampling',
+      'flopscopebench-cov-prop',
+      'flopscopebench-diverging',
+      'flopscopebench-verdict',
+      'flopscopebench-scorecard',
+      'flopscopebench-sage',
       'coral-slate-contrast',
       'coral-slate-split',
       'coral-slate-hardline',
@@ -158,23 +158,23 @@ test('explorer themes expose the approved page-wide alternatives with a stable r
     '#B29F9E',
   );
   assert.match(
-    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-axis').summary,
-    /whestbench coral↔slate axis/i,
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'flopscopebench-axis').summary,
+    /flopscopebench coral↔slate axis/i,
   );
   assert.equal(
-    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-axis-blue').roles.action,
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'flopscopebench-axis-blue').roles.action,
     '#B29F9E',
   );
   assert.equal(
-    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-cov-prop').roles.quantity,
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'flopscopebench-cov-prop').roles.quantity,
     '#B29F9E',
   );
   assert.equal(
-    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-scorecard').roles.quantity,
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'flopscopebench-scorecard').roles.quantity,
     '#D23934',
   );
   assert.equal(
-    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-sage').roles.statusSuccess,
+    EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'flopscopebench-sage').roles.statusSuccess,
     '#94A3B8',
   );
   assert.equal(

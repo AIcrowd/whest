@@ -106,7 +106,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isreal",
-                "label": "we.isreal",
+                "label": "fnp.isreal",
                 "original_target": "isreal",
                 "role": "",
                 "target": "isreal",
@@ -122,7 +122,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/iscomplexobj",
-                "label": "we.iscomplexobj",
+                "label": "fnp.iscomplexobj",
                 "original_target": "iscomplexobj",
                 "role": "",
                 "target": "iscomplexobj",
@@ -141,12 +141,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])"
+                "text": "fnp.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])"
               },
               {
                 "kind": "output",
@@ -164,20 +164,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.iscomplex",
     "module": "numpy",
     "name": "iscomplex",
     "notes": "Test if element is complex element-wise.",
     "numpy_ref": "np.iscomplex",
-    "signature": "we.iscomplex(x)",
+    "signature": "fnp.iscomplex(x)",
     "status": "supported",
     "summary": "Returns a bool array, where True if input element is complex.",
-    "weight": 1.0,
-    "whest_ref": "we.iscomplex"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "iscomplex",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L175",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_type_check_impl.py#L175"
   }
 }

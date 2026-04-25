@@ -2,6 +2,7 @@ import { opDocImports, opDocSlugs } from '@/.generated/op-doc-imports';
 import OperationDocNav from '@/components/api-reference/OperationDocNav';
 import OperationDocPage from '@/components/api-reference/OperationDocPage';
 import type { OperationDocRecord } from '@/components/api-reference/op-doc-types';
+import styles from '@/components/api-reference/styles.module.css';
 import { DocsBody, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page';
 import { ChevronRight } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -19,6 +20,40 @@ async function loadOpDoc(slug: string): Promise<OperationDocRecord | null> {
 
 function formatFullNumpyRef(numpyRef: string) {
   return numpyRef.replace(/^np\./, 'numpy.');
+}
+
+// Expand the short JAX-style alias used in op records (e.g. ``fnp.einsum``,
+// ``flops.configure``) into the full dotted module path used as the page H1
+// (``flopscope.numpy.einsum``, ``flopscope.configure``). The alias form is
+// still shown in the signature block so users see the import they would
+// actually write.
+function expandFlopscopeRef(ref: string): string {
+  if (ref.startsWith('fnp.')) {
+    return `flopscope.numpy.${ref.slice('fnp.'.length)}`;
+  }
+  if (ref.startsWith('flops.')) {
+    return `flopscope.${ref.slice('flops.'.length)}`;
+  }
+  if (ref.startsWith('flopscope.')) {
+    return ref;
+  }
+  return `flopscope.${ref}`;
+}
+
+function OperationTitle({ flopscopeRef }: { flopscopeRef: string }) {
+  const fullRef = expandFlopscopeRef(flopscopeRef);
+  const lastDot = fullRef.lastIndexOf('.');
+  if (lastDot < 0) {
+    return <span className={styles.docTitleFunction}>{fullRef}</span>;
+  }
+  return (
+    <>
+      <span className={styles.docTitleNamespace}>
+        {fullRef.slice(0, lastDot + 1)}
+      </span>
+      <span className={styles.docTitleFunction}>{fullRef.slice(lastDot + 1)}</span>
+    </>
+  );
 }
 
 function getTopicForOperation(op: OperationDocRecord) {
@@ -99,7 +134,9 @@ export default async function OperationPage(props: {
           : { enabled: false }
       }
     >
-      <DocsTitle>{op.whest_ref}</DocsTitle>
+      <DocsTitle>
+        <OperationTitle flopscopeRef={op.flopscope_ref} />
+      </DocsTitle>
       <DocsBody>
         <OperationDocPage op={op} />
       </DocsBody>
@@ -119,7 +156,7 @@ export async function generateMetadata(props: {
   if (!op) notFound();
 
   return {
-    title: op.whest_ref,
+    title: op.flopscope_ref,
     description: op.summary || op.notes,
   };
 }

@@ -341,7 +341,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.conj is we.conjugate"
+                "text": "fnp.conj is fnp.conjugate"
               },
               {
                 "kind": "output",
@@ -360,12 +360,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.conjugate(1+2j)"
+                "text": "fnp.conjugate(1+2j)"
               },
               {
                 "kind": "output",
@@ -379,12 +379,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.eye(2) + 1j * we.eye(2)"
+                "text": "x = fnp.eye(2) + 1j * fnp.eye(2)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.conjugate(x)"
+                "text": "fnp.conjugate(x)"
               },
               {
                 "kind": "output",
@@ -406,20 +406,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.conj",
     "module": "numpy",
     "name": "conj",
     "notes": "Complex conjugate element-wise.",
     "numpy_ref": "np.conj",
-    "signature": "we.conj(x)",
+    "signature": "fnp.conj(x)",
     "status": "supported",
     "summary": "Return the complex conjugate, element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.conj"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "conj",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

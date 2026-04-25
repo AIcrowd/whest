@@ -248,7 +248,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/tensordot",
-                "label": "we.tensordot",
+                "label": "fnp.tensordot",
                 "original_target": "tensordot",
                 "role": "",
                 "target": "tensordot",
@@ -272,7 +272,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/dot",
-                "label": "we.dot",
+                "label": "fnp.dot",
                 "original_target": "dot",
                 "role": "",
                 "target": "dot",
@@ -288,7 +288,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vecdot",
-                "label": "we.vecdot",
+                "label": "fnp.vecdot",
                 "original_target": "vecdot",
                 "role": "",
                 "target": "vecdot",
@@ -304,7 +304,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/einsum",
-                "label": "we.einsum",
+                "label": "fnp.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
@@ -329,7 +329,7 @@
           },
           {
             "language": null,
-            "text": "we.inner(a, b) = sum(a[:]*b[:])",
+            "text": "fnp.inner(a, b) = sum(a[:]*b[:])",
             "type": "literal_block"
           },
           {
@@ -359,7 +359,7 @@
           },
           {
             "language": null,
-            "text": "we.inner(a, b) = we.tensordot(a, b, axes=(-1,-1))",
+            "text": "fnp.inner(a, b) = fnp.tensordot(a, b, axes=(-1,-1))",
             "type": "literal_block"
           },
           {
@@ -373,7 +373,7 @@
           },
           {
             "language": null,
-            "text": "we.inner(a, b)[i0,...,ir-2,j0,...,js-2]\n     = sum(a[i0,...,ir-2,:]*b[j0,...,js-2,:])",
+            "text": "fnp.inner(a, b)[i0,...,ir-2,j0,...,js-2]\n     = sum(a[i0,...,ir-2,:]*b[j0,...,js-2,:])",
             "type": "literal_block"
           },
           {
@@ -403,7 +403,7 @@
           },
           {
             "language": null,
-            "text": "we.inner(a,b) = a*b",
+            "text": "fnp.inner(a,b) = a*b",
             "type": "literal_block"
           }
         ],
@@ -425,22 +425,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1,2,3])"
+                "text": "a = fnp.array([1,2,3])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([0,1,0])"
+                "text": "b = fnp.array([0,1,0])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.inner(a, b)"
+                "text": "fnp.inner(a, b)"
               },
               {
                 "kind": "output",
@@ -463,17 +463,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(24).reshape((2,3,4))"
+                "text": "a = fnp.arange(24).reshape((2,3,4))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(4)"
+                "text": "b = fnp.arange(4)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.inner(a, b)"
+                "text": "c = fnp.inner(a, b)"
               },
               {
                 "kind": "input",
@@ -505,17 +505,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(2).reshape((1,1,2))"
+                "text": "a = fnp.arange(2).reshape((1,1,2))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(6).reshape((3,2))"
+                "text": "b = fnp.arange(6).reshape((3,2))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.inner(a, b)"
+                "text": "c = fnp.inner(a, b)"
               },
               {
                 "kind": "input",
@@ -560,7 +560,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.inner(we.eye(2), 7)"
+                "text": "fnp.inner(fnp.eye(2), 7)"
               },
               {
                 "kind": "output",
@@ -582,20 +582,20 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
+    "flopscope_ref": "fnp.inner",
     "module": "numpy",
     "name": "inner",
     "notes": "Inner product; cost = N (FMA=1).",
     "numpy_ref": "np.inner",
-    "signature": "we.inner(a, b)",
+    "signature": "fnp.inner(a, b)",
     "status": "supported",
     "summary": "Inner product of two arrays.",
-    "weight": 1.0,
-    "whest_ref": "we.inner"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "inner",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.inner.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L863"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L863",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.inner.html"
   }
 }

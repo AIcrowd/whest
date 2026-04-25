@@ -157,7 +157,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/lcm",
-              "label": "we.lcm",
+              "label": "fnp.lcm",
               "original_target": "lcm",
               "role": "",
               "target": "lcm",
@@ -176,12 +176,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.gcd(12, 20)"
+              "text": "fnp.gcd(12, 20)"
             },
             {
               "kind": "output",
@@ -190,7 +190,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.gcd.reduce([15, 25, 35])"
+              "text": "fnp.gcd.reduce([15, 25, 35])"
             },
             {
               "kind": "output",
@@ -199,7 +199,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.gcd(we.arange(6), 20)"
+              "text": "fnp.gcd(fnp.arange(6), 20)"
             },
             {
               "kind": "output",
@@ -223,16 +223,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.gcd(12, 20)\n\nwe.gcd.reduce([15, 25, 35])\n\nwe.gcd(we.arange(6), 20)",
+    "code": "import flopscope as fnp\n\nfnp.gcd(12, 20)\n\nfnp.gcd.reduce([15, 25, 35])\n\nfnp.gcd(fnp.arange(6), 20)",
     "output": "4\n\n5\n\narray([20,  1,  2,  1,  4,  5])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.gcd",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
   "href": "/docs/api/ops/gcd/",
   "module": "numpy",
   "name": "gcd",
   "next": {
     "href": "/docs/api/ops/geomspace/",
-    "label": "we.geomspace"
+    "label": "fnp.geomspace"
   },
   "notes": "Element-wise greatest common divisor.",
   "notes_sections": [],
@@ -250,7 +253,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/full_like/",
-    "label": "we.full_like"
+    "label": "fnp.full_like"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.gcd.html",
@@ -275,19 +278,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/lcm",
-      "label": "we.lcm",
+      "label": "fnp.lcm",
       "original_target": "lcm",
       "role": "",
       "target": "lcm",
       "unresolved": false
     }
   ],
-  "signature": "we.gcd(x, y)",
+  "signature": "fnp.gcd(x, y)",
   "slug": "gcd",
   "summary": "Returns the greatest common divisor of ``|x1|`` and ``|x2|``",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.gcd",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

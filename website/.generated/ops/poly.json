@@ -33,7 +33,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "polynomial",
-                  "text": "we.polynomial"
+                  "text": "fnp.polynomial"
                 },
                 {
                   "kind": "text",
@@ -61,7 +61,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `we.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
+          "raw_source": ".. note::\n   This forms part of the old polynomial API. Since version 1.4, the\n   new polynomial API defined in `fnp.polynomial` is preferred.\n   A summary of the differences can be found in the\n   :doc:`transition guide </reference/routines.polynomials>`.",
           "supported": true,
           "type": "directive_block"
         },
@@ -203,7 +203,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/polyval",
-              "label": "we.polyval",
+              "label": "fnp.polyval",
               "original_target": "polyval",
               "role": "",
               "target": "polyval",
@@ -219,7 +219,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/roots",
-              "label": "we.roots",
+              "label": "fnp.roots",
               "original_target": "roots",
               "role": "",
               "target": "roots",
@@ -235,7 +235,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/polyfit",
-              "label": "we.polyfit",
+              "label": "fnp.polyfit",
               "original_target": "polyfit",
               "role": "",
               "target": "polyfit",
@@ -418,7 +418,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -428,7 +428,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.poly((0, 0, 0)) # Multiple root example"
+              "text": "fnp.poly((0, 0, 0)) # Multiple root example"
             },
             {
               "kind": "output",
@@ -451,7 +451,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.poly((-1./2, 0, 1./2))"
+              "text": "fnp.poly((-1./2, 0, 1./2))"
             },
             {
               "kind": "output",
@@ -474,7 +474,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.poly((we.random.random(1)[0], 0, we.random.random(1)[0]))"
+              "text": "fnp.poly((fnp.random.random(1)[0], 0, fnp.random.random(1)[0]))"
             },
             {
               "kind": "output",
@@ -497,12 +497,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "P = we.array([[0, 1./3], [-1./2, 0]])"
+              "text": "P = fnp.array([[0, 1./3], [-1./2, 0]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.poly(P)"
+              "text": "fnp.poly(P)"
             },
             {
               "kind": "output",
@@ -561,16 +561,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.poly((0, 0, 0)) # Multiple root example\n\nwe.poly((-1./2, 0, 1./2))\n\nwe.poly((we.random.random(1)[0], 0, we.random.random(1)[0]))\n\nP = we.array([[0, 1./3], [-1./2, 0]])\n\nwe.poly(P)",
+    "code": "import flopscope as fnp\n\nfnp.poly((0, 0, 0)) # Multiple root example\n\nfnp.poly((-1./2, 0, 1./2))\n\nfnp.poly((fnp.random.random(1)[0], 0, fnp.random.random(1)[0]))\n\nP = fnp.array([[0, 1./3], [-1./2, 0]])\n\nfnp.poly(P)",
     "output": "array([1., 0., 0., 0.])\n\narray([ 1.  ,  0.  , -0.25,  0.  ])\n\narray([ 1.        , -0.77086955,  0.08618131,  0.        ]) # random\n\narray([1.        , 0.        , 0.16666667])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.poly",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L215",
   "href": "/docs/api/ops/poly/",
-  "module": "whest._polynomial",
+  "module": "flopscope._polynomial",
   "name": "poly",
   "next": {
     "href": "/docs/api/ops/polyadd/",
-    "label": "we.polyadd"
+    "label": "fnp.polyadd"
   },
   "notes": "Polynomial from roots. Cost: $n^2$ FLOPs.",
   "notes_sections": [
@@ -591,7 +594,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/place/",
-    "label": "we.place"
+    "label": "fnp.place"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.poly.html",
@@ -618,7 +621,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/polyval",
-      "label": "we.polyval",
+      "label": "fnp.polyval",
       "original_target": "polyval",
       "role": "",
       "target": "polyval",
@@ -634,7 +637,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/roots",
-      "label": "we.roots",
+      "label": "fnp.roots",
       "original_target": "roots",
       "role": "",
       "target": "roots",
@@ -650,7 +653,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/polyfit",
-      "label": "we.polyfit",
+      "label": "fnp.polyfit",
       "original_target": "polyfit",
       "role": "",
       "target": "polyfit",
@@ -673,12 +676,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.poly(seq_of_zeros)",
+  "signature": "fnp.poly(seq_of_zeros)",
   "slug": "poly",
   "summary": "Find the coefficients of a polynomial with the given sequence of roots.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L34",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.poly",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_polynomial.py#L215"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_polynomial_impl.py#L40",
+  "weight": 1.0
 }

@@ -312,12 +312,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.cos(we.array([0, we.pi/2, we.pi]))"
+              "text": "fnp.cos(fnp.array([0, fnp.pi/2, fnp.pi]))"
             },
             {
               "kind": "output",
@@ -336,12 +336,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "out1 = we.array([0], dtype='d')"
+              "text": "out1 = fnp.array([0], dtype='d')"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "out2 = we.cos([0.1], out1)"
+              "text": "out2 = fnp.cos([0.1], out1)"
             },
             {
               "kind": "input",
@@ -365,7 +365,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.cos(we.zeros((3,3)),we.zeros((2,2)))"
+              "text": "fnp.cos(fnp.zeros((3,3)),fnp.zeros((2,2)))"
             },
             {
               "kind": "output",
@@ -404,16 +404,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.cos(we.array([0, we.pi/2, we.pi]))\n\nout1 = we.array([0], dtype='d')\n\nout2 = we.cos([0.1], out1)\n\nout2 is out1\n\nwe.cos(we.zeros((3,3)),we.zeros((2,2)))",
+    "code": "import flopscope as fnp\n\nfnp.cos(fnp.array([0, fnp.pi/2, fnp.pi]))\n\nout1 = fnp.array([0], dtype='d')\n\nout2 = fnp.cos([0.1], out1)\n\nout2 is out1\n\nfnp.cos(fnp.zeros((3,3)),fnp.zeros((2,2)))",
     "output": "array([  1.00000000e+00,   6.12303177e-17,  -1.00000000e+00])\n\nTrue\n\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nValueError: operands could not be broadcast together with shapes (3,3) (2,2)",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.cos",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/cos/",
   "module": "numpy",
   "name": "cos",
   "next": {
     "href": "/docs/api/ops/cosh/",
-    "label": "we.cosh"
+    "label": "fnp.cosh"
   },
   "notes": "Element-wise cosine.",
   "notes_sections": [
@@ -461,7 +464,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/correlate/",
-    "label": "we.correlate"
+    "label": "fnp.correlate"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cos.html",
@@ -476,12 +479,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.cos(x)",
+  "signature": "fnp.cos(x)",
   "slug": "cos",
   "summary": "Cosine element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.cos",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

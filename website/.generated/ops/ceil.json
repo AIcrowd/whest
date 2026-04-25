@@ -332,7 +332,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/floor",
-              "label": "we.floor",
+              "label": "fnp.floor",
               "original_target": "floor",
               "role": "",
               "target": "floor",
@@ -343,7 +343,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/trunc",
-              "label": "we.trunc",
+              "label": "fnp.trunc",
               "original_target": "trunc",
               "role": "",
               "target": "trunc",
@@ -354,7 +354,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/rint",
-              "label": "we.rint",
+              "label": "fnp.rint",
               "original_target": "rint",
               "role": "",
               "target": "rint",
@@ -365,7 +365,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/trunc",
-              "label": "we.trunc",
+              "label": "fnp.trunc",
               "original_target": "fix",
               "role": "",
               "target": "trunc",
@@ -384,7 +384,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -394,12 +394,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])"
+              "text": "a = fnp.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ceil(a)"
+              "text": "fnp.ceil(a)"
             },
             {
               "kind": "output",
@@ -430,16 +430,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nwe.ceil(a)",
+    "code": "import flopscope as fnp\n\na = fnp.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nfnp.ceil(a)",
     "output": "array([-1., -1., -0.,  1.,  2.,  2.,  2.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.ceil",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/ceil/",
   "module": "numpy",
   "name": "ceil",
   "next": {
     "href": "/docs/api/ops/choose/",
-    "label": "we.choose"
+    "label": "fnp.choose"
   },
   "notes": "Element-wise ceiling.",
   "notes_sections": [],
@@ -485,7 +488,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/cbrt/",
-    "label": "we.cbrt"
+    "label": "fnp.cbrt"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ceil.html",
@@ -505,7 +508,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/floor",
-      "label": "we.floor",
+      "label": "fnp.floor",
       "original_target": "floor",
       "role": "",
       "target": "floor",
@@ -516,7 +519,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/trunc",
-      "label": "we.trunc",
+      "label": "fnp.trunc",
       "original_target": "trunc",
       "role": "",
       "target": "trunc",
@@ -527,7 +530,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/rint",
-      "label": "we.rint",
+      "label": "fnp.rint",
       "original_target": "rint",
       "role": "",
       "target": "rint",
@@ -538,19 +541,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/trunc",
-      "label": "we.trunc",
+      "label": "fnp.trunc",
       "original_target": "fix",
       "role": "",
       "target": "trunc",
       "unresolved": false
     }
   ],
-  "signature": "we.ceil(x)",
+  "signature": "fnp.ceil(x)",
   "slug": "ceil",
   "summary": "Return the ceiling of the input, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.ceil",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

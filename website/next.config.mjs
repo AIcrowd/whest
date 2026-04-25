@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 /** @type {import('next').NextConfig} */
 const config = {
   output: 'export',
-  basePath: isProduction ? '/whest' : undefined,
+  basePath: isProduction ? '/flopscope' : undefined,
   trailingSlash: true,
   images: { unoptimized: true },
   reactStrictMode: true,

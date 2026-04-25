@@ -151,7 +151,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/diag",
-              "label": "we.diag",
+              "label": "fnp.diag",
               "original_target": "diag",
               "role": "",
               "target": "diag",
@@ -167,7 +167,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/diagonal",
-              "label": "we.diagonal",
+              "label": "fnp.diagonal",
               "original_target": "diagonal",
               "role": "",
               "target": "diagonal",
@@ -183,7 +183,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/trace",
-              "label": "we.trace",
+              "label": "fnp.trace",
               "original_target": "trace",
               "role": "",
               "target": "trace",
@@ -202,12 +202,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.diagflat([[1,2], [3,4]])"
+              "text": "fnp.diagflat([[1,2], [3,4]])"
             },
             {
               "kind": "output",
@@ -233,7 +233,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.diagflat([1,2], 1)"
+              "text": "fnp.diagflat([1,2], 1)"
             },
             {
               "kind": "output",
@@ -265,16 +265,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.diagflat([[1,2], [3,4]])\n\nwe.diagflat([1,2], 1)",
+    "code": "import flopscope as fnp\n\nfnp.diagflat([[1,2], [3,4]])\n\nfnp.diagflat([1,2], 1)",
     "output": "array([[1, 0, 0, 0],\n       [0, 2, 0, 0],\n       [0, 0, 3, 0],\n       [0, 0, 0, 4]])\n\narray([[0, 1, 0],\n       [0, 0, 2],\n       [0, 0, 0]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.diagflat",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L857",
   "href": "/docs/api/ops/diagflat/",
   "module": "numpy",
   "name": "diagflat",
   "next": {
     "href": "/docs/api/ops/diagonal/",
-    "label": "we.diagonal"
+    "label": "fnp.diagonal"
   },
   "notes": "Create diagonal array from flattened input. Cost: len(v).",
   "notes_sections": [],
@@ -300,7 +303,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/diag_indices_from/",
-    "label": "we.diag_indices_from"
+    "label": "fnp.diag_indices_from"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.diagflat.html",
@@ -324,7 +327,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/diag",
-      "label": "we.diag",
+      "label": "fnp.diag",
       "original_target": "diag",
       "role": "",
       "target": "diag",
@@ -340,7 +343,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/diagonal",
-      "label": "we.diagonal",
+      "label": "fnp.diagonal",
       "original_target": "diagonal",
       "role": "",
       "target": "diagonal",
@@ -356,19 +359,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/trace",
-      "label": "we.trace",
+      "label": "fnp.trace",
       "original_target": "trace",
       "role": "",
       "target": "trace",
       "unresolved": false
     }
   ],
-  "signature": "we.diagflat(v, k=0)",
+  "signature": "fnp.diagflat(v, k=0)",
   "slug": "diagflat",
   "summary": "Create a two-dimensional array with the flattened input as a diagonal.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L318",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.diagflat",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L857"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L331",
+  "weight": 1.0
 }

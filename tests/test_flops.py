@@ -5,8 +5,8 @@ from importlib import resources
 
 import pytest
 
-from whest import flops as public_flops
-from whest._flops import (
+from flopscope import accounting as public_flops
+from flopscope._flops import (
     _ceil_log2,
     analytical_pointwise_cost,
     analytical_reduction_cost,
@@ -14,14 +14,14 @@ from whest._flops import (
     search_cost,
     sort_cost,
 )
-from whest._flops import (
+from flopscope._flops import (
     einsum_cost as analytical_einsum_cost,
 )
-from whest._flops import (
+from flopscope._flops import (
     svd_cost as analytical_svd_cost,
 )
-from whest._symmetric import SymmetryInfo
-from whest._weights import load_weights, reset_weights
+from flopscope._symmetric import SymmetryInfo
+from flopscope._weights import load_weights, reset_weights
 
 
 @pytest.fixture(autouse=True)
@@ -38,7 +38,7 @@ def _write_weights(tmp_path, weights):
 
 
 def _packaged_weight(op_name):
-    resource = resources.files("whest").joinpath("data/default_weights.json")
+    resource = resources.files("flopscope").joinpath("data/default_weights.json")
     with resource.open("r", encoding="utf-8") as f:
         return json.load(f)["weights"][op_name]
 
@@ -143,7 +143,7 @@ def test_analytical_einsum_cost_no_operand_symmetry_unchanged():
 
 
 def test_analytical_einsum_cost_matches_contract_path():
-    from whest._opt_einsum import contract_path
+    from flopscope._opt_einsum import contract_path
 
     cost = analytical_einsum_cost("ij,jk->ik", shapes=[(3, 4), (4, 5)])
     _, info = contract_path("ij,jk->ik", (3, 4), (4, 5), shapes=True)

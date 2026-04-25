@@ -162,7 +162,7 @@
                       },
                       {
                         "kind": "text",
-                        "text": " is given, the number of varargs must equal the number of axes.\nDefault: 1. (see Examples below)."
+                        "text": " is given, the number of varargs must equal the number of axes\nspecified in the axis parameter.\nDefault: 1. (see Examples below)."
                       }
                     ],
                     "type": "paragraph"
@@ -427,17 +427,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "f = we.array([1, 2, 4, 7, 11, 16])"
+                "text": "f = fnp.array([1, 2, 4, 7, 11, 16])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(f)"
+                "text": "fnp.gradient(f)"
               },
               {
                 "kind": "output",
@@ -446,7 +446,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(f, 2)"
+                "text": "fnp.gradient(f, 2)"
               },
               {
                 "kind": "output",
@@ -469,12 +469,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(f.size)"
+                "text": "x = fnp.arange(f.size)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(f, x)"
+                "text": "fnp.gradient(f, x)"
               },
               {
                 "kind": "output",
@@ -497,12 +497,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([0., 1., 1.5, 3.5, 4., 6.])"
+                "text": "x = fnp.array([0., 1., 1.5, 3.5, 4., 6.])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(f, x)"
+                "text": "fnp.gradient(f, x)"
               },
               {
                 "kind": "output",
@@ -525,7 +525,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(we.array([[1, 2, 6], [3, 4, 5]]))"
+                "text": "fnp.gradient(fnp.array([[1, 2, 6], [3, 4, 5]]))"
               },
               {
                 "kind": "output",
@@ -570,7 +570,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(we.array([[1, 2, 6], [3, 4, 5]]), dx, y)"
+                "text": "fnp.gradient(fnp.array([[1, 2, 6], [3, 4, 5]]), dx, y)"
               },
               {
                 "kind": "output",
@@ -609,7 +609,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([0, 1, 2, 3, 4])"
+                "text": "x = fnp.array([0, 1, 2, 3, 4])"
               },
               {
                 "kind": "input",
@@ -619,7 +619,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(f, edge_order=1)"
+                "text": "fnp.gradient(f, edge_order=1)"
               },
               {
                 "kind": "output",
@@ -628,7 +628,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(f, edge_order=2)"
+                "text": "fnp.gradient(f, edge_order=2)"
               },
               {
                 "kind": "output",
@@ -659,7 +659,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(we.array([[1, 2, 6], [3, 4, 5]]), axis=0)"
+                "text": "fnp.gradient(fnp.array([[1, 2, 6], [3, 4, 5]]), axis=0)"
               },
               {
                 "kind": "output",
@@ -713,7 +713,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([0., 2., 3., 6., 8.])"
+                "text": "x = fnp.array([0., 2., 3., 6., 8.])"
               },
               {
                 "kind": "input",
@@ -723,7 +723,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(y, x, edge_order=2)"
+                "text": "fnp.gradient(y, x, edge_order=2)"
               },
               {
                 "kind": "output",
@@ -766,7 +766,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([0., 2., 4., 6., 8.])"
+                "text": "x = fnp.array([0., 2., 4., 6., 8.])"
               },
               {
                 "kind": "input",
@@ -776,7 +776,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(y, dx, edge_order=2)"
+                "text": "fnp.gradient(y, dx, edge_order=2)"
               },
               {
                 "kind": "output",
@@ -809,17 +809,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(0, 6, dx)"
+                "text": "x = fnp.arange(0, 6, dx)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.arange(0, 9, dy)"
+                "text": "y = fnp.arange(0, 9, dy)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xs, ys = we.meshgrid(x, y)"
+                "text": "xs, ys = fnp.meshgrid(x, y)"
               },
               {
                 "kind": "input",
@@ -829,7 +829,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(zs, dy, dx)  # Passing two scalars"
+                "text": "fnp.gradient(zs, dy, dx)  # Passing two scalars"
               },
               {
                 "kind": "output",
@@ -872,7 +872,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gradient(zs, y, dx)  # Passing one array and one scalar"
+                "text": "fnp.gradient(zs, y, dx)  # Passing one array and one scalar"
               },
               {
                 "kind": "output",
@@ -910,20 +910,20 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.gradient",
     "module": "numpy",
     "name": "gradient",
     "notes": "Gradient using central differences.",
     "numpy_ref": "np.gradient",
-    "signature": "we.gradient(f, *varargs, axis=None, edge_order=1)",
+    "signature": "fnp.gradient(f, *varargs, axis=None, edge_order=1)",
     "status": "supported",
     "summary": "Return the gradient of an N-dimensional array.",
-    "weight": 1.0,
-    "whest_ref": "we.gradient"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "gradient",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L976",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1023"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1023",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L1002"
   }
 }

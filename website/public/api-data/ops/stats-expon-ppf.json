@@ -163,20 +163,20 @@
     "category": "counted_custom",
     "cost_formula": "5n",
     "cost_formula_latex": "$5n$",
-    "module": "whest.stats",
+    "flopscope_ref": "fnp.stats.expon.ppf",
+    "module": "flopscope.stats",
     "name": "stats.expon.ppf",
     "notes": "Exponential PPF; cost = numel(input).",
     "numpy_ref": "np.stats.expon.ppf",
-    "signature": "we.stats.expon.ppf(q, loc=0, scale=1)",
+    "signature": "fnp.stats.expon.ppf(q, loc=0, scale=1)",
     "status": "supported",
     "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
-    "weight": 16.0,
-    "whest_ref": "we.stats.expon.ppf"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "stats-expon-ppf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_expon.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_expon.py#L55",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2302"
   }
 }

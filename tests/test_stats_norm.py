@@ -1,4 +1,4 @@
-"""Tests for whest.stats normal distribution (erf, ndtri, norm)."""
+"""Tests for flopscope.stats normal distribution (erf, ndtri, norm)."""
 
 from __future__ import annotations
 
@@ -7,11 +7,11 @@ import pytest
 import scipy.special
 import scipy.stats
 
-from whest._budget import BudgetContext
-from whest.errors import BudgetExhaustedError
-from whest.stats._erf import _erf, _erfc
-from whest.stats._ndtri import _ndtri
-from whest.stats._norm import norm
+from flopscope._budget import BudgetContext
+from flopscope.errors import BudgetExhaustedError
+from flopscope.stats._erf import _erf, _erfc
+from flopscope.stats._ndtri import _ndtri
+from flopscope.stats._norm import norm
 
 # ---------------------------------------------------------------------------
 # TestErf
@@ -216,4 +216,4 @@ class TestBudgetExhausted:
 
 class TestRepr:
     def test_repr(self):
-        assert repr(norm) == "<whest.stats.norm>"
+        assert repr(norm) == "<flopscope.stats.norm>"

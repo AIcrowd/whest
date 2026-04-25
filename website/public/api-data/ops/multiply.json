@@ -362,12 +362,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.multiply(2.0, 4.0)"
+                "text": "fnp.multiply(2.0, 4.0)"
               },
               {
                 "kind": "output",
@@ -381,17 +381,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.arange(9.0).reshape((3, 3))"
+                "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.arange(3.0)"
+                "text": "x2 = fnp.arange(3.0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.multiply(x1, x2)"
+                "text": "fnp.multiply(x1, x2)"
               },
               {
                 "kind": "output",
@@ -427,7 +427,7 @@
                 "href": "/docs/api/ops/multiply",
                 "kind": "link",
                 "target": "multiply",
-                "text": "we.multiply"
+                "text": "fnp.multiply"
               },
               {
                 "kind": "text",
@@ -441,12 +441,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.arange(9.0).reshape((3, 3))"
+                "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.arange(3.0)"
+                "text": "x2 = fnp.arange(3.0)"
               },
               {
                 "kind": "input",
@@ -477,20 +477,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.multiply",
     "module": "numpy",
     "name": "multiply",
     "notes": "Element-wise multiplication.",
     "numpy_ref": "np.multiply",
-    "signature": "we.multiply(x, y)",
+    "signature": "fnp.multiply(x, y)",
     "status": "supported",
     "summary": "Multiply arguments element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.multiply"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "multiply",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

@@ -302,7 +302,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/linalg-matrix_power",
-                "label": "we.linalg.matrix_power",
+                "label": "fnp.linalg.matrix_power",
                 "original_target": "numpy.linalg.matrix_power",
                 "role": "",
                 "target": "linalg.matrix_power",
@@ -313,7 +313,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/sqrt",
-                "label": "we.sqrt",
+                "label": "fnp.sqrt",
                 "original_target": "sqrt",
                 "role": "",
                 "target": "sqrt",
@@ -324,7 +324,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/power",
-                "label": "we.power",
+                "label": "fnp.power",
                 "original_target": "power",
                 "role": "",
                 "target": "power",
@@ -343,12 +343,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.square([-1j, 1])"
+                "text": "fnp.square([-1j, 1])"
               },
               {
                 "kind": "output",
@@ -366,20 +366,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.square",
     "module": "numpy",
     "name": "square",
     "notes": "Element-wise x^2.",
     "numpy_ref": "np.square",
-    "signature": "we.square(x)",
+    "signature": "fnp.square(x)",
     "status": "supported",
     "summary": "Return the element-wise square of the input.",
-    "weight": 1.0,
-    "whest_ref": "we.square"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "square",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

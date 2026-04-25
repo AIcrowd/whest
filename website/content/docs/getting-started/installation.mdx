@@ -2,31 +2,31 @@
 title: "Installation"
 ---
 
-*Use this page when setting up whest for the first time.*
+*Use this page when setting up flopscope for the first time.*
 
 **You will learn:**
-- How to install whest as a dependency or for development
+- How to install flopscope as a dependency or for development
 - How to verify your installation works
 - How to fix common installation pitfalls
 
 ## Install as a dependency
 
 ```bash
-uv add git+https://github.com/AIcrowd/whest.git
+uv add git+https://github.com/AIcrowd/flopscope.git
 ```
 
 ## Install for development
 
 ```bash
-git clone https://github.com/AIcrowd/whest.git
-cd whest
+git clone https://github.com/AIcrowd/flopscope.git
+cd flopscope
 uv sync --all-extras
 ```
 
 ## Verify installation
 
 ```bash
-uv run python -c "import whest as we; print(we.__version__)"
+uv run python -c "import flopscope as we; print(we.__version__)"
 ```
 
 ## What you'll see
@@ -35,13 +35,13 @@ uv run python -c "import whest as we; print(we.__version__)"
 0.2.0+np2.2.6
 ```
 
-The version string includes the installed NumPy version suffix. If you see a version number, whest is installed correctly.
+The version string includes the installed NumPy version suffix. If you see a version number, flopscope is installed correctly.
 
 ## Common pitfalls
 
 **Symptom:** `ImportError: numpy version mismatch`
 
-**Fix:** whest supports NumPy `>=2.0.0,<2.3.0` (default install uses NumPy 2.2). Using `uv` handles this automatically. If you installed manually, check your NumPy version:
+**Fix:** Flopscope supports NumPy `>=2.0.0,<2.3.0` (default install uses NumPy 2.2). Using `uv` handles this automatically. If you installed manually, check your NumPy version:
 
 ```bash
 uv run python -c "import numpy; print(numpy.__version__)"

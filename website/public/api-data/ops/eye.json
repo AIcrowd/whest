@@ -329,7 +329,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/identity",
-                "label": "we.identity",
+                "label": "fnp.identity",
                 "original_target": "identity",
                 "role": "",
                 "target": "identity",
@@ -345,7 +345,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/diag",
-                "label": "we.diag",
+                "label": "fnp.diag",
                 "original_target": "diag",
                 "role": "",
                 "target": "diag",
@@ -364,12 +364,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.eye(2, dtype=int)"
+                "text": "fnp.eye(2, dtype=int)"
               },
               {
                 "kind": "output",
@@ -382,7 +382,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.eye(3, k=1)"
+                "text": "fnp.eye(3, k=1)"
               },
               {
                 "kind": "output",
@@ -408,20 +408,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.eye",
     "module": "numpy",
     "name": "eye",
     "notes": "Create identity matrix.",
     "numpy_ref": "np.eye",
-    "signature": "we.eye(N, M=None, k=0, dtype=<class 'float'>, order='C', *, device=None, like=None)",
+    "signature": "fnp.eye(N, M=None, k=0, dtype=<class 'float'>, order='C', *, device=None, like=None)",
     "status": "supported",
     "summary": "Return a 2-D array with ones on the diagonal and zeros elsewhere.",
-    "weight": 0.0,
-    "whest_ref": "we.eye"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "eye",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L163",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L77"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L77",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L176"
   }
 }

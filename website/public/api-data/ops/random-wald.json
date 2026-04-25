@@ -90,7 +90,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.wald`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.wald`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -198,7 +198,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.broadcast(mean, scale).size"
+                        "text": "fnp.broadcast(mean, scale).size"
                       },
                       {
                         "kind": "text",
@@ -259,7 +259,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.broadcast(mean, scale).size"
+                    "text": "fnp.broadcast(mean, scale).size"
                   },
                   {
                     "kind": "text",
@@ -405,7 +405,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "h = plt.hist(we.random.wald(3, 2, 100000), bins=200, density=True)"
+                "text": "h = plt.hist(fnp.random.wald(3, 2, 100000), bins=200, density=True)"
               },
               {
                 "kind": "input",
@@ -424,20 +424,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.wald",
     "module": "numpy.random",
     "name": "random.wald",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.wald",
-    "signature": "we.random.wald(mean, scale, size=None)",
+    "signature": "fnp.random.wald(mean, scale, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Wald, or inverse Gaussian, distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.wald"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-wald",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.wald.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.wald.html"
   }
 }

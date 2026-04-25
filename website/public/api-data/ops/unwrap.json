@@ -375,7 +375,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/degrees",
-                "label": "we.degrees",
+                "label": "fnp.degrees",
                 "original_target": "rad2deg",
                 "role": "",
                 "target": "degrees",
@@ -386,7 +386,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/radians",
-                "label": "we.radians",
+                "label": "fnp.radians",
                 "original_target": "deg2rad",
                 "role": "",
                 "target": "radians",
@@ -443,17 +443,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "phase = fnp.linspace(0, fnp.pi, num=5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "phase = we.linspace(0, we.pi, num=5)"
-              },
-              {
-                "kind": "input",
-                "prompt": ">>>",
-                "text": "phase[3:] += we.pi"
+                "text": "phase[3:] += fnp.pi"
               },
               {
                 "kind": "input",
@@ -467,7 +472,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unwrap(phase)"
+                "text": "fnp.unwrap(phase)"
               },
               {
                 "kind": "output",
@@ -476,7 +481,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unwrap([0, 1, 2, -1, 0], period=4)"
+                "text": "fnp.unwrap([0, 1, 2, -1, 0], period=4)"
               },
               {
                 "kind": "output",
@@ -485,7 +490,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unwrap([ 1, 2, 3, 4, 5, 6, 1, 2, 3], period=6)"
+                "text": "fnp.unwrap([ 1, 2, 3, 4, 5, 6, 1, 2, 3], period=6)"
               },
               {
                 "kind": "output",
@@ -494,7 +499,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unwrap([2, 3, 4, 5, 2, 3, 4, 5], period=4)"
+                "text": "fnp.unwrap([2, 3, 4, 5, 2, 3, 4, 5], period=4)"
               },
               {
                 "kind": "output",
@@ -503,12 +508,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "phase_deg = we.mod(we.linspace(0 ,720, 19), 360) - 180"
+                "text": "phase_deg = fnp.mod(fnp.linspace(0 ,720, 19), 360) - 180"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.unwrap(phase_deg, period=360)"
+                "text": "fnp.unwrap(phase_deg, period=360)"
               },
               {
                 "kind": "output",
@@ -524,6 +529,135 @@
               }
             ],
             "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "This example plots the unwrapping of the wrapped input signal "
+              },
+              {
+                "kind": "code",
+                "text": "w"
+              },
+              {
+                "kind": "text",
+                "text": ".\nFirst generate "
+              },
+              {
+                "kind": "code",
+                "text": "w"
+              },
+              {
+                "kind": "text",
+                "text": ", then apply "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/unwrap",
+                "kind": "link",
+                "target": "unwrap",
+                "text": "unwrap"
+              },
+              {
+                "kind": "text",
+                "text": " to get "
+              },
+              {
+                "kind": "code",
+                "text": "u"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "t = fnp.linspace(0, 25, 801)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "w = fnp.mod(1.5 * fnp.sin(1.1 * t + 0.26) * (1 - t / 6 + (t / 23) ** 3), 2.0) - 1"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "u = fnp.unwrap(w, period=2.0)"
+              }
+            ],
+            "type": "doctest_block"
+          },
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Plot "
+              },
+              {
+                "kind": "code",
+                "text": "w"
+              },
+              {
+                "kind": "text",
+                "text": " and "
+              },
+              {
+                "kind": "code",
+                "text": "u"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          },
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import matplotlib.pyplot as plt"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.plot(t, w, label='w (a signal wrapped to [-1, 1])')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.plot(t, u, linewidth=2.5, alpha=0.5, label='unwrap(w, period=2)')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.xlabel('t')"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.grid(alpha=0.6)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.legend(framealpha=1, shadow=True)"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "plt.show()"
+              }
+            ],
+            "type": "doctest_block"
           }
         ],
         "title": "Examples"
@@ -534,20 +668,20 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "module": "whest._unwrap",
+    "flopscope_ref": "fnp.unwrap",
+    "module": "flopscope._unwrap",
     "name": "unwrap",
     "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
     "numpy_ref": "np.unwrap",
-    "signature": "we.unwrap(p, discont=None, axis=-1, *, period=6.283185307179586)",
+    "signature": "fnp.unwrap(p, discont=None, axis=-1, *, period=6.283185307179586)",
     "status": "supported",
     "summary": "Unwrap by taking the complement of large deltas with respect to the period.",
-    "weight": 1.0,
-    "whest_ref": "we.unwrap"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "unwrap",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1707",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_unwrap.py#L35"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_unwrap.py#L35",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L1740"
   }
 }

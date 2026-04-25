@@ -66,7 +66,7 @@
             "content_blocks": [],
             "directive": "versionchanged",
             "options": [],
-            "raw_source": ".. versionchanged:: 1.20.0\n    Values are rounded towards ``-inf`` instead of ``0`` when an\n    integer ``dtype`` is specified. The old behavior can\n    still be obtained with ``we.linspace(start, stop, num).astype(int)``",
+            "raw_source": ".. versionchanged:: 1.20.0\n    Values are rounded towards ``-inf`` instead of ``0`` when an\n    integer ``dtype`` is specified. The old behavior can\n    still be obtained with ``fnp.linspace(start, stop, num).astype(int)``",
             "supported": true,
             "type": "directive_block",
             "version": "1.20.0"
@@ -648,7 +648,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/arange",
-                "label": "we.arange",
+                "label": "fnp.arange",
                 "original_target": "arange",
                 "role": "",
                 "target": "arange",
@@ -675,7 +675,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/geomspace",
-                "label": "we.geomspace",
+                "label": "fnp.geomspace",
                 "original_target": "geomspace",
                 "role": "",
                 "target": "geomspace",
@@ -702,7 +702,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/logspace",
-                "label": "we.logspace",
+                "label": "fnp.logspace",
                 "original_target": "logspace",
                 "role": "",
                 "target": "logspace",
@@ -732,12 +732,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linspace(2.0, 3.0, num=5)"
+                "text": "fnp.linspace(2.0, 3.0, num=5)"
               },
               {
                 "kind": "output",
@@ -746,7 +746,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linspace(2.0, 3.0, num=5, endpoint=False)"
+                "text": "fnp.linspace(2.0, 3.0, num=5, endpoint=False)"
               },
               {
                 "kind": "output",
@@ -755,7 +755,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linspace(2.0, 3.0, num=5, retstep=True)"
+                "text": "fnp.linspace(2.0, 3.0, num=5, retstep=True)"
               },
               {
                 "kind": "output",
@@ -788,17 +788,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.zeros(N)"
+                "text": "y = fnp.zeros(N)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.linspace(0, 10, N, endpoint=True)"
+                "text": "x1 = fnp.linspace(0, 10, N, endpoint=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.linspace(0, 10, N, endpoint=False)"
+                "text": "x2 = fnp.linspace(0, 10, N, endpoint=False)"
               },
               {
                 "kind": "input",
@@ -844,20 +844,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.linspace",
     "module": "numpy",
     "name": "linspace",
     "notes": "Return evenly spaced numbers over interval. Cost: numel(output).",
     "numpy_ref": "np.linspace",
-    "signature": "we.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, *, device=None)",
+    "signature": "fnp.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, *, device=None)",
     "status": "supported",
     "summary": "Return evenly spaced numbers over a specified interval.",
-    "weight": 1.0,
-    "whest_ref": "we.linspace"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "linspace",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/function_base.py#L25",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L128"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L128",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/function_base.py#L27"
   }
 }

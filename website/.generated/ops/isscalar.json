@@ -121,7 +121,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/ndim",
-              "label": "we.ndim",
+              "label": "fnp.ndim",
               "original_target": "ndim",
               "role": "",
               "target": "ndim",
@@ -179,7 +179,7 @@
               "href": "",
               "kind": "link",
               "target": "ndim(x) == 0",
-              "text": "we.ndim(x) == 0"
+              "text": "fnp.ndim(x) == 0"
             },
             {
               "kind": "text",
@@ -227,8 +227,8 @@
           "type": "paragraph"
         },
         {
-          "raw_kind": "table",
-          "raw_text": "\n\n\n\n\n\nx\n\nisscalar(x)\n\nwe.ndim(x) == 0\n\nPEP 3141 numeric objects\n(including builtins)\n\nTrue\n\nTrue\n\nbuiltin string and buffer objects\n\nTrue\n\nTrue\n\nother builtin objects, like\npathlib.Path, Exception,\nthe result of re.compile\n\nFalse\n\nTrue\n\nthird-party objects like\nmatplotlib.figure.Figure\n\nFalse\n\nTrue\n\nzero-dimensional numpy arrays\n\nFalse\n\nTrue\n\nother numpy arrays\n\nFalse\n\nFalse\n\nlist, tuple, and other\nsequence objects\n\nFalse\n\nFalse",
+          "raw_kind": "system_message",
+          "raw_text": "<string>:11: (ERROR/3) Malformed table.\nRight border not aligned or missing.\n\n+------------------------------------+---------------+-------------------+\n| x                                  |``isscalar(x)``|``fnp.ndim(x) == 0``|\n+====================================+===============+===================+\n| PEP 3141 numeric objects           | ``True``      | ``True``          |\n| (including builtins)               |               |                   |\n+------------------------------------+---------------+-------------------+\n| builtin string and buffer objects  | ``True``      | ``True``          |\n+------------------------------------+---------------+-------------------+\n| other builtin objects, like        | ``False``     | ``True``          |\n| `pathlib.Path`, `Exception`,       |               |                   |\n| the result of `re.compile`         |               |                   |\n+------------------------------------+---------------+-------------------+\n| third-party objects like           | ``False``     | ``True``          |\n| `matplotlib.figure.Figure`         |               |                   |\n+------------------------------------+---------------+-------------------+\n| zero-dimensional numpy arrays      | ``False``     | ``True``          |\n+------------------------------------+---------------+-------------------+\n| other numpy arrays                 | ``False``     | ``False``         |\n+------------------------------------+---------------+-------------------+\n| `list`, `tuple`, and other         | ``False``     | ``False``         |\n| sequence objects                   |               |                   |\n+------------------------------------+---------------+-------------------+",
           "type": "raw_block"
         }
       ],
@@ -241,7 +241,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -251,7 +251,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isscalar(3.1)"
+              "text": "fnp.isscalar(3.1)"
             },
             {
               "kind": "output",
@@ -265,7 +265,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isscalar(we.array(3.1))"
+              "text": "fnp.isscalar(fnp.array(3.1))"
             },
             {
               "kind": "output",
@@ -279,7 +279,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isscalar([3.1])"
+              "text": "fnp.isscalar([3.1])"
             },
             {
               "kind": "output",
@@ -293,7 +293,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isscalar(False)"
+              "text": "fnp.isscalar(False)"
             },
             {
               "kind": "output",
@@ -307,7 +307,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isscalar('numpy')"
+              "text": "fnp.isscalar('numpy')"
             },
             {
               "kind": "output",
@@ -335,7 +335,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isscalar(Fraction(5, 17))"
+              "text": "fnp.isscalar(Fraction(5, 17))"
             },
             {
               "kind": "output",
@@ -349,7 +349,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isscalar(Number())"
+              "text": "fnp.isscalar(Number())"
             },
             {
               "kind": "output",
@@ -370,30 +370,33 @@
   "doc_coverage": {
     "raw_blocks": [
       {
-        "kind": "table",
-        "raw_text": "\n\n\n\n\n\nx\n\nisscalar(x)\n\nwe.ndim(x) == 0\n\nPEP 3141 numeric objects\n(including builtins)\n\nTrue\n\nTrue\n\nbuiltin string and buffer objects\n\nTrue\n\nTrue\n\nother builtin objects, like\npathlib.Path, Exception,\nthe result of re.compile\n\nFalse\n\nTrue\n\nthird-party objects like\nmatplotlib.figure.Figure\n\nFalse\n\nTrue\n\nzero-dimensional numpy arrays\n\nFalse\n\nTrue\n\nother numpy arrays\n\nFalse\n\nFalse\n\nlist, tuple, and other\nsequence objects\n\nFalse\n\nFalse"
+        "kind": "system_message",
+        "raw_text": "<string>:11: (ERROR/3) Malformed table.\nRight border not aligned or missing.\n\n+------------------------------------+---------------+-------------------+\n| x                                  |``isscalar(x)``|``fnp.ndim(x) == 0``|\n+====================================+===============+===================+\n| PEP 3141 numeric objects           | ``True``      | ``True``          |\n| (including builtins)               |               |                   |\n+------------------------------------+---------------+-------------------+\n| builtin string and buffer objects  | ``True``      | ``True``          |\n+------------------------------------+---------------+-------------------+\n| other builtin objects, like        | ``False``     | ``True``          |\n| `pathlib.Path`, `Exception`,       |               |                   |\n| the result of `re.compile`         |               |                   |\n+------------------------------------+---------------+-------------------+\n| third-party objects like           | ``False``     | ``True``          |\n| `matplotlib.figure.Figure`         |               |                   |\n+------------------------------------+---------------+-------------------+\n| zero-dimensional numpy arrays      | ``False``     | ``True``          |\n+------------------------------------+---------------+-------------------+\n| other numpy arrays                 | ``False``     | ``False``         |\n+------------------------------------+---------------+-------------------+\n| `list`, `tuple`, and other         | ``False``     | ``False``         |\n| sequence objects                   |               |                   |\n+------------------------------------+---------------+-------------------+"
       }
     ],
     "unresolved_references": [],
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.isscalar(3.1)\n\nwe.isscalar(we.array(3.1))\n\nwe.isscalar([3.1])\n\nwe.isscalar(False)\n\nwe.isscalar('numpy')\n\nfrom fractions import Fraction\n\nwe.isscalar(Fraction(5, 17))\n\nfrom numbers import Number\n\nwe.isscalar(Number())",
+    "code": "import flopscope as fnp\n\nfnp.isscalar(3.1)\n\nfnp.isscalar(fnp.array(3.1))\n\nfnp.isscalar([3.1])\n\nfnp.isscalar(False)\n\nfnp.isscalar('numpy')\n\nfrom fractions import Fraction\n\nfnp.isscalar(Fraction(5, 17))\n\nfrom numbers import Number\n\nfnp.isscalar(Number())",
     "output": "True\n\nFalse\n\nFalse\n\nTrue\n\nTrue\n\nTrue\n\nTrue",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.isscalar",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1105",
   "href": "/docs/api/ops/isscalar/",
   "module": "numpy",
   "name": "isscalar",
   "next": {
     "href": "/docs/api/ops/issubdtype/",
-    "label": "we.issubdtype"
+    "label": "fnp.issubdtype"
   },
   "notes": "Return True if input is a scalar.",
   "notes_sections": [
     "If you need a stricter way to identify a *numerical* scalar, use ``isinstance(x, numbers.Number)``, as that returns ``False`` for most non-numerical elements such as strings.",
-    "In most cases ``we.ndim(x) == 0`` should be used instead of this function, as that will also return true for 0d arrays. This is how numpy overloads functions in the style of the ``dx`` arguments to `gradient` and the ``bins`` argument to `histogram`. Some key differences:",
-    "+------------------------------------+---------------+-------------------+ | x                                  |``isscalar(x)``|``we.ndim(x) == 0``| +====================================+===============+===================+ | PEP 3141 numeric objects           | ``True``      | ``True``          | | (including builtins)               |               |                   | +------------------------------------+---------------+-------------------+ | builtin string and buffer objects  | ``True``      | ``True``          | +------------------------------------+---------------+-------------------+ | other builtin objects, like        | ``False``     | ``True``          | | `pathlib.Path`, `Exception`,       |               |                   | | the result of `re.compile`         |               |                   | +------------------------------------+---------------+-------------------+ | third-party objects like           | ``False``     | ``True``          | | `matplotlib.figure.Figure`         |               |                   | +------------------------------------+---------------+-------------------+ | zero-dimensional numpy arrays      | ``False``     | ``True``          | +------------------------------------+---------------+-------------------+ | other numpy arrays                 | ``False``     | ``False``         | +------------------------------------+---------------+-------------------+ | `list`, `tuple`, and other         | ``False``     | ``False``         | | sequence objects                   |               |                   | +------------------------------------+---------------+-------------------+"
+    "In most cases ``fnp.ndim(x) == 0`` should be used instead of this function, as that will also return true for 0d arrays. This is how numpy overloads functions in the style of the ``dx`` arguments to `gradient` and the ``bins`` argument to `histogram`. Some key differences:",
+    "+------------------------------------+---------------+-------------------+ | x                                  |``isscalar(x)``|``fnp.ndim(x) == 0``| +====================================+===============+===================+ | PEP 3141 numeric objects           | ``True``      | ``True``          | | (including builtins)               |               |                   | +------------------------------------+---------------+-------------------+ | builtin string and buffer objects  | ``True``      | ``True``          | +------------------------------------+---------------+-------------------+ | other builtin objects, like        | ``False``     | ``True``          | | `pathlib.Path`, `Exception`,       |               |                   | | the result of `re.compile`         |               |                   | +------------------------------------+---------------+-------------------+ | third-party objects like           | ``False``     | ``True``          | | `matplotlib.figure.Figure`         |               |                   | +------------------------------------+---------------+-------------------+ | zero-dimensional numpy arrays      | ``False``     | ``True``          | +------------------------------------+---------------+-------------------+ | other numpy arrays                 | ``False``     | ``False``         | +------------------------------------+---------------+-------------------+ | `list`, `tuple`, and other         | ``False``     | ``False``         | | sequence objects                   |               |                   | +------------------------------------+---------------+-------------------+"
   ],
   "numpy_ref": "np.isscalar",
   "parameters": [
@@ -407,7 +410,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/isrealobj/",
-    "label": "we.isrealobj"
+    "label": "fnp.isrealobj"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isscalar.html",
@@ -431,19 +434,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/ndim",
-      "label": "we.ndim",
+      "label": "fnp.ndim",
       "original_target": "ndim",
       "role": "",
       "target": "ndim",
       "unresolved": false
     }
   ],
-  "signature": "we.isscalar(element)",
+  "signature": "fnp.isscalar(element)",
   "slug": "isscalar",
   "summary": "Returns True if the type of `element` is a scalar type.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1927",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.isscalar",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1105"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L1975",
+  "weight": 0.0
 }

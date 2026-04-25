@@ -349,7 +349,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/array_split",
-                "label": "we.array_split",
+                "label": "fnp.array_split",
                 "original_target": "array_split",
                 "role": "",
                 "target": "array_split",
@@ -365,7 +365,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/hsplit",
-                "label": "we.hsplit",
+                "label": "fnp.hsplit",
                 "original_target": "hsplit",
                 "role": "",
                 "target": "hsplit",
@@ -381,7 +381,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vsplit",
-                "label": "we.vsplit",
+                "label": "fnp.vsplit",
                 "original_target": "vsplit",
                 "role": "",
                 "target": "vsplit",
@@ -397,7 +397,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/dsplit",
-                "label": "we.dsplit",
+                "label": "fnp.dsplit",
                 "original_target": "dsplit",
                 "role": "",
                 "target": "dsplit",
@@ -413,7 +413,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/concatenate",
-                "label": "we.concatenate",
+                "label": "fnp.concatenate",
                 "original_target": "concatenate",
                 "role": "",
                 "target": "concatenate",
@@ -429,7 +429,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/stack",
-                "label": "we.stack",
+                "label": "fnp.stack",
                 "original_target": "stack",
                 "role": "",
                 "target": "stack",
@@ -445,7 +445,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/hstack",
-                "label": "we.hstack",
+                "label": "fnp.hstack",
                 "original_target": "hstack",
                 "role": "",
                 "target": "hstack",
@@ -461,7 +461,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vstack",
-                "label": "we.vstack",
+                "label": "fnp.vstack",
                 "original_target": "vstack",
                 "role": "",
                 "target": "vstack",
@@ -477,7 +477,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/dstack",
-                "label": "we.dstack",
+                "label": "fnp.dstack",
                 "original_target": "dstack",
                 "role": "",
                 "target": "dstack",
@@ -496,17 +496,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(9.0)"
+                "text": "x = fnp.arange(9.0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.split(x, 3)"
+                "text": "fnp.split(x, 3)"
               },
               {
                 "kind": "output",
@@ -520,12 +520,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(8.0)"
+                "text": "x = fnp.arange(8.0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.split(x, [3, 5, 6, 10])"
+                "text": "fnp.split(x, [3, 5, 6, 10])"
               },
               {
                 "kind": "output",
@@ -559,20 +559,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.split",
     "module": "numpy",
     "name": "split",
     "notes": "Split array into sub-arrays. Cost: numel(output).",
     "numpy_ref": "np.split",
-    "signature": "we.split(ary, indices_or_sections, axis=0)",
+    "signature": "fnp.split(ary, indices_or_sections, axis=0)",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays as views into `ary`.",
-    "weight": 0.0,
-    "whest_ref": "we.split"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "split",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L803",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L282"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L282",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L798"
   }
 }

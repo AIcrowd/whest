@@ -157,7 +157,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/gcd",
-              "label": "we.gcd",
+              "label": "fnp.gcd",
               "original_target": "gcd",
               "role": "",
               "target": "gcd",
@@ -176,12 +176,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.lcm(12, 20)"
+              "text": "fnp.lcm(12, 20)"
             },
             {
               "kind": "output",
@@ -190,7 +190,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.lcm.reduce([3, 12, 20])"
+              "text": "fnp.lcm.reduce([3, 12, 20])"
             },
             {
               "kind": "output",
@@ -199,7 +199,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.lcm.reduce([40, 12, 20])"
+              "text": "fnp.lcm.reduce([40, 12, 20])"
             },
             {
               "kind": "output",
@@ -208,7 +208,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.lcm(we.arange(6), 20)"
+              "text": "fnp.lcm(fnp.arange(6), 20)"
             },
             {
               "kind": "output",
@@ -232,16 +232,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.lcm(12, 20)\n\nwe.lcm.reduce([3, 12, 20])\n\nwe.lcm.reduce([40, 12, 20])\n\nwe.lcm(we.arange(6), 20)",
+    "code": "import flopscope as fnp\n\nfnp.lcm(12, 20)\n\nfnp.lcm.reduce([3, 12, 20])\n\nfnp.lcm.reduce([40, 12, 20])\n\nfnp.lcm(fnp.arange(6), 20)",
     "output": "60\n\n60\n\n120\n\narray([ 0, 20, 20, 60, 20, 20])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.lcm",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
   "href": "/docs/api/ops/lcm/",
   "module": "numpy",
   "name": "lcm",
   "next": {
     "href": "/docs/api/ops/ldexp/",
-    "label": "we.ldexp"
+    "label": "fnp.ldexp"
   },
   "notes": "Element-wise least common multiple.",
   "notes_sections": [],
@@ -259,7 +262,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/kron/",
-    "label": "we.kron"
+    "label": "fnp.kron"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.lcm.html",
@@ -284,19 +287,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/gcd",
-      "label": "we.gcd",
+      "label": "fnp.gcd",
       "original_target": "gcd",
       "role": "",
       "target": "gcd",
       "unresolved": false
     }
   ],
-  "signature": "we.lcm(x, y)",
+  "signature": "fnp.lcm(x, y)",
   "slug": "lcm",
   "summary": "Returns the lowest common multiple of ``|x1|`` and ``|x2|``",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.lcm",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

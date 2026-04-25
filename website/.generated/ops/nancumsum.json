@@ -337,7 +337,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/cumsum",
-              "label": "we.cumsum",
+              "label": "fnp.cumsum",
               "original_target": "numpy.cumsum",
               "role": "",
               "target": "cumsum",
@@ -353,7 +353,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/isnan",
-              "label": "we.isnan",
+              "label": "fnp.isnan",
               "original_target": "isnan",
               "role": "",
               "target": "isnan",
@@ -372,12 +372,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumsum(1)"
+              "text": "fnp.nancumsum(1)"
             },
             {
               "kind": "output",
@@ -386,7 +386,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumsum([1])"
+              "text": "fnp.nancumsum([1])"
             },
             {
               "kind": "output",
@@ -395,7 +395,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumsum([1, we.nan])"
+              "text": "fnp.nancumsum([1, fnp.nan])"
             },
             {
               "kind": "output",
@@ -404,12 +404,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 2], [3, we.nan]])"
+              "text": "a = fnp.array([[1, 2], [3, fnp.nan]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumsum(a)"
+              "text": "fnp.nancumsum(a)"
             },
             {
               "kind": "output",
@@ -418,7 +418,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumsum(a, axis=0)"
+              "text": "fnp.nancumsum(a, axis=0)"
             },
             {
               "kind": "output",
@@ -431,7 +431,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumsum(a, axis=1)"
+              "text": "fnp.nancumsum(a, axis=1)"
             },
             {
               "kind": "output",
@@ -459,16 +459,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.nancumsum(1)\n\nwe.nancumsum([1])\n\nwe.nancumsum([1, we.nan])\n\na = we.array([[1, 2], [3, we.nan]])\n\nwe.nancumsum(a)\n\nwe.nancumsum(a, axis=0)\n\nwe.nancumsum(a, axis=1)",
+    "code": "import flopscope as fnp\n\nfnp.nancumsum(1)\n\nfnp.nancumsum([1])\n\nfnp.nancumsum([1, fnp.nan])\n\na = fnp.array([[1, 2], [3, fnp.nan]])\n\nfnp.nancumsum(a)\n\nfnp.nancumsum(a, axis=0)\n\nfnp.nancumsum(a, axis=1)",
     "output": "array([1])\n\narray([1])\n\narray([1.,  1.])\n\narray([1.,  3.,  6.,  6.])\n\narray([[1.,  2.],\n       [4.,  2.]])\n\narray([[1.,  3.],\n       [3.,  3.]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.nancumsum",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
   "href": "/docs/api/ops/nancumsum/",
   "module": "numpy",
   "name": "nancumsum",
   "next": {
     "href": "/docs/api/ops/nanmax/",
-    "label": "we.nanmax"
+    "label": "fnp.nanmax"
   },
   "notes": "Cumulative sum ignoring NaNs.",
   "notes_sections": [],
@@ -513,7 +516,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/nancumprod/",
-    "label": "we.nancumprod"
+    "label": "fnp.nancumprod"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nancumsum.html",
@@ -540,7 +543,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/cumsum",
-      "label": "we.cumsum",
+      "label": "fnp.cumsum",
       "original_target": "numpy.cumsum",
       "role": "",
       "target": "cumsum",
@@ -556,19 +559,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/isnan",
-      "label": "we.isnan",
+      "label": "fnp.isnan",
       "original_target": "isnan",
       "role": "",
       "target": "isnan",
       "unresolved": false
     }
   ],
-  "signature": "we.nancumsum(a, axis=None, dtype=None, out=None)",
+  "signature": "fnp.nancumsum(a, axis=None, dtype=None, out=None)",
   "slug": "nancumsum",
   "summary": "Return the cumulative sum of array elements over a given axis treating Not a Numbers (NaNs) as zero.  The cumulative sum does not change when NaNs are encountered and leading NaNs are replaced by zeros.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L818",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.nancumsum",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_nanfunctions_impl.py#L816",
+  "weight": 1.0
 }

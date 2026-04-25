@@ -26,7 +26,7 @@
                 "description_inline": [],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.Generator.html",
                 "href": "",
-                "label": "we.random.Generator",
+                "label": "fnp.random.Generator",
                 "original_target": "numpy.random.Generator",
                 "role": "",
                 "target": "random.Generator",
@@ -66,20 +66,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.random.seed",
     "module": "numpy.random",
     "name": "random.seed",
     "notes": "Seed random number generator.",
     "numpy_ref": "np.random.seed",
-    "signature": "we.random.seed(seed=None)",
+    "signature": "fnp.random.seed(seed=None)",
     "status": "supported",
     "summary": "Reseed the singleton RandomState instance.",
-    "weight": 0.0,
-    "whest_ref": "we.random.seed"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "random-seed",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.seed.html",
-    "whest": null
+    "flopscope": null,
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.seed.html"
   }
 }

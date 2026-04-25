@@ -339,7 +339,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/argsort",
-                "label": "we.argsort",
+                "label": "fnp.argsort",
                 "original_target": "argsort",
                 "role": "",
                 "target": "argsort",
@@ -355,7 +355,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/lexsort",
-                "label": "we.lexsort",
+                "label": "fnp.lexsort",
                 "original_target": "lexsort",
                 "role": "",
                 "target": "lexsort",
@@ -371,7 +371,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/searchsorted",
-                "label": "we.searchsorted",
+                "label": "fnp.searchsorted",
                 "original_target": "searchsorted",
                 "role": "",
                 "target": "searchsorted",
@@ -387,7 +387,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/partition",
-                "label": "we.partition",
+                "label": "fnp.partition",
                 "original_target": "partition",
                 "role": "",
                 "target": "partition",
@@ -457,8 +457,8 @@
                 "text": " makes a temporary copy if needed to make the data\n"
               },
               {
-                "external_url": "https://we.org/doc/stable/glossary.html#term-contiguous",
-                "href": "https://we.org/doc/stable/glossary.html#term-contiguous",
+                "external_url": "https://fnp.org/doc/stable/glossary.html#term-contiguous",
+                "href": "https://fnp.org/doc/stable/glossary.html#term-contiguous",
                 "kind": "link",
                 "text": "contiguous"
               },
@@ -648,17 +648,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1,4],[3,1]])"
+                "text": "a = fnp.array([[1,4],[3,1]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(a)                # sort along the last axis"
+                "text": "fnp.sort(a)                # sort along the last axis"
               },
               {
                 "kind": "output",
@@ -671,7 +671,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(a, axis=None)     # sort the flattened array"
+                "text": "fnp.sort(a, axis=None)     # sort the flattened array"
               },
               {
                 "kind": "output",
@@ -680,7 +680,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(a, axis=0)        # sort along the first axis"
+                "text": "fnp.sort(a, axis=0)        # sort along the first axis"
               },
               {
                 "kind": "output",
@@ -730,12 +730,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array(values, dtype=dtype)       # create a structured array"
+                "text": "a = fnp.array(values, dtype=dtype)       # create a structured array"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(a, order='height')                        # doctest: +SKIP"
+                "text": "fnp.sort(a, order='height')                        # doctest: +SKIP"
               },
               {
                 "kind": "output",
@@ -766,7 +766,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sort(a, order=['age', 'height'])               # doctest: +SKIP"
+                "text": "fnp.sort(a, order=['age', 'height'])               # doctest: +SKIP"
               },
               {
                 "kind": "output",
@@ -792,20 +792,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.sort",
     "module": "numpy",
     "name": "sort",
     "notes": "Comparison sort; cost = n*ceil(log2(n)) per slice.",
     "numpy_ref": "np.sort",
-    "signature": "we.sort(a, axis=-1, kind=None, order=None, *, stable=None)",
+    "signature": "fnp.sort(a, axis=-1, kind=None, order=None, *, stable=None)",
     "status": "supported",
     "summary": "Return a sorted copy of an array.",
-    "weight": 1.0,
-    "whest_ref": "we.sort"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "sort",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L969",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L44"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L44",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L939"
   }
 }

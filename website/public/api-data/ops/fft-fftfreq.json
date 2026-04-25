@@ -244,17 +244,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "signal = we.array([-2, 8, 6, 4, 1, 0, 3, 5], dtype=float)"
+                "text": "signal = fnp.array([-2, 8, 6, 4, 1, 0, 3, 5], dtype=float)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "fourier = we.fft.fft(signal)"
+                "text": "fourier = fnp.fft.fft(signal)"
               },
               {
                 "kind": "input",
@@ -269,7 +269,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "freq = we.fft.fftfreq(n, d=timestep)"
+                "text": "freq = fnp.fft.fftfreq(n, d=timestep)"
               },
               {
                 "kind": "input",
@@ -292,20 +292,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.fft.fftfreq",
     "module": "numpy.fft",
     "name": "fft.fftfreq",
     "notes": "FFT sample frequencies. No arithmetic; returns index array.",
     "numpy_ref": "np.fft.fftfreq",
-    "signature": "we.fft.fftfreq(n, d=1.0, device=None)",
+    "signature": "fnp.fft.fftfreq(n, d=1.0, device=None)",
     "status": "supported",
     "summary": "Return the Discrete Fourier Transform sample frequencies.",
-    "weight": 0.0,
-    "whest_ref": "we.fft.fftfreq"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "fft-fftfreq",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L125",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_free.py#L11"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L11",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_helper.py#L125"
   }
 }

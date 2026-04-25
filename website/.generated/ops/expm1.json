@@ -303,7 +303,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/log1p",
-              "label": "we.log1p",
+              "label": "fnp.log1p",
               "original_target": "log1p",
               "role": "",
               "target": "log1p",
@@ -377,17 +377,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
-            }
-          ],
-          "type": "doctest_block"
-        },
-        {
-          "lines": [
+              "text": "import flopscope as fnp"
+            },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.expm1(1e-10)"
+              "text": "fnp.expm1(1e-10)"
             },
             {
               "kind": "output",
@@ -396,7 +391,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.exp(1e-10) - 1"
+              "text": "fnp.exp(1e-10) - 1"
             },
             {
               "kind": "output",
@@ -427,16 +422,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.expm1(1e-10)\n\nwe.exp(1e-10) - 1",
+    "code": "import flopscope as fnp\n\nfnp.expm1(1e-10)\n\nfnp.exp(1e-10) - 1",
     "output": "1.00000000005e-10\n\n1.000000082740371e-10",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.expm1",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/expm1/",
   "module": "numpy",
   "name": "expm1",
   "next": {
     "href": "/docs/api/ops/extract/",
-    "label": "we.extract"
+    "label": "fnp.extract"
   },
   "notes": "Element-wise e^x - 1 (accurate near zero).",
   "notes_sections": [
@@ -484,7 +482,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/expand_dims/",
-    "label": "we.expand_dims"
+    "label": "fnp.expand_dims"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.expm1.html",
@@ -513,19 +511,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/log1p",
-      "label": "we.log1p",
+      "label": "fnp.log1p",
       "original_target": "log1p",
       "role": "",
       "target": "log1p",
       "unresolved": false
     }
   ],
-  "signature": "we.expm1(x)",
+  "signature": "fnp.expm1(x)",
   "slug": "expm1",
   "summary": "Calculate ``exp(x) - 1`` for all elements in the array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.expm1",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 16.0
 }

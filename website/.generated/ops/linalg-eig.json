@@ -296,7 +296,7 @@
               "href": "",
               "kind": "link",
               "target": "linalg",
-              "text": "we.linalg"
+              "text": "fnp.linalg"
             },
             {
               "kind": "text",
@@ -585,7 +585,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -609,7 +609,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "eigenvalues, eigenvectors = LA.eig(we.diag((1, 2, 3)))"
+              "text": "eigenvalues, eigenvectors = LA.eig(fnp.diag((1, 2, 3)))"
             },
             {
               "kind": "input",
@@ -654,7 +654,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "eigenvalues, eigenvectors = LA.eig(we.array([[1, -1], [1, 1]]))"
+              "text": "eigenvalues, eigenvectors = LA.eig(fnp.array([[1, -1], [1, 1]]))"
             },
             {
               "kind": "input",
@@ -711,7 +711,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 1j], [-1j, 1]])"
+              "text": "a = fnp.array([[1, 1j], [-1j, 1]])"
             },
             {
               "kind": "input",
@@ -757,7 +757,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1 + 1e-9, 0], [0, 1 - 1e-9]])"
+              "text": "a = fnp.array([[1 + 1e-9, 0], [0, 1 - 1e-9]])"
             },
             {
               "kind": "input",
@@ -809,20 +809,23 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nfrom numpy import linalg as LA\n\neigenvalues, eigenvectors = LA.eig(we.diag((1, 2, 3)))\n\neigenvalues\n\neigenvectors\n\neigenvalues, eigenvectors = LA.eig(we.array([[1, -1], [1, 1]]))\n\neigenvalues\n\neigenvectors\n\na = we.array([[1, 1j], [-1j, 1]])\n\neigenvalues, eigenvectors = LA.eig(a)\n\neigenvalues\n\neigenvectors\n\na = we.array([[1 + 1e-9, 0], [0, 1 - 1e-9]])\n\neigenvalues, eigenvectors = LA.eig(a)\n\neigenvalues\n\neigenvectors",
+    "code": "import flopscope as fnp\n\nfrom numpy import linalg as LA\n\neigenvalues, eigenvectors = LA.eig(fnp.diag((1, 2, 3)))\n\neigenvalues\n\neigenvectors\n\neigenvalues, eigenvectors = LA.eig(fnp.array([[1, -1], [1, 1]]))\n\neigenvalues\n\neigenvectors\n\na = fnp.array([[1, 1j], [-1j, 1]])\n\neigenvalues, eigenvectors = LA.eig(a)\n\neigenvalues\n\neigenvectors\n\na = fnp.array([[1 + 1e-9, 0], [0, 1 - 1e-9]])\n\neigenvalues, eigenvectors = LA.eig(a)\n\neigenvalues\n\neigenvectors",
     "output": "array([1., 2., 3.])\n\narray([[1., 0., 0.],\n       [0., 1., 0.],\n       [0., 0., 1.]])\n\narray([1.+1.j, 1.-1.j])\n\narray([[0.70710678+0.j        , 0.70710678-0.j        ],\n       [0.        -0.70710678j, 0.        +0.70710678j]])\n\narray([2.+0.j, 0.+0.j])\n\narray([[ 0.        +0.70710678j,  0.70710678+0.j        ], # may vary\n       [ 0.70710678+0.j        , -0.        +0.70710678j]])\n\narray([1., 1.])\n\narray([[1., 0.],\n       [0., 1.]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.eig",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L116",
   "href": "/docs/api/ops/linalg-eig/",
   "module": "numpy.linalg",
   "name": "linalg.eig",
   "next": {
     "href": "/docs/api/ops/linalg-eigh/",
-    "label": "we.linalg.eigh"
+    "label": "fnp.linalg.eigh"
   },
   "notes": "Eigendecomposition. Cost: $n^3$.",
   "notes_sections": [
-    "Broadcasting rules apply, see the `we.linalg` documentation for details.",
+    "Broadcasting rules apply, see the `fnp.linalg` documentation for details.",
     "This is implemented using the ``_geev`` LAPACK routines which compute the eigenvalues and eigenvectors of general square arrays.",
     "The number `w` is an eigenvalue of `a` if there exists a vector `v` such that ``a @ v = w * v``. Thus, the arrays `a`, `eigenvalues`, and `eigenvectors` satisfy the equations ``a @ eigenvectors[:,i] = eigenvalues[i] * eigenvectors[:,i]`` for :math:`i \\in \\{0,...,M-1\\}`.",
     "The array `eigenvectors` may not be of maximum rank, that is, some of the columns may be linearly dependent, although round-off error may obscure that fact. If the eigenvalues are all different, then theoretically the eigenvectors are linearly independent and `a` can be diagonalized by a similarity transformation using `eigenvectors`, i.e, ``inv(eigenvectors) @ a @ eigenvectors`` is diagonal.",
@@ -842,7 +845,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/linalg-diagonal/",
-    "label": "we.linalg.diagonal"
+    "label": "fnp.linalg.diagonal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html",
@@ -956,12 +959,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.eig(a)",
+  "signature": "fnp.linalg.eig(a)",
   "slug": "linalg-eig",
   "summary": "Compute the eigenvalues and right eigenvectors of a square array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1331",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.eig",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L116"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L1362",
+  "weight": 4.0
 }

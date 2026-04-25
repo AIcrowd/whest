@@ -69,7 +69,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/diag_indices",
-                "label": "we.diag_indices",
+                "label": "fnp.diag_indices",
                 "original_target": "diag_indices",
                 "role": "",
                 "target": "diag_indices",
@@ -88,7 +88,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -107,7 +107,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(16).reshape(4, 4)"
+                "text": "a = fnp.arange(16).reshape(4, 4)"
               },
               {
                 "kind": "input",
@@ -147,7 +147,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "di = we.diag_indices_from(a)"
+                "text": "di = fnp.diag_indices_from(a)"
               },
               {
                 "kind": "input",
@@ -189,7 +189,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.diag_indices(a.shape[0])"
+                "text": "fnp.diag_indices(a.shape[0])"
               },
               {
                 "kind": "output",
@@ -207,20 +207,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.diag_indices_from",
     "module": "numpy",
     "name": "diag_indices_from",
     "notes": "Return indices to access main diagonal of given array.",
     "numpy_ref": "np.diag_indices_from",
-    "signature": "we.diag_indices_from(arr)",
+    "signature": "fnp.diag_indices_from(arr)",
     "status": "supported",
     "summary": "Return the indices to access the main diagonal of an n-dimensional array.",
-    "weight": 0.0,
-    "whest_ref": "we.diag_indices_from"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "diag_indices_from",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_index_tricks_impl.py#L1018",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L849"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L849",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_index_tricks_impl.py#L997"
   }
 }

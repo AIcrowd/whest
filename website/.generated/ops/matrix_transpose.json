@@ -135,7 +135,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/transpose",
-              "label": "we.transpose",
+              "label": "fnp.transpose",
               "original_target": "transpose",
               "role": "",
               "target": "transpose",
@@ -154,12 +154,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.matrix_transpose([[1, 2], [3, 4]])"
+              "text": "fnp.matrix_transpose([[1, 2], [3, 4]])"
             },
             {
               "kind": "output",
@@ -177,7 +177,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])"
+              "text": "fnp.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])"
             },
             {
               "kind": "output",
@@ -213,16 +213,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.matrix_transpose([[1, 2], [3, 4]])\n\nwe.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])",
+    "code": "import flopscope as fnp\n\nfnp.matrix_transpose([[1, 2], [3, 4]])\n\nfnp.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])",
     "output": "array([[1, 3],\n       [2, 4]])\n\narray([[[1, 3],\n        [2, 4]],\n       [[5, 7],\n        [6, 8]]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.matrix_transpose",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1155",
   "href": "/docs/api/ops/matrix_transpose/",
   "module": "numpy",
   "name": "matrix_transpose",
   "next": {
     "href": "/docs/api/ops/matvec/",
-    "label": "we.matvec"
+    "label": "fnp.matvec"
   },
   "notes": "Transpose last two dimensions (NumPy 2.x array API).",
   "notes_sections": [],
@@ -239,7 +242,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/matmul/",
-    "label": "we.matmul"
+    "label": "fnp.matmul"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.matrix_transpose.html",
@@ -264,19 +267,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/transpose",
-      "label": "we.transpose",
+      "label": "fnp.transpose",
       "original_target": "transpose",
       "role": "",
       "target": "transpose",
       "unresolved": false
     }
   ],
-  "signature": "we.matrix_transpose(x, /)",
+  "signature": "fnp.matrix_transpose(x, /)",
   "slug": "matrix_transpose",
   "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L709",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.matrix_transpose",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1155"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L683",
+  "weight": 0.0
 }

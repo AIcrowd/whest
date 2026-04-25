@@ -341,7 +341,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.conj is we.conjugate"
+              "text": "fnp.conj is fnp.conjugate"
             },
             {
               "kind": "output",
@@ -360,12 +360,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.conjugate(1+2j)"
+              "text": "fnp.conjugate(1+2j)"
             },
             {
               "kind": "output",
@@ -379,12 +379,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.eye(2) + 1j * we.eye(2)"
+              "text": "x = fnp.eye(2) + 1j * fnp.eye(2)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.conjugate(x)"
+              "text": "fnp.conjugate(x)"
             },
             {
               "kind": "output",
@@ -419,21 +419,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.conjugate(1+2j)\n\nx = we.eye(2) + 1j * we.eye(2)\n\nwe.conjugate(x)",
+    "code": "import flopscope as fnp\n\nfnp.conjugate(1+2j)\n\nx = fnp.eye(2) + 1j * fnp.eye(2)\n\nfnp.conjugate(x)",
     "output": "(1-2j)\n\narray([[ 1.-1.j,  0.-0.j],\n       [ 0.-0.j,  1.-1.j]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.conjugate",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/conjugate/",
   "module": "numpy",
   "name": "conjugate",
   "next": {
     "href": "/docs/api/ops/convolve/",
-    "label": "we.convolve"
+    "label": "fnp.convolve"
   },
   "notes": "Complex conjugate element-wise.",
   "notes_sections": [
     "`conj` is an alias for `conjugate`:",
-    ">>> we.conj is we.conjugate True"
+    ">>> fnp.conj is fnp.conjugate True"
   ],
   "numpy_ref": "np.conjugate",
   "parameters": [
@@ -477,7 +480,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/conj/",
-    "label": "we.conj"
+    "label": "fnp.conj"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.conjugate.html",
@@ -492,12 +495,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.conjugate(x)",
+  "signature": "fnp.conjugate(x)",
   "slug": "conjugate",
   "summary": "Return the complex conjugate, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.conjugate",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

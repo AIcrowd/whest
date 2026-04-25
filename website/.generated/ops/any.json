@@ -447,7 +447,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/all",
-              "label": "we.all",
+              "label": "fnp.all",
               "original_target": "all",
               "role": "",
               "target": "all",
@@ -483,7 +483,7 @@
           "content_blocks": [],
           "directive": "versionchanged",
           "options": [],
-          "raw_source": ".. versionchanged:: 2.0\n   Before NumPy 2.0, ``any`` did not return booleans for object dtype\n   input arrays.\n   This behavior is still available via ``we.logical_or.reduce``.",
+          "raw_source": ".. versionchanged:: 2.0\n   Before NumPy 2.0, ``any`` did not return booleans for object dtype\n   input arrays.\n   This behavior is still available via ``fnp.logical_or.reduce``.",
           "supported": true,
           "type": "directive_block",
           "version": "2.0"
@@ -498,12 +498,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.any([[True, False], [True, True]])"
+              "text": "fnp.any([[True, False], [True, True]])"
             },
             {
               "kind": "output",
@@ -517,7 +517,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.any([[True,  False, True ],"
+              "text": "fnp.any([[True,  False, True ],"
             },
             {
               "kind": "input",
@@ -536,7 +536,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.any([-1, 0, 5])"
+              "text": "fnp.any([-1, 0, 5])"
             },
             {
               "kind": "output",
@@ -550,7 +550,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.any([[we.nan], [we.inf]], axis=1, keepdims=True)"
+              "text": "fnp.any([[fnp.nan], [fnp.inf]], axis=1, keepdims=True)"
             },
             {
               "kind": "output",
@@ -568,7 +568,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.any([[True, False], [False, False]], where=[[False], [True]])"
+              "text": "fnp.any([[True, False], [False, False]], where=[[False], [True]])"
             },
             {
               "kind": "output",
@@ -582,7 +582,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 0, 0],"
+              "text": "a = fnp.array([[1, 0, 0],"
             },
             {
               "kind": "input",
@@ -597,7 +597,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.any(a, axis=0)"
+              "text": "fnp.any(a, axis=0)"
             },
             {
               "kind": "output",
@@ -606,7 +606,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.any(a, axis=1)"
+              "text": "fnp.any(a, axis=1)"
             },
             {
               "kind": "output",
@@ -620,12 +620,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "o=we.array(False)"
+              "text": "o=fnp.array(False)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "z=we.any([-1, 4, 5], out=o)"
+              "text": "z=fnp.any([-1, 4, 5], out=o)"
             },
             {
               "kind": "input",
@@ -684,21 +684,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.any([[True, False], [True, True]])\n\nwe.any([[True,  False, True ],\n        [False, False, False]], axis=0)\n\nwe.any([-1, 0, 5])\n\nwe.any([[we.nan], [we.inf]], axis=1, keepdims=True)\n\nwe.any([[True, False], [False, False]], where=[[False], [True]])\n\na = we.array([[1, 0, 0],\n              [0, 0, 1],\n              [0, 0, 0]])\n\nwe.any(a, axis=0)\n\nwe.any(a, axis=1)\n\no=we.array(False)\n\nz=we.any([-1, 4, 5], out=o)\n\nz, o\n\nz is o\n\nid(z), id(o) # identity of z and o              # doctest: +SKIP",
+    "code": "import flopscope as fnp\n\nfnp.any([[True, False], [True, True]])\n\nfnp.any([[True,  False, True ],\n        [False, False, False]], axis=0)\n\nfnp.any([-1, 0, 5])\n\nfnp.any([[fnp.nan], [fnp.inf]], axis=1, keepdims=True)\n\nfnp.any([[True, False], [False, False]], where=[[False], [True]])\n\na = fnp.array([[1, 0, 0],\n              [0, 0, 1],\n              [0, 0, 0]])\n\nfnp.any(a, axis=0)\n\nfnp.any(a, axis=1)\n\no=fnp.array(False)\n\nz=fnp.any([-1, 4, 5], out=o)\n\nz, o\n\nz is o\n\nid(z), id(o) # identity of z and o              # doctest: +SKIP",
     "output": "True\n\narray([ True, False, True])\n\nTrue\n\narray([[ True],\n       [ True]])\n\nFalse\n\narray([ True, False,  True])\n\narray([ True,  True, False])\n\n(array(True), array(True))\n\nTrue\n\n(191614240, 191614240)",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.any",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
   "href": "/docs/api/ops/any/",
   "module": "numpy",
   "name": "any",
   "next": {
     "href": "/docs/api/ops/append/",
-    "label": "we.append"
+    "label": "fnp.append"
   },
   "notes": "Test whether any array element is true.",
   "notes_sections": [
     "Not a Number (NaN), positive infinity and negative infinity evaluate to `True` because these are not equal to zero.",
-    ".. versionchanged:: 2.0 Before NumPy 2.0, ``any`` did not return booleans for object dtype input arrays. This behavior is still available via ``we.logical_or.reduce``."
+    ".. versionchanged:: 2.0 Before NumPy 2.0, ``any`` did not return booleans for object dtype input arrays. This behavior is still available via ``fnp.logical_or.reduce``."
   ],
   "numpy_ref": "np.any",
   "parameters": [
@@ -750,7 +753,7 @@
     {
       "body": [
         "Elements to include in checking for any `True` values.",
-        "See `~we.ufunc.reduce` for details.",
+        "See `~fnp.ufunc.reduce` for details.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -760,7 +763,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/angle/",
-    "label": "we.angle"
+    "label": "fnp.angle"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.any.html",
@@ -801,19 +804,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/all",
-      "label": "we.all",
+      "label": "fnp.all",
       "original_target": "all",
       "role": "",
       "target": "all",
       "unresolved": false
     }
   ],
-  "signature": "we.any(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
+  "signature": "fnp.any(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
   "slug": "any",
   "summary": "Test whether any array element along a given axis evaluates to True.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2477",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.any",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L2436",
+  "weight": 1.0
 }

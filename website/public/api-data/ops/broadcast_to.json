@@ -212,7 +212,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/broadcast_arrays",
-                "label": "we.broadcast_arrays",
+                "label": "fnp.broadcast_arrays",
                 "original_target": "broadcast_arrays",
                 "role": "",
                 "target": "broadcast_arrays",
@@ -223,7 +223,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/broadcast_shapes",
-                "label": "we.broadcast_shapes",
+                "label": "fnp.broadcast_shapes",
                 "original_target": "broadcast_shapes",
                 "role": "",
                 "target": "broadcast_shapes",
@@ -242,17 +242,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([1, 2, 3])"
+                "text": "x = fnp.array([1, 2, 3])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.broadcast_to(x, (3, 3))"
+                "text": "fnp.broadcast_to(x, (3, 3))"
               },
               {
                 "kind": "output",
@@ -278,20 +278,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.broadcast_to",
     "module": "numpy",
     "name": "broadcast_to",
     "notes": "Broadcast array to new shape. Cost: numel(output).",
     "numpy_ref": "np.broadcast_to",
-    "signature": "we.broadcast_to(array, shape, subok=False)",
+    "signature": "fnp.broadcast_to(array, shape, subok=False)",
     "status": "supported",
     "summary": "Broadcast an array to a new shape.",
-    "weight": 0.0,
-    "whest_ref": "we.broadcast_to"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "broadcast_to",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_stride_tricks_impl.py#L367",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L481"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L481",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_stride_tricks_impl.py#L400"
   }
 }

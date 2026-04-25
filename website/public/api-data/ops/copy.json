@@ -249,7 +249,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array(a, copy=True)  #doctest: +SKIP"
+                "text": "fnp.array(a, copy=True)  #doctest: +SKIP"
               }
             ],
             "type": "doctest_block"
@@ -281,7 +281,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               }
             ],
             "type": "doctest_block"
@@ -300,7 +300,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([1, 2, 3])"
+                "text": "x = fnp.array([1, 2, 3])"
               },
               {
                 "kind": "input",
@@ -310,7 +310,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "z = we.copy(x)"
+                "text": "z = fnp.copy(x)"
               }
             ],
             "type": "doctest_block"
@@ -356,7 +356,7 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Note that, we.copy clears previously set WRITEABLE=False flag."
+                "text": "Note that, fnp.copy clears previously set WRITEABLE=False flag."
               }
             ],
             "type": "paragraph"
@@ -366,7 +366,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2, 3])"
+                "text": "a = fnp.array([1, 2, 3])"
               },
               {
                 "kind": "input",
@@ -376,7 +376,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.copy(a)"
+                "text": "b = fnp.copy(a)"
               },
               {
                 "kind": "input",
@@ -413,20 +413,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.copy",
     "module": "numpy",
     "name": "copy",
     "notes": "Return array copy.",
     "numpy_ref": "np.copy",
-    "signature": "we.copy(a, order='K', subok=False)",
+    "signature": "fnp.copy(a, order='K', subok=False)",
     "status": "supported",
     "summary": "Return an array copy of the given object.",
-    "weight": 0.0,
-    "whest_ref": "we.copy"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "copy",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L898",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L349"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L349",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L924"
   }
 }

@@ -97,7 +97,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.uniform`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.uniform`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -218,7 +218,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.broadcast(low, high).size"
+                        "text": "fnp.broadcast(low, high).size"
                       },
                       {
                         "kind": "text",
@@ -276,7 +276,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.broadcast(low, high).size"
+                    "text": "fnp.broadcast(low, high).size"
                   },
                   {
                     "kind": "text",
@@ -576,7 +576,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.float32(5*0.99999999)"
+                "text": "x = fnp.float32(5*0.99999999)"
               },
               {
                 "kind": "input",
@@ -585,7 +585,7 @@
               },
               {
                 "kind": "output",
-                "text": "we.float32(5.0)"
+                "text": "fnp.float32(5.0)"
               }
             ],
             "type": "doctest_block"
@@ -609,7 +609,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.uniform(-1,0,1000)"
+                "text": "s = fnp.random.uniform(-1,0,1000)"
               }
             ],
             "type": "doctest_block"
@@ -628,7 +628,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.all(s >= -1)"
+                "text": "fnp.all(s >= -1)"
               },
               {
                 "kind": "output",
@@ -637,7 +637,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.all(s < 0)"
+                "text": "fnp.all(s < 0)"
               },
               {
                 "kind": "output",
@@ -670,7 +670,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(bins, we.ones_like(bins), linewidth=2, color='r')"
+                "text": "plt.plot(bins, fnp.ones_like(bins), linewidth=2, color='r')"
               },
               {
                 "kind": "input",
@@ -689,20 +689,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.uniform",
     "module": "numpy.random",
     "name": "random.uniform",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.uniform",
-    "signature": "we.random.uniform(low=0.0, high=1.0, size=None)",
+    "signature": "fnp.random.uniform(low=0.0, high=1.0, size=None)",
     "status": "supported",
     "summary": "Draw samples from a uniform distribution.",
-    "weight": 1.0,
-    "whest_ref": "we.random.uniform"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "random-uniform",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.uniform.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.uniform.html"
   }
 }

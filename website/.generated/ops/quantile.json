@@ -591,38 +591,6 @@
               ],
               "name": "weights",
               "type": "field_list"
-            },
-            {
-              "body_blocks": [
-                {
-                  "inline": [
-                    {
-                      "kind": "text",
-                      "text": "Deprecated name for the method keyword argument."
-                    }
-                  ],
-                  "type": "paragraph"
-                },
-                {
-                  "argument_inline": [],
-                  "content_blocks": [],
-                  "directive": "deprecated",
-                  "options": [],
-                  "raw_source": ".. deprecated:: 1.22.0",
-                  "supported": true,
-                  "type": "directive_block",
-                  "version": "1.22.0"
-                }
-              ],
-              "data_type": "str, optional",
-              "inline": [
-                {
-                  "kind": "text",
-                  "text": "Deprecated name for the method keyword argument."
-                }
-              ],
-              "name": "interpolation",
-              "type": "field_list"
             }
           ],
           "title": "Parameters",
@@ -769,7 +737,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/mean",
-              "label": "we.mean",
+              "label": "fnp.mean",
               "original_target": "mean",
               "role": "",
               "target": "mean",
@@ -785,7 +753,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/percentile",
-              "label": "we.percentile",
+              "label": "fnp.percentile",
               "original_target": "percentile",
               "role": "",
               "target": "percentile",
@@ -805,7 +773,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/median",
-              "label": "we.median",
+              "label": "fnp.median",
               "original_target": "median",
               "role": "",
               "target": "median",
@@ -816,7 +784,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanquantile",
-              "label": "we.nanquantile",
+              "label": "fnp.nanquantile",
               "original_target": "nanquantile",
               "role": "",
               "target": "nanquantile",
@@ -1574,12 +1542,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[10, 7, 4], [3, 2, 1]])"
+              "text": "a = fnp.array([[10, 7, 4], [3, 2, 1]])"
             },
             {
               "kind": "input",
@@ -1597,7 +1565,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.quantile(a, 0.5)"
+              "text": "fnp.quantile(a, 0.5)"
             },
             {
               "kind": "output",
@@ -1606,7 +1574,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.quantile(a, 0.5, axis=0)"
+              "text": "fnp.quantile(a, 0.5, axis=0)"
             },
             {
               "kind": "output",
@@ -1615,7 +1583,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.quantile(a, 0.5, axis=1)"
+              "text": "fnp.quantile(a, 0.5, axis=1)"
             },
             {
               "kind": "output",
@@ -1624,7 +1592,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.quantile(a, 0.5, axis=1, keepdims=True)"
+              "text": "fnp.quantile(a, 0.5, axis=1, keepdims=True)"
             },
             {
               "kind": "output",
@@ -1637,17 +1605,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "m = we.quantile(a, 0.5, axis=0)"
+              "text": "m = fnp.quantile(a, 0.5, axis=0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "out = we.zeros_like(m)"
+              "text": "out = fnp.zeros_like(m)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.quantile(a, 0.5, axis=0, out=out)"
+              "text": "fnp.quantile(a, 0.5, axis=0, out=out)"
             },
             {
               "kind": "output",
@@ -1670,7 +1638,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.quantile(b, 0.5, axis=1, overwrite_input=True)"
+              "text": "fnp.quantile(b, 0.5, axis=1, overwrite_input=True)"
             },
             {
               "kind": "output",
@@ -1679,7 +1647,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "assert not we.all(a == b)"
+              "text": "assert not fnp.all(a == b)"
             }
           ],
           "type": "doctest_block"
@@ -1695,7 +1663,7 @@
               "href": "/docs/api/ops/percentile",
               "kind": "link",
               "target": "percentile",
-              "text": "we.percentile"
+              "text": "fnp.percentile"
             },
             {
               "kind": "text",
@@ -1738,16 +1706,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[10, 7, 4], [3, 2, 1]])\n\na\n\nwe.quantile(a, 0.5)\n\nwe.quantile(a, 0.5, axis=0)\n\nwe.quantile(a, 0.5, axis=1)\n\nwe.quantile(a, 0.5, axis=1, keepdims=True)\n\nm = we.quantile(a, 0.5, axis=0)\n\nout = we.zeros_like(m)\n\nwe.quantile(a, 0.5, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nwe.quantile(b, 0.5, axis=1, overwrite_input=True)\n\nassert not we.all(a == b)",
+    "code": "import flopscope as fnp\n\na = fnp.array([[10, 7, 4], [3, 2, 1]])\n\na\n\nfnp.quantile(a, 0.5)\n\nfnp.quantile(a, 0.5, axis=0)\n\nfnp.quantile(a, 0.5, axis=1)\n\nfnp.quantile(a, 0.5, axis=1, keepdims=True)\n\nm = fnp.quantile(a, 0.5, axis=0)\n\nout = fnp.zeros_like(m)\n\nfnp.quantile(a, 0.5, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nfnp.quantile(b, 0.5, axis=1, overwrite_input=True)\n\nassert not fnp.all(a == b)",
     "output": "array([[10,  7,  4],\n       [ 3,  2,  1]])\n\n3.5\n\narray([6.5, 4.5, 2.5])\n\narray([7.,  2.])\n\narray([[7.],\n       [2.]])\n\narray([6.5, 4.5, 2.5])\n\narray([6.5, 4.5, 2.5])\n\narray([7.,  2.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.quantile",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
   "href": "/docs/api/ops/quantile/",
   "module": "numpy",
   "name": "quantile",
   "next": {
     "href": "/docs/api/ops/radians/",
-    "label": "we.radians"
+    "label": "fnp.radians"
   },
   "notes": "q-th quantile of array elements.",
   "notes_sections": [
@@ -1872,20 +1843,11 @@
       ],
       "name": "weights",
       "type": "array_like, optional"
-    },
-    {
-      "body": [
-        "Deprecated name for the method keyword argument.",
-        "",
-        ".. deprecated:: 1.22.0"
-      ],
-      "name": "interpolation",
-      "type": "str, optional"
     }
   ],
   "previous": {
     "href": "/docs/api/ops/putmask/",
-    "label": "we.putmask"
+    "label": "fnp.putmask"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.quantile.html",
@@ -1911,7 +1873,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/mean",
-      "label": "we.mean",
+      "label": "fnp.mean",
       "original_target": "mean",
       "role": "",
       "target": "mean",
@@ -1927,7 +1889,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/percentile",
-      "label": "we.percentile",
+      "label": "fnp.percentile",
       "original_target": "percentile",
       "role": "",
       "target": "percentile",
@@ -1947,7 +1909,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/median",
-      "label": "we.median",
+      "label": "fnp.median",
       "original_target": "median",
       "role": "",
       "target": "median",
@@ -1958,19 +1920,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanquantile",
-      "label": "we.nanquantile",
+      "label": "fnp.nanquantile",
       "original_target": "nanquantile",
       "role": "",
       "target": "nanquantile",
       "unresolved": false
     }
   ],
-  "signature": "we.quantile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
+  "signature": "fnp.quantile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None)",
   "slug": "quantile",
   "summary": "Compute the q-th quantile of the data along the specified axis.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L4283",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.quantile",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L4255",
+  "weight": 1.0
 }

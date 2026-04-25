@@ -177,7 +177,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/triu_indices",
-              "label": "we.triu_indices",
+              "label": "fnp.triu_indices",
               "original_target": "triu_indices",
               "role": "",
               "target": "triu_indices",
@@ -188,7 +188,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/triu",
-              "label": "we.triu",
+              "label": "fnp.triu",
               "original_target": "triu",
               "role": "",
               "target": "triu",
@@ -199,7 +199,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/tril_indices_from",
-              "label": "we.tril_indices_from",
+              "label": "fnp.tril_indices_from",
               "original_target": "tril_indices_from",
               "role": "",
               "target": "tril_indices_from",
@@ -218,7 +218,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -237,7 +237,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(16).reshape(4, 4)"
+              "text": "a = fnp.arange(16).reshape(4, 4)"
             },
             {
               "kind": "input",
@@ -277,7 +277,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "triui = we.triu_indices_from(a)"
+              "text": "triui = fnp.triu_indices_from(a)"
             },
             {
               "kind": "input",
@@ -319,7 +319,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.triu_indices(a.shape[0])"
+              "text": "fnp.triu_indices(a.shape[0])"
             },
             {
               "kind": "output",
@@ -350,7 +350,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "triuim1 = we.triu_indices_from(a, k=1)"
+              "text": "triuim1 = fnp.triu_indices_from(a, k=1)"
             },
             {
               "kind": "input",
@@ -379,16 +379,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.arange(16).reshape(4, 4)\n\na\n\ntriui = we.triu_indices_from(a)\n\ntriui\n\na[triui]\n\nwe.triu_indices(a.shape[0])\n\ntriuim1 = we.triu_indices_from(a, k=1)\n\na[triuim1]",
+    "code": "import flopscope as fnp\n\na = fnp.arange(16).reshape(4, 4)\n\na\n\ntriui = fnp.triu_indices_from(a)\n\ntriui\n\na[triui]\n\nfnp.triu_indices(a.shape[0])\n\ntriuim1 = fnp.triu_indices_from(a, k=1)\n\na[triuim1]",
     "output": "array([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])\n\n(array([0, 0, 0, 0, 1, 1, 1, 2, 2, 3]), array([0, 1, 2, 3, 1, 2, 3, 2, 3, 3]))\n\narray([ 0,  1,  2,  3,  5,  6,  7, 10, 11, 15])\n\n(array([0, 0, 0, 0, 1, 1, 1, 2, 2, 3]), array([0, 1, 2, 3, 1, 2, 3, 2, 3, 3]))\n\narray([ 1,  2,  3,  6,  7, 11])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.triu_indices_from",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1481",
   "href": "/docs/api/ops/triu_indices_from/",
   "module": "numpy",
   "name": "triu_indices_from",
   "next": {
     "href": "/docs/api/ops/true_divide/",
-    "label": "we.true_divide"
+    "label": "fnp.true_divide"
   },
   "notes": "Return upper-triangle indices for given array.",
   "notes_sections": [],
@@ -411,7 +414,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/triu_indices/",
-    "label": "we.triu_indices"
+    "label": "fnp.triu_indices"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.triu_indices_from.html",
@@ -430,7 +433,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/triu_indices",
-      "label": "we.triu_indices",
+      "label": "fnp.triu_indices",
       "original_target": "triu_indices",
       "role": "",
       "target": "triu_indices",
@@ -441,7 +444,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/triu",
-      "label": "we.triu",
+      "label": "fnp.triu",
       "original_target": "triu",
       "role": "",
       "target": "triu",
@@ -452,19 +455,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/tril_indices_from",
-      "label": "we.tril_indices_from",
+      "label": "fnp.tril_indices_from",
       "original_target": "tril_indices_from",
       "role": "",
       "target": "tril_indices_from",
       "unresolved": false
     }
   ],
-  "signature": "we.triu_indices_from(arr, k=0)",
+  "signature": "fnp.triu_indices_from(arr, k=0)",
   "slug": "triu_indices_from",
   "summary": "Return the indices for the upper-triangle of arr.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L1128",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.triu_indices_from",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1481"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L1141",
+  "weight": 0.0
 }

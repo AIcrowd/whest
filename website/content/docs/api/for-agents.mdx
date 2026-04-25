@@ -2,24 +2,24 @@
 title: "For AI Agents"
 ---
 
-*Use this page if you are an AI coding assistant (or building one) that needs to generate whest code correctly.*
+*Use this page if you are an AI coding assistant (or building one) that needs to generate flopscope code correctly.*
 
 **You will learn:**
 - How to orient yourself with llms.txt, ops.json, per-op JSON, and the cheat sheet
-- The five rules for generating correct whest code
-- How to avoid common mistakes AI agents make with whest
+- The five rules for generating correct flopscope code
+- How to avoid common mistakes AI agents make with flopscope
 
 This page is for AI coding assistants (Claude, Cursor, Copilot, etc.) helping
-users write whest code. It explains what resources are available, how to
+users write flopscope code. It explains what resources are available, how to
 access them, and the key things you must know before generating code.
 
 ---
 
 ## Quick orientation
 
-**whest is NOT NumPy.** It wraps a subset of NumPy with analytical FLOP
+**flopscope is NOT NumPy.** It wraps a subset of NumPy with analytical FLOP
 counting. Every arithmetic operation is charged against a budget. Code that
-works with NumPy may fail or behave differently with whest:
+works with NumPy may fail or behave differently with flopscope:
 
 - All counted operations require an active `BudgetContext`
 - 35 operations are blocked entirely (I/O, config, state)
@@ -38,7 +38,7 @@ works with NumPy may fail or behave differently with whest:
 
 ### How to use llms.txt
 
-If you're an agent encountering whest for the first time:
+If you're an agent encountering flopscope for the first time:
 
 1. Fetch `llms.txt` — this gives you the doc map in ~300 words
 2. Identify which page answers your question from the section descriptions
@@ -70,7 +70,7 @@ payload for one operation:
   "detail_href": "/docs/api/ops/einsum/",
   "detail_json_href": "/api-data/ops/einsum.json",
   "module": "numpy",
-  "whest_ref": "we.einsum",
+  "flopscope_ref": "we.einsum",
   "numpy_ref": "np.einsum",
   "category": "counted_custom",
   "cost_formula": "product of all index dims (FMA=1)",
@@ -88,7 +88,7 @@ Use this to:
 - Check if an operation is supported: filter by `"blocked": false`
 - Get the cost formula for a specific operation: look up by `name`
 - List all free operations: filter by `"free": true`
-- Map between NumPy and whest calls: use `numpy_ref` and `whest_ref`
+- Map between NumPy and flopscope calls: use `numpy_ref` and `flopscope_ref`
 - Jump to the standalone page or full payload: use `detail_href` and `detail_json_href`
 
 ### How to use per-op JSON
@@ -108,7 +108,7 @@ For example:
 These payloads include:
 
 - top-level metadata (`slug`, `detail_href`, `detail_json_href`)
-- source links (`source.whest`, `source.numpy`)
+- source links (`source.flopscope`, `source.numpy`)
 - operation metadata (`op.*`)
 - normalized doc sections under `docs.sections[]`
 
@@ -116,11 +116,11 @@ Fetch the per-op JSON when you need the full signature, summary, notes,
 parameter list, returns, or examples for a single function without loading the
 entire reference surface.
 
-## Five rules for generating whest code
+## Five rules for generating flopscope code
 
 **1. A global default budget is active automatically — use `BudgetContext` for control.**
 
-A global default budget auto-activates when whest is imported, so quick
+A global default budget auto-activates when flopscope is imported, so quick
 scripts work without any setup. For precise budget control and namespacing,
 use an explicit `BudgetContext`. Both forms are valid:
 
@@ -155,11 +155,11 @@ Blocked: `save`, `load`, `geterr`, `seterr`, and 28 others. These raise
 
 When in doubt, check `ops.json`, the relevant `/api-data/ops/<slug>.json`, or the [API Reference](/docs/api/).
 
-**3. Use `we.flops.*` to estimate costs before running.**
+**3. Use `we.accounting.*` to estimate costs before running.**
 
 ```python
-cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
-cost = we.flops.svd_cost(m=256, n=256, k=10)
+cost = we.accounting.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+cost = we.accounting.svd_cost(m=256, n=256, k=10)
 ```
 
 These are pure functions — no `BudgetContext` needed.

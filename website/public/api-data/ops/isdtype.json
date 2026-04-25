@@ -233,7 +233,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/issubdtype",
-                "label": "we.issubdtype",
+                "label": "fnp.issubdtype",
                 "original_target": "issubdtype",
                 "role": "",
                 "target": "issubdtype",
@@ -252,12 +252,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isdtype(we.float32, we.float64)"
+                "text": "fnp.isdtype(fnp.float32, fnp.float64)"
               },
               {
                 "kind": "output",
@@ -266,7 +266,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isdtype(we.float32, \"real floating\")"
+                "text": "fnp.isdtype(fnp.float32, \"real floating\")"
               },
               {
                 "kind": "output",
@@ -275,7 +275,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isdtype(we.complex128, (\"real floating\", \"complex floating\"))"
+                "text": "fnp.isdtype(fnp.complex128, (\"real floating\", \"complex floating\"))"
               },
               {
                 "kind": "output",
@@ -293,20 +293,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.isdtype",
     "module": "numpy",
     "name": "isdtype",
     "notes": "Return True if array or dtype is of specified kind (NumPy 2.x).",
     "numpy_ref": "np.isdtype",
-    "signature": "we.isdtype(dtype, kind)",
+    "signature": "fnp.isdtype(dtype, kind)",
     "status": "supported",
     "summary": "Determine if a provided dtype is of a specified data type ``kind``.",
-    "weight": 0.0,
-    "whest_ref": "we.isdtype"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "isdtype",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numerictypes.py#L381",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1081"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1081",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numerictypes.py#L385"
   }
 }

@@ -233,7 +233,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "linalg",
-                "text": "we.linalg"
+                "text": "fnp.linalg"
               },
               {
                 "kind": "text",
@@ -326,7 +326,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -336,17 +336,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.random.random()"
+                "text": "x = fnp.random.random()"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "Q = we.array([[we.cos(x), -we.sin(x)], [we.sin(x), we.cos(x)]])"
+                "text": "Q = fnp.array([[fnp.cos(x), -fnp.sin(x)], [fnp.sin(x), fnp.cos(x)]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.norm(Q[0, :]), LA.norm(Q[1, :]), we.dot(Q[0, :],Q[1, :])"
+                "text": "LA.norm(Q[0, :]), LA.norm(Q[1, :]), fnp.dot(Q[0, :],Q[1, :])"
               },
               {
                 "kind": "output",
@@ -385,7 +385,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "D = we.diag((-1,1))"
+                "text": "D = fnp.diag((-1,1))"
               },
               {
                 "kind": "input",
@@ -399,12 +399,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = we.dot(Q, D)"
+                "text": "A = fnp.dot(Q, D)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = we.dot(A, Q.T)"
+                "text": "A = fnp.dot(A, Q.T)"
               },
               {
                 "kind": "input",
@@ -427,20 +427,20 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
+    "flopscope_ref": "fnp.linalg.eigvals",
     "module": "numpy.linalg",
     "name": "linalg.eigvals",
     "notes": "Eigenvalues only. Cost: $n^3$.",
     "numpy_ref": "np.linalg.eigvals",
-    "signature": "we.linalg.eigvals(a)",
+    "signature": "fnp.linalg.eigvals(a)",
     "status": "supported",
     "summary": "Compute the eigenvalues of a general matrix.",
-    "weight": 4.0,
-    "whest_ref": "we.linalg.eigvals"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "linalg-eigvals",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1133",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L192"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L192",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L1170"
   }
 }

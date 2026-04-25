@@ -30,7 +30,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "take(arr, indices, axis=3)",
-                "text": "we.take(arr, indices, axis=3)"
+                "text": "fnp.take(arr, indices, axis=3)"
               },
               {
                 "kind": "text",
@@ -366,7 +366,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/compress",
-                "label": "we.compress",
+                "label": "fnp.compress",
                 "original_target": "compress",
                 "role": "",
                 "target": "compress",
@@ -398,7 +398,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/take_along_axis",
-                "label": "we.take_along_axis",
+                "label": "fnp.take_along_axis",
                 "original_target": "take_along_axis",
                 "role": "",
                 "target": "take_along_axis",
@@ -442,7 +442,7 @@
           },
           {
             "language": null,
-            "text": "Ni, Nk = a.shape[:axis], a.shape[axis+1:]\nfor ii in ndindex(Ni):\n    for kk in ndindex(Nj):\n        out[ii + s_[...,] + kk] = a[ii + s_[:,] + kk][indices]",
+            "text": "Ni, Nk = a.shape[:axis], a.shape[axis+1:]\nfor ii in ndindex(Ni):\n    for kk in ndindex(Nk):\n        out[ii + s_[...,] + kk] = a[ii + s_[:,] + kk][indices]",
             "type": "literal_block"
           },
           {
@@ -467,7 +467,7 @@
           },
           {
             "language": null,
-            "text": "out = we.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)",
+            "text": "out = fnp.apply_along_axis(lambda a_1d: a_1d[indices], axis, a)",
             "type": "literal_block"
           }
         ],
@@ -480,7 +480,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
@@ -495,7 +495,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.take(a, indices)"
+                "text": "fnp.take(a, indices)"
               },
               {
                 "kind": "output",
@@ -526,7 +526,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array(a)"
+                "text": "a = fnp.array(a)"
               },
               {
                 "kind": "input",
@@ -565,7 +565,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.take(a, [[0, 1], [2, 3]])"
+                "text": "fnp.take(a, [[0, 1], [2, 3]])"
               },
               {
                 "kind": "output",
@@ -587,20 +587,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.take",
     "module": "numpy",
     "name": "take",
     "notes": "Take elements from array along axis. Cost: numel(output).",
     "numpy_ref": "np.take",
-    "signature": "we.take(a, indices, axis=None, out=None, mode='raise')",
+    "signature": "fnp.take(a, indices, axis=None, out=None, mode='raise')",
     "status": "supported",
     "summary": "Take elements from an array along an axis.",
-    "weight": 4.0,
-    "whest_ref": "we.take"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "take",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L109",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1408"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1408",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L106"
   }
 }

@@ -221,7 +221,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "amax(x)+1",
-                      "text": "we.amax(x)+1"
+                      "text": "fnp.amax(x)+1"
                     },
                     {
                       "kind": "text",
@@ -250,7 +250,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "amax(x)+1",
-                  "text": "we.amax(x)+1"
+                  "text": "fnp.amax(x)+1"
                 },
                 {
                   "kind": "text",
@@ -347,7 +347,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/histogram",
-              "label": "we.histogram",
+              "label": "fnp.histogram",
               "original_target": "histogram",
               "role": "",
               "target": "histogram",
@@ -358,7 +358,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/digitize",
-              "label": "we.digitize",
+              "label": "fnp.digitize",
               "original_target": "digitize",
               "role": "",
               "target": "digitize",
@@ -369,7 +369,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/unique",
-              "label": "we.unique",
+              "label": "fnp.unique",
               "original_target": "unique",
               "role": "",
               "target": "unique",
@@ -388,12 +388,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bincount(we.arange(5))"
+              "text": "fnp.bincount(fnp.arange(5))"
             },
             {
               "kind": "output",
@@ -402,7 +402,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bincount(we.array([0, 1, 1, 3, 2, 1, 7]))"
+              "text": "fnp.bincount(fnp.array([0, 1, 1, 3, 2, 1, 7]))"
             },
             {
               "kind": "output",
@@ -416,12 +416,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([0, 1, 1, 3, 2, 1, 7, 23])"
+              "text": "x = fnp.array([0, 1, 1, 3, 2, 1, 7, 23])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bincount(x).size == we.amax(x)+1"
+              "text": "fnp.bincount(x).size == fnp.amax(x)+1"
             },
             {
               "kind": "output",
@@ -444,7 +444,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bincount(we.arange(5, dtype=float))"
+              "text": "fnp.bincount(fnp.arange(5, dtype=float))"
             },
             {
               "kind": "output",
@@ -499,17 +499,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "w = we.array([0.3, 0.5, 0.2, 0.7, 1., -0.6]) # weights"
+              "text": "w = fnp.array([0.3, 0.5, 0.2, 0.7, 1., -0.6]) # weights"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([0, 1, 1, 2, 2, 2])"
+              "text": "x = fnp.array([0, 1, 1, 2, 2, 2])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bincount(x,  weights=w)"
+              "text": "fnp.bincount(x,  weights=w)"
             },
             {
               "kind": "output",
@@ -533,16 +533,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.bincount(we.arange(5))\n\nwe.bincount(we.array([0, 1, 1, 3, 2, 1, 7]))\n\nx = we.array([0, 1, 1, 3, 2, 1, 7, 23])\n\nwe.bincount(x).size == we.amax(x)+1\n\nwe.bincount(we.arange(5, dtype=float))\n\nw = we.array([0.3, 0.5, 0.2, 0.7, 1., -0.6]) # weights\n\nx = we.array([0, 1, 1, 2, 2, 2])\n\nwe.bincount(x,  weights=w)",
+    "code": "import flopscope as fnp\n\nfnp.bincount(fnp.arange(5))\n\nfnp.bincount(fnp.array([0, 1, 1, 3, 2, 1, 7]))\n\nx = fnp.array([0, 1, 1, 3, 2, 1, 7, 23])\n\nfnp.bincount(x).size == fnp.amax(x)+1\n\nfnp.bincount(fnp.arange(5, dtype=float))\n\nw = fnp.array([0.3, 0.5, 0.2, 0.7, 1., -0.6]) # weights\n\nx = fnp.array([0, 1, 1, 2, 2, 2])\n\nfnp.bincount(x,  weights=w)",
     "output": "array([1, 1, 1, 1, 1])\n\narray([1, 3, 1, 1, 0, 0, 0, 1])\n\nTrue\n\nTraceback (most recent call last):\n  ...\nTypeError: Cannot cast array data from dtype('float64') to dtype('int64')\naccording to the rule 'safe'\n\narray([ 0.3,  0.7,  1.1])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.bincount",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L235",
   "href": "/docs/api/ops/bincount/",
   "module": "numpy",
   "name": "bincount",
   "next": {
     "href": "/docs/api/ops/bitwise_and/",
-    "label": "we.bitwise_and"
+    "label": "fnp.bitwise_and"
   },
   "notes": "Integer counting; cost = numel(x).",
   "notes_sections": [],
@@ -572,7 +575,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/bartlett/",
-    "label": "we.bartlett"
+    "label": "fnp.bartlett"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.bincount.html",
@@ -580,7 +583,7 @@
     {
       "body": [
         "The result of binning the input array.",
-        "The length of `out` is equal to ``we.amax(x)+1``."
+        "The length of `out` is equal to ``fnp.amax(x)+1``."
       ],
       "name": "out",
       "type": "ndarray of ints"
@@ -592,7 +595,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/histogram",
-      "label": "we.histogram",
+      "label": "fnp.histogram",
       "original_target": "histogram",
       "role": "",
       "target": "histogram",
@@ -603,7 +606,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/digitize",
-      "label": "we.digitize",
+      "label": "fnp.digitize",
       "original_target": "digitize",
       "role": "",
       "target": "digitize",
@@ -614,19 +617,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/unique",
-      "label": "we.unique",
+      "label": "fnp.unique",
       "original_target": "unique",
       "role": "",
       "target": "unique",
       "unresolved": false
     }
   ],
-  "signature": "we.bincount(x, **kwargs)",
+  "signature": "fnp.bincount(x, /, weights=None, minlength=0)",
   "slug": "bincount",
   "summary": "Count number of occurrences of each value in array of non-negative ints.",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.bincount",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L235"
+  "weight": 1.0
 }

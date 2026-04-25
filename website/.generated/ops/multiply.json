@@ -362,12 +362,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.multiply(2.0, 4.0)"
+              "text": "fnp.multiply(2.0, 4.0)"
             },
             {
               "kind": "output",
@@ -381,17 +381,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.arange(9.0).reshape((3, 3))"
+              "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = we.arange(3.0)"
+              "text": "x2 = fnp.arange(3.0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.multiply(x1, x2)"
+              "text": "fnp.multiply(x1, x2)"
             },
             {
               "kind": "output",
@@ -427,7 +427,7 @@
               "href": "/docs/api/ops/multiply",
               "kind": "link",
               "target": "multiply",
-              "text": "we.multiply"
+              "text": "fnp.multiply"
             },
             {
               "kind": "text",
@@ -441,12 +441,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.arange(9.0).reshape((3, 3))"
+              "text": "x1 = fnp.arange(9.0).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = we.arange(3.0)"
+              "text": "x2 = fnp.arange(3.0)"
             },
             {
               "kind": "input",
@@ -490,16 +490,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.multiply(2.0, 4.0)\n\nx1 = we.arange(9.0).reshape((3, 3))\n\nx2 = we.arange(3.0)\n\nwe.multiply(x1, x2)\n\nx1 = we.arange(9.0).reshape((3, 3))\n\nx2 = we.arange(3.0)\n\nx1 * x2",
+    "code": "import flopscope as fnp\n\nfnp.multiply(2.0, 4.0)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = fnp.arange(3.0)\n\nfnp.multiply(x1, x2)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = fnp.arange(3.0)\n\nx1 * x2",
     "output": "8.0\n\narray([[  0.,   1.,   4.],\n       [  0.,   4.,  10.],\n       [  0.,   7.,  16.]])\n\narray([[  0.,   1.,   4.],\n       [  0.,   4.,  10.],\n       [  0.,   7.,  16.]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.multiply",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
   "href": "/docs/api/ops/multiply/",
   "module": "numpy",
   "name": "multiply",
   "next": {
     "href": "/docs/api/ops/nan_to_num/",
-    "label": "we.nan_to_num"
+    "label": "fnp.nan_to_num"
   },
   "notes": "Element-wise multiplication.",
   "notes_sections": [
@@ -549,7 +552,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/moveaxis/",
-    "label": "we.moveaxis"
+    "label": "fnp.moveaxis"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.multiply.html",
@@ -564,12 +567,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.multiply(x, y)",
+  "signature": "fnp.multiply(x, y)",
   "slug": "multiply",
   "summary": "Multiply arguments element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.multiply",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

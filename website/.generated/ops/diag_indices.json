@@ -143,7 +143,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/diag_indices_from",
-              "label": "we.diag_indices_from",
+              "label": "fnp.diag_indices_from",
               "original_target": "diag_indices_from",
               "role": "",
               "target": "diag_indices_from",
@@ -162,7 +162,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -181,7 +181,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "di = we.diag_indices(4)"
+              "text": "di = fnp.diag_indices(4)"
             },
             {
               "kind": "input",
@@ -195,7 +195,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(16).reshape(4, 4)"
+              "text": "a = fnp.arange(16).reshape(4, 4)"
             },
             {
               "kind": "input",
@@ -261,7 +261,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "d3 = we.diag_indices(2, 3)"
+              "text": "d3 = fnp.diag_indices(2, 3)"
             },
             {
               "kind": "input",
@@ -289,7 +289,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.zeros((2, 2, 2), dtype=int)"
+              "text": "a = fnp.zeros((2, 2, 2), dtype=int)"
             },
             {
               "kind": "input",
@@ -335,16 +335,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\ndi = we.diag_indices(4)\n\ndi\n\na = we.arange(16).reshape(4, 4)\n\na\n\na[di] = 100\n\na\n\nd3 = we.diag_indices(2, 3)\n\nd3\n\na = we.zeros((2, 2, 2), dtype=int)\n\na[d3] = 1\n\na",
+    "code": "import flopscope as fnp\n\ndi = fnp.diag_indices(4)\n\ndi\n\na = fnp.arange(16).reshape(4, 4)\n\na\n\na[di] = 100\n\na\n\nd3 = fnp.diag_indices(2, 3)\n\nd3\n\na = fnp.zeros((2, 2, 2), dtype=int)\n\na[d3] = 1\n\na",
     "output": "(array([0, 1, 2, 3]), array([0, 1, 2, 3]))\n\narray([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])\n\narray([[100,   1,   2,   3],\n       [  4, 100,   6,   7],\n       [  8,   9, 100,  11],\n       [ 12,  13,  14, 100]])\n\n(array([0, 1]), array([0, 1]), array([0, 1]))\n\narray([[[1, 0],\n        [0, 0]],\n       [[0, 0],\n        [0, 1]]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.diag_indices",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L841",
   "href": "/docs/api/ops/diag_indices/",
   "module": "numpy",
   "name": "diag_indices",
   "next": {
     "href": "/docs/api/ops/diag_indices_from/",
-    "label": "we.diag_indices_from"
+    "label": "fnp.diag_indices_from"
   },
   "notes": "Return indices to access main diagonal of n-D array.",
   "notes_sections": [],
@@ -368,7 +371,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/diag/",
-    "label": "we.diag"
+    "label": "fnp.diag"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.diag_indices.html",
@@ -379,19 +382,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/diag_indices_from",
-      "label": "we.diag_indices_from",
+      "label": "fnp.diag_indices_from",
       "original_target": "diag_indices_from",
       "role": "",
       "target": "diag_indices_from",
       "unresolved": false
     }
   ],
-  "signature": "we.diag_indices(n, ndim=2)",
+  "signature": "fnp.diag_indices(n, ndim=2)",
   "slug": "diag_indices",
   "summary": "Return the indices to access the main diagonal of an array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_index_tricks_impl.py#L947",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.diag_indices",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L841"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_index_tricks_impl.py#L926",
+  "weight": 0.0
 }

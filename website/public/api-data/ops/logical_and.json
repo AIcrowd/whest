@@ -334,7 +334,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_or",
-                "label": "we.logical_or",
+                "label": "fnp.logical_or",
                 "original_target": "logical_or",
                 "role": "",
                 "target": "logical_or",
@@ -345,7 +345,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_not",
-                "label": "we.logical_not",
+                "label": "fnp.logical_not",
                 "original_target": "logical_not",
                 "role": "",
                 "target": "logical_not",
@@ -356,7 +356,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_xor",
-                "label": "we.logical_xor",
+                "label": "fnp.logical_xor",
                 "original_target": "logical_xor",
                 "role": "",
                 "target": "logical_xor",
@@ -367,7 +367,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bitwise_and",
-                "label": "we.bitwise_and",
+                "label": "fnp.bitwise_and",
                 "original_target": "bitwise_and",
                 "role": "",
                 "target": "bitwise_and",
@@ -386,12 +386,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_and(True, False)"
+                "text": "fnp.logical_and(True, False)"
               },
               {
                 "kind": "output",
@@ -400,7 +400,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_and([True, False], [False, False])"
+                "text": "fnp.logical_and([True, False], [False, False])"
               },
               {
                 "kind": "output",
@@ -414,12 +414,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(5)"
+                "text": "x = fnp.arange(5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_and(x>1, x<4)"
+                "text": "fnp.logical_and(x>1, x<4)"
               },
               {
                 "kind": "output",
@@ -447,7 +447,7 @@
                 "href": "/docs/api/ops/logical_and",
                 "kind": "link",
                 "target": "logical_and",
-                "text": "we.logical_and"
+                "text": "fnp.logical_and"
               },
               {
                 "kind": "text",
@@ -461,12 +461,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([True, False])"
+                "text": "a = fnp.array([True, False])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([False, False])"
+                "text": "b = fnp.array([False, False])"
               },
               {
                 "kind": "input",
@@ -489,20 +489,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.logical_and",
     "module": "numpy",
     "name": "logical_and",
     "notes": "Element-wise logical AND.",
     "numpy_ref": "np.logical_and",
-    "signature": "we.logical_and(x, y)",
+    "signature": "fnp.logical_and(x, y)",
     "status": "supported",
     "summary": "Compute the truth value of x1 AND x2 element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.logical_and"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "logical_and",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

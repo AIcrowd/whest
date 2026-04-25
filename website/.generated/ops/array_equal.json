@@ -135,7 +135,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/allclose",
-              "label": "we.allclose",
+              "label": "fnp.allclose",
               "original_target": "allclose",
               "role": "",
               "target": "allclose",
@@ -151,7 +151,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/array_equiv",
-              "label": "we.array_equiv",
+              "label": "fnp.array_equiv",
               "original_target": "array_equiv",
               "role": "",
               "target": "array_equiv",
@@ -170,7 +170,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -180,7 +180,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equal([1, 2], [1, 2])"
+              "text": "fnp.array_equal([1, 2], [1, 2])"
             },
             {
               "kind": "output",
@@ -194,7 +194,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equal(we.array([1, 2]), we.array([1, 2]))"
+              "text": "fnp.array_equal(fnp.array([1, 2]), fnp.array([1, 2]))"
             },
             {
               "kind": "output",
@@ -208,7 +208,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equal([1, 2], [1, 2, 3])"
+              "text": "fnp.array_equal([1, 2], [1, 2, 3])"
             },
             {
               "kind": "output",
@@ -222,7 +222,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equal([1, 2], [1, 4])"
+              "text": "fnp.array_equal([1, 2], [1, 4])"
             },
             {
               "kind": "output",
@@ -236,12 +236,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([1, we.nan])"
+              "text": "a = fnp.array([1, fnp.nan])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equal(a, a)"
+              "text": "fnp.array_equal(a, a)"
             },
             {
               "kind": "output",
@@ -255,7 +255,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equal(a, a, equal_nan=True)"
+              "text": "fnp.array_equal(a, a, equal_nan=True)"
             },
             {
               "kind": "output",
@@ -294,7 +294,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([1 + 1j])"
+              "text": "a = fnp.array([1 + 1j])"
             },
             {
               "kind": "input",
@@ -304,17 +304,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a.real = we.nan"
+              "text": "a.real = fnp.nan"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b.imag = we.nan"
+              "text": "b.imag = fnp.nan"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array_equal(a, b, equal_nan=True)"
+              "text": "fnp.array_equal(a, b, equal_nan=True)"
             },
             {
               "kind": "output",
@@ -338,16 +338,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.array_equal([1, 2], [1, 2])\n\nwe.array_equal(we.array([1, 2]), we.array([1, 2]))\n\nwe.array_equal([1, 2], [1, 2, 3])\n\nwe.array_equal([1, 2], [1, 4])\n\na = we.array([1, we.nan])\n\nwe.array_equal(a, a)\n\nwe.array_equal(a, a, equal_nan=True)\n\na = we.array([1 + 1j])\n\nb = a.copy()\n\na.real = we.nan\n\nb.imag = we.nan\n\nwe.array_equal(a, b, equal_nan=True)",
+    "code": "import flopscope as fnp\n\nfnp.array_equal([1, 2], [1, 2])\n\nfnp.array_equal(fnp.array([1, 2]), fnp.array([1, 2]))\n\nfnp.array_equal([1, 2], [1, 2, 3])\n\nfnp.array_equal([1, 2], [1, 4])\n\na = fnp.array([1, fnp.nan])\n\nfnp.array_equal(a, a)\n\nfnp.array_equal(a, a, equal_nan=True)\n\na = fnp.array([1 + 1j])\n\nb = a.copy()\n\na.real = fnp.nan\n\nb.imag = fnp.nan\n\nfnp.array_equal(a, b, equal_nan=True)",
     "output": "True\n\nTrue\n\nFalse\n\nFalse\n\nFalse\n\nTrue\n\nTrue",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.array_equal",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L59",
   "href": "/docs/api/ops/array_equal/",
   "module": "numpy",
   "name": "array_equal",
   "next": {
     "href": "/docs/api/ops/array_equiv/",
-    "label": "we.array_equiv"
+    "label": "fnp.array_equiv"
   },
   "notes": "Element-wise equality; cost = numel(a).",
   "notes_sections": [],
@@ -372,7 +375,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/array/",
-    "label": "we.array"
+    "label": "fnp.array"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.array_equal.html",
@@ -396,7 +399,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/allclose",
-      "label": "we.allclose",
+      "label": "fnp.allclose",
       "original_target": "allclose",
       "role": "",
       "target": "allclose",
@@ -412,19 +415,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/array_equiv",
-      "label": "we.array_equiv",
+      "label": "fnp.array_equiv",
       "original_target": "array_equiv",
       "role": "",
       "target": "array_equiv",
       "unresolved": false
     }
   ],
-  "signature": "we.array_equal(a1, a2, equal_nan=False)",
+  "signature": "fnp.array_equal(a1, a2, equal_nan=False)",
   "slug": "array_equal",
   "summary": "True if two arrays have the same shape and elements, False otherwise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2475",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.array_equal",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L59"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L2535",
+  "weight": 1.0
 }

@@ -2,8 +2,8 @@
 
 import numpy
 
-from whest import _free_ops as ops
-from whest._budget import BudgetContext
+from flopscope import _free_ops as ops
+from flopscope._budget import BudgetContext
 
 
 def test_zeros():

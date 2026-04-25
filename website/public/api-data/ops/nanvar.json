@@ -500,7 +500,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/std",
-                "label": "we.std",
+                "label": "fnp.std",
                 "original_target": "std",
                 "role": "",
                 "target": "std",
@@ -516,7 +516,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/mean",
-                "label": "we.mean",
+                "label": "fnp.mean",
                 "original_target": "mean",
                 "role": "",
                 "target": "mean",
@@ -532,7 +532,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/var",
-                "label": "we.var",
+                "label": "fnp.var",
                 "original_target": "var",
                 "role": "",
                 "target": "var",
@@ -543,7 +543,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanstd",
-                "label": "we.nanstd",
+                "label": "fnp.nanstd",
                 "original_target": "nanstd",
                 "role": "",
                 "target": "nanstd",
@@ -554,7 +554,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/nanmean",
-                "label": "we.nanmean",
+                "label": "fnp.nanmean",
                 "original_target": "nanmean",
                 "role": "",
                 "target": "nanmean",
@@ -721,17 +721,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, we.nan], [3, 4]])"
+                "text": "a = fnp.array([[1, fnp.nan], [3, 4]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanvar(a)"
+                "text": "fnp.nanvar(a)"
               },
               {
                 "kind": "output",
@@ -740,7 +740,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanvar(a, axis=0)"
+                "text": "fnp.nanvar(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -749,7 +749,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanvar(a, axis=1)"
+                "text": "fnp.nanvar(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -767,20 +767,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.nanvar",
     "module": "numpy",
     "name": "nanvar",
     "notes": "Variance ignoring NaNs.",
     "numpy_ref": "np.nanvar",
-    "signature": "we.nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
+    "signature": "fnp.nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
     "status": "supported",
     "summary": "Compute the variance along the specified axis, while ignoring NaNs.",
-    "weight": 2.0,
-    "whest_ref": "we.nanvar"
+    "weight": 2.0
   },
   "schema_version": 1,
   "slug": "nanvar",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L1715",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_nanfunctions_impl.py#L1693"
   }
 }

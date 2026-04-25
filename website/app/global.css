@@ -21,7 +21,7 @@ html > body[data-scroll-locked] {
 }
 
 @theme inline {
-  /* Four type registers — Whest Design System */
+  /* Four type registers — Flopscope Design System */
   --font-heading: var(--font-display-serif), 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --font-serif: var(--font-paper-serif), 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -76,7 +76,7 @@ html > body[data-scroll-locked] {
 
 
 .dark {
-  /* whestbench palette — dark mode */
+  /* flopscopebench palette — dark mode */
   --background: oklch(0.205 0.005 220);              /* dark bg */
   --foreground: oklch(0.963 0.004 248.2);            /* gray-100 as text */
   --card: oklch(0.250 0.005 220);
@@ -129,7 +129,7 @@ html > body[data-scroll-locked] {
 /* Code block styling is handled by Shiki themes in source.config.ts */
 
 /* =========================================================================
-   Docs prose — Paper register (Whest Design System)
+   Docs prose — Paper register (Flopscope Design System)
    Body: Source Serif 4   Headings: Newsreader   Code: JetBrains Mono
    Distill.pub-adjacent long-form rhythm on pure white.
    Scope: ONLY the DocsBody ('article > div.prose'). The fumadocs TOC also
@@ -247,8 +247,9 @@ aside#nd-sidebar a[data-active='true'] {
   color: var(--gray-400);
 }
 
-/* Coral-dot wordmark — persistent glyph for `Whest.` */
-.whest-wordmark {
+/* Coral wordmark — persistent glyph for `flopscope.` (lowercase, with
+   `flop` highlighted in coral and the trailing period as the brand dot). */
+.flopscope-wordmark {
   font-family: var(--font-display-serif), 'Source Serif 4', Georgia, serif;
   font-weight: 700;
   font-variation-settings: 'opsz' 32;
@@ -258,22 +259,25 @@ aside#nd-sidebar a[data-active='true'] {
   align-items: baseline;
   gap: 0;
 }
-.dark .whest-wordmark {
+.dark .flopscope-wordmark {
   color: #E8EAEB;
 }
-.whest-wordmark__dot {
+.flopscope-wordmark__flop {
+  color: var(--coral);
+}
+.flopscope-wordmark__dot {
   color: var(--coral);
   display: inline-block;
   /* Period already carries the weight of the font; nudge down-baseline for
      optical balance against the tall x-height of Newsreader */
   transform: translateY(0);
 }
-.whest-wordmark__sub {
+.flopscope-wordmark__sub {
   font-style: italic;
   font-weight: 400;
   color: var(--gray-600);
   margin-left: 1px;
 }
-.dark .whest-wordmark__sub {
+.dark .flopscope-wordmark__sub {
   color: var(--gray-400);
 }

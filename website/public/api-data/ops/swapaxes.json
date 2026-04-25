@@ -182,17 +182,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[1,2,3]])"
+                "text": "x = fnp.array([[1,2,3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.swapaxes(x,0,1)"
+                "text": "fnp.swapaxes(x,0,1)"
               },
               {
                 "kind": "output",
@@ -214,7 +214,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[[0,1],[2,3]],[[4,5],[6,7]]])"
+                "text": "x = fnp.array([[[0,1],[2,3]],[[4,5],[6,7]]])"
               },
               {
                 "kind": "input",
@@ -245,7 +245,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.swapaxes(x,0,2)"
+                "text": "fnp.swapaxes(x,0,2)"
               },
               {
                 "kind": "output",
@@ -275,20 +275,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.swapaxes",
     "module": "numpy",
     "name": "swapaxes",
     "notes": "Interchange two axes of an array.",
     "numpy_ref": "np.swapaxes",
-    "signature": "we.swapaxes(a, axis1, axis2)",
+    "signature": "fnp.swapaxes(a, axis1, axis2)",
     "status": "supported",
     "summary": "Interchange two axes of an array.",
-    "weight": 0.0,
-    "whest_ref": "we.swapaxes"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "swapaxes",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L578",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L222"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L222",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L552"
   }
 }

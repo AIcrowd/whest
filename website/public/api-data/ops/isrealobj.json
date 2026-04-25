@@ -133,7 +133,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/iscomplexobj",
-                "label": "we.iscomplexobj",
+                "label": "fnp.iscomplexobj",
                 "original_target": "iscomplexobj",
                 "role": "",
                 "target": "iscomplexobj",
@@ -144,7 +144,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/isreal",
-                "label": "we.isreal",
+                "label": "fnp.isreal",
                 "original_target": "isreal",
                 "role": "",
                 "target": "isreal",
@@ -172,7 +172,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isrealobj('A string')"
+                "text": "fnp.isrealobj('A string')"
               },
               {
                 "kind": "output",
@@ -181,7 +181,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isrealobj(False)"
+                "text": "fnp.isrealobj(False)"
               },
               {
                 "kind": "output",
@@ -190,7 +190,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isrealobj(None)"
+                "text": "fnp.isrealobj(None)"
               },
               {
                 "kind": "output",
@@ -209,12 +209,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isrealobj(1)"
+                "text": "fnp.isrealobj(1)"
               },
               {
                 "kind": "output",
@@ -223,7 +223,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isrealobj(1+0j)"
+                "text": "fnp.isrealobj(1+0j)"
               },
               {
                 "kind": "output",
@@ -232,7 +232,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isrealobj([3, 1+0j, True])"
+                "text": "fnp.isrealobj([3, 1+0j, True])"
               },
               {
                 "kind": "output",
@@ -250,20 +250,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.isrealobj",
     "module": "numpy",
     "name": "isrealobj",
     "notes": "Return True if x is a not complex type or array.",
     "numpy_ref": "np.isrealobj",
-    "signature": "we.isrealobj(x)",
+    "signature": "fnp.isrealobj(x)",
     "status": "supported",
     "summary": "Return True if x is a not complex type or an array of complex numbers.",
-    "weight": 1.0,
-    "whest_ref": "we.isrealobj"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "isrealobj",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L312",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_type_check_impl.py#L312"
   }
 }

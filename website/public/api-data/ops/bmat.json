@@ -189,7 +189,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/block",
-                "label": "we.block",
+                "label": "fnp.block",
                 "original_target": "block",
                 "role": "",
                 "target": "block",
@@ -208,27 +208,27 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = we.asmatrix('1 1; 1 1')"
+                "text": "A = fnp.asmatrix('1 1; 1 1')"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "B = we.asmatrix('2 2; 2 2')"
+                "text": "B = fnp.asmatrix('2 2; 2 2')"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "C = we.asmatrix('3 4; 5 6')"
+                "text": "C = fnp.asmatrix('3 4; 5 6')"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "D = we.asmatrix('7 8; 9 0')"
+                "text": "D = fnp.asmatrix('7 8; 9 0')"
               }
             ],
             "type": "doctest_block"
@@ -247,7 +247,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bmat([[A, B], [C, D]])"
+                "text": "fnp.bmat([[A, B], [C, D]])"
               },
               {
                 "kind": "output",
@@ -268,7 +268,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bmat(we.r_[we.c_[A, B], we.c_[C, D]])"
+                "text": "fnp.bmat(fnp.r_[fnp.c_[A, B], fnp.c_[C, D]])"
               },
               {
                 "kind": "output",
@@ -289,7 +289,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.bmat('A,B; C,D')"
+                "text": "fnp.bmat('A,B; C,D')"
               },
               {
                 "kind": "output",
@@ -319,20 +319,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.bmat",
     "module": "numpy",
     "name": "bmat",
     "notes": "Build matrix from nested list of matrices. Cost: numel(output).",
     "numpy_ref": "np.bmat",
-    "signature": "we.bmat(obj, ldict=None, gdict=None)",
+    "signature": "fnp.bmat(obj, ldict=None, gdict=None)",
     "status": "supported",
     "summary": "Build a matrix object from a string, nested sequence, or array.",
-    "weight": 4.0,
-    "whest_ref": "we.bmat"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "bmat",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/matrixlib/defmatrix.py#L1041",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L705"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L705",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/matrixlib/defmatrix.py#L1042"
   }
 }

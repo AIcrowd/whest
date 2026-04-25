@@ -405,7 +405,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/any",
-                "label": "we.any",
+                "label": "fnp.any",
                 "original_target": "any",
                 "role": "",
                 "target": "any",
@@ -441,7 +441,7 @@
             "content_blocks": [],
             "directive": "versionchanged",
             "options": [],
-            "raw_source": ".. versionchanged:: 2.0\n   Before NumPy 2.0, ``all`` did not return booleans for object dtype\n   input arrays.\n   This behavior is still available via ``we.logical_and.reduce``.",
+            "raw_source": ".. versionchanged:: 2.0\n   Before NumPy 2.0, ``all`` did not return booleans for object dtype\n   input arrays.\n   This behavior is still available via ``fnp.logical_and.reduce``.",
             "supported": true,
             "type": "directive_block",
             "version": "2.0"
@@ -456,12 +456,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.all([[True,False],[True,True]])"
+                "text": "fnp.all([[True,False],[True,True]])"
               },
               {
                 "kind": "output",
@@ -475,7 +475,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.all([[True,False],[True,True]], axis=0)"
+                "text": "fnp.all([[True,False],[True,True]], axis=0)"
               },
               {
                 "kind": "output",
@@ -489,7 +489,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.all([-1, 4, 5])"
+                "text": "fnp.all([-1, 4, 5])"
               },
               {
                 "kind": "output",
@@ -503,7 +503,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.all([1.0, we.nan])"
+                "text": "fnp.all([1.0, fnp.nan])"
               },
               {
                 "kind": "output",
@@ -517,7 +517,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.all([[True, True], [False, True]], where=[[True], [False]])"
+                "text": "fnp.all([[True, True], [False, True]], where=[[True], [False]])"
               },
               {
                 "kind": "output",
@@ -531,12 +531,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "o=we.array(False)"
+                "text": "o=fnp.array(False)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "z=we.all([-1, 4, 5], out=o)"
+                "text": "z=fnp.all([-1, 4, 5], out=o)"
               },
               {
                 "kind": "input",
@@ -559,20 +559,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.all",
     "module": "numpy",
     "name": "all",
     "notes": "Test whether all array elements are true.",
     "numpy_ref": "np.all",
-    "signature": "we.all(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
+    "signature": "fnp.all(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
     "status": "supported",
     "summary": "Test whether all array elements along a given axis evaluate to True.",
-    "weight": 1.0,
-    "whest_ref": "we.all"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "all",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2589",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L2548"
   }
 }

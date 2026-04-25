@@ -5,13 +5,13 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from whest._opt_einsum._subgraph_symmetry import (
+from flopscope._opt_einsum._subgraph_symmetry import (
     EinsumBipartite,
     SubgraphSymmetryOracle,
     _build_bipartite,
     _induce_subgraph,
 )
-from whest._perm_group import PermutationGroup
+from flopscope._perm_group import PermutationGroup
 
 
 def _sym_group(*labels: str) -> PermutationGroup:
@@ -415,10 +415,10 @@ class TestOldSymIsSubsetOfNewSym:
         output_chars = subscripts.split("->")[1]
 
         # Call the OLD reference implementation (still present in
-        # whest._einsum until Commit 2). Skip gracefully if it has
+        # flopscope._einsum until Commit 2). Skip gracefully if it has
         # already been removed.
         try:
-            from whest._einsum import _detect_induced_output_symmetry
+            from flopscope._einsum import _detect_induced_output_symmetry
         except ImportError:
             pytest.skip("old detector already removed")
 
@@ -454,7 +454,7 @@ class TestOldSymIsSubsetOfNewSym:
                 )
 
 
-from whest._opt_einsum._symmetry import SubsetSymmetry
+from flopscope._opt_einsum._symmetry import SubsetSymmetry
 
 
 class TestSubsetSymmetryDataclass:
@@ -487,7 +487,7 @@ class TestSubsetSymmetryDataclass:
             ss.output = PermutationGroup.symmetric(1)  # type: ignore[misc]
 
 
-from whest._opt_einsum._subgraph_symmetry import (
+from flopscope._opt_einsum._subgraph_symmetry import (
     _derive_pi_canonical,
 )
 
@@ -648,7 +648,7 @@ class TestWSymmetryOracle:
         assert _is_s_k(result.output, 2, "i", "j")
 
 
-from whest._opt_einsum._symmetry import unique_elements
+from flopscope._opt_einsum._symmetry import unique_elements
 
 
 class TestExactGroupDetection:
@@ -697,7 +697,7 @@ class TestExactGroupDetection:
 
 class TestBurnsideFLOPCount:
     def test_c3_unique_via_perm_group(self):
-        from whest._perm_group import PermutationGroup as PG
+        from flopscope._perm_group import PermutationGroup as PG
 
         n = 10
         c3 = PG.cyclic(3)
@@ -709,7 +709,7 @@ class TestBurnsideFLOPCount:
         assert result == (n**3 + 2 * n) // 3
 
     def test_s3_unique_via_perm_group_gives_correct_value(self):
-        from whest._perm_group import PermutationGroup as PG
+        from flopscope._perm_group import PermutationGroup as PG
 
         n = 10
         s3 = PG.symmetric(3)
@@ -728,20 +728,22 @@ class TestGroupDisplay:
     """Tests that the path info table renders exact group names."""
 
     def test_s2_displays_as_s2(self):
-        import whest as we
+        import flopscope as flops
+        import flopscope.numpy as fnp
 
-        with we.BudgetContext(flop_budget=10**9, quiet=True):
+        with flops.BudgetContext(flop_budget=10**9, quiet=True):
             X = np.ones((5, 3))
-            _, info = we.einsum_path("ij,ik->jk", X, X)
+            _, info = fnp.einsum_path("ij,ik->jk", X, X)
             table = info.format_table()
             assert "S2" in table
 
     def test_trace_a_cubed_shows_c3(self):
-        import whest as we
+        import flopscope as flops
+        import flopscope.numpy as fnp
 
-        with we.BudgetContext(flop_budget=10**9, quiet=True):
+        with flops.BudgetContext(flop_budget=10**9, quiet=True):
             A = np.ones((5, 5))
-            _, info = we.einsum_path("ij,jk,ki->", A, A, A)
+            _, info = fnp.einsum_path("ij,jk,ki->", A, A, A)
             table = info.format_table()
             assert "C3" in table or "G(3)" in table
 
@@ -752,7 +754,7 @@ class TestDeclaredGroupNotPromoted:
     def test_declared_c3_not_promoted_to_s3(self):
         """C_3 on T in 'ijk,ai->ajk': single-operand subset {0} should
         report C_3 on {i,j,k}, not S_3."""
-        from whest._perm_group import PermutationGroup
+        from flopscope._perm_group import PermutationGroup
 
         c3 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
         c3._labels = ("i", "j", "k")
@@ -777,7 +779,7 @@ class TestDeclaredGroupNotPromoted:
 
     def test_declared_s3_still_works(self):
         """S_3 declared on T should still be detected as S_3."""
-        from whest._perm_group import PermutationGroup
+        from flopscope._perm_group import PermutationGroup
 
         s3 = PermutationGroup.symmetric(3, axes=(0, 1, 2))
         s3._labels = ("i", "j", "k")
@@ -822,7 +824,7 @@ class TestC3AxisMergingBug:
         causing the fingerprint fast path to falsely detect S2{i,k}.
         The result is numerically NOT symmetric: Result[i,k] != Result[k,i].
         """
-        from whest._perm_group import PermutationGroup
+        from flopscope._perm_group import PermutationGroup
 
         n = 4
         c3 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
@@ -847,7 +849,7 @@ class TestC3AxisMergingBug:
     def test_c3_declared_uses_sigma_loop(self):
         """Declared C3 on T in 'aijk,ab->ijkb' should be found via σ-loop
         generators, not the (now-removed) fingerprint fast path."""
-        from whest._perm_group import PermutationGroup
+        from flopscope._perm_group import PermutationGroup
 
         n = 4
         c3 = PermutationGroup.cyclic(3, axes=(1, 2, 3))

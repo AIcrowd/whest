@@ -49,7 +49,7 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "A string with 'f' representing trim from front and 'b' to trim from\nback. By default, zeros are trimmed on both sides.\nFront and back refer to the edges of a dimension, with \"front\" refering\nto the side with the lowest index 0, and \"back\" refering to the highest\nindex (or index -1)."
+                        "text": "A string with 'f' representing trim from front and 'b' to trim from\nback. By default, zeros are trimmed on both sides.\nFront and back refer to the edges of a dimension, with \"front\" referring\nto the side with the lowest index 0, and \"back\" referring to the highest\nindex (or index -1)."
                       }
                     ],
                     "type": "paragraph"
@@ -59,7 +59,7 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "A string with 'f' representing trim from front and 'b' to trim from\nback. By default, zeros are trimmed on both sides.\nFront and back refer to the edges of a dimension, with \"front\" refering\nto the side with the lowest index 0, and \"back\" refering to the highest\nindex (or index -1)."
+                    "text": "A string with 'f' representing trim from front and 'b' to trim from\nback. By default, zeros are trimmed on both sides.\nFront and back refer to the edges of a dimension, with \"front\" referring\nto the side with the lowest index 0, and \"back\" referring to the highest\nindex (or index -1)."
                   }
                 ],
                 "name": "trim",
@@ -79,7 +79,7 @@
                       },
                       {
                         "kind": "text",
-                        "text": " is cropped such, that the smallest bounding box is\nreturned that still contains all values which are not zero.\nIf an axis is specified, "
+                        "text": " is cropped such that the smallest bounding box is\nreturned that still contains all values which are not zero.\nIf an axis is specified, "
                       },
                       {
                         "kind": "code",
@@ -99,6 +99,16 @@
                       }
                     ],
                     "type": "paragraph"
+                  },
+                  {
+                    "argument_inline": [],
+                    "content_blocks": [],
+                    "directive": "versionadded",
+                    "options": [],
+                    "raw_source": ".. versionadded:: 2.2.0",
+                    "supported": true,
+                    "type": "directive_block",
+                    "version": "2.2.0"
                   }
                 ],
                 "data_type": "int or sequence, optional",
@@ -113,7 +123,7 @@
                   },
                   {
                     "kind": "text",
-                    "text": " is cropped such, that the smallest bounding box is\nreturned that still contains all values which are not zero.\nIf an axis is specified, "
+                    "text": " is cropped such that the smallest bounding box is\nreturned that still contains all values which are not zero.\nIf an axis is specified, "
                   },
                   {
                     "kind": "code",
@@ -196,17 +206,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array((0, 0, 0, 1, 2, 3, 0, 2, 1, 0))"
+                "text": "a = fnp.array((0, 0, 0, 1, 2, 3, 0, 2, 1, 0))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trim_zeros(a)"
+                "text": "fnp.trim_zeros(a)"
               },
               {
                 "kind": "output",
@@ -220,7 +230,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trim_zeros(a, trim='b')"
+                "text": "fnp.trim_zeros(a, trim='b')"
               },
               {
                 "kind": "output",
@@ -243,7 +253,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([[0, 0, 2, 3, 0, 0],"
+                "text": "b = fnp.array([[0, 0, 2, 3, 0, 0],"
               },
               {
                 "kind": "input",
@@ -258,7 +268,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trim_zeros(b)"
+                "text": "fnp.trim_zeros(b)"
               },
               {
                 "kind": "output",
@@ -276,7 +286,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trim_zeros(b, axis=-1)"
+                "text": "fnp.trim_zeros(b, axis=-1)"
               },
               {
                 "kind": "output",
@@ -307,7 +317,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.trim_zeros([0, 1, 2, 0])"
+                "text": "fnp.trim_zeros([0, 1, 2, 0])"
               },
               {
                 "kind": "output",
@@ -325,20 +335,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.trim_zeros",
     "module": "numpy",
     "name": "trim_zeros",
     "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed.",
     "numpy_ref": "np.trim_zeros",
-    "signature": "we.trim_zeros(filt, trim='fb', axis=None)",
+    "signature": "fnp.trim_zeros(filt, trim='fb', axis=None)",
     "status": "supported",
     "summary": "Remove values along a dimension which are zero along all other.",
-    "weight": 4.0,
-    "whest_ref": "we.trim_zeros"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "trim_zeros",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1889",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1458"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1458",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L1940"
   }
 }

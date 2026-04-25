@@ -135,7 +135,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/transpose",
-                "label": "we.transpose",
+                "label": "fnp.transpose",
                 "original_target": "transpose",
                 "role": "",
                 "target": "transpose",
@@ -150,16 +150,41 @@
       {
         "blocks": [
           {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "This function is an alias of "
+              },
+              {
+                "external_url": "",
+                "href": "/docs/api/ops/matrix_transpose",
+                "kind": "link",
+                "target": "matrix_transpose",
+                "text": "fnp.matrix_transpose"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
             "lines": [
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matrix_transpose([[1, 2], [3, 4]])"
+                "text": "fnp.matrix_transpose([[1, 2], [3, 4]])"
               },
               {
                 "kind": "output",
@@ -177,7 +202,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])"
+                "text": "fnp.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])"
               },
               {
                 "kind": "output",
@@ -207,20 +232,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.linalg.matrix_transpose",
     "module": "numpy.linalg",
     "name": "linalg.matrix_transpose",
-    "notes": "Transpose view \u2014 delegates to whest.matrix_transpose. Cost: 0 FLOPs.",
+    "notes": "Transpose view \u2014 delegates to flopscope.matrix_transpose. Cost: 0 FLOPs.",
     "numpy_ref": "np.linalg.matrix_transpose",
-    "signature": "we.linalg.matrix_transpose(x, /)",
+    "signature": "fnp.linalg.matrix_transpose(x, /)",
     "status": "supported",
     "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
-    "weight": 0.0,
-    "whest_ref": "we.linalg.matrix_transpose"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "linalg-matrix_transpose",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3405",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L108"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L108",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L3428"
   }
 }

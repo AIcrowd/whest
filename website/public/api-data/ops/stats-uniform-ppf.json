@@ -163,20 +163,20 @@
     "category": "counted_custom",
     "cost_formula": "3n",
     "cost_formula_latex": "$3n$",
-    "module": "whest.stats",
+    "flopscope_ref": "fnp.stats.uniform.ppf",
+    "module": "flopscope.stats",
     "name": "stats.uniform.ppf",
     "notes": "Uniform PPF; cost = numel(input).",
     "numpy_ref": "np.stats.uniform.ppf",
-    "signature": "we.stats.uniform.ppf(q, loc=0, scale=1)",
+    "signature": "fnp.stats.uniform.ppf(q, loc=0, scale=1)",
     "status": "supported",
     "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
-    "weight": 1.0,
-    "whest_ref": "we.stats.uniform.ppf"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "stats-uniform-ppf",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_uniform.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_uniform.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2302"
   }
 }

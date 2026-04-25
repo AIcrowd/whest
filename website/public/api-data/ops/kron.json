@@ -81,7 +81,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/outer",
-                "label": "we.outer",
+                "label": "fnp.outer",
                 "original_target": "outer",
                 "role": "",
                 "target": "outer",
@@ -119,7 +119,7 @@
               },
               {
                 "kind": "code",
-                "text": "a.shape = (r0,r1,..,rN)"
+                "text": "a.shape = (r0,r1,...,rN)"
               },
               {
                 "kind": "text",
@@ -203,12 +203,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.kron([1,10,100], [5,6,7])"
+                "text": "fnp.kron([1,10,100], [5,6,7])"
               },
               {
                 "kind": "output",
@@ -217,7 +217,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.kron([5,6,7], [1,10,100])"
+                "text": "fnp.kron([5,6,7], [1,10,100])"
               },
               {
                 "kind": "output",
@@ -231,7 +231,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.kron(we.eye(2), we.ones((2,2)))"
+                "text": "fnp.kron(fnp.eye(2), fnp.ones((2,2)))"
               },
               {
                 "kind": "output",
@@ -257,17 +257,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(100).reshape((2,5,2,5))"
+                "text": "a = fnp.arange(100).reshape((2,5,2,5))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.arange(24).reshape((2,3,4))"
+                "text": "b = fnp.arange(24).reshape((2,3,4))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c = we.kron(a,b)"
+                "text": "c = fnp.kron(a,b)"
               },
               {
                 "kind": "input",
@@ -301,7 +301,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "K = tuple(we.array(I) * we.array(S1) + we.array(J1))"
+                "text": "K = tuple(fnp.array(I) * fnp.array(S1) + fnp.array(J1))"
               },
               {
                 "kind": "input",
@@ -324,20 +324,20 @@
     "category": "counted_custom",
     "cost_formula": "m1*m2 * n1*n2",
     "cost_formula_latex": "$m_1 m_2 \\cdot n_1 n_2$",
+    "flopscope_ref": "fnp.kron",
     "module": "numpy",
     "name": "kron",
     "notes": "Kronecker product; cost proportional to output size.",
     "numpy_ref": "np.kron",
-    "signature": "we.kron(a, b)",
+    "signature": "fnp.kron(a, b)",
     "status": "supported",
     "summary": "Kronecker product of two arrays.",
-    "weight": 1.0,
-    "whest_ref": "we.kron"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "kron",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1085",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L954"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L954",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L1080"
   }
 }

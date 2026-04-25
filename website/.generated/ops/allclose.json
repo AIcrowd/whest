@@ -293,7 +293,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isclose",
-              "label": "we.isclose",
+              "label": "fnp.isclose",
               "original_target": "isclose",
               "role": "",
               "target": "isclose",
@@ -304,7 +304,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/all",
-              "label": "we.all",
+              "label": "fnp.all",
               "original_target": "all",
               "role": "",
               "target": "all",
@@ -315,7 +315,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/any",
-              "label": "we.any",
+              "label": "fnp.any",
               "original_target": "any",
               "role": "",
               "target": "any",
@@ -326,7 +326,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/equal",
-              "label": "we.equal",
+              "label": "fnp.equal",
               "original_target": "equal",
               "role": "",
               "target": "equal",
@@ -581,12 +581,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose([1e10,1e-7], [1.00001e10,1e-8])"
+              "text": "fnp.allclose([1e10,1e-7], [1.00001e10,1e-8])"
             },
             {
               "kind": "output",
@@ -600,7 +600,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose([1e10,1e-8], [1.00001e10,1e-9])"
+              "text": "fnp.allclose([1e10,1e-8], [1.00001e10,1e-9])"
             },
             {
               "kind": "output",
@@ -614,7 +614,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose([1e10,1e-8], [1.0001e10,1e-9])"
+              "text": "fnp.allclose([1e10,1e-8], [1.0001e10,1e-9])"
             },
             {
               "kind": "output",
@@ -628,7 +628,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose([1.0, we.nan], [1.0, we.nan])"
+              "text": "fnp.allclose([1.0, fnp.nan], [1.0, fnp.nan])"
             },
             {
               "kind": "output",
@@ -642,7 +642,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose([1.0, we.nan], [1.0, we.nan], equal_nan=True)"
+              "text": "fnp.allclose([1.0, fnp.nan], [1.0, fnp.nan], equal_nan=True)"
             },
             {
               "kind": "output",
@@ -666,16 +666,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.allclose([1e10,1e-7], [1.00001e10,1e-8])\n\nwe.allclose([1e10,1e-8], [1.00001e10,1e-9])\n\nwe.allclose([1e10,1e-8], [1.0001e10,1e-9])\n\nwe.allclose([1.0, we.nan], [1.0, we.nan])\n\nwe.allclose([1.0, we.nan], [1.0, we.nan], equal_nan=True)",
+    "code": "import flopscope as fnp\n\nfnp.allclose([1e10,1e-7], [1.00001e10,1e-8])\n\nfnp.allclose([1e10,1e-8], [1.00001e10,1e-9])\n\nfnp.allclose([1e10,1e-8], [1.0001e10,1e-9])\n\nfnp.allclose([1.0, fnp.nan], [1.0, fnp.nan])\n\nfnp.allclose([1.0, fnp.nan], [1.0, fnp.nan], equal_nan=True)",
     "output": "False\n\nTrue\n\nFalse\n\nFalse\n\nTrue",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.allclose",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L39",
   "href": "/docs/api/ops/allclose/",
   "module": "numpy",
   "name": "allclose",
   "next": {
     "href": "/docs/api/ops/angle/",
-    "label": "we.angle"
+    "label": "fnp.angle"
   },
   "notes": "Element-wise tolerance check; cost = numel(a).",
   "notes_sections": [
@@ -720,7 +723,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/all/",
-    "label": "we.all"
+    "label": "fnp.all"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.allclose.html",
@@ -740,7 +743,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isclose",
-      "label": "we.isclose",
+      "label": "fnp.isclose",
       "original_target": "isclose",
       "role": "",
       "target": "isclose",
@@ -751,7 +754,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/all",
-      "label": "we.all",
+      "label": "fnp.all",
       "original_target": "all",
       "role": "",
       "target": "all",
@@ -762,7 +765,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/any",
-      "label": "we.any",
+      "label": "fnp.any",
       "original_target": "any",
       "role": "",
       "target": "any",
@@ -773,19 +776,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/equal",
-      "label": "we.equal",
+      "label": "fnp.equal",
       "original_target": "equal",
       "role": "",
       "target": "equal",
       "unresolved": false
     }
   ],
-  "signature": "we.allclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
+  "signature": "fnp.allclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
   "slug": "allclose",
   "summary": "Returns True if two arrays are element-wise equal within a tolerance.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2243",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.allclose",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_counting_ops.py#L39"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L2290",
+  "weight": 1.0
 }

@@ -407,17 +407,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([[1, 2, 3], [4, 5, 6]])"
+                "text": "x = fnp.array([[1, 2, 3], [4, 5, 6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ravel(x)"
+                "text": "fnp.ravel(x)"
               },
               {
                 "kind": "output",
@@ -445,7 +445,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ravel(x, order='F')"
+                "text": "fnp.ravel(x, order='F')"
               },
               {
                 "kind": "output",
@@ -476,7 +476,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ravel(x.T)"
+                "text": "fnp.ravel(x.T)"
               },
               {
                 "kind": "output",
@@ -485,7 +485,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ravel(x.T, order='A')"
+                "text": "fnp.ravel(x.T, order='A')"
               },
               {
                 "kind": "output",
@@ -516,7 +516,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(3)[::-1]; a"
+                "text": "a = fnp.arange(3)[::-1]; a"
               },
               {
                 "kind": "output",
@@ -548,7 +548,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(12).reshape(2,3,2).swapaxes(1,2); a"
+                "text": "a = fnp.arange(12).reshape(2,3,2).swapaxes(1,2); a"
               },
               {
                 "kind": "output",
@@ -596,20 +596,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.ravel",
     "module": "numpy",
     "name": "ravel",
     "notes": "Return contiguous flattened array. Cost: numel(input).",
     "numpy_ref": "np.ravel",
-    "signature": "we.ravel(a, order='C')",
+    "signature": "fnp.ravel(a, order='C')",
     "status": "supported",
     "summary": "Return a contiguous flattened array.",
-    "weight": 0.0,
-    "whest_ref": "we.ravel"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "ravel",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1904",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L336"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L336",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L1879"
   }
 }

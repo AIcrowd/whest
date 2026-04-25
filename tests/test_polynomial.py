@@ -2,8 +2,8 @@
 
 import numpy
 
-from whest._budget import BudgetContext
-from whest._polynomial import (
+from flopscope._budget import BudgetContext
+from flopscope._polynomial import (
     poly,
     polyadd,
     polyder,
@@ -298,16 +298,16 @@ def test_roots_no_budget():
 # ---------------------------------------------------------------------------
 
 
-def test_import_from_whest():
-    import whest as we
+def test_import_from_flopscope():
+    import flopscope.numpy as fnp
 
-    assert hasattr(we, "polyval")
-    assert hasattr(we, "polyadd")
-    assert hasattr(we, "polysub")
-    assert hasattr(we, "polyder")
-    assert hasattr(we, "polyint")
-    assert hasattr(we, "polymul")
-    assert hasattr(we, "polydiv")
-    assert hasattr(we, "polyfit")
-    assert hasattr(we, "poly")
-    assert hasattr(we, "roots")
+    assert hasattr(fnp, "polyval")
+    assert hasattr(fnp, "polyadd")
+    assert hasattr(fnp, "polysub")
+    assert hasattr(fnp, "polyder")
+    assert hasattr(fnp, "polyint")
+    assert hasattr(fnp, "polymul")
+    assert hasattr(fnp, "polydiv")
+    assert hasattr(fnp, "polyfit")
+    assert hasattr(fnp, "poly")
+    assert hasattr(fnp, "roots")

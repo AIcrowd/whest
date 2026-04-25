@@ -47,7 +47,7 @@
                   "type": "paragraph"
                 }
               ],
-              "data_type": "we.ndarray",
+              "data_type": "fnp.ndarray",
               "inline": [
                 {
                   "kind": "text",
@@ -124,7 +124,7 @@
                   "type": "paragraph"
                 }
               ],
-              "data_type": "we.ndarray",
+              "data_type": "fnp.ndarray",
               "inline": [
                 {
                   "kind": "text",
@@ -155,7 +155,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/transpose",
-              "label": "we.transpose",
+              "label": "fnp.transpose",
               "original_target": "transpose",
               "role": "",
               "target": "transpose",
@@ -171,7 +171,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/swapaxes",
-              "label": "we.swapaxes",
+              "label": "fnp.swapaxes",
               "original_target": "swapaxes",
               "role": "",
               "target": "swapaxes",
@@ -190,17 +190,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.zeros((3, 4, 5))"
+              "text": "x = fnp.zeros((3, 4, 5))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.moveaxis(x, 0, -1).shape"
+              "text": "fnp.moveaxis(x, 0, -1).shape"
             },
             {
               "kind": "output",
@@ -209,7 +209,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.moveaxis(x, -1, 0).shape"
+              "text": "fnp.moveaxis(x, -1, 0).shape"
             },
             {
               "kind": "output",
@@ -232,7 +232,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.transpose(x).shape"
+              "text": "fnp.transpose(x).shape"
             },
             {
               "kind": "output",
@@ -241,7 +241,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.swapaxes(x, 0, -1).shape"
+              "text": "fnp.swapaxes(x, 0, -1).shape"
             },
             {
               "kind": "output",
@@ -250,7 +250,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.moveaxis(x, [0, 1], [-1, -2]).shape"
+              "text": "fnp.moveaxis(x, [0, 1], [-1, -2]).shape"
             },
             {
               "kind": "output",
@@ -259,7 +259,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape"
+              "text": "fnp.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape"
             },
             {
               "kind": "output",
@@ -283,16 +283,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.zeros((3, 4, 5))\n\nwe.moveaxis(x, 0, -1).shape\n\nwe.moveaxis(x, -1, 0).shape\n\nwe.transpose(x).shape\n\nwe.swapaxes(x, 0, -1).shape\n\nwe.moveaxis(x, [0, 1], [-1, -2]).shape\n\nwe.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape",
+    "code": "import flopscope as fnp\n\nx = fnp.zeros((3, 4, 5))\n\nfnp.moveaxis(x, 0, -1).shape\n\nfnp.moveaxis(x, -1, 0).shape\n\nfnp.transpose(x).shape\n\nfnp.swapaxes(x, 0, -1).shape\n\nfnp.moveaxis(x, [0, 1], [-1, -2]).shape\n\nfnp.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape",
     "output": "(4, 5, 3)\n\n(5, 3, 4)\n\n(5, 4, 3)\n\n(5, 4, 3)\n\n(5, 4, 3)\n\n(5, 4, 3)",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.moveaxis",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L230",
   "href": "/docs/api/ops/moveaxis/",
   "module": "numpy",
   "name": "moveaxis",
   "next": {
     "href": "/docs/api/ops/multiply/",
-    "label": "we.multiply"
+    "label": "fnp.multiply"
   },
   "notes": "Move axes to new positions.",
   "notes_sections": [],
@@ -303,7 +306,7 @@
         "The array whose axes should be reordered."
       ],
       "name": "a",
-      "type": "we.ndarray"
+      "type": "fnp.ndarray"
     },
     {
       "body": [
@@ -323,7 +326,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/modf/",
-    "label": "we.modf"
+    "label": "fnp.modf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.moveaxis.html",
@@ -333,7 +336,7 @@
         "Array with moved axes. This array is a view of the input array."
       ],
       "name": "result",
-      "type": "we.ndarray"
+      "type": "fnp.ndarray"
     }
   ],
   "see_also": [
@@ -347,7 +350,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/transpose",
-      "label": "we.transpose",
+      "label": "fnp.transpose",
       "original_target": "transpose",
       "role": "",
       "target": "transpose",
@@ -363,19 +366,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/swapaxes",
-      "label": "we.swapaxes",
+      "label": "fnp.swapaxes",
       "original_target": "swapaxes",
       "role": "",
       "target": "swapaxes",
       "unresolved": false
     }
   ],
-  "signature": "we.moveaxis(a, source, destination)",
+  "signature": "fnp.moveaxis(a, source, destination)",
   "slug": "moveaxis",
   "summary": "Move axes of an array to new positions.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1448",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.moveaxis",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L230"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L1493",
+  "weight": 0.0
 }

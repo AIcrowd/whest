@@ -10,8 +10,9 @@ from __future__ import annotations
 import numpy
 import pytest
 
-from whest._budget import BudgetContext
-from whest._weights import reset_weights
+import flopscope
+from flopscope._budget import BudgetContext
+from flopscope._weights import reset_weights
 
 
 def _cost_of(fn, *args, **kwargs) -> int:
@@ -51,9 +52,10 @@ def _deterministic_numpy_random(monkeypatch):
 
 @pytest.fixture(scope="module")
 def we():
-    import whest
+    """Fixture returning ``flopscope.numpy`` (the counted numpy surface)."""
+    import flopscope.numpy
 
-    return whest
+    return flopscope.numpy
 
 
 # ---------------------------------------------------------------------------
@@ -778,46 +780,57 @@ class TestStats:
     """All stats methods charge numel(input) * 1 = numel(input) FLOPs."""
 
     def test_norm_pdf(self, we):
-        assert _cost_of(we.stats.norm.pdf, numpy.random.rand(100)) == 100
+        assert _cost_of(flopscope.stats.norm.pdf, numpy.random.rand(100)) == 100
 
     def test_norm_cdf(self, we):
-        assert _cost_of(we.stats.norm.cdf, numpy.random.rand(100)) == 100
+        assert _cost_of(flopscope.stats.norm.cdf, numpy.random.rand(100)) == 100
 
     def test_norm_ppf(self, we):
-        assert _cost_of(we.stats.norm.ppf, numpy.random.rand(100) * 0.98 + 0.01) == 100
+        assert (
+            _cost_of(flopscope.stats.norm.ppf, numpy.random.rand(100) * 0.98 + 0.01)
+            == 100
+        )
 
     def test_uniform_pdf(self, we):
-        assert _cost_of(we.stats.uniform.pdf, numpy.random.rand(100)) == 100
+        assert _cost_of(flopscope.stats.uniform.pdf, numpy.random.rand(100)) == 100
 
     def test_uniform_cdf(self, we):
-        assert _cost_of(we.stats.uniform.cdf, numpy.random.rand(100)) == 100
+        assert _cost_of(flopscope.stats.uniform.cdf, numpy.random.rand(100)) == 100
 
     def test_uniform_ppf(self, we):
-        assert _cost_of(we.stats.uniform.ppf, numpy.random.rand(100)) == 100
+        assert _cost_of(flopscope.stats.uniform.ppf, numpy.random.rand(100)) == 100
 
     def test_expon_pdf(self, we):
-        assert _cost_of(we.stats.expon.pdf, numpy.random.rand(100)) == 100
+        assert _cost_of(flopscope.stats.expon.pdf, numpy.random.rand(100)) == 100
 
     def test_cauchy_pdf(self, we):
-        assert _cost_of(we.stats.cauchy.pdf, numpy.random.rand(100)) == 100
+        assert _cost_of(flopscope.stats.cauchy.pdf, numpy.random.rand(100)) == 100
 
     def test_logistic_cdf(self, we):
-        assert _cost_of(we.stats.logistic.cdf, numpy.random.rand(100)) == 100
+        assert _cost_of(flopscope.stats.logistic.cdf, numpy.random.rand(100)) == 100
 
     def test_laplace_ppf(self, we):
         assert (
-            _cost_of(we.stats.laplace.ppf, numpy.random.rand(100) * 0.98 + 0.01) == 100
+            _cost_of(flopscope.stats.laplace.ppf, numpy.random.rand(100) * 0.98 + 0.01)
+            == 100
         )
 
     def test_lognorm_pdf(self, we):
         assert (
-            _cost_of(we.stats.lognorm.pdf, numpy.abs(numpy.random.rand(100)) + 0.1, 0.5)
+            _cost_of(
+                flopscope.stats.lognorm.pdf,
+                numpy.abs(numpy.random.rand(100)) + 0.1,
+                0.5,
+            )
             == 100
         )
 
     def test_truncnorm_cdf(self, we):
-        assert _cost_of(we.stats.truncnorm.cdf, numpy.random.rand(100), -2, 2) == 100
+        assert (
+            _cost_of(flopscope.stats.truncnorm.cdf, numpy.random.rand(100), -2, 2)
+            == 100
+        )
 
     def test_scalar_input(self, we):
         """Scalar input should charge 1 FLOP."""
-        assert _cost_of(we.stats.norm.pdf, 0.0) == 1
+        assert _cost_of(flopscope.stats.norm.pdf, 0.0) == 1

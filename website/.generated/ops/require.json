@@ -303,7 +303,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/asarray",
-              "label": "we.asarray",
+              "label": "fnp.asarray",
               "original_target": "asarray",
               "role": "",
               "target": "asarray",
@@ -400,12 +400,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(6).reshape(2,3)"
+              "text": "x = fnp.arange(6).reshape(2,3)"
             },
             {
               "kind": "input",
@@ -444,7 +444,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.require(x, dtype=we.float32, requirements=['A', 'O', 'W', 'F'])"
+              "text": "y = fnp.require(x, dtype=fnp.float32, requirements=['A', 'O', 'W', 'F'])"
             },
             {
               "kind": "input",
@@ -500,16 +500,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(6).reshape(2,3)\n\nx.flags\n\ny = we.require(x, dtype=we.float32, requirements=['A', 'O', 'W', 'F'])\n\ny.flags",
+    "code": "import flopscope as fnp\n\nx = fnp.arange(6).reshape(2,3)\n\nx.flags\n\ny = fnp.require(x, dtype=fnp.float32, requirements=['A', 'O', 'W', 'F'])\n\ny.flags",
     "output": "C_CONTIGUOUS : True\n  F_CONTIGUOUS : False\n  OWNDATA : False\n  WRITEABLE : True\n  ALIGNED : True\n  WRITEBACKIFCOPY : False\n\nC_CONTIGUOUS : False\n  F_CONTIGUOUS : True\n  OWNDATA : True\n  WRITEABLE : True\n  ALIGNED : True\n  WRITEBACKIFCOPY : False",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.require",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1313",
   "href": "/docs/api/ops/require/",
   "module": "numpy",
   "name": "require",
   "next": {
     "href": "/docs/api/ops/reshape/",
-    "label": "we.reshape"
+    "label": "fnp.reshape"
   },
   "notes": "Return array that satisfies requirements.",
   "notes_sections": [
@@ -549,11 +552,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -563,7 +566,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/repeat/",
-    "label": "we.repeat"
+    "label": "fnp.repeat"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.require.html",
@@ -587,7 +590,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/asarray",
-      "label": "we.asarray",
+      "label": "fnp.asarray",
       "original_target": "asarray",
       "role": "",
       "target": "asarray",
@@ -658,12 +661,9 @@
       "unresolved": true
     }
   ],
-  "signature": "we.require(a, dtype=None, requirements=None, *, like=None)",
+  "signature": "fnp.require(a, dtype=None, requirements=None, *, like=None)",
   "slug": "require",
   "summary": "Return an ndarray of the provided type that satisfies requirements.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/_asarray.py#L27",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.require",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1313"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/_asarray.py#L22",
+  "weight": 0.0
 }

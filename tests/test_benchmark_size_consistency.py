@@ -14,7 +14,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
-WEIGHTS_PATH = ROOT / "src" / "whest" / "data" / "weights.json"
+WEIGHTS_PATH = ROOT / "src" / "flopscope" / "data" / "weights.json"
 
 # Tokens that appear as bench_code arguments but are NOT array variables
 # whose shapes need documenting in benchmark_size.

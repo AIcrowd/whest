@@ -88,7 +88,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "int8",
-                      "text": "we.int8"
+                      "text": "fnp.int8"
                     },
                     {
                       "kind": "text",
@@ -99,7 +99,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "float64",
-                      "text": "we.float64"
+                      "text": "fnp.float64"
                     },
                     {
                       "kind": "text",
@@ -120,7 +120,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "int8",
-                  "text": "we.int8"
+                  "text": "fnp.int8"
                 },
                 {
                   "kind": "text",
@@ -131,7 +131,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "float64",
-                  "text": "we.float64"
+                  "text": "fnp.float64"
                 },
                 {
                   "kind": "text",
@@ -147,7 +147,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in\nmemory."
+                      "text": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in memory."
                     }
                   ],
                   "type": "paragraph"
@@ -157,10 +157,74 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in\nmemory."
+                  "text": "Whether to store multi-dimensional data in row-major\n(C-style) or column-major (Fortran-style) order in memory."
                 }
               ],
               "name": "order",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "The device on which to place the created array. Default: "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "None"
+                    },
+                    {
+                      "kind": "text",
+                      "text": ".\nFor Array-API interoperability only, so must be "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "\"cpu\""
+                    },
+                    {
+                      "kind": "text",
+                      "text": " if passed."
+                    }
+                  ],
+                  "type": "paragraph"
+                },
+                {
+                  "argument_inline": [],
+                  "content_blocks": [],
+                  "directive": "versionadded",
+                  "options": [],
+                  "raw_source": ".. versionadded:: 2.0.0",
+                  "supported": true,
+                  "type": "directive_block",
+                  "version": "2.0.0"
+                }
+              ],
+              "data_type": "str, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "The device on which to place the created array. Default: "
+                },
+                {
+                  "kind": "code",
+                  "text": "None"
+                },
+                {
+                  "kind": "text",
+                  "text": ".\nFor Array-API interoperability only, so must be "
+                },
+                {
+                  "kind": "code",
+                  "text": "\"cpu\""
+                },
+                {
+                  "kind": "text",
+                  "text": " if passed."
+                }
+              ],
+              "name": "device",
               "type": "field_list"
             },
             {
@@ -281,7 +345,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/zeros_like",
-              "label": "we.zeros_like",
+              "label": "fnp.zeros_like",
               "original_target": "zeros_like",
               "role": "",
               "target": "zeros_like",
@@ -297,7 +361,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/empty",
-              "label": "we.empty",
+              "label": "fnp.empty",
               "original_target": "empty",
               "role": "",
               "target": "empty",
@@ -313,7 +377,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/ones",
-              "label": "we.ones",
+              "label": "fnp.ones",
               "original_target": "ones",
               "role": "",
               "target": "ones",
@@ -329,7 +393,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/full",
-              "label": "we.full",
+              "label": "fnp.full",
               "original_target": "full",
               "role": "",
               "target": "full",
@@ -348,12 +412,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros(5)"
+              "text": "fnp.zeros(5)"
             },
             {
               "kind": "output",
@@ -367,7 +431,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros((5,), dtype=int)"
+              "text": "fnp.zeros((5,), dtype=int)"
             },
             {
               "kind": "output",
@@ -381,7 +445,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros((2, 1))"
+              "text": "fnp.zeros((2, 1))"
             },
             {
               "kind": "output",
@@ -404,7 +468,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros(s)"
+              "text": "fnp.zeros(s)"
             },
             {
               "kind": "output",
@@ -422,7 +486,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype"
+              "text": "fnp.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype"
             },
             {
               "kind": "output",
@@ -450,16 +514,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.zeros(5)\n\nwe.zeros((5,), dtype=int)\n\nwe.zeros((2, 1))\n\ns = (2,2)\n\nwe.zeros(s)\n\nwe.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype",
+    "code": "import flopscope as fnp\n\nfnp.zeros(5)\n\nfnp.zeros((5,), dtype=int)\n\nfnp.zeros((2, 1))\n\ns = (2,2)\n\nfnp.zeros(s)\n\nfnp.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype",
     "output": "array([ 0.,  0.,  0.,  0.,  0.])\n\narray([0, 0, 0, 0, 0])\n\narray([[ 0.],\n       [ 0.]])\n\narray([[ 0.,  0.],\n       [ 0.,  0.]])\n\narray([(0, 0), (0, 0)],\n      dtype=[('x', '<i4'), ('y', '<i4')])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.zeros",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L48",
   "href": "/docs/api/ops/zeros/",
   "module": "numpy",
   "name": "zeros",
   "next": {
     "href": "/docs/api/ops/zeros_like/",
-    "label": "we.zeros_like"
+    "label": "fnp.zeros_like"
   },
   "notes": "Create zero-filled array.",
   "notes_sections": [],
@@ -474,8 +541,8 @@
     },
     {
       "body": [
-        "The desired data-type for the array, e.g., `we.int8`.  Default is",
-        "`we.float64`."
+        "The desired data-type for the array, e.g., `fnp.int8`.  Default is",
+        "`fnp.float64`."
       ],
       "name": "dtype",
       "type": "data-type, optional"
@@ -483,11 +550,20 @@
     {
       "body": [
         "Whether to store multi-dimensional data in row-major",
-        "(C-style) or column-major (Fortran-style) order in",
-        "memory."
+        "(C-style) or column-major (Fortran-style) order in memory."
       ],
       "name": "order",
       "type": "{'C', 'F'}, optional, default: 'C'"
+    },
+    {
+      "body": [
+        "The device on which to place the created array. Default: ``None``.",
+        "For Array-API interoperability only, so must be ``\"cpu\"`` if passed.",
+        "",
+        ".. versionadded:: 2.0.0"
+      ],
+      "name": "device",
+      "type": "str, optional"
     },
     {
       "body": [
@@ -505,7 +581,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/where/",
-    "label": "we.where"
+    "label": "fnp.where"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.zeros.html",
@@ -529,7 +605,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/zeros_like",
-      "label": "we.zeros_like",
+      "label": "fnp.zeros_like",
       "original_target": "zeros_like",
       "role": "",
       "target": "zeros_like",
@@ -545,7 +621,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/empty",
-      "label": "we.empty",
+      "label": "fnp.empty",
       "original_target": "empty",
       "role": "",
       "target": "empty",
@@ -561,7 +637,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/ones",
-      "label": "we.ones",
+      "label": "fnp.ones",
       "original_target": "ones",
       "role": "",
       "target": "ones",
@@ -577,19 +653,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/full",
-      "label": "we.full",
+      "label": "fnp.full",
       "original_target": "full",
       "role": "",
       "target": "full",
       "unresolved": false
     }
   ],
-  "signature": "we.zeros(shape, dtype=<class 'float'>, **kwargs)",
+  "signature": "fnp.zeros(shape, dtype=None, order='C', *, device=None, like=None)",
   "slug": "zeros",
   "summary": "Return a new array of given shape and type, filled with zeros.",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.zeros",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L48"
+  "weight": 0.0
 }

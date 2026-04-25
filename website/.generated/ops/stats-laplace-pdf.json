@@ -161,12 +161,15 @@
     "unsupported_directives": []
   },
   "example": null,
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.stats.laplace.pdf",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_laplace.py#L32",
   "href": "/docs/api/ops/stats-laplace-pdf/",
-  "module": "whest.stats",
+  "module": "flopscope.stats",
   "name": "stats.laplace.pdf",
   "next": {
     "href": "/docs/api/ops/stats-laplace-ppf/",
-    "label": "we.stats.laplace.ppf"
+    "label": "fnp.stats.laplace.ppf"
   },
   "notes": "Laplace PDF; cost = numel(input).",
   "notes_sections": [],
@@ -204,7 +207,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/stats-laplace-cdf/",
-    "label": "we.stats.laplace.cdf"
+    "label": "fnp.stats.laplace.cdf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.laplace.html",
@@ -218,12 +221,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.stats.laplace.pdf(x, loc=0, scale=1)",
+  "signature": "fnp.stats.laplace.pdf(x, loc=0, scale=1)",
   "slug": "stats-laplace-pdf",
   "summary": "Probability density function at x of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.stats.laplace.pdf",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_laplace.py#L32"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/scipy/stats/_distn_infrastructure.py#L2051",
+  "weight": 16.0
 }

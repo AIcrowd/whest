@@ -135,7 +135,7 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "we.array allows to specify whether the array is written in C-contiguous\norder (last index varies the fastest), or FORTRAN-contiguous order in\nmemory (first index varies the fastest)."
+                "text": "fnp.array allows to specify whether the array is written in C-contiguous\norder (last index varies the fastest), or FORTRAN-contiguous order in\nmemory (first index varies the fastest)."
               }
             ],
             "type": "paragraph"
@@ -145,12 +145,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 2, 3], [4, 5, 6]], order='C')"
+                "text": "a = fnp.array([[1, 2, 3], [4, 5, 6]], order='C')"
               },
               {
                 "kind": "input",
@@ -168,7 +168,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isfortran(a)"
+                "text": "fnp.isfortran(a)"
               },
               {
                 "kind": "output",
@@ -182,7 +182,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([[1, 2, 3], [4, 5, 6]], order='F')"
+                "text": "b = fnp.array([[1, 2, 3], [4, 5, 6]], order='F')"
               },
               {
                 "kind": "input",
@@ -200,7 +200,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isfortran(b)"
+                "text": "fnp.isfortran(b)"
               },
               {
                 "kind": "output",
@@ -223,7 +223,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 2, 3], [4, 5, 6]], order='C')"
+                "text": "a = fnp.array([[1, 2, 3], [4, 5, 6]], order='C')"
               },
               {
                 "kind": "input",
@@ -241,7 +241,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isfortran(a)"
+                "text": "fnp.isfortran(a)"
               },
               {
                 "kind": "output",
@@ -272,7 +272,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isfortran(b)"
+                "text": "fnp.isfortran(b)"
               },
               {
                 "kind": "output",
@@ -295,7 +295,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.isfortran(we.array([1, 2], order='F'))"
+                "text": "fnp.isfortran(fnp.array([1, 2], order='F'))"
               },
               {
                 "kind": "output",
@@ -313,20 +313,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.isfortran",
     "module": "numpy",
     "name": "isfortran",
     "notes": "Return True if array is Fortran contiguous.",
     "numpy_ref": "np.isfortran",
-    "signature": "we.isfortran(a)",
+    "signature": "fnp.isfortran(a)",
     "status": "supported",
     "summary": "Check if the array is Fortran contiguous but *not* C contiguous.",
-    "weight": 0.0,
-    "whest_ref": "we.isfortran"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "isfortran",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L520",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1089"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1089",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L553"
   }
 }

@@ -31,7 +31,15 @@
             },
             {
               "kind": "text",
-              "text": "-point discrete Fourier\nTransform (DFT) with the efficient Fast Fourier Transform (FFT)\nalgorithm [CT]."
+              "text": "-point discrete Fourier\nTransform (DFT) with the efficient Fast Fourier Transform (FFT)\nalgorithm "
+            },
+            {
+              "kind": "text",
+              "text": "[CT]_"
+            },
+            {
+              "kind": "text",
+              "text": "."
             }
           ],
           "type": "paragraph"
@@ -170,7 +178,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "we.fft"
+                      "text": "fnp.fft"
                     },
                     {
                       "kind": "text",
@@ -201,7 +209,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "we.fft"
+                  "text": "fnp.fft"
                 },
                 {
                   "kind": "text",
@@ -394,7 +402,7 @@
               ],
               "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
               "href": "",
-              "label": "we.fft",
+              "label": "fnp.fft",
               "original_target": "numpy.fft",
               "role": "",
               "target": "fft",
@@ -540,7 +548,7 @@
               "href": "",
               "kind": "link",
               "target": "fft",
-              "text": "we.fft"
+              "text": "fnp.fft"
             },
             {
               "kind": "text",
@@ -569,12 +577,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.fft(we.exp(2j * we.pi * we.arange(8) / 8))"
+              "text": "fnp.fft.fft(fnp.exp(2j * fnp.pi * fnp.arange(8) / 8))"
             },
             {
               "kind": "output",
@@ -606,7 +614,7 @@
               "href": "",
               "kind": "link",
               "target": "fft",
-              "text": "we.fft"
+              "text": "fnp.fft"
             },
             {
               "kind": "text",
@@ -625,26 +633,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "t = we.arange(256)"
+              "text": "t = fnp.arange(256)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "sp = we.fft.fft(we.sin(t))"
+              "text": "sp = fnp.fft.fft(fnp.sin(t))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "freq = we.fft.fftfreq(t.shape[-1])"
+              "text": "freq = fnp.fft.fftfreq(t.shape[-1])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "plt.plot(freq, sp.real, freq, sp.imag)"
-            },
-            {
-              "kind": "output",
-              "text": "[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]"
+              "text": "_ = plt.plot(freq, sp.real, freq, sp.imag)"
             },
             {
               "kind": "input",
@@ -666,6 +670,11 @@
   "doc_coverage": {
     "raw_blocks": [
       {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": "[CT]_"
+      },
+      {
         "kind": "citation",
         "raw_text": "CT\n\nCooley, James W., and John W. Tukey, 1965, \"An algorithm for the\nmachine calculation of complex Fourier series,\" Math. Comput.\n19: 297-301."
       }
@@ -674,21 +683,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.fft.fft(we.exp(2j * we.pi * we.arange(8) / 8))\n\nimport matplotlib.pyplot as plt\n\nt = we.arange(256)\n\nsp = we.fft.fft(we.sin(t))\n\nfreq = we.fft.fftfreq(t.shape[-1])\n\nplt.plot(freq, sp.real, freq, sp.imag)\n\nplt.show()",
-    "output": "array([-2.33486982e-16+1.14423775e-17j,  8.00000000e+00-1.25557246e-15j,\n        2.33486982e-16+2.33486982e-16j,  0.00000000e+00+1.22464680e-16j,\n       -1.14423775e-17+2.33486982e-16j,  0.00000000e+00+5.20784380e-16j,\n        1.14423775e-17+1.14423775e-17j,  0.00000000e+00+1.22464680e-16j])\n\n[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]",
+    "code": "import flopscope as fnp\n\nfnp.fft.fft(fnp.exp(2j * fnp.pi * fnp.arange(8) / 8))\n\nimport matplotlib.pyplot as plt\n\nt = fnp.arange(256)\n\nsp = fnp.fft.fft(fnp.sin(t))\n\nfreq = fnp.fft.fftfreq(t.shape[-1])\n\n_ = plt.plot(freq, sp.real, freq, sp.imag)\n\nplt.show()",
+    "output": "array([-2.33486982e-16+1.14423775e-17j,  8.00000000e+00-1.25557246e-15j,\n        2.33486982e-16+2.33486982e-16j,  0.00000000e+00+1.22464680e-16j,\n       -1.14423775e-17+2.33486982e-16j,  0.00000000e+00+5.20784380e-16j,\n        1.14423775e-17+1.14423775e-17j,  0.00000000e+00+1.22464680e-16j])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.fft",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L166",
   "href": "/docs/api/ops/fft-fft/",
   "module": "numpy.fft",
   "name": "fft.fft",
   "next": {
     "href": "/docs/api/ops/fft-fft2/",
-    "label": "we.fft.fft2"
+    "label": "fnp.fft.fft2"
   },
   "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
     "FFT (Fast Fourier Transform) refers to a way the discrete Fourier Transform (DFT) can be calculated efficiently, by using symmetries in the calculated terms.  The symmetry is highest when `n` is a power of 2, and the transform is therefore most efficient for these sizes.",
-    "The DFT is defined, with the conventions used in this implementation, in the documentation for the `we.fft` module."
+    "The DFT is defined, with the conventions used in this implementation, in the documentation for the `fnp.fft` module."
   ],
   "numpy_ref": "np.fft.fft",
   "parameters": [
@@ -719,7 +731,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `we.fft`). Default is \"backward\".",
+        "Normalization mode (see `fnp.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -743,7 +755,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/fabs/",
-    "label": "we.fabs"
+    "label": "fnp.fabs"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html",
@@ -768,7 +780,7 @@
       ],
       "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
       "href": "",
-      "label": "we.fft",
+      "label": "fnp.fft",
       "original_target": "numpy.fft",
       "role": "",
       "target": "fft",
@@ -879,12 +891,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
   "slug": "fft-fft",
   "summary": "Compute the one-dimensional discrete Fourier Transform.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L113",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.fft",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L166"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L120",
+  "weight": 1.0
 }

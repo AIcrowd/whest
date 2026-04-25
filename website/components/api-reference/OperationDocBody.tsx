@@ -325,13 +325,13 @@ export default async function OperationDocBody({
   sections,
   headerSummary,
   signature,
-  whestSourceUrl,
+  flopscopeSourceUrl,
   upstreamSourceUrl,
 }: {
   sections: DocSection[];
   headerSummary?: string;
   signature?: string;
-  whestSourceUrl?: string;
+  flopscopeSourceUrl?: string;
   upstreamSourceUrl?: string;
 }): Promise<ReactNode> {
   const visibleSections = sections.filter((section) => {
@@ -393,7 +393,7 @@ export default async function OperationDocBody({
           {sectionIndex === signatureInsertIndex ? (
             <OperationDocSignature
               signature={signature}
-              whestSourceUrl={whestSourceUrl}
+              flopscopeSourceUrl={flopscopeSourceUrl}
               upstreamSourceUrl={upstreamSourceUrl}
             />
           ) : null}
@@ -410,7 +410,7 @@ export default async function OperationDocBody({
     return (
       <OperationDocSignature
         signature={signature}
-        whestSourceUrl={whestSourceUrl}
+        flopscopeSourceUrl={flopscopeSourceUrl}
         upstreamSourceUrl={upstreamSourceUrl}
       />
     );

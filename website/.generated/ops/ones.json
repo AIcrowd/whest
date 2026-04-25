@@ -88,7 +88,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "int8",
-                      "text": "we.int8"
+                      "text": "fnp.int8"
                     },
                     {
                       "kind": "text",
@@ -99,7 +99,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "float64",
-                      "text": "we.float64"
+                      "text": "fnp.float64"
                     },
                     {
                       "kind": "text",
@@ -120,7 +120,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "int8",
-                  "text": "we.int8"
+                  "text": "fnp.int8"
                 },
                 {
                   "kind": "text",
@@ -131,7 +131,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "float64",
-                  "text": "we.float64"
+                  "text": "fnp.float64"
                 },
                 {
                   "kind": "text",
@@ -329,7 +329,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/ones_like",
-              "label": "we.ones_like",
+              "label": "fnp.ones_like",
               "original_target": "ones_like",
               "role": "",
               "target": "ones_like",
@@ -345,7 +345,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/empty",
-              "label": "we.empty",
+              "label": "fnp.empty",
               "original_target": "empty",
               "role": "",
               "target": "empty",
@@ -361,7 +361,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/zeros",
-              "label": "we.zeros",
+              "label": "fnp.zeros",
               "original_target": "zeros",
               "role": "",
               "target": "zeros",
@@ -377,7 +377,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/full",
-              "label": "we.full",
+              "label": "fnp.full",
               "original_target": "full",
               "role": "",
               "target": "full",
@@ -396,12 +396,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ones(5)"
+              "text": "fnp.ones(5)"
             },
             {
               "kind": "output",
@@ -415,7 +415,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ones((5,), dtype=int)"
+              "text": "fnp.ones((5,), dtype=int)"
             },
             {
               "kind": "output",
@@ -429,7 +429,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ones((2, 1))"
+              "text": "fnp.ones((2, 1))"
             },
             {
               "kind": "output",
@@ -452,7 +452,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ones(s)"
+              "text": "fnp.ones(s)"
             },
             {
               "kind": "output",
@@ -480,16 +480,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.ones(5)\n\nwe.ones((5,), dtype=int)\n\nwe.ones((2, 1))\n\ns = (2,2)\n\nwe.ones(s)",
+    "code": "import flopscope as fnp\n\nfnp.ones(5)\n\nfnp.ones((5,), dtype=int)\n\nfnp.ones((2, 1))\n\ns = (2,2)\n\nfnp.ones(s)",
     "output": "array([1., 1., 1., 1., 1.])\n\narray([1, 1, 1, 1, 1])\n\narray([[1.],\n       [1.]])\n\narray([[1.,  1.],\n       [1.,  1.]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.ones",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L56",
   "href": "/docs/api/ops/ones/",
   "module": "numpy",
   "name": "ones",
   "next": {
     "href": "/docs/api/ops/ones_like/",
-    "label": "we.ones_like"
+    "label": "fnp.ones_like"
   },
   "notes": "Create one-filled array.",
   "notes_sections": [],
@@ -504,8 +507,8 @@
     },
     {
       "body": [
-        "The desired data-type for the array, e.g., `we.int8`.  Default is",
-        "`we.float64`."
+        "The desired data-type for the array, e.g., `fnp.int8`.  Default is",
+        "`fnp.float64`."
       ],
       "name": "dtype",
       "type": "data-type, optional"
@@ -531,11 +534,11 @@
     },
     {
       "body": [
-        "    Reference object to allow the creation of arrays which are not",
-        "    NumPy arrays. If an array-like passed in as ``like`` supports",
-        "    the ``__array_function__`` protocol, the result will be defined",
-        "    by it. In this case, it ensures the creation of an array object",
-        "    compatible with that passed in via this argument.",
+        "Reference object to allow the creation of arrays which are not",
+        "NumPy arrays. If an array-like passed in as ``like`` supports",
+        "the ``__array_function__`` protocol, the result will be defined",
+        "by it. In this case, it ensures the creation of an array object",
+        "compatible with that passed in via this argument.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -545,7 +548,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/not_equal/",
-    "label": "we.not_equal"
+    "label": "fnp.not_equal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ones.html",
@@ -569,7 +572,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/ones_like",
-      "label": "we.ones_like",
+      "label": "fnp.ones_like",
       "original_target": "ones_like",
       "role": "",
       "target": "ones_like",
@@ -585,7 +588,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/empty",
-      "label": "we.empty",
+      "label": "fnp.empty",
       "original_target": "empty",
       "role": "",
       "target": "empty",
@@ -601,7 +604,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/zeros",
-      "label": "we.zeros",
+      "label": "fnp.zeros",
       "original_target": "zeros",
       "role": "",
       "target": "zeros",
@@ -617,19 +620,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/full",
-      "label": "we.full",
+      "label": "fnp.full",
       "original_target": "full",
       "role": "",
       "target": "full",
       "unresolved": false
     }
   ],
-  "signature": "we.ones(shape, dtype=None, order='C', *, device=None, like=None)",
+  "signature": "fnp.ones(shape, dtype=None, order='C', *, device=None, like=None)",
   "slug": "ones",
   "summary": "Return a new array of given shape and type, filled with ones.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L137",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.ones",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L56"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L170",
+  "weight": 0.0
 }

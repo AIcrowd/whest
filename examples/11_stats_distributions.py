@@ -1,6 +1,6 @@
 """Statistical distributions with FLOP counting (scipy.stats compatible).
 
-``we.stats`` provides continuous distributions that match scipy.stats
+``flops.stats`` provides continuous distributions that match scipy.stats
 exactly (same signatures, same numerical results) while tracking FLOP
 costs.  Each distribution has ``.pdf()``, ``.cdf()``, and ``.ppf()``
 methods.
@@ -8,25 +8,27 @@ methods.
 Run: uv run python examples/11_stats_distributions.py
 """
 
-import whest as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
+fnp = fnp  # backwards-compat local alias for this test
 # ---------------------------------------------------------------------------
 # 1. Basic usage — normal distribution
 # ---------------------------------------------------------------------------
 print("=== Normal distribution ===\n")
 
-with we.BudgetContext(flop_budget=10**6) as budget:
-    x = we.random.randn(1000)
+with flops.BudgetContext(flop_budget=10**6) as budget:
+    x = fnp.random.randn(1000)
 
-    pdf_vals = we.stats.norm.pdf(x, loc=0, scale=1)
-    cdf_vals = we.stats.norm.cdf(x, loc=0, scale=1)
+    pdf_vals = flops.stats.norm.pdf(x, loc=0, scale=1)
+    cdf_vals = flops.stats.norm.cdf(x, loc=0, scale=1)
 
     # Inverse CDF (percent-point function)
-    q = we.array([0.025, 0.5, 0.975])
-    quantiles = we.stats.norm.ppf(q)
+    q = fnp.array([0.025, 0.5, 0.975])
+    quantiles = flops.stats.norm.ppf(q)
 
-print(f"PDF at x=0:        {we.stats.norm.pdf(0.0):.6f}")
-print(f"CDF at x=1.96:     {we.stats.norm.cdf(1.96):.6f}")
+print(f"PDF at x=0:        {flops.stats.norm.pdf(0.0):.6f}")
+print(f"CDF at x=1.96:     {flops.stats.norm.cdf(1.96):.6f}")
 print(f"Quantiles (2.5%, 50%, 97.5%): {quantiles}")
 print(f"FLOPs used:        {budget.flops_used:,}")
 
@@ -36,17 +38,17 @@ print(f"FLOPs used:        {budget.flops_used:,}")
 print("\n=== FLOP cost per 10,000 elements ===\n")
 
 n = 10_000
-x = we.random.randn(n)
+x = fnp.random.randn(n)
 
 distributions = [
-    ("norm", we.stats.norm),
-    ("uniform", we.stats.uniform),
-    ("expon", we.stats.expon),
-    ("cauchy", we.stats.cauchy),
-    ("logistic", we.stats.logistic),
-    ("laplace", we.stats.laplace),
-    ("lognorm", we.stats.lognorm),
-    ("truncnorm", we.stats.truncnorm),
+    ("norm", flops.stats.norm),
+    ("uniform", flops.stats.uniform),
+    ("expon", flops.stats.expon),
+    ("cauchy", flops.stats.cauchy),
+    ("logistic", flops.stats.logistic),
+    ("laplace", flops.stats.laplace),
+    ("lognorm", flops.stats.lognorm),
+    ("truncnorm", flops.stats.truncnorm),
 ]
 
 print(f"{'Distribution':<14} {'PDF cost':>10} {'CDF cost':>10} {'PPF cost':>10}")
@@ -65,12 +67,12 @@ for name, dist in distributions:
         q_args = (0.5,)
 
     for method_name in ("pdf", "cdf", "ppf"):
-        with we.BudgetContext(flop_budget=10**8, quiet=True) as b:
+        with flops.BudgetContext(flop_budget=10**8, quiet=True) as b:
             method = getattr(dist, method_name)
             if method_name == "ppf":
                 # ppf takes quantiles in [0,1], use uniform random
-                u = we.random.randn(n)
-                u = 1 / (1 + we.exp(-u))  # sigmoid to [0,1]
+                u = fnp.random.randn(n)
+                u = 1 / (1 + fnp.exp(-u))  # sigmoid to [0,1]
                 method(u, *q_args[1:]) if len(q_args) > 1 else method(u)
             else:
                 method(*args)
@@ -91,14 +93,14 @@ print("\n=== Practical: Gaussian quantile computation under budget ===\n")
 
 flop_limit = 500_000
 
-with we.BudgetContext(flop_budget=flop_limit) as budget:
+with flops.BudgetContext(flop_budget=flop_limit) as budget:
     # Generate 10k samples
-    samples = we.random.randn(10_000)
+    samples = fnp.random.randn(10_000)
 
     # Compute CDF values (how likely is each sample?)
-    probabilities = we.stats.norm.cdf(samples)
+    probabilities = flops.stats.norm.cdf(samples)
 
-    # What fraction of budget did we use?
+    # What fraction of budget did fnp use?
     remaining = flop_limit - budget.flops_used
 
 print(f"Samples:     {samples.shape[0]:,}")

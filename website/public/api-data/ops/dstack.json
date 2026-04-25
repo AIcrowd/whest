@@ -196,7 +196,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/concatenate",
-                "label": "we.concatenate",
+                "label": "fnp.concatenate",
                 "original_target": "concatenate",
                 "role": "",
                 "target": "concatenate",
@@ -212,7 +212,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/stack",
-                "label": "we.stack",
+                "label": "fnp.stack",
                 "original_target": "stack",
                 "role": "",
                 "target": "stack",
@@ -228,7 +228,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/block",
-                "label": "we.block",
+                "label": "fnp.block",
                 "original_target": "block",
                 "role": "",
                 "target": "block",
@@ -244,7 +244,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/vstack",
-                "label": "we.vstack",
+                "label": "fnp.vstack",
                 "original_target": "vstack",
                 "role": "",
                 "target": "vstack",
@@ -260,7 +260,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/hstack",
-                "label": "we.hstack",
+                "label": "fnp.hstack",
                 "original_target": "hstack",
                 "role": "",
                 "target": "hstack",
@@ -276,7 +276,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/column_stack",
-                "label": "we.column_stack",
+                "label": "fnp.column_stack",
                 "original_target": "column_stack",
                 "role": "",
                 "target": "column_stack",
@@ -292,7 +292,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/dsplit",
-                "label": "we.dsplit",
+                "label": "fnp.dsplit",
                 "original_target": "dsplit",
                 "role": "",
                 "target": "dsplit",
@@ -311,34 +311,34 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array((1,2,3))"
+                "text": "a = fnp.array((1,2,3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array((2,3,4))"
+                "text": "b = fnp.array((4,5,6))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.dstack((a,b))"
+                "text": "fnp.dstack((a,b))"
               },
               {
                 "kind": "output",
-                "text": "array([[[1, 2],"
+                "text": "array([[[1, 4],"
               },
               {
                 "kind": "output",
-                "text": "        [2, 3],"
+                "text": "        [2, 5],"
               },
               {
                 "kind": "output",
-                "text": "        [3, 4]]])"
+                "text": "        [3, 6]]])"
               }
             ],
             "type": "doctest_block"
@@ -348,29 +348,29 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1],[2],[3]])"
+                "text": "a = fnp.array([[1],[2],[3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([[2],[3],[4]])"
+                "text": "b = fnp.array([[4],[5],[6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.dstack((a,b))"
+                "text": "fnp.dstack((a,b))"
               },
               {
                 "kind": "output",
-                "text": "array([[[1, 2]],"
+                "text": "array([[[1, 4]],"
               },
               {
                 "kind": "output",
-                "text": "       [[2, 3]],"
+                "text": "       [[2, 5]],"
               },
               {
                 "kind": "output",
-                "text": "       [[3, 4]]])"
+                "text": "       [[3, 6]]])"
               }
             ],
             "type": "doctest_block"
@@ -384,20 +384,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.dstack",
     "module": "numpy",
     "name": "dstack",
     "notes": "Stack arrays depth-wise (along third axis). Cost: numel(output).",
     "numpy_ref": "np.dstack",
-    "signature": "we.dstack(tup)",
+    "signature": "fnp.dstack(tup)",
     "status": "supported",
     "summary": "Stack arrays in sequence depth wise (along third axis).",
-    "weight": 1.0,
-    "whest_ref": "we.dstack"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "dstack",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L669",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L890"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L890",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_shape_base_impl.py#L673"
   }
 }

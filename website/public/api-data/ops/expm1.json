@@ -303,7 +303,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/log1p",
-                "label": "we.log1p",
+                "label": "fnp.log1p",
                 "original_target": "log1p",
                 "role": "",
                 "target": "log1p",
@@ -377,17 +377,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
-              }
-            ],
-            "type": "doctest_block"
-          },
-          {
-            "lines": [
+                "text": "import flopscope as fnp"
+              },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.expm1(1e-10)"
+                "text": "fnp.expm1(1e-10)"
               },
               {
                 "kind": "output",
@@ -396,7 +391,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.exp(1e-10) - 1"
+                "text": "fnp.exp(1e-10) - 1"
               },
               {
                 "kind": "output",
@@ -414,20 +409,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.expm1",
     "module": "numpy",
     "name": "expm1",
     "notes": "Element-wise e^x - 1 (accurate near zero).",
     "numpy_ref": "np.expm1",
-    "signature": "we.expm1(x)",
+    "signature": "fnp.expm1(x)",
     "status": "supported",
     "summary": "Calculate ``exp(x) - 1`` for all elements in the array.",
-    "weight": 16.0,
-    "whest_ref": "we.expm1"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "expm1",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

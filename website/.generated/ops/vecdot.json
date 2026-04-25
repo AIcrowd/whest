@@ -374,7 +374,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/vdot",
-              "label": "we.vdot",
+              "label": "fnp.vdot",
               "original_target": "vdot",
               "role": "",
               "target": "vdot",
@@ -390,7 +390,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/matmul",
-              "label": "we.matmul",
+              "label": "fnp.matmul",
               "original_target": "matmul",
               "role": "",
               "target": "matmul",
@@ -406,7 +406,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/vecmat",
-              "label": "we.vecmat",
+              "label": "fnp.vecmat",
               "original_target": "vecmat",
               "role": "",
               "target": "vecmat",
@@ -422,7 +422,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/matvec",
-              "label": "we.matvec",
+              "label": "fnp.matvec",
               "original_target": "matvec",
               "role": "",
               "target": "matvec",
@@ -438,7 +438,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/einsum",
-              "label": "we.einsum",
+              "label": "fnp.einsum",
               "original_target": "einsum",
               "role": "",
               "target": "einsum",
@@ -457,7 +457,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             }
           ],
           "type": "doctest_block"
@@ -476,17 +476,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "v = we.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])"
+              "text": "v = fnp.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "n = we.array([0., 0.6, 0.8])"
+              "text": "n = fnp.array([0., 0.6, 0.8])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.vecdot(v, n)"
+              "text": "fnp.vecdot(v, n)"
             },
             {
               "kind": "output",
@@ -517,16 +517,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nv = we.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])\n\nn = we.array([0., 0.6, 0.8])\n\nwe.vecdot(v, n)",
+    "code": "import flopscope as fnp\n\nv = fnp.array([[0., 5., 0.], [0., 0., 10.], [0., 6., 8.]])\n\nn = fnp.array([0., 0.6, 0.8])\n\nfnp.vecdot(v, n)",
     "output": "array([ 3.,  8., 10.])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.vecdot",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L545",
   "href": "/docs/api/ops/vecdot/",
   "module": "numpy",
   "name": "vecdot",
   "next": {
     "href": "/docs/api/ops/vecmat/",
-    "label": "we.vecmat"
+    "label": "fnp.vecmat"
   },
   "notes": "Vector dot product along last axis.",
   "notes_sections": [],
@@ -559,7 +562,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/vdot/",
-    "label": "we.vdot"
+    "label": "fnp.vdot"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.vecdot.html",
@@ -584,7 +587,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/vdot",
-      "label": "we.vdot",
+      "label": "fnp.vdot",
       "original_target": "vdot",
       "role": "",
       "target": "vdot",
@@ -600,7 +603,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/matmul",
-      "label": "we.matmul",
+      "label": "fnp.matmul",
       "original_target": "matmul",
       "role": "",
       "target": "matmul",
@@ -616,7 +619,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/vecmat",
-      "label": "we.vecmat",
+      "label": "fnp.vecmat",
       "original_target": "vecmat",
       "role": "",
       "target": "vecmat",
@@ -632,7 +635,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/matvec",
-      "label": "we.matvec",
+      "label": "fnp.matvec",
       "original_target": "matvec",
       "role": "",
       "target": "matvec",
@@ -648,19 +651,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/einsum",
-      "label": "we.einsum",
+      "label": "fnp.einsum",
       "original_target": "einsum",
       "role": "",
       "target": "einsum",
       "unresolved": false
     }
   ],
-  "signature": "we.vecdot(a, b, **kwargs)",
+  "signature": "fnp.vecdot(a, b, **kwargs)",
   "slug": "vecdot",
   "summary": "Vector dot product of two arrays.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.vecdot",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L545"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

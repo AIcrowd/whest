@@ -1,20 +1,21 @@
-"""Basic whest usage — BudgetContext, free ops, counted ops, summary.
+"""Basic flopscope usage — BudgetContext, free ops, counted ops, summary.
 
 Run: uv run python examples/01_basic_usage.py
 """
 
-import whest as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
-with we.BudgetContext(flop_budget=10_000_000) as budget:
+with flops.BudgetContext(flop_budget=10_000_000) as budget:
     # Free operations (0 FLOPs)
-    W = we.ones((256, 256))
-    x = we.ones((256,))
+    W = fnp.ones((256, 256))
+    x = fnp.ones((256,))
 
     # Counted operations
-    h = we.einsum("ij,j->i", W, x)  # matrix-vector multiply
-    h = we.maximum(h, 0)  # ReLU
-    h = we.exp(h)  # exponential
-    total = we.sum(h)  # reduction
+    h = fnp.einsum("ij,j->i", W, x)  # matrix-vector multiply
+    h = fnp.maximum(h, 0)  # ReLU
+    h = fnp.exp(h)  # exponential
+    total = fnp.sum(h)  # reduction
 
     print(budget.summary())
     print(f"\nResult: {total}")

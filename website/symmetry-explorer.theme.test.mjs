@@ -34,14 +34,14 @@ test('explorer theme registry exposes the approved presets', () => {
       'deep-info-ledger',
       'warm-exception',
       'muted-amber',
-      'whestbench-axis',
-      'whestbench-axis-blue',
-      'whestbench-sampling',
-      'whestbench-cov-prop',
-      'whestbench-diverging',
-      'whestbench-verdict',
-      'whestbench-scorecard',
-      'whestbench-sage',
+      'flopscopebench-axis',
+      'flopscopebench-axis-blue',
+      'flopscopebench-sampling',
+      'flopscopebench-cov-prop',
+      'flopscopebench-diverging',
+      'flopscopebench-verdict',
+      'flopscopebench-scorecard',
+      'flopscopebench-sage',
       'coral-slate-contrast',
       'coral-slate-split',
       'coral-slate-hardline',
@@ -62,11 +62,11 @@ test('explorer theme registry exposes the approved presets', () => {
   const editorialBalanceSlate = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-balance-slate');
   const editorialBalanceWarm = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'editorial-balance-warm');
   const teachingCalm = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'teaching-calm');
-  const whestbenchSampling = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-sampling');
-  const whestbenchCovProp = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-cov-prop');
-  const whestbenchVerdict = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-verdict');
-  const whestbenchSage = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-sage');
-  const whestbenchAxisBlue = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'whestbench-axis-blue');
+  const flopscopebenchSampling = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'flopscopebench-sampling');
+  const flopscopebenchCovProp = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'flopscopebench-cov-prop');
+  const flopscopebenchVerdict = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'flopscopebench-verdict');
+  const flopscopebenchSage = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'flopscopebench-sage');
+  const flopscopebenchAxisBlue = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'flopscopebench-axis-blue');
   const coralSlateContrast = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'coral-slate-contrast');
   const coralSlateHardline = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'coral-slate-hardline');
   const inkAuthority = EXPLORER_THEME_PRESETS.find((preset) => preset.id === 'ink-authority');
@@ -81,11 +81,11 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.ok(editorialBalanceSlate);
   assert.ok(editorialBalanceWarm);
   assert.ok(teachingCalm);
-  assert.ok(whestbenchSampling);
-  assert.ok(whestbenchCovProp);
-  assert.ok(whestbenchVerdict);
-  assert.ok(whestbenchSage);
-  assert.ok(whestbenchAxisBlue);
+  assert.ok(flopscopebenchSampling);
+  assert.ok(flopscopebenchCovProp);
+  assert.ok(flopscopebenchVerdict);
+  assert.ok(flopscopebenchSage);
+  assert.ok(flopscopebenchAxisBlue);
   assert.ok(coralSlateContrast);
   assert.ok(coralSlateHardline);
   assert.ok(inkAuthority);
@@ -105,14 +105,14 @@ test('explorer theme registry exposes the approved presets', () => {
   assert.equal(EXPLORER_THEME_PRESETS[0].roles.quantity, '#292C2D');
   assert.equal(teachingCalm.roles.symmetryObject, '#2959C4');
   assert.equal(teachingCalm.roles.action, '#FA9E33');
-  assert.equal(whestbenchSampling.roles.quantity, '#D23934');
-  assert.equal(whestbenchCovProp.roles.action, '#B29F9E');
-  assert.equal(whestbenchAxisBlue.roles.summedSide, '#334155');
-  assert.equal(whestbenchAxisBlue.roles.action, '#B29F9E');
-  assert.equal(whestbenchAxisBlue.roles.quantity, '#334155');
-  assert.equal(whestbenchVerdict.roles.quantity, '#B29F9E');
-  assert.equal(whestbenchSage.roles.quantity, '#94A3B8');
-  assert.equal(whestbenchVerdict.roles.statusSuccess, '#B29F9E');
+  assert.equal(flopscopebenchSampling.roles.quantity, '#D23934');
+  assert.equal(flopscopebenchCovProp.roles.action, '#B29F9E');
+  assert.equal(flopscopebenchAxisBlue.roles.summedSide, '#334155');
+  assert.equal(flopscopebenchAxisBlue.roles.action, '#B29F9E');
+  assert.equal(flopscopebenchAxisBlue.roles.quantity, '#334155');
+  assert.equal(flopscopebenchVerdict.roles.quantity, '#B29F9E');
+  assert.equal(flopscopebenchSage.roles.quantity, '#94A3B8');
+  assert.equal(flopscopebenchVerdict.roles.statusSuccess, '#B29F9E');
   assert.equal(coralSlateContrast.roles.quantity, '#334155');
   assert.equal(coralSlateHardline.roles.quantity, '#292C2D');
   assert.equal(inkAuthority.roles.symmetryObject, '#292C2D');

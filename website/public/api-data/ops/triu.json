@@ -95,7 +95,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/tril",
-                "label": "we.tril",
+                "label": "fnp.tril",
                 "original_target": "tril",
                 "role": "",
                 "target": "tril",
@@ -114,12 +114,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.triu([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)"
+                "text": "fnp.triu([[1,2,3],[4,5,6],[7,8,9],[10,11,12]], -1)"
               },
               {
                 "kind": "output",
@@ -145,7 +145,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.triu(we.arange(3*4*5).reshape(3, 4, 5))"
+                "text": "fnp.triu(fnp.arange(3*4*5).reshape(3, 4, 5))"
               },
               {
                 "kind": "output",
@@ -207,20 +207,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.triu",
     "module": "numpy",
     "name": "triu",
     "notes": "Upper triangle of array.",
     "numpy_ref": "np.triu",
-    "signature": "we.triu(m, k=0)",
+    "signature": "fnp.triu(m, k=0)",
     "status": "supported",
     "summary": "Upper triangle of an array.",
-    "weight": 0.0,
-    "whest_ref": "we.triu"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "triu",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L497",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L444"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L444",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_twodim_base_impl.py#L510"
   }
 }

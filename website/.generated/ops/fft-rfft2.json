@@ -156,7 +156,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "we.fft"
+                      "text": "fnp.fft"
                     },
                     {
                       "kind": "text",
@@ -187,7 +187,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "we.fft"
+                  "text": "fnp.fft"
                 },
                 {
                   "kind": "text",
@@ -348,17 +348,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.mgrid[:5, :5][0]"
+              "text": "a = fnp.mgrid[:5, :5][0]"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.rfft2(a)"
+              "text": "fnp.fft.rfft2(a)"
             },
             {
               "kind": "output",
@@ -398,16 +398,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.mgrid[:5, :5][0]\n\nwe.fft.rfft2(a)",
+    "code": "import flopscope as fnp\n\na = fnp.mgrid[:5, :5][0]\n\nfnp.fft.rfft2(a)",
     "output": "array([[ 50.  +0.j        ,   0.  +0.j        ,   0.  +0.j        ],\n       [-12.5+17.20477401j,   0.  +0.j        ,   0.  +0.j        ],\n       [-12.5 +4.0614962j ,   0.  +0.j        ,   0.  +0.j        ],\n       [-12.5 -4.0614962j ,   0.  +0.j        ,   0.  +0.j        ],\n       [-12.5-17.20477401j,   0.  +0.j        ,   0.  +0.j        ]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.rfft2",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L283",
   "href": "/docs/api/ops/fft-rfft2/",
   "module": "numpy.fft",
   "name": "fft.rfft2",
   "next": {
     "href": "/docs/api/ops/fft-rfftfreq/",
-    "label": "we.fft.rfftfreq"
+    "label": "fnp.fft.rfftfreq"
   },
   "notes": "2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -458,7 +461,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `we.fft`). Default is \"backward\".",
+        "Normalization mode (see `fnp.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -483,7 +486,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/fft-rfft/",
-    "label": "we.fft.rfft"
+    "label": "fnp.fft.rfft"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.rfft2.html",
@@ -514,12 +517,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.rfft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
+  "signature": "fnp.fft.rfft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
   "slug": "fft-rfft2",
   "summary": "Compute the 2-dimensional FFT of a real array.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1387",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.rfft2",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L283"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/fft/_pocketfft.py#L1393",
+  "weight": 1.0
 }

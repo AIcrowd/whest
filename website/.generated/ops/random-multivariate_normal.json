@@ -81,7 +81,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.multivariate_normal`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.multivariate_normal`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -604,7 +604,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Diagonal covariance means that points are oriented along x or y-axis:"
+              "text": "Diagonal covariance means that the variables are independent, and the\nprobability density contours have their axes aligned with the coordinate axes:"
             }
           ],
           "type": "paragraph"
@@ -619,7 +619,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x, y = we.random.multivariate_normal(mean, cov, 5000).T"
+              "text": "x, y = fnp.random.multivariate_normal(mean, cov, 5000).T"
             },
             {
               "kind": "input",
@@ -683,7 +683,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.random.multivariate_normal(mean, cov, (3, 3))"
+              "text": "x = fnp.random.multivariate_normal(mean, cov, (3, 3))"
             },
             {
               "kind": "input",
@@ -711,12 +711,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "cov = we.array([[6, -3], [-3, 3.5]])"
+              "text": "cov = fnp.array([[6, -3], [-3, 3.5]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "pts = we.random.multivariate_normal([0, 0], cov, size=800)"
+              "text": "pts = fnp.random.multivariate_normal([0, 0], cov, size=800)"
             }
           ],
           "type": "doctest_block"
@@ -744,7 +744,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.cov(pts.T)"
+              "text": "fnp.cov(pts.T)"
             },
             {
               "kind": "output",
@@ -757,7 +757,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.corrcoef(pts.T)[0, 1]"
+              "text": "fnp.corrcoef(pts.T)[0, 1]"
             },
             {
               "kind": "output",
@@ -829,16 +829,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "mean = (1, 2)\n\ncov = [[1, 0], [0, 1]]\n\nx = we.random.multivariate_normal(mean, cov, (3, 3))\n\nx.shape\n\ncov = we.array([[6, -3], [-3, 3.5]])\n\npts = we.random.multivariate_normal([0, 0], cov, size=800)\n\npts.mean(axis=0)\n\nwe.cov(pts.T)\n\nwe.corrcoef(pts.T)[0, 1]\n\nimport matplotlib.pyplot as plt\n\nplt.plot(pts[:, 0], pts[:, 1], '.', alpha=0.5)\n\nplt.axis('equal')\n\nplt.grid()\n\nplt.show()",
+    "code": "mean = (1, 2)\n\ncov = [[1, 0], [0, 1]]\n\nx = fnp.random.multivariate_normal(mean, cov, (3, 3))\n\nx.shape\n\ncov = fnp.array([[6, -3], [-3, 3.5]])\n\npts = fnp.random.multivariate_normal([0, 0], cov, size=800)\n\npts.mean(axis=0)\n\nfnp.cov(pts.T)\n\nfnp.corrcoef(pts.T)[0, 1]\n\nimport matplotlib.pyplot as plt\n\nplt.plot(pts[:, 0], pts[:, 1], '.', alpha=0.5)\n\nplt.axis('equal')\n\nplt.grid()\n\nplt.show()",
     "output": "(3, 3, 2)\n\narray([ 0.0326911 , -0.01280782])  # may vary\n\narray([[ 5.96202397, -2.85602287],\n       [-2.85602287,  3.47613949]])  # may vary\n\n-0.6273591314603949  # may vary",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.multivariate_normal",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-multivariate_normal/",
   "module": "numpy.random",
   "name": "random.multivariate_normal",
   "next": {
     "href": "/docs/api/ops/random-negative_binomial/",
-    "label": "we.random.negative_binomial"
+    "label": "fnp.random.negative_binomial"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -848,8 +851,8 @@
     "- Spherical covariance (`cov` is a multiple of the identity matrix) - Diagonal covariance (`cov` has non-negative elements, and only on the diagonal)",
     "This geometrical property can be seen in two dimensions by plotting generated data-points:",
     ">>> mean = [0, 0] >>> cov = [[1, 0], [0, 100]]  # diagonal covariance",
-    "Diagonal covariance means that points are oriented along x or y-axis:",
-    ">>> import matplotlib.pyplot as plt >>> x, y = we.random.multivariate_normal(mean, cov, 5000).T >>> plt.plot(x, y, 'x') >>> plt.axis('equal') >>> plt.show()",
+    "Diagonal covariance means that the variables are independent, and the probability density contours have their axes aligned with the coordinate axes:",
+    ">>> import matplotlib.pyplot as plt >>> x, y = fnp.random.multivariate_normal(mean, cov, 5000).T >>> plt.plot(x, y, 'x') >>> plt.axis('equal') >>> plt.show()",
     "Note that the covariance matrix must be positive semidefinite (a.k.a. nonnegative-definite). Otherwise, the behavior of this method is undefined and backwards compatibility is not guaranteed."
   ],
   "numpy_ref": "np.random.multivariate_normal",
@@ -897,7 +900,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-multinomial/",
-    "label": "we.random.multinomial"
+    "label": "fnp.random.multinomial"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.multivariate_normal.html",
@@ -932,12 +935,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
+  "signature": "fnp.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
   "slug": "random-multivariate_normal",
   "summary": "Draw random samples from a multivariate normal distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.multivariate_normal",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

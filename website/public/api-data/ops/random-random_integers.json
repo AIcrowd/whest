@@ -16,7 +16,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "int_",
-                "text": "we.int_"
+                "text": "fnp.int_"
               },
               {
                 "kind": "text",
@@ -57,7 +57,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "int_",
-                "text": "we.int_"
+                "text": "fnp.int_"
               },
               {
                 "kind": "text",
@@ -100,7 +100,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "int_",
-                "text": "we.int_"
+                "text": "fnp.int_"
               },
               {
                 "kind": "text",
@@ -428,7 +428,7 @@
           },
           {
             "language": null,
-            "text": "a + (b - a) * (we.random.random_integers(N) - 1) / (N - 1.)",
+            "text": "a + (b - a) * (fnp.random.random_integers(N) - 1) / (N - 1.)",
             "type": "literal_block"
           }
         ],
@@ -441,7 +441,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.random_integers(5)"
+                "text": "fnp.random.random_integers(5)"
               },
               {
                 "kind": "output",
@@ -450,16 +450,16 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "type(we.random.random_integers(5))"
+                "text": "type(fnp.random.random_integers(5))"
               },
               {
                 "kind": "output",
-                "text": "<class 'we.int64'>"
+                "text": "<class 'fnp.int64'>"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.random_integers(5, size=(3,2))"
+                "text": "fnp.random.random_integers(5, size=(3,2))"
               },
               {
                 "kind": "output",
@@ -506,7 +506,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "2.5 * (we.random.random_integers(5, size=(5,)) - 1) / 4."
+                "text": "2.5 * (fnp.random.random_integers(5, size=(5,)) - 1) / 4."
               },
               {
                 "kind": "output",
@@ -529,12 +529,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "d1 = we.random.random_integers(1, 6, 1000)"
+                "text": "d1 = fnp.random.random_integers(1, 6, 1000)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "d2 = we.random.random_integers(1, 6, 1000)"
+                "text": "d2 = fnp.random.random_integers(1, 6, 1000)"
               },
               {
                 "kind": "input",
@@ -582,20 +582,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.random_integers",
     "module": "numpy.random",
     "name": "random.random_integers",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.random_integers",
-    "signature": "we.random.random_integers(low, high=None, size=None)",
+    "signature": "fnp.random.random_integers(low, high=None, size=None)",
     "status": "supported",
-    "summary": "Random integers of type `we.int_` between `low` and `high`, inclusive.",
-    "weight": 1.0,
-    "whest_ref": "we.random.random_integers"
+    "summary": "Random integers of type `fnp.int_` between `low` and `high`, inclusive.",
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "random-random_integers",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.random_integers.html",
-    "whest": null
+    "flopscope": null,
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.random_integers.html"
   }
 }

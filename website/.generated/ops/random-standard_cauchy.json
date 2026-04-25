@@ -81,7 +81,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.standard_cauchy`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.standard_cauchy`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -312,7 +312,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.standard_cauchy(1000000)"
+              "text": "s = fnp.random.standard_cauchy(1000000)"
             },
             {
               "kind": "input",
@@ -360,16 +360,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import matplotlib.pyplot as plt\n\ns = we.random.standard_cauchy(1000000)\n\ns = s[(s>-25) & (s<25)]  # truncate distribution so it plots well\n\nplt.hist(s, bins=100)\n\nplt.show()",
+    "code": "import matplotlib.pyplot as plt\n\ns = fnp.random.standard_cauchy(1000000)\n\ns = s[(s>-25) & (s<25)]  # truncate distribution so it plots well\n\nplt.hist(s, bins=100)\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.standard_cauchy",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-standard_cauchy/",
   "module": "numpy.random",
   "name": "random.standard_cauchy",
   "next": {
     "href": "/docs/api/ops/random-standard_exponential/",
-    "label": "we.random.standard_exponential"
+    "label": "fnp.random.standard_exponential"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -393,7 +396,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-shuffle/",
-    "label": "we.random.shuffle"
+    "label": "fnp.random.shuffle"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_cauchy.html",
@@ -424,12 +427,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.standard_cauchy(size=None)",
+  "signature": "fnp.random.standard_cauchy(size=None)",
   "slug": "random-standard_cauchy",
   "summary": "Draw samples from a standard Cauchy distribution with mode = 0.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.standard_cauchy",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

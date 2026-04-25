@@ -124,7 +124,7 @@
                         "href": "/docs/api/ops/linalg-norm",
                         "kind": "link",
                         "target": "linalg.norm",
-                        "text": "we.linalg.norm"
+                        "text": "fnp.linalg.norm"
                       },
                       {
                         "kind": "text",
@@ -153,7 +153,7 @@
                     "href": "/docs/api/ops/linalg-norm",
                     "kind": "link",
                     "target": "linalg.norm",
-                    "text": "we.linalg.norm"
+                    "text": "fnp.linalg.norm"
                   },
                   {
                     "kind": "text",
@@ -184,7 +184,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/linalg-norm",
-                "label": "we.linalg.norm",
+                "label": "fnp.linalg.norm",
                 "original_target": "numpy.linalg.norm",
                 "role": "",
                 "target": "linalg.norm",
@@ -208,7 +208,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(9) - 4"
+                "text": "a = fnp.arange(9) - 4"
               },
               {
                 "kind": "input",
@@ -267,7 +267,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.matrix_norm(b, ord=we.inf)"
+                "text": "LA.matrix_norm(b, ord=fnp.inf)"
               },
               {
                 "kind": "output",
@@ -276,7 +276,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "LA.matrix_norm(b, ord=-we.inf)"
+                "text": "LA.matrix_norm(b, ord=-fnp.inf)"
               },
               {
                 "kind": "output",
@@ -335,20 +335,20 @@
     "category": "counted_custom",
     "cost_formula": "depends on ord",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.linalg.matrix_norm",
     "module": "numpy.linalg",
     "name": "linalg.matrix_norm",
     "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     "numpy_ref": "np.linalg.matrix_norm",
-    "signature": "we.linalg.matrix_norm(x, ord='fro', keepdims=False)",
+    "signature": "fnp.linalg.matrix_norm(x, ord='fro', keepdims=False)",
     "status": "supported",
     "summary": "Computes the matrix norm of a matrix (or a stack of matrices) ``x``.",
-    "weight": 1.0,
-    "whest_ref": "we.linalg.matrix_norm"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "linalg-matrix_norm",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3418",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L310"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L310",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L3446"
   }
 }

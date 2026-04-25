@@ -1,0 +1,113 @@
+---
+title: "How Flopscope Works"
+---
+
+*Understand how Flopscope wraps NumPy to count every FLOP.*
+
+**You will learn:**
+- The wrapping pattern that makes `import flopscope as we` a drop-in for NumPy
+- How costs are calculated from tensor shapes before execution
+- How budgets are enforced and what happens when they are exceeded
+- How the operation registry classifies every NumPy callable
+
+## The wrapping pattern
+
+flopscope exposes a NumPy-compatible API. When you write `import flopscope as we` and call `we.einsum(...)`, you get a function that behaves like `np.einsum(...)` but with FLOP counting layered on top.
+
+Under the hood, flopscope re-exports wrapped versions of NumPy functions. The `flopscope/__init__.py` module imports from internal modules that each handle a category of operations:
+
+- **`_pointwise.py`** -- unary and binary elementwise operations (`exp`, `add`, `multiply`, etc.)
+- **`_einsum.py`** -- the `einsum` and `einsum_path` functions with symmetry-aware path optimization
+- **`_free_ops.py`** -- zero-cost operations (`zeros`, `reshape`, `transpose`, `copy`, etc.)
+- **`_counting_ops.py`** -- operations that look free but involve genuine computation (`trace`, `histogram`, etc.)
+- **`_sorting_ops.py`** -- sorting, searching, and set operations
+- **Submodules** -- `flopscope.numpy.linalg`, `flopscope.numpy.fft`, `flopscope.numpy.random`, `flopscope.stats`
+
+Each wrapped function follows the same pattern: compute the analytical FLOP cost, check the budget, then delegate to the real NumPy implementation.
+
+## Cost interception
+
+When you call a counted operation, flopscope computes its FLOP cost analytically from the tensor shapes *before* the operation executes. The cost depends on the operation category:
+
+| Category | Cost formula | Example |
+|----------|-------------|---------|
+| Pointwise unary | `numel(output)` | `we.exp(x)` on shape (256, 256) costs 65,536 |
+| Pointwise binary | `numel(output)` | `we.add(a, b)` with broadcast output (256, 256) costs 65,536 |
+| Reduction | `numel(input)` | `we.sum(x)` on shape (256, 256) costs 65,536 |
+| Einsum | product of all index dimensions | `'ij,jk->ik'` with shapes (m, k), (k, n) costs m * k * n |
+| Free | 0 | `we.zeros(...)`, `we.reshape(...)`, `we.transpose(...)` |
+
+The cost is always deterministic -- the same shapes produce the same FLOP count regardless of the data values or the hardware running the code.
+
+Each FMA (fused multiply-add) counts as 1 operation, not 2. A matrix multiply of dimensions (m, k) x (k, n) costs `m * k * n` FLOPs.
+
+## Budget enforcement
+
+`BudgetContext` accumulates the cost of every operation that runs inside it. Before each counted operation executes, the budget is checked:
+
+1. The wrapped function computes the analytical cost from input shapes
+2. It calls `budget.deduct(op_name, flop_cost=cost, ...)` on the active budget
+3. `deduct()` checks if `flops_used + cost > flop_budget`
+4. If within budget: the cost is recorded, and the real NumPy function runs
+5. If over budget: `BudgetExhaustedError` is raised, and the operation does **not** execute
+
+Every deduction is recorded as an `OpRecord` in the budget's operation log, capturing the operation name, input shapes, FLOP cost, and cumulative total. This log powers the budget summary and debugging tools.
+
+If no explicit `BudgetContext` is active, Flopscope automatically creates a global default context with a budget of 1e15 FLOPs (configurable via the `FLOPSCOPE_DEFAULT_BUDGET` environment variable). This means bare calls outside any `with` block still work and still count FLOPs.
+
+### The flow of a single call
+
+Here is what happens when you call `we.matmul(A, B)` with shapes (100, 200) and (200, 50):
+
+```
+User calls we.matmul(A, B)
+    |
+    v
+flopscope computes cost: 100 * 200 * 50 = 1,000,000 FLOPs
+    |
+    v
+budget.deduct("matmul", flop_cost=1_000_000, shapes=((100,200), (200,50)))
+    |
+    +--> if flops_used + 1_000_000 > flop_budget:
+    |        raise BudgetExhaustedError
+    |
+    +--> else: flops_used += 1_000_000
+                record OpRecord to op_log
+    |
+    v
+np.matmul(A, B) executes and returns the result
+    |
+    v
+Result returned to user
+```
+
+## The operation registry
+
+The registry (`flopscope/_registry.py`) is a mapping of every NumPy callable to its classification and cost behavior. Each entry specifies:
+
+- **Category:** one of `counted_unary`, `counted_binary`, `counted_reduction`, `counted_custom`, `free`, or `blacklisted`
+- **Module:** which NumPy module it belongs to (`numpy`, `numpy.linalg`, `numpy.fft`, etc.)
+- **Notes:** any special behavior or cost formula details
+
+The categories determine how costs are calculated:
+
+| Category | Meaning | Cost |
+|----------|---------|------|
+| `counted_unary` | Scalar math on each element | `numel(output)` |
+| `counted_binary` | Element-wise binary operation | `numel(output)` |
+| `counted_reduction` | Reduce an array along axes | `numel(input)` |
+| `counted_custom` | Bespoke cost formula | Varies (e.g., `n * ceil(log2(n))` for sort) |
+| `free` | Zero FLOP cost | 0 |
+| `blacklisted` | Intentionally unsupported | Raises `AttributeError` |
+
+**Free operations** include allocation (`zeros`, `ones`, `empty`), shape manipulation (`reshape`, `transpose`, `squeeze`), indexing helpers (`ix_`, `indices`), and metadata queries (`shape`, `ndim`, `size`). These do not touch the budget.
+
+**Blocked operations** include I/O (`save`, `load`), error state management (`geterr`, `seterr`), and other operations that do not make sense in a FLOP-counted context. Calling a blocked operation raises `AttributeError`.
+
+When per-operation [weights](/docs/development/calibration/) are loaded, the analytical cost is multiplied by the operation's weight before deduction. This allows the cost model to reflect that `exp` is more expensive than `abs` in terms of actual hardware instructions, while keeping the base formulas simple and deterministic.
+
+## Related pages
+
+- [FLOP Counting Model](/docs/understanding/flop-counting-model) -- detailed cost formulas for every category
+- [Operation Categories](/docs/understanding/operation-categories) -- which operations are free, counted, or blocked
+- [Competition Guide](/docs/getting-started/competition) -- using budgets in competition

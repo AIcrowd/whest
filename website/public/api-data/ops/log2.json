@@ -294,7 +294,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log",
-                "label": "we.log",
+                "label": "fnp.log",
                 "original_target": "log",
                 "role": "",
                 "target": "log",
@@ -305,7 +305,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log10",
-                "label": "we.log10",
+                "label": "fnp.log10",
                 "original_target": "log10",
                 "role": "",
                 "target": "log10",
@@ -316,7 +316,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/log1p",
-                "label": "we.log1p",
+                "label": "fnp.log1p",
                 "original_target": "log1p",
                 "role": "",
                 "target": "log1p",
@@ -500,17 +500,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([0, 1, 2, 2**4])"
+                "text": "x = fnp.array([0, 1, 2, 2**4])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.log2(x)"
+                "text": "fnp.log2(x)"
               },
               {
                 "kind": "output",
@@ -524,12 +524,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xi = we.array([0+1.j, 1, 2+0.j, 4.j])"
+                "text": "xi = fnp.array([0+1.j, 1, 2+0.j, 4.j])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.log2(xi)"
+                "text": "fnp.log2(xi)"
               },
               {
                 "kind": "output",
@@ -547,20 +547,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.log2",
     "module": "numpy",
     "name": "log2",
     "notes": "Element-wise base-2 logarithm.",
     "numpy_ref": "np.log2",
-    "signature": "we.log2(x)",
+    "signature": "fnp.log2(x)",
     "status": "supported",
     "summary": "Base-2 logarithm of `x`.",
-    "weight": 16.0,
-    "whest_ref": "we.log2"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "log2",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

@@ -604,7 +604,7 @@
         },
         {
           "language": null,
-          "text": "we.all(we.diff(xp) > 0)",
+          "text": "fnp.all(fnp.diff(xp) > 0)",
           "type": "literal_block"
         }
       ],
@@ -617,7 +617,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -632,7 +632,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.interp(2.5, xp, fp)"
+              "text": "fnp.interp(2.5, xp, fp)"
             },
             {
               "kind": "output",
@@ -641,7 +641,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)"
+              "text": "fnp.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)"
             },
             {
               "kind": "output",
@@ -655,7 +655,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.interp(3.14, xp, fp, right=UNDEF)"
+              "text": "fnp.interp(3.14, xp, fp, right=UNDEF)"
             },
             {
               "kind": "output",
@@ -678,22 +678,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linspace(0, 2*we.pi, 10)"
+              "text": "x = fnp.linspace(0, 2*fnp.pi, 10)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.sin(x)"
+              "text": "y = fnp.sin(x)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "xvals = we.linspace(0, 2*we.pi, 50)"
+              "text": "xvals = fnp.linspace(0, 2*fnp.pi, 50)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "yinterp = we.interp(xvals, x, y)"
+              "text": "yinterp = fnp.interp(xvals, x, y)"
             },
             {
               "kind": "input",
@@ -755,7 +755,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.interp(x, xp, fp, period=360)"
+              "text": "fnp.interp(x, xp, fp, period=360)"
             },
             {
               "kind": "output",
@@ -793,7 +793,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.interp(x, xp, fp)"
+              "text": "fnp.interp(x, xp, fp)"
             },
             {
               "kind": "output",
@@ -817,16 +817,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nxp = [1, 2, 3]\n\nfp = [3, 2, 0]\n\nwe.interp(2.5, xp, fp)\n\nwe.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)\n\nUNDEF = -99.0\n\nwe.interp(3.14, xp, fp, right=UNDEF)\n\nx = we.linspace(0, 2*we.pi, 10)\n\ny = we.sin(x)\n\nxvals = we.linspace(0, 2*we.pi, 50)\n\nyinterp = we.interp(xvals, x, y)\n\nimport matplotlib.pyplot as plt\n\nplt.plot(x, y, 'o')\n\nplt.plot(xvals, yinterp, '-x')\n\nplt.show()\n\nx = [-180, -170, -185, 185, -10, -5, 0, 365]\n\nxp = [190, -190, 350, -350]\n\nfp = [5, 10, 3, 4]\n\nwe.interp(x, xp, fp, period=360)\n\nx = [1.5, 4.0]\n\nxp = [2,3,5]\n\nfp = [1.0j, 0, 2+3j]\n\nwe.interp(x, xp, fp)",
+    "code": "import flopscope as fnp\n\nxp = [1, 2, 3]\n\nfp = [3, 2, 0]\n\nfnp.interp(2.5, xp, fp)\n\nfnp.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)\n\nUNDEF = -99.0\n\nfnp.interp(3.14, xp, fp, right=UNDEF)\n\nx = fnp.linspace(0, 2*fnp.pi, 10)\n\ny = fnp.sin(x)\n\nxvals = fnp.linspace(0, 2*fnp.pi, 50)\n\nyinterp = fnp.interp(xvals, x, y)\n\nimport matplotlib.pyplot as plt\n\nplt.plot(x, y, 'o')\n\nplt.plot(xvals, yinterp, '-x')\n\nplt.show()\n\nx = [-180, -170, -185, 185, -10, -5, 0, 365]\n\nxp = [190, -190, 350, -350]\n\nfp = [5, 10, 3, 4]\n\nfnp.interp(x, xp, fp, period=360)\n\nx = [1.5, 4.0]\n\nxp = [2,3,5]\n\nfp = [1.0j, 0, 2+3j]\n\nfnp.interp(x, xp, fp)",
     "output": "1.0\n\narray([3.  , 3.  , 2.5 , 0.56, 0.  ])\n\n-99.0\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\narray([7.5 , 5.  , 8.75, 6.25, 3.  , 3.25, 3.5 , 3.75])\n\narray([0.+1.j , 1.+1.5j])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.interp",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1196",
   "href": "/docs/api/ops/interp/",
   "module": "numpy",
   "name": "interp",
   "next": {
     "href": "/docs/api/ops/intersect1d/",
-    "label": "we.intersect1d"
+    "label": "fnp.intersect1d"
   },
   "notes": "1-D linear interpolation.",
   "notes_sections": [],
@@ -881,7 +884,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/insert/",
-    "label": "we.insert"
+    "label": "fnp.insert"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.interp.html",
@@ -907,12 +910,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.interp(x, xp, fp, left=None, right=None, period=None)",
+  "signature": "fnp.interp(x, xp, fp, left=None, right=None, period=None)",
   "slug": "interp",
   "summary": "One-dimensional linear interpolation for monotonically increasing sample points.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1505",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.interp",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1196"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L1538",
+  "weight": 1.0
 }

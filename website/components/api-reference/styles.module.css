@@ -256,9 +256,9 @@
 }
 
 /* =========================================================================
-   Chips — drawn from the Whest Design System palette.
+   Chips — drawn from the Flopscope Design System palette.
    Areas + types pick from the four universal semantics + neutral.
-   Weights ride the whestbench heatmap axis (gray-100 → coral).
+   Weights ride the flopscopebench heatmap axis (gray-100 → coral).
    Font: Inter (app register); chips are UI chrome, never paper serif.
    ========================================================================= */
 
@@ -446,6 +446,18 @@
 .docSignatureFunction {
   font-weight: 700;
   color: var(--coral);
+}
+
+/* H1 title for an operation page: namespace prefix muted, function name in
+   coral. Inherits font/size from the surrounding DocsTitle. */
+.docTitleNamespace {
+  color: var(--api-signature-muted);
+  font-weight: inherit;
+}
+
+.docTitleFunction {
+  color: var(--coral);
+  font-weight: inherit;
 }
 
 .docSignatureParams {

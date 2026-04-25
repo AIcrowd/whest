@@ -302,7 +302,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/power",
-                "label": "we.power",
+                "label": "fnp.power",
                 "original_target": "power",
                 "role": "",
                 "target": "power",
@@ -321,12 +321,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.exp2([2, 3])"
+                "text": "fnp.exp2([2, 3])"
               },
               {
                 "kind": "output",
@@ -344,20 +344,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.exp2",
     "module": "numpy",
     "name": "exp2",
     "notes": "Element-wise 2^x.",
     "numpy_ref": "np.exp2",
-    "signature": "we.exp2(x)",
+    "signature": "fnp.exp2(x)",
     "status": "supported",
     "summary": "Calculate `2**p` for all `p` in the input array.",
-    "weight": 16.0,
-    "whest_ref": "we.exp2"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "exp2",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

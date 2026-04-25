@@ -259,7 +259,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/concatenate",
-              "label": "we.concatenate",
+              "label": "fnp.concatenate",
               "original_target": "concatenate",
               "role": "",
               "target": "concatenate",
@@ -275,7 +275,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/block",
-              "label": "we.block",
+              "label": "fnp.block",
               "original_target": "block",
               "role": "",
               "target": "block",
@@ -291,7 +291,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/split",
-              "label": "we.split",
+              "label": "fnp.split",
               "original_target": "split",
               "role": "",
               "target": "split",
@@ -307,7 +307,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/unstack",
-              "label": "we.unstack",
+              "label": "fnp.unstack",
               "original_target": "unstack",
               "role": "",
               "target": "unstack",
@@ -326,12 +326,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rng = we.random.default_rng()"
+              "text": "rng = fnp.random.default_rng()"
             },
             {
               "kind": "input",
@@ -341,7 +341,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.stack(arrays, axis=0).shape"
+              "text": "fnp.stack(arrays, axis=0).shape"
             },
             {
               "kind": "output",
@@ -355,7 +355,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.stack(arrays, axis=1).shape"
+              "text": "fnp.stack(arrays, axis=1).shape"
             },
             {
               "kind": "output",
@@ -369,7 +369,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.stack(arrays, axis=2).shape"
+              "text": "fnp.stack(arrays, axis=2).shape"
             },
             {
               "kind": "output",
@@ -383,17 +383,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([1, 2, 3])"
+              "text": "a = fnp.array([1, 2, 3])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([4, 5, 6])"
+              "text": "b = fnp.array([4, 5, 6])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.stack((a, b))"
+              "text": "fnp.stack((a, b))"
             },
             {
               "kind": "output",
@@ -411,7 +411,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.stack((a, b), axis=-1)"
+              "text": "fnp.stack((a, b), axis=-1)"
             },
             {
               "kind": "output",
@@ -443,16 +443,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nrng = we.random.default_rng()\n\narrays = [rng.normal(size=(3,4)) for _ in range(10)]\n\nwe.stack(arrays, axis=0).shape\n\nwe.stack(arrays, axis=1).shape\n\nwe.stack(arrays, axis=2).shape\n\na = we.array([1, 2, 3])\n\nb = we.array([4, 5, 6])\n\nwe.stack((a, b))\n\nwe.stack((a, b), axis=-1)",
+    "code": "import flopscope as fnp\n\nrng = fnp.random.default_rng()\n\narrays = [rng.normal(size=(3,4)) for _ in range(10)]\n\nfnp.stack(arrays, axis=0).shape\n\nfnp.stack(arrays, axis=1).shape\n\nfnp.stack(arrays, axis=2).shape\n\na = fnp.array([1, 2, 3])\n\nb = fnp.array([4, 5, 6])\n\nfnp.stack((a, b))\n\nfnp.stack((a, b), axis=-1)",
     "output": "(10, 3, 4)\n\n(3, 10, 4)\n\n(3, 4, 10)\n\narray([[1, 2, 3],\n       [4, 5, 6]])\n\narray([[1, 4],\n       [2, 5],\n       [3, 6]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.stack",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L250",
   "href": "/docs/api/ops/stack/",
   "module": "numpy",
   "name": "stack",
   "next": {
     "href": "/docs/api/ops/stats-cauchy-cdf/",
-    "label": "we.stats.cauchy.cdf"
+    "label": "fnp.stats.cauchy.cdf"
   },
   "notes": "Join arrays along new axis. Cost: numel(output).",
   "notes_sections": [],
@@ -505,7 +508,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/squeeze/",
-    "label": "we.squeeze"
+    "label": "fnp.squeeze"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.stack.html",
@@ -529,7 +532,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/concatenate",
-      "label": "we.concatenate",
+      "label": "fnp.concatenate",
       "original_target": "concatenate",
       "role": "",
       "target": "concatenate",
@@ -545,7 +548,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/block",
-      "label": "we.block",
+      "label": "fnp.block",
       "original_target": "block",
       "role": "",
       "target": "block",
@@ -561,7 +564,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/split",
-      "label": "we.split",
+      "label": "fnp.split",
       "original_target": "split",
       "role": "",
       "target": "split",
@@ -577,19 +580,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/unstack",
-      "label": "we.unstack",
+      "label": "fnp.unstack",
       "original_target": "unstack",
       "role": "",
       "target": "unstack",
       "unresolved": false
     }
   ],
-  "signature": "we.stack(arrays, axis=0, out=None, *, dtype=None, casting='same_kind')",
+  "signature": "fnp.stack(arrays, axis=0, out=None, *, dtype=None, casting='same_kind')",
   "slug": "stack",
   "summary": "Join a sequence of arrays along a new axis.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L380",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.stack",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L250"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/shape_base.py#L378",
+  "weight": 1.0
 }

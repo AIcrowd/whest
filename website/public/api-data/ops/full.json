@@ -115,7 +115,7 @@
                             "inline": [
                               {
                                 "kind": "code",
-                                "text": "we.array(fill_value).dtype"
+                                "text": "fnp.array(fill_value).dtype"
                               },
                               {
                                 "kind": "text",
@@ -345,7 +345,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/full_like",
-                "label": "we.full_like",
+                "label": "fnp.full_like",
                 "original_target": "full_like",
                 "role": "",
                 "target": "full_like",
@@ -361,7 +361,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/empty",
-                "label": "we.empty",
+                "label": "fnp.empty",
                 "original_target": "empty",
                 "role": "",
                 "target": "empty",
@@ -377,7 +377,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/ones",
-                "label": "we.ones",
+                "label": "fnp.ones",
                 "original_target": "ones",
                 "role": "",
                 "target": "ones",
@@ -393,7 +393,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/zeros",
-                "label": "we.zeros",
+                "label": "fnp.zeros",
                 "original_target": "zeros",
                 "role": "",
                 "target": "zeros",
@@ -412,12 +412,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.full((2, 2), we.inf)"
+                "text": "fnp.full((2, 2), fnp.inf)"
               },
               {
                 "kind": "output",
@@ -430,7 +430,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.full((2, 2), 10)"
+                "text": "fnp.full((2, 2), 10)"
               },
               {
                 "kind": "output",
@@ -448,7 +448,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.full((2, 2), [1, 2])"
+                "text": "fnp.full((2, 2), [1, 2])"
               },
               {
                 "kind": "output",
@@ -470,20 +470,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.full",
     "module": "numpy",
     "name": "full",
     "notes": "Create array filled with scalar value. Cost: num copied.",
     "numpy_ref": "np.full",
-    "signature": "we.full(shape, fill_value, dtype=None, order='C', *, device=None, like=None)",
+    "signature": "fnp.full(shape, fill_value, dtype=None, order='C', *, device=None, like=None)",
     "status": "supported",
     "summary": "Return a new array of given shape and type, filled with `fill_value`.",
-    "weight": 1.0,
-    "whest_ref": "we.full"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "full",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L290",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L64"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L64",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L323"
   }
 }

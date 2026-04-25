@@ -238,12 +238,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.i0(0.)"
+                "text": "fnp.i0(0.)"
               },
               {
                 "kind": "output",
@@ -252,7 +252,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.i0([0, 1, 2, 3])"
+                "text": "fnp.i0([0, 1, 2, 3])"
               },
               {
                 "kind": "output",
@@ -270,20 +270,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.i0",
     "module": "numpy",
     "name": "i0",
     "notes": "Modified Bessel function of order 0, element-wise.",
     "numpy_ref": "np.i0",
-    "signature": "we.i0(x)",
+    "signature": "fnp.i0(x)",
     "status": "supported",
     "summary": "Modified Bessel function of the first kind, order 0.",
-    "weight": 16.0,
-    "whest_ref": "we.i0"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "i0",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3554",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L3532"
   }
 }

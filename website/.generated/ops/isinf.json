@@ -316,7 +316,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isneginf",
-              "label": "we.isneginf",
+              "label": "fnp.isneginf",
               "original_target": "isneginf",
               "role": "",
               "target": "isneginf",
@@ -327,7 +327,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isposinf",
-              "label": "we.isposinf",
+              "label": "fnp.isposinf",
               "original_target": "isposinf",
               "role": "",
               "target": "isposinf",
@@ -338,7 +338,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isnan",
-              "label": "we.isnan",
+              "label": "fnp.isnan",
               "original_target": "isnan",
               "role": "",
               "target": "isnan",
@@ -349,7 +349,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/isfinite",
-              "label": "we.isfinite",
+              "label": "fnp.isfinite",
               "original_target": "isfinite",
               "role": "",
               "target": "isfinite",
@@ -391,12 +391,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isinf(we.inf)"
+              "text": "fnp.isinf(fnp.inf)"
             },
             {
               "kind": "output",
@@ -405,7 +405,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isinf(we.nan)"
+              "text": "fnp.isinf(fnp.nan)"
             },
             {
               "kind": "output",
@@ -414,7 +414,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isinf(-we.inf)"
+              "text": "fnp.isinf(-fnp.inf)"
             },
             {
               "kind": "output",
@@ -423,7 +423,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isinf([we.inf, -we.inf, 1.0, we.nan])"
+              "text": "fnp.isinf([fnp.inf, -fnp.inf, 1.0, fnp.nan])"
             },
             {
               "kind": "output",
@@ -437,17 +437,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([-we.inf, 0., we.inf])"
+              "text": "x = fnp.array([-fnp.inf, 0., fnp.inf])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.array([2, 2, 2])"
+              "text": "y = fnp.array([2, 2, 2])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isinf(x, y)"
+              "text": "fnp.isinf(x, y)"
             },
             {
               "kind": "output",
@@ -487,16 +487,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.isinf(we.inf)\n\nwe.isinf(we.nan)\n\nwe.isinf(-we.inf)\n\nwe.isinf([we.inf, -we.inf, 1.0, we.nan])\n\nx = we.array([-we.inf, 0., we.inf])\n\ny = we.array([2, 2, 2])\n\nwe.isinf(x, y)\n\ny",
+    "code": "import flopscope as fnp\n\nfnp.isinf(fnp.inf)\n\nfnp.isinf(fnp.nan)\n\nfnp.isinf(-fnp.inf)\n\nfnp.isinf([fnp.inf, -fnp.inf, 1.0, fnp.nan])\n\nx = fnp.array([-fnp.inf, 0., fnp.inf])\n\ny = fnp.array([2, 2, 2])\n\nfnp.isinf(x, y)\n\ny",
     "output": "True\n\nFalse\n\nTrue\n\narray([ True,  True, False, False])\n\narray([1, 0, 1])\n\narray([1, 0, 1])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.isinf",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L561",
   "href": "/docs/api/ops/isinf/",
   "module": "numpy",
   "name": "isinf",
   "next": {
     "href": "/docs/api/ops/isnan/",
-    "label": "we.isnan"
+    "label": "fnp.isnan"
   },
   "notes": "Test for infinity element-wise. Cost: numel(input).",
   "notes_sections": [
@@ -545,7 +548,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/isin/",
-    "label": "we.isin"
+    "label": "fnp.isin"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isinf.html",
@@ -565,7 +568,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isneginf",
-      "label": "we.isneginf",
+      "label": "fnp.isneginf",
       "original_target": "isneginf",
       "role": "",
       "target": "isneginf",
@@ -576,7 +579,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isposinf",
-      "label": "we.isposinf",
+      "label": "fnp.isposinf",
       "original_target": "isposinf",
       "role": "",
       "target": "isposinf",
@@ -587,7 +590,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isnan",
-      "label": "we.isnan",
+      "label": "fnp.isnan",
       "original_target": "isnan",
       "role": "",
       "target": "isnan",
@@ -598,19 +601,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/isfinite",
-      "label": "we.isfinite",
+      "label": "fnp.isfinite",
       "original_target": "isfinite",
       "role": "",
       "target": "isfinite",
       "unresolved": false
     }
   ],
-  "signature": "we.isinf(*args, **kwargs)",
+  "signature": "fnp.isinf(x, /, out=None, *, where=True, casting='same_kind', order='K', dtype=None, subok=True, signature=None)",
   "slug": "isinf",
   "summary": "Test element-wise for positive or negative infinity.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.isinf",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L561"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

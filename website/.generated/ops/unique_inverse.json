@@ -46,7 +46,7 @@
         },
         {
           "language": null,
-          "text": "we.unique(x, return_inverse=True, equal_nan=False)",
+          "text": "fnp.unique(x, return_inverse=True, equal_nan=False, sorted=False)",
           "type": "literal_block"
         },
         {
@@ -57,6 +57,25 @@
             }
           ],
           "type": "paragraph"
+        },
+        {
+          "argument_inline": [],
+          "content_blocks": [
+            {
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "This function currently always returns a sorted result, however,\nthis could change in any NumPy minor release."
+                }
+              ],
+              "type": "paragraph"
+            }
+          ],
+          "directive": "note",
+          "options": [],
+          "raw_source": ".. note::\n    This function currently always returns a sorted result, however,\n    this could change in any NumPy minor release.",
+          "supported": true,
+          "type": "directive_block"
         }
       ],
       "title": "Extended Summary"
@@ -181,7 +200,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/unique",
-              "label": "we.unique",
+              "label": "fnp.unique",
               "original_target": "unique",
               "role": "",
               "target": "unique",
@@ -200,7 +219,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -210,7 +229,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "uniq = we.unique_inverse(x)"
+              "text": "uniq = fnp.unique_inverse(x)"
             },
             {
               "kind": "input",
@@ -248,16 +267,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = [1, 1, 2]\n\nuniq = we.unique_inverse(x)\n\nuniq.values\n\nuniq.inverse_indices",
+    "code": "import flopscope as fnp\n\nx = [1, 1, 2]\n\nuniq = fnp.unique_inverse(x)\n\nuniq.values\n\nuniq.inverse_indices",
     "output": "array([1, 2])\n\narray([0, 0, 1])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.unique_inverse",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L320",
   "href": "/docs/api/ops/unique_inverse/",
   "module": "numpy",
   "name": "unique_inverse",
   "next": {
     "href": "/docs/api/ops/unique_values/",
-    "label": "we.unique_values"
+    "label": "fnp.unique_values"
   },
   "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
   "notes_sections": [],
@@ -273,7 +295,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/unique_counts/",
-    "label": "we.unique_counts"
+    "label": "fnp.unique_counts"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unique_inverse.html",
@@ -301,19 +323,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/unique",
-      "label": "we.unique",
+      "label": "fnp.unique",
       "original_target": "unique",
       "role": "",
       "target": "unique",
       "unresolved": false
     }
   ],
-  "signature": "we.unique_inverse(x, /)",
+  "signature": "fnp.unique_inverse(x, /)",
   "slug": "unique_inverse",
   "summary": "Find the unique elements of `x` and indices to reconstruct `x`.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L520",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.unique_inverse",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L320"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_arraysetops_impl.py#L560",
+  "weight": 1.0
 }

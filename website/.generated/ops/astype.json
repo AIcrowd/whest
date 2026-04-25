@@ -27,7 +27,7 @@
             },
             {
               "kind": "code",
-              "text": "we.ndarray.astype"
+              "text": "fnp.ndarray.astype"
             },
             {
               "kind": "text",
@@ -305,12 +305,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr = we.array([1, 2, 3]); arr"
+              "text": "arr = fnp.array([1, 2, 3]); arr"
             },
             {
               "kind": "output",
@@ -319,7 +319,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.astype(arr, we.float64)"
+              "text": "fnp.astype(arr, fnp.float64)"
             },
             {
               "kind": "output",
@@ -342,17 +342,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr = we.array([1, 2, 3])"
+              "text": "arr = fnp.array([1, 2, 3])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr_noncpy = we.astype(arr, arr.dtype, copy=False)"
+              "text": "arr_noncpy = fnp.astype(arr, arr.dtype, copy=False)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.shares_memory(arr, arr_noncpy)"
+              "text": "fnp.shares_memory(arr, arr_noncpy)"
             },
             {
               "kind": "output",
@@ -383,16 +383,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\narr = we.array([1, 2, 3]); arr\n\nwe.astype(arr, we.float64)\n\narr = we.array([1, 2, 3])\n\narr_noncpy = we.astype(arr, arr.dtype, copy=False)\n\nwe.shares_memory(arr, arr_noncpy)",
+    "code": "import flopscope as fnp\n\narr = fnp.array([1, 2, 3]); arr\n\nfnp.astype(arr, fnp.float64)\n\narr = fnp.array([1, 2, 3])\n\narr_noncpy = fnp.astype(arr, arr.dtype, copy=False)\n\nfnp.shares_memory(arr, arr_noncpy)",
     "output": "array([1, 2, 3])\n\narray([1., 2., 3.])\n\nTrue",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.astype",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L512",
   "href": "/docs/api/ops/astype/",
   "module": "numpy",
   "name": "astype",
   "next": {
     "href": "/docs/api/ops/atleast_1d/",
-    "label": "we.atleast_1d"
+    "label": "fnp.atleast_1d"
   },
   "notes": "Cast array to specified type.",
   "notes_sections": [],
@@ -438,7 +441,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/asarray_chkfinite/",
-    "label": "we.asarray_chkfinite"
+    "label": "fnp.asarray_chkfinite"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.astype.html",
@@ -464,12 +467,9 @@
       "unresolved": true
     }
   ],
-  "signature": "we.astype(x, dtype, /, *, copy=True, device=None)",
+  "signature": "fnp.astype(x, dtype, /, *, copy=True, device=None)",
   "slug": "astype",
   "summary": "Copies an array to a specified data type.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2618",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.astype",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L512"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L2678",
+  "weight": 0.0
 }

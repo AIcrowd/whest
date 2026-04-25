@@ -481,12 +481,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arctanh([0, -0.5])"
+                "text": "fnp.arctanh([0, -0.5])"
               },
               {
                 "kind": "output",
@@ -504,20 +504,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.arctanh",
     "module": "numpy",
     "name": "arctanh",
     "notes": "Element-wise inverse hyperbolic tangent.",
     "numpy_ref": "np.arctanh",
-    "signature": "we.arctanh(x)",
+    "signature": "fnp.arctanh(x)",
     "status": "supported",
     "summary": "Inverse hyperbolic tangent element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.arctanh"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "arctanh",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

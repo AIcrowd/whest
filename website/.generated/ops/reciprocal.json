@@ -323,12 +323,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.reciprocal(2.)"
+              "text": "fnp.reciprocal(2.)"
             },
             {
               "kind": "output",
@@ -337,7 +337,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.reciprocal([1, 2., 3.33])"
+              "text": "fnp.reciprocal([1, 2., 3.33])"
             },
             {
               "kind": "output",
@@ -368,16 +368,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.reciprocal(2.)\n\nwe.reciprocal([1, 2., 3.33])",
+    "code": "import flopscope as fnp\n\nfnp.reciprocal(2.)\n\nfnp.reciprocal([1, 2., 3.33])",
     "output": "0.5\n\narray([ 1.       ,  0.5      ,  0.3003003])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.reciprocal",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
   "href": "/docs/api/ops/reciprocal/",
   "module": "numpy",
   "name": "reciprocal",
   "next": {
     "href": "/docs/api/ops/remainder/",
-    "label": "we.remainder"
+    "label": "fnp.remainder"
   },
   "notes": "Element-wise 1/x.",
   "notes_sections": [
@@ -426,7 +429,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/real_if_close/",
-    "label": "we.real_if_close"
+    "label": "fnp.real_if_close"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.reciprocal.html",
@@ -441,12 +444,9 @@
     }
   ],
   "see_also": [],
-  "signature": "we.reciprocal(x)",
+  "signature": "fnp.reciprocal(x)",
   "slug": "reciprocal",
   "summary": "Return the reciprocal of the argument, element-wise.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.reciprocal",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py",
+  "weight": 1.0
 }

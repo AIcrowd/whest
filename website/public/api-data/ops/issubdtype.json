@@ -163,12 +163,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ints = we.array([1, 2, 3], dtype=we.int32)"
+                "text": "ints = fnp.array([1, 2, 3], dtype=fnp.int32)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.issubdtype(ints.dtype, we.integer)"
+                "text": "fnp.issubdtype(ints.dtype, fnp.integer)"
               },
               {
                 "kind": "output",
@@ -177,7 +177,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.issubdtype(ints.dtype, we.floating)"
+                "text": "fnp.issubdtype(ints.dtype, fnp.floating)"
               },
               {
                 "kind": "output",
@@ -191,12 +191,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "floats = we.array([1, 2, 3], dtype=we.float32)"
+                "text": "floats = fnp.array([1, 2, 3], dtype=fnp.float32)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.issubdtype(floats.dtype, we.integer)"
+                "text": "fnp.issubdtype(floats.dtype, fnp.integer)"
               },
               {
                 "kind": "output",
@@ -205,7 +205,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.issubdtype(floats.dtype, we.floating)"
+                "text": "fnp.issubdtype(floats.dtype, fnp.floating)"
               },
               {
                 "kind": "output",
@@ -228,7 +228,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.issubdtype(we.float64, we.float32)"
+                "text": "fnp.issubdtype(fnp.float64, fnp.float32)"
               },
               {
                 "kind": "output",
@@ -237,7 +237,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.issubdtype(we.float32, we.float64)"
+                "text": "fnp.issubdtype(fnp.float32, fnp.float64)"
               },
               {
                 "kind": "output",
@@ -268,7 +268,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.issubdtype(we.float64, we.floating)"
+                "text": "fnp.issubdtype(fnp.float64, fnp.floating)"
               },
               {
                 "kind": "output",
@@ -277,7 +277,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.issubdtype(we.float32, we.floating)"
+                "text": "fnp.issubdtype(fnp.float32, fnp.floating)"
               },
               {
                 "kind": "output",
@@ -300,7 +300,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.issubdtype('S1', we.bytes_)"
+                "text": "fnp.issubdtype('S1', fnp.bytes_)"
               },
               {
                 "kind": "output",
@@ -309,7 +309,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.issubdtype('i4', we.signedinteger)"
+                "text": "fnp.issubdtype('i4', fnp.signedinteger)"
               },
               {
                 "kind": "output",
@@ -327,20 +327,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.issubdtype",
     "module": "numpy",
     "name": "issubdtype",
     "notes": "Return True if first argument is lower in type hierarchy.",
     "numpy_ref": "np.issubdtype",
-    "signature": "we.issubdtype(arg1, arg2)",
+    "signature": "fnp.issubdtype(arg1, arg2)",
     "status": "supported",
     "summary": "Returns True if first argument is a typecode lower/equal in type hierarchy.",
-    "weight": 0.0,
-    "whest_ref": "we.issubdtype"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "issubdtype",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numerictypes.py#L471",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1113"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1113",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numerictypes.py#L475"
   }
 }

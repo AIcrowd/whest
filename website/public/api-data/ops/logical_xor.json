@@ -366,7 +366,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_and",
-                "label": "we.logical_and",
+                "label": "fnp.logical_and",
                 "original_target": "logical_and",
                 "role": "",
                 "target": "logical_and",
@@ -377,7 +377,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_or",
-                "label": "we.logical_or",
+                "label": "fnp.logical_or",
                 "original_target": "logical_or",
                 "role": "",
                 "target": "logical_or",
@@ -388,7 +388,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/logical_not",
-                "label": "we.logical_not",
+                "label": "fnp.logical_not",
                 "original_target": "logical_not",
                 "role": "",
                 "target": "logical_not",
@@ -399,7 +399,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bitwise_xor",
-                "label": "we.bitwise_xor",
+                "label": "fnp.bitwise_xor",
                 "original_target": "bitwise_xor",
                 "role": "",
                 "target": "bitwise_xor",
@@ -418,12 +418,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_xor(True, False)"
+                "text": "fnp.logical_xor(True, False)"
               },
               {
                 "kind": "output",
@@ -432,7 +432,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_xor([True, True, False, False], [True, False, True, False])"
+                "text": "fnp.logical_xor([True, True, False, False], [True, False, True, False])"
               },
               {
                 "kind": "output",
@@ -446,12 +446,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(5)"
+                "text": "x = fnp.arange(5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_xor(x < 1, x > 3)"
+                "text": "fnp.logical_xor(x < 1, x > 3)"
               },
               {
                 "kind": "output",
@@ -474,7 +474,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_xor(0, we.eye(2))"
+                "text": "fnp.logical_xor(0, fnp.eye(2))"
               },
               {
                 "kind": "output",
@@ -496,20 +496,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.logical_xor",
     "module": "numpy",
     "name": "logical_xor",
     "notes": "Element-wise logical XOR.",
     "numpy_ref": "np.logical_xor",
-    "signature": "we.logical_xor(x, y)",
+    "signature": "fnp.logical_xor(x, y)",
     "status": "supported",
     "summary": "Compute the truth value of x1 XOR x2, element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.logical_xor"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "logical_xor",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

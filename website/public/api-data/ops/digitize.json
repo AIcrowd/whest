@@ -266,7 +266,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/bincount",
-                "label": "we.bincount",
+                "label": "fnp.bincount",
                 "original_target": "bincount",
                 "role": "",
                 "target": "bincount",
@@ -277,7 +277,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/histogram",
-                "label": "we.histogram",
+                "label": "fnp.histogram",
                 "original_target": "histogram",
                 "role": "",
                 "target": "histogram",
@@ -288,7 +288,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/unique",
-                "label": "we.unique",
+                "label": "fnp.unique",
                 "original_target": "unique",
                 "role": "",
                 "target": "unique",
@@ -299,7 +299,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/searchsorted",
-                "label": "we.searchsorted",
+                "label": "fnp.searchsorted",
                 "original_target": "searchsorted",
                 "role": "",
                 "target": "searchsorted",
@@ -366,7 +366,7 @@
                 "href": "/docs/api/ops/digitize",
                 "kind": "link",
                 "target": "digitize",
-                "text": "we.digitize"
+                "text": "fnp.digitize"
               },
               {
                 "kind": "text",
@@ -377,7 +377,7 @@
                 "href": "/docs/api/ops/searchsorted",
                 "kind": "link",
                 "target": "searchsorted",
-                "text": "we.searchsorted"
+                "text": "fnp.searchsorted"
               },
               {
                 "kind": "text",
@@ -413,7 +413,7 @@
           },
           {
             "language": null,
-            "text": "we.digitize(x, bins, right=True)\nwe.searchsorted(bins, x, side='left')",
+            "text": "fnp.digitize(x, bins, right=True)\nfnp.searchsorted(bins, x, side='left')",
             "type": "literal_block"
           },
           {
@@ -446,22 +446,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([0.2, 6.4, 3.0, 1.6])"
+                "text": "x = fnp.array([0.2, 6.4, 3.0, 1.6])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "bins = we.array([0.0, 1.0, 2.5, 4.0, 10.0])"
+                "text": "bins = fnp.array([0.0, 1.0, 2.5, 4.0, 10.0])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "inds = we.digitize(x, bins)"
+                "text": "inds = fnp.digitize(x, bins)"
               },
               {
                 "kind": "input",
@@ -511,17 +511,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([1.2, 10.0, 12.4, 15.5, 20.])"
+                "text": "x = fnp.array([1.2, 10.0, 12.4, 15.5, 20.])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "bins = we.array([0, 5, 10, 15, 20])"
+                "text": "bins = fnp.array([0, 5, 10, 15, 20])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.digitize(x,bins,right=True)"
+                "text": "fnp.digitize(x,bins,right=True)"
               },
               {
                 "kind": "output",
@@ -530,7 +530,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.digitize(x,bins,right=False)"
+                "text": "fnp.digitize(x,bins,right=False)"
               },
               {
                 "kind": "output",
@@ -548,20 +548,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.digitize",
     "module": "numpy",
     "name": "digitize",
     "notes": "Bin search; cost = n*ceil(log2(bins)).",
     "numpy_ref": "np.digitize",
-    "signature": "we.digitize(x, bins, right=False)",
+    "signature": "fnp.digitize(x, bins, right=False)",
     "status": "supported",
     "summary": "Return the indices of the bins to which each value in input array belongs.",
-    "weight": 1.0,
-    "whest_ref": "we.digitize"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "digitize",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5718",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L212"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L212",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L5651"
   }
 }

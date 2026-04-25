@@ -227,7 +227,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/nonzero",
-              "label": "we.nonzero",
+              "label": "fnp.nonzero",
               "original_target": "nonzero",
               "role": "",
               "target": "nonzero",
@@ -246,21 +246,21 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.count_nonzero(we.eye(4))"
+              "text": "fnp.count_nonzero(fnp.eye(4))"
             },
             {
               "kind": "output",
-              "text": "4"
+              "text": "fnp.int64(4)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[0, 1, 7, 0],"
+              "text": "a = fnp.array([[0, 1, 7, 0],"
             },
             {
               "kind": "input",
@@ -270,16 +270,16 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.count_nonzero(a)"
+              "text": "fnp.count_nonzero(a)"
             },
             {
               "kind": "output",
-              "text": "5"
+              "text": "fnp.int64(5)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.count_nonzero(a, axis=0)"
+              "text": "fnp.count_nonzero(a, axis=0)"
             },
             {
               "kind": "output",
@@ -288,7 +288,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.count_nonzero(a, axis=1)"
+              "text": "fnp.count_nonzero(a, axis=1)"
             },
             {
               "kind": "output",
@@ -297,7 +297,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.count_nonzero(a, axis=1, keepdims=True)"
+              "text": "fnp.count_nonzero(a, axis=1, keepdims=True)"
             },
             {
               "kind": "output",
@@ -325,16 +325,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.count_nonzero(we.eye(4))\n\na = we.array([[0, 1, 7, 0],\n              [3, 0, 2, 19]])\n\nwe.count_nonzero(a)\n\nwe.count_nonzero(a, axis=0)\n\nwe.count_nonzero(a, axis=1)\n\nwe.count_nonzero(a, axis=1, keepdims=True)",
-    "output": "4\n\n5\n\narray([1, 1, 2, 1])\n\narray([2, 3])\n\narray([[2],\n       [3]])",
+    "code": "import flopscope as fnp\n\nfnp.count_nonzero(fnp.eye(4))\n\na = fnp.array([[0, 1, 7, 0],\n              [3, 0, 2, 19]])\n\nfnp.count_nonzero(a)\n\nfnp.count_nonzero(a, axis=0)\n\nfnp.count_nonzero(a, axis=1)\n\nfnp.count_nonzero(a, axis=1, keepdims=True)",
+    "output": "fnp.int64(4)\n\nfnp.int64(5)\n\narray([1, 1, 2, 1])\n\narray([2, 3])\n\narray([[2],\n       [3]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.count_nonzero",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L704",
   "href": "/docs/api/ops/count_nonzero/",
   "module": "numpy",
   "name": "count_nonzero",
   "next": {
     "href": "/docs/api/ops/cov/",
-    "label": "we.cov"
+    "label": "fnp.cov"
   },
   "notes": "Count non-zero elements.",
   "notes_sections": [],
@@ -368,7 +371,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/cosh/",
-    "label": "we.cosh"
+    "label": "fnp.cosh"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.count_nonzero.html",
@@ -394,19 +397,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/nonzero",
-      "label": "we.nonzero",
+      "label": "fnp.nonzero",
       "original_target": "nonzero",
       "role": "",
       "target": "nonzero",
       "unresolved": false
     }
   ],
-  "signature": "we.count_nonzero(a, axis=None, *, keepdims=False)",
+  "signature": "fnp.count_nonzero(a, axis=None, *, keepdims=False)",
   "slug": "count_nonzero",
   "summary": "Counts the number of non-zero values in the array ``a``.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L450",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.count_nonzero",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L704"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/numeric.py#L483",
+  "weight": 1.0
 }

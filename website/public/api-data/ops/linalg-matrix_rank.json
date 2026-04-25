@@ -379,7 +379,15 @@
               },
               {
                 "kind": "text",
-                "text": " as indicating rank deficiency\n(with the symbols defined above). This is the algorithm MATLAB uses [1].\nIt also appears in "
+                "text": " as indicating rank deficiency\n(with the symbols defined above). This is the algorithm MATLAB uses "
+              },
+              {
+                "kind": "text",
+                "text": "[1]_"
+              },
+              {
+                "kind": "text",
+                "text": ".\nIt also appears in "
               },
               {
                 "kind": "emphasis",
@@ -387,7 +395,15 @@
               },
               {
                 "kind": "text",
-                "text": " in the discussion of SVD solutions\nfor linear least squares [2]."
+                "text": " in the discussion of SVD solutions\nfor linear least squares "
+              },
+              {
+                "kind": "text",
+                "text": "[2]_"
+              },
+              {
+                "kind": "text",
+                "text": "."
               }
             ],
             "type": "paragraph"
@@ -473,7 +489,7 @@
               },
               {
                 "kind": "code",
-                "text": "S.max() *\nwe.finfo(A.dtype).eps / 2. * we.sqrt(m + n + 1.)"
+                "text": "S.max() *\nfnp.finfo(A.dtype).eps / 2. * fnp.sqrt(m + n + 1.)"
               },
               {
                 "kind": "text",
@@ -532,17 +548,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "from we.linalg import matrix_rank"
+                "text": "from fnp.linalg import matrix_rank"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "matrix_rank(we.eye(4)) # Full rank matrix"
+                "text": "matrix_rank(fnp.eye(4)) # Full rank matrix"
               },
               {
                 "kind": "output",
@@ -551,7 +567,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "I=we.eye(4); I[-1,-1] = 0. # rank deficient matrix"
+                "text": "I=fnp.eye(4); I[-1,-1] = 0. # rank deficient matrix"
               },
               {
                 "kind": "input",
@@ -565,7 +581,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "matrix_rank(we.ones((4,))) # 1 dimension - rank 1 unless all 0"
+                "text": "matrix_rank(fnp.ones((4,))) # 1 dimension - rank 1 unless all 0"
               },
               {
                 "kind": "output",
@@ -574,7 +590,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "matrix_rank(we.zeros((4,)))"
+                "text": "matrix_rank(fnp.zeros((4,)))"
               },
               {
                 "kind": "output",
@@ -592,20 +608,20 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
+    "flopscope_ref": "fnp.linalg.matrix_rank",
     "module": "numpy.linalg",
     "name": "linalg.matrix_rank",
     "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD).",
     "numpy_ref": "np.linalg.matrix_rank",
-    "signature": "we.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)",
+    "signature": "fnp.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)",
     "status": "supported",
     "summary": "Return matrix rank of array using SVD method",
-    "weight": 4.0,
-    "whest_ref": "we.linalg.matrix_rank"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "linalg-matrix_rank",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2010",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L424"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L424",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/linalg/_linalg.py#L2035"
   }
 }

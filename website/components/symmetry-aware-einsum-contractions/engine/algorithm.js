@@ -1,6 +1,6 @@
 /**
  * Core algorithm engine — JS port of the subgraph symmetry detection.
- * Ports logic from whest/_opt_einsum/_subgraph_symmetry.py
+ * Ports logic from flopscope/_opt_einsum/_subgraph_symmetry.py
  */
 
 import { Permutation, dimino, burnsideCount } from './permutation.js';

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from whest._opt_einsum import contract_path
-from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+from flopscope._opt_einsum import contract_path
+from flopscope._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
 
 class TestRandomGreedyUsesSymmetry:
@@ -56,7 +56,7 @@ class TestRandomGreedyUsesSymmetry:
 
 class TestSsaPathComputeCostUsesOracle:
     def test_rescore_symmetric_less_than_dense(self):
-        from whest._opt_einsum._path_random import ssa_path_compute_cost
+        from flopscope._opt_einsum._path_random import ssa_path_compute_cost
 
         n = 10
         X = np.ones((n, n, n))

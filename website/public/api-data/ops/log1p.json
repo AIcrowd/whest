@@ -328,7 +328,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/expm1",
-                "label": "we.expm1",
+                "label": "fnp.expm1",
                 "original_target": "expm1",
                 "role": "",
                 "target": "expm1",
@@ -527,12 +527,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.log1p(1e-99)"
+                "text": "fnp.log1p(1e-99)"
               },
               {
                 "kind": "output",
@@ -541,7 +541,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.log(1 + 1e-99)"
+                "text": "fnp.log(1 + 1e-99)"
               },
               {
                 "kind": "output",
@@ -559,20 +559,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.log1p",
     "module": "numpy",
     "name": "log1p",
     "notes": "Element-wise log(1+x) (accurate near zero).",
     "numpy_ref": "np.log1p",
-    "signature": "we.log1p(x)",
+    "signature": "fnp.log1p(x)",
     "status": "supported",
     "summary": "Return the natural logarithm of one plus the input array, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.log1p"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "log1p",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

@@ -98,7 +98,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.zipf`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.zipf`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -173,7 +173,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.array(a).size"
+                        "text": "fnp.array(a).size"
                       },
                       {
                         "kind": "text",
@@ -223,7 +223,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.array(a).size"
+                    "text": "fnp.array(a).size"
                   },
                   {
                     "kind": "text",
@@ -405,7 +405,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.zipf(a, n)"
+                "text": "s = fnp.random.zipf(a, n)"
               }
             ],
             "type": "doctest_block"
@@ -455,12 +455,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "count = we.bincount(s)"
+                "text": "count = fnp.bincount(s)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "k = we.arange(1, s.max() + 1)"
+                "text": "k = fnp.arange(1, s.max() + 1)"
               }
             ],
             "type": "doctest_block"
@@ -519,20 +519,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.zipf",
     "module": "numpy.random",
     "name": "random.zipf",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.zipf",
-    "signature": "we.random.zipf(a, size=None)",
+    "signature": "fnp.random.zipf(a, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Zipf distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.zipf"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-zipf",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.zipf.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.zipf.html"
   }
 }

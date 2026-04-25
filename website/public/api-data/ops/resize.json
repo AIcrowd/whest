@@ -149,7 +149,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/reshape",
-                "label": "we.reshape",
+                "label": "fnp.reshape",
                 "original_target": "numpy.reshape",
                 "role": "",
                 "target": "reshape",
@@ -165,7 +165,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/pad",
-                "label": "we.pad",
+                "label": "fnp.pad",
                 "original_target": "numpy.pad",
                 "role": "",
                 "target": "pad",
@@ -181,7 +181,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/repeat",
-                "label": "we.repeat",
+                "label": "fnp.repeat",
                 "original_target": "numpy.repeat",
                 "role": "",
                 "target": "repeat",
@@ -266,17 +266,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[0,1],[2,3]])"
+                "text": "a = fnp.array([[0,1],[2,3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.resize(a,(2,3))"
+                "text": "fnp.resize(a,(2,3))"
               },
               {
                 "kind": "output",
@@ -289,7 +289,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.resize(a,(1,4))"
+                "text": "fnp.resize(a,(1,4))"
               },
               {
                 "kind": "output",
@@ -298,7 +298,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.resize(a,(2,4))"
+                "text": "fnp.resize(a,(2,4))"
               },
               {
                 "kind": "output",
@@ -320,20 +320,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.resize",
     "module": "numpy",
     "name": "resize",
     "notes": "Return new array with given shape by repeating. Cost: numel(output).",
     "numpy_ref": "np.resize",
-    "signature": "we.resize(a, new_shape)",
+    "signature": "fnp.resize(a, new_shape)",
     "status": "supported",
     "summary": "Return a new array with the specified shape.",
-    "weight": 1.0,
-    "whest_ref": "we.resize"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "resize",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1534",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1321"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1321",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L1508"
   }
 }

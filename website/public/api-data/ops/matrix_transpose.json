@@ -135,7 +135,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/transpose",
-                "label": "we.transpose",
+                "label": "fnp.transpose",
                 "original_target": "transpose",
                 "role": "",
                 "target": "transpose",
@@ -154,12 +154,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matrix_transpose([[1, 2], [3, 4]])"
+                "text": "fnp.matrix_transpose([[1, 2], [3, 4]])"
               },
               {
                 "kind": "output",
@@ -177,7 +177,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])"
+                "text": "fnp.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])"
               },
               {
                 "kind": "output",
@@ -207,20 +207,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.matrix_transpose",
     "module": "numpy",
     "name": "matrix_transpose",
     "notes": "Transpose last two dimensions (NumPy 2.x array API).",
     "numpy_ref": "np.matrix_transpose",
-    "signature": "we.matrix_transpose(x, /)",
+    "signature": "fnp.matrix_transpose(x, /)",
     "status": "supported",
     "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
-    "weight": 0.0,
-    "whest_ref": "we.matrix_transpose"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "matrix_transpose",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L709",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1155"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1155",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/fromnumeric.py#L683"
   }
 }

@@ -259,7 +259,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/concatenate",
-                "label": "we.concatenate",
+                "label": "fnp.concatenate",
                 "original_target": "concatenate",
                 "role": "",
                 "target": "concatenate",
@@ -275,7 +275,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/block",
-                "label": "we.block",
+                "label": "fnp.block",
                 "original_target": "block",
                 "role": "",
                 "target": "block",
@@ -291,7 +291,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/split",
-                "label": "we.split",
+                "label": "fnp.split",
                 "original_target": "split",
                 "role": "",
                 "target": "split",
@@ -307,7 +307,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/unstack",
-                "label": "we.unstack",
+                "label": "fnp.unstack",
                 "original_target": "unstack",
                 "role": "",
                 "target": "unstack",
@@ -326,12 +326,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng()"
+                "text": "rng = fnp.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -341,7 +341,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.stack(arrays, axis=0).shape"
+                "text": "fnp.stack(arrays, axis=0).shape"
               },
               {
                 "kind": "output",
@@ -355,7 +355,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.stack(arrays, axis=1).shape"
+                "text": "fnp.stack(arrays, axis=1).shape"
               },
               {
                 "kind": "output",
@@ -369,7 +369,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.stack(arrays, axis=2).shape"
+                "text": "fnp.stack(arrays, axis=2).shape"
               },
               {
                 "kind": "output",
@@ -383,17 +383,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2, 3])"
+                "text": "a = fnp.array([1, 2, 3])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([4, 5, 6])"
+                "text": "b = fnp.array([4, 5, 6])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.stack((a, b))"
+                "text": "fnp.stack((a, b))"
               },
               {
                 "kind": "output",
@@ -411,7 +411,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.stack((a, b), axis=-1)"
+                "text": "fnp.stack((a, b), axis=-1)"
               },
               {
                 "kind": "output",
@@ -437,20 +437,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.stack",
     "module": "numpy",
     "name": "stack",
     "notes": "Join arrays along new axis. Cost: numel(output).",
     "numpy_ref": "np.stack",
-    "signature": "we.stack(arrays, axis=0, out=None, *, dtype=None, casting='same_kind')",
+    "signature": "fnp.stack(arrays, axis=0, out=None, *, dtype=None, casting='same_kind')",
     "status": "supported",
     "summary": "Join a sequence of arrays along a new axis.",
-    "weight": 1.0,
-    "whest_ref": "we.stack"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "stack",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L380",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L250"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L250",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/shape_base.py#L378"
   }
 }

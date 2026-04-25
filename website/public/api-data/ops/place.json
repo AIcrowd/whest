@@ -30,7 +30,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "copyto(arr, vals, where=mask)",
-                "text": "we.copyto(arr, vals, where=mask)"
+                "text": "fnp.copyto(arr, vals, where=mask)"
               },
               {
                 "kind": "text",
@@ -285,7 +285,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/copyto",
-                "label": "we.copyto",
+                "label": "fnp.copyto",
                 "original_target": "copyto",
                 "role": "",
                 "target": "copyto",
@@ -296,7 +296,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/put",
-                "label": "we.put",
+                "label": "fnp.put",
                 "original_target": "put",
                 "role": "",
                 "target": "put",
@@ -307,7 +307,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/take",
-                "label": "we.take",
+                "label": "fnp.take",
                 "original_target": "take",
                 "role": "",
                 "target": "take",
@@ -318,7 +318,7 @@
                 "description_inline": [],
                 "external_url": "",
                 "href": "/docs/api/ops/extract",
-                "label": "we.extract",
+                "label": "fnp.extract",
                 "original_target": "extract",
                 "role": "",
                 "target": "extract",
@@ -337,17 +337,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = we.arange(6).reshape(2, 3)"
+                "text": "arr = fnp.arange(6).reshape(2, 3)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.place(arr, arr>2, [44, 55])"
+                "text": "fnp.place(arr, arr>2, [44, 55])"
               },
               {
                 "kind": "input",
@@ -374,20 +374,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.place",
     "module": "numpy",
     "name": "place",
     "notes": "Change elements satisfying condition. Cost: numel(input).",
     "numpy_ref": "np.place",
-    "signature": "we.place(arr, mask, vals, *args, **kwargs)",
+    "signature": "fnp.place(arr, mask, vals, *args, **kwargs)",
     "status": "supported",
     "summary": "Change elements of an array based on conditional and input values.",
-    "weight": 4.0,
-    "whest_ref": "we.place"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "place",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L2047",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1239"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1239",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_function_base_impl.py#L2100"
   }
 }

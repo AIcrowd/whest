@@ -460,12 +460,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arcsinh(we.array([we.e, 10.0]))"
+                "text": "fnp.arcsinh(fnp.array([fnp.e, 10.0]))"
               },
               {
                 "kind": "output",
@@ -483,20 +483,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.arcsinh",
     "module": "numpy",
     "name": "arcsinh",
     "notes": "Element-wise inverse hyperbolic sine.",
     "numpy_ref": "np.arcsinh",
-    "signature": "we.arcsinh(x)",
+    "signature": "fnp.arcsinh(x)",
     "status": "supported",
     "summary": "Inverse hyperbolic sine element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.arcsinh"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "arcsinh",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

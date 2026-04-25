@@ -105,7 +105,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.standard_t`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.standard_t`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -180,7 +180,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.array(df).size"
+                        "text": "fnp.array(df).size"
                       },
                       {
                         "kind": "text",
@@ -230,7 +230,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.array(df).size"
+                    "text": "fnp.array(df).size"
                   },
                   {
                     "kind": "text",
@@ -383,7 +383,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "intake = we.array([5260., 5470, 5640, 6180, 6390, 6515, 6805, 7515, \\"
+                "text": "intake = fnp.array([5260., 5470, 5640, 6180, 6390, 6515, 6805, 7515, \\"
               },
               {
                 "kind": "input",
@@ -416,7 +416,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.mean(intake)"
+                "text": "fnp.mean(intake)"
               },
               {
                 "kind": "output",
@@ -434,7 +434,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "t = (we.mean(intake)-7725)/(intake.std(ddof=1)/we.sqrt(len(intake)))"
+                "text": "t = (fnp.mean(intake)-7725)/(intake.std(ddof=1)/fnp.sqrt(len(intake)))"
               },
               {
                 "kind": "input",
@@ -467,7 +467,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.standard_t(10, size=1000000)"
+                "text": "s = fnp.random.standard_t(10, size=1000000)"
               },
               {
                 "kind": "input",
@@ -491,7 +491,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum(we.abs(t) < we.abs(s)) / float(len(s))"
+                "text": "fnp.sum(fnp.abs(t) < fnp.abs(s)) / float(len(s))"
               },
               {
                 "kind": "output",
@@ -527,20 +527,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.standard_t",
     "module": "numpy.random",
     "name": "random.standard_t",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.standard_t",
-    "signature": "we.random.standard_t(df, size=None)",
+    "signature": "fnp.random.standard_t(df, size=None)",
     "status": "supported",
     "summary": "Draw samples from a standard Student's t distribution with `df` degrees of freedom.",
-    "weight": 16.0,
-    "whest_ref": "we.random.standard_t"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-standard_t",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_t.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_t.html"
   }
 }

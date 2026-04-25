@@ -218,7 +218,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/result_type",
-              "label": "we.result_type",
+              "label": "fnp.result_type",
               "original_target": "result_type",
               "role": "",
               "target": "result_type",
@@ -261,12 +261,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.can_cast(we.int32, we.int64)"
+              "text": "fnp.can_cast(fnp.int32, fnp.int64)"
             },
             {
               "kind": "output",
@@ -275,7 +275,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.can_cast(we.float64, complex)"
+              "text": "fnp.can_cast(fnp.float64, complex)"
             },
             {
               "kind": "output",
@@ -284,7 +284,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.can_cast(complex, float)"
+              "text": "fnp.can_cast(complex, float)"
             },
             {
               "kind": "output",
@@ -298,7 +298,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.can_cast('i8', 'f8')"
+              "text": "fnp.can_cast('i8', 'f8')"
             },
             {
               "kind": "output",
@@ -307,7 +307,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.can_cast('i8', 'f4')"
+              "text": "fnp.can_cast('i8', 'f4')"
             },
             {
               "kind": "output",
@@ -316,7 +316,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.can_cast('i4', 'S4')"
+              "text": "fnp.can_cast('i4', 'S4')"
             },
             {
               "kind": "output",
@@ -340,16 +340,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.can_cast(we.int32, we.int64)\n\nwe.can_cast(we.float64, complex)\n\nwe.can_cast(complex, float)\n\nwe.can_cast('i8', 'f8')\n\nwe.can_cast('i8', 'f4')\n\nwe.can_cast('i4', 'S4')",
+    "code": "import flopscope as fnp\n\nfnp.can_cast(fnp.int32, fnp.int64)\n\nfnp.can_cast(fnp.float64, complex)\n\nfnp.can_cast(complex, float)\n\nfnp.can_cast('i8', 'f8')\n\nfnp.can_cast('i8', 'f4')\n\nfnp.can_cast('i4', 'S4')",
     "output": "True\n\nTrue\n\nFalse\n\nTrue\n\nFalse\n\nFalse",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.can_cast",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L739",
   "href": "/docs/api/ops/can_cast/",
   "module": "numpy",
   "name": "can_cast",
   "next": {
     "href": "/docs/api/ops/cbrt/",
-    "label": "we.cbrt"
+    "label": "fnp.cbrt"
   },
   "notes": "Returns True if cast is safe.",
   "notes_sections": [
@@ -388,7 +391,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/broadcast_to/",
-    "label": "we.broadcast_to"
+    "label": "fnp.broadcast_to"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.can_cast.html",
@@ -418,19 +421,16 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/result_type",
-      "label": "we.result_type",
+      "label": "fnp.result_type",
       "original_target": "result_type",
       "role": "",
       "target": "result_type",
       "unresolved": false
     }
   ],
-  "signature": "we.can_cast(*args, **kwargs)",
+  "signature": "fnp.can_cast(from_, to, casting='safe')",
   "slug": "can_cast",
   "summary": "Returns True if cast between data types can occur according to the casting rule.",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.can_cast",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L739"
+  "weight": 0.0
 }

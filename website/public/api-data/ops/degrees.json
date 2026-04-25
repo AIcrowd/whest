@@ -291,7 +291,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/degrees",
-                "label": "we.degrees",
+                "label": "fnp.degrees",
                 "original_target": "rad2deg",
                 "role": "",
                 "target": "degrees",
@@ -319,22 +319,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
-              }
-            ],
-            "type": "doctest_block"
-          },
-          {
-            "lines": [
-              {
-                "kind": "input",
-                "prompt": ">>>",
-                "text": "rad = we.arange(12.)*we.pi/6"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.degrees(rad)"
+                "text": "rad = fnp.arange(12.)*fnp.pi/6"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "fnp.degrees(rad)"
               },
               {
                 "kind": "output",
@@ -352,17 +347,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out = we.zeros((rad.shape))"
+                "text": "out = fnp.zeros((rad.shape))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "r = we.degrees(rad, out)"
+                "text": "r = fnp.degrees(rad, out)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.all(r == out)"
+                "text": "fnp.all(r == out)"
               },
               {
                 "kind": "output",
@@ -380,20 +375,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.degrees",
     "module": "numpy",
     "name": "degrees",
     "notes": "Convert radians to degrees element-wise.",
     "numpy_ref": "np.degrees",
-    "signature": "we.degrees(x)",
+    "signature": "fnp.degrees(x)",
     "status": "supported",
     "summary": "Convert angles from radians to degrees.",
-    "weight": 1.0,
-    "whest_ref": "we.degrees"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "degrees",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

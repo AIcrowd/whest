@@ -31,20 +31,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.random",
     "module": "numpy.random",
     "name": "random.random",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.random",
-    "signature": "we.random.random(size=None)",
+    "signature": "fnp.random.random(size=None)",
     "status": "supported",
     "summary": "Return random floats in the half-open interval [0.0, 1.0). Alias for `random_sample` to ease forward-porting to the new random API.",
-    "weight": 1.0,
-    "whest_ref": "we.random.random"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "random-random",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.random.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L177"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L177",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.random.html"
   }
 }

@@ -500,7 +500,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/std",
-              "label": "we.std",
+              "label": "fnp.std",
               "original_target": "std",
               "role": "",
               "target": "std",
@@ -516,7 +516,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/mean",
-              "label": "we.mean",
+              "label": "fnp.mean",
               "original_target": "mean",
               "role": "",
               "target": "mean",
@@ -532,7 +532,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/var",
-              "label": "we.var",
+              "label": "fnp.var",
               "original_target": "var",
               "role": "",
               "target": "var",
@@ -543,7 +543,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanstd",
-              "label": "we.nanstd",
+              "label": "fnp.nanstd",
               "original_target": "nanstd",
               "role": "",
               "target": "nanstd",
@@ -554,7 +554,7 @@
               "description_inline": [],
               "external_url": "",
               "href": "/docs/api/ops/nanmean",
-              "label": "we.nanmean",
+              "label": "fnp.nanmean",
               "original_target": "nanmean",
               "role": "",
               "target": "nanmean",
@@ -721,17 +721,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, we.nan], [3, 4]])"
+              "text": "a = fnp.array([[1, fnp.nan], [3, 4]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanvar(a)"
+              "text": "fnp.nanvar(a)"
             },
             {
               "kind": "output",
@@ -740,7 +740,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanvar(a, axis=0)"
+              "text": "fnp.nanvar(a, axis=0)"
             },
             {
               "kind": "output",
@@ -749,7 +749,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nanvar(a, axis=1)"
+              "text": "fnp.nanvar(a, axis=1)"
             },
             {
               "kind": "output",
@@ -773,16 +773,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[1, we.nan], [3, 4]])\n\nwe.nanvar(a)\n\nwe.nanvar(a, axis=0)\n\nwe.nanvar(a, axis=1)",
+    "code": "import flopscope as fnp\n\na = fnp.array([[1, fnp.nan], [3, 4]])\n\nfnp.nanvar(a)\n\nfnp.nanvar(a, axis=0)\n\nfnp.nanvar(a, axis=1)",
     "output": "1.5555555555555554\n\narray([1.,  0.])\n\narray([0.,  0.25])  # may vary",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.nanvar",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
   "href": "/docs/api/ops/nanvar/",
   "module": "numpy",
   "name": "nanvar",
   "next": {
     "href": "/docs/api/ops/ndim/",
-    "label": "we.ndim"
+    "label": "fnp.ndim"
   },
   "notes": "Variance ignoring NaNs.",
   "notes_sections": [
@@ -848,7 +851,7 @@
     },
     {
       "body": [
-        "Elements to include in the variance. See `~we.ufunc.reduce` for",
+        "Elements to include in the variance. See `~fnp.ufunc.reduce` for",
         "details.",
         "",
         ".. versionadded:: 1.22.0"
@@ -881,7 +884,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/nansum/",
-    "label": "we.nansum"
+    "label": "fnp.nansum"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nanvar.html",
@@ -908,7 +911,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/std",
-      "label": "we.std",
+      "label": "fnp.std",
       "original_target": "std",
       "role": "",
       "target": "std",
@@ -924,7 +927,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/mean",
-      "label": "we.mean",
+      "label": "fnp.mean",
       "original_target": "mean",
       "role": "",
       "target": "mean",
@@ -940,7 +943,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/var",
-      "label": "we.var",
+      "label": "fnp.var",
       "original_target": "var",
       "role": "",
       "target": "var",
@@ -951,7 +954,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanstd",
-      "label": "we.nanstd",
+      "label": "fnp.nanstd",
       "original_target": "nanstd",
       "role": "",
       "target": "nanstd",
@@ -962,7 +965,7 @@
       "description_inline": [],
       "external_url": "",
       "href": "/docs/api/ops/nanmean",
-      "label": "we.nanmean",
+      "label": "fnp.nanmean",
       "original_target": "nanmean",
       "role": "",
       "target": "nanmean",
@@ -980,12 +983,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
+  "signature": "fnp.nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
   "slug": "nanvar",
   "summary": "Compute the variance along the specified axis, while ignoring NaNs.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L1715",
-  "weight": 2.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.nanvar",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L206"
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/lib/_nanfunctions_impl.py#L1693",
+  "weight": 2.0
 }

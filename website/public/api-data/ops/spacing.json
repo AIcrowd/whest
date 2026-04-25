@@ -287,7 +287,7 @@
               },
               {
                 "kind": "code",
-                "text": "spacing(we.float64(1)) == we.finfo(we.float64).eps"
+                "text": "spacing(fnp.float64(1)) == fnp.finfo(fnp.float64).eps"
               },
               {
                 "kind": "text",
@@ -323,12 +323,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.spacing(1) == we.finfo(we.float64).eps"
+                "text": "fnp.spacing(1) == fnp.finfo(fnp.float64).eps"
               },
               {
                 "kind": "output",
@@ -346,20 +346,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.spacing",
     "module": "numpy",
     "name": "spacing",
     "notes": "Return ULP spacing for each element.",
     "numpy_ref": "np.spacing",
-    "signature": "we.spacing(x)",
+    "signature": "fnp.spacing(x)",
     "status": "supported",
     "summary": "Return the distance between x and the nearest adjacent number.",
-    "weight": 1.0,
-    "whest_ref": "we.spacing"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "spacing",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.4.4/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }
