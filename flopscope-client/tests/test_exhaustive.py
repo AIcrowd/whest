@@ -18,6 +18,9 @@ import time
 
 import pytest
 
+import flopscope as flops
+import flopscope.numpy as fnp
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------

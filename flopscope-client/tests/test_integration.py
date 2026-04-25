@@ -15,6 +15,9 @@ import time
 
 import pytest
 
+import flopscope as flops
+import flopscope.numpy as fnp
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
@@ -272,11 +275,9 @@ class TestErrors:
                 we.exp(a)
 
     def test_no_budget_context(self):
-        import flopscope as we
-
         # Operations outside a BudgetContext should raise NoBudgetContextError
-        with pytest.raises((we.NoBudgetContextError, we.FlopscopeServerError)):
-            we.ones((3,))
+        with pytest.raises((flops.NoBudgetContextError, flops.FlopscopeServerError)):
+            fnp.ones((3,))
 
     def test_blacklisted_function(self):
         import flopscope as we

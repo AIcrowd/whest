@@ -388,28 +388,31 @@ class RequestHandler:
 
 
 def _get_flopscope_func(op_name: str):
-    """Look up a flopscope function by dotted name (e.g. 'linalg.svd').
+    """Look up a flopscope op by dotted name (e.g. 'linalg.svd', 'stats.norm.pdf').
 
-    Numpy-shaped operations live under ``flopscope.numpy`` in the JAX-style
-    layout, but clients still send unprefixed names like ``"add"`` or
-    ``"linalg.svd"``. Resolve those by trying ``flopscope`` first (for
-    primitives like ``as_symmetric``) and falling back to
-    ``flopscope.numpy`` (for numpy ops and namespaces such as ``linalg``,
-    ``fft``, ``random``).
+    Post-rebrand layout (JAX-style):
+    - Numpy-shaped ops (einsum, linalg.*, fft.*, random.*) live under
+      :mod:`flopscope.numpy`.
+    - Stats distributions (stats.norm.*, stats.uniform.*, ...) live under
+      :mod:`flopscope.stats` (top-level — closer in spirit to scipy.stats
+      than numpy).
+
+    We try ``flopscope.numpy`` first; if the first component is not under
+    numpy we fall back to top-level ``flopscope`` so submodules like
+    ``stats`` continue to resolve.
     """
-    parts = op_name.split(".")
-    try:
-        obj = flops
-        for part in parts:
-            obj = getattr(obj, part)
-        return obj
-    except AttributeError:
-        import flopscope.numpy as fnp
+    import flopscope.numpy as fnp
 
-        obj = fnp
-        for part in parts:
-            obj = getattr(obj, part)
+    parts = op_name.split(".")
+    for base in (fnp, flops):
+        obj = base
+        try:
+            for part in parts:
+                obj = getattr(obj, part)
+        except AttributeError:
+            continue
         return obj
+    raise AttributeError(f"flopscope does not provide {op_name!r}")
 
 
 def _decode_index_key(raw_key):
