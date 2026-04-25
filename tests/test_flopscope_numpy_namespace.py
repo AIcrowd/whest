@@ -83,17 +83,35 @@ class TestFlopscopeNumpySubmodules:
         assert NDArray is not None
 
 
-class TestRawNumpyFallback:
-    """Attributes flopscope doesn't implement should transparently fall back
-    to the raw ``numpy`` module (unclouded by the registry, uncounted)."""
+class TestStrictNoNumpyFallback:
+    """flopscope.numpy must NOT transparently expose uncounted numpy ops.
 
-    def test_unknown_numpy_scalar_type_falls_back(self):
-        # ``numpy.int_`` is a basic scalar alias we don't expose explicitly.
-        assert fnp.int_ is np.int_
+    Silently falling back to numpy for unsupported names would defeat the
+    point of FLOP accounting — participants would unknowingly call
+    uncounted operations. Every unsupported access raises AttributeError.
+    """
+
+    def test_numpy_scalar_alias_not_exposed_via_fallback(self):
+        # ``numpy.int_`` exists in numpy; flopscope does not expose it,
+        # so the access must raise instead of silently returning np.int_.
+        with pytest.raises(AttributeError):
+            _ = fnp.int_
+
+    def test_blacklisted_op_raises(self):
+        # Pick a name that exists in numpy but flopscope doesn't implement.
+        # ``frompyfunc`` is a numpy escape hatch for arbitrary user code;
+        # we don't track FLOP costs through it.
+        with pytest.raises(AttributeError):
+            _ = fnp.frompyfunc
 
     def test_unknown_name_raises_descriptive_attribute_error(self):
         with pytest.raises(AttributeError, match="does not provide"):
             _ = fnp.totally_not_a_real_numpy_attribute_xyz
+
+    def test_random_numpy_attribute_does_not_leak(self):
+        # numpy.True_ is a genuine numpy attribute. Strict policy: raises.
+        with pytest.raises(AttributeError):
+            _ = fnp.True_
 
 
 class TestTopLevelHintsAtNumpySurface:

@@ -9,9 +9,11 @@ Usage::
     u, s, vt = fnp.linalg.svd(M)
 
 All operations exposed here are counted against the currently active
-:class:`~flopscope.BudgetContext`. Attributes not explicitly implemented in
-flopscope fall back to the underlying ``numpy`` module (uncounted — primarily
-useful for scalar constants, dtype utilities, and obscure numpy helpers).
+:class:`~flopscope.BudgetContext`. Accessing an attribute that flopscope
+does not implement raises :class:`AttributeError` — there is no
+transparent fallback to ``numpy``. This is deliberate: silently exposing
+uncounted numpy operations would defeat the purpose of FLOP accounting.
+If you need a raw numpy operation, import ``numpy`` directly.
 """
 
 import importlib as _importlib
@@ -451,8 +453,11 @@ bool_ = _np.bool_
 complex64 = _np.complex64
 complex128 = _np.complex128
 
-# --- Registry-aware __getattr__ with raw-numpy fallback ---
-from flopscope._registry import REGISTRY as _REGISTRY
+# --- Registry-aware __getattr__ ---
+# Strict policy: any name not explicitly implemented above (and not in the
+# registry as a known-classified op) raises AttributeError. We intentionally
+# do NOT fall through to ``numpy`` — silently exposing uncounted numpy ops
+# would defeat the purpose of FLOP accounting.
 from flopscope._registry import make_module_getattr as _make_module_getattr
 
 _LAZY_SUBMODULES = frozenset({"linalg", "fft", "random", "testing", "typing"})
@@ -464,15 +469,7 @@ def __getattr__(name: str):
         module = _importlib.import_module(f"flopscope.numpy.{name}")
         globals()[name] = module
         return module
-    if name in _REGISTRY:
-        return _registry_getattr(name)
-    try:
-        return getattr(_np, name)
-    except AttributeError as err:
-        raise AttributeError(
-            f"flopscope.numpy does not provide {name!r} "
-            f"(not registered in flopscope and not exposed by numpy)."
-        ) from err
+    return _registry_getattr(name)
 
 
 def __dir__() -> list[str]:

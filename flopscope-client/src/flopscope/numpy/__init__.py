@@ -21,8 +21,6 @@ import builtins
 import struct
 from typing import Any
 
-import numpy as _np
-
 from flopscope._connection import get_connection
 from flopscope._math_compat import e, inf, nan, pi  # noqa: F401 (re-export)
 from flopscope._protocol import encode_create_from_data, encode_request
@@ -211,23 +209,11 @@ del _op_name
 from flopscope.numpy import fft, linalg, random  # noqa: E402,F401
 
 # ---------------------------------------------------------------------------
-# Fallback __getattr__: fall through to raw numpy for names we don't proxy.
+# Strict __getattr__: no transparent fallback to raw numpy. Unsupported
+# names raise AttributeError so participants notice immediately rather than
+# silently dispatch to an uncounted numpy operation.
 # ---------------------------------------------------------------------------
 
 from flopscope._getattr import make_module_getattr as _make_module_getattr  # noqa: E402
 
-_module_getattr = _make_module_getattr("", "flopscope.numpy")
-
-
-def __getattr__(name: str):
-    try:
-        return _module_getattr(name)
-    except AttributeError:
-        pass
-    try:
-        return getattr(_np, name)
-    except AttributeError as err:
-        raise AttributeError(
-            f"flopscope.numpy does not provide {name!r} "
-            f"(not registered and not exposed by numpy)."
-        ) from err
+__getattr__ = _make_module_getattr("", "flopscope.numpy")
