@@ -247,7 +247,8 @@ aside#nd-sidebar a[data-active='true'] {
   color: var(--gray-400);
 }
 
-/* Coral-dot wordmark — persistent glyph for `Flopscope.` */
+/* Coral wordmark — persistent glyph for `flopscope.` (lowercase, with
+   `flop` highlighted in coral and the trailing period as the brand dot). */
 .flopscope-wordmark {
   font-family: var(--font-display-serif), 'Source Serif 4', Georgia, serif;
   font-weight: 700;
@@ -260,6 +261,9 @@ aside#nd-sidebar a[data-active='true'] {
 }
 .dark .flopscope-wordmark {
   color: #E8EAEB;
+}
+.flopscope-wordmark__flop {
+  color: var(--coral);
 }
 .flopscope-wordmark__dot {
   color: var(--coral);
