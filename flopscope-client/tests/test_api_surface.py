@@ -192,7 +192,7 @@ class TestClassExports:
         assert issubclass(flops.BudgetExhaustedError, flops.FlopscopeError)
         assert issubclass(flops.NoBudgetContextError, flops.FlopscopeError)
         assert issubclass(flops.SymmetryError, flops.FlopscopeError)
-        assert issubclass(fnp.FlopscopeServerError, flops.FlopscopeError)
+        assert issubclass(flops.FlopscopeServerError, flops.FlopscopeError)
         assert issubclass(flops.FlopscopeWarning, UserWarning)
 
 

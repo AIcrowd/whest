@@ -14,6 +14,9 @@ import time
 
 import pytest
 
+import flopscope as flops
+import flopscope.numpy as fnp
+
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
@@ -403,7 +406,7 @@ class TestErrorPropagation:
     def test_no_budget_context_raises(self):
         import flopscope as flops
         import flopscope.numpy as fnp
-        with pytest.raises((flops.NoBudgetContextError, fnp.FlopscopeServerError)):
+        with pytest.raises((flops.NoBudgetContextError, flops.FlopscopeServerError)):
             fnp.array([1.0, 2.0, 3.0])
 
     def test_budget_context_isolates_errors(self):
