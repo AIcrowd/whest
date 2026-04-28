@@ -2748,6 +2748,8 @@ def _build_operation_internal_refs(
 ) -> dict[str, dict[str, str]]:
     refs: dict[str, dict[str, str]] = {}
     for name, info in registry.items():
+        if info["category"] == "blacklisted":
+            continue
         canonical = resolve_canonical_name(name, alias_map)
         import_path = flopscope_ref(canonical, info["module"]).replace(
             "fnp.", "flopscope.numpy.", 1

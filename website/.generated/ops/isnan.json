@@ -328,8 +328,8 @@
             {
               "description": "",
               "description_inline": [],
-              "external_url": "",
-              "href": "/docs/api/numpy/isnat/",
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.isnat.html",
+              "href": "",
               "label": "isnat",
               "original_target": "isnat",
               "role": "",
@@ -540,8 +540,8 @@
     {
       "description": "",
       "description_inline": [],
-      "external_url": "",
-      "href": "/docs/api/numpy/isnat/",
+      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.isnat.html",
+      "href": "",
       "label": "isnat",
       "original_target": "isnat",
       "role": "",

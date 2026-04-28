@@ -343,8 +343,8 @@
                   "text": "Set whether to raise or warn on overflow, underflow and division by zero."
                 }
               ],
-              "external_url": "",
-              "href": "/docs/api/numpy/seterr/",
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.seterr.html",
+              "href": "",
               "label": "seterr",
               "original_target": "seterr",
               "role": "",
@@ -636,8 +636,8 @@
           "text": "Set whether to raise or warn on overflow, underflow and division by zero."
         }
       ],
-      "external_url": "",
-      "href": "/docs/api/numpy/seterr/",
+      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.seterr.html",
+      "href": "",
       "label": "seterr",
       "original_target": "seterr",
       "role": "",

@@ -374,8 +374,8 @@
                   "text": "Return the binary representation of the input number as a string."
                 }
               ],
-              "external_url": "",
-              "href": "/docs/api/numpy/binary-repr/",
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.binary_repr.html",
+              "href": "",
               "label": "binary_repr",
               "original_target": "binary_repr",
               "role": "",
@@ -816,8 +816,8 @@
           "text": "Return the binary representation of the input number as a string."
         }
       ],
-      "external_url": "",
-      "href": "/docs/api/numpy/binary-repr/",
+      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.binary_repr.html",
+      "href": "",
       "label": "binary_repr",
       "original_target": "binary_repr",
       "role": "",
