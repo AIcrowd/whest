@@ -211,10 +211,16 @@ def _counted_binary(np_func, op_name: str):
         output_shape = _np.broadcast_shapes(x.shape, y.shape)
         x_sym = _symmetry_of(x)
         y_sym = _symmetry_of(y)
-        out_symmetry, aligned_inputs = _pointwise_symmetry(
-            ((x, x_sym), (y, y_sym)),
-            output_shape,
-        )
+        x_is_scalar = x.ndim == 0
+        y_is_scalar = y.ndim == 0
+        if x_is_scalar ^ y_is_scalar:
+            out_symmetry = y_sym if x_is_scalar else x_sym
+            aligned_inputs = [out_symmetry] if out_symmetry is not None else []
+        else:
+            out_symmetry, aligned_inputs = _pointwise_symmetry(
+                ((x, x_sym), (y, y_sym)),
+                output_shape,
+            )
         out_symmetry = _prepare_symmetric_out(out, out_symmetry)
 
         cost = pointwise_cost(output_shape, symmetry=out_symmetry)

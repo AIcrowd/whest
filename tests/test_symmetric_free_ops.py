@@ -195,6 +195,13 @@ class TestFull:
         assert result.symmetry == we.SymmetryGroup.young(blocks=((0, 1), (2, 3)))
         assert np.all(result == 7.0)
 
+    def test_high_rank_scalar_comparison_keeps_symmetry(self):
+        result = we.full((2, 2, 2, 2, 2, 2, 2, 2), 1.0)
+        compared = result == 1.0
+        assert isinstance(compared, SymmetricTensor)
+        assert compared.symmetry == result.symmetry
+        assert np.all(compared)
+
 
 # ---------------------------------------------------------------------------
 # Tier 3: Propagation from input / shape detection
