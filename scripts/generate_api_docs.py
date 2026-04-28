@@ -981,13 +981,17 @@ def find_public_doc_contract_violations(
     if not summary.strip():
         violations.append(f"{import_path}: missing summary")
 
-    if kind in rules["require_parameters_and_returns_for_kind"] and _requires_structured_public_callable_docs(import_path):
+    if kind in rules[
+        "require_parameters_and_returns_for_kind"
+    ] and _requires_structured_public_callable_docs(import_path):
         if require_parameters and not sections.get("Parameters"):
             violations.append(f"{import_path}: missing Parameters section")
         if not sections.get("Returns"):
             violations.append(f"{import_path}: missing Returns section")
 
-    if import_path in set(rules["require_examples_for"]) and not sections.get("Examples"):
+    if import_path in set(rules["require_examples_for"]) and not sections.get(
+        "Examples"
+    ):
         violations.append(f"{import_path}: missing Examples section")
 
     for line in sections.get("Examples", []):
@@ -1436,9 +1440,7 @@ def _is_prompt_line(line: str) -> tuple[bool, str | None]:
 def rewrite_example_text(text: str) -> str:
     """Rewrite upstream NumPy example text to the current flopscope naming."""
     rewritten = rewrite_api_refs(text)
-    rewritten = rewritten.replace(
-        "import numpy as np", "import flopscope.numpy as fnp"
-    )
+    rewritten = rewritten.replace("import numpy as np", "import flopscope.numpy as fnp")
     return rewritten
 
 
@@ -3688,9 +3690,15 @@ def _make_public_api_manifest_entry(
     module: str | None = None,
     is_callable: bool | None = None,
 ) -> dict[str, object]:
-    resolved_kind = kind or (_public_api_entry_kind(obj) if obj is not None else "object")
+    resolved_kind = kind or (
+        _public_api_entry_kind(obj) if obj is not None else "object"
+    )
     resolved_callable = (
-        is_callable if is_callable is not None else callable(obj) if obj is not None else False
+        is_callable
+        if is_callable is not None
+        else callable(obj)
+        if obj is not None
+        else False
     )
     return {
         "canonical_name": import_path,
@@ -3748,7 +3756,9 @@ def _public_api_aliases(import_path: str) -> list[str]:
     if import_path.startswith("flopscope.numpy."):
         aliases.append(import_path.replace("flopscope.numpy.", "fnp.", 1))
     elif import_path.startswith("flopscope.accounting."):
-        aliases.append(import_path.replace("flopscope.accounting.", "flops.accounting.", 1))
+        aliases.append(
+            import_path.replace("flopscope.accounting.", "flops.accounting.", 1)
+        )
     elif import_path.startswith("flopscope.stats."):
         aliases.append(import_path.replace("flopscope.", "flops.", 1))
     elif import_path.startswith("flopscope."):
@@ -3815,7 +3825,9 @@ def build_public_api_manifest(
             continue
         manifest[import_path] = _make_public_api_manifest_entry(import_path, obj=obj)
 
-    for import_path, obj in _iter_public_callable_exports(fnp_random, "flopscope.numpy.random"):
+    for import_path, obj in _iter_public_callable_exports(
+        fnp_random, "flopscope.numpy.random"
+    ):
         if import_path in registry_import_paths:
             continue
         manifest[import_path] = _make_public_api_manifest_entry(import_path, obj=obj)
@@ -3925,7 +3937,9 @@ def _public_api_payload_from_symbol(
         "area": _public_api_namespace(import_path),
         "display_type": "",
         "weight": 1.0,
-        "aliases": [alias for alias in _public_api_aliases(import_path) if alias != import_path],
+        "aliases": [
+            alias for alias in _public_api_aliases(import_path) if alias != import_path
+        ],
         "notes": "",
         "cost_formula": "",
         "cost_formula_latex": "",
@@ -4049,10 +4063,7 @@ def write_public_api_leaf_artifacts(
             "};",
             "",
             "export const publicApiLeafImportPaths = [",
-            *[
-                f'  "{import_path}",'
-                for import_path in sorted(manifest)
-            ],
+            *[f'  "{import_path}",' for import_path in sorted(manifest)],
             "] as const;",
             "",
         ]
@@ -4074,7 +4085,9 @@ def write_public_api_leaf_artifacts(
     (generated_dir / "public-api-leaf-imports.ts").write_text(
         "\n".join(import_map_lines)
     )
-    print(f"  Generated .generated/public-api/*.json ({len(public_index_entries)} leaves)")
+    print(
+        f"  Generated .generated/public-api/*.json ({len(public_index_entries)} leaves)"
+    )
     print(f"  Generated {generated_dir / 'public-api-route-map.json'}")
     print(f"  Generated {generated_dir / 'public-api-leaf-imports.ts'}")
     print(f"  Generated {public_api_data_dir / 'index.json'}")
@@ -4363,7 +4376,9 @@ def extract_directives_from_file(path: Path) -> list[str]:
     return directives
 
 
-def _public_doc_sections_from_payload(payload: dict[str, object]) -> dict[str, list[str]]:
+def _public_doc_sections_from_payload(
+    payload: dict[str, object],
+) -> dict[str, list[str]]:
     sections: dict[str, list[str]] = {}
 
     if payload.get("parameters"):
@@ -4414,7 +4429,9 @@ def collect_public_doc_contract_violations() -> list[str]:
             continue
         payload_path = GENERATED_DIR / "public-api" / f"{slug}.json"
         if not payload_path.exists():
-            violations.append(f"{import_path}: missing generated payload at {payload_path}")
+            violations.append(
+                f"{import_path}: missing generated payload at {payload_path}"
+            )
             continue
         payload = json.loads(payload_path.read_text())
         require_parameters = True
@@ -4448,7 +4465,9 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         print(f"\nAPI index at {API_INDEX_PATH} no longer renders <ApiNamespaceHub />")
         return False
 
-    operation_cost_index_path = WEBSITE / "content" / "docs" / "api" / "operation-cost-index.mdx"
+    operation_cost_index_path = (
+        WEBSITE / "content" / "docs" / "api" / "operation-cost-index.mdx"
+    )
     if not operation_cost_index_path.exists():
         print(f"\nOperation Cost Index page NOT FOUND at {operation_cost_index_path}")
         return False
@@ -4618,7 +4637,9 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         return False
 
     public_api_route_map = json.loads(public_api_route_map_path.read_text())
-    absolute_route = public_api_route_map.get("routes", {}).get("/docs/api/numpy/absolute/")
+    absolute_route = public_api_route_map.get("routes", {}).get(
+        "/docs/api/numpy/absolute/"
+    )
     if (
         not isinstance(absolute_route, dict)
         or absolute_route.get("import_path") != "flopscope.numpy.absolute"
@@ -4630,7 +4651,10 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         return False
 
     public_api_index = json.loads(public_api_index_path.read_text())
-    if "entries" not in public_api_index or "operation_cost_index" not in public_api_index:
+    if (
+        "entries" not in public_api_index
+        or "operation_cost_index" not in public_api_index
+    ):
         print(
             "\npublic API index missing 'entries' or 'operation_cost_index' "
             f"at {public_api_index_path}"
@@ -4643,13 +4667,15 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         if isinstance(entry, dict)
     ):
         print(
-            "\npublic API index missing canonical entry for "
-            "'flopscope.numpy.absolute'"
+            "\npublic API index missing canonical entry for 'flopscope.numpy.absolute'"
         )
         return False
 
     public_api_import_map = public_api_import_map_path.read_text()
-    if '"flopscope.numpy.absolute": () => import("./public-api/flopscope-numpy-absolute.json")' not in public_api_import_map:
+    if (
+        '"flopscope.numpy.absolute": () => import("./public-api/flopscope-numpy-absolute.json")'
+        not in public_api_import_map
+    ):
         print(
             "\npublic-api-leaf-imports.ts missing static import for "
             "'flopscope.numpy.absolute'"
