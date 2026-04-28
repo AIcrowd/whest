@@ -228,7 +228,6 @@ def _relabel_group_to_output(
         )
 
     remapped = SymmetryGroup(*generators, axes=axes)
-    remapped._labels = tuple(output_subscript[axis] for axis in axes)
     return validate_symmetry_group(remapped, ndim=len(output_subscript))
 
 

@@ -109,13 +109,20 @@ def test_expand_dims_tuple_axis_remaps_symmetry():
     r = ops.expand_dims(a, axis=(0, 2))
     assert isinstance(r, SymmetricTensor)
     assert r.shape == (1, 3, 1, 3)
-    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(1, 3))
+    assert r.symmetry == we.SymmetryGroup.young(blocks=((0, 2), (1, 3)))
 
 
 def test_expand_dims_plain_arrays_remain_plain():
     r = ops.expand_dims(numpy.array([1, 2, 3]), axis=0)
     assert not isinstance(r, SymmetricTensor)
     assert r.shape == (1, 3)
+
+
+def test_expand_dims_plain_arrays_gain_inserted_axis_symmetry():
+    r = ops.expand_dims(numpy.array([1, 2, 3]), axis=(1, 2, 3))
+    assert isinstance(r, SymmetricTensor)
+    assert r.shape == (3, 1, 1, 1)
+    assert r.symmetry == we.SymmetryGroup.symmetric(axes=(1, 2, 3))
 
 
 def test_expand_dims_invalid_axis_matches_numpy():
@@ -136,16 +143,15 @@ def test_expand_dims_duplicate_axes_match_numpy():
     assert type(ours.value) is type(numpy_err.value)
 
 
-def test_expand_dims_matches_newaxis_symmetry():
-    a = we.as_symmetric(
-        numpy.stack([numpy.eye(3), 2 * numpy.eye(3)], axis=-1), symmetry=(0, 1)
-    )
-    by_fn = ops.expand_dims(a, axis=0)
-    by_slice = a[None, ...]
+def test_expand_dims_can_be_richer_than_newaxis_slicing():
+    a = we.eye(3)
+    by_fn = ops.expand_dims(a, axis=(0, 2))
+    by_slice = a[None, :, None, :]
     assert isinstance(by_fn, SymmetricTensor)
     assert isinstance(by_slice, SymmetricTensor)
     assert numpy.array_equal(by_fn, by_slice)
-    assert by_fn.symmetry == by_slice.symmetry
+    assert by_fn.symmetry == we.SymmetryGroup.young(blocks=((0, 2), (1, 3)))
+    assert by_slice.symmetry == we.SymmetryGroup.symmetric(axes=(1, 3))
 
 
 def test_vstack():

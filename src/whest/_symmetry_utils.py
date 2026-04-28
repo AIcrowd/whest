@@ -195,17 +195,25 @@ def remap_group_for_expand_dims(
     axis,
 ) -> SymmetryGroup | None:
     """Remap tensor-axis support after ``numpy.expand_dims`` axis insertion."""
-    if group is None:
-        return None
-    validate_symmetry_group(group, ndim=ndim)
+    if group is not None:
+        validate_symmetry_group(group, ndim=ndim)
     probe_shape = tuple(range(2, 2 + ndim))
     probe = np.empty(probe_shape)
     expanded_shape = np.expand_dims(probe, axis=axis).shape
-    axis_map = {
-        old_axis: expanded_shape.index(size)
-        for old_axis, size in enumerate(probe_shape)
-    }
-    return remap_group_axes(group, axis_map)
+    remapped = None
+    if group is not None:
+        axis_map = {
+            old_axis: expanded_shape.index(size)
+            for old_axis, size in enumerate(probe_shape)
+        }
+        remapped = remap_group_axes(group, axis_map)
+    inserted_axes = tuple(
+        axis_idx for axis_idx, size in enumerate(expanded_shape) if size == 1
+    )
+    inserted = None
+    if len(inserted_axes) >= 2:
+        inserted = SymmetryGroup.symmetric(axes=inserted_axes)
+    return direct_product_groups(remapped, inserted)
 
 
 def intersect_groups(

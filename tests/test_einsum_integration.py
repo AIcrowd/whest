@@ -212,6 +212,8 @@ class TestOutputSymmetryWrapping:
         numpy.testing.assert_allclose(result, expected, rtol=1e-10)
         assert isinstance(result, SymmetricTensor)
         assert result.symmetry.order() == 6
+        assert result.symmetry == SymmetryGroup.symmetric(axes=(0, 1, 2))
+        assert getattr(result.symmetry, "_labels", None) is None
         assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 1, 2)))
 
     def test_einsum_preserves_single_operand_reduction_subgroup_symmetry(self):
@@ -248,7 +250,9 @@ class TestOutputSymmetryWrapping:
         expected = numpy.einsum("ijk->kji", data)
         numpy.testing.assert_allclose(result, expected, rtol=1e-10)
         assert isinstance(result, SymmetricTensor)
+        assert result.symmetry == SymmetryGroup.symmetric(axes=(0, 2))
         assert result.symmetry.axes == (0, 2)
+        assert getattr(result.symmetry, "_labels", None) is None
         assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 2)))
 
     def test_einsum_with_plain_out_and_explicit_symmetry_validates_but_returns_plain_out(

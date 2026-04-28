@@ -443,11 +443,14 @@ attach_docstring(squeeze, _np.squeeze, "free", "0 FLOPs")
 
 def expand_dims(a, axis):
     """Insert a new axis. Wraps ``numpy.expand_dims``. Cost: 0 FLOPs."""
-    if not isinstance(a, SymmetricTensor):
-        return _np.expand_dims(a, axis=axis)
+    a_arr = _np.asarray(a)
     result = _np.expand_dims(_np.asarray(a), axis=axis)
-    symmetry = remap_group_for_expand_dims(a.symmetry, ndim=a.ndim, axis=axis)
-    return wrap_with_symmetry(result, symmetry)
+    symmetry = remap_group_for_expand_dims(
+        a.symmetry if isinstance(a, SymmetricTensor) else None,
+        ndim=a_arr.ndim,
+        axis=axis,
+    )
+    return wrap_with_symmetry(result, symmetry) if symmetry is not None else result
 
 
 attach_docstring(expand_dims, _np.expand_dims, "free", "0 FLOPs")
