@@ -387,3 +387,19 @@ def wrap_with_symmetry(data, symmetry: SymmetryGroup | None):
     from whest._symmetric import SymmetricTensor
 
     return SymmetricTensor(array, symmetry=symmetry)
+
+
+def wrap_with_trusted_symmetry(data, symmetry: SymmetryGroup | None):
+    """Wrap data with already-proven symmetry metadata without re-validating.
+
+    This helper is for internal call sites only, where the symmetry was
+    generated or revalidated by trusted constructor logic. Avoiding the
+    redundant validation call keeps constructor hot paths fast while leaving
+    public/user-facing symmetry paths fully validated.
+    """
+    array = np.asarray(data)
+    if symmetry is None:
+        return array
+    from whest._symmetric import SymmetricTensor
+
+    return SymmetricTensor(array, symmetry=symmetry)

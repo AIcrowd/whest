@@ -8,6 +8,7 @@ outside a :class:`~whest._budget.BudgetContext`.
 from __future__ import annotations
 
 import inspect as _inspect
+from functools import lru_cache
 
 import numpy as _np
 
@@ -20,11 +21,13 @@ from whest._symmetry_utils import (
     remap_group_for_expand_dims,
     validate_symmetry_group,
     wrap_with_symmetry,
+    wrap_with_trusted_symmetry,
 )
 from whest._validation import require_budget
 from whest.errors import SymmetryError, UnsupportedFunctionError
 
 
+@lru_cache(maxsize=1024)
 def _infer_constant_shape_symmetry(shape):
     if len(shape) < 2:
         return None
@@ -45,7 +48,7 @@ def _wrap_constant_fill(result):
     symmetry = _infer_constant_shape_symmetry(result.shape)
     if symmetry is None:
         return result
-    return wrap_with_symmetry(result, symmetry)
+    return wrap_with_trusted_symmetry(result, symmetry)
 
 
 def _compatible_symmetry_for_shape(symmetry, shape):
@@ -136,7 +139,7 @@ def eye(N, M=None, k=0, dtype=float, **kwargs):
     result = _np.eye(N, M=M, k=k, dtype=dtype, **kwargs)
     symmetry = _infer_structural_constructor_symmetry(kind="eye", N=N, M=M, k=k)
     if symmetry is not None:
-        return wrap_with_symmetry(result, symmetry)
+        return wrap_with_trusted_symmetry(result, symmetry)
     return result
 
 
@@ -162,7 +165,7 @@ def diag(v, k=0):
         result = _np.diag(v, k=k)
     symmetry = _infer_structural_constructor_symmetry(kind="diag", k=k, v_ndim=v.ndim)
     if symmetry is not None:
-        return wrap_with_symmetry(result, symmetry)
+        return wrap_with_trusted_symmetry(result, symmetry)
     return result
 
 
@@ -208,7 +211,7 @@ def zeros_like(a, dtype=None, **kwargs):
         if isinstance(a, SymmetricTensor):
             return _np.array(result, copy=False, subok=False)
         return result
-    return wrap_with_symmetry(result, symmetry)
+    return wrap_with_trusted_symmetry(result, symmetry)
 
 
 attach_docstring(zeros_like, _np.zeros_like, "free", "0 FLOPs")
@@ -226,7 +229,7 @@ def ones_like(a, dtype=None, **kwargs):
         if isinstance(a, SymmetricTensor):
             return _np.array(result, copy=False, subok=False)
         return result
-    return wrap_with_symmetry(result, symmetry)
+    return wrap_with_trusted_symmetry(result, symmetry)
 
 
 attach_docstring(ones_like, _np.ones_like, "free", "0 FLOPs")
@@ -248,7 +251,7 @@ def full_like(a, fill_value, dtype=None, **kwargs):
         if isinstance(a, SymmetricTensor):
             return _np.array(result, copy=False, subok=False)
         return result
-    return wrap_with_symmetry(result, symmetry)
+    return wrap_with_trusted_symmetry(result, symmetry)
 
 
 attach_docstring(full_like, _np.full_like, "free", "0 FLOPs")
@@ -275,7 +278,7 @@ def identity(n, dtype=float):
     result = _np.identity(n, dtype=dtype)
     symmetry = _infer_structural_constructor_symmetry(kind="identity")
     if symmetry is not None:
-        return wrap_with_symmetry(result, symmetry)
+        return wrap_with_trusted_symmetry(result, symmetry)
     return result
 
 
@@ -1013,7 +1016,7 @@ def diagflat(v, k=0):
         kind="diagflat", k=k, v_ndim=v_arr.ndim
     )
     if symmetry is not None:
-        return wrap_with_symmetry(result, symmetry)
+        return wrap_with_trusted_symmetry(result, symmetry)
     return result
 
 

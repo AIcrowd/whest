@@ -238,15 +238,6 @@ XFAIL_PATTERNS: dict[str, str] = {
     # ------------------------------------------------------------------ #
     # NUMPY_INTERNAL — fromiter/resize edge cases                         #
     # ------------------------------------------------------------------ #
-    "*TestCreationFuncs::test_zeros": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
-    "*TestCreationFuncs::test_ones": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
-    "*TestCreationFuncs::test_empty": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
     "*TestResize::test_reshape_from_zero": (
         "SUBCLASS_RETURN: np.resize returns WhestArray; the subsequent "
         "assert_array_equal invokes WhestArray.__eq__ -> we.equal -> "
