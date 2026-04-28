@@ -281,7 +281,7 @@
   ],
   "signature": "flops.flops.reduction_cost(op_name: 'str', *, input_shape: 'tuple[int, ...]', axis: 'int | None' = None, symmetry: 'SymmetryGroup | None' = None) -> 'int'",
   "slug": "flops-reduction-cost",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L388",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L385",
   "status_note": "",
   "summary": "Weighted FLOP cost of a reduction operation.",
   "upstream_source_url": ""

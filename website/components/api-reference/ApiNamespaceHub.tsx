@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './styles.module.css';
 import { getFeaturedEntries, getNamespaceCards } from './public-api-data';
 
@@ -23,9 +24,9 @@ export default function ApiNamespaceHub() {
                 <div>
                   <p className={styles.namespaceEyebrow}>{card.importPath}</p>
                   <h3 className={styles.namespaceTitle}>
-                    <a className={styles.namespaceLink} href={card.href}>
+                    <Link className={styles.namespaceLink} href={card.href}>
                       {card.title}
-                    </a>
+                    </Link>
                   </h3>
                 </div>
                 <span className={styles.namespaceCountChip}>{card.count} entries</span>
@@ -34,9 +35,9 @@ export default function ApiNamespaceHub() {
               <ul className={styles.namespaceHighlights}>
                 {card.highlights.map((entry) => (
                   <li key={entry.import_path}>
-                    <a className={styles.namespaceHighlightLink} href={entry.href}>
+                    <Link className={styles.namespaceHighlightLink} href={entry.href}>
                       <span className={styles.namespaceHighlightText}>{entry.display_name}</span>
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -60,9 +61,9 @@ export default function ApiNamespaceHub() {
               <div>
                 <p className={styles.entryHighlightEyebrow}>{entry.namespace}</p>
                 <h3 className={styles.entryHighlightTitle}>
-                  <a className={styles.entryHighlightLink} href={entry.href}>
+                  <Link className={styles.entryHighlightLink} href={entry.href}>
                     {entry.display_name}
-                  </a>
+                  </Link>
                 </h3>
               </div>
               <p className={styles.entryHighlightDescription}>{entry.summary}</p>

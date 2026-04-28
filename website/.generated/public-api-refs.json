@@ -1878,7 +1878,7 @@
     "kind": "cost_helper",
     "label": "flops.flops.pointwise_cost",
     "module": "flopscope.accounting",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L344"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L341"
   },
   "flops.accounting.poly_cost": {
     "canonical_name": "flops.poly_cost",
@@ -1977,7 +1977,7 @@
     "kind": "cost_helper",
     "label": "flops.flops.reduction_cost",
     "module": "flopscope.accounting",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L388"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L385"
   },
   "flops.accounting.rfft_cost": {
     "canonical_name": "flops.rfft_cost",
@@ -5163,7 +5163,7 @@
     "kind": "cost_helper",
     "label": "flops.flops.pointwise_cost",
     "module": "flopscope.accounting",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L344"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L341"
   },
   "flops.poly": {
     "canonical_name": "poly",
@@ -5991,7 +5991,7 @@
     "kind": "cost_helper",
     "label": "flops.flops.reduction_cost",
     "module": "flopscope.accounting",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L388"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L385"
   },
   "flops.remainder": {
     "canonical_name": "remainder",
@@ -7449,7 +7449,7 @@
     "kind": "cost_helper",
     "label": "flops.flops.pointwise_cost",
     "module": "flopscope.accounting",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L344"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L341"
   },
   "flopscope.accounting.poly_cost": {
     "canonical_name": "flops.poly_cost",
@@ -7548,7 +7548,7 @@
     "kind": "cost_helper",
     "label": "flops.flops.reduction_cost",
     "module": "flopscope.accounting",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L388"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L385"
   },
   "flopscope.accounting.rfft_cost": {
     "canonical_name": "flops.rfft_cost",
@@ -18393,7 +18393,7 @@
     "kind": "cost_helper",
     "label": "flops.flops.pointwise_cost",
     "module": "flopscope.accounting",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L344"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L341"
   },
   "poly": {
     "canonical_name": "poly",
@@ -19221,7 +19221,7 @@
     "kind": "cost_helper",
     "label": "flops.flops.reduction_cost",
     "module": "flopscope.accounting",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L388"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L385"
   },
   "remainder": {
     "canonical_name": "remainder",
