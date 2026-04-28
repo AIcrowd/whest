@@ -448,6 +448,35 @@
   color: var(--coral);
 }
 
+/* Parameter-level tokens for the structured signature: italic param names,
+   muted type annotations, distinct default values. Mirrors numpy.org's
+   reference page typography (cf. numpy.einsum signature). */
+.docSignatureStar {
+  font-weight: 600;
+  color: var(--api-signature-ink);
+}
+
+.docSignatureParam {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--api-signature-ink);
+}
+
+.docSignatureType {
+  font-style: italic;
+  color: var(--api-signature-muted);
+}
+
+.docSignatureDefault {
+  color: var(--coral);
+  font-weight: 400;
+}
+
+.docSignaturePunct {
+  color: var(--api-signature-muted);
+  font-weight: 400;
+}
+
 /* H1 title for an operation page: namespace prefix muted, function name in
    coral. Inherits font/size from the surrounding DocsTitle. */
 .docTitleNamespace {
