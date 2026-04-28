@@ -76,7 +76,7 @@ html > body[data-scroll-locked] {
 
 
 .dark {
-  /* flopscopebench palette — dark mode */
+  /* whestbench palette — dark mode */
   --background: oklch(0.205 0.005 220);              /* dark bg */
   --foreground: oklch(0.963 0.004 248.2);            /* gray-100 as text */
   --card: oklch(0.250 0.005 220);
