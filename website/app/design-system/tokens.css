@@ -65,7 +65,10 @@
 
   /* ═══════════════════════════════════════════════════════════
      TIER 3B — Whestbench extension  (surface-scoped)
-     Estimator identity + circuit gate-type chart scale.
+     Estimator identity + circuit gate-type chart scale. Naming kept
+     as ``whestbench`` (and ``--wb-*`` token prefix) intentionally —
+     this is a separate sub-brand for the bench surface, not a stale
+     reference to the former library name.
      ═══════════════════════════════════════════════════════════ */
   --wb-gt:        #292C2D;  /* = gray-900 */
   --wb-sampling:  #F0524D;  /* = coral */
