@@ -365,7 +365,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_and",
+              "href": "/docs/api/numpy/logical-and/",
               "label": "fnp.logical_and",
               "original_target": "logical_and",
               "role": "",
@@ -376,7 +376,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_not",
+              "href": "/docs/api/numpy/logical-not/",
               "label": "fnp.logical_not",
               "original_target": "logical_not",
               "role": "",
@@ -387,7 +387,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_xor",
+              "href": "/docs/api/numpy/logical-xor/",
               "label": "fnp.logical_xor",
               "original_target": "logical_xor",
               "role": "",
@@ -398,7 +398,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_or",
+              "href": "/docs/api/numpy/bitwise-or/",
               "label": "fnp.bitwise_or",
               "original_target": "bitwise_or",
               "role": "",
@@ -418,7 +418,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -476,7 +476,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/logical_or",
+              "href": "/docs/api/numpy/logical-or/",
               "kind": "link",
               "target": "logical_or",
               "text": "fnp.logical_or"
@@ -534,18 +534,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.logical_or(True, False)\n\nfnp.logical_or([True, False], [False, False])\n\nx = fnp.arange(5)\n\nfnp.logical_or(x < 1, x > 3)\n\na = fnp.array([True, False])\n\nb = fnp.array([False, False])\n\na | b",
+    "code": "import flopscope.numpy as fnp\n\nfnp.logical_or(True, False)\n\nfnp.logical_or([True, False], [False, False])\n\nx = fnp.arange(5)\n\nfnp.logical_or(x < 1, x > 3)\n\na = fnp.array([True, False])\n\nb = fnp.array([False, False])\n\na | b",
     "output": "True\n\narray([ True, False])\n\narray([ True, False, False, False,  True])\n\narray([ True, False])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.logical_or",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
-  "href": "/docs/api/ops/logical_or/",
+  "href": "/docs/api/numpy/logical-or/",
   "module": "numpy",
   "name": "logical_or",
   "next": {
-    "href": "/docs/api/ops/logical_xor/",
+    "href": "/docs/api/numpy/logical-xor/",
     "label": "fnp.logical_xor"
   },
   "notes": "Element-wise logical OR.",
@@ -593,10 +593,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/logical_not/",
+    "href": "/docs/api/numpy/logical-not/",
     "label": "fnp.logical_not"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.logical_or",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.logical_or.html",
   "returns": [
     {
@@ -614,7 +615,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_and",
+      "href": "/docs/api/numpy/logical-and/",
       "label": "fnp.logical_and",
       "original_target": "logical_and",
       "role": "",
@@ -625,7 +626,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_not",
+      "href": "/docs/api/numpy/logical-not/",
       "label": "fnp.logical_not",
       "original_target": "logical_not",
       "role": "",
@@ -636,7 +637,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_xor",
+      "href": "/docs/api/numpy/logical-xor/",
       "label": "fnp.logical_xor",
       "original_target": "logical_xor",
       "role": "",
@@ -647,7 +648,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_or",
+      "href": "/docs/api/numpy/bitwise-or/",
       "label": "fnp.bitwise_or",
       "original_target": "bitwise_or",
       "role": "",
@@ -658,6 +659,8 @@
   "signature": "fnp.logical_or(x, y)",
   "slug": "logical_or",
   "summary": "Compute the truth value of x1 OR x2 element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

@@ -237,7 +237,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/asarray",
+              "href": "/docs/api/numpy/asarray/",
               "label": "fnp.asarray",
               "original_target": "asarray",
               "role": "",
@@ -301,7 +301,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/fromiter",
+              "href": "/docs/api/numpy/fromiter/",
               "label": "fnp.fromiter",
               "original_target": "fromiter",
               "role": "",
@@ -317,7 +317,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/fromfunction",
+              "href": "/docs/api/numpy/fromfunction/",
               "label": "fnp.fromfunction",
               "original_target": "fromfunction",
               "role": "",
@@ -337,7 +337,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -350,7 +350,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/asarray_chkfinite",
+              "href": "/docs/api/numpy/asarray-chkfinite/",
               "kind": "link",
               "target": "asarray_chkfinite",
               "text": "asarray_chkfinite"
@@ -361,7 +361,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/asarray",
+              "href": "/docs/api/numpy/asarray/",
               "kind": "link",
               "target": "asarray",
               "text": "asarray"
@@ -455,18 +455,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = [1, 2]\n\nfnp.asarray_chkfinite(a, dtype=float)\n\na = [1, 2, fnp.inf]\n\ntry:\n    fnp.asarray_chkfinite(a)\nexcept ValueError:\n    print('ValueError')",
+    "code": "import flopscope.numpy as fnp\n\na = [1, 2]\n\nfnp.asarray_chkfinite(a, dtype=float)\n\na = [1, 2, fnp.inf]\n\ntry:\n    fnp.asarray_chkfinite(a)\nexcept ValueError:\n    print('ValueError')",
     "output": "array([1., 2.])\n\nValueError",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.asarray_chkfinite",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L621",
-  "href": "/docs/api/ops/asarray_chkfinite/",
+  "href": "/docs/api/numpy/asarray-chkfinite/",
   "module": "numpy",
   "name": "asarray_chkfinite",
   "next": {
-    "href": "/docs/api/ops/astype/",
+    "href": "/docs/api/numpy/astype/",
     "label": "fnp.astype"
   },
   "notes": "Convert to array, raising if NaN or inf. Cost: numel(input).",
@@ -503,10 +503,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/asarray/",
+    "href": "/docs/api/numpy/asarray/",
     "label": "fnp.asarray"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.asarray_chkfinite",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.asarray_chkfinite.html",
   "returns": [
     {
@@ -529,7 +530,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/asarray",
+      "href": "/docs/api/numpy/asarray/",
       "label": "fnp.asarray",
       "original_target": "asarray",
       "role": "",
@@ -593,7 +594,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/fromiter",
+      "href": "/docs/api/numpy/fromiter/",
       "label": "fnp.fromiter",
       "original_target": "fromiter",
       "role": "",
@@ -609,7 +610,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/fromfunction",
+      "href": "/docs/api/numpy/fromfunction/",
       "label": "fnp.fromfunction",
       "original_target": "fromfunction",
       "role": "",
@@ -620,6 +621,8 @@
   "signature": "fnp.asarray_chkfinite(a, dtype=None, order=None)",
   "slug": "asarray_chkfinite",
   "summary": "Convert the input to an array, checking for NaNs or Infs.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L579",
   "weight": 1.0
 }

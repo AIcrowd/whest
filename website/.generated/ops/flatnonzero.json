@@ -134,7 +134,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/nonzero",
+              "href": "/docs/api/numpy/nonzero/",
               "label": "fnp.nonzero",
               "original_target": "nonzero",
               "role": "",
@@ -150,7 +150,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ravel",
+              "href": "/docs/api/numpy/ravel/",
               "label": "fnp.ravel",
               "original_target": "ravel",
               "role": "",
@@ -170,7 +170,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -236,18 +236,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.arange(-2, 3)\n\nx\n\nfnp.flatnonzero(x)\n\nx.ravel()[fnp.flatnonzero(x)]",
+    "code": "import flopscope.numpy as fnp\n\nx = fnp.arange(-2, 3)\n\nx\n\nfnp.flatnonzero(x)\n\nx.ravel()[fnp.flatnonzero(x)]",
     "output": "array([-2, -1,  0,  1,  2])\n\narray([0, 1, 3, 4])\n\narray([-2, -1,  1,  2])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.flatnonzero",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L933",
-  "href": "/docs/api/ops/flatnonzero/",
+  "href": "/docs/api/numpy/flatnonzero/",
   "module": "numpy",
   "name": "flatnonzero",
   "next": {
-    "href": "/docs/api/ops/flip/",
+    "href": "/docs/api/numpy/flip/",
     "label": "fnp.flip"
   },
   "notes": "Return indices of non-zero elements in flattened array. Cost: numel(input).",
@@ -263,10 +263,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fill_diagonal/",
+    "href": "/docs/api/numpy/fill-diagonal/",
     "label": "fnp.fill_diagonal"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.flatnonzero",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.flatnonzero.html",
   "returns": [
     {
@@ -288,7 +289,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/nonzero",
+      "href": "/docs/api/numpy/nonzero/",
       "label": "fnp.nonzero",
       "original_target": "nonzero",
       "role": "",
@@ -304,7 +305,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ravel",
+      "href": "/docs/api/numpy/ravel/",
       "label": "fnp.ravel",
       "original_target": "ravel",
       "role": "",
@@ -315,6 +316,8 @@
   "signature": "fnp.flatnonzero(a)",
   "slug": "flatnonzero",
   "summary": "Return indices that are non-zero in the flattened version of a.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L646",
   "weight": 1.0
 }

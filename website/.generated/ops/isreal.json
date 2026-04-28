@@ -121,7 +121,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/iscomplex",
+              "href": "/docs/api/numpy/iscomplex/",
               "label": "fnp.iscomplex",
               "original_target": "iscomplex",
               "role": "",
@@ -137,7 +137,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isrealobj",
+              "href": "/docs/api/numpy/isrealobj/",
               "label": "fnp.isrealobj",
               "original_target": "isrealobj",
               "role": "",
@@ -156,7 +156,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/isreal",
+              "href": "/docs/api/numpy/isreal/",
               "kind": "link",
               "target": "isreal",
               "text": "isreal"
@@ -178,7 +178,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -304,18 +304,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([1+1j, 1+0j, 4.5, 3, 2, 2j], dtype=complex)\n\nfnp.isreal(a)\n\na = fnp.array([2j, \"a\"], dtype=\"U\")\n\nfnp.isreal(a)  # Warns about non-elementwise comparison\n\na = fnp.array([1, \"2\", 3+4j], dtype=object)\n\nfnp.isreal(a)\n\na = fnp.array([1+2j, 2+1j], dtype=object)\n\nfnp.isreal(a)",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array([1+1j, 1+0j, 4.5, 3, 2, 2j], dtype=complex)\n\nfnp.isreal(a)\n\na = fnp.array([2j, \"a\"], dtype=\"U\")\n\nfnp.isreal(a)  # Warns about non-elementwise comparison\n\na = fnp.array([1, \"2\", 3+4j], dtype=object)\n\nfnp.isreal(a)\n\na = fnp.array([1+2j, 2+1j], dtype=object)\n\nfnp.isreal(a)",
     "output": "array([False,  True,  True,  True,  True, False])\n\nFalse\n\narray([ True,  True,  True])\n\narray([ True,  True])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.isreal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/isreal/",
+  "href": "/docs/api/numpy/isreal/",
   "module": "numpy",
   "name": "isreal",
   "next": {
-    "href": "/docs/api/ops/isrealobj/",
+    "href": "/docs/api/numpy/isrealobj/",
     "label": "fnp.isrealobj"
   },
   "notes": "Test if element is real (imag == 0) element-wise.",
@@ -333,10 +333,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isposinf/",
+    "href": "/docs/api/numpy/isposinf/",
     "label": "fnp.isposinf"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.isreal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isreal.html",
   "returns": [
     {
@@ -352,7 +353,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/iscomplex",
+      "href": "/docs/api/numpy/iscomplex/",
       "label": "fnp.iscomplex",
       "original_target": "iscomplex",
       "role": "",
@@ -368,7 +369,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isrealobj",
+      "href": "/docs/api/numpy/isrealobj/",
       "label": "fnp.isrealobj",
       "original_target": "isrealobj",
       "role": "",
@@ -379,6 +380,8 @@
   "signature": "fnp.isreal(x)",
   "slug": "isreal",
   "summary": "Returns a bool array, where True if input element is real.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L213",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/take_along_axis/",
+  "detail_href": "/docs/api/numpy/take-along-axis/",
   "detail_json_href": "/api-data/ops/take_along_axis.json",
   "docs": {
     "sections": [
@@ -36,7 +36,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "kind": "link",
                 "target": "argsort",
                 "text": "argsort"
@@ -47,7 +47,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argpartition",
+                "href": "/docs/api/numpy/argpartition/",
                 "kind": "link",
                 "target": "argpartition",
                 "text": "argpartition"
@@ -152,7 +152,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/sort",
+                        "href": "/docs/api/numpy/sort/",
                         "kind": "link",
                         "target": "sort",
                         "text": "sort"
@@ -163,7 +163,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/argsort",
+                        "href": "/docs/api/numpy/argsort/",
                         "kind": "link",
                         "target": "argsort",
                         "text": "argsort"
@@ -184,7 +184,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/sort",
+                    "href": "/docs/api/numpy/sort/",
                     "kind": "link",
                     "target": "sort",
                     "text": "sort"
@@ -195,7 +195,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/argsort",
+                    "href": "/docs/api/numpy/argsort/",
                     "kind": "link",
                     "target": "argsort",
                     "text": "argsort"
@@ -261,7 +261,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/take",
+                "href": "/docs/api/numpy/take/",
                 "label": "fnp.take",
                 "original_target": "take",
                 "role": "",
@@ -277,7 +277,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/put_along_axis",
+                "href": "/docs/api/numpy/put-along-axis/",
                 "label": "fnp.put_along_axis",
                 "original_target": "put_along_axis",
                 "role": "",
@@ -362,7 +362,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"

@@ -256,7 +256,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/argpartition",
+              "href": "/docs/api/numpy/argpartition/",
               "label": "fnp.argpartition",
               "original_target": "argpartition",
               "role": "",
@@ -272,7 +272,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/sort",
+              "href": "/docs/api/numpy/sort/",
               "label": "fnp.sort",
               "original_target": "sort",
               "role": "",
@@ -360,7 +360,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -579,18 +579,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])\n\np = fnp.partition(a, 4)\n\np\n\np2 = fnp.partition(a, (4, 8))\n\np2",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array([7, 1, 7, 7, 1, 5, 7, 2, 3, 2, 6, 2, 3, 0])\n\np = fnp.partition(a, 4)\n\np\n\np2 = fnp.partition(a, (4, 8))\n\np2",
     "output": "array([0, 1, 2, 1, 2, 5, 2, 3, 3, 6, 7, 7, 7, 7]) # may vary\n\narray([0, 1, 2, 1, 2, 3, 3, 2, 5, 6, 7, 7, 7, 7])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.partition",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L113",
-  "href": "/docs/api/ops/partition/",
+  "href": "/docs/api/numpy/partition/",
   "module": "numpy",
   "name": "partition",
   "next": {
-    "href": "/docs/api/ops/percentile/",
+    "href": "/docs/api/numpy/percentile/",
     "label": "fnp.percentile"
   },
   "notes": "Quickselect; cost = n per slice.",
@@ -653,10 +653,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/pad/",
+    "href": "/docs/api/numpy/pad/",
     "label": "fnp.pad"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.partition",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.partition.html",
   "returns": [
     {
@@ -693,7 +694,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/argpartition",
+      "href": "/docs/api/numpy/argpartition/",
       "label": "fnp.argpartition",
       "original_target": "argpartition",
       "role": "",
@@ -709,7 +710,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/sort",
+      "href": "/docs/api/numpy/sort/",
       "label": "fnp.sort",
       "original_target": "sort",
       "role": "",
@@ -720,6 +721,8 @@
   "signature": "fnp.partition(a, kth, axis=-1, kind='introselect', order=None)",
   "slug": "partition",
   "summary": "Return a partitioned copy of an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L758",
   "weight": 1.0
 }

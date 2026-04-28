@@ -312,7 +312,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/empty_like",
+              "href": "/docs/api/numpy/empty-like/",
               "label": "fnp.empty_like",
               "original_target": "empty_like",
               "role": "",
@@ -328,7 +328,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/zeros_like",
+              "href": "/docs/api/numpy/zeros-like/",
               "label": "fnp.zeros_like",
               "original_target": "zeros_like",
               "role": "",
@@ -344,7 +344,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/full_like",
+              "href": "/docs/api/numpy/full-like/",
               "label": "fnp.full_like",
               "original_target": "full_like",
               "role": "",
@@ -360,7 +360,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ones",
+              "href": "/docs/api/numpy/ones/",
               "label": "fnp.ones",
               "original_target": "ones",
               "role": "",
@@ -380,7 +380,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -464,18 +464,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.arange(6)\n\nx = x.reshape((2, 3))\n\nx\n\nfnp.ones_like(x)\n\ny = fnp.arange(3, dtype=float)\n\ny\n\nfnp.ones_like(y)",
+    "code": "import flopscope.numpy as fnp\n\nx = fnp.arange(6)\n\nx = x.reshape((2, 3))\n\nx\n\nfnp.ones_like(x)\n\ny = fnp.arange(3, dtype=float)\n\ny\n\nfnp.ones_like(y)",
     "output": "array([[0, 1, 2],\n       [3, 4, 5]])\n\narray([[1, 1, 1],\n       [1, 1, 1]])\n\narray([0., 1., 2.])\n\narray([1.,  1.,  1.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.ones_like",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L151",
-  "href": "/docs/api/ops/ones_like/",
+  "href": "/docs/api/numpy/ones-like/",
   "module": "numpy",
   "name": "ones_like",
   "next": {
-    "href": "/docs/api/ops/outer/",
+    "href": "/docs/api/numpy/outer/",
     "label": "fnp.outer"
   },
   "notes": "Array of ones with same shape/type as input.",
@@ -537,10 +537,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ones/",
+    "href": "/docs/api/numpy/ones/",
     "label": "fnp.ones"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.ones_like",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ones_like.html",
   "returns": [
     {
@@ -561,7 +562,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/empty_like",
+      "href": "/docs/api/numpy/empty-like/",
       "label": "fnp.empty_like",
       "original_target": "empty_like",
       "role": "",
@@ -577,7 +578,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/zeros_like",
+      "href": "/docs/api/numpy/zeros-like/",
       "label": "fnp.zeros_like",
       "original_target": "zeros_like",
       "role": "",
@@ -593,7 +594,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/full_like",
+      "href": "/docs/api/numpy/full-like/",
       "label": "fnp.full_like",
       "original_target": "full_like",
       "role": "",
@@ -609,7 +610,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ones",
+      "href": "/docs/api/numpy/ones/",
       "label": "fnp.ones",
       "original_target": "ones",
       "role": "",
@@ -620,6 +621,8 @@
   "signature": "fnp.ones_like(a, dtype=None, order='K', subok=True, shape=None, *, device=None)",
   "slug": "ones_like",
   "summary": "Return an array of ones with the same shape and type as a given array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L213",
   "weight": 0.0
 }

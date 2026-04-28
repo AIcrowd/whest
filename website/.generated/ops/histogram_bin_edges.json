@@ -13,7 +13,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/histogram",
+              "href": "/docs/api/numpy/histogram/",
               "kind": "link",
               "target": "histogram",
               "text": "histogram"
@@ -97,7 +97,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/histogram_bin_edges",
+                      "href": "/docs/api/numpy/histogram-bin-edges/",
                       "kind": "link",
                       "target": "histogram_bin_edges",
                       "text": "histogram_bin_edges"
@@ -438,7 +438,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/histogram",
+                      "href": "/docs/api/numpy/histogram/",
                       "kind": "link",
                       "target": "histogram",
                       "text": "histogram"
@@ -455,7 +455,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/histogram",
+                  "href": "/docs/api/numpy/histogram/",
                   "kind": "link",
                   "target": "histogram",
                   "text": "histogram"
@@ -479,7 +479,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/histogram",
+              "href": "/docs/api/numpy/histogram/",
               "label": "fnp.histogram",
               "original_target": "histogram",
               "role": "",
@@ -526,7 +526,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/ptp",
+              "href": "/docs/api/numpy/ptp/",
               "kind": "link",
               "target": "ptp",
               "text": "ptp"
@@ -690,7 +690,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -872,18 +872,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\narr = fnp.array([0, 0, 0, 1, 2, 3, 3, 4, 5])\n\nfnp.histogram_bin_edges(arr, bins='auto', range=(0, 1))\n\nfnp.histogram_bin_edges(arr, bins=2)\n\nfnp.histogram_bin_edges(arr, [1, 2])\n\nshared_bins = fnp.histogram_bin_edges(arr, bins='auto')\n\nshared_bins\n\ngroup_id = fnp.array([0, 1, 1, 0, 1, 1, 0, 1, 1])\n\nhist_0, _ = fnp.histogram(arr[group_id == 0], bins=shared_bins)\n\nhist_1, _ = fnp.histogram(arr[group_id == 1], bins=shared_bins)\n\nhist_0; hist_1\n\nhist_0, bins_0 = fnp.histogram(arr[group_id == 0], bins='auto')\n\nhist_1, bins_1 = fnp.histogram(arr[group_id == 1], bins='auto')\n\nhist_0; hist_1\n\nbins_0; bins_1",
+    "code": "import flopscope.numpy as fnp\n\narr = fnp.array([0, 0, 0, 1, 2, 3, 3, 4, 5])\n\nfnp.histogram_bin_edges(arr, bins='auto', range=(0, 1))\n\nfnp.histogram_bin_edges(arr, bins=2)\n\nfnp.histogram_bin_edges(arr, [1, 2])\n\nshared_bins = fnp.histogram_bin_edges(arr, bins='auto')\n\nshared_bins\n\ngroup_id = fnp.array([0, 1, 1, 0, 1, 1, 0, 1, 1])\n\nhist_0, _ = fnp.histogram(arr[group_id == 0], bins=shared_bins)\n\nhist_1, _ = fnp.histogram(arr[group_id == 1], bins=shared_bins)\n\nhist_0; hist_1\n\nhist_0, bins_0 = fnp.histogram(arr[group_id == 0], bins='auto')\n\nhist_1, bins_1 = fnp.histogram(arr[group_id == 1], bins='auto')\n\nhist_0; hist_1\n\nbins_0; bins_1",
     "output": "array([0.  , 0.25, 0.5 , 0.75, 1.  ])\n\narray([0. , 2.5, 5. ])\n\narray([1, 2])\n\narray([0., 1., 2., 3., 4., 5.])\n\narray([1, 1, 0, 1, 0])\narray([2, 0, 1, 1, 2])\n\narray([1, 1, 1])\narray([2, 1, 1, 2])\n\narray([0., 1., 2., 3.])\narray([0.  , 1.25, 2.5 , 3.75, 5.  ])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.histogram_bin_edges",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L218",
-  "href": "/docs/api/ops/histogram_bin_edges/",
+  "href": "/docs/api/numpy/histogram-bin-edges/",
   "module": "numpy",
   "name": "histogram_bin_edges",
   "next": {
-    "href": "/docs/api/ops/histogramdd/",
+    "href": "/docs/api/numpy/histogramdd/",
     "label": "fnp.histogramdd"
   },
   "notes": "Bin edge computation; cost = numel(a).",
@@ -994,10 +994,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/histogram2d/",
+    "href": "/docs/api/numpy/histogram2d/",
     "label": "fnp.histogram2d"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.histogram_bin_edges",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.histogram_bin_edges.html",
   "returns": [
     {
@@ -1013,7 +1014,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/histogram",
+      "href": "/docs/api/numpy/histogram/",
       "label": "fnp.histogram",
       "original_target": "histogram",
       "role": "",
@@ -1024,6 +1025,8 @@
   "signature": "fnp.histogram_bin_edges(a, bins=10, range=None, weights=None)",
   "slug": "histogram_bin_edges",
   "summary": "Function to calculate only the edges of the bins used by the `histogram` function.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_histograms_impl.py#L477",
   "weight": 1.0
 }

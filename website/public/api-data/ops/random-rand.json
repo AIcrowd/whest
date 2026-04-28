@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-rand/",
+  "detail_href": "/docs/api/numpy/random/rand/",
   "detail_json_href": "/api-data/ops/random-rand.json",
   "docs": {
     "sections": [
@@ -38,7 +38,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/zeros",
+                    "href": "/docs/api/numpy/zeros/",
                     "kind": "link",
                     "target": "zeros",
                     "text": "fnp.zeros"
@@ -49,7 +49,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/ones",
+                    "href": "/docs/api/numpy/ones/",
                     "kind": "link",
                     "target": "ones",
                     "text": "fnp.ones"

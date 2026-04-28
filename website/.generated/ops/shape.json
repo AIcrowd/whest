@@ -155,7 +155,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -251,18 +251,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.shape(fnp.eye(3))\n\nfnp.shape([[1, 3]])\n\nfnp.shape([0])\n\nfnp.shape(0)\n\na = fnp.array([(1, 2), (3, 4), (5, 6)],\n             dtype=[('x', 'i4'), ('y', 'i4')])\n\nfnp.shape(a)\n\na.shape",
+    "code": "import flopscope.numpy as fnp\n\nfnp.shape(fnp.eye(3))\n\nfnp.shape([[1, 3]])\n\nfnp.shape([0])\n\nfnp.shape(0)\n\na = fnp.array([(1, 2), (3, 4), (5, 6)],\n             dtype=[('x', 'i4'), ('y', 'i4')])\n\nfnp.shape(a)\n\na.shape",
     "output": "(3, 3)\n\n(1, 2)\n\n(1,)\n\n()\n\n(3,)\n\n(3,)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.shape",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1384",
-  "href": "/docs/api/ops/shape/",
+  "href": "/docs/api/numpy/shape/",
   "module": "numpy",
   "name": "shape",
   "next": {
-    "href": "/docs/api/ops/shares_memory/",
+    "href": "/docs/api/numpy/shares-memory/",
     "label": "fnp.shares_memory"
   },
   "notes": "Return shape of array.",
@@ -278,10 +278,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/setxor1d/",
+    "href": "/docs/api/numpy/setxor1d/",
     "label": "fnp.setxor1d"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.shape",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.shape.html",
   "returns": [
     {
@@ -353,6 +354,8 @@
   "signature": "fnp.shape(a)",
   "slug": "shape",
   "summary": "Return the shape of an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2118",
   "weight": 0.0
 }

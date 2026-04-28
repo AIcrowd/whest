@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/logspace/",
+  "detail_href": "/docs/api/numpy/logspace/",
   "detail_json_href": "/api-data/ops/logspace.json",
   "docs": {
     "sections": [
@@ -476,7 +476,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "label": "fnp.arange",
                 "original_target": "arange",
                 "role": "",
@@ -492,7 +492,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "label": "fnp.linspace",
                 "original_target": "linspace",
                 "role": "",
@@ -508,7 +508,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/geomspace",
+                "href": "/docs/api/numpy/geomspace/",
                 "label": "fnp.geomspace",
                 "original_target": "geomspace",
                 "role": "",
@@ -578,7 +578,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

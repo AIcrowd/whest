@@ -343,7 +343,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -449,18 +449,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.tanh((0, fnp.pi*1j, fnp.pi*1j/2))\n\nout1 = fnp.array([0], dtype='d')\n\nout2 = fnp.tanh([0.1], out1)\n\nout2 is out1\n\nfnp.tanh(fnp.zeros((3,3)),fnp.zeros((2,2)))",
+    "code": "import flopscope.numpy as fnp\n\nfnp.tanh((0, fnp.pi*1j, fnp.pi*1j/2))\n\nout1 = fnp.array([0], dtype='d')\n\nout2 = fnp.tanh([0.1], out1)\n\nout2 is out1\n\nfnp.tanh(fnp.zeros((3,3)),fnp.zeros((2,2)))",
     "output": "array([ 0. +0.00000000e+00j,  0. -1.22460635e-16j,  0. +1.63317787e+16j])\n\nTrue\n\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nValueError: operands could not be broadcast together with shapes (3,3) (2,2)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.tanh",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/tanh/",
+  "href": "/docs/api/numpy/tanh/",
   "module": "numpy",
   "name": "tanh",
   "next": {
-    "href": "/docs/api/ops/tensordot/",
+    "href": "/docs/api/numpy/tensordot/",
     "label": "fnp.tensordot"
   },
   "notes": "Element-wise hyperbolic tangent.",
@@ -508,10 +508,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/tan/",
+    "href": "/docs/api/numpy/tan/",
     "label": "fnp.tan"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.tanh",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.tanh.html",
   "returns": [
     {
@@ -527,6 +528,8 @@
   "signature": "fnp.tanh(x)",
   "slug": "tanh",
   "summary": "Compute hyperbolic tangent element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

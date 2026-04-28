@@ -386,10 +386,11 @@ def budget_live(by_namespace: bool = False):
 
     Examples
     --------
-    >>> import whest as we
-    >>> with we.budget_live():
-    ...     with we.BudgetContext(flop_budget=100):
-    ...         _ = we.add(we.array([1.0]), we.array([2.0]))
+    >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
+    >>> with flops.budget_live():
+    ...     with flops.BudgetContext(flop_budget=100):
+    ...         _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))
     """
     try:
         from rich.live import Live
@@ -436,10 +437,11 @@ def budget_summary(by_namespace: bool = False):
 
     Examples
     --------
-    >>> import whest as we
-    >>> with we.BudgetContext(flop_budget=100):
-    ...     _ = we.add(we.array([1.0]), we.array([2.0]))
-    >>> we.budget_summary()
+    >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
+    >>> with flops.BudgetContext(flop_budget=100):
+    ...     _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))
+    >>> flops.budget_summary()
     """
     result = render_budget_summary(by_namespace=by_namespace)
     try:

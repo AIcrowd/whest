@@ -107,7 +107,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/atleast_1d",
+              "href": "/docs/api/numpy/atleast-1d/",
               "label": "fnp.atleast_1d",
               "original_target": "atleast_1d",
               "role": "",
@@ -118,7 +118,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/atleast_3d",
+              "href": "/docs/api/numpy/atleast-3d/",
               "label": "fnp.atleast_3d",
               "original_target": "atleast_3d",
               "role": "",
@@ -138,7 +138,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -209,18 +209,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.atleast_2d(3.0)\n\nx = fnp.arange(3.0)\n\nfnp.atleast_2d(x)\n\nfnp.atleast_2d(x).base is x\n\nfnp.atleast_2d(1, [1, 2], [[1, 2]])",
+    "code": "import flopscope.numpy as fnp\n\nfnp.atleast_2d(3.0)\n\nx = fnp.arange(3.0)\n\nfnp.atleast_2d(x)\n\nfnp.atleast_2d(x).base is x\n\nfnp.atleast_2d(1, [1, 2], [[1, 2]])",
     "output": "array([[3.]])\n\narray([[0., 1., 2.]])\n\nTrue\n\n(array([[1]]), array([[1, 2]]), array([[1, 2]]))",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.atleast_2d",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L650",
-  "href": "/docs/api/ops/atleast_2d/",
+  "href": "/docs/api/numpy/atleast-2d/",
   "module": "numpy",
   "name": "atleast_2d",
   "next": {
-    "href": "/docs/api/ops/atleast_3d/",
+    "href": "/docs/api/numpy/atleast-3d/",
     "label": "fnp.atleast_3d"
   },
   "notes": "View inputs as arrays with at least two dimensions.",
@@ -238,10 +238,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/atleast_1d/",
+    "href": "/docs/api/numpy/atleast-1d/",
     "label": "fnp.atleast_1d"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.atleast_2d",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.atleast_2d.html",
   "returns": [
     {
@@ -259,7 +260,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/atleast_1d",
+      "href": "/docs/api/numpy/atleast-1d/",
       "label": "fnp.atleast_1d",
       "original_target": "atleast_1d",
       "role": "",
@@ -270,7 +271,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/atleast_3d",
+      "href": "/docs/api/numpy/atleast-3d/",
       "label": "fnp.atleast_3d",
       "original_target": "atleast_3d",
       "role": "",
@@ -281,6 +282,8 @@
   "signature": "fnp.atleast_2d(*arys)",
   "slug": "atleast_2d",
   "summary": "View inputs as arrays with at least two dimensions.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L80",
   "weight": 0.0
 }

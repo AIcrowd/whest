@@ -5,14 +5,14 @@ title: "How Flopscope Works"
 *Understand how Flopscope wraps NumPy to count every FLOP.*
 
 **You will learn:**
-- The wrapping pattern that makes `import flopscope as we` a drop-in for NumPy
+- The wrapping pattern that makes `import flopscope.numpy as fnp` the counted NumPy surface
 - How costs are calculated from tensor shapes before execution
 - How budgets are enforced and what happens when they are exceeded
 - How the operation registry classifies every NumPy callable
 
 ## The wrapping pattern
 
-flopscope exposes a NumPy-compatible API. When you write `import flopscope as we` and call `we.einsum(...)`, you get a function that behaves like `np.einsum(...)` but with FLOP counting layered on top.
+flopscope exposes a NumPy-compatible API. When you write `import flopscope.numpy as fnp` and call `fnp.einsum(...)`, you get a function that behaves like `np.einsum(...)` but with FLOP counting layered on top.
 
 Under the hood, flopscope re-exports wrapped versions of NumPy functions. The `flopscope/__init__.py` module imports from internal modules that each handle a category of operations:
 
@@ -31,11 +31,11 @@ When you call a counted operation, flopscope computes its FLOP cost analytically
 
 | Category | Cost formula | Example |
 |----------|-------------|---------|
-| Pointwise unary | `numel(output)` | `we.exp(x)` on shape (256, 256) costs 65,536 |
-| Pointwise binary | `numel(output)` | `we.add(a, b)` with broadcast output (256, 256) costs 65,536 |
-| Reduction | `numel(input)` | `we.sum(x)` on shape (256, 256) costs 65,536 |
+| Pointwise unary | `numel(output)` | `fnp.exp(x)` on shape (256, 256) costs 65,536 |
+| Pointwise binary | `numel(output)` | `fnp.add(a, b)` with broadcast output (256, 256) costs 65,536 |
+| Reduction | `numel(input)` | `fnp.sum(x)` on shape (256, 256) costs 65,536 |
 | Einsum | product of all index dimensions | `'ij,jk->ik'` with shapes (m, k), (k, n) costs m * k * n |
-| Free | 0 | `we.zeros(...)`, `we.reshape(...)`, `we.transpose(...)` |
+| Free | 0 | `fnp.zeros(...)`, `fnp.reshape(...)`, `fnp.transpose(...)` |
 
 The cost is always deterministic -- the same shapes produce the same FLOP count regardless of the data values or the hardware running the code.
 
@@ -57,10 +57,10 @@ If no explicit `BudgetContext` is active, Flopscope automatically creates a glob
 
 ### The flow of a single call
 
-Here is what happens when you call `we.matmul(A, B)` with shapes (100, 200) and (200, 50):
+Here is what happens when you call `fnp.matmul(A, B)` with shapes (100, 200) and (200, 50):
 
 ```
-User calls we.matmul(A, B)
+User calls fnp.matmul(A, B)
     |
     v
 flopscope computes cost: 100 * 200 * 50 = 1,000,000 FLOPs

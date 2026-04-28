@@ -46,7 +46,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/extract",
+              "href": "/docs/api/numpy/extract/",
               "kind": "link",
               "target": "extract",
               "text": "fnp.extract"
@@ -74,7 +74,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/place",
+              "href": "/docs/api/numpy/place/",
               "kind": "link",
               "target": "place",
               "text": "place"
@@ -85,7 +85,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/extract",
+              "href": "/docs/api/numpy/extract/",
               "kind": "link",
               "target": "extract",
               "text": "extract"
@@ -260,7 +260,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/take",
+              "href": "/docs/api/numpy/take/",
               "label": "fnp.take",
               "original_target": "take",
               "role": "",
@@ -271,7 +271,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/put",
+              "href": "/docs/api/numpy/put/",
               "label": "fnp.put",
               "original_target": "put",
               "role": "",
@@ -282,7 +282,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/copyto",
+              "href": "/docs/api/numpy/copyto/",
               "label": "fnp.copyto",
               "original_target": "copyto",
               "role": "",
@@ -293,7 +293,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/compress",
+              "href": "/docs/api/numpy/compress/",
               "label": "fnp.compress",
               "original_target": "compress",
               "role": "",
@@ -304,7 +304,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/place",
+              "href": "/docs/api/numpy/place/",
               "label": "fnp.place",
               "original_target": "place",
               "role": "",
@@ -324,7 +324,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -428,18 +428,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\narr = fnp.arange(12).reshape((3, 4))\n\narr\n\ncondition = fnp.mod(arr, 3)==0\n\ncondition\n\nfnp.extract(condition, arr)\n\narr[condition]",
+    "code": "import flopscope.numpy as fnp\n\narr = fnp.arange(12).reshape((3, 4))\n\narr\n\ncondition = fnp.mod(arr, 3)==0\n\ncondition\n\nfnp.extract(condition, arr)\n\narr[condition]",
     "output": "array([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11]])\n\narray([[ True, False, False,  True],\n       [False, False,  True, False],\n       [False,  True, False, False]])\n\narray([0, 3, 6, 9])\n\narray([0, 3, 6, 9])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.extract",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L903",
-  "href": "/docs/api/ops/extract/",
+  "href": "/docs/api/numpy/extract/",
   "module": "numpy",
   "name": "extract",
   "next": {
-    "href": "/docs/api/ops/eye/",
+    "href": "/docs/api/numpy/eye/",
     "label": "fnp.eye"
   },
   "notes": "Return elements satisfying condition. Cost: numel(input).",
@@ -463,10 +463,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/expm1/",
+    "href": "/docs/api/numpy/expm1/",
     "label": "fnp.expm1"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.extract",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.extract.html",
   "returns": [
     {
@@ -482,7 +483,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/take",
+      "href": "/docs/api/numpy/take/",
       "label": "fnp.take",
       "original_target": "take",
       "role": "",
@@ -493,7 +494,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/put",
+      "href": "/docs/api/numpy/put/",
       "label": "fnp.put",
       "original_target": "put",
       "role": "",
@@ -504,7 +505,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/copyto",
+      "href": "/docs/api/numpy/copyto/",
       "label": "fnp.copyto",
       "original_target": "copyto",
       "role": "",
@@ -515,7 +516,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/compress",
+      "href": "/docs/api/numpy/compress/",
       "label": "fnp.compress",
       "original_target": "compress",
       "role": "",
@@ -526,7 +527,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/place",
+      "href": "/docs/api/numpy/place/",
       "label": "fnp.place",
       "original_target": "place",
       "role": "",
@@ -537,6 +538,8 @@
   "signature": "fnp.extract(condition, arr)",
   "slug": "extract",
   "summary": "Return the elements of an array that satisfy some condition.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1990",
   "weight": 4.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-chisquare/",
+  "detail_href": "/docs/api/numpy/random/chisquare/",
   "detail_json_href": "/api-data/ops/random-chisquare.json",
   "docs": {
     "sections": [
@@ -286,7 +286,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/size",
+                        "href": "/docs/api/numpy/size/",
                         "kind": "link",
                         "target": "size",
                         "text": "size"
@@ -323,7 +323,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/size",
+                    "href": "/docs/api/numpy/size/",
                     "kind": "link",
                     "target": "size",
                     "text": "size"

@@ -513,11 +513,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.noncentral_f",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-noncentral_f/",
+  "href": "/docs/api/numpy/random/noncentral-f/",
   "module": "numpy.random",
   "name": "random.noncentral_f",
   "next": {
-    "href": "/docs/api/ops/random-normal/",
+    "href": "/docs/api/numpy/random/normal/",
     "label": "fnp.random.normal"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -561,10 +561,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-noncentral_chisquare/",
+    "href": "/docs/api/numpy/random/noncentral-chisquare/",
     "label": "fnp.random.noncentral_chisquare"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.noncentral_f",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.noncentral_f.html",
   "returns": [
     {
@@ -596,6 +597,8 @@
   "signature": "fnp.random.noncentral_f(dfnum, dfden, nonc, size=None)",
   "slug": "random-noncentral_f",
   "summary": "Draw samples from the noncentral F distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

@@ -374,7 +374,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/degrees",
+              "href": "/docs/api/numpy/degrees/",
               "label": "fnp.degrees",
               "original_target": "rad2deg",
               "role": "",
@@ -385,7 +385,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/radians",
+              "href": "/docs/api/numpy/radians/",
               "label": "fnp.radians",
               "original_target": "deg2rad",
               "role": "",
@@ -443,7 +443,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -540,18 +540,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nphase = fnp.linspace(0, fnp.pi, num=5)\n\nphase[3:] += fnp.pi\n\nphase\n\nfnp.unwrap(phase)\n\nfnp.unwrap([0, 1, 2, -1, 0], period=4)\n\nfnp.unwrap([ 1, 2, 3, 4, 5, 6, 1, 2, 3], period=6)\n\nfnp.unwrap([2, 3, 4, 5, 2, 3, 4, 5], period=4)\n\nphase_deg = fnp.mod(fnp.linspace(0 ,720, 19), 360) - 180\n\nfnp.unwrap(phase_deg, period=360)",
+    "code": "import flopscope.numpy as fnp\n\nphase = fnp.linspace(0, fnp.pi, num=5)\n\nphase[3:] += fnp.pi\n\nphase\n\nfnp.unwrap(phase)\n\nfnp.unwrap([0, 1, 2, -1, 0], period=4)\n\nfnp.unwrap([ 1, 2, 3, 4, 5, 6, 1, 2, 3], period=6)\n\nfnp.unwrap([2, 3, 4, 5, 2, 3, 4, 5], period=4)\n\nphase_deg = fnp.mod(fnp.linspace(0 ,720, 19), 360) - 180\n\nfnp.unwrap(phase_deg, period=360)",
     "output": "array([ 0.        ,  0.78539816,  1.57079633,  5.49778714,  6.28318531]) # may vary\n\narray([ 0.        ,  0.78539816,  1.57079633, -0.78539816,  0.        ]) # may vary\n\narray([0, 1, 2, 3, 4])\n\narray([1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([2, 3, 4, 5, 6, 7, 8, 9])\n\narray([-180., -140., -100.,  -60.,  -20.,   20.,   60.,  100.,  140.,\n        180.,  220.,  260.,  300.,  340.,  380.,  420.,  460.,  500.,\n        540.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.unwrap",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_unwrap.py#L35",
-  "href": "/docs/api/ops/unwrap/",
+  "href": "/docs/api/numpy/unwrap/",
   "module": "flopscope._unwrap",
   "name": "unwrap",
   "next": {
-    "href": "/docs/api/ops/vander/",
+    "href": "/docs/api/numpy/vander/",
     "label": "fnp.vander"
   },
   "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
@@ -596,10 +596,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unstack/",
+    "href": "/docs/api/numpy/unstack/",
     "label": "fnp.unstack"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.unwrap",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unwrap.html",
   "returns": [
     {
@@ -615,7 +616,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/degrees",
+      "href": "/docs/api/numpy/degrees/",
       "label": "fnp.degrees",
       "original_target": "rad2deg",
       "role": "",
@@ -626,7 +627,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/radians",
+      "href": "/docs/api/numpy/radians/",
       "label": "fnp.radians",
       "original_target": "deg2rad",
       "role": "",
@@ -637,6 +638,8 @@
   "signature": "fnp.unwrap(p, discont=None, axis=-1, *, period=6.283185307179586)",
   "slug": "unwrap",
   "summary": "Unwrap by taking the complement of large deltas with respect to the period.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1707",
   "weight": 1.0
 }

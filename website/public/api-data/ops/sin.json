@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/sin/",
+  "detail_href": "/docs/api/numpy/sin/",
   "detail_json_href": "/api-data/ops/sin.json",
   "docs": {
     "sections": [
@@ -285,7 +285,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/arcsin",
+                "href": "/docs/api/numpy/arcsin/",
                 "label": "fnp.arcsin",
                 "original_target": "arcsin",
                 "role": "",
@@ -296,7 +296,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/sinh",
+                "href": "/docs/api/numpy/sinh/",
                 "label": "fnp.sinh",
                 "original_target": "sinh",
                 "role": "",
@@ -307,7 +307,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/cos",
+                "href": "/docs/api/numpy/cos/",
                 "label": "fnp.cos",
                 "original_target": "cos",
                 "role": "",
@@ -397,7 +397,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"

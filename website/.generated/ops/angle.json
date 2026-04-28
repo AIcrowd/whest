@@ -129,7 +129,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/arctan2",
+              "href": "/docs/api/numpy/arctan2/",
               "label": "fnp.arctan2",
               "original_target": "arctan2",
               "role": "",
@@ -140,7 +140,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/absolute",
+              "href": "/docs/api/numpy/absolute/",
               "label": "fnp.absolute",
               "original_target": "absolute",
               "role": "",
@@ -163,7 +163,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arctan2",
+              "href": "/docs/api/numpy/arctan2/",
               "kind": "link",
               "target": "arctan2",
               "text": "arctan2"
@@ -174,7 +174,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arctan2",
+              "href": "/docs/api/numpy/arctan2/",
               "kind": "link",
               "target": "arctan2",
               "text": "arctan2"
@@ -196,7 +196,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -243,18 +243,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.angle([1.0, 1.0j, 1+1j])               # in radians\n\nfnp.angle(1+1j, deg=True)                  # in degrees\n\nfnp.angle([0., -0., complex(0., -0.), complex(-0., -0.)])  # convention",
+    "code": "import flopscope.numpy as fnp\n\nfnp.angle([1.0, 1.0j, 1+1j])               # in radians\n\nfnp.angle(1+1j, deg=True)                  # in degrees\n\nfnp.angle([0., -0., complex(0., -0.), complex(-0., -0.)])  # convention",
     "output": "array([ 0.        ,  1.57079633,  0.78539816]) # may vary\n\n45.0\n\narray([ 0.        ,  3.14159265, -0.        , -3.14159265])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.angle",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/angle/",
+  "href": "/docs/api/numpy/angle/",
   "module": "numpy",
   "name": "angle",
   "next": {
-    "href": "/docs/api/ops/any/",
+    "href": "/docs/api/numpy/any/",
     "label": "fnp.any"
   },
   "notes": "Return angle of complex argument element-wise.",
@@ -279,10 +279,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/allclose/",
+    "href": "/docs/api/numpy/allclose/",
     "label": "fnp.allclose"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.angle",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.angle.html",
   "returns": [
     {
@@ -299,7 +300,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/arctan2",
+      "href": "/docs/api/numpy/arctan2/",
       "label": "fnp.arctan2",
       "original_target": "arctan2",
       "role": "",
@@ -310,7 +311,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/absolute",
+      "href": "/docs/api/numpy/absolute/",
       "label": "fnp.absolute",
       "original_target": "absolute",
       "role": "",
@@ -321,6 +322,8 @@
   "signature": "fnp.angle(z, deg=False)",
   "slug": "angle",
   "summary": "Return the angle of the complex argument.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1649",
   "weight": 16.0
 }

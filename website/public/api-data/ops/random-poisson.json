@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-poisson/",
+  "detail_href": "/docs/api/numpy/random/poisson/",
   "detail_json_href": "/api-data/ops/random-poisson.json",
   "docs": {
     "sections": [
@@ -391,7 +391,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

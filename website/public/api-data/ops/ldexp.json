@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/ldexp/",
+  "detail_href": "/docs/api/numpy/ldexp/",
   "detail_json_href": "/api-data/ops/ldexp.json",
   "docs": {
     "sections": [
@@ -390,7 +390,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/ldexp",
+                    "href": "/docs/api/numpy/ldexp/",
                     "kind": "link",
                     "target": "ldexp",
                     "text": "ldexp"
@@ -401,7 +401,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/frexp",
+                "href": "/docs/api/numpy/frexp/",
                 "label": "fnp.frexp",
                 "original_target": "frexp",
                 "role": "",
@@ -429,7 +429,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/ldexp",
+                "href": "/docs/api/numpy/ldexp/",
                 "kind": "link",
                 "target": "ldexp",
                 "text": "ldexp"
@@ -440,7 +440,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/frexp",
+                "href": "/docs/api/numpy/frexp/",
                 "kind": "link",
                 "target": "frexp",
                 "text": "frexp"
@@ -470,7 +470,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

@@ -733,7 +733,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/array",
+                      "href": "/docs/api/numpy/array/",
                       "kind": "link",
                       "target": "array",
                       "text": "array"
@@ -762,7 +762,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/array",
+                  "href": "/docs/api/numpy/array/",
                   "kind": "link",
                   "target": "array",
                   "text": "array"
@@ -931,7 +931,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -1246,18 +1246,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = [1, 2, 3, 4, 5]\n\nfnp.pad(a, (2, 3), 'constant', constant_values=(4, 6))\n\nfnp.pad(a, (2, 3), 'edge')\n\nfnp.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))\n\nfnp.pad(a, (2,), 'maximum')\n\nfnp.pad(a, (2,), 'mean')\n\nfnp.pad(a, (2,), 'median')\n\na = [[1, 2], [3, 4]]\n\nfnp.pad(a, ((3, 2), (2, 3)), 'minimum')\n\na = [1, 2, 3, 4, 5]\n\nfnp.pad(a, (2, 3), 'reflect')\n\nfnp.pad(a, (2, 3), 'reflect', reflect_type='odd')\n\nfnp.pad(a, (2, 3), 'symmetric')\n\nfnp.pad(a, (2, 3), 'symmetric', reflect_type='odd')\n\nfnp.pad(a, (2, 3), 'wrap')\n\ndef pad_with(vector, pad_width, iaxis, kwargs):\n    pad_value = kwargs.get('padder', 10)\n    vector[:pad_width[0]] = pad_value\n    vector[-pad_width[1]:] = pad_value\n\na = fnp.arange(6)\n\na = a.reshape((2, 3))\n\nfnp.pad(a, 2, pad_with)\n\nfnp.pad(a, 2, pad_with, padder=100)",
+    "code": "import flopscope.numpy as fnp\n\na = [1, 2, 3, 4, 5]\n\nfnp.pad(a, (2, 3), 'constant', constant_values=(4, 6))\n\nfnp.pad(a, (2, 3), 'edge')\n\nfnp.pad(a, (2, 3), 'linear_ramp', end_values=(5, -4))\n\nfnp.pad(a, (2,), 'maximum')\n\nfnp.pad(a, (2,), 'mean')\n\nfnp.pad(a, (2,), 'median')\n\na = [[1, 2], [3, 4]]\n\nfnp.pad(a, ((3, 2), (2, 3)), 'minimum')\n\na = [1, 2, 3, 4, 5]\n\nfnp.pad(a, (2, 3), 'reflect')\n\nfnp.pad(a, (2, 3), 'reflect', reflect_type='odd')\n\nfnp.pad(a, (2, 3), 'symmetric')\n\nfnp.pad(a, (2, 3), 'symmetric', reflect_type='odd')\n\nfnp.pad(a, (2, 3), 'wrap')\n\ndef pad_with(vector, pad_width, iaxis, kwargs):\n    pad_value = kwargs.get('padder', 10)\n    vector[:pad_width[0]] = pad_value\n    vector[-pad_width[1]:] = pad_value\n\na = fnp.arange(6)\n\na = a.reshape((2, 3))\n\nfnp.pad(a, 2, pad_with)\n\nfnp.pad(a, 2, pad_with, padder=100)",
     "output": "array([4, 4, 1, ..., 6, 6, 6])\n\narray([1, 1, 1, ..., 5, 5, 5])\n\narray([ 5,  3,  1,  2,  3,  4,  5,  2, -1, -4])\n\narray([5, 5, 1, 2, 3, 4, 5, 5, 5])\n\narray([3, 3, 1, 2, 3, 4, 5, 3, 3])\n\narray([3, 3, 1, 2, 3, 4, 5, 3, 3])\n\narray([[1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1],\n       [3, 3, 3, 4, 3, 3, 3],\n       [1, 1, 1, 2, 1, 1, 1],\n       [1, 1, 1, 2, 1, 1, 1]])\n\narray([3, 2, 1, 2, 3, 4, 5, 4, 3, 2])\n\narray([-1,  0,  1,  2,  3,  4,  5,  6,  7,  8])\n\narray([2, 1, 1, 2, 3, 4, 5, 5, 4, 3])\n\narray([0, 1, 1, 2, 3, 4, 5, 5, 6, 7])\n\narray([4, 5, 1, 2, 3, 4, 5, 1, 2, 3])\n\narray([[10, 10, 10, 10, 10, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10],\n       [10, 10,  0,  1,  2, 10, 10],\n       [10, 10,  3,  4,  5, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10],\n       [10, 10, 10, 10, 10, 10, 10]])\n\narray([[100, 100, 100, 100, 100, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100],\n       [100, 100,   0,   1,   2, 100, 100],\n       [100, 100,   3,   4,   5, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100],\n       [100, 100, 100, 100, 100, 100, 100]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.pad",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L429",
-  "href": "/docs/api/ops/pad/",
+  "href": "/docs/api/numpy/pad/",
   "module": "numpy",
   "name": "pad",
   "next": {
-    "href": "/docs/api/ops/partition/",
+    "href": "/docs/api/numpy/partition/",
     "label": "fnp.partition"
   },
   "notes": "Pad array. Cost: numel(output).",
@@ -1402,10 +1402,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/packbits/",
+    "href": "/docs/api/numpy/packbits/",
     "label": "fnp.packbits"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.pad",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.pad.html",
   "returns": [
     {
@@ -1421,6 +1422,8 @@
   "signature": "fnp.pad(array, pad_width, mode='constant', **kwargs)",
   "slug": "pad",
   "summary": "Pad an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraypad_impl.py#L545",
   "weight": 1.0
 }

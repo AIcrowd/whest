@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/vecmat/",
+  "detail_href": "/docs/api/numpy/vecmat/",
   "detail_json_href": "/api-data/ops/vecmat.json",
   "docs": {
     "sections": [
@@ -397,7 +397,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vecdot",
+                "href": "/docs/api/numpy/vecdot/",
                 "label": "fnp.vecdot",
                 "original_target": "vecdot",
                 "role": "",
@@ -413,7 +413,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/matvec",
+                "href": "/docs/api/numpy/matvec/",
                 "label": "fnp.matvec",
                 "original_target": "matvec",
                 "role": "",
@@ -429,7 +429,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/matmul",
+                "href": "/docs/api/numpy/matmul/",
                 "label": "fnp.matmul",
                 "original_target": "matmul",
                 "role": "",
@@ -445,7 +445,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "fnp.einsum",
                 "original_target": "einsum",
                 "role": "",

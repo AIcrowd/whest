@@ -36,7 +36,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/argsort",
+              "href": "/docs/api/numpy/argsort/",
               "kind": "link",
               "target": "argsort",
               "text": "argsort"
@@ -47,7 +47,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/argpartition",
+              "href": "/docs/api/numpy/argpartition/",
               "kind": "link",
               "target": "argpartition",
               "text": "argpartition"
@@ -152,7 +152,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/indices",
+                      "href": "/docs/api/numpy/indices/",
                       "kind": "link",
                       "target": "indices",
                       "text": "indices"
@@ -173,7 +173,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/indices",
+                  "href": "/docs/api/numpy/indices/",
                   "kind": "link",
                   "target": "indices",
                   "text": "indices"
@@ -228,7 +228,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/take_along_axis",
+              "href": "/docs/api/numpy/take-along-axis/",
               "label": "fnp.take_along_axis",
               "original_target": "take_along_axis",
               "role": "",
@@ -313,7 +313,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -402,18 +402,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[10, 30, 20], [60, 40, 50]])\n\nai = fnp.argmax(a, axis=1, keepdims=True)\n\nai\n\nfnp.put_along_axis(a, ai, 99, axis=1)\n\na",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array([[10, 30, 20], [60, 40, 50]])\n\nai = fnp.argmax(a, axis=1, keepdims=True)\n\nai\n\nfnp.put_along_axis(a, ai, 99, axis=1)\n\na",
     "output": "array([[1],\n       [0]])\n\narray([[10, 99, 20],\n       [99, 40, 50]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.put_along_axis",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1275",
-  "href": "/docs/api/ops/put_along_axis/",
+  "href": "/docs/api/numpy/put-along-axis/",
   "module": "numpy",
   "name": "put_along_axis",
   "next": {
-    "href": "/docs/api/ops/putmask/",
+    "href": "/docs/api/numpy/putmask/",
     "label": "fnp.putmask"
   },
   "notes": "Put values into destination array using indices. Cost: numel(input).",
@@ -460,10 +460,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/put/",
+    "href": "/docs/api/numpy/put/",
     "label": "fnp.put"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.put_along_axis",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.put_along_axis.html",
   "returns": [],
   "see_also": [
@@ -476,7 +477,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/take_along_axis",
+      "href": "/docs/api/numpy/take-along-axis/",
       "label": "fnp.take_along_axis",
       "original_target": "take_along_axis",
       "role": "",
@@ -487,6 +488,8 @@
   "signature": "fnp.put_along_axis(arr, indices, values, axis, *args, **kwargs)",
   "slug": "put_along_axis",
   "summary": "Put values into the destination array by matching 1d index and data slices.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L182",
   "weight": 1.0
 }

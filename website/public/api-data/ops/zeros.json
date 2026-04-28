@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/zeros/",
+  "detail_href": "/docs/api/numpy/zeros/",
   "detail_json_href": "/api-data/ops/zeros.json",
   "docs": {
     "sections": [
@@ -280,7 +280,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/zeros_like",
+                "href": "/docs/api/numpy/zeros-like/",
                 "label": "fnp.zeros_like",
                 "original_target": "zeros_like",
                 "role": "",
@@ -296,7 +296,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/empty",
+                "href": "/docs/api/numpy/empty/",
                 "label": "fnp.empty",
                 "original_target": "empty",
                 "role": "",
@@ -312,7 +312,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ones",
+                "href": "/docs/api/numpy/ones/",
                 "label": "fnp.ones",
                 "original_target": "ones",
                 "role": "",
@@ -328,7 +328,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/full",
+                "href": "/docs/api/numpy/full/",
                 "label": "fnp.full",
                 "original_target": "full",
                 "role": "",
@@ -348,7 +348,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

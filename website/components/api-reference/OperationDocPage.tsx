@@ -4,9 +4,9 @@ import OperationDocBody from './OperationDocBody';
 import OperationDocOverlay from './OperationDocOverlay';
 import OperationDocSection from './OperationDocSection';
 import OperationDocSignature from './OperationDocSignature';
-import type {OperationDocRecord} from './op-doc-types';
+import type {ApiDocRecord} from './op-doc-types';
 
-export default async function OperationDocPage({op}: {op: OperationDocRecord}) {
+export default async function OperationDocPage({op}: {op: ApiDocRecord}) {
   // Layout follows numpy.org's reference page: H1 → signature →
   // brief summary → meta → extended description → Parameters → ...
   // The signature lives at the top so readers see the call shape before
@@ -18,8 +18,14 @@ export default async function OperationDocPage({op}: {op: OperationDocRecord}) {
         signature={op.signature}
         flopscopeSourceUrl={op.flopscope_source_url}
         upstreamSourceUrl={op.upstream_source_url}
+        upstreamSourceLabel={op.upstream_source_label}
       />
-      <OperationDocHeader op={op} />
+      <OperationDocHeader
+        summary={op.summary}
+        provenanceLabel={op.provenance_label}
+        provenanceUrl={op.provenance_url}
+        provenanceRef={op.provenance_ref ?? op.numpy_ref}
+      />
       <OperationDocOverlay op={op} />
       {op.body_sections && op.body_sections.length > 0 ? (
         <OperationDocBody

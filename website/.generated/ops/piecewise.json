@@ -257,7 +257,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/piecewise",
+                      "href": "/docs/api/numpy/piecewise/",
                       "kind": "link",
                       "target": "piecewise",
                       "text": "piecewise"
@@ -294,7 +294,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/piecewise",
+                  "href": "/docs/api/numpy/piecewise/",
                   "kind": "link",
                   "target": "piecewise",
                   "text": "piecewise"
@@ -333,7 +333,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/piecewise",
+                      "href": "/docs/api/numpy/piecewise/",
                       "kind": "link",
                       "target": "piecewise",
                       "text": "piecewise"
@@ -370,7 +370,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/piecewise",
+                  "href": "/docs/api/numpy/piecewise/",
                   "kind": "link",
                   "target": "piecewise",
                   "text": "piecewise"
@@ -495,7 +495,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/choose",
+              "href": "/docs/api/numpy/choose/",
               "label": "fnp.choose",
               "original_target": "choose",
               "role": "",
@@ -506,7 +506,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/select",
+              "href": "/docs/api/numpy/select/",
               "label": "fnp.select",
               "original_target": "select",
               "role": "",
@@ -517,7 +517,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/where",
+              "href": "/docs/api/numpy/where/",
               "label": "fnp.where",
               "original_target": "where",
               "role": "",
@@ -581,7 +581,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -728,18 +728,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.linspace(-2.5, 2.5, 6)\n\nfnp.piecewise(x, [x < 0, x >= 0], [-1, 1])\n\nfnp.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])\n\ny = -2\n\nfnp.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])",
+    "code": "import flopscope.numpy as fnp\n\nx = fnp.linspace(-2.5, 2.5, 6)\n\nfnp.piecewise(x, [x < 0, x >= 0], [-1, 1])\n\nfnp.piecewise(x, [x < 0, x >= 0], [lambda x: -x, lambda x: x])\n\ny = -2\n\nfnp.piecewise(y, [y < 0, y >= 0], [lambda x: -x, lambda x: x])",
     "output": "array([-1., -1., -1.,  1.,  1.,  1.])\n\narray([2.5,  1.5,  0.5,  0.5,  1.5,  2.5])\n\narray(2)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.piecewise",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L344",
-  "href": "/docs/api/ops/piecewise/",
+  "href": "/docs/api/numpy/piecewise/",
   "module": "numpy",
   "name": "piecewise",
   "next": {
-    "href": "/docs/api/ops/place/",
+    "href": "/docs/api/numpy/place/",
     "label": "fnp.place"
   },
   "notes": "Piecewise function. Cost: numel(input).",
@@ -805,10 +805,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/permute_dims/",
+    "href": "/docs/api/numpy/permute-dims/",
     "label": "fnp.permute_dims"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.piecewise",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.piecewise.html",
   "returns": [
     {
@@ -827,7 +828,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/choose",
+      "href": "/docs/api/numpy/choose/",
       "label": "fnp.choose",
       "original_target": "choose",
       "role": "",
@@ -838,7 +839,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/select",
+      "href": "/docs/api/numpy/select/",
       "label": "fnp.select",
       "original_target": "select",
       "role": "",
@@ -849,7 +850,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/where",
+      "href": "/docs/api/numpy/where/",
       "label": "fnp.where",
       "original_target": "where",
       "role": "",
@@ -860,6 +861,8 @@
   "signature": "fnp.piecewise(x, condlist, funclist, *args, **kw)",
   "slug": "piecewise",
   "summary": "Evaluate a piecewise-defined function.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L658",
   "weight": 4.0
 }

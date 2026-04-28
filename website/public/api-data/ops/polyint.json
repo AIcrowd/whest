@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/polyint/",
+  "detail_href": "/docs/api/numpy/polyint/",
   "detail_json_href": "/api-data/ops/polyint.json",
   "docs": {
     "sections": [
@@ -287,7 +287,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/polyder",
+                "href": "/docs/api/numpy/polyder/",
                 "label": "fnp.polyder",
                 "original_target": "polyder",
                 "role": "",
@@ -332,7 +332,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"

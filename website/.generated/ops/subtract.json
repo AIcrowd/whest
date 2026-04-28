@@ -354,7 +354,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -416,7 +416,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/subtract",
+              "href": "/docs/api/numpy/subtract/",
               "kind": "link",
               "target": "subtract",
               "text": "fnp.subtract"
@@ -482,18 +482,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.subtract(1.0, 4.0)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = fnp.arange(3.0)\n\nfnp.subtract(x1, x2)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = fnp.arange(3.0)\n\nx1 - x2",
+    "code": "import flopscope.numpy as fnp\n\nfnp.subtract(1.0, 4.0)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = fnp.arange(3.0)\n\nfnp.subtract(x1, x2)\n\nx1 = fnp.arange(9.0).reshape((3, 3))\n\nx2 = fnp.arange(3.0)\n\nx1 - x2",
     "output": "-3.0\n\narray([[ 0.,  0.,  0.],\n       [ 3.,  3.,  3.],\n       [ 6.,  6.,  6.]])\n\narray([[0., 0., 0.],\n       [3., 3., 3.],\n       [6., 6., 6.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.subtract",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
-  "href": "/docs/api/ops/subtract/",
+  "href": "/docs/api/numpy/subtract/",
   "module": "numpy",
   "name": "subtract",
   "next": {
-    "href": "/docs/api/ops/sum/",
+    "href": "/docs/api/numpy/sum/",
     "label": "fnp.sum"
   },
   "notes": "Element-wise subtraction.",
@@ -543,10 +543,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/std/",
+    "href": "/docs/api/numpy/std/",
     "label": "fnp.std"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.subtract",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.subtract.html",
   "returns": [
     {
@@ -562,6 +563,8 @@
   "signature": "fnp.subtract(x, y)",
   "slug": "subtract",
   "summary": "Subtract arguments, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

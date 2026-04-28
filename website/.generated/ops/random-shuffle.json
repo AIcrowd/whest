@@ -254,11 +254,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.shuffle",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L279",
-  "href": "/docs/api/ops/random-shuffle/",
+  "href": "/docs/api/numpy/random/shuffle/",
   "module": "numpy.random",
   "name": "random.shuffle",
   "next": {
-    "href": "/docs/api/ops/random-standard_cauchy/",
+    "href": "/docs/api/numpy/random/standard-cauchy/",
     "label": "fnp.random.standard_cauchy"
   },
   "notes": "Shuffle; cost = n*ceil(log2(n)).",
@@ -274,10 +274,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-set_state/",
+    "href": "/docs/api/numpy/random/set-state/",
     "label": "fnp.random.set_state"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.shuffle",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.shuffle.html",
   "returns": [
     {
@@ -307,6 +308,8 @@
   "signature": "fnp.random.shuffle(x)",
   "slug": "random-shuffle",
   "summary": "Modify a sequence in-place by shuffling its contents.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

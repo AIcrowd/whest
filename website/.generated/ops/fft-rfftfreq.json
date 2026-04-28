@@ -272,7 +272,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -340,18 +340,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nsignal = fnp.array([-2, 8, 6, 4, 1, 0, 3, 5, -3, 4], dtype=float)\n\nfourier = fnp.fft.rfft(signal)\n\nn = signal.size\n\nsample_rate = 100\n\nfreq = fnp.fft.fftfreq(n, d=1./sample_rate)\n\nfreq\n\nfreq = fnp.fft.rfftfreq(n, d=1./sample_rate)\n\nfreq",
+    "code": "import flopscope.numpy as fnp\n\nsignal = fnp.array([-2, 8, 6, 4, 1, 0, 3, 5, -3, 4], dtype=float)\n\nfourier = fnp.fft.rfft(signal)\n\nn = signal.size\n\nsample_rate = 100\n\nfreq = fnp.fft.fftfreq(n, d=1./sample_rate)\n\nfreq\n\nfreq = fnp.fft.rfftfreq(n, d=1./sample_rate)\n\nfreq",
     "output": "array([  0.,  10.,  20., ..., -30., -20., -10.])\n\narray([  0.,  10.,  20.,  30.,  40.,  50.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.rfftfreq",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L22",
-  "href": "/docs/api/ops/fft-rfftfreq/",
+  "href": "/docs/api/numpy/fft/rfftfreq/",
   "module": "numpy.fft",
   "name": "fft.rfftfreq",
   "next": {
-    "href": "/docs/api/ops/fft-rfftn/",
+    "href": "/docs/api/numpy/fft/rfftn/",
     "label": "fnp.fft.rfftn"
   },
   "notes": "Real FFT sample frequencies. No arithmetic; returns index array.",
@@ -384,10 +384,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-rfft2/",
+    "href": "/docs/api/numpy/fft/rfft2/",
     "label": "fnp.fft.rfft2"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.rfftfreq",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.rfftfreq.html",
   "returns": [
     {
@@ -402,6 +403,8 @@
   "signature": "fnp.fft.rfftfreq(n, d=1.0, device=None)",
   "slug": "fft-rfftfreq",
   "summary": "Return the Discrete Fourier Transform sample frequencies (for usage with rfft, irfft).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L180",
   "weight": 0.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/arctanh/",
+  "detail_href": "/docs/api/numpy/arctanh/",
   "detail_json_href": "/api-data/ops/arctanh.json",
   "docs": {
     "sections": [
@@ -304,7 +304,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arctanh",
+                "href": "/docs/api/numpy/arctanh/",
                 "kind": "link",
                 "target": "arctanh",
                 "text": "arctanh"
@@ -364,7 +364,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arctanh",
+                "href": "/docs/api/numpy/arctanh/",
                 "kind": "link",
                 "target": "arctanh",
                 "text": "arctanh"
@@ -400,7 +400,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arctanh",
+                "href": "/docs/api/numpy/arctanh/",
                 "kind": "link",
                 "target": "arctanh",
                 "text": "arctanh"
@@ -436,7 +436,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arctanh",
+                "href": "/docs/api/numpy/arctanh/",
                 "kind": "link",
                 "target": "arctanh",
                 "text": "atanh"
@@ -481,7 +481,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

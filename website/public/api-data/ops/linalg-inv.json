@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-inv/",
+  "detail_href": "/docs/api/numpy/linalg/inv/",
   "detail_json_href": "/api-data/ops/linalg-inv.json",
   "docs": {
     "sections": [
@@ -215,7 +215,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-cond",
+                "href": "/docs/api/numpy/linalg/cond/",
                 "label": "fnp.linalg.cond",
                 "original_target": "numpy.linalg.cond",
                 "role": "",
@@ -231,7 +231,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-svd",
+                "href": "/docs/api/numpy/linalg/svd/",
                 "label": "fnp.linalg.svd",
                 "original_target": "numpy.linalg.svd",
                 "role": "",
@@ -327,7 +327,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -514,7 +514,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-cond",
+                "href": "/docs/api/numpy/linalg/cond/",
                 "kind": "link",
                 "target": "linalg.cond",
                 "text": "fnp.linalg.cond"

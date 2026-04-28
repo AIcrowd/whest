@@ -344,7 +344,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/full_like",
+              "href": "/docs/api/numpy/full-like/",
               "label": "fnp.full_like",
               "original_target": "full_like",
               "role": "",
@@ -360,7 +360,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/empty",
+              "href": "/docs/api/numpy/empty/",
               "label": "fnp.empty",
               "original_target": "empty",
               "role": "",
@@ -376,7 +376,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ones",
+              "href": "/docs/api/numpy/ones/",
               "label": "fnp.ones",
               "original_target": "ones",
               "role": "",
@@ -392,7 +392,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/zeros",
+              "href": "/docs/api/numpy/zeros/",
               "label": "fnp.zeros",
               "original_target": "zeros",
               "role": "",
@@ -412,7 +412,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -476,18 +476,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.full((2, 2), fnp.inf)\n\nfnp.full((2, 2), 10)\n\nfnp.full((2, 2), [1, 2])",
+    "code": "import flopscope.numpy as fnp\n\nfnp.full((2, 2), fnp.inf)\n\nfnp.full((2, 2), 10)\n\nfnp.full((2, 2), [1, 2])",
     "output": "array([[inf, inf],\n       [inf, inf]])\n\narray([[10, 10],\n       [10, 10]])\n\narray([[1, 2],\n       [1, 2]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.full",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L64",
-  "href": "/docs/api/ops/full/",
+  "href": "/docs/api/numpy/full/",
   "module": "numpy",
   "name": "full",
   "next": {
-    "href": "/docs/api/ops/full_like/",
+    "href": "/docs/api/numpy/full-like/",
     "label": "fnp.full_like"
   },
   "notes": "Create array filled with scalar value. Cost: num copied.",
@@ -549,10 +549,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fromiter/",
+    "href": "/docs/api/numpy/fromiter/",
     "label": "fnp.fromiter"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.full",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.full.html",
   "returns": [
     {
@@ -573,7 +574,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/full_like",
+      "href": "/docs/api/numpy/full-like/",
       "label": "fnp.full_like",
       "original_target": "full_like",
       "role": "",
@@ -589,7 +590,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/empty",
+      "href": "/docs/api/numpy/empty/",
       "label": "fnp.empty",
       "original_target": "empty",
       "role": "",
@@ -605,7 +606,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ones",
+      "href": "/docs/api/numpy/ones/",
       "label": "fnp.ones",
       "original_target": "ones",
       "role": "",
@@ -621,7 +622,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/zeros",
+      "href": "/docs/api/numpy/zeros/",
       "label": "fnp.zeros",
       "original_target": "zeros",
       "role": "",
@@ -632,6 +633,8 @@
   "signature": "fnp.full(shape, fill_value, dtype=None, order='C', *, device=None, like=None)",
   "slug": "full",
   "summary": "Return a new array of given shape and type, filled with `fill_value`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L290",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/unique_inverse/",
+  "detail_href": "/docs/api/numpy/unique-inverse/",
   "detail_json_href": "/api-data/ops/unique_inverse.json",
   "docs": {
     "sections": [
@@ -180,7 +180,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/unique",
+                "href": "/docs/api/numpy/unique/",
                 "label": "fnp.unique",
                 "original_target": "unique",
                 "role": "",
@@ -200,7 +200,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

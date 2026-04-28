@@ -240,7 +240,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/tensordot",
+              "href": "/docs/api/numpy/tensordot/",
               "label": "fnp.tensordot",
               "original_target": "numpy.tensordot",
               "role": "",
@@ -271,7 +271,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -382,18 +382,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.eye(4*6)\n\na.shape = (4, 6, 8, 3)\n\nainv = fnp.linalg.tensorinv(a, ind=2)\n\nainv.shape\n\nrng = fnp.random.default_rng()\n\nb = rng.normal(size=(4, 6))\n\nfnp.allclose(fnp.tensordot(ainv, b), fnp.linalg.tensorsolve(a, b))\n\na = fnp.eye(4*6)\n\na.shape = (24, 8, 3)\n\nainv = fnp.linalg.tensorinv(a, ind=1)\n\nainv.shape\n\nrng = fnp.random.default_rng()\n\nb = rng.normal(size=24)\n\nfnp.allclose(fnp.tensordot(ainv, b, 1), fnp.linalg.tensorsolve(a, b))",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.eye(4*6)\n\na.shape = (4, 6, 8, 3)\n\nainv = fnp.linalg.tensorinv(a, ind=2)\n\nainv.shape\n\nrng = fnp.random.default_rng()\n\nb = rng.normal(size=(4, 6))\n\nfnp.allclose(fnp.tensordot(ainv, b), fnp.linalg.tensorsolve(a, b))\n\na = fnp.eye(4*6)\n\na.shape = (24, 8, 3)\n\nainv = fnp.linalg.tensorinv(a, ind=1)\n\nainv.shape\n\nrng = fnp.random.default_rng()\n\nb = rng.normal(size=24)\n\nfnp.allclose(fnp.tensordot(ainv, b, 1), fnp.linalg.tensorsolve(a, b))",
     "output": "(8, 3, 4, 6)\n\nTrue\n\n(8, 3, 24)\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.tensorinv",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L287",
-  "href": "/docs/api/ops/linalg-tensorinv/",
+  "href": "/docs/api/numpy/linalg/tensorinv/",
   "module": "numpy.linalg",
   "name": "linalg.tensorinv",
   "next": {
-    "href": "/docs/api/ops/linalg-tensorsolve/",
+    "href": "/docs/api/numpy/linalg/tensorsolve/",
     "label": "fnp.linalg.tensorsolve"
   },
   "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv).",
@@ -418,10 +418,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-tensordot/",
+    "href": "/docs/api/numpy/linalg/tensordot/",
     "label": "fnp.linalg.tensordot"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.tensorinv",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.tensorinv.html",
   "returns": [
     {
@@ -437,7 +438,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/tensordot",
+      "href": "/docs/api/numpy/tensordot/",
       "label": "fnp.tensordot",
       "original_target": "numpy.tensordot",
       "role": "",
@@ -459,6 +460,8 @@
   "signature": "fnp.linalg.tensorinv(a, ind=2)",
   "slug": "linalg-tensorinv",
   "summary": "Compute the 'inverse' of an N-dimensional array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L419",
   "weight": 4.0
 }

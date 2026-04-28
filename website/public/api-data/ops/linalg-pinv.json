@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-pinv/",
+  "detail_href": "/docs/api/numpy/linalg/pinv/",
   "detail_json_href": "/api-data/ops/linalg-pinv.json",
   "docs": {
     "sections": [
@@ -597,7 +597,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

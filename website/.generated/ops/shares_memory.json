@@ -38,7 +38,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/may_share_memory",
+                  "href": "/docs/api/numpy/may-share-memory/",
                   "kind": "link",
                   "target": "may_share_memory",
                   "text": "fnp.may_share_memory"
@@ -225,7 +225,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/may_share_memory",
+              "href": "/docs/api/numpy/may-share-memory/",
               "label": "fnp.may_share_memory",
               "original_target": "may_share_memory",
               "role": "",
@@ -245,7 +245,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -395,18 +395,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.array([1, 2, 3, 4])\n\nfnp.shares_memory(x, fnp.array([5, 6, 7]))\n\nfnp.shares_memory(x[::2], x)\n\nfnp.shares_memory(x[::2], x[1::2])\n\nfrom fnp.lib.stride_tricks import as_strided\n\nx = fnp.zeros([192163377], dtype=fnp.int8)\n\nx1 = as_strided(\n    x, strides=(36674, 61119, 85569), shape=(1049, 1049, 1049))\n\nx2 = as_strided(\n    x[64023025:], strides=(12223, 12224, 1), shape=(1049, 1049, 1))\n\nfnp.shares_memory(x1, x2, max_work=1000)",
+    "code": "import flopscope.numpy as fnp\n\nx = fnp.array([1, 2, 3, 4])\n\nfnp.shares_memory(x, fnp.array([5, 6, 7]))\n\nfnp.shares_memory(x[::2], x)\n\nfnp.shares_memory(x[::2], x[1::2])\n\nfrom fnp.lib.stride_tricks import as_strided\n\nx = fnp.zeros([192163377], dtype=fnp.int8)\n\nx1 = as_strided(\n    x, strides=(36674, 61119, 85569), shape=(1049, 1049, 1049))\n\nx2 = as_strided(\n    x[64023025:], strides=(12223, 12224, 1), shape=(1049, 1049, 1))\n\nfnp.shares_memory(x1, x2, max_work=1000)",
     "output": "False\n\nTrue\n\nFalse\n\nTraceback (most recent call last):\n...\nfnp.exceptions.TooHardError: Exceeded max_work",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.shares_memory",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1392",
-  "href": "/docs/api/ops/shares_memory/",
+  "href": "/docs/api/numpy/shares-memory/",
   "module": "numpy",
   "name": "shares_memory",
   "next": {
-    "href": "/docs/api/ops/sign/",
+    "href": "/docs/api/numpy/sign/",
     "label": "fnp.sign"
   },
   "notes": "Determine if two arrays share memory.",
@@ -439,10 +439,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/shape/",
+    "href": "/docs/api/numpy/shape/",
     "label": "fnp.shape"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.shares_memory",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.shares_memory.html",
   "returns": [
     {
@@ -456,7 +457,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/may_share_memory",
+      "href": "/docs/api/numpy/may-share-memory/",
       "label": "fnp.may_share_memory",
       "original_target": "may_share_memory",
       "role": "",
@@ -467,6 +468,8 @@
   "signature": "fnp.shares_memory(*args, **kwargs)",
   "slug": "shares_memory",
   "summary": "Determine if two arrays share memory.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

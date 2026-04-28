@@ -642,11 +642,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.normal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-normal/",
+  "href": "/docs/api/numpy/random/normal/",
   "module": "numpy.random",
   "name": "random.normal",
   "next": {
-    "href": "/docs/api/ops/random-pareto/",
+    "href": "/docs/api/numpy/random/pareto/",
     "label": "fnp.random.pareto"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -685,10 +685,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-noncentral_f/",
+    "href": "/docs/api/numpy/random/noncentral-f/",
     "label": "fnp.random.noncentral_f"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.normal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.normal.html",
   "returns": [
     {
@@ -736,6 +737,8 @@
   "signature": "fnp.random.normal(loc=0.0, scale=1.0, size=None)",
   "slug": "random-normal",
   "summary": "Draw random samples from a normal (Gaussian) distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

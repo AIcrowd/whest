@@ -209,7 +209,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/prod",
+                      "href": "/docs/api/numpy/prod/",
                       "kind": "link",
                       "target": "prod",
                       "text": "prod"
@@ -517,7 +517,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -731,18 +731,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.prod([1.,2.])\n\na = fnp.array([[1., 2.], [3., 4.]])\n\nfnp.prod(a)\n\nfnp.prod(a, axis=1)\n\nfnp.prod(a, axis=0)\n\nfnp.prod([1., fnp.nan, 3.], where=[True, False, True])\n\nx = fnp.array([1, 2, 3], dtype=fnp.uint8)\n\nfnp.prod(x).dtype == fnp.uint\n\nx = fnp.array([1, 2, 3], dtype=fnp.int8)\n\nfnp.prod(x).dtype == int\n\nfnp.prod([1, 2], initial=5)",
+    "code": "import flopscope.numpy as fnp\n\nfnp.prod([1.,2.])\n\na = fnp.array([[1., 2.], [3., 4.]])\n\nfnp.prod(a)\n\nfnp.prod(a, axis=1)\n\nfnp.prod(a, axis=0)\n\nfnp.prod([1., fnp.nan, 3.], where=[True, False, True])\n\nx = fnp.array([1, 2, 3], dtype=fnp.uint8)\n\nfnp.prod(x).dtype == fnp.uint\n\nx = fnp.array([1, 2, 3], dtype=fnp.int8)\n\nfnp.prod(x).dtype == int\n\nfnp.prod([1, 2], initial=5)",
     "output": "2.0\n\n24.0\n\narray([  2.,  12.])\n\narray([3., 8.])\n\n3.0\n\nTrue\n\nTrue\n\n10",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.prod",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
-  "href": "/docs/api/ops/prod/",
+  "href": "/docs/api/numpy/prod/",
   "module": "numpy",
   "name": "prod",
   "next": {
-    "href": "/docs/api/ops/promote_types/",
+    "href": "/docs/api/numpy/promote-types/",
     "label": "fnp.promote_types"
   },
   "notes": "Product of array elements.",
@@ -829,10 +829,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/power/",
+    "href": "/docs/api/numpy/power/",
     "label": "fnp.power"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.prod",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.prod.html",
   "returns": [
     {
@@ -876,6 +877,8 @@
   "signature": "fnp.prod(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "prod",
   "summary": "Return the product of array elements over a given axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3328",
   "weight": 1.0
 }

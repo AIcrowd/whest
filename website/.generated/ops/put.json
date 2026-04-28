@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/put",
+              "href": "/docs/api/numpy/put/",
               "kind": "link",
               "target": "put",
               "text": "put"
@@ -256,7 +256,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/putmask",
+              "href": "/docs/api/numpy/putmask/",
               "label": "fnp.putmask",
               "original_target": "putmask",
               "role": "",
@@ -267,7 +267,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/place",
+              "href": "/docs/api/numpy/place/",
               "label": "fnp.place",
               "original_target": "place",
               "role": "",
@@ -283,7 +283,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/put_along_axis",
+              "href": "/docs/api/numpy/put-along-axis/",
               "label": "fnp.put_along_axis",
               "original_target": "put_along_axis",
               "role": "",
@@ -303,7 +303,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -366,18 +366,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.arange(5)\n\nfnp.put(a, [0, 2], [-44, -55])\n\na\n\na = fnp.arange(5)\n\nfnp.put(a, 22, -5, mode='clip')\n\na",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.arange(5)\n\nfnp.put(a, [0, 2], [-44, -55])\n\na\n\na = fnp.arange(5)\n\nfnp.put(a, 22, -5, mode='clip')\n\na",
     "output": "array([-44,   1, -55,   3,   4])\n\narray([ 0,  1,  2,  3, -5])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.put",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1262",
-  "href": "/docs/api/ops/put/",
+  "href": "/docs/api/numpy/put/",
   "module": "numpy",
   "name": "put",
   "next": {
-    "href": "/docs/api/ops/put_along_axis/",
+    "href": "/docs/api/numpy/put-along-axis/",
     "label": "fnp.put_along_axis"
   },
   "notes": "Replace elements at given flat indices. Cost: numel(input).",
@@ -424,10 +424,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ptp/",
+    "href": "/docs/api/numpy/ptp/",
     "label": "fnp.ptp"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.put",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.put.html",
   "returns": [],
   "see_also": [
@@ -435,7 +436,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/putmask",
+      "href": "/docs/api/numpy/putmask/",
       "label": "fnp.putmask",
       "original_target": "putmask",
       "role": "",
@@ -446,7 +447,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/place",
+      "href": "/docs/api/numpy/place/",
       "label": "fnp.place",
       "original_target": "place",
       "role": "",
@@ -462,7 +463,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/put_along_axis",
+      "href": "/docs/api/numpy/put-along-axis/",
       "label": "fnp.put_along_axis",
       "original_target": "put_along_axis",
       "role": "",
@@ -473,6 +474,8 @@
   "signature": "fnp.put(a, ind, v, mode='raise')",
   "slug": "put",
   "summary": "Replaces specified elements of an array with given values.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L513",
   "weight": 1.0
 }

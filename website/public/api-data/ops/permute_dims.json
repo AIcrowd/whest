@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/permute_dims/",
+  "detail_href": "/docs/api/numpy/permute-dims/",
   "detail_json_href": "/api-data/ops/permute_dims.json",
   "docs": {
     "sections": [
@@ -228,7 +228,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/moveaxis",
+                "href": "/docs/api/numpy/moveaxis/",
                 "label": "fnp.moveaxis",
                 "original_target": "moveaxis",
                 "role": "",
@@ -244,7 +244,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "label": "fnp.argsort",
                 "original_target": "argsort",
                 "role": "",
@@ -294,7 +294,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

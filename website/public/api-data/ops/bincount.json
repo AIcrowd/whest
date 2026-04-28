@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/bincount/",
+  "detail_href": "/docs/api/numpy/bincount/",
   "detail_json_href": "/api-data/ops/bincount.json",
   "docs": {
     "sections": [
@@ -346,7 +346,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "label": "fnp.histogram",
                 "original_target": "histogram",
                 "role": "",
@@ -357,7 +357,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/digitize",
+                "href": "/docs/api/numpy/digitize/",
                 "label": "fnp.digitize",
                 "original_target": "digitize",
                 "role": "",
@@ -368,7 +368,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/unique",
+                "href": "/docs/api/numpy/unique/",
                 "label": "fnp.unique",
                 "original_target": "unique",
                 "role": "",
@@ -388,7 +388,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -474,7 +474,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/bincount",
+                "href": "/docs/api/numpy/bincount/",
                 "kind": "link",
                 "target": "bincount",
                 "text": "bincount"

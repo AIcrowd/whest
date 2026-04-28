@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/bmat/",
+  "detail_href": "/docs/api/numpy/bmat/",
   "detail_json_href": "/api-data/ops/bmat.json",
   "docs": {
     "sections": [
@@ -188,7 +188,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "label": "fnp.block",
                 "original_target": "block",
                 "role": "",
@@ -208,7 +208,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

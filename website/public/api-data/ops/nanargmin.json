@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nanargmin/",
+  "detail_href": "/docs/api/numpy/nanargmin/",
   "detail_json_href": "/api-data/ops/nanargmin.json",
   "docs": {
     "sections": [
@@ -185,7 +185,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/argmin",
+                "href": "/docs/api/numpy/argmin/",
                 "label": "fnp.argmin",
                 "original_target": "argmin",
                 "role": "",
@@ -196,7 +196,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanargmax",
+                "href": "/docs/api/numpy/nanargmax/",
                 "label": "fnp.nanargmax",
                 "original_target": "nanargmax",
                 "role": "",
@@ -216,7 +216,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

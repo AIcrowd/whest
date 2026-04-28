@@ -529,11 +529,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.noncentral_chisquare",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-noncentral_chisquare/",
+  "href": "/docs/api/numpy/random/noncentral-chisquare/",
   "module": "numpy.random",
   "name": "random.noncentral_chisquare",
   "next": {
-    "href": "/docs/api/ops/random-noncentral_f/",
+    "href": "/docs/api/numpy/random/noncentral-f/",
     "label": "fnp.random.noncentral_f"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -570,10 +570,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-negative_binomial/",
+    "href": "/docs/api/numpy/random/negative-binomial/",
     "label": "fnp.random.negative_binomial"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.noncentral_chisquare",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.noncentral_chisquare.html",
   "returns": [
     {
@@ -605,6 +606,8 @@
   "signature": "fnp.random.noncentral_chisquare(df, nonc, size=None)",
   "slug": "random-noncentral_chisquare",
   "summary": "Draw samples from a noncentral chi-square distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/polysub/",
+  "detail_href": "/docs/api/numpy/polysub/",
   "detail_json_href": "/api-data/ops/polysub.json",
   "docs": {
     "sections": [
@@ -215,7 +215,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polyval",
+                "href": "/docs/api/numpy/polyval/",
                 "label": "fnp.polyval",
                 "original_target": "polyval",
                 "role": "",
@@ -226,7 +226,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polydiv",
+                "href": "/docs/api/numpy/polydiv/",
                 "label": "fnp.polydiv",
                 "original_target": "polydiv",
                 "role": "",
@@ -237,7 +237,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polymul",
+                "href": "/docs/api/numpy/polymul/",
                 "label": "fnp.polymul",
                 "original_target": "polymul",
                 "role": "",
@@ -248,7 +248,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polyadd",
+                "href": "/docs/api/numpy/polyadd/",
                 "label": "fnp.polyadd",
                 "original_target": "polyadd",
                 "role": "",
@@ -274,7 +274,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"

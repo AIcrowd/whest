@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nanprod/",
+  "detail_href": "/docs/api/numpy/nanprod/",
   "detail_json_href": "/api-data/ops/nanprod.json",
   "docs": {
     "sections": [
@@ -434,7 +434,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/prod",
+                "href": "/docs/api/numpy/prod/",
                 "label": "fnp.prod",
                 "original_target": "numpy.prod",
                 "role": "",
@@ -450,7 +450,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
+                "href": "/docs/api/numpy/isnan/",
                 "label": "fnp.isnan",
                 "original_target": "isnan",
                 "role": "",
@@ -470,7 +470,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

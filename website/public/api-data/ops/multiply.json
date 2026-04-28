@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/multiply/",
+  "detail_href": "/docs/api/numpy/multiply/",
   "detail_json_href": "/api-data/ops/multiply.json",
   "docs": {
     "sections": [
@@ -362,7 +362,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -424,7 +424,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/multiply",
+                "href": "/docs/api/numpy/multiply/",
                 "kind": "link",
                 "target": "multiply",
                 "text": "fnp.multiply"

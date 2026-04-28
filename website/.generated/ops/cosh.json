@@ -317,7 +317,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -387,18 +387,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.cosh(0)\n\nimport matplotlib.pyplot as plt\n\nx = fnp.linspace(-4, 4, 1000)\n\nplt.plot(x, fnp.cosh(x))\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nfnp.cosh(0)\n\nimport matplotlib.pyplot as plt\n\nx = fnp.linspace(-4, 4, 1000)\n\nplt.plot(x, fnp.cosh(x))\n\nplt.show()",
     "output": "1.0",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.cosh",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/cosh/",
+  "href": "/docs/api/numpy/cosh/",
   "module": "numpy",
   "name": "cosh",
   "next": {
-    "href": "/docs/api/ops/count_nonzero/",
+    "href": "/docs/api/numpy/count-nonzero/",
     "label": "fnp.count_nonzero"
   },
   "notes": "Element-wise hyperbolic cosine.",
@@ -444,10 +444,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/cos/",
+    "href": "/docs/api/numpy/cos/",
     "label": "fnp.cos"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.cosh",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cosh.html",
   "returns": [
     {
@@ -463,6 +464,8 @@
   "signature": "fnp.cosh(x)",
   "slug": "cosh",
   "summary": "Hyperbolic cosine, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

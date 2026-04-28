@@ -183,7 +183,7 @@ def einsum_cache_info():
 
     Example::
 
-        info = we.einsum_cache_info()
+        info = flops.einsum_cache_info()
         print(f"Cache hit rate: {info.hits / max(info.hits + info.misses, 1):.0%}")
     """
     return _path_cache.cache_info()

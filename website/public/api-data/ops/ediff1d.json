@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/ediff1d/",
+  "detail_href": "/docs/api/numpy/ediff1d/",
   "detail_json_href": "/api-data/ops/ediff1d.json",
   "docs": {
     "sections": [
@@ -151,7 +151,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diff",
+                "href": "/docs/api/numpy/diff/",
                 "label": "fnp.diff",
                 "original_target": "diff",
                 "role": "",
@@ -162,7 +162,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/gradient",
+                "href": "/docs/api/numpy/gradient/",
                 "label": "fnp.gradient",
                 "original_target": "gradient",
                 "role": "",
@@ -212,7 +212,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

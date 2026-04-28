@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/argpartition/",
+  "detail_href": "/docs/api/numpy/argpartition/",
   "detail_json_href": "/api-data/ops/argpartition.json",
   "docs": {
     "sections": [
@@ -328,7 +328,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/partition",
+                "href": "/docs/api/numpy/partition/",
                 "label": "fnp.partition",
                 "original_target": "partition",
                 "role": "",
@@ -360,7 +360,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "label": "fnp.argsort",
                 "original_target": "argsort",
                 "role": "",
@@ -384,7 +384,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/take_along_axis",
+                "href": "/docs/api/numpy/take-along-axis/",
                 "label": "fnp.take_along_axis",
                 "original_target": "take_along_axis",
                 "role": "",
@@ -420,7 +420,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argpartition",
+                "href": "/docs/api/numpy/argpartition/",
                 "kind": "link",
                 "target": "argpartition",
                 "text": "argpartition"
@@ -431,7 +431,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/partition",
+                "href": "/docs/api/numpy/partition/",
                 "kind": "link",
                 "target": "partition",
                 "text": "partition"
@@ -462,7 +462,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

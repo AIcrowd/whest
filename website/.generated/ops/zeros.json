@@ -280,7 +280,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/zeros_like",
+              "href": "/docs/api/numpy/zeros-like/",
               "label": "fnp.zeros_like",
               "original_target": "zeros_like",
               "role": "",
@@ -296,7 +296,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/empty",
+              "href": "/docs/api/numpy/empty/",
               "label": "fnp.empty",
               "original_target": "empty",
               "role": "",
@@ -312,7 +312,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ones",
+              "href": "/docs/api/numpy/ones/",
               "label": "fnp.ones",
               "original_target": "ones",
               "role": "",
@@ -328,7 +328,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/full",
+              "href": "/docs/api/numpy/full/",
               "label": "fnp.full",
               "original_target": "full",
               "role": "",
@@ -348,7 +348,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -450,18 +450,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.zeros(5)\n\nfnp.zeros((5,), dtype=int)\n\nfnp.zeros((2, 1))\n\ns = (2,2)\n\nfnp.zeros(s)\n\nfnp.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype",
+    "code": "import flopscope.numpy as fnp\n\nfnp.zeros(5)\n\nfnp.zeros((5,), dtype=int)\n\nfnp.zeros((2, 1))\n\ns = (2,2)\n\nfnp.zeros(s)\n\nfnp.zeros((2,), dtype=[('x', 'i4'), ('y', 'i4')]) # custom dtype",
     "output": "array([ 0.,  0.,  0.,  0.,  0.])\n\narray([0, 0, 0, 0, 0])\n\narray([[ 0.],\n       [ 0.]])\n\narray([[ 0.,  0.],\n       [ 0.,  0.]])\n\narray([(0, 0), (0, 0)],\n      dtype=[('x', '<i4'), ('y', '<i4')])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.zeros",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L48",
-  "href": "/docs/api/ops/zeros/",
+  "href": "/docs/api/numpy/zeros/",
   "module": "numpy",
   "name": "zeros",
   "next": {
-    "href": "/docs/api/ops/zeros_like/",
+    "href": "/docs/api/numpy/zeros-like/",
     "label": "fnp.zeros_like"
   },
   "notes": "Create zero-filled array.",
@@ -507,10 +507,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/where/",
+    "href": "/docs/api/numpy/where/",
     "label": "fnp.where"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.zeros",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.zeros.html",
   "returns": [
     {
@@ -531,7 +532,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/zeros_like",
+      "href": "/docs/api/numpy/zeros-like/",
       "label": "fnp.zeros_like",
       "original_target": "zeros_like",
       "role": "",
@@ -547,7 +548,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/empty",
+      "href": "/docs/api/numpy/empty/",
       "label": "fnp.empty",
       "original_target": "empty",
       "role": "",
@@ -563,7 +564,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ones",
+      "href": "/docs/api/numpy/ones/",
       "label": "fnp.ones",
       "original_target": "ones",
       "role": "",
@@ -579,7 +580,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/full",
+      "href": "/docs/api/numpy/full/",
       "label": "fnp.full",
       "original_target": "full",
       "role": "",
@@ -590,6 +591,8 @@
   "signature": "fnp.zeros(shape, dtype=<class 'float'>, **kwargs)",
   "slug": "zeros",
   "summary": "Return a new array of given shape and type, filled with zeros.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/flip/",
+  "detail_href": "/docs/api/numpy/flip/",
   "detail_json_href": "/api-data/ops/flip.json",
   "docs": {
     "sections": [
@@ -157,7 +157,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/flipud",
+                "href": "/docs/api/numpy/flipud/",
                 "label": "fnp.flipud",
                 "original_target": "flipud",
                 "role": "",
@@ -173,7 +173,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fliplr",
+                "href": "/docs/api/numpy/fliplr/",
                 "label": "fnp.fliplr",
                 "original_target": "fliplr",
                 "role": "",
@@ -291,7 +291,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

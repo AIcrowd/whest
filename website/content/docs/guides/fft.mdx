@@ -33,6 +33,7 @@ Real-valued transforms (`rfft`, `irfft`, `rfftn`, `irfftn`) cost roughly half of
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=1_000_000) as budget:
     # Generate a signal (costs numel(output) = 1,024 FLOPs)
     signal = fnp.random.randn(1024)
@@ -57,6 +58,7 @@ When your input is real-valued (which is common in signal processing), prefer `r
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=1_000_000) as budget:
     signal = fnp.random.randn(1024)  # 1,024 FLOPs
 
@@ -83,6 +85,7 @@ Use `fft2` for 2-D transforms (e.g., images) and `fftn` for arbitrary dimensions
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=10**8) as budget:
     # 2-D image (costs numel(output) = 65,536 FLOPs)
     image = fnp.random.randn(256, 256)
@@ -103,6 +106,7 @@ A common signal processing pattern — window the signal before FFT to reduce sp
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=1_000_000) as budget:
     signal = fnp.random.randn(1024)
 

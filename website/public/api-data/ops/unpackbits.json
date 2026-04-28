@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/unpackbits/",
+  "detail_href": "/docs/api/numpy/unpackbits/",
   "detail_json_href": "/api-data/ops/unpackbits.json",
   "docs": {
     "sections": [
@@ -296,7 +296,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/packbits",
+                "href": "/docs/api/numpy/packbits/",
                 "label": "fnp.packbits",
                 "original_target": "packbits",
                 "role": "",
@@ -316,7 +316,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

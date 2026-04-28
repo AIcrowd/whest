@@ -217,7 +217,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/result_type",
+              "href": "/docs/api/numpy/result-type/",
               "label": "fnp.result_type",
               "original_target": "result_type",
               "role": "",
@@ -261,7 +261,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -340,18 +340,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.can_cast(fnp.int32, fnp.int64)\n\nfnp.can_cast(fnp.float64, complex)\n\nfnp.can_cast(complex, float)\n\nfnp.can_cast('i8', 'f8')\n\nfnp.can_cast('i8', 'f4')\n\nfnp.can_cast('i4', 'S4')",
+    "code": "import flopscope.numpy as fnp\n\nfnp.can_cast(fnp.int32, fnp.int64)\n\nfnp.can_cast(fnp.float64, complex)\n\nfnp.can_cast(complex, float)\n\nfnp.can_cast('i8', 'f8')\n\nfnp.can_cast('i8', 'f4')\n\nfnp.can_cast('i4', 'S4')",
     "output": "True\n\nTrue\n\nFalse\n\nTrue\n\nFalse\n\nFalse",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.can_cast",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L739",
-  "href": "/docs/api/ops/can_cast/",
+  "href": "/docs/api/numpy/can-cast/",
   "module": "numpy",
   "name": "can_cast",
   "next": {
-    "href": "/docs/api/ops/cbrt/",
+    "href": "/docs/api/numpy/cbrt/",
     "label": "fnp.cbrt"
   },
   "notes": "Returns True if cast is safe.",
@@ -390,10 +390,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/broadcast_to/",
+    "href": "/docs/api/numpy/broadcast-to/",
     "label": "fnp.broadcast_to"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.can_cast",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.can_cast.html",
   "returns": [
     {
@@ -420,7 +421,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/result_type",
+      "href": "/docs/api/numpy/result-type/",
       "label": "fnp.result_type",
       "original_target": "result_type",
       "role": "",
@@ -431,6 +432,8 @@
   "signature": "fnp.can_cast(*args, **kwargs)",
   "slug": "can_cast",
   "summary": "Returns True if cast between data types can occur according to the casting rule.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

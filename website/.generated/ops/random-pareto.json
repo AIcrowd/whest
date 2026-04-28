@@ -543,11 +543,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.pareto",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-pareto/",
+  "href": "/docs/api/numpy/random/pareto/",
   "module": "numpy.random",
   "name": "random.pareto",
   "next": {
-    "href": "/docs/api/ops/random-permutation/",
+    "href": "/docs/api/numpy/random/permutation/",
     "label": "fnp.random.permutation"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -578,10 +578,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-normal/",
+    "href": "/docs/api/numpy/random/normal/",
     "label": "fnp.random.normal"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.pareto",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.pareto.html",
   "returns": [
     {
@@ -645,6 +646,8 @@
   "signature": "fnp.random.pareto(a, size=None)",
   "slug": "random-pareto",
   "summary": "Draw samples from a Pareto II or Lomax distribution with specified shape.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

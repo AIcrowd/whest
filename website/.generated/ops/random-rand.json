@@ -38,7 +38,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/zeros",
+                  "href": "/docs/api/numpy/zeros/",
                   "kind": "link",
                   "target": "zeros",
                   "text": "fnp.zeros"
@@ -49,7 +49,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/ones",
+                  "href": "/docs/api/numpy/ones/",
                   "kind": "link",
                   "target": "ones",
                   "text": "fnp.ones"
@@ -221,11 +221,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.rand",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L83",
-  "href": "/docs/api/ops/random-rand/",
+  "href": "/docs/api/numpy/random/rand/",
   "module": "numpy.random",
   "name": "random.rand",
   "next": {
-    "href": "/docs/api/ops/random-randint/",
+    "href": "/docs/api/numpy/random/randint/",
     "label": "fnp.random.randint"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -242,10 +242,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-power/",
+    "href": "/docs/api/numpy/random/power/",
     "label": "fnp.random.power"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.rand",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.rand.html",
   "returns": [
     {
@@ -272,6 +273,8 @@
   "signature": "fnp.random.rand(*args)",
   "slug": "random-rand",
   "summary": "Random values in a given shape.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

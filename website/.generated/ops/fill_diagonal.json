@@ -180,7 +180,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/diag_indices",
+              "href": "/docs/api/numpy/diag-indices/",
               "label": "fnp.diag_indices",
               "original_target": "diag_indices",
               "role": "",
@@ -191,7 +191,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/diag_indices_from",
+              "href": "/docs/api/numpy/diag-indices-from/",
               "label": "fnp.diag_indices_from",
               "original_target": "diag_indices_from",
               "role": "",
@@ -214,7 +214,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/diag_indices",
+              "href": "/docs/api/numpy/diag-indices/",
               "kind": "link",
               "target": "diag_indices",
               "text": "diag_indices"
@@ -236,7 +236,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -501,7 +501,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/flipud",
+              "href": "/docs/api/numpy/flipud/",
               "kind": "link",
               "target": "flipud",
               "text": "fnp.flipud"
@@ -512,7 +512,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/fliplr",
+              "href": "/docs/api/numpy/fliplr/",
               "kind": "link",
               "target": "fliplr",
               "text": "fnp.fliplr"
@@ -602,18 +602,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.zeros((3, 3), int)\n\nfnp.fill_diagonal(a, 5)\n\na\n\na = fnp.zeros((3, 3, 3, 3), int)\n\nfnp.fill_diagonal(a, 4)\n\na[0, 0]\n\na[1, 1]\n\na[2, 2]\n\na = fnp.zeros((5, 3), int)\n\nfnp.fill_diagonal(a, 4)\n\na\n\na = fnp.zeros((5, 3), int)\n\nfnp.fill_diagonal(a, 4, wrap=True)\n\na\n\na = fnp.zeros((3, 5), int)\n\nfnp.fill_diagonal(a, 4, wrap=True)\n\na\n\na = fnp.zeros((3, 3), int);\n\nfnp.fill_diagonal(fnp.fliplr(a), [1,2,3])  # Horizontal flip\n\na\n\nfnp.fill_diagonal(fnp.flipud(a), [1,2,3])  # Vertical flip\n\na",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.zeros((3, 3), int)\n\nfnp.fill_diagonal(a, 5)\n\na\n\na = fnp.zeros((3, 3, 3, 3), int)\n\nfnp.fill_diagonal(a, 4)\n\na[0, 0]\n\na[1, 1]\n\na[2, 2]\n\na = fnp.zeros((5, 3), int)\n\nfnp.fill_diagonal(a, 4)\n\na\n\na = fnp.zeros((5, 3), int)\n\nfnp.fill_diagonal(a, 4, wrap=True)\n\na\n\na = fnp.zeros((3, 5), int)\n\nfnp.fill_diagonal(a, 4, wrap=True)\n\na\n\na = fnp.zeros((3, 3), int);\n\nfnp.fill_diagonal(fnp.fliplr(a), [1,2,3])  # Horizontal flip\n\na\n\nfnp.fill_diagonal(fnp.flipud(a), [1,2,3])  # Vertical flip\n\na",
     "output": "array([[5, 0, 0],\n       [0, 5, 0],\n       [0, 0, 5]])\n\narray([[4, 0, 0],\n       [0, 0, 0],\n       [0, 0, 0]])\n\narray([[0, 0, 0],\n       [0, 4, 0],\n       [0, 0, 0]])\n\narray([[0, 0, 0],\n       [0, 0, 0],\n       [0, 0, 4]])\n\narray([[4, 0, 0],\n       [0, 4, 0],\n       [0, 0, 4],\n       [0, 0, 0],\n       [0, 0, 0]])\n\narray([[4, 0, 0],\n       [0, 4, 0],\n       [0, 0, 4],\n       [0, 0, 0],\n       [4, 0, 0]])\n\narray([[4, 0, 0, 0, 0],\n       [0, 4, 0, 0, 0],\n       [0, 0, 4, 0, 0]])\n\narray([[0, 0, 1],\n       [0, 2, 0],\n       [3, 0, 0]])\n\narray([[0, 0, 3],\n       [0, 2, 0],\n       [1, 0, 0]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fill_diagonal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L918",
-  "href": "/docs/api/ops/fill_diagonal/",
+  "href": "/docs/api/numpy/fill-diagonal/",
   "module": "numpy",
   "name": "fill_diagonal",
   "next": {
-    "href": "/docs/api/ops/flatnonzero/",
+    "href": "/docs/api/numpy/flatnonzero/",
     "label": "fnp.flatnonzero"
   },
   "notes": "Fill main diagonal of given array. Cost: min(m,n).",
@@ -650,10 +650,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-rfftn/",
+    "href": "/docs/api/numpy/fft/rfftn/",
     "label": "fnp.fft.rfftn"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fill_diagonal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fill_diagonal.html",
   "returns": [],
   "see_also": [
@@ -661,7 +662,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/diag_indices",
+      "href": "/docs/api/numpy/diag-indices/",
       "label": "fnp.diag_indices",
       "original_target": "diag_indices",
       "role": "",
@@ -672,7 +673,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/diag_indices_from",
+      "href": "/docs/api/numpy/diag-indices-from/",
       "label": "fnp.diag_indices_from",
       "original_target": "diag_indices_from",
       "role": "",
@@ -683,6 +684,8 @@
   "signature": "fnp.fill_diagonal(a, val, wrap=False, **kwargs)",
   "slug": "fill_diagonal",
   "summary": "Fill the main diagonal of the given array of any dimensionality.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_index_tricks_impl.py#L815",
   "weight": 4.0
 }

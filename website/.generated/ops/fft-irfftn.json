@@ -925,7 +925,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -984,18 +984,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.zeros((3, 2, 2))\n\na[0, 0, 0] = 3 * 2 * 2\n\nfnp.fft.irfftn(a)",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.zeros((3, 2, 2))\n\na[0, 0, 0] = 3 * 2 * 2\n\nfnp.fft.irfftn(a)",
     "output": "array([[[1.,  1.],\n        [1.,  1.]],\n       [[1.,  1.],\n        [1.,  1.]],\n       [[1.,  1.],\n        [1.,  1.]]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.irfftn",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L412",
-  "href": "/docs/api/ops/fft-irfftn/",
+  "href": "/docs/api/numpy/fft/irfftn/",
   "module": "numpy.fft",
   "name": "fft.irfftn",
   "next": {
-    "href": "/docs/api/ops/fft-rfft/",
+    "href": "/docs/api/numpy/fft/rfft/",
     "label": "fnp.fft.rfft"
   },
   "notes": "Inverse N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
@@ -1085,10 +1085,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-irfft2/",
+    "href": "/docs/api/numpy/fft/irfft2/",
     "label": "fnp.fft.irfft2"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.irfftn",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.irfftn.html",
   "returns": [
     {
@@ -1184,6 +1185,8 @@
   "signature": "fnp.fft.irfftn(a, s=None, axes=None, norm=None, out=None)",
   "slug": "fft-irfftn",
   "summary": "Computes the inverse of `rfftn`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1467",
   "weight": 1.0
 }

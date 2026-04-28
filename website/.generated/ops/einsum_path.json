@@ -88,7 +88,7 @@
                             },
                             {
                               "external_url": "",
-                              "href": "/docs/api/ops/einsum_path",
+                              "href": "/docs/api/numpy/einsum-path/",
                               "kind": "link",
                               "target": "einsum_path",
                               "text": "einsum_path"
@@ -248,7 +248,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "label": "fnp.einsum",
               "original_target": "einsum",
               "role": "",
@@ -259,7 +259,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/linalg-multi_dot",
+              "href": "/docs/api/numpy/linalg/multi-dot/",
               "label": "fnp.linalg.multi_dot",
               "original_target": "linalg.multi_dot",
               "role": "",
@@ -552,11 +552,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.einsum_path",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L337",
-  "href": "/docs/api/ops/einsum_path/",
+  "href": "/docs/api/numpy/einsum-path/",
   "module": "numpy",
   "name": "einsum_path",
   "next": {
-    "href": "/docs/api/ops/empty/",
+    "href": "/docs/api/numpy/empty/",
     "label": "fnp.empty"
   },
   "notes": "Optimize einsum contraction path (no numeric output).",
@@ -607,10 +607,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/einsum/",
+    "href": "/docs/api/numpy/einsum/",
     "label": "fnp.einsum"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.einsum_path",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.einsum_path.html",
   "returns": [
     {
@@ -633,7 +634,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/einsum",
+      "href": "/docs/api/numpy/einsum/",
       "label": "fnp.einsum",
       "original_target": "einsum",
       "role": "",
@@ -644,7 +645,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/linalg-multi_dot",
+      "href": "/docs/api/numpy/linalg/multi-dot/",
       "label": "fnp.linalg.multi_dot",
       "original_target": "linalg.multi_dot",
       "role": "",
@@ -655,6 +656,8 @@
   "signature": "fnp.einsum_path(subscripts: 'str', *operands, optimize: 'str | bool | list' = 'auto')",
   "slug": "einsum_path",
   "summary": "Evaluates the lowest cost contraction order for an einsum expression by considering the creation of intermediate arrays.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/einsumfunc.py#L742",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/cos/",
+  "detail_href": "/docs/api/numpy/cos/",
   "detail_json_href": "/api-data/ops/cos.json",
   "docs": {
     "sections": [
@@ -312,7 +312,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

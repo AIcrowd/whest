@@ -68,6 +68,7 @@ Pass a `SymmetricTensor` to get automatic cost reductions:
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=10**8) as budget:
     A = flops.as_symmetric(fnp.multiply(fnp.eye(10), 2.0), symmetric_axes=(0, 1))
 

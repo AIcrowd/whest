@@ -33,10 +33,12 @@ export default function OperationDocSignature({
   signature,
   flopscopeSourceUrl,
   upstreamSourceUrl,
+  upstreamSourceLabel,
 }: {
   signature?: string;
   flopscopeSourceUrl?: string;
   upstreamSourceUrl?: string;
+  upstreamSourceLabel?: string;
 }) {
   if (!signature) {
     return null;
@@ -87,7 +89,7 @@ export default function OperationDocSignature({
                 rel="noreferrer"
                 className={styles.docSourceLink}
               >
-                [numpy source]
+                [{upstreamSourceLabel ?? 'numpy source'}]
               </a>
             ) : null}
           </span>

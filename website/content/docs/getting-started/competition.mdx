@@ -18,6 +18,7 @@ Every competition submission runs inside a FLOP budget. Use `BudgetContext` to d
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=50_000_000, namespace="solver") as budget:
     A = fnp.ones((256, 256))
     x = fnp.ones((256,))
@@ -37,6 +38,7 @@ For cleaner code, use `@flops.budget` to attach a budget directly to a function:
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 @flops.budget(flop_budget=50_000_000, namespace="forward-pass")
 def forward(W, x):
     h = fnp.einsum('ij,j->i', W, x)

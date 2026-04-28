@@ -164,7 +164,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/unique",
+              "href": "/docs/api/numpy/unique/",
               "label": "fnp.unique",
               "original_target": "unique",
               "role": "",
@@ -184,7 +184,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -232,18 +232,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = [1, 1, 2]\n\nuniq = fnp.unique_counts(x)\n\nuniq.values\n\nuniq.counts",
+    "code": "import flopscope.numpy as fnp\n\nx = [1, 1, 2]\n\nuniq = fnp.unique_counts(x)\n\nuniq.values\n\nuniq.counts",
     "output": "array([1, 2])\n\narray([2, 1])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.unique_counts",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L303",
-  "href": "/docs/api/ops/unique_counts/",
+  "href": "/docs/api/numpy/unique-counts/",
   "module": "numpy",
   "name": "unique_counts",
   "next": {
-    "href": "/docs/api/ops/unique_inverse/",
+    "href": "/docs/api/numpy/unique-inverse/",
     "label": "fnp.unique_inverse"
   },
   "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
@@ -259,10 +259,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/unique_all/",
+    "href": "/docs/api/numpy/unique-all/",
     "label": "fnp.unique_all"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.unique_counts",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unique_counts.html",
   "returns": [
     {
@@ -286,7 +287,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/unique",
+      "href": "/docs/api/numpy/unique/",
       "label": "fnp.unique",
       "original_target": "unique",
       "role": "",
@@ -297,6 +298,8 @@
   "signature": "fnp.unique_counts(x, /)",
   "slug": "unique_counts",
   "summary": "Find the unique elements and counts of an input array `x`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L468",
   "weight": 1.0
 }

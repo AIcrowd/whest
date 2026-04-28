@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fft-irfftn/",
+  "detail_href": "/docs/api/numpy/fft/irfftn/",
   "detail_json_href": "/api-data/ops/fft-irfftn.json",
   "docs": {
     "sections": [
@@ -925,7 +925,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

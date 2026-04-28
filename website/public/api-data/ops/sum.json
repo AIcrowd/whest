@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/sum/",
+  "detail_href": "/docs/api/numpy/sum/",
   "detail_json_href": "/api-data/ops/sum.json",
   "docs": {
     "sections": [
@@ -200,7 +200,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/sum",
+                        "href": "/docs/api/numpy/sum/",
                         "kind": "link",
                         "target": "sum",
                         "text": "sum"
@@ -464,7 +464,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/add",
+                "href": "/docs/api/numpy/add/",
                 "label": "fnp.add",
                 "original_target": "add",
                 "role": "",
@@ -480,7 +480,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/cumsum",
+                "href": "/docs/api/numpy/cumsum/",
                 "label": "fnp.cumsum",
                 "original_target": "cumsum",
                 "role": "",
@@ -496,7 +496,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/trapezoid",
+                "href": "/docs/api/numpy/trapezoid/",
                 "label": "fnp.trapezoid",
                 "original_target": "trapezoid",
                 "role": "",
@@ -507,7 +507,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
+                "href": "/docs/api/numpy/mean/",
                 "label": "fnp.mean",
                 "original_target": "mean",
                 "role": "",
@@ -518,7 +518,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/average",
+                "href": "/docs/api/numpy/average/",
                 "label": "fnp.average",
                 "original_target": "average",
                 "role": "",
@@ -632,7 +632,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

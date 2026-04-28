@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/asarray/",
+  "detail_href": "/docs/api/numpy/asarray/",
   "detail_json_href": "/api-data/ops/asarray.json",
   "docs": {
     "sections": [
@@ -524,7 +524,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/asarray_chkfinite",
+                "href": "/docs/api/numpy/asarray-chkfinite/",
                 "label": "fnp.asarray_chkfinite",
                 "original_target": "asarray_chkfinite",
                 "role": "",
@@ -540,7 +540,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fromiter",
+                "href": "/docs/api/numpy/fromiter/",
                 "label": "fnp.fromiter",
                 "original_target": "fromiter",
                 "role": "",
@@ -556,7 +556,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fromfunction",
+                "href": "/docs/api/numpy/fromfunction/",
                 "label": "fnp.fromfunction",
                 "original_target": "fromfunction",
                 "role": "",
@@ -590,7 +590,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

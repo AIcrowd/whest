@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-svd/",
+  "detail_href": "/docs/api/numpy/linalg/svd/",
   "detail_json_href": "/api-data/ops/linalg-svd.json",
   "docs": {
     "sections": [
@@ -932,7 +932,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/matmul",
+                "href": "/docs/api/numpy/matmul/",
                 "kind": "link",
                 "target": "matmul",
                 "text": "fnp.matmul"
@@ -987,7 +987,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

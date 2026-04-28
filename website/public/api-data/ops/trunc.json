@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/trunc/",
+  "detail_href": "/docs/api/numpy/trunc/",
   "detail_json_href": "/api-data/ops/trunc.json",
   "docs": {
     "sections": [
@@ -331,7 +331,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/ceil",
+                "href": "/docs/api/numpy/ceil/",
                 "label": "fnp.ceil",
                 "original_target": "ceil",
                 "role": "",
@@ -342,7 +342,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/floor",
+                "href": "/docs/api/numpy/floor/",
                 "label": "fnp.floor",
                 "original_target": "floor",
                 "role": "",
@@ -353,7 +353,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/rint",
+                "href": "/docs/api/numpy/rint/",
                 "label": "fnp.rint",
                 "original_target": "rint",
                 "role": "",
@@ -364,7 +364,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/trunc",
+                "href": "/docs/api/numpy/trunc/",
                 "label": "fnp.trunc",
                 "original_target": "fix",
                 "role": "",
@@ -384,7 +384,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

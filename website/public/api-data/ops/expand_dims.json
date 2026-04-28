@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/expand_dims/",
+  "detail_href": "/docs/api/numpy/expand-dims/",
   "detail_json_href": "/api-data/ops/expand_dims.json",
   "docs": {
     "sections": [
@@ -166,7 +166,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/squeeze",
+                "href": "/docs/api/numpy/squeeze/",
                 "label": "fnp.squeeze",
                 "original_target": "squeeze",
                 "role": "",
@@ -182,7 +182,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/reshape",
+                "href": "/docs/api/numpy/reshape/",
                 "label": "fnp.reshape",
                 "original_target": "reshape",
                 "role": "",
@@ -193,7 +193,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/atleast_1d",
+                "href": "/docs/api/numpy/atleast-1d/",
                 "label": "fnp.atleast_1d",
                 "original_target": "atleast_1d",
                 "role": "",
@@ -204,7 +204,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/atleast_2d",
+                "href": "/docs/api/numpy/atleast-2d/",
                 "label": "fnp.atleast_2d",
                 "original_target": "atleast_2d",
                 "role": "",
@@ -215,7 +215,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/atleast_3d",
+                "href": "/docs/api/numpy/atleast-3d/",
                 "label": "fnp.atleast_3d",
                 "original_target": "atleast_3d",
                 "role": "",
@@ -235,7 +235,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

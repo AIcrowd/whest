@@ -534,7 +534,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/cov",
+                      "href": "/docs/api/numpy/cov/",
                       "kind": "link",
                       "target": "cov",
                       "text": "cov"
@@ -558,7 +558,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/cov",
+                      "href": "/docs/api/numpy/cov/",
                       "kind": "link",
                       "target": "cov",
                       "text": "cov"
@@ -836,11 +836,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.multivariate_normal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-multivariate_normal/",
+  "href": "/docs/api/numpy/random/multivariate-normal/",
   "module": "numpy.random",
   "name": "random.multivariate_normal",
   "next": {
-    "href": "/docs/api/ops/random-negative_binomial/",
+    "href": "/docs/api/numpy/random/negative-binomial/",
     "label": "fnp.random.negative_binomial"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -899,10 +899,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-multinomial/",
+    "href": "/docs/api/numpy/random/multinomial/",
     "label": "fnp.random.multinomial"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.multivariate_normal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.multivariate_normal.html",
   "returns": [
     {
@@ -938,6 +939,8 @@
   "signature": "fnp.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
   "slug": "random-multivariate_normal",
   "summary": "Draw random samples from a multivariate normal distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

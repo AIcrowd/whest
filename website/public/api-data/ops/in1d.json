@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/in1d/",
+  "detail_href": "/docs/api/numpy/in1d/",
   "detail_json_href": "/api-data/ops/in1d.json",
   "docs": {
     "sections": [
@@ -465,7 +465,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isin",
+                "href": "/docs/api/numpy/isin/",
                 "label": "fnp.isin",
                 "original_target": "isin",
                 "role": "",
@@ -484,7 +484,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/in1d",
+                "href": "/docs/api/numpy/in1d/",
                 "kind": "link",
                 "target": "in1d",
                 "text": "in1d"
@@ -606,7 +606,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

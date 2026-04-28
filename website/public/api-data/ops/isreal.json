@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isreal/",
+  "detail_href": "/docs/api/numpy/isreal/",
   "detail_json_href": "/api-data/ops/isreal.json",
   "docs": {
     "sections": [
@@ -121,7 +121,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/iscomplex",
+                "href": "/docs/api/numpy/iscomplex/",
                 "label": "fnp.iscomplex",
                 "original_target": "iscomplex",
                 "role": "",
@@ -137,7 +137,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isrealobj",
+                "href": "/docs/api/numpy/isrealobj/",
                 "label": "fnp.isrealobj",
                 "original_target": "isrealobj",
                 "role": "",
@@ -156,7 +156,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/isreal",
+                "href": "/docs/api/numpy/isreal/",
                 "kind": "link",
                 "target": "isreal",
                 "text": "isreal"
@@ -178,7 +178,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

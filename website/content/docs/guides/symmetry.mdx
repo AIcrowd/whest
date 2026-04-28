@@ -34,6 +34,7 @@ operations; it does not reduce that `einsum`'s own cost by itself.
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=10**6) as budget:
     s2_matrix = flops.as_symmetric(
         fnp.array([[2.0, 1.0], [1.0, 3.0]]),
@@ -61,6 +62,7 @@ set of axes.
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 matrix_data = fnp.array([[2.0, 1.0], [1.0, 3.0]])
 s2_matrix = flops.as_symmetric(matrix_data, symmetric_axes=(0, 1))
 ```
@@ -189,7 +191,7 @@ c3_tensor = fnp.random.symmetric((4, 4, 4), c3_group)
 d4_tensor = fnp.random.symmetric((4, 4, 4, 4), d4_group)
 ```
 
-The propagation examples below assume `import flopscope as we`; generated tensors
+The propagation examples below assume `import flopscope as flops` plus `import flopscope.numpy as fnp`; generated tensors
 above use ``fnp.random.symmetric(...)`` and the explicit transform helper is
 ``flops.symmetrize(...)``.
 

@@ -597,7 +597,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -660,18 +660,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nrng = fnp.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nB = fnp.linalg.pinv(a)\n\nfnp.allclose(a, fnp.dot(a, fnp.dot(B, a)))\n\nfnp.allclose(B, fnp.dot(B, fnp.dot(a, B)))",
+    "code": "import flopscope.numpy as fnp\n\nrng = fnp.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nB = fnp.linalg.pinv(a)\n\nfnp.allclose(a, fnp.dot(a, fnp.dot(B, a)))\n\nfnp.allclose(B, fnp.dot(B, fnp.dot(a, B)))",
     "output": "True\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.pinv",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L189",
-  "href": "/docs/api/ops/linalg-pinv/",
+  "href": "/docs/api/numpy/linalg/pinv/",
   "module": "numpy.linalg",
   "name": "linalg.pinv",
   "next": {
-    "href": "/docs/api/ops/linalg-qr/",
+    "href": "/docs/api/numpy/linalg/qr/",
     "label": "fnp.linalg.qr"
   },
   "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
@@ -721,10 +721,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-outer/",
+    "href": "/docs/api/numpy/linalg/outer/",
     "label": "fnp.linalg.outer"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.pinv",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.pinv.html",
   "returns": [
     {
@@ -773,6 +774,8 @@
   "signature": "fnp.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
   "slug": "linalg-pinv",
   "summary": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2128",
   "weight": 4.0
 }

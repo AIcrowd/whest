@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/cov/",
+  "detail_href": "/docs/api/numpy/cov/",
   "detail_json_href": "/api-data/ops/cov.json",
   "docs": {
     "sections": [
@@ -641,7 +641,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/corrcoef",
+                "href": "/docs/api/numpy/corrcoef/",
                 "label": "fnp.corrcoef",
                 "original_target": "corrcoef",
                 "role": "",
@@ -737,7 +737,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"

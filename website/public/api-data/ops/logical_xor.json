@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/logical_xor/",
+  "detail_href": "/docs/api/numpy/logical-xor/",
   "detail_json_href": "/api-data/ops/logical_xor.json",
   "docs": {
     "sections": [
@@ -365,7 +365,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_and",
+                "href": "/docs/api/numpy/logical-and/",
                 "label": "fnp.logical_and",
                 "original_target": "logical_and",
                 "role": "",
@@ -376,7 +376,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_or",
+                "href": "/docs/api/numpy/logical-or/",
                 "label": "fnp.logical_or",
                 "original_target": "logical_or",
                 "role": "",
@@ -387,7 +387,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_not",
+                "href": "/docs/api/numpy/logical-not/",
                 "label": "fnp.logical_not",
                 "original_target": "logical_not",
                 "role": "",
@@ -398,7 +398,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_xor",
+                "href": "/docs/api/numpy/bitwise-xor/",
                 "label": "fnp.bitwise_xor",
                 "original_target": "bitwise_xor",
                 "role": "",
@@ -418,7 +418,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

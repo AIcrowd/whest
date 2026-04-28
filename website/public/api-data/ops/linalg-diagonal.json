@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-diagonal/",
+  "detail_href": "/docs/api/numpy/linalg/diagonal/",
   "detail_json_href": "/api-data/ops/linalg-diagonal.json",
   "docs": {
     "sections": [
@@ -37,7 +37,7 @@
                 "display_text": "fnp.diagonal",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/diagonal",
+                "href": "/docs/api/numpy/diagonal/",
                 "kind": "role_reference",
                 "original_target": "fnp.diagonal",
                 "role": "py:func",
@@ -172,7 +172,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diagonal",
+                "href": "/docs/api/numpy/diagonal/",
                 "label": "fnp.diagonal",
                 "original_target": "numpy.diagonal",
                 "role": "",
@@ -350,7 +350,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/flipud",
+                "href": "/docs/api/numpy/flipud/",
                 "kind": "link",
                 "target": "flipud",
                 "text": "fnp.flipud"
@@ -361,7 +361,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/fliplr",
+                "href": "/docs/api/numpy/fliplr/",
                 "kind": "link",
                 "target": "fliplr",
                 "text": "fnp.fliplr"

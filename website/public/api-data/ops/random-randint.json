@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-randint/",
+  "detail_href": "/docs/api/numpy/random/randint/",
   "detail_json_href": "/api-data/ops/random-randint.json",
   "docs": {
     "sections": [
@@ -363,7 +363,7 @@
                     "inline": [
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/size",
+                        "href": "/docs/api/numpy/size/",
                         "kind": "link",
                         "target": "size",
                         "text": "size"
@@ -374,7 +374,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/size",
+                        "href": "/docs/api/numpy/size/",
                         "kind": "link",
                         "target": "size",
                         "text": "size"
@@ -391,7 +391,7 @@
                 "inline": [
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/size",
+                    "href": "/docs/api/numpy/size/",
                     "kind": "link",
                     "target": "size",
                     "text": "size"
@@ -402,7 +402,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/size",
+                    "href": "/docs/api/numpy/size/",
                     "kind": "link",
                     "target": "size",
                     "text": "size"

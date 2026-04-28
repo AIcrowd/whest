@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/diag_indices/",
+  "detail_href": "/docs/api/numpy/diag-indices/",
   "detail_json_href": "/api-data/ops/diag_indices.json",
   "docs": {
     "sections": [
@@ -142,7 +142,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diag_indices_from",
+                "href": "/docs/api/numpy/diag-indices-from/",
                 "label": "fnp.diag_indices_from",
                 "original_target": "diag_indices_from",
                 "role": "",
@@ -162,7 +162,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"

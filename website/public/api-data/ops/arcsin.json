@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/arcsin/",
+  "detail_href": "/docs/api/numpy/arcsin/",
   "detail_json_href": "/api-data/ops/arcsin.json",
   "docs": {
     "sections": [
@@ -309,7 +309,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/sin",
+                "href": "/docs/api/numpy/sin/",
                 "label": "fnp.sin",
                 "original_target": "sin",
                 "role": "",
@@ -320,7 +320,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/cos",
+                "href": "/docs/api/numpy/cos/",
                 "label": "fnp.cos",
                 "original_target": "cos",
                 "role": "",
@@ -331,7 +331,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/arccos",
+                "href": "/docs/api/numpy/arccos/",
                 "label": "fnp.arccos",
                 "original_target": "arccos",
                 "role": "",
@@ -342,7 +342,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/tan",
+                "href": "/docs/api/numpy/tan/",
                 "label": "fnp.tan",
                 "original_target": "tan",
                 "role": "",
@@ -353,7 +353,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/arctan",
+                "href": "/docs/api/numpy/arctan/",
                 "label": "fnp.arctan",
                 "original_target": "arctan",
                 "role": "",
@@ -364,7 +364,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/arctan2",
+                "href": "/docs/api/numpy/arctan2/",
                 "label": "fnp.arctan2",
                 "original_target": "arctan2",
                 "role": "",
@@ -394,7 +394,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arcsin",
+                "href": "/docs/api/numpy/arcsin/",
                 "kind": "link",
                 "target": "arcsin",
                 "text": "arcsin"
@@ -479,7 +479,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arcsin",
+                "href": "/docs/api/numpy/arcsin/",
                 "kind": "link",
                 "target": "arcsin",
                 "text": "arcsin"
@@ -499,7 +499,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arcsin",
+                "href": "/docs/api/numpy/arcsin/",
                 "kind": "link",
                 "target": "arcsin",
                 "text": "asin"
@@ -549,7 +549,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

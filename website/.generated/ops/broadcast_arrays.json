@@ -150,7 +150,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/broadcast_to",
+              "href": "/docs/api/numpy/broadcast-to/",
               "label": "fnp.broadcast_to",
               "original_target": "broadcast_to",
               "role": "",
@@ -161,7 +161,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/broadcast_shapes",
+              "href": "/docs/api/numpy/broadcast-shapes/",
               "label": "fnp.broadcast_shapes",
               "original_target": "broadcast_shapes",
               "role": "",
@@ -181,7 +181,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -267,18 +267,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.array([[1,2,3]])\n\ny = fnp.array([[4],[5]])\n\nfnp.broadcast_arrays(x, y)\n\n[fnp.array(a) for a in fnp.broadcast_arrays(x, y)]",
+    "code": "import flopscope.numpy as fnp\n\nx = fnp.array([[1,2,3]])\n\ny = fnp.array([[4],[5]])\n\nfnp.broadcast_arrays(x, y)\n\n[fnp.array(a) for a in fnp.broadcast_arrays(x, y)]",
     "output": "(array([[1, 2, 3],\n        [1, 2, 3]]),\n array([[4, 4, 4],\n        [5, 5, 5]]))\n\n[array([[1, 2, 3],\n        [1, 2, 3]]),\n array([[4, 4, 4],\n        [5, 5, 5]])]",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.broadcast_arrays",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L718",
-  "href": "/docs/api/ops/broadcast_arrays/",
+  "href": "/docs/api/numpy/broadcast-arrays/",
   "module": "numpy",
   "name": "broadcast_arrays",
   "next": {
-    "href": "/docs/api/ops/broadcast_shapes/",
+    "href": "/docs/api/numpy/broadcast-shapes/",
     "label": "fnp.broadcast_shapes"
   },
   "notes": "Broadcast arrays against each other. Cost: numel(output).",
@@ -302,10 +302,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bmat/",
+    "href": "/docs/api/numpy/bmat/",
     "label": "fnp.bmat"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.broadcast_arrays",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.broadcast_arrays.html",
   "returns": [
     {
@@ -342,7 +343,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/broadcast_to",
+      "href": "/docs/api/numpy/broadcast-to/",
       "label": "fnp.broadcast_to",
       "original_target": "broadcast_to",
       "role": "",
@@ -353,7 +354,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/broadcast_shapes",
+      "href": "/docs/api/numpy/broadcast-shapes/",
       "label": "fnp.broadcast_shapes",
       "original_target": "broadcast_shapes",
       "role": "",
@@ -364,6 +365,8 @@
   "signature": "fnp.broadcast_arrays(*args, subok=False)",
   "slug": "broadcast_arrays",
   "summary": "Broadcast any number of arrays against each other.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_stride_tricks_impl.py#L481",
   "weight": 0.0
 }

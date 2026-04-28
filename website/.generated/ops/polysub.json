@@ -215,7 +215,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/polyval",
+              "href": "/docs/api/numpy/polyval/",
               "label": "fnp.polyval",
               "original_target": "polyval",
               "role": "",
@@ -226,7 +226,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/polydiv",
+              "href": "/docs/api/numpy/polydiv/",
               "label": "fnp.polydiv",
               "original_target": "polydiv",
               "role": "",
@@ -237,7 +237,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/polymul",
+              "href": "/docs/api/numpy/polymul/",
               "label": "fnp.polymul",
               "original_target": "polymul",
               "role": "",
@@ -248,7 +248,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/polyadd",
+              "href": "/docs/api/numpy/polyadd/",
               "label": "fnp.polyadd",
               "original_target": "polyadd",
               "role": "",
@@ -274,7 +274,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -315,18 +315,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.polysub([2, 10, -2], [3, 10, -4])",
+    "code": "import flopscope.numpy as fnp\n\nfnp.polysub([2, 10, -2], [3, 10, -4])",
     "output": "array([-1,  0,  2])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.polysub",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L115",
-  "href": "/docs/api/ops/polysub/",
+  "href": "/docs/api/numpy/polysub/",
   "module": "flopscope._polynomial",
   "name": "polysub",
   "next": {
-    "href": "/docs/api/ops/polyval/",
+    "href": "/docs/api/numpy/polyval/",
     "label": "fnp.polyval"
   },
   "notes": "Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs.",
@@ -342,10 +342,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/polymul/",
+    "href": "/docs/api/numpy/polymul/",
     "label": "fnp.polymul"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.polysub",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.polysub.html",
   "returns": [
     {
@@ -361,7 +362,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/polyval",
+      "href": "/docs/api/numpy/polyval/",
       "label": "fnp.polyval",
       "original_target": "polyval",
       "role": "",
@@ -372,7 +373,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/polydiv",
+      "href": "/docs/api/numpy/polydiv/",
       "label": "fnp.polydiv",
       "original_target": "polydiv",
       "role": "",
@@ -383,7 +384,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/polymul",
+      "href": "/docs/api/numpy/polymul/",
       "label": "fnp.polymul",
       "original_target": "polymul",
       "role": "",
@@ -394,7 +395,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/polyadd",
+      "href": "/docs/api/numpy/polyadd/",
       "label": "fnp.polyadd",
       "original_target": "polyadd",
       "role": "",
@@ -405,6 +406,8 @@
   "signature": "fnp.polysub(a1, a2)",
   "slug": "polysub",
   "summary": "Difference (subtraction) of two polynomials.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L855",
   "weight": 1.0
 }

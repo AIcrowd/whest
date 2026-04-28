@@ -782,7 +782,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -913,18 +913,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.mgrid[:3, :3, :3][0]\n\nfnp.fft.fftn(a, axes=(1, 2))\n\nfnp.fft.fftn(a, (2, 2), axes=(0, 1))\n\nimport matplotlib.pyplot as plt\n\n[X, Y] = fnp.meshgrid(2 * fnp.pi * fnp.arange(200) / 12,\n                     2 * fnp.pi * fnp.arange(200) / 34)\n\nS = fnp.sin(X) + fnp.cos(Y) + fnp.random.uniform(0, 1, X.shape)\n\nFS = fnp.fft.fftn(S)\n\nplt.imshow(fnp.log(fnp.abs(fnp.fft.fftshift(FS))**2))\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.mgrid[:3, :3, :3][0]\n\nfnp.fft.fftn(a, axes=(1, 2))\n\nfnp.fft.fftn(a, (2, 2), axes=(0, 1))\n\nimport matplotlib.pyplot as plt\n\n[X, Y] = fnp.meshgrid(2 * fnp.pi * fnp.arange(200) / 12,\n                     2 * fnp.pi * fnp.arange(200) / 34)\n\nS = fnp.sin(X) + fnp.cos(Y) + fnp.random.uniform(0, 1, X.shape)\n\nFS = fnp.fft.fftn(S)\n\nplt.imshow(fnp.log(fnp.abs(fnp.fft.fftshift(FS))**2))\n\nplt.show()",
     "output": "array([[[ 0.+0.j,   0.+0.j,   0.+0.j], # may vary\n        [ 0.+0.j,   0.+0.j,   0.+0.j],\n        [ 0.+0.j,   0.+0.j,   0.+0.j]],\n       [[ 9.+0.j,   0.+0.j,   0.+0.j],\n        [ 0.+0.j,   0.+0.j,   0.+0.j],\n        [ 0.+0.j,   0.+0.j,   0.+0.j]],\n       [[18.+0.j,   0.+0.j,   0.+0.j],\n        [ 0.+0.j,   0.+0.j,   0.+0.j],\n        [ 0.+0.j,   0.+0.j,   0.+0.j]]])\n\narray([[[ 2.+0.j,  2.+0.j,  2.+0.j], # may vary\n        [ 0.+0.j,  0.+0.j,  0.+0.j]],\n       [[-2.+0.j, -2.+0.j, -2.+0.j],\n        [ 0.+0.j,  0.+0.j,  0.+0.j]]])\n\n<matplotlib.image.AxesImage object at 0x...>",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.fftn",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L337",
-  "href": "/docs/api/ops/fft-fftn/",
+  "href": "/docs/api/numpy/fft/fftn/",
   "module": "numpy.fft",
   "name": "fft.fftn",
   "next": {
-    "href": "/docs/api/ops/fft-fftshift/",
+    "href": "/docs/api/numpy/fft/fftshift/",
     "label": "fnp.fft.fftshift"
   },
   "notes": "N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
@@ -1011,10 +1011,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-fftfreq/",
+    "href": "/docs/api/numpy/fft/fftfreq/",
     "label": "fnp.fft.fftfreq"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.fftn",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.fftn.html",
   "returns": [
     {
@@ -1152,6 +1153,8 @@
   "signature": "fnp.fft.fftn(a, s=None, axes=None, norm=None, out=None)",
   "slug": "fft-fftn",
   "summary": "Compute the N-dimensional discrete Fourier Transform.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L749",
   "weight": 1.0
 }

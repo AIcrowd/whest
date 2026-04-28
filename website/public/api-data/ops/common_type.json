@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/common_type/",
+  "detail_href": "/docs/api/numpy/common-type/",
   "detail_json_href": "/api-data/ops/common_type.json",
   "docs": {
     "sections": [
@@ -125,7 +125,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mintypecode",
+                "href": "/docs/api/numpy/mintypecode/",
                 "label": "fnp.mintypecode",
                 "original_target": "mintypecode",
                 "role": "",

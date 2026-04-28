@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/cumsum/",
+  "detail_href": "/docs/api/numpy/cumsum/",
   "detail_json_href": "/api-data/ops/cumsum.json",
   "docs": {
     "sections": [
@@ -338,7 +338,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/cumsum",
+                    "href": "/docs/api/numpy/cumsum/",
                     "kind": "link",
                     "target": "cumsum",
                     "text": "cumsum"
@@ -349,7 +349,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/cumulative_sum",
+                "href": "/docs/api/numpy/cumulative-sum/",
                 "label": "fnp.cumulative_sum",
                 "original_target": "cumulative_sum",
                 "role": "",
@@ -365,7 +365,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "label": "fnp.sum",
                 "original_target": "sum",
                 "role": "",
@@ -381,7 +381,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/trapezoid",
+                "href": "/docs/api/numpy/trapezoid/",
                 "label": "fnp.trapezoid",
                 "original_target": "trapezoid",
                 "role": "",
@@ -397,7 +397,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/diff",
+                "href": "/docs/api/numpy/diff/",
                 "label": "fnp.diff",
                 "original_target": "diff",
                 "role": "",
@@ -441,7 +441,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "kind": "link",
                 "target": "sum",
                 "text": "sum"
@@ -452,7 +452,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "kind": "link",
                 "target": "sum",
                 "text": "sum"
@@ -474,7 +474,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

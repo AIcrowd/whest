@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nanmax/",
+  "detail_href": "/docs/api/numpy/nanmax/",
   "detail_json_href": "/api-data/ops/nanmax.json",
   "docs": {
     "sections": [
@@ -185,7 +185,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/max",
+                        "href": "/docs/api/numpy/max/",
                         "kind": "link",
                         "target": "max",
                         "text": "max"
@@ -238,7 +238,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/max",
+                    "href": "/docs/api/numpy/max/",
                     "kind": "link",
                     "target": "max",
                     "text": "max"
@@ -476,7 +476,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmin",
+                "href": "/docs/api/numpy/nanmin/",
                 "label": "fnp.nanmin",
                 "original_target": "nanmin",
                 "role": "",
@@ -492,7 +492,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/max",
+                "href": "/docs/api/numpy/max/",
                 "label": "fnp.max",
                 "original_target": "amax",
                 "role": "",
@@ -508,7 +508,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fmax",
+                "href": "/docs/api/numpy/fmax/",
                 "label": "fnp.fmax",
                 "original_target": "fmax",
                 "role": "",
@@ -524,7 +524,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/maximum",
+                "href": "/docs/api/numpy/maximum/",
                 "label": "fnp.maximum",
                 "original_target": "maximum",
                 "role": "",
@@ -540,7 +540,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
+                "href": "/docs/api/numpy/isnan/",
                 "label": "fnp.isnan",
                 "original_target": "isnan",
                 "role": "",
@@ -556,7 +556,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isfinite",
+                "href": "/docs/api/numpy/isfinite/",
                 "label": "fnp.isfinite",
                 "original_target": "isfinite",
                 "role": "",
@@ -567,7 +567,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/min",
+                "href": "/docs/api/numpy/min/",
                 "label": "fnp.min",
                 "original_target": "amin",
                 "role": "",
@@ -578,7 +578,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/fmin",
+                "href": "/docs/api/numpy/fmin/",
                 "label": "fnp.fmin",
                 "original_target": "fmin",
                 "role": "",
@@ -589,7 +589,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/minimum",
+                "href": "/docs/api/numpy/minimum/",
                 "label": "fnp.minimum",
                 "original_target": "minimum",
                 "role": "",
@@ -632,7 +632,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

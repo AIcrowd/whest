@@ -1,8 +1,8 @@
 /**
  * Python code generator for the symmetry explorer.
  *
- * Produces a runnable snippet that uses the `flopscope` library (imported as `we`)
- * to construct tensors with the requested symmetries and call `we.einsum_path`.
+ * Produces a runnable snippet that uses `flopscope` / `flopscope.numpy`
+ * to construct tensors with the requested symmetries and call `fnp.einsum_path`.
  */
 
 // ---------------------------------------------------------------------------
@@ -17,7 +17,7 @@
  * Generators are separated by commas that are *outside* parentheses.
  *
  * A single generator like `(0 1)(2 3)` becomes:
- *   "we.Permutation(we.Cycle(0, 1)(2, 3))"
+ *   "flops.Permutation(flops.Cycle(0, 1)(2, 3))"
  */
 function parseGensForPython(input) {
   if (!input || !input.trim()) return [];
@@ -40,22 +40,22 @@ function parseGensForPython(input) {
 
   return generators.map((gen) => {
     // gen looks like "(0 1)(2 3)" — possibly multiple cycles chained.
-    // Convert each (a b c) into we.Cycle(a, b, c), then chain with ().
+    // Convert each (a b c) into flops.Cycle(a, b, c), then chain with ().
     const cycles = [];
     const cycleRe = /\(([^)]+)\)/g;
     let m;
     while ((m = cycleRe.exec(gen)) !== null) {
       const elements = m[1].trim().split(/\s+/).join(', ');
-      cycles.push(`we.Cycle(${elements})`);
+      cycles.push(`flops.Cycle(${elements})`);
     }
     if (cycles.length === 0) return null;
-    // Chain cycles: we.Cycle(0, 1)(2, 3)
+    // Chain cycles: flops.Cycle(0, 1)(2, 3)
     const chained = cycles[0] + cycles.slice(1).map((c) => {
-      // Extract the args portion from "we.Cycle(args)"
-      const inner = c.slice('we.Cycle'.length);
+      // Extract the args portion from "flops.Cycle(args)"
+      const inner = c.slice('flops.Cycle'.length);
       return inner; // already "(a, b)"
     }).join('');
-    return `we.Permutation(${chained})`;
+    return `flops.Permutation(${chained})`;
   }).filter(Boolean);
 }
 
@@ -69,14 +69,14 @@ function buildGroupExpr(variable) {
 
   switch (symmetry) {
     case 'symmetric':
-      return `we.PermutationGroup.symmetric(${k}, axes=${axesTuple})`;
+      return `flops.PermutationGroup.symmetric(${k}, axes=${axesTuple})`;
     case 'cyclic':
-      return `we.PermutationGroup.cyclic(${k}, axes=${axesTuple})`;
+      return `flops.PermutationGroup.cyclic(${k}, axes=${axesTuple})`;
     case 'dihedral':
-      return `we.PermutationGroup.dihedral(${k}, axes=${axesTuple})`;
+      return `flops.PermutationGroup.dihedral(${k}, axes=${axesTuple})`;
     case 'custom': {
       const gens = parseGensForPython(generators || '');
-      return `we.PermutationGroup(${gens.join(', ')}, axes=${axesTuple})`;
+      return `flops.PermutationGroup(${gens.join(', ')}, axes=${axesTuple})`;
     }
     default:
       return null;
@@ -103,28 +103,28 @@ function buildGroupLines(variable) {
   switch (symmetry) {
     case 'symmetric':
       return [
-        'we.PermutationGroup.symmetric(',
+        'flops.PermutationGroup.symmetric(',
         `    ${k},`,
         `    axes=${axesTuple},`,
         ')',
       ];
     case 'cyclic':
       return [
-        'we.PermutationGroup.cyclic(',
+        'flops.PermutationGroup.cyclic(',
         `    ${k},`,
         `    axes=${axesTuple},`,
         ')',
       ];
     case 'dihedral':
       return [
-        'we.PermutationGroup.dihedral(',
+        'flops.PermutationGroup.dihedral(',
         `    ${k},`,
         `    axes=${axesTuple},`,
         ')',
       ];
     case 'custom': {
       const gens = parseGensForPython(generators || '');
-      const lines = ['we.PermutationGroup('];
+      const lines = ['flops.PermutationGroup('];
       for (const gen of gens) {
         lines.push(`    ${gen},`);
       }
@@ -155,7 +155,8 @@ export function generatePython(variables, subscripts, output, operandNames, dime
   const lines = [];
 
   // --- Import ---------------------------------------------------------------
-  lines.push('import flopscope as we');
+  lines.push('import flopscope as flops');
+  lines.push('import flopscope.numpy as fnp');
   lines.push('');
 
   // --- Dimension ------------------------------------------------------------
@@ -172,9 +173,9 @@ export function generatePython(variables, subscripts, output, operandNames, dime
 
     const shape = shapeExpr(v.rank);
     if (v.symmetry === 'none') {
-      lines.push(`${v.name} = we.random.randn(${new Array(v.rank).fill('n').join(', ')})`);
+      lines.push(`${v.name} = fnp.random.randn(${new Array(v.rank).fill('n').join(', ')})`);
     } else {
-      lines.push(`${v.name} = we.random.symmetric(`);
+      lines.push(`${v.name} = fnp.random.symmetric(`);
       lines.push(`    ${shape},`);
       lines.push(...indentLines(buildGroupLines(v)));
       lines.push(')');
@@ -187,7 +188,7 @@ export function generatePython(variables, subscripts, output, operandNames, dime
   lines.push('# --- Expression ---');
   const names = operandNames.split(',').map((s) => s.trim()).join(', ');
   const einsumStr = `'${subscripts}->${output}'`;
-  lines.push('path, info = we.einsum_path(');
+  lines.push('path, info = fnp.einsum_path(');
   lines.push(`    ${einsumStr},`);
   lines.push(`    ${names},`);
   lines.push(')');

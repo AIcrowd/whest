@@ -768,7 +768,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/mean",
+              "href": "/docs/api/numpy/mean/",
               "label": "fnp.mean",
               "original_target": "mean",
               "role": "",
@@ -784,7 +784,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/percentile",
+              "href": "/docs/api/numpy/percentile/",
               "label": "fnp.percentile",
               "original_target": "percentile",
               "role": "",
@@ -804,7 +804,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/median",
+              "href": "/docs/api/numpy/median/",
               "label": "fnp.median",
               "original_target": "median",
               "role": "",
@@ -815,7 +815,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanquantile",
+              "href": "/docs/api/numpy/nanquantile/",
               "label": "fnp.nanquantile",
               "original_target": "nanquantile",
               "role": "",
@@ -846,7 +846,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/quantile",
+              "href": "/docs/api/numpy/quantile/",
               "kind": "link",
               "target": "quantile",
               "text": "quantile"
@@ -1239,7 +1239,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/quantile",
+              "href": "/docs/api/numpy/quantile/",
               "kind": "link",
               "target": "quantile",
               "text": "quantile"
@@ -1444,7 +1444,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/quantile",
+              "href": "/docs/api/numpy/quantile/",
               "kind": "link",
               "target": "quantile",
               "text": "quantile"
@@ -1574,7 +1574,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -1692,7 +1692,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/percentile",
+              "href": "/docs/api/numpy/percentile/",
               "kind": "link",
               "target": "percentile",
               "text": "fnp.percentile"
@@ -1738,18 +1738,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[10, 7, 4], [3, 2, 1]])\n\na\n\nfnp.quantile(a, 0.5)\n\nfnp.quantile(a, 0.5, axis=0)\n\nfnp.quantile(a, 0.5, axis=1)\n\nfnp.quantile(a, 0.5, axis=1, keepdims=True)\n\nm = fnp.quantile(a, 0.5, axis=0)\n\nout = fnp.zeros_like(m)\n\nfnp.quantile(a, 0.5, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nfnp.quantile(b, 0.5, axis=1, overwrite_input=True)\n\nassert not fnp.all(a == b)",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array([[10, 7, 4], [3, 2, 1]])\n\na\n\nfnp.quantile(a, 0.5)\n\nfnp.quantile(a, 0.5, axis=0)\n\nfnp.quantile(a, 0.5, axis=1)\n\nfnp.quantile(a, 0.5, axis=1, keepdims=True)\n\nm = fnp.quantile(a, 0.5, axis=0)\n\nout = fnp.zeros_like(m)\n\nfnp.quantile(a, 0.5, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nfnp.quantile(b, 0.5, axis=1, overwrite_input=True)\n\nassert not fnp.all(a == b)",
     "output": "array([[10,  7,  4],\n       [ 3,  2,  1]])\n\n3.5\n\narray([6.5, 4.5, 2.5])\n\narray([7.,  2.])\n\narray([[7.],\n       [2.]])\n\narray([6.5, 4.5, 2.5])\n\narray([6.5, 4.5, 2.5])\n\narray([7.,  2.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.quantile",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
-  "href": "/docs/api/ops/quantile/",
+  "href": "/docs/api/numpy/quantile/",
   "module": "numpy",
   "name": "quantile",
   "next": {
-    "href": "/docs/api/ops/radians/",
+    "href": "/docs/api/numpy/radians/",
     "label": "fnp.radians"
   },
   "notes": "q-th quantile of array elements.",
@@ -1887,10 +1887,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/putmask/",
+    "href": "/docs/api/numpy/putmask/",
     "label": "fnp.putmask"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.quantile",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.quantile.html",
   "returns": [
     {
@@ -1913,7 +1914,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/mean",
+      "href": "/docs/api/numpy/mean/",
       "label": "fnp.mean",
       "original_target": "mean",
       "role": "",
@@ -1929,7 +1930,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/percentile",
+      "href": "/docs/api/numpy/percentile/",
       "label": "fnp.percentile",
       "original_target": "percentile",
       "role": "",
@@ -1949,7 +1950,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/median",
+      "href": "/docs/api/numpy/median/",
       "label": "fnp.median",
       "original_target": "median",
       "role": "",
@@ -1960,7 +1961,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanquantile",
+      "href": "/docs/api/numpy/nanquantile/",
       "label": "fnp.nanquantile",
       "original_target": "nanquantile",
       "role": "",
@@ -1971,6 +1972,8 @@
   "signature": "fnp.quantile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
   "slug": "quantile",
   "summary": "Compute the q-th quantile of the data along the specified axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L4283",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/conj/",
+  "detail_href": "/docs/api/numpy/conj/",
   "detail_json_href": "/api-data/ops/conj.json",
   "docs": {
     "sections": [
@@ -313,7 +313,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/conj",
+                "href": "/docs/api/numpy/conj/",
                 "kind": "link",
                 "target": "conj",
                 "text": "conj"
@@ -324,7 +324,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/conjugate",
+                "href": "/docs/api/numpy/conjugate/",
                 "kind": "link",
                 "target": "conjugate",
                 "text": "conjugate"
@@ -360,7 +360,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

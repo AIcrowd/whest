@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/union1d/",
+  "detail_href": "/docs/api/numpy/union1d/",
   "detail_json_href": "/api-data/ops/union1d.json",
   "docs": {
     "sections": [
@@ -104,7 +104,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

@@ -148,7 +148,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/reshape",
+              "href": "/docs/api/numpy/reshape/",
               "label": "fnp.reshape",
               "original_target": "numpy.reshape",
               "role": "",
@@ -164,7 +164,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/pad",
+              "href": "/docs/api/numpy/pad/",
               "label": "fnp.pad",
               "original_target": "numpy.pad",
               "role": "",
@@ -180,7 +180,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/repeat",
+              "href": "/docs/api/numpy/repeat/",
               "label": "fnp.repeat",
               "original_target": "numpy.repeat",
               "role": "",
@@ -219,7 +219,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/reshape",
+              "href": "/docs/api/numpy/reshape/",
               "kind": "link",
               "target": "reshape",
               "text": "reshape"
@@ -266,7 +266,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -333,18 +333,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[0,1],[2,3]])\n\nfnp.resize(a,(2,3))\n\nfnp.resize(a,(1,4))\n\nfnp.resize(a,(2,4))",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array([[0,1],[2,3]])\n\nfnp.resize(a,(2,3))\n\nfnp.resize(a,(1,4))\n\nfnp.resize(a,(2,4))",
     "output": "array([[0, 1, 2],\n       [3, 0, 1]])\n\narray([[0, 1, 2, 3]])\n\narray([[0, 1, 2, 3],\n       [0, 1, 2, 3]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.resize",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1321",
-  "href": "/docs/api/ops/resize/",
+  "href": "/docs/api/numpy/resize/",
   "module": "numpy",
   "name": "resize",
   "next": {
-    "href": "/docs/api/ops/result_type/",
+    "href": "/docs/api/numpy/result-type/",
     "label": "fnp.result_type"
   },
   "notes": "Return new array with given shape by repeating. Cost: numel(output).",
@@ -370,10 +370,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/reshape/",
+    "href": "/docs/api/numpy/reshape/",
     "label": "fnp.reshape"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.resize",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.resize.html",
   "returns": [
     {
@@ -396,7 +397,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/reshape",
+      "href": "/docs/api/numpy/reshape/",
       "label": "fnp.reshape",
       "original_target": "numpy.reshape",
       "role": "",
@@ -412,7 +413,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/pad",
+      "href": "/docs/api/numpy/pad/",
       "label": "fnp.pad",
       "original_target": "numpy.pad",
       "role": "",
@@ -428,7 +429,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/repeat",
+      "href": "/docs/api/numpy/repeat/",
       "label": "fnp.repeat",
       "original_target": "numpy.repeat",
       "role": "",
@@ -455,6 +456,8 @@
   "signature": "fnp.resize(a, new_shape)",
   "slug": "resize",
   "summary": "Return a new array with the specified shape.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1534",
   "weight": 1.0
 }

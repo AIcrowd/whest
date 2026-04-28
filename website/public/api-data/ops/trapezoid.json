@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/trapezoid/",
+  "detail_href": "/docs/api/numpy/trapezoid/",
   "detail_json_href": "/api-data/ops/trapezoid.json",
   "docs": {
     "sections": [
@@ -366,7 +366,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "label": "fnp.sum",
                 "original_target": "sum",
                 "role": "",
@@ -377,7 +377,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/cumsum",
+                "href": "/docs/api/numpy/cumsum/",
                 "label": "fnp.cumsum",
                 "original_target": "cumsum",
                 "role": "",
@@ -458,7 +458,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -646,7 +646,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/trapezoid",
+                "href": "/docs/api/numpy/trapezoid/",
                 "kind": "link",
                 "target": "trapezoid",
                 "text": "fnp.trapezoid"

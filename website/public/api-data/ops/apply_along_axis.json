@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/apply_along_axis/",
+  "detail_href": "/docs/api/numpy/apply-along-axis/",
   "detail_json_href": "/api-data/ops/apply_along_axis.json",
   "docs": {
     "sections": [
@@ -482,7 +482,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/apply_over_axes",
+                "href": "/docs/api/numpy/apply-over-axes/",
                 "label": "fnp.apply_over_axes",
                 "original_target": "apply_over_axes",
                 "role": "",
@@ -502,7 +502,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

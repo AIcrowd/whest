@@ -160,7 +160,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -198,18 +198,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.iterable([1, 2, 3])\n\nfnp.iterable(2)",
+    "code": "import flopscope.numpy as fnp\n\nfnp.iterable([1, 2, 3])\n\nfnp.iterable(2)",
     "output": "True\n\nFalse",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.iterable",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1121",
-  "href": "/docs/api/ops/iterable/",
+  "href": "/docs/api/numpy/iterable/",
   "module": "numpy",
   "name": "iterable",
   "next": {
-    "href": "/docs/api/ops/ix_/",
+    "href": "/docs/api/numpy/ix-/",
     "label": "fnp.ix_"
   },
   "notes": "Return True if object is iterable.",
@@ -228,10 +228,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/issubdtype/",
+    "href": "/docs/api/numpy/issubdtype/",
     "label": "fnp.issubdtype"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.iterable",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iterable.html",
   "returns": [
     {
@@ -247,6 +248,8 @@
   "signature": "fnp.iterable(y)",
   "slug": "iterable",
   "summary": "Check whether or not an object can be iterated over.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L339",
   "weight": 0.0
 }

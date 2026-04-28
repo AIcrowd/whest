@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/modf/",
+  "detail_href": "/docs/api/numpy/modf/",
   "detail_json_href": "/api-data/ops/modf.json",
   "docs": {
     "sections": [
@@ -362,7 +362,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/modf",
+                    "href": "/docs/api/numpy/modf/",
                     "kind": "link",
                     "target": "modf",
                     "text": "modf"
@@ -373,7 +373,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/floor_divide",
+                "href": "/docs/api/numpy/floor-divide/",
                 "label": "fnp.floor_divide",
                 "original_target": "divmod",
                 "role": "",
@@ -407,7 +407,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

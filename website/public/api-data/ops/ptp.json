@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/ptp/",
+  "detail_href": "/docs/api/numpy/ptp/",
   "detail_json_href": "/api-data/ops/ptp.json",
   "docs": {
     "sections": [
@@ -35,7 +35,7 @@
                 "inline": [
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/ptp",
+                    "href": "/docs/api/numpy/ptp/",
                     "kind": "link",
                     "target": "ptp",
                     "text": "ptp"
@@ -200,7 +200,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/ptp",
+                        "href": "/docs/api/numpy/ptp/",
                         "kind": "link",
                         "target": "ptp",
                         "text": "ptp"
@@ -302,7 +302,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

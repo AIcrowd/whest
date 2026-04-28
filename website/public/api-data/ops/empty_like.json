@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/empty_like/",
+  "detail_href": "/docs/api/numpy/empty-like/",
   "detail_json_href": "/api-data/ops/empty_like.json",
   "docs": {
     "sections": [
@@ -312,7 +312,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ones_like",
+                "href": "/docs/api/numpy/ones-like/",
                 "label": "fnp.ones_like",
                 "original_target": "ones_like",
                 "role": "",
@@ -328,7 +328,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/zeros_like",
+                "href": "/docs/api/numpy/zeros-like/",
                 "label": "fnp.zeros_like",
                 "original_target": "zeros_like",
                 "role": "",
@@ -344,7 +344,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/full_like",
+                "href": "/docs/api/numpy/full-like/",
                 "label": "fnp.full_like",
                 "original_target": "full_like",
                 "role": "",
@@ -360,7 +360,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/empty",
+                "href": "/docs/api/numpy/empty/",
                 "label": "fnp.empty",
                 "original_target": "empty",
                 "role": "",
@@ -383,7 +383,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/zeros_like",
+                "href": "/docs/api/numpy/zeros-like/",
                 "kind": "link",
                 "target": "zeros_like",
                 "text": "zeros_like"
@@ -394,7 +394,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/ones_like",
+                "href": "/docs/api/numpy/ones-like/",
                 "kind": "link",
                 "target": "ones_like",
                 "text": "ones_like"
@@ -405,7 +405,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/full_like",
+                "href": "/docs/api/numpy/full-like/",
                 "kind": "link",
                 "target": "full_like",
                 "text": "full_like"
@@ -416,7 +416,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/empty_like",
+                "href": "/docs/api/numpy/empty-like/",
                 "kind": "link",
                 "target": "empty_like",
                 "text": "empty_like"
@@ -438,7 +438,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

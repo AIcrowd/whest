@@ -341,7 +341,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/ravel",
+              "href": "/docs/api/numpy/ravel/",
               "kind": "link",
               "target": "ravel",
               "text": "ravel"
@@ -368,7 +368,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/reshape",
+              "href": "/docs/api/numpy/reshape/",
               "kind": "link",
               "target": "reshape",
               "text": "reshape"
@@ -407,7 +407,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -621,18 +621,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.array([[1, 2, 3], [4, 5, 6]])\n\nfnp.ravel(x)\n\nx.reshape(-1)\n\nfnp.ravel(x, order='F')\n\nfnp.ravel(x.T)\n\nfnp.ravel(x.T, order='A')\n\na = fnp.arange(3)[::-1]; a\n\na.ravel(order='C')\n\na.ravel(order='K')\n\na = fnp.arange(12).reshape(2,3,2).swapaxes(1,2); a\n\na.ravel(order='C')\n\na.ravel(order='K')",
+    "code": "import flopscope.numpy as fnp\n\nx = fnp.array([[1, 2, 3], [4, 5, 6]])\n\nfnp.ravel(x)\n\nx.reshape(-1)\n\nfnp.ravel(x, order='F')\n\nfnp.ravel(x.T)\n\nfnp.ravel(x.T, order='A')\n\na = fnp.arange(3)[::-1]; a\n\na.ravel(order='C')\n\na.ravel(order='K')\n\na = fnp.arange(12).reshape(2,3,2).swapaxes(1,2); a\n\na.ravel(order='C')\n\na.ravel(order='K')",
     "output": "array([1, 2, 3, 4, 5, 6])\n\narray([1, 2, 3, 4, 5, 6])\n\narray([1, 4, 2, 5, 3, 6])\n\narray([1, 4, 2, 5, 3, 6])\n\narray([1, 2, 3, 4, 5, 6])\n\narray([2, 1, 0])\n\narray([2, 1, 0])\n\narray([2, 1, 0])\n\narray([[[ 0,  2,  4],\n        [ 1,  3,  5]],\n       [[ 6,  8, 10],\n        [ 7,  9, 11]]])\n\narray([ 0,  2,  4,  1,  3,  5,  6,  8, 10,  7,  9, 11])\n\narray([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.ravel",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L336",
-  "href": "/docs/api/ops/ravel/",
+  "href": "/docs/api/numpy/ravel/",
   "module": "numpy",
   "name": "ravel",
   "next": {
-    "href": "/docs/api/ops/ravel_multi_index/",
+    "href": "/docs/api/numpy/ravel-multi-index/",
     "label": "fnp.ravel_multi_index"
   },
   "notes": "Return contiguous flattened array. Cost: numel(input).",
@@ -672,10 +672,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-zipf/",
+    "href": "/docs/api/numpy/random/zipf/",
     "label": "fnp.random.zipf"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.ravel",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ravel.html",
   "returns": [
     {
@@ -742,6 +743,8 @@
   "signature": "fnp.ravel(a, order='C')",
   "slug": "ravel",
   "summary": "Return a contiguous flattened array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1904",
   "weight": 0.0
 }

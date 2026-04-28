@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/poly/",
+  "detail_href": "/docs/api/numpy/poly/",
   "detail_json_href": "/api-data/ops/poly.json",
   "docs": {
     "sections": [
@@ -202,7 +202,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/polyval",
+                "href": "/docs/api/numpy/polyval/",
                 "label": "fnp.polyval",
                 "original_target": "polyval",
                 "role": "",
@@ -218,7 +218,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/roots",
+                "href": "/docs/api/numpy/roots/",
                 "label": "fnp.roots",
                 "original_target": "roots",
                 "role": "",
@@ -234,7 +234,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/polyfit",
+                "href": "/docs/api/numpy/polyfit/",
                 "label": "fnp.polyfit",
                 "original_target": "polyfit",
                 "role": "",
@@ -281,7 +281,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/polyfit",
+                "href": "/docs/api/numpy/polyfit/",
                 "kind": "link",
                 "target": "polyfit",
                 "text": "polyfit"
@@ -418,7 +418,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"

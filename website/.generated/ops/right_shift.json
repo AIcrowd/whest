@@ -414,7 +414,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/left_shift",
+              "href": "/docs/api/numpy/left-shift/",
               "label": "fnp.left_shift",
               "original_target": "left_shift",
               "role": "",
@@ -429,8 +429,8 @@
                   "text": "Return the binary representation of the input number as a string."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.binary_repr.html",
-              "href": "",
+              "external_url": "",
+              "href": "/docs/api/numpy/binary-repr/",
               "label": "binary_repr",
               "original_target": "binary_repr",
               "role": "",
@@ -450,7 +450,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -512,7 +512,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/right_shift",
+              "href": "/docs/api/numpy/right-shift/",
               "kind": "link",
               "target": "right_shift",
               "text": "fnp.right_shift"
@@ -570,18 +570,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.binary_repr(10)\n\nfnp.right_shift(10, 1)\n\nfnp.binary_repr(5)\n\nfnp.right_shift(10, [1,2,3])\n\nx1 = 10\n\nx2 = fnp.array([1,2,3])\n\nx1 >> x2",
+    "code": "import flopscope.numpy as fnp\n\nfnp.binary_repr(10)\n\nfnp.right_shift(10, 1)\n\nfnp.binary_repr(5)\n\nfnp.right_shift(10, [1,2,3])\n\nx1 = 10\n\nx2 = fnp.array([1,2,3])\n\nx1 >> x2",
     "output": "'1010'\n\n5\n\n'101'\n\narray([5, 2, 1])\n\narray([5, 2, 1])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.right_shift",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
-  "href": "/docs/api/ops/right_shift/",
+  "href": "/docs/api/numpy/right-shift/",
   "module": "numpy",
   "name": "right_shift",
   "next": {
-    "href": "/docs/api/ops/rint/",
+    "href": "/docs/api/numpy/rint/",
     "label": "fnp.rint"
   },
   "notes": "Element-wise right bit shift (legacy name).",
@@ -636,10 +636,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/result_type/",
+    "href": "/docs/api/numpy/result-type/",
     "label": "fnp.result_type"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.right_shift",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.right_shift.html",
   "returns": [
     {
@@ -661,7 +662,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/left_shift",
+      "href": "/docs/api/numpy/left-shift/",
       "label": "fnp.left_shift",
       "original_target": "left_shift",
       "role": "",
@@ -676,8 +677,8 @@
           "text": "Return the binary representation of the input number as a string."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.binary_repr.html",
-      "href": "",
+      "external_url": "",
+      "href": "/docs/api/numpy/binary-repr/",
       "label": "binary_repr",
       "original_target": "binary_repr",
       "role": "",
@@ -688,6 +689,8 @@
   "signature": "fnp.right_shift(x, y)",
   "slug": "right_shift",
   "summary": "Shift the bits of an integer to the right.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

@@ -29,7 +29,7 @@ All cost formulae reflect this: a matrix multiply of dimensions
 
 flopscope computes FLOP costs **analytically from tensor shapes**, not by measuring execution time.
 
-1. You call a counted operation (e.g., `we.einsum('ij,j->i', W, x)`)
+1. You call a counted operation (e.g., `fnp.einsum('ij,j->i', W, x)`)
 2. flopscope computes the cost from the shapes: 256 × 256 = 65,536 FLOPs
 3. The cost is checked against the remaining budget
 4. If within budget: the operation executes and the cost is deducted
@@ -101,7 +101,7 @@ Symmetry that reduces einsum costs comes from two complementary sources,
 both unified under the **subgraph symmetry detection** algorithm:
 
 1. **Declared per-operand symmetry.** When an operand is wrapped with
-   `we.as_symmetric()`, its symmetry groups are embedded in the bipartite
+   `flops.as_symmetric()`, its symmetry groups are embedded in the bipartite
    graph as U-vertex equivalence classes. These propagate into intermediate
    tensors automatically.
 
@@ -180,7 +180,7 @@ earlier step and no longer appear in the current step, the inner
 reduction is skipped (the per-step table shows this as `[W: ...]` when
 detected-but-not-applied versus `[W✓: ...]` when applied). Inner
 symmetry can be toggled globally with
-`we.configure(use_inner_symmetry=False)`.
+`flops.configure(use_inner_symmetry=False)`.
 
 The two factors are independent; outer-product contractions (no summed
 indices) and non-uniform index dimensions are handled by the same
@@ -201,7 +201,7 @@ through intermediates — if an early contraction produces a symmetric
 intermediate, subsequent steps benefit from the reduced element count, and
 the optimizer factors this into its ordering decisions.
 
-Use `we.einsum_path()` to inspect the per-step breakdown. See
+Use `fnp.einsum_path()` to inspect the per-step breakdown. See
 [Use Einsum](/docs/guides/einsum/) for examples.
 
 ## Per-operation weights
@@ -325,7 +325,9 @@ The `benchmarks/` package in this repository automates both methods. See
 The `flop_multiplier` parameter in `BudgetContext` scales all costs:
 
 ```python
-with we.BudgetContext(flop_budget=10**6, flop_multiplier=2.0) as budget:
+import flopscope as flops
+
+with flops.BudgetContext(flop_budget=10**6, flop_multiplier=2.0) as budget:
     # Every operation costs 2× its normal FLOP count
     ...
 ```
@@ -337,23 +339,26 @@ weights scale each operation individually.
 
 ## Namespaces
 
-Use `we.namespace(...)` to create nested namespace scopes inside an active `BudgetContext`. The `namespace` parameter on `BudgetContext` sets the root namespace prefix for operations in that context:
+Use `flops.namespace(...)` to create nested namespace scopes inside an active `BudgetContext`. The `namespace` parameter on `BudgetContext` sets the root namespace prefix for operations in that context:
 
 ```python
-with we.BudgetContext(flop_budget=10**6, namespace="predict") as budget:
-    with we.namespace("precompute"):
-        stats = we.mean(x)
+import flopscope as flops
+import flopscope.numpy as fnp
 
-    with we.namespace("fallback"):
-        with we.namespace("sampling"):
-            sample = we.add(stats, 1)
+with flops.BudgetContext(flop_budget=10**6, namespace="predict") as budget:
+    with flops.namespace("precompute"):
+        stats = fnp.mean(x)
+
+    with flops.namespace("fallback"):
+        with flops.namespace("sampling"):
+            sample = fnp.add(stats, 1)
 
     print(budget.summary(by_namespace=True))
 ```
 
-Namespaces are hierarchical and exact per operation. `we.namespace("precompute")` inside `namespace="predict"` records operations as `predict.precompute`, and nested scopes append dotted segments such as `predict.fallback.sampling`.
+Namespaces are hierarchical and exact per operation. `flops.namespace("precompute")` inside `namespace="predict"` records operations as `predict.precompute`, and nested scopes append dotted segments such as `predict.fallback.sampling`.
 
-Namespaces do not create child budgets or separate time limits. They only change attribution. `budget.summary()` and `we.budget_summary()` stay flat by default; `budget.summary(by_namespace=True)` and `we.budget_summary(by_namespace=True)` opt into a `By namespace` section. The structured forms, `budget.summary_dict(by_namespace=True)` and `we.budget_summary_dict(by_namespace=True)`, return the same exact buckets keyed by the full namespace path or `None` for unlabeled operations.
+Namespaces do not create child budgets or separate time limits. They only change attribution. `budget.summary()` and `flops.budget_summary()` stay flat by default; `budget.summary(by_namespace=True)` and `flops.budget_summary(by_namespace=True)` opt into a `By namespace` section. The structured forms, `budget.summary_dict(by_namespace=True)` and `flops.budget_summary_dict(by_namespace=True)`, return the same exact buckets keyed by the full namespace path or `None` for unlabeled operations.
 
 ```python
 data = budget.summary_dict(by_namespace=True)

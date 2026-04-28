@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/promote_types/",
+  "detail_href": "/docs/api/numpy/promote-types/",
   "detail_json_href": "/api-data/ops/promote_types.json",
   "docs": {
     "sections": [
@@ -143,7 +143,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/result_type",
+                "href": "/docs/api/numpy/result-type/",
                 "label": "fnp.result_type",
                 "original_target": "result_type",
                 "role": "",
@@ -165,7 +165,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/can_cast",
+                "href": "/docs/api/numpy/can-cast/",
                 "label": "fnp.can_cast",
                 "original_target": "can_cast",
                 "role": "",
@@ -188,7 +188,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/result_type",
+                "href": "/docs/api/numpy/result-type/",
                 "kind": "link",
                 "target": "result_type",
                 "text": "fnp.result_type"
@@ -238,7 +238,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

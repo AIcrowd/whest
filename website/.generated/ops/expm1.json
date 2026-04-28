@@ -302,7 +302,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/log1p",
+              "href": "/docs/api/numpy/log1p/",
               "label": "fnp.log1p",
               "original_target": "log1p",
               "role": "",
@@ -377,7 +377,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -427,18 +427,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.expm1(1e-10)\n\nfnp.exp(1e-10) - 1",
+    "code": "import flopscope.numpy as fnp\n\nfnp.expm1(1e-10)\n\nfnp.exp(1e-10) - 1",
     "output": "1.00000000005e-10\n\n1.000000082740371e-10",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.expm1",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/expm1/",
+  "href": "/docs/api/numpy/expm1/",
   "module": "numpy",
   "name": "expm1",
   "next": {
-    "href": "/docs/api/ops/extract/",
+    "href": "/docs/api/numpy/extract/",
     "label": "fnp.extract"
   },
   "notes": "Element-wise e^x - 1 (accurate near zero).",
@@ -486,10 +486,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/expand_dims/",
+    "href": "/docs/api/numpy/expand-dims/",
     "label": "fnp.expand_dims"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.expm1",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.expm1.html",
   "returns": [
     {
@@ -515,7 +516,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/log1p",
+      "href": "/docs/api/numpy/log1p/",
       "label": "fnp.log1p",
       "original_target": "log1p",
       "role": "",
@@ -526,6 +527,8 @@
   "signature": "fnp.expm1(x)",
   "slug": "expm1",
   "summary": "Calculate ``exp(x) - 1`` for all elements in the array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

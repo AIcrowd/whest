@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nancumsum/",
+  "detail_href": "/docs/api/numpy/nancumsum/",
   "detail_json_href": "/api-data/ops/nancumsum.json",
   "docs": {
     "sections": [
@@ -336,7 +336,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/cumsum",
+                "href": "/docs/api/numpy/cumsum/",
                 "label": "fnp.cumsum",
                 "original_target": "numpy.cumsum",
                 "role": "",
@@ -352,7 +352,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
+                "href": "/docs/api/numpy/isnan/",
                 "label": "fnp.isnan",
                 "original_target": "isnan",
                 "role": "",
@@ -372,7 +372,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

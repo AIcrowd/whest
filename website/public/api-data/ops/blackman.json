@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/blackman/",
+  "detail_href": "/docs/api/numpy/blackman/",
   "detail_json_href": "/api-data/ops/blackman.json",
   "docs": {
     "sections": [
@@ -105,7 +105,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bartlett",
+                "href": "/docs/api/numpy/bartlett/",
                 "label": "fnp.bartlett",
                 "original_target": "bartlett",
                 "role": "",
@@ -116,7 +116,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hamming",
+                "href": "/docs/api/numpy/hamming/",
                 "label": "fnp.hamming",
                 "original_target": "hamming",
                 "role": "",
@@ -127,7 +127,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hanning",
+                "href": "/docs/api/numpy/hanning/",
                 "label": "fnp.hanning",
                 "original_target": "hanning",
                 "role": "",
@@ -138,7 +138,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/kaiser",
+                "href": "/docs/api/numpy/kaiser/",
                 "label": "fnp.kaiser",
                 "original_target": "kaiser",
                 "role": "",
@@ -210,7 +210,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

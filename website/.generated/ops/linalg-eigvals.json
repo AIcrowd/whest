@@ -326,7 +326,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -433,18 +433,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfrom numpy import linalg as LA\n\nx = fnp.random.random()\n\nQ = fnp.array([[fnp.cos(x), -fnp.sin(x)], [fnp.sin(x), fnp.cos(x)]])\n\nLA.norm(Q[0, :]), LA.norm(Q[1, :]), fnp.dot(Q[0, :],Q[1, :])\n\nD = fnp.diag((-1,1))\n\nLA.eigvals(D)\n\nA = fnp.dot(Q, D)\n\nA = fnp.dot(A, Q.T)\n\nLA.eigvals(A)",
+    "code": "import flopscope.numpy as fnp\n\nfrom numpy import linalg as LA\n\nx = fnp.random.random()\n\nQ = fnp.array([[fnp.cos(x), -fnp.sin(x)], [fnp.sin(x), fnp.cos(x)]])\n\nLA.norm(Q[0, :]), LA.norm(Q[1, :]), fnp.dot(Q[0, :],Q[1, :])\n\nD = fnp.diag((-1,1))\n\nLA.eigvals(D)\n\nA = fnp.dot(Q, D)\n\nA = fnp.dot(A, Q.T)\n\nLA.eigvals(A)",
     "output": "(1.0, 1.0, 0.0)\n\narray([-1.,  1.])\n\narray([ 1., -1.]) # random",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.eigvals",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L192",
-  "href": "/docs/api/ops/linalg-eigvals/",
+  "href": "/docs/api/numpy/linalg/eigvals/",
   "module": "numpy.linalg",
   "name": "linalg.eigvals",
   "next": {
-    "href": "/docs/api/ops/linalg-eigvalsh/",
+    "href": "/docs/api/numpy/linalg/eigvalsh/",
     "label": "fnp.linalg.eigvalsh"
   },
   "notes": "Eigenvalues only. Cost: $n^3$.",
@@ -463,10 +463,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-eigh/",
+    "href": "/docs/api/numpy/linalg/eigh/",
     "label": "fnp.linalg.eigh"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.eigvals",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eigvals.html",
   "returns": [
     {
@@ -548,6 +549,8 @@
   "signature": "fnp.linalg.eigvals(a)",
   "slug": "linalg-eigvals",
   "summary": "Compute the eigenvalues of a general matrix.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1133",
   "weight": 4.0
 }

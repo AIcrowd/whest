@@ -392,7 +392,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -447,18 +447,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.heaviside([-1.5, 0, 2.0], 0.5)\n\nfnp.heaviside([-1.5, 0, 2.0], 1)",
+    "code": "import flopscope.numpy as fnp\n\nfnp.heaviside([-1.5, 0, 2.0], 0.5)\n\nfnp.heaviside([-1.5, 0, 2.0], 1)",
     "output": "array([ 0. ,  0.5,  1. ])\n\narray([ 0.,  1.,  1.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.heaviside",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
-  "href": "/docs/api/ops/heaviside/",
+  "href": "/docs/api/numpy/heaviside/",
   "module": "numpy",
   "name": "heaviside",
   "next": {
-    "href": "/docs/api/ops/histogram/",
+    "href": "/docs/api/numpy/histogram/",
     "label": "fnp.histogram"
   },
   "notes": "Heaviside step function element-wise.",
@@ -513,10 +513,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/hanning/",
+    "href": "/docs/api/numpy/hanning/",
     "label": "fnp.hanning"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.heaviside",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.heaviside.html",
   "returns": [
     {
@@ -532,6 +533,8 @@
   "signature": "fnp.heaviside(x, y)",
   "slug": "heaviside",
   "summary": "Compute the Heaviside step function.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

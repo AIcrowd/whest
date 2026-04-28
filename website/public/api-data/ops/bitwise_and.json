@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/bitwise_and/",
+  "detail_href": "/docs/api/numpy/bitwise-and/",
   "detail_json_href": "/api-data/ops/bitwise_and.json",
   "docs": {
     "sections": [
@@ -323,7 +323,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_and",
+                "href": "/docs/api/numpy/logical-and/",
                 "label": "fnp.logical_and",
                 "original_target": "logical_and",
                 "role": "",
@@ -334,7 +334,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_or",
+                "href": "/docs/api/numpy/bitwise-or/",
                 "label": "fnp.bitwise_or",
                 "original_target": "bitwise_or",
                 "role": "",
@@ -345,7 +345,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_xor",
+                "href": "/docs/api/numpy/bitwise-xor/",
                 "label": "fnp.bitwise_xor",
                 "original_target": "bitwise_xor",
                 "role": "",
@@ -360,8 +360,8 @@
                     "text": "Return the binary representation of the input number as a string."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.binary_repr.html",
-                "href": "",
+                "external_url": "",
+                "href": "/docs/api/numpy/binary-repr/",
                 "label": "binary_repr",
                 "original_target": "binary_repr",
                 "role": "",
@@ -381,7 +381,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -513,7 +513,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_and",
+                "href": "/docs/api/numpy/bitwise-and/",
                 "kind": "link",
                 "target": "bitwise_and",
                 "text": "fnp.bitwise_and"

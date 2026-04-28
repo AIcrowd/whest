@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/flatnonzero/",
+  "detail_href": "/docs/api/numpy/flatnonzero/",
   "detail_json_href": "/api-data/ops/flatnonzero.json",
   "docs": {
     "sections": [
@@ -134,7 +134,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/nonzero",
+                "href": "/docs/api/numpy/nonzero/",
                 "label": "fnp.nonzero",
                 "original_target": "nonzero",
                 "role": "",
@@ -150,7 +150,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ravel",
+                "href": "/docs/api/numpy/ravel/",
                 "label": "fnp.ravel",
                 "original_target": "ravel",
                 "role": "",
@@ -170,7 +170,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

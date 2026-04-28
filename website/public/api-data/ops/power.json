@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/power/",
+  "detail_href": "/docs/api/numpy/power/",
   "detail_json_href": "/api-data/ops/power.json",
   "docs": {
     "sections": [
@@ -456,7 +456,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/float_power",
+                "href": "/docs/api/numpy/float-power/",
                 "label": "fnp.float_power",
                 "original_target": "float_power",
                 "role": "",
@@ -476,7 +476,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -607,7 +607,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/power",
+                "href": "/docs/api/numpy/power/",
                 "kind": "link",
                 "target": "power",
                 "text": "fnp.power"

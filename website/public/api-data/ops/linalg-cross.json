@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-cross/",
+  "detail_href": "/docs/api/numpy/linalg/cross/",
   "detail_json_href": "/api-data/ops/linalg-cross.json",
   "docs": {
     "sections": [
@@ -54,7 +54,7 @@
                 "display_text": "fnp.cross",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/cross",
+                "href": "/docs/api/numpy/cross/",
                 "kind": "role_reference",
                 "original_target": "fnp.cross",
                 "role": "func",
@@ -270,7 +270,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/cross",
+                "href": "/docs/api/numpy/cross/",
                 "label": "fnp.cross",
                 "original_target": "numpy.cross",
                 "role": "",
@@ -407,7 +407,7 @@
     "flopscope_ref": "fnp.linalg.cross",
     "module": "numpy.linalg",
     "name": "linalg.cross",
-    "notes": "Delegates to `we.cross` which charges `numel(output)` FLOPs.",
+    "notes": "Delegates to `fnp.cross` which charges `numel(output)` FLOPs.",
     "numpy_ref": "np.linalg.cross",
     "signature": "fnp.linalg.cross(x1, x2, /, *, axis=-1)",
     "status": "supported",

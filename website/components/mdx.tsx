@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
 import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import ApiReference from './api-reference';
+import ApiNamespaceHub from './api-reference/ApiNamespaceHub';
+import NamespaceInventory from './api-reference/NamespaceInventory';
+import OperationCostIndex from './api-reference/OperationCostIndex';
 import SortableTable from './shared/SortableTable';
 import Mermaid from './mermaid';
 import StaticFileLink from './static-file-link';
@@ -44,6 +47,9 @@ export function getMDXComponents(components?: MDXComponents) {
     ...defaultMdxComponents,
     pre: DocsPre,
     ApiReference,
+    ApiNamespaceHub,
+    NamespaceInventory,
+    OperationCostIndex,
     Callout,
     SymmetryExplorer: SymmetryExplorerStandaloneHandoff,
     SortableTable,

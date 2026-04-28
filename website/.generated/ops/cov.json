@@ -641,7 +641,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/corrcoef",
+              "href": "/docs/api/numpy/corrcoef/",
               "label": "fnp.corrcoef",
               "original_target": "corrcoef",
               "role": "",
@@ -737,7 +737,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -961,18 +961,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.array([[0, 2], [1, 1], [2, 0]]).T\n\nx\n\nfnp.cov(x)\n\nx = [-2.1, -1,  4.3]\n\ny = [3,  1.1,  0.12]\n\nX = fnp.stack((x, y), axis=0)\n\nfnp.cov(X)\n\nfnp.cov(x, y)\n\nfnp.cov(x)",
+    "code": "import flopscope.numpy as fnp\n\nx = fnp.array([[0, 2], [1, 1], [2, 0]]).T\n\nx\n\nfnp.cov(x)\n\nx = [-2.1, -1,  4.3]\n\ny = [3,  1.1,  0.12]\n\nX = fnp.stack((x, y), axis=0)\n\nfnp.cov(X)\n\nfnp.cov(x, y)\n\nfnp.cov(x)",
     "output": "array([[0, 1, 2],\n       [2, 1, 0]])\n\narray([[ 1., -1.],\n       [-1.,  1.]])\n\narray([[11.71      , -4.286     ], # may vary\n       [-4.286     ,  2.144133]])\n\narray([[11.71      , -4.286     ], # may vary\n       [-4.286     ,  2.144133]])\n\narray(11.71)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.cov",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1143",
-  "href": "/docs/api/ops/cov/",
+  "href": "/docs/api/numpy/cov/",
   "module": "numpy",
   "name": "cov",
   "next": {
-    "href": "/docs/api/ops/cross/",
+    "href": "/docs/api/numpy/cross/",
     "label": "fnp.cross"
   },
   "notes": "Covariance matrix.",
@@ -1061,10 +1061,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/count_nonzero/",
+    "href": "/docs/api/numpy/count-nonzero/",
     "label": "fnp.count_nonzero"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.cov",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cov.html",
   "returns": [
     {
@@ -1085,7 +1086,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/corrcoef",
+      "href": "/docs/api/numpy/corrcoef/",
       "label": "fnp.corrcoef",
       "original_target": "corrcoef",
       "role": "",
@@ -1096,6 +1097,8 @@
   "signature": "fnp.cov(m, y=None, rowvar=True, bias=False, ddof=None, fweights=None, aweights=None, *, dtype=None)",
   "slug": "cov",
   "summary": "Estimate a covariance matrix, given data and weights.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L2680",
   "weight": 1.0
 }

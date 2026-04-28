@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-det/",
+  "detail_href": "/docs/api/numpy/linalg/det/",
   "detail_json_href": "/api-data/ops/linalg-det.json",
   "docs": {
     "sections": [
@@ -199,7 +199,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

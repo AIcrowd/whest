@@ -520,11 +520,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.logistic",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-logistic/",
+  "href": "/docs/api/numpy/random/logistic/",
   "module": "numpy.random",
   "name": "random.logistic",
   "next": {
-    "href": "/docs/api/ops/random-lognormal/",
+    "href": "/docs/api/numpy/random/lognormal/",
     "label": "fnp.random.lognormal"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -563,10 +563,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-laplace/",
+    "href": "/docs/api/numpy/random/laplace/",
     "label": "fnp.random.laplace"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.logistic",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.logistic.html",
   "returns": [
     {
@@ -614,6 +615,8 @@
   "signature": "fnp.random.logistic(loc=0.0, scale=1.0, size=None)",
   "slug": "random-logistic",
   "summary": "Draw samples from a logistic distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

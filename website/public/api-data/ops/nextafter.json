@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nextafter/",
+  "detail_href": "/docs/api/numpy/nextafter/",
   "detail_json_href": "/api-data/ops/nextafter.json",
   "docs": {
     "sections": [
@@ -370,7 +370,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/arange/",
+  "detail_href": "/docs/api/numpy/arange/",
   "detail_json_href": "/api-data/ops/arange.json",
   "docs": {
     "sections": [
@@ -23,7 +23,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "kind": "link",
                 "target": "arange",
                 "text": "arange"
@@ -181,7 +181,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "kind": "link",
                 "target": "linspace",
                 "text": "fnp.linspace"
@@ -623,7 +623,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "label": "fnp.linspace",
                 "original_target": "numpy.linspace",
                 "role": "",
@@ -698,7 +698,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "kind": "link",
                 "target": "arange",
                 "text": "fnp.arange"
@@ -755,7 +755,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "kind": "link",
                 "target": "linspace",
                 "text": "fnp.linspace"
@@ -799,7 +799,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "kind": "link",
                 "target": "arange",
                 "text": "fnp.arange"
@@ -858,7 +858,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

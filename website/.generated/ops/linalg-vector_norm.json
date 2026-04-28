@@ -191,7 +191,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/linalg-norm",
+                      "href": "/docs/api/numpy/linalg/norm/",
                       "kind": "link",
                       "target": "linalg.norm",
                       "text": "fnp.linalg.norm"
@@ -220,7 +220,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/linalg-norm",
+                  "href": "/docs/api/numpy/linalg/norm/",
                   "kind": "link",
                   "target": "linalg.norm",
                   "text": "fnp.linalg.norm"
@@ -253,7 +253,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/linalg-norm",
+              "href": "/docs/api/numpy/linalg/norm/",
               "label": "fnp.linalg.norm",
               "original_target": "numpy.linalg.norm",
               "role": "",
@@ -418,11 +418,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.vector_norm",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L251",
-  "href": "/docs/api/ops/linalg-vector_norm/",
+  "href": "/docs/api/numpy/linalg/vector-norm/",
   "module": "numpy.linalg",
   "name": "linalg.vector_norm",
   "next": {
-    "href": "/docs/api/ops/linspace/",
+    "href": "/docs/api/numpy/linspace/",
     "label": "fnp.linspace"
   },
   "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm).",
@@ -466,10 +466,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-vecdot/",
+    "href": "/docs/api/numpy/linalg/vecdot/",
     "label": "fnp.linalg.vecdot"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.vector_norm",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.vector_norm.html",
   "returns": [],
   "see_also": [
@@ -482,7 +483,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/linalg-norm",
+      "href": "/docs/api/numpy/linalg/norm/",
       "label": "fnp.linalg.norm",
       "original_target": "numpy.linalg.norm",
       "role": "",
@@ -493,6 +494,8 @@
   "signature": "fnp.linalg.vector_norm(x, ord=2, axis=None, keepdims=False)",
   "slug": "linalg-vector_norm",
   "summary": "Computes the vector norm of a vector (or batch of vectors) ``x``.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3481",
   "weight": 1.0
 }

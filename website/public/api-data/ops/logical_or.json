@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/logical_or/",
+  "detail_href": "/docs/api/numpy/logical-or/",
   "detail_json_href": "/api-data/ops/logical_or.json",
   "docs": {
     "sections": [
@@ -365,7 +365,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_and",
+                "href": "/docs/api/numpy/logical-and/",
                 "label": "fnp.logical_and",
                 "original_target": "logical_and",
                 "role": "",
@@ -376,7 +376,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_not",
+                "href": "/docs/api/numpy/logical-not/",
                 "label": "fnp.logical_not",
                 "original_target": "logical_not",
                 "role": "",
@@ -387,7 +387,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_xor",
+                "href": "/docs/api/numpy/logical-xor/",
                 "label": "fnp.logical_xor",
                 "original_target": "logical_xor",
                 "role": "",
@@ -398,7 +398,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_or",
+                "href": "/docs/api/numpy/bitwise-or/",
                 "label": "fnp.bitwise_or",
                 "original_target": "bitwise_or",
                 "role": "",
@@ -418,7 +418,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -476,7 +476,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/logical_or",
+                "href": "/docs/api/numpy/logical-or/",
                 "kind": "link",
                 "target": "logical_or",
                 "text": "fnp.logical_or"

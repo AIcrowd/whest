@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/asarray_chkfinite/",
+  "detail_href": "/docs/api/numpy/asarray-chkfinite/",
   "detail_json_href": "/api-data/ops/asarray_chkfinite.json",
   "docs": {
     "sections": [
@@ -237,7 +237,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/asarray",
+                "href": "/docs/api/numpy/asarray/",
                 "label": "fnp.asarray",
                 "original_target": "asarray",
                 "role": "",
@@ -301,7 +301,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fromiter",
+                "href": "/docs/api/numpy/fromiter/",
                 "label": "fnp.fromiter",
                 "original_target": "fromiter",
                 "role": "",
@@ -317,7 +317,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fromfunction",
+                "href": "/docs/api/numpy/fromfunction/",
                 "label": "fnp.fromfunction",
                 "original_target": "fromfunction",
                 "role": "",
@@ -337,7 +337,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -350,7 +350,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/asarray_chkfinite",
+                "href": "/docs/api/numpy/asarray-chkfinite/",
                 "kind": "link",
                 "target": "asarray_chkfinite",
                 "text": "asarray_chkfinite"
@@ -361,7 +361,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/asarray",
+                "href": "/docs/api/numpy/asarray/",
                 "kind": "link",
                 "target": "asarray",
                 "text": "asarray"

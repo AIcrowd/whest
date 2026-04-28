@@ -312,7 +312,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -404,18 +404,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.cos(fnp.array([0, fnp.pi/2, fnp.pi]))\n\nout1 = fnp.array([0], dtype='d')\n\nout2 = fnp.cos([0.1], out1)\n\nout2 is out1\n\nfnp.cos(fnp.zeros((3,3)),fnp.zeros((2,2)))",
+    "code": "import flopscope.numpy as fnp\n\nfnp.cos(fnp.array([0, fnp.pi/2, fnp.pi]))\n\nout1 = fnp.array([0], dtype='d')\n\nout2 = fnp.cos([0.1], out1)\n\nout2 is out1\n\nfnp.cos(fnp.zeros((3,3)),fnp.zeros((2,2)))",
     "output": "array([  1.00000000e+00,   6.12303177e-17,  -1.00000000e+00])\n\nTrue\n\nTraceback (most recent call last):\n  File \"<stdin>\", line 1, in <module>\nValueError: operands could not be broadcast together with shapes (3,3) (2,2)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.cos",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/cos/",
+  "href": "/docs/api/numpy/cos/",
   "module": "numpy",
   "name": "cos",
   "next": {
-    "href": "/docs/api/ops/cosh/",
+    "href": "/docs/api/numpy/cosh/",
     "label": "fnp.cosh"
   },
   "notes": "Element-wise cosine.",
@@ -463,10 +463,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/correlate/",
+    "href": "/docs/api/numpy/correlate/",
     "label": "fnp.correlate"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.cos",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cos.html",
   "returns": [
     {
@@ -482,6 +483,8 @@
   "signature": "fnp.cos(x)",
   "slug": "cos",
   "summary": "Cosine element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

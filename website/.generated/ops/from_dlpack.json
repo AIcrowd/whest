@@ -363,11 +363,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.from_dlpack",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L964",
-  "href": "/docs/api/ops/from_dlpack/",
+  "href": "/docs/api/numpy/from-dlpack/",
   "module": "numpy",
   "name": "from_dlpack",
   "next": {
-    "href": "/docs/api/ops/frombuffer/",
+    "href": "/docs/api/numpy/frombuffer/",
     "label": "fnp.frombuffer"
   },
   "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output).",
@@ -406,10 +406,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/frexp/",
+    "href": "/docs/api/numpy/frexp/",
     "label": "fnp.frexp"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.from_dlpack",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.from_dlpack.html",
   "returns": [
     {
@@ -422,6 +423,8 @@
   "signature": "fnp.from_dlpack(*args, **kwargs)",
   "slug": "from_dlpack",
   "summary": "Create a NumPy array from an object implementing the ``__dlpack__`` protocol. Generally, the returned NumPy array is a view of the input object. See [1]_ and [2]_ for more details.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

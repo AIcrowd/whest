@@ -523,7 +523,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -646,18 +646,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nA = fnp.array([[1,-2j],[2j,5]])\n\nA\n\nL = fnp.linalg.cholesky(A)\n\nL\n\nfnp.dot(L, L.T.conj()) # verify that L * L.H = A\n\nA = [[1,-2j],[2j,5]] # what happens if A is only array_like?\n\nfnp.linalg.cholesky(A) # an ndarray object is returned\n\nfnp.linalg.cholesky(fnp.matrix(A))\n\nfnp.linalg.cholesky(A, upper=True)",
+    "code": "import flopscope.numpy as fnp\n\nA = fnp.array([[1,-2j],[2j,5]])\n\nA\n\nL = fnp.linalg.cholesky(A)\n\nL\n\nfnp.dot(L, L.T.conj()) # verify that L * L.H = A\n\nA = [[1,-2j],[2j,5]] # what happens if A is only array_like?\n\nfnp.linalg.cholesky(A) # an ndarray object is returned\n\nfnp.linalg.cholesky(fnp.matrix(A))\n\nfnp.linalg.cholesky(A, upper=True)",
     "output": "array([[ 1.+0.j, -0.-2.j],\n       [ 0.+2.j,  5.+0.j]])\n\narray([[1.+0.j, 0.+0.j],\n       [0.+2.j, 1.+0.j]])\n\narray([[1.+0.j, 0.-2.j],\n       [0.+2.j, 5.+0.j]])\n\narray([[1.+0.j, 0.+0.j],\n       [0.+2.j, 1.+0.j]])\n\nmatrix([[ 1.+0.j,  0.+0.j],\n        [ 0.+2.j,  1.+0.j]])\n\narray([[1.-0.j, 0.-2.j],\n       [0.-0.j, 1.-0.j]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.cholesky",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L38",
-  "href": "/docs/api/ops/linalg-cholesky/",
+  "href": "/docs/api/numpy/linalg/cholesky/",
   "module": "numpy.linalg",
   "name": "linalg.cholesky",
   "next": {
-    "href": "/docs/api/ops/linalg-cond/",
+    "href": "/docs/api/numpy/linalg/cond/",
     "label": "fnp.linalg.cond"
   },
   "notes": "Cholesky decomposition. Cost: $n^3$.",
@@ -692,10 +692,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/lexsort/",
+    "href": "/docs/api/numpy/lexsort/",
     "label": "fnp.lexsort"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.cholesky",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.cholesky.html",
   "returns": [
     {
@@ -771,6 +772,8 @@
   "signature": "fnp.linalg.cholesky(a, /, *, upper=False)",
   "slug": "linalg-cholesky",
   "summary": "Cholesky decomposition.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L740",
   "weight": 4.0
 }

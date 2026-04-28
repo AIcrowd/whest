@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/tril/",
+  "detail_href": "/docs/api/numpy/tril/",
   "detail_json_href": "/api-data/ops/tril.json",
   "docs": {
     "sections": [
@@ -35,7 +35,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/ndim",
+                "href": "/docs/api/numpy/ndim/",
                 "kind": "link",
                 "target": "ndim",
                 "text": "ndim"
@@ -46,7 +46,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/tril",
+                "href": "/docs/api/numpy/tril/",
                 "kind": "link",
                 "target": "tril",
                 "text": "tril"
@@ -242,7 +242,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/triu",
+                "href": "/docs/api/numpy/triu/",
                 "label": "fnp.triu",
                 "original_target": "triu",
                 "role": "",
@@ -262,7 +262,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

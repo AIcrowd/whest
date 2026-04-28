@@ -340,11 +340,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.set_state",
   "flopscope_source_url": "",
-  "href": "/docs/api/ops/random-set_state/",
+  "href": "/docs/api/numpy/random/set-state/",
   "module": "numpy.random",
   "name": "random.set_state",
   "next": {
-    "href": "/docs/api/ops/random-shuffle/",
+    "href": "/docs/api/numpy/random/shuffle/",
     "label": "fnp.random.shuffle"
   },
   "notes": "Set internal state of generator.",
@@ -372,10 +372,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-seed/",
+    "href": "/docs/api/numpy/random/seed/",
     "label": "fnp.random.seed"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.set_state",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.set_state.html",
   "returns": [
     {
@@ -402,6 +403,8 @@
   "signature": "fnp.random.set_state(state)",
   "slug": "random-set_state",
   "summary": "Set the internal state of the generator from a tuple.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

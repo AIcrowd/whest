@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/append/",
+  "detail_href": "/docs/api/numpy/append/",
   "detail_json_href": "/api-data/ops/append.json",
   "docs": {
     "sections": [
@@ -276,7 +276,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/append",
+                        "href": "/docs/api/numpy/append/",
                         "kind": "link",
                         "target": "append",
                         "text": "append"
@@ -337,7 +337,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/append",
+                    "href": "/docs/api/numpy/append/",
                     "kind": "link",
                     "target": "append",
                     "text": "append"
@@ -386,7 +386,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/insert",
+                "href": "/docs/api/numpy/insert/",
                 "label": "fnp.insert",
                 "original_target": "insert",
                 "role": "",
@@ -402,7 +402,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/delete",
+                "href": "/docs/api/numpy/delete/",
                 "label": "fnp.delete",
                 "original_target": "delete",
                 "role": "",
@@ -422,7 +422,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

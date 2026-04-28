@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/sqrt/",
+  "detail_href": "/docs/api/numpy/sqrt/",
   "detail_json_href": "/api-data/ops/sqrt.json",
   "docs": {
     "sections": [
@@ -448,7 +448,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

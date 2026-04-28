@@ -370,7 +370,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -420,18 +420,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\neps = fnp.finfo(fnp.float64).eps\n\nfnp.nextafter(1, 2) == eps + 1\n\nfnp.nextafter([1, 2], [2, 1]) == [eps + 1, 2 - eps]",
+    "code": "import flopscope.numpy as fnp\n\neps = fnp.finfo(fnp.float64).eps\n\nfnp.nextafter(1, 2) == eps + 1\n\nfnp.nextafter([1, 2], [2, 1]) == [eps + 1, 2 - eps]",
     "output": "True\n\narray([ True,  True])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.nextafter",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
-  "href": "/docs/api/ops/nextafter/",
+  "href": "/docs/api/numpy/nextafter/",
   "module": "numpy",
   "name": "nextafter",
   "next": {
-    "href": "/docs/api/ops/nonzero/",
+    "href": "/docs/api/numpy/nonzero/",
     "label": "fnp.nonzero"
   },
   "notes": "Return next float after x1 toward x2 element-wise.",
@@ -486,10 +486,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/negative/",
+    "href": "/docs/api/numpy/negative/",
     "label": "fnp.negative"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nextafter",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nextafter.html",
   "returns": [
     {
@@ -505,6 +506,8 @@
   "signature": "fnp.nextafter(x, y)",
   "slug": "nextafter",
   "summary": "Return the next floating-point value after x1 towards x2, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

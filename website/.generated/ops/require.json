@@ -302,7 +302,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/asarray",
+              "href": "/docs/api/numpy/asarray/",
               "label": "fnp.asarray",
               "original_target": "asarray",
               "role": "",
@@ -400,7 +400,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -500,18 +500,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.arange(6).reshape(2,3)\n\nx.flags\n\ny = fnp.require(x, dtype=fnp.float32, requirements=['A', 'O', 'W', 'F'])\n\ny.flags",
+    "code": "import flopscope.numpy as fnp\n\nx = fnp.arange(6).reshape(2,3)\n\nx.flags\n\ny = fnp.require(x, dtype=fnp.float32, requirements=['A', 'O', 'W', 'F'])\n\ny.flags",
     "output": "C_CONTIGUOUS : True\n  F_CONTIGUOUS : False\n  OWNDATA : False\n  WRITEABLE : True\n  ALIGNED : True\n  WRITEBACKIFCOPY : False\n\nC_CONTIGUOUS : False\n  F_CONTIGUOUS : True\n  OWNDATA : True\n  WRITEABLE : True\n  ALIGNED : True\n  WRITEBACKIFCOPY : False",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.require",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1313",
-  "href": "/docs/api/ops/require/",
+  "href": "/docs/api/numpy/require/",
   "module": "numpy",
   "name": "require",
   "next": {
-    "href": "/docs/api/ops/reshape/",
+    "href": "/docs/api/numpy/reshape/",
     "label": "fnp.reshape"
   },
   "notes": "Return array that satisfies requirements.",
@@ -565,10 +565,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/repeat/",
+    "href": "/docs/api/numpy/repeat/",
     "label": "fnp.repeat"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.require",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.require.html",
   "returns": [
     {
@@ -589,7 +590,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/asarray",
+      "href": "/docs/api/numpy/asarray/",
       "label": "fnp.asarray",
       "original_target": "asarray",
       "role": "",
@@ -664,6 +665,8 @@
   "signature": "fnp.require(a, dtype=None, requirements=None, *, like=None)",
   "slug": "require",
   "summary": "Return an ndarray of the provided type that satisfies requirements.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/_asarray.py#L27",
   "weight": 0.0
 }

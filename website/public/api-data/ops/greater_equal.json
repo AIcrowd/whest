@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/greater_equal/",
+  "detail_href": "/docs/api/numpy/greater-equal/",
   "detail_json_href": "/api-data/ops/greater_equal.json",
   "docs": {
     "sections": [
@@ -349,7 +349,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/greater",
+                "href": "/docs/api/numpy/greater/",
                 "label": "fnp.greater",
                 "original_target": "greater",
                 "role": "",
@@ -360,7 +360,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/less",
+                "href": "/docs/api/numpy/less/",
                 "label": "fnp.less",
                 "original_target": "less",
                 "role": "",
@@ -371,7 +371,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/less_equal",
+                "href": "/docs/api/numpy/less-equal/",
                 "label": "fnp.less_equal",
                 "original_target": "less_equal",
                 "role": "",
@@ -382,7 +382,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/equal",
+                "href": "/docs/api/numpy/equal/",
                 "label": "fnp.equal",
                 "original_target": "equal",
                 "role": "",
@@ -393,7 +393,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/not_equal",
+                "href": "/docs/api/numpy/not-equal/",
                 "label": "fnp.not_equal",
                 "original_target": "not_equal",
                 "role": "",
@@ -413,7 +413,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -443,7 +443,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/greater_equal",
+                "href": "/docs/api/numpy/greater-equal/",
                 "kind": "link",
                 "target": "greater_equal",
                 "text": "fnp.greater_equal"

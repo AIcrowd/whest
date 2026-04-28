@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/clip/",
+  "detail_href": "/docs/api/numpy/clip/",
   "detail_json_href": "/api-data/ops/clip.json",
   "docs": {
     "sections": [
@@ -281,7 +281,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/min",
+                        "href": "/docs/api/numpy/min/",
                         "kind": "link",
                         "target": "min",
                         "text": "min"
@@ -292,7 +292,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/max",
+                        "href": "/docs/api/numpy/max/",
                         "kind": "link",
                         "target": "max",
                         "text": "max"
@@ -363,7 +363,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/min",
+                    "href": "/docs/api/numpy/min/",
                     "kind": "link",
                     "target": "min",
                     "text": "min"
@@ -374,7 +374,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/max",
+                    "href": "/docs/api/numpy/max/",
                     "kind": "link",
                     "target": "max",
                     "text": "max"
@@ -616,7 +616,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/clip",
+                "href": "/docs/api/numpy/clip/",
                 "kind": "link",
                 "target": "clip",
                 "text": "clip"
@@ -646,7 +646,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

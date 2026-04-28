@@ -326,7 +326,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_and",
+              "href": "/docs/api/numpy/bitwise-and/",
               "label": "fnp.bitwise_and",
               "original_target": "bitwise_and",
               "role": "",
@@ -337,7 +337,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_or",
+              "href": "/docs/api/numpy/bitwise-or/",
               "label": "fnp.bitwise_or",
               "original_target": "bitwise_or",
               "role": "",
@@ -348,7 +348,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_xor",
+              "href": "/docs/api/numpy/bitwise-xor/",
               "label": "fnp.bitwise_xor",
               "original_target": "bitwise_xor",
               "role": "",
@@ -359,7 +359,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_not",
+              "href": "/docs/api/numpy/logical-not/",
               "label": "fnp.logical_not",
               "original_target": "logical_not",
               "role": "",
@@ -374,8 +374,8 @@
                   "text": "Return the binary representation of the input number as a string."
                 }
               ],
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.binary_repr.html",
-              "href": "",
+              "external_url": "",
+              "href": "/docs/api/numpy/binary-repr/",
               "label": "binary_repr",
               "original_target": "binary_repr",
               "role": "",
@@ -394,7 +394,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_not",
+              "href": "/docs/api/numpy/bitwise-not/",
               "kind": "link",
               "target": "bitwise_not",
               "text": "fnp.bitwise_not"
@@ -405,7 +405,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/invert",
+              "href": "/docs/api/numpy/invert/",
               "kind": "link",
               "target": "invert",
               "text": "invert"
@@ -451,7 +451,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -609,7 +609,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/invert",
+              "href": "/docs/api/numpy/invert/",
               "kind": "link",
               "target": "invert",
               "text": "fnp.invert"
@@ -672,18 +672,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.invert(fnp.array(13, dtype=fnp.uint8))\n\nx\n\nfnp.binary_repr(x, width=8)\n\nx = fnp.invert(fnp.array(13, dtype=fnp.uint16))\n\nx\n\nfnp.binary_repr(x, width=16)\n\nfnp.invert(fnp.array([13], dtype=fnp.int8))\n\nfnp.binary_repr(-14, width=8)\n\nfnp.invert(fnp.array([True, False]))\n\nx1 = fnp.array([True, False])\n\n~x1",
+    "code": "import flopscope.numpy as fnp\n\nx = fnp.invert(fnp.array(13, dtype=fnp.uint8))\n\nx\n\nfnp.binary_repr(x, width=8)\n\nx = fnp.invert(fnp.array(13, dtype=fnp.uint16))\n\nx\n\nfnp.binary_repr(x, width=16)\n\nfnp.invert(fnp.array([13], dtype=fnp.int8))\n\nfnp.binary_repr(-14, width=8)\n\nfnp.invert(fnp.array([True, False]))\n\nx1 = fnp.array([True, False])\n\n~x1",
     "output": "fnp.uint8(242)\n\n'11110010'\n\nfnp.uint16(65522)\n\n'1111111111110010'\n\narray([-14], dtype=int8)\n\n'11110010'\n\narray([False,  True])\n\narray([False,  True])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.bitwise_not",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/bitwise_not/",
+  "href": "/docs/api/numpy/bitwise-not/",
   "module": "numpy",
   "name": "bitwise_not",
   "next": {
-    "href": "/docs/api/ops/bitwise_or/",
+    "href": "/docs/api/numpy/bitwise-or/",
     "label": "fnp.bitwise_or"
   },
   "notes": "Element-wise bitwise NOT.",
@@ -732,10 +732,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bitwise_left_shift/",
+    "href": "/docs/api/numpy/bitwise-left-shift/",
     "label": "fnp.bitwise_left_shift"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.bitwise_not",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_not.html",
   "returns": [
     {
@@ -752,7 +753,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_and",
+      "href": "/docs/api/numpy/bitwise-and/",
       "label": "fnp.bitwise_and",
       "original_target": "bitwise_and",
       "role": "",
@@ -763,7 +764,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_or",
+      "href": "/docs/api/numpy/bitwise-or/",
       "label": "fnp.bitwise_or",
       "original_target": "bitwise_or",
       "role": "",
@@ -774,7 +775,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_xor",
+      "href": "/docs/api/numpy/bitwise-xor/",
       "label": "fnp.bitwise_xor",
       "original_target": "bitwise_xor",
       "role": "",
@@ -785,7 +786,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_not",
+      "href": "/docs/api/numpy/logical-not/",
       "label": "fnp.logical_not",
       "original_target": "logical_not",
       "role": "",
@@ -800,8 +801,8 @@
           "text": "Return the binary representation of the input number as a string."
         }
       ],
-      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.binary_repr.html",
-      "href": "",
+      "external_url": "",
+      "href": "/docs/api/numpy/binary-repr/",
       "label": "binary_repr",
       "original_target": "binary_repr",
       "role": "",
@@ -812,6 +813,8 @@
   "signature": "fnp.bitwise_not(x)",
   "slug": "bitwise_not",
   "summary": "Compute bit-wise inversion, or bit-wise NOT, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

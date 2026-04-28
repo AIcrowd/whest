@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/cross/",
+  "detail_href": "/docs/api/numpy/cross/",
   "detail_json_href": "/api-data/ops/cross.json",
   "docs": {
     "sections": [
@@ -517,7 +517,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/inner",
+                "href": "/docs/api/numpy/inner/",
                 "label": "fnp.inner",
                 "original_target": "inner",
                 "role": "",
@@ -533,7 +533,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/outer",
+                "href": "/docs/api/numpy/outer/",
                 "label": "fnp.outer",
                 "original_target": "outer",
                 "role": "",
@@ -549,7 +549,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/cross",
+                    "href": "/docs/api/numpy/cross/",
                     "kind": "link",
                     "target": "cross",
                     "text": "fnp.cross"
@@ -560,7 +560,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-cross",
+                "href": "/docs/api/numpy/linalg/cross/",
                 "label": "fnp.linalg.cross",
                 "original_target": "linalg.cross",
                 "role": "",
@@ -576,7 +576,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ix_",
+                "href": "/docs/api/numpy/ix-/",
                 "label": "fnp.ix_",
                 "original_target": "ix_",
                 "role": "",
@@ -633,7 +633,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

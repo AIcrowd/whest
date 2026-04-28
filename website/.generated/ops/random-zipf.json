@@ -438,7 +438,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/bincount",
+              "href": "/docs/api/numpy/bincount/",
               "kind": "link",
               "target": "bincount",
               "text": "bincount"
@@ -537,11 +537,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.zipf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-zipf/",
+  "href": "/docs/api/numpy/random/zipf/",
   "module": "numpy.random",
   "name": "random.zipf",
   "next": {
-    "href": "/docs/api/ops/ravel/",
+    "href": "/docs/api/numpy/ravel/",
     "label": "fnp.ravel"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -572,10 +572,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-weibull/",
+    "href": "/docs/api/numpy/random/weibull/",
     "label": "fnp.random.weibull"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.zipf",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.zipf.html",
   "returns": [
     {
@@ -623,6 +624,8 @@
   "signature": "fnp.random.zipf(a, size=None)",
   "slug": "random-zipf",
   "summary": "Draw samples from a Zipf distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

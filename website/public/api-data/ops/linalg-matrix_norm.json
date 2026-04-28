@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-matrix_norm/",
+  "detail_href": "/docs/api/numpy/linalg/matrix-norm/",
   "detail_json_href": "/api-data/ops/linalg-matrix_norm.json",
   "docs": {
     "sections": [
@@ -121,7 +121,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/linalg-norm",
+                        "href": "/docs/api/numpy/linalg/norm/",
                         "kind": "link",
                         "target": "linalg.norm",
                         "text": "fnp.linalg.norm"
@@ -150,7 +150,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/linalg-norm",
+                    "href": "/docs/api/numpy/linalg/norm/",
                     "kind": "link",
                     "target": "linalg.norm",
                     "text": "fnp.linalg.norm"
@@ -183,7 +183,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-norm",
+                "href": "/docs/api/numpy/linalg/norm/",
                 "label": "fnp.linalg.norm",
                 "original_target": "numpy.linalg.norm",
                 "role": "",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/mintypecode/",
+  "detail_href": "/docs/api/numpy/mintypecode/",
   "detail_json_href": "/api-data/ops/mintypecode.json",
   "docs": {
     "sections": [
@@ -217,7 +217,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

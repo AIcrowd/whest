@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nanmean/",
+  "detail_href": "/docs/api/numpy/nanmean/",
   "detail_json_href": "/api-data/ops/nanmean.json",
   "docs": {
     "sections": [
@@ -263,7 +263,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/mean",
+                        "href": "/docs/api/numpy/mean/",
                         "kind": "link",
                         "target": "mean",
                         "text": "mean"
@@ -274,7 +274,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/sum",
+                        "href": "/docs/api/numpy/sum/",
                         "kind": "link",
                         "target": "sum",
                         "text": "sum"
@@ -444,7 +444,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/average",
+                "href": "/docs/api/numpy/average/",
                 "label": "fnp.average",
                 "original_target": "average",
                 "role": "",
@@ -460,7 +460,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
+                "href": "/docs/api/numpy/mean/",
                 "label": "fnp.mean",
                 "original_target": "mean",
                 "role": "",
@@ -471,7 +471,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/var",
+                "href": "/docs/api/numpy/var/",
                 "label": "fnp.var",
                 "original_target": "var",
                 "role": "",
@@ -482,7 +482,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanvar",
+                "href": "/docs/api/numpy/nanvar/",
                 "label": "fnp.nanvar",
                 "original_target": "nanvar",
                 "role": "",
@@ -541,7 +541,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

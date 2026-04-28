@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/roll/",
+  "detail_href": "/docs/api/numpy/roll/",
   "detail_json_href": "/api-data/ops/roll.json",
   "docs": {
     "sections": [
@@ -202,7 +202,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/rollaxis",
+                "href": "/docs/api/numpy/rollaxis/",
                 "label": "fnp.rollaxis",
                 "original_target": "rollaxis",
                 "role": "",
@@ -236,7 +236,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

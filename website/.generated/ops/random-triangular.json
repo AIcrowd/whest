@@ -500,11 +500,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.triangular",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-triangular/",
+  "href": "/docs/api/numpy/random/triangular/",
   "module": "numpy.random",
   "name": "random.triangular",
   "next": {
-    "href": "/docs/api/ops/random-uniform/",
+    "href": "/docs/api/numpy/random/uniform/",
     "label": "fnp.random.uniform"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -550,10 +550,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_t/",
+    "href": "/docs/api/numpy/random/standard-t/",
     "label": "fnp.random.standard_t"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.triangular",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.triangular.html",
   "returns": [
     {
@@ -585,6 +586,8 @@
   "signature": "fnp.random.triangular(left, mode, right, size=None)",
   "slug": "random-triangular",
   "summary": "Draw samples from the triangular distribution over the interval ``[left, right]``.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/logaddexp/",
+  "detail_href": "/docs/api/numpy/logaddexp/",
   "detail_json_href": "/api-data/ops/logaddexp.json",
   "docs": {
     "sections": [
@@ -344,7 +344,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/logaddexp2",
+                "href": "/docs/api/numpy/logaddexp2/",
                 "label": "fnp.logaddexp2",
                 "original_target": "logaddexp2",
                 "role": "",
@@ -364,7 +364,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

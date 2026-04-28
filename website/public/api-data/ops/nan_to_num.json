@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nan_to_num/",
+  "detail_href": "/docs/api/numpy/nan-to-num/",
   "detail_json_href": "/api-data/ops/nan_to_num.json",
   "docs": {
     "sections": [
@@ -292,7 +292,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/copy",
+                        "href": "/docs/api/numpy/copy/",
                         "kind": "link",
                         "target": "copy",
                         "text": "copy"
@@ -325,7 +325,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/copy",
+                    "href": "/docs/api/numpy/copy/",
                     "kind": "link",
                     "target": "copy",
                     "text": "copy"
@@ -366,7 +366,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isinf",
+                "href": "/docs/api/numpy/isinf/",
                 "label": "fnp.isinf",
                 "original_target": "isinf",
                 "role": "",
@@ -382,7 +382,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isneginf",
+                "href": "/docs/api/numpy/isneginf/",
                 "label": "fnp.isneginf",
                 "original_target": "isneginf",
                 "role": "",
@@ -398,7 +398,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isposinf",
+                "href": "/docs/api/numpy/isposinf/",
                 "label": "fnp.isposinf",
                 "original_target": "isposinf",
                 "role": "",
@@ -414,7 +414,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
+                "href": "/docs/api/numpy/isnan/",
                 "label": "fnp.isnan",
                 "original_target": "isnan",
                 "role": "",
@@ -430,7 +430,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isfinite",
+                "href": "/docs/api/numpy/isfinite/",
                 "label": "fnp.isfinite",
                 "original_target": "isfinite",
                 "role": "",
@@ -464,7 +464,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

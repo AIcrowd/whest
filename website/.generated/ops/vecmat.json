@@ -397,7 +397,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/vecdot",
+              "href": "/docs/api/numpy/vecdot/",
               "label": "fnp.vecdot",
               "original_target": "vecdot",
               "role": "",
@@ -413,7 +413,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/matvec",
+              "href": "/docs/api/numpy/matvec/",
               "label": "fnp.matvec",
               "original_target": "matvec",
               "role": "",
@@ -429,7 +429,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/matmul",
+              "href": "/docs/api/numpy/matmul/",
               "label": "fnp.matmul",
               "original_target": "matmul",
               "role": "",
@@ -445,7 +445,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "label": "fnp.einsum",
               "original_target": "einsum",
               "role": "",
@@ -532,11 +532,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.vecmat",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L615",
-  "href": "/docs/api/ops/vecmat/",
+  "href": "/docs/api/numpy/vecmat/",
   "module": "numpy",
   "name": "vecmat",
   "next": {
-    "href": "/docs/api/ops/vsplit/",
+    "href": "/docs/api/numpy/vsplit/",
     "label": "fnp.vsplit"
   },
   "notes": "Vector-matrix product. Cost = output_size * contracted_axis.",
@@ -569,10 +569,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/vecdot/",
+    "href": "/docs/api/numpy/vecdot/",
     "label": "fnp.vecdot"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.vecmat",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.vecmat.html",
   "returns": [
     {
@@ -593,7 +594,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/vecdot",
+      "href": "/docs/api/numpy/vecdot/",
       "label": "fnp.vecdot",
       "original_target": "vecdot",
       "role": "",
@@ -609,7 +610,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/matvec",
+      "href": "/docs/api/numpy/matvec/",
       "label": "fnp.matvec",
       "original_target": "matvec",
       "role": "",
@@ -625,7 +626,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/matmul",
+      "href": "/docs/api/numpy/matmul/",
       "label": "fnp.matmul",
       "original_target": "matmul",
       "role": "",
@@ -641,7 +642,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/einsum",
+      "href": "/docs/api/numpy/einsum/",
       "label": "fnp.einsum",
       "original_target": "einsum",
       "role": "",
@@ -652,6 +653,8 @@
   "signature": "fnp.vecmat(a, b, **kwargs)",
   "slug": "vecmat",
   "summary": "Vector-matrix dot product of two arrays.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/arcsinh/",
+  "detail_href": "/docs/api/numpy/arcsinh/",
   "detail_json_href": "/api-data/ops/arcsinh.json",
   "docs": {
     "sections": [
@@ -283,7 +283,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arcsinh",
+                "href": "/docs/api/numpy/arcsinh/",
                 "kind": "link",
                 "target": "arcsinh",
                 "text": "arcsinh"
@@ -343,7 +343,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arcsinh",
+                "href": "/docs/api/numpy/arcsinh/",
                 "kind": "link",
                 "target": "arcsinh",
                 "text": "arcsinh"
@@ -379,7 +379,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arcsinh",
+                "href": "/docs/api/numpy/arcsinh/",
                 "kind": "link",
                 "target": "arcsinh",
                 "text": "arcsinh"
@@ -415,7 +415,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arcsinh",
+                "href": "/docs/api/numpy/arcsinh/",
                 "kind": "link",
                 "target": "arcsinh",
                 "text": "asinh"
@@ -460,7 +460,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

@@ -465,7 +465,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isin",
+              "href": "/docs/api/numpy/isin/",
               "label": "fnp.isin",
               "original_target": "isin",
               "role": "",
@@ -484,7 +484,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/in1d",
+              "href": "/docs/api/numpy/in1d/",
               "kind": "link",
               "target": "in1d",
               "text": "in1d"
@@ -606,7 +606,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -682,18 +682,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\ntest = fnp.array([0, 1, 2, 5, 0])\n\nstates = [0, 2]\n\nmask = fnp.in1d(test, states)\n\nmask\n\ntest[mask]\n\nmask = fnp.in1d(test, states, invert=True)\n\nmask\n\ntest[mask]",
+    "code": "import flopscope.numpy as fnp\n\ntest = fnp.array([0, 1, 2, 5, 0])\n\nstates = [0, 2]\n\nmask = fnp.in1d(test, states)\n\nmask\n\ntest[mask]\n\nmask = fnp.in1d(test, states, invert=True)\n\nmask\n\ntest[mask]",
     "output": "array([ True, False,  True, False,  True])\n\narray([0, 2, 0])\n\narray([False,  True, False,  True, False])\n\narray([1, 5])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.in1d",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L369",
-  "href": "/docs/api/ops/in1d/",
+  "href": "/docs/api/numpy/in1d/",
   "module": "numpy",
   "name": "in1d",
   "next": {
-    "href": "/docs/api/ops/indices/",
+    "href": "/docs/api/numpy/indices/",
     "label": "fnp.indices"
   },
   "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)). Removed in numpy 2.4; use `isin` instead.",
@@ -762,10 +762,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/imag/",
+    "href": "/docs/api/numpy/imag/",
     "label": "fnp.imag"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.in1d",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.in1d.html",
   "returns": [
     {
@@ -786,7 +787,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isin",
+      "href": "/docs/api/numpy/isin/",
       "label": "fnp.isin",
       "original_target": "isin",
       "role": "",
@@ -797,6 +798,8 @@
   "signature": "fnp.in1d(ar1, ar2, assume_unique=False, invert=False, *, kind=None)",
   "slug": "in1d",
   "summary": "Test whether each element of a 1-D array is also present in a second array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L762",
   "weight": 1.0
 }

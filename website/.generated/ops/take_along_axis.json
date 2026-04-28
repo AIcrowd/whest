@@ -36,7 +36,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/argsort",
+              "href": "/docs/api/numpy/argsort/",
               "kind": "link",
               "target": "argsort",
               "text": "argsort"
@@ -47,7 +47,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/argpartition",
+              "href": "/docs/api/numpy/argpartition/",
               "kind": "link",
               "target": "argpartition",
               "text": "argpartition"
@@ -152,7 +152,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/sort",
+                      "href": "/docs/api/numpy/sort/",
                       "kind": "link",
                       "target": "sort",
                       "text": "sort"
@@ -163,7 +163,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/argsort",
+                      "href": "/docs/api/numpy/argsort/",
                       "kind": "link",
                       "target": "argsort",
                       "text": "argsort"
@@ -184,7 +184,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/sort",
+                  "href": "/docs/api/numpy/sort/",
                   "kind": "link",
                   "target": "sort",
                   "text": "sort"
@@ -195,7 +195,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/argsort",
+                  "href": "/docs/api/numpy/argsort/",
                   "kind": "link",
                   "target": "argsort",
                   "text": "argsort"
@@ -261,7 +261,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/take",
+              "href": "/docs/api/numpy/take/",
               "label": "fnp.take",
               "original_target": "take",
               "role": "",
@@ -277,7 +277,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/put_along_axis",
+              "href": "/docs/api/numpy/put-along-axis/",
               "label": "fnp.put_along_axis",
               "original_target": "put_along_axis",
               "role": "",
@@ -362,7 +362,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -580,18 +580,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[10, 30, 20], [60, 40, 50]])\n\nfnp.sort(a, axis=1)\n\nai = fnp.argsort(a, axis=1)\n\nai\n\nfnp.take_along_axis(a, ai, axis=1)\n\nfnp.max(a, axis=1, keepdims=True)\n\nai = fnp.argmax(a, axis=1, keepdims=True)\n\nai\n\nfnp.take_along_axis(a, ai, axis=1)\n\nai_min = fnp.argmin(a, axis=1, keepdims=True)\n\nai_max = fnp.argmax(a, axis=1, keepdims=True)\n\nai = fnp.concatenate([ai_min, ai_max], axis=1)\n\nai\n\nfnp.take_along_axis(a, ai, axis=1)",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array([[10, 30, 20], [60, 40, 50]])\n\nfnp.sort(a, axis=1)\n\nai = fnp.argsort(a, axis=1)\n\nai\n\nfnp.take_along_axis(a, ai, axis=1)\n\nfnp.max(a, axis=1, keepdims=True)\n\nai = fnp.argmax(a, axis=1, keepdims=True)\n\nai\n\nfnp.take_along_axis(a, ai, axis=1)\n\nai_min = fnp.argmin(a, axis=1, keepdims=True)\n\nai_max = fnp.argmax(a, axis=1, keepdims=True)\n\nai = fnp.concatenate([ai_min, ai_max], axis=1)\n\nai\n\nfnp.take_along_axis(a, ai, axis=1)",
     "output": "array([[10, 20, 30],\n       [40, 50, 60]])\n\narray([[0, 2, 1],\n       [1, 2, 0]])\n\narray([[10, 20, 30],\n       [40, 50, 60]])\n\narray([[30],\n       [60]])\n\narray([[1],\n       [0]])\n\narray([[30],\n       [60]])\n\narray([[0, 1],\n       [1, 0]])\n\narray([[10, 30],\n       [40, 60]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.take_along_axis",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1421",
-  "href": "/docs/api/ops/take_along_axis/",
+  "href": "/docs/api/numpy/take-along-axis/",
   "module": "numpy",
   "name": "take_along_axis",
   "next": {
-    "href": "/docs/api/ops/tan/",
+    "href": "/docs/api/numpy/tan/",
     "label": "fnp.tan"
   },
   "notes": "Take values from input array by matching 1-D index. Cost: numel(output).",
@@ -631,10 +631,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/take/",
+    "href": "/docs/api/numpy/take/",
     "label": "fnp.take"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.take_along_axis",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.take_along_axis.html",
   "returns": [
     {
@@ -655,7 +656,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/take",
+      "href": "/docs/api/numpy/take/",
       "label": "fnp.take",
       "original_target": "take",
       "role": "",
@@ -671,7 +672,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/put_along_axis",
+      "href": "/docs/api/numpy/put-along-axis/",
       "label": "fnp.put_along_axis",
       "original_target": "put_along_axis",
       "role": "",
@@ -682,6 +683,8 @@
   "signature": "fnp.take_along_axis(arr, indices, axis)",
   "slug": "take_along_axis",
   "summary": "Take values from the input array by matching 1d index and data slices.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L57",
   "weight": 1.0
 }

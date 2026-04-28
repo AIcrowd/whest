@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-eigh/",
+  "detail_href": "/docs/api/numpy/linalg/eigh/",
   "detail_json_href": "/api-data/ops/linalg-eigh.json",
   "docs": {
     "sections": [
@@ -451,7 +451,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

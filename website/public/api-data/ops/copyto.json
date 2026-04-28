@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/copyto/",
+  "detail_href": "/docs/api/numpy/copyto/",
   "detail_json_href": "/api-data/ops/copyto.json",
   "docs": {
     "sections": [
@@ -35,7 +35,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/where",
+                "href": "/docs/api/numpy/where/",
                 "kind": "link",
                 "target": "where",
                 "text": "where"
@@ -275,7 +275,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

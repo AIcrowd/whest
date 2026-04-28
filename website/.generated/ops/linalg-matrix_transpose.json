@@ -134,7 +134,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/transpose",
+              "href": "/docs/api/numpy/transpose/",
               "label": "fnp.transpose",
               "original_target": "transpose",
               "role": "",
@@ -154,7 +154,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -213,18 +213,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.matrix_transpose([[1, 2], [3, 4]])\n\nfnp.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])",
+    "code": "import flopscope.numpy as fnp\n\nfnp.matrix_transpose([[1, 2], [3, 4]])\n\nfnp.matrix_transpose([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])",
     "output": "array([[1, 3],\n       [2, 4]])\n\narray([[[1, 3],\n        [2, 4]],\n       [[5, 7],\n        [6, 8]]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.matrix_transpose",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L108",
-  "href": "/docs/api/ops/linalg-matrix_transpose/",
+  "href": "/docs/api/numpy/linalg/matrix-transpose/",
   "module": "numpy.linalg",
   "name": "linalg.matrix_transpose",
   "next": {
-    "href": "/docs/api/ops/linalg-multi_dot/",
+    "href": "/docs/api/numpy/linalg/multi-dot/",
     "label": "fnp.linalg.multi_dot"
   },
   "notes": "Transpose view \u2014 delegates to flopscope.matrix_transpose. Cost: 0 FLOPs.",
@@ -241,10 +241,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-matrix_rank/",
+    "href": "/docs/api/numpy/linalg/matrix-rank/",
     "label": "fnp.linalg.matrix_rank"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.matrix_transpose",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_transpose.html",
   "returns": [
     {
@@ -266,7 +267,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/transpose",
+      "href": "/docs/api/numpy/transpose/",
       "label": "fnp.transpose",
       "original_target": "transpose",
       "role": "",
@@ -277,6 +278,8 @@
   "signature": "fnp.linalg.matrix_transpose(x, /)",
   "slug": "linalg-matrix_transpose",
   "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3405",
   "weight": 0.0
 }

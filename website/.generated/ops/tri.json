@@ -332,7 +332,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -391,18 +391,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.tri(3, 5, 2, dtype=int)\n\nfnp.tri(3, 5, -1)",
+    "code": "import flopscope.numpy as fnp\n\nfnp.tri(3, 5, 2, dtype=int)\n\nfnp.tri(3, 5, -1)",
     "output": "array([[1, 1, 1, 0, 0],\n       [1, 1, 1, 1, 0],\n       [1, 1, 1, 1, 1]])\n\narray([[0.,  0.,  0.,  0.,  0.],\n       [1.,  0.,  0.,  0.,  0.],\n       [1.,  1.,  0.,  0.,  0.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.tri",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1434",
-  "href": "/docs/api/ops/tri/",
+  "href": "/docs/api/numpy/tri/",
   "module": "numpy",
   "name": "tri",
   "next": {
-    "href": "/docs/api/ops/tril/",
+    "href": "/docs/api/numpy/tril/",
     "label": "fnp.tril"
   },
   "notes": "Array with ones at and below given diagonal.",
@@ -455,10 +455,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/trapezoid/",
+    "href": "/docs/api/numpy/trapezoid/",
     "label": "fnp.trapezoid"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.tri",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.tri.html",
   "returns": [
     {
@@ -474,6 +475,8 @@
   "signature": "fnp.tri(N, M=None, k=0, dtype=<class 'float'>, *, like=None)",
   "slug": "tri",
   "summary": "An array with ones at and below the given diagonal and zeros elsewhere.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L376",
   "weight": 0.0
 }

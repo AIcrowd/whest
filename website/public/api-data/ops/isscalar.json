@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isscalar/",
+  "detail_href": "/docs/api/numpy/isscalar/",
   "detail_json_href": "/api-data/ops/isscalar.json",
   "docs": {
     "sections": [
@@ -120,7 +120,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ndim",
+                "href": "/docs/api/numpy/ndim/",
                 "label": "fnp.ndim",
                 "original_target": "ndim",
                 "role": "",
@@ -195,7 +195,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/gradient",
+                "href": "/docs/api/numpy/gradient/",
                 "kind": "link",
                 "target": "gradient",
                 "text": "gradient"
@@ -214,7 +214,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "kind": "link",
                 "target": "histogram",
                 "text": "histogram"
@@ -241,7 +241,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"

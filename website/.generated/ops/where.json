@@ -70,7 +70,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/nonzero",
+                  "href": "/docs/api/numpy/nonzero/",
                   "kind": "link",
                   "target": "nonzero",
                   "text": "nonzero"
@@ -316,7 +316,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/choose",
+              "href": "/docs/api/numpy/choose/",
               "label": "fnp.choose",
               "original_target": "choose",
               "role": "",
@@ -332,7 +332,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/nonzero",
+              "href": "/docs/api/numpy/nonzero/",
               "label": "fnp.nonzero",
               "original_target": "nonzero",
               "role": "",
@@ -355,7 +355,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/where",
+              "href": "/docs/api/numpy/where/",
               "kind": "link",
               "target": "where",
               "text": "where"
@@ -382,7 +382,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -535,18 +535,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.arange(10)\n\na\n\nfnp.where(a < 5, a, 10*a)\n\nfnp.where([[True, False], [True, True]],\n         [[1, 2], [3, 4]],\n         [[9, 8], [7, 6]])\n\nx, y = fnp.ogrid[:3, :4]\n\nfnp.where(x < y, x, 10 + y)  # both x and 10+y are broadcast\n\na = fnp.array([[0, 1, 2],\n              [0, 2, 4],\n              [0, 3, 6]])\n\nfnp.where(a < 4, a, -1)  # -1 is broadcast",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.arange(10)\n\na\n\nfnp.where(a < 5, a, 10*a)\n\nfnp.where([[True, False], [True, True]],\n         [[1, 2], [3, 4]],\n         [[9, 8], [7, 6]])\n\nx, y = fnp.ogrid[:3, :4]\n\nfnp.where(x < y, x, 10 + y)  # both x and 10+y are broadcast\n\na = fnp.array([[0, 1, 2],\n              [0, 2, 4],\n              [0, 3, 6]])\n\nfnp.where(a < 4, a, -1)  # -1 is broadcast",
     "output": "array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([ 0,  1,  2,  3,  4, 50, 60, 70, 80, 90])\n\narray([[1, 8],\n       [3, 4]])\n\narray([[10,  0,  0,  0],\n       [10, 11,  1,  1],\n       [10, 11, 12,  2]])\n\narray([[ 0,  1,  2],\n       [ 0,  2, -1],\n       [ 0,  3, -1]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.where",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L357",
-  "href": "/docs/api/ops/where/",
+  "href": "/docs/api/numpy/where/",
   "module": "numpy",
   "name": "where",
   "next": {
-    "href": "/docs/api/ops/zeros/",
+    "href": "/docs/api/numpy/zeros/",
     "label": "fnp.zeros"
   },
   "notes": "Select elements based on condition. Cost: numel(input).",
@@ -573,10 +573,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/vstack/",
+    "href": "/docs/api/numpy/vstack/",
     "label": "fnp.vstack"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.where",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.where.html",
   "returns": [
     {
@@ -593,7 +594,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/choose",
+      "href": "/docs/api/numpy/choose/",
       "label": "fnp.choose",
       "original_target": "choose",
       "role": "",
@@ -609,7 +610,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/nonzero",
+      "href": "/docs/api/numpy/nonzero/",
       "label": "fnp.nonzero",
       "original_target": "nonzero",
       "role": "",
@@ -620,6 +621,8 @@
   "signature": "fnp.where(condition, x=None, y=None)",
   "slug": "where",
   "summary": "Return elements chosen from `x` or `y` depending on `condition`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 4.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/absolute/",
+  "detail_href": "/docs/api/numpy/absolute/",
   "detail_json_href": "/api-data/ops/absolute.json",
   "docs": {
     "sections": [
@@ -23,7 +23,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/absolute",
+                "href": "/docs/api/numpy/absolute/",
                 "kind": "link",
                 "target": "absolute",
                 "text": "fnp.abs"
@@ -337,7 +337,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -449,7 +449,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/absolute",
+                "href": "/docs/api/numpy/absolute/",
                 "kind": "link",
                 "target": "absolute",
                 "text": "abs"
@@ -460,7 +460,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/absolute",
+                "href": "/docs/api/numpy/absolute/",
                 "kind": "link",
                 "target": "absolute",
                 "text": "fnp.absolute"

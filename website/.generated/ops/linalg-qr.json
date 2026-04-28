@@ -469,7 +469,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -707,18 +707,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nrng = fnp.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nQ, R = fnp.linalg.qr(a)\n\nfnp.allclose(a, fnp.dot(Q, R))  # a does equal QR\n\nR2 = fnp.linalg.qr(a, mode='r')\n\nfnp.allclose(R, R2)  # mode='r' returns the same R as mode='full'\n\na = fnp.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input\n\nQ, R = fnp.linalg.qr(a)\n\nQ.shape\n\nR.shape\n\nfnp.allclose(a, fnp.matmul(Q, R))\n\nA = fnp.array([[0, 1], [1, 1], [1, 1], [2, 1]])\n\nA\n\nb = fnp.array([1, 2, 2, 3])\n\nQ, R = fnp.linalg.qr(A)\n\np = fnp.dot(Q.T, b)\n\nfnp.dot(fnp.linalg.inv(R), p)",
+    "code": "import flopscope.numpy as fnp\n\nrng = fnp.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nQ, R = fnp.linalg.qr(a)\n\nfnp.allclose(a, fnp.dot(Q, R))  # a does equal QR\n\nR2 = fnp.linalg.qr(a, mode='r')\n\nfnp.allclose(R, R2)  # mode='r' returns the same R as mode='full'\n\na = fnp.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input\n\nQ, R = fnp.linalg.qr(a)\n\nQ.shape\n\nR.shape\n\nfnp.allclose(a, fnp.matmul(Q, R))\n\nA = fnp.array([[0, 1], [1, 1], [1, 1], [2, 1]])\n\nA\n\nb = fnp.array([1, 2, 2, 3])\n\nQ, R = fnp.linalg.qr(A)\n\np = fnp.dot(Q.T, b)\n\nfnp.dot(fnp.linalg.inv(R), p)",
     "output": "True\n\nTrue\n\n(3, 2, 2)\n\n(3, 2, 2)\n\nTrue\n\narray([[0, 1],\n       [1, 1],\n       [1, 1],\n       [2, 1]])\n\narray([  1.,   1.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.qr",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L78",
-  "href": "/docs/api/ops/linalg-qr/",
+  "href": "/docs/api/numpy/linalg/qr/",
   "module": "numpy.linalg",
   "name": "linalg.qr",
   "next": {
-    "href": "/docs/api/ops/linalg-slogdet/",
+    "href": "/docs/api/numpy/linalg/slogdet/",
     "label": "fnp.linalg.slogdet"
   },
   "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
@@ -761,10 +761,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-pinv/",
+    "href": "/docs/api/numpy/linalg/pinv/",
     "label": "fnp.linalg.pinv"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.qr",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html",
   "returns": [
     {
@@ -845,6 +846,8 @@
   "signature": "fnp.linalg.qr(a, mode='reduced')",
   "slug": "linalg-qr",
   "summary": "Compute the qr factorization of a matrix.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L928",
   "weight": 4.0
 }

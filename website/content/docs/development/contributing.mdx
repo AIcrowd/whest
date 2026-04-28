@@ -156,7 +156,7 @@ uv run python scripts/generate_api_docs.py --verify
 
 ## NumPy Compatibility Testing
 
-flopscope's goal is to be a drop-in replacement for NumPy: `import flopscope as np` should work for all supported functions. To verify this, we run NumPy's own test suite against flopscope.
+flopscope's goal is NumPy API compatibility on the counted surface: `import flopscope.numpy as np` should work for supported functions. To verify this, we run NumPy's own test suite against flopscope.
 
 ### How it works
 
@@ -164,22 +164,22 @@ A pytest conftest at `tests/numpy_compat/conftest.py` monkeypatches numpy functi
 
 ```
 NumPy test file                conftest.py               flopscope
-  calls np.sum(x)  ──────>   np.sum = we.sum   ──────>  we.sum(x)
+  calls np.sum(x)  ──────>   np.sum = fnp.sum  ──────>  fnp.sum(x)
   asserts result              (monkeypatch)              (FLOP-counted)
 ```
 
 #### Avoiding infinite recursion
 
-flopscope functions internally call numpy (e.g., `we.dot` calls `_np.dot`). Since `_np` IS the numpy module, patching `numpy.dot = we.dot` would cause infinite recursion: `we.dot` → `_np.dot` → `numpy.dot` → `we.dot` → ...
+flopscope functions internally call numpy (for example, `fnp.dot` eventually delegates to `_np.dot` inside the implementation modules). Since `_np` is the numpy module, patching `numpy.dot = fnp.dot` without isolating those backend references would cause infinite recursion: `fnp.dot` → `_np.dot` → `numpy.dot` → `fnp.dot` → ...
 
 We solve this by **freezing numpy before patching**: the conftest creates a snapshot of the numpy module (and its submodules like `numpy.linalg`, `numpy.fft`), then rebinds every flopscope module's `_np` reference to the frozen copy. Now flopscope's internal calls go to the original numpy functions, while the test suite sees flopscope's versions.
 
 ```python
 # Simplified flow in conftest.py:
 frozen_np = freeze_numpy()           # snapshot of original numpy
-rebind_flopscope_np(frozen_np)       # we._np → frozen copy
-patch_numpy()                        # np.sum = we.sum, etc.
-# Now: test calls np.sum → we.sum → frozen_np.sum (original) ✓
+rebind_flopscope_np(frozen_np)       # flopscope internals → frozen copy
+patch_numpy()                        # np.sum = fnp.sum, etc.
+# Now: test calls np.sum → fnp.sum → frozen_np.sum (original) ✓
 ```
 
 ### What gets patched
@@ -190,7 +190,7 @@ Of flopscope's 508 registered functions, most non-ufunc functions are patched on
 |----------|-------|-------------|
 | Ufuncs | 101 | flopscope functions are plain callables, not ufuncs -- they lack `.reduce`, `.accumulate`, `.outer`, `.nargs`. Tests check these attributes at collection time. |
 | Blacklisted | 32 | Intentionally unsupported |
-| `linalg.outer` | 1 | `we.linalg.outer` delegates to `np.outer` (not `np.linalg.outer`), which has different validation behavior |
+| `linalg.outer` | 1 | `fnp.linalg.outer` delegates to `np.outer` (not `np.linalg.outer`), which has different validation behavior |
 
 Everything else -- free ops, counted custom ops (dot, einsum, etc.), submodule functions (linalg, fft), reductions, and special functions -- is patched.
 

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isin/",
+  "detail_href": "/docs/api/numpy/isin/",
   "detail_json_href": "/api-data/ops/isin.json",
   "docs": {
     "sections": [
@@ -444,7 +444,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/isin",
+                "href": "/docs/api/numpy/isin/",
                 "kind": "link",
                 "target": "isin",
                 "text": "isin"
@@ -535,7 +535,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/array",
+                "href": "/docs/api/numpy/array/",
                 "kind": "link",
                 "target": "array",
                 "text": "array"
@@ -606,7 +606,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -669,7 +669,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/nonzero",
+                "href": "/docs/api/numpy/nonzero/",
                 "kind": "link",
                 "target": "nonzero",
                 "text": "nonzero"
@@ -744,7 +744,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/array",
+                "href": "/docs/api/numpy/array/",
                 "kind": "link",
                 "target": "array",
                 "text": "array"

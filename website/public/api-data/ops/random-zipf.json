@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-zipf/",
+  "detail_href": "/docs/api/numpy/random/zipf/",
   "detail_json_href": "/api-data/ops/random-zipf.json",
   "docs": {
     "sections": [
@@ -438,7 +438,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/bincount",
+                "href": "/docs/api/numpy/bincount/",
                 "kind": "link",
                 "target": "bincount",
                 "text": "bincount"

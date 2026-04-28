@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/tensordot/",
+  "detail_href": "/docs/api/numpy/tensordot/",
   "detail_json_href": "/api-data/ops/tensordot.json",
   "docs": {
     "sections": [
@@ -273,7 +273,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "label": "fnp.dot",
                 "original_target": "dot",
                 "role": "",
@@ -284,7 +284,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "fnp.einsum",
                 "original_target": "einsum",
                 "role": "",
@@ -488,7 +488,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "kind": "link",
                 "target": "einsum",
                 "text": "fnp.einsum"

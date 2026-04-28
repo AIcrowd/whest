@@ -194,7 +194,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/inner",
+              "href": "/docs/api/numpy/inner/",
               "label": "fnp.inner",
               "original_target": "inner",
               "role": "",
@@ -214,7 +214,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "label": "fnp.einsum",
               "original_target": "einsum",
               "role": "",
@@ -254,7 +254,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/outer",
+                  "href": "/docs/api/numpy/outer/",
                   "kind": "link",
                   "target": "outer",
                   "text": "fnp.outer"
@@ -265,7 +265,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/linalg-outer",
+              "href": "/docs/api/numpy/linalg/outer/",
               "label": "fnp.linalg.outer",
               "original_target": "linalg.outer",
               "role": "",
@@ -285,7 +285,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/tensordot",
+              "href": "/docs/api/numpy/tensordot/",
               "label": "fnp.tensordot",
               "original_target": "tensordot",
               "role": "",
@@ -332,7 +332,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -488,18 +488,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nrl = fnp.outer(fnp.ones((5,)), fnp.linspace(-2, 2, 5))\n\nrl\n\nim = fnp.outer(1j*fnp.linspace(2, -2, 5), fnp.ones((5,)))\n\nim\n\ngrid = rl + im\n\ngrid\n\nx = fnp.array(['a', 'b', 'c'], dtype=object)\n\nfnp.outer(x, [1, 2, 3])",
+    "code": "import flopscope.numpy as fnp\n\nrl = fnp.outer(fnp.ones((5,)), fnp.linspace(-2, 2, 5))\n\nrl\n\nim = fnp.outer(1j*fnp.linspace(2, -2, 5), fnp.ones((5,)))\n\nim\n\ngrid = rl + im\n\ngrid\n\nx = fnp.array(['a', 'b', 'c'], dtype=object)\n\nfnp.outer(x, [1, 2, 3])",
     "output": "array([[-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.],\n       [-2., -1.,  0.,  1.,  2.]])\n\narray([[0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j, 0.+2.j],\n       [0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j, 0.+1.j],\n       [0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j],\n       [0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j, 0.-1.j],\n       [0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j, 0.-2.j]])\n\narray([[-2.+2.j, -1.+2.j,  0.+2.j,  1.+2.j,  2.+2.j],\n       [-2.+1.j, -1.+1.j,  0.+1.j,  1.+1.j,  2.+1.j],\n       [-2.+0.j, -1.+0.j,  0.+0.j,  1.+0.j,  2.+0.j],\n       [-2.-1.j, -1.-1.j,  0.-1.j,  1.-1.j,  2.-1.j],\n       [-2.-2.j, -1.-2.j,  0.-2.j,  1.-2.j,  2.-2.j]])\n\narray([['a', 'aa', 'aaa'],\n       ['b', 'bb', 'bbb'],\n       ['c', 'cc', 'ccc']], dtype=object)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.outer",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L885",
-  "href": "/docs/api/ops/outer/",
+  "href": "/docs/api/numpy/outer/",
   "module": "numpy",
   "name": "outer",
   "next": {
-    "href": "/docs/api/ops/packbits/",
+    "href": "/docs/api/numpy/packbits/",
     "label": "fnp.packbits"
   },
   "notes": "Outer product of two vectors; cost = M*N.",
@@ -531,10 +531,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ones_like/",
+    "href": "/docs/api/numpy/ones-like/",
     "label": "fnp.ones_like"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.outer",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.outer.html",
   "returns": [
     {
@@ -550,7 +551,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/inner",
+      "href": "/docs/api/numpy/inner/",
       "label": "fnp.inner",
       "original_target": "inner",
       "role": "",
@@ -570,7 +571,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/einsum",
+      "href": "/docs/api/numpy/einsum/",
       "label": "fnp.einsum",
       "original_target": "einsum",
       "role": "",
@@ -610,7 +611,7 @@
         },
         {
           "external_url": "",
-          "href": "/docs/api/ops/outer",
+          "href": "/docs/api/numpy/outer/",
           "kind": "link",
           "target": "outer",
           "text": "fnp.outer"
@@ -621,7 +622,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/linalg-outer",
+      "href": "/docs/api/numpy/linalg/outer/",
       "label": "fnp.linalg.outer",
       "original_target": "linalg.outer",
       "role": "",
@@ -641,7 +642,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/tensordot",
+      "href": "/docs/api/numpy/tensordot/",
       "label": "fnp.tensordot",
       "original_target": "tensordot",
       "role": "",
@@ -652,6 +653,8 @@
   "signature": "fnp.outer(a, b, out=None)",
   "slug": "outer",
   "summary": "Compute the outer product of two vectors.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L876",
   "weight": 1.0
 }

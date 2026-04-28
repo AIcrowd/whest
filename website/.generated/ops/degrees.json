@@ -292,7 +292,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/degrees",
+              "href": "/docs/api/numpy/degrees/",
               "label": "fnp.degrees",
               "original_target": "rad2deg",
               "role": "",
@@ -321,7 +321,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -395,18 +395,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nrad = fnp.arange(12.)*fnp.pi/6\n\nfnp.degrees(rad)\n\nout = fnp.zeros((rad.shape))\n\nr = fnp.degrees(rad, out)\n\nfnp.all(r == out)",
+    "code": "import flopscope.numpy as fnp\n\nrad = fnp.arange(12.)*fnp.pi/6\n\nfnp.degrees(rad)\n\nout = fnp.zeros((rad.shape))\n\nr = fnp.degrees(rad, out)\n\nfnp.all(r == out)",
     "output": "array([   0.,   30.,   60.,   90.,  120.,  150.,  180.,  210.,  240.,\n        270.,  300.,  330.])\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.degrees",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/degrees/",
+  "href": "/docs/api/numpy/degrees/",
   "module": "numpy",
   "name": "degrees",
   "next": {
-    "href": "/docs/api/ops/delete/",
+    "href": "/docs/api/numpy/delete/",
     "label": "fnp.delete"
   },
   "notes": "Convert radians to degrees element-wise.",
@@ -452,10 +452,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/cumulative_sum/",
+    "href": "/docs/api/numpy/cumulative-sum/",
     "label": "fnp.cumulative_sum"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.degrees",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.degrees.html",
   "returns": [
     {
@@ -478,7 +479,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/degrees",
+      "href": "/docs/api/numpy/degrees/",
       "label": "fnp.degrees",
       "original_target": "rad2deg",
       "role": "",
@@ -489,6 +490,8 @@
   "signature": "fnp.degrees(x)",
   "slug": "degrees",
   "summary": "Convert angles from radians to degrees.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

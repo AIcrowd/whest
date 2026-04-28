@@ -1,0 +1,119 @@
+{
+  "aliases": [
+    "flops.stats.cauchy"
+  ],
+  "area": "stats",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Cauchy (Lorentz) continuous random variable."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This object mirrors "
+            },
+            {
+              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.cauchy.html",
+              "href": "",
+              "kind": "link",
+              "target": "stats.cauchy",
+              "text": "scipy.stats.cauchy"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " is the location parameter and "
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": " is the half-width at\nhalf-maximum. Each public method deducts "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(input)"
+            },
+            {
+              "kind": "text",
+              "text": " FLOPs from\nthe active budget."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flopscope.stats.cauchy",
+  "canonical_path": "/docs/api/stats/cauchy/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.stats.cauchy",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": null,
+  "flopscope_ref": "flopscope.stats.cauchy",
+  "flopscope_source_url": "",
+  "href": "/docs/api/stats/cauchy/",
+  "import_path": "flopscope.stats.cauchy",
+  "is_operation_cost_leaf": false,
+  "kind": "object",
+  "legacy_href": "/docs/api/stats/cauchy/",
+  "module": "flopscope.stats._cauchy",
+  "name": "cauchy",
+  "next": null,
+  "notes": "",
+  "notes_sections": [
+    "``loc`` is the location parameter and ``scale`` is the half-width at half-maximum. Each public method deducts ``1 * numel(input)`` FLOPs from the active budget."
+  ],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [],
+  "previous": null,
+  "returns": [],
+  "schema_version": 1,
+  "see_also": [],
+  "signature": "flopscope.stats.cauchy",
+  "slug": "flopscope-stats-cauchy",
+  "summary": "Cauchy (Lorentz) continuous random variable.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

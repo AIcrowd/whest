@@ -299,7 +299,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isinf",
+              "href": "/docs/api/numpy/isinf/",
               "label": "fnp.isinf",
               "original_target": "isinf",
               "role": "",
@@ -310,7 +310,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isneginf",
+              "href": "/docs/api/numpy/isneginf/",
               "label": "fnp.isneginf",
               "original_target": "isneginf",
               "role": "",
@@ -321,7 +321,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isposinf",
+              "href": "/docs/api/numpy/isposinf/",
               "label": "fnp.isposinf",
               "original_target": "isposinf",
               "role": "",
@@ -332,7 +332,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isnan",
+              "href": "/docs/api/numpy/isnan/",
               "label": "fnp.isnan",
               "original_target": "isnan",
               "role": "",
@@ -383,7 +383,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -497,18 +497,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.isfinite(1)\n\nfnp.isfinite(0)\n\nfnp.isfinite(fnp.nan)\n\nfnp.isfinite(fnp.inf)\n\nfnp.isfinite(-fnp.inf)\n\nfnp.isfinite([fnp.log(-1.),1.,fnp.log(0)])\n\nx = fnp.array([-fnp.inf, 0., fnp.inf])\n\ny = fnp.array([2, 2, 2])\n\nfnp.isfinite(x, y)\n\ny",
+    "code": "import flopscope.numpy as fnp\n\nfnp.isfinite(1)\n\nfnp.isfinite(0)\n\nfnp.isfinite(fnp.nan)\n\nfnp.isfinite(fnp.inf)\n\nfnp.isfinite(-fnp.inf)\n\nfnp.isfinite([fnp.log(-1.),1.,fnp.log(0)])\n\nx = fnp.array([-fnp.inf, 0., fnp.inf])\n\ny = fnp.array([2, 2, 2])\n\nfnp.isfinite(x, y)\n\ny",
     "output": "True\n\nTrue\n\nFalse\n\nFalse\n\nFalse\n\narray([False,  True, False])\n\narray([0, 1, 0])\n\narray([0, 1, 0])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.isfinite",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L546",
-  "href": "/docs/api/ops/isfinite/",
+  "href": "/docs/api/numpy/isfinite/",
   "module": "numpy",
   "name": "isfinite",
   "next": {
-    "href": "/docs/api/ops/isfortran/",
+    "href": "/docs/api/numpy/isfortran/",
     "label": "fnp.isfortran"
   },
   "notes": "Test for finite values element-wise. Cost: numel(input).",
@@ -557,10 +557,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isdtype/",
+    "href": "/docs/api/numpy/isdtype/",
     "label": "fnp.isdtype"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.isfinite",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isfinite.html",
   "returns": [
     {
@@ -578,7 +579,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isinf",
+      "href": "/docs/api/numpy/isinf/",
       "label": "fnp.isinf",
       "original_target": "isinf",
       "role": "",
@@ -589,7 +590,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isneginf",
+      "href": "/docs/api/numpy/isneginf/",
       "label": "fnp.isneginf",
       "original_target": "isneginf",
       "role": "",
@@ -600,7 +601,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isposinf",
+      "href": "/docs/api/numpy/isposinf/",
       "label": "fnp.isposinf",
       "original_target": "isposinf",
       "role": "",
@@ -611,7 +612,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isnan",
+      "href": "/docs/api/numpy/isnan/",
       "label": "fnp.isnan",
       "original_target": "isnan",
       "role": "",
@@ -622,6 +623,8 @@
   "signature": "fnp.isfinite(x, **kwargs)",
   "slug": "isfinite",
   "summary": "Test element-wise for finiteness (not infinity and not Not a Number).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

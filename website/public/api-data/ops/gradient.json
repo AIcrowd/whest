@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/gradient/",
+  "detail_href": "/docs/api/numpy/gradient/",
   "detail_json_href": "/api-data/ops/gradient.json",
   "docs": {
     "sections": [
@@ -427,7 +427,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

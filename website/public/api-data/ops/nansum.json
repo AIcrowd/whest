@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nansum/",
+  "detail_href": "/docs/api/numpy/nansum/",
   "detail_json_href": "/api-data/ops/nansum.json",
   "docs": {
     "sections": [
@@ -254,7 +254,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/mean",
+                        "href": "/docs/api/numpy/mean/",
                         "kind": "link",
                         "target": "mean",
                         "text": "mean"
@@ -265,7 +265,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/sum",
+                        "href": "/docs/api/numpy/sum/",
                         "kind": "link",
                         "target": "sum",
                         "text": "sum"
@@ -553,7 +553,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "label": "fnp.sum",
                 "original_target": "numpy.sum",
                 "role": "",
@@ -569,7 +569,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
+                "href": "/docs/api/numpy/isnan/",
                 "label": "fnp.isnan",
                 "original_target": "isnan",
                 "role": "",
@@ -585,7 +585,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isfinite",
+                "href": "/docs/api/numpy/isfinite/",
                 "label": "fnp.isfinite",
                 "original_target": "isfinite",
                 "role": "",
@@ -619,7 +619,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/ravel/",
+  "detail_href": "/docs/api/numpy/ravel/",
   "detail_json_href": "/api-data/ops/ravel.json",
   "docs": {
     "sections": [
@@ -341,7 +341,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/ravel",
+                "href": "/docs/api/numpy/ravel/",
                 "kind": "link",
                 "target": "ravel",
                 "text": "ravel"
@@ -368,7 +368,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/reshape",
+                "href": "/docs/api/numpy/reshape/",
                 "kind": "link",
                 "target": "reshape",
                 "text": "reshape"
@@ -407,7 +407,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

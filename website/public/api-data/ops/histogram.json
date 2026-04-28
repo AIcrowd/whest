@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/histogram/",
+  "detail_href": "/docs/api/numpy/histogram/",
   "detail_json_href": "/api-data/ops/histogram.json",
   "docs": {
     "sections": [
@@ -86,7 +86,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/histogram_bin_edges",
+                        "href": "/docs/api/numpy/histogram-bin-edges/",
                         "kind": "link",
                         "target": "histogram_bin_edges",
                         "text": "histogram_bin_edges"
@@ -597,7 +597,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/histogramdd",
+                "href": "/docs/api/numpy/histogramdd/",
                 "label": "fnp.histogramdd",
                 "original_target": "histogramdd",
                 "role": "",
@@ -608,7 +608,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bincount",
+                "href": "/docs/api/numpy/bincount/",
                 "label": "fnp.bincount",
                 "original_target": "bincount",
                 "role": "",
@@ -619,7 +619,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/searchsorted",
+                "href": "/docs/api/numpy/searchsorted/",
                 "label": "fnp.searchsorted",
                 "original_target": "searchsorted",
                 "role": "",
@@ -630,7 +630,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/digitize",
+                "href": "/docs/api/numpy/digitize/",
                 "label": "fnp.digitize",
                 "original_target": "digitize",
                 "role": "",
@@ -641,7 +641,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram_bin_edges",
+                "href": "/docs/api/numpy/histogram-bin-edges/",
                 "label": "fnp.histogram_bin_edges",
                 "original_target": "histogram_bin_edges",
                 "role": "",
@@ -729,7 +729,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -817,7 +817,7 @@
             "content_blocks": [
               {
                 "language": "python",
-                "text": "import matplotlib.pyplot as plt\nimport flopscope as fnp\n\nrng = fnp.random.RandomState(10)  # deterministic random data\na = fnp.hstack((rng.normal(size=1000),\n               rng.normal(loc=5, scale=2, size=1000)))\nplt.hist(a, bins='auto')  # arguments are passed to fnp.histogram\nplt.title(\"Histogram with 'auto' bins\")\nplt.show()",
+                "text": "import matplotlib.pyplot as plt\nimport flopscope.numpy as fnp\n\nrng = fnp.random.RandomState(10)  # deterministic random data\na = fnp.hstack((rng.normal(size=1000),\n               rng.normal(loc=5, scale=2, size=1000)))\nplt.hist(a, bins='auto')  # arguments are passed to fnp.histogram\nplt.title(\"Histogram with 'auto' bins\")\nplt.show()",
                 "type": "literal_block"
               }
             ],

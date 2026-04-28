@@ -32,6 +32,7 @@ Dispatch integration with `AIcrowd/flopscope-docs` was verified on 2026-04-16.
 ```python
 import numpy as np
 
+
 depth, width = 5, 256
 
 # Weight init
@@ -57,6 +58,7 @@ for i, W in enumerate(weights):
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 depth, width = 5, 256
 
 # Weight init
@@ -82,7 +84,7 @@ flops.budget_summary()  # 984,321 FLOPs
 
 ## Key Features
 
-- **NumPy-compatible API** -- `import flopscope as we` and write familiar NumPy code
+- **NumPy-compatible API** -- `import flopscope.numpy as fnp` for counted NumPy ops, with `import flopscope as flops` for budgets and symmetry helpers
 - **Analytical FLOP counting** -- deterministic, hardware-independent cost tracking
 - **Budget enforcement** -- operations are checked before execution; exceeding the budget raises a clear error
 - **Symmetry-aware einsum** -- automatic FLOP savings for repeated operands and declared symmetry groups
@@ -93,7 +95,7 @@ flops.budget_summary()  # 984,321 FLOPs
 
 | Module | Operations | Cost Model | Status |
 |--------|-----------|------------|--------|
-| Core (`we.*`) | 333 | Varies by category (unary, binary, reduction, free) | Supported |
+| NumPy surface (`fnp.*`) | 333 | Varies by category (unary, binary, reduction, free) | Supported |
 | `fnp.linalg` | 31 | Per-operation formulas | Supported |
 | `fnp.fft` | 18 | `5n * ceil(log2(n))` for transforms | Supported |
 | `fnp.random` | 51 | `numel(output)` per sample; shuffle: `n*ceil(log2(n))` | Supported |
@@ -118,6 +120,7 @@ uv add git+https://github.com/AIcrowd/flopscope.git
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 depth, width = 5, 256
 
 with flops.BudgetContext(flop_budget=10**8, wall_time_limit_s=5.0) as budget:

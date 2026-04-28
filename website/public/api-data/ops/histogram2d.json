@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/histogram2d/",
+  "detail_href": "/docs/api/numpy/histogram2d/",
   "detail_json_href": "/api-data/ops/histogram2d.json",
   "docs": {
     "sections": [
@@ -513,7 +513,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "label": "fnp.histogram",
                 "original_target": "histogram",
                 "role": "",
@@ -529,7 +529,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/histogramdd",
+                "href": "/docs/api/numpy/histogramdd/",
                 "label": "fnp.histogramdd",
                 "original_target": "histogramdd",
                 "role": "",
@@ -609,7 +609,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/histogramdd",
+                "href": "/docs/api/numpy/histogramdd/",
                 "kind": "link",
                 "target": "histogramdd",
                 "text": "histogramdd"
@@ -631,7 +631,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

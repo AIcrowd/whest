@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-multi_dot/",
+  "detail_href": "/docs/api/numpy/linalg/multi-dot/",
   "detail_json_href": "/api-data/ops/linalg-multi_dot.json",
   "docs": {
     "sections": [
@@ -31,7 +31,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "kind": "link",
                 "target": "dot",
                 "text": "fnp.dot"
@@ -210,7 +210,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "label": "fnp.dot",
                 "original_target": "numpy.dot",
                 "role": "",
@@ -305,7 +305,7 @@
           },
           {
             "language": null,
-            "text": ">>> import flopscope as fnp\n>>> from fnp.linalg import multi_dot\n>>> # Prepare some data\n>>> A = fnp.random.random((10000, 100))\n>>> B = fnp.random.random((100, 1000))\n>>> C = fnp.random.random((1000, 5))\n>>> D = fnp.random.random((5, 333))\n>>> # the actual dot multiplication\n>>> _ = multi_dot([A, B, C, D])",
+            "text": ">>> import flopscope.numpy as fnp\n>>> from fnp.linalg import multi_dot\n>>> # Prepare some data\n>>> A = fnp.random.random((10000, 100))\n>>> B = fnp.random.random((100, 1000))\n>>> C = fnp.random.random((1000, 5))\n>>> D = fnp.random.random((5, 333))\n>>> # the actual dot multiplication\n>>> _ = multi_dot([A, B, C, D])",
             "type": "literal_block"
           },
           {

@@ -1,0 +1,158 @@
+{
+  "aliases": [
+    "flops.accounting.SymmetryInfo"
+  ],
+  "area": "accounting",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Metadata about tensor symmetry groups."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Groups of dimension indices that are symmetric under permutation."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "list of tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Groups of dimension indices that are symmetric under permutation."
+                }
+              ],
+              "name": "symmetric_axes",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Full tensor shape."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "tuple of int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Full tensor shape."
+                }
+              ],
+              "name": "shape",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "PermutationGroup objects carrying axis info. Auto-built from\nsymmetric_axes when not supplied."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "list of PermutationGroup, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "PermutationGroup objects carrying axis info. Auto-built from\nsymmetric_axes when not supplied."
+                }
+              ],
+              "name": "groups",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    }
+  ],
+  "canonical_name": "flopscope.accounting.SymmetryInfo",
+  "canonical_path": "/docs/api/accounting/symmetry-info/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.accounting.SymmetryInfo",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": null,
+  "flopscope_ref": "flopscope.accounting.SymmetryInfo",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L15",
+  "href": "/docs/api/accounting/symmetry-info/",
+  "import_path": "flopscope.accounting.SymmetryInfo",
+  "is_operation_cost_leaf": false,
+  "kind": "class",
+  "legacy_href": "/docs/api/accounting/symmetry-info/",
+  "module": "flopscope._symmetric",
+  "name": "SymmetryInfo",
+  "next": null,
+  "notes": "",
+  "notes_sections": [],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [
+    {
+      "body": [
+        "Groups of dimension indices that are symmetric under permutation."
+      ],
+      "name": "symmetric_axes",
+      "type": "list of tuple of int"
+    },
+    {
+      "body": [
+        "Full tensor shape."
+      ],
+      "name": "shape",
+      "type": "tuple of int"
+    },
+    {
+      "body": [
+        "PermutationGroup objects carrying axis info. Auto-built from",
+        "symmetric_axes when not supplied."
+      ],
+      "name": "groups",
+      "type": "list of PermutationGroup, optional"
+    }
+  ],
+  "previous": null,
+  "returns": [],
+  "schema_version": 1,
+  "see_also": [],
+  "signature": "flopscope.accounting.SymmetryInfo(symmetric_axes: 'list[tuple[int, ...]]' = <factory>, shape: 'tuple[int, ...]' = (), groups: 'list | None' = None) -> None",
+  "slug": "flopscope-accounting-symmetry-info",
+  "summary": "Metadata about tensor symmetry groups.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

@@ -19,6 +19,7 @@ title: "Einsum Patterns"
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=10**8) as budget:
     A = fnp.ones((256, 256))
     B = fnp.ones((256, 256))
@@ -104,6 +105,7 @@ For the full symmetry guide, see [Symmetry Savings](/docs/guides/symmetry/).
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 n = 10
 T = flops.as_symmetric(fnp.ones((n, n, n)), symmetric_axes=(0, 1, 2))
 A = fnp.random.randn(n, n)
@@ -159,6 +161,7 @@ By default Flopscope finds the optimal contraction order automatically. You can 
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 A = fnp.ones((3, 4))
 B = fnp.ones((4, 5))
 C = fnp.ones((5, 6))

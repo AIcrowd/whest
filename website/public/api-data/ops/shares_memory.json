@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/shares_memory/",
+  "detail_href": "/docs/api/numpy/shares-memory/",
   "detail_json_href": "/api-data/ops/shares_memory.json",
   "docs": {
     "sections": [
@@ -38,7 +38,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/may_share_memory",
+                    "href": "/docs/api/numpy/may-share-memory/",
                     "kind": "link",
                     "target": "may_share_memory",
                     "text": "fnp.may_share_memory"
@@ -225,7 +225,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/may_share_memory",
+                "href": "/docs/api/numpy/may-share-memory/",
                 "label": "fnp.may_share_memory",
                 "original_target": "may_share_memory",
                 "role": "",
@@ -245,7 +245,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

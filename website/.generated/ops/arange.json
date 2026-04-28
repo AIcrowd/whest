@@ -23,7 +23,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/arange",
+              "href": "/docs/api/numpy/arange/",
               "kind": "link",
               "target": "arange",
               "text": "arange"
@@ -181,7 +181,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/linspace",
+              "href": "/docs/api/numpy/linspace/",
               "kind": "link",
               "target": "linspace",
               "text": "fnp.linspace"
@@ -623,7 +623,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/linspace",
+              "href": "/docs/api/numpy/linspace/",
               "label": "fnp.linspace",
               "original_target": "numpy.linspace",
               "role": "",
@@ -698,7 +698,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arange",
+              "href": "/docs/api/numpy/arange/",
               "kind": "link",
               "target": "arange",
               "text": "fnp.arange"
@@ -755,7 +755,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/linspace",
+              "href": "/docs/api/numpy/linspace/",
               "kind": "link",
               "target": "linspace",
               "text": "fnp.linspace"
@@ -799,7 +799,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arange",
+              "href": "/docs/api/numpy/arange/",
               "kind": "link",
               "target": "arange",
               "text": "fnp.arange"
@@ -858,7 +858,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -928,18 +928,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.arange(3)\n\nfnp.arange(3.0)\n\nfnp.arange(3,7)\n\nfnp.arange(3,7,2)",
+    "code": "import flopscope.numpy as fnp\n\nfnp.arange(3)\n\nfnp.arange(3.0)\n\nfnp.arange(3,7)\n\nfnp.arange(3,7,2)",
     "output": "array([0, 1, 2])\n\narray([ 0.,  1.,  2.])\n\narray([3, 4, 5, 6])\n\narray([3, 5])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.arange",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L113",
-  "href": "/docs/api/ops/arange/",
+  "href": "/docs/api/numpy/arange/",
   "module": "numpy",
   "name": "arange",
   "next": {
-    "href": "/docs/api/ops/arccos/",
+    "href": "/docs/api/numpy/arccos/",
     "label": "fnp.arccos"
   },
   "notes": "Return evenly spaced values in given interval. Cost: numel(output).",
@@ -1006,10 +1006,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/apply_over_axes/",
+    "href": "/docs/api/numpy/apply-over-axes/",
     "label": "fnp.apply_over_axes"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.arange",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.arange.html",
   "returns": [
     {
@@ -1035,7 +1036,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/linspace",
+      "href": "/docs/api/numpy/linspace/",
       "label": "fnp.linspace",
       "original_target": "numpy.linspace",
       "role": "",
@@ -1089,6 +1090,8 @@
   "signature": "fnp.arange(*args, **kwargs)",
   "slug": "arange",
   "summary": "Return evenly spaced values within a given interval.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

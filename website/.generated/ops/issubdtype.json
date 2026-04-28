@@ -146,7 +146,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/issubdtype",
+              "href": "/docs/api/numpy/issubdtype/",
               "kind": "link",
               "target": "issubdtype",
               "text": "issubdtype"
@@ -347,11 +347,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.issubdtype",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1113",
-  "href": "/docs/api/ops/issubdtype/",
+  "href": "/docs/api/numpy/issubdtype/",
   "module": "numpy",
   "name": "issubdtype",
   "next": {
-    "href": "/docs/api/ops/iterable/",
+    "href": "/docs/api/numpy/iterable/",
     "label": "fnp.iterable"
   },
   "notes": "Return True if first argument is lower in type hierarchy.",
@@ -367,10 +367,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isscalar/",
+    "href": "/docs/api/numpy/isscalar/",
     "label": "fnp.isscalar"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.issubdtype",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.issubdtype.html",
   "returns": [
     {
@@ -400,6 +401,8 @@
   "signature": "fnp.issubdtype(arg1, arg2)",
   "slug": "issubdtype",
   "summary": "Returns True if first argument is a typecode lower/equal in type hierarchy.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numerictypes.py#L471",
   "weight": 0.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/bitwise_left_shift/",
+  "detail_href": "/docs/api/numpy/bitwise-left-shift/",
   "detail_json_href": "/api-data/ops/bitwise_left_shift.json",
   "docs": {
     "sections": [
@@ -422,7 +422,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/right_shift",
+                "href": "/docs/api/numpy/right-shift/",
                 "label": "fnp.right_shift",
                 "original_target": "right_shift",
                 "role": "",
@@ -437,8 +437,8 @@
                     "text": "Return the binary representation of the input number as a string."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.binary_repr.html",
-                "href": "",
+                "external_url": "",
+                "href": "/docs/api/numpy/binary-repr/",
                 "label": "binary_repr",
                 "original_target": "binary_repr",
                 "role": "",
@@ -458,7 +458,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -578,7 +578,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/left_shift",
+                "href": "/docs/api/numpy/left-shift/",
                 "kind": "link",
                 "target": "left_shift",
                 "text": "fnp.left_shift"

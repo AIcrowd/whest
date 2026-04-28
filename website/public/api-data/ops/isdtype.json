@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isdtype/",
+  "detail_href": "/docs/api/numpy/isdtype/",
   "detail_json_href": "/api-data/ops/isdtype.json",
   "docs": {
     "sections": [
@@ -232,7 +232,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/issubdtype",
+                "href": "/docs/api/numpy/issubdtype/",
                 "label": "fnp.issubdtype",
                 "original_target": "issubdtype",
                 "role": "",
@@ -252,7 +252,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

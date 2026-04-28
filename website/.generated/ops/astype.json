@@ -305,7 +305,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -383,18 +383,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\narr = fnp.array([1, 2, 3]); arr\n\nfnp.astype(arr, fnp.float64)\n\narr = fnp.array([1, 2, 3])\n\narr_noncpy = fnp.astype(arr, arr.dtype, copy=False)\n\nfnp.shares_memory(arr, arr_noncpy)",
+    "code": "import flopscope.numpy as fnp\n\narr = fnp.array([1, 2, 3]); arr\n\nfnp.astype(arr, fnp.float64)\n\narr = fnp.array([1, 2, 3])\n\narr_noncpy = fnp.astype(arr, arr.dtype, copy=False)\n\nfnp.shares_memory(arr, arr_noncpy)",
     "output": "array([1, 2, 3])\n\narray([1., 2., 3.])\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.astype",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L512",
-  "href": "/docs/api/ops/astype/",
+  "href": "/docs/api/numpy/astype/",
   "module": "numpy",
   "name": "astype",
   "next": {
-    "href": "/docs/api/ops/atleast_1d/",
+    "href": "/docs/api/numpy/atleast-1d/",
     "label": "fnp.atleast_1d"
   },
   "notes": "Cast array to specified type.",
@@ -440,10 +440,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/asarray_chkfinite/",
+    "href": "/docs/api/numpy/asarray-chkfinite/",
     "label": "fnp.asarray_chkfinite"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.astype",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.astype.html",
   "returns": [
     {
@@ -470,6 +471,8 @@
   "signature": "fnp.astype(x, dtype, /, *, copy=True, device=None)",
   "slug": "astype",
   "summary": "Copies an array to a specified data type.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2618",
   "weight": 0.0
 }

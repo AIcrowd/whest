@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/squeeze/",
+  "detail_href": "/docs/api/numpy/squeeze/",
   "detail_json_href": "/api-data/ops/squeeze.json",
   "docs": {
     "sections": [
@@ -207,7 +207,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/expand_dims",
+                "href": "/docs/api/numpy/expand-dims/",
                 "label": "fnp.expand_dims",
                 "original_target": "expand_dims",
                 "role": "",
@@ -223,7 +223,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/reshape",
+                "href": "/docs/api/numpy/reshape/",
                 "label": "fnp.reshape",
                 "original_target": "reshape",
                 "role": "",
@@ -243,7 +243,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

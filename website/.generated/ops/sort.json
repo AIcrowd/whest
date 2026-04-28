@@ -338,7 +338,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/argsort",
+              "href": "/docs/api/numpy/argsort/",
               "label": "fnp.argsort",
               "original_target": "argsort",
               "role": "",
@@ -354,7 +354,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/lexsort",
+              "href": "/docs/api/numpy/lexsort/",
               "label": "fnp.lexsort",
               "original_target": "lexsort",
               "role": "",
@@ -370,7 +370,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/searchsorted",
+              "href": "/docs/api/numpy/searchsorted/",
               "label": "fnp.searchsorted",
               "original_target": "searchsorted",
               "role": "",
@@ -386,7 +386,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/partition",
+              "href": "/docs/api/numpy/partition/",
               "label": "fnp.partition",
               "original_target": "partition",
               "role": "",
@@ -447,7 +447,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/sort",
+              "href": "/docs/api/numpy/sort/",
               "kind": "link",
               "target": "sort",
               "text": "sort"
@@ -648,7 +648,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -840,18 +840,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[1,4],[3,1]])\n\nfnp.sort(a)                # sort along the last axis\n\nfnp.sort(a, axis=None)     # sort the flattened array\n\nfnp.sort(a, axis=0)        # sort along the first axis\n\ndtype = [('name', 'S10'), ('height', float), ('age', int)]\n\nvalues = [('Arthur', 1.8, 41), ('Lancelot', 1.9, 38),\n          ('Galahad', 1.7, 38)]\n\na = fnp.array(values, dtype=dtype)       # create a structured array\n\nfnp.sort(a, order='height')                        # doctest: +SKIP\n\nfnp.sort(a, order=['age', 'height'])               # doctest: +SKIP",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array([[1,4],[3,1]])\n\nfnp.sort(a)                # sort along the last axis\n\nfnp.sort(a, axis=None)     # sort the flattened array\n\nfnp.sort(a, axis=0)        # sort along the first axis\n\ndtype = [('name', 'S10'), ('height', float), ('age', int)]\n\nvalues = [('Arthur', 1.8, 41), ('Lancelot', 1.9, 38),\n          ('Galahad', 1.7, 38)]\n\na = fnp.array(values, dtype=dtype)       # create a structured array\n\nfnp.sort(a, order='height')                        # doctest: +SKIP\n\nfnp.sort(a, order=['age', 'height'])               # doctest: +SKIP",
     "output": "array([[1, 4],\n       [1, 3]])\n\narray([1, 1, 3, 4])\n\narray([[1, 1],\n       [3, 4]])\n\narray([('Galahad', 1.7, 38), ('Arthur', 1.8, 41),\n       ('Lancelot', 1.8999999999999999, 38)],\n      dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])\n\narray([('Galahad', 1.7, 38), ('Lancelot', 1.8999999999999999, 38),\n       ('Arthur', 1.8, 41)],\n      dtype=[('name', '|S10'), ('height', '<f8'), ('age', '<i4')])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.sort",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L44",
-  "href": "/docs/api/ops/sort/",
+  "href": "/docs/api/numpy/sort/",
   "module": "numpy",
   "name": "sort",
   "next": {
-    "href": "/docs/api/ops/sort_complex/",
+    "href": "/docs/api/numpy/sort-complex/",
     "label": "fnp.sort_complex"
   },
   "notes": "Comparison sort; cost = n*ceil(log2(n)) per slice.",
@@ -921,10 +921,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/size/",
+    "href": "/docs/api/numpy/size/",
     "label": "fnp.size"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.sort",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sort.html",
   "returns": [
     {
@@ -961,7 +962,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/argsort",
+      "href": "/docs/api/numpy/argsort/",
       "label": "fnp.argsort",
       "original_target": "argsort",
       "role": "",
@@ -977,7 +978,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/lexsort",
+      "href": "/docs/api/numpy/lexsort/",
       "label": "fnp.lexsort",
       "original_target": "lexsort",
       "role": "",
@@ -993,7 +994,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/searchsorted",
+      "href": "/docs/api/numpy/searchsorted/",
       "label": "fnp.searchsorted",
       "original_target": "searchsorted",
       "role": "",
@@ -1009,7 +1010,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/partition",
+      "href": "/docs/api/numpy/partition/",
       "label": "fnp.partition",
       "original_target": "partition",
       "role": "",
@@ -1020,6 +1021,8 @@
   "signature": "fnp.sort(a, axis=-1, kind=None, order=None, *, stable=None)",
   "slug": "sort",
   "summary": "Return a sorted copy of an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L969",
   "weight": 1.0
 }

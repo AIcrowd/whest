@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/unstack/",
+  "detail_href": "/docs/api/numpy/unstack/",
   "detail_json_href": "/api-data/ops/unstack.json",
   "docs": {
     "sections": [
@@ -199,7 +199,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/stack",
+                "href": "/docs/api/numpy/stack/",
                 "label": "fnp.stack",
                 "original_target": "stack",
                 "role": "",
@@ -215,7 +215,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
+                "href": "/docs/api/numpy/concatenate/",
                 "label": "fnp.concatenate",
                 "original_target": "concatenate",
                 "role": "",
@@ -231,7 +231,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "label": "fnp.block",
                 "original_target": "block",
                 "role": "",
@@ -247,7 +247,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "label": "fnp.split",
                 "original_target": "split",
                 "role": "",
@@ -266,7 +266,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/unstack",
+                "href": "/docs/api/numpy/unstack/",
                 "kind": "link",
                 "target": "unstack",
                 "text": "unstack"
@@ -279,7 +279,7 @@
                 "display_text": "stack",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/stack",
+                "href": "/docs/api/numpy/stack/",
                 "kind": "role_reference",
                 "original_target": "stack",
                 "role": "py:func",

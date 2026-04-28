@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/unique/",
+  "detail_href": "/docs/api/numpy/unique/",
   "detail_json_href": "/api-data/ops/unique.json",
   "docs": {
     "sections": [
@@ -485,7 +485,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/repeat",
+                "href": "/docs/api/numpy/repeat/",
                 "label": "fnp.repeat",
                 "original_target": "repeat",
                 "role": "",
@@ -501,7 +501,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/sort",
+                "href": "/docs/api/numpy/sort/",
                 "label": "fnp.sort",
                 "original_target": "sort",
                 "role": "",
@@ -555,7 +555,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

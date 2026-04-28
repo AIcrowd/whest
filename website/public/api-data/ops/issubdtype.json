@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/issubdtype/",
+  "detail_href": "/docs/api/numpy/issubdtype/",
   "detail_json_href": "/api-data/ops/issubdtype.json",
   "docs": {
     "sections": [
@@ -146,7 +146,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/issubdtype",
+                "href": "/docs/api/numpy/issubdtype/",
                 "kind": "link",
                 "target": "issubdtype",
                 "text": "issubdtype"

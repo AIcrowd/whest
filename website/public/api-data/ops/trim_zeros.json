@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/trim_zeros/",
+  "detail_href": "/docs/api/numpy/trim-zeros/",
   "detail_json_href": "/api-data/ops/trim_zeros.json",
   "docs": {
     "sections": [
@@ -196,7 +196,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

@@ -268,7 +268,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/var",
+                      "href": "/docs/api/numpy/var/",
                       "kind": "link",
                       "target": "var",
                       "text": "var"
@@ -521,7 +521,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/std",
+              "href": "/docs/api/numpy/std/",
               "label": "fnp.std",
               "original_target": "std",
               "role": "",
@@ -532,7 +532,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/mean",
+              "href": "/docs/api/numpy/mean/",
               "label": "fnp.mean",
               "original_target": "mean",
               "role": "",
@@ -543,7 +543,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanmean",
+              "href": "/docs/api/numpy/nanmean/",
               "label": "fnp.nanmean",
               "original_target": "nanmean",
               "role": "",
@@ -554,7 +554,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanstd",
+              "href": "/docs/api/numpy/nanstd/",
               "label": "fnp.nanstd",
               "original_target": "nanstd",
               "role": "",
@@ -565,7 +565,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanvar",
+              "href": "/docs/api/numpy/nanvar/",
               "label": "fnp.nanvar",
               "original_target": "nanvar",
               "role": "",
@@ -607,7 +607,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/mean",
+              "href": "/docs/api/numpy/mean/",
               "kind": "link",
               "target": "mean",
               "text": "mean"
@@ -788,7 +788,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -946,7 +946,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -1024,18 +1024,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[1, 2], [3, 4]])\n\nfnp.var(a)\n\nfnp.var(a, axis=0)\n\nfnp.var(a, axis=1)\n\na = fnp.zeros((2, 512*512), dtype=fnp.float32)\n\na[0, :] = 1.0\n\na[1, :] = 0.1\n\nfnp.var(a)\n\nfnp.var(a, dtype=fnp.float64)\n\n((1-0.55)**2 + (0.1-0.55)**2)/2\n\na = fnp.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nfnp.var(a)\n\nfnp.var(a, where=[[True], [True], [False]])\n\nimport flopscope as fnp\n\nfrom timeit import timeit\n\na = fnp.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nmean = fnp.mean(a, axis=1, keepdims=True)\n\ng = globals()\n\nn = 10000\n\nt1 = timeit(\"var = fnp.var(a, axis=1, mean=mean)\", globals=g, number=n)\n\nt2 = timeit(\"var = fnp.var(a, axis=1)\", globals=g, number=n)\n\nprint(f'Percentage execution time saved {100*(t2-t1)/t2:.0f}%')",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array([[1, 2], [3, 4]])\n\nfnp.var(a)\n\nfnp.var(a, axis=0)\n\nfnp.var(a, axis=1)\n\na = fnp.zeros((2, 512*512), dtype=fnp.float32)\n\na[0, :] = 1.0\n\na[1, :] = 0.1\n\nfnp.var(a)\n\nfnp.var(a, dtype=fnp.float64)\n\n((1-0.55)**2 + (0.1-0.55)**2)/2\n\na = fnp.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nfnp.var(a)\n\nfnp.var(a, where=[[True], [True], [False]])\n\nimport flopscope.numpy as fnp\n\nfrom timeit import timeit\n\na = fnp.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nmean = fnp.mean(a, axis=1, keepdims=True)\n\ng = globals()\n\nn = 10000\n\nt1 = timeit(\"var = fnp.var(a, axis=1, mean=mean)\", globals=g, number=n)\n\nt2 = timeit(\"var = fnp.var(a, axis=1)\", globals=g, number=n)\n\nprint(f'Percentage execution time saved {100*(t2-t1)/t2:.0f}%')",
     "output": "1.25\n\narray([1.,  1.])\n\narray([0.25,  0.25])\n\nfnp.float32(0.20250003)\n\n0.20249999932944759 # may vary\n\n0.2025\n\n6.833333333333333 # may vary\n\n4.0\n\n#doctest: +SKIP\nPercentage execution time saved 32%",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.var",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
-  "href": "/docs/api/ops/var/",
+  "href": "/docs/api/numpy/var/",
   "module": "numpy",
   "name": "var",
   "next": {
-    "href": "/docs/api/ops/vdot/",
+    "href": "/docs/api/numpy/vdot/",
     "label": "fnp.vdot"
   },
   "notes": "Variance; cost_multiplier=2 (two passes).",
@@ -1149,10 +1149,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/vander/",
+    "href": "/docs/api/numpy/vander/",
     "label": "fnp.vander"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.var",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.var.html",
   "returns": [
     {
@@ -1169,7 +1170,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/std",
+      "href": "/docs/api/numpy/std/",
       "label": "fnp.std",
       "original_target": "std",
       "role": "",
@@ -1180,7 +1181,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/mean",
+      "href": "/docs/api/numpy/mean/",
       "label": "fnp.mean",
       "original_target": "mean",
       "role": "",
@@ -1191,7 +1192,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanmean",
+      "href": "/docs/api/numpy/nanmean/",
       "label": "fnp.nanmean",
       "original_target": "nanmean",
       "role": "",
@@ -1202,7 +1203,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanstd",
+      "href": "/docs/api/numpy/nanstd/",
       "label": "fnp.nanstd",
       "original_target": "nanstd",
       "role": "",
@@ -1213,7 +1214,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanvar",
+      "href": "/docs/api/numpy/nanvar/",
       "label": "fnp.nanvar",
       "original_target": "nanvar",
       "role": "",
@@ -1235,6 +1236,8 @@
   "signature": "fnp.var(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
   "slug": "var",
   "summary": "Compute the variance along the specified axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L4073",
   "weight": 2.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/floor_divide/",
+  "detail_href": "/docs/api/numpy/floor-divide/",
   "detail_json_href": "/api-data/ops/floor_divide.json",
   "docs": {
     "sections": [
@@ -29,7 +29,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/remainder",
+                "href": "/docs/api/numpy/remainder/",
                 "kind": "link",
                 "target": "remainder",
                 "text": "remainder"
@@ -395,7 +395,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/remainder",
+                "href": "/docs/api/numpy/remainder/",
                 "label": "fnp.remainder",
                 "original_target": "remainder",
                 "role": "",
@@ -411,7 +411,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/floor_divide",
+                "href": "/docs/api/numpy/floor-divide/",
                 "label": "fnp.floor_divide",
                 "original_target": "divmod",
                 "role": "",
@@ -427,7 +427,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/divide",
+                "href": "/docs/api/numpy/divide/",
                 "label": "fnp.divide",
                 "original_target": "divide",
                 "role": "",
@@ -443,7 +443,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/floor",
+                "href": "/docs/api/numpy/floor/",
                 "label": "fnp.floor",
                 "original_target": "floor",
                 "role": "",
@@ -459,7 +459,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ceil",
+                "href": "/docs/api/numpy/ceil/",
                 "label": "fnp.ceil",
                 "original_target": "ceil",
                 "role": "",
@@ -479,7 +479,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -518,7 +518,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/floor_divide",
+                "href": "/docs/api/numpy/floor-divide/",
                 "kind": "link",
                 "target": "floor_divide",
                 "text": "fnp.floor_divide"

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/prod/",
+  "detail_href": "/docs/api/numpy/prod/",
   "detail_json_href": "/api-data/ops/prod.json",
   "docs": {
     "sections": [
@@ -209,7 +209,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/prod",
+                        "href": "/docs/api/numpy/prod/",
                         "kind": "link",
                         "target": "prod",
                         "text": "prod"
@@ -517,7 +517,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

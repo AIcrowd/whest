@@ -200,7 +200,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/sum",
+                      "href": "/docs/api/numpy/sum/",
                       "kind": "link",
                       "target": "sum",
                       "text": "sum"
@@ -464,7 +464,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/add",
+              "href": "/docs/api/numpy/add/",
               "label": "fnp.add",
               "original_target": "add",
               "role": "",
@@ -480,7 +480,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/cumsum",
+              "href": "/docs/api/numpy/cumsum/",
               "label": "fnp.cumsum",
               "original_target": "cumsum",
               "role": "",
@@ -496,7 +496,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/trapezoid",
+              "href": "/docs/api/numpy/trapezoid/",
               "label": "fnp.trapezoid",
               "original_target": "trapezoid",
               "role": "",
@@ -507,7 +507,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/mean",
+              "href": "/docs/api/numpy/mean/",
               "label": "fnp.mean",
               "original_target": "mean",
               "role": "",
@@ -518,7 +518,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/average",
+              "href": "/docs/api/numpy/average/",
               "label": "fnp.average",
               "original_target": "average",
               "role": "",
@@ -632,7 +632,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -759,18 +759,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.sum([0.5, 1.5])\n\nfnp.sum([0.5, 0.7, 0.2, 1.5], dtype=fnp.int32)\n\nfnp.sum([[0, 1], [0, 5]])\n\nfnp.sum([[0, 1], [0, 5]], axis=0)\n\nfnp.sum([[0, 1], [0, 5]], axis=1)\n\nfnp.sum([[0, 1], [fnp.nan, 5]], where=[False, True], axis=1)\n\nfnp.ones(128, dtype=fnp.int8).sum(dtype=fnp.int8)\n\nfnp.sum([10], initial=5)",
+    "code": "import flopscope.numpy as fnp\n\nfnp.sum([0.5, 1.5])\n\nfnp.sum([0.5, 0.7, 0.2, 1.5], dtype=fnp.int32)\n\nfnp.sum([[0, 1], [0, 5]])\n\nfnp.sum([[0, 1], [0, 5]], axis=0)\n\nfnp.sum([[0, 1], [0, 5]], axis=1)\n\nfnp.sum([[0, 1], [fnp.nan, 5]], where=[False, True], axis=1)\n\nfnp.ones(128, dtype=fnp.int8).sum(dtype=fnp.int8)\n\nfnp.sum([10], initial=5)",
     "output": "2.0\n\nfnp.int32(1)\n\n6\n\narray([0, 6])\n\narray([1, 5])\n\narray([1., 5.])\n\nfnp.int8(-128)\n\n15",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.sum",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
-  "href": "/docs/api/ops/sum/",
+  "href": "/docs/api/numpy/sum/",
   "module": "numpy",
   "name": "sum",
   "next": {
-    "href": "/docs/api/ops/swapaxes/",
+    "href": "/docs/api/numpy/swapaxes/",
     "label": "fnp.swapaxes"
   },
   "notes": "Sum of array elements.",
@@ -853,10 +853,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/subtract/",
+    "href": "/docs/api/numpy/subtract/",
     "label": "fnp.subtract"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.sum",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sum.html",
   "returns": [
     {
@@ -900,7 +901,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/add",
+      "href": "/docs/api/numpy/add/",
       "label": "fnp.add",
       "original_target": "add",
       "role": "",
@@ -916,7 +917,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/cumsum",
+      "href": "/docs/api/numpy/cumsum/",
       "label": "fnp.cumsum",
       "original_target": "cumsum",
       "role": "",
@@ -932,7 +933,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/trapezoid",
+      "href": "/docs/api/numpy/trapezoid/",
       "label": "fnp.trapezoid",
       "original_target": "trapezoid",
       "role": "",
@@ -943,7 +944,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/mean",
+      "href": "/docs/api/numpy/mean/",
       "label": "fnp.mean",
       "original_target": "mean",
       "role": "",
@@ -954,7 +955,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/average",
+      "href": "/docs/api/numpy/average/",
       "label": "fnp.average",
       "original_target": "average",
       "role": "",
@@ -965,6 +966,8 @@
   "signature": "fnp.sum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "sum",
   "summary": "Sum of array elements over a given axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2338",
   "weight": 1.0
 }

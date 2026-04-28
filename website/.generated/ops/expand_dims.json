@@ -166,7 +166,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/squeeze",
+              "href": "/docs/api/numpy/squeeze/",
               "label": "fnp.squeeze",
               "original_target": "squeeze",
               "role": "",
@@ -182,7 +182,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/reshape",
+              "href": "/docs/api/numpy/reshape/",
               "label": "fnp.reshape",
               "original_target": "reshape",
               "role": "",
@@ -193,7 +193,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/atleast_1d",
+              "href": "/docs/api/numpy/atleast-1d/",
               "label": "fnp.atleast_1d",
               "original_target": "atleast_1d",
               "role": "",
@@ -204,7 +204,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/atleast_2d",
+              "href": "/docs/api/numpy/atleast-2d/",
               "label": "fnp.atleast_2d",
               "original_target": "atleast_2d",
               "role": "",
@@ -215,7 +215,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/atleast_3d",
+              "href": "/docs/api/numpy/atleast-3d/",
               "label": "fnp.atleast_3d",
               "original_target": "atleast_3d",
               "role": "",
@@ -235,7 +235,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -468,18 +468,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nx = fnp.array([1, 2])\n\nx.shape\n\ny = fnp.expand_dims(x, axis=0)\n\ny\n\ny.shape\n\ny = fnp.expand_dims(x, axis=1)\n\ny\n\ny.shape\n\ny = fnp.expand_dims(x, axis=(0, 1))\n\ny\n\ny = fnp.expand_dims(x, axis=(2, 0))\n\ny\n\nfnp.newaxis is None",
+    "code": "import flopscope.numpy as fnp\n\nx = fnp.array([1, 2])\n\nx.shape\n\ny = fnp.expand_dims(x, axis=0)\n\ny\n\ny.shape\n\ny = fnp.expand_dims(x, axis=1)\n\ny\n\ny.shape\n\ny = fnp.expand_dims(x, axis=(0, 1))\n\ny\n\ny = fnp.expand_dims(x, axis=(2, 0))\n\ny\n\nfnp.newaxis is None",
     "output": "(2,)\n\narray([[1, 2]])\n\n(1, 2)\n\narray([[1],\n       [2]])\n\n(2, 1)\n\narray([[[1, 2]]])\n\narray([[[1],\n        [2]]])\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.expand_dims",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L328",
-  "href": "/docs/api/ops/expand_dims/",
+  "href": "/docs/api/numpy/expand-dims/",
   "module": "numpy",
   "name": "expand_dims",
   "next": {
-    "href": "/docs/api/ops/expm1/",
+    "href": "/docs/api/numpy/expm1/",
     "label": "fnp.expm1"
   },
   "notes": "Insert new size-1 axis.",
@@ -507,10 +507,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/exp2/",
+    "href": "/docs/api/numpy/exp2/",
     "label": "fnp.exp2"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.expand_dims",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.expand_dims.html",
   "returns": [
     {
@@ -531,7 +532,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/squeeze",
+      "href": "/docs/api/numpy/squeeze/",
       "label": "fnp.squeeze",
       "original_target": "squeeze",
       "role": "",
@@ -547,7 +548,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/reshape",
+      "href": "/docs/api/numpy/reshape/",
       "label": "fnp.reshape",
       "original_target": "reshape",
       "role": "",
@@ -558,7 +559,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/atleast_1d",
+      "href": "/docs/api/numpy/atleast-1d/",
       "label": "fnp.atleast_1d",
       "original_target": "atleast_1d",
       "role": "",
@@ -569,7 +570,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/atleast_2d",
+      "href": "/docs/api/numpy/atleast-2d/",
       "label": "fnp.atleast_2d",
       "original_target": "atleast_2d",
       "role": "",
@@ -580,7 +581,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/atleast_3d",
+      "href": "/docs/api/numpy/atleast-3d/",
       "label": "fnp.atleast_3d",
       "original_target": "atleast_3d",
       "role": "",
@@ -591,6 +592,8 @@
   "signature": "fnp.expand_dims(a, axis)",
   "slug": "expand_dims",
   "summary": "Expand the shape of an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L511",
   "weight": 0.0
 }

@@ -118,7 +118,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/shape",
+              "href": "/docs/api/numpy/shape/",
               "label": "fnp.shape",
               "original_target": "shape",
               "role": "",
@@ -170,7 +170,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -235,18 +235,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([[1,2,3],[4,5,6]])\n\nfnp.size(a)\n\nfnp.size(a,1)\n\nfnp.size(a,0)",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array([[1,2,3],[4,5,6]])\n\nfnp.size(a)\n\nfnp.size(a,1)\n\nfnp.size(a,0)",
     "output": "6\n\n3\n\n2",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.size",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1400",
-  "href": "/docs/api/ops/size/",
+  "href": "/docs/api/numpy/size/",
   "module": "numpy",
   "name": "size",
   "next": {
-    "href": "/docs/api/ops/sort/",
+    "href": "/docs/api/numpy/sort/",
     "label": "fnp.sort"
   },
   "notes": "Return number of elements in array.",
@@ -270,10 +270,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sinh/",
+    "href": "/docs/api/numpy/sinh/",
     "label": "fnp.sinh"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.size",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.size.html",
   "returns": [
     {
@@ -294,7 +295,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/shape",
+      "href": "/docs/api/numpy/shape/",
       "label": "fnp.shape",
       "original_target": "shape",
       "role": "",
@@ -337,6 +338,8 @@
   "signature": "fnp.size(a, axis=None)",
   "slug": "size",
   "summary": "Return the number of elements along a given axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3566",
   "weight": 0.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/einsum_path/",
+  "detail_href": "/docs/api/numpy/einsum-path/",
   "detail_json_href": "/api-data/ops/einsum_path.json",
   "docs": {
     "sections": [
@@ -88,7 +88,7 @@
                               },
                               {
                                 "external_url": "",
-                                "href": "/docs/api/ops/einsum_path",
+                                "href": "/docs/api/numpy/einsum-path/",
                                 "kind": "link",
                                 "target": "einsum_path",
                                 "text": "einsum_path"
@@ -248,7 +248,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "fnp.einsum",
                 "original_target": "einsum",
                 "role": "",
@@ -259,7 +259,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-multi_dot",
+                "href": "/docs/api/numpy/linalg/multi-dot/",
                 "label": "fnp.linalg.multi_dot",
                 "original_target": "linalg.multi_dot",
                 "role": "",

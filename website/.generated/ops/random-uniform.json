@@ -702,11 +702,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.uniform",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-uniform/",
+  "href": "/docs/api/numpy/random/uniform/",
   "module": "numpy.random",
   "name": "random.uniform",
   "next": {
-    "href": "/docs/api/ops/random-vonmises/",
+    "href": "/docs/api/numpy/random/vonmises/",
     "label": "fnp.random.vonmises"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -750,10 +750,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-triangular/",
+    "href": "/docs/api/numpy/random/triangular/",
     "label": "fnp.random.triangular"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.uniform",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.uniform.html",
   "returns": [
     {
@@ -905,6 +906,8 @@
   "signature": "fnp.random.uniform(low=0.0, high=1.0, size=None)",
   "slug": "random-uniform",
   "summary": "Draw samples from a uniform distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

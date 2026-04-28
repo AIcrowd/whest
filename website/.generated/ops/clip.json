@@ -281,7 +281,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/min",
+                      "href": "/docs/api/numpy/min/",
                       "kind": "link",
                       "target": "min",
                       "text": "min"
@@ -292,7 +292,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/max",
+                      "href": "/docs/api/numpy/max/",
                       "kind": "link",
                       "target": "max",
                       "text": "max"
@@ -363,7 +363,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/min",
+                  "href": "/docs/api/numpy/min/",
                   "kind": "link",
                   "target": "min",
                   "text": "min"
@@ -374,7 +374,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/max",
+                  "href": "/docs/api/numpy/max/",
                   "kind": "link",
                   "target": "max",
                   "text": "max"
@@ -616,7 +616,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/clip",
+              "href": "/docs/api/numpy/clip/",
               "kind": "link",
               "target": "clip",
               "text": "clip"
@@ -646,7 +646,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -746,18 +746,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.arange(10)\n\na\n\nfnp.clip(a, 1, 8)\n\nfnp.clip(a, 8, 1)\n\nfnp.clip(a, 3, 6, out=a)\n\na\n\na = fnp.arange(10)\n\na\n\nfnp.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.arange(10)\n\na\n\nfnp.clip(a, 1, 8)\n\nfnp.clip(a, 8, 1)\n\nfnp.clip(a, 3, 6, out=a)\n\na\n\na = fnp.arange(10)\n\na\n\nfnp.clip(a, [3, 4, 1, 1, 1, 4, 4, 4, 4, 4], 8)",
     "output": "array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([1, 1, 2, 3, 4, 5, 6, 7, 8, 8])\n\narray([1, 1, 1, 1, 1, 1, 1, 1, 1, 1])\n\narray([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])\n\narray([3, 3, 3, 3, 4, 5, 6, 6, 6, 6])\n\narray([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([3, 4, 2, 3, 4, 5, 6, 7, 8, 8])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.clip",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L655",
-  "href": "/docs/api/ops/clip/",
+  "href": "/docs/api/numpy/clip/",
   "module": "numpy",
   "name": "clip",
   "next": {
-    "href": "/docs/api/ops/column_stack/",
+    "href": "/docs/api/numpy/column-stack/",
     "label": "fnp.column_stack"
   },
   "notes": "Clip array to [a_min, a_max] element-wise.",
@@ -813,10 +813,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/choose/",
+    "href": "/docs/api/numpy/choose/",
     "label": "fnp.choose"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.clip",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.clip.html",
   "returns": [
     {
@@ -845,6 +846,8 @@
   "signature": "fnp.clip(a, a_min=<no value>, a_max=<no value>, out=None, *, min=<no value>, max=<no value>, **kwargs)",
   "slug": "clip",
   "summary": "Clip (limit) the values in an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2241",
   "weight": 1.0
 }

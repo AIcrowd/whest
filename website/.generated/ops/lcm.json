@@ -156,7 +156,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/gcd",
+              "href": "/docs/api/numpy/gcd/",
               "label": "fnp.gcd",
               "original_target": "gcd",
               "role": "",
@@ -176,7 +176,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -232,18 +232,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.lcm(12, 20)\n\nfnp.lcm.reduce([3, 12, 20])\n\nfnp.lcm.reduce([40, 12, 20])\n\nfnp.lcm(fnp.arange(6), 20)",
+    "code": "import flopscope.numpy as fnp\n\nfnp.lcm(12, 20)\n\nfnp.lcm.reduce([3, 12, 20])\n\nfnp.lcm.reduce([40, 12, 20])\n\nfnp.lcm(fnp.arange(6), 20)",
     "output": "60\n\n60\n\n120\n\narray([ 0, 20, 20, 60, 20, 20])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.lcm",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
-  "href": "/docs/api/ops/lcm/",
+  "href": "/docs/api/numpy/lcm/",
   "module": "numpy",
   "name": "lcm",
   "next": {
-    "href": "/docs/api/ops/ldexp/",
+    "href": "/docs/api/numpy/ldexp/",
     "label": "fnp.ldexp"
   },
   "notes": "Element-wise least common multiple.",
@@ -261,10 +261,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/kron/",
+    "href": "/docs/api/numpy/kron/",
     "label": "fnp.kron"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.lcm",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.lcm.html",
   "returns": [
     {
@@ -286,7 +287,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/gcd",
+      "href": "/docs/api/numpy/gcd/",
       "label": "fnp.gcd",
       "original_target": "gcd",
       "role": "",
@@ -297,6 +298,8 @@
   "signature": "fnp.lcm(x, y)",
   "slug": "lcm",
   "summary": "Returns the lowest common multiple of ``|x1|`` and ``|x2|``",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

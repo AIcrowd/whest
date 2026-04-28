@@ -333,7 +333,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/ceil",
+              "href": "/docs/api/numpy/ceil/",
               "label": "fnp.ceil",
               "original_target": "ceil",
               "role": "",
@@ -344,7 +344,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/floor",
+              "href": "/docs/api/numpy/floor/",
               "label": "fnp.floor",
               "original_target": "floor",
               "role": "",
@@ -355,7 +355,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/rint",
+              "href": "/docs/api/numpy/rint/",
               "label": "fnp.rint",
               "original_target": "rint",
               "role": "",
@@ -366,7 +366,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/trunc",
+              "href": "/docs/api/numpy/trunc/",
               "label": "fnp.trunc",
               "original_target": "fix",
               "role": "",
@@ -386,7 +386,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -427,18 +427,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nfnp.trunc(a)",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nfnp.trunc(a)",
     "output": "array([-1., -1., -0.,  0.,  1.,  1.,  2.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.trunc",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/trunc/",
+  "href": "/docs/api/numpy/trunc/",
   "module": "numpy",
   "name": "trunc",
   "next": {
-    "href": "/docs/api/ops/typename/",
+    "href": "/docs/api/numpy/typename/",
     "label": "fnp.typename"
   },
   "notes": "Truncate toward zero element-wise.",
@@ -484,10 +484,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/true_divide/",
+    "href": "/docs/api/numpy/true-divide/",
     "label": "fnp.true_divide"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.trunc",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.trunc.html",
   "returns": [
     {
@@ -504,7 +505,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/ceil",
+      "href": "/docs/api/numpy/ceil/",
       "label": "fnp.ceil",
       "original_target": "ceil",
       "role": "",
@@ -515,7 +516,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/floor",
+      "href": "/docs/api/numpy/floor/",
       "label": "fnp.floor",
       "original_target": "floor",
       "role": "",
@@ -526,7 +527,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/rint",
+      "href": "/docs/api/numpy/rint/",
       "label": "fnp.rint",
       "original_target": "rint",
       "role": "",
@@ -537,7 +538,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/trunc",
+      "href": "/docs/api/numpy/trunc/",
       "label": "fnp.trunc",
       "original_target": "fix",
       "role": "",
@@ -548,6 +549,8 @@
   "signature": "fnp.trunc(x)",
   "slug": "trunc",
   "summary": "Return the truncated value of the input, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

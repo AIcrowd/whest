@@ -1,4 +1,4 @@
-"""Base class for scipy-compatible continuous distributions."""
+"""Base support for SciPy-compatible continuous distributions."""
 
 from __future__ import annotations
 
@@ -9,11 +9,21 @@ from flopscope._validation import require_budget
 
 
 class ContinuousDistribution:
-    """Base for scipy-compatible continuous distributions with FLOP counting.
+    """Base class for FLOP-counted continuous distributions.
 
-    Subclasses implement ``_compute_pdf``, ``_compute_cdf``, ``_compute_ppf``
-    as pure-NumPy helpers, then call :meth:`_deduct_and_call` to wrap them
-    with budget deduction and FlopscopeArray conversion.
+    Parameters
+    ----------
+    name : str
+        Distribution name used to construct operation labels such as
+        ``"stats.norm.pdf"`` in the budget log.
+
+    Notes
+    -----
+    Subclasses implement ``_compute_pdf``, ``_compute_cdf``, and
+    ``_compute_ppf`` as pure NumPy kernels. Public ``pdf``, ``cdf``, and
+    ``ppf`` methods should delegate through :meth:`_deduct_and_call` so that
+    budget deduction and ``FlopscopeArray`` wrapping stay consistent across
+    the stats surface.
     """
 
     def __init__(self, name: str):
@@ -36,6 +46,16 @@ class ContinuousDistribution:
             Primary input array (determines output size).
         *args, **kwargs
             Forwarded to ``_compute_{method}``.
+
+        Returns
+        -------
+        FlopscopeArray
+            Result returned by the matching ``_compute_{method}``
+            implementation after budget deduction.
+
+        Notes
+        -----
+        The deducted FLOP charge is ``cost_per_elem * max(numel(x), 1)``.
         """
         budget = require_budget()
         x = _np.asarray(x, dtype=_np.float64)

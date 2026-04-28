@@ -162,13 +162,14 @@ def symmetrize(
 
     The canonical pattern for generating random data with symmetry is:
 
-    ``we.random.symmetric(shape, symmetry_group, distribution=...)``.
+    ``fnp.random.symmetric(shape, symmetry_group, distribution=...)``.
 
     Examples
     --------
-    >>> import flopscope as we
-    >>> data = we.random.randn(4, 4)
-    >>> S = we.symmetrize(data, we.PermutationGroup.symmetric(2, axes=(0, 1)))
+    >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
+    >>> data = fnp.random.randn(4, 4)
+    >>> S = flops.symmetrize(data, flops.PermutationGroup.symmetric(2, axes=(0, 1)))
     >>> S.is_symmetric((0, 1))
     True
     """
@@ -249,6 +250,17 @@ def is_symmetric(
     Returns
     -------
     bool
+        ``True`` if the data is symmetric under every requested axis group,
+        otherwise ``False``.
+
+    Examples
+    --------
+    >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
+    >>>
+    >>> matrix = fnp.array([[1.0, 2.0], [2.0, 3.0]])
+    >>> flops.is_symmetric(matrix, (0, 1))
+    True
     """
     if (
         isinstance(symmetric_axes, tuple)
@@ -292,7 +304,7 @@ def _warn_symmetry_loss(
     warnings.warn(
         f"Symmetry lost along dims {dim_str}: {reason}. "
         "Use as_symmetric() to re-tag if you know the result is symmetric. "
-        "Suppress with we.configure(symmetry_warnings=False).",
+        "Suppress with flops.configure(symmetry_warnings=False).",
         SymmetryLossWarning,
         stacklevel=stacklevel,
     )
@@ -856,6 +868,7 @@ def as_symmetric(
     Returns
     -------
     SymmetricTensor
+        View of ``data`` carrying validated symmetry metadata.
 
     Raises
     ------
@@ -863,6 +876,16 @@ def as_symmetric(
         If both *symmetric_axes* and *symmetry* are provided.
     SymmetryError
         If the data does not satisfy the claimed symmetry.
+
+    Examples
+    --------
+    >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
+    >>>
+    >>> matrix = fnp.array([[1.0, 2.0], [2.0, 3.0]])
+    >>> tagged = flops.as_symmetric(matrix, (0, 1))
+    >>> tagged.symmetric_axes
+    [(0, 1)]
     """
     if symmetric_axes is not None and symmetry is not None:
         raise ValueError(

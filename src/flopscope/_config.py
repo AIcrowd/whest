@@ -33,9 +33,9 @@ def configure(**kwargs: object) -> None:
 
     Examples
     --------
-    >>> import whest as we
-    >>> we.configure(einsum_path_cache_size=8192)
-    >>> we.configure(symmetry_warnings=False)
+    >>> import flopscope as flops
+    >>> flops.configure(einsum_path_cache_size=8192)
+    >>> flops.configure(symmetry_warnings=False)
     """
     for key, value in kwargs.items():
         if key not in _SETTINGS:

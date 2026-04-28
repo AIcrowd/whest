@@ -313,7 +313,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/conj",
+              "href": "/docs/api/numpy/conj/",
               "kind": "link",
               "target": "conj",
               "text": "conj"
@@ -324,7 +324,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/conjugate",
+              "href": "/docs/api/numpy/conjugate/",
               "kind": "link",
               "target": "conjugate",
               "text": "conjugate"
@@ -360,7 +360,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -419,18 +419,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.conjugate(1+2j)\n\nx = fnp.eye(2) + 1j * fnp.eye(2)\n\nfnp.conjugate(x)",
+    "code": "import flopscope.numpy as fnp\n\nfnp.conjugate(1+2j)\n\nx = fnp.eye(2) + 1j * fnp.eye(2)\n\nfnp.conjugate(x)",
     "output": "(1-2j)\n\narray([[ 1.-1.j,  0.-0.j],\n       [ 0.-0.j,  1.-1.j]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.conj",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/conj/",
+  "href": "/docs/api/numpy/conj/",
   "module": "numpy",
   "name": "conj",
   "next": {
-    "href": "/docs/api/ops/conjugate/",
+    "href": "/docs/api/numpy/conjugate/",
     "label": "fnp.conjugate"
   },
   "notes": "Complex conjugate element-wise.",
@@ -479,10 +479,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/concatenate/",
+    "href": "/docs/api/numpy/concatenate/",
     "label": "fnp.concatenate"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.conj",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.conj.html",
   "returns": [
     {
@@ -498,6 +499,8 @@
   "signature": "fnp.conj(x)",
   "slug": "conj",
   "summary": "Return the complex conjugate, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-trace/",
+  "detail_href": "/docs/api/numpy/linalg/trace/",
   "detail_json_href": "/api-data/ops/linalg-trace.json",
   "docs": {
     "sections": [
@@ -37,7 +37,7 @@
                 "display_text": "fnp.trace",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/trace",
+                "href": "/docs/api/numpy/trace/",
                 "kind": "role_reference",
                 "original_target": "fnp.trace",
                 "role": "py:func",
@@ -192,7 +192,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/trace",
+                "href": "/docs/api/numpy/trace/",
                 "label": "fnp.trace",
                 "original_target": "numpy.trace",
                 "role": "",
@@ -245,7 +245,7 @@
                 "display_text": "fnp.trace",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/trace",
+                "href": "/docs/api/numpy/trace/",
                 "kind": "role_reference",
                 "original_target": "fnp.trace",
                 "role": "py:func",

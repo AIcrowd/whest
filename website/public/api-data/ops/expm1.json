@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/expm1/",
+  "detail_href": "/docs/api/numpy/expm1/",
   "detail_json_href": "/api-data/ops/expm1.json",
   "docs": {
     "sections": [
@@ -302,7 +302,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/log1p",
+                "href": "/docs/api/numpy/log1p/",
                 "label": "fnp.log1p",
                 "original_target": "log1p",
                 "role": "",
@@ -377,7 +377,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"

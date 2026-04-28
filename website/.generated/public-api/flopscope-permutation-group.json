@@ -1,0 +1,80 @@
+{
+  "aliases": [
+    "flops.PermutationGroup"
+  ],
+  "area": "flopscope",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "A permutation group on {0, ..., n-1} defined by generators."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Same generator-based design as "
+            },
+            {
+              "kind": "code",
+              "text": "sympy.combinatorics.PermutationGroup"
+            },
+            {
+              "kind": "text",
+              "text": ".\nFor the small groups in einsum symmetry (typically < 100 elements), all\nelements are enumerated via Dimino's algorithm."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    }
+  ],
+  "canonical_name": "flopscope.PermutationGroup",
+  "canonical_path": "/docs/api/flopscope/permutation-group/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.PermutationGroup",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": null,
+  "flopscope_ref": "flopscope.PermutationGroup",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_perm_group.py#L244",
+  "href": "/docs/api/flopscope/permutation-group/",
+  "import_path": "flopscope.PermutationGroup",
+  "is_operation_cost_leaf": false,
+  "kind": "class",
+  "legacy_href": "/docs/api/flopscope/permutation-group/",
+  "module": "flopscope._perm_group",
+  "name": "PermutationGroup",
+  "next": null,
+  "notes": "",
+  "notes_sections": [],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [],
+  "previous": null,
+  "returns": [],
+  "schema_version": 1,
+  "see_also": [],
+  "signature": "flopscope.PermutationGroup(*generators: 'Permutation', axes: 'tuple[int, ...] | None' = None) -> 'None'",
+  "slug": "flopscope-permutation-group",
+  "summary": "A permutation group on {0, ..., n-1} defined by generators.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

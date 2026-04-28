@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stack/",
+  "detail_href": "/docs/api/numpy/stack/",
   "detail_json_href": "/api-data/ops/stack.json",
   "docs": {
     "sections": [
@@ -258,7 +258,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
+                "href": "/docs/api/numpy/concatenate/",
                 "label": "fnp.concatenate",
                 "original_target": "concatenate",
                 "role": "",
@@ -274,7 +274,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "label": "fnp.block",
                 "original_target": "block",
                 "role": "",
@@ -290,7 +290,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "label": "fnp.split",
                 "original_target": "split",
                 "role": "",
@@ -306,7 +306,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/unstack",
+                "href": "/docs/api/numpy/unstack/",
                 "label": "fnp.unstack",
                 "original_target": "unstack",
                 "role": "",
@@ -326,7 +326,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

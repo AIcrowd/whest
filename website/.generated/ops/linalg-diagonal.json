@@ -37,7 +37,7 @@
               "display_text": "fnp.diagonal",
               "explicit_title": false,
               "external_url": "",
-              "href": "/docs/api/ops/diagonal",
+              "href": "/docs/api/numpy/diagonal/",
               "kind": "role_reference",
               "original_target": "fnp.diagonal",
               "role": "py:func",
@@ -172,7 +172,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/diagonal",
+              "href": "/docs/api/numpy/diagonal/",
               "label": "fnp.diagonal",
               "original_target": "numpy.diagonal",
               "role": "",
@@ -350,7 +350,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/flipud",
+              "href": "/docs/api/numpy/flipud/",
               "kind": "link",
               "target": "flipud",
               "text": "fnp.flipud"
@@ -361,7 +361,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/fliplr",
+              "href": "/docs/api/numpy/fliplr/",
               "kind": "link",
               "target": "fliplr",
               "text": "fnp.fliplr"
@@ -449,11 +449,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.diagonal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L100",
-  "href": "/docs/api/ops/linalg-diagonal/",
+  "href": "/docs/api/numpy/linalg/diagonal/",
   "module": "numpy.linalg",
   "name": "linalg.diagonal",
   "next": {
-    "href": "/docs/api/ops/linalg-eig/",
+    "href": "/docs/api/numpy/linalg/eig/",
     "label": "fnp.linalg.eig"
   },
   "notes": "View of diagonal \u2014 delegates to flopscope.diagonal. Cost: 0 FLOPs.",
@@ -482,10 +482,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-det/",
+    "href": "/docs/api/numpy/linalg/det/",
     "label": "fnp.linalg.det"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.diagonal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.diagonal.html",
   "returns": [
     {
@@ -504,7 +505,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/diagonal",
+      "href": "/docs/api/numpy/diagonal/",
       "label": "fnp.diagonal",
       "original_target": "numpy.diagonal",
       "role": "",
@@ -515,6 +516,8 @@
   "signature": "fnp.linalg.diagonal(x, /, *, offset=0)",
   "slug": "linalg-diagonal",
   "summary": "Returns specified diagonals of a matrix (or a stack of matrices) ``x``.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3042",
   "weight": 0.0
 }

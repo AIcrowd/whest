@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/true_divide/",
+  "detail_href": "/docs/api/numpy/true-divide/",
   "detail_json_href": "/api-data/ops/true_divide.json",
   "docs": {
     "sections": [
@@ -343,8 +343,8 @@
                     "text": "Set whether to raise or warn on overflow, underflow and division by zero."
                   }
                 ],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.seterr.html",
-                "href": "",
+                "external_url": "",
+                "href": "/docs/api/numpy/seterr/",
                 "label": "seterr",
                 "original_target": "seterr",
                 "role": "",
@@ -419,7 +419,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -476,7 +476,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/divide",
+                "href": "/docs/api/numpy/divide/",
                 "kind": "link",
                 "target": "divide",
                 "text": "fnp.divide"

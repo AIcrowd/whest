@@ -73,6 +73,7 @@ const installCode = 'uv add git+https://github.com/AIcrowd/flopscope.git';
 
 const numpyCode = `import numpy as np
 
+
 depth, width = 5, 256
 
 # Weight init
@@ -91,25 +92,26 @@ for i, W in enumerate(weights):
         h = np.maximum(h, 0)
 # Total FLOPs? No idea.`;
 
-const flopscopeCode = `import flopscope as we
+const flopscopeCode = `import flopscope as flops
+import flopscope.numpy as fnp
 
 depth, width = 5, 256
 
 # Weight init
-scale = we.sqrt(2 / width)
+scale = fnp.sqrt(2 / width)
 weights = [
-    we.random.randn(width, width) * scale
+    fnp.random.randn(width, width) * scale
     for _ in range(depth)
 ]
 
 # Forward pass
-x = we.random.randn(width)
+x = fnp.random.randn(width)
 h = x
 for i, W in enumerate(weights):
-    h = we.einsum('ij,j->i', W, h)
+    h = fnp.einsum('ij,j->i', W, h)
     if i < depth - 1:
-        h = we.maximum(h, 0)
-we.budget_summary()  # 984,321 FLOPs`;
+        h = fnp.maximum(h, 0)
+flops.budget_summary()  # 984,321 FLOPs`;
 
 // Flopscope-paper-tuned syntax palette. These are the same hex values the
 // Shiki `flopscopeLight` theme emits (see lib/shiki-themes.ts) — using them
@@ -142,6 +144,7 @@ const numpyLines: Token[][] = [
     { text: 'as', className: TOKENS.keyword },
     { text: ' np', className: TOKENS.base },
   ],
+  [],
   [],
   [
     { text: 'depth, width ', className: TOKENS.base },
@@ -229,7 +232,13 @@ const flopscopeLines: Token[][] = [
     { text: 'import', className: TOKENS.keyword },
     { text: ' flopscope ', className: TOKENS.base },
     { text: 'as', className: TOKENS.keyword },
-    { text: ' we', className: TOKENS.base },
+    { text: ' flops', className: TOKENS.base },
+  ],
+  [
+    { text: 'import', className: TOKENS.keyword },
+    { text: ' flopscope.numpy ', className: TOKENS.base },
+    { text: 'as', className: TOKENS.keyword },
+    { text: ' fnp', className: TOKENS.base },
   ],
   [],
   [
@@ -242,7 +251,7 @@ const flopscopeLines: Token[][] = [
   [
     { text: 'scale ', className: TOKENS.base },
     { text: '=', className: TOKENS.op },
-    { text: ' we.sqrt', className: TOKENS.func },
+    { text: ' fnp.sqrt', className: TOKENS.func },
     { text: '(', className: TOKENS.base },
     { text: '2', className: TOKENS.number },
     { text: ' / ', className: TOKENS.op },
@@ -255,7 +264,7 @@ const flopscopeLines: Token[][] = [
     { text: ' [', className: TOKENS.base },
   ],
   [
-    { text: '    we.random.randn', className: TOKENS.func },
+    { text: '    fnp.random.randn', className: TOKENS.func },
     { text: '(width, width)', className: TOKENS.base },
     { text: ' * ', className: TOKENS.op },
     { text: 'scale', className: TOKENS.base },
@@ -273,7 +282,7 @@ const flopscopeLines: Token[][] = [
   [
     { text: 'x ', className: TOKENS.base },
     { text: '=', className: TOKENS.op },
-    { text: ' we.random.randn', className: TOKENS.func },
+    { text: ' fnp.random.randn', className: TOKENS.func },
     { text: '(width)', className: TOKENS.base },
   ],
   [
@@ -291,7 +300,7 @@ const flopscopeLines: Token[][] = [
   [
     { text: '    h ', className: TOKENS.base },
     { text: '=', className: TOKENS.op },
-    { text: ' we.einsum', className: TOKENS.func },
+    { text: ' fnp.einsum', className: TOKENS.func },
     { text: "('ij,j->i', W, h)", className: TOKENS.string },
   ],
   [
@@ -305,13 +314,13 @@ const flopscopeLines: Token[][] = [
   [
     { text: '        h ', className: TOKENS.base },
     { text: '=', className: TOKENS.op },
-    { text: ' we.maximum', className: TOKENS.func },
+    { text: ' fnp.maximum', className: TOKENS.func },
     { text: '(h, ', className: TOKENS.base },
     { text: '0', className: TOKENS.number },
     { text: ')', className: TOKENS.base },
   ],
   [
-    { text: 'we.budget_summary', className: TOKENS.func },
+    { text: 'flops.budget_summary', className: TOKENS.func },
     { text: '()', className: TOKENS.base },
     { text: '  # 984,321 FLOPs', className: TOKENS.muted },
   ],

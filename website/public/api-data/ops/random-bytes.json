@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/random-bytes/",
+  "detail_href": "/docs/api/numpy/random/bytes/",
   "detail_json_href": "/api-data/ops/random-bytes.json",
   "docs": {
     "sections": [
@@ -225,7 +225,7 @@
   "schema_version": 1,
   "slug": "random-bytes",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L473",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L475",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.bytes.html"
   }
 }

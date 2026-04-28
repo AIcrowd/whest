@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/correlate/",
+  "detail_href": "/docs/api/numpy/correlate/",
   "detail_json_href": "/api-data/ops/correlate.json",
   "docs": {
     "sections": [
@@ -98,7 +98,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/convolve",
+                        "href": "/docs/api/numpy/convolve/",
                         "kind": "link",
                         "target": "convolve",
                         "text": "convolve"
@@ -109,7 +109,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/convolve",
+                        "href": "/docs/api/numpy/convolve/",
                         "kind": "link",
                         "target": "convolve",
                         "text": "convolve"
@@ -130,7 +130,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/convolve",
+                    "href": "/docs/api/numpy/convolve/",
                     "kind": "link",
                     "target": "convolve",
                     "text": "convolve"
@@ -141,7 +141,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/convolve",
+                    "href": "/docs/api/numpy/convolve/",
                     "kind": "link",
                     "target": "convolve",
                     "text": "convolve"
@@ -239,7 +239,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/convolve",
+                "href": "/docs/api/numpy/convolve/",
                 "label": "fnp.convolve",
                 "original_target": "convolve",
                 "role": "",
@@ -322,7 +322,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/correlate",
+                "href": "/docs/api/numpy/correlate/",
                 "kind": "link",
                 "target": "correlate",
                 "text": "fnp.correlate"
@@ -365,7 +365,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

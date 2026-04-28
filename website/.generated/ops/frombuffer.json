@@ -284,7 +284,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -348,18 +348,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\ns = b'hello world'\n\nfnp.frombuffer(s, dtype='S1', count=5, offset=6)\n\nfnp.frombuffer(b'\\x01\\x02', dtype=fnp.uint8)\n\nfnp.frombuffer(b'\\x01\\x02\\x03\\x04\\x05', dtype=fnp.uint8, count=3)",
+    "code": "import flopscope.numpy as fnp\n\ns = b'hello world'\n\nfnp.frombuffer(s, dtype='S1', count=5, offset=6)\n\nfnp.frombuffer(b'\\x01\\x02', dtype=fnp.uint8)\n\nfnp.frombuffer(b'\\x01\\x02\\x03\\x04\\x05', dtype=fnp.uint8, count=3)",
     "output": "array([b'w', b'o', b'r', b'l', b'd'], dtype='|S1')\n\narray([1, 2], dtype=uint8)\n\narray([1, 2, 3], dtype=uint8)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.frombuffer",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L977",
-  "href": "/docs/api/ops/frombuffer/",
+  "href": "/docs/api/numpy/frombuffer/",
   "module": "numpy",
   "name": "frombuffer",
   "next": {
-    "href": "/docs/api/ops/fromfunction/",
+    "href": "/docs/api/numpy/fromfunction/",
     "label": "fnp.fromfunction"
   },
   "notes": "Interpret buffer as 1-D array. Cost: numel(output).",
@@ -414,10 +414,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/from_dlpack/",
+    "href": "/docs/api/numpy/from-dlpack/",
     "label": "fnp.from_dlpack"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.frombuffer",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.frombuffer.html",
   "returns": [
     {
@@ -447,6 +448,8 @@
   "signature": "fnp.frombuffer(*args, **kwargs)",
   "slug": "frombuffer",
   "summary": "Interpret a buffer as a 1-dimensional array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/column_stack/",
+  "detail_href": "/docs/api/numpy/column-stack/",
   "detail_json_href": "/api-data/ops/column_stack.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/hstack",
+                "href": "/docs/api/numpy/hstack/",
                 "kind": "link",
                 "target": "hstack",
                 "text": "hstack"
@@ -116,7 +116,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/stack",
+                "href": "/docs/api/numpy/stack/",
                 "label": "fnp.stack",
                 "original_target": "stack",
                 "role": "",
@@ -127,7 +127,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hstack",
+                "href": "/docs/api/numpy/hstack/",
                 "label": "fnp.hstack",
                 "original_target": "hstack",
                 "role": "",
@@ -138,7 +138,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/vstack",
+                "href": "/docs/api/numpy/vstack/",
                 "label": "fnp.vstack",
                 "original_target": "vstack",
                 "role": "",
@@ -149,7 +149,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
+                "href": "/docs/api/numpy/concatenate/",
                 "label": "fnp.concatenate",
                 "original_target": "concatenate",
                 "role": "",
@@ -169,7 +169,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

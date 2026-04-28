@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/kron/",
+  "detail_href": "/docs/api/numpy/kron/",
   "detail_json_href": "/api-data/ops/kron.json",
   "docs": {
     "sections": [
@@ -80,7 +80,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/outer",
+                "href": "/docs/api/numpy/outer/",
                 "label": "fnp.outer",
                 "original_target": "outer",
                 "role": "",
@@ -203,7 +203,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

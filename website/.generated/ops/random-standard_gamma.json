@@ -148,7 +148,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/shape",
+                      "href": "/docs/api/numpy/shape/",
                       "kind": "link",
                       "target": "shape",
                       "text": "shape"
@@ -201,7 +201,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/shape",
+                  "href": "/docs/api/numpy/shape/",
                   "kind": "link",
                   "target": "shape",
                   "text": "shape"
@@ -487,11 +487,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.standard_gamma",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-standard_gamma/",
+  "href": "/docs/api/numpy/random/standard-gamma/",
   "module": "numpy.random",
   "name": "random.standard_gamma",
   "next": {
-    "href": "/docs/api/ops/random-standard_normal/",
+    "href": "/docs/api/numpy/random/standard-normal/",
     "label": "fnp.random.standard_normal"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -522,10 +522,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_exponential/",
+    "href": "/docs/api/numpy/random/standard-exponential/",
     "label": "fnp.random.standard_exponential"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.standard_gamma",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_gamma.html",
   "returns": [
     {
@@ -573,6 +574,8 @@
   "signature": "fnp.random.standard_gamma(shape, size=None)",
   "slug": "random-standard_gamma",
   "summary": "Draw samples from a standard Gamma distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

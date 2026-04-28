@@ -29,7 +29,7 @@
               "display_text": "fnp.vecdot",
               "explicit_title": false,
               "external_url": "",
-              "href": "/docs/api/ops/vecdot",
+              "href": "/docs/api/numpy/vecdot/",
               "kind": "role_reference",
               "original_target": "fnp.vecdot",
               "role": "func",
@@ -261,7 +261,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/vecdot",
+              "href": "/docs/api/numpy/vecdot/",
               "label": "fnp.vecdot",
               "original_target": "numpy.vecdot",
               "role": "",
@@ -331,14 +331,14 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.vecdot",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L82",
-  "href": "/docs/api/ops/linalg-vecdot/",
+  "href": "/docs/api/numpy/linalg/vecdot/",
   "module": "numpy.linalg",
   "name": "linalg.vecdot",
   "next": {
-    "href": "/docs/api/ops/linalg-vector_norm/",
+    "href": "/docs/api/numpy/linalg/vector-norm/",
     "label": "fnp.linalg.vector_norm"
   },
-  "notes": "Delegates to `we.vecdot` which charges `2*n` FLOPs.",
+  "notes": "Delegates to `fnp.vecdot` which charges `2*n` FLOPs.",
   "notes_sections": [],
   "numpy_ref": "np.linalg.vecdot",
   "parameters": [
@@ -365,10 +365,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-trace/",
+    "href": "/docs/api/numpy/linalg/trace/",
     "label": "fnp.linalg.trace"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.vecdot",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.vecdot.html",
   "returns": [
     {
@@ -384,7 +385,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/vecdot",
+      "href": "/docs/api/numpy/vecdot/",
       "label": "fnp.vecdot",
       "original_target": "numpy.vecdot",
       "role": "",
@@ -395,6 +396,8 @@
   "signature": "fnp.linalg.vecdot(x1, x2, /, *, axis=-1)",
   "slug": "linalg-vecdot",
   "summary": "Computes the vector dot product.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3583",
   "weight": 1.0
 }

@@ -240,7 +240,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/cumprod",
+              "href": "/docs/api/numpy/cumprod/",
               "label": "fnp.cumprod",
               "original_target": "numpy.cumprod",
               "role": "",
@@ -256,7 +256,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isnan",
+              "href": "/docs/api/numpy/isnan/",
               "label": "fnp.isnan",
               "original_target": "isnan",
               "role": "",
@@ -276,7 +276,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -363,18 +363,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.nancumprod(1)\n\nfnp.nancumprod([1])\n\nfnp.nancumprod([1, fnp.nan])\n\na = fnp.array([[1, 2], [3, fnp.nan]])\n\nfnp.nancumprod(a)\n\nfnp.nancumprod(a, axis=0)\n\nfnp.nancumprod(a, axis=1)",
+    "code": "import flopscope.numpy as fnp\n\nfnp.nancumprod(1)\n\nfnp.nancumprod([1])\n\nfnp.nancumprod([1, fnp.nan])\n\na = fnp.array([[1, 2], [3, fnp.nan]])\n\nfnp.nancumprod(a)\n\nfnp.nancumprod(a, axis=0)\n\nfnp.nancumprod(a, axis=1)",
     "output": "array([1])\n\narray([1])\n\narray([1.,  1.])\n\narray([1.,  2.,  6.,  6.])\n\narray([[1.,  2.],\n       [3.,  2.]])\n\narray([[1.,  2.],\n       [3.,  3.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.nancumprod",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L206",
-  "href": "/docs/api/ops/nancumprod/",
+  "href": "/docs/api/numpy/nancumprod/",
   "module": "numpy",
   "name": "nancumprod",
   "next": {
-    "href": "/docs/api/ops/nancumsum/",
+    "href": "/docs/api/numpy/nancumsum/",
     "label": "fnp.nancumsum"
   },
   "notes": "Cumulative product ignoring NaNs.",
@@ -418,10 +418,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nanargmin/",
+    "href": "/docs/api/numpy/nanargmin/",
     "label": "fnp.nanargmin"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nancumprod",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nancumprod.html",
   "returns": [
     {
@@ -443,7 +444,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/cumprod",
+      "href": "/docs/api/numpy/cumprod/",
       "label": "fnp.cumprod",
       "original_target": "numpy.cumprod",
       "role": "",
@@ -459,7 +460,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isnan",
+      "href": "/docs/api/numpy/isnan/",
       "label": "fnp.isnan",
       "original_target": "isnan",
       "role": "",
@@ -470,6 +471,8 @@
   "signature": "fnp.nancumprod(a, axis=None, dtype=None, out=None)",
   "slug": "nancumprod",
   "summary": "Return the cumulative product of array elements over a given axis treating Not a Numbers (NaNs) as one.  The cumulative product does not change when NaNs are encountered and leading NaNs are replaced by ones.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L887",
   "weight": 1.0
 }

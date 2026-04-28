@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/isnan/",
+  "detail_href": "/docs/api/numpy/isnan/",
   "detail_json_href": "/api-data/ops/isnan.json",
   "docs": {
     "sections": [
@@ -285,7 +285,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isinf",
+                "href": "/docs/api/numpy/isinf/",
                 "label": "fnp.isinf",
                 "original_target": "isinf",
                 "role": "",
@@ -296,7 +296,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isneginf",
+                "href": "/docs/api/numpy/isneginf/",
                 "label": "fnp.isneginf",
                 "original_target": "isneginf",
                 "role": "",
@@ -307,7 +307,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isposinf",
+                "href": "/docs/api/numpy/isposinf/",
                 "label": "fnp.isposinf",
                 "original_target": "isposinf",
                 "role": "",
@@ -318,7 +318,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isfinite",
+                "href": "/docs/api/numpy/isfinite/",
                 "label": "fnp.isfinite",
                 "original_target": "isfinite",
                 "role": "",
@@ -328,8 +328,8 @@
               {
                 "description": "",
                 "description_inline": [],
-                "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.isnat.html",
-                "href": "",
+                "external_url": "",
+                "href": "/docs/api/numpy/isnat/",
                 "label": "isnat",
                 "original_target": "isnat",
                 "role": "",
@@ -363,7 +363,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

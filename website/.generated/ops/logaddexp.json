@@ -344,7 +344,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/logaddexp2",
+              "href": "/docs/api/numpy/logaddexp2/",
               "label": "fnp.logaddexp2",
               "original_target": "logaddexp2",
               "role": "",
@@ -364,7 +364,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -424,18 +424,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nprob1 = fnp.log(1e-50)\n\nprob2 = fnp.log(2.5e-50)\n\nprob12 = fnp.logaddexp(prob1, prob2)\n\nprob12\n\nfnp.exp(prob12)",
+    "code": "import flopscope.numpy as fnp\n\nprob1 = fnp.log(1e-50)\n\nprob2 = fnp.log(2.5e-50)\n\nprob12 = fnp.logaddexp(prob1, prob2)\n\nprob12\n\nfnp.exp(prob12)",
     "output": "-113.87649168120691\n\n3.5000000000000057e-50",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.logaddexp",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L82",
-  "href": "/docs/api/ops/logaddexp/",
+  "href": "/docs/api/numpy/logaddexp/",
   "module": "numpy",
   "name": "logaddexp",
   "next": {
-    "href": "/docs/api/ops/logaddexp2/",
+    "href": "/docs/api/numpy/logaddexp2/",
     "label": "fnp.logaddexp2"
   },
   "notes": "log(exp(x1) + exp(x2)) element-wise.",
@@ -483,10 +483,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/log2/",
+    "href": "/docs/api/numpy/log2/",
     "label": "fnp.log2"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.logaddexp",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.logaddexp.html",
   "returns": [
     {
@@ -508,7 +509,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/logaddexp2",
+      "href": "/docs/api/numpy/logaddexp2/",
       "label": "fnp.logaddexp2",
       "original_target": "logaddexp2",
       "role": "",
@@ -519,6 +520,8 @@
   "signature": "fnp.logaddexp(x, y)",
   "slug": "logaddexp",
   "summary": "Logarithm of the sum of exponentiations of the inputs.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

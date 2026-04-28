@@ -127,7 +127,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bartlett",
+              "href": "/docs/api/numpy/bartlett/",
               "label": "fnp.bartlett",
               "original_target": "bartlett",
               "role": "",
@@ -138,7 +138,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/blackman",
+              "href": "/docs/api/numpy/blackman/",
               "label": "fnp.blackman",
               "original_target": "blackman",
               "role": "",
@@ -149,7 +149,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/hamming",
+              "href": "/docs/api/numpy/hamming/",
               "label": "fnp.hamming",
               "original_target": "hamming",
               "role": "",
@@ -160,7 +160,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/hanning",
+              "href": "/docs/api/numpy/hanning/",
               "label": "fnp.hanning",
               "original_target": "hanning",
               "role": "",
@@ -293,7 +293,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -385,18 +385,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nimport matplotlib.pyplot as plt\n\nfnp.kaiser(12, 14)",
+    "code": "import flopscope.numpy as fnp\n\nimport matplotlib.pyplot as plt\n\nfnp.kaiser(12, 14)",
     "output": "array([7.72686684e-06, 3.46009194e-03, 4.65200189e-02, # may vary\n        2.29737120e-01, 5.99885316e-01, 9.45674898e-01,\n        9.45674898e-01, 5.99885316e-01, 2.29737120e-01,\n        4.65200189e-02, 3.46009194e-03, 7.72686684e-06])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.kaiser",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L157",
-  "href": "/docs/api/ops/kaiser/",
+  "href": "/docs/api/numpy/kaiser/",
   "module": "flopscope._window",
   "name": "kaiser",
   "next": {
-    "href": "/docs/api/ops/kron/",
+    "href": "/docs/api/numpy/kron/",
     "label": "fnp.kron"
   },
   "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample).",
@@ -431,10 +431,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ix_/",
+    "href": "/docs/api/numpy/ix-/",
     "label": "fnp.ix_"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.kaiser",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.kaiser.html",
   "returns": [
     {
@@ -451,7 +452,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bartlett",
+      "href": "/docs/api/numpy/bartlett/",
       "label": "fnp.bartlett",
       "original_target": "bartlett",
       "role": "",
@@ -462,7 +463,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/blackman",
+      "href": "/docs/api/numpy/blackman/",
       "label": "fnp.blackman",
       "original_target": "blackman",
       "role": "",
@@ -473,7 +474,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/hamming",
+      "href": "/docs/api/numpy/hamming/",
       "label": "fnp.hamming",
       "original_target": "hamming",
       "role": "",
@@ -484,7 +485,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/hanning",
+      "href": "/docs/api/numpy/hanning/",
       "label": "fnp.hanning",
       "original_target": "hanning",
       "role": "",
@@ -495,6 +496,8 @@
   "signature": "fnp.kaiser(M, beta)",
   "slug": "kaiser",
   "summary": "Return the Kaiser window.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3617",
   "weight": 16.0
 }

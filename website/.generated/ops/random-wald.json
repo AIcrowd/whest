@@ -179,7 +179,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/mean",
+                      "href": "/docs/api/numpy/mean/",
                       "kind": "link",
                       "target": "mean",
                       "text": "mean"
@@ -240,7 +240,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/mean",
+                  "href": "/docs/api/numpy/mean/",
                   "kind": "link",
                   "target": "mean",
                   "text": "mean"
@@ -450,11 +450,11 @@
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.wald",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/ops/random-wald/",
+  "href": "/docs/api/numpy/random/wald/",
   "module": "numpy.random",
   "name": "random.wald",
   "next": {
-    "href": "/docs/api/ops/random-weibull/",
+    "href": "/docs/api/numpy/random/weibull/",
     "label": "fnp.random.weibull"
   },
   "notes": "Sampling; cost = numel(output).",
@@ -491,10 +491,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-vonmises/",
+    "href": "/docs/api/numpy/random/vonmises/",
     "label": "fnp.random.vonmises"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.wald",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.wald.html",
   "returns": [
     {
@@ -526,6 +527,8 @@
   "signature": "fnp.random.wald(mean, scale, size=None)",
   "slug": "random-wald",
   "summary": "Draw samples from a Wald, or inverse Gaussian, distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

@@ -34,6 +34,7 @@ h = np.maximum(h, 0)
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 # No setup needed — global default budget tracks FLOPs automatically
 W = fnp.random.randn(256, 256)
 x = fnp.random.randn(256)
@@ -48,6 +49,7 @@ flops.budget_summary()  # see what you spent
 ```python
 import flopscope as flops
 import flopscope.numpy as fnp
+
 with flops.BudgetContext(flop_budget=20_000_000) as budget:
     W = fnp.random.randn(256, 256)
     x = fnp.random.randn(256)
@@ -65,7 +67,7 @@ with flops.BudgetContext(flop_budget=20_000_000) as budget:
 
 | NumPy | flopscope | Notes |
 |-------|-----------|-------|
-| `import numpy as np` | `import flopscope as we` | Drop-in replacement |
+| `import numpy as np` | `import flopscope.numpy as fnp` | Use `import flopscope as flops` alongside it for budgets, symmetry, and accounting helpers |
 | Call ops anywhere | Works anywhere too | A global default budget auto-activates; use explicit `BudgetContext` for limits and namespacing |
 | `np.linalg.svd(A)` | `fnp.linalg.svd(A, k=10)` | Truncated SVD with explicit `k` |
 | Plain `ndarray` only | `SymmetricTensor` available | Wrap with `flops.as_symmetric()` for cost savings |
@@ -80,7 +82,7 @@ with flops.BudgetContext(flop_budget=20_000_000) as budget:
 
 **Symptom:** Using `np.linalg.svd` instead of `fnp.linalg.svd`
 
-**Fix:** If you import NumPy alongside flopscope, make sure to use `we.` for operations you want counted. Operations called through `np.` bypass FLOP counting entirely.
+**Fix:** If you import NumPy alongside flopscope, make sure to use `fnp.` for counted operations. Operations called through `np.` bypass FLOP counting entirely.
 
 ## Related pages
 

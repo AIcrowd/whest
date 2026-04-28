@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/hstack",
+              "href": "/docs/api/numpy/hstack/",
               "kind": "link",
               "target": "hstack",
               "text": "hstack"
@@ -116,7 +116,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/stack",
+              "href": "/docs/api/numpy/stack/",
               "label": "fnp.stack",
               "original_target": "stack",
               "role": "",
@@ -127,7 +127,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/hstack",
+              "href": "/docs/api/numpy/hstack/",
               "label": "fnp.hstack",
               "original_target": "hstack",
               "role": "",
@@ -138,7 +138,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/vstack",
+              "href": "/docs/api/numpy/vstack/",
               "label": "fnp.vstack",
               "original_target": "vstack",
               "role": "",
@@ -149,7 +149,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/concatenate",
+              "href": "/docs/api/numpy/concatenate/",
               "label": "fnp.concatenate",
               "original_target": "concatenate",
               "role": "",
@@ -169,7 +169,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -216,18 +216,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\na = fnp.array((1,2,3))\n\nb = fnp.array((2,3,4))\n\nfnp.column_stack((a,b))",
+    "code": "import flopscope.numpy as fnp\n\na = fnp.array((1,2,3))\n\nb = fnp.array((2,3,4))\n\nfnp.column_stack((a,b))",
     "output": "array([[1, 2],\n       [2, 3],\n       [3, 4]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.column_stack",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L760",
-  "href": "/docs/api/ops/column_stack/",
+  "href": "/docs/api/numpy/column-stack/",
   "module": "numpy",
   "name": "column_stack",
   "next": {
-    "href": "/docs/api/ops/common_type/",
+    "href": "/docs/api/numpy/common-type/",
     "label": "fnp.common_type"
   },
   "notes": "Stack 1-D arrays as columns into 2-D array.",
@@ -243,10 +243,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/clip/",
+    "href": "/docs/api/numpy/clip/",
     "label": "fnp.clip"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.column_stack",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.column_stack.html",
   "returns": [
     {
@@ -262,7 +263,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/stack",
+      "href": "/docs/api/numpy/stack/",
       "label": "fnp.stack",
       "original_target": "stack",
       "role": "",
@@ -273,7 +274,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/hstack",
+      "href": "/docs/api/numpy/hstack/",
       "label": "fnp.hstack",
       "original_target": "hstack",
       "role": "",
@@ -284,7 +285,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/vstack",
+      "href": "/docs/api/numpy/vstack/",
       "label": "fnp.vstack",
       "original_target": "vstack",
       "role": "",
@@ -295,7 +296,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/concatenate",
+      "href": "/docs/api/numpy/concatenate/",
       "label": "fnp.concatenate",
       "original_target": "concatenate",
       "role": "",
@@ -306,6 +307,8 @@
   "signature": "fnp.column_stack(tup)",
   "slug": "column_stack",
   "summary": "Stack 1-D arrays as columns into a 2-D array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L621",
   "weight": 0.0
 }

@@ -292,7 +292,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/copy",
+                      "href": "/docs/api/numpy/copy/",
                       "kind": "link",
                       "target": "copy",
                       "text": "copy"
@@ -325,7 +325,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/copy",
+                  "href": "/docs/api/numpy/copy/",
                   "kind": "link",
                   "target": "copy",
                   "text": "copy"
@@ -366,7 +366,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isinf",
+              "href": "/docs/api/numpy/isinf/",
               "label": "fnp.isinf",
               "original_target": "isinf",
               "role": "",
@@ -382,7 +382,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isneginf",
+              "href": "/docs/api/numpy/isneginf/",
               "label": "fnp.isneginf",
               "original_target": "isneginf",
               "role": "",
@@ -398,7 +398,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isposinf",
+              "href": "/docs/api/numpy/isposinf/",
               "label": "fnp.isposinf",
               "original_target": "isposinf",
               "role": "",
@@ -414,7 +414,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isnan",
+              "href": "/docs/api/numpy/isnan/",
               "label": "fnp.isnan",
               "original_target": "isnan",
               "role": "",
@@ -430,7 +430,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isfinite",
+              "href": "/docs/api/numpy/isfinite/",
               "label": "fnp.isfinite",
               "original_target": "isfinite",
               "role": "",
@@ -464,7 +464,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as fnp"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -581,18 +581,18 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as fnp\n\nfnp.nan_to_num(fnp.inf)\n\nfnp.nan_to_num(-fnp.inf)\n\nfnp.nan_to_num(fnp.nan)\n\nx = fnp.array([fnp.inf, -fnp.inf, fnp.nan, -128, 128])\n\nfnp.nan_to_num(x)\n\nfnp.nan_to_num(x, nan=-9999, posinf=33333333, neginf=33333333)\n\ny = fnp.array([complex(fnp.inf, fnp.nan), fnp.nan, complex(fnp.nan, fnp.inf)])\n\nfnp.nan_to_num(y)\n\nfnp.nan_to_num(y, nan=111111, posinf=222222)",
+    "code": "import flopscope.numpy as fnp\n\nfnp.nan_to_num(fnp.inf)\n\nfnp.nan_to_num(-fnp.inf)\n\nfnp.nan_to_num(fnp.nan)\n\nx = fnp.array([fnp.inf, -fnp.inf, fnp.nan, -128, 128])\n\nfnp.nan_to_num(x)\n\nfnp.nan_to_num(x, nan=-9999, posinf=33333333, neginf=33333333)\n\ny = fnp.array([complex(fnp.inf, fnp.nan), fnp.nan, complex(fnp.nan, fnp.inf)])\n\nfnp.nan_to_num(y)\n\nfnp.nan_to_num(y, nan=111111, posinf=222222)",
     "output": "1.7976931348623157e+308\n\n-1.7976931348623157e+308\n\n0.0\n\narray([ 1.79769313e+308, -1.79769313e+308,  0.00000000e+000, # may vary\n       -1.28000000e+002,  1.28000000e+002])\n\narray([ 3.3333333e+07,  3.3333333e+07, -9.9990000e+03,\n       -1.2800000e+02,  1.2800000e+02])\n\narray([  1.79769313e+308,  -1.79769313e+308,   0.00000000e+000, # may vary\n     -1.28000000e+002,   1.28000000e+002])\n\narray([  1.79769313e+308 +0.00000000e+000j, # may vary\n         0.00000000e+000 +0.00000000e+000j,\n         0.00000000e+000 +1.79769313e+308j])\n\narray([222222.+111111.j, 111111.     +0.j, 111111.+222222.j])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.nan_to_num",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L38",
-  "href": "/docs/api/ops/nan_to_num/",
+  "href": "/docs/api/numpy/nan-to-num/",
   "module": "numpy",
   "name": "nan_to_num",
   "next": {
-    "href": "/docs/api/ops/nanargmax/",
+    "href": "/docs/api/numpy/nanargmax/",
     "label": "fnp.nanargmax"
   },
   "notes": "Replace NaN/inf with finite numbers element-wise.",
@@ -646,10 +646,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/multiply/",
+    "href": "/docs/api/numpy/multiply/",
     "label": "fnp.multiply"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nan_to_num",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nan_to_num.html",
   "returns": [
     {
@@ -671,7 +672,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isinf",
+      "href": "/docs/api/numpy/isinf/",
       "label": "fnp.isinf",
       "original_target": "isinf",
       "role": "",
@@ -687,7 +688,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isneginf",
+      "href": "/docs/api/numpy/isneginf/",
       "label": "fnp.isneginf",
       "original_target": "isneginf",
       "role": "",
@@ -703,7 +704,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isposinf",
+      "href": "/docs/api/numpy/isposinf/",
       "label": "fnp.isposinf",
       "original_target": "isposinf",
       "role": "",
@@ -719,7 +720,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isnan",
+      "href": "/docs/api/numpy/isnan/",
       "label": "fnp.isnan",
       "original_target": "isnan",
       "role": "",
@@ -735,7 +736,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isfinite",
+      "href": "/docs/api/numpy/isfinite/",
       "label": "fnp.isfinite",
       "original_target": "isfinite",
       "role": "",
@@ -746,6 +747,8 @@
   "signature": "fnp.nan_to_num(x, copy=True, nan=0.0, posinf=None, neginf=None)",
   "slug": "nan_to_num",
   "summary": "Replace NaN with zero and infinity with large finite numbers (default behaviour) or with the numbers defined by the user using the `nan`, `posinf` and/or `neginf` keywords.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L373",
   "weight": 1.0
 }

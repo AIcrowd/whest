@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nanvar/",
+  "detail_href": "/docs/api/numpy/nanvar/",
   "detail_json_href": "/api-data/ops/nanvar.json",
   "docs": {
     "sections": [
@@ -499,7 +499,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/std",
+                "href": "/docs/api/numpy/std/",
                 "label": "fnp.std",
                 "original_target": "std",
                 "role": "",
@@ -515,7 +515,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
+                "href": "/docs/api/numpy/mean/",
                 "label": "fnp.mean",
                 "original_target": "mean",
                 "role": "",
@@ -531,7 +531,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/var",
+                "href": "/docs/api/numpy/var/",
                 "label": "fnp.var",
                 "original_target": "var",
                 "role": "",
@@ -542,7 +542,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanstd",
+                "href": "/docs/api/numpy/nanstd/",
                 "label": "fnp.nanstd",
                 "original_target": "nanstd",
                 "role": "",
@@ -553,7 +553,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmean",
+                "href": "/docs/api/numpy/nanmean/",
                 "label": "fnp.nanmean",
                 "original_target": "nanmean",
                 "role": "",
@@ -695,7 +695,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "kind": "link",
                 "target": "sum",
                 "text": "sum"
@@ -721,7 +721,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

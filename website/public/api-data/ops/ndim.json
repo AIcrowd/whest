@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/ndim/",
+  "detail_href": "/docs/api/numpy/ndim/",
   "detail_json_href": "/api-data/ops/ndim.json",
   "docs": {
     "sections": [
@@ -128,7 +128,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/shape",
+                "href": "/docs/api/numpy/shape/",
                 "label": "fnp.shape",
                 "original_target": "shape",
                 "role": "",
@@ -164,7 +164,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",

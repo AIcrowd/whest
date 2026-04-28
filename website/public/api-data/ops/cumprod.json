@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/cumprod/",
+  "detail_href": "/docs/api/numpy/cumprod/",
   "detail_json_href": "/api-data/ops/cumprod.json",
   "docs": {
     "sections": [
@@ -226,7 +226,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/cumprod",
+                    "href": "/docs/api/numpy/cumprod/",
                     "kind": "link",
                     "target": "cumprod",
                     "text": "cumprod"
@@ -237,7 +237,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/cumulative_prod",
+                "href": "/docs/api/numpy/cumulative-prod/",
                 "label": "fnp.cumulative_prod",
                 "original_target": "cumulative_prod",
                 "role": "",
@@ -282,7 +282,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as fnp"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
