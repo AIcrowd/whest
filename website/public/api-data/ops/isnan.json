@@ -409,7 +409,7 @@
     "name": "isnan",
     "notes": "Test for NaN element-wise. Cost: numel(input).",
     "numpy_ref": "np.isnan",
-    "signature": "fnp.isnan(x, **kwargs)",
+    "signature": "fnp.isnan(*args, **kwargs)",
     "status": "supported",
     "summary": "Test element-wise for NaN and return result as a boolean array.",
     "weight": 1.0

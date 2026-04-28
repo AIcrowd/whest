@@ -609,7 +609,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.isinf(x, **kwargs)",
+  "signature": "fnp.isinf(*args, **kwargs)",
   "slug": "isinf",
   "summary": "Test element-wise for positive or negative infinity.",
   "upstream_ref_label": "NumPy Ref",

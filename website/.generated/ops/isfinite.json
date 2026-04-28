@@ -620,7 +620,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.isfinite(x, **kwargs)",
+  "signature": "fnp.isfinite(*args, **kwargs)",
   "slug": "isfinite",
   "summary": "Test element-wise for finiteness (not infinity and not Not a Number).",
   "upstream_ref_label": "NumPy Ref",

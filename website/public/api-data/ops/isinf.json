@@ -479,7 +479,7 @@
     "name": "isinf",
     "notes": "Test for infinity element-wise. Cost: numel(input).",
     "numpy_ref": "np.isinf",
-    "signature": "fnp.isinf(x, **kwargs)",
+    "signature": "fnp.isinf(*args, **kwargs)",
     "status": "supported",
     "summary": "Test element-wise for positive or negative infinity.",
     "weight": 1.0

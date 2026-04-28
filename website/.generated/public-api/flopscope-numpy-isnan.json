@@ -564,7 +564,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.isnan(x, **kwargs)",
+  "signature": "fnp.isnan(*args, **kwargs)",
   "slug": "isnan",
   "summary": "Test element-wise for NaN and return result as a boolean array.",
   "upstream_ref_label": "NumPy Ref",

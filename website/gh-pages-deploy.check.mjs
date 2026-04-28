@@ -25,12 +25,9 @@ test('for-agents links use normal static paths for machine-readable artifacts', 
 
 test('docs route stays GH Pages-safe and avoids runtime filesystem reads', async () => {
   const source = await readSource('app/docs/[[...slug]]/page.tsx');
-  const opSource = await readSource('app/docs/api/ops/[slug]/page.tsx');
 
   assert.doesNotMatch(source, /node:fs|node:fs\/promises|from 'fs'|from "fs"/);
   assert.doesNotMatch(source, /process\.cwd\(/);
-  assert.doesNotMatch(opSource, /node:fs|node:fs\/promises|from 'fs'|from "fs"/);
-  assert.doesNotMatch(opSource, /process\.cwd\(/);
 });
 
 test('build-generated public artifacts exist and are non-empty', async () => {

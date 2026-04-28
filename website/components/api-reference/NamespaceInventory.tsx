@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './styles.module.css';
 import {
   getNamespaceInventory,
@@ -22,18 +23,18 @@ export default function NamespaceInventory({ namespace }: { namespace: PublicApi
               <article key={entry.import_path} className={styles.namespaceRow}>
                 <div className={styles.namespaceRowBody}>
                   <h3 className={styles.namespaceRowTitle}>
-                    <a className={styles.namespaceLink} href={entry.href}>
+                    <Link className={styles.namespaceLink} href={entry.href}>
                       {entry.display_name}
-                    </a>
+                    </Link>
                   </h3>
                   <p className={styles.namespaceSummary}>{entry.summary}</p>
                 </div>
                 {entry.members && entry.members.length > 0 ? (
                   <div className={styles.namespaceMembers}>
                     {entry.members.map((member) => (
-                      <a key={member.href} className={styles.namespaceMemberLink} href={member.href}>
+                      <Link key={member.href} className={styles.namespaceMemberLink} href={member.href}>
                         {member.label}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 ) : null}

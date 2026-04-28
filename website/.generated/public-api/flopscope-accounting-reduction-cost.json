@@ -279,7 +279,7 @@
     "source": "derived"
   },
   "flopscope_ref": "flopscope.accounting.reduction_cost",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L388",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L385",
   "href": "/docs/api/accounting/reduction-cost/",
   "import_path": "flopscope.accounting.reduction_cost",
   "is_operation_cost_leaf": false,

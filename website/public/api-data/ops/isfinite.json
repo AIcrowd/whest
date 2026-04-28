@@ -489,7 +489,7 @@
     "name": "isfinite",
     "notes": "Test for finite values element-wise. Cost: numel(input).",
     "numpy_ref": "np.isfinite",
-    "signature": "fnp.isfinite(x, **kwargs)",
+    "signature": "fnp.isfinite(*args, **kwargs)",
     "status": "supported",
     "summary": "Test element-wise for finiteness (not infinity and not Not a Number).",
     "weight": 1.0
