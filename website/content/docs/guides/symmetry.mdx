@@ -345,8 +345,10 @@ broadcast_sum = we.add(stretched_s2_tensor, plain_tensor)
 ```
 
 Before group intersection, any axis stretched from size `1` to a larger output
-size is removed from the candidate group. That is why broadcasted singleton
-axes do not automatically stay symmetric after a binary op.
+size is removed from the carried candidate group. So singleton broadcasting by
+itself does not preserve symmetry. In this example, though, `plain_tensor`
+already carries the same analytically provable `S_2` symmetry on `(0, 1)`, so
+`broadcast_sum` keeps that shared block.
 
 ## Warnings, conservative behavior, and re-tagging
 

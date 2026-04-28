@@ -228,7 +228,7 @@ print(json.dumps({
     intersection_order: 3,
     shared_group_type: 'SymmetricTensor',
     shared_group_axes: [0, 1, 2, 3],
-    broadcast_has_symmetry: false,
+    broadcast_has_symmetry: true,
     unary_c3_order: 3,
     unary_d4_order: 8,
     repeated_einsum_cost: 30,
