@@ -21,7 +21,9 @@ def test_ops_index_exposes_detail_links_and_slugs():
 
     sample = operations[0]
     assert sample["slug"] == sample["name"]
-    assert sample["detail_href"] == f"/docs/api/ops/{sample['slug']}/"
+    assert sample["detail_href"].startswith("/docs/api/")
+    assert sample["detail_href"].endswith("/")
+    assert "/docs/api/ops/" not in sample["detail_href"]
     assert sample["detail_json_href"] == f"/api-data/ops/{sample['slug']}.json"
     assert "summary" in sample
 
@@ -51,10 +53,10 @@ def test_per_op_detail_payloads_exist_for_index_entries():
             f"{name} detail payload should contain docs sections"
         )
 
-    assert operations_by_name["absolute"]["detail_href"] == "/docs/api/ops/absolute/"
-    assert operations_by_name["add"]["detail_href"] == "/docs/api/ops/add/"
-    assert operations_by_name["einsum"]["detail_href"] == "/docs/api/ops/einsum/"
-    assert operations_by_name["sum"]["detail_href"] == "/docs/api/ops/sum/"
+    assert operations_by_name["absolute"]["detail_href"] == "/docs/api/numpy/absolute/"
+    assert operations_by_name["add"]["detail_href"] == "/docs/api/numpy/add/"
+    assert operations_by_name["einsum"]["detail_href"] == "/docs/api/numpy/einsum/"
+    assert operations_by_name["sum"]["detail_href"] == "/docs/api/numpy/sum/"
 
 
 def test_generated_import_map_contains_known_op_slugs():
