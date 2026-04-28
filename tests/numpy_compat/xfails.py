@@ -1,8 +1,8 @@
-"""Known divergences between whest and NumPy.
+"""Known divergences between flopscope and NumPy.
 
 Each entry maps a test node ID (or pattern) to a reason string.
 Tests matching these patterns are marked xfail when running NumPy's
-test suite against whest.
+test suite against flopscope.
 
 Current state (2026-04-17, numpy 2.4.4, after Task 10 triage):
     Total:          ~7,862 passed, 47 xfailed, 0 failures (all suites)
@@ -48,7 +48,7 @@ Fixes applied:
     random fix:         TestRandint::test_* (6 patterns) and test_choice_return_shape
                         removed (now pass with NonDescriptor fix).
     StdVar fix:         test_out_scalar removed (std/var out= now works).
-    7 trivial fixes:    _aswhest order='A', linalg.diagonal axis=-2/-1, linalg.cross
+    7 trivial fixes:    _asflopscope order='A', linalg.diagonal axis=-2/-1, linalg.cross
                         validation, tensordot int axes, norm axis validation,
                         clip argument validation, astype copy/device kwargs.
     Tier 3 fixes:       cond NaN (SVD fallback per-matrix), matrix_rank 1D input,
@@ -63,11 +63,11 @@ What we patch (55 functions):
     sum, prod, etc.) plus misc functions like isclose, real, imag, etc.
 
 What we DON'T patch (and why):
-    - Ufuncs (101): whest functions are plain callables, not ufuncs.
+    - Ufuncs (101): flopscope functions are plain callables, not ufuncs.
       They lack .reduce/.accumulate/.outer/.nargs/etc. Patching would
       break test collection and any test using ufunc protocol.
     - Free ops (220): pass-throughs that delegate to numpy. Patching
-      causes infinite recursion since whest's _np IS np.
+      causes infinite recursion since flopscope's _np IS np.
     - Counted custom (36): dot, matmul, einsum, convolve, etc. call
       _np.func() via module lookup. Same recursion issue.
     - Submodule functions (38): linalg.*, fft.*. Same recursion issue.
@@ -85,17 +85,17 @@ Categories for failures:
 New categories added for numpy 2.3 triage (Task 9):
 
     BEHAVIORAL_SHIM — numpy's own test asserts the 2.3+ behavior that
-        whest intentionally shims away (e.g. count_nonzero test asserts
-        numpy scalar return; whest returns int).
+        flopscope intentionally shims away (e.g. count_nonzero test asserts
+        numpy scalar return; flopscope returns int).
 
-    REMOVED_IN_NUMPY — numpy removed this symbol in 2.4; whest gates it
+    REMOVED_IN_NUMPY — numpy removed this symbol in 2.4; flopscope gates it
         off. The upstream test still references the removed symbol.
-        (Not used for numpy 2.3 triage — nothing whest wraps was removed
+        (Not used for numpy 2.3 triage — nothing flopscope wraps was removed
         in 2.3; category reserved for the 2.4 triage in Task 11.)
 
 Changes in numpy 2.4 triage (Task 10):
     1 new xfail added: test_ufunc_override_where — numpy 2.4 changed
-        ufunc dispatch so WhestArray (returned by patched np.zeros) ends
+        ufunc dispatch so FlopscopeArray (returned by patched np.zeros) ends
         up as out= in an OverriddenArray._unwrap call; the unwrap sees a
         non-matching ndarray subclass and returns NotImplemented, then
         [0] subscript crashes.  SUBCLASS_RETURN category.
@@ -117,7 +117,7 @@ Unit suite gaps (for Task 11 to fix, not this file):
     test_signature_conformance — 6 tests fail because numpy 2.4 added
         C-level positional-only annotations to dot, packbits, unpackbits,
         shares_memory, ravel_multi_index, promote_types whose signatures
-        now differ from whest's pass-through wrappers (*args, **kwargs).
+        now differ from flopscope's pass-through wrappers (*args, **kwargs).
 """
 
 # Reason-string constants for use in XFAIL_PATTERNS values.
@@ -130,18 +130,18 @@ Unit suite gaps (for Task 11 to fix, not this file):
 # within its bundled test files. If a future triage finds such tests,
 # use these constants as XFAIL_PATTERNS values.
 BEHAVIORAL_SHIM = (
-    "BEHAVIORAL_SHIM: whest intentionally preserves pre-2.3 behavior; "
+    "BEHAVIORAL_SHIM: flopscope intentionally preserves pre-2.3 behavior; "
     "numpy's test asserts the 2.3+ behavior and therefore fails when "
     "monkeypatched."
 )
 REMOVED_IN_NUMPY = (
-    "REMOVED_IN_NUMPY: numpy removed this symbol in 2.4; whest gates it "
+    "REMOVED_IN_NUMPY: numpy removed this symbol in 2.4; flopscope gates it "
     "off. The upstream test still references the removed symbol."
 )
 
 XFAIL_PATTERNS: dict[str, str] = {
     # ------------------------------------------------------------------ #
-    # test_pocketfft.py — upstream numpy flake (not whest's fault)        #
+    # test_pocketfft.py — upstream numpy flake (not flopscope's fault)        #
     # ------------------------------------------------------------------ #
     # test_identity_long_short_reversed[longdouble] has atol = 5 * spacing
     # on the dtype, which on Linux x86 (80-bit extended longdouble,
@@ -167,12 +167,12 @@ XFAIL_PATTERNS: dict[str, str] = {
     # test_shuffle iterates the shuffle over 11 array variants and does
     # assert_array_equal after each. The shuffle itself succeeds; the
     # failure is in the equality check for structured-dtype arrays
-    # (WhestArray.__eq__ -> we.equal -> np.equal raises _UFuncNoLoopError
+    # (FlopscopeArray.__eq__ -> we.equal -> np.equal raises _UFuncNoLoopError
     # on VoidDType) and the dtype=object case (legacy RandomState shuffle
     # order differs from what the test hard-codes, which numpy documents
     # as "will not be fixed" — see the UserWarning emitted during the run).
     "*TestRandomDist::test_shuffle": (
-        "SUBCLASS_RETURN: WhestArray.__eq__ routes through we.equal which "
+        "SUBCLASS_RETURN: FlopscopeArray.__eq__ routes through we.equal which "
         "lacks a ufunc loop for structured dtypes; same root cause as the "
         "other SUBCLASS_RETURN entries"
     ),
@@ -182,14 +182,14 @@ XFAIL_PATTERNS: dict[str, str] = {
     #     subclasses through _np.polyval.
     #   - std/var/mean: honor the out= identity contract in
     #     _counted_reduction — when out is passed, return it directly
-    #     without WhestArray rewrapping.
+    #     without FlopscopeArray rewrapping.
     #   - random.choice: preserve object-pick identity when picking a
     #     scalar from an object-dtype array; added "choice" to the
     #     wrap_module_returns skip list.
     # ------------------------------------------------------------------ #
-    # SUBCLASS_RETURN — WhestArray subclass propagation               #
+    # SUBCLASS_RETURN — FlopscopeArray subclass propagation               #
     # ------------------------------------------------------------------ #
-    # whest wraps return values in WhestArray (an ndarray subclass)
+    # flopscope wraps return values in FlopscopeArray (an ndarray subclass)
     # so that operator overloads can route through FLOP-tracked we.* funcs.
     # NumPy's tests use strict `type(x) is np.ndarray` checks that fail when
     # the result is a subclass. These tests are inherent limitations of the
@@ -198,85 +198,85 @@ XFAIL_PATTERNS: dict[str, str] = {
         "SUBCLASS_RETURN: ndarray subclass propagates through ufunc with __array_priority__"
     ),
     "*TestUfunc::test_array_wrap_array_priority": (
-        "SUBCLASS_RETURN: np.zeros (patched to return WhestArray) wins the "
+        "SUBCLASS_RETURN: np.zeros (patched to return FlopscopeArray) wins the "
         "__array_priority__ contest against a subclass with priority 0; "
-        "add returns WhestArray instead of the expected subclass instance"
+        "add returns FlopscopeArray instead of the expected subclass instance"
     ),
     "*TestUfunc::test_scalar_reduction": (
-        "SUBCLASS_RETURN: ufunc reduction on WhestArray returns subclass instead of scalar"
+        "SUBCLASS_RETURN: ufunc reduction on FlopscopeArray returns subclass instead of scalar"
     ),
     "*TestUfunc::test_broadcast": (
-        "SUBCLASS_RETURN: broadcast result preserves WhestArray subclass"
+        "SUBCLASS_RETURN: broadcast result preserves FlopscopeArray subclass"
     ),
     "*TestNonzero::test_return_type": (
-        "SUBCLASS_RETURN: nonzero returns WhestArray instead of plain ndarray tuple"
+        "SUBCLASS_RETURN: nonzero returns FlopscopeArray instead of plain ndarray tuple"
     ),
     "*TestRequire::test_ensure_array": (
-        "SUBCLASS_RETURN: np.require with subok=False can't strip WhestArray"
+        "SUBCLASS_RETURN: np.require with subok=False can't strip FlopscopeArray"
     ),
     "*TestArrayComparisons::test_compare_unstructured_voids*": (
-        "SUBCLASS_RETURN: void comparison preserves WhestArray subclass"
+        "SUBCLASS_RETURN: void comparison preserves FlopscopeArray subclass"
     ),
     # ------------------------------------------------------------------ #
     # SUBCLASS_RETURN — *_like strides mismatch                           #
     # ------------------------------------------------------------------ #
     # np.zeros_like/ones_like/empty_like/full_like preserve strides from the
-    # prototype. When the prototype is a WhestArray, the resulting array has
+    # prototype. When the prototype is a FlopscopeArray, the resulting array has
     # C-order strides rather than the non-contiguous strides of the original.
     "*TestLikeFuncs::test_zeros_like": (
-        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is WhestArray"
+        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is FlopscopeArray"
     ),
     "*TestLikeFuncs::test_ones_like": (
-        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is WhestArray"
+        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is FlopscopeArray"
     ),
     "*TestLikeFuncs::test_empty_like": (
-        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is WhestArray"
+        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is FlopscopeArray"
     ),
     "*TestLikeFuncs::test_filled_like": (
-        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is WhestArray"
+        "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is FlopscopeArray"
     ),
     # ------------------------------------------------------------------ #
     # NUMPY_INTERNAL — fromiter/resize edge cases                         #
     # ------------------------------------------------------------------ #
     "*TestCreationFuncs::test_zeros": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
+        "SUBCLASS_RETURN: _asflopscope OWNDATA copy interacts with _symmetric_2d wrapping"
     ),
     "*TestCreationFuncs::test_ones": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
+        "SUBCLASS_RETURN: _asflopscope OWNDATA copy interacts with _symmetric_2d wrapping"
     ),
     "*TestCreationFuncs::test_empty": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
+        "SUBCLASS_RETURN: _asflopscope OWNDATA copy interacts with _symmetric_2d wrapping"
     ),
     "*TestResize::test_reshape_from_zero": (
-        "SUBCLASS_RETURN: np.resize returns WhestArray; the subsequent "
-        "assert_array_equal invokes WhestArray.__eq__ -> we.equal -> "
+        "SUBCLASS_RETURN: np.resize returns FlopscopeArray; the subsequent "
+        "assert_array_equal invokes FlopscopeArray.__eq__ -> we.equal -> "
         "np.equal, which has no ufunc loop for VoidDType (the test uses "
         "dtype=[('a', np.float32)], a structured dtype). Same root cause "
         "as other SUBCLASS_RETURN entries."
     ),
     "*TestFromiter::test_growth_and_complicated_dtypes*i,O*": (
-        "SUBCLASS_RETURN: fromiter returns WhestArray; the subsequent "
-        "assert_array_equal invokes WhestArray.__eq__ -> we.equal -> "
+        "SUBCLASS_RETURN: fromiter returns FlopscopeArray; the subsequent "
+        "assert_array_equal invokes FlopscopeArray.__eq__ -> we.equal -> "
         "np.equal, which has no ufunc loop for VoidDType (structured "
         "dtypes). Same root cause as other SUBCLASS_RETURN entries."
     ),
     "*TestOut::test_out_wrap_no_leak": (
-        "NUMPY_INTERNAL: refcount check sees unexpected count due to WhestArray subclass "
+        "NUMPY_INTERNAL: refcount check sees unexpected count due to FlopscopeArray subclass "
         "wrapping (fails on numpy 2.2; xpassed on 2.3/2.4 which is acceptable)"
     ),
     # ------------------------------------------------------------------ #
     # SUBCLASS_RETURN — numpy 2.4 ufunc __array_ufunc__ dispatch change  #
     # ------------------------------------------------------------------ #
     # numpy 2.4 changed ufunc dispatch so our patched np.zeros returns a
-    # WhestArray, which then lands as out= inside OverriddenArray._unwrap.
+    # FlopscopeArray, which then lands as out= inside OverriddenArray._unwrap.
     # _unwrap checks type(obj) != np.ndarray and returns NotImplemented
     # for any ndarray subclass it doesn't recognise; the caller then does
     # NotImplemented[0] which raises TypeError.
     # This test passed on numpy 2.3; it's a genuine 2.4 regression caused
-    # by our WhestArray subclass propagating into third-party __array_ufunc__
+    # by our FlopscopeArray subclass propagating into third-party __array_ufunc__
     # implementations that use strict type checks.
     "*TestSpecialMethods::test_ufunc_override_where": (
-        "SUBCLASS_RETURN: numpy 2.4 ufunc dispatch routes WhestArray (from patched "
+        "SUBCLASS_RETURN: numpy 2.4 ufunc dispatch routes FlopscopeArray (from patched "
         "np.zeros) as out= into OverriddenArray._unwrap which does strict "
         "type(obj) != np.ndarray checks; returns NotImplemented then crashes on [0]"
     ),

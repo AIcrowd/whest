@@ -1,7 +1,7 @@
 /**
  * Python code generator for the symmetry explorer.
  *
- * Produces a runnable snippet that uses the `whest` library (imported as `we`)
+ * Produces a runnable snippet that uses the `flopscope` library (imported as `we`)
  * to construct tensors with the requested symmetries and call `we.einsum_path`.
  */
 
@@ -155,7 +155,7 @@ export function generatePython(variables, subscripts, output, operandNames, dime
   const lines = [];
 
   // --- Import ---------------------------------------------------------------
-  lines.push('import whest as we');
+  lines.push('import flopscope as we');
   lines.push('');
 
   // --- Dimension ------------------------------------------------------------

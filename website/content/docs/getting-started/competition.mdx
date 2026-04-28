@@ -6,7 +6,7 @@ title: "Competition Guide"
 
 **You will learn:**
 - How to set budget limits with `BudgetContext`
-- How to use the `@we.budget` decorator form
+- How to use the `@flops.budget` decorator form
 - How wall-time limits work via `wall_time_limit_s`
 - How to read budget summaries
 - Common competition pitfalls and tips
@@ -16,35 +16,35 @@ title: "Competition Guide"
 Every competition submission runs inside a FLOP budget. Use `BudgetContext` to declare how many FLOPs your code is allowed to spend:
 
 ```python
-import whest as we
-
-with we.BudgetContext(flop_budget=50_000_000, namespace="solver") as budget:
-    A = we.ones((256, 256))
-    x = we.ones((256,))
-    h = we.einsum('ij,j->i', A, x)
-    h = we.exp(h)
-    result = we.sum(h)
+import flopscope as flops
+import flopscope.numpy as fnp
+with flops.BudgetContext(flop_budget=50_000_000, namespace="solver") as budget:
+    A = fnp.ones((256, 256))
+    x = fnp.ones((256,))
+    h = fnp.einsum('ij,j->i', A, x)
+    h = fnp.exp(h)
+    result = fnp.sum(h)
 ```
 
-If your code exceeds the budget, whest raises `BudgetExhaustedError` *before* the offending operation executes. The error message includes the cost of the failed operation and the remaining budget.
+If your code exceeds the budget, Flopscope raises `BudgetExhaustedError` *before* the offending operation executes. The error message includes the cost of the failed operation and the remaining budget.
 
-The `namespace` parameter sets the root namespace prefix for that budget context. Nested `we.namespace(...)` scopes extend it with dotted segments, but they do not create child budgets or split the FLOP limit into separate pools.
+The `namespace` parameter sets the root namespace prefix for that budget context. Nested `flops.namespace(...)` scopes extend it with dotted segments, but they do not create child budgets or split the FLOP limit into separate pools.
 
 ## Decorator form
 
-For cleaner code, use `@we.budget` to attach a budget directly to a function:
+For cleaner code, use `@flops.budget` to attach a budget directly to a function:
 
 ```python
-import whest as we
-
-@we.budget(flop_budget=50_000_000, namespace="forward-pass")
+import flopscope as flops
+import flopscope.numpy as fnp
+@flops.budget(flop_budget=50_000_000, namespace="forward-pass")
 def forward(W, x):
-    h = we.einsum('ij,j->i', W, x)
-    h = we.maximum(h, 0)
-    return we.sum(h)
+    h = fnp.einsum('ij,j->i', W, x)
+    h = fnp.maximum(h, 0)
+    return fnp.sum(h)
 
 result = forward(W, x)
-we.budget_summary()
+flops.budget_summary()
 ```
 
 Each call to the decorated function runs inside the same `BudgetContext`; the namespace is only the root prefix used for attribution, not a separate budget pool. Repeated calls reuse that context and keep accumulating on the same budget and operation log.
@@ -54,41 +54,41 @@ Each call to the decorated function runs inside the same `BudgetContext`; the na
 In addition to FLOP budgets, competitions may enforce a wall-clock time limit via `wall_time_limit_s`. This prevents solutions from stalling on operations that are analytically cheap but slow in practice:
 
 ```python
-with we.BudgetContext(flop_budget=10**9, wall_time_limit_s=60.0) as budget:
+with flops.BudgetContext(flop_budget=10**9, wall_time_limit_s=60.0) as budget:
     # Must finish within 60 seconds AND within 1 billion FLOPs
     ...
 ```
 
-If the wall-clock time is exceeded, whest raises `TimeExhaustedError`. The timer starts when the context is entered and is checked after each counted operation.
+If the wall-clock time is exceeded, Flopscope raises `TimeExhaustedError`. The timer starts when the context is entered and is checked after each counted operation.
 
 What `wall_time_limit_s` does and does not do:
 
 - It is a `BudgetContext` setting, so you configure it in the same place you set `flop_budget`.
 - It measures total wall-clock time for the active context, not FLOPs.
 - It is checked cooperatively before and after counted NumPy calls, so overshoot is bounded by the duration of one NumPy call.
-- It is a clean diagnostic limit inside whest. Hard process/container kills still belong to the outer execution environment.
+- It is a clean diagnostic limit inside flopscope. Hard process/container kills still belong to the outer execution environment.
 
 ## Reading the budget summary
 
-Call `budget.summary()` when you want the current context's summary, or `we.budget_summary()` for the accumulated session/global view. Both stay flat by default; use `by_namespace=True` only when you want a namespace breakdown:
+Call `budget.summary()` when you want the current context's summary, or `flops.budget_summary()` for the accumulated session/global view. Both stay flat by default; use `by_namespace=True` only when you want a namespace breakdown:
 
 ```python
 print(budget.summary())                   # context summary, flat by default
 print(budget.summary(by_namespace=True))  # context summary with namespaces
-we.budget_summary()                       # session/global summary
-we.budget_summary(by_namespace=True)      # session/global summary with namespaces
+flops.budget_summary()                       # session/global summary
+flops.budget_summary(by_namespace=True)      # session/global summary with namespaces
 ```
 
 Use these forms for different questions:
 
 - `budget.summary()` answers "what did this one explicit context spend?"
-- `we.budget_summary()` answers "what has this process/session spent overall?"
-- `budget.summary_dict(...)` and `we.budget_summary_dict(...)` return the same information as structured data instead of formatted text.
+- `flops.budget_summary()` answers "what has this process/session spent overall?"
+- `budget.summary_dict(...)` and `flops.budget_summary_dict(...)` return the same information as structured data instead of formatted text.
 
 The block below shows `print(budget.summary(by_namespace=True))` for the `solver` context:
 
 ```text
-whest FLOP Budget Summary [solver]
+flopscope FLOP Budget Summary [solver]
 ==================================
   Total budget:              50,000,000
   Used:                          66,048  (0.1%)
@@ -115,19 +115,19 @@ whest FLOP Budget Summary [solver]
 Key things to look for:
 
 - **Budget / Used / Remaining:** the top rows show the explicit competition budget, current spend, and remaining headroom
-- **By namespace:** `solver` is the root prefix, and nested scopes show up as dotted paths like `solver.precompute`. Use `budget.summary(by_namespace=True)` for the current context or `we.budget_summary(by_namespace=True)` for the accumulated session/global view
+- **By namespace:** `solver` is the root prefix, and nested scopes show up as dotted paths like `solver.precompute`. Use `budget.summary(by_namespace=True)` for the current context or `flops.budget_summary(by_namespace=True)` for the accumulated session/global view
 - **By operation:** this toy pass is dominated by the single `einsum`; `exp` and `sum` are tiny by comparison
 - **Wall / tracked / untracked time:** wall time is total elapsed time for the context, tracked time is time spent inside counted NumPy calls, and untracked time is everything else in the context (`wall_time - tracked_time`)
 - **Flat default:** the default summary stays flat unless you opt into `by_namespace=True`
 
-For programmatic access, use `we.budget_summary_dict()`:
+For programmatic access, use `flops.budget_summary_dict()`:
 
 ```python
-data = we.budget_summary_dict()
+data = flops.budget_summary_dict()
 print(f"Used: {data['flops_used']:,} / {data['flop_budget']:,}")
 
 # Per-namespace breakdown:
-data = we.budget_summary_dict(by_namespace=True)
+data = flops.budget_summary_dict(by_namespace=True)
 print(data["by_namespace"]["solver"]["flops_used"])
 ```
 
@@ -136,17 +136,17 @@ print(data["by_namespace"]["solver"]["flops_used"])
 **Check costs before committing budget.** Use cost query functions to estimate before executing:
 
 ```python
-cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+cost = flops.accounting.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
 print(f"This matmul will cost {cost:,} FLOPs")  # 16,777,216
 ```
 
 **Use namespaces for phases.** Split your solution into named phases (e.g., `"init"`, `"solve"`, `"refine"`) so the budget summary shows exactly where FLOPs are spent.
 
-**Exploit symmetry for savings.** If your tensors are symmetric, wrapping them with `we.as_symmetric()` can halve pointwise costs and significantly reduce einsum costs. See [Symmetry Savings](/docs/guides/symmetry) for details.
+**Exploit symmetry for savings.** If your tensors are symmetric, wrapping them with `flops.as_symmetric()` can halve pointwise costs and significantly reduce einsum costs. See [Symmetry Savings](/docs/guides/symmetry) for details.
 
-**Prefer cheaper operations.** A matrix-vector product via `we.einsum('ij,j->i', A, x)` costs `m*n` FLOPs, while a full matrix-matrix multiply costs `m*n*k`. Avoid computing more than you need.
+**Prefer cheaper operations.** A matrix-vector product via `fnp.einsum('ij,j->i', A, x)` costs `m*n` FLOPs, while a full matrix-matrix multiply costs `m*n*k`. Avoid computing more than you need.
 
-**Watch out for hidden costs.** Operations like `we.array()` and `we.concatenate()` are *not* free -- they charge `numel(output)` FLOPs, and `we.where()` charges `numel(condition)`. Check the cost of any operation you are unsure about.
+**Watch out for hidden costs.** Operations like `fnp.array()` and `fnp.concatenate()` are *not* free -- they charge `numel(output)` FLOPs, and `fnp.where()` charges `numel(condition)`. Check the cost of any operation you are unsure about.
 
 ## When things go wrong
 

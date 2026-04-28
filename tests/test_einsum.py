@@ -1,11 +1,11 @@
-"""Tests for whest einsum with FLOP counting and symmetry."""
+"""Tests for flopscope einsum with FLOP counting and symmetry."""
 
 import numpy
 import pytest
 
-from whest._budget import BudgetContext
-from whest._einsum import einsum
-from whest.errors import BudgetExhaustedError, SymmetryError
+from flopscope._budget import BudgetContext
+from flopscope._einsum import einsum
+from flopscope.errors import BudgetExhaustedError, SymmetryError
 
 
 def test_matmul_result():

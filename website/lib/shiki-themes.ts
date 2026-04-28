@@ -1,5 +1,5 @@
 // =========================================================================
-// Whest Design System — Shiki themes
+// Flopscope Design System — Shiki themes
 // Derived from the system palette: coral = value, ink-gray = structure.
 //   string     → coral-hover  (#D23934)   — AA at body size
 //   operator   → coral        (#F0524D)   — brand accent
@@ -13,7 +13,7 @@
 // Canvas: pure white light / neutral #1A1D1E dark (NOT warm-brown).
 // =========================================================================
 
-type WhestTheme = {
+type FlopscopeTheme = {
   name: string;
   type: 'light' | 'dark';
   colors: Record<string, string>;
@@ -23,8 +23,8 @@ type WhestTheme = {
   }>;
 };
 
-export const whestLight: WhestTheme = {
-  name: 'whest-paper',
+export const flopscopeLight: FlopscopeTheme = {
+  name: 'flopscope-paper',
   type: 'light',
   colors: {
     'editor.background': '#FFFFFF',
@@ -55,8 +55,8 @@ export const whestLight: WhestTheme = {
   ],
 };
 
-export const whestDark: WhestTheme = {
-  name: 'whest-ink',
+export const flopscopeDark: FlopscopeTheme = {
+  name: 'flopscope-ink',
   type: 'dark',
   colors: {
     'editor.background': '#1A1D1E',

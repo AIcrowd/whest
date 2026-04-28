@@ -6,7 +6,7 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.server
     volumes:
-      - whest-sock:/ipc
+      - flopscope-sock:/ipc
     restart: unless-stopped
 
   participant:
@@ -14,10 +14,10 @@ services:
       context: ..
       dockerfile: docker/Dockerfile.participant-hardened
     volumes:
-      - whest-sock:/ipc
+      - flopscope-sock:/ipc
       - ./submissions:/submission:ro
     environment:
-      - WHEST_SERVER_URL=ipc:///ipc/whest.sock
+      - FLOPSCOPE_SERVER_URL=ipc:///ipc/flopscope.sock
     depends_on:
       - backend
     network_mode: none
@@ -33,4 +33,4 @@ services:
     pids_limit: 50
 
 volumes:
-  whest-sock:
+  flopscope-sock:

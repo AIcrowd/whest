@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import numpy
 
-from whest._budget import BudgetContext
-from whest._counting_ops import (
+from flopscope._budget import BudgetContext
+from flopscope._counting_ops import (
     allclose,
     array_equal,
     array_equiv,

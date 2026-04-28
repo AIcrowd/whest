@@ -35,10 +35,10 @@ fmt:  ## Auto-fix lint and format issues
 # ---------------------------------------------------------------------------
 .PHONY: test
 test:  ## Run pytest with coverage (fails if < 90%)
-	$(UV) pytest --cov=whest --cov-fail-under=90
+	$(UV) pytest --cov=flopscope --cov-fail-under=90
 
 .PHONY: test-numpy-compat
-test-numpy-compat:  ## Run NumPy's own tests against whest
+test-numpy-compat:  ## Run NumPy's own tests against flopscope
 	$(UV) pytest tests/numpy_compat/ -n auto -q \
 		--pyargs numpy._core.tests.test_umath \
 		          numpy._core.tests.test_ufunc \
@@ -81,7 +81,7 @@ sync-client:  ## Regenerate client files from core library
 
 .PHONY: test-integration
 test-integration:  ## Run client-server integration tests
-	cd whest-client && $(UV) pytest tests/test_full_integration.py -v --tb=short
+	cd flopscope-client && $(UV) pytest tests/test_full_integration.py -v --tb=short
 
 # ---------------------------------------------------------------------------
 # Setup

@@ -2,9 +2,9 @@
 
 import numpy
 
-from whest._config import configure, get_setting
-from whest._einsum import _identity_pattern, _symmetry_fingerprint
-from whest._symmetric import SymmetricTensor
+from flopscope._config import configure, get_setting
+from flopscope._einsum import _identity_pattern, _symmetry_fingerprint
+from flopscope._symmetric import SymmetricTensor
 
 
 def test_einsum_path_cache_size_default():
@@ -71,8 +71,8 @@ def test_identity_pattern_mixed():
     hash(pat)
 
 
-from whest._budget import BudgetContext
-from whest._einsum import clear_einsum_cache, einsum, einsum_cache_info
+from flopscope._budget import BudgetContext
+from flopscope._einsum import clear_einsum_cache, einsum, einsum_cache_info
 
 
 def test_cache_hit_on_repeated_call():
@@ -129,7 +129,7 @@ def test_cache_correctness():
     numpy.testing.assert_allclose(result1, expected)
 
 
-from whest._einsum import einsum_path
+from flopscope._einsum import einsum_path
 
 
 def test_einsum_path_warms_cache():
@@ -195,17 +195,17 @@ def test_configure_rebuilds_cache():
         configure(einsum_path_cache_size=original)
 
 
-import whest
+import flopscope
 
 
 def test_public_api_clear():
-    whest.clear_einsum_cache()
-    info = whest.einsum_cache_info()
+    flopscope.numpy.clear_einsum_cache()
+    info = flopscope.numpy.einsum_cache_info()
     assert info.currsize == 0
 
 
 def test_public_api_cache_info():
-    info = whest.einsum_cache_info()
+    info = flopscope.numpy.einsum_cache_info()
     assert hasattr(info, "hits")
     assert hasattr(info, "misses")
     assert hasattr(info, "maxsize")

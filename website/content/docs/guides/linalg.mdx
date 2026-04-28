@@ -2,10 +2,10 @@
 title: "Linear Algebra"
 ---
 
-*Use this page to learn how to use `we.linalg` operations and their FLOP costs.*
+*Use this page to learn how to use `fnp.linalg` operations and their FLOP costs.*
 
 **You will learn:**
-- How to use decompositions, solvers, and property operations in we.linalg
+- How to use decompositions, solvers, and property operations in fnp.linalg
 - How symmetric inputs reduce linalg costs
 - How to query linalg costs before running them
 
@@ -19,14 +19,14 @@ title: "Linear Algebra"
 
 | Operation | Cost | Weight | Notes |
 |-----------|------|--------|-------|
-| `we.linalg.svd(A, k=k)` | $m \cdot n \cdot k$ | 4.0 | Truncated SVD |
-| `we.linalg.eig(A)` | $10n^3$ | 4.0 | General eigendecomposition |
-| `we.linalg.eigh(A)` | $4n^3/3$ | 4.0 | Symmetric eigendecomposition |
-| `we.linalg.cholesky(A)` | $n^3/3$ | 4.0 | Cholesky (symmetric positive definite) |
-| `we.linalg.qr(A)` | $mn^2 - n^3/3$ | 4.0 | Householder QR (FMA=1) |
-| `we.linalg.eigvals(A)` | $10n^3$ | 4.0 | Eigenvalues only |
-| `we.linalg.eigvalsh(A)` | $4n^3/3$ | 4.0 | Symmetric eigenvalues only |
-| `we.linalg.svdvals(A)` | $m \cdot n \cdot \min(m,n)$ | 4.0 | Singular values only |
+| `fnp.linalg.svd(A, k=k)` | $m \cdot n \cdot k$ | 4.0 | Truncated SVD |
+| `fnp.linalg.eig(A)` | $10n^3$ | 4.0 | General eigendecomposition |
+| `fnp.linalg.eigh(A)` | $4n^3/3$ | 4.0 | Symmetric eigendecomposition |
+| `fnp.linalg.cholesky(A)` | $n^3/3$ | 4.0 | Cholesky (symmetric positive definite) |
+| `fnp.linalg.qr(A)` | $mn^2 - n^3/3$ | 4.0 | Householder QR (FMA=1) |
+| `fnp.linalg.eigvals(A)` | $10n^3$ | 4.0 | Eigenvalues only |
+| `fnp.linalg.eigvalsh(A)` | $4n^3/3$ | 4.0 | Symmetric eigenvalues only |
+| `fnp.linalg.svdvals(A)` | $m \cdot n \cdot \min(m,n)$ | 4.0 | Singular values only |
 
 ### Solvers
 
@@ -36,10 +36,10 @@ ignored in the cost model.
 
 | Operation | Cost | Weight |
 |-----------|------|--------|
-| `we.linalg.solve(A, b)` | $n^3$ | 4.0 |
-| `we.linalg.inv(A)` | $n^3$ | 4.0 |
-| `we.linalg.lstsq(A, b)` | $m \cdot n \cdot \min(m,n)$ | 4.0 |
-| `we.linalg.pinv(A)` | $m \cdot n \cdot \min(m,n)$ | 4.0 |
+| `fnp.linalg.solve(A, b)` | $n^3$ | 4.0 |
+| `fnp.linalg.inv(A)` | $n^3$ | 4.0 |
+| `fnp.linalg.lstsq(A, b)` | $m \cdot n \cdot \min(m,n)$ | 4.0 |
+| `fnp.linalg.pinv(A)` | $m \cdot n \cdot \min(m,n)$ | 4.0 |
 
 `inv` of a symmetric matrix returns a `SymmetricTensor`.
 
@@ -47,36 +47,36 @@ ignored in the cost model.
 
 | Operation | Cost | Weight |
 |-----------|------|--------|
-| `we.linalg.det(A)` | $n^3$ | 4.0 |
-| `we.linalg.slogdet(A)` | $n^3$ | 4.0 |
-| `we.linalg.norm(x)` | depends on ord | varies |
-| `we.linalg.cond(A)` | $m \cdot n \cdot \min(m,n)$ | varies |
-| `we.linalg.matrix_rank(A)` | $m \cdot n \cdot \min(m,n)$ | varies |
-| `we.linalg.trace(A)` | $n$ | varies |
+| `fnp.linalg.det(A)` | $n^3$ | 4.0 |
+| `fnp.linalg.slogdet(A)` | $n^3$ | 4.0 |
+| `fnp.linalg.norm(x)` | depends on ord | varies |
+| `fnp.linalg.cond(A)` | $m \cdot n \cdot \min(m,n)$ | varies |
+| `fnp.linalg.matrix_rank(A)` | $m \cdot n \cdot \min(m,n)$ | varies |
+| `fnp.linalg.trace(A)` | $n$ | varies |
 
 ### Compound
 
 | Operation | Cost | Notes |
 |-----------|------|-------|
-| `we.linalg.multi_dot(arrays)` | Optimal chain ordering | Uses `np.linalg.multi_dot` |
-| `we.linalg.matrix_power(A, n)` | $n^3 \times \text\{exponent\}$ | Repeated squaring |
+| `fnp.linalg.multi_dot(arrays)` | Optimal chain ordering | Uses `np.linalg.multi_dot` |
+| `fnp.linalg.matrix_power(A, n)` | $n^3 \times \text\{exponent\}$ | Repeated squaring |
 
 ## Symmetric input savings
 
 Pass a `SymmetricTensor` to get automatic cost reductions:
 
 ```python
-import whest as we
-
-with we.BudgetContext(flop_budget=10**8) as budget:
-    A = we.as_symmetric(we.multiply(we.eye(10), 2.0), symmetric_axes=(0, 1))
+import flopscope as flops
+import flopscope.numpy as fnp
+with flops.BudgetContext(flop_budget=10**8) as budget:
+    A = flops.as_symmetric(fnp.multiply(fnp.eye(10), 2.0), symmetric_axes=(0, 1))
 
     # solve_cost(n=10) = n^3 = 1000 FLOPs (symmetric/nrhs params are currently ignored)
-    x = we.linalg.solve(A, we.ones(10))
+    x = fnp.linalg.solve(A, fnp.ones(10))
 
     # inv returns SymmetricTensor
-    A_inv = we.linalg.inv(A)
-    print(isinstance(A_inv, we.SymmetricTensor))  # True
+    A_inv = fnp.linalg.inv(A)
+    print(isinstance(A_inv, flops.SymmetricTensor))  # True
 ```
 
 See [Exploit Symmetry Savings](/docs/guides/symmetry/) for full details.
@@ -84,18 +84,18 @@ See [Exploit Symmetry Savings](/docs/guides/symmetry/) for full details.
 ## Query cost before running
 
 ```python
-cost = we.flops.svd_cost(m=256, n=256, k=10)
+cost = flops.accounting.svd_cost(m=256, n=256, k=10)
 print(f"SVD cost: {cost:,}")  # 655,360
 
-cost = we.flops.solve_cost(n=256)
+cost = flops.accounting.solve_cost(n=256)
 print(f"Solve cost: {cost:,}")  # 16,777,216 (= 256^3; symmetric/nrhs params currently ignored)
 ```
 
 ## Common pitfalls
 
-**Symptom:** Using `numpy.linalg.svd` instead of `we.linalg.svd`
+**Symptom:** Using `numpy.linalg.svd` instead of `fnp.linalg.svd`
 
-**Fix:** Operations called through `numpy` directly bypass FLOP counting. Always use `we.linalg.*`.
+**Fix:** Operations called through `numpy` directly bypass FLOP counting. Always use `fnp.linalg.*`.
 
 ## Related pages
 

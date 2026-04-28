@@ -170,7 +170,7 @@ export interface OperationDocRecord {
   canonical_path: string;
   legacy_href: string;
   module: string;
-  whest_ref: string;
+  flopscope_ref: string;
   numpy_ref: string;
   signature: string;
   summary: string;
@@ -183,7 +183,7 @@ export interface OperationDocRecord {
   cost_formula_latex: string;
   provenance_label?: string;
   provenance_url?: string;
-  whest_source_url?: string;
+  flopscope_source_url?: string;
   upstream_source_url?: string;
   parameters: DocField[];
   returns: DocField[];

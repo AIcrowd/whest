@@ -7,7 +7,7 @@ These are all trivial pass-throughs to numpy so we just need to execute them.
 import numpy
 import pytest
 
-import whest._free_ops as ops
+import flopscope._free_ops as ops
 
 # ---------------------------------------------------------------------------
 # Helper

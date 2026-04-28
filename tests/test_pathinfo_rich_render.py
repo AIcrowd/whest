@@ -9,8 +9,9 @@ import numpy as np
 import pytest
 from rich.console import Console
 
-import whest as we
-from whest._perm_group import PermutationGroup
+import flopscope as flops
+import flopscope.numpy as fnp
+from flopscope._perm_group import PermutationGroup
 
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 
@@ -55,7 +56,7 @@ def _symmetrized_tensor(shape, group: PermutationGroup):
         for i in range(len(axes)):
             perm[axes[i]] = axes[af[i]]
         total = total + np.transpose(data, perm)
-    return we.as_symmetric(total / group.order(), symmetry=group)
+    return flops.as_symmetric(total / group.order(), symmetry=group)
 
 
 def _summary_pill_body(info, label: str):
@@ -77,7 +78,7 @@ def _rgb_from_style(style: str):
 
 def test_rich_renderable_uses_a_single_composed_block():
     X = np.ones((5, 5))
-    _, info = we.einsum_path("ij,jk,kl->il", X, X, X, optimize="greedy")
+    _, info = fnp.einsum_path("ij,jk,kl->il", X, X, X, optimize="greedy")
 
     renderable = info._rich_renderable()
     assert len(renderable.renderable.renderables) == 3
@@ -85,7 +86,7 @@ def test_rich_renderable_uses_a_single_composed_block():
 
 def test_label_styles_are_consistent_between_expression_and_step_text():
     X = np.ones((4, 4))
-    _, info = we.einsum_path("ij,ik->jk", X, X)
+    _, info = fnp.einsum_path("ij,ik->jk", X, X)
 
     expr = info._rich_eq_text()
     subscript = info._rich_subscript_text(info.steps[0].subscript)
@@ -116,15 +117,15 @@ def test_symmetry_class_styles_are_consistent_on_real_cases():
     x = np.ones((4, 4))
     a = np.ones((4, 4))
 
-    _, s2_gram = we.einsum_path("ij,ik->jk", x, x)
+    _, s2_gram = fnp.einsum_path("ij,ik->jk", x, x)
     v = np.ones(4)
-    _, s2_outer = we.einsum_path("i,j->ij", v, v)
-    _, c3_trace = we.einsum_path("ij,jk,ki->", a, a, a)
+    _, s2_outer = fnp.einsum_path("i,j->ij", v, v)
+    _, c3_trace = fnp.einsum_path("ij,jk,ki->", a, a, a)
 
     d4_group = PermutationGroup.dihedral(4, axes=(1, 2, 3, 4))
     t = _symmetrized_tensor((4, 4, 4, 4, 4), d4_group)
     w = np.ones((4, 4))
-    _, d4_case = we.einsum_path("aijkl,ab->ijklb", t, w)
+    _, d4_case = fnp.einsum_path("aijkl,ab->ijklb", t, w)
 
     gram_sym = s2_gram._rich_step_sym_text(s2_gram.steps[0])
     outer_sym = s2_outer._rich_step_sym_text(s2_outer.steps[0])
@@ -143,7 +144,7 @@ def test_verbose_rich_print_uses_rich_layout_and_keeps_detail_rows(capsys):
     pytest.importorskip("rich")
 
     x = np.ones((4, 4))
-    _, info = we.einsum_path("ai,bi,ci->abc", x, x, x)
+    _, info = fnp.einsum_path("ai,bi,ci->abc", x, x, x)
 
     info.print(verbose=True)
     out = capsys.readouterr().out
@@ -156,7 +157,7 @@ def test_verbose_rich_print_uses_rich_layout_and_keeps_detail_rows(capsys):
 
 def test_summary_pills_are_single_line_and_keep_all_default_fields():
     X = np.ones((5, 5))
-    _, info = we.einsum_path("ij,jk,kl->il", X, X, X, optimize="greedy")
+    _, info = fnp.einsum_path("ij,jk,kl->il", X, X, X, optimize="greedy")
 
     output = render_rich(info, no_color=True)
     for field in (
@@ -174,7 +175,7 @@ def test_summary_pills_are_single_line_and_keep_all_default_fields():
 
 def test_speedup_pill_turns_green_when_speedup_is_above_one():
     X = np.ones((5, 5))
-    _, info = we.einsum_path("ij,jk,kl->il", X, X, X, optimize="greedy")
+    _, info = fnp.einsum_path("ij,jk,kl->il", X, X, X, optimize="greedy")
 
     body = _summary_pill_body(info, "Speedup")
     value_start = body.plain.index(": ") + 2
@@ -185,7 +186,7 @@ def test_speedup_pill_turns_green_when_speedup_is_above_one():
 
 def test_savings_pill_shows_total_dense_vs_optimized_savings():
     X = np.ones((5, 5))
-    _, info = we.einsum_path("ij,jk,kl->il", X, X, X, optimize="greedy")
+    _, info = fnp.einsum_path("ij,jk,kl->il", X, X, X, optimize="greedy")
 
     body = _summary_pill_body(info, "Savings")
 
@@ -194,7 +195,7 @@ def test_savings_pill_shows_total_dense_vs_optimized_savings():
 
 def test_index_sizes_pill_preserves_label_styles():
     X = np.ones((5, 5))
-    _, info = we.einsum_path("ij,jk,kl->il", X, X, X, optimize="greedy")
+    _, info = fnp.einsum_path("ij,jk,kl->il", X, X, X, optimize="greedy")
     expr = info._rich_subscript_text(info.eq)
 
     pill = info._rich_metric_pill("Index sizes", info._rich_index_sizes_text())
@@ -210,7 +211,7 @@ def test_index_sizes_pill_preserves_label_styles():
 def d4_case_info():
     d4_group = PermutationGroup.dihedral(4, axes=(1, 2, 3, 4))
     tensor = _symmetrized_tensor((4, 4, 4, 4, 4), d4_group)
-    _, info = we.einsum_path("aijkl,ab->ijklb", tensor, np.ones((4, 4)))
+    _, info = fnp.einsum_path("aijkl,ab->ijklb", tensor, np.ones((4, 4)))
     return info
 
 
@@ -227,7 +228,7 @@ def test_real_d4_case_keeps_critical_headers_and_values_unbroken(d4_case_info):
 
 def test_default_rich_output_does_not_show_verbose_detail_rows():
     X = np.ones((4, 4))
-    _, info = we.einsum_path("ai,bi,ci->abc", X, X, X)
+    _, info = fnp.einsum_path("ai,bi,ci->abc", X, X, X)
 
     output = render_rich(info, no_color=True)
 
@@ -238,7 +239,7 @@ def test_default_rich_output_does_not_show_verbose_detail_rows():
 
 def test_verbose_rich_details_stay_with_their_step():
     X = np.ones((4, 4))
-    _, info = we.einsum_path("ai,bi,ci->abc", X, X, X)
+    _, info = fnp.einsum_path("ai,bi,ci->abc", X, X, X)
 
     output = render_verbose_rich(info, no_color=True)
 

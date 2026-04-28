@@ -7,7 +7,7 @@ import { JSDOM } from 'jsdom';
 
 const websiteRoot = path.dirname(fileURLToPath(import.meta.url));
 const outRoot = path.join(websiteRoot, 'out');
-const DEPLOY_BASE_PATH = '/whest';
+const DEPLOY_BASE_PATH = '/flopscope';
 
 async function readSource(relativePath) {
   return readFile(path.join(websiteRoot, relativePath), 'utf8');
@@ -52,7 +52,7 @@ test('build-generated public artifacts exist and are non-empty', async () => {
   const llmsFull = await readFile(llmsFullPath, 'utf8');
   const sampleDetail = await readFile(sampleDetailPath, 'utf8');
 
-  assert.match(llms, /^# whest/m);
+  assert.match(llms, /^# flopscope/m);
   assert.ok(llms.length > 100);
   assert.ok(llmsFull.length > 1000);
   assert.match(sampleDetail, /"schema_version": 1/);

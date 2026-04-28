@@ -7,7 +7,17 @@ import type {OperationDocRecord} from './op-doc-types';
 // operation signature — matches the rest of the docs where structured
 // data sits in the prose flow without widget framing.
 export default function OperationDocOverlay({op}: {op: OperationDocRecord}) {
-  const aliases = op.aliases.length ? op.aliases.map((alias) => `we.${alias}`).join(', ') : null;
+  const aliases = op.aliases.length
+    ? op.aliases
+        .map((alias) =>
+          alias.startsWith('fnp.') ||
+          alias.startsWith('flops.') ||
+          alias.startsWith('flopscope.')
+            ? alias
+            : `fnp.${alias}`,
+        )
+        .join(', ')
+    : null;
 
   return (
     <section className={styles.docOverlay} aria-label="Operation summary">
@@ -52,7 +62,7 @@ export default function OperationDocOverlay({op}: {op: OperationDocRecord}) {
 
       {op.notes ? (
         <div className={styles.docMetaRow}>
-          <span className={styles.docMetaLabel}>Whest Context</span>
+          <span className={styles.docMetaLabel}>Flopscope Context</span>
           <p className={styles.docBodyText}>{op.notes}</p>
         </div>
       ) : null}

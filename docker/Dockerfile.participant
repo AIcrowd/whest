@@ -2,15 +2,15 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Install ONLY the client — no numpy
-COPY whest-client/ /app/whest-client/
-RUN pip install --no-cache-dir /app/whest-client/
+COPY flopscope-client/ /app/flopscope-client/
+RUN pip install --no-cache-dir /app/flopscope-client/
 
 # Verify the client installed correctly and numpy is NOT available
-RUN python -c "import whest; print(f'whest-client {whest.__version__} installed')"
+RUN python -c "import flopscope; print(f'flopscope-client {flopscope.__version__} installed')"
 RUN ! python -c "import numpy" 2>/dev/null && echo "GOOD: numpy is not installed"
 
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-ENV WHEST_SERVER_URL=ipc:///tmp/whest.sock
+ENV FLOPSCOPE_SERVER_URL=ipc:///tmp/flopscope.sock
 CMD ["/entrypoint.sh"]

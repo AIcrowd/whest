@@ -132,9 +132,13 @@ function renderNotes(paragraphs: string[]) {
 function renderLink(link: DocLink, prefixWhestLabel: boolean) {
   const label =
     link.href && prefixWhestLabel
-      ? link.label.startsWith('we.')
+      ? (
+          link.label.startsWith('fnp.') ||
+          link.label.startsWith('flops.') ||
+          link.label.startsWith('flopscope.')
+        )
         ? link.label
-        : `we.${link.label}`
+        : `fnp.${link.label}`
       : link.label;
 
   return (

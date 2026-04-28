@@ -1,14 +1,14 @@
 FROM python:3.10-slim
 WORKDIR /app
 
-# Install the real whest library (src layout)
-COPY src/ /app/whest-lib/src/
-COPY pyproject.toml /app/whest-lib/pyproject.toml
-COPY README.md /app/whest-lib/README.md
-RUN pip install --no-cache-dir /app/whest-lib/
+# Install the real flopscope library (src layout)
+COPY src/ /app/flopscope-lib/src/
+COPY pyproject.toml /app/flopscope-lib/pyproject.toml
+COPY README.md /app/flopscope-lib/README.md
+RUN pip install --no-cache-dir /app/flopscope-lib/
 
 # Install the server package
-COPY whest-server/ /app/whest-server/
-RUN pip install --no-cache-dir /app/whest-server/
+COPY flopscope-server/ /app/flopscope-server/
+RUN pip install --no-cache-dir /app/flopscope-server/
 
-CMD ["python", "-m", "whest_server", "--url", "ipc:///ipc/whest.sock"]
+CMD ["python", "-m", "flopscope_server", "--url", "ipc:///ipc/flopscope.sock"]

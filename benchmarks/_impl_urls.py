@@ -1,6 +1,6 @@
 """Map operation names to GitHub source code URLs.
 
-For each operation in whest, finds where the FLOP cost is charged in the
+For each operation in flopscope, finds where the FLOP cost is charged in the
 source tree and constructs a GitHub permalink.
 
 Strategy (tried in order for each op):
@@ -16,8 +16,8 @@ import re
 import subprocess
 from pathlib import Path
 
-REPO_URL = "https://github.com/AIcrowd/whest/blob/main"
-SRC_ROOT = Path(__file__).resolve().parent.parent / "src" / "whest"
+REPO_URL = "https://github.com/AIcrowd/flopscope/blob/main"
+SRC_ROOT = Path(__file__).resolve().parent.parent / "src" / "flopscope"
 
 
 def _grep(pattern: str, path: str | None = None) -> list[tuple[str, int, str]]:
@@ -47,7 +47,7 @@ def _grep(pattern: str, path: str | None = None) -> list[tuple[str, int, str]]:
 
 def _to_rel_path(abs_path: str) -> str:
     """Convert absolute path to repo-relative path."""
-    repo_root = SRC_ROOT.parent.parent  # up from src/whest
+    repo_root = SRC_ROOT.parent.parent  # up from src/flopscope
     try:
         return str(Path(abs_path).relative_to(repo_root))
     except ValueError:
@@ -89,7 +89,7 @@ def _find_deduct_line(op_name: str) -> tuple[str, int | None]:
         src_hits = [
             h
             for h in hits
-            if "/src/whest/" in h[0]
+            if "/src/flopscope/" in h[0]
             and "__pycache__" not in h[0]
             and "/data/" not in h[0]
             and "_registry.py" not in h[0]

@@ -1,12 +1,4 @@
 {
   "title": "API Reference",
-  "pages": [
-    "index",
-    "operation-cost-index",
-    "random",
-    "stats",
-    "flops",
-    "testing",
-    "for-agents"
-  ]
+  "pages": ["index", "for-agents"]
 }
