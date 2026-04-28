@@ -236,6 +236,46 @@ XFAIL_PATTERNS: dict[str, str] = {
         "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is WhestArray"
     ),
     # ------------------------------------------------------------------ #
+    # SUBCLASS_RETURN — strict flags checks after dropping OWNDATA parity #
+    # ------------------------------------------------------------------ #
+    # Whest no longer guarantees ndarray flag parity for subclass results.
+    # These clip tests use assert_array_strict_equal(...), which compares
+    # x.flags == y.flags in addition to values/dtype. Our patched clip path
+    # now returns view-backed WhestArray results with OWNDATA=False where
+    # NumPy returns owning ndarrays with OWNDATA=True.
+    "*TestClip::test_simple_*": (
+        "SUBCLASS_RETURN: clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_type_cast_*": (
+        "SUBCLASS_RETURN: clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_clip_with_out_*": (
+        "SUBCLASS_RETURN: clip out= path preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_clip_inplace_*": (
+        "SUBCLASS_RETURN: in-place clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_array_double": (
+        "SUBCLASS_RETURN: clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_clip_complex": (
+        "SUBCLASS_RETURN: clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_clip_non_contig": (
+        "SUBCLASS_RETURN: clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_clip_func_takes_out": (
+        "SUBCLASS_RETURN: clip out= path preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    # ------------------------------------------------------------------ #
     # NUMPY_INTERNAL — fromiter/resize edge cases                         #
     # ------------------------------------------------------------------ #
     "*TestResize::test_reshape_from_zero": (
