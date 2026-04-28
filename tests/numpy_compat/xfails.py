@@ -214,6 +214,10 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestRequire::test_ensure_array": (
         "SUBCLASS_RETURN: np.require with subok=False can't strip WhestArray"
     ),
+    "*TestRequire::test_non_array_input": (
+        "SUBCLASS_RETURN: np.require wraps a newly allocated owning ndarray "
+        "as WhestArray, so OWNDATA flag parity is intentionally lost"
+    ),
     "*TestArrayComparisons::test_compare_unstructured_voids*": (
         "SUBCLASS_RETURN: void comparison preserves WhestArray subclass"
     ),
