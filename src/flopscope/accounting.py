@@ -211,8 +211,7 @@ _PARAMETER_DESCRIPTIONS = {
     "shapes": "Operand shapes in the same order as the einsum operands.",
     "subscripts": "Einstein summation expression that defines the contraction.",
     "symmetry_info": (
-        "Optional symmetry metadata used to count only analytically distinct "
-        "elements."
+        "Optional symmetry metadata used to count only analytically distinct elements."
     ),
 }
 
@@ -326,9 +325,7 @@ def _render_parameters(signature: inspect.Signature, op_name: str) -> str:
             f"Argument forwarded to the analytical ``{op_name}`` cost formula.",
         )
         if parameter.default is not inspect.Signature.empty:
-            description = (
-                f"{description} Defaults to ``{parameter.default!r}``."
-            )
+            description = f"{description} Defaults to ``{parameter.default!r}``."
         rendered.append(f"{header}\n    {description}")
     return "\n\n".join(rendered)
 

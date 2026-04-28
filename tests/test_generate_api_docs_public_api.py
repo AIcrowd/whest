@@ -8,7 +8,9 @@ ROOT = Path(__file__).resolve().parent.parent
 MODULE_PATH = ROOT / "scripts" / "generate_api_docs.py"
 
 
-spec = importlib.util.spec_from_file_location("generate_api_docs_public_api", MODULE_PATH)
+spec = importlib.util.spec_from_file_location(
+    "generate_api_docs_public_api", MODULE_PATH
+)
 assert spec is not None
 assert spec.loader is not None
 generate_api_docs = importlib.util.module_from_spec(spec)
