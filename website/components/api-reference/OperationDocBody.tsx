@@ -358,6 +358,11 @@ export default async function OperationDocBody({
     return normalizeText(summaryText) !== normalizeText(headerSummary);
   });
 
+  // Section titles that the upstream numpydoc parser emits but numpy.org's
+  // own reference render does NOT show as headings. The blocks render as
+  // unannotated prose flowing under the brief summary.
+  const HEADLESS_SECTION_TITLES = new Set(['Extended Summary', 'Summary']);
+
   const renderedSections = await Promise.all(
     visibleSections.map(async (section) => {
       const renderedBlocks = await Promise.all(
@@ -373,9 +378,13 @@ export default async function OperationDocBody({
         }),
       );
 
+      const omitHeading = HEADLESS_SECTION_TITLES.has(section.title);
+
       return (
         <section key={section.title} className={styles.docSection}>
-          <OperationDocSectionHeading title={section.title} />
+          {!omitHeading ? (
+            <OperationDocSectionHeading title={section.title} />
+          ) : null}
           {renderedBlocks}
         </section>
       );
