@@ -180,7 +180,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/unique",
+              "href": "/docs/api/numpy/unique/",
               "label": "flops.unique",
               "original_target": "unique",
               "role": "",
@@ -200,7 +200,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -238,7 +238,7 @@
     }
   ],
   "canonical_name": "unique_inverse",
-  "canonical_path": "unique-inverse",
+  "canonical_path": "numpy/unique-inverse",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -249,20 +249,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = [1, 1, 2]\n\nuniq = flops.unique_inverse(x)\n\nuniq.values\n\nuniq.inverse_indices",
+    "code": "import flopscope.numpy as fnp\n\nx = [1, 1, 2]\n\nuniq = flops.unique_inverse(x)\n\nuniq.values\n\nuniq.inverse_indices",
     "output": "array([1, 2])\n\narray([0, 0, 1])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.unique_inverse",
+  "flopscope_ref": "fnp.unique_inverse",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L320",
-  "href": "/docs/api/unique-inverse/",
+  "href": "/docs/api/numpy/unique-inverse/",
   "legacy_href": "/docs/api/ops/unique_inverse/",
   "module": "numpy",
   "name": "unique_inverse",
   "next": {
-    "href": "/docs/api/unique-values/",
-    "label": "flops.unique_values"
+    "href": "/docs/api/numpy/unique-values/",
+    "label": "fnp.unique_values"
   },
   "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
   "notes_sections": [],
@@ -277,10 +277,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/unique-counts/",
-    "label": "flops.unique_counts"
+    "href": "/docs/api/numpy/unique-counts/",
+    "label": "fnp.unique_counts"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.unique_inverse",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unique_inverse.html",
   "returns": [
     {
@@ -305,7 +306,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/unique",
+      "href": "/docs/api/numpy/unique/",
       "label": "flops.unique",
       "original_target": "unique",
       "role": "",
@@ -313,9 +314,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.unique_inverse(x, /)",
+  "signature": "fnp.unique_inverse(x, /)",
   "slug": "unique_inverse",
   "summary": "Find the unique elements of `x` and indices to reconstruct `x`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L520",
   "weight": 1.0
 }

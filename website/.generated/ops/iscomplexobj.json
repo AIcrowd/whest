@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/iscomplexobj",
+              "href": "/docs/api/numpy/iscomplexobj/",
               "kind": "link",
               "target": "iscomplexobj",
               "text": "iscomplexobj"
@@ -132,7 +132,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isrealobj",
+              "href": "/docs/api/numpy/isrealobj/",
               "label": "flops.isrealobj",
               "original_target": "isrealobj",
               "role": "",
@@ -143,7 +143,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/iscomplex",
+              "href": "/docs/api/numpy/iscomplex/",
               "label": "flops.iscomplex",
               "original_target": "iscomplex",
               "role": "",
@@ -163,7 +163,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -200,7 +200,7 @@
     }
   ],
   "canonical_name": "iscomplexobj",
-  "canonical_path": "iscomplexobj",
+  "canonical_path": "numpy/iscomplexobj",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -211,20 +211,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.iscomplexobj(1)\n\nflops.iscomplexobj(1+0j)\n\nflops.iscomplexobj([3, 1+0j, True])",
+    "code": "import flopscope.numpy as fnp\n\nflops.iscomplexobj(1)\n\nflops.iscomplexobj(1+0j)\n\nflops.iscomplexobj([3, 1+0j, True])",
     "output": "False\n\nTrue\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.iscomplexobj",
+  "flopscope_ref": "fnp.iscomplexobj",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/iscomplexobj/",
+  "href": "/docs/api/numpy/iscomplexobj/",
   "legacy_href": "/docs/api/ops/iscomplexobj/",
   "module": "numpy",
   "name": "iscomplexobj",
   "next": {
-    "href": "/docs/api/isdtype/",
-    "label": "flops.isdtype"
+    "href": "/docs/api/numpy/isdtype/",
+    "label": "fnp.isdtype"
   },
   "notes": "Return True if input is a complex type or array.",
   "notes_sections": [],
@@ -239,10 +239,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/iscomplex/",
-    "label": "flops.iscomplex"
+    "href": "/docs/api/numpy/iscomplex/",
+    "label": "fnp.iscomplex"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.iscomplexobj",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iscomplexobj.html",
   "returns": [
     {
@@ -259,7 +260,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isrealobj",
+      "href": "/docs/api/numpy/isrealobj/",
       "label": "flops.isrealobj",
       "original_target": "isrealobj",
       "role": "",
@@ -270,7 +271,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/iscomplex",
+      "href": "/docs/api/numpy/iscomplex/",
       "label": "flops.iscomplex",
       "original_target": "iscomplex",
       "role": "",
@@ -278,9 +279,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.iscomplexobj(x)",
+  "signature": "fnp.iscomplexobj(x)",
   "slug": "iscomplexobj",
   "summary": "Check for a complex type or an array of complex numbers.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L270",
   "weight": 1.0
 }

@@ -9,15 +9,7 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Percent point function (inverse of "
-              },
-              {
-                "kind": "code",
-                "text": "cdf"
-              },
-              {
-                "kind": "text",
-                "text": ") at q of the given RV."
+                "text": "Evaluate the percent-point function."
               }
             ],
             "type": "paragraph"
@@ -35,7 +27,15 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "lower tail probability"
+                        "text": "Probabilities in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "[0, 1]"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
@@ -45,7 +45,15 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "lower tail probability"
+                    "text": "Probabilities in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "[0, 1]"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "q",
@@ -57,39 +65,33 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
-                      }
-                    ],
-                    "type": "paragraph"
-                  }
-                ],
-                "data_type": "array_like",
-                "inline": [
-                  {
-                    "kind": "text",
-                    "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
-                  }
-                ],
-                "name": "arg1, arg2, arg3,...",
-                "type": "field_list"
-              },
-              {
-                "body_blocks": [
-                  {
-                    "inline": [
+                        "text": "Mean of the distribution. Defaults to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "0"
+                      },
                       {
                         "kind": "text",
-                        "text": "location parameter (default=0)"
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "array_like, optional",
+                "data_type": "float, optional",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "location parameter (default=0)"
+                    "text": "Mean of the distribution. Defaults to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "0"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "loc",
@@ -101,17 +103,33 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "scale parameter (default=1)"
+                        "text": "Standard deviation of the distribution. Defaults to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "1"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "array_like, optional",
+                "data_type": "float, optional",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "scale parameter (default=1)"
+                    "text": "Standard deviation of the distribution. Defaults to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "1"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "scale",
@@ -134,20 +152,36 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "quantile corresponding to the lower tail probability q."
+                        "text": "Quantiles corresponding to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "q"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "array_like",
+                "data_type": "FlopscopeArray",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "quantile corresponding to the lower tail probability q."
+                    "text": "Quantiles corresponding to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "q"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
-                "name": "x",
+                "name": "",
                 "type": "field_list"
               }
             ],
@@ -156,6 +190,73 @@
           }
         ],
         "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Equivalent to "
+              },
+              {
+                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.ppf(q, loc, scale).html",
+                "href": "",
+                "kind": "link",
+                "target": "stats.norm.ppf(q, loc, scale)",
+                "text": "scipy.stats.norm.ppf(q, loc, scale)"
+              },
+              {
+                "kind": "text",
+                "text": ".\nFLOP cost: "
+              },
+              {
+                "kind": "code",
+                "text": "1 * numel(q)"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import flopscope.numpy as fnp"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import flopscope as flops"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "q = flops.array([0.25, 0.5, 0.75])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "flops.round(flops.stats.norm.ppf(q), 3)"
+              },
+              {
+                "kind": "output",
+                "text": "array([-0.674,  0.   ,  0.674])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
   },
@@ -167,16 +268,16 @@
     "module": "flopscope.stats",
     "name": "stats.norm.ppf",
     "notes": "Normal PPF (inverse CDF); cost = numel(input).",
-    "numpy_ref": "np.stats.norm.ppf",
+    "numpy_ref": "scipy.stats.norm.ppf",
     "signature": "flops.stats.norm.ppf(q, loc=0, scale=1)",
     "status": "supported",
-    "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+    "summary": "Evaluate the percent-point function.",
     "weight": 16.0
   },
   "schema_version": 1,
   "slug": "stats-norm-ppf",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_norm.py#L88",
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2302"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_norm.py#L103",
+    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html"
   }
 }

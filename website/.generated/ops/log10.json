@@ -357,7 +357,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/log10",
+              "href": "/docs/api/numpy/log10/",
               "kind": "link",
               "target": "log10",
               "text": "log10"
@@ -393,7 +393,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/log10",
+              "href": "/docs/api/numpy/log10/",
               "kind": "link",
               "target": "log10",
               "text": "log10"
@@ -412,7 +412,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/log10",
+              "href": "/docs/api/numpy/log10/",
               "kind": "link",
               "target": "log10",
               "text": "log10"
@@ -474,7 +474,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -493,7 +493,7 @@
     }
   ],
   "canonical_name": "log10",
-  "canonical_path": "log10",
+  "canonical_path": "numpy/log10",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -526,20 +526,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.log10([1e-15, -3.])",
+    "code": "import flopscope.numpy as fnp\n\nflops.log10([1e-15, -3.])",
     "output": "array([-15.,  nan])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.log10",
+  "flopscope_ref": "fnp.log10",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/log10/",
+  "href": "/docs/api/numpy/log10/",
   "legacy_href": "/docs/api/ops/log10/",
   "module": "numpy",
   "name": "log10",
   "next": {
-    "href": "/docs/api/log1p/",
-    "label": "flops.log1p"
+    "href": "/docs/api/numpy/log1p/",
+    "label": "fnp.log1p"
   },
   "notes": "Element-wise base-10 logarithm.",
   "notes_sections": [
@@ -589,10 +589,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/log/",
-    "label": "flops.log"
+    "href": "/docs/api/numpy/log/",
+    "label": "fnp.log"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.log10",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.log10.html",
   "returns": [
     {
@@ -618,9 +619,11 @@
       "unresolved": true
     }
   ],
-  "signature": "flops.log10(*args, **kwargs)",
+  "signature": "fnp.log10(*args, **kwargs)",
   "slug": "log10",
   "summary": "Return the base 10 logarithm of the input array, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

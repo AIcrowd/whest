@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/diag_indices",
+              "href": "/docs/api/numpy/diag-indices/",
               "kind": "link",
               "target": "diag_indices",
               "text": "diag_indices"
@@ -68,7 +68,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/diag_indices",
+              "href": "/docs/api/numpy/diag-indices/",
               "label": "flops.diag_indices",
               "original_target": "diag_indices",
               "role": "",
@@ -88,7 +88,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -203,7 +203,7 @@
     }
   ],
   "canonical_name": "diag_indices_from",
-  "canonical_path": "diag-indices-from",
+  "canonical_path": "numpy/diag-indices-from",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -214,20 +214,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.arange(16).reshape(4, 4)\n\na\n\ndi = flops.diag_indices_from(a)\n\ndi\n\na[di]\n\nflops.diag_indices(a.shape[0])",
+    "code": "import flopscope.numpy as fnp\n\na = flops.arange(16).reshape(4, 4)\n\na\n\ndi = flops.diag_indices_from(a)\n\ndi\n\na[di]\n\nflops.diag_indices(a.shape[0])",
     "output": "array([[ 0,  1,  2,  3],\n       [ 4,  5,  6,  7],\n       [ 8,  9, 10, 11],\n       [12, 13, 14, 15]])\n\n(array([0, 1, 2, 3]), array([0, 1, 2, 3]))\n\narray([ 0,  5, 10, 15])\n\n(array([0, 1, 2, 3]), array([0, 1, 2, 3]))",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.diag_indices_from",
+  "flopscope_ref": "fnp.diag_indices_from",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L997",
-  "href": "/docs/api/diag-indices-from/",
+  "href": "/docs/api/numpy/diag-indices-from/",
   "legacy_href": "/docs/api/ops/diag_indices_from/",
   "module": "numpy",
   "name": "diag_indices_from",
   "next": {
-    "href": "/docs/api/diagflat/",
-    "label": "flops.diagflat"
+    "href": "/docs/api/numpy/diagflat/",
+    "label": "fnp.diagflat"
   },
   "notes": "Return indices to access main diagonal of given array.",
   "notes_sections": [],
@@ -240,10 +240,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/diag-indices/",
-    "label": "flops.diag_indices"
+    "href": "/docs/api/numpy/diag-indices/",
+    "label": "fnp.diag_indices"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.diag_indices_from",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.diag_indices_from.html",
   "returns": [],
   "see_also": [
@@ -251,7 +252,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/diag_indices",
+      "href": "/docs/api/numpy/diag-indices/",
       "label": "flops.diag_indices",
       "original_target": "diag_indices",
       "role": "",
@@ -259,9 +260,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.diag_indices_from(arr)",
+  "signature": "fnp.diag_indices_from(arr)",
   "slug": "diag_indices_from",
   "summary": "Return the indices to access the main diagonal of an n-dimensional array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_index_tricks_impl.py#L1018",
   "weight": 0.0
 }

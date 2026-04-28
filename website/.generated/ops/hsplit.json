@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/split",
+              "href": "/docs/api/numpy/split/",
               "kind": "link",
               "target": "split",
               "text": "split"
@@ -38,7 +38,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/hsplit",
+              "href": "/docs/api/numpy/hsplit/",
               "kind": "link",
               "target": "hsplit",
               "text": "hsplit"
@@ -49,7 +49,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/split",
+              "href": "/docs/api/numpy/split/",
               "kind": "link",
               "target": "split",
               "text": "split"
@@ -93,7 +93,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/split",
+              "href": "/docs/api/numpy/split/",
               "label": "flops.split",
               "original_target": "split",
               "role": "",
@@ -113,7 +113,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -316,7 +316,7 @@
     }
   ],
   "canonical_name": "hsplit",
-  "canonical_path": "hsplit",
+  "canonical_path": "numpy/hsplit",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -327,30 +327,31 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.arange(16.0).reshape(4, 4)\n\nx\n\nflops.hsplit(x, 2)\n\nflops.hsplit(x, flops.array([3, 6]))\n\nx = flops.arange(8.0).reshape(2, 2, 2)\n\nx\n\nflops.hsplit(x, 2)\n\nx = flops.array([0, 1, 2, 3, 4, 5])\n\nflops.hsplit(x, 2)",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.arange(16.0).reshape(4, 4)\n\nx\n\nflops.hsplit(x, 2)\n\nflops.hsplit(x, flops.array([3, 6]))\n\nx = flops.arange(8.0).reshape(2, 2, 2)\n\nx\n\nflops.hsplit(x, 2)\n\nx = flops.array([0, 1, 2, 3, 4, 5])\n\nflops.hsplit(x, 2)",
     "output": "array([[ 0.,   1.,   2.,   3.],\n       [ 4.,   5.,   6.,   7.],\n       [ 8.,   9.,  10.,  11.],\n       [12.,  13.,  14.,  15.]])\n\n[array([[  0.,   1.],\n       [  4.,   5.],\n       [  8.,   9.],\n       [12.,  13.]]),\n array([[  2.,   3.],\n       [  6.,   7.],\n       [10.,  11.],\n       [14.,  15.]])]\n\n[array([[ 0.,   1.,   2.],\n       [ 4.,   5.,   6.],\n       [ 8.,   9.,  10.],\n       [12.,  13.,  14.]]),\n array([[ 3.],\n       [ 7.],\n       [11.],\n       [15.]]),\n array([], shape=(4, 0), dtype=float64)]\n\narray([[[0.,  1.],\n        [2.,  3.]],\n       [[4.,  5.],\n        [6.,  7.]]])\n\n[array([[[0.,  1.]],\n       [[4.,  5.]]]),\n array([[[2.,  3.]],\n       [[6.,  7.]]])]\n\n[array([0, 1, 2]), array([3, 4, 5])]",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.hsplit",
+  "flopscope_ref": "fnp.hsplit",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L416",
-  "href": "/docs/api/hsplit/",
+  "href": "/docs/api/numpy/hsplit/",
   "legacy_href": "/docs/api/ops/hsplit/",
   "module": "numpy",
   "name": "hsplit",
   "next": {
-    "href": "/docs/api/hstack/",
-    "label": "flops.hstack"
+    "href": "/docs/api/numpy/hstack/",
+    "label": "fnp.hstack"
   },
   "notes": "Split array into columns.",
   "notes_sections": [],
   "numpy_ref": "np.hsplit",
   "parameters": [],
   "previous": {
-    "href": "/docs/api/histogramdd/",
-    "label": "flops.histogramdd"
+    "href": "/docs/api/numpy/histogramdd/",
+    "label": "fnp.histogramdd"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.hsplit",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.hsplit.html",
   "returns": [],
   "see_also": [
@@ -363,7 +364,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/split",
+      "href": "/docs/api/numpy/split/",
       "label": "flops.split",
       "original_target": "split",
       "role": "",
@@ -371,9 +372,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.hsplit(ary, indices_or_sections)",
+  "signature": "fnp.hsplit(ary, indices_or_sections)",
   "slug": "hsplit",
   "summary": "Split an array into multiple sub-arrays horizontally (column-wise).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L886",
   "weight": 0.0
 }

@@ -217,7 +217,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -264,7 +264,7 @@
     }
   ],
   "canonical_name": "mintypecode",
-  "canonical_path": "mintypecode",
+  "canonical_path": "numpy/mintypecode",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -275,20 +275,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.mintypecode(['d', 'f', 'S'])\n\nx = flops.array([1.1, 2-3.j])\n\nflops.mintypecode(x)\n\nflops.mintypecode('abceh', default='G')",
+    "code": "import flopscope.numpy as fnp\n\nflops.mintypecode(['d', 'f', 'S'])\n\nx = flops.array([1.1, 2-3.j])\n\nflops.mintypecode(x)\n\nflops.mintypecode('abceh', default='G')",
     "output": "'d'\n\n'D'\n\n'G'",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.mintypecode",
+  "flopscope_ref": "fnp.mintypecode",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1330",
-  "href": "/docs/api/mintypecode/",
+  "href": "/docs/api/numpy/mintypecode/",
   "legacy_href": "/docs/api/ops/mintypecode/",
   "module": "numpy",
   "name": "mintypecode",
   "next": {
-    "href": "/docs/api/mod/",
-    "label": "flops.mod"
+    "href": "/docs/api/numpy/mod/",
+    "label": "fnp.mod"
   },
   "notes": "Return minimum data type character that can satisfy all given types.",
   "notes_sections": [],
@@ -320,10 +320,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/minimum/",
-    "label": "flops.minimum"
+    "href": "/docs/api/numpy/minimum/",
+    "label": "fnp.minimum"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.mintypecode",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.mintypecode.html",
   "returns": [
     {
@@ -347,9 +348,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.mintypecode(typechars, typeset='GDFgdf', default='d')",
+  "signature": "fnp.mintypecode(typechars, typeset='GDFgdf', default='d')",
   "slug": "mintypecode",
   "summary": "Return the character for the minimum-size type to which given types can be safely cast.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L25",
   "weight": 0.0
 }

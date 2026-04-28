@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/digitize/",
+  "detail_href": "/docs/api/numpy/digitize/",
   "detail_json_href": "/api-data/ops/digitize.json",
   "docs": {
     "sections": [
@@ -265,7 +265,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bincount",
+                "href": "/docs/api/numpy/bincount/",
                 "label": "flops.bincount",
                 "original_target": "bincount",
                 "role": "",
@@ -276,7 +276,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "label": "flops.histogram",
                 "original_target": "histogram",
                 "role": "",
@@ -287,7 +287,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/unique",
+                "href": "/docs/api/numpy/unique/",
                 "label": "flops.unique",
                 "original_target": "unique",
                 "role": "",
@@ -298,7 +298,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/searchsorted",
+                "href": "/docs/api/numpy/searchsorted/",
                 "label": "flops.searchsorted",
                 "original_target": "searchsorted",
                 "role": "",
@@ -337,7 +337,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/digitize",
+                "href": "/docs/api/numpy/digitize/",
                 "kind": "link",
                 "target": "digitize",
                 "text": "digitize"
@@ -363,7 +363,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/digitize",
+                "href": "/docs/api/numpy/digitize/",
                 "kind": "link",
                 "target": "digitize",
                 "text": "flops.digitize"
@@ -374,7 +374,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/searchsorted",
+                "href": "/docs/api/numpy/searchsorted/",
                 "kind": "link",
                 "target": "searchsorted",
                 "text": "flops.searchsorted"
@@ -424,7 +424,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/searchsorted",
+                "href": "/docs/api/numpy/searchsorted/",
                 "kind": "link",
                 "target": "searchsorted",
                 "text": "searchsorted"
@@ -446,7 +446,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -548,12 +548,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.digitize",
+    "flopscope_ref": "fnp.digitize",
     "module": "numpy",
     "name": "digitize",
     "notes": "Bin search; cost = n*ceil(log2(bins)).",
     "numpy_ref": "np.digitize",
-    "signature": "flops.digitize(x, bins, right=False)",
+    "signature": "fnp.digitize(x, bins, right=False)",
     "status": "supported",
     "summary": "Return the indices of the bins to which each value in input array belongs.",
     "weight": 1.0

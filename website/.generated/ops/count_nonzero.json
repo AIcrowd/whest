@@ -226,7 +226,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/nonzero",
+              "href": "/docs/api/numpy/nonzero/",
               "label": "flops.nonzero",
               "original_target": "nonzero",
               "role": "",
@@ -246,7 +246,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -315,7 +315,7 @@
     }
   ],
   "canonical_name": "count_nonzero",
-  "canonical_path": "count-nonzero",
+  "canonical_path": "numpy/count-nonzero",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -326,20 +326,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.count_nonzero(flops.eye(4))\n\na = flops.array([[0, 1, 7, 0],\n              [3, 0, 2, 19]])\n\nflops.count_nonzero(a)\n\nflops.count_nonzero(a, axis=0)\n\nflops.count_nonzero(a, axis=1)\n\nflops.count_nonzero(a, axis=1, keepdims=True)",
+    "code": "import flopscope.numpy as fnp\n\nflops.count_nonzero(flops.eye(4))\n\na = flops.array([[0, 1, 7, 0],\n              [3, 0, 2, 19]])\n\nflops.count_nonzero(a)\n\nflops.count_nonzero(a, axis=0)\n\nflops.count_nonzero(a, axis=1)\n\nflops.count_nonzero(a, axis=1, keepdims=True)",
     "output": "4\n\n5\n\narray([1, 1, 2, 1])\n\narray([2, 3])\n\narray([[2],\n       [3]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.count_nonzero",
+  "flopscope_ref": "fnp.count_nonzero",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L833",
-  "href": "/docs/api/count-nonzero/",
+  "href": "/docs/api/numpy/count-nonzero/",
   "legacy_href": "/docs/api/ops/count_nonzero/",
   "module": "numpy",
   "name": "count_nonzero",
   "next": {
-    "href": "/docs/api/cov/",
-    "label": "flops.cov"
+    "href": "/docs/api/numpy/cov/",
+    "label": "fnp.cov"
   },
   "notes": "Count non-zero elements.",
   "notes_sections": [],
@@ -372,10 +372,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/cosh/",
-    "label": "flops.cosh"
+    "href": "/docs/api/numpy/cosh/",
+    "label": "fnp.cosh"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.count_nonzero",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.count_nonzero.html",
   "returns": [
     {
@@ -398,7 +399,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/nonzero",
+      "href": "/docs/api/numpy/nonzero/",
       "label": "flops.nonzero",
       "original_target": "nonzero",
       "role": "",
@@ -406,9 +407,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.count_nonzero(a, axis=None, *, keepdims=False)",
+  "signature": "fnp.count_nonzero(a, axis=None, *, keepdims=False)",
   "slug": "count_nonzero",
   "summary": "Counts the number of non-zero values in the array ``a``.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L450",
   "weight": 1.0
 }

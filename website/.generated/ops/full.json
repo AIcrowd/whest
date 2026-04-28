@@ -344,7 +344,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/full_like",
+              "href": "/docs/api/numpy/full-like/",
               "label": "flops.full_like",
               "original_target": "full_like",
               "role": "",
@@ -360,7 +360,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/empty",
+              "href": "/docs/api/numpy/empty/",
               "label": "flops.empty",
               "original_target": "empty",
               "role": "",
@@ -376,7 +376,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ones",
+              "href": "/docs/api/numpy/ones/",
               "label": "flops.ones",
               "original_target": "ones",
               "role": "",
@@ -392,7 +392,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/zeros",
+              "href": "/docs/api/numpy/zeros/",
               "label": "flops.zeros",
               "original_target": "zeros",
               "role": "",
@@ -412,7 +412,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -466,7 +466,7 @@
     }
   ],
   "canonical_name": "full",
-  "canonical_path": "full",
+  "canonical_path": "numpy/full",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -477,20 +477,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.full((2, 2), flops.inf)\n\nflops.full((2, 2), 10)\n\nflops.full((2, 2), [1, 2])",
+    "code": "import flopscope.numpy as fnp\n\nflops.full((2, 2), flops.inf)\n\nflops.full((2, 2), 10)\n\nflops.full((2, 2), [1, 2])",
     "output": "array([[inf, inf],\n       [inf, inf]])\n\narray([[10, 10],\n       [10, 10]])\n\narray([[1, 2],\n       [1, 2]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.full",
+  "flopscope_ref": "fnp.full",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L124",
-  "href": "/docs/api/full/",
+  "href": "/docs/api/numpy/full/",
   "legacy_href": "/docs/api/ops/full/",
   "module": "numpy",
   "name": "full",
   "next": {
-    "href": "/docs/api/full-like/",
-    "label": "flops.full_like"
+    "href": "/docs/api/numpy/full-like/",
+    "label": "fnp.full_like"
   },
   "notes": "Create array filled with scalar value. Cost: num copied.",
   "notes_sections": [],
@@ -551,10 +551,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/fromiter/",
-    "label": "flops.fromiter"
+    "href": "/docs/api/numpy/fromiter/",
+    "label": "fnp.fromiter"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.full",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.full.html",
   "returns": [
     {
@@ -575,7 +576,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/full_like",
+      "href": "/docs/api/numpy/full-like/",
       "label": "flops.full_like",
       "original_target": "full_like",
       "role": "",
@@ -591,7 +592,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/empty",
+      "href": "/docs/api/numpy/empty/",
       "label": "flops.empty",
       "original_target": "empty",
       "role": "",
@@ -607,7 +608,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ones",
+      "href": "/docs/api/numpy/ones/",
       "label": "flops.ones",
       "original_target": "ones",
       "role": "",
@@ -623,7 +624,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/zeros",
+      "href": "/docs/api/numpy/zeros/",
       "label": "flops.zeros",
       "original_target": "zeros",
       "role": "",
@@ -631,9 +632,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.full(shape, fill_value, dtype=None, order='C', *, device=None, like=None)",
+  "signature": "fnp.full(shape, fill_value, dtype=None, order='C', *, device=None, like=None)",
   "slug": "full",
   "summary": "Return a new array of given shape and type, filled with `fill_value`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L290",
   "weight": 1.0
 }

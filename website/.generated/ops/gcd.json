@@ -156,7 +156,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/lcm",
+              "href": "/docs/api/numpy/lcm/",
               "label": "flops.lcm",
               "original_target": "lcm",
               "role": "",
@@ -176,7 +176,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -213,7 +213,7 @@
     }
   ],
   "canonical_name": "gcd",
-  "canonical_path": "gcd",
+  "canonical_path": "numpy/gcd",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -224,20 +224,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.gcd(12, 20)\n\nflops.gcd.reduce([15, 25, 35])\n\nflops.gcd(flops.arange(6), 20)",
+    "code": "import flopscope.numpy as fnp\n\nflops.gcd(12, 20)\n\nflops.gcd.reduce([15, 25, 35])\n\nflops.gcd(flops.arange(6), 20)",
     "output": "4\n\n5\n\narray([20,  1,  2,  1,  4,  5])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.gcd",
+  "flopscope_ref": "fnp.gcd",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/gcd/",
+  "href": "/docs/api/numpy/gcd/",
   "legacy_href": "/docs/api/ops/gcd/",
   "module": "numpy",
   "name": "gcd",
   "next": {
-    "href": "/docs/api/geomspace/",
-    "label": "flops.geomspace"
+    "href": "/docs/api/numpy/geomspace/",
+    "label": "fnp.geomspace"
   },
   "notes": "Element-wise greatest common divisor.",
   "notes_sections": [],
@@ -254,10 +254,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/full-like/",
-    "label": "flops.full_like"
+    "href": "/docs/api/numpy/full-like/",
+    "label": "fnp.full_like"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.gcd",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.gcd.html",
   "returns": [
     {
@@ -279,7 +280,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/lcm",
+      "href": "/docs/api/numpy/lcm/",
       "label": "flops.lcm",
       "original_target": "lcm",
       "role": "",
@@ -287,9 +288,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.gcd(*args, **kwargs)",
+  "signature": "fnp.gcd(*args, **kwargs)",
   "slug": "gcd",
   "summary": "Returns the greatest common divisor of ``|x1|`` and ``|x2|``",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

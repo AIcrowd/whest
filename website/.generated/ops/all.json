@@ -194,7 +194,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/all",
+                      "href": "/docs/api/numpy/all/",
                       "kind": "link",
                       "target": "all",
                       "text": "all"
@@ -404,7 +404,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/any",
+              "href": "/docs/api/numpy/any/",
               "label": "flops.any",
               "original_target": "any",
               "role": "",
@@ -456,7 +456,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -555,7 +555,7 @@
     }
   ],
   "canonical_name": "all",
-  "canonical_path": "all",
+  "canonical_path": "numpy/all",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -573,20 +573,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.all([[True,False],[True,True]])\n\nflops.all([[True,False],[True,True]], axis=0)\n\nflops.all([-1, 4, 5])\n\nflops.all([1.0, flops.nan])\n\nflops.all([[True, True], [False, True]], where=[[True], [False]])\n\no=flops.array(False)\n\nz=flops.all([-1, 4, 5], out=o)\n\nid(z), id(o), z",
+    "code": "import flopscope.numpy as fnp\n\nflops.all([[True,False],[True,True]])\n\nflops.all([[True,False],[True,True]], axis=0)\n\nflops.all([-1, 4, 5])\n\nflops.all([1.0, flops.nan])\n\nflops.all([[True, True], [False, True]], where=[[True], [False]])\n\no=flops.array(False)\n\nz=flops.all([-1, 4, 5], out=o)\n\nid(z), id(o), z",
     "output": "False\n\narray([ True, False])\n\nTrue\n\nTrue\n\nTrue\n\n(28293632, 28293632, array(True)) # may vary",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.all",
+  "flopscope_ref": "fnp.all",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/all/",
+  "href": "/docs/api/numpy/all/",
   "legacy_href": "/docs/api/ops/all/",
   "module": "numpy",
   "name": "all",
   "next": {
-    "href": "/docs/api/allclose/",
-    "label": "flops.allclose"
+    "href": "/docs/api/numpy/allclose/",
+    "label": "fnp.allclose"
   },
   "notes": "Test whether all array elements are true.",
   "notes_sections": [
@@ -652,10 +652,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/add/",
-    "label": "flops.add"
+    "href": "/docs/api/numpy/add/",
+    "label": "fnp.add"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.all",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.all.html",
   "returns": [
     {
@@ -693,7 +694,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/any",
+      "href": "/docs/api/numpy/any/",
       "label": "flops.any",
       "original_target": "any",
       "role": "",
@@ -701,9 +702,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.all(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
+  "signature": "fnp.all(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
   "slug": "all",
   "summary": "Test whether all array elements along a given axis evaluate to True.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2589",
   "weight": 1.0
 }

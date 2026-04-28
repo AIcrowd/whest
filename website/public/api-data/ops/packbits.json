@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/packbits/",
+  "detail_href": "/docs/api/numpy/packbits/",
   "detail_json_href": "/api-data/ops/packbits.json",
   "docs": {
     "sections": [
@@ -234,7 +234,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/unpackbits",
+                "href": "/docs/api/numpy/unpackbits/",
                 "label": "flops.unpackbits",
                 "original_target": "unpackbits",
                 "role": "",
@@ -254,7 +254,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -323,12 +323,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.packbits",
+    "flopscope_ref": "fnp.packbits",
     "module": "numpy",
     "name": "packbits",
     "notes": "Pack elements of array into bits. Cost: numel(input).",
     "numpy_ref": "np.packbits",
-    "signature": "flops.packbits(a, *args, **kwargs)",
+    "signature": "fnp.packbits(a, *args, **kwargs)",
     "status": "supported",
     "summary": "Packs the elements of a binary-valued array into bits in a uint8 array.",
     "weight": 1.0

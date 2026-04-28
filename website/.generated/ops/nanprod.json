@@ -434,7 +434,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/prod",
+              "href": "/docs/api/numpy/prod/",
               "label": "flops.prod",
               "original_target": "numpy.prod",
               "role": "",
@@ -450,7 +450,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isnan",
+              "href": "/docs/api/numpy/isnan/",
               "label": "flops.isnan",
               "original_target": "isnan",
               "role": "",
@@ -470,7 +470,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -530,7 +530,7 @@
     }
   ],
   "canonical_name": "nanprod",
-  "canonical_path": "nanprod",
+  "canonical_path": "numpy/nanprod",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -541,20 +541,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.nanprod(1)\n\nflops.nanprod([1])\n\nflops.nanprod([1, flops.nan])\n\na = flops.array([[1, 2], [3, flops.nan]])\n\nflops.nanprod(a)\n\nflops.nanprod(a, axis=0)",
+    "code": "import flopscope.numpy as fnp\n\nflops.nanprod(1)\n\nflops.nanprod([1])\n\nflops.nanprod([1, flops.nan])\n\na = flops.array([[1, 2], [3, flops.nan]])\n\nflops.nanprod(a)\n\nflops.nanprod(a, axis=0)",
     "output": "1\n\n1\n\n1.0\n\n6.0\n\narray([3., 2.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.nanprod",
+  "flopscope_ref": "fnp.nanprod",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/nanprod/",
+  "href": "/docs/api/numpy/nanprod/",
   "legacy_href": "/docs/api/ops/nanprod/",
   "module": "numpy",
   "name": "nanprod",
   "next": {
-    "href": "/docs/api/nanquantile/",
-    "label": "flops.nanquantile"
+    "href": "/docs/api/numpy/nanquantile/",
+    "label": "fnp.nanquantile"
   },
   "notes": "Product ignoring NaNs.",
   "notes_sections": [],
@@ -630,10 +630,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/nanpercentile/",
-    "label": "flops.nanpercentile"
+    "href": "/docs/api/numpy/nanpercentile/",
+    "label": "fnp.nanpercentile"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nanprod",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nanprod.html",
   "returns": [
     {
@@ -655,7 +656,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/prod",
+      "href": "/docs/api/numpy/prod/",
       "label": "flops.prod",
       "original_target": "numpy.prod",
       "role": "",
@@ -671,7 +672,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isnan",
+      "href": "/docs/api/numpy/isnan/",
       "label": "flops.isnan",
       "original_target": "isnan",
       "role": "",
@@ -679,9 +680,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.nanprod(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+  "signature": "fnp.nanprod(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "nanprod",
   "summary": "Return the product of array elements over a given axis treating Not a Numbers (NaNs) as ones.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L737",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/unravel-index/",
+  "detail_href": "/docs/api/numpy/unravel-index/",
   "detail_json_href": "/api-data/ops/unravel_index.json",
   "docs": {
     "sections": [
@@ -31,7 +31,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/shape",
+                        "href": "/docs/api/numpy/shape/",
                         "kind": "link",
                         "target": "shape",
                         "text": "shape"
@@ -52,7 +52,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/shape",
+                    "href": "/docs/api/numpy/shape/",
                     "kind": "link",
                     "target": "shape",
                     "text": "shape"
@@ -75,7 +75,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/indices",
+                        "href": "/docs/api/numpy/indices/",
                         "kind": "link",
                         "target": "indices",
                         "text": "indices"
@@ -96,7 +96,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/indices",
+                    "href": "/docs/api/numpy/indices/",
                     "kind": "link",
                     "target": "indices",
                     "text": "indices"
@@ -152,7 +152,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/indices",
+                        "href": "/docs/api/numpy/indices/",
                         "kind": "link",
                         "target": "indices",
                         "text": "indices"
@@ -173,7 +173,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/indices",
+                    "href": "/docs/api/numpy/indices/",
                     "kind": "link",
                     "target": "indices",
                     "text": "indices"
@@ -201,7 +201,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/ravel_multi_index",
+                "href": "/docs/api/numpy/ravel-multi-index/",
                 "label": "flops.ravel_multi_index",
                 "original_target": "ravel_multi_index",
                 "role": "",
@@ -221,7 +221,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -267,12 +267,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.unravel_index",
+    "flopscope_ref": "fnp.unravel_index",
     "module": "numpy",
     "name": "unravel_index",
     "notes": "Convert flat index to multi-dimensional index.",
     "numpy_ref": "np.unravel_index",
-    "signature": "flops.unravel_index(*args, **kwargs)",
+    "signature": "fnp.unravel_index(*args, **kwargs)",
     "status": "supported",
     "summary": "Converts a flat index or array of flat indices into a tuple of coordinate arrays.",
     "weight": 0.0

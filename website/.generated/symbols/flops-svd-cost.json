@@ -12,66 +12,13 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Weighted FLOP cost estimate for "
-            },
-            {
-              "external_url": "",
-              "href": "/docs/api/linalg/svd/",
-              "kind": "link",
-              "target": "linalg.svd",
-              "text": "linalg.svd"
-            },
-            {
-              "kind": "text",
-              "text": "."
+              "text": "Weighted FLOP cost of a (truncated) SVD."
             }
           ],
           "type": "paragraph"
         }
       ],
       "title": "Summary"
-    },
-    {
-      "blocks": [
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
-            },
-            {
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
-              "href": "",
-              "kind": "link",
-              "target": "_weights",
-              "text": "flopscope._weights"
-            },
-            {
-              "kind": "text",
-              "text": ". The final value is floored with "
-            },
-            {
-              "kind": "code",
-              "text": "int(...)"
-            },
-            {
-              "kind": "text",
-              "text": " to match runtime budget accounting."
-            }
-          ],
-          "type": "paragraph"
-        },
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "Analytical formula:\nFLOP cost of a (truncated) SVD."
-            }
-          ],
-          "type": "paragraph"
-        }
-      ],
-      "title": "Extended Summary"
     },
     {
       "blocks": [
@@ -83,7 +30,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Number of rows."
+                      "text": "Number of rows in the input matrix."
                     }
                   ],
                   "type": "paragraph"
@@ -93,7 +40,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Number of rows."
+                  "text": "Number of rows in the input matrix."
                 }
               ],
               "name": "m",
@@ -105,7 +52,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Number of columns."
+                      "text": "Number of columns in the input matrix."
                     }
                   ],
                   "type": "paragraph"
@@ -115,7 +62,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Number of columns."
+                  "text": "Number of columns in the input matrix."
                 }
               ],
               "name": "n",
@@ -127,17 +74,33 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Number of singular values/vectors to compute. Defaults to min(m, n)."
+                      "text": "Target rank or number of singular components to estimate. Defaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "None"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "int or None, optional",
+              "data_type": "int | None, optional",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Number of singular values/vectors to compute. Defaults to min(m, n)."
+                  "text": "Target rank or number of singular components to estimate. Defaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "None"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
               "name": "k",
@@ -160,7 +123,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Estimated FLOP count: m * n * k."
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
                     }
                   ],
                   "type": "paragraph"
@@ -170,7 +133,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Estimated FLOP count: m * n * k."
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
                 }
               ],
               "name": "",
@@ -189,6 +152,34 @@
           "inline": [
             {
               "kind": "text",
+              "text": "This helper multiplies the analytical FLOP count by the active weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "flopscope._weights"
+            },
+            {
+              "kind": "text",
+              "text": " and then applies "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " so public estimates match budget deductions."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
               "text": "Based on Golub-Reinsch bidiagonalization."
             }
           ],
@@ -196,6 +187,35 @@
         }
       ],
       "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "cost = flops.accounting.svd_cost(128, 64)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "isinstance(cost, int)"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "flops.svd_cost",
@@ -221,6 +241,6 @@
   "slug": "flops-svd-cost",
   "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_flops.py#L175",
   "status_note": "",
-  "summary": "Weighted FLOP cost estimate for ``linalg.svd``.",
+  "summary": "Weighted FLOP cost of a (truncated) SVD.",
   "upstream_source_url": ""
 }

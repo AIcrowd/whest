@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/gradient/",
+  "detail_href": "/docs/api/numpy/gradient/",
   "detail_json_href": "/api-data/ops/gradient.json",
   "docs": {
     "sections": [
@@ -427,7 +427,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -910,12 +910,12 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.gradient",
+    "flopscope_ref": "fnp.gradient",
     "module": "numpy",
     "name": "gradient",
     "notes": "Gradient using central differences.",
     "numpy_ref": "np.gradient",
-    "signature": "flops.gradient(f, *varargs, axis=None, edge_order=1)",
+    "signature": "fnp.gradient(f, *varargs, axis=None, edge_order=1)",
     "status": "supported",
     "summary": "Return the gradient of an N-dimensional array.",
     "weight": 1.0

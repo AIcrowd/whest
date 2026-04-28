@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/floor/",
+  "detail_href": "/docs/api/numpy/floor/",
   "detail_json_href": "/api-data/ops/floor.json",
   "docs": {
     "sections": [
@@ -331,7 +331,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/ceil",
+                "href": "/docs/api/numpy/ceil/",
                 "label": "flops.ceil",
                 "original_target": "ceil",
                 "role": "",
@@ -342,7 +342,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/trunc",
+                "href": "/docs/api/numpy/trunc/",
                 "label": "flops.trunc",
                 "original_target": "trunc",
                 "role": "",
@@ -353,7 +353,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/rint",
+                "href": "/docs/api/numpy/rint/",
                 "label": "flops.rint",
                 "original_target": "rint",
                 "role": "",
@@ -395,7 +395,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/floor",
+                "href": "/docs/api/numpy/floor/",
                 "kind": "link",
                 "target": "floor",
                 "text": "floor"
@@ -436,7 +436,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -464,12 +464,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.floor",
+    "flopscope_ref": "fnp.floor",
     "module": "numpy",
     "name": "floor",
     "notes": "Element-wise floor.",
     "numpy_ref": "np.floor",
-    "signature": "flops.floor(*args, **kwargs)",
+    "signature": "fnp.floor(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the floor of the input, element-wise.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/nonzero/",
+  "detail_href": "/docs/api/numpy/nonzero/",
   "detail_json_href": "/api-data/ops/nonzero.json",
   "docs": {
     "sections": [
@@ -52,7 +52,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argwhere",
+                "href": "/docs/api/numpy/argwhere/",
                 "kind": "link",
                 "target": "argwhere",
                 "text": "argwhere"
@@ -191,7 +191,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/flatnonzero",
+                "href": "/docs/api/numpy/flatnonzero/",
                 "label": "flops.flatnonzero",
                 "original_target": "flatnonzero",
                 "role": "",
@@ -223,7 +223,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/count_nonzero",
+                "href": "/docs/api/numpy/count-nonzero/",
                 "label": "flops.count_nonzero",
                 "original_target": "count_nonzero",
                 "role": "",
@@ -281,7 +281,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -360,7 +360,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/nonzero",
+                "href": "/docs/api/numpy/nonzero/",
                 "kind": "link",
                 "target": "nonzero",
                 "text": "nonzero"
@@ -476,7 +476,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/nonzero",
+                "href": "/docs/api/numpy/nonzero/",
                 "kind": "link",
                 "target": "nonzero",
                 "text": "nonzero"
@@ -511,12 +511,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.nonzero",
+    "flopscope_ref": "fnp.nonzero",
     "module": "numpy",
     "name": "nonzero",
     "notes": "Return indices of non-zero elements. Cost: numel(input).",
     "numpy_ref": "np.nonzero",
-    "signature": "flops.nonzero(a)",
+    "signature": "fnp.nonzero(a)",
     "status": "supported",
     "summary": "Return the indices of the elements that are non-zero.",
     "weight": 1.0

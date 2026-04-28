@@ -202,7 +202,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/polyval",
+              "href": "/docs/api/numpy/polyval/",
               "label": "flops.polyval",
               "original_target": "polyval",
               "role": "",
@@ -218,7 +218,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/roots",
+              "href": "/docs/api/numpy/roots/",
               "label": "flops.roots",
               "original_target": "roots",
               "role": "",
@@ -234,7 +234,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/polyfit",
+              "href": "/docs/api/numpy/polyfit/",
               "label": "flops.polyfit",
               "original_target": "polyfit",
               "role": "",
@@ -281,7 +281,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/polyfit",
+              "href": "/docs/api/numpy/polyfit/",
               "kind": "link",
               "target": "polyfit",
               "text": "polyfit"
@@ -418,7 +418,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -525,7 +525,7 @@
     }
   ],
   "canonical_name": "poly",
-  "canonical_path": "poly",
+  "canonical_path": "numpy/poly",
   "category": "counted_custom",
   "cost_formula": "n^2",
   "cost_formula_latex": "$n^2$",
@@ -562,20 +562,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.poly((0, 0, 0)) # Multiple root example\n\nflops.poly((-1./2, 0, 1./2))\n\nflops.poly((flops.random.random(1)[0], 0, flops.random.random(1)[0]))\n\nP = flops.array([[0, 1./3], [-1./2, 0]])\n\nflops.poly(P)",
+    "code": "import flopscope.numpy as fnp\n\nflops.poly((0, 0, 0)) # Multiple root example\n\nflops.poly((-1./2, 0, 1./2))\n\nflops.poly((flops.random.random(1)[0], 0, flops.random.random(1)[0]))\n\nP = flops.array([[0, 1./3], [-1./2, 0]])\n\nflops.poly(P)",
     "output": "array([1., 0., 0., 0.])\n\narray([ 1.  ,  0.  , -0.25,  0.  ])\n\narray([ 1.        , -0.77086955,  0.08618131,  0.        ]) # random\n\narray([1.        , 0.        , 0.16666667])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.poly",
+  "flopscope_ref": "fnp.poly",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L215",
-  "href": "/docs/api/poly/",
+  "href": "/docs/api/numpy/poly/",
   "legacy_href": "/docs/api/ops/poly/",
   "module": "flopscope._polynomial",
   "name": "poly",
   "next": {
-    "href": "/docs/api/polyadd/",
-    "label": "flops.polyadd"
+    "href": "/docs/api/numpy/polyadd/",
+    "label": "fnp.polyadd"
   },
   "notes": "Polynomial from roots. Cost: $n^2$ FLOPs.",
   "notes_sections": [
@@ -595,10 +595,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/place/",
-    "label": "flops.place"
+    "href": "/docs/api/numpy/place/",
+    "label": "fnp.place"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.poly",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.poly.html",
   "returns": [
     {
@@ -622,7 +623,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/polyval",
+      "href": "/docs/api/numpy/polyval/",
       "label": "flops.polyval",
       "original_target": "polyval",
       "role": "",
@@ -638,7 +639,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/roots",
+      "href": "/docs/api/numpy/roots/",
       "label": "flops.roots",
       "original_target": "roots",
       "role": "",
@@ -654,7 +655,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/polyfit",
+      "href": "/docs/api/numpy/polyfit/",
       "label": "flops.polyfit",
       "original_target": "polyfit",
       "role": "",
@@ -678,9 +679,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.poly(seq_of_zeros)",
+  "signature": "fnp.poly(seq_of_zeros)",
   "slug": "poly",
   "summary": "Find the coefficients of a polynomial with the given sequence of roots.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L34",
   "weight": 1.0
 }

@@ -569,7 +569,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -659,7 +659,7 @@
     }
   ],
   "canonical_name": "fft.fft",
-  "canonical_path": "fft/fft",
+  "canonical_path": "numpy/fft/fft",
   "category": "counted_custom",
   "cost_formula": "5n * ceil(log2(n))",
   "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
@@ -675,20 +675,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.fft.fft(flops.exp(2j * flops.pi * flops.arange(8) / 8))\n\nimport matplotlib.pyplot as plt\n\nt = flops.arange(256)\n\nsp = flops.fft.fft(flops.sin(t))\n\nfreq = flops.fft.fftfreq(t.shape[-1])\n\nplt.plot(freq, sp.real, freq, sp.imag)\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nflops.fft.fft(flops.exp(2j * flops.pi * flops.arange(8) / 8))\n\nimport matplotlib.pyplot as plt\n\nt = flops.arange(256)\n\nsp = flops.fft.fft(flops.sin(t))\n\nfreq = flops.fft.fftfreq(t.shape[-1])\n\nplt.plot(freq, sp.real, freq, sp.imag)\n\nplt.show()",
     "output": "array([-2.33486982e-16+1.14423775e-17j,  8.00000000e+00-1.25557246e-15j,\n        2.33486982e-16+2.33486982e-16j,  0.00000000e+00+1.22464680e-16j,\n       -1.14423775e-17+2.33486982e-16j,  0.00000000e+00+5.20784380e-16j,\n        1.14423775e-17+1.14423775e-17j,  0.00000000e+00+1.22464680e-16j])\n\n[<matplotlib.lines.Line2D object at 0x...>, <matplotlib.lines.Line2D object at 0x...>]",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.fft.fft",
+  "flopscope_ref": "fnp.fft.fft",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L166",
-  "href": "/docs/api/fft/fft/",
+  "href": "/docs/api/numpy/fft/fft/",
   "legacy_href": "/docs/api/ops/fft-fft/",
   "module": "numpy.fft",
   "name": "fft.fft",
   "next": {
-    "href": "/docs/api/fft/fft2/",
-    "label": "flops.fft.fft2"
+    "href": "/docs/api/numpy/fft/fft2/",
+    "label": "fnp.fft.fft2"
   },
   "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -747,10 +747,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/fabs/",
-    "label": "flops.fabs"
+    "href": "/docs/api/numpy/fabs/",
+    "label": "fnp.fabs"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.fft",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.fft.html",
   "returns": [
     {
@@ -884,9 +885,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
   "slug": "fft-fft",
   "summary": "Compute the one-dimensional discrete Fourier Transform.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L113",
   "weight": 1.0
 }

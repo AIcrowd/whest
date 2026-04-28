@@ -132,6 +132,38 @@ def _validate_namespace_segment(name: str) -> str:
 
 
 def namespace(name: str) -> _NamespaceScope:
+    """Create a nested namespace scope for the active budget context.
+
+    Parameters
+    ----------
+    name : str
+        Namespace segment to append to the active budget namespace. The
+        segment must be non-empty and must not contain ``"."``.
+
+    Returns
+    -------
+    _NamespaceScope
+        Context manager that attributes counted operations to the nested
+        namespace while the scope is active.
+
+    Raises
+    ------
+    NoBudgetContextError
+        If called outside an active :class:`BudgetContext`.
+    ValueError
+        If ``name`` is not a valid namespace segment.
+
+    Examples
+    --------
+    >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
+    >>>
+    >>> with flops.BudgetContext(flop_budget=100, quiet=True) as budget:
+    ...     with flops.namespace("encoder"):
+    ...         _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))
+    >>> budget.op_log[-1].namespace
+    'encoder'
+    """
     from flopscope.errors import NoBudgetContextError
 
     budget = get_active_budget()
@@ -214,6 +246,17 @@ class BudgetContext:
         counted NumPy call. If the deadline is exceeded, flopscope raises
         ``TimeExhaustedError`` at the next operation boundary. This is a
         diagnostic UX limit, not a hard preemptive kill.
+
+    Examples
+    --------
+    >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
+    >>>
+    >>> with flops.BudgetContext(flop_budget=100, quiet=True) as budget:
+    ...     x = fnp.array([1.0, 2.0, 3.0])
+    ...     _ = fnp.einsum("i->", x)
+    >>> budget.summary_dict()["flops_used"] > 0
+    True
     """
 
     def __init__(
@@ -493,8 +536,9 @@ def budget(
     Examples
     --------
     >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
     >>> with flops.budget(1_000):
-    ...     _ = flops.add(flops.array([1.0]), flops.array([2.0]))
+    ...     _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))
     """
     return BudgetContext(
         flop_budget=flop_budget,
@@ -655,8 +699,9 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
     Examples
     --------
     >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
     >>> with flops.BudgetContext(flop_budget=100):
-    ...     _ = flops.add(flops.array([1.0]), flops.array([2.0]))
+    ...     _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))
     >>> summary = flops.budget_summary_dict()
     >>> sorted(summary)
     ['flop_budget', 'flops_remaining', 'flops_used', 'operations', 'tracked_time_s', 'untracked_time_s', 'wall_time_s']
@@ -683,6 +728,20 @@ def budget_reset() -> None:
     -----
     This is primarily useful in tests, notebooks, and long-lived processes
     where you want a fresh session-wide summary.
+
+    Examples
+    --------
+    >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
+    >>>
+    >>> flops.budget_reset()
+    >>> with flops.BudgetContext(flop_budget=100, quiet=True):
+    ...     _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))
+    >>> flops.budget_summary_dict()["flops_used"] > 0
+    True
+    >>> flops.budget_reset()
+    >>> flops.budget_summary_dict()["flops_used"]
+    0
     """
     _accumulator.reset()
     for ctx in list(_all_budget_contexts):

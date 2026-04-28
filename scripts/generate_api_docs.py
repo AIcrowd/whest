@@ -34,6 +34,7 @@ SRC_ROOT = (ROOT / "src").resolve()
 WEBSITE = ROOT / "website"
 PUBLIC_DIR = WEBSITE / "public"
 API_DATA_DIR = PUBLIC_DIR / "api-data" / "ops"
+PUBLIC_API_DATA_DIR = PUBLIC_DIR / "api-data" / "public-api"
 GENERATED_DIR = WEBSITE / ".generated"
 API_INDEX_PATH = WEBSITE / "content" / "docs" / "api" / "index.mdx"
 OP_DOCS_DIR = WEBSITE / "content" / "docs" / "api" / "ops"
@@ -530,6 +531,9 @@ class OperationDocRecord:
     summary: str = ""
     provenance_label: str = ""
     provenance_url: str = ""
+    provenance_ref: str = ""
+    upstream_ref_label: str = ""
+    upstream_source_label: str = ""
     flopscope_source_url: str = ""
     upstream_source_url: str = ""
     parameters: list[DocField] | None = None
@@ -547,6 +551,7 @@ class OperationDocRecord:
 
 _WORKER_ALIAS_MAP: dict[str, str] | None = None
 _WORKER_SUPPORTED_OPS: set[str] | None = None
+_WORKER_INTERNAL_REFS: dict[str, dict[str, str]] | None = None
 
 
 @dataclass(slots=True)
@@ -751,6 +756,49 @@ def _resolve_public_api_module(module_label: str):
     return _import_local_flopscope_module(module_path)
 
 
+def _public_api_segment_slug(segment: str) -> str:
+    """Normalize one import-path segment for canonical public API routes."""
+    normalized = segment.replace("_", "-")
+    normalized = CAMEL_BOUNDARY_RE.sub("-", normalized)
+    normalized = re.sub(r"-{2,}", "-", normalized)
+    return normalized.lower()
+
+
+def canonical_api_href(import_path: str) -> str:
+    """Return the canonical public API docs href for an import path."""
+    # Accept user-facing aliases like ``flops.stats.norm.pdf`` in addition to
+    # the canonical ``flopscope.stats.norm.pdf`` form. ``flops.`` is the public
+    # alias for ``flopscope.`` and ``flops.X.Y`` rewrites to ``flopscope.X.Y``
+    # for url derivation.
+    if import_path.startswith("flops."):
+        import_path = "flopscope." + import_path.removeprefix("flops.")
+
+    prefix = "flopscope."
+    if not import_path.startswith(prefix):
+        raise ValueError(f"Unsupported import path: {import_path}")
+
+    remainder = import_path.removeprefix(prefix)
+    if not remainder:
+        raise ValueError(f"Unsupported import path: {import_path}")
+
+    namespace: list[str]
+    if remainder == "numpy" or remainder.startswith("numpy."):
+        tail = remainder.removeprefix("numpy")
+        namespace = ["numpy"]
+    elif remainder == "stats" or remainder.startswith("stats."):
+        tail = remainder.removeprefix("stats")
+        namespace = ["stats"]
+    elif remainder == "accounting" or remainder.startswith("accounting."):
+        tail = remainder.removeprefix("accounting")
+        namespace = ["accounting"]
+    else:
+        tail = remainder
+        namespace = ["flopscope"]
+
+    parts = namespace + [part for part in tail.lstrip(".").split(".") if part]
+    return f"/docs/api/{'/'.join(_public_api_segment_slug(part) for part in parts)}/"
+
+
 def display_type_for_category(category: str) -> str:
     """Return the UI display type for a registry category."""
     if category == "blacklisted":
@@ -765,12 +813,14 @@ def display_type_for_category(category: str) -> str:
 def flopscope_ref(name: str, module: str) -> str:
     """Derive the flopscope call reference from an op name and registry module."""
     if module == "numpy.linalg":
-        return f"flops.linalg.{name.removeprefix('linalg.')}"
+        return f"fnp.linalg.{name.removeprefix('linalg.')}"
     if module == "numpy.fft":
-        return f"flops.fft.{name.removeprefix('fft.')}"
+        return f"fnp.fft.{name.removeprefix('fft.')}"
     if module == "numpy.random":
-        return f"flops.random.{name.removeprefix('random.')}"
-    return f"flops.{name}"
+        return f"fnp.random.{name.removeprefix('random.')}"
+    if module == "flopscope.stats":
+        return f"flops.{name}"
+    return f"fnp.{name}"
 
 
 def numpy_ref(name: str, module: str) -> str:
@@ -781,7 +831,37 @@ def numpy_ref(name: str, module: str) -> str:
         return f"np.fft.{name.removeprefix('fft.')}"
     if module == "numpy.random":
         return f"np.random.{name.removeprefix('random.')}"
+    if module == "flopscope.stats":
+        return f"scipy.{name}"
     return f"np.{name}"
+
+
+def provenance_label_for_operation(module: str) -> str:
+    """Return the upstream docs attribution label for an operation page."""
+    if module == "flopscope.stats":
+        return "Adapted from SciPy docs"
+    return "Adapted from NumPy docs"
+
+
+def provenance_ref_for_operation(name: str, module: str) -> str:
+    """Return the upstream reference label that matches the docs URL."""
+    if module == "flopscope.stats":
+        return f"scipy.stats.{name.split('.')[1]}"
+    return numpy_ref(name, module)
+
+
+def upstream_ref_label_for_operation(module: str) -> str:
+    """Return the metadata label for the upstream API reference."""
+    if module == "flopscope.stats":
+        return "SciPy Ref"
+    return "NumPy Ref"
+
+
+def upstream_source_label_for_operation(module: str) -> str:
+    """Return the metadata label for the upstream source link."""
+    if module == "flopscope.stats":
+        return "scipy source"
+    return "numpy source"
 
 
 PUBLIC_SYMBOL_GUIDES: dict[str, list[tuple[str, str]]] = {
@@ -831,6 +911,91 @@ NUMPY_REF_PATTERN = re.compile(r"\b(?:np|numpy)\.(?=[A-Za-z_])")
 def rewrite_api_refs(text: str) -> str:
     """Rewrite NumPy API references to their flopscope equivalents."""
     return NUMPY_REF_PATTERN.sub("flops.", text)
+
+
+def public_doc_contract_rules() -> dict[str, object]:
+    return {
+        "require_examples_for": [
+            "flopscope.BudgetContext",
+            "flopscope.budget",
+            "flopscope.budget_live",
+            "flopscope.budget_summary",
+            "flopscope.budget_summary_dict",
+            "flopscope.budget_reset",
+            "flopscope.configure",
+            "flopscope.namespace",
+            "flopscope.numpy.clear_einsum_cache",
+            "flopscope.numpy.einsum_cache_info",
+            "flopscope.as_symmetric",
+            "flopscope.is_symmetric",
+            "flopscope.symmetrize",
+            "flopscope.numpy.random.symmetric",
+            "flopscope.accounting.einsum_cost",
+            "flopscope.accounting.pointwise_cost",
+            "flopscope.accounting.reduction_cost",
+            "flopscope.accounting.svd_cost",
+        ],
+        "require_parameters_and_returns_for_kind": {"function", "method"},
+        "stale_alias_patterns": [
+            r"\bimport flopscope as we\b",
+            r"\bimport whest\b",
+            r"\bwe\.",
+        ],
+    }
+
+
+def _requires_structured_public_callable_docs(import_path: str) -> bool:
+    if import_path.startswith("flopscope.stats."):
+        return True
+    if import_path.startswith("flopscope.accounting."):
+        return True
+    return import_path in {
+        "flopscope.BudgetContext",
+        "flopscope.budget",
+        "flopscope.budget_live",
+        "flopscope.budget_reset",
+        "flopscope.budget_summary",
+        "flopscope.budget_summary_dict",
+        "flopscope.configure",
+        "flopscope.namespace",
+        "flopscope.as_symmetric",
+        "flopscope.is_symmetric",
+        "flopscope.symmetrize",
+        "flopscope.numpy.clear_einsum_cache",
+        "flopscope.numpy.einsum_cache_info",
+        "flopscope.numpy.random.symmetric",
+    }
+
+
+def find_public_doc_contract_violations(
+    *,
+    import_path: str,
+    kind: str,
+    summary: str,
+    sections: dict[str, list[str]],
+    require_parameters: bool = True,
+) -> list[str]:
+    rules = public_doc_contract_rules()
+    violations: list[str] = []
+
+    if not summary.strip():
+        violations.append(f"{import_path}: missing summary")
+
+    if kind in rules["require_parameters_and_returns_for_kind"] and _requires_structured_public_callable_docs(import_path):
+        if require_parameters and not sections.get("Parameters"):
+            violations.append(f"{import_path}: missing Parameters section")
+        if not sections.get("Returns"):
+            violations.append(f"{import_path}: missing Returns section")
+
+    if import_path in set(rules["require_examples_for"]) and not sections.get("Examples"):
+        violations.append(f"{import_path}: missing Examples section")
+
+    for line in sections.get("Examples", []):
+        for pattern in rules["stale_alias_patterns"]:
+            if re.search(pattern, line):
+                violations.append(f"{import_path}: stale alias in examples -> {line}")
+
+    return violations
 
 
 def _split_paragraphs(lines: list[str]) -> list[str]:
@@ -1271,7 +1436,9 @@ def _is_prompt_line(line: str) -> tuple[bool, str | None]:
 def rewrite_example_text(text: str) -> str:
     """Rewrite upstream NumPy example text to the current flopscope naming."""
     rewritten = rewrite_api_refs(text)
-    rewritten = rewritten.replace("import numpy as np", "import flopscope as flops")
+    rewritten = rewritten.replace(
+        "import numpy as np", "import flopscope.numpy as fnp"
+    )
     return rewritten
 
 
@@ -2242,13 +2409,17 @@ def _resolve_attr(root: object, dotted_name: str) -> object:
 
 
 def _worker_init_operation_doc_context(
-    alias_items: tuple[tuple[str, str], ...], supported_ops: tuple[str, ...]
+    alias_items: tuple[tuple[str, str], ...],
+    supported_ops: tuple[str, ...],
+    internal_refs: dict[str, dict[str, str]],
 ) -> None:
     """Initialize per-process context for parallel operation doc workers."""
     global _WORKER_ALIAS_MAP
     global _WORKER_SUPPORTED_OPS
+    global _WORKER_INTERNAL_REFS
     _WORKER_ALIAS_MAP = dict(alias_items)
     _WORKER_SUPPORTED_OPS = set(supported_ops)
+    _WORKER_INTERNAL_REFS = internal_refs
 
 
 def _worker_build_operation_record(
@@ -2275,6 +2446,7 @@ def _worker_build_operation_record(
         owned_example_html,
         alias_map=_WORKER_ALIAS_MAP,
         supported_ops=_WORKER_SUPPORTED_OPS,
+        internal_refs=_WORKER_INTERNAL_REFS,
     )
 
 
@@ -2289,6 +2461,7 @@ def _build_operation_record(
     *,
     alias_map: dict[str, str] | None,
     supported_ops: set[str] | None,
+    internal_refs: dict[str, dict[str, str]] | None = None,
 ) -> OperationDocRecord:
     """Build one in-memory operation record."""
     if alias_map is None or supported_ops is None:
@@ -2308,14 +2481,18 @@ def _build_operation_record(
         owned_example_html,
         alias_map=alias_map,
         supported_ops=supported_ops,
+        internal_refs=internal_refs,
     )
     cost_plain, cost_latex = cost_for_op(name, category)
+    canonical_href = canonical_api_href(
+        flopscope_ref(name, module).replace("fnp.", "flopscope.numpy.", 1)
+    )
     return OperationDocRecord(
         name=name,
         canonical_name=name,
         slug=slug_for_operation(name),
-        href=canonical_api_href_for_name(name),
-        canonical_path=canonical_api_path_for_name(name),
+        href=canonical_href,
+        canonical_path=canonical_href.removeprefix("/docs/api/").rstrip("/"),
         legacy_href=detail_href_for_slug(slug_for_operation(name)),
         module=module,
         area=normalize_area(module),
@@ -2330,8 +2507,11 @@ def _build_operation_record(
         aliases=aliases,
         signature=signature,
         summary=parsed_doc.summary,
-        provenance_label="Adapted from NumPy docs",
+        provenance_label=provenance_label_for_operation(module),
         provenance_url=docs_url_for_operation(name, module),
+        provenance_ref=provenance_ref_for_operation(name, module),
+        upstream_ref_label=upstream_ref_label_for_operation(module),
+        upstream_source_label=upstream_source_label_for_operation(module),
         flopscope_source_url=flopscope_source_url,
         upstream_source_url=upstream_source_url,
         parameters=parsed_doc.parameters,
@@ -2513,7 +2693,10 @@ def build_structured_doc(
     flopscope_obj, upstream_obj = resolve_live_objects(name, module)
     alias_map = alias_map or {}
     supported_ops = supported_ops or set()
-    raw_doc = inspect.getdoc(upstream_obj) or inspect.getdoc(flopscope_obj) or ""
+    if module == "flopscope.stats":
+        raw_doc = inspect.getdoc(flopscope_obj) or inspect.getdoc(upstream_obj) or ""
+    else:
+        raw_doc = inspect.getdoc(upstream_obj) or inspect.getdoc(flopscope_obj) or ""
     parsed = _rewrite_parsed_doc(
         parse_numpy_docstring(raw_doc),
         alias_map=alias_map,
@@ -2536,7 +2719,7 @@ def build_structured_doc(
     )
 
     upstream_source_url = ""
-    if upstream_obj is not None:
+    if module != "flopscope.stats" and upstream_obj is not None:
         numpy_root = Path(np.__file__).resolve().parent
         upstream_source_url = _repo_source_url(
             upstream_obj,
@@ -2736,14 +2919,17 @@ def _build_operation_internal_refs(
         canonical = resolve_canonical_name(name, alias_map)
         if canonical != name:
             continue
+        import_path = flopscope_ref(canonical, info["module"]).replace(
+            "fnp.", "flopscope.numpy.", 1
+        )
         entry = {
             "canonical_name": canonical,
-            "href": canonical_api_href_for_name(canonical),
+            "href": canonical_api_href(import_path),
         }
         op_aliases = {
             name,
             flopscope_ref(name, info["module"]),
-            flopscope_ref(name, info["module"]).replace("flops.", "flopscope.", 1),
+            flopscope_ref(name, info["module"]).replace("fnp.", "flopscope.numpy.", 1),
         }
         for alias in op_aliases:
             refs[alias] = entry
@@ -3109,6 +3295,7 @@ def build_operation_doc_records(
         if info["category"] != "blacklisted"
         and resolve_canonical_name(name, alias_map) == name
     }
+    internal_refs = _build_operation_internal_refs(registry, alias_map)
     tasks: list[tuple[str, str, str, list[str], float, str, str]] = []
     for name, info in sorted(registry.items()):
         if info["category"] == "blacklisted":
@@ -3153,7 +3340,11 @@ def build_operation_doc_records(
             max_workers=max_workers,
             mp_context=mp_context,
             initializer=_worker_init_operation_doc_context,
-            initargs=(tuple(alias_map.items()), tuple(sorted(supported_ops))),
+            initargs=(
+                tuple(alias_map.items()),
+                tuple(sorted(supported_ops)),
+                internal_refs,
+            ),
         ) as executor:
             records = list(executor.map(_worker_build_operation_record, tasks))
     else:
@@ -3162,6 +3353,7 @@ def build_operation_doc_records(
                 *task,
                 alias_map=alias_map,
                 supported_ops=supported_ops,
+                internal_refs=internal_refs,
             )
             for task in tasks
         ]
@@ -3478,6 +3670,416 @@ def build_public_api_refs_manifest(
     return manifest
 
 
+def _public_api_entry_kind(obj: object) -> str:
+    if inspect.isclass(obj):
+        return "class"
+    if inspect.isfunction(obj) or inspect.ismethod(obj) or inspect.isbuiltin(obj):
+        return "function"
+    if callable(obj):
+        return "callable"
+    return "object"
+
+
+def _make_public_api_manifest_entry(
+    import_path: str,
+    *,
+    obj: object | None = None,
+    kind: str | None = None,
+    module: str | None = None,
+    is_callable: bool | None = None,
+) -> dict[str, object]:
+    resolved_kind = kind or (_public_api_entry_kind(obj) if obj is not None else "object")
+    resolved_callable = (
+        is_callable if is_callable is not None else callable(obj) if obj is not None else False
+    )
+    return {
+        "canonical_name": import_path,
+        "href": canonical_api_href(import_path),
+        "import_path": import_path,
+        "kind": resolved_kind,
+        "module": module or getattr(obj, "__module__", ""),
+        "callable": resolved_callable,
+    }
+
+
+TOP_LEVEL_PUBLIC_EXPORTS = (
+    "BudgetContext",
+    "FlopscopeArray",
+    "PathInfo",
+    "StepInfo",
+    "Permutation",
+    "PermutationGroup",
+    "Cycle",
+    "SymmetricTensor",
+    "SymmetryInfo",
+    "budget",
+    "budget_live",
+    "budget_reset",
+    "budget_summary",
+    "budget_summary_dict",
+    "configure",
+    "namespace",
+    "as_symmetric",
+    "is_symmetric",
+    "symmetrize",
+)
+
+
+def _public_api_namespace(import_path: str) -> str:
+    if import_path.startswith("flopscope.numpy."):
+        return "numpy"
+    if import_path.startswith("flopscope.stats."):
+        return "stats"
+    if import_path.startswith("flopscope.accounting."):
+        return "accounting"
+    return "flopscope"
+
+
+def _resolve_public_api_object(import_path: str) -> object:
+    root = _import_local_flopscope_module("flopscope")
+    obj: object = root
+    for part in import_path.split(".")[1:]:
+        obj = getattr(obj, part)
+    return obj
+
+
+def _public_api_aliases(import_path: str) -> list[str]:
+    aliases = [import_path]
+    if import_path.startswith("flopscope.numpy."):
+        aliases.append(import_path.replace("flopscope.numpy.", "fnp.", 1))
+    elif import_path.startswith("flopscope.accounting."):
+        aliases.append(import_path.replace("flopscope.accounting.", "flops.accounting.", 1))
+    elif import_path.startswith("flopscope.stats."):
+        aliases.append(import_path.replace("flopscope.", "flops.", 1))
+    elif import_path.startswith("flopscope."):
+        aliases.append(import_path.replace("flopscope.", "flops.", 1))
+    return _dedupe_aliases(aliases)
+
+
+def _iter_public_callable_exports(
+    module: object, import_prefix: str, *, skip: set[str] | None = None
+) -> list[tuple[str, object]]:
+    exports: list[tuple[str, object]] = []
+    skip = skip or set()
+    for name in getattr(module, "__all__", []):
+        if name in skip or not hasattr(module, name):
+            continue
+        obj = getattr(module, name)
+        if inspect.ismodule(obj):
+            continue
+        if not (inspect.isclass(obj) or callable(obj)):
+            continue
+        exports.append((f"{import_prefix}.{name}", obj))
+    return exports
+
+
+def build_public_api_manifest(
+    registry: dict[str, dict],
+) -> dict[str, dict[str, object]]:
+    """Build a canonical import-path keyed manifest for the public API."""
+    manifest: dict[str, dict[str, object]] = {}
+    flops = _import_local_flopscope_module("flopscope")
+    fnp = _import_local_flopscope_module("flopscope.numpy")
+    fnp_random = _import_local_flopscope_module("flopscope.numpy.random")
+    stats_module = _import_local_flopscope_module("flopscope.stats")
+    accounting_module = _import_local_flopscope_module("flopscope.accounting")
+    alias_map = load_alias_map(registry)
+
+    for name in TOP_LEVEL_PUBLIC_EXPORTS:
+        if not hasattr(flops, name):
+            continue
+        obj = getattr(flops, name)
+        import_path = f"flopscope.{name}"
+        manifest[import_path] = _make_public_api_manifest_entry(import_path, obj=obj)
+
+    for name, info in sorted(registry.items()):
+        if info["category"] == "blacklisted":
+            continue
+        if resolve_canonical_name(name, alias_map) != name:
+            continue
+        import_path = flopscope_ref(name, info["module"]).replace(
+            "fnp.", "flopscope.numpy.", 1
+        )
+        manifest[import_path] = _make_public_api_manifest_entry(
+            import_path,
+            kind="function",
+            module=info["module"],
+            is_callable=True,
+        )
+
+    registry_import_paths = set(manifest)
+    for import_path, obj in _iter_public_callable_exports(
+        fnp, "flopscope.numpy", skip={"linalg", "fft", "random"}
+    ):
+        if import_path in registry_import_paths:
+            continue
+        manifest[import_path] = _make_public_api_manifest_entry(import_path, obj=obj)
+
+    for import_path, obj in _iter_public_callable_exports(fnp_random, "flopscope.numpy.random"):
+        if import_path in registry_import_paths:
+            continue
+        manifest[import_path] = _make_public_api_manifest_entry(import_path, obj=obj)
+
+    for name in getattr(stats_module, "__all__", []):
+        if not hasattr(stats_module, name):
+            continue
+        obj = getattr(stats_module, name)
+        if inspect.ismodule(obj):
+            continue
+        import_path = f"flopscope.stats.{name}"
+        manifest[import_path] = _make_public_api_manifest_entry(import_path, obj=obj)
+        for member_name in sorted(dir(obj)):
+            if member_name.startswith("_"):
+                continue
+            member = getattr(obj, member_name, None)
+            if not callable(member):
+                continue
+            member_import_path = f"{import_path}.{member_name}"
+            manifest[member_import_path] = _make_public_api_manifest_entry(
+                member_import_path,
+                obj=member,
+            )
+
+    for import_path, obj in _iter_public_callable_exports(
+        accounting_module, "flopscope.accounting"
+    ):
+        manifest[import_path] = _make_public_api_manifest_entry(import_path, obj=obj)
+
+    return manifest
+
+
+def build_operation_cost_index_entries(
+    manifest: dict[str, dict[str, object]],
+) -> list[dict[str, object]]:
+    """Return manifest entries that belong in the operation cost index."""
+    included_prefixes = ("flopscope.numpy.", "flopscope.stats.")
+    return sorted(
+        [
+            entry
+            for entry in manifest.values()
+            if entry["import_path"].startswith(included_prefixes)
+            and bool(entry["callable"])
+            and entry["kind"] != "class"
+        ],
+        key=lambda entry: str(entry["import_path"]),
+    )
+
+
+def _public_api_leaf_slug(import_path: str) -> str:
+    """Return the generated payload slug for one canonical public API leaf."""
+    return slug_for_symbol(import_path)
+
+
+def _public_api_payload_from_operation(record: OperationDocRecord) -> dict[str, object]:
+    import_path = record.flopscope_ref.replace("fnp.", "flopscope.numpy.", 1)
+    payload = asdict(record)
+    payload["canonical_name"] = import_path
+    payload["href"] = canonical_api_href(import_path)
+    payload["canonical_path"] = payload["href"]
+    payload["legacy_href"] = detail_href_for_slug(record.slug)
+    payload["import_path"] = import_path
+    payload["display_name"] = import_path
+    payload["kind"] = "function"
+    payload["operation"] = {
+        "name": record.name,
+        "category": record.category,
+        "free": record.category == "free",
+        "blocked": record.category == "blacklisted",
+        "cost_formula": record.cost_formula,
+        "cost_formula_latex": record.cost_formula_latex,
+    }
+    return payload
+
+
+def _public_api_payload_from_symbol(
+    entry: dict[str, object],
+    *,
+    alias_map: dict[str, str],
+    supported_ops: set[str],
+    internal_refs: dict[str, dict[str, str]],
+) -> dict[str, object]:
+    import_path = str(entry["import_path"])
+    obj = _resolve_public_api_object(import_path)
+    raw_doc = inspect.getdoc(obj) or ""
+    parsed = _rewrite_parsed_doc(
+        parse_numpy_docstring(raw_doc),
+        alias_map=alias_map,
+        supported_ops=supported_ops,
+        internal_refs=internal_refs,
+    )
+    examples = parsed.examples
+    return {
+        "name": import_path.rsplit(".", 1)[-1],
+        "canonical_name": import_path,
+        "slug": _public_api_leaf_slug(import_path),
+        "href": str(entry["href"]),
+        "canonical_path": str(entry["href"]),
+        "legacy_href": str(entry["href"]),
+        "module": str(entry["module"]),
+        "import_path": import_path,
+        "display_name": import_path,
+        "flopscope_ref": import_path,
+        "numpy_ref": "",
+        "signature": _symbol_signature(import_path, obj),
+        "summary": _public_symbol_summary(raw_doc, parsed),
+        "area": _public_api_namespace(import_path),
+        "display_type": "",
+        "weight": 1.0,
+        "aliases": [alias for alias in _public_api_aliases(import_path) if alias != import_path],
+        "notes": "",
+        "cost_formula": "",
+        "cost_formula_latex": "",
+        "flopscope_source_url": _repo_source_url(
+            obj,
+            repo_blob_root="https://github.com/AIcrowd/flopscope/blob/main",
+        ),
+        "upstream_source_url": "",
+        "parameters": [asdict(field) for field in parsed.parameters],
+        "returns": [asdict(field) for field in parsed.returns],
+        "see_also": [asdict(link) for link in parsed.see_also],
+        "notes_sections": parsed.notes,
+        "example": asdict(examples[0]) if examples else None,
+        "body_sections": parsed.sections or [],
+        "doc_coverage": parsed.coverage,
+        "previous": None,
+        "next": None,
+        "kind": str(entry["kind"]),
+        "operation": None,
+    }
+
+
+def write_public_api_leaf_artifacts(
+    operation_records: list[OperationDocRecord],
+    registry: dict[str, dict],
+    website_root: Path,
+) -> None:
+    """Emit canonical public-API leaf payloads, route refs, and a public index."""
+    manifest = build_public_api_manifest(registry)
+    operation_cost_index = build_operation_cost_index_entries(manifest)
+    operation_cost_import_paths = {
+        str(entry["import_path"]) for entry in operation_cost_index
+    }
+    alias_map = load_alias_map(registry)
+    supported_ops = {
+        name
+        for name, info in registry.items()
+        if info["category"] != "blacklisted"
+        and resolve_canonical_name(name, alias_map) == name
+    }
+
+    generated_dir = website_root / ".generated"
+    leaf_payload_dir = generated_dir / "public-api"
+    public_api_data_dir = website_root / "public" / "api-data" / "public-api"
+    generated_dir.mkdir(parents=True, exist_ok=True)
+    leaf_payload_dir.mkdir(parents=True, exist_ok=True)
+    public_api_data_dir.mkdir(parents=True, exist_ok=True)
+
+    expected_payload_slugs = {
+        _public_api_leaf_slug(import_path) for import_path in manifest
+    }
+    for existing_payload in leaf_payload_dir.glob("*.json"):
+        if existing_payload.stem not in expected_payload_slugs:
+            existing_payload.unlink()
+
+    route_map: dict[str, dict[str, object]] = {}
+    public_index_entries: list[dict[str, object]] = []
+    public_operation_cost_entries: list[dict[str, object]] = []
+    import_map_lines = [
+        "export const publicApiLeafImports: Record<string, () => Promise<{ default: unknown }>> = {",
+    ]
+    operation_records_by_import_path = {
+        record.flopscope_ref.replace("fnp.", "flopscope.numpy.", 1): record
+        for record in operation_records
+    }
+    internal_refs = _build_operation_internal_refs(registry, alias_map)
+    for import_path in manifest:
+        href = str(manifest[import_path]["href"])
+        entry = {"canonical_name": import_path, "href": href}
+        for alias in _public_api_aliases(import_path):
+            internal_refs[alias] = entry
+
+    for import_path in sorted(manifest):
+        entry = manifest[import_path]
+        slug = _public_api_leaf_slug(import_path)
+        is_operation_cost_leaf = import_path in operation_cost_import_paths
+        operation_record = operation_records_by_import_path.get(import_path)
+        payload = (
+            _public_api_payload_from_operation(operation_record)
+            if operation_record is not None
+            else _public_api_payload_from_symbol(
+                entry,
+                alias_map=alias_map,
+                supported_ops=supported_ops,
+                internal_refs=internal_refs,
+            )
+        )
+        payload["schema_version"] = 1
+        payload["is_operation_cost_leaf"] = is_operation_cost_leaf
+        write_json(leaf_payload_dir / f"{slug}.json", payload)
+        route_map[str(entry["href"])] = {
+            "canonical_name": str(entry["canonical_name"]),
+            "href": str(entry["href"]),
+            "import_path": import_path,
+            "slug": slug,
+            "kind": str(payload.get("kind") or entry["kind"]),
+            "module": str(entry["module"]),
+            "callable": bool(entry["callable"]),
+        }
+        public_summary = {
+            "href": str(entry["href"]),
+            "import_path": import_path,
+            "display_name": str(payload.get("display_name") or import_path),
+            "summary": str(payload.get("summary") or ""),
+            "kind": str(payload.get("kind") or entry["kind"]),
+            "namespace": _public_api_namespace(import_path),
+            "module": str(entry["module"]),
+            "callable": bool(entry["callable"]),
+            "slug": slug,
+            "is_operation_cost_leaf": is_operation_cost_leaf,
+        }
+        public_index_entries.append(public_summary)
+        if is_operation_cost_leaf:
+            public_operation_cost_entries.append(public_summary)
+        import_map_lines.append(
+            f'  "{import_path}": () => import("./public-api/{slug}.json"),'
+        )
+
+    import_map_lines.extend(
+        [
+            "};",
+            "",
+            "export const publicApiLeafImportPaths = [",
+            *[
+                f'  "{import_path}",'
+                for import_path in sorted(manifest)
+            ],
+            "] as const;",
+            "",
+        ]
+    )
+
+    write_json(
+        generated_dir / "public-api-route-map.json",
+        {"schema_version": 1, "routes": route_map},
+    )
+    write_json(
+        public_api_data_dir / "index.json",
+        {
+            "schema_version": 1,
+            "entries": public_index_entries,
+            "operation_cost_index": public_operation_cost_entries,
+            "total": len(public_index_entries),
+        },
+    )
+    (generated_dir / "public-api-leaf-imports.ts").write_text(
+        "\n".join(import_map_lines)
+    )
+    print(f"  Generated .generated/public-api/*.json ({len(public_index_entries)} leaves)")
+    print(f"  Generated {generated_dir / 'public-api-route-map.json'}")
+    print(f"  Generated {generated_dir / 'public-api-leaf-imports.ts'}")
+    print(f"  Generated {public_api_data_dir / 'index.json'}")
+
+
 def write_op_doc_coverage_artifact(
     records: list[OperationDocRecord], website_root: Path
 ) -> None:
@@ -3761,6 +4363,80 @@ def extract_directives_from_file(path: Path) -> list[str]:
     return directives
 
 
+def _public_doc_sections_from_payload(payload: dict[str, object]) -> dict[str, list[str]]:
+    sections: dict[str, list[str]] = {}
+
+    if payload.get("parameters"):
+        sections["Parameters"] = [
+            str(item.get("name", ""))
+            for item in payload.get("parameters", [])
+            if isinstance(item, dict)
+        ]
+    if payload.get("returns"):
+        sections["Returns"] = [
+            str(item.get("name", ""))
+            for item in payload.get("returns", [])
+            if isinstance(item, dict)
+        ]
+
+    for section in payload.get("body_sections", []) or []:
+        if not isinstance(section, dict):
+            continue
+        title = str(section.get("title", "")).strip()
+        if not title:
+            continue
+        sections.setdefault(title, []).append(json.dumps(section, sort_keys=True))
+
+    example = payload.get("example")
+    if isinstance(example, dict):
+        sections.setdefault("Examples", [])
+        for key in ("code", "output"):
+            value = str(example.get(key, "")).strip()
+            if value:
+                sections["Examples"].append(value)
+
+    return sections
+
+
+def collect_public_doc_contract_violations() -> list[str]:
+    public_api_index_path = PUBLIC_API_DATA_DIR / "index.json"
+    if not public_api_index_path.exists():
+        return [f"public API index missing at {public_api_index_path}"]
+
+    public_api_index = json.loads(public_api_index_path.read_text())
+    violations: list[str] = []
+    for entry in public_api_index.get("entries", []):
+        if not isinstance(entry, dict):
+            continue
+        slug = str(entry.get("slug", "")).strip()
+        import_path = str(entry.get("import_path", "")).strip()
+        if not slug or not import_path:
+            continue
+        payload_path = GENERATED_DIR / "public-api" / f"{slug}.json"
+        if not payload_path.exists():
+            violations.append(f"{import_path}: missing generated payload at {payload_path}")
+            continue
+        payload = json.loads(payload_path.read_text())
+        require_parameters = True
+        try:
+            obj = _resolve_public_api_object(import_path)
+            signature = inspect.signature(obj)
+            require_parameters = len(signature.parameters) > 0
+        except (TypeError, ValueError, AttributeError):
+            require_parameters = True
+        violations.extend(
+            find_public_doc_contract_violations(
+                import_path=import_path,
+                kind=str(payload.get("kind", "function")),
+                summary=str(payload.get("summary", "")),
+                sections=_public_doc_sections_from_payload(payload),
+                require_parameters=require_parameters,
+            )
+        )
+
+    return violations
+
+
 def verify_coverage(registry: dict[str, dict]) -> bool:
     """Verify the generated API reference data matches the registry."""
     if not API_INDEX_PATH.exists():
@@ -3768,11 +4444,23 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         return False
 
     api_index = API_INDEX_PATH.read_text()
-    if "<ApiReference />" not in api_index:
-        print(f"\nAPI index at {API_INDEX_PATH} no longer renders <ApiReference />")
+    if "<ApiNamespaceHub />" not in api_index:
+        print(f"\nAPI index at {API_INDEX_PATH} no longer renders <ApiNamespaceHub />")
         return False
 
-    print("API index renders the interactive ApiReference component.")
+    operation_cost_index_path = WEBSITE / "content" / "docs" / "api" / "operation-cost-index.mdx"
+    if not operation_cost_index_path.exists():
+        print(f"\nOperation Cost Index page NOT FOUND at {operation_cost_index_path}")
+        return False
+
+    if "<OperationCostIndex />" not in operation_cost_index_path.read_text():
+        print(
+            f"\nOperation Cost Index page at {operation_cost_index_path} "
+            "no longer renders <OperationCostIndex />"
+        )
+        return False
+
+    print("API index renders the namespace hub and a dedicated operation-cost page.")
 
     ops_json_path = PUBLIC_DIR / "ops.json"
     if not ops_json_path.exists():
@@ -3834,13 +4522,13 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
     abs_ref = op_refs.get("abs")
     if (
         not isinstance(abs_ref, dict)
-        or abs_ref.get("label") != "flops.absolute"
-        or abs_ref.get("href") != "/docs/api/absolute/"
+        or abs_ref.get("label") != "fnp.absolute"
+        or abs_ref.get("href") != "/docs/api/numpy/absolute/"
         or abs_ref.get("canonical_name") != "absolute"
     ):
         print(
             "\nop-refs.json missing structured alias entry for "
-            "'abs' -> '/docs/api/absolute/'"
+            "'abs' -> '/docs/api/numpy/absolute/'"
         )
         return False
 
@@ -3881,7 +4569,7 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         return False
 
     legacy_redirects = json.loads(legacy_redirects_path.read_text())
-    if legacy_redirects.get("einsum") != "/docs/api/einsum/":
+    if legacy_redirects.get("einsum") != "/docs/api/numpy/einsum/":
         print("\nlegacy-op-redirects.json missing redirect for einsum")
         return False
 
@@ -3914,8 +4602,71 @@ def verify_coverage(registry: dict[str, dict]) -> bool:
         print(f"\nGenerated import map NOT FOUND at {import_map_path}")
         return False
 
+    public_api_route_map_path = GENERATED_DIR / "public-api-route-map.json"
+    if not public_api_route_map_path.exists():
+        print(f"\nPublic API route map NOT FOUND at {public_api_route_map_path}")
+        return False
+
+    public_api_import_map_path = GENERATED_DIR / "public-api-leaf-imports.ts"
+    if not public_api_import_map_path.exists():
+        print(f"\nPublic API import map NOT FOUND at {public_api_import_map_path}")
+        return False
+
+    public_api_index_path = PUBLIC_API_DATA_DIR / "index.json"
+    if not public_api_index_path.exists():
+        print(f"\nPublic API index NOT FOUND at {public_api_index_path}")
+        return False
+
+    public_api_route_map = json.loads(public_api_route_map_path.read_text())
+    absolute_route = public_api_route_map.get("routes", {}).get("/docs/api/numpy/absolute/")
+    if (
+        not isinstance(absolute_route, dict)
+        or absolute_route.get("import_path") != "flopscope.numpy.absolute"
+    ):
+        print(
+            "\npublic-api-route-map.json missing canonical route entry for "
+            "'/docs/api/numpy/absolute/'"
+        )
+        return False
+
+    public_api_index = json.loads(public_api_index_path.read_text())
+    if "entries" not in public_api_index or "operation_cost_index" not in public_api_index:
+        print(
+            "\npublic API index missing 'entries' or 'operation_cost_index' "
+            f"at {public_api_index_path}"
+        )
+        return False
+
+    if not any(
+        entry.get("import_path") == "flopscope.numpy.absolute"
+        for entry in public_api_index["entries"]
+        if isinstance(entry, dict)
+    ):
+        print(
+            "\npublic API index missing canonical entry for "
+            "'flopscope.numpy.absolute'"
+        )
+        return False
+
+    public_api_import_map = public_api_import_map_path.read_text()
+    if '"flopscope.numpy.absolute": () => import("./public-api/flopscope-numpy-absolute.json")' not in public_api_import_map:
+        print(
+            "\npublic-api-leaf-imports.ts missing static import for "
+            "'flopscope.numpy.absolute'"
+        )
+        return False
+
+    public_doc_violations = collect_public_doc_contract_violations()
+    if public_doc_violations:
+        print("\npublic API doc contract violations:")
+        for violation in public_doc_violations[:50]:
+            print(f"  {violation}")
+        if len(public_doc_violations) > 50:
+            print(f"  ... and {len(public_doc_violations) - 50} more")
+        return False
+
     print(
-        "Generated operation and public API manifests, static payloads, parser coverage, and example coverage are present."
+        "Generated operation doc manifests, canonical public API artifacts, parser coverage, and example coverage are present."
     )
 
     return True
@@ -3956,6 +4707,7 @@ def main():
     write_operation_doc_artifacts(records, WEBSITE)
     write_public_symbol_artifacts(symbol_records, WEBSITE)
     write_public_api_route_artifacts(records, symbol_records, WEBSITE)
+    write_public_api_leaf_artifacts(records, registry, WEBSITE)
     write_op_doc_coverage_artifact(records, WEBSITE)
     example_coverage = build_example_coverage(records, API_EXAMPLES_DIR)
     write_example_coverage_artifact(example_coverage, WEBSITE)

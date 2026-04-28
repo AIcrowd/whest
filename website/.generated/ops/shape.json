@@ -155,7 +155,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -234,7 +234,7 @@
     }
   ],
   "canonical_name": "shape",
-  "canonical_path": "shape",
+  "canonical_path": "numpy/shape",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -252,20 +252,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.shape(flops.eye(3))\n\nflops.shape([[1, 3]])\n\nflops.shape([0])\n\nflops.shape(0)\n\na = flops.array([(1, 2), (3, 4), (5, 6)],\n             dtype=[('x', 'i4'), ('y', 'i4')])\n\nflops.shape(a)\n\na.shape",
+    "code": "import flopscope.numpy as fnp\n\nflops.shape(flops.eye(3))\n\nflops.shape([[1, 3]])\n\nflops.shape([0])\n\nflops.shape(0)\n\na = flops.array([(1, 2), (3, 4), (5, 6)],\n             dtype=[('x', 'i4'), ('y', 'i4')])\n\nflops.shape(a)\n\na.shape",
     "output": "(3, 3)\n\n(1, 2)\n\n(1,)\n\n()\n\n(3,)\n\n(3,)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.shape",
+  "flopscope_ref": "fnp.shape",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1535",
-  "href": "/docs/api/shape/",
+  "href": "/docs/api/numpy/shape/",
   "legacy_href": "/docs/api/ops/shape/",
   "module": "numpy",
   "name": "shape",
   "next": {
-    "href": "/docs/api/shares-memory/",
-    "label": "flops.shares_memory"
+    "href": "/docs/api/numpy/shares-memory/",
+    "label": "fnp.shares_memory"
   },
   "notes": "Return shape of array.",
   "notes_sections": [],
@@ -280,10 +280,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/setxor1d/",
-    "label": "flops.setxor1d"
+    "href": "/docs/api/numpy/setxor1d/",
+    "label": "fnp.setxor1d"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.shape",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.shape.html",
   "returns": [
     {
@@ -352,9 +353,11 @@
       "unresolved": true
     }
   ],
-  "signature": "flops.shape(a)",
+  "signature": "fnp.shape(a)",
   "slug": "shape",
   "summary": "Return the shape of an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2118",
   "weight": 0.0
 }

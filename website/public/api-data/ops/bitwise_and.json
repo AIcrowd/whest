@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/bitwise-and/",
+  "detail_href": "/docs/api/numpy/bitwise-and/",
   "detail_json_href": "/api-data/ops/bitwise_and.json",
   "docs": {
     "sections": [
@@ -323,7 +323,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_and",
+                "href": "/docs/api/numpy/logical-and/",
                 "label": "flops.logical_and",
                 "original_target": "logical_and",
                 "role": "",
@@ -334,7 +334,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_or",
+                "href": "/docs/api/numpy/bitwise-or/",
                 "label": "flops.bitwise_or",
                 "original_target": "bitwise_or",
                 "role": "",
@@ -345,7 +345,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_xor",
+                "href": "/docs/api/numpy/bitwise-xor/",
                 "label": "flops.bitwise_xor",
                 "original_target": "bitwise_xor",
                 "role": "",
@@ -381,7 +381,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -513,7 +513,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_and",
+                "href": "/docs/api/numpy/bitwise-and/",
                 "kind": "link",
                 "target": "bitwise_and",
                 "text": "flops.bitwise_and"
@@ -558,12 +558,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.bitwise_and",
+    "flopscope_ref": "fnp.bitwise_and",
     "module": "numpy",
     "name": "bitwise_and",
     "notes": "Element-wise bitwise AND.",
     "numpy_ref": "np.bitwise_and",
-    "signature": "flops.bitwise_and(*args, **kwargs)",
+    "signature": "fnp.bitwise_and(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the bit-wise AND of two arrays element-wise.",
     "weight": 1.0

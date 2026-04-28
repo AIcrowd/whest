@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/copy/",
+  "detail_href": "/docs/api/numpy/copy/",
   "detail_json_href": "/api-data/ops/copy.json",
   "docs": {
     "sections": [
@@ -281,7 +281,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -413,12 +413,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.copy",
+    "flopscope_ref": "fnp.copy",
     "module": "numpy",
     "name": "copy",
     "notes": "Return array copy.",
     "numpy_ref": "np.copy",
-    "signature": "flops.copy(a, order='K', subok=False)",
+    "signature": "fnp.copy(a, order='K', subok=False)",
     "status": "supported",
     "summary": "Return an array copy of the given object.",
     "weight": 0.0

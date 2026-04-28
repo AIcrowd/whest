@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/logspace/",
+  "detail_href": "/docs/api/numpy/logspace/",
   "detail_json_href": "/api-data/ops/logspace.json",
   "docs": {
     "sections": [
@@ -476,7 +476,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "label": "flops.arange",
                 "original_target": "arange",
                 "role": "",
@@ -492,7 +492,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "label": "flops.linspace",
                 "original_target": "linspace",
                 "role": "",
@@ -508,7 +508,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/geomspace",
+                "href": "/docs/api/numpy/geomspace/",
                 "label": "flops.geomspace",
                 "original_target": "geomspace",
                 "role": "",
@@ -578,7 +578,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -703,12 +703,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.logspace",
+    "flopscope_ref": "fnp.logspace",
     "module": "numpy",
     "name": "logspace",
     "notes": "Log-spaced generation; cost = num.",
     "numpy_ref": "np.logspace",
-    "signature": "flops.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None, axis=0)",
+    "signature": "fnp.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None, axis=0)",
     "status": "supported",
     "summary": "Return numbers spaced evenly on a log scale.",
     "weight": 1.0

@@ -438,7 +438,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/bincount",
+              "href": "/docs/api/numpy/bincount/",
               "kind": "link",
               "target": "bincount",
               "text": "bincount"
@@ -515,7 +515,7 @@
     }
   ],
   "canonical_name": "random.zipf",
-  "canonical_path": "random/zipf",
+  "canonical_path": "numpy/random/zipf",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -536,15 +536,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.zipf",
+  "flopscope_ref": "fnp.random.zipf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/zipf/",
+  "href": "/docs/api/numpy/random/zipf/",
   "legacy_href": "/docs/api/ops/random-zipf/",
   "module": "numpy.random",
   "name": "random.zipf",
   "next": {
-    "href": "/docs/api/ravel/",
-    "label": "flops.ravel"
+    "href": "/docs/api/numpy/ravel/",
+    "label": "fnp.ravel"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -574,10 +574,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/weibull/",
-    "label": "flops.random.weibull"
+    "href": "/docs/api/numpy/random/weibull/",
+    "label": "fnp.random.weibull"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.zipf",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.zipf.html",
   "returns": [
     {
@@ -622,9 +623,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.zipf(a, size=None)",
+  "signature": "fnp.random.zipf(a, size=None)",
   "slug": "random-zipf",
   "summary": "Draw samples from a Zipf distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

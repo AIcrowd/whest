@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/mintypecode/",
+  "detail_href": "/docs/api/numpy/mintypecode/",
   "detail_json_href": "/api-data/ops/mintypecode.json",
   "docs": {
     "sections": [
@@ -217,7 +217,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -268,12 +268,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.mintypecode",
+    "flopscope_ref": "fnp.mintypecode",
     "module": "numpy",
     "name": "mintypecode",
     "notes": "Return minimum data type character that can satisfy all given types.",
     "numpy_ref": "np.mintypecode",
-    "signature": "flops.mintypecode(typechars, typeset='GDFgdf', default='d')",
+    "signature": "fnp.mintypecode(typechars, typeset='GDFgdf', default='d')",
     "status": "supported",
     "summary": "Return the character for the minimum-size type to which given types can be safely cast.",
     "weight": 0.0

@@ -363,7 +363,7 @@
                   "inline": [
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/size",
+                      "href": "/docs/api/numpy/size/",
                       "kind": "link",
                       "target": "size",
                       "text": "size"
@@ -374,7 +374,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/size",
+                      "href": "/docs/api/numpy/size/",
                       "kind": "link",
                       "target": "size",
                       "text": "size"
@@ -391,7 +391,7 @@
               "inline": [
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/size",
+                  "href": "/docs/api/numpy/size/",
                   "kind": "link",
                   "target": "size",
                   "text": "size"
@@ -402,7 +402,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/size",
+                  "href": "/docs/api/numpy/size/",
                   "kind": "link",
                   "target": "size",
                   "text": "size"
@@ -626,7 +626,7 @@
     }
   ],
   "canonical_name": "random.randint",
-  "canonical_path": "random/randint",
+  "canonical_path": "numpy/random/randint",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -642,15 +642,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.randint",
+  "flopscope_ref": "fnp.random.randint",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/randint/",
+  "href": "/docs/api/numpy/random/randint/",
   "legacy_href": "/docs/api/ops/random-randint/",
   "module": "numpy.random",
   "name": "random.randint",
   "next": {
-    "href": "/docs/api/random/randn/",
-    "label": "flops.random.randn"
+    "href": "/docs/api/numpy/random/randn/",
+    "label": "fnp.random.randn"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -700,10 +700,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/rand/",
-    "label": "flops.random.rand"
+    "href": "/docs/api/numpy/random/rand/",
+    "label": "fnp.random.rand"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.randint",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.randint.html",
   "returns": [
     {
@@ -781,9 +782,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.randint(low, high=None, size=None, dtype=<class 'int'>)",
+  "signature": "fnp.random.randint(low, high=None, size=None, dtype=<class 'int'>)",
   "slug": "random-randint",
   "summary": "Return random integers from `low` (inclusive) to `high` (exclusive).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

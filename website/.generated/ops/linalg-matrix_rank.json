@@ -532,7 +532,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -588,7 +588,7 @@
     }
   ],
   "canonical_name": "linalg.matrix_rank",
-  "canonical_path": "linalg/matrix-rank",
+  "canonical_path": "numpy/linalg/matrix-rank",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -608,20 +608,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nfrom flops.linalg import matrix_rank\n\nmatrix_rank(flops.eye(4)) # Full rank matrix\n\nI=flops.eye(4); I[-1,-1] = 0. # rank deficient matrix\n\nmatrix_rank(I)\n\nmatrix_rank(flops.ones((4,))) # 1 dimension - rank 1 unless all 0\n\nmatrix_rank(flops.zeros((4,)))",
+    "code": "import flopscope.numpy as fnp\n\nfrom flops.linalg import matrix_rank\n\nmatrix_rank(flops.eye(4)) # Full rank matrix\n\nI=flops.eye(4); I[-1,-1] = 0. # rank deficient matrix\n\nmatrix_rank(I)\n\nmatrix_rank(flops.ones((4,))) # 1 dimension - rank 1 unless all 0\n\nmatrix_rank(flops.zeros((4,)))",
     "output": "4\n\n3\n\n1\n\n0",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.matrix_rank",
+  "flopscope_ref": "fnp.linalg.matrix_rank",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L424",
-  "href": "/docs/api/linalg/matrix-rank/",
+  "href": "/docs/api/numpy/linalg/matrix-rank/",
   "legacy_href": "/docs/api/ops/linalg-matrix_rank/",
   "module": "numpy.linalg",
   "name": "linalg.matrix_rank",
   "next": {
-    "href": "/docs/api/linalg/matrix-transpose/",
-    "label": "flops.linalg.matrix_transpose"
+    "href": "/docs/api/numpy/linalg/matrix-transpose/",
+    "label": "fnp.linalg.matrix_transpose"
   },
   "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD).",
   "notes_sections": [
@@ -670,10 +670,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/matrix-power/",
-    "label": "flops.linalg.matrix_power"
+    "href": "/docs/api/numpy/linalg/matrix-power/",
+    "label": "fnp.linalg.matrix_power"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.matrix_rank",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_rank.html",
   "returns": [
     {
@@ -685,9 +686,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)",
+  "signature": "fnp.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)",
   "slug": "linalg-matrix_rank",
   "summary": "Return matrix rank of array using SVD method",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2010",
   "weight": 4.0
 }

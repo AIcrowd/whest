@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/cross/",
+  "detail_href": "/docs/api/numpy/cross/",
   "detail_json_href": "/api-data/ops/cross.json",
   "docs": {
     "sections": [
@@ -517,7 +517,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/inner",
+                "href": "/docs/api/numpy/inner/",
                 "label": "flops.inner",
                 "original_target": "inner",
                 "role": "",
@@ -533,7 +533,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/outer",
+                "href": "/docs/api/numpy/outer/",
                 "label": "flops.outer",
                 "original_target": "outer",
                 "role": "",
@@ -549,7 +549,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/cross",
+                    "href": "/docs/api/numpy/cross/",
                     "kind": "link",
                     "target": "cross",
                     "text": "flops.cross"
@@ -560,7 +560,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-cross",
+                "href": "/docs/api/numpy/linalg/cross/",
                 "label": "flops.linalg.cross",
                 "original_target": "linalg.cross",
                 "role": "",
@@ -576,7 +576,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ix_",
+                "href": "/docs/api/numpy/ix-/",
                 "label": "flops.ix_",
                 "original_target": "ix_",
                 "role": "",
@@ -633,7 +633,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -947,12 +947,12 @@
     "category": "counted_custom",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.cross",
+    "flopscope_ref": "fnp.cross",
     "module": "numpy",
     "name": "cross",
     "notes": "Cross product of two 3-D vectors.",
     "numpy_ref": "np.cross",
-    "signature": "flops.cross(a, b, axisa=-1, axisb=-1, axisc=-1, axis=None)",
+    "signature": "fnp.cross(a, b, axisa=-1, axisb=-1, axisc=-1, axis=None)",
     "status": "supported",
     "summary": "Return the cross product of two (arrays of) vectors.",
     "weight": 1.0

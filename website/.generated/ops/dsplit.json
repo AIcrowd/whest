@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/split",
+              "href": "/docs/api/numpy/split/",
               "kind": "link",
               "target": "split",
               "text": "split"
@@ -38,7 +38,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/dsplit",
+              "href": "/docs/api/numpy/dsplit/",
               "kind": "link",
               "target": "dsplit",
               "text": "dsplit"
@@ -49,7 +49,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/split",
+              "href": "/docs/api/numpy/split/",
               "kind": "link",
               "target": "split",
               "text": "split"
@@ -85,7 +85,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/split",
+              "href": "/docs/api/numpy/split/",
               "label": "flops.split",
               "original_target": "split",
               "role": "",
@@ -105,7 +105,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -215,7 +215,7 @@
     }
   ],
   "canonical_name": "dsplit",
-  "canonical_path": "dsplit",
+  "canonical_path": "numpy/dsplit",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -226,30 +226,31 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.arange(16.0).reshape(2, 2, 4)\n\nx\n\nflops.dsplit(x, 2)\n\nflops.dsplit(x, flops.array([3, 6]))",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.arange(16.0).reshape(2, 2, 4)\n\nx\n\nflops.dsplit(x, 2)\n\nflops.dsplit(x, flops.array([3, 6]))",
     "output": "array([[[ 0.,   1.,   2.,   3.],\n        [ 4.,   5.,   6.,   7.]],\n       [[ 8.,   9.,  10.,  11.],\n        [12.,  13.,  14.,  15.]]])\n\n[array([[[ 0.,  1.],\n        [ 4.,  5.]],\n       [[ 8.,  9.],\n        [12., 13.]]]), array([[[ 2.,  3.],\n        [ 6.,  7.]],\n       [[10., 11.],\n        [14., 15.]]])]\n\n[array([[[ 0.,   1.,   2.],\n        [ 4.,   5.,   6.]],\n       [[ 8.,   9.,  10.],\n        [12.,  13.,  14.]]]),\n array([[[ 3.],\n        [ 7.]],\n       [[11.],\n        [15.]]]),\narray([], shape=(2, 2, 0), dtype=float64)]",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.dsplit",
+  "flopscope_ref": "fnp.dsplit",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1026",
-  "href": "/docs/api/dsplit/",
+  "href": "/docs/api/numpy/dsplit/",
   "legacy_href": "/docs/api/ops/dsplit/",
   "module": "numpy",
   "name": "dsplit",
   "next": {
-    "href": "/docs/api/dstack/",
-    "label": "flops.dstack"
+    "href": "/docs/api/numpy/dstack/",
+    "label": "fnp.dstack"
   },
   "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output).",
   "notes_sections": [],
   "numpy_ref": "np.dsplit",
   "parameters": [],
   "previous": {
-    "href": "/docs/api/dot/",
-    "label": "flops.dot"
+    "href": "/docs/api/numpy/dot/",
+    "label": "fnp.dot"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.dsplit",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.dsplit.html",
   "returns": [],
   "see_also": [
@@ -262,7 +263,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/split",
+      "href": "/docs/api/numpy/split/",
       "label": "flops.split",
       "original_target": "split",
       "role": "",
@@ -270,9 +271,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.dsplit(ary, indices_or_sections)",
+  "signature": "fnp.dsplit(ary, indices_or_sections)",
   "slug": "dsplit",
   "summary": "Split array into multiple sub-arrays along the 3rd axis (depth).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1011",
   "weight": 0.0
 }

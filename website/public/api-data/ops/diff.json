@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/diff/",
+  "detail_href": "/docs/api/numpy/diff/",
   "detail_json_href": "/api-data/ops/diff.json",
   "docs": {
     "sections": [
@@ -35,7 +35,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/diff",
+                "href": "/docs/api/numpy/diff/",
                 "kind": "link",
                 "target": "diff",
                 "text": "diff"
@@ -334,7 +334,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/gradient",
+                "href": "/docs/api/numpy/gradient/",
                 "label": "flops.gradient",
                 "original_target": "gradient",
                 "role": "",
@@ -345,7 +345,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/ediff1d",
+                "href": "/docs/api/numpy/ediff1d/",
                 "label": "flops.ediff1d",
                 "original_target": "ediff1d",
                 "role": "",
@@ -356,7 +356,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/cumsum",
+                "href": "/docs/api/numpy/cumsum/",
                 "label": "flops.cumsum",
                 "original_target": "cumsum",
                 "role": "",
@@ -471,7 +471,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -559,12 +559,12 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.diff",
+    "flopscope_ref": "fnp.diff",
     "module": "numpy",
     "name": "diff",
     "notes": "n-th discrete difference along axis.",
     "numpy_ref": "np.diff",
-    "signature": "flops.diff(a, n=1, axis=-1, prepend=<no value>, append=<no value>)",
+    "signature": "fnp.diff(a, n=1, axis=-1, prepend=<no value>, append=<no value>)",
     "status": "supported",
     "summary": "Calculate the n-th discrete difference along the given axis.",
     "weight": 1.0

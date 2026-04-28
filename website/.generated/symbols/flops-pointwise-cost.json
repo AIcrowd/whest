@@ -161,6 +161,65 @@
         }
       ],
       "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This helper multiplies the analytical pointwise count by the active weight\nfor "
+            },
+            {
+              "kind": "code",
+              "text": "op_name"
+            },
+            {
+              "kind": "text",
+              "text": " and then floors with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget\naccounting."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "cost = flops.accounting.pointwise_cost(\"exp\", shape=(2, 3))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "isinstance(cost, int)"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "flops.pointwise_cost",
@@ -180,7 +239,7 @@
   ],
   "signature": "flops.flops.pointwise_cost(op_name: 'str', *, shape: 'tuple[int, ...]', symmetry: 'SymmetryGroup | None' = None) -> 'int'",
   "slug": "flops-pointwise-cost",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L185",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L344",
   "status_note": "",
   "summary": "Weighted FLOP cost of a pointwise operation.",
   "upstream_source_url": ""

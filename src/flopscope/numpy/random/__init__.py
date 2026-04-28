@@ -398,12 +398,13 @@ def symmetric(
 
     Examples
     --------
-    >>> import flopscope as we
-    >>> S = flops.random.symmetric((4, 4), flops.SymmetryGroup.symmetric(axes=(0, 1)))
+    >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
+    >>> S = fnp.random.symmetric((4, 4), flops.SymmetryGroup.symmetric(axes=(0, 1)))
     >>> S.is_symmetric((0, 1))
     True
 
-    >>> S = flops.random.symmetric(
+    >>> S = fnp.random.symmetric(
     ...     (3, 3, 3),
     ...     flops.SymmetryGroup.cyclic(axes=(0, 1, 2)),
     ...     distribution="normal",
@@ -414,10 +415,15 @@ def symmetric(
     True
 
     >>> import numpy as np
-    >>> import flopscope as we
+    >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
     >>> def shifted_uniform(shape, **kwargs):
     ...     return np.random.uniform(*shape, **kwargs)
-    >>> S = flops.random.symmetric((2, 2), flops.SymmetryGroup.symmetric(axes=(0, 1)), distribution=shifted_uniform)
+    >>> S = fnp.random.symmetric(
+    ...     (2, 2),
+    ...     flops.SymmetryGroup.symmetric(axes=(0, 1)),
+    ...     distribution=shifted_uniform,
+    ... )
     >>> S.is_symmetric((0, 1))
     True
     """

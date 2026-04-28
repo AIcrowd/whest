@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/bincount/",
+  "detail_href": "/docs/api/numpy/bincount/",
   "detail_json_href": "/api-data/ops/bincount.json",
   "docs": {
     "sections": [
@@ -346,7 +346,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "label": "flops.histogram",
                 "original_target": "histogram",
                 "role": "",
@@ -357,7 +357,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/digitize",
+                "href": "/docs/api/numpy/digitize/",
                 "label": "flops.digitize",
                 "original_target": "digitize",
                 "role": "",
@@ -368,7 +368,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/unique",
+                "href": "/docs/api/numpy/unique/",
                 "label": "flops.unique",
                 "original_target": "unique",
                 "role": "",
@@ -388,7 +388,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -474,7 +474,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/bincount",
+                "href": "/docs/api/numpy/bincount/",
                 "kind": "link",
                 "target": "bincount",
                 "text": "bincount"
@@ -527,12 +527,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.bincount",
+    "flopscope_ref": "fnp.bincount",
     "module": "numpy",
     "name": "bincount",
     "notes": "Integer counting; cost = numel(x).",
     "numpy_ref": "np.bincount",
-    "signature": "flops.bincount(x, **kwargs)",
+    "signature": "fnp.bincount(x, **kwargs)",
     "status": "supported",
     "summary": "Count number of occurrences of each value in array of non-negative ints.",
     "weight": 1.0

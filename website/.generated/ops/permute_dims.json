@@ -228,7 +228,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/moveaxis",
+              "href": "/docs/api/numpy/moveaxis/",
               "label": "flops.moveaxis",
               "original_target": "moveaxis",
               "role": "",
@@ -244,7 +244,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/argsort",
+              "href": "/docs/api/numpy/argsort/",
               "label": "flops.argsort",
               "original_target": "argsort",
               "role": "",
@@ -294,7 +294,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -420,7 +420,7 @@
     }
   ],
   "canonical_name": "permute_dims",
-  "canonical_path": "permute-dims",
+  "canonical_path": "numpy/permute-dims",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -438,20 +438,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([[1, 2], [3, 4]])\n\na\n\nflops.transpose(a)\n\na = flops.array([1, 2, 3, 4])\n\na\n\nflops.transpose(a)\n\na = flops.ones((1, 2, 3))\n\nflops.transpose(a, (1, 0, 2)).shape\n\na = flops.ones((2, 3, 4, 5))\n\nflops.transpose(a).shape\n\na = flops.arange(3*4*5).reshape((3, 4, 5))\n\nflops.transpose(a, (-1, 0, -2)).shape",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[1, 2], [3, 4]])\n\na\n\nflops.transpose(a)\n\na = flops.array([1, 2, 3, 4])\n\na\n\nflops.transpose(a)\n\na = flops.ones((1, 2, 3))\n\nflops.transpose(a, (1, 0, 2)).shape\n\na = flops.ones((2, 3, 4, 5))\n\nflops.transpose(a).shape\n\na = flops.arange(3*4*5).reshape((3, 4, 5))\n\nflops.transpose(a, (-1, 0, -2)).shape",
     "output": "array([[1, 2],\n       [3, 4]])\n\narray([[1, 3],\n       [2, 4]])\n\narray([1, 2, 3, 4])\n\narray([1, 2, 3, 4])\n\n(2, 1, 3)\n\n(5, 4, 3, 2)\n\n(5, 3, 4)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.permute_dims",
+  "flopscope_ref": "fnp.permute_dims",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1382",
-  "href": "/docs/api/permute-dims/",
+  "href": "/docs/api/numpy/permute-dims/",
   "legacy_href": "/docs/api/ops/permute_dims/",
   "module": "numpy",
   "name": "permute_dims",
   "next": {
-    "href": "/docs/api/piecewise/",
-    "label": "flops.piecewise"
+    "href": "/docs/api/numpy/piecewise/",
+    "label": "fnp.piecewise"
   },
   "notes": "Permute dimensions (NumPy 2.x array API).",
   "notes_sections": [
@@ -480,10 +480,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/percentile/",
-    "label": "flops.percentile"
+    "href": "/docs/api/numpy/percentile/",
+    "label": "fnp.percentile"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.permute_dims",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.permute_dims.html",
   "returns": [
     {
@@ -520,7 +521,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/moveaxis",
+      "href": "/docs/api/numpy/moveaxis/",
       "label": "flops.moveaxis",
       "original_target": "moveaxis",
       "role": "",
@@ -536,7 +537,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/argsort",
+      "href": "/docs/api/numpy/argsort/",
       "label": "flops.argsort",
       "original_target": "argsort",
       "role": "",
@@ -544,9 +545,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.permute_dims(a, axes=None)",
+  "signature": "fnp.permute_dims(a, axes=None)",
   "slug": "permute_dims",
   "summary": "Returns an array with axes transposed.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L630",
   "weight": 0.0
 }

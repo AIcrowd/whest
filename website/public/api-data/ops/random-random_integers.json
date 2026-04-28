@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/random-integers/",
+  "detail_href": "/docs/api/numpy/random/random-integers/",
   "detail_json_href": "/api-data/ops/random-random_integers.json",
   "docs": {
     "sections": [
@@ -298,7 +298,7 @@
                     "inline": [
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/size",
+                        "href": "/docs/api/numpy/size/",
                         "kind": "link",
                         "target": "size",
                         "text": "size"
@@ -309,7 +309,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/size",
+                        "href": "/docs/api/numpy/size/",
                         "kind": "link",
                         "target": "size",
                         "text": "size"
@@ -326,7 +326,7 @@
                 "inline": [
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/size",
+                    "href": "/docs/api/numpy/size/",
                     "kind": "link",
                     "target": "size",
                     "text": "size"
@@ -337,7 +337,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/size",
+                    "href": "/docs/api/numpy/size/",
                     "kind": "link",
                     "target": "size",
                     "text": "size"
@@ -582,12 +582,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.random_integers",
+    "flopscope_ref": "fnp.random.random_integers",
     "module": "numpy.random",
     "name": "random.random_integers",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.random_integers",
-    "signature": "flops.random.random_integers(low, high=None, size=None)",
+    "signature": "fnp.random.random_integers(low, high=None, size=None)",
     "status": "supported",
     "summary": "Random integers of type `flops.int_` between `low` and `high`, inclusive.",
     "weight": 1.0

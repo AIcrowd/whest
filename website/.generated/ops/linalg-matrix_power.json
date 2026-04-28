@@ -245,7 +245,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -375,7 +375,7 @@
     }
   ],
   "canonical_name": "linalg.matrix_power",
-  "canonical_path": "linalg/matrix-power",
+  "canonical_path": "numpy/linalg/matrix-power",
   "category": "counted_custom",
   "cost_formula": "log2(k) * n^3",
   "cost_formula_latex": "$\\lfloor\\log_2 k\\rfloor \\cdot n^3$",
@@ -386,20 +386,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nfrom flops.linalg import matrix_power\n\ni = flops.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit\n\nmatrix_power(i, 3) # should = -i\n\nmatrix_power(i, 0)\n\nmatrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements\n\nq = flops.zeros((4, 4))\n\nq[0:2, 0:2] = -i\n\nq[2:4, 2:4] = i\n\nq # one of the three quaternion units not equal to 1\n\nmatrix_power(q, 2) # = -flops.eye(4)",
+    "code": "import flopscope.numpy as fnp\n\nfrom flops.linalg import matrix_power\n\ni = flops.array([[0, 1], [-1, 0]]) # matrix equiv. of the imaginary unit\n\nmatrix_power(i, 3) # should = -i\n\nmatrix_power(i, 0)\n\nmatrix_power(i, -3) # should = 1/(-i) = i, but w/ f.p. elements\n\nq = flops.zeros((4, 4))\n\nq[0:2, 0:2] = -i\n\nq[2:4, 2:4] = i\n\nq # one of the three quaternion units not equal to 1\n\nmatrix_power(q, 2) # = -flops.eye(4)",
     "output": "array([[ 0, -1],\n       [ 1,  0]])\n\narray([[1, 0],\n       [0, 1]])\n\narray([[ 0.,  1.],\n       [-1.,  0.]])\n\narray([[ 0., -1.,  0.,  0.],\n       [ 1.,  0.,  0.,  0.],\n       [ 0.,  0.,  0.,  1.],\n       [ 0.,  0., -1.,  0.]])\n\narray([[-1.,  0.,  0.,  0.],\n       [ 0., -1.,  0.,  0.],\n       [ 0.,  0., -1.,  0.],\n       [ 0.,  0.,  0., -1.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.matrix_power",
+  "flopscope_ref": "fnp.linalg.matrix_power",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L109",
-  "href": "/docs/api/linalg/matrix-power/",
+  "href": "/docs/api/numpy/linalg/matrix-power/",
   "legacy_href": "/docs/api/ops/linalg-matrix_power/",
   "module": "numpy.linalg",
   "name": "linalg.matrix_power",
   "next": {
-    "href": "/docs/api/linalg/matrix-rank/",
-    "label": "flops.linalg.matrix_rank"
+    "href": "/docs/api/numpy/linalg/matrix-rank/",
+    "label": "fnp.linalg.matrix_rank"
   },
   "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring).",
   "notes_sections": [],
@@ -422,10 +422,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/matrix-norm/",
-    "label": "flops.linalg.matrix_norm"
+    "href": "/docs/api/numpy/linalg/matrix-norm/",
+    "label": "fnp.linalg.matrix_norm"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.matrix_power",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matrix_power.html",
   "returns": [
     {
@@ -440,9 +441,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.linalg.matrix_power(a, n)",
+  "signature": "fnp.linalg.matrix_power(a, n)",
   "slug": "linalg-matrix_power",
   "summary": "Raise a square matrix to the (integer) power `n`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L617",
   "weight": 1.0
 }

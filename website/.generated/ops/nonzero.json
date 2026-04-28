@@ -52,7 +52,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/argwhere",
+              "href": "/docs/api/numpy/argwhere/",
               "kind": "link",
               "target": "argwhere",
               "text": "argwhere"
@@ -191,7 +191,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/flatnonzero",
+              "href": "/docs/api/numpy/flatnonzero/",
               "label": "flops.flatnonzero",
               "original_target": "flatnonzero",
               "role": "",
@@ -223,7 +223,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/count_nonzero",
+              "href": "/docs/api/numpy/count-nonzero/",
               "label": "flops.count_nonzero",
               "original_target": "count_nonzero",
               "role": "",
@@ -281,7 +281,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -360,7 +360,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/nonzero",
+              "href": "/docs/api/numpy/nonzero/",
               "kind": "link",
               "target": "nonzero",
               "text": "nonzero"
@@ -476,7 +476,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/nonzero",
+              "href": "/docs/api/numpy/nonzero/",
               "kind": "link",
               "target": "nonzero",
               "text": "nonzero"
@@ -507,7 +507,7 @@
     }
   ],
   "canonical_name": "nonzero",
-  "canonical_path": "nonzero",
+  "canonical_path": "numpy/nonzero",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -534,20 +534,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])\n\nx\n\nflops.nonzero(x)\n\nx[flops.nonzero(x)]\n\nflops.transpose(flops.nonzero(x))\n\na = flops.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])\n\na > 3\n\nflops.nonzero(a > 3)\n\na[flops.nonzero(a > 3)]\n\na[a > 3]  # prefer this spelling\n\n(a > 3).nonzero()",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])\n\nx\n\nflops.nonzero(x)\n\nx[flops.nonzero(x)]\n\nflops.transpose(flops.nonzero(x))\n\na = flops.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])\n\na > 3\n\nflops.nonzero(a > 3)\n\na[flops.nonzero(a > 3)]\n\na[a > 3]  # prefer this spelling\n\n(a > 3).nonzero()",
     "output": "array([[3, 0, 0],\n       [0, 4, 0],\n       [5, 6, 0]])\n\n(array([0, 1, 2, 2]), array([0, 1, 0, 1]))\n\narray([3, 4, 5, 6])\n\narray([[0, 0],\n       [1, 1],\n       [2, 0],\n       [2, 1]])\n\narray([[False, False, False],\n       [ True,  True,  True],\n       [ True,  True,  True]])\n\n(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))\n\narray([4, 5, 6, 7, 8, 9])\n\narray([4, 5, 6, 7, 8, 9])\n\n(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.nonzero",
+  "flopscope_ref": "fnp.nonzero",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1346",
-  "href": "/docs/api/nonzero/",
+  "href": "/docs/api/numpy/nonzero/",
   "legacy_href": "/docs/api/ops/nonzero/",
   "module": "numpy",
   "name": "nonzero",
   "next": {
-    "href": "/docs/api/not-equal/",
-    "label": "flops.not_equal"
+    "href": "/docs/api/numpy/not-equal/",
+    "label": "fnp.not_equal"
   },
   "notes": "Return indices of non-zero elements. Cost: numel(input).",
   "notes_sections": [
@@ -564,10 +564,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/nextafter/",
-    "label": "flops.nextafter"
+    "href": "/docs/api/numpy/nextafter/",
+    "label": "fnp.nextafter"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nonzero",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nonzero.html",
   "returns": [
     {
@@ -588,7 +589,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/flatnonzero",
+      "href": "/docs/api/numpy/flatnonzero/",
       "label": "flops.flatnonzero",
       "original_target": "flatnonzero",
       "role": "",
@@ -620,7 +621,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/count_nonzero",
+      "href": "/docs/api/numpy/count-nonzero/",
       "label": "flops.count_nonzero",
       "original_target": "count_nonzero",
       "role": "",
@@ -628,9 +629,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.nonzero(a)",
+  "signature": "fnp.nonzero(a)",
   "slug": "nonzero",
   "summary": "Return the indices of the elements that are non-zero.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2018",
   "weight": 1.0
 }

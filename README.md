@@ -32,6 +32,7 @@ Dispatch integration with `AIcrowd/flopscope-docs` was verified on 2026-04-16.
 ```python
 import numpy as np
 
+
 depth, width = 5, 256
 
 # Weight init
@@ -55,25 +56,26 @@ for i, W in enumerate(weights):
 <td>
 
 ```python
-import flopscope as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
 depth, width = 5, 256
 
 # Weight init
-scale = we.sqrt(2 / width)
+scale = fnp.sqrt(2 / width)
 weights = [
-    we.random.randn(width, width) * scale
+    fnp.random.randn(width, width) * scale
     for _ in range(depth)
 ]
 
 # Forward pass
-x = we.random.randn(width)
+x = fnp.random.randn(width)
 h = x
 for i, W in enumerate(weights):
-    h = we.einsum('ij,j->i', W, h)
+    h = fnp.einsum('ij,j->i', W, h)
     if i < depth - 1:
-        h = we.maximum(h, 0)
-we.budget_summary()  # 984,321 FLOPs
+        h = fnp.maximum(h, 0)
+flops.budget_summary()  # 984,321 FLOPs
 ```
 
 </td>
@@ -82,7 +84,7 @@ we.budget_summary()  # 984,321 FLOPs
 
 ## Key Features
 
-- **NumPy-compatible API** -- `import flopscope as we` and write familiar NumPy code
+- **NumPy-compatible API** -- `import flopscope.numpy as fnp` for counted NumPy ops, with `import flopscope as flops` for budgets and symmetry helpers
 - **Analytical FLOP counting** -- deterministic, hardware-independent cost tracking
 - **Budget enforcement** -- operations are checked before execution; exceeding the budget raises a clear error
 - **Symmetry-aware einsum** -- automatic FLOP savings for repeated operands and declared symmetry groups
@@ -93,12 +95,12 @@ we.budget_summary()  # 984,321 FLOPs
 
 | Module | Operations | Cost Model | Status |
 |--------|-----------|------------|--------|
-| Core (`we.*`) | 333 | Varies by category (unary, binary, reduction, free) | Supported |
-| `we.linalg` | 31 | Per-operation formulas | Supported |
-| `we.fft` | 18 | `5n * ceil(log2(n))` for transforms | Supported |
-| `we.random` | 51 | `numel(output)` per sample; shuffle: `n*ceil(log2(n))` | Supported |
-| `we.stats` | 24 | Per-distribution CDF/PDF/PPF formulas | Supported |
-| `we.polynomial` | 10 | Per-operation formulas | Supported |
+| NumPy surface (`fnp.*`) | 333 | Varies by category (unary, binary, reduction, free) | Supported |
+| `fnp.linalg` | 31 | Per-operation formulas | Supported |
+| `fnp.fft` | 18 | `5n * ceil(log2(n))` for transforms | Supported |
+| `fnp.random` | 51 | `numel(output)` per sample; shuffle: `n*ceil(log2(n))` | Supported |
+| `flops.stats` | 24 | Per-distribution CDF/PDF/PPF formulas | Supported |
+| `fnp.polynomial` | 10 | Per-operation formulas | Supported |
 | **Total** | **473 supported** | | **35 blocked** |
 
 Blocked operations (I/O, config, and system calls) raise a helpful `AttributeError` with a link to the docs.
@@ -116,27 +118,28 @@ uv add git+https://github.com/AIcrowd/flopscope.git
 ### Basic Usage
 
 ```python
-import flopscope as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
 depth, width = 5, 256
 
-with we.BudgetContext(flop_budget=10**8, wall_time_limit_s=5.0) as budget:
+with flops.BudgetContext(flop_budget=10**8, wall_time_limit_s=5.0) as budget:
     # Weight init
-    scale = we.sqrt(2 / width)
-    weights = [we.random.randn(width, width) * scale
+    scale = fnp.sqrt(2 / width)
+    weights = [fnp.random.randn(width, width) * scale
                for _ in range(depth)]
 
     # Forward pass
-    x = we.random.randn(width)
+    x = fnp.random.randn(width)
     h = x
     for i, W in enumerate(weights):
-        h = we.einsum('ij,j->i', W, h)
+        h = fnp.einsum('ij,j->i', W, h)
         if i < depth - 1:
-            h = we.maximum(h, 0)
+            h = fnp.maximum(h, 0)
 
     print(budget.summary())   # current context summary
 
-we.budget_summary()           # session/global summary
+flops.budget_summary()           # session/global summary
 ```
 
 ```
@@ -145,7 +148,7 @@ we.budget_summary()           # session/global summary
 and after each counted NumPy call. If the limit is exceeded, flopscope raises
 `TimeExhaustedError` with the operation name, elapsed time, and configured
 limit. Use `budget.summary()` for the current context and
-`we.budget_summary()` when you want the accumulated session/global view.
+`flops.budget_summary()` when you want the accumulated session/global view.
 flopscope FLOP Budget Summary
 =========================
   Total budget:     100,000,000
@@ -164,10 +167,10 @@ flopscope FLOP Budget Summary
 
 ```python
 # Query FLOP costs without running anything (no BudgetContext needed)
-cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+cost = flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
 print(f"Matmul cost: {cost:,}")  # 16,777,216
 
-cost = we.flops.svd_cost(m=256, n=256, k=10)
+cost = flops.svd_cost(m=256, n=256, k=10)
 print(f"SVD cost: {cost:,}")     # 655,360
 ```
 
@@ -177,13 +180,13 @@ When you pass the same array object multiple times, flopscope automatically
 detects the symmetry and reduces the FLOP count:
 
 ```python
-with we.BudgetContext(flop_budget=10**8) as budget:
-    X = we.ones((100, 100))
+with flops.BudgetContext(flop_budget=10**8) as budget:
+    X = fnp.ones((100, 100))
 
     # Gram matrix: both operands are the same X.
     # flopscope auto-detects this and induces S2{j,k} on the output,
     # giving ~1/2 the dense cost (since R[j,k] = R[k,j]).
-    R = we.einsum("ij,ik->jk", X, X)
+    R = fnp.einsum("ij,ik->jk", X, X)
     print(f"Cost with equal-operand detection: {budget.flops_used:,}")
 ```
 
@@ -211,7 +214,7 @@ including triple products and block symmetries.
 
 **Cost is analytical, not wall-clock.** Two operations with the same shapes always report the same FLOP cost, regardless of data values, cache effects, or hardware. This is intentional -- it makes scores reproducible across machines.
 
-**SymmetricTensor propagation rules.** Symmetry metadata (used by einsum for FLOP savings) propagates through reshaping, slicing, and unary pointwise operations (e.g., `exp`, `log`). Binary pointwise operations (e.g., `add`, `multiply`) intersect the symmetry groups of both operands. Reductions may drop symmetry on the reduced axis. If the result doesn't carry the symmetry you expect, declare symmetry groups explicitly with `we.as_symmetric()`.
+**SymmetricTensor propagation rules.** Symmetry metadata (used by einsum for FLOP savings) propagates through reshaping, slicing, and unary pointwise operations (e.g., `exp`, `log`). Binary pointwise operations (e.g., `add`, `multiply`) intersect the symmetry groups of both operands. Reductions may drop symmetry on the reduced axis. If the result doesn't carry the symmetry you expect, declare symmetry groups explicitly with `flops.as_symmetric()`.
 
 ## Documentation
 

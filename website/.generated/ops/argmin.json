@@ -258,7 +258,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/argmax",
+              "href": "/docs/api/numpy/argmax/",
               "label": "flops.argmax",
               "original_target": "argmax",
               "role": "",
@@ -290,7 +290,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/unravel_index",
+              "href": "/docs/api/numpy/unravel-index/",
               "label": "flops.unravel_index",
               "original_target": "unravel_index",
               "role": "",
@@ -317,7 +317,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/take_along_axis",
+              "href": "/docs/api/numpy/take-along-axis/",
               "label": "flops.take_along_axis",
               "original_target": "take_along_axis",
               "role": "",
@@ -351,7 +351,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -577,7 +577,7 @@
     }
   ],
   "canonical_name": "argmin",
-  "canonical_path": "argmin",
+  "canonical_path": "numpy/argmin",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -595,20 +595,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.arange(6).reshape(2,3) + 10\n\na\n\nflops.argmin(a)\n\nflops.argmin(a, axis=0)\n\nflops.argmin(a, axis=1)\n\nind = flops.unravel_index(flops.argmin(a, axis=None), a.shape)\n\nind\n\na[ind]\n\nb = flops.arange(6) + 10\n\nb[4] = 10\n\nb\n\nflops.argmin(b)  # Only the first occurrence is returned.\n\nx = flops.array([[4,2,3], [1,0,3]])\n\nindex_array = flops.argmin(x, axis=-1)\n\nflops.take_along_axis(x, flops.expand_dims(index_array, axis=-1), axis=-1)\n\nflops.take_along_axis(x, flops.expand_dims(index_array, axis=-1),\n    axis=-1).squeeze(axis=-1)\n\nx = flops.arange(24).reshape((2, 3, 4))\n\nres = flops.argmin(x, axis=1, keepdims=True)\n\nres.shape",
+    "code": "import flopscope.numpy as fnp\n\na = flops.arange(6).reshape(2,3) + 10\n\na\n\nflops.argmin(a)\n\nflops.argmin(a, axis=0)\n\nflops.argmin(a, axis=1)\n\nind = flops.unravel_index(flops.argmin(a, axis=None), a.shape)\n\nind\n\na[ind]\n\nb = flops.arange(6) + 10\n\nb[4] = 10\n\nb\n\nflops.argmin(b)  # Only the first occurrence is returned.\n\nx = flops.array([[4,2,3], [1,0,3]])\n\nindex_array = flops.argmin(x, axis=-1)\n\nflops.take_along_axis(x, flops.expand_dims(index_array, axis=-1), axis=-1)\n\nflops.take_along_axis(x, flops.expand_dims(index_array, axis=-1),\n    axis=-1).squeeze(axis=-1)\n\nx = flops.arange(24).reshape((2, 3, 4))\n\nres = flops.argmin(x, axis=1, keepdims=True)\n\nres.shape",
     "output": "array([[10, 11, 12],\n       [13, 14, 15]])\n\n0\n\narray([0, 0, 0])\n\narray([0, 0])\n\n(0, 0)\n\n10\n\narray([10, 11, 12, 13, 10, 15])\n\n0\n\narray([[2],\n       [0]])\n\narray([2, 0])\n\n(2, 1, 4)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.argmin",
+  "flopscope_ref": "fnp.argmin",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/argmin/",
+  "href": "/docs/api/numpy/argmin/",
   "legacy_href": "/docs/api/ops/argmin/",
   "module": "numpy",
   "name": "argmin",
   "next": {
-    "href": "/docs/api/argpartition/",
-    "label": "flops.argpartition"
+    "href": "/docs/api/numpy/argpartition/",
+    "label": "fnp.argpartition"
   },
   "notes": "Index of minimum value.",
   "notes_sections": [
@@ -652,10 +652,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/argmax/",
-    "label": "flops.argmax"
+    "href": "/docs/api/numpy/argmax/",
+    "label": "fnp.argmax"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.argmin",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.argmin.html",
   "returns": [
     {
@@ -685,7 +686,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/argmax",
+      "href": "/docs/api/numpy/argmax/",
       "label": "flops.argmax",
       "original_target": "argmax",
       "role": "",
@@ -717,7 +718,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/unravel_index",
+      "href": "/docs/api/numpy/unravel-index/",
       "label": "flops.unravel_index",
       "original_target": "unravel_index",
       "role": "",
@@ -744,7 +745,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/take_along_axis",
+      "href": "/docs/api/numpy/take-along-axis/",
       "label": "flops.take_along_axis",
       "original_target": "take_along_axis",
       "role": "",
@@ -752,9 +753,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.argmin(a, axis=None, out=None, *, keepdims=<no value>)",
+  "signature": "fnp.argmin(a, axis=None, out=None, *, keepdims=<no value>)",
   "slug": "argmin",
   "summary": "Returns the indices of the minimum values along an axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1349",
   "weight": 1.0
 }

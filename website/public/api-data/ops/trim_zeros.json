@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/trim-zeros/",
+  "detail_href": "/docs/api/numpy/trim-zeros/",
   "detail_json_href": "/api-data/ops/trim_zeros.json",
   "docs": {
     "sections": [
@@ -196,7 +196,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -325,12 +325,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.trim_zeros",
+    "flopscope_ref": "fnp.trim_zeros",
     "module": "numpy",
     "name": "trim_zeros",
     "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed.",
     "numpy_ref": "np.trim_zeros",
-    "signature": "flops.trim_zeros(filt, trim='fb', axis=None)",
+    "signature": "fnp.trim_zeros(filt, trim='fb', axis=None)",
     "status": "supported",
     "summary": "Remove values along a dimension which are zero along all other.",
     "weight": 4.0

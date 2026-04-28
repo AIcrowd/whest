@@ -105,7 +105,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bartlett",
+              "href": "/docs/api/numpy/bartlett/",
               "label": "flops.bartlett",
               "original_target": "bartlett",
               "role": "",
@@ -116,7 +116,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/hamming",
+              "href": "/docs/api/numpy/hamming/",
               "label": "flops.hamming",
               "original_target": "hamming",
               "role": "",
@@ -127,7 +127,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/hanning",
+              "href": "/docs/api/numpy/hanning/",
               "label": "flops.hanning",
               "original_target": "hanning",
               "role": "",
@@ -138,7 +138,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/kaiser",
+              "href": "/docs/api/numpy/kaiser/",
               "label": "flops.kaiser",
               "original_target": "kaiser",
               "role": "",
@@ -210,7 +210,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -275,7 +275,7 @@
     }
   ],
   "canonical_name": "blackman",
-  "canonical_path": "blackman",
+  "canonical_path": "numpy/blackman",
   "category": "counted_custom",
   "cost_formula": "3n",
   "cost_formula_latex": "$3n$",
@@ -286,20 +286,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nimport matplotlib.pyplot as plt\n\nflops.blackman(12)",
+    "code": "import flopscope.numpy as fnp\n\nimport matplotlib.pyplot as plt\n\nflops.blackman(12)",
     "output": "array([-1.38777878e-17,   3.26064346e-02,   1.59903635e-01, # may vary\n        4.14397981e-01,   7.36045180e-01,   9.67046769e-01,\n        9.67046769e-01,   7.36045180e-01,   4.14397981e-01,\n        1.59903635e-01,   3.26064346e-02,  -1.38777878e-17])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.blackman",
+  "flopscope_ref": "fnp.blackman",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L64",
-  "href": "/docs/api/blackman/",
+  "href": "/docs/api/numpy/blackman/",
   "legacy_href": "/docs/api/ops/blackman/",
   "module": "flopscope._window",
   "name": "blackman",
   "next": {
-    "href": "/docs/api/block/",
-    "label": "flops.block"
+    "href": "/docs/api/numpy/block/",
+    "label": "fnp.block"
   },
   "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
   "notes_sections": [
@@ -319,10 +319,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/bitwise-xor/",
-    "label": "flops.bitwise_xor"
+    "href": "/docs/api/numpy/bitwise-xor/",
+    "label": "fnp.bitwise_xor"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.blackman",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.blackman.html",
   "returns": [
     {
@@ -339,7 +340,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bartlett",
+      "href": "/docs/api/numpy/bartlett/",
       "label": "flops.bartlett",
       "original_target": "bartlett",
       "role": "",
@@ -350,7 +351,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/hamming",
+      "href": "/docs/api/numpy/hamming/",
       "label": "flops.hamming",
       "original_target": "hamming",
       "role": "",
@@ -361,7 +362,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/hanning",
+      "href": "/docs/api/numpy/hanning/",
       "label": "flops.hanning",
       "original_target": "hanning",
       "role": "",
@@ -372,7 +373,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/kaiser",
+      "href": "/docs/api/numpy/kaiser/",
       "label": "flops.kaiser",
       "original_target": "kaiser",
       "role": "",
@@ -380,9 +381,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.blackman(M)",
+  "signature": "fnp.blackman(M)",
   "slug": "blackman",
   "summary": "Return the Blackman window.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3058",
   "weight": 16.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/negative-binomial/",
+  "detail_href": "/docs/api/numpy/random/negative-binomial/",
   "detail_json_href": "/api-data/ops/random-negative_binomial.json",
   "docs": {
     "sections": [
@@ -529,12 +529,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.negative_binomial",
+    "flopscope_ref": "fnp.random.negative_binomial",
     "module": "numpy.random",
     "name": "random.negative_binomial",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.negative_binomial",
-    "signature": "flops.random.negative_binomial(n, p, size=None)",
+    "signature": "fnp.random.negative_binomial(n, p, size=None)",
     "status": "supported",
     "summary": "Draw samples from a negative binomial distribution.",
     "weight": 16.0

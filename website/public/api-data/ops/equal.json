@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/equal/",
+  "detail_href": "/docs/api/numpy/equal/",
   "detail_json_href": "/api-data/ops/equal.json",
   "docs": {
     "sections": [
@@ -349,7 +349,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/not_equal",
+                "href": "/docs/api/numpy/not-equal/",
                 "label": "flops.not_equal",
                 "original_target": "not_equal",
                 "role": "",
@@ -360,7 +360,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/greater_equal",
+                "href": "/docs/api/numpy/greater-equal/",
                 "label": "flops.greater_equal",
                 "original_target": "greater_equal",
                 "role": "",
@@ -371,7 +371,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/less_equal",
+                "href": "/docs/api/numpy/less-equal/",
                 "label": "flops.less_equal",
                 "original_target": "less_equal",
                 "role": "",
@@ -382,7 +382,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/greater",
+                "href": "/docs/api/numpy/greater/",
                 "label": "flops.greater",
                 "original_target": "greater",
                 "role": "",
@@ -393,7 +393,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/less",
+                "href": "/docs/api/numpy/less/",
                 "label": "flops.less",
                 "original_target": "less",
                 "role": "",
@@ -413,7 +413,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -466,7 +466,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/equal",
+                "href": "/docs/api/numpy/equal/",
                 "kind": "link",
                 "target": "equal",
                 "text": "flops.equal"
@@ -511,12 +511,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.equal",
+    "flopscope_ref": "fnp.equal",
     "module": "numpy",
     "name": "equal",
     "notes": "Element-wise x1 == x2.",
     "numpy_ref": "np.equal",
-    "signature": "flops.equal(*args, **kwargs)",
+    "signature": "fnp.equal(*args, **kwargs)",
     "status": "supported",
     "summary": "Return (x1 == x2) element-wise.",
     "weight": 1.0

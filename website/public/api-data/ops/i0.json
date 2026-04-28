@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/i0/",
+  "detail_href": "/docs/api/numpy/i0/",
   "detail_json_href": "/api-data/ops/i0.json",
   "docs": {
     "sections": [
@@ -238,7 +238,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -270,12 +270,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.i0",
+    "flopscope_ref": "fnp.i0",
     "module": "numpy",
     "name": "i0",
     "notes": "Modified Bessel function of order 0, element-wise.",
     "numpy_ref": "np.i0",
-    "signature": "flops.i0(x)",
+    "signature": "fnp.i0(x)",
     "status": "supported",
     "summary": "Modified Bessel function of the first kind, order 0.",
     "weight": 16.0

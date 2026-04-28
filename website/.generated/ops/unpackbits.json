@@ -296,7 +296,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/packbits",
+              "href": "/docs/api/numpy/packbits/",
               "label": "flops.packbits",
               "original_target": "packbits",
               "role": "",
@@ -316,7 +316,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -448,7 +448,7 @@
     }
   ],
   "canonical_name": "unpackbits",
-  "canonical_path": "unpackbits",
+  "canonical_path": "numpy/unpackbits",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -459,20 +459,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([[2], [7], [23]], dtype=flops.uint8)\n\na\n\nb = flops.unpackbits(a, axis=1)\n\nb\n\nc = flops.unpackbits(a, axis=1, count=-3)\n\nc\n\np = flops.packbits(b, axis=0)\n\nflops.unpackbits(p, axis=0)\n\nflops.array_equal(b, flops.unpackbits(p, axis=0, count=b.shape[0]))",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[2], [7], [23]], dtype=flops.uint8)\n\na\n\nb = flops.unpackbits(a, axis=1)\n\nb\n\nc = flops.unpackbits(a, axis=1, count=-3)\n\nc\n\np = flops.packbits(b, axis=0)\n\nflops.unpackbits(p, axis=0)\n\nflops.array_equal(b, flops.unpackbits(p, axis=0, count=b.shape[0]))",
     "output": "array([[ 2],\n       [ 7],\n       [23]], dtype=uint8)\n\narray([[0, 0, 0, 0, 0, 0, 1, 0],\n       [0, 0, 0, 0, 0, 1, 1, 1],\n       [0, 0, 0, 1, 0, 1, 1, 1]], dtype=uint8)\n\narray([[0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0],\n       [0, 0, 0, 1, 0]], dtype=uint8)\n\narray([[0, 0, 0, 0, 0, 0, 1, 0],\n       [0, 0, 0, 0, 0, 1, 1, 1],\n       [0, 0, 0, 1, 0, 1, 1, 1],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0],\n       [0, 0, 0, 0, 0, 0, 0, 0]], dtype=uint8)\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.unpackbits",
+  "flopscope_ref": "fnp.unpackbits",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1648",
-  "href": "/docs/api/unpackbits/",
+  "href": "/docs/api/numpy/unpackbits/",
   "legacy_href": "/docs/api/ops/unpackbits/",
   "module": "numpy",
   "name": "unpackbits",
   "next": {
-    "href": "/docs/api/unravel-index/",
-    "label": "flops.unravel_index"
+    "href": "/docs/api/numpy/unravel-index/",
+    "label": "fnp.unravel_index"
   },
   "notes": "Unpack elements of array into bits. Cost: numel(input).",
   "notes_sections": [],
@@ -519,10 +519,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/unique-values/",
-    "label": "flops.unique_values"
+    "href": "/docs/api/numpy/unique-values/",
+    "label": "fnp.unique_values"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.unpackbits",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unpackbits.html",
   "returns": [
     {
@@ -543,7 +544,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/packbits",
+      "href": "/docs/api/numpy/packbits/",
       "label": "flops.packbits",
       "original_target": "packbits",
       "role": "",
@@ -551,9 +552,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.unpackbits(a, *args, **kwargs)",
+  "signature": "fnp.unpackbits(a, *args, **kwargs)",
   "slug": "unpackbits",
   "summary": "Unpacks elements of a uint8 array into a binary-valued output array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

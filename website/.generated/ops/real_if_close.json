@@ -191,7 +191,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/real",
+              "href": "/docs/api/numpy/real/",
               "label": "flops.real",
               "original_target": "real",
               "role": "",
@@ -202,7 +202,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/imag",
+              "href": "/docs/api/numpy/imag/",
               "label": "flops.imag",
               "original_target": "imag",
               "role": "",
@@ -213,7 +213,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/angle",
+              "href": "/docs/api/numpy/angle/",
               "label": "flops.angle",
               "original_target": "angle",
               "role": "",
@@ -247,7 +247,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -289,7 +289,7 @@
     }
   ],
   "canonical_name": "real_if_close",
-  "canonical_path": "real-if-close",
+  "canonical_path": "numpy/real-if-close",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -300,20 +300,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.finfo(float).eps\n\nflops.real_if_close([2.1 + 4e-14j, 5.2 + 3e-15j], tol=1000)\n\nflops.real_if_close([2.1 + 4e-13j, 5.2 + 3e-15j], tol=1000)",
+    "code": "import flopscope.numpy as fnp\n\nflops.finfo(float).eps\n\nflops.real_if_close([2.1 + 4e-14j, 5.2 + 3e-15j], tol=1000)\n\nflops.real_if_close([2.1 + 4e-13j, 5.2 + 3e-15j], tol=1000)",
     "output": "2.2204460492503131e-16 # may vary\n\narray([2.1, 5.2])\n\narray([2.1+4.e-13j, 5.2 + 3e-15j])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.real_if_close",
+  "flopscope_ref": "fnp.real_if_close",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/real-if-close/",
+  "href": "/docs/api/numpy/real-if-close/",
   "legacy_href": "/docs/api/ops/real_if_close/",
   "module": "numpy",
   "name": "real_if_close",
   "next": {
-    "href": "/docs/api/reciprocal/",
-    "label": "flops.reciprocal"
+    "href": "/docs/api/numpy/reciprocal/",
+    "label": "fnp.reciprocal"
   },
   "notes": "Return real array if imaginary part is negligible.",
   "notes_sections": [
@@ -339,10 +339,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/real/",
-    "label": "flops.real"
+    "href": "/docs/api/numpy/real/",
+    "label": "fnp.real"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.real_if_close",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.real_if_close.html",
   "returns": [
     {
@@ -359,7 +360,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/real",
+      "href": "/docs/api/numpy/real/",
       "label": "flops.real",
       "original_target": "real",
       "role": "",
@@ -370,7 +371,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/imag",
+      "href": "/docs/api/numpy/imag/",
       "label": "flops.imag",
       "original_target": "imag",
       "role": "",
@@ -381,7 +382,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/angle",
+      "href": "/docs/api/numpy/angle/",
       "label": "flops.angle",
       "original_target": "angle",
       "role": "",
@@ -389,9 +390,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.real_if_close(a, tol=100)",
+  "signature": "fnp.real_if_close(a, tol=100)",
   "slug": "real_if_close",
   "summary": "If input is complex with all imaginary parts close to zero, return real parts.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L489",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/imag/",
+  "detail_href": "/docs/api/numpy/imag/",
   "detail_json_href": "/api-data/ops/imag.json",
   "docs": {
     "sections": [
@@ -139,7 +139,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/real",
+                "href": "/docs/api/numpy/real/",
                 "label": "flops.real",
                 "original_target": "real",
                 "role": "",
@@ -150,7 +150,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/angle",
+                "href": "/docs/api/numpy/angle/",
                 "label": "flops.angle",
                 "original_target": "angle",
                 "role": "",
@@ -161,7 +161,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/real_if_close",
+                "href": "/docs/api/numpy/real-if-close/",
                 "label": "flops.real_if_close",
                 "original_target": "real_if_close",
                 "role": "",
@@ -181,7 +181,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -232,12 +232,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.imag",
+    "flopscope_ref": "fnp.imag",
     "module": "numpy",
     "name": "imag",
     "notes": "Return imaginary part of complex array.",
     "numpy_ref": "np.imag",
-    "signature": "flops.imag(val)",
+    "signature": "fnp.imag(val)",
     "status": "supported",
     "summary": "Return the imaginary part of the complex argument.",
     "weight": 1.0

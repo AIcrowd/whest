@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/iscomplexobj/",
+  "detail_href": "/docs/api/numpy/iscomplexobj/",
   "detail_json_href": "/api-data/ops/iscomplexobj.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/iscomplexobj",
+                "href": "/docs/api/numpy/iscomplexobj/",
                 "kind": "link",
                 "target": "iscomplexobj",
                 "text": "iscomplexobj"
@@ -132,7 +132,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isrealobj",
+                "href": "/docs/api/numpy/isrealobj/",
                 "label": "flops.isrealobj",
                 "original_target": "isrealobj",
                 "role": "",
@@ -143,7 +143,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/iscomplex",
+                "href": "/docs/api/numpy/iscomplex/",
                 "label": "flops.iscomplex",
                 "original_target": "iscomplex",
                 "role": "",
@@ -163,7 +163,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -204,12 +204,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.iscomplexobj",
+    "flopscope_ref": "fnp.iscomplexobj",
     "module": "numpy",
     "name": "iscomplexobj",
     "notes": "Return True if input is a complex type or array.",
     "numpy_ref": "np.iscomplexobj",
-    "signature": "flops.iscomplexobj(x)",
+    "signature": "fnp.iscomplexobj(x)",
     "status": "supported",
     "summary": "Check for a complex type or an array of complex numbers.",
     "weight": 1.0

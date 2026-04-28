@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/roll/",
+  "detail_href": "/docs/api/numpy/roll/",
   "detail_json_href": "/api-data/ops/roll.json",
   "docs": {
     "sections": [
@@ -202,7 +202,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/rollaxis",
+                "href": "/docs/api/numpy/rollaxis/",
                 "label": "flops.rollaxis",
                 "original_target": "rollaxis",
                 "role": "",
@@ -236,7 +236,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -400,12 +400,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.roll",
+    "flopscope_ref": "fnp.roll",
     "module": "numpy",
     "name": "roll",
     "notes": "Roll array elements along axis. Cost: numel(output).",
     "numpy_ref": "np.roll",
-    "signature": "flops.roll(a, shift, axis=None)",
+    "signature": "fnp.roll(a, shift, axis=None)",
     "status": "supported",
     "summary": "Roll array elements along a given axis.",
     "weight": 1.0

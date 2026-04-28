@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/logical-and/",
+  "detail_href": "/docs/api/numpy/logical-and/",
   "detail_json_href": "/api-data/ops/logical_and.json",
   "docs": {
     "sections": [
@@ -333,7 +333,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_or",
+                "href": "/docs/api/numpy/logical-or/",
                 "label": "flops.logical_or",
                 "original_target": "logical_or",
                 "role": "",
@@ -344,7 +344,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_not",
+                "href": "/docs/api/numpy/logical-not/",
                 "label": "flops.logical_not",
                 "original_target": "logical_not",
                 "role": "",
@@ -355,7 +355,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_xor",
+                "href": "/docs/api/numpy/logical-xor/",
                 "label": "flops.logical_xor",
                 "original_target": "logical_xor",
                 "role": "",
@@ -366,7 +366,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_and",
+                "href": "/docs/api/numpy/bitwise-and/",
                 "label": "flops.bitwise_and",
                 "original_target": "bitwise_and",
                 "role": "",
@@ -386,7 +386,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -444,7 +444,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/logical_and",
+                "href": "/docs/api/numpy/logical-and/",
                 "kind": "link",
                 "target": "logical_and",
                 "text": "flops.logical_and"
@@ -489,12 +489,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.logical_and",
+    "flopscope_ref": "fnp.logical_and",
     "module": "numpy",
     "name": "logical_and",
     "notes": "Element-wise logical AND.",
     "numpy_ref": "np.logical_and",
-    "signature": "flops.logical_and(*args, **kwargs)",
+    "signature": "fnp.logical_and(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the truth value of x1 AND x2 element-wise.",
     "weight": 1.0

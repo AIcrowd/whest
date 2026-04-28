@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/choose/",
+  "detail_href": "/docs/api/numpy/choose/",
   "detail_json_href": "/api-data/ops/choose.json",
   "docs": {
     "sections": [
@@ -734,7 +734,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/take_along_axis",
+                "href": "/docs/api/numpy/take-along-axis/",
                 "label": "flops.take_along_axis",
                 "original_target": "numpy.take_along_axis",
                 "role": "",
@@ -776,7 +776,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -957,12 +957,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.choose",
+    "flopscope_ref": "fnp.choose",
     "module": "numpy",
     "name": "choose",
     "notes": "Construct array from index array and choices. Cost: numel(output).",
     "numpy_ref": "np.choose",
-    "signature": "flops.choose(a, choices, out=None, mode='raise')",
+    "signature": "fnp.choose(a, choices, out=None, mode='raise')",
     "status": "supported",
     "summary": "Construct an array from an index array and a list of arrays to choose from.",
     "weight": 4.0

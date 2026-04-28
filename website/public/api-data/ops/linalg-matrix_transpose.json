@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/matrix-transpose/",
+  "detail_href": "/docs/api/numpy/linalg/matrix-transpose/",
   "detail_json_href": "/api-data/ops/linalg-matrix_transpose.json",
   "docs": {
     "sections": [
@@ -134,7 +134,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/transpose",
+                "href": "/docs/api/numpy/transpose/",
                 "label": "flops.transpose",
                 "original_target": "transpose",
                 "role": "",
@@ -154,7 +154,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -207,12 +207,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.linalg.matrix_transpose",
+    "flopscope_ref": "fnp.linalg.matrix_transpose",
     "module": "numpy.linalg",
     "name": "linalg.matrix_transpose",
     "notes": "Transpose view \u2014 delegates to flopscope.matrix_transpose. Cost: 0 FLOPs.",
     "numpy_ref": "np.linalg.matrix_transpose",
-    "signature": "flops.linalg.matrix_transpose(x, /)",
+    "signature": "fnp.linalg.matrix_transpose(x, /)",
     "status": "supported",
     "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
     "weight": 0.0

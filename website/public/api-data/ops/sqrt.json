@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/sqrt/",
+  "detail_href": "/docs/api/numpy/sqrt/",
   "detail_json_href": "/api-data/ops/sqrt.json",
   "docs": {
     "sections": [
@@ -448,7 +448,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -499,12 +499,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.sqrt",
+    "flopscope_ref": "fnp.sqrt",
     "module": "numpy",
     "name": "sqrt",
     "notes": "Element-wise square root.",
     "numpy_ref": "np.sqrt",
-    "signature": "flops.sqrt(*args, **kwargs)",
+    "signature": "fnp.sqrt(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the non-negative square-root of an array, element-wise.",
     "weight": 1.0

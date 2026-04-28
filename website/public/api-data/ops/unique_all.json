@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/unique-all/",
+  "detail_href": "/docs/api/numpy/unique-all/",
   "detail_json_href": "/api-data/ops/unique_all.json",
   "docs": {
     "sections": [
@@ -190,7 +190,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/unique",
+                "href": "/docs/api/numpy/unique/",
                 "label": "flops.unique",
                 "original_target": "unique",
                 "role": "",
@@ -210,7 +210,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -270,12 +270,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.unique_all",
+    "flopscope_ref": "fnp.unique_all",
     "module": "numpy",
     "name": "unique_all",
     "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.unique_all",
-    "signature": "flops.unique_all(x, /)",
+    "signature": "fnp.unique_all(x, /)",
     "status": "supported",
     "summary": "Find the unique elements of an array, and counts, inverse, and indices.",
     "weight": 1.0

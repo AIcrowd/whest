@@ -325,7 +325,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -382,7 +382,7 @@
     }
   ],
   "canonical_name": "linalg.solve",
-  "canonical_path": "linalg/solve",
+  "canonical_path": "numpy/linalg/solve",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -398,20 +398,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([[1, 2], [3, 5]])\n\nb = flops.array([1, 2])\n\nx = flops.linalg.solve(a, b)\n\nx\n\nflops.allclose(flops.dot(a, x), b)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[1, 2], [3, 5]])\n\nb = flops.array([1, 2])\n\nx = flops.linalg.solve(a, b)\n\nx\n\nflops.allclose(flops.dot(a, x), b)",
     "output": "array([-1.,  1.])\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.solve",
+  "flopscope_ref": "fnp.linalg.solve",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L53",
-  "href": "/docs/api/linalg/solve/",
+  "href": "/docs/api/numpy/linalg/solve/",
   "legacy_href": "/docs/api/ops/linalg-solve/",
   "module": "numpy.linalg",
   "name": "linalg.solve",
   "next": {
-    "href": "/docs/api/linalg/svd/",
-    "label": "flops.linalg.svd"
+    "href": "/docs/api/numpy/linalg/svd/",
+    "label": "fnp.linalg.svd"
   },
   "notes": "Solve Ax=b. Cost: $n^3$.",
   "notes_sections": [
@@ -439,10 +439,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/slogdet/",
-    "label": "flops.linalg.slogdet"
+    "href": "/docs/api/numpy/linalg/slogdet/",
+    "label": "fnp.linalg.slogdet"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.solve",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html",
   "returns": [
     {
@@ -473,9 +474,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.linalg.solve(a, b)",
+  "signature": "fnp.linalg.solve(a, b)",
   "slug": "linalg-solve",
   "summary": "Solve a linear matrix equation, or system of linear scalar equations.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L320",
   "weight": 4.0
 }

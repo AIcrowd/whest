@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/iscomplex/",
+  "detail_href": "/docs/api/numpy/iscomplex/",
   "detail_json_href": "/api-data/ops/iscomplex.json",
   "docs": {
     "sections": [
@@ -105,7 +105,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isreal",
+                "href": "/docs/api/numpy/isreal/",
                 "label": "flops.isreal",
                 "original_target": "isreal",
                 "role": "",
@@ -121,7 +121,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/iscomplexobj",
+                "href": "/docs/api/numpy/iscomplexobj/",
                 "label": "flops.iscomplexobj",
                 "original_target": "iscomplexobj",
                 "role": "",
@@ -141,7 +141,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -164,12 +164,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.iscomplex",
+    "flopscope_ref": "fnp.iscomplex",
     "module": "numpy",
     "name": "iscomplex",
     "notes": "Test if element is complex element-wise.",
     "numpy_ref": "np.iscomplex",
-    "signature": "flops.iscomplex(x)",
+    "signature": "fnp.iscomplex(x)",
     "status": "supported",
     "summary": "Returns a bool array, where True if input element is complex.",
     "weight": 1.0

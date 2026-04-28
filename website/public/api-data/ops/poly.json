@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/poly/",
+  "detail_href": "/docs/api/numpy/poly/",
   "detail_json_href": "/api-data/ops/poly.json",
   "docs": {
     "sections": [
@@ -202,7 +202,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/polyval",
+                "href": "/docs/api/numpy/polyval/",
                 "label": "flops.polyval",
                 "original_target": "polyval",
                 "role": "",
@@ -218,7 +218,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/roots",
+                "href": "/docs/api/numpy/roots/",
                 "label": "flops.roots",
                 "original_target": "roots",
                 "role": "",
@@ -234,7 +234,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/polyfit",
+                "href": "/docs/api/numpy/polyfit/",
                 "label": "flops.polyfit",
                 "original_target": "polyfit",
                 "role": "",
@@ -281,7 +281,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/polyfit",
+                "href": "/docs/api/numpy/polyfit/",
                 "kind": "link",
                 "target": "polyfit",
                 "text": "polyfit"
@@ -418,7 +418,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -529,12 +529,12 @@
     "category": "counted_custom",
     "cost_formula": "n^2",
     "cost_formula_latex": "$n^2$",
-    "flopscope_ref": "flops.poly",
+    "flopscope_ref": "fnp.poly",
     "module": "flopscope._polynomial",
     "name": "poly",
     "notes": "Polynomial from roots. Cost: $n^2$ FLOPs.",
     "numpy_ref": "np.poly",
-    "signature": "flops.poly(seq_of_zeros)",
+    "signature": "fnp.poly(seq_of_zeros)",
     "status": "supported",
     "summary": "Find the coefficients of a polynomial with the given sequence of roots.",
     "weight": 1.0

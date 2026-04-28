@@ -628,7 +628,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -718,7 +718,7 @@
     }
   ],
   "canonical_name": "fft.ifft",
-  "canonical_path": "fft/ifft",
+  "canonical_path": "numpy/fft/ifft",
   "category": "counted_custom",
   "cost_formula": "5n * ceil(log2(n))",
   "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
@@ -729,20 +729,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.fft.ifft([0, 4, 0, 0])\n\nimport matplotlib.pyplot as plt\n\nt = flops.arange(400)\n\nn = flops.zeros((400,), dtype=complex)\n\nn[40:60] = flops.exp(1j*flops.random.uniform(0, 2*flops.pi, (20,)))\n\ns = flops.fft.ifft(n)\n\nplt.plot(t, s.real, label='real')\n\nplt.plot(t, s.imag, '--', label='imaginary')\n\nplt.legend()\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nflops.fft.ifft([0, 4, 0, 0])\n\nimport matplotlib.pyplot as plt\n\nt = flops.arange(400)\n\nn = flops.zeros((400,), dtype=complex)\n\nn[40:60] = flops.exp(1j*flops.random.uniform(0, 2*flops.pi, (20,)))\n\ns = flops.fft.ifft(n)\n\nplt.plot(t, s.real, label='real')\n\nplt.plot(t, s.imag, '--', label='imaginary')\n\nplt.legend()\n\nplt.show()",
     "output": "array([ 1.+0.j,  0.+1.j, -1.+0.j,  0.-1.j]) # may vary\n\n[<matplotlib.lines.Line2D object at ...>]\n\n[<matplotlib.lines.Line2D object at ...>]\n\n<matplotlib.legend.Legend object at ...>",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.fft.ifft",
+  "flopscope_ref": "fnp.fft.ifft",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L183",
-  "href": "/docs/api/fft/ifft/",
+  "href": "/docs/api/numpy/fft/ifft/",
   "legacy_href": "/docs/api/ops/fft-ifft/",
   "module": "numpy.fft",
   "name": "fft.ifft",
   "next": {
-    "href": "/docs/api/fft/ifft2/",
-    "label": "flops.fft.ifft2"
+    "href": "/docs/api/numpy/fft/ifft2/",
+    "label": "fnp.fft.ifft2"
   },
   "notes": "Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -801,10 +801,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/fft/hfft/",
-    "label": "flops.fft.hfft"
+    "href": "/docs/api/numpy/fft/hfft/",
+    "label": "fnp.fft.hfft"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.ifft",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifft.html",
   "returns": [
     {
@@ -890,9 +891,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.fft.ifft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.ifft(a, n=None, axis=-1, norm=None, out=None)",
   "slug": "fft-ifft",
   "summary": "Compute the one-dimensional inverse discrete Fourier Transform.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L213",
   "weight": 1.0
 }

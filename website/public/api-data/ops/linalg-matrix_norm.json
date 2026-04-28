@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/matrix-norm/",
+  "detail_href": "/docs/api/numpy/linalg/matrix-norm/",
   "detail_json_href": "/api-data/ops/linalg-matrix_norm.json",
   "docs": {
     "sections": [
@@ -121,7 +121,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/linalg-norm",
+                        "href": "/docs/api/numpy/linalg/norm/",
                         "kind": "link",
                         "target": "linalg.norm",
                         "text": "flops.linalg.norm"
@@ -150,7 +150,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/linalg-norm",
+                    "href": "/docs/api/numpy/linalg/norm/",
                     "kind": "link",
                     "target": "linalg.norm",
                     "text": "flops.linalg.norm"
@@ -183,7 +183,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-norm",
+                "href": "/docs/api/numpy/linalg/norm/",
                 "label": "flops.linalg.norm",
                 "original_target": "numpy.linalg.norm",
                 "role": "",
@@ -335,12 +335,12 @@
     "category": "counted_custom",
     "cost_formula": "depends on ord",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.linalg.matrix_norm",
+    "flopscope_ref": "fnp.linalg.matrix_norm",
     "module": "numpy.linalg",
     "name": "linalg.matrix_norm",
     "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     "numpy_ref": "np.linalg.matrix_norm",
-    "signature": "flops.linalg.matrix_norm(x, ord='fro', keepdims=False)",
+    "signature": "fnp.linalg.matrix_norm(x, ord='fro', keepdims=False)",
     "status": "supported",
     "summary": "Computes the matrix norm of a matrix (or a stack of matrices) ``x``.",
     "weight": 1.0

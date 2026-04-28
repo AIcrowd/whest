@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/add/",
+  "detail_href": "/docs/api/numpy/add/",
   "detail_json_href": "/api-data/ops/add.json",
   "docs": {
     "sections": [
@@ -362,7 +362,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -419,7 +419,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/add",
+                "href": "/docs/api/numpy/add/",
                 "kind": "link",
                 "target": "add",
                 "text": "flops.add"
@@ -472,12 +472,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.add",
+    "flopscope_ref": "fnp.add",
     "module": "numpy",
     "name": "add",
     "notes": "Element-wise addition.",
     "numpy_ref": "np.add",
-    "signature": "flops.add(*args, **kwargs)",
+    "signature": "fnp.add(*args, **kwargs)",
     "status": "supported",
     "summary": "Add arguments element-wise.",
     "weight": 1.0

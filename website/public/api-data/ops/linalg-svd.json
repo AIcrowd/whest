@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/svd/",
+  "detail_href": "/docs/api/numpy/linalg/svd/",
   "detail_json_href": "/api-data/ops/linalg-svd.json",
   "docs": {
     "sections": [
@@ -932,7 +932,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/matmul",
+                "href": "/docs/api/numpy/matmul/",
                 "kind": "link",
                 "target": "matmul",
                 "text": "flops.matmul"
@@ -987,7 +987,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -1215,12 +1215,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * k",
     "cost_formula_latex": "$m \\cdot n \\cdot k$",
-    "flopscope_ref": "flops.linalg.svd",
+    "flopscope_ref": "fnp.linalg.svd",
     "module": "numpy.linalg",
     "name": "linalg.svd",
     "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
     "numpy_ref": "np.linalg.svd",
-    "signature": "flops.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
+    "signature": "fnp.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
     "status": "supported",
     "summary": "Singular Value Decomposition.",
     "weight": 4.0

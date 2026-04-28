@@ -170,7 +170,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/mean",
+                      "href": "/docs/api/numpy/mean/",
                       "kind": "link",
                       "target": "mean",
                       "text": "mean"
@@ -231,7 +231,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/mean",
+                  "href": "/docs/api/numpy/mean/",
                   "kind": "link",
                   "target": "mean",
                   "text": "mean"
@@ -633,7 +633,7 @@
     }
   ],
   "canonical_name": "random.lognormal",
-  "canonical_path": "random/lognormal",
+  "canonical_path": "numpy/random/lognormal",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -658,15 +658,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.lognormal",
+  "flopscope_ref": "fnp.random.lognormal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/lognormal/",
+  "href": "/docs/api/numpy/random/lognormal/",
   "legacy_href": "/docs/api/ops/random-lognormal/",
   "module": "numpy.random",
   "name": "random.lognormal",
   "next": {
-    "href": "/docs/api/random/logseries/",
-    "label": "flops.random.logseries"
+    "href": "/docs/api/numpy/random/logseries/",
+    "label": "fnp.random.logseries"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -703,10 +703,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/logistic/",
-    "label": "flops.random.logistic"
+    "href": "/docs/api/numpy/random/logistic/",
+    "label": "fnp.random.logistic"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.lognormal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.lognormal.html",
   "returns": [
     {
@@ -751,9 +752,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.lognormal(mean=0.0, sigma=1.0, size=None)",
+  "signature": "fnp.random.lognormal(mean=0.0, sigma=1.0, size=None)",
   "slug": "random-lognormal",
   "summary": "Draw samples from a log-normal distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

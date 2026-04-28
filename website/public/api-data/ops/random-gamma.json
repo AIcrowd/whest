@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/gamma/",
+  "detail_href": "/docs/api/numpy/random/gamma/",
   "detail_json_href": "/api-data/ops/random-gamma.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/shape",
+                "href": "/docs/api/numpy/shape/",
                 "kind": "link",
                 "target": "shape",
                 "text": "shape"
@@ -189,7 +189,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/shape",
+                        "href": "/docs/api/numpy/shape/",
                         "kind": "link",
                         "target": "shape",
                         "text": "shape"
@@ -250,7 +250,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/shape",
+                    "href": "/docs/api/numpy/shape/",
                     "kind": "link",
                     "target": "shape",
                     "text": "shape"
@@ -522,12 +522,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.gamma",
+    "flopscope_ref": "fnp.random.gamma",
     "module": "numpy.random",
     "name": "random.gamma",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.gamma",
-    "signature": "flops.random.gamma(shape, scale=1.0, size=None)",
+    "signature": "fnp.random.gamma(shape, scale=1.0, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Gamma distribution.",
     "weight": 16.0

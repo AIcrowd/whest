@@ -492,7 +492,7 @@
     }
   ],
   "canonical_name": "random.f",
-  "canonical_path": "random/f",
+  "canonical_path": "numpy/random/f",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -517,15 +517,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.f",
+  "flopscope_ref": "fnp.random.f",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/f/",
+  "href": "/docs/api/numpy/random/f/",
   "legacy_href": "/docs/api/ops/random-f/",
   "module": "numpy.random",
   "name": "random.f",
   "next": {
-    "href": "/docs/api/random/gamma/",
-    "label": "flops.random.gamma"
+    "href": "/docs/api/numpy/random/gamma/",
+    "label": "fnp.random.gamma"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -559,10 +559,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/exponential/",
-    "label": "flops.random.exponential"
+    "href": "/docs/api/numpy/random/exponential/",
+    "label": "fnp.random.exponential"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.f",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.f.html",
   "returns": [
     {
@@ -607,9 +608,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.f(dfnum, dfden, size=None)",
+  "signature": "fnp.random.f(dfnum, dfden, size=None)",
   "slug": "random-f",
   "summary": "Draw samples from an F distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

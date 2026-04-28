@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/cholesky/",
+  "detail_href": "/docs/api/numpy/linalg/cholesky/",
   "detail_json_href": "/api-data/ops/linalg-cholesky.json",
   "docs": {
     "sections": [
@@ -523,7 +523,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -640,12 +640,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "flops.linalg.cholesky",
+    "flopscope_ref": "fnp.linalg.cholesky",
     "module": "numpy.linalg",
     "name": "linalg.cholesky",
     "notes": "Cholesky decomposition. Cost: $n^3$.",
     "numpy_ref": "np.linalg.cholesky",
-    "signature": "flops.linalg.cholesky(a, /, *, upper=False)",
+    "signature": "fnp.linalg.cholesky(a, /, *, upper=False)",
     "status": "supported",
     "summary": "Cholesky decomposition.",
     "weight": 4.0

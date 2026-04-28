@@ -98,7 +98,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/convolve",
+                      "href": "/docs/api/numpy/convolve/",
                       "kind": "link",
                       "target": "convolve",
                       "text": "convolve"
@@ -109,7 +109,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/convolve",
+                      "href": "/docs/api/numpy/convolve/",
                       "kind": "link",
                       "target": "convolve",
                       "text": "convolve"
@@ -130,7 +130,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/convolve",
+                  "href": "/docs/api/numpy/convolve/",
                   "kind": "link",
                   "target": "convolve",
                   "text": "convolve"
@@ -141,7 +141,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/convolve",
+                  "href": "/docs/api/numpy/convolve/",
                   "kind": "link",
                   "target": "convolve",
                   "text": "convolve"
@@ -239,7 +239,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/convolve",
+              "href": "/docs/api/numpy/convolve/",
               "label": "flops.convolve",
               "original_target": "convolve",
               "role": "",
@@ -322,7 +322,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/correlate",
+              "href": "/docs/api/numpy/correlate/",
               "kind": "link",
               "target": "correlate",
               "text": "flops.correlate"
@@ -365,7 +365,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -456,7 +456,7 @@
     }
   ],
   "canonical_name": "correlate",
-  "canonical_path": "correlate",
+  "canonical_path": "numpy/correlate",
   "category": "counted_custom",
   "cost_formula": "n * m",
   "cost_formula_latex": "$n \\cdot m$",
@@ -482,20 +482,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.correlate([1, 2, 3], [0, 1, 0.5])\n\nflops.correlate([1, 2, 3], [0, 1, 0.5], \"same\")\n\nflops.correlate([1, 2, 3], [0, 1, 0.5], \"full\")\n\nflops.correlate([1+1j, 2, 3-1j], [0, 1, 0.5j], 'full')\n\nflops.correlate([0, 1, 0.5j], [1+1j, 2, 3-1j], 'full')",
+    "code": "import flopscope.numpy as fnp\n\nflops.correlate([1, 2, 3], [0, 1, 0.5])\n\nflops.correlate([1, 2, 3], [0, 1, 0.5], \"same\")\n\nflops.correlate([1, 2, 3], [0, 1, 0.5], \"full\")\n\nflops.correlate([1+1j, 2, 3-1j], [0, 1, 0.5j], 'full')\n\nflops.correlate([0, 1, 0.5j], [1+1j, 2, 3-1j], 'full')",
     "output": "array([3.5])\n\narray([2. ,  3.5,  3. ])\n\narray([0.5,  2. ,  3.5,  3. ,  0. ])\n\narray([ 0.5-0.5j,  1.0+0.j ,  1.5-1.5j,  3.0-1.j ,  0.0+0.j ])\n\narray([ 0.0+0.j ,  3.0+1.j ,  1.5+1.5j,  1.0+0.j ,  0.5+0.5j])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.correlate",
+  "flopscope_ref": "fnp.correlate",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1230",
-  "href": "/docs/api/correlate/",
+  "href": "/docs/api/numpy/correlate/",
   "legacy_href": "/docs/api/ops/correlate/",
   "module": "numpy",
   "name": "correlate",
   "next": {
-    "href": "/docs/api/cos/",
-    "label": "flops.cos"
+    "href": "/docs/api/numpy/cos/",
+    "label": "fnp.cos"
   },
   "notes": "1-D cross-correlation.",
   "notes_sections": [
@@ -523,10 +523,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/corrcoef/",
-    "label": "flops.corrcoef"
+    "href": "/docs/api/numpy/corrcoef/",
+    "label": "fnp.corrcoef"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.correlate",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.correlate.html",
   "returns": [
     {
@@ -547,7 +548,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/convolve",
+      "href": "/docs/api/numpy/convolve/",
       "label": "flops.convolve",
       "original_target": "convolve",
       "role": "",
@@ -571,9 +572,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.correlate(a, v, mode='valid')",
+  "signature": "fnp.correlate(a, v, mode='valid')",
   "slug": "correlate",
   "summary": "Cross-correlation of two 1-dimensional sequences.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L692",
   "weight": 1.0
 }

@@ -12,18 +12,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Weighted FLOP cost estimate for "
-            },
-            {
-              "external_url": "",
-              "href": "/docs/api/polyint/",
-              "kind": "link",
-              "target": "polyint",
-              "text": "polyint"
-            },
-            {
-              "kind": "text",
-              "text": "."
+              "text": "Cost for polyint: n FLOPs (n = len of coeffs)."
             }
           ],
           "type": "paragraph"
@@ -34,10 +23,76 @@
     {
       "blocks": [
         {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of columns in the input matrix."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of columns in the input matrix."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
           "inline": [
             {
               "kind": "text",
-              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+              "text": "This helper multiplies the analytical FLOP count by the active weight from "
             },
             {
               "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
@@ -48,7 +103,7 @@
             },
             {
               "kind": "text",
-              "text": ". The final value is floored with "
+              "text": " and then applies "
             },
             {
               "kind": "code",
@@ -56,22 +111,13 @@
             },
             {
               "kind": "text",
-              "text": " to match runtime budget accounting."
-            }
-          ],
-          "type": "paragraph"
-        },
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "Analytical formula:\nCost for polyint: n FLOPs (n = len of coeffs)."
+              "text": " so public estimates match budget deductions."
             }
           ],
           "type": "paragraph"
         }
       ],
-      "title": "Extended Summary"
+      "title": "Notes"
     }
   ],
   "canonical_name": "flops.polyint_cost",
@@ -93,6 +139,6 @@
   "slug": "flops-polyint-cost",
   "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L37",
   "status_note": "",
-  "summary": "Weighted FLOP cost estimate for ``polyint``.",
+  "summary": "Cost for polyint: n FLOPs (n = len of coeffs).",
   "upstream_source_url": ""
 }

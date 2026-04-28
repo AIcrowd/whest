@@ -419,7 +419,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -476,7 +476,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/divide",
+              "href": "/docs/api/numpy/divide/",
               "kind": "link",
               "target": "divide",
               "text": "flops.divide"
@@ -525,7 +525,7 @@
     }
   ],
   "canonical_name": "divide",
-  "canonical_path": "divide",
+  "canonical_path": "numpy/divide",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -543,20 +543,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.divide(2.0, 4.0)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nflops.divide(x1, x2)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = 2 * flops.ones(3)\n\nx1 / x2",
+    "code": "import flopscope.numpy as fnp\n\nflops.divide(2.0, 4.0)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nflops.divide(x1, x2)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = 2 * flops.ones(3)\n\nx1 / x2",
     "output": "0.5\n\narray([[nan, 1. , 1. ],\n       [inf, 4. , 2.5],\n       [inf, 7. , 4. ]])\n\narray([[0. , 0.5, 1. ],\n       [1.5, 2. , 2.5],\n       [3. , 3.5, 4. ]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.divide",
+  "flopscope_ref": "fnp.divide",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/divide/",
+  "href": "/docs/api/numpy/divide/",
   "legacy_href": "/docs/api/ops/divide/",
   "module": "numpy",
   "name": "divide",
   "next": {
-    "href": "/docs/api/dot/",
-    "label": "flops.dot"
+    "href": "/docs/api/numpy/dot/",
+    "label": "fnp.dot"
   },
   "notes": "Element-wise true division.",
   "notes_sections": [
@@ -613,10 +613,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/digitize/",
-    "label": "flops.digitize"
+    "href": "/docs/api/numpy/digitize/",
+    "label": "fnp.digitize"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.divide",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.divide.html",
   "returns": [
     {
@@ -646,9 +647,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.divide(*args, **kwargs)",
+  "signature": "fnp.divide(*args, **kwargs)",
   "slug": "divide",
   "summary": "Divide arguments element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

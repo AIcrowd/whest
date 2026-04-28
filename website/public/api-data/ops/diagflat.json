@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/diagflat/",
+  "detail_href": "/docs/api/numpy/diagflat/",
   "detail_json_href": "/api-data/ops/diagflat.json",
   "docs": {
     "sections": [
@@ -150,7 +150,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/diag",
+                "href": "/docs/api/numpy/diag/",
                 "label": "flops.diag",
                 "original_target": "diag",
                 "role": "",
@@ -166,7 +166,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/diagonal",
+                "href": "/docs/api/numpy/diagonal/",
                 "label": "flops.diagonal",
                 "original_target": "diagonal",
                 "role": "",
@@ -182,7 +182,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/trace",
+                "href": "/docs/api/numpy/trace/",
                 "label": "flops.trace",
                 "original_target": "trace",
                 "role": "",
@@ -202,7 +202,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -259,12 +259,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.diagflat",
+    "flopscope_ref": "fnp.diagflat",
     "module": "numpy",
     "name": "diagflat",
     "notes": "Create diagonal array from flattened input. Cost: len(v).",
     "numpy_ref": "np.diagflat",
-    "signature": "flops.diagflat(v, k=0)",
+    "signature": "fnp.diagflat(v, k=0)",
     "status": "supported",
     "summary": "Create a two-dimensional array with the flattened input as a diagonal.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/spacing/",
+  "detail_href": "/docs/api/numpy/spacing/",
   "detail_json_href": "/api-data/ops/spacing.json",
   "docs": {
     "sections": [
@@ -323,7 +323,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -346,12 +346,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.spacing",
+    "flopscope_ref": "fnp.spacing",
     "module": "numpy",
     "name": "spacing",
     "notes": "Return ULP spacing for each element.",
     "numpy_ref": "np.spacing",
-    "signature": "flops.spacing(*args, **kwargs)",
+    "signature": "fnp.spacing(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the distance between x and the nearest adjacent number.",
     "weight": 1.0

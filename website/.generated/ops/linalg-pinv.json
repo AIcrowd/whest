@@ -597,7 +597,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -640,7 +640,7 @@
     }
   ],
   "canonical_name": "linalg.pinv",
-  "canonical_path": "linalg/pinv",
+  "canonical_path": "numpy/linalg/pinv",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -661,20 +661,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nrng = flops.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nB = flops.linalg.pinv(a)\n\nflops.allclose(a, flops.dot(a, flops.dot(B, a)))\n\nflops.allclose(B, flops.dot(B, flops.dot(a, B)))",
+    "code": "import flopscope.numpy as fnp\n\nrng = flops.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nB = flops.linalg.pinv(a)\n\nflops.allclose(a, flops.dot(a, flops.dot(B, a)))\n\nflops.allclose(B, flops.dot(B, flops.dot(a, B)))",
     "output": "True\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.pinv",
+  "flopscope_ref": "fnp.linalg.pinv",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L194",
-  "href": "/docs/api/linalg/pinv/",
+  "href": "/docs/api/numpy/linalg/pinv/",
   "legacy_href": "/docs/api/ops/linalg-pinv/",
   "module": "numpy.linalg",
   "name": "linalg.pinv",
   "next": {
-    "href": "/docs/api/linalg/qr/",
-    "label": "flops.linalg.qr"
+    "href": "/docs/api/numpy/linalg/qr/",
+    "label": "fnp.linalg.qr"
   },
   "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
   "notes_sections": [
@@ -723,10 +723,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/outer/",
-    "label": "flops.linalg.outer"
+    "href": "/docs/api/numpy/linalg/outer/",
+    "label": "fnp.linalg.outer"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.pinv",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.pinv.html",
   "returns": [
     {
@@ -772,9 +773,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
+  "signature": "fnp.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
   "slug": "linalg-pinv",
   "summary": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2128",
   "weight": 4.0
 }

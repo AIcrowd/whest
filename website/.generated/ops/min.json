@@ -157,7 +157,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/min",
+                      "href": "/docs/api/numpy/min/",
                       "kind": "link",
                       "target": "min",
                       "text": "min"
@@ -449,7 +449,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/nanmin",
+              "href": "/docs/api/numpy/nanmin/",
               "label": "flops.nanmin",
               "original_target": "nanmin",
               "role": "",
@@ -465,7 +465,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/minimum",
+              "href": "/docs/api/numpy/minimum/",
               "label": "flops.minimum",
               "original_target": "minimum",
               "role": "",
@@ -481,7 +481,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/fmin",
+              "href": "/docs/api/numpy/fmin/",
               "label": "flops.fmin",
               "original_target": "fmin",
               "role": "",
@@ -497,7 +497,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/argmin",
+              "href": "/docs/api/numpy/argmin/",
               "label": "flops.argmin",
               "original_target": "argmin",
               "role": "",
@@ -508,7 +508,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanmax",
+              "href": "/docs/api/numpy/nanmax/",
               "label": "flops.nanmax",
               "original_target": "nanmax",
               "role": "",
@@ -519,7 +519,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/maximum",
+              "href": "/docs/api/numpy/maximum/",
               "label": "flops.maximum",
               "original_target": "maximum",
               "role": "",
@@ -530,7 +530,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/fmax",
+              "href": "/docs/api/numpy/fmax/",
               "label": "flops.fmax",
               "original_target": "fmax",
               "role": "",
@@ -562,7 +562,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/min",
+              "href": "/docs/api/numpy/min/",
               "kind": "link",
               "target": "min",
               "text": "min"
@@ -608,7 +608,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -777,7 +777,7 @@
     }
   ],
   "canonical_name": "min",
-  "canonical_path": "min",
+  "canonical_path": "numpy/min",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -788,20 +788,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.arange(4).reshape((2,2))\n\na\n\nflops.min(a)           # Minimum of the flattened array\n\nflops.min(a, axis=0)   # Minima along the first axis\n\nflops.min(a, axis=1)   # Minima along the second axis\n\nflops.min(a, where=[False, True], initial=10, axis=0)\n\nb = flops.arange(5, dtype=float)\n\nb[2] = flops.nan\n\nflops.min(b)\n\nflops.min(b, where=~flops.isnan(b), initial=10)\n\nflops.nanmin(b)\n\nflops.min([[-50], [10]], axis=-1, initial=0)\n\nflops.min([6], initial=5)\n\nmin([6], default=5)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.arange(4).reshape((2,2))\n\na\n\nflops.min(a)           # Minimum of the flattened array\n\nflops.min(a, axis=0)   # Minima along the first axis\n\nflops.min(a, axis=1)   # Minima along the second axis\n\nflops.min(a, where=[False, True], initial=10, axis=0)\n\nb = flops.arange(5, dtype=float)\n\nb[2] = flops.nan\n\nflops.min(b)\n\nflops.min(b, where=~flops.isnan(b), initial=10)\n\nflops.nanmin(b)\n\nflops.min([[-50], [10]], axis=-1, initial=0)\n\nflops.min([6], initial=5)\n\nmin([6], default=5)",
     "output": "array([[0, 1],\n       [2, 3]])\n\n0\n\narray([0, 1])\n\narray([0, 2])\n\narray([10,  1])\n\nflops.float64(nan)\n\n0.0\n\n0.0\n\narray([-50,   0])\n\n5\n\n6",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.min",
+  "flopscope_ref": "fnp.min",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/min/",
+  "href": "/docs/api/numpy/min/",
   "legacy_href": "/docs/api/ops/min/",
   "module": "numpy",
   "name": "min",
   "next": {
-    "href": "/docs/api/min-scalar-type/",
-    "label": "flops.min_scalar_type"
+    "href": "/docs/api/numpy/min-scalar-type/",
+    "label": "fnp.min_scalar_type"
   },
   "notes": "Minimum value of array.",
   "notes_sections": [
@@ -870,10 +870,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/meshgrid/",
-    "label": "flops.meshgrid"
+    "href": "/docs/api/numpy/meshgrid/",
+    "label": "fnp.meshgrid"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.min",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.min.html",
   "returns": [
     {
@@ -913,7 +914,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/nanmin",
+      "href": "/docs/api/numpy/nanmin/",
       "label": "flops.nanmin",
       "original_target": "nanmin",
       "role": "",
@@ -929,7 +930,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/minimum",
+      "href": "/docs/api/numpy/minimum/",
       "label": "flops.minimum",
       "original_target": "minimum",
       "role": "",
@@ -945,7 +946,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/fmin",
+      "href": "/docs/api/numpy/fmin/",
       "label": "flops.fmin",
       "original_target": "fmin",
       "role": "",
@@ -961,7 +962,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/argmin",
+      "href": "/docs/api/numpy/argmin/",
       "label": "flops.argmin",
       "original_target": "argmin",
       "role": "",
@@ -972,7 +973,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanmax",
+      "href": "/docs/api/numpy/nanmax/",
       "label": "flops.nanmax",
       "original_target": "nanmax",
       "role": "",
@@ -983,7 +984,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/maximum",
+      "href": "/docs/api/numpy/maximum/",
       "label": "flops.maximum",
       "original_target": "maximum",
       "role": "",
@@ -994,7 +995,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/fmax",
+      "href": "/docs/api/numpy/fmax/",
       "label": "flops.fmax",
       "original_target": "fmax",
       "role": "",
@@ -1002,9 +1003,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.min(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+  "signature": "fnp.min(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "min",
   "summary": "Return the minimum of an array or minimum along an axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3190",
   "weight": 1.0
 }

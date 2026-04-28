@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/beta/",
+  "detail_href": "/docs/api/numpy/random/beta/",
   "detail_json_href": "/api-data/ops/random-beta.json",
   "docs": {
     "sections": [
@@ -356,12 +356,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.beta",
+    "flopscope_ref": "fnp.random.beta",
     "module": "numpy.random",
     "name": "random.beta",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.beta",
-    "signature": "flops.random.beta(a, b, size=None)",
+    "signature": "fnp.random.beta(a, b, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Beta distribution.",
     "weight": 16.0

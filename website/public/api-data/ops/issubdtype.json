@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/issubdtype/",
+  "detail_href": "/docs/api/numpy/issubdtype/",
   "detail_json_href": "/api-data/ops/issubdtype.json",
   "docs": {
     "sections": [
@@ -146,7 +146,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/issubdtype",
+                "href": "/docs/api/numpy/issubdtype/",
                 "kind": "link",
                 "target": "issubdtype",
                 "text": "issubdtype"
@@ -327,12 +327,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.issubdtype",
+    "flopscope_ref": "fnp.issubdtype",
     "module": "numpy",
     "name": "issubdtype",
     "notes": "Return True if first argument is lower in type hierarchy.",
     "numpy_ref": "np.issubdtype",
-    "signature": "flops.issubdtype(arg1, arg2)",
+    "signature": "fnp.issubdtype(arg1, arg2)",
     "status": "supported",
     "summary": "Returns True if first argument is a typecode lower/equal in type hierarchy.",
     "weight": 0.0

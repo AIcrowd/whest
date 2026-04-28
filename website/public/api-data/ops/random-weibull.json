@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/weibull/",
+  "detail_href": "/docs/api/numpy/random/weibull/",
   "detail_json_href": "/api-data/ops/random-weibull.json",
   "docs": {
     "sections": [
@@ -581,12 +581,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.weibull",
+    "flopscope_ref": "fnp.random.weibull",
     "module": "numpy.random",
     "name": "random.weibull",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.weibull",
-    "signature": "flops.random.weibull(a, size=None)",
+    "signature": "fnp.random.weibull(a, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Weibull distribution.",
     "weight": 16.0

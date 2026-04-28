@@ -316,7 +316,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/frombuffer/",
+              "href": "/docs/api/numpy/frombuffer/",
               "label": "flops.frombuffer",
               "original_target": "frombuffer",
               "role": "",
@@ -338,7 +338,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/fromiter/",
+              "href": "/docs/api/numpy/fromiter/",
               "label": "flops.fromiter",
               "original_target": "fromiter",
               "role": "",
@@ -358,7 +358,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/interp/",
+  "detail_href": "/docs/api/numpy/interp/",
   "detail_json_href": "/api-data/ops/interp.json",
   "docs": {
     "sections": [
@@ -617,7 +617,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -811,12 +811,12 @@
     "category": "counted_custom",
     "cost_formula": "n * log(m)",
     "cost_formula_latex": "$n \\cdot \\log m$",
-    "flopscope_ref": "flops.interp",
+    "flopscope_ref": "fnp.interp",
     "module": "numpy",
     "name": "interp",
     "notes": "1-D linear interpolation.",
     "numpy_ref": "np.interp",
-    "signature": "flops.interp(x, xp, fp, left=None, right=None, period=None)",
+    "signature": "fnp.interp(x, xp, fp, left=None, right=None, period=None)",
     "status": "supported",
     "summary": "One-dimensional linear interpolation for monotonically increasing sample points.",
     "weight": 1.0

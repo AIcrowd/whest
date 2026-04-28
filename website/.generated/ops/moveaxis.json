@@ -154,7 +154,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/transpose",
+              "href": "/docs/api/numpy/transpose/",
               "label": "flops.transpose",
               "original_target": "transpose",
               "role": "",
@@ -170,7 +170,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/swapaxes",
+              "href": "/docs/api/numpy/swapaxes/",
               "label": "flops.swapaxes",
               "original_target": "swapaxes",
               "role": "",
@@ -190,7 +190,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -273,7 +273,7 @@
     }
   ],
   "canonical_name": "moveaxis",
-  "canonical_path": "moveaxis",
+  "canonical_path": "numpy/moveaxis",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -284,20 +284,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.zeros((3, 4, 5))\n\nflops.moveaxis(x, 0, -1).shape\n\nflops.moveaxis(x, -1, 0).shape\n\nflops.transpose(x).shape\n\nflops.swapaxes(x, 0, -1).shape\n\nflops.moveaxis(x, [0, 1], [-1, -2]).shape\n\nflops.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.zeros((3, 4, 5))\n\nflops.moveaxis(x, 0, -1).shape\n\nflops.moveaxis(x, -1, 0).shape\n\nflops.transpose(x).shape\n\nflops.swapaxes(x, 0, -1).shape\n\nflops.moveaxis(x, [0, 1], [-1, -2]).shape\n\nflops.moveaxis(x, [0, 1, 2], [-1, -2, -3]).shape",
     "output": "(4, 5, 3)\n\n(5, 3, 4)\n\n(5, 4, 3)\n\n(5, 4, 3)\n\n(5, 4, 3)\n\n(5, 4, 3)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.moveaxis",
+  "flopscope_ref": "fnp.moveaxis",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L332",
-  "href": "/docs/api/moveaxis/",
+  "href": "/docs/api/numpy/moveaxis/",
   "legacy_href": "/docs/api/ops/moveaxis/",
   "module": "numpy",
   "name": "moveaxis",
   "next": {
-    "href": "/docs/api/multiply/",
-    "label": "flops.multiply"
+    "href": "/docs/api/numpy/multiply/",
+    "label": "fnp.multiply"
   },
   "notes": "Move axes to new positions.",
   "notes_sections": [],
@@ -327,10 +327,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/modf/",
-    "label": "flops.modf"
+    "href": "/docs/api/numpy/modf/",
+    "label": "fnp.modf"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.moveaxis",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.moveaxis.html",
   "returns": [
     {
@@ -351,7 +352,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/transpose",
+      "href": "/docs/api/numpy/transpose/",
       "label": "flops.transpose",
       "original_target": "transpose",
       "role": "",
@@ -367,7 +368,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/swapaxes",
+      "href": "/docs/api/numpy/swapaxes/",
       "label": "flops.swapaxes",
       "original_target": "swapaxes",
       "role": "",
@@ -375,9 +376,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.moveaxis(a, source, destination)",
+  "signature": "fnp.moveaxis(a, source, destination)",
   "slug": "moveaxis",
   "summary": "Move axes of an array to new positions.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1448",
   "weight": 0.0
 }

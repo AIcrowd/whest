@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/triu/",
+  "detail_href": "/docs/api/numpy/triu/",
   "detail_json_href": "/api-data/ops/triu.json",
   "docs": {
     "sections": [
@@ -35,7 +35,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/ndim",
+                "href": "/docs/api/numpy/ndim/",
                 "kind": "link",
                 "target": "ndim",
                 "text": "ndim"
@@ -46,7 +46,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/triu",
+                "href": "/docs/api/numpy/triu/",
                 "kind": "link",
                 "target": "triu",
                 "text": "triu"
@@ -66,7 +66,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/tril",
+                "href": "/docs/api/numpy/tril/",
                 "kind": "link",
                 "target": "tril",
                 "text": "tril"
@@ -94,7 +94,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/tril",
+                "href": "/docs/api/numpy/tril/",
                 "label": "flops.tril",
                 "original_target": "tril",
                 "role": "",
@@ -114,7 +114,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -207,12 +207,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.triu",
+    "flopscope_ref": "fnp.triu",
     "module": "numpy",
     "name": "triu",
     "notes": "Upper triangle of array.",
     "numpy_ref": "np.triu",
-    "signature": "flops.triu(m, k=0)",
+    "signature": "fnp.triu(m, k=0)",
     "status": "supported",
     "summary": "Upper triangle of an array.",
     "weight": 0.0

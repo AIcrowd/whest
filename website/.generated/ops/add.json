@@ -362,7 +362,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -419,7 +419,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/add",
+              "href": "/docs/api/numpy/add/",
               "kind": "link",
               "target": "add",
               "text": "flops.add"
@@ -468,7 +468,7 @@
     }
   ],
   "canonical_name": "add",
-  "canonical_path": "add",
+  "canonical_path": "numpy/add",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -486,20 +486,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.add(1.0, 4.0)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nflops.add(x1, x2)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nx1 + x2",
+    "code": "import flopscope.numpy as fnp\n\nflops.add(1.0, 4.0)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nflops.add(x1, x2)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nx1 + x2",
     "output": "5.0\n\narray([[  0.,   2.,   4.],\n       [  3.,   5.,   7.],\n       [  6.,   8.,  10.]])\n\narray([[ 0.,  2.,  4.],\n       [ 3.,  5.,  7.],\n       [ 6.,  8., 10.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.add",
+  "flopscope_ref": "fnp.add",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/add/",
+  "href": "/docs/api/numpy/add/",
   "legacy_href": "/docs/api/ops/add/",
   "module": "numpy",
   "name": "add",
   "next": {
-    "href": "/docs/api/all/",
-    "label": "flops.all"
+    "href": "/docs/api/numpy/all/",
+    "label": "fnp.all"
   },
   "notes": "Element-wise addition.",
   "notes_sections": [
@@ -548,10 +548,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/absolute/",
-    "label": "flops.absolute"
+    "href": "/docs/api/numpy/absolute/",
+    "label": "fnp.absolute"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.add",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.add.html",
   "returns": [
     {
@@ -564,9 +565,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.add(*args, **kwargs)",
+  "signature": "fnp.add(*args, **kwargs)",
   "slug": "add",
   "summary": "Add arguments element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

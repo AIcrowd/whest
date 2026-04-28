@@ -85,6 +85,69 @@
         }
       ],
       "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": ""
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.budget_reset()"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "with flops.BudgetContext(flop_budget=100, quiet=True):"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "_ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.budget_summary_dict()[\"flops_used\"] > 0"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.budget_reset()"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.budget_summary_dict()[\"flops_used\"]"
+            },
+            {
+              "kind": "output",
+              "text": "0"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "budget_reset",
@@ -99,7 +162,7 @@
   "related_guides": [],
   "signature": "flops.budget_reset() -> 'None'",
   "slug": "budget-reset",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_budget.py#L669",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_budget.py#L714",
   "status_note": "",
   "summary": "Clear accumulated session-wide budget data.",
   "upstream_source_url": ""

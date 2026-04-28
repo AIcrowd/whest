@@ -444,7 +444,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/isin",
+              "href": "/docs/api/numpy/isin/",
               "kind": "link",
               "target": "isin",
               "text": "isin"
@@ -535,7 +535,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/array",
+              "href": "/docs/api/numpy/array/",
               "kind": "link",
               "target": "array",
               "text": "array"
@@ -606,7 +606,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -669,7 +669,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/nonzero",
+              "href": "/docs/api/numpy/nonzero/",
               "kind": "link",
               "target": "nonzero",
               "text": "nonzero"
@@ -744,7 +744,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/array",
+              "href": "/docs/api/numpy/array/",
               "kind": "link",
               "target": "array",
               "text": "array"
@@ -811,7 +811,7 @@
     }
   ],
   "canonical_name": "isin",
-  "canonical_path": "isin",
+  "canonical_path": "numpy/isin",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -822,20 +822,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nelement = 2*flops.arange(4).reshape((2, 2))\n\nelement\n\ntest_elements = [1, 2, 4, 8]\n\nmask = flops.isin(element, test_elements)\n\nmask\n\nelement[mask]\n\nflops.nonzero(mask)\n\nmask = flops.isin(element, test_elements, invert=True)\n\nmask\n\nelement[mask]\n\ntest_set = {1, 2, 4, 8}\n\nflops.isin(element, test_set)\n\nflops.isin(element, list(test_set))",
+    "code": "import flopscope.numpy as fnp\n\nelement = 2*flops.arange(4).reshape((2, 2))\n\nelement\n\ntest_elements = [1, 2, 4, 8]\n\nmask = flops.isin(element, test_elements)\n\nmask\n\nelement[mask]\n\nflops.nonzero(mask)\n\nmask = flops.isin(element, test_elements, invert=True)\n\nmask\n\nelement[mask]\n\ntest_set = {1, 2, 4, 8}\n\nflops.isin(element, test_set)\n\nflops.isin(element, list(test_set))",
     "output": "array([[0, 2],\n       [4, 6]])\n\narray([[False,  True],\n       [ True, False]])\n\narray([2, 4])\n\n(array([0, 1]), array([1, 0]))\n\narray([[ True, False],\n       [False,  True]])\n\narray([0, 6])\n\narray([[False, False],\n       [False, False]])\n\narray([[False,  True],\n       [ True, False]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.isin",
+  "flopscope_ref": "fnp.isin",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L390",
-  "href": "/docs/api/isin/",
+  "href": "/docs/api/numpy/isin/",
   "legacy_href": "/docs/api/ops/isin/",
   "module": "numpy",
   "name": "isin",
   "next": {
-    "href": "/docs/api/isinf/",
-    "label": "flops.isinf"
+    "href": "/docs/api/numpy/isinf/",
+    "label": "fnp.isinf"
   },
   "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)).",
   "notes_sections": [
@@ -906,10 +906,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/isfortran/",
-    "label": "flops.isfortran"
+    "href": "/docs/api/numpy/isfortran/",
+    "label": "fnp.isfortran"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.isin",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isin.html",
   "returns": [
     {
@@ -922,9 +923,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.isin(element, test_elements, assume_unique=False, invert=False, *, kind=None)",
+  "signature": "fnp.isin(element, test_elements, assume_unique=False, invert=False, *, kind=None)",
   "slug": "isin",
   "summary": "Calculates ``element in test_elements``, broadcasting over `element` only. Returns a boolean array of the same shape as `element` that is True where an element of `element` is in `test_elements` and False otherwise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L1015",
   "weight": 1.0
 }

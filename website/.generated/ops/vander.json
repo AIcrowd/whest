@@ -313,7 +313,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -464,7 +464,7 @@
     }
   ],
   "canonical_name": "vander",
-  "canonical_path": "vander",
+  "canonical_path": "numpy/vander",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -482,20 +482,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.array([1, 2, 3, 5])\n\nN = 3\n\nflops.vander(x, N)\n\nflops.column_stack([x**(N-1-i) for i in range(N)])\n\nx = flops.array([1, 2, 3, 5])\n\nflops.vander(x)\n\nflops.vander(x, increasing=True)\n\nflops.linalg.det(flops.vander(x))\n\n(5-3)*(5-2)*(5-1)*(3-2)*(3-1)*(2-1)",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([1, 2, 3, 5])\n\nN = 3\n\nflops.vander(x, N)\n\nflops.column_stack([x**(N-1-i) for i in range(N)])\n\nx = flops.array([1, 2, 3, 5])\n\nflops.vander(x)\n\nflops.vander(x, increasing=True)\n\nflops.linalg.det(flops.vander(x))\n\n(5-3)*(5-2)*(5-1)*(3-2)*(3-1)*(2-1)",
     "output": "array([[ 1,  1,  1],\n       [ 4,  2,  1],\n       [ 9,  3,  1],\n       [25,  5,  1]])\n\narray([[ 1,  1,  1],\n       [ 4,  2,  1],\n       [ 9,  3,  1],\n       [25,  5,  1]])\n\narray([[  1,   1,   1,   1],\n       [  8,   4,   2,   1],\n       [ 27,   9,   3,   1],\n       [125,  25,   5,   1]])\n\narray([[  1,   1,   1,   1],\n       [  1,   2,   4,   8],\n       [  1,   3,   9,  27],\n       [  1,   5,  25, 125]])\n\n48.000000000000043 # may vary\n\n48",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.vander",
+  "flopscope_ref": "fnp.vander",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L280",
-  "href": "/docs/api/vander/",
+  "href": "/docs/api/numpy/vander/",
   "legacy_href": "/docs/api/ops/vander/",
   "module": "numpy",
   "name": "vander",
   "next": {
-    "href": "/docs/api/var/",
-    "label": "flops.var"
+    "href": "/docs/api/numpy/var/",
+    "label": "fnp.var"
   },
   "notes": "Vandermonde matrix; cost = len(x)*(N-1).",
   "notes_sections": [],
@@ -526,10 +526,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/unwrap/",
-    "label": "flops.unwrap"
+    "href": "/docs/api/numpy/unwrap/",
+    "label": "fnp.unwrap"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.vander",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.vander.html",
   "returns": [
     {
@@ -555,9 +556,11 @@
       "unresolved": true
     }
   ],
-  "signature": "flops.vander(x, N=None, increasing=False)",
+  "signature": "fnp.vander(x, N=None, increasing=False)",
   "slug": "vander",
   "summary": "Generate a Vandermonde matrix.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L547",
   "weight": 1.0
 }

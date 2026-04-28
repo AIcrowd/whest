@@ -3,10 +3,17 @@
   "pages": [
     "index",
     "operation-cost-index",
+<<<<<<< HEAD
     "random",
     "stats",
     "flops",
     "testing",
+=======
+    "numpy",
+    "flopscope",
+    "stats",
+    "accounting",
+>>>>>>> e2dc0f7aa (Unify API docs and generated public reference)
     "for-agents"
   ]
 }

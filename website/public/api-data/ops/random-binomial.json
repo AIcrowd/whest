@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/binomial/",
+  "detail_href": "/docs/api/numpy/random/binomial/",
   "detail_json_href": "/api-data/ops/random-binomial.json",
   "docs": {
     "sections": [
@@ -499,12 +499,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.binomial",
+    "flopscope_ref": "fnp.random.binomial",
     "module": "numpy.random",
     "name": "random.binomial",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.binomial",
-    "signature": "flops.random.binomial(n, p, size=None)",
+    "signature": "fnp.random.binomial(n, p, size=None)",
     "status": "supported",
     "summary": "Draw samples from a binomial distribution.",
     "weight": 16.0

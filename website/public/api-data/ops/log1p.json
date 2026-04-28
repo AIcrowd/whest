@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/log1p/",
+  "detail_href": "/docs/api/numpy/log1p/",
   "detail_json_href": "/api-data/ops/log1p.json",
   "docs": {
     "sections": [
@@ -316,7 +316,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/log1p",
+                    "href": "/docs/api/numpy/log1p/",
                     "kind": "link",
                     "target": "log1p",
                     "text": "log1p"
@@ -327,7 +327,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/expm1",
+                "href": "/docs/api/numpy/expm1/",
                 "label": "flops.expm1",
                 "original_target": "expm1",
                 "role": "",
@@ -350,7 +350,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log1p",
+                "href": "/docs/api/numpy/log1p/",
                 "kind": "link",
                 "target": "log1p",
                 "text": "log1p"
@@ -435,7 +435,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log1p",
+                "href": "/docs/api/numpy/log1p/",
                 "kind": "link",
                 "target": "log1p",
                 "text": "log1p"
@@ -471,7 +471,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log1p",
+                "href": "/docs/api/numpy/log1p/",
                 "kind": "link",
                 "target": "log1p",
                 "text": "log1p"
@@ -490,7 +490,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log1p",
+                "href": "/docs/api/numpy/log1p/",
                 "kind": "link",
                 "target": "log1p",
                 "text": "log1p"
@@ -527,7 +527,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -559,12 +559,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.log1p",
+    "flopscope_ref": "fnp.log1p",
     "module": "numpy",
     "name": "log1p",
     "notes": "Element-wise log(1+x) (accurate near zero).",
     "numpy_ref": "np.log1p",
-    "signature": "flops.log1p(*args, **kwargs)",
+    "signature": "fnp.log1p(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the natural logarithm of one plus the input array, element-wise.",
     "weight": 16.0

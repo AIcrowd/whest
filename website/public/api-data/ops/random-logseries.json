@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/logseries/",
+  "detail_href": "/docs/api/numpy/random/logseries/",
   "detail_json_href": "/api-data/ops/random-logseries.json",
   "docs": {
     "sections": [
@@ -453,12 +453,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.logseries",
+    "flopscope_ref": "fnp.random.logseries",
     "module": "numpy.random",
     "name": "random.logseries",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.logseries",
-    "signature": "flops.random.logseries(p, size=None)",
+    "signature": "fnp.random.logseries(p, size=None)",
     "status": "supported",
     "summary": "Draw samples from a logarithmic series distribution.",
     "weight": 16.0

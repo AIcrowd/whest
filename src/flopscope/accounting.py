@@ -7,6 +7,7 @@ formulas remain available to the runtime in the private modules.
 
 from __future__ import annotations
 
+import inspect
 from functools import wraps
 
 from flopscope._flops import (
@@ -166,20 +167,178 @@ def _weight_cost(op_name: str, analytical_cost: int) -> int:
 
 
 def _make_weighted_cost(op_name: str, analytical_fn):
+    example = _EXAMPLE_DOCS.get(op_name)
+
     @wraps(analytical_fn)
     def wrapper(*args, **kwargs):
         return _weight_cost(op_name, analytical_fn(*args, **kwargs))
 
-    analytical_doc = analytical_fn.__doc__ or ""
-    wrapper.__doc__ = (
-        f"Weighted FLOP cost estimate for ``{op_name}``.\n\n"
-        "This public helper returns the analytical cost formula multiplied by "
-        "the active operation weight from ``flopscope._weights``. The final value "
-        "is floored with ``int(...)`` to match runtime budget accounting.\n\n"
-        "Analytical formula:\n"
-        f"{analytical_doc}"
+    wrapper.__doc__ = _build_weighted_cost_docstring(
+        op_name,
+        analytical_fn,
+        example=example,
     )
     return wrapper
+
+
+_EXAMPLE_DOCS = {
+    "einsum": """\
+>>> import flopscope as flops
+>>> cost = flops.accounting.einsum_cost(
+...     "ij,jk->ik",
+...     [(8, 16), (16, 4)],
+... )
+>>> isinstance(cost, int)
+True
+""",
+    "linalg.svd": """\
+>>> import flopscope as flops
+>>> cost = flops.accounting.svd_cost(128, 64)
+>>> isinstance(cost, int)
+True
+""",
+}
+
+
+_PARAMETER_DESCRIPTIONS = {
+    "axis": "Axis or axes forwarded to the analytical cost formula.",
+    "input_shape": "Shape of the reduction input.",
+    "k": "Target rank or number of singular components to estimate.",
+    "m": "Number of rows in the input matrix.",
+    "n": "Number of columns in the input matrix.",
+    "operand_symmetries": "Optional symmetry metadata for each einsum operand.",
+    "shape": "Shape of the array passed to the analytical cost formula.",
+    "shapes": "Operand shapes in the same order as the einsum operands.",
+    "subscripts": "Einstein summation expression that defines the contraction.",
+    "symmetry_info": (
+        "Optional symmetry metadata used to count only analytically distinct "
+        "elements."
+    ),
+}
+
+
+def _build_weighted_cost_docstring(
+    op_name: str,
+    analytical_fn,
+    *,
+    example: str | None = None,
+) -> str:
+    summary, description, notes = _parse_analytical_doc(analytical_fn.__doc__ or "")
+    signature = inspect.signature(analytical_fn)
+
+    parts = [
+        _make_weighted_summary(summary, op_name),
+    ]
+    if description:
+        parts.extend(["", description])
+    parts.extend(
+        [
+            "",
+            "Parameters",
+            "----------",
+            _render_parameters(signature, op_name),
+            "",
+            "Returns",
+            "-------",
+            "int",
+            "    Weighted public cost estimate, floored to match runtime accounting.",
+            "",
+            "Notes",
+            "-----",
+            (
+                "This helper multiplies the analytical FLOP count by the active "
+                "weight from ``flopscope._weights`` and then applies ``int(...)`` "
+                "so public estimates match budget deductions."
+            ),
+        ]
+    )
+    if notes:
+        parts.extend(["", notes])
+    if example:
+        parts.extend(["", "Examples", "--------", example.rstrip()])
+    return "\n".join(parts)
+
+
+def _make_weighted_summary(summary: str, op_name: str) -> str:
+    if summary:
+        return summary.replace("FLOP cost", "Weighted FLOP cost", 1)
+    return f"Weighted FLOP cost estimate for ``{op_name}``."
+
+
+def _parse_analytical_doc(doc: str) -> tuple[str, str, str]:
+    lines = inspect.cleandoc(doc).splitlines()
+    if not lines:
+        return "", "", ""
+
+    summary = ""
+    index = 0
+    while index < len(lines) and not lines[index].strip():
+        index += 1
+    if index < len(lines):
+        summary = lines[index].strip()
+        index += 1
+
+    while index < len(lines) and not lines[index].strip():
+        index += 1
+
+    description_lines: list[str] = []
+    notes_lines: list[str] = []
+    current_section: str | None = None
+
+    while index < len(lines):
+        if _is_numpydoc_header(lines, index):
+            current_section = lines[index].strip()
+            index += 2
+            continue
+
+        line = lines[index]
+        if current_section == "Notes":
+            notes_lines.append(line)
+        elif current_section is None:
+            description_lines.append(line)
+        index += 1
+
+    description = "\n".join(description_lines).strip()
+    notes = "\n".join(notes_lines).strip()
+    return summary, description, notes
+
+
+def _is_numpydoc_header(lines: list[str], index: int) -> bool:
+    if index + 1 >= len(lines):
+        return False
+    title = lines[index].strip()
+    underline = lines[index + 1].strip()
+    return bool(title) and underline == "-" * len(title)
+
+
+def _render_parameters(signature: inspect.Signature, op_name: str) -> str:
+    rendered: list[str] = []
+    for parameter in signature.parameters.values():
+        annotation = _format_annotation(parameter.annotation)
+        header = parameter.name
+        if annotation:
+            header = f"{header} : {annotation}"
+        if parameter.default is not inspect.Signature.empty:
+            header = f"{header}, optional"
+
+        description = _PARAMETER_DESCRIPTIONS.get(
+            parameter.name,
+            f"Argument forwarded to the analytical ``{op_name}`` cost formula.",
+        )
+        if parameter.default is not inspect.Signature.empty:
+            description = (
+                f"{description} Defaults to ``{parameter.default!r}``."
+            )
+        rendered.append(f"{header}\n    {description}")
+    return "\n\n".join(rendered)
+
+
+def _format_annotation(annotation) -> str:
+    if annotation is inspect.Signature.empty:
+        return "object"
+    if isinstance(annotation, str):
+        return annotation
+    return getattr(annotation, "__name__", repr(annotation))
 
 
 def pointwise_cost(
@@ -204,6 +363,19 @@ def pointwise_cost(
     -------
     int
         Weighted public cost estimate, floored to match runtime accounting.
+
+    Notes
+    -----
+    This helper multiplies the analytical pointwise count by the active weight
+    for ``op_name`` and then floors with ``int(...)`` to match runtime budget
+    accounting.
+
+    Examples
+    --------
+    >>> import flopscope as flops
+    >>> cost = flops.accounting.pointwise_cost("exp", shape=(2, 3))
+    >>> isinstance(cost, int)
+    True
     """
     if not isinstance(op_name, str):
         raise TypeError("pointwise_cost() requires op_name as the first argument")
@@ -238,6 +410,23 @@ def reduction_cost(
     -------
     int
         Weighted public cost estimate, floored to match runtime accounting.
+
+    Notes
+    -----
+    This helper multiplies the analytical reduction count by the active weight
+    for ``op_name`` and then floors with ``int(...)`` to match runtime budget
+    accounting.
+
+    Examples
+    --------
+    >>> import flopscope as flops
+    >>> cost = flops.accounting.reduction_cost(
+    ...     "sum",
+    ...     input_shape=(4, 5),
+    ...     axis=1,
+    ... )
+    >>> isinstance(cost, int)
+    True
     """
     if not isinstance(op_name, str):
         raise TypeError("reduction_cost() requires op_name as the first argument")

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/nanmin/",
+  "detail_href": "/docs/api/numpy/nanmin/",
   "detail_json_href": "/api-data/ops/nanmin.json",
   "docs": {
     "sections": [
@@ -194,7 +194,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/min",
+                        "href": "/docs/api/numpy/min/",
                         "kind": "link",
                         "target": "min",
                         "text": "min"
@@ -450,7 +450,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmax",
+                "href": "/docs/api/numpy/nanmax/",
                 "label": "flops.nanmax",
                 "original_target": "nanmax",
                 "role": "",
@@ -482,7 +482,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fmin",
+                "href": "/docs/api/numpy/fmin/",
                 "label": "flops.fmin",
                 "original_target": "fmin",
                 "role": "",
@@ -498,7 +498,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/minimum",
+                "href": "/docs/api/numpy/minimum/",
                 "label": "flops.minimum",
                 "original_target": "minimum",
                 "role": "",
@@ -514,7 +514,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
+                "href": "/docs/api/numpy/isnan/",
                 "label": "flops.isnan",
                 "original_target": "isnan",
                 "role": "",
@@ -530,7 +530,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isfinite",
+                "href": "/docs/api/numpy/isfinite/",
                 "label": "flops.isfinite",
                 "original_target": "isfinite",
                 "role": "",
@@ -552,7 +552,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/fmax",
+                "href": "/docs/api/numpy/fmax/",
                 "label": "flops.fmax",
                 "original_target": "fmax",
                 "role": "",
@@ -563,7 +563,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/maximum",
+                "href": "/docs/api/numpy/maximum/",
                 "label": "flops.maximum",
                 "original_target": "maximum",
                 "role": "",
@@ -606,7 +606,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -684,12 +684,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.nanmin",
+    "flopscope_ref": "fnp.nanmin",
     "module": "numpy",
     "name": "nanmin",
     "notes": "Minimum ignoring NaNs.",
     "numpy_ref": "np.nanmin",
-    "signature": "flops.nanmin(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+    "signature": "fnp.nanmin(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
     "status": "supported",
     "summary": "Return minimum of an array or minimum along an axis, ignoring any NaNs. When all-NaN slices are encountered a ``RuntimeWarning`` is raised and Nan is returned for that slice.",
     "weight": 1.0

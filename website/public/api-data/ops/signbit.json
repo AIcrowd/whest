@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/signbit/",
+  "detail_href": "/docs/api/numpy/signbit/",
   "detail_json_href": "/api-data/ops/signbit.json",
   "docs": {
     "sections": [
@@ -284,7 +284,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -316,12 +316,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.signbit",
+    "flopscope_ref": "fnp.signbit",
     "module": "numpy",
     "name": "signbit",
     "notes": "Returns True for elements with negative sign bit.",
     "numpy_ref": "np.signbit",
-    "signature": "flops.signbit(*args, **kwargs)",
+    "signature": "fnp.signbit(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns element-wise True where signbit is set (less than zero).",
     "weight": 1.0

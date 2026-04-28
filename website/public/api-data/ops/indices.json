@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/indices/",
+  "detail_href": "/docs/api/numpy/indices/",
   "detail_json_href": "/api-data/ops/indices.json",
   "docs": {
     "sections": [
@@ -216,7 +216,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/meshgrid",
+                "href": "/docs/api/numpy/meshgrid/",
                 "label": "flops.meshgrid",
                 "original_target": "meshgrid",
                 "role": "",
@@ -312,7 +312,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -479,12 +479,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.indices",
+    "flopscope_ref": "fnp.indices",
     "module": "numpy",
     "name": "indices",
     "notes": "Return array representing indices of a grid. Cost: numel(output).",
     "numpy_ref": "np.indices",
-    "signature": "flops.indices(dimensions, dtype=<class 'int'>, sparse=False)",
+    "signature": "fnp.indices(dimensions, dtype=<class 'int'>, sparse=False)",
     "status": "supported",
     "summary": "Return an array representing the indices of a grid.",
     "weight": 1.0

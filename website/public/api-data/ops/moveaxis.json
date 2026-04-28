@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/moveaxis/",
+  "detail_href": "/docs/api/numpy/moveaxis/",
   "detail_json_href": "/api-data/ops/moveaxis.json",
   "docs": {
     "sections": [
@@ -154,7 +154,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/transpose",
+                "href": "/docs/api/numpy/transpose/",
                 "label": "flops.transpose",
                 "original_target": "transpose",
                 "role": "",
@@ -170,7 +170,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/swapaxes",
+                "href": "/docs/api/numpy/swapaxes/",
                 "label": "flops.swapaxes",
                 "original_target": "swapaxes",
                 "role": "",
@@ -190,7 +190,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -277,12 +277,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.moveaxis",
+    "flopscope_ref": "fnp.moveaxis",
     "module": "numpy",
     "name": "moveaxis",
     "notes": "Move axes to new positions.",
     "numpy_ref": "np.moveaxis",
-    "signature": "flops.moveaxis(a, source, destination)",
+    "signature": "fnp.moveaxis(a, source, destination)",
     "status": "supported",
     "summary": "Move axes of an array to new positions.",
     "weight": 0.0

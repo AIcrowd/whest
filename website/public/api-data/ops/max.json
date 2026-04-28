@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/max/",
+  "detail_href": "/docs/api/numpy/max/",
   "detail_json_href": "/api-data/ops/max.json",
   "docs": {
     "sections": [
@@ -146,7 +146,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/max",
+                        "href": "/docs/api/numpy/max/",
                         "kind": "link",
                         "target": "max",
                         "text": "max"
@@ -438,7 +438,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmax",
+                "href": "/docs/api/numpy/nanmax/",
                 "label": "flops.nanmax",
                 "original_target": "nanmax",
                 "role": "",
@@ -454,7 +454,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/maximum",
+                "href": "/docs/api/numpy/maximum/",
                 "label": "flops.maximum",
                 "original_target": "maximum",
                 "role": "",
@@ -470,7 +470,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fmax",
+                "href": "/docs/api/numpy/fmax/",
                 "label": "flops.fmax",
                 "original_target": "fmax",
                 "role": "",
@@ -486,7 +486,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argmax",
+                "href": "/docs/api/numpy/argmax/",
                 "label": "flops.argmax",
                 "original_target": "argmax",
                 "role": "",
@@ -497,7 +497,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmin",
+                "href": "/docs/api/numpy/nanmin/",
                 "label": "flops.nanmin",
                 "original_target": "nanmin",
                 "role": "",
@@ -508,7 +508,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/minimum",
+                "href": "/docs/api/numpy/minimum/",
                 "label": "flops.minimum",
                 "original_target": "minimum",
                 "role": "",
@@ -519,7 +519,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/fmin",
+                "href": "/docs/api/numpy/fmin/",
                 "label": "flops.fmin",
                 "original_target": "fmin",
                 "role": "",
@@ -551,7 +551,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/max",
+                "href": "/docs/api/numpy/max/",
                 "kind": "link",
                 "target": "max",
                 "text": "max"
@@ -597,7 +597,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -757,12 +757,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.max",
+    "flopscope_ref": "fnp.max",
     "module": "numpy",
     "name": "max",
     "notes": "Maximum value of array.",
     "numpy_ref": "np.max",
-    "signature": "flops.max(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+    "signature": "fnp.max(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
     "status": "supported",
     "summary": "Return the maximum of an array or maximum along an axis.",
     "weight": 1.0

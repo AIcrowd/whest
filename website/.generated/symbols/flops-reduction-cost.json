@@ -183,6 +183,85 @@
         }
       ],
       "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This helper multiplies the analytical reduction count by the active weight\nfor "
+            },
+            {
+              "kind": "code",
+              "text": "op_name"
+            },
+            {
+              "kind": "text",
+              "text": " and then floors with "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " to match runtime budget\naccounting."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "cost = flops.accounting.reduction_cost("
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "\"sum\","
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "input_shape=(4, 5),"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "axis=1,"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": ")"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "isinstance(cost, int)"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "flops.reduction_cost",
@@ -202,7 +281,7 @@
   ],
   "signature": "flops.flops.reduction_cost(op_name: 'str', *, input_shape: 'tuple[int, ...]', axis: 'int | None' = None, symmetry: 'SymmetryGroup | None' = None) -> 'int'",
   "slug": "flops-reduction-cost",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L216",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/accounting.py#L388",
   "status_note": "",
   "summary": "Weighted FLOP cost of a reduction operation.",
   "upstream_source_url": ""

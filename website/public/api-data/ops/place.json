@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/place/",
+  "detail_href": "/docs/api/numpy/place/",
   "detail_json_href": "/api-data/ops/place.json",
   "docs": {
     "sections": [
@@ -38,7 +38,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/place",
+                "href": "/docs/api/numpy/place/",
                 "kind": "link",
                 "target": "place",
                 "text": "place"
@@ -65,7 +65,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/copyto",
+                "href": "/docs/api/numpy/copyto/",
                 "kind": "link",
                 "target": "copyto",
                 "text": "copyto"
@@ -93,7 +93,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/extract",
+                "href": "/docs/api/numpy/extract/",
                 "kind": "link",
                 "target": "extract",
                 "text": "extract"
@@ -104,7 +104,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/place",
+                "href": "/docs/api/numpy/place/",
                 "kind": "link",
                 "target": "place",
                 "text": "place"
@@ -284,7 +284,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/copyto",
+                "href": "/docs/api/numpy/copyto/",
                 "label": "flops.copyto",
                 "original_target": "copyto",
                 "role": "",
@@ -295,7 +295,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/put",
+                "href": "/docs/api/numpy/put/",
                 "label": "flops.put",
                 "original_target": "put",
                 "role": "",
@@ -306,7 +306,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/take",
+                "href": "/docs/api/numpy/take/",
                 "label": "flops.take",
                 "original_target": "take",
                 "role": "",
@@ -317,7 +317,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/extract",
+                "href": "/docs/api/numpy/extract/",
                 "label": "flops.extract",
                 "original_target": "extract",
                 "role": "",
@@ -337,7 +337,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -374,12 +374,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.place",
+    "flopscope_ref": "fnp.place",
     "module": "numpy",
     "name": "place",
     "notes": "Change elements satisfying condition. Cost: numel(input).",
     "numpy_ref": "np.place",
-    "signature": "flops.place(arr, mask, vals, *args, **kwargs)",
+    "signature": "fnp.place(arr, mask, vals, *args, **kwargs)",
     "status": "supported",
     "summary": "Change elements of an array based on conditional and input values.",
     "weight": 4.0

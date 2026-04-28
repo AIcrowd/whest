@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/isfortran/",
+  "detail_href": "/docs/api/numpy/isfortran/",
   "detail_json_href": "/api-data/ops/isfortran.json",
   "docs": {
     "sections": [
@@ -145,7 +145,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -313,12 +313,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.isfortran",
+    "flopscope_ref": "fnp.isfortran",
     "module": "numpy",
     "name": "isfortran",
     "notes": "Return True if array is Fortran contiguous.",
     "numpy_ref": "np.isfortran",
-    "signature": "flops.isfortran(a)",
+    "signature": "fnp.isfortran(a)",
     "status": "supported",
     "summary": "Check if the array is Fortran contiguous but *not* C contiguous.",
     "weight": 0.0

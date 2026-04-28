@@ -160,7 +160,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -188,7 +188,7 @@
     }
   ],
   "canonical_name": "iterable",
-  "canonical_path": "iterable",
+  "canonical_path": "numpy/iterable",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -199,20 +199,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.iterable([1, 2, 3])\n\nflops.iterable(2)",
+    "code": "import flopscope.numpy as fnp\n\nflops.iterable([1, 2, 3])\n\nflops.iterable(2)",
     "output": "True\n\nFalse",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.iterable",
+  "flopscope_ref": "fnp.iterable",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1272",
-  "href": "/docs/api/iterable/",
+  "href": "/docs/api/numpy/iterable/",
   "legacy_href": "/docs/api/ops/iterable/",
   "module": "numpy",
   "name": "iterable",
   "next": {
-    "href": "/docs/api/ix-/",
-    "label": "flops.ix_"
+    "href": "/docs/api/numpy/ix-/",
+    "label": "fnp.ix_"
   },
   "notes": "Return True if object is iterable.",
   "notes_sections": [
@@ -230,10 +230,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/issubdtype/",
-    "label": "flops.issubdtype"
+    "href": "/docs/api/numpy/issubdtype/",
+    "label": "fnp.issubdtype"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.iterable",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iterable.html",
   "returns": [
     {
@@ -246,9 +247,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.iterable(y)",
+  "signature": "fnp.iterable(y)",
   "slug": "iterable",
   "summary": "Check whether or not an object can be iterated over.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L339",
   "weight": 0.0
 }

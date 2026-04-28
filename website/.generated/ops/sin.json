@@ -285,7 +285,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/arcsin",
+              "href": "/docs/api/numpy/arcsin/",
               "label": "flops.arcsin",
               "original_target": "arcsin",
               "role": "",
@@ -296,7 +296,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/sinh",
+              "href": "/docs/api/numpy/sinh/",
               "label": "flops.sinh",
               "original_target": "sinh",
               "role": "",
@@ -307,7 +307,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/cos",
+              "href": "/docs/api/numpy/cos/",
               "label": "flops.cos",
               "original_target": "cos",
               "role": "",
@@ -397,7 +397,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -502,7 +502,7 @@
     }
   ],
   "canonical_name": "sin",
-  "canonical_path": "sin",
+  "canonical_path": "numpy/sin",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -520,20 +520,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.sin(flops.pi/2.)\n\nflops.sin(flops.array((0., 30., 45., 60., 90.)) * flops.pi / 180. )\n\nimport matplotlib.pylab as plt\n\nx = flops.linspace(-flops.pi, flops.pi, 201)\n\nplt.plot(x, flops.sin(x))\n\nplt.xlabel('Angle [rad]')\n\nplt.ylabel('sin(x)')\n\nplt.axis('tight')\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nflops.sin(flops.pi/2.)\n\nflops.sin(flops.array((0., 30., 45., 60., 90.)) * flops.pi / 180. )\n\nimport matplotlib.pylab as plt\n\nx = flops.linspace(-flops.pi, flops.pi, 201)\n\nplt.plot(x, flops.sin(x))\n\nplt.xlabel('Angle [rad]')\n\nplt.ylabel('sin(x)')\n\nplt.axis('tight')\n\nplt.show()",
     "output": "1.0\n\narray([ 0.        ,  0.5       ,  0.70710678,  0.8660254 ,  1.        ])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.sin",
+  "flopscope_ref": "fnp.sin",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/sin/",
+  "href": "/docs/api/numpy/sin/",
   "legacy_href": "/docs/api/ops/sin/",
   "module": "numpy",
   "name": "sin",
   "next": {
-    "href": "/docs/api/sinc/",
-    "label": "flops.sinc"
+    "href": "/docs/api/numpy/sinc/",
+    "label": "fnp.sinc"
   },
   "notes": "Element-wise sine.",
   "notes_sections": [
@@ -580,10 +580,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/signbit/",
-    "label": "flops.signbit"
+    "href": "/docs/api/numpy/signbit/",
+    "label": "fnp.signbit"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.sin",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sin.html",
   "returns": [
     {
@@ -600,7 +601,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/arcsin",
+      "href": "/docs/api/numpy/arcsin/",
       "label": "flops.arcsin",
       "original_target": "arcsin",
       "role": "",
@@ -611,7 +612,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/sinh",
+      "href": "/docs/api/numpy/sinh/",
       "label": "flops.sinh",
       "original_target": "sinh",
       "role": "",
@@ -622,7 +623,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/cos",
+      "href": "/docs/api/numpy/cos/",
       "label": "flops.cos",
       "original_target": "cos",
       "role": "",
@@ -630,9 +631,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.sin(*args, **kwargs)",
+  "signature": "fnp.sin(*args, **kwargs)",
   "slug": "sin",
   "summary": "Trigonometric sine, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

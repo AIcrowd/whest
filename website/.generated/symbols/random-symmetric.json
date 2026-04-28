@@ -292,7 +292,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/shape/",
+                      "href": "/docs/api/numpy/shape/",
                       "kind": "link",
                       "target": "shape",
                       "text": "shape"
@@ -313,7 +313,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/shape/",
+                  "href": "/docs/api/numpy/shape/",
                   "kind": "link",
                   "target": "shape",
                   "text": "shape"
@@ -632,12 +632,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as we"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "S = flops.random.symmetric((4, 4), flops.SymmetryGroup.symmetric(axes=(0, 1)))"
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "S = fnp.random.symmetric((4, 4), flops.SymmetryGroup.symmetric(axes=(0, 1)))"
             },
             {
               "kind": "input",
@@ -656,7 +661,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "S = flops.random.symmetric("
+              "text": "S = fnp.random.symmetric("
             },
             {
               "kind": "input",
@@ -705,12 +710,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
               "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -725,7 +735,27 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "S = flops.random.symmetric((2, 2), flops.SymmetryGroup.symmetric(axes=(0, 1)), distribution=shifted_uniform)"
+              "text": "S = fnp.random.symmetric("
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "(2, 2),"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "flops.SymmetryGroup.symmetric(axes=(0, 1)),"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "distribution=shifted_uniform,"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": ")"
             },
             {
               "kind": "input",

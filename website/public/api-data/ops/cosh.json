@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/cosh/",
+  "detail_href": "/docs/api/numpy/cosh/",
   "detail_json_href": "/api-data/ops/cosh.json",
   "docs": {
     "sections": [
@@ -317,7 +317,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -374,12 +374,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.cosh",
+    "flopscope_ref": "fnp.cosh",
     "module": "numpy",
     "name": "cosh",
     "notes": "Element-wise hyperbolic cosine.",
     "numpy_ref": "np.cosh",
-    "signature": "flops.cosh(*args, **kwargs)",
+    "signature": "fnp.cosh(*args, **kwargs)",
     "status": "supported",
     "summary": "Hyperbolic cosine, element-wise.",
     "weight": 16.0

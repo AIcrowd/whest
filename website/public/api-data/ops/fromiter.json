@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fromiter/",
+  "detail_href": "/docs/api/numpy/fromiter/",
   "detail_json_href": "/api-data/ops/fromiter.json",
   "docs": {
     "sections": [
@@ -235,7 +235,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/fromiter",
+                "href": "/docs/api/numpy/fromiter/",
                 "kind": "link",
                 "target": "fromiter",
                 "text": "fromiter"
@@ -257,7 +257,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -329,12 +329,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.fromiter",
+    "flopscope_ref": "fnp.fromiter",
     "module": "numpy",
     "name": "fromiter",
     "notes": "Create array from an iterable. Cost: numel(output).",
     "numpy_ref": "np.fromiter",
-    "signature": "flops.fromiter(*args, **kwargs)",
+    "signature": "fnp.fromiter(*args, **kwargs)",
     "status": "supported",
     "summary": "Create a new 1-dimensional array from an iterable object.",
     "weight": 16.0

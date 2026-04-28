@@ -476,7 +476,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/empty_like",
+              "href": "/docs/api/numpy/empty-like/",
               "label": "flops.empty_like",
               "original_target": "empty_like",
               "role": "",
@@ -492,7 +492,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ones_like",
+              "href": "/docs/api/numpy/ones-like/",
               "label": "flops.ones_like",
               "original_target": "ones_like",
               "role": "",
@@ -508,7 +508,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/zeros_like",
+              "href": "/docs/api/numpy/zeros-like/",
               "label": "flops.zeros_like",
               "original_target": "zeros_like",
               "role": "",
@@ -524,7 +524,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/full_like",
+              "href": "/docs/api/numpy/full-like/",
               "label": "flops.full_like",
               "original_target": "full_like",
               "role": "",
@@ -540,7 +540,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/empty",
+              "href": "/docs/api/numpy/empty/",
               "label": "flops.empty",
               "original_target": "empty",
               "role": "",
@@ -556,7 +556,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ones",
+              "href": "/docs/api/numpy/ones/",
               "label": "flops.ones",
               "original_target": "ones",
               "role": "",
@@ -572,7 +572,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/zeros",
+              "href": "/docs/api/numpy/zeros/",
               "label": "flops.zeros",
               "original_target": "zeros",
               "role": "",
@@ -588,7 +588,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/full",
+              "href": "/docs/api/numpy/full/",
               "label": "flops.full",
               "original_target": "full",
               "role": "",
@@ -604,7 +604,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/copy",
+              "href": "/docs/api/numpy/copy/",
               "label": "flops.copy",
               "original_target": "copy",
               "role": "",
@@ -646,7 +646,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -834,7 +834,7 @@
     }
   ],
   "canonical_name": "array",
-  "canonical_path": "array",
+  "canonical_path": "numpy/array",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -850,20 +850,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.array([1, 2, 3])\n\nflops.array([1, 2, 3.0])\n\nflops.array([[1, 2], [3, 4]])\n\nflops.array([1, 2, 3], ndmin=2)\n\nflops.array([1, 2, 3], dtype=complex)\n\nx = flops.array([(1,2),(3,4)],dtype=[('a','<i4'),('b','<i4')])\n\nx['a']\n\nflops.array(flops.asmatrix('1 2; 3 4'))\n\nflops.array(flops.asmatrix('1 2; 3 4'), subok=True)",
+    "code": "import flopscope.numpy as fnp\n\nflops.array([1, 2, 3])\n\nflops.array([1, 2, 3.0])\n\nflops.array([[1, 2], [3, 4]])\n\nflops.array([1, 2, 3], ndmin=2)\n\nflops.array([1, 2, 3], dtype=complex)\n\nx = flops.array([(1,2),(3,4)],dtype=[('a','<i4'),('b','<i4')])\n\nx['a']\n\nflops.array(flops.asmatrix('1 2; 3 4'))\n\nflops.array(flops.asmatrix('1 2; 3 4'), subok=True)",
     "output": "array([1, 2, 3])\n\narray([ 1.,  2.,  3.])\n\narray([[1, 2],\n       [3, 4]])\n\narray([[1, 2, 3]])\n\narray([ 1.+0.j,  2.+0.j,  3.+0.j])\n\narray([1, 3], dtype=int32)\n\narray([[1, 2],\n       [3, 4]])\n\nmatrix([[1, 2],\n        [3, 4]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.array",
+  "flopscope_ref": "fnp.array",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L92",
-  "href": "/docs/api/array/",
+  "href": "/docs/api/numpy/array/",
   "legacy_href": "/docs/api/ops/array/",
   "module": "numpy",
   "name": "array",
   "next": {
-    "href": "/docs/api/array-equal/",
-    "label": "flops.array_equal"
+    "href": "/docs/api/numpy/array-equal/",
+    "label": "fnp.array_equal"
   },
   "notes": "Create array from data. Cost: numel(input).",
   "notes_sections": [
@@ -959,10 +959,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/argwhere/",
-    "label": "flops.argwhere"
+    "href": "/docs/api/numpy/argwhere/",
+    "label": "fnp.argwhere"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.array",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.array.html",
   "returns": [
     {
@@ -983,7 +984,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/empty_like",
+      "href": "/docs/api/numpy/empty-like/",
       "label": "flops.empty_like",
       "original_target": "empty_like",
       "role": "",
@@ -999,7 +1000,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ones_like",
+      "href": "/docs/api/numpy/ones-like/",
       "label": "flops.ones_like",
       "original_target": "ones_like",
       "role": "",
@@ -1015,7 +1016,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/zeros_like",
+      "href": "/docs/api/numpy/zeros-like/",
       "label": "flops.zeros_like",
       "original_target": "zeros_like",
       "role": "",
@@ -1031,7 +1032,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/full_like",
+      "href": "/docs/api/numpy/full-like/",
       "label": "flops.full_like",
       "original_target": "full_like",
       "role": "",
@@ -1047,7 +1048,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/empty",
+      "href": "/docs/api/numpy/empty/",
       "label": "flops.empty",
       "original_target": "empty",
       "role": "",
@@ -1063,7 +1064,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ones",
+      "href": "/docs/api/numpy/ones/",
       "label": "flops.ones",
       "original_target": "ones",
       "role": "",
@@ -1079,7 +1080,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/zeros",
+      "href": "/docs/api/numpy/zeros/",
       "label": "flops.zeros",
       "original_target": "zeros",
       "role": "",
@@ -1095,7 +1096,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/full",
+      "href": "/docs/api/numpy/full/",
       "label": "flops.full",
       "original_target": "full",
       "role": "",
@@ -1111,7 +1112,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/copy",
+      "href": "/docs/api/numpy/copy/",
       "label": "flops.copy",
       "original_target": "copy",
       "role": "",
@@ -1119,9 +1120,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.array(object, dtype=None, **kwargs)",
+  "signature": "fnp.array(object, dtype=None, **kwargs)",
   "slug": "array",
   "summary": "Create an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

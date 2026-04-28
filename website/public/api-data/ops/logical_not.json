@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/logical-not/",
+  "detail_href": "/docs/api/numpy/logical-not/",
   "detail_json_href": "/api-data/ops/logical_not.json",
   "docs": {
     "sections": [
@@ -317,7 +317,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_and",
+                "href": "/docs/api/numpy/logical-and/",
                 "label": "flops.logical_and",
                 "original_target": "logical_and",
                 "role": "",
@@ -328,7 +328,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_or",
+                "href": "/docs/api/numpy/logical-or/",
                 "label": "flops.logical_or",
                 "original_target": "logical_or",
                 "role": "",
@@ -339,7 +339,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_xor",
+                "href": "/docs/api/numpy/logical-xor/",
                 "label": "flops.logical_xor",
                 "original_target": "logical_xor",
                 "role": "",
@@ -359,7 +359,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -410,12 +410,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.logical_not",
+    "flopscope_ref": "fnp.logical_not",
     "module": "numpy",
     "name": "logical_not",
     "notes": "Element-wise logical NOT.",
     "numpy_ref": "np.logical_not",
-    "signature": "flops.logical_not(*args, **kwargs)",
+    "signature": "fnp.logical_not(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the truth value of NOT x element-wise.",
     "weight": 1.0

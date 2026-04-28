@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/putmask/",
+  "detail_href": "/docs/api/numpy/putmask/",
   "detail_json_href": "/api-data/ops/putmask.json",
   "docs": {
     "sections": [
@@ -253,7 +253,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/place",
+                "href": "/docs/api/numpy/place/",
                 "label": "flops.place",
                 "original_target": "place",
                 "role": "",
@@ -264,7 +264,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/put",
+                "href": "/docs/api/numpy/put/",
                 "label": "flops.put",
                 "original_target": "put",
                 "role": "",
@@ -275,7 +275,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/take",
+                "href": "/docs/api/numpy/take/",
                 "label": "flops.take",
                 "original_target": "take",
                 "role": "",
@@ -286,7 +286,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/copyto",
+                "href": "/docs/api/numpy/copyto/",
                 "label": "flops.copyto",
                 "original_target": "copyto",
                 "role": "",
@@ -306,7 +306,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -392,12 +392,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.putmask",
+    "flopscope_ref": "fnp.putmask",
     "module": "numpy",
     "name": "putmask",
     "notes": "Change elements of array based on condition and input values. Cost: numel(input).",
     "numpy_ref": "np.putmask",
-    "signature": "flops.putmask(a, mask, values, *args, **kwargs)",
+    "signature": "fnp.putmask(a, mask, values, *args, **kwargs)",
     "status": "supported",
     "summary": "Changes elements of an array based on conditional and input values.",
     "weight": 4.0

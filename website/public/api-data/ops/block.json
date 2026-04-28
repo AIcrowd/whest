@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/block/",
+  "detail_href": "/docs/api/numpy/block/",
   "detail_json_href": "/api-data/ops/block.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
+                "href": "/docs/api/numpy/concatenate/",
                 "kind": "link",
                 "target": "concatenate",
                 "text": "concatenate"
@@ -283,7 +283,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
+                "href": "/docs/api/numpy/concatenate/",
                 "label": "flops.concatenate",
                 "original_target": "concatenate",
                 "role": "",
@@ -299,7 +299,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/stack",
+                "href": "/docs/api/numpy/stack/",
                 "label": "flops.stack",
                 "original_target": "stack",
                 "role": "",
@@ -315,7 +315,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vstack",
+                "href": "/docs/api/numpy/vstack/",
                 "label": "flops.vstack",
                 "original_target": "vstack",
                 "role": "",
@@ -331,7 +331,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/hstack",
+                "href": "/docs/api/numpy/hstack/",
                 "label": "flops.hstack",
                 "original_target": "hstack",
                 "role": "",
@@ -347,7 +347,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/dstack",
+                "href": "/docs/api/numpy/dstack/",
                 "label": "flops.dstack",
                 "original_target": "dstack",
                 "role": "",
@@ -363,7 +363,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/column_stack",
+                "href": "/docs/api/numpy/column-stack/",
                 "label": "flops.column_stack",
                 "original_target": "column_stack",
                 "role": "",
@@ -379,7 +379,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vsplit",
+                "href": "/docs/api/numpy/vsplit/",
                 "label": "flops.vsplit",
                 "original_target": "vsplit",
                 "role": "",
@@ -395,7 +395,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/unstack",
+                "href": "/docs/api/numpy/unstack/",
                 "label": "flops.unstack",
                 "original_target": "unstack",
                 "role": "",
@@ -418,7 +418,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "kind": "link",
                 "target": "block",
                 "text": "flops.block"
@@ -507,7 +507,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "kind": "link",
                 "target": "block",
                 "text": "block"
@@ -576,7 +576,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -639,7 +639,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "kind": "link",
                 "target": "block",
                 "text": "block"
@@ -650,7 +650,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/hstack",
+                "href": "/docs/api/numpy/hstack/",
                 "kind": "link",
                 "target": "hstack",
                 "text": "hstack"
@@ -736,7 +736,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "kind": "link",
                 "target": "block",
                 "text": "block"
@@ -747,7 +747,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/vstack",
+                "href": "/docs/api/numpy/vstack/",
                 "kind": "link",
                 "target": "vstack",
                 "text": "vstack"
@@ -831,7 +831,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/atleast_1d",
+                "href": "/docs/api/numpy/atleast-1d/",
                 "kind": "link",
                 "target": "atleast_1d",
                 "text": "atleast_1d"
@@ -842,7 +842,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/atleast_2d",
+                "href": "/docs/api/numpy/atleast-2d/",
                 "kind": "link",
                 "target": "atleast_2d",
                 "text": "atleast_2d"
@@ -919,12 +919,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.block",
+    "flopscope_ref": "fnp.block",
     "module": "numpy",
     "name": "block",
     "notes": "Assemble ndarray from nested list of blocks. Cost: numel(output).",
     "numpy_ref": "np.block",
-    "signature": "flops.block(arrays)",
+    "signature": "fnp.block(arrays)",
     "status": "supported",
     "summary": "Assemble an nd-array from nested lists of blocks.",
     "weight": 1.0

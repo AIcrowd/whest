@@ -25,7 +25,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Equivalent to "
+              "text": "This object mirrors "
             },
             {
               "external_url": "",
@@ -36,76 +36,63 @@
             },
             {
               "kind": "text",
-              "text": ".  The shape parameter "
-            },
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
             {
               "kind": "code",
               "text": "s"
             },
             {
               "kind": "text",
-              "text": "\nis the standard deviation of the underlying normal distribution."
+              "text": " is the shape parameter: the standard deviation of the underlying\nnormal distribution. It is the first positional argument, ahead of\n"
+            },
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " and "
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": ", matching SciPy's "
+            },
+            {
+              "kind": "code",
+              "text": "lognorm"
+            },
+            {
+              "kind": "text",
+              "text": " signature. Each\npublic method deducts "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(input)"
+            },
+            {
+              "kind": "text",
+              "text": " FLOPs from the active budget."
             }
           ],
           "type": "paragraph"
-        },
-        {
-          "argument_inline": [],
-          "content_blocks": [
-            {
-              "inline": [
-                {
-                  "kind": "code",
-                  "text": "s"
-                },
-                {
-                  "kind": "text",
-                  "text": " is the "
-                },
-                {
-                  "kind": "strong",
-                  "text": "first positional argument"
-                },
-                {
-                  "kind": "text",
-                  "text": " (before "
-                },
-                {
-                  "kind": "code",
-                  "text": "loc"
-                },
-                {
-                  "kind": "text",
-                  "text": "/"
-                },
-                {
-                  "kind": "code",
-                  "text": "scale"
-                },
-                {
-                  "kind": "text",
-                  "text": "),\nmatching scipy's signature: "
-                },
-                {
-                  "kind": "code",
-                  "text": "lognorm.pdf(x, s, loc=0, scale=1)"
-                },
-                {
-                  "kind": "text",
-                  "text": "."
-                }
-              ],
-              "type": "paragraph"
-            }
-          ],
-          "directive": "note",
-          "options": [],
-          "raw_source": ".. note::\n\n   ``s`` is the **first positional argument** (before ``loc``/``scale``),\n   matching scipy's signature: ``lognorm.pdf(x, s, loc=0, scale=1)``.",
-          "supported": true,
-          "type": "directive_block"
         }
       ],
-      "title": "Extended Summary"
+      "title": "Notes"
     }
   ],
   "canonical_name": "stats.lognorm",

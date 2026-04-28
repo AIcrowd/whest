@@ -304,7 +304,7 @@
     }
   ],
   "canonical_name": "random.permutation",
-  "canonical_path": "random/permutation",
+  "canonical_path": "numpy/random/permutation",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -320,15 +320,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.permutation",
+  "flopscope_ref": "fnp.random.permutation",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L264",
-  "href": "/docs/api/random/permutation/",
+  "href": "/docs/api/numpy/random/permutation/",
   "legacy_href": "/docs/api/ops/random-permutation/",
   "module": "numpy.random",
   "name": "random.permutation",
   "next": {
-    "href": "/docs/api/random/poisson/",
-    "label": "flops.random.poisson"
+    "href": "/docs/api/numpy/random/poisson/",
+    "label": "fnp.random.poisson"
   },
   "notes": "Shuffle; cost = n*ceil(log2(n)).",
   "notes_sections": [],
@@ -345,10 +345,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/pareto/",
-    "label": "flops.random.pareto"
+    "href": "/docs/api/numpy/random/pareto/",
+    "label": "fnp.random.pareto"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.permutation",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.permutation.html",
   "returns": [
     {
@@ -377,9 +378,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.permutation(x)",
+  "signature": "fnp.random.permutation(x)",
   "slug": "random-permutation",
   "summary": "Randomly permute a sequence, or return a permuted range.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

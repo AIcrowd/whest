@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/isposinf/",
+  "detail_href": "/docs/api/numpy/isposinf/",
   "detail_json_href": "/api-data/ops/isposinf.json",
   "docs": {
     "sections": [
@@ -130,7 +130,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isinf",
+                "href": "/docs/api/numpy/isinf/",
                 "label": "flops.isinf",
                 "original_target": "isinf",
                 "role": "",
@@ -141,7 +141,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isneginf",
+                "href": "/docs/api/numpy/isneginf/",
                 "label": "flops.isneginf",
                 "original_target": "isneginf",
                 "role": "",
@@ -152,7 +152,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isfinite",
+                "href": "/docs/api/numpy/isfinite/",
                 "label": "flops.isfinite",
                 "original_target": "isfinite",
                 "role": "",
@@ -163,7 +163,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
+                "href": "/docs/api/numpy/isnan/",
                 "label": "flops.isnan",
                 "original_target": "isnan",
                 "role": "",
@@ -206,7 +206,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -280,12 +280,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.isposinf",
+    "flopscope_ref": "fnp.isposinf",
     "module": "numpy",
     "name": "isposinf",
     "notes": "Test for positive infinity element-wise.",
     "numpy_ref": "np.isposinf",
-    "signature": "flops.isposinf(x, out=None)",
+    "signature": "fnp.isposinf(x, out=None)",
     "status": "supported",
     "summary": "Test element-wise for positive infinity, return result as bool array.",
     "weight": 1.0

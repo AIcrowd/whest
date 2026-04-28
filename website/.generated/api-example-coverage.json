@@ -3820,196 +3820,244 @@
     "has_inherited_examples": true
   },
   "stats.cauchy.cdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.cauchy.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.cauchy.pdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.cauchy.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.cauchy.ppf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.cauchy.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.expon.cdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.expon.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.expon.pdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.expon.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.expon.ppf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.expon.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.laplace.cdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.laplace.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.laplace.pdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.laplace.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.laplace.ppf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.laplace.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.logistic.cdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.logistic.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.logistic.pdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.logistic.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.logistic.ppf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.logistic.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.lognorm.cdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.lognorm.pdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.lognorm.ppf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.norm.cdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.norm.pdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.norm.ppf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.truncnorm.cdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.truncnorm.pdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.truncnorm.ppf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.uniform.cdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.uniform.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.uniform.pdf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.uniform.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "stats.uniform.ppf": {
-    "coverage_status": "missing",
-    "example_count": 0,
-    "example_source": "missing",
-    "example_sources": [],
+    "coverage_status": "derived",
+    "example_count": 1,
+    "example_source": "derived",
+    "example_sources": [
+      "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.uniform.html"
+    ],
     "has_flopscope_examples": false,
-    "has_inherited_examples": false
+    "has_inherited_examples": true
   },
   "std": {
     "coverage_status": "derived",

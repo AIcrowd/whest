@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/all/",
+  "detail_href": "/docs/api/numpy/all/",
   "detail_json_href": "/api-data/ops/all.json",
   "docs": {
     "sections": [
@@ -194,7 +194,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/all",
+                        "href": "/docs/api/numpy/all/",
                         "kind": "link",
                         "target": "all",
                         "text": "all"
@@ -404,7 +404,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/any",
+                "href": "/docs/api/numpy/any/",
                 "label": "flops.any",
                 "original_target": "any",
                 "role": "",
@@ -456,7 +456,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -559,12 +559,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.all",
+    "flopscope_ref": "fnp.all",
     "module": "numpy",
     "name": "all",
     "notes": "Test whether all array elements are true.",
     "numpy_ref": "np.all",
-    "signature": "flops.all(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
+    "signature": "fnp.all(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
     "status": "supported",
     "summary": "Test whether all array elements along a given axis evaluate to True.",
     "weight": 1.0

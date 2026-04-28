@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/isscalar/",
+  "detail_href": "/docs/api/numpy/isscalar/",
   "detail_json_href": "/api-data/ops/isscalar.json",
   "docs": {
     "sections": [
@@ -120,7 +120,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ndim",
+                "href": "/docs/api/numpy/ndim/",
                 "label": "flops.ndim",
                 "original_target": "ndim",
                 "role": "",
@@ -195,7 +195,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/gradient",
+                "href": "/docs/api/numpy/gradient/",
                 "kind": "link",
                 "target": "gradient",
                 "text": "gradient"
@@ -214,7 +214,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "kind": "link",
                 "target": "histogram",
                 "text": "histogram"
@@ -241,7 +241,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -367,12 +367,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.isscalar",
+    "flopscope_ref": "fnp.isscalar",
     "module": "numpy",
     "name": "isscalar",
     "notes": "Return True if input is a scalar.",
     "numpy_ref": "np.isscalar",
-    "signature": "flops.isscalar(element)",
+    "signature": "fnp.isscalar(element)",
     "status": "supported",
     "summary": "Returns True if the type of `element` is a scalar type.",
     "weight": 0.0

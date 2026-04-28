@@ -25,7 +25,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Equivalent to "
+              "text": "This object mirrors "
             },
             {
               "external_url": "",
@@ -36,7 +36,7 @@
             },
             {
               "kind": "text",
-              "text": ".  Uses the standard "
+              "text": " and uses the standard\n"
             },
             {
               "kind": "code",
@@ -44,7 +44,7 @@
             },
             {
               "kind": "text",
-              "text": " /\n"
+              "text": "/"
             },
             {
               "kind": "code",
@@ -52,13 +52,47 @@
             },
             {
               "kind": "text",
-              "text": " parameterisation (mean and standard deviation)."
+              "text": " parameterization."
             }
           ],
           "type": "paragraph"
         }
       ],
       "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " is the mean and "
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": " is the standard deviation. Each public\nmethod deducts "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(input)"
+            },
+            {
+              "kind": "text",
+              "text": " FLOPs from the active budget."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
     }
   ],
   "canonical_name": "stats.norm",

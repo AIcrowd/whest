@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fft/ifftshift/",
+  "detail_href": "/docs/api/numpy/fft/ifftshift/",
   "detail_json_href": "/api-data/ops/fft-ifftshift.json",
   "docs": {
     "sections": [
@@ -162,7 +162,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -215,12 +215,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.fft.ifftshift",
+    "flopscope_ref": "fnp.fft.ifftshift",
     "module": "numpy.fft",
     "name": "fft.ifftshift",
     "notes": "Inverse of fftshift. No arithmetic; index reordering only.",
     "numpy_ref": "np.fft.ifftshift",
-    "signature": "flops.fft.ifftshift(x, axes=None)",
+    "signature": "fnp.fft.ifftshift(x, axes=None)",
     "status": "supported",
     "summary": "The inverse of `fftshift`. Although identical for even-length `x`, the functions differ by one sample for odd-length `x`.",
     "weight": 0.0

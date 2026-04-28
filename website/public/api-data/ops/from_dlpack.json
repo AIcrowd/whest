@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/from-dlpack/",
+  "detail_href": "/docs/api/numpy/from-dlpack/",
   "detail_json_href": "/api-data/ops/from_dlpack.json",
   "docs": {
     "sections": [
@@ -331,12 +331,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.from_dlpack",
+    "flopscope_ref": "fnp.from_dlpack",
     "module": "numpy",
     "name": "from_dlpack",
     "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output).",
     "numpy_ref": "np.from_dlpack",
-    "signature": "flops.from_dlpack(*args, **kwargs)",
+    "signature": "fnp.from_dlpack(*args, **kwargs)",
     "status": "supported",
     "summary": "Create a NumPy array from an object implementing the ``__dlpack__`` protocol. Generally, the returned NumPy array is a view of the input object. See [1]_ and [2]_ for more details.",
     "weight": 0.0

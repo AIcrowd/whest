@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/searchsorted/",
+  "detail_href": "/docs/api/numpy/searchsorted/",
   "detail_json_href": "/api-data/ops/searchsorted.json",
   "docs": {
     "sections": [
@@ -318,7 +318,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/sort",
+                "href": "/docs/api/numpy/sort/",
                 "label": "flops.sort",
                 "original_target": "sort",
                 "role": "",
@@ -334,7 +334,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "label": "flops.histogram",
                 "original_target": "histogram",
                 "role": "",
@@ -366,7 +366,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/searchsorted",
+                "href": "/docs/api/numpy/searchsorted/",
                 "kind": "link",
                 "target": "searchsorted",
                 "text": "searchsorted"
@@ -385,7 +385,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/sort",
+                "href": "/docs/api/numpy/sort/",
                 "kind": "link",
                 "target": "sort",
                 "text": "sort"
@@ -456,7 +456,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -577,12 +577,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.searchsorted",
+    "flopscope_ref": "fnp.searchsorted",
     "module": "numpy",
     "name": "searchsorted",
     "notes": "Binary search; cost = m*ceil(log2(n)).",
     "numpy_ref": "np.searchsorted",
-    "signature": "flops.searchsorted(a, v, side='left', sorter=None)",
+    "signature": "fnp.searchsorted(a, v, side='left', sorter=None)",
     "status": "supported",
     "summary": "Find indices where elements should be inserted to maintain order.",
     "weight": 1.0

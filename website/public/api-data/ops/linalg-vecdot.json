@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/vecdot/",
+  "detail_href": "/docs/api/numpy/linalg/vecdot/",
   "detail_json_href": "/api-data/ops/linalg-vecdot.json",
   "docs": {
     "sections": [
@@ -29,7 +29,7 @@
                 "display_text": "flops.vecdot",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/vecdot",
+                "href": "/docs/api/numpy/vecdot/",
                 "kind": "role_reference",
                 "original_target": "flops.vecdot",
                 "role": "func",
@@ -261,7 +261,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/vecdot",
+                "href": "/docs/api/numpy/vecdot/",
                 "label": "flops.vecdot",
                 "original_target": "numpy.vecdot",
                 "role": "",
@@ -318,12 +318,12 @@
     "category": "counted_custom",
     "cost_formula": "delegates to flops.vecdot",
     "cost_formula_latex": "delegates to `vecdot`",
-    "flopscope_ref": "flops.linalg.vecdot",
+    "flopscope_ref": "fnp.linalg.vecdot",
     "module": "numpy.linalg",
     "name": "linalg.vecdot",
-    "notes": "Delegates to `we.vecdot` which charges `2*n` FLOPs.",
+    "notes": "Delegates to `fnp.vecdot` which charges `2*n` FLOPs.",
     "numpy_ref": "np.linalg.vecdot",
-    "signature": "flops.linalg.vecdot(x1, x2, /, *, axis=-1)",
+    "signature": "fnp.linalg.vecdot(x1, x2, /, *, axis=-1)",
     "status": "supported",
     "summary": "Computes the vector dot product.",
     "weight": 1.0

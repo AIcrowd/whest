@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/logistic/",
+  "detail_href": "/docs/api/numpy/random/logistic/",
   "detail_json_href": "/api-data/ops/random-logistic.json",
   "docs": {
     "sections": [
@@ -494,12 +494,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.logistic",
+    "flopscope_ref": "fnp.random.logistic",
     "module": "numpy.random",
     "name": "random.logistic",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.logistic",
-    "signature": "flops.random.logistic(loc=0.0, scale=1.0, size=None)",
+    "signature": "fnp.random.logistic(loc=0.0, scale=1.0, size=None)",
     "status": "supported",
     "summary": "Draw samples from a logistic distribution.",
     "weight": 16.0

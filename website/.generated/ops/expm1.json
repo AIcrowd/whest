@@ -302,7 +302,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/log1p",
+              "href": "/docs/api/numpy/log1p/",
               "label": "flops.log1p",
               "original_target": "log1p",
               "role": "",
@@ -377,7 +377,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -410,7 +410,7 @@
     }
   ],
   "canonical_name": "expm1",
-  "canonical_path": "expm1",
+  "canonical_path": "numpy/expm1",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -428,20 +428,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.expm1(1e-10)\n\nflops.exp(1e-10) - 1",
+    "code": "import flopscope.numpy as fnp\n\nflops.expm1(1e-10)\n\nflops.exp(1e-10) - 1",
     "output": "1.00000000005e-10\n\n1.000000082740371e-10",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.expm1",
+  "flopscope_ref": "fnp.expm1",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/expm1/",
+  "href": "/docs/api/numpy/expm1/",
   "legacy_href": "/docs/api/ops/expm1/",
   "module": "numpy",
   "name": "expm1",
   "next": {
-    "href": "/docs/api/extract/",
-    "label": "flops.extract"
+    "href": "/docs/api/numpy/extract/",
+    "label": "fnp.extract"
   },
   "notes": "Element-wise e^x - 1 (accurate near zero).",
   "notes_sections": [
@@ -488,10 +488,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/expand-dims/",
-    "label": "flops.expand_dims"
+    "href": "/docs/api/numpy/expand-dims/",
+    "label": "fnp.expand_dims"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.expm1",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.expm1.html",
   "returns": [
     {
@@ -517,7 +518,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/log1p",
+      "href": "/docs/api/numpy/log1p/",
       "label": "flops.log1p",
       "original_target": "log1p",
       "role": "",
@@ -525,9 +526,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.expm1(*args, **kwargs)",
+  "signature": "fnp.expm1(*args, **kwargs)",
   "slug": "expm1",
   "summary": "Calculate ``exp(x) - 1`` for all elements in the array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

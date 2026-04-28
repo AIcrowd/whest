@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/diag-indices-from/",
+  "detail_href": "/docs/api/numpy/diag-indices-from/",
   "detail_json_href": "/api-data/ops/diag_indices_from.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/diag_indices",
+                "href": "/docs/api/numpy/diag-indices/",
                 "kind": "link",
                 "target": "diag_indices",
                 "text": "diag_indices"
@@ -68,7 +68,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diag_indices",
+                "href": "/docs/api/numpy/diag-indices/",
                 "label": "flops.diag_indices",
                 "original_target": "diag_indices",
                 "role": "",
@@ -88,7 +88,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -207,12 +207,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.diag_indices_from",
+    "flopscope_ref": "fnp.diag_indices_from",
     "module": "numpy",
     "name": "diag_indices_from",
     "notes": "Return indices to access main diagonal of given array.",
     "numpy_ref": "np.diag_indices_from",
-    "signature": "flops.diag_indices_from(arr)",
+    "signature": "fnp.diag_indices_from(arr)",
     "status": "supported",
     "summary": "Return the indices to access the main diagonal of an n-dimensional array.",
     "weight": 0.0

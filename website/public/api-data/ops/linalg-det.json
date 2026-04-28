@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/det/",
+  "detail_href": "/docs/api/numpy/linalg/det/",
   "detail_json_href": "/api-data/ops/linalg-det.json",
   "docs": {
     "sections": [
@@ -199,7 +199,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -264,12 +264,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "flops.linalg.det",
+    "flopscope_ref": "fnp.linalg.det",
     "module": "numpy.linalg",
     "name": "linalg.det",
     "notes": "Determinant. Cost: $n^3$.",
     "numpy_ref": "np.linalg.det",
-    "signature": "flops.linalg.det(a)",
+    "signature": "fnp.linalg.det(a)",
     "status": "supported",
     "summary": "Compute the determinant of an array.",
     "weight": 4.0

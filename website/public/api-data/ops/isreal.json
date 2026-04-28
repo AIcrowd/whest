@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/isreal/",
+  "detail_href": "/docs/api/numpy/isreal/",
   "detail_json_href": "/api-data/ops/isreal.json",
   "docs": {
     "sections": [
@@ -121,7 +121,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/iscomplex",
+                "href": "/docs/api/numpy/iscomplex/",
                 "label": "flops.iscomplex",
                 "original_target": "iscomplex",
                 "role": "",
@@ -137,7 +137,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isrealobj",
+                "href": "/docs/api/numpy/isrealobj/",
                 "label": "flops.isrealobj",
                 "original_target": "isrealobj",
                 "role": "",
@@ -156,7 +156,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/isreal",
+                "href": "/docs/api/numpy/isreal/",
                 "kind": "link",
                 "target": "isreal",
                 "text": "isreal"
@@ -178,7 +178,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -298,12 +298,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.isreal",
+    "flopscope_ref": "fnp.isreal",
     "module": "numpy",
     "name": "isreal",
     "notes": "Test if element is real (imag == 0) element-wise.",
     "numpy_ref": "np.isreal",
-    "signature": "flops.isreal(x)",
+    "signature": "fnp.isreal(x)",
     "status": "supported",
     "summary": "Returns a bool array, where True if input element is real.",
     "weight": 1.0

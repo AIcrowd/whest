@@ -326,7 +326,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_and",
+              "href": "/docs/api/numpy/bitwise-and/",
               "label": "flops.bitwise_and",
               "original_target": "bitwise_and",
               "role": "",
@@ -337,7 +337,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_or",
+              "href": "/docs/api/numpy/bitwise-or/",
               "label": "flops.bitwise_or",
               "original_target": "bitwise_or",
               "role": "",
@@ -348,7 +348,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_xor",
+              "href": "/docs/api/numpy/bitwise-xor/",
               "label": "flops.bitwise_xor",
               "original_target": "bitwise_xor",
               "role": "",
@@ -359,7 +359,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_not",
+              "href": "/docs/api/numpy/logical-not/",
               "label": "flops.logical_not",
               "original_target": "logical_not",
               "role": "",
@@ -394,7 +394,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_not",
+              "href": "/docs/api/numpy/bitwise-not/",
               "kind": "link",
               "target": "bitwise_not",
               "text": "flops.bitwise_not"
@@ -405,7 +405,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/invert",
+              "href": "/docs/api/numpy/invert/",
               "kind": "link",
               "target": "invert",
               "text": "invert"
@@ -451,7 +451,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -609,7 +609,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/invert",
+              "href": "/docs/api/numpy/invert/",
               "kind": "link",
               "target": "invert",
               "text": "flops.invert"
@@ -645,7 +645,7 @@
     }
   ],
   "canonical_name": "bitwise_not",
-  "canonical_path": "bitwise-not",
+  "canonical_path": "numpy/bitwise-not",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -673,20 +673,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.invert(flops.array(13, dtype=flops.uint8))\n\nx\n\nflops.binary_repr(x, width=8)\n\nx = flops.invert(flops.array(13, dtype=flops.uint16))\n\nx\n\nflops.binary_repr(x, width=16)\n\nflops.invert(flops.array([13], dtype=flops.int8))\n\nflops.binary_repr(-14, width=8)\n\nflops.invert(flops.array([True, False]))\n\nx1 = flops.array([True, False])\n\n~x1",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.invert(flops.array(13, dtype=flops.uint8))\n\nx\n\nflops.binary_repr(x, width=8)\n\nx = flops.invert(flops.array(13, dtype=flops.uint16))\n\nx\n\nflops.binary_repr(x, width=16)\n\nflops.invert(flops.array([13], dtype=flops.int8))\n\nflops.binary_repr(-14, width=8)\n\nflops.invert(flops.array([True, False]))\n\nx1 = flops.array([True, False])\n\n~x1",
     "output": "flops.uint8(242)\n\n'11110010'\n\nflops.uint16(65522)\n\n'1111111111110010'\n\narray([-14], dtype=int8)\n\n'11110010'\n\narray([False,  True])\n\narray([False,  True])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.bitwise_not",
+  "flopscope_ref": "fnp.bitwise_not",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/bitwise-not/",
+  "href": "/docs/api/numpy/bitwise-not/",
   "legacy_href": "/docs/api/ops/bitwise_not/",
   "module": "numpy",
   "name": "bitwise_not",
   "next": {
-    "href": "/docs/api/bitwise-or/",
-    "label": "flops.bitwise_or"
+    "href": "/docs/api/numpy/bitwise-or/",
+    "label": "fnp.bitwise_or"
   },
   "notes": "Element-wise bitwise NOT.",
   "notes_sections": [
@@ -734,10 +734,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/bitwise-left-shift/",
-    "label": "flops.bitwise_left_shift"
+    "href": "/docs/api/numpy/bitwise-left-shift/",
+    "label": "fnp.bitwise_left_shift"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.bitwise_not",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_not.html",
   "returns": [
     {
@@ -754,7 +755,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_and",
+      "href": "/docs/api/numpy/bitwise-and/",
       "label": "flops.bitwise_and",
       "original_target": "bitwise_and",
       "role": "",
@@ -765,7 +766,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_or",
+      "href": "/docs/api/numpy/bitwise-or/",
       "label": "flops.bitwise_or",
       "original_target": "bitwise_or",
       "role": "",
@@ -776,7 +777,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_xor",
+      "href": "/docs/api/numpy/bitwise-xor/",
       "label": "flops.bitwise_xor",
       "original_target": "bitwise_xor",
       "role": "",
@@ -787,7 +788,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_not",
+      "href": "/docs/api/numpy/logical-not/",
       "label": "flops.logical_not",
       "original_target": "logical_not",
       "role": "",
@@ -811,9 +812,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.bitwise_not(*args, **kwargs)",
+  "signature": "fnp.bitwise_not(*args, **kwargs)",
   "slug": "bitwise_not",
   "summary": "Compute bit-wise inversion, or bit-wise NOT, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

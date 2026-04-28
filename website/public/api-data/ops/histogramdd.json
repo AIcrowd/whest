@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/histogramdd/",
+  "detail_href": "/docs/api/numpy/histogramdd/",
   "detail_json_href": "/api-data/ops/histogramdd.json",
   "docs": {
     "sections": [
@@ -397,7 +397,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "label": "flops.histogram",
                 "original_target": "histogram",
                 "role": "",
@@ -413,7 +413,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram2d",
+                "href": "/docs/api/numpy/histogram2d/",
                 "label": "flops.histogram2d",
                 "original_target": "histogram2d",
                 "role": "",
@@ -433,7 +433,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -471,12 +471,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.histogramdd",
+    "flopscope_ref": "fnp.histogramdd",
     "module": "numpy",
     "name": "histogramdd",
     "notes": "ND binning; cost = n*sum(ceil(log2(b_i))).",
     "numpy_ref": "np.histogramdd",
-    "signature": "flops.histogramdd(sample, bins=10, range=None, density=None, weights=None)",
+    "signature": "fnp.histogramdd(sample, bins=10, range=None, density=None, weights=None)",
     "status": "supported",
     "summary": "Compute the multidimensional histogram of some data.",
     "weight": 1.0

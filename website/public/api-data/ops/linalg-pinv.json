@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/pinv/",
+  "detail_href": "/docs/api/numpy/linalg/pinv/",
   "detail_json_href": "/api-data/ops/linalg-pinv.json",
   "docs": {
     "sections": [
@@ -597,7 +597,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -644,12 +644,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
-    "flopscope_ref": "flops.linalg.pinv",
+    "flopscope_ref": "fnp.linalg.pinv",
     "module": "numpy.linalg",
     "name": "linalg.pinv",
     "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
     "numpy_ref": "np.linalg.pinv",
-    "signature": "flops.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
+    "signature": "fnp.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
     "status": "supported",
     "summary": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.",
     "weight": 4.0

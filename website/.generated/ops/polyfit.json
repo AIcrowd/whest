@@ -636,7 +636,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/linalg-lstsq",
+                      "href": "/docs/api/numpy/linalg/lstsq/",
                       "kind": "link",
                       "target": "linalg.lstsq",
                       "text": "flops.linalg.lstsq"
@@ -834,7 +834,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/polyval",
+              "href": "/docs/api/numpy/polyval/",
               "label": "flops.polyval",
               "original_target": "polyval",
               "role": "",
@@ -850,7 +850,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/linalg-lstsq",
+              "href": "/docs/api/numpy/linalg/lstsq/",
               "label": "flops.linalg.lstsq",
               "original_target": "linalg.lstsq",
               "role": "",
@@ -931,7 +931,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/polyfit",
+              "href": "/docs/api/numpy/polyfit/",
               "kind": "link",
               "target": "polyfit",
               "text": "polyfit"
@@ -1017,7 +1017,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -1214,7 +1214,7 @@
     }
   ],
   "canonical_name": "polyfit",
-  "canonical_path": "polyfit",
+  "canonical_path": "numpy/polyfit",
   "category": "counted_custom",
   "cost_formula": "2m * (deg+1)^2",
   "cost_formula_latex": "$2m \\cdot (\\text{deg}+1)^2$",
@@ -1241,20 +1241,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nimport warnings\n\nx = flops.array([0.0, 1.0, 2.0, 3.0,  4.0,  5.0])\n\ny = flops.array([0.0, 0.8, 0.9, 0.1, -0.8, -1.0])\n\nz = flops.polyfit(x, y, 3)\n\nz\n\np = flops.poly1d(z)\n\np(0.5)\n\np(3.5)\n\np(10)\n\nwith warnings.catch_warnings():\n    warnings.simplefilter('ignore', flops.exceptions.RankWarning)\n    p30 = flops.poly1d(flops.polyfit(x, y, 30))\n\np30(4)\n\np30(5)\n\np30(4.5)\n\nimport matplotlib.pyplot as plt\n\nxp = flops.linspace(-2, 6, 100)\n\n_ = plt.plot(x, y, '.', xp, p(xp), '-', xp, p30(xp), '--')\n\nplt.ylim(-2,2)\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nimport warnings\n\nx = flops.array([0.0, 1.0, 2.0, 3.0,  4.0,  5.0])\n\ny = flops.array([0.0, 0.8, 0.9, 0.1, -0.8, -1.0])\n\nz = flops.polyfit(x, y, 3)\n\nz\n\np = flops.poly1d(z)\n\np(0.5)\n\np(3.5)\n\np(10)\n\nwith warnings.catch_warnings():\n    warnings.simplefilter('ignore', flops.exceptions.RankWarning)\n    p30 = flops.poly1d(flops.polyfit(x, y, 30))\n\np30(4)\n\np30(5)\n\np30(4.5)\n\nimport matplotlib.pyplot as plt\n\nxp = flops.linspace(-2, 6, 100)\n\n_ = plt.plot(x, y, '.', xp, p(xp), '-', xp, p30(xp), '--')\n\nplt.ylim(-2,2)\n\nplt.show()",
     "output": "array([ 0.08703704, -0.81349206,  1.69312169, -0.03968254]) # may vary\n\n0.6143849206349179 # may vary\n\n-0.34732142857143039 # may vary\n\n22.579365079365115 # may vary\n\n-0.80000000000000204 # may vary\n\n-0.99999999999999445 # may vary\n\n-0.10547061179440398 # may vary\n\n(-2, 2)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.polyfit",
+  "flopscope_ref": "fnp.polyfit",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L200",
-  "href": "/docs/api/polyfit/",
+  "href": "/docs/api/numpy/polyfit/",
   "legacy_href": "/docs/api/ops/polyfit/",
   "module": "flopscope._polynomial",
   "name": "polyfit",
   "next": {
-    "href": "/docs/api/polyint/",
-    "label": "flops.polyint"
+    "href": "/docs/api/numpy/polyint/",
+    "label": "fnp.polyint"
   },
   "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs.",
   "notes_sections": [
@@ -1337,10 +1337,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/polydiv/",
-    "label": "flops.polydiv"
+    "href": "/docs/api/numpy/polydiv/",
+    "label": "fnp.polydiv"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.polyfit",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.polyfit.html",
   "returns": [
     {
@@ -1389,7 +1390,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/polyval",
+      "href": "/docs/api/numpy/polyval/",
       "label": "flops.polyval",
       "original_target": "polyval",
       "role": "",
@@ -1405,7 +1406,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/linalg-lstsq",
+      "href": "/docs/api/numpy/linalg/lstsq/",
       "label": "flops.linalg.lstsq",
       "original_target": "linalg.lstsq",
       "role": "",
@@ -1429,9 +1430,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.polyfit(x, y, deg, rcond=None, full=False, w=None, cov=False)",
+  "signature": "fnp.polyfit(x, y, deg, rcond=None, full=False, w=None, cov=False)",
   "slug": "polyfit",
   "summary": "Least squares polynomial fit.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L449",
   "weight": 1.0
 }

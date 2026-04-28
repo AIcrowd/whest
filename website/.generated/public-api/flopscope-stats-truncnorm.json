@@ -1,0 +1,143 @@
+{
+  "aliases": [
+    "flops.stats.truncnorm"
+  ],
+  "area": "stats",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Truncated normal continuous random variable."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This object mirrors "
+            },
+            {
+              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.html",
+              "href": "",
+              "kind": "link",
+              "target": "stats.truncnorm",
+              "text": "scipy.stats.truncnorm"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "a"
+            },
+            {
+              "kind": "text",
+              "text": " and "
+            },
+            {
+              "kind": "code",
+              "text": "b"
+            },
+            {
+              "kind": "text",
+              "text": " are standardized lower and upper bounds. The truncated\nsupport is "
+            },
+            {
+              "kind": "code",
+              "text": "[a * scale + loc, b * scale + loc]"
+            },
+            {
+              "kind": "text",
+              "text": ", and both bounds appear\nbefore "
+            },
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " and "
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": " to match SciPy's signature. Each public\nmethod deducts "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(input)"
+            },
+            {
+              "kind": "text",
+              "text": " FLOPs from the active budget."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flopscope.stats.truncnorm",
+  "canonical_path": "/docs/api/stats/truncnorm/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.stats.truncnorm",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": null,
+  "flopscope_ref": "flopscope.stats.truncnorm",
+  "flopscope_source_url": "",
+  "href": "/docs/api/stats/truncnorm/",
+  "import_path": "flopscope.stats.truncnorm",
+  "is_operation_cost_leaf": false,
+  "kind": "object",
+  "legacy_href": "/docs/api/stats/truncnorm/",
+  "module": "flopscope.stats._truncnorm",
+  "name": "truncnorm",
+  "next": null,
+  "notes": "",
+  "notes_sections": [
+    "``a`` and ``b`` are standardized lower and upper bounds. The truncated support is ``[a * scale + loc, b * scale + loc]``, and both bounds appear before ``loc`` and ``scale`` to match SciPy's signature. Each public method deducts ``1 * numel(input)`` FLOPs from the active budget."
+  ],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [],
+  "previous": null,
+  "returns": [],
+  "schema_version": 1,
+  "see_also": [],
+  "signature": "flopscope.stats.truncnorm",
+  "slug": "flopscope-stats-truncnorm",
+  "summary": "Truncated normal continuous random variable.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

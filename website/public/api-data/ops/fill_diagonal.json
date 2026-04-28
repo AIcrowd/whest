@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fill-diagonal/",
+  "detail_href": "/docs/api/numpy/fill-diagonal/",
   "detail_json_href": "/api-data/ops/fill_diagonal.json",
   "docs": {
     "sections": [
@@ -180,7 +180,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diag_indices",
+                "href": "/docs/api/numpy/diag-indices/",
                 "label": "flops.diag_indices",
                 "original_target": "diag_indices",
                 "role": "",
@@ -191,7 +191,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diag_indices_from",
+                "href": "/docs/api/numpy/diag-indices-from/",
                 "label": "flops.diag_indices_from",
                 "original_target": "diag_indices_from",
                 "role": "",
@@ -214,7 +214,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/diag_indices",
+                "href": "/docs/api/numpy/diag-indices/",
                 "kind": "link",
                 "target": "diag_indices",
                 "text": "diag_indices"
@@ -236,7 +236,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -501,7 +501,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/flipud",
+                "href": "/docs/api/numpy/flipud/",
                 "kind": "link",
                 "target": "flipud",
                 "text": "flops.flipud"
@@ -512,7 +512,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/fliplr",
+                "href": "/docs/api/numpy/fliplr/",
                 "kind": "link",
                 "target": "fliplr",
                 "text": "flops.fliplr"
@@ -596,12 +596,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.fill_diagonal",
+    "flopscope_ref": "fnp.fill_diagonal",
     "module": "numpy",
     "name": "fill_diagonal",
     "notes": "Fill main diagonal of given array. Cost: min(m,n).",
     "numpy_ref": "np.fill_diagonal",
-    "signature": "flops.fill_diagonal(a, val, wrap=False, **kwargs)",
+    "signature": "fnp.fill_diagonal(a, val, wrap=False, **kwargs)",
     "status": "supported",
     "summary": "Fill the main diagonal of the given array of any dimensionality.",
     "weight": 4.0

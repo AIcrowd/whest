@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/cumulative-sum/",
+  "detail_href": "/docs/api/numpy/cumulative-sum/",
   "detail_json_href": "/api-data/ops/cumulative_sum.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/cumsum",
+                "href": "/docs/api/numpy/cumsum/",
                 "kind": "link",
                 "target": "cumsum",
                 "text": "flops.cumsum"
@@ -401,7 +401,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "label": "flops.sum",
                 "original_target": "sum",
                 "role": "",
@@ -417,7 +417,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/trapezoid",
+                "href": "/docs/api/numpy/trapezoid/",
                 "label": "flops.trapezoid",
                 "original_target": "trapezoid",
                 "role": "",
@@ -433,7 +433,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/diff",
+                "href": "/docs/api/numpy/diff/",
                 "label": "flops.diff",
                 "original_target": "diff",
                 "role": "",
@@ -477,7 +477,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "kind": "link",
                 "target": "sum",
                 "text": "sum"
@@ -488,7 +488,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "kind": "link",
                 "target": "sum",
                 "text": "sum"
@@ -632,12 +632,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.cumulative_sum",
+    "flopscope_ref": "fnp.cumulative_sum",
     "module": "numpy",
     "name": "cumulative_sum",
     "notes": "Cumulative sum (NumPy 2.x array API).",
     "numpy_ref": "np.cumulative_sum",
-    "signature": "flops.cumulative_sum(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
+    "signature": "fnp.cumulative_sum(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
     "status": "supported",
     "summary": "Return the cumulative sum of the elements along a given axis.",
     "weight": 1.0

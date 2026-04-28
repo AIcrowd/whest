@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fft/fftn/",
+  "detail_href": "/docs/api/numpy/fft/fftn/",
   "detail_json_href": "/api-data/ops/fft-fftn.json",
   "docs": {
     "sections": [
@@ -782,7 +782,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -907,12 +907,12 @@
     "category": "counted_custom",
     "cost_formula": "5N * ceil(log2(N))",
     "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
-    "flopscope_ref": "flops.fft.fftn",
+    "flopscope_ref": "fnp.fft.fftn",
     "module": "numpy.fft",
     "name": "fft.fftn",
     "notes": "N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.fftn",
-    "signature": "flops.fft.fftn(a, s=None, axes=None, norm=None, out=None)",
+    "signature": "fnp.fft.fftn(a, s=None, axes=None, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the N-dimensional discrete Fourier Transform.",
     "weight": 1.0

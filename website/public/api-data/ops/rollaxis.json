@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/rollaxis/",
+  "detail_href": "/docs/api/numpy/rollaxis/",
   "detail_json_href": "/api-data/ops/rollaxis.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/moveaxis",
+                "href": "/docs/api/numpy/moveaxis/",
                 "kind": "link",
                 "target": "moveaxis",
                 "text": "moveaxis"
@@ -38,7 +38,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/moveaxis",
+                "href": "/docs/api/numpy/moveaxis/",
                 "kind": "link",
                 "target": "moveaxis",
                 "text": "moveaxis"
@@ -275,7 +275,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/moveaxis",
+                "href": "/docs/api/numpy/moveaxis/",
                 "label": "flops.moveaxis",
                 "original_target": "moveaxis",
                 "role": "",
@@ -291,7 +291,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/roll",
+                "href": "/docs/api/numpy/roll/",
                 "label": "flops.roll",
                 "original_target": "roll",
                 "role": "",
@@ -311,7 +311,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -357,12 +357,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.rollaxis",
+    "flopscope_ref": "fnp.rollaxis",
     "module": "numpy",
     "name": "rollaxis",
     "notes": "Roll specified axis backwards. Cost: numel(output).",
     "numpy_ref": "np.rollaxis",
-    "signature": "flops.rollaxis(a, axis, start=0)",
+    "signature": "fnp.rollaxis(a, axis, start=0)",
     "status": "supported",
     "summary": "Roll the specified axis backwards, until it lies in a given position.",
     "weight": 0.0

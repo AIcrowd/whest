@@ -130,7 +130,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isinf",
+              "href": "/docs/api/numpy/isinf/",
               "label": "flops.isinf",
               "original_target": "isinf",
               "role": "",
@@ -141,7 +141,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isneginf",
+              "href": "/docs/api/numpy/isneginf/",
               "label": "flops.isneginf",
               "original_target": "isneginf",
               "role": "",
@@ -152,7 +152,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isfinite",
+              "href": "/docs/api/numpy/isfinite/",
               "label": "flops.isfinite",
               "original_target": "isfinite",
               "role": "",
@@ -163,7 +163,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isnan",
+              "href": "/docs/api/numpy/isnan/",
               "label": "flops.isnan",
               "original_target": "isnan",
               "role": "",
@@ -206,7 +206,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -276,7 +276,7 @@
     }
   ],
   "canonical_name": "isposinf",
-  "canonical_path": "isposinf",
+  "canonical_path": "numpy/isposinf",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -287,20 +287,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.isposinf(flops.inf)\n\nflops.isposinf(-flops.inf)\n\nflops.isposinf([-flops.inf, 0., flops.inf])\n\nx = flops.array([-flops.inf, 0., flops.inf])\n\ny = flops.array([2, 2, 2])\n\nflops.isposinf(x, y)\n\ny",
+    "code": "import flopscope.numpy as fnp\n\nflops.isposinf(flops.inf)\n\nflops.isposinf(-flops.inf)\n\nflops.isposinf([-flops.inf, 0., flops.inf])\n\nx = flops.array([-flops.inf, 0., flops.inf])\n\ny = flops.array([2, 2, 2])\n\nflops.isposinf(x, y)\n\ny",
     "output": "True\n\nFalse\n\narray([False, False,  True])\n\narray([0, 0, 1])\n\narray([0, 0, 1])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.isposinf",
+  "flopscope_ref": "fnp.isposinf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/isposinf/",
+  "href": "/docs/api/numpy/isposinf/",
   "legacy_href": "/docs/api/ops/isposinf/",
   "module": "numpy",
   "name": "isposinf",
   "next": {
-    "href": "/docs/api/isreal/",
-    "label": "flops.isreal"
+    "href": "/docs/api/numpy/isreal/",
+    "label": "fnp.isreal"
   },
   "notes": "Test for positive infinity element-wise.",
   "notes_sections": [
@@ -327,10 +327,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/isneginf/",
-    "label": "flops.isneginf"
+    "href": "/docs/api/numpy/isneginf/",
+    "label": "fnp.isneginf"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.isposinf",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isposinf.html",
   "returns": [
     {
@@ -355,7 +356,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isinf",
+      "href": "/docs/api/numpy/isinf/",
       "label": "flops.isinf",
       "original_target": "isinf",
       "role": "",
@@ -366,7 +367,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isneginf",
+      "href": "/docs/api/numpy/isneginf/",
       "label": "flops.isneginf",
       "original_target": "isneginf",
       "role": "",
@@ -377,7 +378,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isfinite",
+      "href": "/docs/api/numpy/isfinite/",
       "label": "flops.isfinite",
       "original_target": "isfinite",
       "role": "",
@@ -388,7 +389,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isnan",
+      "href": "/docs/api/numpy/isnan/",
       "label": "flops.isnan",
       "original_target": "isnan",
       "role": "",
@@ -396,9 +397,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.isposinf(x, out=None)",
+  "signature": "fnp.isposinf(x, out=None)",
   "slug": "isposinf",
   "summary": "Test element-wise for positive infinity, return result as bool array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_ufunclike_impl.py#L70",
   "weight": 1.0
 }

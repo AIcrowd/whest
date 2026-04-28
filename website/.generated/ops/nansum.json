@@ -254,7 +254,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/mean",
+                      "href": "/docs/api/numpy/mean/",
                       "kind": "link",
                       "target": "mean",
                       "text": "mean"
@@ -265,7 +265,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/sum",
+                      "href": "/docs/api/numpy/sum/",
                       "kind": "link",
                       "target": "sum",
                       "text": "sum"
@@ -553,7 +553,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/sum",
+              "href": "/docs/api/numpy/sum/",
               "label": "flops.sum",
               "original_target": "numpy.sum",
               "role": "",
@@ -569,7 +569,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isnan",
+              "href": "/docs/api/numpy/isnan/",
               "label": "flops.isnan",
               "original_target": "isnan",
               "role": "",
@@ -585,7 +585,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isfinite",
+              "href": "/docs/api/numpy/isfinite/",
               "label": "flops.isfinite",
               "original_target": "isfinite",
               "role": "",
@@ -619,7 +619,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -716,7 +716,7 @@
     }
   ],
   "canonical_name": "nansum",
-  "canonical_path": "nansum",
+  "canonical_path": "numpy/nansum",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -727,20 +727,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.nansum(1)\n\nflops.nansum([1])\n\nflops.nansum([1, flops.nan])\n\na = flops.array([[1, 1], [1, flops.nan]])\n\nflops.nansum(a)\n\nflops.nansum(a, axis=0)\n\nflops.nansum([1, flops.nan, flops.inf])\n\nflops.nansum([1, flops.nan, -flops.inf])\n\nfrom flops.testing import suppress_warnings\n\nwith flops.errstate(invalid=\"ignore\"):\n    flops.nansum([1, flops.nan, flops.inf, -flops.inf]) # both +/- infinity present",
+    "code": "import flopscope.numpy as fnp\n\nflops.nansum(1)\n\nflops.nansum([1])\n\nflops.nansum([1, flops.nan])\n\na = flops.array([[1, 1], [1, flops.nan]])\n\nflops.nansum(a)\n\nflops.nansum(a, axis=0)\n\nflops.nansum([1, flops.nan, flops.inf])\n\nflops.nansum([1, flops.nan, -flops.inf])\n\nfrom flops.testing import suppress_warnings\n\nwith flops.errstate(invalid=\"ignore\"):\n    flops.nansum([1, flops.nan, flops.inf, -flops.inf]) # both +/- infinity present",
     "output": "1\n\n1\n\n1.0\n\n3.0\n\narray([2.,  1.])\n\ninf\n\n-inf\n\nflops.float64(nan)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.nansum",
+  "flopscope_ref": "fnp.nansum",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/nansum/",
+  "href": "/docs/api/numpy/nansum/",
   "legacy_href": "/docs/api/ops/nansum/",
   "module": "numpy",
   "name": "nansum",
   "next": {
-    "href": "/docs/api/nanvar/",
-    "label": "flops.nanvar"
+    "href": "/docs/api/numpy/nanvar/",
+    "label": "fnp.nanvar"
   },
   "notes": "Sum ignoring NaNs.",
   "notes_sections": [
@@ -821,10 +821,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/nanstd/",
-    "label": "flops.nanstd"
+    "href": "/docs/api/numpy/nanstd/",
+    "label": "fnp.nanstd"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nansum",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nansum.html",
   "returns": [
     {
@@ -848,7 +849,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/sum",
+      "href": "/docs/api/numpy/sum/",
       "label": "flops.sum",
       "original_target": "numpy.sum",
       "role": "",
@@ -864,7 +865,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isnan",
+      "href": "/docs/api/numpy/isnan/",
       "label": "flops.isnan",
       "original_target": "isnan",
       "role": "",
@@ -880,7 +881,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isfinite",
+      "href": "/docs/api/numpy/isfinite/",
       "label": "flops.isfinite",
       "original_target": "isfinite",
       "role": "",
@@ -888,9 +889,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.nansum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+  "signature": "fnp.nansum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "nansum",
   "summary": "Return the sum of array elements over a given axis treating Not a Numbers (NaNs) as zero.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L635",
   "weight": 1.0
 }

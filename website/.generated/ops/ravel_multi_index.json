@@ -243,7 +243,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/unravel_index",
+              "href": "/docs/api/numpy/unravel-index/",
               "label": "flops.unravel_index",
               "original_target": "unravel_index",
               "role": "",
@@ -263,7 +263,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -328,7 +328,7 @@
     }
   ],
   "canonical_name": "ravel_multi_index",
-  "canonical_path": "ravel-multi-index",
+  "canonical_path": "numpy/ravel-multi-index",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -339,20 +339,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\narr = flops.array([[3,6,6],[4,5,1]])\n\nflops.ravel_multi_index(arr, (7,6))\n\nflops.ravel_multi_index(arr, (7,6), order='F')\n\nflops.ravel_multi_index(arr, (4,6), mode='clip')\n\nflops.ravel_multi_index(arr, (4,4), mode=('clip','wrap'))\n\nflops.ravel_multi_index((3,1,4,1), (6,7,8,9))",
+    "code": "import flopscope.numpy as fnp\n\narr = flops.array([[3,6,6],[4,5,1]])\n\nflops.ravel_multi_index(arr, (7,6))\n\nflops.ravel_multi_index(arr, (7,6), order='F')\n\nflops.ravel_multi_index(arr, (4,6), mode='clip')\n\nflops.ravel_multi_index(arr, (4,4), mode=('clip','wrap'))\n\nflops.ravel_multi_index((3,1,4,1), (6,7,8,9))",
     "output": "array([22, 41, 37])\n\narray([31, 41, 13])\n\narray([22, 23, 19])\n\narray([12, 13, 13])\n\n1621",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.ravel_multi_index",
+  "flopscope_ref": "fnp.ravel_multi_index",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1456",
-  "href": "/docs/api/ravel-multi-index/",
+  "href": "/docs/api/numpy/ravel-multi-index/",
   "legacy_href": "/docs/api/ops/ravel_multi_index/",
   "module": "numpy",
   "name": "ravel_multi_index",
   "next": {
-    "href": "/docs/api/real/",
-    "label": "flops.real"
+    "href": "/docs/api/numpy/real/",
+    "label": "fnp.real"
   },
   "notes": "Convert multi-dimensional index to flat index.",
   "notes_sections": [],
@@ -398,10 +398,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ravel/",
-    "label": "flops.ravel"
+    "href": "/docs/api/numpy/ravel/",
+    "label": "fnp.ravel"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.ravel_multi_index",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ravel_multi_index.html",
   "returns": [
     {
@@ -418,7 +419,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/unravel_index",
+      "href": "/docs/api/numpy/unravel-index/",
       "label": "flops.unravel_index",
       "original_target": "unravel_index",
       "role": "",
@@ -426,9 +427,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.ravel_multi_index(*args, **kwargs)",
+  "signature": "fnp.ravel_multi_index(*args, **kwargs)",
   "slug": "ravel_multi_index",
   "summary": "Converts a tuple of index arrays into an array of flat indices, applying boundary modes to the multi-index.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

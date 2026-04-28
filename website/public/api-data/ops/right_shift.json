@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/right-shift/",
+  "detail_href": "/docs/api/numpy/right-shift/",
   "detail_json_href": "/api-data/ops/right_shift.json",
   "docs": {
     "sections": [
@@ -414,7 +414,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/left_shift",
+                "href": "/docs/api/numpy/left-shift/",
                 "label": "flops.left_shift",
                 "original_target": "left_shift",
                 "role": "",
@@ -450,7 +450,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -512,7 +512,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/right_shift",
+                "href": "/docs/api/numpy/right-shift/",
                 "kind": "link",
                 "target": "right_shift",
                 "text": "flops.right_shift"
@@ -557,12 +557,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.right_shift",
+    "flopscope_ref": "fnp.right_shift",
     "module": "numpy",
     "name": "right_shift",
     "notes": "Element-wise right bit shift (legacy name).",
     "numpy_ref": "np.right_shift",
-    "signature": "flops.right_shift(*args, **kwargs)",
+    "signature": "fnp.right_shift(*args, **kwargs)",
     "status": "supported",
     "summary": "Shift the bits of an integer to the right.",
     "weight": 1.0

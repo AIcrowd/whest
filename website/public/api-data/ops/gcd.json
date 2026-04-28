@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/gcd/",
+  "detail_href": "/docs/api/numpy/gcd/",
   "detail_json_href": "/api-data/ops/gcd.json",
   "docs": {
     "sections": [
@@ -156,7 +156,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/lcm",
+                "href": "/docs/api/numpy/lcm/",
                 "label": "flops.lcm",
                 "original_target": "lcm",
                 "role": "",
@@ -176,7 +176,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -217,12 +217,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.gcd",
+    "flopscope_ref": "fnp.gcd",
     "module": "numpy",
     "name": "gcd",
     "notes": "Element-wise greatest common divisor.",
     "numpy_ref": "np.gcd",
-    "signature": "flops.gcd(*args, **kwargs)",
+    "signature": "fnp.gcd(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the greatest common divisor of ``|x1|`` and ``|x2|``",
     "weight": 16.0

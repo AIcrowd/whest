@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/subtract/",
+  "detail_href": "/docs/api/numpy/subtract/",
   "detail_json_href": "/api-data/ops/subtract.json",
   "docs": {
     "sections": [
@@ -354,7 +354,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -416,7 +416,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/subtract",
+                "href": "/docs/api/numpy/subtract/",
                 "kind": "link",
                 "target": "subtract",
                 "text": "flops.subtract"
@@ -469,12 +469,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.subtract",
+    "flopscope_ref": "fnp.subtract",
     "module": "numpy",
     "name": "subtract",
     "notes": "Element-wise subtraction.",
     "numpy_ref": "np.subtract",
-    "signature": "flops.subtract(*args, **kwargs)",
+    "signature": "fnp.subtract(*args, **kwargs)",
     "status": "supported",
     "summary": "Subtract arguments, element-wise.",
     "weight": 1.0

@@ -328,7 +328,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ones_like",
+              "href": "/docs/api/numpy/ones-like/",
               "label": "flops.ones_like",
               "original_target": "ones_like",
               "role": "",
@@ -344,7 +344,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/empty",
+              "href": "/docs/api/numpy/empty/",
               "label": "flops.empty",
               "original_target": "empty",
               "role": "",
@@ -360,7 +360,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/zeros",
+              "href": "/docs/api/numpy/zeros/",
               "label": "flops.zeros",
               "original_target": "zeros",
               "role": "",
@@ -376,7 +376,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/full",
+              "href": "/docs/api/numpy/full/",
               "label": "flops.full",
               "original_target": "full",
               "role": "",
@@ -396,7 +396,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -470,7 +470,7 @@
     }
   ],
   "canonical_name": "ones",
-  "canonical_path": "ones",
+  "canonical_path": "numpy/ones",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -481,20 +481,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.ones(5)\n\nflops.ones((5,), dtype=int)\n\nflops.ones((2, 1))\n\ns = (2,2)\n\nflops.ones(s)",
+    "code": "import flopscope.numpy as fnp\n\nflops.ones(5)\n\nflops.ones((5,), dtype=int)\n\nflops.ones((2, 1))\n\ns = (2,2)\n\nflops.ones(s)",
     "output": "array([1., 1., 1., 1., 1.])\n\narray([1, 1, 1, 1, 1])\n\narray([[1.],\n       [1.]])\n\narray([[1.,  1.],\n       [1.,  1.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.ones",
+  "flopscope_ref": "fnp.ones",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L116",
-  "href": "/docs/api/ones/",
+  "href": "/docs/api/numpy/ones/",
   "legacy_href": "/docs/api/ops/ones/",
   "module": "numpy",
   "name": "ones",
   "next": {
-    "href": "/docs/api/ones-like/",
-    "label": "flops.ones_like"
+    "href": "/docs/api/numpy/ones-like/",
+    "label": "fnp.ones_like"
   },
   "notes": "Create one-filled array.",
   "notes_sections": [],
@@ -549,10 +549,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/not-equal/",
-    "label": "flops.not_equal"
+    "href": "/docs/api/numpy/not-equal/",
+    "label": "fnp.not_equal"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.ones",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ones.html",
   "returns": [
     {
@@ -573,7 +574,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ones_like",
+      "href": "/docs/api/numpy/ones-like/",
       "label": "flops.ones_like",
       "original_target": "ones_like",
       "role": "",
@@ -589,7 +590,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/empty",
+      "href": "/docs/api/numpy/empty/",
       "label": "flops.empty",
       "original_target": "empty",
       "role": "",
@@ -605,7 +606,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/zeros",
+      "href": "/docs/api/numpy/zeros/",
       "label": "flops.zeros",
       "original_target": "zeros",
       "role": "",
@@ -621,7 +622,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/full",
+      "href": "/docs/api/numpy/full/",
       "label": "flops.full",
       "original_target": "full",
       "role": "",
@@ -629,9 +630,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.ones(shape, dtype=None, order='C', *, device=None, like=None)",
+  "signature": "fnp.ones(shape, dtype=None, order='C', *, device=None, like=None)",
   "slug": "ones",
   "summary": "Return a new array of given shape and type, filled with ones.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L137",
   "weight": 0.0
 }

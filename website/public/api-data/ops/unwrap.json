@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/unwrap/",
+  "detail_href": "/docs/api/numpy/unwrap/",
   "detail_json_href": "/api-data/ops/unwrap.json",
   "docs": {
     "sections": [
@@ -443,7 +443,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -534,12 +534,12 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.unwrap",
+    "flopscope_ref": "fnp.unwrap",
     "module": "flopscope._unwrap",
     "name": "unwrap",
     "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
     "numpy_ref": "np.unwrap",
-    "signature": "flops.unwrap(p, discont=None, axis=-1, *, period=6.283185307179586)",
+    "signature": "fnp.unwrap(p, discont=None, axis=-1, *, period=6.283185307179586)",
     "status": "supported",
     "summary": "Unwrap by taking the complement of large deltas with respect to the period.",
     "weight": 1.0

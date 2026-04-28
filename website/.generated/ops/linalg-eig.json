@@ -585,7 +585,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -799,7 +799,7 @@
     }
   ],
   "canonical_name": "linalg.eig",
-  "canonical_path": "linalg/eig",
+  "canonical_path": "numpy/linalg/eig",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -810,20 +810,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nfrom numpy import linalg as LA\n\neigenvalues, eigenvectors = LA.eig(flops.diag((1, 2, 3)))\n\neigenvalues\n\neigenvectors\n\neigenvalues, eigenvectors = LA.eig(flops.array([[1, -1], [1, 1]]))\n\neigenvalues\n\neigenvectors\n\na = flops.array([[1, 1j], [-1j, 1]])\n\neigenvalues, eigenvectors = LA.eig(a)\n\neigenvalues\n\neigenvectors\n\na = flops.array([[1 + 1e-9, 0], [0, 1 - 1e-9]])\n\neigenvalues, eigenvectors = LA.eig(a)\n\neigenvalues\n\neigenvectors",
+    "code": "import flopscope.numpy as fnp\n\nfrom numpy import linalg as LA\n\neigenvalues, eigenvectors = LA.eig(flops.diag((1, 2, 3)))\n\neigenvalues\n\neigenvectors\n\neigenvalues, eigenvectors = LA.eig(flops.array([[1, -1], [1, 1]]))\n\neigenvalues\n\neigenvectors\n\na = flops.array([[1, 1j], [-1j, 1]])\n\neigenvalues, eigenvectors = LA.eig(a)\n\neigenvalues\n\neigenvectors\n\na = flops.array([[1 + 1e-9, 0], [0, 1 - 1e-9]])\n\neigenvalues, eigenvectors = LA.eig(a)\n\neigenvalues\n\neigenvectors",
     "output": "array([1., 2., 3.])\n\narray([[1., 0., 0.],\n       [0., 1., 0.],\n       [0., 0., 1.]])\n\narray([1.+1.j, 1.-1.j])\n\narray([[0.70710678+0.j        , 0.70710678-0.j        ],\n       [0.        -0.70710678j, 0.        +0.70710678j]])\n\narray([2.+0.j, 0.+0.j])\n\narray([[ 0.        +0.70710678j,  0.70710678+0.j        ], # may vary\n       [ 0.70710678+0.j        , -0.        +0.70710678j]])\n\narray([1., 1.])\n\narray([[1., 0.],\n       [0., 1.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.eig",
+  "flopscope_ref": "fnp.linalg.eig",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L116",
-  "href": "/docs/api/linalg/eig/",
+  "href": "/docs/api/numpy/linalg/eig/",
   "legacy_href": "/docs/api/ops/linalg-eig/",
   "module": "numpy.linalg",
   "name": "linalg.eig",
   "next": {
-    "href": "/docs/api/linalg/eigh/",
-    "label": "flops.linalg.eigh"
+    "href": "/docs/api/numpy/linalg/eigh/",
+    "label": "fnp.linalg.eigh"
   },
   "notes": "Eigendecomposition. Cost: $n^3$.",
   "notes_sections": [
@@ -846,10 +846,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/diagonal/",
-    "label": "flops.linalg.diagonal"
+    "href": "/docs/api/numpy/linalg/diagonal/",
+    "label": "fnp.linalg.diagonal"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.eig",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.eig.html",
   "returns": [
     {
@@ -961,9 +962,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.linalg.eig(a)",
+  "signature": "fnp.linalg.eig(a)",
   "slug": "linalg-eig",
   "summary": "Compute the eigenvalues and right eigenvectors of a square array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1331",
   "weight": 4.0
 }

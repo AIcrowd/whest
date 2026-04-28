@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fft/rfft/",
+  "detail_href": "/docs/api/numpy/fft/rfft/",
   "detail_json_href": "/api-data/ops/fft-rfft.json",
   "docs": {
     "sections": [
@@ -670,7 +670,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -727,12 +727,12 @@
     "category": "counted_custom",
     "cost_formula": "5(n/2) * ceil(log2(n))",
     "cost_formula_latex": "$5(n/2) \\cdot \\lceil\\log_2 n\\rceil$",
-    "flopscope_ref": "flops.fft.rfft",
+    "flopscope_ref": "fnp.fft.rfft",
     "module": "numpy.fft",
     "name": "fft.rfft",
     "notes": "1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.rfft",
-    "signature": "flops.fft.rfft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "fnp.fft.rfft(a, n=None, axis=-1, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the one-dimensional discrete Fourier Transform for real input.",
     "weight": 1.0

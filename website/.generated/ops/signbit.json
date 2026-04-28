@@ -284,7 +284,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -312,7 +312,7 @@
     }
   ],
   "canonical_name": "signbit",
-  "canonical_path": "signbit",
+  "canonical_path": "numpy/signbit",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -330,20 +330,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.signbit(-1.2)\n\nflops.signbit(flops.array([1, -2.3, 2.1]))",
+    "code": "import flopscope.numpy as fnp\n\nflops.signbit(-1.2)\n\nflops.signbit(flops.array([1, -2.3, 2.1]))",
     "output": "True\n\narray([False,  True, False])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.signbit",
+  "flopscope_ref": "fnp.signbit",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/signbit/",
+  "href": "/docs/api/numpy/signbit/",
   "legacy_href": "/docs/api/ops/signbit/",
   "module": "numpy",
   "name": "signbit",
   "next": {
-    "href": "/docs/api/sin/",
-    "label": "flops.sin"
+    "href": "/docs/api/numpy/sin/",
+    "label": "fnp.sin"
   },
   "notes": "Returns True for elements with negative sign bit.",
   "notes_sections": [],
@@ -388,10 +388,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/sign/",
-    "label": "flops.sign"
+    "href": "/docs/api/numpy/sign/",
+    "label": "fnp.sign"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.signbit",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.signbit.html",
   "returns": [
     {
@@ -404,9 +405,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.signbit(*args, **kwargs)",
+  "signature": "fnp.signbit(*args, **kwargs)",
   "slug": "signbit",
   "summary": "Returns element-wise True where signbit is set (less than zero).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

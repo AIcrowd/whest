@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/append/",
+  "detail_href": "/docs/api/numpy/append/",
   "detail_json_href": "/api-data/ops/append.json",
   "docs": {
     "sections": [
@@ -276,7 +276,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/append",
+                        "href": "/docs/api/numpy/append/",
                         "kind": "link",
                         "target": "append",
                         "text": "append"
@@ -337,7 +337,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/append",
+                    "href": "/docs/api/numpy/append/",
                     "kind": "link",
                     "target": "append",
                     "text": "append"
@@ -386,7 +386,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/insert",
+                "href": "/docs/api/numpy/insert/",
                 "label": "flops.insert",
                 "original_target": "insert",
                 "role": "",
@@ -402,7 +402,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/delete",
+                "href": "/docs/api/numpy/delete/",
                 "label": "flops.delete",
                 "original_target": "delete",
                 "role": "",
@@ -422,7 +422,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -585,12 +585,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.append",
+    "flopscope_ref": "fnp.append",
     "module": "numpy",
     "name": "append",
     "notes": "Append values to end of array. Cost: numel(values).",
     "numpy_ref": "np.append",
-    "signature": "flops.append(arr, values, axis=None)",
+    "signature": "fnp.append(arr, values, axis=None)",
     "status": "supported",
     "summary": "Append values to the end of an array.",
     "weight": 1.0

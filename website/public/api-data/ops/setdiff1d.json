@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/setdiff1d/",
+  "detail_href": "/docs/api/numpy/setdiff1d/",
   "detail_json_href": "/api-data/ops/setdiff1d.json",
   "docs": {
     "sections": [
@@ -212,7 +212,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -245,12 +245,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.setdiff1d",
+    "flopscope_ref": "fnp.setdiff1d",
     "module": "numpy",
     "name": "setdiff1d",
     "notes": "Set difference; cost = (n+m)*ceil(log2(n+m)).",
     "numpy_ref": "np.setdiff1d",
-    "signature": "flops.setdiff1d(ar1, ar2, assume_unique=False)",
+    "signature": "fnp.setdiff1d(ar1, ar2, assume_unique=False)",
     "status": "supported",
     "summary": "Find the set difference of two arrays.",
     "weight": 1.0

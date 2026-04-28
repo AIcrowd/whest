@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/zipf/",
+  "detail_href": "/docs/api/numpy/random/zipf/",
   "detail_json_href": "/api-data/ops/random-zipf.json",
   "docs": {
     "sections": [
@@ -438,7 +438,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/bincount",
+                "href": "/docs/api/numpy/bincount/",
                 "kind": "link",
                 "target": "bincount",
                 "text": "bincount"
@@ -519,12 +519,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.zipf",
+    "flopscope_ref": "fnp.random.zipf",
     "module": "numpy.random",
     "name": "random.zipf",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.zipf",
-    "signature": "flops.random.zipf(a, size=None)",
+    "signature": "fnp.random.zipf(a, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Zipf distribution.",
     "weight": 16.0

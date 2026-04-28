@@ -932,7 +932,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/matmul",
+              "href": "/docs/api/numpy/matmul/",
               "kind": "link",
               "target": "matmul",
               "text": "flops.matmul"
@@ -987,7 +987,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -1211,7 +1211,7 @@
     }
   ],
   "canonical_name": "linalg.svd",
-  "canonical_path": "linalg/svd",
+  "canonical_path": "numpy/linalg/svd",
   "category": "counted_custom",
   "cost_formula": "m * n * k",
   "cost_formula_latex": "$m \\cdot n \\cdot k$",
@@ -1229,20 +1229,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nrng = flops.random.default_rng()\n\na = rng.normal(size=(9, 6)) + 1j*rng.normal(size=(9, 6))\n\nb = rng.normal(size=(2, 7, 8, 3)) + 1j*rng.normal(size=(2, 7, 8, 3))\n\nU, S, Vh = flops.linalg.svd(a, full_matrices=True)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(a, flops.dot(U[:, :6] * S, Vh))\n\nsmat = flops.zeros((9, 6), dtype=complex)\n\nsmat[:6, :6] = flops.diag(S)\n\nflops.allclose(a, flops.dot(U, flops.dot(smat, Vh)))\n\nU, S, Vh = flops.linalg.svd(a, full_matrices=False)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(a, flops.dot(U * S, Vh))\n\nsmat = flops.diag(S)\n\nflops.allclose(a, flops.dot(U, flops.dot(smat, Vh)))\n\nU, S, Vh = flops.linalg.svd(b, full_matrices=True)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(b, flops.matmul(U[..., :3] * S[..., None, :], Vh))\n\nflops.allclose(b, flops.matmul(U[..., :3], S[..., None] * Vh))\n\nU, S, Vh = flops.linalg.svd(b, full_matrices=False)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(b, flops.matmul(U * S[..., None, :], Vh))\n\nflops.allclose(b, flops.matmul(U, S[..., None] * Vh))",
+    "code": "import flopscope.numpy as fnp\n\nrng = flops.random.default_rng()\n\na = rng.normal(size=(9, 6)) + 1j*rng.normal(size=(9, 6))\n\nb = rng.normal(size=(2, 7, 8, 3)) + 1j*rng.normal(size=(2, 7, 8, 3))\n\nU, S, Vh = flops.linalg.svd(a, full_matrices=True)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(a, flops.dot(U[:, :6] * S, Vh))\n\nsmat = flops.zeros((9, 6), dtype=complex)\n\nsmat[:6, :6] = flops.diag(S)\n\nflops.allclose(a, flops.dot(U, flops.dot(smat, Vh)))\n\nU, S, Vh = flops.linalg.svd(a, full_matrices=False)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(a, flops.dot(U * S, Vh))\n\nsmat = flops.diag(S)\n\nflops.allclose(a, flops.dot(U, flops.dot(smat, Vh)))\n\nU, S, Vh = flops.linalg.svd(b, full_matrices=True)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(b, flops.matmul(U[..., :3] * S[..., None, :], Vh))\n\nflops.allclose(b, flops.matmul(U[..., :3], S[..., None] * Vh))\n\nU, S, Vh = flops.linalg.svd(b, full_matrices=False)\n\nU.shape, S.shape, Vh.shape\n\nflops.allclose(b, flops.matmul(U * S[..., None, :], Vh))\n\nflops.allclose(b, flops.matmul(U, S[..., None] * Vh))",
     "output": "((9, 9), (6,), (6, 6))\n\nTrue\n\nTrue\n\n((9, 6), (6,), (6, 6))\n\nTrue\n\nTrue\n\n((2, 7, 8, 8), (2, 7, 3), (2, 7, 3, 3))\n\nTrue\n\nTrue\n\n((2, 7, 8, 3), (2, 7, 3), (2, 7, 3, 3))\n\nTrue\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.svd",
+  "flopscope_ref": "fnp.linalg.svd",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_svd.py#L27",
-  "href": "/docs/api/linalg/svd/",
+  "href": "/docs/api/numpy/linalg/svd/",
   "legacy_href": "/docs/api/ops/linalg-svd/",
   "module": "numpy.linalg",
   "name": "linalg.svd",
   "next": {
-    "href": "/docs/api/linalg/svdvals/",
-    "label": "flops.linalg.svdvals"
+    "href": "/docs/api/numpy/linalg/svdvals/",
+    "label": "fnp.linalg.svdvals"
   },
   "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
   "notes_sections": [
@@ -1289,10 +1289,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/solve/",
-    "label": "flops.linalg.solve"
+    "href": "/docs/api/numpy/linalg/solve/",
+    "label": "fnp.linalg.solve"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.svd",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.svd.html",
   "returns": [
     {
@@ -1369,9 +1370,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
+  "signature": "fnp.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
   "slug": "linalg-svd",
   "summary": "Singular Value Decomposition.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1639",
   "weight": 4.0
 }

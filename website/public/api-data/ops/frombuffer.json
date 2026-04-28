@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/frombuffer/",
+  "detail_href": "/docs/api/numpy/frombuffer/",
   "detail_json_href": "/api-data/ops/frombuffer.json",
   "docs": {
     "sections": [
@@ -284,7 +284,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -335,12 +335,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.frombuffer",
+    "flopscope_ref": "fnp.frombuffer",
     "module": "numpy",
     "name": "frombuffer",
     "notes": "Interpret buffer as 1-D array. Cost: numel(output).",
     "numpy_ref": "np.frombuffer",
-    "signature": "flops.frombuffer(*args, **kwargs)",
+    "signature": "fnp.frombuffer(*args, **kwargs)",
     "status": "supported",
     "summary": "Interpret a buffer as a 1-dimensional array.",
     "weight": 0.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/sort/",
+  "detail_href": "/docs/api/numpy/sort/",
   "detail_json_href": "/api-data/ops/sort.json",
   "docs": {
     "sections": [
@@ -338,7 +338,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "label": "flops.argsort",
                 "original_target": "argsort",
                 "role": "",
@@ -354,7 +354,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/lexsort",
+                "href": "/docs/api/numpy/lexsort/",
                 "label": "flops.lexsort",
                 "original_target": "lexsort",
                 "role": "",
@@ -370,7 +370,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/searchsorted",
+                "href": "/docs/api/numpy/searchsorted/",
                 "label": "flops.searchsorted",
                 "original_target": "searchsorted",
                 "role": "",
@@ -386,7 +386,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/partition",
+                "href": "/docs/api/numpy/partition/",
                 "label": "flops.partition",
                 "original_target": "partition",
                 "role": "",
@@ -447,7 +447,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/sort",
+                "href": "/docs/api/numpy/sort/",
                 "kind": "link",
                 "target": "sort",
                 "text": "sort"
@@ -648,7 +648,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -792,12 +792,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.sort",
+    "flopscope_ref": "fnp.sort",
     "module": "numpy",
     "name": "sort",
     "notes": "Comparison sort; cost = n*ceil(log2(n)) per slice.",
     "numpy_ref": "np.sort",
-    "signature": "flops.sort(a, axis=-1, kind=None, order=None, *, stable=None)",
+    "signature": "fnp.sort(a, axis=-1, kind=None, order=None, *, stable=None)",
     "status": "supported",
     "summary": "Return a sorted copy of an array.",
     "weight": 1.0

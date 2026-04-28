@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/rint/",
+  "detail_href": "/docs/api/numpy/rint/",
   "detail_json_href": "/api-data/ops/rint.json",
   "docs": {
     "sections": [
@@ -296,7 +296,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/ceil",
+                "href": "/docs/api/numpy/ceil/",
                 "label": "flops.ceil",
                 "original_target": "ceil",
                 "role": "",
@@ -307,7 +307,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/floor",
+                "href": "/docs/api/numpy/floor/",
                 "label": "flops.floor",
                 "original_target": "floor",
                 "role": "",
@@ -318,7 +318,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/trunc",
+                "href": "/docs/api/numpy/trunc/",
                 "label": "flops.trunc",
                 "original_target": "trunc",
                 "role": "",
@@ -352,7 +352,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -380,12 +380,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.rint",
+    "flopscope_ref": "fnp.rint",
     "module": "numpy",
     "name": "rint",
     "notes": "Round to nearest integer element-wise.",
     "numpy_ref": "np.rint",
-    "signature": "flops.rint(*args, **kwargs)",
+    "signature": "fnp.rint(*args, **kwargs)",
     "status": "supported",
     "summary": "Round elements of the array to the nearest integer.",
     "weight": 1.0

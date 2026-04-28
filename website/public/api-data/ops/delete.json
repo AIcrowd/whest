@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/delete/",
+  "detail_href": "/docs/api/numpy/delete/",
   "detail_json_href": "/api-data/ops/delete.json",
   "docs": {
     "sections": [
@@ -190,7 +190,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/delete",
+                        "href": "/docs/api/numpy/delete/",
                         "kind": "link",
                         "target": "delete",
                         "text": "delete"
@@ -243,7 +243,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/delete",
+                    "href": "/docs/api/numpy/delete/",
                     "kind": "link",
                     "target": "delete",
                     "text": "delete"
@@ -292,7 +292,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/insert",
+                "href": "/docs/api/numpy/insert/",
                 "label": "flops.insert",
                 "original_target": "insert",
                 "role": "",
@@ -308,7 +308,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/append",
+                "href": "/docs/api/numpy/append/",
                 "label": "flops.append",
                 "original_target": "append",
                 "role": "",
@@ -395,7 +395,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -475,12 +475,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.delete",
+    "flopscope_ref": "fnp.delete",
     "module": "numpy",
     "name": "delete",
     "notes": "Return array with sub-arrays deleted along axis. Cost: num deleted.",
     "numpy_ref": "np.delete",
-    "signature": "flops.delete(arr, obj, axis=None)",
+    "signature": "fnp.delete(arr, obj, axis=None)",
     "status": "supported",
     "summary": "Return a new array with sub-arrays along an axis deleted. For a one dimensional array, this returns those entries not returned by `arr[obj]`.",
     "weight": 1.0

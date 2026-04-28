@@ -273,7 +273,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/dot",
+              "href": "/docs/api/numpy/dot/",
               "label": "flops.dot",
               "original_target": "dot",
               "role": "",
@@ -284,7 +284,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "label": "flops.einsum",
               "original_target": "einsum",
               "role": "",
@@ -488,7 +488,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "flops.einsum"
@@ -932,7 +932,7 @@
     }
   ],
   "canonical_name": "linalg.tensordot",
-  "canonical_path": "linalg/tensordot",
+  "canonical_path": "numpy/linalg/tensordot",
   "category": "counted_custom",
   "cost_formula": "delegates to flops.tensordot",
   "cost_formula_latex": "delegates to `tensordot`",
@@ -948,17 +948,17 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.tensordot",
+  "flopscope_ref": "fnp.linalg.tensordot",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L67",
-  "href": "/docs/api/linalg/tensordot/",
+  "href": "/docs/api/numpy/linalg/tensordot/",
   "legacy_href": "/docs/api/ops/linalg-tensordot/",
   "module": "numpy.linalg",
   "name": "linalg.tensordot",
   "next": {
-    "href": "/docs/api/linalg/tensorinv/",
-    "label": "flops.linalg.tensorinv"
+    "href": "/docs/api/numpy/linalg/tensorinv/",
+    "label": "fnp.linalg.tensorinv"
   },
-  "notes": "Delegates to `we.tensordot` which charges FLOPs based on contraction.",
+  "notes": "Delegates to `fnp.tensordot` which charges FLOPs based on contraction.",
   "notes_sections": [
     "Three common use cases are: * ``axes = 0`` : tensor product :math:`a\\otimes b` * ``axes = 1`` : tensor dot product :math:`a\\cdot b` * ``axes = 2`` : (default) tensor double contraction :math:`a:b`",
     "When `axes` is integer_like, the sequence of axes for evaluation will be: from the -Nth axis to the -1th axis in `a`, and from the 0th axis to (N-1)th axis in `b`. For example, ``axes = 2`` is the equal to ``axes = [[-2, -1], [0, 1]]``. When N-1 is smaller than 0, or when -N is larger than -1, the element of `a` and `b` are defined as the `axes`.",
@@ -988,10 +988,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/svdvals/",
-    "label": "flops.linalg.svdvals"
+    "href": "/docs/api/numpy/linalg/svdvals/",
+    "label": "fnp.linalg.svdvals"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.tensordot",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.tensordot.html",
   "returns": [
     {
@@ -1007,7 +1008,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/dot",
+      "href": "/docs/api/numpy/dot/",
       "label": "flops.dot",
       "original_target": "dot",
       "role": "",
@@ -1018,7 +1019,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/einsum",
+      "href": "/docs/api/numpy/einsum/",
       "label": "flops.einsum",
       "original_target": "einsum",
       "role": "",
@@ -1026,9 +1027,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.linalg.tensordot(x1, x2, /, *, axes=2)",
+  "signature": "fnp.linalg.tensordot(x1, x2, /, *, axes=2)",
   "slug": "linalg-tensordot",
   "summary": "Compute tensor dot product along specified axes.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3392",
   "weight": 1.0
 }

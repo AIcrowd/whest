@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/cumprod",
+              "href": "/docs/api/numpy/cumprod/",
               "kind": "link",
               "target": "cumprod",
               "text": "flops.cumprod"
@@ -522,7 +522,7 @@
     }
   ],
   "canonical_name": "cumulative_prod",
-  "canonical_path": "cumulative-prod",
+  "canonical_path": "numpy/cumulative-prod",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -538,15 +538,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.cumulative_prod",
+  "flopscope_ref": "fnp.cumulative_prod",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/cumulative-prod/",
+  "href": "/docs/api/numpy/cumulative-prod/",
   "legacy_href": "/docs/api/ops/cumulative_prod/",
   "module": "numpy",
   "name": "cumulative_prod",
   "next": {
-    "href": "/docs/api/cumulative-sum/",
-    "label": "flops.cumulative_sum"
+    "href": "/docs/api/numpy/cumulative-sum/",
+    "label": "fnp.cumulative_sum"
   },
   "notes": "Cumulative product (NumPy 2.x array API).",
   "notes_sections": [
@@ -603,10 +603,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/cumsum/",
-    "label": "flops.cumsum"
+    "href": "/docs/api/numpy/cumsum/",
+    "label": "fnp.cumsum"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.cumulative_prod",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cumulative_prod.html",
   "returns": [
     {
@@ -620,9 +621,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.cumulative_prod(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
+  "signature": "fnp.cumulative_prod(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
   "slug": "cumulative_prod",
   "summary": "Return the cumulative product of elements along a given axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2713",
   "weight": 1.0
 }

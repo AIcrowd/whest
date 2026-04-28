@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/isrealobj",
+              "href": "/docs/api/numpy/isrealobj/",
               "kind": "link",
               "target": "isrealobj",
               "text": "isrealobj"
@@ -132,7 +132,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/iscomplexobj",
+              "href": "/docs/api/numpy/iscomplexobj/",
               "label": "flops.iscomplexobj",
               "original_target": "iscomplexobj",
               "role": "",
@@ -143,7 +143,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isreal",
+              "href": "/docs/api/numpy/isreal/",
               "label": "flops.isreal",
               "original_target": "isreal",
               "role": "",
@@ -209,7 +209,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -246,7 +246,7 @@
     }
   ],
   "canonical_name": "isrealobj",
-  "canonical_path": "isrealobj",
+  "canonical_path": "numpy/isrealobj",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -257,20 +257,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.isrealobj(1)\n\nflops.isrealobj(1+0j)\n\nflops.isrealobj([3, 1+0j, True])",
+    "code": "import flopscope.numpy as fnp\n\nflops.isrealobj(1)\n\nflops.isrealobj(1+0j)\n\nflops.isrealobj([3, 1+0j, True])",
     "output": "True\n\nFalse\n\nFalse",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.isrealobj",
+  "flopscope_ref": "fnp.isrealobj",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/isrealobj/",
+  "href": "/docs/api/numpy/isrealobj/",
   "legacy_href": "/docs/api/ops/isrealobj/",
   "module": "numpy",
   "name": "isrealobj",
   "next": {
-    "href": "/docs/api/isscalar/",
-    "label": "flops.isscalar"
+    "href": "/docs/api/numpy/isscalar/",
+    "label": "fnp.isscalar"
   },
   "notes": "Return True if x is a not complex type or array.",
   "notes_sections": [
@@ -288,10 +288,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/isreal/",
-    "label": "flops.isreal"
+    "href": "/docs/api/numpy/isreal/",
+    "label": "fnp.isreal"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.isrealobj",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isrealobj.html",
   "returns": [
     {
@@ -307,7 +308,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/iscomplexobj",
+      "href": "/docs/api/numpy/iscomplexobj/",
       "label": "flops.iscomplexobj",
       "original_target": "iscomplexobj",
       "role": "",
@@ -318,7 +319,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isreal",
+      "href": "/docs/api/numpy/isreal/",
       "label": "flops.isreal",
       "original_target": "isreal",
       "role": "",
@@ -326,9 +327,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.isrealobj(x)",
+  "signature": "fnp.isrealobj(x)",
   "slug": "isrealobj",
   "summary": "Return True if x is a not complex type or an array of complex numbers.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L312",
   "weight": 1.0
 }

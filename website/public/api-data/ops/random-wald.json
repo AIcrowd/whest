@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/wald/",
+  "detail_href": "/docs/api/numpy/random/wald/",
   "detail_json_href": "/api-data/ops/random-wald.json",
   "docs": {
     "sections": [
@@ -179,7 +179,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/mean",
+                        "href": "/docs/api/numpy/mean/",
                         "kind": "link",
                         "target": "mean",
                         "text": "mean"
@@ -240,7 +240,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/mean",
+                    "href": "/docs/api/numpy/mean/",
                     "kind": "link",
                     "target": "mean",
                     "text": "mean"
@@ -424,12 +424,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.wald",
+    "flopscope_ref": "fnp.random.wald",
     "module": "numpy.random",
     "name": "random.wald",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.wald",
-    "signature": "flops.random.wald(mean, scale, size=None)",
+    "signature": "fnp.random.wald(mean, scale, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Wald, or inverse Gaussian, distribution.",
     "weight": 16.0

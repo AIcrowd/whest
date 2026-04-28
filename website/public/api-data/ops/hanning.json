@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/hanning/",
+  "detail_href": "/docs/api/numpy/hanning/",
   "detail_json_href": "/api-data/ops/hanning.json",
   "docs": {
     "sections": [
@@ -121,7 +121,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bartlett",
+                "href": "/docs/api/numpy/bartlett/",
                 "label": "flops.bartlett",
                 "original_target": "bartlett",
                 "role": "",
@@ -132,7 +132,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/blackman",
+                "href": "/docs/api/numpy/blackman/",
                 "label": "flops.blackman",
                 "original_target": "blackman",
                 "role": "",
@@ -143,7 +143,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hamming",
+                "href": "/docs/api/numpy/hamming/",
                 "label": "flops.hamming",
                 "original_target": "hamming",
                 "role": "",
@@ -154,7 +154,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/kaiser",
+                "href": "/docs/api/numpy/kaiser/",
                 "label": "flops.kaiser",
                 "original_target": "kaiser",
                 "role": "",
@@ -237,7 +237,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -297,12 +297,12 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
-    "flopscope_ref": "flops.hanning",
+    "flopscope_ref": "fnp.hanning",
     "module": "flopscope._window",
     "name": "hanning",
     "notes": "Hanning window. Cost: n (one cosine per sample).",
     "numpy_ref": "np.hanning",
-    "signature": "flops.hanning(M)",
+    "signature": "fnp.hanning(M)",
     "status": "supported",
     "summary": "Return the Hanning window.",
     "weight": 16.0

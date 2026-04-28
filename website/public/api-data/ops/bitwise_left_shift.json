@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/bitwise-left-shift/",
+  "detail_href": "/docs/api/numpy/bitwise-left-shift/",
   "detail_json_href": "/api-data/ops/bitwise_left_shift.json",
   "docs": {
     "sections": [
@@ -422,7 +422,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/right_shift",
+                "href": "/docs/api/numpy/right-shift/",
                 "label": "flops.right_shift",
                 "original_target": "right_shift",
                 "role": "",
@@ -458,7 +458,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -578,7 +578,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/left_shift",
+                "href": "/docs/api/numpy/left-shift/",
                 "kind": "link",
                 "target": "left_shift",
                 "text": "flops.left_shift"
@@ -623,12 +623,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.bitwise_left_shift",
+    "flopscope_ref": "fnp.bitwise_left_shift",
     "module": "numpy",
     "name": "bitwise_left_shift",
     "notes": "Element-wise left bit shift.",
     "numpy_ref": "np.bitwise_left_shift",
-    "signature": "flops.bitwise_left_shift(*args, **kwargs)",
+    "signature": "fnp.bitwise_left_shift(*args, **kwargs)",
     "status": "supported",
     "summary": "Shift the bits of an integer to the left.",
     "weight": 1.0

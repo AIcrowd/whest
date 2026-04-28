@@ -525,7 +525,7 @@
     }
   ],
   "canonical_name": "random.negative_binomial",
-  "canonical_path": "random/negative-binomial",
+  "canonical_path": "numpy/random/negative-binomial",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -550,15 +550,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.negative_binomial",
+  "flopscope_ref": "fnp.random.negative_binomial",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/negative-binomial/",
+  "href": "/docs/api/numpy/random/negative-binomial/",
   "legacy_href": "/docs/api/ops/random-negative_binomial/",
   "module": "numpy.random",
   "name": "random.negative_binomial",
   "next": {
-    "href": "/docs/api/random/noncentral-chisquare/",
-    "label": "flops.random.noncentral_chisquare"
+    "href": "/docs/api/numpy/random/noncentral-chisquare/",
+    "label": "fnp.random.noncentral_chisquare"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -595,10 +595,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/multivariate-normal/",
-    "label": "flops.random.multivariate_normal"
+    "href": "/docs/api/numpy/random/multivariate-normal/",
+    "label": "fnp.random.multivariate_normal"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.negative_binomial",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.negative_binomial.html",
   "returns": [
     {
@@ -639,9 +640,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.negative_binomial(n, p, size=None)",
+  "signature": "fnp.random.negative_binomial(n, p, size=None)",
   "slug": "random-negative_binomial",
   "summary": "Draw samples from a negative binomial distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

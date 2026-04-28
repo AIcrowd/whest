@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/polyder/",
+  "detail_href": "/docs/api/numpy/polyder/",
   "detail_json_href": "/api-data/ops/polyder.json",
   "docs": {
     "sections": [
@@ -185,7 +185,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/polyint",
+                "href": "/docs/api/numpy/polyint/",
                 "label": "flops.polyint",
                 "original_target": "polyint",
                 "role": "",
@@ -238,7 +238,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -371,12 +371,12 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
-    "flopscope_ref": "flops.polyder",
+    "flopscope_ref": "fnp.polyder",
     "module": "flopscope._polynomial",
     "name": "polyder",
     "notes": "Differentiate polynomial. Cost: n FLOPs.",
     "numpy_ref": "np.polyder",
-    "signature": "flops.polyder(p, m=1)",
+    "signature": "fnp.polyder(p, m=1)",
     "status": "supported",
     "summary": "Return the derivative of the specified order of a polynomial.",
     "weight": 1.0

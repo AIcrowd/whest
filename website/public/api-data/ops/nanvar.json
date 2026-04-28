@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/nanvar/",
+  "detail_href": "/docs/api/numpy/nanvar/",
   "detail_json_href": "/api-data/ops/nanvar.json",
   "docs": {
     "sections": [
@@ -499,7 +499,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/std",
+                "href": "/docs/api/numpy/std/",
                 "label": "flops.std",
                 "original_target": "std",
                 "role": "",
@@ -515,7 +515,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
+                "href": "/docs/api/numpy/mean/",
                 "label": "flops.mean",
                 "original_target": "mean",
                 "role": "",
@@ -531,7 +531,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/var",
+                "href": "/docs/api/numpy/var/",
                 "label": "flops.var",
                 "original_target": "var",
                 "role": "",
@@ -542,7 +542,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanstd",
+                "href": "/docs/api/numpy/nanstd/",
                 "label": "flops.nanstd",
                 "original_target": "nanstd",
                 "role": "",
@@ -553,7 +553,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmean",
+                "href": "/docs/api/numpy/nanmean/",
                 "label": "flops.nanmean",
                 "original_target": "nanmean",
                 "role": "",
@@ -695,7 +695,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "kind": "link",
                 "target": "sum",
                 "text": "sum"
@@ -721,7 +721,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -767,12 +767,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.nanvar",
+    "flopscope_ref": "fnp.nanvar",
     "module": "numpy",
     "name": "nanvar",
     "notes": "Variance ignoring NaNs.",
     "numpy_ref": "np.nanvar",
-    "signature": "flops.nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
+    "signature": "fnp.nanvar(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
     "status": "supported",
     "summary": "Compute the variance along the specified axis, while ignoring NaNs.",
     "weight": 2.0

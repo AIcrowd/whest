@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/atleast-2d/",
+  "detail_href": "/docs/api/numpy/atleast-2d/",
   "detail_json_href": "/api-data/ops/atleast_2d.json",
   "docs": {
     "sections": [
@@ -107,7 +107,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/atleast_1d",
+                "href": "/docs/api/numpy/atleast-1d/",
                 "label": "flops.atleast_1d",
                 "original_target": "atleast_1d",
                 "role": "",
@@ -118,7 +118,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/atleast_3d",
+                "href": "/docs/api/numpy/atleast-3d/",
                 "label": "flops.atleast_3d",
                 "original_target": "atleast_3d",
                 "role": "",
@@ -138,7 +138,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -203,12 +203,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.atleast_2d",
+    "flopscope_ref": "fnp.atleast_2d",
     "module": "numpy",
     "name": "atleast_2d",
     "notes": "View inputs as arrays with at least two dimensions.",
     "numpy_ref": "np.atleast_2d",
-    "signature": "flops.atleast_2d(*arys)",
+    "signature": "fnp.atleast_2d(*arys)",
     "status": "supported",
     "summary": "View inputs as arrays with at least two dimensions.",
     "weight": 0.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/array-split/",
+  "detail_href": "/docs/api/numpy/array-split/",
   "detail_json_href": "/api-data/ops/array_split.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "kind": "link",
                 "target": "split",
                 "text": "split"
@@ -38,7 +38,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/array_split",
+                "href": "/docs/api/numpy/array-split/",
                 "kind": "link",
                 "target": "array_split",
                 "text": "array_split"
@@ -82,7 +82,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "label": "flops.split",
                 "original_target": "split",
                 "role": "",
@@ -102,7 +102,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -149,12 +149,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.array_split",
+    "flopscope_ref": "fnp.array_split",
     "module": "numpy",
     "name": "array_split",
     "notes": "Split array into sub-arrays (possibly unequal). Cost: numel(output).",
     "numpy_ref": "np.array_split",
-    "signature": "flops.array_split(ary, indices_or_sections, axis=0)",
+    "signature": "fnp.array_split(ary, indices_or_sections, axis=0)",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays.",
     "weight": 0.0

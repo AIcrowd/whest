@@ -352,7 +352,7 @@
     }
   ],
   "canonical_name": "random.beta",
-  "canonical_path": "random/beta",
+  "canonical_path": "numpy/random/beta",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -364,15 +364,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.beta",
+  "flopscope_ref": "fnp.random.beta",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/beta/",
+  "href": "/docs/api/numpy/random/beta/",
   "legacy_href": "/docs/api/ops/random-beta/",
   "module": "numpy.random",
   "name": "random.beta",
   "next": {
-    "href": "/docs/api/random/binomial/",
-    "label": "flops.random.binomial"
+    "href": "/docs/api/numpy/random/binomial/",
+    "label": "fnp.random.binomial"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -404,10 +404,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/radians/",
-    "label": "flops.radians"
+    "href": "/docs/api/numpy/radians/",
+    "label": "fnp.radians"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.beta",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.beta.html",
   "returns": [
     {
@@ -436,9 +437,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.beta(a, b, size=None)",
+  "signature": "fnp.random.beta(a, b, size=None)",
   "slug": "random-beta",
   "summary": "Draw samples from a Beta distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/bmat/",
+  "detail_href": "/docs/api/numpy/bmat/",
   "detail_json_href": "/api-data/ops/bmat.json",
   "docs": {
     "sections": [
@@ -188,7 +188,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "label": "flops.block",
                 "original_target": "block",
                 "role": "",
@@ -208,7 +208,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -319,12 +319,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.bmat",
+    "flopscope_ref": "fnp.bmat",
     "module": "numpy",
     "name": "bmat",
     "notes": "Build matrix from nested list of matrices. Cost: numel(output).",
     "numpy_ref": "np.bmat",
-    "signature": "flops.bmat(obj, ldict=None, gdict=None)",
+    "signature": "fnp.bmat(obj, ldict=None, gdict=None)",
     "status": "supported",
     "summary": "Build a matrix object from a string, nested sequence, or array.",
     "weight": 4.0

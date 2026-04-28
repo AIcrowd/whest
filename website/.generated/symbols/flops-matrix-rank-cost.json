@@ -12,66 +12,13 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Weighted FLOP cost estimate for "
-            },
-            {
-              "external_url": "",
-              "href": "/docs/api/linalg/matrix-rank/",
-              "kind": "link",
-              "target": "linalg.matrix_rank",
-              "text": "linalg.matrix_rank"
-            },
-            {
-              "kind": "text",
-              "text": "."
+              "text": "Weighted FLOP cost of matrix rank."
             }
           ],
           "type": "paragraph"
         }
       ],
       "title": "Summary"
-    },
-    {
-      "blocks": [
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
-            },
-            {
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
-              "href": "",
-              "kind": "link",
-              "target": "_weights",
-              "text": "flopscope._weights"
-            },
-            {
-              "kind": "text",
-              "text": ". The final value is floored with "
-            },
-            {
-              "kind": "code",
-              "text": "int(...)"
-            },
-            {
-              "kind": "text",
-              "text": " to match runtime budget accounting."
-            }
-          ],
-          "type": "paragraph"
-        },
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "Analytical formula:\nFLOP cost of matrix rank."
-            }
-          ],
-          "type": "paragraph"
-        }
-      ],
-      "title": "Extended Summary"
     },
     {
       "blocks": [
@@ -83,7 +30,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Number of rows."
+                      "text": "Number of rows in the input matrix."
                     }
                   ],
                   "type": "paragraph"
@@ -93,7 +40,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Number of rows."
+                  "text": "Number of rows in the input matrix."
                 }
               ],
               "name": "m",
@@ -105,7 +52,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Number of columns."
+                      "text": "Number of columns in the input matrix."
                     }
                   ],
                   "type": "paragraph"
@@ -115,7 +62,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Number of columns."
+                  "text": "Number of columns in the input matrix."
                 }
               ],
               "name": "n",
@@ -138,7 +85,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Estimated FLOP count: m * n * min(m, n)."
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
                     }
                   ],
                   "type": "paragraph"
@@ -148,7 +95,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Estimated FLOP count: m * n * min(m, n)."
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
                 }
               ],
               "name": "",
@@ -163,6 +110,34 @@
     },
     {
       "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This helper multiplies the analytical FLOP count by the active weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "flopscope._weights"
+            },
+            {
+              "kind": "text",
+              "text": " and then applies "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " so public estimates match budget deductions."
+            }
+          ],
+          "type": "paragraph"
+        },
         {
           "inline": [
             {
@@ -195,6 +170,6 @@
   "slug": "flops-matrix-rank-cost",
   "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L402",
   "status_note": "",
-  "summary": "Weighted FLOP cost estimate for ``linalg.matrix_rank``.",
+  "summary": "Weighted FLOP cost of matrix rank.",
   "upstream_source_url": ""
 }

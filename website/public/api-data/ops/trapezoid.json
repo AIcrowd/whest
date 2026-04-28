@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/trapezoid/",
+  "detail_href": "/docs/api/numpy/trapezoid/",
   "detail_json_href": "/api-data/ops/trapezoid.json",
   "docs": {
     "sections": [
@@ -366,7 +366,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/sum",
+                "href": "/docs/api/numpy/sum/",
                 "label": "flops.sum",
                 "original_target": "sum",
                 "role": "",
@@ -377,7 +377,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/cumsum",
+                "href": "/docs/api/numpy/cumsum/",
                 "label": "flops.cumsum",
                 "original_target": "cumsum",
                 "role": "",
@@ -458,7 +458,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -646,7 +646,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/trapezoid",
+                "href": "/docs/api/numpy/trapezoid/",
                 "kind": "link",
                 "target": "trapezoid",
                 "text": "flops.trapezoid"
@@ -708,12 +708,12 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.trapezoid",
+    "flopscope_ref": "fnp.trapezoid",
     "module": "numpy",
     "name": "trapezoid",
     "notes": "Integrate using the trapezoidal rule.",
     "numpy_ref": "np.trapezoid",
-    "signature": "flops.trapezoid(y, x=None, dx=1.0, axis=-1)",
+    "signature": "fnp.trapezoid(y, x=None, dx=1.0, axis=-1)",
     "status": "supported",
     "summary": "Integrate along the given axis using the composite trapezoidal rule.",
     "weight": 1.0

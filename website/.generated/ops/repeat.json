@@ -172,7 +172,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/tile",
+              "href": "/docs/api/numpy/tile/",
               "label": "flops.tile",
               "original_target": "tile",
               "role": "",
@@ -188,7 +188,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/unique",
+              "href": "/docs/api/numpy/unique/",
               "label": "flops.unique",
               "original_target": "unique",
               "role": "",
@@ -208,7 +208,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -271,7 +271,7 @@
     }
   ],
   "canonical_name": "repeat",
-  "canonical_path": "repeat",
+  "canonical_path": "numpy/repeat",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -282,20 +282,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.repeat(3, 4)\n\nx = flops.array([[1,2],[3,4]])\n\nflops.repeat(x, 2)\n\nflops.repeat(x, 3, axis=1)\n\nflops.repeat(x, [1, 2], axis=0)",
+    "code": "import flopscope.numpy as fnp\n\nflops.repeat(3, 4)\n\nx = flops.array([[1,2],[3,4]])\n\nflops.repeat(x, 2)\n\nflops.repeat(x, 3, axis=1)\n\nflops.repeat(x, [1, 2], axis=0)",
     "output": "array([3, 3, 3, 3])\n\narray([1, 1, 2, 2, 3, 3, 4, 4])\n\narray([[1, 1, 1, 2, 2, 2],\n       [3, 3, 3, 4, 4, 4]])\n\narray([[1, 2],\n       [3, 4],\n       [3, 4]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.repeat",
+  "flopscope_ref": "fnp.repeat",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L519",
-  "href": "/docs/api/repeat/",
+  "href": "/docs/api/numpy/repeat/",
   "legacy_href": "/docs/api/ops/repeat/",
   "module": "numpy",
   "name": "repeat",
   "next": {
-    "href": "/docs/api/require/",
-    "label": "flops.require"
+    "href": "/docs/api/numpy/require/",
+    "label": "fnp.require"
   },
   "notes": "Repeat elements of an array. Cost: numel(output).",
   "notes_sections": [],
@@ -326,10 +326,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/remainder/",
-    "label": "flops.remainder"
+    "href": "/docs/api/numpy/remainder/",
+    "label": "fnp.remainder"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.repeat",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.repeat.html",
   "returns": [
     {
@@ -351,7 +352,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/tile",
+      "href": "/docs/api/numpy/tile/",
       "label": "flops.tile",
       "original_target": "tile",
       "role": "",
@@ -367,7 +368,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/unique",
+      "href": "/docs/api/numpy/unique/",
       "label": "flops.unique",
       "original_target": "unique",
       "role": "",
@@ -375,9 +376,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.repeat(a, repeats, axis=None)",
+  "signature": "fnp.repeat(a, repeats, axis=None)",
   "slug": "repeat",
   "summary": "Repeat each element of an array after themselves",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L462",
   "weight": 1.0
 }

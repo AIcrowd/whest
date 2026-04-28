@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/flatnonzero/",
+  "detail_href": "/docs/api/numpy/flatnonzero/",
   "detail_json_href": "/api-data/ops/flatnonzero.json",
   "docs": {
     "sections": [
@@ -134,7 +134,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/nonzero",
+                "href": "/docs/api/numpy/nonzero/",
                 "label": "flops.nonzero",
                 "original_target": "nonzero",
                 "role": "",
@@ -150,7 +150,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ravel",
+                "href": "/docs/api/numpy/ravel/",
                 "label": "flops.ravel",
                 "original_target": "ravel",
                 "role": "",
@@ -170,7 +170,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -230,12 +230,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.flatnonzero",
+    "flopscope_ref": "fnp.flatnonzero",
     "module": "numpy",
     "name": "flatnonzero",
     "notes": "Return indices of non-zero elements in flattened array. Cost: numel(input).",
     "numpy_ref": "np.flatnonzero",
-    "signature": "flops.flatnonzero(a)",
+    "signature": "fnp.flatnonzero(a)",
     "status": "supported",
     "summary": "Return indices that are non-zero in the flattened version of a.",
     "weight": 1.0

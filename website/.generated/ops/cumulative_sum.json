@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/cumsum",
+              "href": "/docs/api/numpy/cumsum/",
               "kind": "link",
               "target": "cumsum",
               "text": "flops.cumsum"
@@ -401,7 +401,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/sum",
+              "href": "/docs/api/numpy/sum/",
               "label": "flops.sum",
               "original_target": "sum",
               "role": "",
@@ -417,7 +417,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/trapezoid",
+              "href": "/docs/api/numpy/trapezoid/",
               "label": "flops.trapezoid",
               "original_target": "trapezoid",
               "role": "",
@@ -433,7 +433,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/diff",
+              "href": "/docs/api/numpy/diff/",
               "label": "flops.diff",
               "original_target": "diff",
               "role": "",
@@ -477,7 +477,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/sum",
+              "href": "/docs/api/numpy/sum/",
               "kind": "link",
               "target": "sum",
               "text": "sum"
@@ -488,7 +488,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/sum",
+              "href": "/docs/api/numpy/sum/",
               "kind": "link",
               "target": "sum",
               "text": "sum"
@@ -628,7 +628,7 @@
     }
   ],
   "canonical_name": "cumulative_sum",
-  "canonical_path": "cumulative-sum",
+  "canonical_path": "numpy/cumulative-sum",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -644,15 +644,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.cumulative_sum",
+  "flopscope_ref": "fnp.cumulative_sum",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/cumulative-sum/",
+  "href": "/docs/api/numpy/cumulative-sum/",
   "legacy_href": "/docs/api/ops/cumulative_sum/",
   "module": "numpy",
   "name": "cumulative_sum",
   "next": {
-    "href": "/docs/api/degrees/",
-    "label": "flops.degrees"
+    "href": "/docs/api/numpy/degrees/",
+    "label": "fnp.degrees"
   },
   "notes": "Cumulative sum (NumPy 2.x array API).",
   "notes_sections": [
@@ -710,10 +710,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/cumulative-prod/",
-    "label": "flops.cumulative_prod"
+    "href": "/docs/api/numpy/cumulative-prod/",
+    "label": "fnp.cumulative_prod"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.cumulative_sum",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cumulative_sum.html",
   "returns": [
     {
@@ -736,7 +737,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/sum",
+      "href": "/docs/api/numpy/sum/",
       "label": "flops.sum",
       "original_target": "sum",
       "role": "",
@@ -752,7 +753,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/trapezoid",
+      "href": "/docs/api/numpy/trapezoid/",
       "label": "flops.trapezoid",
       "original_target": "trapezoid",
       "role": "",
@@ -768,7 +769,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/diff",
+      "href": "/docs/api/numpy/diff/",
       "label": "flops.diff",
       "original_target": "diff",
       "role": "",
@@ -776,9 +777,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.cumulative_sum(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
+  "signature": "fnp.cumulative_sum(x, /, *, axis=None, dtype=None, out=None, include_initial=False)",
   "slug": "cumulative_sum",
   "summary": "Return the cumulative sum of the elements along a given axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2790",
   "weight": 1.0
 }

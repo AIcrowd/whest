@@ -33,7 +33,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Equivalent to "
+              "text": "This object mirrors "
             },
             {
               "external_url": "",
@@ -51,6 +51,40 @@
         }
       ],
       "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " is the lower bound and "
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": " is the interval width. Each\npublic method deducts "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(input)"
+            },
+            {
+              "kind": "text",
+              "text": " FLOPs from the active budget."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
     }
   ],
   "canonical_name": "stats.uniform",

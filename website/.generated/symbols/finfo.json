@@ -83,7 +83,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/spacing/",
+              "href": "/docs/api/numpy/spacing/",
               "label": "flops.spacing",
               "original_target": "spacing",
               "role": "",
@@ -99,7 +99,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/nextafter/",
+              "href": "/docs/api/numpy/nextafter/",
               "label": "flops.nextafter",
               "original_target": "nextafter",
               "role": "",
@@ -206,7 +206,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",

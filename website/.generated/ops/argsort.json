@@ -454,7 +454,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/sort",
+              "href": "/docs/api/numpy/sort/",
               "label": "flops.sort",
               "original_target": "sort",
               "role": "",
@@ -470,7 +470,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/lexsort",
+              "href": "/docs/api/numpy/lexsort/",
               "label": "flops.lexsort",
               "original_target": "lexsort",
               "role": "",
@@ -502,7 +502,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/argpartition",
+              "href": "/docs/api/numpy/argpartition/",
               "label": "flops.argpartition",
               "original_target": "argpartition",
               "role": "",
@@ -526,7 +526,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/take_along_axis",
+              "href": "/docs/api/numpy/take-along-axis/",
               "label": "flops.take_along_axis",
               "original_target": "take_along_axis",
               "role": "",
@@ -549,7 +549,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/sort",
+              "href": "/docs/api/numpy/sort/",
               "kind": "link",
               "target": "sort",
               "text": "sort"
@@ -569,7 +569,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/argsort",
+              "href": "/docs/api/numpy/argsort/",
               "kind": "link",
               "target": "argsort",
               "text": "argsort"
@@ -580,7 +580,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/sort",
+              "href": "/docs/api/numpy/sort/",
               "kind": "link",
               "target": "sort",
               "text": "sort"
@@ -611,7 +611,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -836,7 +836,7 @@
     }
   ],
   "canonical_name": "argsort",
-  "canonical_path": "argsort",
+  "canonical_path": "numpy/argsort",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -854,20 +854,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.array([3, 1, 2])\n\nflops.argsort(x)\n\nx = flops.array([[0, 3], [2, 2]])\n\nx\n\nind = flops.argsort(x, axis=0)  # sorts along first axis (down)\n\nind\n\nflops.take_along_axis(x, ind, axis=0)  # same as flops.sort(x, axis=0)\n\nind = flops.argsort(x, axis=1)  # sorts along last axis (across)\n\nind\n\nflops.take_along_axis(x, ind, axis=1)  # same as flops.sort(x, axis=1)\n\nind = flops.unravel_index(flops.argsort(x, axis=None), x.shape)\n\nind\n\nx[ind]  # same as flops.sort(x, axis=None)\n\nx = flops.array([(1, 0), (0, 1)], dtype=[('x', '<i4'), ('y', '<i4')])\n\nx\n\nflops.argsort(x, order=('x','y'))\n\nflops.argsort(x, order=('y','x'))",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([3, 1, 2])\n\nflops.argsort(x)\n\nx = flops.array([[0, 3], [2, 2]])\n\nx\n\nind = flops.argsort(x, axis=0)  # sorts along first axis (down)\n\nind\n\nflops.take_along_axis(x, ind, axis=0)  # same as flops.sort(x, axis=0)\n\nind = flops.argsort(x, axis=1)  # sorts along last axis (across)\n\nind\n\nflops.take_along_axis(x, ind, axis=1)  # same as flops.sort(x, axis=1)\n\nind = flops.unravel_index(flops.argsort(x, axis=None), x.shape)\n\nind\n\nx[ind]  # same as flops.sort(x, axis=None)\n\nx = flops.array([(1, 0), (0, 1)], dtype=[('x', '<i4'), ('y', '<i4')])\n\nx\n\nflops.argsort(x, order=('x','y'))\n\nflops.argsort(x, order=('y','x'))",
     "output": "array([1, 2, 0])\n\narray([[0, 3],\n       [2, 2]])\n\narray([[0, 1],\n       [1, 0]])\n\narray([[0, 2],\n       [2, 3]])\n\narray([[0, 1],\n       [0, 1]])\n\narray([[0, 3],\n       [2, 2]])\n\n(array([0, 1, 1, 0]), array([0, 0, 1, 1]))\n\narray([0, 2, 2, 3])\n\narray([(1, 0), (0, 1)],\n      dtype=[('x', '<i4'), ('y', '<i4')])\n\narray([1, 0])\n\narray([0, 1])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.argsort",
+  "flopscope_ref": "fnp.argsort",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L65",
-  "href": "/docs/api/argsort/",
+  "href": "/docs/api/numpy/argsort/",
   "legacy_href": "/docs/api/ops/argsort/",
   "module": "numpy",
   "name": "argsort",
   "next": {
-    "href": "/docs/api/argwhere/",
-    "label": "flops.argwhere"
+    "href": "/docs/api/numpy/argwhere/",
+    "label": "fnp.argwhere"
   },
   "notes": "Indirect sort; cost = n*ceil(log2(n)) per slice.",
   "notes_sections": [
@@ -926,10 +926,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/argpartition/",
-    "label": "flops.argpartition"
+    "href": "/docs/api/numpy/argpartition/",
+    "label": "fnp.argpartition"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.argsort",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.argsort.html",
   "returns": [
     {
@@ -953,7 +954,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/sort",
+      "href": "/docs/api/numpy/sort/",
       "label": "flops.sort",
       "original_target": "sort",
       "role": "",
@@ -969,7 +970,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/lexsort",
+      "href": "/docs/api/numpy/lexsort/",
       "label": "flops.lexsort",
       "original_target": "lexsort",
       "role": "",
@@ -1001,7 +1002,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/argpartition",
+      "href": "/docs/api/numpy/argpartition/",
       "label": "flops.argpartition",
       "original_target": "argpartition",
       "role": "",
@@ -1025,7 +1026,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/take_along_axis",
+      "href": "/docs/api/numpy/take-along-axis/",
       "label": "flops.take_along_axis",
       "original_target": "take_along_axis",
       "role": "",
@@ -1033,9 +1034,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.argsort(a, axis=-1, kind=None, order=None, *, stable=None)",
+  "signature": "fnp.argsort(a, axis=-1, kind=None, order=None, *, stable=None)",
   "slug": "argsort",
   "summary": "Returns the indices that would sort an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1130",
   "weight": 1.0
 }

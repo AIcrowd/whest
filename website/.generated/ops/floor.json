@@ -331,7 +331,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/ceil",
+              "href": "/docs/api/numpy/ceil/",
               "label": "flops.ceil",
               "original_target": "ceil",
               "role": "",
@@ -342,7 +342,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/trunc",
+              "href": "/docs/api/numpy/trunc/",
               "label": "flops.trunc",
               "original_target": "trunc",
               "role": "",
@@ -353,7 +353,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/rint",
+              "href": "/docs/api/numpy/rint/",
               "label": "flops.rint",
               "original_target": "rint",
               "role": "",
@@ -395,7 +395,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/floor",
+              "href": "/docs/api/numpy/floor/",
               "kind": "link",
               "target": "floor",
               "text": "floor"
@@ -436,7 +436,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -460,7 +460,7 @@
     }
   ],
   "canonical_name": "floor",
-  "canonical_path": "floor",
+  "canonical_path": "numpy/floor",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -478,20 +478,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nflops.floor(a)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nflops.floor(a)",
     "output": "array([-2., -2., -1.,  0.,  1.,  1.,  2.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.floor",
+  "flopscope_ref": "fnp.floor",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/floor/",
+  "href": "/docs/api/numpy/floor/",
   "legacy_href": "/docs/api/ops/floor/",
   "module": "numpy",
   "name": "floor",
   "next": {
-    "href": "/docs/api/floor-divide/",
-    "label": "flops.floor_divide"
+    "href": "/docs/api/numpy/floor-divide/",
+    "label": "fnp.floor_divide"
   },
   "notes": "Element-wise floor.",
   "notes_sections": [
@@ -538,10 +538,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/float-power/",
-    "label": "flops.float_power"
+    "href": "/docs/api/numpy/float-power/",
+    "label": "fnp.float_power"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.floor",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.floor.html",
   "returns": [
     {
@@ -558,7 +559,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/ceil",
+      "href": "/docs/api/numpy/ceil/",
       "label": "flops.ceil",
       "original_target": "ceil",
       "role": "",
@@ -569,7 +570,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/trunc",
+      "href": "/docs/api/numpy/trunc/",
       "label": "flops.trunc",
       "original_target": "trunc",
       "role": "",
@@ -580,7 +581,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/rint",
+      "href": "/docs/api/numpy/rint/",
       "label": "flops.rint",
       "original_target": "rint",
       "role": "",
@@ -599,9 +600,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.floor(*args, **kwargs)",
+  "signature": "fnp.floor(*args, **kwargs)",
   "slug": "floor",
   "summary": "Return the floor of the input, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

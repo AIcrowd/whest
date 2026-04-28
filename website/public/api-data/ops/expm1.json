@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/expm1/",
+  "detail_href": "/docs/api/numpy/expm1/",
   "detail_json_href": "/api-data/ops/expm1.json",
   "docs": {
     "sections": [
@@ -302,7 +302,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/log1p",
+                "href": "/docs/api/numpy/log1p/",
                 "label": "flops.log1p",
                 "original_target": "log1p",
                 "role": "",
@@ -377,7 +377,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -414,12 +414,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.expm1",
+    "flopscope_ref": "fnp.expm1",
     "module": "numpy",
     "name": "expm1",
     "notes": "Element-wise e^x - 1 (accurate near zero).",
     "numpy_ref": "np.expm1",
-    "signature": "flops.expm1(*args, **kwargs)",
+    "signature": "fnp.expm1(*args, **kwargs)",
     "status": "supported",
     "summary": "Calculate ``exp(x) - 1`` for all elements in the array.",
     "weight": 16.0

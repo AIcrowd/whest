@@ -645,7 +645,7 @@
     }
   ],
   "canonical_name": "random.gumbel",
-  "canonical_path": "random/gumbel",
+  "canonical_path": "numpy/random/gumbel",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -670,15 +670,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.gumbel",
+  "flopscope_ref": "fnp.random.gumbel",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/gumbel/",
+  "href": "/docs/api/numpy/random/gumbel/",
   "legacy_href": "/docs/api/ops/random-gumbel/",
   "module": "numpy.random",
   "name": "random.gumbel",
   "next": {
-    "href": "/docs/api/random/hypergeometric/",
-    "label": "flops.random.hypergeometric"
+    "href": "/docs/api/numpy/random/hypergeometric/",
+    "label": "fnp.random.hypergeometric"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -719,10 +719,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/get-state/",
-    "label": "flops.random.get_state"
+    "href": "/docs/api/numpy/random/get-state/",
+    "label": "fnp.random.get_state"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.gumbel",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.gumbel.html",
   "returns": [
     {
@@ -795,9 +796,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.gumbel(loc=0.0, scale=1.0, size=None)",
+  "signature": "fnp.random.gumbel(loc=0.0, scale=1.0, size=None)",
   "slug": "random-gumbel",
   "summary": "Draw samples from a Gumbel distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

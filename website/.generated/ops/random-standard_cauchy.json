@@ -337,7 +337,7 @@
     }
   ],
   "canonical_name": "random.standard_cauchy",
-  "canonical_path": "random/standard-cauchy",
+  "canonical_path": "numpy/random/standard-cauchy",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -366,15 +366,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.standard_cauchy",
+  "flopscope_ref": "fnp.random.standard_cauchy",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/standard-cauchy/",
+  "href": "/docs/api/numpy/random/standard-cauchy/",
   "legacy_href": "/docs/api/ops/random-standard_cauchy/",
   "module": "numpy.random",
   "name": "random.standard_cauchy",
   "next": {
-    "href": "/docs/api/random/standard-exponential/",
-    "label": "flops.random.standard_exponential"
+    "href": "/docs/api/numpy/random/standard-exponential/",
+    "label": "fnp.random.standard_exponential"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -397,10 +397,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/shuffle/",
-    "label": "flops.random.shuffle"
+    "href": "/docs/api/numpy/random/shuffle/",
+    "label": "fnp.random.shuffle"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.standard_cauchy",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_cauchy.html",
   "returns": [
     {
@@ -429,9 +430,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.standard_cauchy(size=None)",
+  "signature": "fnp.random.standard_cauchy(size=None)",
   "slug": "random-standard_cauchy",
   "summary": "Draw samples from a standard Cauchy distribution with mode = 0.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

@@ -396,7 +396,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -441,7 +441,7 @@
     }
   ],
   "canonical_name": "fft.irfft2",
-  "canonical_path": "fft/irfft2",
+  "canonical_path": "numpy/fft/irfft2",
   "category": "counted_custom",
   "cost_formula": "5(N/2) * ceil(log2(N))",
   "cost_formula_latex": "$5(N/2) \\cdot \\lceil\\log_2 N\\rceil$",
@@ -452,20 +452,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.mgrid[:5, :5][0]\n\nA = flops.fft.rfft2(a)\n\nflops.fft.irfft2(A, s=a.shape)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.mgrid[:5, :5][0]\n\nA = flops.fft.rfft2(a)\n\nflops.fft.irfft2(A, s=a.shape)",
     "output": "array([[0., 0., 0., 0., 0.],\n       [1., 1., 1., 1., 1.],\n       [2., 2., 2., 2., 2.],\n       [3., 3., 3., 3., 3.],\n       [4., 4., 4., 4., 4.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.fft.irfft2",
+  "flopscope_ref": "fnp.fft.irfft2",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L307",
-  "href": "/docs/api/fft/irfft2/",
+  "href": "/docs/api/numpy/fft/irfft2/",
   "legacy_href": "/docs/api/ops/fft-irfft2/",
   "module": "numpy.fft",
   "name": "fft.irfft2",
   "next": {
-    "href": "/docs/api/fft/irfftn/",
-    "label": "flops.fft.irfftn"
+    "href": "/docs/api/numpy/fft/irfftn/",
+    "label": "fnp.fft.irfftn"
   },
   "notes": "Inverse 2-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -540,10 +540,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/fft/irfft/",
-    "label": "flops.fft.irfft"
+    "href": "/docs/api/numpy/fft/irfft/",
+    "label": "fnp.fft.irfft"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.irfft2",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.irfft2.html",
   "returns": [
     {
@@ -628,9 +629,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.fft.irfft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
+  "signature": "fnp.fft.irfft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
   "slug": "fft-irfft2",
   "summary": "Computes the inverse of `rfft2`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1606",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/rand/",
+  "detail_href": "/docs/api/numpy/random/rand/",
   "detail_json_href": "/api-data/ops/random-rand.json",
   "docs": {
     "sections": [
@@ -38,7 +38,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/zeros",
+                    "href": "/docs/api/numpy/zeros/",
                     "kind": "link",
                     "target": "zeros",
                     "text": "flops.zeros"
@@ -49,7 +49,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/ones",
+                    "href": "/docs/api/numpy/ones/",
                     "kind": "link",
                     "target": "ones",
                     "text": "flops.ones"
@@ -208,12 +208,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.rand",
+    "flopscope_ref": "fnp.random.rand",
     "module": "numpy.random",
     "name": "random.rand",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.rand",
-    "signature": "flops.random.rand(*args)",
+    "signature": "fnp.random.rand(*args)",
     "status": "supported",
     "summary": "Random values in a given shape.",
     "weight": 1.0

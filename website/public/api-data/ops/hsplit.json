@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/hsplit/",
+  "detail_href": "/docs/api/numpy/hsplit/",
   "detail_json_href": "/api-data/ops/hsplit.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "kind": "link",
                 "target": "split",
                 "text": "split"
@@ -38,7 +38,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/hsplit",
+                "href": "/docs/api/numpy/hsplit/",
                 "kind": "link",
                 "target": "hsplit",
                 "text": "hsplit"
@@ -49,7 +49,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "kind": "link",
                 "target": "split",
                 "text": "split"
@@ -93,7 +93,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "label": "flops.split",
                 "original_target": "split",
                 "role": "",
@@ -113,7 +113,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -320,12 +320,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.hsplit",
+    "flopscope_ref": "fnp.hsplit",
     "module": "numpy",
     "name": "hsplit",
     "notes": "Split array into columns.",
     "numpy_ref": "np.hsplit",
-    "signature": "flops.hsplit(ary, indices_or_sections)",
+    "signature": "fnp.hsplit(ary, indices_or_sections)",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays horizontally (column-wise).",
     "weight": 0.0

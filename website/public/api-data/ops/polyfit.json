@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/polyfit/",
+  "detail_href": "/docs/api/numpy/polyfit/",
   "detail_json_href": "/api-data/ops/polyfit.json",
   "docs": {
     "sections": [
@@ -636,7 +636,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/linalg-lstsq",
+                        "href": "/docs/api/numpy/linalg/lstsq/",
                         "kind": "link",
                         "target": "linalg.lstsq",
                         "text": "flops.linalg.lstsq"
@@ -834,7 +834,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/polyval",
+                "href": "/docs/api/numpy/polyval/",
                 "label": "flops.polyval",
                 "original_target": "polyval",
                 "role": "",
@@ -850,7 +850,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-lstsq",
+                "href": "/docs/api/numpy/linalg/lstsq/",
                 "label": "flops.linalg.lstsq",
                 "original_target": "linalg.lstsq",
                 "role": "",
@@ -931,7 +931,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/polyfit",
+                "href": "/docs/api/numpy/polyfit/",
                 "kind": "link",
                 "target": "polyfit",
                 "text": "polyfit"
@@ -1017,7 +1017,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -1218,12 +1218,12 @@
     "category": "counted_custom",
     "cost_formula": "2m * (deg+1)^2",
     "cost_formula_latex": "$2m \\cdot (\\text{deg}+1)^2$",
-    "flopscope_ref": "flops.polyfit",
+    "flopscope_ref": "fnp.polyfit",
     "module": "flopscope._polynomial",
     "name": "polyfit",
     "notes": "Least squares polynomial fit. Cost: 2 * m * (deg+1)^2 FLOPs.",
     "numpy_ref": "np.polyfit",
-    "signature": "flops.polyfit(x, y, deg, rcond=None, full=False, w=None, cov=False)",
+    "signature": "fnp.polyfit(x, y, deg, rcond=None, full=False, w=None, cov=False)",
     "status": "supported",
     "summary": "Least squares polynomial fit.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/inv/",
+  "detail_href": "/docs/api/numpy/linalg/inv/",
   "detail_json_href": "/api-data/ops/linalg-inv.json",
   "docs": {
     "sections": [
@@ -215,7 +215,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-cond",
+                "href": "/docs/api/numpy/linalg/cond/",
                 "label": "flops.linalg.cond",
                 "original_target": "numpy.linalg.cond",
                 "role": "",
@@ -231,7 +231,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-svd",
+                "href": "/docs/api/numpy/linalg/svd/",
                 "label": "flops.linalg.svd",
                 "original_target": "numpy.linalg.svd",
                 "role": "",
@@ -327,7 +327,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -514,7 +514,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-cond",
+                "href": "/docs/api/numpy/linalg/cond/",
                 "kind": "link",
                 "target": "linalg.cond",
                 "text": "flops.linalg.cond"
@@ -619,12 +619,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "flops.linalg.inv",
+    "flopscope_ref": "fnp.linalg.inv",
     "module": "numpy.linalg",
     "name": "linalg.inv",
     "notes": "Matrix inverse. Cost: $n^3$ (LU + solve).",
     "numpy_ref": "np.linalg.inv",
-    "signature": "flops.linalg.inv(a)",
+    "signature": "fnp.linalg.inv(a)",
     "status": "supported",
     "summary": "Compute the inverse of a matrix.",
     "weight": 4.0

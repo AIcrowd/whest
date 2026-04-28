@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/array-equiv/",
+  "detail_href": "/docs/api/numpy/array-equiv/",
   "detail_json_href": "/api-data/ops/array_equiv.json",
   "docs": {
     "sections": [
@@ -104,7 +104,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -182,12 +182,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.array_equiv",
+    "flopscope_ref": "fnp.array_equiv",
     "module": "numpy",
     "name": "array_equiv",
     "notes": "Element-wise equivalence; cost = numel(a).",
     "numpy_ref": "np.array_equiv",
-    "signature": "flops.array_equiv(a1, a2)",
+    "signature": "fnp.array_equiv(a1, a2)",
     "status": "supported",
     "summary": "Returns True if input arrays are shape consistent and all elements equal.",
     "weight": 1.0

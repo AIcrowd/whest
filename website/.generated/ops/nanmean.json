@@ -263,7 +263,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/mean",
+                      "href": "/docs/api/numpy/mean/",
                       "kind": "link",
                       "target": "mean",
                       "text": "mean"
@@ -274,7 +274,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/sum",
+                      "href": "/docs/api/numpy/sum/",
                       "kind": "link",
                       "target": "sum",
                       "text": "sum"
@@ -444,7 +444,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/average",
+              "href": "/docs/api/numpy/average/",
               "label": "flops.average",
               "original_target": "average",
               "role": "",
@@ -460,7 +460,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/mean",
+              "href": "/docs/api/numpy/mean/",
               "label": "flops.mean",
               "original_target": "mean",
               "role": "",
@@ -471,7 +471,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/var",
+              "href": "/docs/api/numpy/var/",
               "label": "flops.var",
               "original_target": "var",
               "role": "",
@@ -482,7 +482,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanvar",
+              "href": "/docs/api/numpy/nanvar/",
               "label": "flops.nanvar",
               "original_target": "nanvar",
               "role": "",
@@ -541,7 +541,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -583,7 +583,7 @@
     }
   ],
   "canonical_name": "nanmean",
-  "canonical_path": "nanmean",
+  "canonical_path": "numpy/nanmean",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -594,20 +594,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([[1, flops.nan], [3, 4]])\n\nflops.nanmean(a)\n\nflops.nanmean(a, axis=0)\n\nflops.nanmean(a, axis=1)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[1, flops.nan], [3, 4]])\n\nflops.nanmean(a)\n\nflops.nanmean(a, axis=0)\n\nflops.nanmean(a, axis=1)",
     "output": "2.6666666666666665\n\narray([2.,  4.])\n\narray([1.,  3.5]) # may vary",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.nanmean",
+  "flopscope_ref": "fnp.nanmean",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/nanmean/",
+  "href": "/docs/api/numpy/nanmean/",
   "legacy_href": "/docs/api/ops/nanmean/",
   "module": "numpy",
   "name": "nanmean",
   "next": {
-    "href": "/docs/api/nanmedian/",
-    "label": "flops.nanmedian"
+    "href": "/docs/api/numpy/nanmedian/",
+    "label": "fnp.nanmedian"
   },
   "notes": "Mean ignoring NaNs.",
   "notes_sections": [
@@ -676,10 +676,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/nanmax/",
-    "label": "flops.nanmax"
+    "href": "/docs/api/numpy/nanmax/",
+    "label": "fnp.nanmax"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nanmean",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nanmean.html",
   "returns": [
     {
@@ -702,7 +703,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/average",
+      "href": "/docs/api/numpy/average/",
       "label": "flops.average",
       "original_target": "average",
       "role": "",
@@ -718,7 +719,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/mean",
+      "href": "/docs/api/numpy/mean/",
       "label": "flops.mean",
       "original_target": "mean",
       "role": "",
@@ -729,7 +730,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/var",
+      "href": "/docs/api/numpy/var/",
       "label": "flops.var",
       "original_target": "var",
       "role": "",
@@ -740,7 +741,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanvar",
+      "href": "/docs/api/numpy/nanvar/",
       "label": "flops.nanvar",
       "original_target": "nanvar",
       "role": "",
@@ -748,9 +749,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.nanmean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)",
+  "signature": "fnp.nanmean(a, axis=None, dtype=None, out=None, keepdims=<no value>, *, where=<no value>)",
   "slug": "nanmean",
   "summary": "Compute the arithmetic mean along the specified axis, ignoring NaNs.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L954",
   "weight": 1.0
 }

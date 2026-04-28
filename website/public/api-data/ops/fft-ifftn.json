@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fft/ifftn/",
+  "detail_href": "/docs/api/numpy/fft/ifftn/",
   "detail_json_href": "/api-data/ops/fft-ifftn.json",
   "docs": {
     "sections": [
@@ -810,7 +810,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -898,12 +898,12 @@
     "category": "counted_custom",
     "cost_formula": "5N * ceil(log2(N))",
     "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
-    "flopscope_ref": "flops.fft.ifftn",
+    "flopscope_ref": "fnp.fft.ifftn",
     "module": "numpy.fft",
     "name": "fft.ifftn",
     "notes": "Inverse N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.ifftn",
-    "signature": "flops.fft.ifftn(a, s=None, axes=None, norm=None, out=None)",
+    "signature": "fnp.fft.ifftn(a, s=None, axes=None, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the N-dimensional inverse discrete Fourier Transform.",
     "weight": 1.0

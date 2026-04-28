@@ -185,7 +185,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/argmax",
+              "href": "/docs/api/numpy/argmax/",
               "label": "flops.argmax",
               "original_target": "argmax",
               "role": "",
@@ -196,7 +196,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanargmin",
+              "href": "/docs/api/numpy/nanargmin/",
               "label": "flops.nanargmin",
               "original_target": "nanargmin",
               "role": "",
@@ -216,7 +216,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -267,7 +267,7 @@
     }
   ],
   "canonical_name": "nanargmax",
-  "canonical_path": "nanargmax",
+  "canonical_path": "numpy/nanargmax",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -278,20 +278,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([[flops.nan, 4], [2, 3]])\n\nflops.argmax(a)\n\nflops.nanargmax(a)\n\nflops.nanargmax(a, axis=0)\n\nflops.nanargmax(a, axis=1)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[flops.nan, 4], [2, 3]])\n\nflops.argmax(a)\n\nflops.nanargmax(a)\n\nflops.nanargmax(a, axis=0)\n\nflops.nanargmax(a, axis=1)",
     "output": "0\n\n1\n\narray([1, 0])\n\narray([1, 1])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.nanargmax",
+  "flopscope_ref": "fnp.nanargmax",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/nanargmax/",
+  "href": "/docs/api/numpy/nanargmax/",
   "legacy_href": "/docs/api/ops/nanargmax/",
   "module": "numpy",
   "name": "nanargmax",
   "next": {
-    "href": "/docs/api/nanargmin/",
-    "label": "flops.nanargmin"
+    "href": "/docs/api/numpy/nanargmin/",
+    "label": "fnp.nanargmin"
   },
   "notes": "Index of maximum ignoring NaNs.",
   "notes_sections": [],
@@ -334,10 +334,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/nan-to-num/",
-    "label": "flops.nan_to_num"
+    "href": "/docs/api/numpy/nan-to-num/",
+    "label": "fnp.nan_to_num"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nanargmax",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nanargmax.html",
   "returns": [
     {
@@ -353,7 +354,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/argmax",
+      "href": "/docs/api/numpy/argmax/",
       "label": "flops.argmax",
       "original_target": "argmax",
       "role": "",
@@ -364,7 +365,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanargmin",
+      "href": "/docs/api/numpy/nanargmin/",
       "label": "flops.nanargmin",
       "original_target": "nanargmin",
       "role": "",
@@ -372,9 +373,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.nanargmax(a, axis=None, out=None, *, keepdims=<no value>)",
+  "signature": "fnp.nanargmax(a, axis=None, out=None, *, keepdims=<no value>)",
   "slug": "nanargmax",
   "summary": "Return the indices of the maximum values in the specified axis ignoring NaNs. For all-NaN slices ``ValueError`` is raised. Warning: the results cannot be trusted if a slice contains only NaNs and -Infs.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L572",
   "weight": 1.0
 }

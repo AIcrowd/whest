@@ -281,7 +281,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -409,7 +409,7 @@
     }
   ],
   "canonical_name": "copy",
-  "canonical_path": "copy",
+  "canonical_path": "numpy/copy",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -433,20 +433,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.array([1, 2, 3])\n\ny = x\n\nz = flops.copy(x)\n\nx[0] = 10\n\nx[0] == y[0]\n\nx[0] == z[0]\n\na = flops.array([1, 2, 3])\n\na.flags[\"WRITEABLE\"] = False\n\nb = flops.copy(a)\n\nb.flags[\"WRITEABLE\"]\n\nb[0] = 3\n\nb",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([1, 2, 3])\n\ny = x\n\nz = flops.copy(x)\n\nx[0] = 10\n\nx[0] == y[0]\n\nx[0] == z[0]\n\na = flops.array([1, 2, 3])\n\na.flags[\"WRITEABLE\"] = False\n\nb = flops.copy(a)\n\nb.flags[\"WRITEABLE\"]\n\nb[0] = 3\n\nb",
     "output": "True\n\nFalse\n\nTrue\n\narray([3, 2, 3])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.copy",
+  "flopscope_ref": "fnp.copy",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L475",
-  "href": "/docs/api/copy/",
+  "href": "/docs/api/numpy/copy/",
   "legacy_href": "/docs/api/ops/copy/",
   "module": "numpy",
   "name": "copy",
   "next": {
-    "href": "/docs/api/copysign/",
-    "label": "flops.copysign"
+    "href": "/docs/api/numpy/copysign/",
+    "label": "fnp.copysign"
   },
   "notes": "Return array copy.",
   "notes_sections": [
@@ -485,10 +485,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/convolve/",
-    "label": "flops.convolve"
+    "href": "/docs/api/numpy/convolve/",
+    "label": "fnp.convolve"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.copy",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.copy.html",
   "returns": [
     {
@@ -517,9 +518,11 @@
       "unresolved": true
     }
   ],
-  "signature": "flops.copy(a, order='K', subok=False)",
+  "signature": "fnp.copy(a, order='K', subok=False)",
   "slug": "copy",
   "summary": "Return an array copy of the given object.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L898",
   "weight": 0.0
 }

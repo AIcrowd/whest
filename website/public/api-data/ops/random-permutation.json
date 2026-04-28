@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/permutation/",
+  "detail_href": "/docs/api/numpy/random/permutation/",
   "detail_json_href": "/api-data/ops/random-permutation.json",
   "docs": {
     "sections": [
@@ -308,12 +308,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.permutation",
+    "flopscope_ref": "fnp.random.permutation",
     "module": "numpy.random",
     "name": "random.permutation",
     "notes": "Shuffle; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.random.permutation",
-    "signature": "flops.random.permutation(x)",
+    "signature": "fnp.random.permutation(x)",
     "status": "supported",
     "summary": "Randomly permute a sequence, or return a permuted range.",
     "weight": 1.0

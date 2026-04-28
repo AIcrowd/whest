@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/sort-complex/",
+  "detail_href": "/docs/api/numpy/sort-complex/",
   "detail_json_href": "/api-data/ops/sort_complex.json",
   "docs": {
     "sections": [
@@ -90,7 +90,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -127,12 +127,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.sort_complex",
+    "flopscope_ref": "fnp.sort_complex",
     "module": "numpy",
     "name": "sort_complex",
     "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
     "numpy_ref": "np.sort_complex",
-    "signature": "flops.sort_complex(a)",
+    "signature": "fnp.sort_complex(a)",
     "status": "supported",
     "summary": "Sort a complex array using the real part first, then the imaginary part.",
     "weight": 1.0

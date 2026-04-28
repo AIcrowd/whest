@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/atleast-1d/",
+  "detail_href": "/docs/api/numpy/atleast-1d/",
   "detail_json_href": "/api-data/ops/atleast_1d.json",
   "docs": {
     "sections": [
@@ -121,7 +121,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/atleast_2d",
+                "href": "/docs/api/numpy/atleast-2d/",
                 "label": "flops.atleast_2d",
                 "original_target": "atleast_2d",
                 "role": "",
@@ -132,7 +132,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/atleast_3d",
+                "href": "/docs/api/numpy/atleast-3d/",
                 "label": "flops.atleast_3d",
                 "original_target": "atleast_3d",
                 "role": "",
@@ -152,7 +152,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -225,12 +225,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.atleast_1d",
+    "flopscope_ref": "fnp.atleast_1d",
     "module": "numpy",
     "name": "atleast_1d",
     "notes": "View inputs as arrays with at least one dimension.",
     "numpy_ref": "np.atleast_1d",
-    "signature": "flops.atleast_1d(*arys)",
+    "signature": "fnp.atleast_1d(*arys)",
     "status": "supported",
     "summary": "Convert inputs to arrays with at least one dimension.",
     "weight": 0.0

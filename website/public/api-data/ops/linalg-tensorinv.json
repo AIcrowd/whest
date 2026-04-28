@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/tensorinv/",
+  "detail_href": "/docs/api/numpy/linalg/tensorinv/",
   "detail_json_href": "/api-data/ops/linalg-tensorinv.json",
   "docs": {
     "sections": [
@@ -240,7 +240,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/tensordot",
+                "href": "/docs/api/numpy/tensordot/",
                 "label": "flops.tensordot",
                 "original_target": "numpy.tensordot",
                 "role": "",
@@ -271,7 +271,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -376,12 +376,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "flops.linalg.tensorinv",
+    "flopscope_ref": "fnp.linalg.tensorinv",
     "module": "numpy.linalg",
     "name": "linalg.tensorinv",
     "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv).",
     "numpy_ref": "np.linalg.tensorinv",
-    "signature": "flops.linalg.tensorinv(a, ind=2)",
+    "signature": "fnp.linalg.tensorinv(a, ind=2)",
     "status": "supported",
     "summary": "Compute the 'inverse' of an N-dimensional array.",
     "weight": 4.0

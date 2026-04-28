@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/eigvals/",
+  "detail_href": "/docs/api/numpy/linalg/eigvals/",
   "detail_json_href": "/api-data/ops/linalg-eigvals.json",
   "docs": {
     "sections": [
@@ -326,7 +326,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -427,12 +427,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "flops.linalg.eigvals",
+    "flopscope_ref": "fnp.linalg.eigvals",
     "module": "numpy.linalg",
     "name": "linalg.eigvals",
     "notes": "Eigenvalues only. Cost: $n^3$.",
     "numpy_ref": "np.linalg.eigvals",
-    "signature": "flops.linalg.eigvals(a)",
+    "signature": "fnp.linalg.eigvals(a)",
     "status": "supported",
     "summary": "Compute the eigenvalues of a general matrix.",
     "weight": 4.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/absolute/",
+  "detail_href": "/docs/api/numpy/absolute/",
   "detail_json_href": "/api-data/ops/absolute.json",
   "docs": {
     "sections": [
@@ -337,7 +337,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -460,7 +460,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/absolute",
+                "href": "/docs/api/numpy/absolute/",
                 "kind": "link",
                 "target": "absolute",
                 "text": "flops.absolute"
@@ -500,12 +500,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.absolute",
+    "flopscope_ref": "fnp.absolute",
     "module": "numpy",
     "name": "absolute",
     "notes": "Element-wise absolute value.",
     "numpy_ref": "np.absolute",
-    "signature": "flops.absolute(*args, **kwargs)",
+    "signature": "fnp.absolute(*args, **kwargs)",
     "status": "supported",
     "summary": "Calculate the absolute value element-wise.",
     "weight": 1.0

@@ -500,7 +500,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -559,7 +559,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/meshgrid",
+              "href": "/docs/api/numpy/meshgrid/",
               "kind": "link",
               "target": "meshgrid",
               "text": "meshgrid"
@@ -636,7 +636,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/meshgrid",
+              "href": "/docs/api/numpy/meshgrid/",
               "kind": "link",
               "target": "meshgrid",
               "text": "meshgrid"
@@ -750,7 +750,7 @@
     }
   ],
   "canonical_name": "meshgrid",
-  "canonical_path": "meshgrid",
+  "canonical_path": "numpy/meshgrid",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -768,20 +768,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nnx, ny = (3, 2)\n\nx = flops.linspace(0, 1, nx)\n\ny = flops.linspace(0, 1, ny)\n\nxv, yv = flops.meshgrid(x, y)\n\nxv\n\nyv\n\nimport matplotlib.pyplot as plt\n\nplt.plot(xv, yv, marker='o', color='k', linestyle='none')\n\nplt.show()\n\nxv, yv = flops.meshgrid(x, y, sparse=True)\n\nxv\n\nyv\n\nx = flops.linspace(-5, 5, 101)\n\ny = flops.linspace(-5, 5, 101)\n\nxx, yy = flops.meshgrid(x, y)\n\nzz = flops.sqrt(xx**2 + yy**2)\n\nxx.shape, yy.shape, zz.shape\n\nxs, ys = flops.meshgrid(x, y, sparse=True)\n\nzs = flops.sqrt(xs**2 + ys**2)\n\nxs.shape, ys.shape, zs.shape\n\nflops.array_equal(zz, zs)\n\nh = plt.contourf(x, y, zs)\n\nplt.axis('scaled')\n\nplt.colorbar()\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nnx, ny = (3, 2)\n\nx = flops.linspace(0, 1, nx)\n\ny = flops.linspace(0, 1, ny)\n\nxv, yv = flops.meshgrid(x, y)\n\nxv\n\nyv\n\nimport matplotlib.pyplot as plt\n\nplt.plot(xv, yv, marker='o', color='k', linestyle='none')\n\nplt.show()\n\nxv, yv = flops.meshgrid(x, y, sparse=True)\n\nxv\n\nyv\n\nx = flops.linspace(-5, 5, 101)\n\ny = flops.linspace(-5, 5, 101)\n\nxx, yy = flops.meshgrid(x, y)\n\nzz = flops.sqrt(xx**2 + yy**2)\n\nxx.shape, yy.shape, zz.shape\n\nxs, ys = flops.meshgrid(x, y, sparse=True)\n\nzs = flops.sqrt(xs**2 + ys**2)\n\nxs.shape, ys.shape, zs.shape\n\nflops.array_equal(zz, zs)\n\nh = plt.contourf(x, y, zs)\n\nplt.axis('scaled')\n\nplt.colorbar()\n\nplt.show()",
     "output": "array([[0. , 0.5, 1. ],\n       [0. , 0.5, 1. ]])\n\narray([[0.,  0.,  0.],\n       [1.,  1.,  1.]])\n\narray([[0. ,  0.5,  1. ]])\n\narray([[0.],\n       [1.]])\n\n((101, 101), (101, 101), (101, 101))\n\n((1, 101), (101, 1), (101, 101))\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.meshgrid",
+  "flopscope_ref": "fnp.meshgrid",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L629",
-  "href": "/docs/api/meshgrid/",
+  "href": "/docs/api/numpy/meshgrid/",
   "legacy_href": "/docs/api/ops/meshgrid/",
   "module": "numpy",
   "name": "meshgrid",
   "next": {
-    "href": "/docs/api/min/",
-    "label": "flops.min"
+    "href": "/docs/api/numpy/min/",
+    "label": "fnp.min"
   },
   "notes": "Coordinate matrices from coordinate vectors. Cost: numel(output).",
   "notes_sections": [
@@ -835,10 +835,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/median/",
-    "label": "flops.median"
+    "href": "/docs/api/numpy/median/",
+    "label": "fnp.median"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.meshgrid",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.meshgrid.html",
   "returns": [
     {
@@ -898,9 +899,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.meshgrid(*xi, copy=True, sparse=False, indexing='xy')",
+  "signature": "fnp.meshgrid(*xi, copy=True, sparse=False, indexing='xy')",
   "slug": "meshgrid",
   "summary": "Return a tuple of coordinate matrices from coordinate vectors.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5117",
   "weight": 1.0
 }

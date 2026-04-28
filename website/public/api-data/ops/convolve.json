@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/convolve/",
+  "detail_href": "/docs/api/numpy/convolve/",
   "detail_json_href": "/api-data/ops/convolve.json",
   "docs": {
     "sections": [
@@ -315,7 +315,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/polymul",
+                "href": "/docs/api/numpy/polymul/",
                 "label": "flops.polymul",
                 "original_target": "polymul",
                 "role": "",
@@ -410,7 +410,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -479,12 +479,12 @@
     "category": "counted_custom",
     "cost_formula": "n * m",
     "cost_formula_latex": "$n \\cdot m$",
-    "flopscope_ref": "flops.convolve",
+    "flopscope_ref": "fnp.convolve",
     "module": "numpy",
     "name": "convolve",
     "notes": "1-D discrete convolution.",
     "numpy_ref": "np.convolve",
-    "signature": "flops.convolve(a, v, mode='full')",
+    "signature": "fnp.convolve(a, v, mode='full')",
     "status": "supported",
     "summary": "Returns the discrete, linear convolution of two one-dimensional sequences.",
     "weight": 1.0

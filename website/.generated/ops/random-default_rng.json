@@ -391,7 +391,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -455,7 +455,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -502,7 +502,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -557,7 +557,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -594,7 +594,7 @@
     }
   ],
   "canonical_name": "random.default_rng",
-  "canonical_path": "random/default-rng",
+  "canonical_path": "numpy/random/default-rng",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -605,20 +605,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nrng = flops.random.default_rng(12345)\n\nprint(rng)\n\nrfloat = rng.random()\n\nrfloat\n\ntype(rfloat)\n\nimport flopscope as flops\n\nrng = flops.random.default_rng(12345)\n\nrints = rng.integers(low=0, high=10, size=3)\n\nrints\n\ntype(rints[0])\n\nimport flopscope as flops\n\nrng = flops.random.default_rng(seed=42)\n\nprint(rng)\n\narr1 = rng.random((3, 3))\n\narr1\n\nimport flopscope as flops\n\nrng = flops.random.default_rng(seed=42)\n\narr2 = rng.random((3, 3))\n\narr2",
+    "code": "import flopscope.numpy as fnp\n\nrng = flops.random.default_rng(12345)\n\nprint(rng)\n\nrfloat = rng.random()\n\nrfloat\n\ntype(rfloat)\n\nimport flopscope.numpy as fnp\n\nrng = flops.random.default_rng(12345)\n\nrints = rng.integers(low=0, high=10, size=3)\n\nrints\n\ntype(rints[0])\n\nimport flopscope.numpy as fnp\n\nrng = flops.random.default_rng(seed=42)\n\nprint(rng)\n\narr1 = rng.random((3, 3))\n\narr1\n\nimport flopscope.numpy as fnp\n\nrng = flops.random.default_rng(seed=42)\n\narr2 = rng.random((3, 3))\n\narr2",
     "output": "Generator(PCG64)\n\n0.22733602246716966\n\n<class 'float'>\n\narray([6, 2, 7])\n\n<class 'flops.int64'>\n\nGenerator(PCG64)\n\narray([[0.77395605, 0.43887844, 0.85859792],\n       [0.69736803, 0.09417735, 0.97562235],\n       [0.7611397 , 0.78606431, 0.12811363]])\n\narray([[0.77395605, 0.43887844, 0.85859792],\n       [0.69736803, 0.09417735, 0.97562235],\n       [0.7611397 , 0.78606431, 0.12811363]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.default_rng",
+  "flopscope_ref": "fnp.random.default_rng",
   "flopscope_source_url": "",
-  "href": "/docs/api/random/default-rng/",
+  "href": "/docs/api/numpy/random/default-rng/",
   "legacy_href": "/docs/api/ops/random-default_rng/",
   "module": "numpy.random",
   "name": "random.default_rng",
   "next": {
-    "href": "/docs/api/random/dirichlet/",
-    "label": "flops.random.dirichlet"
+    "href": "/docs/api/numpy/random/dirichlet/",
+    "label": "fnp.random.dirichlet"
   },
   "notes": "Construct a new Generator with default BitGenerator.",
   "notes_sections": [
@@ -643,10 +643,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/choice/",
-    "label": "flops.random.choice"
+    "href": "/docs/api/numpy/random/choice/",
+    "label": "fnp.random.choice"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.default_rng",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.default_rng.html",
   "returns": [
     {
@@ -658,9 +659,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.random.default_rng(seed=None)",
+  "signature": "fnp.random.default_rng(seed=None)",
   "slug": "random-default_rng",
   "summary": "Construct a new Generator with the default BitGenerator (PCG64).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

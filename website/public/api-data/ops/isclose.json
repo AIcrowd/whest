@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/isclose/",
+  "detail_href": "/docs/api/numpy/isclose/",
   "detail_json_href": "/api-data/ops/isclose.json",
   "docs": {
     "sections": [
@@ -339,7 +339,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/allclose",
+                "href": "/docs/api/numpy/allclose/",
                 "label": "flops.allclose",
                 "original_target": "allclose",
                 "role": "",
@@ -521,7 +521,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/isclose",
+                "href": "/docs/api/numpy/isclose/",
                 "kind": "link",
                 "target": "isclose",
                 "text": "isclose"
@@ -559,7 +559,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -694,12 +694,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.isclose",
+    "flopscope_ref": "fnp.isclose",
     "module": "numpy",
     "name": "isclose",
     "notes": "Element-wise approximate equality test.",
     "numpy_ref": "np.isclose",
-    "signature": "flops.isclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
+    "signature": "fnp.isclose(a, b, rtol=1e-05, atol=1e-08, equal_nan=False)",
     "status": "supported",
     "summary": "Returns a boolean array where two arrays are element-wise equal within a tolerance.",
     "weight": 1.0

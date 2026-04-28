@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/flip/",
+  "detail_href": "/docs/api/numpy/flip/",
   "detail_json_href": "/api-data/ops/flip.json",
   "docs": {
     "sections": [
@@ -157,7 +157,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/flipud",
+                "href": "/docs/api/numpy/flipud/",
                 "label": "flops.flipud",
                 "original_target": "flipud",
                 "role": "",
@@ -173,7 +173,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fliplr",
+                "href": "/docs/api/numpy/fliplr/",
                 "label": "flops.fliplr",
                 "original_target": "fliplr",
                 "role": "",
@@ -291,7 +291,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -434,12 +434,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.flip",
+    "flopscope_ref": "fnp.flip",
     "module": "numpy",
     "name": "flip",
     "notes": "Reverse order of elements along axis.",
     "numpy_ref": "np.flip",
-    "signature": "flops.flip(m, axis=None)",
+    "signature": "fnp.flip(m, axis=None)",
     "status": "supported",
     "summary": "Reverse the order of elements in an array along the given axis.",
     "weight": 0.0

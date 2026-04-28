@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/multiply/",
+  "detail_href": "/docs/api/numpy/multiply/",
   "detail_json_href": "/api-data/ops/multiply.json",
   "docs": {
     "sections": [
@@ -362,7 +362,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -424,7 +424,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/multiply",
+                "href": "/docs/api/numpy/multiply/",
                 "kind": "link",
                 "target": "multiply",
                 "text": "flops.multiply"
@@ -477,12 +477,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.multiply",
+    "flopscope_ref": "fnp.multiply",
     "module": "numpy",
     "name": "multiply",
     "notes": "Element-wise multiplication.",
     "numpy_ref": "np.multiply",
-    "signature": "flops.multiply(*args, **kwargs)",
+    "signature": "fnp.multiply(*args, **kwargs)",
     "status": "supported",
     "summary": "Multiply arguments element-wise.",
     "weight": 1.0

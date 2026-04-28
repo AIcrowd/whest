@@ -567,7 +567,7 @@
     }
   ],
   "canonical_name": "random.power",
-  "canonical_path": "random/power",
+  "canonical_path": "numpy/random/power",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -592,15 +592,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.power",
+  "flopscope_ref": "fnp.random.power",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/power/",
+  "href": "/docs/api/numpy/random/power/",
   "legacy_href": "/docs/api/ops/random-power/",
   "module": "numpy.random",
   "name": "random.power",
   "next": {
-    "href": "/docs/api/random/rand/",
-    "label": "flops.random.rand"
+    "href": "/docs/api/numpy/random/rand/",
+    "label": "fnp.random.rand"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -630,10 +630,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/poisson/",
-    "label": "flops.random.poisson"
+    "href": "/docs/api/numpy/random/poisson/",
+    "label": "fnp.random.poisson"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.power",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.power.html",
   "returns": [
     {
@@ -662,9 +663,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.power(a, size=None)",
+  "signature": "fnp.random.power(a, size=None)",
   "slug": "random-power",
   "summary": "Draws samples in [0, 1] from a power distribution with positive exponent a - 1.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

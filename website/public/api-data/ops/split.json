@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/split/",
+  "detail_href": "/docs/api/numpy/split/",
   "detail_json_href": "/api-data/ops/split.json",
   "docs": {
     "sections": [
@@ -348,7 +348,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/array_split",
+                "href": "/docs/api/numpy/array-split/",
                 "label": "flops.array_split",
                 "original_target": "array_split",
                 "role": "",
@@ -364,7 +364,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/hsplit",
+                "href": "/docs/api/numpy/hsplit/",
                 "label": "flops.hsplit",
                 "original_target": "hsplit",
                 "role": "",
@@ -380,7 +380,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vsplit",
+                "href": "/docs/api/numpy/vsplit/",
                 "label": "flops.vsplit",
                 "original_target": "vsplit",
                 "role": "",
@@ -396,7 +396,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/dsplit",
+                "href": "/docs/api/numpy/dsplit/",
                 "label": "flops.dsplit",
                 "original_target": "dsplit",
                 "role": "",
@@ -412,7 +412,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
+                "href": "/docs/api/numpy/concatenate/",
                 "label": "flops.concatenate",
                 "original_target": "concatenate",
                 "role": "",
@@ -428,7 +428,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/stack",
+                "href": "/docs/api/numpy/stack/",
                 "label": "flops.stack",
                 "original_target": "stack",
                 "role": "",
@@ -444,7 +444,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/hstack",
+                "href": "/docs/api/numpy/hstack/",
                 "label": "flops.hstack",
                 "original_target": "hstack",
                 "role": "",
@@ -460,7 +460,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vstack",
+                "href": "/docs/api/numpy/vstack/",
                 "label": "flops.vstack",
                 "original_target": "vstack",
                 "role": "",
@@ -476,7 +476,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/dstack",
+                "href": "/docs/api/numpy/dstack/",
                 "label": "flops.dstack",
                 "original_target": "dstack",
                 "role": "",
@@ -496,7 +496,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -559,12 +559,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.split",
+    "flopscope_ref": "fnp.split",
     "module": "numpy",
     "name": "split",
     "notes": "Split array into sub-arrays. Cost: numel(output).",
     "numpy_ref": "np.split",
-    "signature": "flops.split(ary, indices_or_sections, axis=0)",
+    "signature": "fnp.split(ary, indices_or_sections, axis=0)",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays as views into `ary`.",
     "weight": 0.0

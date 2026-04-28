@@ -362,7 +362,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/modf",
+                  "href": "/docs/api/numpy/modf/",
                   "kind": "link",
                   "target": "modf",
                   "text": "modf"
@@ -407,7 +407,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -435,7 +435,7 @@
     }
   ],
   "canonical_name": "modf",
-  "canonical_path": "modf",
+  "canonical_path": "numpy/modf",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -453,20 +453,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.modf([0, 3.5])\n\nflops.modf(-0.5)",
+    "code": "import flopscope.numpy as fnp\n\nflops.modf([0, 3.5])\n\nflops.modf(-0.5)",
     "output": "(array([ 0. ,  0.5]), array([ 0.,  3.]))\n\n(-0.5, -0)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.modf",
+  "flopscope_ref": "fnp.modf",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L178",
-  "href": "/docs/api/modf/",
+  "href": "/docs/api/numpy/modf/",
   "legacy_href": "/docs/api/ops/modf/",
   "module": "numpy",
   "name": "modf",
   "next": {
-    "href": "/docs/api/moveaxis/",
-    "label": "flops.moveaxis"
+    "href": "/docs/api/numpy/moveaxis/",
+    "label": "fnp.moveaxis"
   },
   "notes": "Return fractional and integral parts element-wise.",
   "notes_sections": [
@@ -513,10 +513,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/mod/",
-    "label": "flops.mod"
+    "href": "/docs/api/numpy/mod/",
+    "label": "fnp.mod"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.modf",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.modf.html",
   "returns": [
     {
@@ -550,7 +551,7 @@
         },
         {
           "external_url": "",
-          "href": "/docs/api/ops/modf",
+          "href": "/docs/api/numpy/modf/",
           "kind": "link",
           "target": "modf",
           "text": "modf"
@@ -569,9 +570,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.modf(*args, **kwargs)",
+  "signature": "fnp.modf(*args, **kwargs)",
   "slug": "modf",
   "summary": "Return the fractional and integral parts of an array, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

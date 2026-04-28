@@ -235,7 +235,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/fromiter",
+              "href": "/docs/api/numpy/fromiter/",
               "kind": "link",
               "target": "fromiter",
               "text": "fromiter"
@@ -257,7 +257,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -325,7 +325,7 @@
     }
   ],
   "canonical_name": "fromiter",
-  "canonical_path": "fromiter",
+  "canonical_path": "numpy/fromiter",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -336,20 +336,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\niterable = (x*x for x in range(5))\n\nflops.fromiter(iterable, float)\n\niterable = ((x+1, x+2) for x in range(5))\n\nflops.fromiter(iterable, dtype=flops.dtype((int, 2)))",
+    "code": "import flopscope.numpy as fnp\n\niterable = (x*x for x in range(5))\n\nflops.fromiter(iterable, float)\n\niterable = ((x+1, x+2) for x in range(5))\n\nflops.fromiter(iterable, dtype=flops.dtype((int, 2)))",
     "output": "array([  0.,   1.,   4.,   9.,  16.])\n\narray([[1, 2],\n       [2, 3],\n       [3, 4],\n       [4, 5],\n       [5, 6]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.fromiter",
+  "flopscope_ref": "fnp.fromiter",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1167",
-  "href": "/docs/api/fromiter/",
+  "href": "/docs/api/numpy/fromiter/",
   "legacy_href": "/docs/api/ops/fromiter/",
   "module": "numpy",
   "name": "fromiter",
   "next": {
-    "href": "/docs/api/full/",
-    "label": "flops.full"
+    "href": "/docs/api/numpy/full/",
+    "label": "fnp.full"
   },
   "notes": "Create array from an iterable. Cost: numel(output).",
   "notes_sections": [
@@ -398,10 +398,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/fromfunction/",
-    "label": "flops.fromfunction"
+    "href": "/docs/api/numpy/fromfunction/",
+    "label": "fnp.fromfunction"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fromiter",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fromiter.html",
   "returns": [
     {
@@ -413,9 +414,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.fromiter(*args, **kwargs)",
+  "signature": "fnp.fromiter(*args, **kwargs)",
   "slug": "fromiter",
   "summary": "Create a new 1-dimensional array from an iterable object.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

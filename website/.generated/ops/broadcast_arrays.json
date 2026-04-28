@@ -150,7 +150,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/broadcast_to",
+              "href": "/docs/api/numpy/broadcast-to/",
               "label": "flops.broadcast_to",
               "original_target": "broadcast_to",
               "role": "",
@@ -161,7 +161,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/broadcast_shapes",
+              "href": "/docs/api/numpy/broadcast-shapes/",
               "label": "flops.broadcast_shapes",
               "original_target": "broadcast_shapes",
               "role": "",
@@ -181,7 +181,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -257,7 +257,7 @@
     }
   ],
   "canonical_name": "broadcast_arrays",
-  "canonical_path": "broadcast-arrays",
+  "canonical_path": "numpy/broadcast-arrays",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -268,20 +268,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.array([[1,2,3]])\n\ny = flops.array([[4],[5]])\n\nflops.broadcast_arrays(x, y)\n\n[flops.array(a) for a in flops.broadcast_arrays(x, y)]",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([[1,2,3]])\n\ny = flops.array([[4],[5]])\n\nflops.broadcast_arrays(x, y)\n\n[flops.array(a) for a in flops.broadcast_arrays(x, y)]",
     "output": "(array([[1, 2, 3],\n        [1, 2, 3]]),\n array([[4, 4, 4],\n        [5, 5, 5]]))\n\n[array([[1, 2, 3],\n        [1, 2, 3]]),\n array([[4, 4, 4],\n        [5, 5, 5]])]",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.broadcast_arrays",
+  "flopscope_ref": "fnp.broadcast_arrays",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L854",
-  "href": "/docs/api/broadcast-arrays/",
+  "href": "/docs/api/numpy/broadcast-arrays/",
   "legacy_href": "/docs/api/ops/broadcast_arrays/",
   "module": "numpy",
   "name": "broadcast_arrays",
   "next": {
-    "href": "/docs/api/broadcast-shapes/",
-    "label": "flops.broadcast_shapes"
+    "href": "/docs/api/numpy/broadcast-shapes/",
+    "label": "fnp.broadcast_shapes"
   },
   "notes": "Broadcast arrays against each other. Cost: numel(output).",
   "notes_sections": [],
@@ -304,10 +304,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/bmat/",
-    "label": "flops.bmat"
+    "href": "/docs/api/numpy/bmat/",
+    "label": "fnp.bmat"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.broadcast_arrays",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.broadcast_arrays.html",
   "returns": [
     {
@@ -344,7 +345,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/broadcast_to",
+      "href": "/docs/api/numpy/broadcast-to/",
       "label": "flops.broadcast_to",
       "original_target": "broadcast_to",
       "role": "",
@@ -355,7 +356,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/broadcast_shapes",
+      "href": "/docs/api/numpy/broadcast-shapes/",
       "label": "flops.broadcast_shapes",
       "original_target": "broadcast_shapes",
       "role": "",
@@ -363,9 +364,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.broadcast_arrays(*args, subok=False)",
+  "signature": "fnp.broadcast_arrays(*args, subok=False)",
   "slug": "broadcast_arrays",
   "summary": "Broadcast any number of arrays against each other.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_stride_tricks_impl.py#L481",
   "weight": 0.0
 }

@@ -397,7 +397,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/histogram",
+              "href": "/docs/api/numpy/histogram/",
               "label": "flops.histogram",
               "original_target": "histogram",
               "role": "",
@@ -413,7 +413,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/histogram2d",
+              "href": "/docs/api/numpy/histogram2d/",
               "label": "flops.histogram2d",
               "original_target": "histogram2d",
               "role": "",
@@ -433,7 +433,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -467,7 +467,7 @@
     }
   ],
   "canonical_name": "histogramdd",
-  "canonical_path": "histogramdd",
+  "canonical_path": "numpy/histogramdd",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -478,20 +478,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nrng = flops.random.default_rng()\n\nr = rng.normal(size=(100,3))\n\nH, edges = flops.histogramdd(r, bins = (5, 8, 4))\n\nH.shape, edges[0].size, edges[1].size, edges[2].size",
+    "code": "import flopscope.numpy as fnp\n\nrng = flops.random.default_rng()\n\nr = rng.normal(size=(100,3))\n\nH, edges = flops.histogramdd(r, bins = (5, 8, 4))\n\nH.shape, edges[0].size, edges[1].size, edges[2].size",
     "output": "((5, 8, 4), 6, 9, 5)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.histogramdd",
+  "flopscope_ref": "fnp.histogramdd",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L175",
-  "href": "/docs/api/histogramdd/",
+  "href": "/docs/api/numpy/histogramdd/",
   "legacy_href": "/docs/api/ops/histogramdd/",
   "module": "numpy",
   "name": "histogramdd",
   "next": {
-    "href": "/docs/api/hsplit/",
-    "label": "flops.hsplit"
+    "href": "/docs/api/numpy/hsplit/",
+    "label": "fnp.hsplit"
   },
   "notes": "ND binning; cost = n*sum(ceil(log2(b_i))).",
   "notes_sections": [],
@@ -558,10 +558,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/histogram-bin-edges/",
-    "label": "flops.histogram_bin_edges"
+    "href": "/docs/api/numpy/histogram-bin-edges/",
+    "label": "fnp.histogram_bin_edges"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.histogramdd",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.histogramdd.html",
   "returns": [
     {
@@ -590,7 +591,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/histogram",
+      "href": "/docs/api/numpy/histogram/",
       "label": "flops.histogram",
       "original_target": "histogram",
       "role": "",
@@ -606,7 +607,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/histogram2d",
+      "href": "/docs/api/numpy/histogram2d/",
       "label": "flops.histogram2d",
       "original_target": "histogram2d",
       "role": "",
@@ -614,9 +615,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.histogramdd(sample, bins=10, range=None, density=None, weights=None)",
+  "signature": "fnp.histogramdd(sample, bins=10, range=None, density=None, weights=None)",
   "slug": "histogramdd",
   "summary": "Compute the multidimensional histogram of some data.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_histograms_impl.py#L917",
   "weight": 1.0
 }

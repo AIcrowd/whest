@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/quantile/",
+  "detail_href": "/docs/api/numpy/quantile/",
   "detail_json_href": "/api-data/ops/quantile.json",
   "docs": {
     "sections": [
@@ -768,7 +768,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
+                "href": "/docs/api/numpy/mean/",
                 "label": "flops.mean",
                 "original_target": "mean",
                 "role": "",
@@ -784,7 +784,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/percentile",
+                "href": "/docs/api/numpy/percentile/",
                 "label": "flops.percentile",
                 "original_target": "percentile",
                 "role": "",
@@ -804,7 +804,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/median",
+                "href": "/docs/api/numpy/median/",
                 "label": "flops.median",
                 "original_target": "median",
                 "role": "",
@@ -815,7 +815,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanquantile",
+                "href": "/docs/api/numpy/nanquantile/",
                 "label": "flops.nanquantile",
                 "original_target": "nanquantile",
                 "role": "",
@@ -846,7 +846,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/quantile",
+                "href": "/docs/api/numpy/quantile/",
                 "kind": "link",
                 "target": "quantile",
                 "text": "quantile"
@@ -1239,7 +1239,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/quantile",
+                "href": "/docs/api/numpy/quantile/",
                 "kind": "link",
                 "target": "quantile",
                 "text": "quantile"
@@ -1444,7 +1444,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/quantile",
+                "href": "/docs/api/numpy/quantile/",
                 "kind": "link",
                 "target": "quantile",
                 "text": "quantile"
@@ -1574,7 +1574,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -1692,7 +1692,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/percentile",
+                "href": "/docs/api/numpy/percentile/",
                 "kind": "link",
                 "target": "percentile",
                 "text": "flops.percentile"
@@ -1713,12 +1713,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.quantile",
+    "flopscope_ref": "fnp.quantile",
     "module": "numpy",
     "name": "quantile",
     "notes": "q-th quantile of array elements.",
     "numpy_ref": "np.quantile",
-    "signature": "flops.quantile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
+    "signature": "fnp.quantile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
     "status": "supported",
     "summary": "Compute the q-th quantile of the data along the specified axis.",
     "weight": 1.0

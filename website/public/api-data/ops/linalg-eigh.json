@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/eigh/",
+  "detail_href": "/docs/api/numpy/linalg/eigh/",
   "detail_json_href": "/api-data/ops/linalg-eigh.json",
   "docs": {
     "sections": [
@@ -451,7 +451,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -703,12 +703,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "flops.linalg.eigh",
+    "flopscope_ref": "fnp.linalg.eigh",
     "module": "numpy.linalg",
     "name": "linalg.eigh",
     "notes": "Symmetric eigendecomposition. Cost: $n^3$.",
     "numpy_ref": "np.linalg.eigh",
-    "signature": "flops.linalg.eigh(a, UPLO='L')",
+    "signature": "fnp.linalg.eigh(a, UPLO='L')",
     "status": "supported",
     "summary": "Return the eigenvalues and eigenvectors of a complex Hermitian (conjugate symmetric) or a real symmetric matrix.",
     "weight": 4.0

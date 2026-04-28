@@ -142,7 +142,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/fliplr",
+              "href": "/docs/api/numpy/fliplr/",
               "label": "flops.fliplr",
               "original_target": "fliplr",
               "role": "",
@@ -158,7 +158,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/flip",
+              "href": "/docs/api/numpy/flip/",
               "label": "flops.flip",
               "original_target": "flip",
               "role": "",
@@ -174,7 +174,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/rot90",
+              "href": "/docs/api/numpy/rot90/",
               "label": "flops.rot90",
               "original_target": "rot90",
               "role": "",
@@ -227,7 +227,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -314,7 +314,7 @@
     }
   ],
   "canonical_name": "flipud",
-  "canonical_path": "flipud",
+  "canonical_path": "numpy/flipud",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -325,20 +325,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nA = flops.diag([1.0, 2, 3])\n\nA\n\nflops.flipud(A)\n\nrng = flops.random.default_rng()\n\nA = rng.normal(size=(2,3,5))\n\nflops.all(flops.flipud(A) == A[::-1,...])\n\nflops.flipud([1,2])",
+    "code": "import flopscope.numpy as fnp\n\nA = flops.diag([1.0, 2, 3])\n\nA\n\nflops.flipud(A)\n\nrng = flops.random.default_rng()\n\nA = rng.normal(size=(2,3,5))\n\nflops.all(flops.flipud(A) == A[::-1,...])\n\nflops.flipud([1,2])",
     "output": "array([[1.,  0.,  0.],\n       [0.,  2.,  0.],\n       [0.,  0.,  3.]])\n\narray([[0.,  0.,  3.],\n       [0.,  2.,  0.],\n       [1.,  0.,  0.]])\n\nTrue\n\narray([2, 1])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.flipud",
+  "flopscope_ref": "fnp.flipud",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1107",
-  "href": "/docs/api/flipud/",
+  "href": "/docs/api/numpy/flipud/",
   "legacy_href": "/docs/api/ops/flipud/",
   "module": "numpy",
   "name": "flipud",
   "next": {
-    "href": "/docs/api/float-power/",
-    "label": "flops.float_power"
+    "href": "/docs/api/numpy/float-power/",
+    "label": "fnp.float_power"
   },
   "notes": "Flip array up-down.",
   "notes_sections": [
@@ -355,10 +355,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/fliplr/",
-    "label": "flops.fliplr"
+    "href": "/docs/api/numpy/fliplr/",
+    "label": "fnp.fliplr"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.flipud",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.flipud.html",
   "returns": [
     {
@@ -380,7 +381,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/fliplr",
+      "href": "/docs/api/numpy/fliplr/",
       "label": "flops.fliplr",
       "original_target": "fliplr",
       "role": "",
@@ -396,7 +397,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/flip",
+      "href": "/docs/api/numpy/flip/",
       "label": "flops.flip",
       "original_target": "flip",
       "role": "",
@@ -412,7 +413,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/rot90",
+      "href": "/docs/api/numpy/rot90/",
       "label": "flops.rot90",
       "original_target": "rot90",
       "role": "",
@@ -420,9 +421,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.flipud(m)",
+  "signature": "fnp.flipud(m)",
   "slug": "flipud",
   "summary": "Reverse the order of elements along axis 0 (up/down).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L105",
   "weight": 0.0
 }

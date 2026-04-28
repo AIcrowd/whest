@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/divide/",
+  "detail_href": "/docs/api/numpy/divide/",
   "detail_json_href": "/api-data/ops/divide.json",
   "docs": {
     "sections": [
@@ -419,7 +419,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -476,7 +476,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/divide",
+                "href": "/docs/api/numpy/divide/",
                 "kind": "link",
                 "target": "divide",
                 "text": "flops.divide"
@@ -529,12 +529,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.divide",
+    "flopscope_ref": "fnp.divide",
     "module": "numpy",
     "name": "divide",
     "notes": "Element-wise true division.",
     "numpy_ref": "np.divide",
-    "signature": "flops.divide(*args, **kwargs)",
+    "signature": "fnp.divide(*args, **kwargs)",
     "status": "supported",
     "summary": "Divide arguments element-wise.",
     "weight": 1.0

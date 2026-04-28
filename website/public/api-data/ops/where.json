@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/where/",
+  "detail_href": "/docs/api/numpy/where/",
   "detail_json_href": "/api-data/ops/where.json",
   "docs": {
     "sections": [
@@ -70,7 +70,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/nonzero",
+                    "href": "/docs/api/numpy/nonzero/",
                     "kind": "link",
                     "target": "nonzero",
                     "text": "nonzero"
@@ -316,7 +316,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/choose",
+                "href": "/docs/api/numpy/choose/",
                 "label": "flops.choose",
                 "original_target": "choose",
                 "role": "",
@@ -332,7 +332,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/nonzero",
+                "href": "/docs/api/numpy/nonzero/",
                 "label": "flops.nonzero",
                 "original_target": "nonzero",
                 "role": "",
@@ -355,7 +355,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/where",
+                "href": "/docs/api/numpy/where/",
                 "kind": "link",
                 "target": "where",
                 "text": "where"
@@ -382,7 +382,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -529,12 +529,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.where",
+    "flopscope_ref": "fnp.where",
     "module": "numpy",
     "name": "where",
     "notes": "Select elements based on condition. Cost: numel(input).",
     "numpy_ref": "np.where",
-    "signature": "flops.where(condition, x=None, y=None)",
+    "signature": "fnp.where(condition, x=None, y=None)",
     "status": "supported",
     "summary": "Return elements chosen from `x` or `y` depending on `condition`.",
     "weight": 4.0

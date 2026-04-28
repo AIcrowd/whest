@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/astype/",
+  "detail_href": "/docs/api/numpy/astype/",
   "detail_json_href": "/api-data/ops/astype.json",
   "docs": {
     "sections": [
@@ -305,7 +305,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -370,12 +370,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.astype",
+    "flopscope_ref": "fnp.astype",
     "module": "numpy",
     "name": "astype",
     "notes": "Cast array to specified type.",
     "numpy_ref": "np.astype",
-    "signature": "flops.astype(x, dtype, /, *, copy=True, device=None)",
+    "signature": "fnp.astype(x, dtype, /, *, copy=True, device=None)",
     "status": "supported",
     "summary": "Copies an array to a specified data type.",
     "weight": 0.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/matvec/",
+  "detail_href": "/docs/api/numpy/matvec/",
   "detail_json_href": "/api-data/ops/matvec.json",
   "docs": {
     "sections": [
@@ -381,7 +381,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vecdot",
+                "href": "/docs/api/numpy/vecdot/",
                 "label": "flops.vecdot",
                 "original_target": "vecdot",
                 "role": "",
@@ -397,7 +397,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vecmat",
+                "href": "/docs/api/numpy/vecmat/",
                 "label": "flops.vecmat",
                 "original_target": "vecmat",
                 "role": "",
@@ -413,7 +413,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/matmul",
+                "href": "/docs/api/numpy/matmul/",
                 "label": "flops.matmul",
                 "original_target": "matmul",
                 "role": "",
@@ -429,7 +429,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
@@ -523,12 +523,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.matvec",
+    "flopscope_ref": "fnp.matvec",
     "module": "numpy",
     "name": "matvec",
     "notes": "Matrix-vector product. Cost = output_size * contracted_axis.",
     "numpy_ref": "np.matvec",
-    "signature": "flops.matvec(a, b, **kwargs)",
+    "signature": "fnp.matvec(a, b, **kwargs)",
     "status": "supported",
     "summary": "Matrix-vector dot product of two arrays.",
     "weight": 1.0

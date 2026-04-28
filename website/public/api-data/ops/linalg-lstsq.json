@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/lstsq/",
+  "detail_href": "/docs/api/numpy/linalg/lstsq/",
   "detail_json_href": "/api-data/ops/linalg-lstsq.json",
   "docs": {
     "sections": [
@@ -642,7 +642,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -813,12 +813,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
-    "flopscope_ref": "flops.linalg.lstsq",
+    "flopscope_ref": "fnp.linalg.lstsq",
     "module": "numpy.linalg",
     "name": "linalg.lstsq",
     "notes": "Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD).",
     "numpy_ref": "np.linalg.lstsq",
-    "signature": "flops.linalg.lstsq(a, b, rcond=None)",
+    "signature": "fnp.linalg.lstsq(a, b, rcond=None)",
     "status": "supported",
     "summary": "Return the least-squares solution to a linear matrix equation.",
     "weight": 4.0

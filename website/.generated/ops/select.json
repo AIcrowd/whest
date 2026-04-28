@@ -236,7 +236,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/where",
+              "href": "/docs/api/numpy/where/",
               "label": "flops.where",
               "original_target": "where",
               "role": "",
@@ -247,7 +247,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/take",
+              "href": "/docs/api/numpy/take/",
               "label": "flops.take",
               "original_target": "take",
               "role": "",
@@ -258,7 +258,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/choose",
+              "href": "/docs/api/numpy/choose/",
               "label": "flops.choose",
               "original_target": "choose",
               "role": "",
@@ -269,7 +269,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/compress",
+              "href": "/docs/api/numpy/compress/",
               "label": "flops.compress",
               "original_target": "compress",
               "role": "",
@@ -280,7 +280,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/diag",
+              "href": "/docs/api/numpy/diag/",
               "label": "flops.diag",
               "original_target": "diag",
               "role": "",
@@ -291,7 +291,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/diagonal",
+              "href": "/docs/api/numpy/diagonal/",
               "label": "flops.diagonal",
               "original_target": "diagonal",
               "role": "",
@@ -311,7 +311,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -440,7 +440,7 @@
     }
   ],
   "canonical_name": "select",
-  "canonical_path": "select",
+  "canonical_path": "numpy/select",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -451,20 +451,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.arange(6)\n\ncondlist = [x<3, x>3]\n\nchoicelist = [x, x**2]\n\nflops.select(condlist, choicelist, 42)\n\ncondlist = [x<=4, x>3]\n\nchoicelist = [x, x**2]\n\nflops.select(condlist, choicelist, 55)",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.arange(6)\n\ncondlist = [x<3, x>3]\n\nchoicelist = [x, x**2]\n\nflops.select(condlist, choicelist, 42)\n\ncondlist = [x<=4, x>3]\n\nchoicelist = [x, x**2]\n\nflops.select(condlist, choicelist, 55)",
     "output": "array([ 0,  1,  2, 42, 16, 25])\n\narray([ 0,  1,  2,  3,  4, 25])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.select",
+  "flopscope_ref": "fnp.select",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1522",
-  "href": "/docs/api/select/",
+  "href": "/docs/api/numpy/select/",
   "legacy_href": "/docs/api/ops/select/",
   "module": "numpy",
   "name": "select",
   "next": {
-    "href": "/docs/api/setdiff1d/",
-    "label": "flops.setdiff1d"
+    "href": "/docs/api/numpy/setdiff1d/",
+    "label": "fnp.setdiff1d"
   },
   "notes": "Return array from list of choices based on conditions. Cost: numel(input).",
   "notes_sections": [],
@@ -496,10 +496,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/searchsorted/",
-    "label": "flops.searchsorted"
+    "href": "/docs/api/numpy/searchsorted/",
+    "label": "fnp.searchsorted"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.select",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.select.html",
   "returns": [
     {
@@ -522,7 +523,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/where",
+      "href": "/docs/api/numpy/where/",
       "label": "flops.where",
       "original_target": "where",
       "role": "",
@@ -533,7 +534,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/take",
+      "href": "/docs/api/numpy/take/",
       "label": "flops.take",
       "original_target": "take",
       "role": "",
@@ -544,7 +545,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/choose",
+      "href": "/docs/api/numpy/choose/",
       "label": "flops.choose",
       "original_target": "choose",
       "role": "",
@@ -555,7 +556,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/compress",
+      "href": "/docs/api/numpy/compress/",
       "label": "flops.compress",
       "original_target": "compress",
       "role": "",
@@ -566,7 +567,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/diag",
+      "href": "/docs/api/numpy/diag/",
       "label": "flops.diag",
       "original_target": "diag",
       "role": "",
@@ -577,7 +578,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/diagonal",
+      "href": "/docs/api/numpy/diagonal/",
       "label": "flops.diagonal",
       "original_target": "diagonal",
       "role": "",
@@ -585,9 +586,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.select(condlist, choicelist, default=0)",
+  "signature": "fnp.select(condlist, choicelist, default=0)",
   "slug": "select",
   "summary": "Return an array drawn from elements in choicelist, depending on conditions.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L786",
   "weight": 4.0
 }

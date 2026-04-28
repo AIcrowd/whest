@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/reciprocal/",
+  "detail_href": "/docs/api/numpy/reciprocal/",
   "detail_json_href": "/api-data/ops/reciprocal.json",
   "docs": {
     "sections": [
@@ -323,7 +323,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -355,12 +355,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.reciprocal",
+    "flopscope_ref": "fnp.reciprocal",
     "module": "numpy",
     "name": "reciprocal",
     "notes": "Element-wise 1/x.",
     "numpy_ref": "np.reciprocal",
-    "signature": "flops.reciprocal(*args, **kwargs)",
+    "signature": "fnp.reciprocal(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the reciprocal of the argument, element-wise.",
     "weight": 1.0

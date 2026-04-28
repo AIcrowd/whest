@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/stack/",
+  "detail_href": "/docs/api/numpy/stack/",
   "detail_json_href": "/api-data/ops/stack.json",
   "docs": {
     "sections": [
@@ -258,7 +258,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
+                "href": "/docs/api/numpy/concatenate/",
                 "label": "flops.concatenate",
                 "original_target": "concatenate",
                 "role": "",
@@ -274,7 +274,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "label": "flops.block",
                 "original_target": "block",
                 "role": "",
@@ -290,7 +290,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "label": "flops.split",
                 "original_target": "split",
                 "role": "",
@@ -306,7 +306,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/unstack",
+                "href": "/docs/api/numpy/unstack/",
                 "label": "flops.unstack",
                 "original_target": "unstack",
                 "role": "",
@@ -326,7 +326,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -437,12 +437,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.stack",
+    "flopscope_ref": "fnp.stack",
     "module": "numpy",
     "name": "stack",
     "notes": "Join arrays along new axis. Cost: numel(output).",
     "numpy_ref": "np.stack",
-    "signature": "flops.stack(arrays, axis=0, out=None, *, dtype=None, casting='same_kind')",
+    "signature": "fnp.stack(arrays, axis=0, out=None, *, dtype=None, casting='same_kind')",
     "status": "supported",
     "summary": "Join a sequence of arrays along a new axis.",
     "weight": 1.0

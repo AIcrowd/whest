@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/sinh/",
+  "detail_href": "/docs/api/numpy/sinh/",
   "detail_json_href": "/api-data/ops/sinh.json",
   "docs": {
     "sections": [
@@ -342,7 +342,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -444,12 +444,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.sinh",
+    "flopscope_ref": "fnp.sinh",
     "module": "numpy",
     "name": "sinh",
     "notes": "Element-wise hyperbolic sine.",
     "numpy_ref": "np.sinh",
-    "signature": "flops.sinh(*args, **kwargs)",
+    "signature": "fnp.sinh(*args, **kwargs)",
     "status": "supported",
     "summary": "Hyperbolic sine, element-wise.",
     "weight": 16.0

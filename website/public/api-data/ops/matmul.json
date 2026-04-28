@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/matmul/",
+  "detail_href": "/docs/api/numpy/matmul/",
   "detail_json_href": "/api-data/ops/matmul.json",
   "docs": {
     "sections": [
@@ -262,7 +262,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vecdot",
+                "href": "/docs/api/numpy/vecdot/",
                 "label": "flops.vecdot",
                 "original_target": "vecdot",
                 "role": "",
@@ -278,7 +278,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/matvec",
+                "href": "/docs/api/numpy/matvec/",
                 "label": "flops.matvec",
                 "original_target": "matvec",
                 "role": "",
@@ -294,7 +294,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vecmat",
+                "href": "/docs/api/numpy/vecmat/",
                 "label": "flops.vecmat",
                 "original_target": "vecmat",
                 "role": "",
@@ -310,7 +310,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/tensordot",
+                "href": "/docs/api/numpy/tensordot/",
                 "label": "flops.tensordot",
                 "original_target": "tensordot",
                 "role": "",
@@ -326,7 +326,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
@@ -342,7 +342,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "label": "flops.dot",
                 "original_target": "dot",
                 "role": "",
@@ -404,7 +404,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/vecmat",
+                        "href": "/docs/api/numpy/vecmat/",
                         "kind": "link",
                         "target": "vecmat",
                         "text": "vecmat"
@@ -428,7 +428,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/matvec",
+                        "href": "/docs/api/numpy/matvec/",
                         "kind": "link",
                         "target": "matvec",
                         "text": "matvec"
@@ -450,7 +450,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/matmul",
+                "href": "/docs/api/numpy/matmul/",
                 "kind": "link",
                 "target": "matmul",
                 "text": "matmul"
@@ -461,7 +461,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "kind": "link",
                 "target": "dot",
                 "text": "dot"
@@ -631,7 +631,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -843,7 +843,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/matmul",
+                "href": "/docs/api/numpy/matmul/",
                 "kind": "link",
                 "target": "matmul",
                 "text": "flops.matmul"
@@ -888,12 +888,12 @@
     "category": "counted_custom",
     "cost_formula": "m * k * n (FMA=1)",
     "cost_formula_latex": "$m \\cdot k \\cdot n$",
-    "flopscope_ref": "flops.matmul",
+    "flopscope_ref": "fnp.matmul",
     "module": "numpy",
     "name": "matmul",
     "notes": "Matrix multiplication; cost = M*K*N (FMA=1).",
     "numpy_ref": "np.matmul",
-    "signature": "flops.matmul(a, b)",
+    "signature": "fnp.matmul(a, b)",
     "status": "supported",
     "summary": "Matrix product of two arrays.",
     "weight": 1.0

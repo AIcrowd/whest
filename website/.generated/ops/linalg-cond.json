@@ -160,7 +160,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/linalg-norm",
+              "href": "/docs/api/numpy/linalg/norm/",
               "label": "flops.linalg.norm",
               "original_target": "numpy.linalg.norm",
               "role": "",
@@ -236,7 +236,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -359,7 +359,7 @@
     }
   ],
   "canonical_name": "linalg.cond",
-  "canonical_path": "linalg/cond",
+  "canonical_path": "numpy/linalg/cond",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -384,20 +384,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nfrom numpy import linalg as LA\n\na = flops.array([[1, 0, -1], [0, 1, 0], [1, 0, 1]])\n\na\n\nLA.cond(a)\n\nLA.cond(a, 'fro')\n\nLA.cond(a, flops.inf)\n\nLA.cond(a, -flops.inf)\n\nLA.cond(a, 1)\n\nLA.cond(a, -1)\n\nLA.cond(a, 2)\n\nLA.cond(a, -2)\n\n(min(LA.svd(a, compute_uv=False)) *\nmin(LA.svd(LA.inv(a), compute_uv=False)))",
+    "code": "import flopscope.numpy as fnp\n\nfrom numpy import linalg as LA\n\na = flops.array([[1, 0, -1], [0, 1, 0], [1, 0, 1]])\n\na\n\nLA.cond(a)\n\nLA.cond(a, 'fro')\n\nLA.cond(a, flops.inf)\n\nLA.cond(a, -flops.inf)\n\nLA.cond(a, 1)\n\nLA.cond(a, -1)\n\nLA.cond(a, 2)\n\nLA.cond(a, -2)\n\n(min(LA.svd(a, compute_uv=False)) *\nmin(LA.svd(LA.inv(a), compute_uv=False)))",
     "output": "array([[ 1,  0, -1],\n       [ 0,  1,  0],\n       [ 1,  0,  1]])\n\n1.4142135623730951\n\n3.1622776601683795\n\n2.0\n\n1.0\n\n2.0\n\n1.0\n\n1.4142135623730951\n\n0.70710678118654746 # may vary\n\n0.70710678118654746 # may vary",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.cond",
+  "flopscope_ref": "fnp.linalg.cond",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L359",
-  "href": "/docs/api/linalg/cond/",
+  "href": "/docs/api/numpy/linalg/cond/",
   "legacy_href": "/docs/api/ops/linalg-cond/",
   "module": "numpy.linalg",
   "name": "linalg.cond",
   "next": {
-    "href": "/docs/api/linalg/cross/",
-    "label": "flops.linalg.cross"
+    "href": "/docs/api/numpy/linalg/cross/",
+    "label": "fnp.linalg.cross"
   },
   "notes": "Condition number. Cost: m*n*min(m,n) (via SVD).",
   "notes_sections": [
@@ -437,10 +437,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/cholesky/",
-    "label": "flops.linalg.cholesky"
+    "href": "/docs/api/numpy/linalg/cholesky/",
+    "label": "fnp.linalg.cholesky"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.cond",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.cond.html",
   "returns": [
     {
@@ -456,7 +457,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/linalg-norm",
+      "href": "/docs/api/numpy/linalg/norm/",
       "label": "flops.linalg.norm",
       "original_target": "numpy.linalg.norm",
       "role": "",
@@ -464,9 +465,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.linalg.cond(x, p=None)",
+  "signature": "fnp.linalg.cond(x, p=None)",
   "slug": "linalg-cond",
   "summary": "Compute the condition number of a matrix.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1885",
   "weight": 4.0
 }

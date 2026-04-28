@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/partition/",
+  "detail_href": "/docs/api/numpy/partition/",
   "detail_json_href": "/api-data/ops/partition.json",
   "docs": {
     "sections": [
@@ -256,7 +256,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argpartition",
+                "href": "/docs/api/numpy/argpartition/",
                 "label": "flops.argpartition",
                 "original_target": "argpartition",
                 "role": "",
@@ -272,7 +272,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/sort",
+                "href": "/docs/api/numpy/sort/",
                 "label": "flops.sort",
                 "original_target": "sort",
                 "role": "",
@@ -360,7 +360,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -561,12 +561,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.partition",
+    "flopscope_ref": "fnp.partition",
     "module": "numpy",
     "name": "partition",
     "notes": "Quickselect; cost = n per slice.",
     "numpy_ref": "np.partition",
-    "signature": "flops.partition(a, kth, axis=-1, kind='introselect', order=None)",
+    "signature": "fnp.partition(a, kth, axis=-1, kind='introselect', order=None)",
     "status": "supported",
     "summary": "Return a partitioned copy of an array.",
     "weight": 1.0

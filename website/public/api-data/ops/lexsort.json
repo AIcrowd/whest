@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/lexsort/",
+  "detail_href": "/docs/api/numpy/lexsort/",
   "detail_json_href": "/api-data/ops/lexsort.json",
   "docs": {
     "sections": [
@@ -212,7 +212,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "label": "flops.argsort",
                 "original_target": "argsort",
                 "role": "",
@@ -244,7 +244,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/sort",
+                "href": "/docs/api/numpy/sort/",
                 "label": "flops.sort",
                 "original_target": "sort",
                 "role": "",
@@ -273,7 +273,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -387,7 +387,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "kind": "link",
                 "target": "argsort",
                 "text": "argsort"
@@ -425,7 +425,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "kind": "link",
                 "target": "argsort",
                 "text": "argsort"
@@ -578,7 +578,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/lexsort",
+                "href": "/docs/api/numpy/lexsort/",
                 "kind": "link",
                 "target": "lexsort",
                 "text": "lexsort"
@@ -650,7 +650,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/lexsort",
+                "href": "/docs/api/numpy/lexsort/",
                 "kind": "link",
                 "target": "lexsort",
                 "text": "lexsort"
@@ -698,12 +698,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.lexsort",
+    "flopscope_ref": "fnp.lexsort",
     "module": "numpy",
     "name": "lexsort",
     "notes": "Multi-key sort; cost = k*n*ceil(log2(n)).",
     "numpy_ref": "np.lexsort",
-    "signature": "flops.lexsort(keys, axis=-1)",
+    "signature": "fnp.lexsort(keys, axis=-1)",
     "status": "supported",
     "summary": "Perform an indirect stable sort using a sequence of keys.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/invert/",
+  "detail_href": "/docs/api/numpy/invert/",
   "detail_json_href": "/api-data/ops/invert.json",
   "docs": {
     "sections": [
@@ -324,7 +324,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_and",
+                "href": "/docs/api/numpy/bitwise-and/",
                 "label": "flops.bitwise_and",
                 "original_target": "bitwise_and",
                 "role": "",
@@ -335,7 +335,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_or",
+                "href": "/docs/api/numpy/bitwise-or/",
                 "label": "flops.bitwise_or",
                 "original_target": "bitwise_or",
                 "role": "",
@@ -346,7 +346,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_xor",
+                "href": "/docs/api/numpy/bitwise-xor/",
                 "label": "flops.bitwise_xor",
                 "original_target": "bitwise_xor",
                 "role": "",
@@ -357,7 +357,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_not",
+                "href": "/docs/api/numpy/logical-not/",
                 "label": "flops.logical_not",
                 "original_target": "logical_not",
                 "role": "",
@@ -392,7 +392,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_not",
+                "href": "/docs/api/numpy/bitwise-not/",
                 "kind": "link",
                 "target": "bitwise_not",
                 "text": "flops.bitwise_not"
@@ -403,7 +403,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/invert",
+                "href": "/docs/api/numpy/invert/",
                 "kind": "link",
                 "target": "invert",
                 "text": "invert"
@@ -449,7 +449,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -607,7 +607,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/invert",
+                "href": "/docs/api/numpy/invert/",
                 "kind": "link",
                 "target": "invert",
                 "text": "flops.invert"
@@ -647,12 +647,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.invert",
+    "flopscope_ref": "fnp.invert",
     "module": "numpy",
     "name": "invert",
     "notes": "Bitwise NOT element-wise.",
     "numpy_ref": "np.invert",
-    "signature": "flops.invert(*args, **kwargs)",
+    "signature": "fnp.invert(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute bit-wise inversion, or bit-wise NOT, element-wise.",
     "weight": 1.0

@@ -9,7 +9,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Probability density function at x of the given RV."
+              "text": "Evaluate the probability density function."
             }
           ],
           "type": "paragraph"
@@ -27,7 +27,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "quantiles"
+                      "text": "Points at which to evaluate the density."
                     }
                   ],
                   "type": "paragraph"
@@ -37,7 +37,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "quantiles"
+                  "text": "Points at which to evaluate the density."
                 }
               ],
               "name": "x",
@@ -49,39 +49,33 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
-                    }
-                  ],
-                  "type": "paragraph"
-                }
-              ],
-              "data_type": "array_like",
-              "inline": [
-                {
-                  "kind": "text",
-                  "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
-                }
-              ],
-              "name": "arg1, arg2, arg3,...",
-              "type": "field_list"
-            },
-            {
-              "body_blocks": [
-                {
-                  "inline": [
+                      "text": "Location parameter of the distribution. Defaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "0"
+                    },
                     {
                       "kind": "text",
-                      "text": "location parameter (default=0)"
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "array_like, optional",
+              "data_type": "float, optional",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "location parameter (default=0)"
+                  "text": "Location parameter of the distribution. Defaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "0"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
               "name": "loc",
@@ -93,17 +87,33 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "scale parameter (default=1)"
+                      "text": "Scale parameter of the distribution. Defaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "1"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "array_like, optional",
+              "data_type": "float, optional",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "scale parameter (default=1)"
+                  "text": "Scale parameter of the distribution. Defaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "1"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
               "name": "scale",
@@ -126,20 +136,36 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Probability density function evaluated at x"
+                      "text": "Probability density evaluated elementwise at "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "x"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "ndarray",
+              "data_type": "FlopscopeArray",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Probability density function evaluated at x"
+                  "text": "Probability density evaluated elementwise at "
+                },
+                {
+                  "kind": "code",
+                  "text": "x"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
-              "name": "pdf",
+              "name": "",
               "type": "field_list"
             }
           ],
@@ -148,6 +174,73 @@
         }
       ],
       "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.cauchy.pdf(x, loc, scale).html",
+              "href": "",
+              "kind": "link",
+              "target": "stats.cauchy.pdf(x, loc, scale)",
+              "text": "scipy.stats.cauchy.pdf(x, loc, scale)"
+            },
+            {
+              "kind": "text",
+              "text": ".\nFLOP cost: "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(x)"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "x = flops.array([-1.0, 0.0, 1.0])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.round(flops.stats.cauchy.pdf(x), 3)"
+            },
+            {
+              "kind": "output",
+              "text": "array([0.159, 0.318, 0.159])"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "stats.cauchy.pdf",
@@ -161,10 +254,14 @@
     "unresolved_references": [],
     "unsupported_directives": []
   },
-  "example": null,
+  "example": {
+    "code": "import flopscope.numpy as fnp\n\nimport flopscope as flops\n\nx = flops.array([-1.0, 0.0, 1.0])\n\nflops.round(flops.stats.cauchy.pdf(x), 3)",
+    "output": "array([0.159, 0.318, 0.159])",
+    "source": "derived"
+  },
   "flopscope_examples_html": "",
   "flopscope_ref": "flops.stats.cauchy.pdf",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_cauchy.py#L32",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_cauchy.py#L34",
   "href": "/docs/api/stats/cauchy/pdf/",
   "legacy_href": "/docs/api/ops/stats-cauchy-pdf/",
   "module": "flopscope.stats",
@@ -174,58 +271,55 @@
     "label": "flops.stats.cauchy.ppf"
   },
   "notes": "Cauchy PDF; cost = numel(input).",
-  "notes_sections": [],
-  "numpy_ref": "np.stats.cauchy.pdf",
+  "notes_sections": [
+    "Equivalent to ``scipy.stats.cauchy.pdf(x, loc, scale)``. FLOP cost: ``1 * numel(x)``."
+  ],
+  "numpy_ref": "scipy.stats.cauchy.pdf",
   "parameters": [
     {
       "body": [
-        "quantiles"
+        "Points at which to evaluate the density."
       ],
       "name": "x",
       "type": "array_like"
     },
     {
       "body": [
-        "The shape parameter(s) for the distribution (see docstring of the",
-        "instance object for more information)"
-      ],
-      "name": "arg1, arg2, arg3,...",
-      "type": "array_like"
-    },
-    {
-      "body": [
-        "location parameter (default=0)"
+        "Location parameter of the distribution. Defaults to ``0``."
       ],
       "name": "loc",
-      "type": "array_like, optional"
+      "type": "float, optional"
     },
     {
       "body": [
-        "scale parameter (default=1)"
+        "Scale parameter of the distribution. Defaults to ``1``."
       ],
       "name": "scale",
-      "type": "array_like, optional"
+      "type": "float, optional"
     }
   ],
   "previous": {
     "href": "/docs/api/stats/cauchy/cdf/",
     "label": "flops.stats.cauchy.cdf"
   },
-  "provenance_label": "Adapted from NumPy docs",
+  "provenance_label": "Adapted from SciPy docs",
+  "provenance_ref": "scipy.stats.cauchy",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.cauchy.html",
   "returns": [
     {
       "body": [
-        "Probability density function evaluated at x"
+        "Probability density evaluated elementwise at ``x``."
       ],
-      "name": "pdf",
-      "type": "ndarray"
+      "name": "",
+      "type": "FlopscopeArray"
     }
   ],
   "see_also": [],
   "signature": "flops.stats.cauchy.pdf(x, loc=0, scale=1)",
   "slug": "stats-cauchy-pdf",
-  "summary": "Probability density function at x of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051",
+  "summary": "Evaluate the probability density function.",
+  "upstream_ref_label": "SciPy Ref",
+  "upstream_source_label": "scipy source",
+  "upstream_source_url": "",
   "weight": 4.0
 }

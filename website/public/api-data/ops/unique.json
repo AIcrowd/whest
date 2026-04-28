@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/unique/",
+  "detail_href": "/docs/api/numpy/unique/",
   "detail_json_href": "/api-data/ops/unique.json",
   "docs": {
     "sections": [
@@ -485,7 +485,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/repeat",
+                "href": "/docs/api/numpy/repeat/",
                 "label": "flops.repeat",
                 "original_target": "repeat",
                 "role": "",
@@ -501,7 +501,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/sort",
+                "href": "/docs/api/numpy/sort/",
                 "label": "flops.sort",
                 "original_target": "sort",
                 "role": "",
@@ -555,7 +555,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -773,12 +773,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.unique",
+    "flopscope_ref": "fnp.unique",
     "module": "numpy",
     "name": "unique",
     "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.unique",
-    "signature": "flops.unique(ar, return_index=False, return_inverse=False, return_counts=False, axis=None, *, equal_nan=True)",
+    "signature": "fnp.unique(ar, return_index=False, return_inverse=False, return_counts=False, axis=None, *, equal_nan=True)",
     "status": "supported",
     "summary": "Find the unique elements of an array.",
     "weight": 1.0

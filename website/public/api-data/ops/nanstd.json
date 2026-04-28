@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/nanstd/",
+  "detail_href": "/docs/api/numpy/nanstd/",
   "detail_json_href": "/api-data/ops/nanstd.json",
   "docs": {
     "sections": [
@@ -479,7 +479,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/var",
+                "href": "/docs/api/numpy/var/",
                 "label": "flops.var",
                 "original_target": "var",
                 "role": "",
@@ -490,7 +490,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
+                "href": "/docs/api/numpy/mean/",
                 "label": "flops.mean",
                 "original_target": "mean",
                 "role": "",
@@ -501,7 +501,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/std",
+                "href": "/docs/api/numpy/std/",
                 "label": "flops.std",
                 "original_target": "std",
                 "role": "",
@@ -512,7 +512,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanvar",
+                "href": "/docs/api/numpy/nanvar/",
                 "label": "flops.nanvar",
                 "original_target": "nanvar",
                 "role": "",
@@ -523,7 +523,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmean",
+                "href": "/docs/api/numpy/nanmean/",
                 "label": "flops.nanmean",
                 "original_target": "nanmean",
                 "role": "",
@@ -639,7 +639,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/std",
+                "href": "/docs/api/numpy/std/",
                 "kind": "link",
                 "target": "std",
                 "text": "std"
@@ -686,7 +686,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -732,12 +732,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.nanstd",
+    "flopscope_ref": "fnp.nanstd",
     "module": "numpy",
     "name": "nanstd",
     "notes": "Standard deviation ignoring NaNs.",
     "numpy_ref": "np.nanstd",
-    "signature": "flops.nanstd(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
+    "signature": "fnp.nanstd(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
     "status": "supported",
     "summary": "Compute the standard deviation along the specified axis, while ignoring NaNs.",
     "weight": 2.0

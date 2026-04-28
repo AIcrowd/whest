@@ -810,7 +810,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -894,7 +894,7 @@
     }
   ],
   "canonical_name": "fft.ifftn",
-  "canonical_path": "fft/ifftn",
+  "canonical_path": "numpy/fft/ifftn",
   "category": "counted_custom",
   "cost_formula": "5N * ceil(log2(N))",
   "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
@@ -905,20 +905,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.eye(4)\n\nflops.fft.ifftn(flops.fft.fftn(a, axes=(0,)), axes=(1,))\n\nimport matplotlib.pyplot as plt\n\nn = flops.zeros((200,200), dtype=complex)\n\nn[60:80, 20:40] = flops.exp(1j*flops.random.uniform(0, 2*flops.pi, (20, 20)))\n\nim = flops.fft.ifftn(n).real\n\nplt.imshow(im)\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\na = flops.eye(4)\n\nflops.fft.ifftn(flops.fft.fftn(a, axes=(0,)), axes=(1,))\n\nimport matplotlib.pyplot as plt\n\nn = flops.zeros((200,200), dtype=complex)\n\nn[60:80, 20:40] = flops.exp(1j*flops.random.uniform(0, 2*flops.pi, (20, 20)))\n\nim = flops.fft.ifftn(n).real\n\nplt.imshow(im)\n\nplt.show()",
     "output": "array([[1.+0.j,  0.+0.j,  0.+0.j,  0.+0.j], # may vary\n       [0.+0.j,  1.+0.j,  0.+0.j,  0.+0.j],\n       [0.+0.j,  0.+0.j,  1.+0.j,  0.+0.j],\n       [0.+0.j,  0.+0.j,  0.+0.j,  1.+0.j]])\n\n<matplotlib.image.AxesImage object at 0x...>",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.fft.ifftn",
+  "flopscope_ref": "fnp.fft.ifftn",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L362",
-  "href": "/docs/api/fft/ifftn/",
+  "href": "/docs/api/numpy/fft/ifftn/",
   "legacy_href": "/docs/api/ops/fft-ifftn/",
   "module": "numpy.fft",
   "name": "fft.ifftn",
   "next": {
-    "href": "/docs/api/fft/ifftshift/",
-    "label": "flops.fft.ifftshift"
+    "href": "/docs/api/numpy/fft/ifftshift/",
+    "label": "fnp.fft.ifftshift"
   },
   "notes": "Inverse N-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -1004,10 +1004,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/fft/ifft2/",
-    "label": "flops.fft.ifft2"
+    "href": "/docs/api/numpy/fft/ifft2/",
+    "label": "fnp.fft.ifft2"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.ifftn",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.ifftn.html",
   "returns": [
     {
@@ -1126,9 +1127,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.fft.ifftn(a, s=None, axes=None, norm=None, out=None)",
+  "signature": "fnp.fft.ifftn(a, s=None, axes=None, norm=None, out=None)",
   "slug": "fft-ifftn",
   "summary": "Compute the N-dimensional inverse discrete Fourier Transform.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L881",
   "weight": 1.0
 }

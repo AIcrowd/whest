@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/unstack/",
+  "detail_href": "/docs/api/numpy/unstack/",
   "detail_json_href": "/api-data/ops/unstack.json",
   "docs": {
     "sections": [
@@ -199,7 +199,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/stack",
+                "href": "/docs/api/numpy/stack/",
                 "label": "flops.stack",
                 "original_target": "stack",
                 "role": "",
@@ -215,7 +215,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
+                "href": "/docs/api/numpy/concatenate/",
                 "label": "flops.concatenate",
                 "original_target": "concatenate",
                 "role": "",
@@ -231,7 +231,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "label": "flops.block",
                 "original_target": "block",
                 "role": "",
@@ -247,7 +247,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "label": "flops.split",
                 "original_target": "split",
                 "role": "",
@@ -266,7 +266,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/unstack",
+                "href": "/docs/api/numpy/unstack/",
                 "kind": "link",
                 "target": "unstack",
                 "text": "unstack"
@@ -279,7 +279,7 @@
                 "display_text": "stack",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/stack",
+                "href": "/docs/api/numpy/stack/",
                 "kind": "role_reference",
                 "original_target": "stack",
                 "role": "py:func",
@@ -424,12 +424,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.unstack",
+    "flopscope_ref": "fnp.unstack",
     "module": "numpy",
     "name": "unstack",
     "notes": "Unstack array along axis into tuple of arrays (NumPy 2.x). Cost: numel(output).",
     "numpy_ref": "np.unstack",
-    "signature": "flops.unstack(x, /, *, axis=0)",
+    "signature": "fnp.unstack(x, /, *, axis=0)",
     "status": "supported",
     "summary": "Split an array into a sequence of arrays along the given axis.",
     "weight": 1.0

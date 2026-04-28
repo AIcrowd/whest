@@ -1,8 +1,4 @@
-"""Log-normal distribution with FLOP counting.
-
-Mimics ``scipy.stats.lognorm`` — see
-https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html
-"""
+"""Log-normal distribution for :mod:`flopscope.stats`."""
 
 from __future__ import annotations
 
@@ -19,73 +15,127 @@ _INV_SQRT_2PI = 1.0 / _np.sqrt(2.0 * _np.pi)
 class LognormDistribution(ContinuousDistribution):
     """Log-normal continuous random variable.
 
-    Equivalent to ``scipy.stats.lognorm``.  The shape parameter ``s``
-    is the standard deviation of the underlying normal distribution.
-
-    .. note::
-
-       ``s`` is the **first positional argument** (before ``loc``/``scale``),
-       matching scipy's signature: ``lognorm.pdf(x, s, loc=0, scale=1)``.
+    This object mirrors ``scipy.stats.lognorm``.
 
     Methods
     -------
     pdf(x, s, loc=0, scale=1)
-        Probability density function.
+        Evaluate the probability density function.
     cdf(x, s, loc=0, scale=1)
-        Cumulative distribution function.
+        Evaluate the cumulative distribution function.
     ppf(q, s, loc=0, scale=1)
-        Percent-point function (inverse of CDF).
+        Evaluate the percent-point function.
+
+    Notes
+    -----
+    ``s`` is the shape parameter: the standard deviation of the underlying
+    normal distribution. It is the first positional argument, ahead of
+    ``loc`` and ``scale``, matching SciPy's ``lognorm`` signature. Each
+    public method deducts ``1 * numel(input)`` FLOPs from the active budget.
     """
 
     def __init__(self):
         super().__init__("lognorm")
 
     def pdf(self, x, s, loc=0, scale=1):
-        """Probability density function at *x*.
-
-        Equivalent to ``scipy.stats.lognorm.pdf(x, s, loc, scale)``.
-
-        FLOP Cost
-        ---------
-        1 * numel(x) FLOPs
+        """Evaluate the probability density function.
 
         Parameters
         ----------
         x : array_like
-            Quantiles.
+            Points at which to evaluate the density.
         s : float
-            Shape parameter (std dev of the underlying normal).
+            Shape parameter of the distribution.
         loc : float, optional
-            Location parameter (default 0).
+            Location parameter. Defaults to ``0``.
         scale : float, optional
-            Scale parameter (default 1).
+            Scale parameter. Defaults to ``1``.
 
         Returns
         -------
         FlopscopeArray
-            PDF evaluated at *x*.
+            Probability density evaluated elementwise at ``x``.
+
+        Notes
+        -----
+        Equivalent to ``scipy.stats.lognorm.pdf(x, s, loc, scale)``.
+        FLOP cost: ``1 * numel(x)``.
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import flopscope as flops
+        >>> x = np.array([0.5, 1.0, 2.0])
+        >>> np.round(flops.stats.lognorm.pdf(x, s=0.5), 3)
+        array([0.61 , 0.798, 0.153])
         """
         return self._deduct_and_call("pdf", 1, x, s, loc=loc, scale=scale)
 
     def cdf(self, x, s, loc=0, scale=1):
-        """Cumulative distribution function at *x*.
+        """Evaluate the cumulative distribution function.
 
+        Parameters
+        ----------
+        x : array_like
+            Points at which to evaluate the cumulative probability.
+        s : float
+            Shape parameter of the distribution.
+        loc : float, optional
+            Location parameter. Defaults to ``0``.
+        scale : float, optional
+            Scale parameter. Defaults to ``1``.
+
+        Returns
+        -------
+        FlopscopeArray
+            Cumulative probability evaluated elementwise at ``x``.
+
+        Notes
+        -----
         Equivalent to ``scipy.stats.lognorm.cdf(x, s, loc, scale)``.
+        FLOP cost: ``1 * numel(x)``.
 
-        FLOP Cost
-        ---------
-        1 * numel(x) FLOPs
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import flopscope as flops
+        >>> x = np.array([0.5, 1.0, 2.0])
+        >>> np.round(flops.stats.lognorm.cdf(x, s=0.5), 3)
+        array([0.083, 0.5  , 0.917])
         """
         return self._deduct_and_call("cdf", 1, x, s, loc=loc, scale=scale)
 
     def ppf(self, q, s, loc=0, scale=1):
-        """Percent-point function (inverse CDF) at *q*.
+        """Evaluate the percent-point function.
 
+        Parameters
+        ----------
+        q : array_like
+            Probabilities in ``[0, 1]``.
+        s : float
+            Shape parameter of the distribution.
+        loc : float, optional
+            Location parameter. Defaults to ``0``.
+        scale : float, optional
+            Scale parameter. Defaults to ``1``.
+
+        Returns
+        -------
+        FlopscopeArray
+            Quantiles corresponding to ``q``.
+
+        Notes
+        -----
         Equivalent to ``scipy.stats.lognorm.ppf(q, s, loc, scale)``.
+        FLOP cost: ``1 * numel(q)``.
 
-        FLOP Cost
-        ---------
-        1 * numel(q) FLOPs
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import flopscope as flops
+        >>> q = np.array([0.25, 0.5, 0.75])
+        >>> np.round(flops.stats.lognorm.ppf(q, s=0.5), 3)
+        array([0.714, 1.   , 1.401])
         """
         return self._deduct_and_call("ppf", 1, q, s, loc=loc, scale=scale)
 

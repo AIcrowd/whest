@@ -105,7 +105,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isreal",
+              "href": "/docs/api/numpy/isreal/",
               "label": "flops.isreal",
               "original_target": "isreal",
               "role": "",
@@ -121,7 +121,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/iscomplexobj",
+              "href": "/docs/api/numpy/iscomplexobj/",
               "label": "flops.iscomplexobj",
               "original_target": "iscomplexobj",
               "role": "",
@@ -141,7 +141,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -160,7 +160,7 @@
     }
   ],
   "canonical_name": "iscomplex",
-  "canonical_path": "iscomplex",
+  "canonical_path": "numpy/iscomplex",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -171,20 +171,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])",
+    "code": "import flopscope.numpy as fnp\n\nflops.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])",
     "output": "array([ True, False, False, False, False,  True])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.iscomplex",
+  "flopscope_ref": "fnp.iscomplex",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/iscomplex/",
+  "href": "/docs/api/numpy/iscomplex/",
   "legacy_href": "/docs/api/ops/iscomplex/",
   "module": "numpy",
   "name": "iscomplex",
   "next": {
-    "href": "/docs/api/iscomplexobj/",
-    "label": "flops.iscomplexobj"
+    "href": "/docs/api/numpy/iscomplexobj/",
+    "label": "fnp.iscomplexobj"
   },
   "notes": "Test if element is complex element-wise.",
   "notes_sections": [],
@@ -199,10 +199,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/isclose/",
-    "label": "flops.isclose"
+    "href": "/docs/api/numpy/isclose/",
+    "label": "fnp.isclose"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.iscomplex",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iscomplex.html",
   "returns": [
     {
@@ -218,7 +219,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isreal",
+      "href": "/docs/api/numpy/isreal/",
       "label": "flops.isreal",
       "original_target": "isreal",
       "role": "",
@@ -234,7 +235,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/iscomplexobj",
+      "href": "/docs/api/numpy/iscomplexobj/",
       "label": "flops.iscomplexobj",
       "original_target": "iscomplexobj",
       "role": "",
@@ -242,9 +243,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.iscomplex(x)",
+  "signature": "fnp.iscomplex(x)",
   "slug": "iscomplex",
   "summary": "Returns a bool array, where True if input element is complex.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L175",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/put-along-axis/",
+  "detail_href": "/docs/api/numpy/put-along-axis/",
   "detail_json_href": "/api-data/ops/put_along_axis.json",
   "docs": {
     "sections": [
@@ -36,7 +36,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "kind": "link",
                 "target": "argsort",
                 "text": "argsort"
@@ -47,7 +47,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argpartition",
+                "href": "/docs/api/numpy/argpartition/",
                 "kind": "link",
                 "target": "argpartition",
                 "text": "argpartition"
@@ -152,7 +152,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/indices",
+                        "href": "/docs/api/numpy/indices/",
                         "kind": "link",
                         "target": "indices",
                         "text": "indices"
@@ -173,7 +173,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/indices",
+                    "href": "/docs/api/numpy/indices/",
                     "kind": "link",
                     "target": "indices",
                     "text": "indices"
@@ -228,7 +228,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/take_along_axis",
+                "href": "/docs/api/numpy/take-along-axis/",
                 "label": "flops.take_along_axis",
                 "original_target": "take_along_axis",
                 "role": "",
@@ -313,7 +313,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -396,12 +396,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.put_along_axis",
+    "flopscope_ref": "fnp.put_along_axis",
     "module": "numpy",
     "name": "put_along_axis",
     "notes": "Put values into destination array using indices. Cost: numel(input).",
     "numpy_ref": "np.put_along_axis",
-    "signature": "flops.put_along_axis(arr, indices, values, axis, *args, **kwargs)",
+    "signature": "fnp.put_along_axis(arr, indices, values, axis, *args, **kwargs)",
     "status": "supported",
     "summary": "Put values into the destination array by matching 1d index and data slices.",
     "weight": 1.0

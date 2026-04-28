@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/matrix-rank/",
+  "detail_href": "/docs/api/numpy/linalg/matrix-rank/",
   "detail_json_href": "/api-data/ops/linalg-matrix_rank.json",
   "docs": {
     "sections": [
@@ -532,7 +532,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -592,12 +592,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
-    "flopscope_ref": "flops.linalg.matrix_rank",
+    "flopscope_ref": "fnp.linalg.matrix_rank",
     "module": "numpy.linalg",
     "name": "linalg.matrix_rank",
     "notes": "Matrix rank. Cost: m*n*min(m,n) (via SVD).",
     "numpy_ref": "np.linalg.matrix_rank",
-    "signature": "flops.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)",
+    "signature": "fnp.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)",
     "status": "supported",
     "summary": "Return matrix rank of array using SVD method",
     "weight": 4.0

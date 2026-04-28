@@ -449,7 +449,7 @@
           "inline": [
             {
               "kind": "code",
-              "text": "we.random.symmetric(shape, symmetry_group, distribution=...)"
+              "text": "fnp.random.symmetric(shape, symmetry_group, distribution=...)"
             },
             {
               "kind": "text",
@@ -468,17 +468,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as we"
+              "text": "import flopscope as flops"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "data = we.random.randn(4, 4)"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "S = we.symmetrize(data, we.SymmetryGroup.symmetric(axes=(0, 1)))"
+              "text": "data = fnp.random.randn(4, 4)"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "S = flops.symmetrize(data, flops.SymmetryGroup.symmetric(axes=(0, 1)))"
             },
             {
               "kind": "input",

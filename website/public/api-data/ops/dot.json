@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/dot/",
+  "detail_href": "/docs/api/numpy/dot/",
   "detail_json_href": "/api-data/ops/dot.json",
   "docs": {
     "sections": [
@@ -78,7 +78,7 @@
                         "display_text": "matmul",
                         "explicit_title": false,
                         "external_url": "",
-                        "href": "/docs/api/ops/matmul",
+                        "href": "/docs/api/numpy/matmul/",
                         "kind": "role_reference",
                         "original_target": "matmul",
                         "role": "func",
@@ -131,7 +131,7 @@
                         "display_text": "multiply",
                         "explicit_title": false,
                         "external_url": "",
-                        "href": "/docs/api/ops/multiply",
+                        "href": "/docs/api/numpy/multiply/",
                         "kind": "role_reference",
                         "original_target": "multiply",
                         "role": "func",
@@ -581,7 +581,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vdot",
+                "href": "/docs/api/numpy/vdot/",
                 "label": "flops.vdot",
                 "original_target": "vdot",
                 "role": "",
@@ -597,7 +597,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vecdot",
+                "href": "/docs/api/numpy/vecdot/",
                 "label": "flops.vecdot",
                 "original_target": "vecdot",
                 "role": "",
@@ -613,7 +613,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/tensordot",
+                "href": "/docs/api/numpy/tensordot/",
                 "label": "flops.tensordot",
                 "original_target": "tensordot",
                 "role": "",
@@ -629,7 +629,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
@@ -645,7 +645,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/matmul",
+                "href": "/docs/api/numpy/matmul/",
                 "label": "flops.matmul",
                 "original_target": "matmul",
                 "role": "",
@@ -661,7 +661,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-multi_dot",
+                "href": "/docs/api/numpy/linalg/multi-dot/",
                 "label": "flops.linalg.multi_dot",
                 "original_target": "linalg.multi_dot",
                 "role": "",
@@ -681,7 +681,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -797,12 +797,12 @@
     "category": "counted_custom",
     "cost_formula": "m * k * n (FMA=1)",
     "cost_formula_latex": "$m \\cdot k \\cdot n$",
-    "flopscope_ref": "flops.dot",
+    "flopscope_ref": "fnp.dot",
     "module": "numpy",
     "name": "dot",
     "notes": "Dot product; cost = M*K*N (FMA=1).",
     "numpy_ref": "np.dot",
-    "signature": "flops.dot(a, b)",
+    "signature": "fnp.dot(a, b)",
     "status": "supported",
     "summary": "Dot product of two arrays. Specifically,",
     "weight": 1.0

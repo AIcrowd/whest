@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/cov/",
+  "detail_href": "/docs/api/numpy/cov/",
   "detail_json_href": "/api-data/ops/cov.json",
   "docs": {
     "sections": [
@@ -641,7 +641,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/corrcoef",
+                "href": "/docs/api/numpy/corrcoef/",
                 "label": "flops.corrcoef",
                 "original_target": "corrcoef",
                 "role": "",
@@ -737,7 +737,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -955,12 +955,12 @@
     "category": "counted_custom",
     "cost_formula": "n^2 * m",
     "cost_formula_latex": "$n^2 \\cdot m$",
-    "flopscope_ref": "flops.cov",
+    "flopscope_ref": "fnp.cov",
     "module": "numpy",
     "name": "cov",
     "notes": "Covariance matrix.",
     "numpy_ref": "np.cov",
-    "signature": "flops.cov(m, y=None, rowvar=True, bias=False, ddof=None, fweights=None, aweights=None, *, dtype=None)",
+    "signature": "fnp.cov(m, y=None, rowvar=True, bias=False, ddof=None, fweights=None, aweights=None, *, dtype=None)",
     "status": "supported",
     "summary": "Estimate a covariance matrix, given data and weights.",
     "weight": 1.0

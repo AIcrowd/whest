@@ -220,7 +220,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/any",
+                      "href": "/docs/api/numpy/any/",
                       "kind": "link",
                       "target": "any",
                       "text": "any"
@@ -446,7 +446,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/all",
+              "href": "/docs/api/numpy/all/",
               "label": "flops.all",
               "original_target": "all",
               "role": "",
@@ -498,7 +498,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -667,7 +667,7 @@
     }
   ],
   "canonical_name": "any",
-  "canonical_path": "any",
+  "canonical_path": "numpy/any",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -685,20 +685,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.any([[True, False], [True, True]])\n\nflops.any([[True,  False, True ],\n        [False, False, False]], axis=0)\n\nflops.any([-1, 0, 5])\n\nflops.any([[flops.nan], [flops.inf]], axis=1, keepdims=True)\n\nflops.any([[True, False], [False, False]], where=[[False], [True]])\n\na = flops.array([[1, 0, 0],\n              [0, 0, 1],\n              [0, 0, 0]])\n\nflops.any(a, axis=0)\n\nflops.any(a, axis=1)\n\no=flops.array(False)\n\nz=flops.any([-1, 4, 5], out=o)\n\nz, o\n\nz is o\n\nid(z), id(o) # identity of z and o              # doctest: +SKIP",
+    "code": "import flopscope.numpy as fnp\n\nflops.any([[True, False], [True, True]])\n\nflops.any([[True,  False, True ],\n        [False, False, False]], axis=0)\n\nflops.any([-1, 0, 5])\n\nflops.any([[flops.nan], [flops.inf]], axis=1, keepdims=True)\n\nflops.any([[True, False], [False, False]], where=[[False], [True]])\n\na = flops.array([[1, 0, 0],\n              [0, 0, 1],\n              [0, 0, 0]])\n\nflops.any(a, axis=0)\n\nflops.any(a, axis=1)\n\no=flops.array(False)\n\nz=flops.any([-1, 4, 5], out=o)\n\nz, o\n\nz is o\n\nid(z), id(o) # identity of z and o              # doctest: +SKIP",
     "output": "True\n\narray([ True, False, True])\n\nTrue\n\narray([[ True],\n       [ True]])\n\nFalse\n\narray([ True, False,  True])\n\narray([ True,  True, False])\n\n(array(True), array(True))\n\nTrue\n\n(191614240, 191614240)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.any",
+  "flopscope_ref": "fnp.any",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/any/",
+  "href": "/docs/api/numpy/any/",
   "legacy_href": "/docs/api/ops/any/",
   "module": "numpy",
   "name": "any",
   "next": {
-    "href": "/docs/api/append/",
-    "label": "flops.append"
+    "href": "/docs/api/numpy/append/",
+    "label": "fnp.append"
   },
   "notes": "Test whether any array element is true.",
   "notes_sections": [
@@ -764,10 +764,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/angle/",
-    "label": "flops.angle"
+    "href": "/docs/api/numpy/angle/",
+    "label": "fnp.angle"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.any",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.any.html",
   "returns": [
     {
@@ -805,7 +806,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/all",
+      "href": "/docs/api/numpy/all/",
       "label": "flops.all",
       "original_target": "all",
       "role": "",
@@ -813,9 +814,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.any(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
+  "signature": "fnp.any(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
   "slug": "any",
   "summary": "Test whether any array element along a given axis evaluates to True.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2477",
   "weight": 1.0
 }

@@ -12,18 +12,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Weighted FLOP cost estimate for "
-            },
-            {
-              "external_url": "",
-              "href": "/docs/api/roots/",
-              "kind": "link",
-              "target": "roots",
-              "text": "roots"
-            },
-            {
-              "kind": "text",
-              "text": "."
+              "text": "Cost for roots: $n^3$ FLOPs (companion matrix eigendecomposition, simplified)."
             }
           ],
           "type": "paragraph"
@@ -34,10 +23,76 @@
     {
       "blocks": [
         {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of columns in the input matrix."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of columns in the input matrix."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
           "inline": [
             {
               "kind": "text",
-              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
+              "text": "This helper multiplies the analytical FLOP count by the active weight from "
             },
             {
               "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
@@ -48,7 +103,7 @@
             },
             {
               "kind": "text",
-              "text": ". The final value is floored with "
+              "text": " and then applies "
             },
             {
               "kind": "code",
@@ -56,22 +111,13 @@
             },
             {
               "kind": "text",
-              "text": " to match runtime budget accounting."
-            }
-          ],
-          "type": "paragraph"
-        },
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "Analytical formula:\nCost for roots: $n^3$ FLOPs (companion matrix eigendecomposition, simplified)."
+              "text": " so public estimates match budget deductions."
             }
           ],
           "type": "paragraph"
         }
       ],
-      "title": "Extended Summary"
+      "title": "Notes"
     }
   ],
   "canonical_name": "flops.roots_cost",
@@ -93,6 +139,6 @@
   "slug": "flops-roots-cost",
   "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L62",
   "status_note": "",
-  "summary": "Weighted FLOP cost estimate for ``roots``.",
+  "summary": "Cost for roots: $n^3$ FLOPs (companion matrix eigendecomposition, simplified).",
   "upstream_source_url": ""
 }

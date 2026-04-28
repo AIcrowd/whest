@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/vander/",
+  "detail_href": "/docs/api/numpy/vander/",
   "detail_json_href": "/api-data/ops/vander.json",
   "docs": {
     "sections": [
@@ -313,7 +313,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -468,12 +468,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.vander",
+    "flopscope_ref": "fnp.vander",
     "module": "numpy",
     "name": "vander",
     "notes": "Vandermonde matrix; cost = len(x)*(N-1).",
     "numpy_ref": "np.vander",
-    "signature": "flops.vander(x, N=None, increasing=False)",
+    "signature": "fnp.vander(x, N=None, increasing=False)",
     "status": "supported",
     "summary": "Generate a Vandermonde matrix.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/permute-dims/",
+  "detail_href": "/docs/api/numpy/permute-dims/",
   "detail_json_href": "/api-data/ops/permute_dims.json",
   "docs": {
     "sections": [
@@ -228,7 +228,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/moveaxis",
+                "href": "/docs/api/numpy/moveaxis/",
                 "label": "flops.moveaxis",
                 "original_target": "moveaxis",
                 "role": "",
@@ -244,7 +244,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "label": "flops.argsort",
                 "original_target": "argsort",
                 "role": "",
@@ -294,7 +294,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -424,12 +424,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.permute_dims",
+    "flopscope_ref": "fnp.permute_dims",
     "module": "numpy",
     "name": "permute_dims",
     "notes": "Permute dimensions (NumPy 2.x array API).",
     "numpy_ref": "np.permute_dims",
-    "signature": "flops.permute_dims(a, axes=None)",
+    "signature": "fnp.permute_dims(a, axes=None)",
     "status": "supported",
     "summary": "Returns an array with axes transposed.",
     "weight": 0.0

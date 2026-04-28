@@ -249,12 +249,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
               "text": "with flops.budget(1_000):"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "_ = flops.add(flops.array([1.0]), flops.array([2.0]))"
+              "text": "_ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))"
             }
           ],
           "type": "doctest_block"
@@ -275,7 +280,7 @@
   "related_guides": [],
   "signature": "flops.budget(flop_budget: 'int', flop_multiplier: 'float' = 1.0, quiet: 'bool' = False, namespace: 'str | None' = None, wall_time_limit_s: 'float | None' = None) -> 'BudgetContext'",
   "slug": "budget",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_budget.py#L463",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_budget.py#L506",
   "status_note": "",
   "summary": "Create a ``BudgetContext`` usable as a context manager or decorator.",
   "upstream_source_url": ""

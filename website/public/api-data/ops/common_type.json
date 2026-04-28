@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/common-type/",
+  "detail_href": "/docs/api/numpy/common-type/",
   "detail_json_href": "/api-data/ops/common_type.json",
   "docs": {
     "sections": [
@@ -125,7 +125,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mintypecode",
+                "href": "/docs/api/numpy/mintypecode/",
                 "label": "flops.mintypecode",
                 "original_target": "mintypecode",
                 "role": "",
@@ -181,12 +181,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.common_type",
+    "flopscope_ref": "fnp.common_type",
     "module": "numpy",
     "name": "common_type",
     "notes": "Return scalar type common to all input arrays.",
     "numpy_ref": "np.common_type",
-    "signature": "flops.common_type(*arrays)",
+    "signature": "fnp.common_type(*arrays)",
     "status": "supported",
     "summary": "Return a scalar type which is common to the input arrays.",
     "weight": 0.0

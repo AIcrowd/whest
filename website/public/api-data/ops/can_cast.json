@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/can-cast/",
+  "detail_href": "/docs/api/numpy/can-cast/",
   "detail_json_href": "/api-data/ops/can_cast.json",
   "docs": {
     "sections": [
@@ -217,7 +217,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/result_type",
+                "href": "/docs/api/numpy/result-type/",
                 "label": "flops.result_type",
                 "original_target": "result_type",
                 "role": "",
@@ -261,7 +261,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -334,12 +334,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.can_cast",
+    "flopscope_ref": "fnp.can_cast",
     "module": "numpy",
     "name": "can_cast",
     "notes": "Returns True if cast is safe.",
     "numpy_ref": "np.can_cast",
-    "signature": "flops.can_cast(*args, **kwargs)",
+    "signature": "fnp.can_cast(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns True if cast between data types can occur according to the casting rule.",
     "weight": 0.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fft/fft/",
+  "detail_href": "/docs/api/numpy/fft/fft/",
   "detail_json_href": "/api-data/ops/fft-fft.json",
   "docs": {
     "sections": [
@@ -569,7 +569,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -663,12 +663,12 @@
     "category": "counted_custom",
     "cost_formula": "5n * ceil(log2(n))",
     "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
-    "flopscope_ref": "flops.fft.fft",
+    "flopscope_ref": "fnp.fft.fft",
     "module": "numpy.fft",
     "name": "fft.fft",
     "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.fft",
-    "signature": "flops.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "fnp.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
     "status": "supported",
     "summary": "Compute the one-dimensional discrete Fourier Transform.",
     "weight": 1.0

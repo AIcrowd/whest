@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/logaddexp2/",
+  "detail_href": "/docs/api/numpy/logaddexp2/",
   "detail_json_href": "/api-data/ops/logaddexp2.json",
   "docs": {
     "sections": [
@@ -344,7 +344,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/logaddexp",
+                "href": "/docs/api/numpy/logaddexp/",
                 "label": "flops.logaddexp",
                 "original_target": "logaddexp",
                 "role": "",
@@ -364,7 +364,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -411,12 +411,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.logaddexp2",
+    "flopscope_ref": "fnp.logaddexp2",
     "module": "numpy",
     "name": "logaddexp2",
     "notes": "log2(2**x1 + 2**x2) element-wise.",
     "numpy_ref": "np.logaddexp2",
-    "signature": "flops.logaddexp2(*args, **kwargs)",
+    "signature": "fnp.logaddexp2(*args, **kwargs)",
     "status": "supported",
     "summary": "Logarithm of the sum of exponentiations of the inputs in base-2.",
     "weight": 16.0

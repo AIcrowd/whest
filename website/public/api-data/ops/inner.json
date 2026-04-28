@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/inner/",
+  "detail_href": "/docs/api/numpy/inner/",
   "detail_json_href": "/api-data/ops/inner.json",
   "docs": {
     "sections": [
@@ -247,7 +247,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/tensordot",
+                "href": "/docs/api/numpy/tensordot/",
                 "label": "flops.tensordot",
                 "original_target": "tensordot",
                 "role": "",
@@ -271,7 +271,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "label": "flops.dot",
                 "original_target": "dot",
                 "role": "",
@@ -287,7 +287,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vecdot",
+                "href": "/docs/api/numpy/vecdot/",
                 "label": "flops.vecdot",
                 "original_target": "vecdot",
                 "role": "",
@@ -303,7 +303,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
@@ -425,7 +425,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -582,12 +582,12 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
-    "flopscope_ref": "flops.inner",
+    "flopscope_ref": "fnp.inner",
     "module": "numpy",
     "name": "inner",
     "notes": "Inner product; cost = N (FMA=1).",
     "numpy_ref": "np.inner",
-    "signature": "flops.inner(a, b)",
+    "signature": "fnp.inner(a, b)",
     "status": "supported",
     "summary": "Inner product of two arrays.",
     "weight": 1.0

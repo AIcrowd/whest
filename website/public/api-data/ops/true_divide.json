@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/true-divide/",
+  "detail_href": "/docs/api/numpy/true-divide/",
   "detail_json_href": "/api-data/ops/true_divide.json",
   "docs": {
     "sections": [
@@ -419,7 +419,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -476,7 +476,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/divide",
+                "href": "/docs/api/numpy/divide/",
                 "kind": "link",
                 "target": "divide",
                 "text": "flops.divide"
@@ -529,12 +529,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.true_divide",
+    "flopscope_ref": "fnp.true_divide",
     "module": "numpy",
     "name": "true_divide",
     "notes": "Element-wise true division (explicit).",
     "numpy_ref": "np.true_divide",
-    "signature": "flops.true_divide(*args, **kwargs)",
+    "signature": "fnp.true_divide(*args, **kwargs)",
     "status": "supported",
     "summary": "Divide arguments element-wise.",
     "weight": 1.0

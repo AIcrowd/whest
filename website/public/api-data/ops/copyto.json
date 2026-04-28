@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/copyto/",
+  "detail_href": "/docs/api/numpy/copyto/",
   "detail_json_href": "/api-data/ops/copyto.json",
   "docs": {
     "sections": [
@@ -35,7 +35,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/where",
+                "href": "/docs/api/numpy/where/",
                 "kind": "link",
                 "target": "where",
                 "text": "where"
@@ -275,7 +275,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -346,12 +346,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.copyto",
+    "flopscope_ref": "fnp.copyto",
     "module": "numpy",
     "name": "copyto",
     "notes": "Copy values from src to dst array. Cost: num copied.",
     "numpy_ref": "np.copyto",
-    "signature": "flops.copyto(dst, src, casting='same_kind', where=True)",
+    "signature": "fnp.copyto(dst, src, casting='same_kind', where=True)",
     "status": "supported",
     "summary": "Copies values from one array to another, broadcasting as necessary.",
     "weight": 1.0

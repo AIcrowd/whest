@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/eig/",
+  "detail_href": "/docs/api/numpy/linalg/eig/",
   "detail_json_href": "/api-data/ops/linalg-eig.json",
   "docs": {
     "sections": [
@@ -585,7 +585,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -803,12 +803,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "flops.linalg.eig",
+    "flopscope_ref": "fnp.linalg.eig",
     "module": "numpy.linalg",
     "name": "linalg.eig",
     "notes": "Eigendecomposition. Cost: $n^3$.",
     "numpy_ref": "np.linalg.eig",
-    "signature": "flops.linalg.eig(a)",
+    "signature": "fnp.linalg.eig(a)",
     "status": "supported",
     "summary": "Compute the eigenvalues and right eigenvectors of a square array.",
     "weight": 4.0

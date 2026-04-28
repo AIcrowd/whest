@@ -12,66 +12,13 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Weighted FLOP cost estimate for "
-            },
-            {
-              "external_url": "",
-              "href": "/docs/api/linalg/cond/",
-              "kind": "link",
-              "target": "linalg.cond",
-              "text": "linalg.cond"
-            },
-            {
-              "kind": "text",
-              "text": "."
+              "text": "Weighted FLOP cost of condition number."
             }
           ],
           "type": "paragraph"
         }
       ],
       "title": "Summary"
-    },
-    {
-      "blocks": [
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
-            },
-            {
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
-              "href": "",
-              "kind": "link",
-              "target": "_weights",
-              "text": "flopscope._weights"
-            },
-            {
-              "kind": "text",
-              "text": ". The final value is floored with "
-            },
-            {
-              "kind": "code",
-              "text": "int(...)"
-            },
-            {
-              "kind": "text",
-              "text": " to match runtime budget accounting."
-            }
-          ],
-          "type": "paragraph"
-        },
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "Analytical formula:\nFLOP cost of condition number."
-            }
-          ],
-          "type": "paragraph"
-        }
-      ],
-      "title": "Extended Summary"
     },
     {
       "blocks": [
@@ -83,7 +30,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Number of rows."
+                      "text": "Number of rows in the input matrix."
                     }
                   ],
                   "type": "paragraph"
@@ -93,7 +40,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Number of rows."
+                  "text": "Number of rows in the input matrix."
                 }
               ],
               "name": "m",
@@ -105,7 +52,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Number of columns."
+                      "text": "Number of columns in the input matrix."
                     }
                   ],
                   "type": "paragraph"
@@ -115,7 +62,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Number of columns."
+                  "text": "Number of columns in the input matrix."
                 }
               ],
               "name": "n",
@@ -127,7 +74,18 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Norm type. "
+                      "text": "Argument forwarded to the analytical "
+                    },
+                    {
+                      "external_url": "",
+                      "href": "/docs/api/numpy/linalg/cond/",
+                      "kind": "link",
+                      "target": "linalg.cond",
+                      "text": "linalg.cond"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " cost formula. Defaults to "
                     },
                     {
                       "kind": "code",
@@ -135,65 +93,28 @@
                     },
                     {
                       "kind": "text",
-                      "text": " and "
-                    },
-                    {
-                      "kind": "code",
-                      "text": "2"
-                    },
-                    {
-                      "kind": "text",
-                      "text": "/"
-                    },
-                    {
-                      "kind": "code",
-                      "text": "-2"
-                    },
-                    {
-                      "kind": "text",
-                      "text": " use SVD; "
-                    },
-                    {
-                      "kind": "code",
-                      "text": "1"
-                    },
-                    {
-                      "kind": "text",
-                      "text": "/"
-                    },
-                    {
-                      "kind": "code",
-                      "text": "-1"
-                    },
-                    {
-                      "kind": "text",
-                      "text": "/"
-                    },
-                    {
-                      "kind": "code",
-                      "text": "inf"
-                    },
-                    {
-                      "kind": "text",
-                      "text": "/"
-                    },
-                    {
-                      "kind": "code",
-                      "text": "-inf"
-                    },
-                    {
-                      "kind": "text",
-                      "text": "\nuse LU factorization, which is cheaper."
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "{None, 2, -2, 1, -1, inf, -inf}, optional",
+              "data_type": "object, optional",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Norm type. "
+                  "text": "Argument forwarded to the analytical "
+                },
+                {
+                  "external_url": "",
+                  "href": "/docs/api/numpy/linalg/cond/",
+                  "kind": "link",
+                  "target": "linalg.cond",
+                  "text": "linalg.cond"
+                },
+                {
+                  "kind": "text",
+                  "text": " cost formula. Defaults to "
                 },
                 {
                   "kind": "code",
@@ -201,55 +122,7 @@
                 },
                 {
                   "kind": "text",
-                  "text": " and "
-                },
-                {
-                  "kind": "code",
-                  "text": "2"
-                },
-                {
-                  "kind": "text",
-                  "text": "/"
-                },
-                {
-                  "kind": "code",
-                  "text": "-2"
-                },
-                {
-                  "kind": "text",
-                  "text": " use SVD; "
-                },
-                {
-                  "kind": "code",
-                  "text": "1"
-                },
-                {
-                  "kind": "text",
-                  "text": "/"
-                },
-                {
-                  "kind": "code",
-                  "text": "-1"
-                },
-                {
-                  "kind": "text",
-                  "text": "/"
-                },
-                {
-                  "kind": "code",
-                  "text": "inf"
-                },
-                {
-                  "kind": "text",
-                  "text": "/"
-                },
-                {
-                  "kind": "code",
-                  "text": "-inf"
-                },
-                {
-                  "kind": "text",
-                  "text": "\nuse LU factorization, which is cheaper."
+                  "text": "."
                 }
               ],
               "name": "p",
@@ -272,7 +145,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Estimated FLOP count."
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
                     }
                   ],
                   "type": "paragraph"
@@ -282,7 +155,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Estimated FLOP count."
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
                 }
               ],
               "name": "",
@@ -297,6 +170,34 @@
     },
     {
       "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This helper multiplies the analytical FLOP count by the active weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "flopscope._weights"
+            },
+            {
+              "kind": "text",
+              "text": " and then applies "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " so public estimates match budget deductions."
+            }
+          ],
+          "type": "paragraph"
+        },
         {
           "inline": [
             {
@@ -385,6 +286,6 @@
   "slug": "flops-cond-cost",
   "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L328",
   "status_note": "",
-  "summary": "Weighted FLOP cost estimate for ``linalg.cond``.",
+  "summary": "Weighted FLOP cost of condition number.",
   "upstream_source_url": ""
 }

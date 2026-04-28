@@ -35,7 +35,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -63,7 +63,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -329,7 +329,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/einsum_path",
+                      "href": "/docs/api/numpy/einsum-path/",
                       "kind": "link",
                       "target": "einsum_path",
                       "text": "flops.einsum_path"
@@ -340,7 +340,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/einsum_path",
+                      "href": "/docs/api/numpy/einsum-path/",
                       "kind": "link",
                       "target": "einsum_path",
                       "text": "flops.einsum_path"
@@ -361,7 +361,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/einsum_path",
+                  "href": "/docs/api/numpy/einsum-path/",
                   "kind": "link",
                   "target": "einsum_path",
                   "text": "flops.einsum_path"
@@ -372,7 +372,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/einsum_path",
+                  "href": "/docs/api/numpy/einsum-path/",
                   "kind": "link",
                   "target": "einsum_path",
                   "text": "flops.einsum_path"
@@ -433,7 +433,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/einsum_path",
+              "href": "/docs/api/numpy/einsum-path/",
               "label": "flops.einsum_path",
               "original_target": "einsum_path",
               "role": "",
@@ -444,7 +444,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/dot",
+              "href": "/docs/api/numpy/dot/",
               "label": "flops.dot",
               "original_target": "dot",
               "role": "",
@@ -455,7 +455,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/inner",
+              "href": "/docs/api/numpy/inner/",
               "label": "flops.inner",
               "original_target": "inner",
               "role": "",
@@ -466,7 +466,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/outer",
+              "href": "/docs/api/numpy/outer/",
               "label": "flops.outer",
               "original_target": "outer",
               "role": "",
@@ -477,7 +477,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/tensordot",
+              "href": "/docs/api/numpy/tensordot/",
               "label": "flops.tensordot",
               "original_target": "tensordot",
               "role": "",
@@ -488,7 +488,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/linalg-multi_dot",
+              "href": "/docs/api/numpy/linalg/multi-dot/",
               "label": "flops.linalg.multi_dot",
               "original_target": "linalg.multi_dot",
               "role": "",
@@ -532,7 +532,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "label": "flops.einsum",
               "original_target": "einsum",
               "role": "",
@@ -555,7 +555,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -575,7 +575,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -601,7 +601,7 @@
                       "display_text": "flops.trace",
                       "explicit_title": false,
                       "external_url": "",
-                      "href": "/docs/api/ops/trace",
+                      "href": "/docs/api/numpy/trace/",
                       "kind": "role_reference",
                       "original_target": "flops.trace",
                       "role": "py:func",
@@ -630,7 +630,7 @@
                       "display_text": "flops.diag",
                       "explicit_title": false,
                       "external_url": "",
-                      "href": "/docs/api/ops/diag",
+                      "href": "/docs/api/numpy/diag/",
                       "kind": "role_reference",
                       "original_target": "flops.diag",
                       "role": "py:func",
@@ -659,7 +659,7 @@
                       "display_text": "flops.sum",
                       "explicit_title": false,
                       "external_url": "",
-                      "href": "/docs/api/ops/sum",
+                      "href": "/docs/api/numpy/sum/",
                       "kind": "role_reference",
                       "original_target": "flops.sum",
                       "role": "py:func",
@@ -688,7 +688,7 @@
                       "display_text": "flops.transpose",
                       "explicit_title": false,
                       "external_url": "",
-                      "href": "/docs/api/ops/transpose",
+                      "href": "/docs/api/numpy/transpose/",
                       "kind": "role_reference",
                       "original_target": "flops.transpose",
                       "role": "py:func",
@@ -717,7 +717,7 @@
                               "display_text": "flops.dot",
                               "explicit_title": false,
                               "external_url": "",
-                              "href": "/docs/api/ops/dot",
+                              "href": "/docs/api/numpy/dot/",
                               "kind": "role_reference",
                               "original_target": "flops.dot",
                               "role": "py:func",
@@ -742,7 +742,7 @@
                           "display_text": "flops.matmul",
                           "explicit_title": false,
                           "external_url": "",
-                          "href": "/docs/api/ops/matmul",
+                          "href": "/docs/api/numpy/matmul/",
                           "kind": "role_reference",
                           "original_target": "flops.matmul",
                           "role": "py:func",
@@ -769,7 +769,7 @@
                               "display_text": "flops.outer",
                               "explicit_title": false,
                               "external_url": "",
-                              "href": "/docs/api/ops/outer",
+                              "href": "/docs/api/numpy/outer/",
                               "kind": "role_reference",
                               "original_target": "flops.outer",
                               "role": "py:func",
@@ -794,7 +794,7 @@
                           "display_text": "flops.inner",
                           "explicit_title": false,
                           "external_url": "",
-                          "href": "/docs/api/ops/inner",
+                          "href": "/docs/api/numpy/inner/",
                           "kind": "role_reference",
                           "original_target": "flops.inner",
                           "role": "py:func",
@@ -821,7 +821,7 @@
                               "display_text": "flops.multiply",
                               "explicit_title": false,
                               "external_url": "",
-                              "href": "/docs/api/ops/multiply",
+                              "href": "/docs/api/numpy/multiply/",
                               "kind": "role_reference",
                               "original_target": "flops.multiply",
                               "role": "py:func",
@@ -861,7 +861,7 @@
                       "display_text": "flops.tensordot",
                       "explicit_title": false,
                       "external_url": "",
-                      "href": "/docs/api/ops/tensordot",
+                      "href": "/docs/api/numpy/tensordot/",
                       "kind": "role_reference",
                       "original_target": "flops.tensordot",
                       "role": "py:func",
@@ -890,7 +890,7 @@
                               "display_text": "flops.einsum_path",
                               "explicit_title": false,
                               "external_url": "",
-                              "href": "/docs/api/ops/einsum_path",
+                              "href": "/docs/api/numpy/einsum-path/",
                               "kind": "role_reference",
                               "original_target": "flops.einsum_path",
                               "role": "py:func",
@@ -943,7 +943,7 @@
               "display_text": "flops.inner(a,b)",
               "explicit_title": true,
               "external_url": "",
-              "href": "/docs/api/ops/inner",
+              "href": "/docs/api/numpy/inner/",
               "kind": "role_reference",
               "original_target": "flops.inner",
               "role": "py:func",
@@ -989,7 +989,7 @@
               "display_text": "flops.matmul(a,b)",
               "explicit_title": true,
               "external_url": "",
-              "href": "/docs/api/ops/matmul",
+              "href": "/docs/api/numpy/matmul/",
               "kind": "role_reference",
               "original_target": "flops.matmul",
               "role": "py:func",
@@ -1016,7 +1016,7 @@
               "display_text": "flops.trace(a)",
               "explicit_title": true,
               "external_url": "",
-              "href": "/docs/api/ops/trace",
+              "href": "/docs/api/numpy/trace/",
               "kind": "role_reference",
               "original_target": "flops.trace",
               "role": "py:func",
@@ -1121,7 +1121,7 @@
               "display_text": "flops.sum(a)",
               "explicit_title": true,
               "external_url": "",
-              "href": "/docs/api/ops/sum",
+              "href": "/docs/api/numpy/sum/",
               "kind": "role_reference",
               "original_target": "flops.sum",
               "role": "py:func",
@@ -1156,7 +1156,7 @@
               "display_text": "flops.diag(a)",
               "explicit_title": true,
               "external_url": "",
-              "href": "/docs/api/ops/diag",
+              "href": "/docs/api/numpy/diag/",
               "kind": "role_reference",
               "original_target": "flops.diag",
               "role": "py:func",
@@ -1178,7 +1178,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -1227,7 +1227,7 @@
               "display_text": "flops.sum(a, axis=-1)",
               "explicit_title": true,
               "external_url": "",
-              "href": "/docs/api/ops/sum",
+              "href": "/docs/api/numpy/sum/",
               "kind": "role_reference",
               "original_target": "flops.sum",
               "role": "py:func",
@@ -1290,7 +1290,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -1309,7 +1309,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -1320,7 +1320,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -1350,7 +1350,7 @@
               "display_text": "flops.swapaxes(a, 0, 2)",
               "explicit_title": true,
               "external_url": "",
-              "href": "/docs/api/ops/swapaxes",
+              "href": "/docs/api/numpy/swapaxes/",
               "kind": "role_reference",
               "original_target": "flops.swapaxes",
               "role": "py:func",
@@ -1412,7 +1412,7 @@
               "display_text": "flops.einsum_path",
               "explicit_title": false,
               "external_url": "",
-              "href": "/docs/api/ops/einsum_path",
+              "href": "/docs/api/numpy/einsum-path/",
               "kind": "role_reference",
               "original_target": "flops.einsum_path",
               "role": "py:func",
@@ -2110,7 +2110,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum_path",
+              "href": "/docs/api/numpy/einsum-path/",
               "kind": "link",
               "target": "einsum_path",
               "text": "einsum_path"
@@ -2140,7 +2140,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -2175,7 +2175,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -2215,7 +2215,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -2250,7 +2250,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "einsum"
@@ -2292,7 +2292,7 @@
     }
   ],
   "canonical_name": "einsum",
-  "canonical_path": "einsum",
+  "canonical_path": "numpy/einsum",
   "category": "counted_custom",
   "cost_formula": "op_factor * product of all index dims",
   "cost_formula_latex": "$\\text{op\\_factor} \\cdot \\prod_i d_i$",
@@ -2319,15 +2319,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.einsum",
+  "flopscope_ref": "fnp.einsum",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L296",
-  "href": "/docs/api/einsum/",
+  "href": "/docs/api/numpy/einsum/",
   "legacy_href": "/docs/api/ops/einsum/",
   "module": "numpy",
   "name": "einsum",
   "next": {
-    "href": "/docs/api/einsum-path/",
-    "label": "flops.einsum_path"
+    "href": "/docs/api/numpy/einsum-path/",
+    "label": "fnp.einsum_path"
   },
   "notes": "Generalized Einstein summation.",
   "notes_sections": [
@@ -2421,10 +2421,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ediff1d/",
-    "label": "flops.ediff1d"
+    "href": "/docs/api/numpy/ediff1d/",
+    "label": "fnp.ediff1d"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.einsum",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.einsum.html",
   "returns": [
     {
@@ -2440,7 +2441,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/einsum_path",
+      "href": "/docs/api/numpy/einsum-path/",
       "label": "flops.einsum_path",
       "original_target": "einsum_path",
       "role": "",
@@ -2451,7 +2452,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/dot",
+      "href": "/docs/api/numpy/dot/",
       "label": "flops.dot",
       "original_target": "dot",
       "role": "",
@@ -2462,7 +2463,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/inner",
+      "href": "/docs/api/numpy/inner/",
       "label": "flops.inner",
       "original_target": "inner",
       "role": "",
@@ -2473,7 +2474,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/outer",
+      "href": "/docs/api/numpy/outer/",
       "label": "flops.outer",
       "original_target": "outer",
       "role": "",
@@ -2484,7 +2485,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/tensordot",
+      "href": "/docs/api/numpy/tensordot/",
       "label": "flops.tensordot",
       "original_target": "tensordot",
       "role": "",
@@ -2495,7 +2496,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/linalg-multi_dot",
+      "href": "/docs/api/numpy/linalg/multi-dot/",
       "label": "flops.linalg.multi_dot",
       "original_target": "linalg.multi_dot",
       "role": "",
@@ -2539,7 +2540,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/einsum",
+      "href": "/docs/api/numpy/einsum/",
       "label": "flops.einsum",
       "original_target": "einsum",
       "role": "",
@@ -2547,9 +2548,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.einsum(subscripts: 'str', *operands: '_np.ndarray', out=None, optimize: 'str | bool | list' = 'auto', symmetry=None, **kwargs) -> '_np.ndarray'",
+  "signature": "fnp.einsum(subscripts: 'str', *operands: '_np.ndarray', out=None, optimize: 'str | bool | list' = 'auto', symmetry=None, **kwargs) -> '_np.ndarray'",
   "slug": "einsum",
   "summary": "Evaluates the Einstein summation convention on the operands.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/einsumfunc.py#L1057",
   "weight": 1.0
 }

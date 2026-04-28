@@ -62,7 +62,7 @@
     }
   ],
   "canonical_name": "random.seed",
-  "canonical_path": "random/seed",
+  "canonical_path": "numpy/random/seed",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -74,15 +74,15 @@
   },
   "example": null,
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.seed",
+  "flopscope_ref": "fnp.random.seed",
   "flopscope_source_url": "",
-  "href": "/docs/api/random/seed/",
+  "href": "/docs/api/numpy/random/seed/",
   "legacy_href": "/docs/api/ops/random-seed/",
   "module": "numpy.random",
   "name": "random.seed",
   "next": {
-    "href": "/docs/api/random/set-state/",
-    "label": "flops.random.set_state"
+    "href": "/docs/api/numpy/random/set-state/",
+    "label": "fnp.random.set_state"
   },
   "notes": "Seed random number generator.",
   "notes_sections": [
@@ -91,10 +91,11 @@
   "numpy_ref": "np.random.seed",
   "parameters": [],
   "previous": {
-    "href": "/docs/api/random/rayleigh/",
-    "label": "flops.random.rayleigh"
+    "href": "/docs/api/numpy/random/rayleigh/",
+    "label": "fnp.random.rayleigh"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.seed",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.seed.html",
   "returns": [],
   "see_also": [
@@ -110,9 +111,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.seed(seed=None)",
+  "signature": "fnp.random.seed(seed=None)",
   "slug": "random-seed",
   "summary": "Reseed the singleton RandomState instance.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

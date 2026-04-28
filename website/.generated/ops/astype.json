@@ -305,7 +305,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -366,7 +366,7 @@
     }
   ],
   "canonical_name": "astype",
-  "canonical_path": "astype",
+  "canonical_path": "numpy/astype",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -384,20 +384,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\narr = flops.array([1, 2, 3]); arr\n\nflops.astype(arr, flops.float64)\n\narr = flops.array([1, 2, 3])\n\narr_noncpy = flops.astype(arr, arr.dtype, copy=False)\n\nflops.shares_memory(arr, arr_noncpy)",
+    "code": "import flopscope.numpy as fnp\n\narr = flops.array([1, 2, 3]); arr\n\nflops.astype(arr, flops.float64)\n\narr = flops.array([1, 2, 3])\n\narr_noncpy = flops.astype(arr, arr.dtype, copy=False)\n\nflops.shares_memory(arr, arr_noncpy)",
     "output": "array([1, 2, 3])\n\narray([1., 2., 3.])\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.astype",
+  "flopscope_ref": "fnp.astype",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L648",
-  "href": "/docs/api/astype/",
+  "href": "/docs/api/numpy/astype/",
   "legacy_href": "/docs/api/ops/astype/",
   "module": "numpy",
   "name": "astype",
   "next": {
-    "href": "/docs/api/atleast-1d/",
-    "label": "flops.atleast_1d"
+    "href": "/docs/api/numpy/atleast-1d/",
+    "label": "fnp.atleast_1d"
   },
   "notes": "Cast array to specified type.",
   "notes_sections": [],
@@ -442,10 +442,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/asarray-chkfinite/",
-    "label": "flops.asarray_chkfinite"
+    "href": "/docs/api/numpy/asarray-chkfinite/",
+    "label": "fnp.asarray_chkfinite"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.astype",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.astype.html",
   "returns": [
     {
@@ -469,9 +470,11 @@
       "unresolved": true
     }
   ],
-  "signature": "flops.astype(x, dtype, /, *, copy=True, device=None)",
+  "signature": "fnp.astype(x, dtype, /, *, copy=True, device=None)",
   "slug": "astype",
   "summary": "Copies an array to a specified data type.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2618",
   "weight": 0.0
 }

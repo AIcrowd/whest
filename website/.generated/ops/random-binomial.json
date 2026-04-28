@@ -495,7 +495,7 @@
     }
   ],
   "canonical_name": "random.binomial",
-  "canonical_path": "random/binomial",
+  "canonical_path": "numpy/random/binomial",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -532,15 +532,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.binomial",
+  "flopscope_ref": "fnp.random.binomial",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/binomial/",
+  "href": "/docs/api/numpy/random/binomial/",
   "legacy_href": "/docs/api/ops/random-binomial/",
   "module": "numpy.random",
   "name": "random.binomial",
   "next": {
-    "href": "/docs/api/random/bytes/",
-    "label": "flops.random.bytes"
+    "href": "/docs/api/numpy/random/bytes/",
+    "label": "fnp.random.bytes"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -578,10 +578,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/beta/",
-    "label": "flops.random.beta"
+    "href": "/docs/api/numpy/random/beta/",
+    "label": "fnp.random.beta"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.binomial",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.binomial.html",
   "returns": [
     {
@@ -627,9 +628,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.binomial(n, p, size=None)",
+  "signature": "fnp.random.binomial(n, p, size=None)",
   "slug": "random-binomial",
   "summary": "Draw samples from a binomial distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

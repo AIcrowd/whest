@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/broadcast-shapes/",
+  "detail_href": "/docs/api/numpy/broadcast-shapes/",
   "detail_json_href": "/api-data/ops/broadcast_shapes.json",
   "docs": {
     "sections": [
@@ -171,7 +171,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/broadcast_arrays",
+                "href": "/docs/api/numpy/broadcast-arrays/",
                 "label": "flops.broadcast_arrays",
                 "original_target": "broadcast_arrays",
                 "role": "",
@@ -182,7 +182,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/broadcast_to",
+                "href": "/docs/api/numpy/broadcast-to/",
                 "label": "flops.broadcast_to",
                 "original_target": "broadcast_to",
                 "role": "",
@@ -202,7 +202,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -239,12 +239,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.broadcast_shapes",
+    "flopscope_ref": "fnp.broadcast_shapes",
     "module": "numpy",
     "name": "broadcast_shapes",
     "notes": "Compute broadcast shape from input shapes.",
     "numpy_ref": "np.broadcast_shapes",
-    "signature": "flops.broadcast_shapes(*args)",
+    "signature": "fnp.broadcast_shapes(*args)",
     "status": "supported",
     "summary": "Broadcast the input shapes into a single shape.",
     "weight": 0.0

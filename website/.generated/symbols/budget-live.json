@@ -147,6 +147,11 @@
             {
               "kind": "input",
               "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
               "text": "with flops.budget_live():"
             },
             {
@@ -157,7 +162,7 @@
             {
               "kind": "input",
               "prompt": "...",
-              "text": "_ = flops.add(flops.array([1.0]), flops.array([2.0]))"
+              "text": "_ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))"
             }
           ],
           "type": "doctest_block"

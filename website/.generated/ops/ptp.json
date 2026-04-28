@@ -35,7 +35,7 @@
               "inline": [
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/ptp",
+                  "href": "/docs/api/numpy/ptp/",
                   "kind": "link",
                   "target": "ptp",
                   "text": "ptp"
@@ -200,7 +200,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/ptp",
+                      "href": "/docs/api/numpy/ptp/",
                       "kind": "link",
                       "target": "ptp",
                       "text": "ptp"
@@ -302,7 +302,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -438,7 +438,7 @@
     }
   ],
   "canonical_name": "ptp",
-  "canonical_path": "ptp",
+  "canonical_path": "numpy/ptp",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -449,20 +449,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.array([[4, 9, 2, 10],\n              [6, 9, 7, 12]])\n\nflops.ptp(x, axis=1)\n\nflops.ptp(x, axis=0)\n\nflops.ptp(x)\n\ny = flops.array([[1, 127],\n              [0, 127],\n              [-1, 127],\n              [-2, 127]], dtype=flops.int8)\n\nflops.ptp(y, axis=1)\n\nflops.ptp(y, axis=1).view(flops.uint8)",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([[4, 9, 2, 10],\n              [6, 9, 7, 12]])\n\nflops.ptp(x, axis=1)\n\nflops.ptp(x, axis=0)\n\nflops.ptp(x)\n\ny = flops.array([[1, 127],\n              [0, 127],\n              [-1, 127],\n              [-2, 127]], dtype=flops.int8)\n\nflops.ptp(y, axis=1)\n\nflops.ptp(y, axis=1).view(flops.uint8)",
     "output": "array([8, 6])\n\narray([2, 0, 5, 2])\n\n10\n\narray([ 126,  127, -128, -127], dtype=int8)\n\narray([126, 127, 128, 129], dtype=uint8)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.ptp",
+  "flopscope_ref": "fnp.ptp",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/ptp/",
+  "href": "/docs/api/numpy/ptp/",
   "legacy_href": "/docs/api/ops/ptp/",
   "module": "numpy",
   "name": "ptp",
   "next": {
-    "href": "/docs/api/put/",
-    "label": "flops.put"
+    "href": "/docs/api/numpy/put/",
+    "label": "fnp.put"
   },
   "notes": "Peak-to-peak (max - min) range of array.",
   "notes_sections": [],
@@ -512,10 +512,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/promote-types/",
-    "label": "flops.promote_types"
+    "href": "/docs/api/numpy/promote-types/",
+    "label": "fnp.promote_types"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.ptp",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ptp.html",
   "returns": [
     {
@@ -528,9 +529,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.ptp(a, axis=None, out=None, keepdims=<no value>)",
+  "signature": "fnp.ptp(a, axis=None, out=None, keepdims=<no value>)",
   "slug": "ptp",
   "summary": "Range of values (maximum - minimum) along an axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2962",
   "weight": 1.0
 }

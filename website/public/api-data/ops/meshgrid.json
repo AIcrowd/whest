@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/meshgrid/",
+  "detail_href": "/docs/api/numpy/meshgrid/",
   "detail_json_href": "/api-data/ops/meshgrid.json",
   "docs": {
     "sections": [
@@ -500,7 +500,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -559,7 +559,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/meshgrid",
+                "href": "/docs/api/numpy/meshgrid/",
                 "kind": "link",
                 "target": "meshgrid",
                 "text": "meshgrid"
@@ -636,7 +636,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/meshgrid",
+                "href": "/docs/api/numpy/meshgrid/",
                 "kind": "link",
                 "target": "meshgrid",
                 "text": "meshgrid"
@@ -754,12 +754,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.meshgrid",
+    "flopscope_ref": "fnp.meshgrid",
     "module": "numpy",
     "name": "meshgrid",
     "notes": "Coordinate matrices from coordinate vectors. Cost: numel(output).",
     "numpy_ref": "np.meshgrid",
-    "signature": "flops.meshgrid(*xi, copy=True, sparse=False, indexing='xy')",
+    "signature": "fnp.meshgrid(*xi, copy=True, sparse=False, indexing='xy')",
     "status": "supported",
     "summary": "Return a tuple of coordinate matrices from coordinate vectors.",
     "weight": 1.0

@@ -12,18 +12,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Weighted FLOP cost estimate for "
-            },
-            {
-              "external_url": "",
-              "href": "/docs/api/einsum/",
-              "kind": "link",
-              "target": "einsum",
-              "text": "einsum"
-            },
-            {
-              "kind": "text",
-              "text": "."
+              "text": "Weighted FLOP cost of an einsum operation."
             }
           ],
           "type": "paragraph"
@@ -33,43 +22,6 @@
     },
     {
       "blocks": [
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "This public helper returns the analytical cost formula multiplied by the active operation weight from "
-            },
-            {
-              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
-              "href": "",
-              "kind": "link",
-              "target": "_weights",
-              "text": "flopscope._weights"
-            },
-            {
-              "kind": "text",
-              "text": ". The final value is floored with "
-            },
-            {
-              "kind": "code",
-              "text": "int(...)"
-            },
-            {
-              "kind": "text",
-              "text": " to match runtime budget accounting."
-            }
-          ],
-          "type": "paragraph"
-        },
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "Analytical formula:\nFLOP cost of an einsum operation."
-            }
-          ],
-          "type": "paragraph"
-        },
         {
           "inline": [
             {
@@ -124,7 +76,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Einsum subscript string."
+                      "text": "Einstein summation expression that defines the contraction."
                     }
                   ],
                   "type": "paragraph"
@@ -134,7 +86,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Einsum subscript string."
+                  "text": "Einstein summation expression that defines the contraction."
                 }
               ],
               "name": "subscripts",
@@ -146,17 +98,17 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Shapes of the input operands."
+                      "text": "Operand shapes in the same order as the einsum operands."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "list of tuple of int",
+              "data_type": "list[tuple[int, ...]]",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Shapes of the input operands."
+                  "text": "Operand shapes in the same order as the einsum operands."
                 }
               ],
               "name": "shapes",
@@ -168,17 +120,33 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Exact symmetry group for each input operand."
+                      "text": "Optional symmetry metadata for each einsum operand. Defaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "None"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "list of SymmetryGroup or None, optional",
+              "data_type": "list[SymmetryGroup | None] | None, optional",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Exact symmetry group for each input operand."
+                  "text": "Optional symmetry metadata for each einsum operand. Defaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "None"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
               "name": "operand_symmetries",
@@ -201,7 +169,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Estimated FLOP count."
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
                     }
                   ],
                   "type": "paragraph"
@@ -211,7 +179,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Estimated FLOP count."
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
                 }
               ],
               "name": "",
@@ -223,6 +191,83 @@
         }
       ],
       "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This helper multiplies the analytical FLOP count by the active weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "flopscope._weights"
+            },
+            {
+              "kind": "text",
+              "text": " and then applies "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " so public estimates match budget deductions."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "cost = flops.accounting.einsum_cost("
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "\"ij,jk->ik\","
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": "[(8, 16), (16, 4)],"
+            },
+            {
+              "kind": "input",
+              "prompt": "...",
+              "text": ")"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "isinstance(cost, int)"
+            },
+            {
+              "kind": "output",
+              "text": "True"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "flops.einsum_cost",
@@ -248,6 +293,6 @@
   "slug": "flops-einsum-cost",
   "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_flops.py#L42",
   "status_note": "",
-  "summary": "Weighted FLOP cost estimate for ``einsum``.",
+  "summary": "Weighted FLOP cost of an einsum operation.",
   "upstream_source_url": ""
 }

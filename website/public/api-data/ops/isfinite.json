@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/isfinite/",
+  "detail_href": "/docs/api/numpy/isfinite/",
   "detail_json_href": "/api-data/ops/isfinite.json",
   "docs": {
     "sections": [
@@ -299,7 +299,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isinf",
+                "href": "/docs/api/numpy/isinf/",
                 "label": "flops.isinf",
                 "original_target": "isinf",
                 "role": "",
@@ -310,7 +310,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isneginf",
+                "href": "/docs/api/numpy/isneginf/",
                 "label": "flops.isneginf",
                 "original_target": "isneginf",
                 "role": "",
@@ -321,7 +321,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isposinf",
+                "href": "/docs/api/numpy/isposinf/",
                 "label": "flops.isposinf",
                 "original_target": "isposinf",
                 "role": "",
@@ -332,7 +332,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
+                "href": "/docs/api/numpy/isnan/",
                 "label": "flops.isnan",
                 "original_target": "isnan",
                 "role": "",
@@ -383,7 +383,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -484,12 +484,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.isfinite",
+    "flopscope_ref": "fnp.isfinite",
     "module": "numpy",
     "name": "isfinite",
     "notes": "Test for finite values element-wise. Cost: numel(input).",
     "numpy_ref": "np.isfinite",
-    "signature": "flops.isfinite(*args, **kwargs)",
+    "signature": "fnp.isfinite(*args, **kwargs)",
     "status": "supported",
     "summary": "Test element-wise for finiteness (not infinity and not Not a Number).",
     "weight": 1.0

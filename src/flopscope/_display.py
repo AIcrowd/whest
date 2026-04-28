@@ -387,9 +387,10 @@ def budget_live(by_namespace: bool = False):
     Examples
     --------
     >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
     >>> with flops.budget_live():
     ...     with flops.BudgetContext(flop_budget=100):
-    ...         _ = flops.add(flops.array([1.0]), flops.array([2.0]))
+    ...         _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))
     """
     try:
         from rich.live import Live
@@ -437,8 +438,9 @@ def budget_summary(by_namespace: bool = False):
     Examples
     --------
     >>> import flopscope as flops
+    >>> import flopscope.numpy as fnp
     >>> with flops.BudgetContext(flop_budget=100):
-    ...     _ = flops.add(flops.array([1.0]), flops.array([2.0]))
+    ...     _ = fnp.add(fnp.array([1.0]), fnp.array([2.0]))
     >>> flops.budget_summary()
     """
     result = render_budget_summary(by_namespace=by_namespace)

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fft/irfftn/",
+  "detail_href": "/docs/api/numpy/fft/irfftn/",
   "detail_json_href": "/api-data/ops/fft-irfftn.json",
   "docs": {
     "sections": [
@@ -925,7 +925,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -978,12 +978,12 @@
     "category": "counted_custom",
     "cost_formula": "5(N/2) * ceil(log2(N))",
     "cost_formula_latex": "$5(N/2) \\cdot \\lceil\\log_2 N\\rceil$",
-    "flopscope_ref": "flops.fft.irfftn",
+    "flopscope_ref": "fnp.fft.irfftn",
     "module": "numpy.fft",
     "name": "fft.irfftn",
     "notes": "Inverse N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.irfftn",
-    "signature": "flops.fft.irfftn(a, s=None, axes=None, norm=None, out=None)",
+    "signature": "fnp.fft.irfftn(a, s=None, axes=None, norm=None, out=None)",
     "status": "supported",
     "summary": "Computes the inverse of `rfftn`.",
     "weight": 1.0

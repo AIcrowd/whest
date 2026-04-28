@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fabs/",
+  "detail_href": "/docs/api/numpy/fabs/",
   "detail_json_href": "/api-data/ops/fabs.json",
   "docs": {
     "sections": [
@@ -35,7 +35,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/absolute",
+                "href": "/docs/api/numpy/absolute/",
                 "kind": "link",
                 "target": "absolute",
                 "text": "absolute"
@@ -363,7 +363,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/absolute",
+                "href": "/docs/api/numpy/absolute/",
                 "label": "flops.absolute",
                 "original_target": "absolute",
                 "role": "",
@@ -383,7 +383,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -415,12 +415,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.fabs",
+    "flopscope_ref": "fnp.fabs",
     "module": "numpy",
     "name": "fabs",
     "notes": "Element-wise absolute value (always float).",
     "numpy_ref": "np.fabs",
-    "signature": "flops.fabs(*args, **kwargs)",
+    "signature": "fnp.fabs(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the absolute values element-wise.",
     "weight": 1.0

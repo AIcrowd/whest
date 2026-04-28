@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/nanargmin/",
+  "detail_href": "/docs/api/numpy/nanargmin/",
   "detail_json_href": "/api-data/ops/nanargmin.json",
   "docs": {
     "sections": [
@@ -185,7 +185,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/argmin",
+                "href": "/docs/api/numpy/argmin/",
                 "label": "flops.argmin",
                 "original_target": "argmin",
                 "role": "",
@@ -196,7 +196,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanargmax",
+                "href": "/docs/api/numpy/nanargmax/",
                 "label": "flops.nanargmax",
                 "original_target": "nanargmax",
                 "role": "",
@@ -216,7 +216,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -271,12 +271,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.nanargmin",
+    "flopscope_ref": "fnp.nanargmin",
     "module": "numpy",
     "name": "nanargmin",
     "notes": "Index of minimum ignoring NaNs.",
     "numpy_ref": "np.nanargmin",
-    "signature": "flops.nanargmin(a, axis=None, out=None, *, keepdims=<no value>)",
+    "signature": "fnp.nanargmin(a, axis=None, out=None, *, keepdims=<no value>)",
     "status": "supported",
     "summary": "Return the indices of the minimum values in the specified axis ignoring NaNs. For all-NaN slices ``ValueError`` is raised. Warning: the results cannot be trusted if a slice contains only NaNs and Infs.",
     "weight": 1.0

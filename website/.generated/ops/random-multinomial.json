@@ -536,7 +536,7 @@
     }
   ],
   "canonical_name": "random.multinomial",
-  "canonical_path": "random/multinomial",
+  "canonical_path": "numpy/random/multinomial",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -552,15 +552,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.multinomial",
+  "flopscope_ref": "fnp.random.multinomial",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/multinomial/",
+  "href": "/docs/api/numpy/random/multinomial/",
   "legacy_href": "/docs/api/ops/random-multinomial/",
   "module": "numpy.random",
   "name": "random.multinomial",
   "next": {
-    "href": "/docs/api/random/multivariate-normal/",
-    "label": "flops.random.multivariate_normal"
+    "href": "/docs/api/numpy/random/multivariate-normal/",
+    "label": "fnp.random.multivariate_normal"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -594,10 +594,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/logseries/",
-    "label": "flops.random.logseries"
+    "href": "/docs/api/numpy/random/logseries/",
+    "label": "fnp.random.logseries"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.multinomial",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.multinomial.html",
   "returns": [
     {
@@ -630,9 +631,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.multinomial(n, pvals, size=None)",
+  "signature": "fnp.random.multinomial(n, pvals, size=None)",
   "slug": "random-multinomial",
   "summary": "Draw samples from a multinomial distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

@@ -7,6 +7,7 @@ import { CodeBlock, Pre } from 'fumadocs-ui/components/codeblock';
 import ApiReference from './api-reference';
 import ApiEntryHighlights from './api-reference/ApiEntryHighlights';
 import ApiNamespaceHub from './api-reference/ApiNamespaceHub';
+import NamespaceInventory from './api-reference/NamespaceInventory';
 import NamespaceSymbolList from './api-reference/NamespaceSymbolList';
 import OperationCostIndexComponent from './api-reference/OperationCostIndex';
 import {getPublicApiData} from './api-reference/public-api-data';
@@ -56,6 +57,7 @@ export function getMDXComponents(components?: MDXComponents) {
     ApiReference,
     ApiNamespaceHub,
     ApiEntryHighlights,
+    NamespaceInventory,
     NamespaceSymbolList,
     OperationCostIndex,
     Callout,

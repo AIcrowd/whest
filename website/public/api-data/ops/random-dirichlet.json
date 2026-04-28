@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/dirichlet/",
+  "detail_href": "/docs/api/numpy/random/dirichlet/",
   "detail_json_href": "/api-data/ops/random-dirichlet.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/size",
+                "href": "/docs/api/numpy/size/",
                 "kind": "link",
                 "target": "size",
                 "text": "size"
@@ -544,12 +544,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.dirichlet",
+    "flopscope_ref": "fnp.random.dirichlet",
     "module": "numpy.random",
     "name": "random.dirichlet",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.dirichlet",
-    "signature": "flops.random.dirichlet(alpha, size=None)",
+    "signature": "fnp.random.dirichlet(alpha, size=None)",
     "status": "supported",
     "summary": "Draw samples from the Dirichlet distribution.",
     "weight": 16.0

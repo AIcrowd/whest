@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/apply-over-axes/",
+  "detail_href": "/docs/api/numpy/apply-over-axes/",
   "detail_json_href": "/api-data/ops/apply_over_axes.json",
   "docs": {
     "sections": [
@@ -310,7 +310,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/apply_along_axis",
+                "href": "/docs/api/numpy/apply-along-axis/",
                 "label": "flops.apply_along_axis",
                 "original_target": "apply_along_axis",
                 "role": "",
@@ -344,7 +344,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -454,12 +454,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.apply_over_axes",
+    "flopscope_ref": "fnp.apply_over_axes",
     "module": "numpy",
     "name": "apply_over_axes",
     "notes": "Apply function over multiple axes. Cost: numel(output).",
     "numpy_ref": "np.apply_over_axes",
-    "signature": "flops.apply_over_axes(func, a, axes)",
+    "signature": "fnp.apply_over_axes(func, a, axes)",
     "status": "supported",
     "summary": "Apply a function repeatedly over multiple axes.",
     "weight": 1.0

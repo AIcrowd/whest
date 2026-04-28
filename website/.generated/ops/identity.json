@@ -262,7 +262,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -289,7 +289,7 @@
     }
   ],
   "canonical_name": "identity",
-  "canonical_path": "identity",
+  "canonical_path": "numpy/identity",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -300,20 +300,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.identity(3)",
+    "code": "import flopscope.numpy as fnp\n\nflops.identity(3)",
     "output": "array([[1.,  0.,  0.],\n       [0.,  1.,  0.],\n       [0.,  0.,  1.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.identity",
+  "flopscope_ref": "fnp.identity",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L276",
-  "href": "/docs/api/identity/",
+  "href": "/docs/api/numpy/identity/",
   "legacy_href": "/docs/api/ops/identity/",
   "module": "numpy",
   "name": "identity",
   "next": {
-    "href": "/docs/api/imag/",
-    "label": "flops.imag"
+    "href": "/docs/api/numpy/imag/",
+    "label": "fnp.imag"
   },
   "notes": "Create square identity matrix.",
   "notes_sections": [],
@@ -348,10 +348,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/i0/",
-    "label": "flops.i0"
+    "href": "/docs/api/numpy/i0/",
+    "label": "fnp.i0"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.identity",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.identity.html",
   "returns": [
     {
@@ -364,9 +365,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.identity(n, dtype=None, *, like=None)",
+  "signature": "fnp.identity(n, dtype=None, *, like=None)",
   "slug": "identity",
   "summary": "Return the identity array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2195",
   "weight": 0.0
 }

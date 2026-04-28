@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/vonmises/",
+  "detail_href": "/docs/api/numpy/random/vonmises/",
   "detail_json_href": "/api-data/ops/random-vonmises.json",
   "docs": {
     "sections": [
@@ -506,12 +506,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.vonmises",
+    "flopscope_ref": "fnp.random.vonmises",
     "module": "numpy.random",
     "name": "random.vonmises",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.vonmises",
-    "signature": "flops.random.vonmises(mu, kappa, size=None)",
+    "signature": "fnp.random.vonmises(mu, kappa, size=None)",
     "status": "supported",
     "summary": "Draw samples from a von Mises distribution.",
     "weight": 16.0

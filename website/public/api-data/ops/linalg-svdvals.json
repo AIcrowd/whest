@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/svdvals/",
+  "detail_href": "/docs/api/numpy/linalg/svdvals/",
   "detail_json_href": "/api-data/ops/linalg-svdvals.json",
   "docs": {
     "sections": [
@@ -239,12 +239,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
-    "flopscope_ref": "flops.linalg.svdvals",
+    "flopscope_ref": "fnp.linalg.svdvals",
     "module": "numpy.linalg",
     "name": "linalg.svdvals",
     "notes": "Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch).",
     "numpy_ref": "np.linalg.svdvals",
-    "signature": "flops.linalg.svdvals(x, /, *, k: 'int | None' = None)",
+    "signature": "fnp.linalg.svdvals(x, /, *, k: 'int | None' = None)",
     "status": "supported",
     "summary": "Returns the singular values of a matrix (or a stack of matrices) ``x``. When x is a stack of matrices, the function will compute the singular values for each matrix in the stack.",
     "weight": 4.0

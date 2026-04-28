@@ -422,7 +422,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/right_shift",
+              "href": "/docs/api/numpy/right-shift/",
               "label": "flops.right_shift",
               "original_target": "right_shift",
               "role": "",
@@ -458,7 +458,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -578,7 +578,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/left_shift",
+              "href": "/docs/api/numpy/left-shift/",
               "kind": "link",
               "target": "left_shift",
               "text": "flops.left_shift"
@@ -619,7 +619,7 @@
     }
   ],
   "canonical_name": "bitwise_left_shift",
-  "canonical_path": "bitwise-left-shift",
+  "canonical_path": "numpy/bitwise-left-shift",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -643,20 +643,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.binary_repr(5)\n\nflops.left_shift(5, 2)\n\nflops.binary_repr(20)\n\nflops.left_shift(5, [1,2,3])\n\na = flops.left_shift(flops.uint8(255), flops.int64(1))  # Expect 254\n\nprint(a, type(a)) # Unexpected result due to upcasting\n\nb = flops.left_shift(flops.uint8(255), flops.uint8(1))\n\nprint(b, type(b))\n\nx1 = 5\n\nx2 = flops.array([1, 2, 3])\n\nx1 << x2",
+    "code": "import flopscope.numpy as fnp\n\nflops.binary_repr(5)\n\nflops.left_shift(5, 2)\n\nflops.binary_repr(20)\n\nflops.left_shift(5, [1,2,3])\n\na = flops.left_shift(flops.uint8(255), flops.int64(1))  # Expect 254\n\nprint(a, type(a)) # Unexpected result due to upcasting\n\nb = flops.left_shift(flops.uint8(255), flops.uint8(1))\n\nprint(b, type(b))\n\nx1 = 5\n\nx2 = flops.array([1, 2, 3])\n\nx1 << x2",
     "output": "'101'\n\n20\n\n'10100'\n\narray([10, 20, 40])\n\n510 <class 'flops.int64'>\n\n254 <class 'flops.uint8'>\n\narray([10, 20, 40])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.bitwise_left_shift",
+  "flopscope_ref": "fnp.bitwise_left_shift",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/bitwise-left-shift/",
+  "href": "/docs/api/numpy/bitwise-left-shift/",
   "legacy_href": "/docs/api/ops/bitwise_left_shift/",
   "module": "numpy",
   "name": "bitwise_left_shift",
   "next": {
-    "href": "/docs/api/bitwise-not/",
-    "label": "flops.bitwise_not"
+    "href": "/docs/api/numpy/bitwise-not/",
+    "label": "fnp.bitwise_not"
   },
   "notes": "Element-wise left bit shift.",
   "notes_sections": [],
@@ -710,10 +710,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/bitwise-count/",
-    "label": "flops.bitwise_count"
+    "href": "/docs/api/numpy/bitwise-count/",
+    "label": "fnp.bitwise_count"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.bitwise_left_shift",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_left_shift.html",
   "returns": [
     {
@@ -735,7 +736,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/right_shift",
+      "href": "/docs/api/numpy/right-shift/",
       "label": "flops.right_shift",
       "original_target": "right_shift",
       "role": "",
@@ -759,9 +760,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.bitwise_left_shift(*args, **kwargs)",
+  "signature": "fnp.bitwise_left_shift(*args, **kwargs)",
   "slug": "bitwise_left_shift",
   "summary": "Shift the bits of an integer to the left.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

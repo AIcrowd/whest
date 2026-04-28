@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/qr/",
+  "detail_href": "/docs/api/numpy/linalg/qr/",
   "detail_json_href": "/api-data/ops/linalg-qr.json",
   "docs": {
     "sections": [
@@ -469,7 +469,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -701,12 +701,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
-    "flopscope_ref": "flops.linalg.qr",
+    "flopscope_ref": "fnp.linalg.qr",
     "module": "numpy.linalg",
     "name": "linalg.qr",
     "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
     "numpy_ref": "np.linalg.qr",
-    "signature": "flops.linalg.qr(a, mode='reduced')",
+    "signature": "fnp.linalg.qr(a, mode='reduced')",
     "status": "supported",
     "summary": "Compute the qr factorization of a matrix.",
     "weight": 4.0

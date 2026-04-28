@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/any/",
+  "detail_href": "/docs/api/numpy/any/",
   "detail_json_href": "/api-data/ops/any.json",
   "docs": {
     "sections": [
@@ -220,7 +220,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/any",
+                        "href": "/docs/api/numpy/any/",
                         "kind": "link",
                         "target": "any",
                         "text": "any"
@@ -446,7 +446,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/all",
+                "href": "/docs/api/numpy/all/",
                 "label": "flops.all",
                 "original_target": "all",
                 "role": "",
@@ -498,7 +498,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -671,12 +671,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.any",
+    "flopscope_ref": "fnp.any",
     "module": "numpy",
     "name": "any",
     "notes": "Test whether any array element is true.",
     "numpy_ref": "np.any",
-    "signature": "flops.any(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
+    "signature": "fnp.any(a, axis=None, out=None, keepdims=<no value>, *, where=<no value>)",
     "status": "supported",
     "summary": "Test whether any array element along a given axis evaluates to True.",
     "weight": 1.0

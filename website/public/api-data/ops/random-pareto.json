@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/pareto/",
+  "detail_href": "/docs/api/numpy/random/pareto/",
   "detail_json_href": "/api-data/ops/random-pareto.json",
   "docs": {
     "sections": [
@@ -508,12 +508,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.pareto",
+    "flopscope_ref": "fnp.random.pareto",
     "module": "numpy.random",
     "name": "random.pareto",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.pareto",
-    "signature": "flops.random.pareto(a, size=None)",
+    "signature": "fnp.random.pareto(a, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Pareto II or Lomax distribution with specified shape.",
     "weight": 16.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/polysub/",
+  "detail_href": "/docs/api/numpy/polysub/",
   "detail_json_href": "/api-data/ops/polysub.json",
   "docs": {
     "sections": [
@@ -215,7 +215,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polyval",
+                "href": "/docs/api/numpy/polyval/",
                 "label": "flops.polyval",
                 "original_target": "polyval",
                 "role": "",
@@ -226,7 +226,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polydiv",
+                "href": "/docs/api/numpy/polydiv/",
                 "label": "flops.polydiv",
                 "original_target": "polydiv",
                 "role": "",
@@ -237,7 +237,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polymul",
+                "href": "/docs/api/numpy/polymul/",
                 "label": "flops.polymul",
                 "original_target": "polymul",
                 "role": "",
@@ -248,7 +248,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/polyadd",
+                "href": "/docs/api/numpy/polyadd/",
                 "label": "flops.polyadd",
                 "original_target": "polyadd",
                 "role": "",
@@ -274,7 +274,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -302,12 +302,12 @@
     "category": "counted_custom",
     "cost_formula": "max(n1, n2)",
     "cost_formula_latex": "$\\max(n_1, n_2)$",
-    "flopscope_ref": "flops.polysub",
+    "flopscope_ref": "fnp.polysub",
     "module": "flopscope._polynomial",
     "name": "polysub",
     "notes": "Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs.",
     "numpy_ref": "np.polysub",
-    "signature": "flops.polysub(a1, a2)",
+    "signature": "fnp.polysub(a1, a2)",
     "status": "supported",
     "summary": "Difference (subtraction) of two polynomials.",
     "weight": 1.0

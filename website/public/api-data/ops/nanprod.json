@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/nanprod/",
+  "detail_href": "/docs/api/numpy/nanprod/",
   "detail_json_href": "/api-data/ops/nanprod.json",
   "docs": {
     "sections": [
@@ -434,7 +434,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/prod",
+                "href": "/docs/api/numpy/prod/",
                 "label": "flops.prod",
                 "original_target": "numpy.prod",
                 "role": "",
@@ -450,7 +450,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
+                "href": "/docs/api/numpy/isnan/",
                 "label": "flops.isnan",
                 "original_target": "isnan",
                 "role": "",
@@ -470,7 +470,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -534,12 +534,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.nanprod",
+    "flopscope_ref": "fnp.nanprod",
     "module": "numpy",
     "name": "nanprod",
     "notes": "Product ignoring NaNs.",
     "numpy_ref": "np.nanprod",
-    "signature": "flops.nanprod(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+    "signature": "fnp.nanprod(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
     "status": "supported",
     "summary": "Return the product of array elements over a given axis treating Not a Numbers (NaNs) as ones.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/clip/",
+  "detail_href": "/docs/api/numpy/clip/",
   "detail_json_href": "/api-data/ops/clip.json",
   "docs": {
     "sections": [
@@ -281,7 +281,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/min",
+                        "href": "/docs/api/numpy/min/",
                         "kind": "link",
                         "target": "min",
                         "text": "min"
@@ -292,7 +292,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/max",
+                        "href": "/docs/api/numpy/max/",
                         "kind": "link",
                         "target": "max",
                         "text": "max"
@@ -363,7 +363,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/min",
+                    "href": "/docs/api/numpy/min/",
                     "kind": "link",
                     "target": "min",
                     "text": "min"
@@ -374,7 +374,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/max",
+                    "href": "/docs/api/numpy/max/",
                     "kind": "link",
                     "target": "max",
                     "text": "max"
@@ -616,7 +616,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/clip",
+                "href": "/docs/api/numpy/clip/",
                 "kind": "link",
                 "target": "clip",
                 "text": "clip"
@@ -646,7 +646,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -733,12 +733,12 @@
     "category": "counted_custom",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.clip",
+    "flopscope_ref": "fnp.clip",
     "module": "numpy",
     "name": "clip",
     "notes": "Clip array to [a_min, a_max] element-wise.",
     "numpy_ref": "np.clip",
-    "signature": "flops.clip(a, a_min=<no value>, a_max=<no value>, out=None, *, min=<no value>, max=<no value>, **kwargs)",
+    "signature": "fnp.clip(a, a_min=<no value>, a_max=<no value>, out=None, *, min=<no value>, max=<no value>, **kwargs)",
     "status": "supported",
     "summary": "Clip (limit) the values in an array.",
     "weight": 1.0

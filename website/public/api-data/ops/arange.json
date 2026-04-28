@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/arange/",
+  "detail_href": "/docs/api/numpy/arange/",
   "detail_json_href": "/api-data/ops/arange.json",
   "docs": {
     "sections": [
@@ -23,7 +23,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "kind": "link",
                 "target": "arange",
                 "text": "arange"
@@ -181,7 +181,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "kind": "link",
                 "target": "linspace",
                 "text": "flops.linspace"
@@ -623,7 +623,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "label": "flops.linspace",
                 "original_target": "numpy.linspace",
                 "role": "",
@@ -698,7 +698,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "kind": "link",
                 "target": "arange",
                 "text": "flops.arange"
@@ -755,7 +755,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "kind": "link",
                 "target": "linspace",
                 "text": "flops.linspace"
@@ -799,7 +799,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "kind": "link",
                 "target": "arange",
                 "text": "flops.arange"
@@ -858,7 +858,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -908,12 +908,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.arange",
+    "flopscope_ref": "fnp.arange",
     "module": "numpy",
     "name": "arange",
     "notes": "Return evenly spaced values in given interval. Cost: numel(output).",
     "numpy_ref": "np.arange",
-    "signature": "flops.arange(*args, **kwargs)",
+    "signature": "fnp.arange(*args, **kwargs)",
     "status": "supported",
     "summary": "Return evenly spaced values within a given interval.",
     "weight": 1.0

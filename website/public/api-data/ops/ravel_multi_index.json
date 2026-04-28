@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ravel-multi-index/",
+  "detail_href": "/docs/api/numpy/ravel-multi-index/",
   "detail_json_href": "/api-data/ops/ravel_multi_index.json",
   "docs": {
     "sections": [
@@ -243,7 +243,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/unravel_index",
+                "href": "/docs/api/numpy/unravel-index/",
                 "label": "flops.unravel_index",
                 "original_target": "unravel_index",
                 "role": "",
@@ -263,7 +263,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -332,12 +332,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.ravel_multi_index",
+    "flopscope_ref": "fnp.ravel_multi_index",
     "module": "numpy",
     "name": "ravel_multi_index",
     "notes": "Convert multi-dimensional index to flat index.",
     "numpy_ref": "np.ravel_multi_index",
-    "signature": "flops.ravel_multi_index(*args, **kwargs)",
+    "signature": "fnp.ravel_multi_index(*args, **kwargs)",
     "status": "supported",
     "summary": "Converts a tuple of index arrays into an array of flat indices, applying boundary modes to the multi-index.",
     "weight": 0.0

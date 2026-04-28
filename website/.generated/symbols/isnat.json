@@ -289,7 +289,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/isnan/",
+              "href": "/docs/api/numpy/isnan/",
               "label": "flops.isnan",
               "original_target": "isnan",
               "role": "",
@@ -300,7 +300,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/isinf/",
+              "href": "/docs/api/numpy/isinf/",
               "label": "flops.isinf",
               "original_target": "isinf",
               "role": "",
@@ -311,7 +311,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/isneginf/",
+              "href": "/docs/api/numpy/isneginf/",
               "label": "flops.isneginf",
               "original_target": "isneginf",
               "role": "",
@@ -322,7 +322,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/isposinf/",
+              "href": "/docs/api/numpy/isposinf/",
               "label": "flops.isposinf",
               "original_target": "isposinf",
               "role": "",
@@ -333,7 +333,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/isfinite/",
+              "href": "/docs/api/numpy/isfinite/",
               "label": "flops.isfinite",
               "original_target": "isfinite",
               "role": "",
@@ -353,7 +353,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",

@@ -362,7 +362,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -424,7 +424,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/multiply",
+              "href": "/docs/api/numpy/multiply/",
               "kind": "link",
               "target": "multiply",
               "text": "flops.multiply"
@@ -473,7 +473,7 @@
     }
   ],
   "canonical_name": "multiply",
-  "canonical_path": "multiply",
+  "canonical_path": "numpy/multiply",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -491,20 +491,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.multiply(2.0, 4.0)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nflops.multiply(x1, x2)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nx1 * x2",
+    "code": "import flopscope.numpy as fnp\n\nflops.multiply(2.0, 4.0)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nflops.multiply(x1, x2)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nx1 * x2",
     "output": "8.0\n\narray([[  0.,   1.,   4.],\n       [  0.,   4.,  10.],\n       [  0.,   7.,  16.]])\n\narray([[  0.,   1.,   4.],\n       [  0.,   4.,  10.],\n       [  0.,   7.,  16.]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.multiply",
+  "flopscope_ref": "fnp.multiply",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/multiply/",
+  "href": "/docs/api/numpy/multiply/",
   "legacy_href": "/docs/api/ops/multiply/",
   "module": "numpy",
   "name": "multiply",
   "next": {
-    "href": "/docs/api/nan-to-num/",
-    "label": "flops.nan_to_num"
+    "href": "/docs/api/numpy/nan-to-num/",
+    "label": "fnp.nan_to_num"
   },
   "notes": "Element-wise multiplication.",
   "notes_sections": [
@@ -553,10 +553,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/moveaxis/",
-    "label": "flops.moveaxis"
+    "href": "/docs/api/numpy/moveaxis/",
+    "label": "fnp.moveaxis"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.multiply",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.multiply.html",
   "returns": [
     {
@@ -569,9 +570,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.multiply(*args, **kwargs)",
+  "signature": "fnp.multiply(*args, **kwargs)",
   "slug": "multiply",
   "summary": "Multiply arguments element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

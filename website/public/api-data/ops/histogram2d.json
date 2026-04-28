@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/histogram2d/",
+  "detail_href": "/docs/api/numpy/histogram2d/",
   "detail_json_href": "/api-data/ops/histogram2d.json",
   "docs": {
     "sections": [
@@ -513,7 +513,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "label": "flops.histogram",
                 "original_target": "histogram",
                 "role": "",
@@ -529,7 +529,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/histogramdd",
+                "href": "/docs/api/numpy/histogramdd/",
                 "label": "flops.histogramdd",
                 "original_target": "histogramdd",
                 "role": "",
@@ -609,7 +609,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/histogramdd",
+                "href": "/docs/api/numpy/histogramdd/",
                 "kind": "link",
                 "target": "histogramdd",
                 "text": "histogramdd"
@@ -631,7 +631,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -1079,12 +1079,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.histogram2d",
+    "flopscope_ref": "fnp.histogram2d",
     "module": "numpy",
     "name": "histogram2d",
     "notes": "2D binning; cost = n*(ceil(log2(bx))+ceil(log2(by))).",
     "numpy_ref": "np.histogram2d",
-    "signature": "flops.histogram2d(x, y, bins=10, range=None, density=None, weights=None)",
+    "signature": "fnp.histogram2d(x, y, bins=10, range=None, density=None, weights=None)",
     "status": "supported",
     "summary": "Compute the bi-dimensional histogram of two data samples.",
     "weight": 1.0

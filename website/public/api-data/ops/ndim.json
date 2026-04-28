@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ndim/",
+  "detail_href": "/docs/api/numpy/ndim/",
   "detail_json_href": "/api-data/ops/ndim.json",
   "docs": {
     "sections": [
@@ -128,7 +128,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/shape",
+                "href": "/docs/api/numpy/shape/",
                 "label": "flops.shape",
                 "original_target": "shape",
                 "role": "",
@@ -164,7 +164,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -205,12 +205,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.ndim",
+    "flopscope_ref": "fnp.ndim",
     "module": "numpy",
     "name": "ndim",
     "notes": "Return number of dimensions of array.",
     "numpy_ref": "np.ndim",
-    "signature": "flops.ndim(a)",
+    "signature": "fnp.ndim(a)",
     "status": "supported",
     "summary": "Return the number of dimensions of an array.",
     "weight": 0.0

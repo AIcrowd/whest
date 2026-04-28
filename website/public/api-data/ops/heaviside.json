@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/heaviside/",
+  "detail_href": "/docs/api/numpy/heaviside/",
   "detail_json_href": "/api-data/ops/heaviside.json",
   "docs": {
     "sections": [
@@ -392,7 +392,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -424,12 +424,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.heaviside",
+    "flopscope_ref": "fnp.heaviside",
     "module": "numpy",
     "name": "heaviside",
     "notes": "Heaviside step function element-wise.",
     "numpy_ref": "np.heaviside",
-    "signature": "flops.heaviside(*args, **kwargs)",
+    "signature": "fnp.heaviside(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the Heaviside step function.",
     "weight": 1.0

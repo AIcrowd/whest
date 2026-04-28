@@ -226,7 +226,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/cumprod",
+                  "href": "/docs/api/numpy/cumprod/",
                   "kind": "link",
                   "target": "cumprod",
                   "text": "cumprod"
@@ -237,7 +237,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/cumulative_prod",
+              "href": "/docs/api/numpy/cumulative-prod/",
               "label": "flops.cumulative_prod",
               "original_target": "cumulative_prod",
               "role": "",
@@ -282,7 +282,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -395,7 +395,7 @@
     }
   ],
   "canonical_name": "cumprod",
-  "canonical_path": "cumprod",
+  "canonical_path": "numpy/cumprod",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -406,20 +406,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([1,2,3])\n\nflops.cumprod(a) # intermediate results 1, 1*2\n              # total product 1*2*3 = 6\n\na = flops.array([[1, 2, 3], [4, 5, 6]])\n\nflops.cumprod(a, dtype=float) # specify type of output\n\nflops.cumprod(a, axis=0)\n\nflops.cumprod(a,axis=1)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([1,2,3])\n\nflops.cumprod(a) # intermediate results 1, 1*2\n              # total product 1*2*3 = 6\n\na = flops.array([[1, 2, 3], [4, 5, 6]])\n\nflops.cumprod(a, dtype=float) # specify type of output\n\nflops.cumprod(a, axis=0)\n\nflops.cumprod(a,axis=1)",
     "output": "array([1, 2, 6])\n\narray([   1.,    2.,    6.,   24.,  120.,  720.])\n\narray([[ 1,  2,  3],\n       [ 4, 10, 18]])\n\narray([[  1,   2,   6],\n       [  4,  20, 120]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.cumprod",
+  "flopscope_ref": "fnp.cumprod",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/cumprod/",
+  "href": "/docs/api/numpy/cumprod/",
   "legacy_href": "/docs/api/ops/cumprod/",
   "module": "numpy",
   "name": "cumprod",
   "next": {
-    "href": "/docs/api/cumsum/",
-    "label": "flops.cumsum"
+    "href": "/docs/api/numpy/cumsum/",
+    "label": "fnp.cumsum"
   },
   "notes": "Cumulative product of array elements.",
   "notes_sections": [
@@ -464,10 +464,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/cross/",
-    "label": "flops.cross"
+    "href": "/docs/api/numpy/cross/",
+    "label": "fnp.cross"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.cumprod",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cumprod.html",
   "returns": [
     {
@@ -489,7 +490,7 @@
         },
         {
           "external_url": "",
-          "href": "/docs/api/ops/cumprod",
+          "href": "/docs/api/numpy/cumprod/",
           "kind": "link",
           "target": "cumprod",
           "text": "cumprod"
@@ -500,7 +501,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/cumulative_prod",
+      "href": "/docs/api/numpy/cumulative-prod/",
       "label": "flops.cumulative_prod",
       "original_target": "cumulative_prod",
       "role": "",
@@ -519,9 +520,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.cumprod(a, axis=None, dtype=None, out=None)",
+  "signature": "fnp.cumprod(a, axis=None, dtype=None, out=None)",
   "slug": "cumprod",
   "summary": "Return the cumulative product of elements along a given axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3453",
   "weight": 1.0
 }

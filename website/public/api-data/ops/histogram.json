@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/histogram/",
+  "detail_href": "/docs/api/numpy/histogram/",
   "detail_json_href": "/api-data/ops/histogram.json",
   "docs": {
     "sections": [
@@ -86,7 +86,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/histogram_bin_edges",
+                        "href": "/docs/api/numpy/histogram-bin-edges/",
                         "kind": "link",
                         "target": "histogram_bin_edges",
                         "text": "histogram_bin_edges"
@@ -597,7 +597,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/histogramdd",
+                "href": "/docs/api/numpy/histogramdd/",
                 "label": "flops.histogramdd",
                 "original_target": "histogramdd",
                 "role": "",
@@ -608,7 +608,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bincount",
+                "href": "/docs/api/numpy/bincount/",
                 "label": "flops.bincount",
                 "original_target": "bincount",
                 "role": "",
@@ -619,7 +619,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/searchsorted",
+                "href": "/docs/api/numpy/searchsorted/",
                 "label": "flops.searchsorted",
                 "original_target": "searchsorted",
                 "role": "",
@@ -630,7 +630,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/digitize",
+                "href": "/docs/api/numpy/digitize/",
                 "label": "flops.digitize",
                 "original_target": "digitize",
                 "role": "",
@@ -641,7 +641,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram_bin_edges",
+                "href": "/docs/api/numpy/histogram-bin-edges/",
                 "label": "flops.histogram_bin_edges",
                 "original_target": "histogram_bin_edges",
                 "role": "",
@@ -729,7 +729,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -817,7 +817,7 @@
             "content_blocks": [
               {
                 "language": "python",
-                "text": "import matplotlib.pyplot as plt\nimport flopscope as flops\n\nrng = flops.random.RandomState(10)  # deterministic random data\na = flops.hstack((rng.normal(size=1000),\n               rng.normal(loc=5, scale=2, size=1000)))\nplt.hist(a, bins='auto')  # arguments are passed to flops.histogram\nplt.title(\"Histogram with 'auto' bins\")\nplt.show()",
+                "text": "import matplotlib.pyplot as plt\nimport flopscope.numpy as fnp\n\nrng = flops.random.RandomState(10)  # deterministic random data\na = flops.hstack((rng.normal(size=1000),\n               rng.normal(loc=5, scale=2, size=1000)))\nplt.hist(a, bins='auto')  # arguments are passed to flops.histogram\nplt.title(\"Histogram with 'auto' bins\")\nplt.show()",
                 "type": "literal_block"
               }
             ],
@@ -841,12 +841,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.histogram",
+    "flopscope_ref": "fnp.histogram",
     "module": "numpy",
     "name": "histogram",
     "notes": "Binning; cost = n*ceil(log2(bins)).",
     "numpy_ref": "np.histogram",
-    "signature": "flops.histogram(a, bins=10, range=None, density=None, weights=None)",
+    "signature": "fnp.histogram(a, bins=10, range=None, density=None, weights=None)",
     "status": "supported",
     "summary": "Compute the histogram of a dataset.",
     "weight": 1.0

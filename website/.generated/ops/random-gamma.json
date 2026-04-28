@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/shape",
+              "href": "/docs/api/numpy/shape/",
               "kind": "link",
               "target": "shape",
               "text": "shape"
@@ -189,7 +189,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/shape",
+                      "href": "/docs/api/numpy/shape/",
                       "kind": "link",
                       "target": "shape",
                       "text": "shape"
@@ -250,7 +250,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/shape",
+                  "href": "/docs/api/numpy/shape/",
                   "kind": "link",
                   "target": "shape",
                   "text": "shape"
@@ -518,7 +518,7 @@
     }
   ],
   "canonical_name": "random.gamma",
-  "canonical_path": "random/gamma",
+  "canonical_path": "numpy/random/gamma",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -543,15 +543,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.gamma",
+  "flopscope_ref": "fnp.random.gamma",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/gamma/",
+  "href": "/docs/api/numpy/random/gamma/",
   "legacy_href": "/docs/api/ops/random-gamma/",
   "module": "numpy.random",
   "name": "random.gamma",
   "next": {
-    "href": "/docs/api/random/geometric/",
-    "label": "flops.random.geometric"
+    "href": "/docs/api/numpy/random/geometric/",
+    "label": "fnp.random.geometric"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -589,10 +589,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/f/",
-    "label": "flops.random.f"
+    "href": "/docs/api/numpy/random/f/",
+    "label": "fnp.random.f"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.gamma",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.gamma.html",
   "returns": [
     {
@@ -637,9 +638,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.gamma(shape, scale=1.0, size=None)",
+  "signature": "fnp.random.gamma(shape, scale=1.0, size=None)",
   "slug": "random-gamma",
   "summary": "Draw samples from a Gamma distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

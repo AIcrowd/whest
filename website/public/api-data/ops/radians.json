@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/radians/",
+  "detail_href": "/docs/api/numpy/radians/",
   "detail_json_href": "/api-data/ops/radians.json",
   "docs": {
     "sections": [
@@ -294,7 +294,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -368,12 +368,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.radians",
+    "flopscope_ref": "fnp.radians",
     "module": "numpy",
     "name": "radians",
     "notes": "Convert degrees to radians element-wise.",
     "numpy_ref": "np.radians",
-    "signature": "flops.radians(*args, **kwargs)",
+    "signature": "fnp.radians(*args, **kwargs)",
     "status": "supported",
     "summary": "Convert angles from degrees to radians.",
     "weight": 1.0

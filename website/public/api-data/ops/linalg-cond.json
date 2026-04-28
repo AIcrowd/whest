@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/cond/",
+  "detail_href": "/docs/api/numpy/linalg/cond/",
   "detail_json_href": "/api-data/ops/linalg-cond.json",
   "docs": {
     "sections": [
@@ -160,7 +160,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-norm",
+                "href": "/docs/api/numpy/linalg/norm/",
                 "label": "flops.linalg.norm",
                 "original_target": "numpy.linalg.norm",
                 "role": "",
@@ -236,7 +236,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -363,12 +363,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
-    "flopscope_ref": "flops.linalg.cond",
+    "flopscope_ref": "fnp.linalg.cond",
     "module": "numpy.linalg",
     "name": "linalg.cond",
     "notes": "Condition number. Cost: m*n*min(m,n) (via SVD).",
     "numpy_ref": "np.linalg.cond",
-    "signature": "flops.linalg.cond(x, p=None)",
+    "signature": "fnp.linalg.cond(x, p=None)",
     "status": "supported",
     "summary": "Compute the condition number of a matrix.",
     "weight": 4.0

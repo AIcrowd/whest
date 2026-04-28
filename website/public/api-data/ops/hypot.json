@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/hypot/",
+  "detail_href": "/docs/api/numpy/hypot/",
   "detail_json_href": "/api-data/ops/hypot.json",
   "docs": {
     "sections": [
@@ -338,7 +338,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -400,12 +400,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.hypot",
+    "flopscope_ref": "fnp.hypot",
     "module": "numpy",
     "name": "hypot",
     "notes": "Element-wise Euclidean norm sqrt(x1^2 + x2^2).",
     "numpy_ref": "np.hypot",
-    "signature": "flops.hypot(*args, **kwargs)",
+    "signature": "fnp.hypot(*args, **kwargs)",
     "status": "supported",
     "summary": "Given the \"legs\" of a right triangle, return its hypotenuse.",
     "weight": 16.0

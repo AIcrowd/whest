@@ -46,7 +46,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/allclose/",
+              "href": "/docs/api/numpy/allclose/",
               "kind": "link",
               "target": "allclose",
               "text": "allclose"
@@ -439,7 +439,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/sin/",
+              "href": "/docs/api/numpy/sin/",
               "kind": "link",
               "target": "sin",
               "text": "flops.sin"

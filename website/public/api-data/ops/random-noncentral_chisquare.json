@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/noncentral-chisquare/",
+  "detail_href": "/docs/api/numpy/random/noncentral-chisquare/",
   "detail_json_href": "/api-data/ops/random-noncentral_chisquare.json",
   "docs": {
     "sections": [
@@ -511,12 +511,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.noncentral_chisquare",
+    "flopscope_ref": "fnp.random.noncentral_chisquare",
     "module": "numpy.random",
     "name": "random.noncentral_chisquare",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.noncentral_chisquare",
-    "signature": "flops.random.noncentral_chisquare(df, nonc, size=None)",
+    "signature": "fnp.random.noncentral_chisquare(df, nonc, size=None)",
     "status": "supported",
     "summary": "Draw samples from a noncentral chi-square distribution.",
     "weight": 16.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/nextafter/",
+  "detail_href": "/docs/api/numpy/nextafter/",
   "detail_json_href": "/api-data/ops/nextafter.json",
   "docs": {
     "sections": [
@@ -370,7 +370,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -407,12 +407,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.nextafter",
+    "flopscope_ref": "fnp.nextafter",
     "module": "numpy",
     "name": "nextafter",
     "notes": "Return next float after x1 toward x2 element-wise.",
     "numpy_ref": "np.nextafter",
-    "signature": "flops.nextafter(*args, **kwargs)",
+    "signature": "fnp.nextafter(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the next floating-point value after x1 towards x2, element-wise.",
     "weight": 1.0

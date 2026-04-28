@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/median/",
+  "detail_href": "/docs/api/numpy/median/",
   "detail_json_href": "/api-data/ops/median.json",
   "docs": {
     "sections": [
@@ -119,7 +119,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/median",
+                        "href": "/docs/api/numpy/median/",
                         "kind": "link",
                         "target": "median",
                         "text": "median"
@@ -180,7 +180,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/median",
+                    "href": "/docs/api/numpy/median/",
                     "kind": "link",
                     "target": "median",
                     "text": "median"
@@ -365,7 +365,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
+                "href": "/docs/api/numpy/mean/",
                 "label": "flops.mean",
                 "original_target": "mean",
                 "role": "",
@@ -376,7 +376,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/percentile",
+                "href": "/docs/api/numpy/percentile/",
                 "label": "flops.percentile",
                 "original_target": "percentile",
                 "role": "",
@@ -482,7 +482,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -616,12 +616,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.median",
+    "flopscope_ref": "fnp.median",
     "module": "numpy",
     "name": "median",
     "notes": "Median of array elements (sorts internally).",
     "numpy_ref": "np.median",
-    "signature": "flops.median(a, axis=None, out=None, overwrite_input=False, keepdims=False)",
+    "signature": "fnp.median(a, axis=None, out=None, overwrite_input=False, keepdims=False)",
     "status": "supported",
     "summary": "Compute the median along the specified axis.",
     "weight": 1.0

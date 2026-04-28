@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/repeat/",
+  "detail_href": "/docs/api/numpy/repeat/",
   "detail_json_href": "/api-data/ops/repeat.json",
   "docs": {
     "sections": [
@@ -172,7 +172,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/tile",
+                "href": "/docs/api/numpy/tile/",
                 "label": "flops.tile",
                 "original_target": "tile",
                 "role": "",
@@ -188,7 +188,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/unique",
+                "href": "/docs/api/numpy/unique/",
                 "label": "flops.unique",
                 "original_target": "unique",
                 "role": "",
@@ -208,7 +208,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -275,12 +275,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.repeat",
+    "flopscope_ref": "fnp.repeat",
     "module": "numpy",
     "name": "repeat",
     "notes": "Repeat elements of an array. Cost: numel(output).",
     "numpy_ref": "np.repeat",
-    "signature": "flops.repeat(a, repeats, axis=None)",
+    "signature": "fnp.repeat(a, repeats, axis=None)",
     "status": "supported",
     "summary": "Repeat each element of an array after themselves",
     "weight": 1.0

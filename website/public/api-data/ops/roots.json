@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/roots/",
+  "detail_href": "/docs/api/numpy/roots/",
   "detail_json_href": "/api-data/ops/roots.json",
   "docs": {
     "sections": [
@@ -226,7 +226,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/poly",
+                "href": "/docs/api/numpy/poly/",
                 "label": "flops.poly",
                 "original_target": "poly",
                 "role": "",
@@ -242,7 +242,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/polyval",
+                "href": "/docs/api/numpy/polyval/",
                 "label": "flops.polyval",
                 "original_target": "polyval",
                 "role": "",
@@ -258,7 +258,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/polyfit",
+                "href": "/docs/api/numpy/polyfit/",
                 "label": "flops.polyfit",
                 "original_target": "polyfit",
                 "role": "",
@@ -326,7 +326,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -354,12 +354,12 @@
     "category": "counted_custom",
     "cost_formula": "10n^3",
     "cost_formula_latex": "$10n^3$",
-    "flopscope_ref": "flops.roots",
+    "flopscope_ref": "fnp.roots",
     "module": "flopscope._polynomial",
     "name": "roots",
     "notes": "Return roots of polynomial with given coefficients. Cost: $n^3$ (companion matrix eig, simplified).",
     "numpy_ref": "np.roots",
-    "signature": "flops.roots(p)",
+    "signature": "fnp.roots(p)",
     "status": "supported",
     "summary": "Return the roots of a polynomial with coefficients given in p.",
     "weight": 16.0

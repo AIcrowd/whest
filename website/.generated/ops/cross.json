@@ -517,7 +517,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/inner",
+              "href": "/docs/api/numpy/inner/",
               "label": "flops.inner",
               "original_target": "inner",
               "role": "",
@@ -533,7 +533,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/outer",
+              "href": "/docs/api/numpy/outer/",
               "label": "flops.outer",
               "original_target": "outer",
               "role": "",
@@ -549,7 +549,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/cross",
+                  "href": "/docs/api/numpy/cross/",
                   "kind": "link",
                   "target": "cross",
                   "text": "flops.cross"
@@ -560,7 +560,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/linalg-cross",
+              "href": "/docs/api/numpy/linalg/cross/",
               "label": "flops.linalg.cross",
               "original_target": "linalg.cross",
               "role": "",
@@ -576,7 +576,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ix_",
+              "href": "/docs/api/numpy/ix-/",
               "label": "flops.ix_",
               "original_target": "ix_",
               "role": "",
@@ -633,7 +633,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -943,7 +943,7 @@
     }
   ],
   "canonical_name": "cross",
-  "canonical_path": "cross",
+  "canonical_path": "numpy/cross",
   "category": "counted_custom",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -954,20 +954,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = [1, 2, 3]\n\ny = [4, 5, 6]\n\nflops.cross(x, y)\n\nx = [1, 2]\n\ny = [4, 5, 6]\n\nflops.cross(x, y)\n\nx = [1, 2, 0]\n\ny = [4, 5, 6]\n\nflops.cross(x, y)\n\nx = [1,2]\n\ny = [4,5]\n\nflops.cross(x, y)\n\nx = flops.array([[1,2,3], [4,5,6]])\n\ny = flops.array([[4,5,6], [1,2,3]])\n\nflops.cross(x, y)\n\nflops.cross(x, y, axisc=0)\n\nx = flops.array([[1,2,3], [4,5,6], [7, 8, 9]])\n\ny = flops.array([[7, 8, 9], [4,5,6], [1,2,3]])\n\nflops.cross(x, y)\n\nflops.cross(x, y, axisa=0, axisb=0)",
+    "code": "import flopscope.numpy as fnp\n\nx = [1, 2, 3]\n\ny = [4, 5, 6]\n\nflops.cross(x, y)\n\nx = [1, 2]\n\ny = [4, 5, 6]\n\nflops.cross(x, y)\n\nx = [1, 2, 0]\n\ny = [4, 5, 6]\n\nflops.cross(x, y)\n\nx = [1,2]\n\ny = [4,5]\n\nflops.cross(x, y)\n\nx = flops.array([[1,2,3], [4,5,6]])\n\ny = flops.array([[4,5,6], [1,2,3]])\n\nflops.cross(x, y)\n\nflops.cross(x, y, axisc=0)\n\nx = flops.array([[1,2,3], [4,5,6], [7, 8, 9]])\n\ny = flops.array([[7, 8, 9], [4,5,6], [1,2,3]])\n\nflops.cross(x, y)\n\nflops.cross(x, y, axisa=0, axisb=0)",
     "output": "array([-3,  6, -3])\n\narray([12, -6, -3])\n\narray([12, -6, -3])\n\narray(-3)\n\narray([[-3,  6, -3],\n       [ 3, -6,  3]])\n\narray([[-3,  3],\n       [ 6, -6],\n       [-3,  3]])\n\narray([[ -6,  12,  -6],\n       [  0,   0,   0],\n       [  6, -12,   6]])\n\narray([[-24,  48, -24],\n       [-30,  60, -30],\n       [-36,  72, -36]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.cross",
+  "flopscope_ref": "fnp.cross",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1115",
-  "href": "/docs/api/cross/",
+  "href": "/docs/api/numpy/cross/",
   "legacy_href": "/docs/api/ops/cross/",
   "module": "numpy",
   "name": "cross",
   "next": {
-    "href": "/docs/api/cumprod/",
-    "label": "flops.cumprod"
+    "href": "/docs/api/numpy/cumprod/",
+    "label": "fnp.cumprod"
   },
   "notes": "Cross product of two 3-D vectors.",
   "notes_sections": [
@@ -1024,10 +1024,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/cov/",
-    "label": "flops.cov"
+    "href": "/docs/api/numpy/cov/",
+    "label": "fnp.cov"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.cross",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cross.html",
   "returns": [
     {
@@ -1048,7 +1049,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/inner",
+      "href": "/docs/api/numpy/inner/",
       "label": "flops.inner",
       "original_target": "inner",
       "role": "",
@@ -1064,7 +1065,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/outer",
+      "href": "/docs/api/numpy/outer/",
       "label": "flops.outer",
       "original_target": "outer",
       "role": "",
@@ -1080,7 +1081,7 @@
         },
         {
           "external_url": "",
-          "href": "/docs/api/ops/cross",
+          "href": "/docs/api/numpy/cross/",
           "kind": "link",
           "target": "cross",
           "text": "flops.cross"
@@ -1091,7 +1092,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/linalg-cross",
+      "href": "/docs/api/numpy/linalg/cross/",
       "label": "flops.linalg.cross",
       "original_target": "linalg.cross",
       "role": "",
@@ -1107,7 +1108,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ix_",
+      "href": "/docs/api/numpy/ix-/",
       "label": "flops.ix_",
       "original_target": "ix_",
       "role": "",
@@ -1115,9 +1116,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.cross(a, b, axisa=-1, axisb=-1, axisc=-1, axis=None)",
+  "signature": "fnp.cross(a, b, axisa=-1, axisb=-1, axisc=-1, axis=None)",
   "slug": "cross",
   "summary": "Return the cross product of two (arrays of) vectors.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1522",
   "weight": 1.0
 }

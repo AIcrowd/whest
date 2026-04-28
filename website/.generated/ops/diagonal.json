@@ -475,7 +475,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/diag",
+              "href": "/docs/api/numpy/diag/",
               "label": "flops.diag",
               "original_target": "diag",
               "role": "",
@@ -491,7 +491,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/diagflat",
+              "href": "/docs/api/numpy/diagflat/",
               "label": "flops.diagflat",
               "original_target": "diagflat",
               "role": "",
@@ -507,7 +507,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/trace",
+              "href": "/docs/api/numpy/trace/",
               "label": "flops.trace",
               "original_target": "trace",
               "role": "",
@@ -527,7 +527,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -674,7 +674,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/flipud",
+              "href": "/docs/api/numpy/flipud/",
               "kind": "link",
               "target": "flipud",
               "text": "flops.flipud"
@@ -685,7 +685,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/fliplr",
+              "href": "/docs/api/numpy/fliplr/",
               "kind": "link",
               "target": "fliplr",
               "text": "flops.fliplr"
@@ -756,7 +756,7 @@
     }
   ],
   "canonical_name": "diagonal",
-  "canonical_path": "diagonal",
+  "canonical_path": "numpy/diagonal",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -767,20 +767,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.arange(4).reshape(2,2)\n\na\n\na.diagonal()\n\na.diagonal(1)\n\na = flops.arange(8).reshape(2,2,2); a\n\na.diagonal(0,  # Main diagonals of two arrays created by skipping\n           0,  # across the outer(left)-most axis last and\n           1)  # the \"middle\" (row) axis first.\n\na[:,:,0]  # main diagonal is [0 6]\n\na[:,:,1]  # main diagonal is [1 7]\n\na = flops.arange(9).reshape(3, 3)\n\na\n\nflops.fliplr(a).diagonal()  # Horizontal flip\n\nflops.flipud(a).diagonal()  # Vertical flip",
+    "code": "import flopscope.numpy as fnp\n\na = flops.arange(4).reshape(2,2)\n\na\n\na.diagonal()\n\na.diagonal(1)\n\na = flops.arange(8).reshape(2,2,2); a\n\na.diagonal(0,  # Main diagonals of two arrays created by skipping\n           0,  # across the outer(left)-most axis last and\n           1)  # the \"middle\" (row) axis first.\n\na[:,:,0]  # main diagonal is [0 6]\n\na[:,:,1]  # main diagonal is [1 7]\n\na = flops.arange(9).reshape(3, 3)\n\na\n\nflops.fliplr(a).diagonal()  # Horizontal flip\n\nflops.flipud(a).diagonal()  # Vertical flip",
     "output": "array([[0, 1],\n       [2, 3]])\n\narray([0, 3])\n\narray([1])\n\narray([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])\n\narray([[0, 6],\n       [1, 7]])\n\narray([[0, 2],\n       [4, 6]])\n\narray([[1, 3],\n       [5, 7]])\n\narray([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n\narray([2, 4, 6])\n\narray([6, 4, 2])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.diagonal",
+  "flopscope_ref": "fnp.diagonal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L589",
-  "href": "/docs/api/diagonal/",
+  "href": "/docs/api/numpy/diagonal/",
   "legacy_href": "/docs/api/ops/diagonal/",
   "module": "numpy",
   "name": "diagonal",
   "next": {
-    "href": "/docs/api/diff/",
-    "label": "flops.diff"
+    "href": "/docs/api/numpy/diff/",
+    "label": "fnp.diff"
   },
   "notes": "Return specified diagonals. Cost: numel(input).",
   "notes_sections": [],
@@ -819,10 +819,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/diagflat/",
-    "label": "flops.diagflat"
+    "href": "/docs/api/numpy/diagflat/",
+    "label": "fnp.diagflat"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.diagonal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html",
   "returns": [
     {
@@ -850,7 +851,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/diag",
+      "href": "/docs/api/numpy/diag/",
       "label": "flops.diag",
       "original_target": "diag",
       "role": "",
@@ -866,7 +867,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/diagflat",
+      "href": "/docs/api/numpy/diagflat/",
       "label": "flops.diagflat",
       "original_target": "diagflat",
       "role": "",
@@ -882,7 +883,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/trace",
+      "href": "/docs/api/numpy/trace/",
       "label": "flops.trace",
       "original_target": "trace",
       "role": "",
@@ -890,9 +891,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.diagonal(a, offset=0, axis1=0, axis2=1)",
+  "signature": "fnp.diagonal(a, offset=0, axis1=0, axis2=1)",
   "slug": "diagonal",
   "summary": "Return specified diagonals.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1695",
   "weight": 1.0
 }

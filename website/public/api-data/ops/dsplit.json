@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/dsplit/",
+  "detail_href": "/docs/api/numpy/dsplit/",
   "detail_json_href": "/api-data/ops/dsplit.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "kind": "link",
                 "target": "split",
                 "text": "split"
@@ -38,7 +38,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/dsplit",
+                "href": "/docs/api/numpy/dsplit/",
                 "kind": "link",
                 "target": "dsplit",
                 "text": "dsplit"
@@ -49,7 +49,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "kind": "link",
                 "target": "split",
                 "text": "split"
@@ -85,7 +85,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/split",
+                "href": "/docs/api/numpy/split/",
                 "label": "flops.split",
                 "original_target": "split",
                 "role": "",
@@ -105,7 +105,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -219,12 +219,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.dsplit",
+    "flopscope_ref": "fnp.dsplit",
     "module": "numpy",
     "name": "dsplit",
     "notes": "Split array into multiple sub-arrays depth-wise. Cost: numel(output).",
     "numpy_ref": "np.dsplit",
-    "signature": "flops.dsplit(ary, indices_or_sections)",
+    "signature": "fnp.dsplit(ary, indices_or_sections)",
     "status": "supported",
     "summary": "Split array into multiple sub-arrays along the 3rd axis (depth).",
     "weight": 0.0

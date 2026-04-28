@@ -182,7 +182,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -271,7 +271,7 @@
     }
   ],
   "canonical_name": "swapaxes",
-  "canonical_path": "swapaxes",
+  "canonical_path": "numpy/swapaxes",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -282,20 +282,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.array([[1,2,3]])\n\nflops.swapaxes(x,0,1)\n\nx = flops.array([[[0,1],[2,3]],[[4,5],[6,7]]])\n\nx\n\nflops.swapaxes(x,0,2)",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([[1,2,3]])\n\nflops.swapaxes(x,0,1)\n\nx = flops.array([[[0,1],[2,3]],[[4,5],[6,7]]])\n\nx\n\nflops.swapaxes(x,0,2)",
     "output": "array([[1],\n       [2],\n       [3]])\n\narray([[[0, 1],\n        [2, 3]],\n       [[4, 5],\n        [6, 7]]])\n\narray([[[0, 4],\n        [2, 6]],\n       [[1, 5],\n        [3, 7]]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.swapaxes",
+  "flopscope_ref": "fnp.swapaxes",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L316",
-  "href": "/docs/api/swapaxes/",
+  "href": "/docs/api/numpy/swapaxes/",
   "legacy_href": "/docs/api/ops/swapaxes/",
   "module": "numpy",
   "name": "swapaxes",
   "next": {
-    "href": "/docs/api/take/",
-    "label": "flops.take"
+    "href": "/docs/api/numpy/take/",
+    "label": "fnp.take"
   },
   "notes": "Interchange two axes of an array.",
   "notes_sections": [],
@@ -324,10 +324,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/sum/",
-    "label": "flops.sum"
+    "href": "/docs/api/numpy/sum/",
+    "label": "fnp.sum"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.swapaxes",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.swapaxes.html",
   "returns": [
     {
@@ -342,9 +343,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.swapaxes(a, axis1, axis2)",
+  "signature": "fnp.swapaxes(a, axis1, axis2)",
   "slug": "swapaxes",
   "summary": "Interchange two axes of an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L578",
   "weight": 0.0
 }

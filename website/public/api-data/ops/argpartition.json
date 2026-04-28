@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/argpartition/",
+  "detail_href": "/docs/api/numpy/argpartition/",
   "detail_json_href": "/api-data/ops/argpartition.json",
   "docs": {
     "sections": [
@@ -328,7 +328,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/partition",
+                "href": "/docs/api/numpy/partition/",
                 "label": "flops.partition",
                 "original_target": "partition",
                 "role": "",
@@ -360,7 +360,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "label": "flops.argsort",
                 "original_target": "argsort",
                 "role": "",
@@ -384,7 +384,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/take_along_axis",
+                "href": "/docs/api/numpy/take-along-axis/",
                 "label": "flops.take_along_axis",
                 "original_target": "take_along_axis",
                 "role": "",
@@ -420,7 +420,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argpartition",
+                "href": "/docs/api/numpy/argpartition/",
                 "kind": "link",
                 "target": "argpartition",
                 "text": "argpartition"
@@ -431,7 +431,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/partition",
+                "href": "/docs/api/numpy/partition/",
                 "kind": "link",
                 "target": "partition",
                 "text": "partition"
@@ -462,7 +462,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -560,12 +560,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.argpartition",
+    "flopscope_ref": "fnp.argpartition",
     "module": "numpy",
     "name": "argpartition",
     "notes": "Indirect partition; cost = n per slice.",
     "numpy_ref": "np.argpartition",
-    "signature": "flops.argpartition(a, kth, axis=-1, kind='introselect', order=None)",
+    "signature": "fnp.argpartition(a, kth, axis=-1, kind='introselect', order=None)",
     "status": "supported",
     "summary": "Perform an indirect partition along the given axis using the algorithm specified by the `kind` keyword. It returns an array of indices of the same shape as `a` that index data along the given axis in partitioned order.",
     "weight": 1.0

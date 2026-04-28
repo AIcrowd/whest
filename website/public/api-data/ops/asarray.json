@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/asarray/",
+  "detail_href": "/docs/api/numpy/asarray/",
   "detail_json_href": "/api-data/ops/asarray.json",
   "docs": {
     "sections": [
@@ -524,7 +524,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/asarray_chkfinite",
+                "href": "/docs/api/numpy/asarray-chkfinite/",
                 "label": "flops.asarray_chkfinite",
                 "original_target": "asarray_chkfinite",
                 "role": "",
@@ -540,7 +540,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fromiter",
+                "href": "/docs/api/numpy/fromiter/",
                 "label": "flops.fromiter",
                 "original_target": "fromiter",
                 "role": "",
@@ -556,7 +556,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fromfunction",
+                "href": "/docs/api/numpy/fromfunction/",
                 "label": "flops.fromfunction",
                 "original_target": "fromfunction",
                 "role": "",
@@ -590,7 +590,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -740,12 +740,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.asarray",
+    "flopscope_ref": "fnp.asarray",
     "module": "numpy",
     "name": "asarray",
     "notes": "Convert input to array. Cost: numel(input).",
     "numpy_ref": "np.asarray",
-    "signature": "flops.asarray(a, dtype=None, **kwargs)",
+    "signature": "fnp.asarray(a, dtype=None, **kwargs)",
     "status": "supported",
     "summary": "Convert the input to an array.",
     "weight": 0.0

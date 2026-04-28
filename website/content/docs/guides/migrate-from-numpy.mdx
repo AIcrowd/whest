@@ -32,27 +32,35 @@ h = np.maximum(h, 0)
 **After (flopscope) — simplest form:**
 
 ```python
-import flopscope as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
 # No setup needed — global default budget tracks FLOPs automatically
-W = we.random.randn(256, 256)
-x = we.random.randn(256)
-h = we.dot(W, x)
-h = we.maximum(h, 0)
+W = fnp.random.randn(256, 256)
+x = fnp.random.randn(256)
+h = fnp.dot(W, x)
+h = fnp.maximum(h, 0)
 
-we.budget_summary()  # see what you spent
+# No setup needed — global default budget tracks FLOPs automatically
+W = fnp.random.randn(256, 256)
+x = fnp.random.randn(256)
+h = fnp.dot(W, x)
+h = fnp.maximum(h, 0)
+
+flops.budget_summary()  # see what you spent
 ```
 
 **After (flopscope) — with explicit budget control:**
 
 ```python
-import flopscope as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
-with we.BudgetContext(flop_budget=20_000_000) as budget:
-    W = we.random.randn(256, 256)
-    x = we.random.randn(256)
-    h = we.dot(W, x)
-    h = we.maximum(h, 0)
+with flops.BudgetContext(flop_budget=20_000_000) as budget:
+    W = fnp.random.randn(256, 256)
+    x = fnp.random.randn(256)
+    h = fnp.dot(W, x)
+    h = fnp.maximum(h, 0)
 ```
 
 ## What stays the same
@@ -65,22 +73,22 @@ with we.BudgetContext(flop_budget=20_000_000) as budget:
 
 | NumPy | flopscope | Notes |
 |-------|-----------|-------|
-| `import numpy as np` | `import flopscope as we` | Drop-in replacement |
+| `import numpy as np` | `import flopscope.numpy as fnp` | Use `import flopscope as flops` alongside it for budgets, symmetry, and accounting helpers |
 | Call ops anywhere | Works anywhere too | A global default budget auto-activates; use explicit `BudgetContext` for limits and namespacing |
-| `np.linalg.svd(A)` | `we.linalg.svd(A, k=10)` | Truncated SVD with explicit `k` |
-| Plain `ndarray` only | `SymmetricTensor` available | Wrap with `we.as_symmetric()` for cost savings |
+| `np.linalg.svd(A)` | `fnp.linalg.svd(A, k=10)` | Truncated SVD with explicit `k` |
+| Plain `ndarray` only | `SymmetricTensor` available | Wrap with `flops.as_symmetric()` for cost savings |
 | All NumPy ops available | Most available, 32 blacklisted | I/O and config ops raise `AttributeError` |
 | No cost tracking | Automatic FLOP counting | Every counted op deducts from budget |
 
 ## Common pitfalls
 
-**Symptom:** `AttributeError` when calling an I/O or config function (e.g., `we.save`, `we.seterr`)
+**Symptom:** `AttributeError` when calling an I/O or config function (e.g., `fnp.save`, `fnp.seterr`)
 
 **Fix:** 32 operations are blacklisted because they are I/O, configuration, or datetime functions with no FLOP cost. See [Operation Categories](/docs/understanding/operation-categories/) for the full list. Use `numpy` directly for these.
 
-**Symptom:** Using `np.linalg.svd` instead of `we.linalg.svd`
+**Symptom:** Using `np.linalg.svd` instead of `fnp.linalg.svd`
 
-**Fix:** If you import NumPy alongside flopscope, make sure to use `we.` for operations you want counted. Operations called through `np.` bypass FLOP counting entirely.
+**Fix:** If you import NumPy alongside flopscope, make sure to use `fnp.` for counted operations. Operations called through `np.` bypass FLOP counting entirely.
 
 ## Related pages
 

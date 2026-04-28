@@ -318,7 +318,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/sort",
+              "href": "/docs/api/numpy/sort/",
               "label": "flops.sort",
               "original_target": "sort",
               "role": "",
@@ -334,7 +334,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/histogram",
+              "href": "/docs/api/numpy/histogram/",
               "label": "flops.histogram",
               "original_target": "histogram",
               "role": "",
@@ -366,7 +366,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/searchsorted",
+              "href": "/docs/api/numpy/searchsorted/",
               "kind": "link",
               "target": "searchsorted",
               "text": "searchsorted"
@@ -385,7 +385,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/sort",
+              "href": "/docs/api/numpy/sort/",
               "kind": "link",
               "target": "sort",
               "text": "sort"
@@ -456,7 +456,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -573,7 +573,7 @@
     }
   ],
   "canonical_name": "searchsorted",
-  "canonical_path": "searchsorted",
+  "canonical_path": "numpy/searchsorted",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -589,20 +589,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.searchsorted([11,12,13,14,15], 13)\n\nflops.searchsorted([11,12,13,14,15], 13, side='right')\n\nflops.searchsorted([11,12,13,14,15], [-10, 20, 12, 13])\n\na = flops.array([40, 10, 20, 30])\n\nsorter = flops.argsort(a)\n\nsorter\n\nresult = flops.searchsorted(a, 25, sorter=sorter)\n\nresult\n\na[sorter[result]]",
+    "code": "import flopscope.numpy as fnp\n\nflops.searchsorted([11,12,13,14,15], 13)\n\nflops.searchsorted([11,12,13,14,15], 13, side='right')\n\nflops.searchsorted([11,12,13,14,15], [-10, 20, 12, 13])\n\na = flops.array([40, 10, 20, 30])\n\nsorter = flops.argsort(a)\n\nsorter\n\nresult = flops.searchsorted(a, 25, sorter=sorter)\n\nresult\n\na[sorter[result]]",
     "output": "2\n\n3\n\narray([0, 5, 1, 2])\n\narray([1, 2, 3, 0])  # Indices that would sort the array 'a'\n\n2\n\n30  # The element at index 2 of the sorted array is 30.",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.searchsorted",
+  "flopscope_ref": "fnp.searchsorted",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L181",
-  "href": "/docs/api/searchsorted/",
+  "href": "/docs/api/numpy/searchsorted/",
   "legacy_href": "/docs/api/ops/searchsorted/",
   "module": "numpy",
   "name": "searchsorted",
   "next": {
-    "href": "/docs/api/select/",
-    "label": "flops.select"
+    "href": "/docs/api/numpy/select/",
+    "label": "fnp.select"
   },
   "notes": "Binary search; cost = m*ceil(log2(n)).",
   "notes_sections": [
@@ -647,10 +647,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/row-stack/",
-    "label": "flops.row_stack"
+    "href": "/docs/api/numpy/row-stack/",
+    "label": "fnp.row_stack"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.searchsorted",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html",
   "returns": [
     {
@@ -672,7 +673,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/sort",
+      "href": "/docs/api/numpy/sort/",
       "label": "flops.sort",
       "original_target": "sort",
       "role": "",
@@ -688,7 +689,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/histogram",
+      "href": "/docs/api/numpy/histogram/",
       "label": "flops.histogram",
       "original_target": "histogram",
       "role": "",
@@ -696,9 +697,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.searchsorted(a, v, side='left', sorter=None)",
+  "signature": "fnp.searchsorted(a, v, side='left', sorter=None)",
   "slug": "searchsorted",
   "summary": "Find indices where elements should be inserted to maintain order.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L1447",
   "weight": 1.0
 }

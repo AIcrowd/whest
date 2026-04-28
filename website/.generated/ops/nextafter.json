@@ -370,7 +370,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -403,7 +403,7 @@
     }
   ],
   "canonical_name": "nextafter",
-  "canonical_path": "nextafter",
+  "canonical_path": "numpy/nextafter",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -421,20 +421,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\neps = flops.finfo(flops.float64).eps\n\nflops.nextafter(1, 2) == eps + 1\n\nflops.nextafter([1, 2], [2, 1]) == [eps + 1, 2 - eps]",
+    "code": "import flopscope.numpy as fnp\n\neps = flops.finfo(flops.float64).eps\n\nflops.nextafter(1, 2) == eps + 1\n\nflops.nextafter([1, 2], [2, 1]) == [eps + 1, 2 - eps]",
     "output": "True\n\narray([ True,  True])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.nextafter",
+  "flopscope_ref": "fnp.nextafter",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/nextafter/",
+  "href": "/docs/api/numpy/nextafter/",
   "legacy_href": "/docs/api/ops/nextafter/",
   "module": "numpy",
   "name": "nextafter",
   "next": {
-    "href": "/docs/api/nonzero/",
-    "label": "flops.nonzero"
+    "href": "/docs/api/numpy/nonzero/",
+    "label": "fnp.nonzero"
   },
   "notes": "Return next float after x1 toward x2 element-wise.",
   "notes_sections": [],
@@ -488,10 +488,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/negative/",
-    "label": "flops.negative"
+    "href": "/docs/api/numpy/negative/",
+    "label": "fnp.negative"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nextafter",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nextafter.html",
   "returns": [
     {
@@ -504,9 +505,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.nextafter(*args, **kwargs)",
+  "signature": "fnp.nextafter(*args, **kwargs)",
   "slug": "nextafter",
   "summary": "Return the next floating-point value after x1 towards x2, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

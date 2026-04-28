@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/cbrt/",
+  "detail_href": "/docs/api/numpy/cbrt/",
   "detail_json_href": "/api-data/ops/cbrt.json",
   "docs": {
     "sections": [
@@ -332,7 +332,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -355,12 +355,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.cbrt",
+    "flopscope_ref": "fnp.cbrt",
     "module": "numpy",
     "name": "cbrt",
     "notes": "Element-wise cube root.",
     "numpy_ref": "np.cbrt",
-    "signature": "flops.cbrt(*args, **kwargs)",
+    "signature": "fnp.cbrt(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the cube-root of an array, element-wise.",
     "weight": 16.0

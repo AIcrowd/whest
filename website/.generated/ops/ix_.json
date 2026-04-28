@@ -36,7 +36,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/ix_",
+              "href": "/docs/api/numpy/ix-/",
               "kind": "link",
               "target": "ix_",
               "text": "ix_"
@@ -185,7 +185,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/meshgrid",
+              "href": "/docs/api/numpy/meshgrid/",
               "label": "flops.meshgrid",
               "original_target": "meshgrid",
               "role": "",
@@ -205,7 +205,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -314,7 +314,7 @@
     }
   ],
   "canonical_name": "ix_",
-  "canonical_path": "ix-",
+  "canonical_path": "numpy/ix-",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -325,20 +325,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.arange(10).reshape(2, 5)\n\na\n\nixgrid = flops.ix_([0, 1], [2, 4])\n\nixgrid\n\nixgrid[0].shape, ixgrid[1].shape\n\na[ixgrid]\n\nixgrid = flops.ix_([True, True], [2, 4])\n\na[ixgrid]\n\nixgrid = flops.ix_([True, True], [False, False, True, False, True])\n\na[ixgrid]",
+    "code": "import flopscope.numpy as fnp\n\na = flops.arange(10).reshape(2, 5)\n\na\n\nixgrid = flops.ix_([0, 1], [2, 4])\n\nixgrid\n\nixgrid[0].shape, ixgrid[1].shape\n\na[ixgrid]\n\nixgrid = flops.ix_([True, True], [2, 4])\n\na[ixgrid]\n\nixgrid = flops.ix_([True, True], [False, False, True, False, True])\n\na[ixgrid]",
     "output": "array([[0, 1, 2, 3, 4],\n       [5, 6, 7, 8, 9]])\n\n(array([[0],\n       [1]]), array([[2, 4]]))\n\n((2, 1), (1, 2))\n\narray([[2, 4],\n       [7, 9]])\n\narray([[2, 4],\n       [7, 9]])\n\narray([[2, 4],\n       [7, 9]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.ix_",
+  "flopscope_ref": "fnp.ix_",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1280",
-  "href": "/docs/api/ix-/",
+  "href": "/docs/api/numpy/ix-/",
   "legacy_href": "/docs/api/ops/ix_/",
   "module": "numpy",
   "name": "ix_",
   "next": {
-    "href": "/docs/api/kaiser/",
-    "label": "flops.kaiser"
+    "href": "/docs/api/numpy/kaiser/",
+    "label": "fnp.kaiser"
   },
   "notes": "Construct open mesh from multiple sequences. Cost: numel(output).",
   "notes_sections": [],
@@ -356,10 +356,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/iterable/",
-    "label": "flops.iterable"
+    "href": "/docs/api/numpy/iterable/",
+    "label": "fnp.iterable"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.ix_",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ix_.html",
   "returns": [
     {
@@ -398,7 +399,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/meshgrid",
+      "href": "/docs/api/numpy/meshgrid/",
       "label": "flops.meshgrid",
       "original_target": "meshgrid",
       "role": "",
@@ -406,9 +407,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.ix_(*args)",
+  "signature": "fnp.ix_(*args)",
   "slug": "ix_",
   "summary": "Construct an open mesh from multiple sequences.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_index_tricks_impl.py#L34",
   "weight": 1.0
 }

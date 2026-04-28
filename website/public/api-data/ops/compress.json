@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/compress/",
+  "detail_href": "/docs/api/numpy/compress/",
   "detail_json_href": "/api-data/ops/compress.json",
   "docs": {
     "sections": [
@@ -43,7 +43,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/compress",
+                "href": "/docs/api/numpy/compress/",
                 "kind": "link",
                 "target": "compress",
                 "text": "compress"
@@ -54,7 +54,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/extract",
+                "href": "/docs/api/numpy/extract/",
                 "kind": "link",
                 "target": "extract",
                 "text": "extract"
@@ -257,7 +257,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/take",
+                "href": "/docs/api/numpy/take/",
                 "label": "flops.take",
                 "original_target": "take",
                 "role": "",
@@ -268,7 +268,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/choose",
+                "href": "/docs/api/numpy/choose/",
                 "label": "flops.choose",
                 "original_target": "choose",
                 "role": "",
@@ -279,7 +279,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diag",
+                "href": "/docs/api/numpy/diag/",
                 "label": "flops.diag",
                 "original_target": "diag",
                 "role": "",
@@ -290,7 +290,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diagonal",
+                "href": "/docs/api/numpy/diagonal/",
                 "label": "flops.diagonal",
                 "original_target": "diagonal",
                 "role": "",
@@ -301,7 +301,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/select",
+                "href": "/docs/api/numpy/select/",
                 "label": "flops.select",
                 "original_target": "select",
                 "role": "",
@@ -333,7 +333,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/extract",
+                "href": "/docs/api/numpy/extract/",
                 "label": "flops.extract",
                 "original_target": "extract",
                 "role": "",
@@ -364,7 +364,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -462,12 +462,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.compress",
+    "flopscope_ref": "fnp.compress",
     "module": "numpy",
     "name": "compress",
     "notes": "Return selected slices along axis. Cost: numel(input).",
     "numpy_ref": "np.compress",
-    "signature": "flops.compress(condition, a, axis=None, out=None)",
+    "signature": "fnp.compress(condition, a, axis=None, out=None)",
     "status": "supported",
     "summary": "Return selected slices of an array along given axis.",
     "weight": 4.0

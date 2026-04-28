@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fft/fftshift/",
+  "detail_href": "/docs/api/numpy/fft/fftshift/",
   "detail_json_href": "/api-data/ops/fft-fftshift.json",
   "docs": {
     "sections": [
@@ -176,7 +176,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -266,12 +266,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.fft.fftshift",
+    "flopscope_ref": "fnp.fft.fftshift",
     "module": "numpy.fft",
     "name": "fft.fftshift",
     "notes": "Shift zero-frequency component to center. No arithmetic; index reordering only.",
     "numpy_ref": "np.fft.fftshift",
-    "signature": "flops.fft.fftshift(x, axes=None)",
+    "signature": "fnp.fft.fftshift(x, axes=None)",
     "status": "supported",
     "summary": "Shift the zero-frequency component to the center of the spectrum.",
     "weight": 0.0

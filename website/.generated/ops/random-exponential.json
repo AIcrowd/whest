@@ -454,7 +454,7 @@
     }
   ],
   "canonical_name": "random.exponential",
-  "canonical_path": "random/exponential",
+  "canonical_path": "numpy/random/exponential",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -498,15 +498,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.exponential",
+  "flopscope_ref": "fnp.random.exponential",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/exponential/",
+  "href": "/docs/api/numpy/random/exponential/",
   "legacy_href": "/docs/api/ops/random-exponential/",
   "module": "numpy.random",
   "name": "random.exponential",
   "next": {
-    "href": "/docs/api/random/f/",
-    "label": "flops.random.f"
+    "href": "/docs/api/numpy/random/f/",
+    "label": "fnp.random.f"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -532,10 +532,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/dirichlet/",
-    "label": "flops.random.dirichlet"
+    "href": "/docs/api/numpy/random/dirichlet/",
+    "label": "fnp.random.dirichlet"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.exponential",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.exponential.html",
   "returns": [
     {
@@ -564,9 +565,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.exponential(scale=1.0, size=None)",
+  "signature": "fnp.random.exponential(scale=1.0, size=None)",
   "slug": "random-exponential",
   "summary": "Draw samples from an exponential distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

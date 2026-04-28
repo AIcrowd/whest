@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/take/",
+  "detail_href": "/docs/api/numpy/take/",
   "detail_json_href": "/api-data/ops/take.json",
   "docs": {
     "sections": [
@@ -365,7 +365,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/compress",
+                "href": "/docs/api/numpy/compress/",
                 "label": "flops.compress",
                 "original_target": "compress",
                 "role": "",
@@ -397,7 +397,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/take_along_axis",
+                "href": "/docs/api/numpy/take-along-axis/",
                 "label": "flops.take_along_axis",
                 "original_target": "take_along_axis",
                 "role": "",
@@ -428,7 +428,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/take",
+                "href": "/docs/api/numpy/take/",
                 "kind": "link",
                 "target": "take",
                 "text": "take"
@@ -453,7 +453,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/apply_along_axis",
+                "href": "/docs/api/numpy/apply-along-axis/",
                 "kind": "link",
                 "target": "apply_along_axis",
                 "text": "apply_along_axis"
@@ -480,7 +480,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -548,7 +548,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/indices",
+                "href": "/docs/api/numpy/indices/",
                 "kind": "link",
                 "target": "indices",
                 "text": "indices"
@@ -587,12 +587,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.take",
+    "flopscope_ref": "fnp.take",
     "module": "numpy",
     "name": "take",
     "notes": "Take elements from array along axis. Cost: numel(output).",
     "numpy_ref": "np.take",
-    "signature": "flops.take(a, indices, axis=None, out=None, mode='raise')",
+    "signature": "fnp.take(a, indices, axis=None, out=None, mode='raise')",
     "status": "supported",
     "summary": "Take elements from an array along an axis.",
     "weight": 4.0

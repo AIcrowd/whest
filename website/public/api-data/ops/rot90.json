@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/rot90/",
+  "detail_href": "/docs/api/numpy/rot90/",
   "detail_json_href": "/api-data/ops/rot90.json",
   "docs": {
     "sections": [
@@ -186,7 +186,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/flip",
+                "href": "/docs/api/numpy/flip/",
                 "label": "flops.flip",
                 "original_target": "flip",
                 "role": "",
@@ -202,7 +202,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fliplr",
+                "href": "/docs/api/numpy/fliplr/",
                 "label": "flops.fliplr",
                 "original_target": "fliplr",
                 "role": "",
@@ -218,7 +218,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/flipud",
+                "href": "/docs/api/numpy/flipud/",
                 "label": "flops.flipud",
                 "original_target": "flipud",
                 "role": "",
@@ -277,7 +277,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -361,12 +361,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.rot90",
+    "flopscope_ref": "fnp.rot90",
     "module": "numpy",
     "name": "rot90",
     "notes": "Rotate array 90 degrees.",
     "numpy_ref": "np.rot90",
-    "signature": "flops.rot90(m, k=1, axes=(0, 1))",
+    "signature": "fnp.rot90(m, k=1, axes=(0, 1))",
     "status": "supported",
     "summary": "Rotate an array by 90 degrees in the plane specified by axes.",
     "weight": 0.0

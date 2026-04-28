@@ -25,7 +25,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Equivalent to "
+              "text": "This object mirrors "
             },
             {
               "external_url": "",
@@ -36,13 +36,47 @@
             },
             {
               "kind": "text",
-              "text": ".  The CDF is the sigmoid\nfunction; the PPF is the logit function."
+              "text": "."
             }
           ],
           "type": "paragraph"
         }
       ],
       "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " is the center of the distribution and "
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": " controls the\nspread. The CDF is the sigmoid function and the PPF is the logit\nfunction. Each public method deducts "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(input)"
+            },
+            {
+              "kind": "text",
+              "text": " FLOPs from the\nactive budget."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
     }
   ],
   "canonical_name": "stats.logistic",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/argwhere/",
+  "detail_href": "/docs/api/numpy/argwhere/",
   "detail_json_href": "/api-data/ops/argwhere.json",
   "docs": {
     "sections": [
@@ -123,7 +123,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/where",
+                "href": "/docs/api/numpy/where/",
                 "label": "flops.where",
                 "original_target": "where",
                 "role": "",
@@ -134,7 +134,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nonzero",
+                "href": "/docs/api/numpy/nonzero/",
                 "label": "flops.nonzero",
                 "original_target": "nonzero",
                 "role": "",
@@ -181,7 +181,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argwhere",
+                "href": "/docs/api/numpy/argwhere/",
                 "kind": "link",
                 "target": "argwhere",
                 "text": "argwhere"
@@ -211,7 +211,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -264,12 +264,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.argwhere",
+    "flopscope_ref": "fnp.argwhere",
     "module": "numpy",
     "name": "argwhere",
     "notes": "Find indices of non-zero elements. Cost: numel(input).",
     "numpy_ref": "np.argwhere",
-    "signature": "flops.argwhere(a)",
+    "signature": "fnp.argwhere(a)",
     "status": "supported",
     "summary": "Find the indices of array elements that are non-zero, grouped by element.",
     "weight": 4.0

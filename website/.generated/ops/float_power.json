@@ -439,7 +439,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/power",
+              "href": "/docs/api/numpy/power/",
               "label": "flops.power",
               "original_target": "power",
               "role": "",
@@ -459,7 +459,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -661,7 +661,7 @@
     }
   ],
   "canonical_name": "float_power",
-  "canonical_path": "float-power",
+  "canonical_path": "numpy/float-power",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -679,20 +679,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx1 = range(6)\n\nx1\n\nflops.float_power(x1, 3)\n\nx2 = [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]\n\nflops.float_power(x1, x2)\n\nx2 = flops.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])\n\nx2\n\nflops.float_power(x1, x2)\n\nx3 = flops.array([-1, -4])\n\nwith flops.errstate(invalid='ignore'):\n    p = flops.float_power(x3, 1.5)\n\np\n\nflops.float_power(x3, 1.5, dtype=complex)",
+    "code": "import flopscope.numpy as fnp\n\nx1 = range(6)\n\nx1\n\nflops.float_power(x1, 3)\n\nx2 = [1.0, 2.0, 3.0, 3.0, 2.0, 1.0]\n\nflops.float_power(x1, x2)\n\nx2 = flops.array([[1, 2, 3, 3, 2, 1], [1, 2, 3, 3, 2, 1]])\n\nx2\n\nflops.float_power(x1, x2)\n\nx3 = flops.array([-1, -4])\n\nwith flops.errstate(invalid='ignore'):\n    p = flops.float_power(x3, 1.5)\n\np\n\nflops.float_power(x3, 1.5, dtype=complex)",
     "output": "[0, 1, 2, 3, 4, 5]\n\narray([   0.,    1.,    8.,   27.,   64.,  125.])\n\narray([  0.,   1.,   8.,  27.,  16.,   5.])\n\narray([[1, 2, 3, 3, 2, 1],\n       [1, 2, 3, 3, 2, 1]])\n\narray([[  0.,   1.,   8.,  27.,  16.,   5.],\n       [  0.,   1.,   8.,  27.,  16.,   5.]])\n\narray([nan, nan])\n\narray([-1.83697020e-16-1.j, -1.46957616e-15-8.j])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.float_power",
+  "flopscope_ref": "fnp.float_power",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/float-power/",
+  "href": "/docs/api/numpy/float-power/",
   "legacy_href": "/docs/api/ops/float_power/",
   "module": "numpy",
   "name": "float_power",
   "next": {
-    "href": "/docs/api/floor/",
-    "label": "flops.floor"
+    "href": "/docs/api/numpy/floor/",
+    "label": "fnp.floor"
   },
   "notes": "Element-wise exponentiation in float64.",
   "notes_sections": [],
@@ -746,10 +746,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/flipud/",
-    "label": "flops.flipud"
+    "href": "/docs/api/numpy/flipud/",
+    "label": "fnp.flipud"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.float_power",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.float_power.html",
   "returns": [
     {
@@ -771,7 +772,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/power",
+      "href": "/docs/api/numpy/power/",
       "label": "flops.power",
       "original_target": "power",
       "role": "",
@@ -779,9 +780,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.float_power(*args, **kwargs)",
+  "signature": "fnp.float_power(*args, **kwargs)",
   "slug": "float_power",
   "summary": "First array elements raised to powers from second array, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

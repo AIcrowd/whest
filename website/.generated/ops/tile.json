@@ -263,7 +263,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/repeat",
+              "href": "/docs/api/numpy/repeat/",
               "label": "flops.repeat",
               "original_target": "repeat",
               "role": "",
@@ -279,7 +279,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/broadcast_to",
+              "href": "/docs/api/numpy/broadcast-to/",
               "label": "flops.broadcast_to",
               "original_target": "broadcast_to",
               "role": "",
@@ -299,7 +299,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -424,7 +424,7 @@
     }
   ],
   "canonical_name": "tile",
-  "canonical_path": "tile",
+  "canonical_path": "numpy/tile",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -435,20 +435,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([0, 1, 2])\n\nflops.tile(a, 2)\n\nflops.tile(a, (2, 2))\n\nflops.tile(a, (2, 1, 2))\n\nb = flops.array([[1, 2], [3, 4]])\n\nflops.tile(b, 2)\n\nflops.tile(b, (2, 1))\n\nc = flops.array([1,2,3,4])\n\nflops.tile(c,(4,1))",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([0, 1, 2])\n\nflops.tile(a, 2)\n\nflops.tile(a, (2, 2))\n\nflops.tile(a, (2, 1, 2))\n\nb = flops.array([[1, 2], [3, 4]])\n\nflops.tile(b, 2)\n\nflops.tile(b, (2, 1))\n\nc = flops.array([1,2,3,4])\n\nflops.tile(c,(4,1))",
     "output": "array([0, 1, 2, 0, 1, 2])\n\narray([[0, 1, 2, 0, 1, 2],\n       [0, 1, 2, 0, 1, 2]])\n\narray([[[0, 1, 2, 0, 1, 2]],\n       [[0, 1, 2, 0, 1, 2]]])\n\narray([[1, 2, 1, 2],\n       [3, 4, 3, 4]])\n\narray([[1, 2],\n       [3, 4],\n       [1, 2],\n       [3, 4]])\n\narray([[1, 2, 3, 4],\n       [1, 2, 3, 4],\n       [1, 2, 3, 4],\n       [1, 2, 3, 4]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.tile",
+  "flopscope_ref": "fnp.tile",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L504",
-  "href": "/docs/api/tile/",
+  "href": "/docs/api/numpy/tile/",
   "legacy_href": "/docs/api/ops/tile/",
   "module": "numpy",
   "name": "tile",
   "next": {
-    "href": "/docs/api/trace/",
-    "label": "flops.trace"
+    "href": "/docs/api/numpy/trace/",
+    "label": "fnp.trace"
   },
   "notes": "Repeat array by tiling. Cost: numel(output).",
   "notes_sections": [],
@@ -470,10 +470,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/tensordot/",
-    "label": "flops.tensordot"
+    "href": "/docs/api/numpy/tensordot/",
+    "label": "fnp.tensordot"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.tile",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.tile.html",
   "returns": [
     {
@@ -494,7 +495,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/repeat",
+      "href": "/docs/api/numpy/repeat/",
       "label": "flops.repeat",
       "original_target": "repeat",
       "role": "",
@@ -510,7 +511,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/broadcast_to",
+      "href": "/docs/api/numpy/broadcast-to/",
       "label": "flops.broadcast_to",
       "original_target": "broadcast_to",
       "role": "",
@@ -518,9 +519,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.tile(A, reps)",
+  "signature": "fnp.tile(A, reps)",
   "slug": "tile",
   "summary": "Construct an array by repeating A the number of times given by reps.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1204",
   "weight": 1.0
 }

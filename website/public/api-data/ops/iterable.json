@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/iterable/",
+  "detail_href": "/docs/api/numpy/iterable/",
   "detail_json_href": "/api-data/ops/iterable.json",
   "docs": {
     "sections": [
@@ -160,7 +160,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -192,12 +192,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.iterable",
+    "flopscope_ref": "fnp.iterable",
     "module": "numpy",
     "name": "iterable",
     "notes": "Return True if object is iterable.",
     "numpy_ref": "np.iterable",
-    "signature": "flops.iterable(y)",
+    "signature": "fnp.iterable(y)",
     "status": "supported",
     "summary": "Check whether or not an object can be iterated over.",
     "weight": 0.0

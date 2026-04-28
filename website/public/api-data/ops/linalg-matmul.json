@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/matmul/",
+  "detail_href": "/docs/api/numpy/linalg/matmul/",
   "detail_json_href": "/api-data/ops/linalg-matmul.json",
   "docs": {
     "sections": [
@@ -29,7 +29,7 @@
                 "display_text": "flops.matmul",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/matmul",
+                "href": "/docs/api/numpy/matmul/",
                 "kind": "role_reference",
                 "original_target": "flops.matmul",
                 "role": "func",
@@ -249,7 +249,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/matmul",
+                "href": "/docs/api/numpy/matmul/",
                 "label": "flops.matmul",
                 "original_target": "numpy.matmul",
                 "role": "",
@@ -473,12 +473,12 @@
     "category": "counted_custom",
     "cost_formula": "delegates to flops.matmul",
     "cost_formula_latex": "delegates to `matmul`",
-    "flopscope_ref": "flops.linalg.matmul",
+    "flopscope_ref": "fnp.linalg.matmul",
     "module": "numpy.linalg",
     "name": "linalg.matmul",
-    "notes": "Delegates to `we.matmul` which charges `m*k*n` FLOPs (FMA=1).",
+    "notes": "Delegates to `fnp.matmul` which charges `m*k*n` FLOPs (FMA=1).",
     "numpy_ref": "np.linalg.matmul",
-    "signature": "flops.linalg.matmul(x1, x2, /)",
+    "signature": "fnp.linalg.matmul(x1, x2, /)",
     "status": "supported",
     "summary": "Computes the matrix product.",
     "weight": 1.0

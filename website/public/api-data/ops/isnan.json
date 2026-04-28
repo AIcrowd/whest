@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/isnan/",
+  "detail_href": "/docs/api/numpy/isnan/",
   "detail_json_href": "/api-data/ops/isnan.json",
   "docs": {
     "sections": [
@@ -285,7 +285,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isinf",
+                "href": "/docs/api/numpy/isinf/",
                 "label": "flops.isinf",
                 "original_target": "isinf",
                 "role": "",
@@ -296,7 +296,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isneginf",
+                "href": "/docs/api/numpy/isneginf/",
                 "label": "flops.isneginf",
                 "original_target": "isneginf",
                 "role": "",
@@ -307,7 +307,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isposinf",
+                "href": "/docs/api/numpy/isposinf/",
                 "label": "flops.isposinf",
                 "original_target": "isposinf",
                 "role": "",
@@ -318,7 +318,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isfinite",
+                "href": "/docs/api/numpy/isfinite/",
                 "label": "flops.isfinite",
                 "original_target": "isfinite",
                 "role": "",
@@ -363,7 +363,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -404,12 +404,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.isnan",
+    "flopscope_ref": "fnp.isnan",
     "module": "numpy",
     "name": "isnan",
     "notes": "Test for NaN element-wise. Cost: numel(input).",
     "numpy_ref": "np.isnan",
-    "signature": "flops.isnan(*args, **kwargs)",
+    "signature": "fnp.isnan(*args, **kwargs)",
     "status": "supported",
     "summary": "Test element-wise for NaN and return result as a boolean array.",
     "weight": 1.0

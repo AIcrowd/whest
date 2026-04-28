@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/conjugate/",
+  "detail_href": "/docs/api/numpy/conjugate/",
   "detail_json_href": "/api-data/ops/conjugate.json",
   "docs": {
     "sections": [
@@ -313,7 +313,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/conj",
+                "href": "/docs/api/numpy/conj/",
                 "kind": "link",
                 "target": "conj",
                 "text": "conj"
@@ -324,7 +324,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/conjugate",
+                "href": "/docs/api/numpy/conjugate/",
                 "kind": "link",
                 "target": "conjugate",
                 "text": "conjugate"
@@ -360,7 +360,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -406,12 +406,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.conjugate",
+    "flopscope_ref": "fnp.conjugate",
     "module": "numpy",
     "name": "conjugate",
     "notes": "Complex conjugate element-wise.",
     "numpy_ref": "np.conjugate",
-    "signature": "flops.conjugate(*args, **kwargs)",
+    "signature": "fnp.conjugate(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the complex conjugate, element-wise.",
     "weight": 1.0

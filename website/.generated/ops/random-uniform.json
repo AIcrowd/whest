@@ -685,7 +685,7 @@
     }
   ],
   "canonical_name": "random.uniform",
-  "canonical_path": "random/uniform",
+  "canonical_path": "numpy/random/uniform",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -701,15 +701,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.uniform",
+  "flopscope_ref": "fnp.random.uniform",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/uniform/",
+  "href": "/docs/api/numpy/random/uniform/",
   "legacy_href": "/docs/api/ops/random-uniform/",
   "module": "numpy.random",
   "name": "random.uniform",
   "next": {
-    "href": "/docs/api/random/vonmises/",
-    "label": "flops.random.vonmises"
+    "href": "/docs/api/numpy/random/vonmises/",
+    "label": "fnp.random.vonmises"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -752,10 +752,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/triangular/",
-    "label": "flops.random.triangular"
+    "href": "/docs/api/numpy/random/triangular/",
+    "label": "fnp.random.triangular"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.uniform",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.uniform.html",
   "returns": [
     {
@@ -904,9 +905,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.uniform(low=0.0, high=1.0, size=None)",
+  "signature": "fnp.random.uniform(low=0.0, high=1.0, size=None)",
   "slug": "random-uniform",
   "summary": "Draw samples from a uniform distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

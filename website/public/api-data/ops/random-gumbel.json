@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/gumbel/",
+  "detail_href": "/docs/api/numpy/random/gumbel/",
   "detail_json_href": "/api-data/ops/random-gumbel.json",
   "docs": {
     "sections": [
@@ -649,12 +649,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.gumbel",
+    "flopscope_ref": "fnp.random.gumbel",
     "module": "numpy.random",
     "name": "random.gumbel",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.gumbel",
-    "signature": "flops.random.gumbel(loc=0.0, scale=1.0, size=None)",
+    "signature": "fnp.random.gumbel(loc=0.0, scale=1.0, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Gumbel distribution.",
     "weight": 16.0

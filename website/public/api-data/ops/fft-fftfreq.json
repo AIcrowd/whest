@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fft/fftfreq/",
+  "detail_href": "/docs/api/numpy/fft/fftfreq/",
   "detail_json_href": "/api-data/ops/fft-fftfreq.json",
   "docs": {
     "sections": [
@@ -244,7 +244,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -292,12 +292,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.fft.fftfreq",
+    "flopscope_ref": "fnp.fft.fftfreq",
     "module": "numpy.fft",
     "name": "fft.fftfreq",
     "notes": "FFT sample frequencies. No arithmetic; returns index array.",
     "numpy_ref": "np.fft.fftfreq",
-    "signature": "flops.fft.fftfreq(n, d=1.0, device=None)",
+    "signature": "fnp.fft.fftfreq(n, d=1.0, device=None)",
     "status": "supported",
     "summary": "Return the Discrete Fourier Transform sample frequencies.",
     "weight": 0.0

@@ -137,9 +137,40 @@
         {
           "items": [
             {
-              "body_blocks": [],
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "View of "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "data"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " carrying validated symmetry metadata."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
               "data_type": "SymmetricTensor",
-              "inline": [],
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "View of "
+                },
+                {
+                  "kind": "code",
+                  "text": "data"
+                },
+                {
+                  "kind": "text",
+                  "text": " carrying validated symmetry metadata."
+                }
+              ],
               "name": "",
               "type": "field_list"
             }
@@ -182,6 +213,50 @@
         }
       ],
       "title": "Raises"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": ""
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "matrix = fnp.array([[1.0, 2.0], [2.0, 3.0]])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "tagged = flops.as_symmetric(matrix, (0, 1))"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "tagged.symmetric_axes"
+            },
+            {
+              "kind": "output",
+              "text": "[(0, 1)]"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "as_symmetric",
@@ -201,7 +276,7 @@
   ],
   "signature": "flops.as_symmetric(data: 'np.ndarray', *, symmetry) -> 'SymmetricTensor'",
   "slug": "as-symmetric",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L695",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_symmetric.py#L724",
   "status_note": "",
   "summary": "Wrap *data* as a :class:`SymmetricTensor` after validating symmetry.",
   "upstream_source_url": ""

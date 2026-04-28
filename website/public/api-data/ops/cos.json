@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/cos/",
+  "detail_href": "/docs/api/numpy/cos/",
   "detail_json_href": "/api-data/ops/cos.json",
   "docs": {
     "sections": [
@@ -312,7 +312,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -391,12 +391,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.cos",
+    "flopscope_ref": "fnp.cos",
     "module": "numpy",
     "name": "cos",
     "notes": "Element-wise cosine.",
     "numpy_ref": "np.cos",
-    "signature": "flops.cos(*args, **kwargs)",
+    "signature": "fnp.cos(*args, **kwargs)",
     "status": "supported",
     "summary": "Cosine element-wise.",
     "weight": 16.0

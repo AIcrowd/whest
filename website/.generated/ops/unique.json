@@ -485,7 +485,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/repeat",
+              "href": "/docs/api/numpy/repeat/",
               "label": "flops.repeat",
               "original_target": "repeat",
               "role": "",
@@ -501,7 +501,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/sort",
+              "href": "/docs/api/numpy/sort/",
               "label": "flops.sort",
               "original_target": "sort",
               "role": "",
@@ -555,7 +555,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -769,7 +769,7 @@
     }
   ],
   "canonical_name": "unique",
-  "canonical_path": "unique",
+  "canonical_path": "numpy/unique",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -780,20 +780,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.unique([1, 1, 2, 2, 3, 3])\n\na = flops.array([[1, 1], [2, 3]])\n\nflops.unique(a)\n\na = flops.array([[1, 0, 0], [1, 0, 0], [2, 3, 4]])\n\nflops.unique(a, axis=0)\n\na = flops.array(['a', 'b', 'b', 'c', 'a'])\n\nu, indices = flops.unique(a, return_index=True)\n\nu\n\nindices\n\na[indices]\n\na = flops.array([1, 2, 6, 4, 2, 3, 2])\n\nu, indices = flops.unique(a, return_inverse=True)\n\nu\n\nindices\n\nu[indices]\n\na = flops.array([1, 2, 6, 4, 2, 3, 2])\n\nvalues, counts = flops.unique(a, return_counts=True)\n\nvalues\n\ncounts\n\nflops.repeat(values, counts)",
+    "code": "import flopscope.numpy as fnp\n\nflops.unique([1, 1, 2, 2, 3, 3])\n\na = flops.array([[1, 1], [2, 3]])\n\nflops.unique(a)\n\na = flops.array([[1, 0, 0], [1, 0, 0], [2, 3, 4]])\n\nflops.unique(a, axis=0)\n\na = flops.array(['a', 'b', 'b', 'c', 'a'])\n\nu, indices = flops.unique(a, return_index=True)\n\nu\n\nindices\n\na[indices]\n\na = flops.array([1, 2, 6, 4, 2, 3, 2])\n\nu, indices = flops.unique(a, return_inverse=True)\n\nu\n\nindices\n\nu[indices]\n\na = flops.array([1, 2, 6, 4, 2, 3, 2])\n\nvalues, counts = flops.unique(a, return_counts=True)\n\nvalues\n\ncounts\n\nflops.repeat(values, counts)",
     "output": "array([1, 2, 3])\n\narray([1, 2, 3])\n\narray([[1, 0, 0], [2, 3, 4]])\n\narray(['a', 'b', 'c'], dtype='<U1')\n\narray([0, 1, 3])\n\narray(['a', 'b', 'c'], dtype='<U1')\n\narray([1, 2, 3, 4, 6])\n\narray([0, 1, 4, 3, 1, 2, 1])\n\narray([1, 2, 6, 4, 2, 3, 2])\n\narray([1, 2, 3, 4, 6])\n\narray([1, 3, 1, 1, 1])\n\narray([1, 2, 2, 2, 3, 4, 6])    # original order not preserved",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.unique",
+  "flopscope_ref": "fnp.unique",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L254",
-  "href": "/docs/api/unique/",
+  "href": "/docs/api/numpy/unique/",
   "legacy_href": "/docs/api/ops/unique/",
   "module": "numpy",
   "name": "unique",
   "next": {
-    "href": "/docs/api/unique-all/",
-    "label": "flops.unique_all"
+    "href": "/docs/api/numpy/unique-all/",
+    "label": "fnp.unique_all"
   },
   "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
   "notes_sections": [
@@ -859,10 +859,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/union1d/",
-    "label": "flops.union1d"
+    "href": "/docs/api/numpy/union1d/",
+    "label": "fnp.union1d"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.unique",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unique.html",
   "returns": [
     {
@@ -907,7 +908,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/repeat",
+      "href": "/docs/api/numpy/repeat/",
       "label": "flops.repeat",
       "original_target": "repeat",
       "role": "",
@@ -923,7 +924,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/sort",
+      "href": "/docs/api/numpy/sort/",
       "label": "flops.sort",
       "original_target": "sort",
       "role": "",
@@ -931,9 +932,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.unique(ar, return_index=False, return_inverse=False, return_counts=False, axis=None, *, equal_nan=True)",
+  "signature": "fnp.unique(ar, return_index=False, return_inverse=False, return_counts=False, axis=None, *, equal_nan=True)",
   "slug": "unique",
   "summary": "Find the unique elements of an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L145",
   "weight": 1.0
 }

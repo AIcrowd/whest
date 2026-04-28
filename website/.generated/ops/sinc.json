@@ -51,7 +51,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/sinc",
+              "href": "/docs/api/numpy/sinc/",
               "kind": "link",
               "target": "sinc",
               "text": "sinc"
@@ -253,7 +253,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -380,7 +380,7 @@
     }
   ],
   "canonical_name": "sinc",
-  "canonical_path": "sinc",
+  "canonical_path": "numpy/sinc",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -400,20 +400,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nimport matplotlib.pyplot as plt\n\nx = flops.linspace(-4, 4, 41)\n\nflops.sinc(x)\n\nplt.plot(x, flops.sinc(x))\n\nplt.title(\"Sinc Function\")\n\nplt.ylabel(\"Amplitude\")\n\nplt.xlabel(\"X\")\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nimport matplotlib.pyplot as plt\n\nx = flops.linspace(-4, 4, 41)\n\nflops.sinc(x)\n\nplt.plot(x, flops.sinc(x))\n\nplt.title(\"Sinc Function\")\n\nplt.ylabel(\"Amplitude\")\n\nplt.xlabel(\"X\")\n\nplt.show()",
     "output": "array([-3.89804309e-17,  -4.92362781e-02,  -8.40918587e-02, # may vary\n        -8.90384387e-02,  -5.84680802e-02,   3.89804309e-17,\n        6.68206631e-02,   1.16434881e-01,   1.26137788e-01,\n        8.50444803e-02,  -3.89804309e-17,  -1.03943254e-01,\n        -1.89206682e-01,  -2.16236208e-01,  -1.55914881e-01,\n        3.89804309e-17,   2.33872321e-01,   5.04551152e-01,\n        7.56826729e-01,   9.35489284e-01,   1.00000000e+00,\n        9.35489284e-01,   7.56826729e-01,   5.04551152e-01,\n        2.33872321e-01,   3.89804309e-17,  -1.55914881e-01,\n       -2.16236208e-01,  -1.89206682e-01,  -1.03943254e-01,\n       -3.89804309e-17,   8.50444803e-02,   1.26137788e-01,\n        1.16434881e-01,   6.68206631e-02,   3.89804309e-17,\n        -5.84680802e-02,  -8.90384387e-02,  -8.40918587e-02,\n        -4.92362781e-02,  -3.89804309e-17])\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\nText(0.5, 1.0, 'Sinc Function')\n\nText(0, 0.5, 'Amplitude')\n\nText(0.5, 0, 'X')",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.sinc",
+  "flopscope_ref": "fnp.sinc",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/sinc/",
+  "href": "/docs/api/numpy/sinc/",
   "legacy_href": "/docs/api/ops/sinc/",
   "module": "numpy",
   "name": "sinc",
   "next": {
-    "href": "/docs/api/sinh/",
-    "label": "flops.sinh"
+    "href": "/docs/api/numpy/sinh/",
+    "label": "fnp.sinh"
   },
   "notes": "Normalized sinc function element-wise.",
   "notes_sections": [
@@ -433,10 +433,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/sin/",
-    "label": "flops.sin"
+    "href": "/docs/api/numpy/sin/",
+    "label": "fnp.sin"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.sinc",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.sinc.html",
   "returns": [
     {
@@ -448,9 +449,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.sinc(x)",
+  "signature": "fnp.sinc(x)",
   "slug": "sinc",
   "summary": "Return the normalized sinc function.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3752",
   "weight": 16.0
 }

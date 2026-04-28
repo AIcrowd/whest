@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ix-/",
+  "detail_href": "/docs/api/numpy/ix-/",
   "detail_json_href": "/api-data/ops/ix_.json",
   "docs": {
     "sections": [
@@ -36,7 +36,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/ix_",
+                "href": "/docs/api/numpy/ix-/",
                 "kind": "link",
                 "target": "ix_",
                 "text": "ix_"
@@ -185,7 +185,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/meshgrid",
+                "href": "/docs/api/numpy/meshgrid/",
                 "label": "flops.meshgrid",
                 "original_target": "meshgrid",
                 "role": "",
@@ -205,7 +205,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -318,12 +318,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.ix_",
+    "flopscope_ref": "fnp.ix_",
     "module": "numpy",
     "name": "ix_",
     "notes": "Construct open mesh from multiple sequences. Cost: numel(output).",
     "numpy_ref": "np.ix_",
-    "signature": "flops.ix_(*args)",
+    "signature": "fnp.ix_(*args)",
     "status": "supported",
     "summary": "Construct an open mesh from multiple sequences.",
     "weight": 1.0

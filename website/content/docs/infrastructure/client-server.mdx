@@ -22,7 +22,7 @@ The client-server model enforces this isolation:
 <Mermaid chart={`graph LR
   subgraph participant ["Participant Container"]
     direction TB
-    p1["import flopscope as we"]
+    p1["import flopscope.numpy as fnp"]
     p2["No NumPy here!<br/>Only client proxy"]
   end
 
@@ -47,9 +47,9 @@ The client-server model enforces this isolation:
 
 1. **Server** runs the real flopscope library backed by NumPy. It stores all arrays, enforces budgets, and counts FLOPs.
 
-2. **Client** is a drop-in replacement (`import flopscope as we`) that proxies every operation to the server over ZMQ (msgpack-encoded messages).
+2. **Client** exposes the same public imports (`import flopscope as flops` plus `import flopscope.numpy as fnp`) and proxies every operation to the server over ZMQ (msgpack-encoded messages).
 
-3. **Arrays stay on the server.** The client holds lightweight `RemoteArray` handles that reference server-side data. When you call `we.einsum(...)`, the client sends the operation and handle IDs to the server, which executes it and returns a new handle.
+3. **Arrays stay on the server.** The client holds lightweight `RemoteArray` handles that reference server-side data. When you call `fnp.einsum(...)`, the client sends the operation and handle IDs to the server, which executes it and returns a new handle.
 
 4. **Budget enforcement happens server-side.** The client cannot manipulate FLOP counts.
 
@@ -66,12 +66,13 @@ Code written for the local library works unchanged with the client:
 
 ```python
 # This code works with BOTH the local library and the client
-import flopscope as we
+import flopscope as flops
+import flopscope.numpy as fnp
 
-with we.BudgetContext(flop_budget=10**6) as budget:
-    x = we.zeros((256,))
-    W = we.random.randn(256, 256)
-    h = we.einsum('ij,j->i', W, x)
+with flops.BudgetContext(flop_budget=10**6) as budget:
+    x = fnp.zeros((256,))
+    W = fnp.random.randn(256, 256)
+    h = fnp.einsum('ij,j->i', W, x)
     print(budget.summary())
 ```
 

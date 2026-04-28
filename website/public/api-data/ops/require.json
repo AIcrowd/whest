@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/require/",
+  "detail_href": "/docs/api/numpy/require/",
   "detail_json_href": "/api-data/ops/require.json",
   "docs": {
     "sections": [
@@ -302,7 +302,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/asarray",
+                "href": "/docs/api/numpy/asarray/",
                 "label": "flops.asarray",
                 "original_target": "asarray",
                 "role": "",
@@ -400,7 +400,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -487,12 +487,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.require",
+    "flopscope_ref": "fnp.require",
     "module": "numpy",
     "name": "require",
     "notes": "Return array that satisfies requirements.",
     "numpy_ref": "np.require",
-    "signature": "flops.require(a, dtype=None, requirements=None, *, like=None)",
+    "signature": "fnp.require(a, dtype=None, requirements=None, *, like=None)",
     "status": "supported",
     "summary": "Return an ndarray of the provided type that satisfies requirements.",
     "weight": 0.0

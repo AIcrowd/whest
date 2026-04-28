@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/outer",
+              "href": "/docs/api/numpy/outer/",
               "kind": "link",
               "target": "outer",
               "text": "flops.outer"
@@ -170,7 +170,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/outer",
+              "href": "/docs/api/numpy/outer/",
               "label": "flops.outer",
               "original_target": "outer",
               "role": "",
@@ -338,7 +338,7 @@
     }
   ],
   "canonical_name": "linalg.outer",
-  "canonical_path": "linalg/outer",
+  "canonical_path": "numpy/linalg/outer",
   "category": "counted_custom",
   "cost_formula": "delegates to flops.outer",
   "cost_formula_latex": "delegates to `outer`",
@@ -354,17 +354,17 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.outer",
+  "flopscope_ref": "fnp.linalg.outer",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L57",
-  "href": "/docs/api/linalg/outer/",
+  "href": "/docs/api/numpy/linalg/outer/",
   "legacy_href": "/docs/api/ops/linalg-outer/",
   "module": "numpy.linalg",
   "name": "linalg.outer",
   "next": {
-    "href": "/docs/api/linalg/pinv/",
-    "label": "flops.linalg.pinv"
+    "href": "/docs/api/numpy/linalg/pinv/",
+    "label": "fnp.linalg.pinv"
   },
-  "notes": "Delegates to `we.outer` which charges `m*n` FLOPs.",
+  "notes": "Delegates to `fnp.outer` which charges `m*n` FLOPs.",
   "notes_sections": [],
   "numpy_ref": "np.linalg.outer",
   "parameters": [
@@ -386,10 +386,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/norm/",
-    "label": "flops.linalg.norm"
+    "href": "/docs/api/numpy/linalg/norm/",
+    "label": "fnp.linalg.norm"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.outer",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.outer.html",
   "returns": [
     {
@@ -405,7 +406,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/outer",
+      "href": "/docs/api/numpy/outer/",
       "label": "flops.outer",
       "original_target": "outer",
       "role": "",
@@ -413,9 +414,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.linalg.outer(x1, x2, /)",
+  "signature": "fnp.linalg.outer(x1, x2, /)",
   "slug": "linalg-outer",
   "summary": "Compute the outer product of two vectors.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L850",
   "weight": 1.0
 }

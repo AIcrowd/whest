@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/eye/",
+  "detail_href": "/docs/api/numpy/eye/",
   "detail_json_href": "/api-data/ops/eye.json",
   "docs": {
     "sections": [
@@ -328,7 +328,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/identity",
+                "href": "/docs/api/numpy/identity/",
                 "label": "flops.identity",
                 "original_target": "identity",
                 "role": "",
@@ -344,7 +344,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/diag",
+                "href": "/docs/api/numpy/diag/",
                 "label": "flops.diag",
                 "original_target": "diag",
                 "role": "",
@@ -364,7 +364,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -408,12 +408,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.eye",
+    "flopscope_ref": "fnp.eye",
     "module": "numpy",
     "name": "eye",
     "notes": "Create identity matrix.",
     "numpy_ref": "np.eye",
-    "signature": "flops.eye(N, M=None, k=0, dtype=<class 'float'>, order='C', *, device=None, like=None)",
+    "signature": "fnp.eye(N, M=None, k=0, dtype=<class 'float'>, order='C', *, device=None, like=None)",
     "status": "supported",
     "summary": "Return a 2-D array with ones on the diagonal and zeros elsewhere.",
     "weight": 0.0

@@ -134,7 +134,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/allclose",
+              "href": "/docs/api/numpy/allclose/",
               "label": "flops.allclose",
               "original_target": "allclose",
               "role": "",
@@ -150,7 +150,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/array_equiv",
+              "href": "/docs/api/numpy/array-equiv/",
               "label": "flops.array_equiv",
               "original_target": "array_equiv",
               "role": "",
@@ -170,7 +170,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -328,7 +328,7 @@
     }
   ],
   "canonical_name": "array_equal",
-  "canonical_path": "array-equal",
+  "canonical_path": "numpy/array-equal",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -339,20 +339,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.array_equal([1, 2], [1, 2])\n\nflops.array_equal(flops.array([1, 2]), flops.array([1, 2]))\n\nflops.array_equal([1, 2], [1, 2, 3])\n\nflops.array_equal([1, 2], [1, 4])\n\na = flops.array([1, flops.nan])\n\nflops.array_equal(a, a)\n\nflops.array_equal(a, a, equal_nan=True)\n\na = flops.array([1 + 1j])\n\nb = a.copy()\n\na.real = flops.nan\n\nb.imag = flops.nan\n\nflops.array_equal(a, b, equal_nan=True)",
+    "code": "import flopscope.numpy as fnp\n\nflops.array_equal([1, 2], [1, 2])\n\nflops.array_equal(flops.array([1, 2]), flops.array([1, 2]))\n\nflops.array_equal([1, 2], [1, 2, 3])\n\nflops.array_equal([1, 2], [1, 4])\n\na = flops.array([1, flops.nan])\n\nflops.array_equal(a, a)\n\nflops.array_equal(a, a, equal_nan=True)\n\na = flops.array([1 + 1j])\n\nb = a.copy()\n\na.real = flops.nan\n\nb.imag = flops.nan\n\nflops.array_equal(a, b, equal_nan=True)",
     "output": "True\n\nTrue\n\nFalse\n\nFalse\n\nFalse\n\nTrue\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.array_equal",
+  "flopscope_ref": "fnp.array_equal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L59",
-  "href": "/docs/api/array-equal/",
+  "href": "/docs/api/numpy/array-equal/",
   "legacy_href": "/docs/api/ops/array_equal/",
   "module": "numpy",
   "name": "array_equal",
   "next": {
-    "href": "/docs/api/array-equiv/",
-    "label": "flops.array_equiv"
+    "href": "/docs/api/numpy/array-equiv/",
+    "label": "fnp.array_equiv"
   },
   "notes": "Element-wise equality; cost = numel(a).",
   "notes_sections": [],
@@ -376,10 +376,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/array/",
-    "label": "flops.array"
+    "href": "/docs/api/numpy/array/",
+    "label": "fnp.array"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.array_equal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.array_equal.html",
   "returns": [
     {
@@ -400,7 +401,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/allclose",
+      "href": "/docs/api/numpy/allclose/",
       "label": "flops.allclose",
       "original_target": "allclose",
       "role": "",
@@ -416,7 +417,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/array_equiv",
+      "href": "/docs/api/numpy/array-equiv/",
       "label": "flops.array_equiv",
       "original_target": "array_equiv",
       "role": "",
@@ -424,9 +425,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.array_equal(a1, a2, equal_nan=False)",
+  "signature": "fnp.array_equal(a1, a2, equal_nan=False)",
   "slug": "array_equal",
   "summary": "True if two arrays have the same shape and elements, False otherwise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2475",
   "weight": 1.0
 }

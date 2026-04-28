@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/tensordot/",
+  "detail_href": "/docs/api/numpy/tensordot/",
   "detail_json_href": "/api-data/ops/tensordot.json",
   "docs": {
     "sections": [
@@ -273,7 +273,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "label": "flops.dot",
                 "original_target": "dot",
                 "role": "",
@@ -284,7 +284,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
@@ -488,7 +488,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "kind": "link",
                 "target": "einsum",
                 "text": "flops.einsum"
@@ -936,12 +936,12 @@
     "category": "counted_custom",
     "cost_formula": "product of contracted dims * output size",
     "cost_formula_latex": "$\\prod_i d_i$",
-    "flopscope_ref": "flops.tensordot",
+    "flopscope_ref": "fnp.tensordot",
     "module": "numpy",
     "name": "tensordot",
     "notes": "Tensor dot product along specified axes.",
     "numpy_ref": "np.tensordot",
-    "signature": "flops.tensordot(a, b, axes=2)",
+    "signature": "fnp.tensordot(a, b, axes=2)",
     "status": "supported",
     "summary": "Compute tensor dot product along specified axes.",
     "weight": 1.0

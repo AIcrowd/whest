@@ -524,7 +524,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/asarray_chkfinite",
+              "href": "/docs/api/numpy/asarray-chkfinite/",
               "label": "flops.asarray_chkfinite",
               "original_target": "asarray_chkfinite",
               "role": "",
@@ -540,7 +540,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/fromiter",
+              "href": "/docs/api/numpy/fromiter/",
               "label": "flops.fromiter",
               "original_target": "fromiter",
               "role": "",
@@ -556,7 +556,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/fromfunction",
+              "href": "/docs/api/numpy/fromfunction/",
               "label": "flops.fromfunction",
               "original_target": "fromfunction",
               "role": "",
@@ -590,7 +590,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -736,7 +736,7 @@
     }
   ],
   "canonical_name": "asarray",
-  "canonical_path": "asarray",
+  "canonical_path": "numpy/asarray",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -747,20 +747,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "a = [1, 2]\n\nimport flopscope as flops\n\nflops.asarray(a)\n\na = flops.array([1, 2])\n\nflops.asarray(a) is a\n\na = flops.array([1, 2], dtype=flops.float32)\n\nflops.shares_memory(flops.asarray(a, dtype=flops.float32), a)\n\nflops.shares_memory(flops.asarray(a, dtype=flops.float64), a)\n\nissubclass(flops.recarray, flops.ndarray)\n\na = flops.array([(1., 2), (3., 4)], dtype='f4,i4').view(flops.recarray)\n\nflops.asarray(a) is a\n\nflops.asanyarray(a) is a",
+    "code": "a = [1, 2]\n\nimport flopscope.numpy as fnp\n\nflops.asarray(a)\n\na = flops.array([1, 2])\n\nflops.asarray(a) is a\n\na = flops.array([1, 2], dtype=flops.float32)\n\nflops.shares_memory(flops.asarray(a, dtype=flops.float32), a)\n\nflops.shares_memory(flops.asarray(a, dtype=flops.float64), a)\n\nissubclass(flops.recarray, flops.ndarray)\n\na = flops.array([(1., 2), (3., 4)], dtype='f4,i4').view(flops.recarray)\n\nflops.asarray(a) is a\n\nflops.asanyarray(a) is a",
     "output": "array([1, 2])\n\nTrue\n\nTrue\n\nFalse\n\nTrue\n\nFalse\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.asarray",
+  "flopscope_ref": "fnp.asarray",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L653",
-  "href": "/docs/api/asarray/",
+  "href": "/docs/api/numpy/asarray/",
   "legacy_href": "/docs/api/ops/asarray/",
   "module": "numpy",
   "name": "asarray",
   "next": {
-    "href": "/docs/api/asarray-chkfinite/",
-    "label": "flops.asarray_chkfinite"
+    "href": "/docs/api/numpy/asarray-chkfinite/",
+    "label": "fnp.asarray_chkfinite"
   },
   "notes": "Convert input to array. Cost: numel(input).",
   "notes_sections": [],
@@ -833,10 +833,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/array-split/",
-    "label": "flops.array_split"
+    "href": "/docs/api/numpy/array-split/",
+    "label": "fnp.array_split"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.asarray",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.asarray.html",
   "returns": [
     {
@@ -907,7 +908,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/asarray_chkfinite",
+      "href": "/docs/api/numpy/asarray-chkfinite/",
       "label": "flops.asarray_chkfinite",
       "original_target": "asarray_chkfinite",
       "role": "",
@@ -923,7 +924,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/fromiter",
+      "href": "/docs/api/numpy/fromiter/",
       "label": "flops.fromiter",
       "original_target": "fromiter",
       "role": "",
@@ -939,7 +940,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/fromfunction",
+      "href": "/docs/api/numpy/fromfunction/",
       "label": "flops.fromfunction",
       "original_target": "fromfunction",
       "role": "",
@@ -947,9 +948,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.asarray(a, dtype=None, **kwargs)",
+  "signature": "fnp.asarray(a, dtype=None, **kwargs)",
   "slug": "asarray",
   "summary": "Convert the input to an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

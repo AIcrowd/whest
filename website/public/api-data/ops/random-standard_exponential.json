@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/standard-exponential/",
+  "detail_href": "/docs/api/numpy/random/standard-exponential/",
   "detail_json_href": "/api-data/ops/random-standard_exponential.json",
   "docs": {
     "sections": [
@@ -246,12 +246,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.standard_exponential",
+    "flopscope_ref": "fnp.random.standard_exponential",
     "module": "numpy.random",
     "name": "random.standard_exponential",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.standard_exponential",
-    "signature": "flops.random.standard_exponential(size=None)",
+    "signature": "fnp.random.standard_exponential(size=None)",
     "status": "supported",
     "summary": "Draw samples from the standard exponential distribution.",
     "weight": 16.0

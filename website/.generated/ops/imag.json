@@ -139,7 +139,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/real",
+              "href": "/docs/api/numpy/real/",
               "label": "flops.real",
               "original_target": "real",
               "role": "",
@@ -150,7 +150,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/angle",
+              "href": "/docs/api/numpy/angle/",
               "label": "flops.angle",
               "original_target": "angle",
               "role": "",
@@ -161,7 +161,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/real_if_close",
+              "href": "/docs/api/numpy/real-if-close/",
               "label": "flops.real_if_close",
               "original_target": "real_if_close",
               "role": "",
@@ -181,7 +181,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -228,7 +228,7 @@
     }
   ],
   "canonical_name": "imag",
-  "canonical_path": "imag",
+  "canonical_path": "numpy/imag",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -239,20 +239,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([1+2j, 3+4j, 5+6j])\n\na.imag\n\na.imag = flops.array([8, 10, 12])\n\na\n\nflops.imag(1 + 1j)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([1+2j, 3+4j, 5+6j])\n\na.imag\n\na.imag = flops.array([8, 10, 12])\n\na\n\nflops.imag(1 + 1j)",
     "output": "array([2.,  4.,  6.])\n\narray([1. +8.j,  3.+10.j,  5.+12.j])\n\n1.0",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.imag",
+  "flopscope_ref": "fnp.imag",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/imag/",
+  "href": "/docs/api/numpy/imag/",
   "legacy_href": "/docs/api/ops/imag/",
   "module": "numpy",
   "name": "imag",
   "next": {
-    "href": "/docs/api/in1d/",
-    "label": "flops.in1d"
+    "href": "/docs/api/numpy/in1d/",
+    "label": "fnp.in1d"
   },
   "notes": "Return imaginary part of complex array.",
   "notes_sections": [],
@@ -267,10 +267,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/identity/",
-    "label": "flops.identity"
+    "href": "/docs/api/numpy/identity/",
+    "label": "fnp.identity"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.imag",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.imag.html",
   "returns": [
     {
@@ -288,7 +289,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/real",
+      "href": "/docs/api/numpy/real/",
       "label": "flops.real",
       "original_target": "real",
       "role": "",
@@ -299,7 +300,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/angle",
+      "href": "/docs/api/numpy/angle/",
       "label": "flops.angle",
       "original_target": "angle",
       "role": "",
@@ -310,7 +311,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/real_if_close",
+      "href": "/docs/api/numpy/real-if-close/",
       "label": "flops.real_if_close",
       "original_target": "real_if_close",
       "role": "",
@@ -318,9 +319,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.imag(val)",
+  "signature": "fnp.imag(val)",
   "slug": "imag",
   "summary": "Return the imaginary part of the complex argument.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L131",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/reshape/",
+  "detail_href": "/docs/api/numpy/reshape/",
   "detail_json_href": "/api-data/ops/reshape.json",
   "docs": {
     "sections": [
@@ -508,7 +508,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -567,12 +567,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.reshape",
+    "flopscope_ref": "fnp.reshape",
     "module": "numpy",
     "name": "reshape",
     "notes": "Reshape array without copying.",
     "numpy_ref": "np.reshape",
-    "signature": "flops.reshape(a, /, shape=None, order='C', *, newshape=None, copy=None)",
+    "signature": "fnp.reshape(a, /, shape=None, order='C', *, newshape=None, copy=None)",
     "status": "supported",
     "summary": "Gives a new shape to an array without changing its data.",
     "weight": 0.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/copysign/",
+  "detail_href": "/docs/api/numpy/copysign/",
   "detail_json_href": "/api-data/ops/copysign.json",
   "docs": {
     "sections": [
@@ -416,7 +416,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -480,12 +480,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.copysign",
+    "flopscope_ref": "fnp.copysign",
     "module": "numpy",
     "name": "copysign",
     "notes": "Copy sign of x2 to magnitude of x1 element-wise.",
     "numpy_ref": "np.copysign",
-    "signature": "flops.copysign(*args, **kwargs)",
+    "signature": "fnp.copysign(*args, **kwargs)",
     "status": "supported",
     "summary": "Change the sign of x1 to that of x2, element-wise.",
     "weight": 1.0

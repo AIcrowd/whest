@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/tile/",
+  "detail_href": "/docs/api/numpy/tile/",
   "detail_json_href": "/api-data/ops/tile.json",
   "docs": {
     "sections": [
@@ -263,7 +263,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/repeat",
+                "href": "/docs/api/numpy/repeat/",
                 "label": "flops.repeat",
                 "original_target": "repeat",
                 "role": "",
@@ -279,7 +279,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/broadcast_to",
+                "href": "/docs/api/numpy/broadcast-to/",
                 "label": "flops.broadcast_to",
                 "original_target": "broadcast_to",
                 "role": "",
@@ -299,7 +299,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -428,12 +428,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.tile",
+    "flopscope_ref": "fnp.tile",
     "module": "numpy",
     "name": "tile",
     "notes": "Repeat array by tiling. Cost: numel(output).",
     "numpy_ref": "np.tile",
-    "signature": "flops.tile(A, reps)",
+    "signature": "fnp.tile(A, reps)",
     "status": "supported",
     "summary": "Construct an array by repeating A the number of times given by reps.",
     "weight": 1.0

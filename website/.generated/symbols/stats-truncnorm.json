@@ -25,7 +25,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Equivalent to "
+              "text": "This object mirrors "
             },
             {
               "external_url": "",
@@ -36,8 +36,18 @@
             },
             {
               "kind": "text",
-              "text": ".  Parameters "
-            },
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
             {
               "kind": "code",
               "text": "a"
@@ -52,15 +62,7 @@
             },
             {
               "kind": "text",
-              "text": "\nare "
-            },
-            {
-              "kind": "strong",
-              "text": "standardised"
-            },
-            {
-              "kind": "text",
-              "text": " bounds \u2014 the distribution is truncated to\n"
+              "text": " are standardized lower and upper bounds. The truncated\nsupport is "
             },
             {
               "kind": "code",
@@ -68,60 +70,37 @@
             },
             {
               "kind": "text",
-              "text": "."
+              "text": ", and both bounds appear\nbefore "
+            },
+            {
+              "kind": "code",
+              "text": "loc"
+            },
+            {
+              "kind": "text",
+              "text": " and "
+            },
+            {
+              "kind": "code",
+              "text": "scale"
+            },
+            {
+              "kind": "text",
+              "text": " to match SciPy's signature. Each public\nmethod deducts "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(input)"
+            },
+            {
+              "kind": "text",
+              "text": " FLOPs from the active budget."
             }
           ],
           "type": "paragraph"
-        },
-        {
-          "argument_inline": [],
-          "content_blocks": [
-            {
-              "inline": [
-                {
-                  "kind": "code",
-                  "text": "a"
-                },
-                {
-                  "kind": "text",
-                  "text": " and "
-                },
-                {
-                  "kind": "code",
-                  "text": "b"
-                },
-                {
-                  "kind": "text",
-                  "text": " are the "
-                },
-                {
-                  "kind": "strong",
-                  "text": "first two positional arguments"
-                },
-                {
-                  "kind": "text",
-                  "text": ",\nmatching scipy's signature:\n"
-                },
-                {
-                  "kind": "code",
-                  "text": "truncnorm.pdf(x, a, b, loc=0, scale=1)"
-                },
-                {
-                  "kind": "text",
-                  "text": "."
-                }
-              ],
-              "type": "paragraph"
-            }
-          ],
-          "directive": "note",
-          "options": [],
-          "raw_source": ".. note::\n\n   ``a`` and ``b`` are the **first two positional arguments**,\n   matching scipy's signature:\n   ``truncnorm.pdf(x, a, b, loc=0, scale=1)``.",
-          "supported": true,
-          "type": "directive_block"
         }
       ],
-      "title": "Extended Summary"
+      "title": "Notes"
     }
   ],
   "canonical_name": "stats.truncnorm",

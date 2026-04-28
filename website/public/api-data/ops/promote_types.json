@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/promote-types/",
+  "detail_href": "/docs/api/numpy/promote-types/",
   "detail_json_href": "/api-data/ops/promote_types.json",
   "docs": {
     "sections": [
@@ -143,7 +143,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/result_type",
+                "href": "/docs/api/numpy/result-type/",
                 "label": "flops.result_type",
                 "original_target": "result_type",
                 "role": "",
@@ -165,7 +165,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/can_cast",
+                "href": "/docs/api/numpy/can-cast/",
                 "label": "flops.can_cast",
                 "original_target": "can_cast",
                 "role": "",
@@ -188,7 +188,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/result_type",
+                "href": "/docs/api/numpy/result-type/",
                 "kind": "link",
                 "target": "result_type",
                 "text": "flops.result_type"
@@ -238,7 +238,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -340,12 +340,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.promote_types",
+    "flopscope_ref": "fnp.promote_types",
     "module": "numpy",
     "name": "promote_types",
     "notes": "Return smallest type to which both types may be safely cast.",
     "numpy_ref": "np.promote_types",
-    "signature": "flops.promote_types(*args, **kwargs)",
+    "signature": "fnp.promote_types(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the data type with the smallest size and smallest scalar kind to which both ``type1`` and ``type2`` may be safely cast. The returned data type is always considered \"canonical\", this mainly means that the promoted dtype will always be in native byte order.",
     "weight": 0.0

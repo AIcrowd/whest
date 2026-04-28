@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/shape/",
+  "detail_href": "/docs/api/numpy/shape/",
   "detail_json_href": "/api-data/ops/shape.json",
   "docs": {
     "sections": [
@@ -155,7 +155,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -238,12 +238,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.shape",
+    "flopscope_ref": "fnp.shape",
     "module": "numpy",
     "name": "shape",
     "notes": "Return shape of array.",
     "numpy_ref": "np.shape",
-    "signature": "flops.shape(a)",
+    "signature": "fnp.shape(a)",
     "status": "supported",
     "summary": "Return the shape of an array.",
     "weight": 0.0

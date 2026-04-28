@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/negative/",
+  "detail_href": "/docs/api/numpy/negative/",
   "detail_json_href": "/api-data/ops/negative.json",
   "docs": {
     "sections": [
@@ -284,7 +284,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -314,7 +314,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/negative",
+                "href": "/docs/api/numpy/negative/",
                 "kind": "link",
                 "target": "negative",
                 "text": "flops.negative"
@@ -354,12 +354,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.negative",
+    "flopscope_ref": "fnp.negative",
     "module": "numpy",
     "name": "negative",
     "notes": "Element-wise negation.",
     "numpy_ref": "np.negative",
-    "signature": "flops.negative(*args, **kwargs)",
+    "signature": "fnp.negative(*args, **kwargs)",
     "status": "supported",
     "summary": "Numerical negative, element-wise.",
     "weight": 1.0

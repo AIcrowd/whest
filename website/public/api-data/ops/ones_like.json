@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ones-like/",
+  "detail_href": "/docs/api/numpy/ones-like/",
   "detail_json_href": "/api-data/ops/ones_like.json",
   "docs": {
     "sections": [
@@ -312,7 +312,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/empty_like",
+                "href": "/docs/api/numpy/empty-like/",
                 "label": "flops.empty_like",
                 "original_target": "empty_like",
                 "role": "",
@@ -328,7 +328,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/zeros_like",
+                "href": "/docs/api/numpy/zeros-like/",
                 "label": "flops.zeros_like",
                 "original_target": "zeros_like",
                 "role": "",
@@ -344,7 +344,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/full_like",
+                "href": "/docs/api/numpy/full-like/",
                 "label": "flops.full_like",
                 "original_target": "full_like",
                 "role": "",
@@ -360,7 +360,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ones",
+                "href": "/docs/api/numpy/ones/",
                 "label": "flops.ones",
                 "original_target": "ones",
                 "role": "",
@@ -380,7 +380,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -458,12 +458,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.ones_like",
+    "flopscope_ref": "fnp.ones_like",
     "module": "numpy",
     "name": "ones_like",
     "notes": "Array of ones with same shape/type as input.",
     "numpy_ref": "np.ones_like",
-    "signature": "flops.ones_like(a, dtype=None, order='K', subok=True, shape=None, *, device=None)",
+    "signature": "fnp.ones_like(a, dtype=None, order='K', subok=True, shape=None, *, device=None)",
     "status": "supported",
     "summary": "Return an array of ones with the same shape and type as a given array.",
     "weight": 0.0

@@ -296,7 +296,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -366,7 +366,7 @@
     }
   ],
   "canonical_name": "radians",
-  "canonical_path": "radians",
+  "canonical_path": "numpy/radians",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -384,20 +384,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\ndeg = flops.arange(12.) * 30.\n\nflops.radians(deg)\n\nout = flops.zeros((deg.shape))\n\nret = flops.radians(deg, out)\n\nret is out",
+    "code": "import flopscope.numpy as fnp\n\ndeg = flops.arange(12.) * 30.\n\nflops.radians(deg)\n\nout = flops.zeros((deg.shape))\n\nret = flops.radians(deg, out)\n\nret is out",
     "output": "array([ 0.        ,  0.52359878,  1.04719755,  1.57079633,  2.0943951 ,\n        2.61799388,  3.14159265,  3.66519143,  4.1887902 ,  4.71238898,\n        5.23598776,  5.75958653])\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.radians",
+  "flopscope_ref": "fnp.radians",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/radians/",
+  "href": "/docs/api/numpy/radians/",
   "legacy_href": "/docs/api/ops/radians/",
   "module": "numpy",
   "name": "radians",
   "next": {
-    "href": "/docs/api/random/beta/",
-    "label": "flops.random.beta"
+    "href": "/docs/api/numpy/random/beta/",
+    "label": "fnp.random.beta"
   },
   "notes": "Convert degrees to radians element-wise.",
   "notes_sections": [],
@@ -442,10 +442,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/quantile/",
-    "label": "flops.quantile"
+    "href": "/docs/api/numpy/quantile/",
+    "label": "fnp.quantile"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.radians",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.radians.html",
   "returns": [
     {
@@ -475,9 +476,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.radians(*args, **kwargs)",
+  "signature": "fnp.radians(*args, **kwargs)",
   "slug": "radians",
   "summary": "Convert angles from degrees to radians.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

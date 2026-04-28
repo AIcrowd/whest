@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/sin/",
+  "detail_href": "/docs/api/numpy/sin/",
   "detail_json_href": "/api-data/ops/sin.json",
   "docs": {
     "sections": [
@@ -285,7 +285,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/arcsin",
+                "href": "/docs/api/numpy/arcsin/",
                 "label": "flops.arcsin",
                 "original_target": "arcsin",
                 "role": "",
@@ -296,7 +296,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/sinh",
+                "href": "/docs/api/numpy/sinh/",
                 "label": "flops.sinh",
                 "original_target": "sinh",
                 "role": "",
@@ -307,7 +307,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/cos",
+                "href": "/docs/api/numpy/cos/",
                 "label": "flops.cos",
                 "original_target": "cos",
                 "role": "",
@@ -397,7 +397,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -506,12 +506,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.sin",
+    "flopscope_ref": "fnp.sin",
     "module": "numpy",
     "name": "sin",
     "notes": "Element-wise sine.",
     "numpy_ref": "np.sin",
-    "signature": "flops.sin(*args, **kwargs)",
+    "signature": "fnp.sin(*args, **kwargs)",
     "status": "supported",
     "summary": "Trigonometric sine, element-wise.",
     "weight": 16.0

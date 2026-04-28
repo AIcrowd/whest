@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/outer/",
+  "detail_href": "/docs/api/numpy/linalg/outer/",
   "detail_json_href": "/api-data/ops/linalg-outer.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/outer",
+                "href": "/docs/api/numpy/outer/",
                 "kind": "link",
                 "target": "outer",
                 "text": "flops.outer"
@@ -170,7 +170,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/outer",
+                "href": "/docs/api/numpy/outer/",
                 "label": "flops.outer",
                 "original_target": "outer",
                 "role": "",
@@ -342,12 +342,12 @@
     "category": "counted_custom",
     "cost_formula": "delegates to flops.outer",
     "cost_formula_latex": "delegates to `outer`",
-    "flopscope_ref": "flops.linalg.outer",
+    "flopscope_ref": "fnp.linalg.outer",
     "module": "numpy.linalg",
     "name": "linalg.outer",
-    "notes": "Delegates to `we.outer` which charges `m*n` FLOPs.",
+    "notes": "Delegates to `fnp.outer` which charges `m*n` FLOPs.",
     "numpy_ref": "np.linalg.outer",
-    "signature": "flops.linalg.outer(x1, x2, /)",
+    "signature": "fnp.linalg.outer(x1, x2, /)",
     "status": "supported",
     "summary": "Compute the outer product of two vectors.",
     "weight": 1.0

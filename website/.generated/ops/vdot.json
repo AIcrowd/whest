@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/vdot",
+              "href": "/docs/api/numpy/vdot/",
               "kind": "link",
               "target": "vdot",
               "text": "vdot"
@@ -38,7 +38,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/dot",
+              "href": "/docs/api/numpy/dot/",
               "kind": "link",
               "target": "dot",
               "text": "dot"
@@ -49,7 +49,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/vdot",
+              "href": "/docs/api/numpy/vdot/",
               "kind": "link",
               "target": "vdot",
               "text": "vdot"
@@ -60,7 +60,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/dot",
+              "href": "/docs/api/numpy/dot/",
               "kind": "link",
               "target": "dot",
               "text": "dot"
@@ -295,7 +295,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/dot",
+              "href": "/docs/api/numpy/dot/",
               "label": "flops.dot",
               "original_target": "dot",
               "role": "",
@@ -315,7 +315,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -404,7 +404,7 @@
     }
   ],
   "canonical_name": "vdot",
-  "canonical_path": "vdot",
+  "canonical_path": "numpy/vdot",
   "category": "counted_custom",
   "cost_formula": "n",
   "cost_formula_latex": "$n$",
@@ -421,20 +421,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([1+2j,3+4j])\n\nb = flops.array([5+6j,7+8j])\n\nflops.vdot(a, b)\n\nflops.vdot(b, a)\n\na = flops.array([[1, 4], [5, 6]])\n\nb = flops.array([[4, 1], [2, 2]])\n\nflops.vdot(a, b)\n\nflops.vdot(b, a)\n\n1*4 + 4*1 + 5*2 + 6*2",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([1+2j,3+4j])\n\nb = flops.array([5+6j,7+8j])\n\nflops.vdot(a, b)\n\nflops.vdot(b, a)\n\na = flops.array([[1, 4], [5, 6]])\n\nb = flops.array([[4, 1], [2, 2]])\n\nflops.vdot(a, b)\n\nflops.vdot(b, a)\n\n1*4 + 4*1 + 5*2 + 6*2",
     "output": "(70-8j)\n\n(70+8j)\n\n30\n\n30\n\n30",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.vdot",
+  "flopscope_ref": "fnp.vdot",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1078",
-  "href": "/docs/api/vdot/",
+  "href": "/docs/api/numpy/vdot/",
   "legacy_href": "/docs/api/ops/vdot/",
   "module": "numpy",
   "name": "vdot",
   "next": {
-    "href": "/docs/api/vecdot/",
-    "label": "flops.vecdot"
+    "href": "/docs/api/numpy/vecdot/",
+    "label": "fnp.vecdot"
   },
   "notes": "Dot product with conjugation; cost = N (FMA=1).",
   "notes_sections": [],
@@ -457,10 +457,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/var/",
-    "label": "flops.var"
+    "href": "/docs/api/numpy/var/",
+    "label": "fnp.var"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.vdot",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.vdot.html",
   "returns": [
     {
@@ -482,7 +483,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/dot",
+      "href": "/docs/api/numpy/dot/",
       "label": "flops.dot",
       "original_target": "dot",
       "role": "",
@@ -490,9 +491,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.vdot(a, b)",
+  "signature": "fnp.vdot(a, b)",
   "slug": "vdot",
   "summary": "Return the dot product of two vectors.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

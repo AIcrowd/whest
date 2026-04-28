@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/randint/",
+  "detail_href": "/docs/api/numpy/random/randint/",
   "detail_json_href": "/api-data/ops/random-randint.json",
   "docs": {
     "sections": [
@@ -363,7 +363,7 @@
                     "inline": [
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/size",
+                        "href": "/docs/api/numpy/size/",
                         "kind": "link",
                         "target": "size",
                         "text": "size"
@@ -374,7 +374,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/size",
+                        "href": "/docs/api/numpy/size/",
                         "kind": "link",
                         "target": "size",
                         "text": "size"
@@ -391,7 +391,7 @@
                 "inline": [
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/size",
+                    "href": "/docs/api/numpy/size/",
                     "kind": "link",
                     "target": "size",
                     "text": "size"
@@ -402,7 +402,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/size",
+                    "href": "/docs/api/numpy/size/",
                     "kind": "link",
                     "target": "size",
                     "text": "size"
@@ -630,12 +630,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.randint",
+    "flopscope_ref": "fnp.random.randint",
     "module": "numpy.random",
     "name": "random.randint",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.randint",
-    "signature": "flops.random.randint(low, high=None, size=None, dtype=<class 'int'>)",
+    "signature": "fnp.random.randint(low, high=None, size=None, dtype=<class 'int'>)",
     "status": "supported",
     "summary": "Return random integers from `low` (inclusive) to `high` (exclusive).",
     "weight": 1.0

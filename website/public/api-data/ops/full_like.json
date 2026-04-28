@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/full-like/",
+  "detail_href": "/docs/api/numpy/full-like/",
   "detail_json_href": "/api-data/ops/full_like.json",
   "docs": {
     "sections": [
@@ -350,7 +350,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/empty_like",
+                "href": "/docs/api/numpy/empty-like/",
                 "label": "flops.empty_like",
                 "original_target": "empty_like",
                 "role": "",
@@ -366,7 +366,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ones_like",
+                "href": "/docs/api/numpy/ones-like/",
                 "label": "flops.ones_like",
                 "original_target": "ones_like",
                 "role": "",
@@ -382,7 +382,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/zeros_like",
+                "href": "/docs/api/numpy/zeros-like/",
                 "label": "flops.zeros_like",
                 "original_target": "zeros_like",
                 "role": "",
@@ -398,7 +398,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/full",
+                "href": "/docs/api/numpy/full/",
                 "label": "flops.full",
                 "original_target": "full",
                 "role": "",
@@ -418,7 +418,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -523,12 +523,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.full_like",
+    "flopscope_ref": "fnp.full_like",
     "module": "numpy",
     "name": "full_like",
     "notes": "Array filled with scalar, same shape/type as input. Cost: numel(output).",
     "numpy_ref": "np.full_like",
-    "signature": "flops.full_like(a, fill_value, dtype=None, order='K', subok=True, shape=None, *, device=None)",
+    "signature": "fnp.full_like(a, fill_value, dtype=None, order='K', subok=True, shape=None, *, device=None)",
     "status": "supported",
     "summary": "Return a full array with the same shape and type as a given array.",
     "weight": 1.0

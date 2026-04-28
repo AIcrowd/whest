@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/select/",
+  "detail_href": "/docs/api/numpy/select/",
   "detail_json_href": "/api-data/ops/select.json",
   "docs": {
     "sections": [
@@ -236,7 +236,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/where",
+                "href": "/docs/api/numpy/where/",
                 "label": "flops.where",
                 "original_target": "where",
                 "role": "",
@@ -247,7 +247,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/take",
+                "href": "/docs/api/numpy/take/",
                 "label": "flops.take",
                 "original_target": "take",
                 "role": "",
@@ -258,7 +258,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/choose",
+                "href": "/docs/api/numpy/choose/",
                 "label": "flops.choose",
                 "original_target": "choose",
                 "role": "",
@@ -269,7 +269,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/compress",
+                "href": "/docs/api/numpy/compress/",
                 "label": "flops.compress",
                 "original_target": "compress",
                 "role": "",
@@ -280,7 +280,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diag",
+                "href": "/docs/api/numpy/diag/",
                 "label": "flops.diag",
                 "original_target": "diag",
                 "role": "",
@@ -291,7 +291,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diagonal",
+                "href": "/docs/api/numpy/diagonal/",
                 "label": "flops.diagonal",
                 "original_target": "diagonal",
                 "role": "",
@@ -311,7 +311,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -444,12 +444,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.select",
+    "flopscope_ref": "fnp.select",
     "module": "numpy",
     "name": "select",
     "notes": "Return array from list of choices based on conditions. Cost: numel(input).",
     "numpy_ref": "np.select",
-    "signature": "flops.select(condlist, choicelist, default=0)",
+    "signature": "fnp.select(condlist, choicelist, default=0)",
     "status": "supported",
     "summary": "Return an array drawn from elements in choicelist, depending on conditions.",
     "weight": 4.0

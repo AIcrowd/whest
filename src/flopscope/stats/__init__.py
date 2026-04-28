@@ -1,30 +1,36 @@
-"""scipy.stats-compatible distributions with FLOP counting.
+"""Continuous probability distributions with analytic FLOP accounting.
 
-This submodule provides a **subset of scipy.stats** continuous distributions,
-each with ``.pdf()``, ``.cdf()``, and ``.ppf()`` methods that match the
-scipy API exactly (same function signatures, same numerical results).
-
-Unlike NumPy operations which are direct wrappers, these functions are
-**not** part of NumPy. They reproduce the ``scipy.stats`` interface so that
-participants can use standard statistical distributions without importing
-scipy (which is not available in the sandbox).
+``flopscope.stats`` provides a focused subset of ``scipy.stats`` continuous
+distributions. Each exported distribution object exposes ``pdf``, ``cdf``,
+and ``ppf`` methods with SciPy-compatible signatures while charging a flat
+FLOP cost per output element to the active budget.
 
 Available distributions
 -----------------------
-===============  ===========================================
-``norm``         Normal (Gaussian) distribution
-``uniform``      Continuous uniform distribution
-``expon``        Exponential distribution
-``cauchy``       Cauchy (Lorentz) distribution
-``logistic``     Logistic distribution
-``laplace``      Laplace (double-exponential) distribution
-``lognorm``      Log-normal distribution
-``truncnorm``    Truncated normal distribution
-===============  ===========================================
+norm
+    Normal (Gaussian) distribution.
+uniform
+    Continuous uniform distribution.
+expon
+    Exponential distribution.
+cauchy
+    Cauchy (Lorentz) distribution.
+logistic
+    Logistic distribution.
+laplace
+    Laplace (double-exponential) distribution.
+lognorm
+    Log-normal distribution.
+truncnorm
+    Truncated normal distribution.
 
-Usage
+Notes
 -----
-All distributions use the scipy ``loc``/``scale`` parameterisation::
+All distributions use SciPy's ``loc``/``scale`` parameterization. Shape
+parameters, when present, precede ``loc`` and ``scale`` exactly as they do in
+``scipy.stats``. Each public method requires an active
+``flopscope.BudgetContext`` and deducts the documented flat FLOP charge before
+returning a ``FlopscopeArray`` result.
 
     import flopscope as flops
 
@@ -43,6 +49,13 @@ Compatibility
 -------------
 Outputs are verified against ``scipy.stats`` to within 1e-12 relative
 tolerance across the full input domain. See ``tests/test_stats_*.py``.
+
+Examples
+--------
+>>> import flopscope as flops
+>>> with flops.BudgetContext(flop_budget=32) as budget:
+...     probs = flops.stats.norm.cdf([0.0, 1.96])
+...     summary = budget.summary()
 """
 
 from flopscope._registry import make_module_getattr as _make_module_getattr

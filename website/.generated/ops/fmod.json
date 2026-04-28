@@ -406,7 +406,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/remainder",
+              "href": "/docs/api/numpy/remainder/",
               "label": "flops.remainder",
               "original_target": "remainder",
               "role": "",
@@ -417,7 +417,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/divide",
+              "href": "/docs/api/numpy/divide/",
               "label": "flops.divide",
               "original_target": "divide",
               "role": "",
@@ -440,7 +440,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/fmod",
+              "href": "/docs/api/numpy/fmod/",
               "kind": "link",
               "target": "fmod",
               "text": "fmod"
@@ -451,7 +451,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/remainder",
+              "href": "/docs/api/numpy/remainder/",
               "kind": "link",
               "target": "remainder",
               "text": "remainder"
@@ -462,7 +462,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/fmod",
+              "href": "/docs/api/numpy/fmod/",
               "kind": "link",
               "target": "fmod",
               "text": "fmod"
@@ -492,7 +492,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -573,7 +573,7 @@
     }
   ],
   "canonical_name": "fmod",
-  "canonical_path": "fmod",
+  "canonical_path": "numpy/fmod",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -591,20 +591,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.fmod([-3, -2, -1, 1, 2, 3], 2)\n\nflops.remainder([-3, -2, -1, 1, 2, 3], 2)\n\nflops.fmod([5, 3], [2, 2.])\n\na = flops.arange(-3, 3).reshape(3, 2)\n\na\n\nflops.fmod(a, [2,2])",
+    "code": "import flopscope.numpy as fnp\n\nflops.fmod([-3, -2, -1, 1, 2, 3], 2)\n\nflops.remainder([-3, -2, -1, 1, 2, 3], 2)\n\nflops.fmod([5, 3], [2, 2.])\n\na = flops.arange(-3, 3).reshape(3, 2)\n\na\n\nflops.fmod(a, [2,2])",
     "output": "array([-1,  0, -1,  1,  0,  1])\n\narray([1, 0, 1, 1, 0, 1])\n\narray([ 1.,  1.])\n\narray([[-3, -2],\n       [-1,  0],\n       [ 1,  2]])\n\narray([[-1,  0],\n       [-1,  0],\n       [ 1,  0]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.fmod",
+  "flopscope_ref": "fnp.fmod",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/fmod/",
+  "href": "/docs/api/numpy/fmod/",
   "legacy_href": "/docs/api/ops/fmod/",
   "module": "numpy",
   "name": "fmod",
   "next": {
-    "href": "/docs/api/frexp/",
-    "label": "flops.frexp"
+    "href": "/docs/api/numpy/frexp/",
+    "label": "fnp.frexp"
   },
   "notes": "Element-wise C-style fmod (remainder toward zero).",
   "notes_sections": [
@@ -660,10 +660,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/fmin/",
-    "label": "flops.fmin"
+    "href": "/docs/api/numpy/fmin/",
+    "label": "fnp.fmin"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fmod",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fmod.html",
   "returns": [
     {
@@ -693,7 +694,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/remainder",
+      "href": "/docs/api/numpy/remainder/",
       "label": "flops.remainder",
       "original_target": "remainder",
       "role": "",
@@ -704,7 +705,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/divide",
+      "href": "/docs/api/numpy/divide/",
       "label": "flops.divide",
       "original_target": "divide",
       "role": "",
@@ -712,9 +713,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.fmod(*args, **kwargs)",
+  "signature": "fnp.fmod(*args, **kwargs)",
   "slug": "fmod",
   "summary": "Returns the element-wise remainder of division.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

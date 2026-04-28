@@ -469,7 +469,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -697,7 +697,7 @@
     }
   ],
   "canonical_name": "linalg.qr",
-  "canonical_path": "linalg/qr",
+  "canonical_path": "numpy/linalg/qr",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -708,20 +708,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nrng = flops.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nQ, R = flops.linalg.qr(a)\n\nflops.allclose(a, flops.dot(Q, R))  # a does equal QR\n\nR2 = flops.linalg.qr(a, mode='r')\n\nflops.allclose(R, R2)  # mode='r' returns the same R as mode='full'\n\na = flops.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input\n\nQ, R = flops.linalg.qr(a)\n\nQ.shape\n\nR.shape\n\nflops.allclose(a, flops.matmul(Q, R))\n\nA = flops.array([[0, 1], [1, 1], [1, 1], [2, 1]])\n\nA\n\nb = flops.array([1, 2, 2, 3])\n\nQ, R = flops.linalg.qr(A)\n\np = flops.dot(Q.T, b)\n\nflops.dot(flops.linalg.inv(R), p)",
+    "code": "import flopscope.numpy as fnp\n\nrng = flops.random.default_rng()\n\na = rng.normal(size=(9, 6))\n\nQ, R = flops.linalg.qr(a)\n\nflops.allclose(a, flops.dot(Q, R))  # a does equal QR\n\nR2 = flops.linalg.qr(a, mode='r')\n\nflops.allclose(R, R2)  # mode='r' returns the same R as mode='full'\n\na = flops.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input\n\nQ, R = flops.linalg.qr(a)\n\nQ.shape\n\nR.shape\n\nflops.allclose(a, flops.matmul(Q, R))\n\nA = flops.array([[0, 1], [1, 1], [1, 1], [2, 1]])\n\nA\n\nb = flops.array([1, 2, 2, 3])\n\nQ, R = flops.linalg.qr(A)\n\np = flops.dot(Q.T, b)\n\nflops.dot(flops.linalg.inv(R), p)",
     "output": "True\n\nTrue\n\n(3, 2, 2)\n\n(3, 2, 2)\n\nTrue\n\narray([[0, 1],\n       [1, 1],\n       [1, 1],\n       [2, 1]])\n\narray([  1.,   1.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.qr",
+  "flopscope_ref": "fnp.linalg.qr",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L78",
-  "href": "/docs/api/linalg/qr/",
+  "href": "/docs/api/numpy/linalg/qr/",
   "legacy_href": "/docs/api/ops/linalg-qr/",
   "module": "numpy.linalg",
   "name": "linalg.qr",
   "next": {
-    "href": "/docs/api/linalg/slogdet/",
-    "label": "flops.linalg.slogdet"
+    "href": "/docs/api/numpy/linalg/slogdet/",
+    "label": "fnp.linalg.slogdet"
   },
   "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
   "notes_sections": [
@@ -763,10 +763,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/pinv/",
-    "label": "flops.linalg.pinv"
+    "href": "/docs/api/numpy/linalg/pinv/",
+    "label": "fnp.linalg.pinv"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.qr",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.qr.html",
   "returns": [
     {
@@ -844,9 +845,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.linalg.qr(a, mode='reduced')",
+  "signature": "fnp.linalg.qr(a, mode='reduced')",
   "slug": "linalg-qr",
   "summary": "Compute the qr factorization of a matrix.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L928",
   "weight": 4.0
 }

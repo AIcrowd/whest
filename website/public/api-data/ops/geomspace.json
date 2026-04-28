@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/geomspace/",
+  "detail_href": "/docs/api/numpy/geomspace/",
   "detail_json_href": "/api-data/ops/geomspace.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/logspace",
+                "href": "/docs/api/numpy/logspace/",
                 "kind": "link",
                 "target": "logspace",
                 "text": "logspace"
@@ -367,7 +367,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/logspace",
+                "href": "/docs/api/numpy/logspace/",
                 "label": "flops.logspace",
                 "original_target": "logspace",
                 "role": "",
@@ -383,7 +383,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "label": "flops.linspace",
                 "original_target": "linspace",
                 "role": "",
@@ -399,7 +399,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "label": "flops.arange",
                 "original_target": "arange",
                 "role": "",
@@ -444,7 +444,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -658,12 +658,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.geomspace",
+    "flopscope_ref": "fnp.geomspace",
     "module": "numpy",
     "name": "geomspace",
     "notes": "Geometric-spaced generation; cost = num.",
     "numpy_ref": "np.geomspace",
-    "signature": "flops.geomspace(start, stop, num=50, endpoint=True, dtype=None, axis=0)",
+    "signature": "fnp.geomspace(start, stop, num=50, endpoint=True, dtype=None, axis=0)",
     "status": "supported",
     "summary": "Return numbers spaced evenly on a log scale (a geometric progression).",
     "weight": 1.0

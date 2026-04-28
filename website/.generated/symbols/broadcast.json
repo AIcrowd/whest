@@ -68,7 +68,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/shape/",
+                      "href": "/docs/api/numpy/shape/",
                       "kind": "link",
                       "target": "shape",
                       "text": "shape"
@@ -97,7 +97,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/shape/",
+                  "href": "/docs/api/numpy/shape/",
                   "kind": "link",
                   "target": "shape",
                   "text": "shape"
@@ -133,7 +133,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/broadcast-arrays/",
+              "href": "/docs/api/numpy/broadcast-arrays/",
               "label": "flops.broadcast_arrays",
               "original_target": "broadcast_arrays",
               "role": "",
@@ -144,7 +144,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/broadcast-to/",
+              "href": "/docs/api/numpy/broadcast-to/",
               "label": "flops.broadcast_to",
               "original_target": "broadcast_to",
               "role": "",
@@ -155,7 +155,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/broadcast-shapes/",
+              "href": "/docs/api/numpy/broadcast-shapes/",
               "label": "flops.broadcast_shapes",
               "original_target": "broadcast_shapes",
               "role": "",
@@ -184,7 +184,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/eigvalsh/",
+  "detail_href": "/docs/api/numpy/linalg/eigvalsh/",
   "detail_json_href": "/api-data/ops/linalg-eigvalsh.json",
   "docs": {
     "sections": [
@@ -299,7 +299,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -411,12 +411,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "flops.linalg.eigvalsh",
+    "flopscope_ref": "fnp.linalg.eigvalsh",
     "module": "numpy.linalg",
     "name": "linalg.eigvalsh",
     "notes": "Symmetric eigenvalues. Cost: $n^3$.",
     "numpy_ref": "np.linalg.eigvalsh",
-    "signature": "flops.linalg.eigvalsh(a, UPLO='L')",
+    "signature": "fnp.linalg.eigvalsh(a, UPLO='L')",
     "status": "supported",
     "summary": "Compute the eigenvalues of a complex Hermitian or real symmetric matrix.",
     "weight": 4.0

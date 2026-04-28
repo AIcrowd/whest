@@ -434,7 +434,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/frexp",
+                  "href": "/docs/api/numpy/frexp/",
                   "kind": "link",
                   "target": "frexp",
                   "text": "frexp"
@@ -445,7 +445,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ldexp",
+              "href": "/docs/api/numpy/ldexp/",
               "label": "flops.ldexp",
               "original_target": "ldexp",
               "role": "",
@@ -479,7 +479,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -530,7 +530,7 @@
     }
   ],
   "canonical_name": "frexp",
-  "canonical_path": "frexp",
+  "canonical_path": "numpy/frexp",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -548,20 +548,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.arange(9)\n\ny1, y2 = flops.frexp(x)\n\ny1\n\ny2\n\ny1 * 2**y2",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.arange(9)\n\ny1, y2 = flops.frexp(x)\n\ny1\n\ny2\n\ny1 * 2**y2",
     "output": "array([ 0.   ,  0.5  ,  0.5  ,  0.75 ,  0.5  ,  0.625,  0.75 ,  0.875,\n        0.5  ])\n\narray([0, 1, 2, 2, 3, 3, 3, 3, 4], dtype=int32)\n\narray([ 0.,  1.,  2.,  3.,  4.,  5.,  6.,  7.,  8.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.frexp",
+  "flopscope_ref": "fnp.frexp",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L178",
-  "href": "/docs/api/frexp/",
+  "href": "/docs/api/numpy/frexp/",
   "legacy_href": "/docs/api/ops/frexp/",
   "module": "numpy",
   "name": "frexp",
   "next": {
-    "href": "/docs/api/from-dlpack/",
-    "label": "flops.from_dlpack"
+    "href": "/docs/api/numpy/from-dlpack/",
+    "label": "fnp.from_dlpack"
   },
   "notes": "Decompose x into mantissa and exponent element-wise.",
   "notes_sections": [
@@ -622,10 +622,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/fmod/",
-    "label": "flops.fmod"
+    "href": "/docs/api/numpy/fmod/",
+    "label": "fnp.fmod"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.frexp",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.frexp.html",
   "returns": [
     {
@@ -663,7 +664,7 @@
         },
         {
           "external_url": "",
-          "href": "/docs/api/ops/frexp",
+          "href": "/docs/api/numpy/frexp/",
           "kind": "link",
           "target": "frexp",
           "text": "frexp"
@@ -674,7 +675,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ldexp",
+      "href": "/docs/api/numpy/ldexp/",
       "label": "flops.ldexp",
       "original_target": "ldexp",
       "role": "",
@@ -682,9 +683,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.frexp(*args, **kwargs)",
+  "signature": "fnp.frexp(*args, **kwargs)",
   "slug": "frexp",
   "summary": "Decompose the elements of x into mantissa and twos exponent.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

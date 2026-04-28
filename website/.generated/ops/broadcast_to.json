@@ -211,7 +211,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/broadcast_arrays",
+              "href": "/docs/api/numpy/broadcast-arrays/",
               "label": "flops.broadcast_arrays",
               "original_target": "broadcast_arrays",
               "role": "",
@@ -222,7 +222,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/broadcast_shapes",
+              "href": "/docs/api/numpy/broadcast-shapes/",
               "label": "flops.broadcast_shapes",
               "original_target": "broadcast_shapes",
               "role": "",
@@ -242,7 +242,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -274,7 +274,7 @@
     }
   ],
   "canonical_name": "broadcast_to",
-  "canonical_path": "broadcast-to",
+  "canonical_path": "numpy/broadcast-to",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -285,20 +285,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nx = flops.array([1, 2, 3])\n\nflops.broadcast_to(x, (3, 3))",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([1, 2, 3])\n\nflops.broadcast_to(x, (3, 3))",
     "output": "array([[1, 2, 3],\n       [1, 2, 3],\n       [1, 2, 3]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.broadcast_to",
+  "flopscope_ref": "fnp.broadcast_to",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L610",
-  "href": "/docs/api/broadcast-to/",
+  "href": "/docs/api/numpy/broadcast-to/",
   "legacy_href": "/docs/api/ops/broadcast_to/",
   "module": "numpy",
   "name": "broadcast_to",
   "next": {
-    "href": "/docs/api/can-cast/",
-    "label": "flops.can_cast"
+    "href": "/docs/api/numpy/can-cast/",
+    "label": "fnp.can_cast"
   },
   "notes": "Broadcast array to new shape. Cost: numel(output).",
   "notes_sections": [],
@@ -329,10 +329,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/broadcast-shapes/",
-    "label": "flops.broadcast_shapes"
+    "href": "/docs/api/numpy/broadcast-shapes/",
+    "label": "fnp.broadcast_shapes"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.broadcast_to",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.broadcast_to.html",
   "returns": [
     {
@@ -361,7 +362,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/broadcast_arrays",
+      "href": "/docs/api/numpy/broadcast-arrays/",
       "label": "flops.broadcast_arrays",
       "original_target": "broadcast_arrays",
       "role": "",
@@ -372,7 +373,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/broadcast_shapes",
+      "href": "/docs/api/numpy/broadcast-shapes/",
       "label": "flops.broadcast_shapes",
       "original_target": "broadcast_shapes",
       "role": "",
@@ -380,9 +381,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.broadcast_to(array, shape, subok=False)",
+  "signature": "fnp.broadcast_to(array, shape, subok=False)",
   "slug": "broadcast_to",
   "summary": "Broadcast an array to a new shape.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_stride_tricks_impl.py#L367",
   "weight": 0.0
 }

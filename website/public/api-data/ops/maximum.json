@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/maximum/",
+  "detail_href": "/docs/api/numpy/maximum/",
   "detail_json_href": "/api-data/ops/maximum.json",
   "docs": {
     "sections": [
@@ -352,7 +352,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/minimum",
+                "href": "/docs/api/numpy/minimum/",
                 "label": "flops.minimum",
                 "original_target": "minimum",
                 "role": "",
@@ -368,7 +368,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fmax",
+                "href": "/docs/api/numpy/fmax/",
                 "label": "flops.fmax",
                 "original_target": "fmax",
                 "role": "",
@@ -400,7 +400,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmax",
+                "href": "/docs/api/numpy/nanmax/",
                 "label": "flops.nanmax",
                 "original_target": "nanmax",
                 "role": "",
@@ -411,7 +411,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/fmin",
+                "href": "/docs/api/numpy/fmin/",
                 "label": "flops.fmin",
                 "original_target": "fmin",
                 "role": "",
@@ -433,7 +433,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmin",
+                "href": "/docs/api/numpy/nanmin/",
                 "label": "flops.nanmin",
                 "original_target": "nanmin",
                 "role": "",
@@ -478,7 +478,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -542,12 +542,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.maximum",
+    "flopscope_ref": "fnp.maximum",
     "module": "numpy",
     "name": "maximum",
     "notes": "Element-wise maximum (propagates NaN).",
     "numpy_ref": "np.maximum",
-    "signature": "flops.maximum(*args, **kwargs)",
+    "signature": "fnp.maximum(*args, **kwargs)",
     "status": "supported",
     "summary": "Element-wise maximum of array elements.",
     "weight": 1.0

@@ -298,7 +298,7 @@
                   "inline": [
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/size",
+                      "href": "/docs/api/numpy/size/",
                       "kind": "link",
                       "target": "size",
                       "text": "size"
@@ -309,7 +309,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/size",
+                      "href": "/docs/api/numpy/size/",
                       "kind": "link",
                       "target": "size",
                       "text": "size"
@@ -326,7 +326,7 @@
               "inline": [
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/size",
+                  "href": "/docs/api/numpy/size/",
                   "kind": "link",
                   "target": "size",
                   "text": "size"
@@ -337,7 +337,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/size",
+                  "href": "/docs/api/numpy/size/",
                   "kind": "link",
                   "target": "size",
                   "text": "size"
@@ -578,7 +578,7 @@
     }
   ],
   "canonical_name": "random.random_integers",
-  "canonical_path": "random/random-integers",
+  "canonical_path": "numpy/random/random-integers",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -594,15 +594,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.random_integers",
+  "flopscope_ref": "fnp.random.random_integers",
   "flopscope_source_url": "",
-  "href": "/docs/api/random/random-integers/",
+  "href": "/docs/api/numpy/random/random-integers/",
   "legacy_href": "/docs/api/ops/random-random_integers/",
   "module": "numpy.random",
   "name": "random.random_integers",
   "next": {
-    "href": "/docs/api/random/random-sample/",
-    "label": "flops.random.random_sample"
+    "href": "/docs/api/numpy/random/random-sample/",
+    "label": "fnp.random.random_sample"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -639,10 +639,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/random/",
-    "label": "flops.random.random"
+    "href": "/docs/api/numpy/random/random/",
+    "label": "fnp.random.random"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.random_integers",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.random_integers.html",
   "returns": [
     {
@@ -704,9 +705,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.random_integers(low, high=None, size=None)",
+  "signature": "fnp.random.random_integers(low, high=None, size=None)",
   "slug": "random-random_integers",
   "summary": "Random integers of type `flops.int_` between `low` and `high`, inclusive.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

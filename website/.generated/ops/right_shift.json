@@ -414,7 +414,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/left_shift",
+              "href": "/docs/api/numpy/left-shift/",
               "label": "flops.left_shift",
               "original_target": "left_shift",
               "role": "",
@@ -450,7 +450,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -512,7 +512,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/right_shift",
+              "href": "/docs/api/numpy/right-shift/",
               "kind": "link",
               "target": "right_shift",
               "text": "flops.right_shift"
@@ -553,7 +553,7 @@
     }
   ],
   "canonical_name": "right_shift",
-  "canonical_path": "right-shift",
+  "canonical_path": "numpy/right-shift",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -571,20 +571,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.binary_repr(10)\n\nflops.right_shift(10, 1)\n\nflops.binary_repr(5)\n\nflops.right_shift(10, [1,2,3])\n\nx1 = 10\n\nx2 = flops.array([1,2,3])\n\nx1 >> x2",
+    "code": "import flopscope.numpy as fnp\n\nflops.binary_repr(10)\n\nflops.right_shift(10, 1)\n\nflops.binary_repr(5)\n\nflops.right_shift(10, [1,2,3])\n\nx1 = 10\n\nx2 = flops.array([1,2,3])\n\nx1 >> x2",
     "output": "'1010'\n\n5\n\n'101'\n\narray([5, 2, 1])\n\narray([5, 2, 1])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.right_shift",
+  "flopscope_ref": "fnp.right_shift",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/right-shift/",
+  "href": "/docs/api/numpy/right-shift/",
   "legacy_href": "/docs/api/ops/right_shift/",
   "module": "numpy",
   "name": "right_shift",
   "next": {
-    "href": "/docs/api/rint/",
-    "label": "flops.rint"
+    "href": "/docs/api/numpy/rint/",
+    "label": "fnp.rint"
   },
   "notes": "Element-wise right bit shift (legacy name).",
   "notes_sections": [],
@@ -638,10 +638,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/result-type/",
-    "label": "flops.result_type"
+    "href": "/docs/api/numpy/result-type/",
+    "label": "fnp.result_type"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.right_shift",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.right_shift.html",
   "returns": [
     {
@@ -663,7 +664,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/left_shift",
+      "href": "/docs/api/numpy/left-shift/",
       "label": "flops.left_shift",
       "original_target": "left_shift",
       "role": "",
@@ -687,9 +688,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.right_shift(*args, **kwargs)",
+  "signature": "fnp.right_shift(*args, **kwargs)",
   "slug": "right_shift",
   "summary": "Shift the bits of an integer to the right.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

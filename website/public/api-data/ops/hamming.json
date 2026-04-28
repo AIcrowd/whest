@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/hamming/",
+  "detail_href": "/docs/api/numpy/hamming/",
   "detail_json_href": "/api-data/ops/hamming.json",
   "docs": {
     "sections": [
@@ -105,7 +105,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bartlett",
+                "href": "/docs/api/numpy/bartlett/",
                 "label": "flops.bartlett",
                 "original_target": "bartlett",
                 "role": "",
@@ -116,7 +116,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/blackman",
+                "href": "/docs/api/numpy/blackman/",
                 "label": "flops.blackman",
                 "original_target": "blackman",
                 "role": "",
@@ -127,7 +127,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hanning",
+                "href": "/docs/api/numpy/hanning/",
                 "label": "flops.hanning",
                 "original_target": "hanning",
                 "role": "",
@@ -138,7 +138,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/kaiser",
+                "href": "/docs/api/numpy/kaiser/",
                 "label": "flops.kaiser",
                 "original_target": "kaiser",
                 "role": "",
@@ -212,7 +212,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -272,12 +272,12 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
-    "flopscope_ref": "flops.hamming",
+    "flopscope_ref": "fnp.hamming",
     "module": "flopscope._window",
     "name": "hamming",
     "notes": "Hamming window. Cost: n (one cosine per sample).",
     "numpy_ref": "np.hamming",
-    "signature": "flops.hamming(M)",
+    "signature": "fnp.hamming(M)",
     "status": "supported",
     "summary": "Return the Hamming window.",
     "weight": 16.0

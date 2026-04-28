@@ -723,7 +723,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/mean",
+              "href": "/docs/api/numpy/mean/",
               "label": "flops.mean",
               "original_target": "mean",
               "role": "",
@@ -743,7 +743,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/median",
+              "href": "/docs/api/numpy/median/",
               "label": "flops.median",
               "original_target": "median",
               "role": "",
@@ -754,7 +754,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanpercentile",
+              "href": "/docs/api/numpy/nanpercentile/",
               "label": "flops.nanpercentile",
               "original_target": "nanpercentile",
               "role": "",
@@ -770,7 +770,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/quantile",
+              "href": "/docs/api/numpy/quantile/",
               "label": "flops.quantile",
               "original_target": "quantile",
               "role": "",
@@ -793,7 +793,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/percentile",
+              "href": "/docs/api/numpy/percentile/",
               "kind": "link",
               "target": "percentile",
               "text": "flops.percentile"
@@ -812,7 +812,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/quantile",
+              "href": "/docs/api/numpy/quantile/",
               "kind": "link",
               "target": "quantile",
               "text": "flops.quantile"
@@ -831,7 +831,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/quantile",
+              "href": "/docs/api/numpy/quantile/",
               "kind": "link",
               "target": "quantile",
               "text": "flops.quantile"
@@ -863,7 +863,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -1012,7 +1012,7 @@
     }
   ],
   "canonical_name": "percentile",
-  "canonical_path": "percentile",
+  "canonical_path": "numpy/percentile",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -1033,20 +1033,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([[10, 7, 4], [3, 2, 1]])\n\na\n\nflops.percentile(a, 50)\n\nflops.percentile(a, 50, axis=0)\n\nflops.percentile(a, 50, axis=1)\n\nflops.percentile(a, 50, axis=1, keepdims=True)\n\nm = flops.percentile(a, 50, axis=0)\n\nout = flops.zeros_like(m)\n\nflops.percentile(a, 50, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nflops.percentile(b, 50, axis=1, overwrite_input=True)\n\nassert not flops.all(a == b)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[10, 7, 4], [3, 2, 1]])\n\na\n\nflops.percentile(a, 50)\n\nflops.percentile(a, 50, axis=0)\n\nflops.percentile(a, 50, axis=1)\n\nflops.percentile(a, 50, axis=1, keepdims=True)\n\nm = flops.percentile(a, 50, axis=0)\n\nout = flops.zeros_like(m)\n\nflops.percentile(a, 50, axis=0, out=out)\n\nm\n\nb = a.copy()\n\nflops.percentile(b, 50, axis=1, overwrite_input=True)\n\nassert not flops.all(a == b)",
     "output": "array([[10,  7,  4],\n       [ 3,  2,  1]])\n\n3.5\n\narray([6.5, 4.5, 2.5])\n\narray([7.,  2.])\n\narray([[7.],\n       [2.]])\n\narray([6.5, 4.5, 2.5])\n\narray([6.5, 4.5, 2.5])\n\narray([7.,  2.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.percentile",
+  "flopscope_ref": "fnp.percentile",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/percentile/",
+  "href": "/docs/api/numpy/percentile/",
   "legacy_href": "/docs/api/ops/percentile/",
   "module": "numpy",
   "name": "percentile",
   "next": {
-    "href": "/docs/api/permute-dims/",
-    "label": "flops.permute_dims"
+    "href": "/docs/api/numpy/permute-dims/",
+    "label": "fnp.permute_dims"
   },
   "notes": "q-th percentile of array elements.",
   "notes_sections": [
@@ -1160,10 +1160,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/partition/",
-    "label": "flops.partition"
+    "href": "/docs/api/numpy/partition/",
+    "label": "fnp.partition"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.percentile",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.percentile.html",
   "returns": [
     {
@@ -1186,7 +1187,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/mean",
+      "href": "/docs/api/numpy/mean/",
       "label": "flops.mean",
       "original_target": "mean",
       "role": "",
@@ -1206,7 +1207,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/median",
+      "href": "/docs/api/numpy/median/",
       "label": "flops.median",
       "original_target": "median",
       "role": "",
@@ -1217,7 +1218,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanpercentile",
+      "href": "/docs/api/numpy/nanpercentile/",
       "label": "flops.nanpercentile",
       "original_target": "nanpercentile",
       "role": "",
@@ -1233,7 +1234,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/quantile",
+      "href": "/docs/api/numpy/quantile/",
       "label": "flops.quantile",
       "original_target": "quantile",
       "role": "",
@@ -1241,9 +1242,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.percentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
+  "signature": "fnp.percentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
   "slug": "percentile",
   "summary": "Compute the q-th percentile of the data along the specified axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L4067",
   "weight": 1.0
 }

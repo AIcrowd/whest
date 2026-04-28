@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/einsum-path/",
+  "detail_href": "/docs/api/numpy/einsum-path/",
   "detail_json_href": "/api-data/ops/einsum_path.json",
   "docs": {
     "sections": [
@@ -88,7 +88,7 @@
                               },
                               {
                                 "external_url": "",
-                                "href": "/docs/api/ops/einsum_path",
+                                "href": "/docs/api/numpy/einsum-path/",
                                 "kind": "link",
                                 "target": "einsum_path",
                                 "text": "einsum_path"
@@ -248,7 +248,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
@@ -259,7 +259,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-multi_dot",
+                "href": "/docs/api/numpy/linalg/multi-dot/",
                 "label": "flops.linalg.multi_dot",
                 "original_target": "linalg.multi_dot",
                 "role": "",
@@ -539,12 +539,12 @@
     "category": "counted_custom",
     "cost_formula": "0 (planning only)",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.einsum_path",
+    "flopscope_ref": "fnp.einsum_path",
     "module": "numpy",
     "name": "einsum_path",
     "notes": "Optimize einsum contraction path (no numeric output).",
     "numpy_ref": "np.einsum_path",
-    "signature": "flops.einsum_path(subscripts: 'str', *operands, optimize: 'str | bool | list' = 'auto')",
+    "signature": "fnp.einsum_path(subscripts: 'str', *operands, optimize: 'str | bool | list' = 'auto')",
     "status": "supported",
     "summary": "Evaluates the lowest cost contraction order for an einsum expression by considering the creation of intermediate arrays.",
     "weight": 1.0

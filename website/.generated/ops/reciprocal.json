@@ -323,7 +323,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -351,7 +351,7 @@
     }
   ],
   "canonical_name": "reciprocal",
-  "canonical_path": "reciprocal",
+  "canonical_path": "numpy/reciprocal",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -369,20 +369,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.reciprocal(2.)\n\nflops.reciprocal([1, 2., 3.33])",
+    "code": "import flopscope.numpy as fnp\n\nflops.reciprocal(2.)\n\nflops.reciprocal([1, 2., 3.33])",
     "output": "0.5\n\narray([ 1.       ,  0.5      ,  0.3003003])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.reciprocal",
+  "flopscope_ref": "fnp.reciprocal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/reciprocal/",
+  "href": "/docs/api/numpy/reciprocal/",
   "legacy_href": "/docs/api/ops/reciprocal/",
   "module": "numpy",
   "name": "reciprocal",
   "next": {
-    "href": "/docs/api/remainder/",
-    "label": "flops.remainder"
+    "href": "/docs/api/numpy/remainder/",
+    "label": "fnp.remainder"
   },
   "notes": "Element-wise 1/x.",
   "notes_sections": [
@@ -430,10 +430,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/real-if-close/",
-    "label": "flops.real_if_close"
+    "href": "/docs/api/numpy/real-if-close/",
+    "label": "fnp.real_if_close"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.reciprocal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.reciprocal.html",
   "returns": [
     {
@@ -446,9 +447,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.reciprocal(*args, **kwargs)",
+  "signature": "fnp.reciprocal(*args, **kwargs)",
   "slug": "reciprocal",
   "summary": "Return the reciprocal of the argument, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

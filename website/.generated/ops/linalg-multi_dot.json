@@ -31,7 +31,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/dot",
+              "href": "/docs/api/numpy/dot/",
               "kind": "link",
               "target": "dot",
               "text": "flops.dot"
@@ -210,7 +210,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/dot",
+              "href": "/docs/api/numpy/dot/",
               "label": "flops.dot",
               "original_target": "numpy.dot",
               "role": "",
@@ -305,7 +305,7 @@
         },
         {
           "language": null,
-          "text": ">>> import flopscope as flops\n>>> from flops.linalg import multi_dot\n>>> # Prepare some data\n>>> A = flops.random.random((10000, 100))\n>>> B = flops.random.random((100, 1000))\n>>> C = flops.random.random((1000, 5))\n>>> D = flops.random.random((5, 333))\n>>> # the actual dot multiplication\n>>> _ = multi_dot([A, B, C, D])",
+          "text": ">>> import flopscope.numpy as fnp\n>>> from flops.linalg import multi_dot\n>>> # Prepare some data\n>>> A = flops.random.random((10000, 100))\n>>> B = flops.random.random((100, 1000))\n>>> C = flops.random.random((1000, 5))\n>>> D = flops.random.random((5, 333))\n>>> # the actual dot multiplication\n>>> _ = multi_dot([A, B, C, D])",
           "type": "literal_block"
         },
         {
@@ -327,7 +327,7 @@
     }
   ],
   "canonical_name": "linalg.multi_dot",
-  "canonical_path": "linalg/multi-dot",
+  "canonical_path": "numpy/linalg/multi-dot",
   "category": "counted_custom",
   "cost_formula": "optimal chain cost",
   "cost_formula_latex": "optimal chain",
@@ -357,20 +357,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nfrom flops.linalg import multi_dot\n\nA = flops.random.random((10000, 100))\n\nB = flops.random.random((100, 1000))\n\nC = flops.random.random((1000, 5))\n\nD = flops.random.random((5, 333))\n\n_ = multi_dot([A, B, C, D])\n\n_ = flops.dot(flops.dot(flops.dot(A, B), C), D)\n\n_ = A.dot(B).dot(C).dot(D)",
+    "code": "import flopscope.numpy as fnp\n\nfrom flops.linalg import multi_dot\n\nA = flops.random.random((10000, 100))\n\nB = flops.random.random((100, 1000))\n\nC = flops.random.random((1000, 5))\n\nD = flops.random.random((5, 333))\n\n_ = multi_dot([A, B, C, D])\n\n_ = flops.dot(flops.dot(flops.dot(A, B), C), D)\n\n_ = A.dot(B).dot(C).dot(D)",
     "output": "",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.multi_dot",
+  "flopscope_ref": "fnp.linalg.multi_dot",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L63",
-  "href": "/docs/api/linalg/multi-dot/",
+  "href": "/docs/api/numpy/linalg/multi-dot/",
   "legacy_href": "/docs/api/ops/linalg-multi_dot/",
   "module": "numpy.linalg",
   "name": "linalg.multi_dot",
   "next": {
-    "href": "/docs/api/linalg/norm/",
-    "label": "flops.linalg.norm"
+    "href": "/docs/api/numpy/linalg/norm/",
+    "label": "fnp.linalg.norm"
   },
   "notes": "Chain matmul. Cost: sum of optimal chain matmul costs (CLRS \u00a715.2).",
   "notes_sections": [
@@ -405,10 +405,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/matrix-transpose/",
-    "label": "flops.linalg.matrix_transpose"
+    "href": "/docs/api/numpy/linalg/matrix-transpose/",
+    "label": "fnp.linalg.matrix_transpose"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.multi_dot",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.multi_dot.html",
   "returns": [
     {
@@ -429,7 +430,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/dot",
+      "href": "/docs/api/numpy/dot/",
       "label": "flops.dot",
       "original_target": "numpy.dot",
       "role": "",
@@ -437,9 +438,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.linalg.multi_dot(arrays, *, out=None)",
+  "signature": "fnp.linalg.multi_dot(arrays, *, out=None)",
   "slug": "linalg-multi_dot",
   "summary": "Compute the dot product of two or more arrays in a single function call, while automatically selecting the fastest evaluation order.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2841",
   "weight": 1.0
 }

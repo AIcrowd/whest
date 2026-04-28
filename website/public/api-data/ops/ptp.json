@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ptp/",
+  "detail_href": "/docs/api/numpy/ptp/",
   "detail_json_href": "/api-data/ops/ptp.json",
   "docs": {
     "sections": [
@@ -35,7 +35,7 @@
                 "inline": [
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/ptp",
+                    "href": "/docs/api/numpy/ptp/",
                     "kind": "link",
                     "target": "ptp",
                     "text": "ptp"
@@ -200,7 +200,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/ptp",
+                        "href": "/docs/api/numpy/ptp/",
                         "kind": "link",
                         "target": "ptp",
                         "text": "ptp"
@@ -302,7 +302,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -442,12 +442,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.ptp",
+    "flopscope_ref": "fnp.ptp",
     "module": "numpy",
     "name": "ptp",
     "notes": "Peak-to-peak (max - min) range of array.",
     "numpy_ref": "np.ptp",
-    "signature": "flops.ptp(a, axis=None, out=None, keepdims=<no value>)",
+    "signature": "fnp.ptp(a, axis=None, out=None, keepdims=<no value>)",
     "status": "supported",
     "summary": "Range of values (maximum - minimum) along an axis.",
     "weight": 1.0

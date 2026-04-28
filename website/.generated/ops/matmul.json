@@ -262,7 +262,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/vecdot",
+              "href": "/docs/api/numpy/vecdot/",
               "label": "flops.vecdot",
               "original_target": "vecdot",
               "role": "",
@@ -278,7 +278,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/matvec",
+              "href": "/docs/api/numpy/matvec/",
               "label": "flops.matvec",
               "original_target": "matvec",
               "role": "",
@@ -294,7 +294,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/vecmat",
+              "href": "/docs/api/numpy/vecmat/",
               "label": "flops.vecmat",
               "original_target": "vecmat",
               "role": "",
@@ -310,7 +310,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/tensordot",
+              "href": "/docs/api/numpy/tensordot/",
               "label": "flops.tensordot",
               "original_target": "tensordot",
               "role": "",
@@ -326,7 +326,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "label": "flops.einsum",
               "original_target": "einsum",
               "role": "",
@@ -342,7 +342,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/dot",
+              "href": "/docs/api/numpy/dot/",
               "label": "flops.dot",
               "original_target": "dot",
               "role": "",
@@ -404,7 +404,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/vecmat",
+                      "href": "/docs/api/numpy/vecmat/",
                       "kind": "link",
                       "target": "vecmat",
                       "text": "vecmat"
@@ -428,7 +428,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/matvec",
+                      "href": "/docs/api/numpy/matvec/",
                       "kind": "link",
                       "target": "matvec",
                       "text": "matvec"
@@ -450,7 +450,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/matmul",
+              "href": "/docs/api/numpy/matmul/",
               "kind": "link",
               "target": "matmul",
               "text": "matmul"
@@ -461,7 +461,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/dot",
+              "href": "/docs/api/numpy/dot/",
               "kind": "link",
               "target": "dot",
               "text": "dot"
@@ -631,7 +631,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -843,7 +843,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/matmul",
+              "href": "/docs/api/numpy/matmul/",
               "kind": "link",
               "target": "matmul",
               "text": "flops.matmul"
@@ -884,7 +884,7 @@
     }
   ],
   "canonical_name": "matmul",
-  "canonical_path": "matmul",
+  "canonical_path": "numpy/matmul",
   "category": "counted_custom",
   "cost_formula": "m * k * n (FMA=1)",
   "cost_formula_latex": "$m \\cdot k \\cdot n$",
@@ -902,20 +902,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([[1, 0],\n              [0, 1]])\n\nb = flops.array([[4, 1],\n              [2, 2]])\n\nflops.matmul(a, b)\n\na = flops.array([[1, 0],\n              [0, 1]])\n\nb = flops.array([1, 2])\n\nflops.matmul(a, b)\n\nflops.matmul(b, a)\n\na = flops.arange(2 * 2 * 4).reshape((2, 2, 4))\n\nb = flops.arange(2 * 2 * 4).reshape((2, 4, 2))\n\nflops.matmul(a,b).shape\n\nflops.matmul(a, b)[0, 1, 1]\n\nsum(a[0, 1, :] * b[0 , :, 1])\n\nflops.matmul([2j, 3j], [2j, 3j])\n\nflops.matmul([1,2], 3)\n\nx1 = flops.array([2j, 3j])\n\nx2 = flops.array([2j, 3j])\n\nx1 @ x2",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[1, 0],\n              [0, 1]])\n\nb = flops.array([[4, 1],\n              [2, 2]])\n\nflops.matmul(a, b)\n\na = flops.array([[1, 0],\n              [0, 1]])\n\nb = flops.array([1, 2])\n\nflops.matmul(a, b)\n\nflops.matmul(b, a)\n\na = flops.arange(2 * 2 * 4).reshape((2, 2, 4))\n\nb = flops.arange(2 * 2 * 4).reshape((2, 4, 2))\n\nflops.matmul(a,b).shape\n\nflops.matmul(a, b)[0, 1, 1]\n\nsum(a[0, 1, :] * b[0 , :, 1])\n\nflops.matmul([2j, 3j], [2j, 3j])\n\nflops.matmul([1,2], 3)\n\nx1 = flops.array([2j, 3j])\n\nx2 = flops.array([2j, 3j])\n\nx1 @ x2",
     "output": "array([[4, 1],\n       [2, 2]])\n\narray([1, 2])\n\narray([1, 2])\n\n(2, 2, 2)\n\n98\n\n98\n\n(-13+0j)\n\nTraceback (most recent call last):\n...\nValueError: matmul: Input operand 1 does not have enough dimensions ...\n\n(-13+0j)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.matmul",
+  "flopscope_ref": "fnp.matmul",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L948",
-  "href": "/docs/api/matmul/",
+  "href": "/docs/api/numpy/matmul/",
   "legacy_href": "/docs/api/ops/matmul/",
   "module": "numpy",
   "name": "matmul",
   "next": {
-    "href": "/docs/api/matrix-transpose/",
-    "label": "flops.matrix_transpose"
+    "href": "/docs/api/numpy/matrix-transpose/",
+    "label": "fnp.matrix_transpose"
   },
   "notes": "Matrix multiplication; cost = M*K*N (FMA=1).",
   "notes_sections": [
@@ -955,10 +955,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/mask-indices/",
-    "label": "flops.mask_indices"
+    "href": "/docs/api/numpy/mask-indices/",
+    "label": "fnp.mask_indices"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.matmul",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.matmul.html",
   "returns": [
     {
@@ -980,7 +981,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/vecdot",
+      "href": "/docs/api/numpy/vecdot/",
       "label": "flops.vecdot",
       "original_target": "vecdot",
       "role": "",
@@ -996,7 +997,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/matvec",
+      "href": "/docs/api/numpy/matvec/",
       "label": "flops.matvec",
       "original_target": "matvec",
       "role": "",
@@ -1012,7 +1013,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/vecmat",
+      "href": "/docs/api/numpy/vecmat/",
       "label": "flops.vecmat",
       "original_target": "vecmat",
       "role": "",
@@ -1028,7 +1029,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/tensordot",
+      "href": "/docs/api/numpy/tensordot/",
       "label": "flops.tensordot",
       "original_target": "tensordot",
       "role": "",
@@ -1044,7 +1045,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/einsum",
+      "href": "/docs/api/numpy/einsum/",
       "label": "flops.einsum",
       "original_target": "einsum",
       "role": "",
@@ -1060,7 +1061,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/dot",
+      "href": "/docs/api/numpy/dot/",
       "label": "flops.dot",
       "original_target": "dot",
       "role": "",
@@ -1068,9 +1069,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.matmul(a, b)",
+  "signature": "fnp.matmul(a, b)",
   "slug": "matmul",
   "summary": "Matrix product of two arrays.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

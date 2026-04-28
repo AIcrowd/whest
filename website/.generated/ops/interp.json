@@ -617,7 +617,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -807,7 +807,7 @@
     }
   ],
   "canonical_name": "interp",
-  "canonical_path": "interp",
+  "canonical_path": "numpy/interp",
   "category": "counted_custom",
   "cost_formula": "n * log(m)",
   "cost_formula_latex": "$n \\cdot \\log m$",
@@ -818,20 +818,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nxp = [1, 2, 3]\n\nfp = [3, 2, 0]\n\nflops.interp(2.5, xp, fp)\n\nflops.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)\n\nUNDEF = -99.0\n\nflops.interp(3.14, xp, fp, right=UNDEF)\n\nx = flops.linspace(0, 2*flops.pi, 10)\n\ny = flops.sin(x)\n\nxvals = flops.linspace(0, 2*flops.pi, 50)\n\nyinterp = flops.interp(xvals, x, y)\n\nimport matplotlib.pyplot as plt\n\nplt.plot(x, y, 'o')\n\nplt.plot(xvals, yinterp, '-x')\n\nplt.show()\n\nx = [-180, -170, -185, 185, -10, -5, 0, 365]\n\nxp = [190, -190, 350, -350]\n\nfp = [5, 10, 3, 4]\n\nflops.interp(x, xp, fp, period=360)\n\nx = [1.5, 4.0]\n\nxp = [2,3,5]\n\nfp = [1.0j, 0, 2+3j]\n\nflops.interp(x, xp, fp)",
+    "code": "import flopscope.numpy as fnp\n\nxp = [1, 2, 3]\n\nfp = [3, 2, 0]\n\nflops.interp(2.5, xp, fp)\n\nflops.interp([0, 1, 1.5, 2.72, 3.14], xp, fp)\n\nUNDEF = -99.0\n\nflops.interp(3.14, xp, fp, right=UNDEF)\n\nx = flops.linspace(0, 2*flops.pi, 10)\n\ny = flops.sin(x)\n\nxvals = flops.linspace(0, 2*flops.pi, 50)\n\nyinterp = flops.interp(xvals, x, y)\n\nimport matplotlib.pyplot as plt\n\nplt.plot(x, y, 'o')\n\nplt.plot(xvals, yinterp, '-x')\n\nplt.show()\n\nx = [-180, -170, -185, 185, -10, -5, 0, 365]\n\nxp = [190, -190, 350, -350]\n\nfp = [5, 10, 3, 4]\n\nflops.interp(x, xp, fp, period=360)\n\nx = [1.5, 4.0]\n\nxp = [2,3,5]\n\nfp = [1.0j, 0, 2+3j]\n\nflops.interp(x, xp, fp)",
     "output": "1.0\n\narray([3.  , 3.  , 2.5 , 0.56, 0.  ])\n\n-99.0\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\narray([7.5 , 5.  , 8.75, 6.25, 3.  , 3.25, 3.5 , 3.75])\n\narray([0.+1.j , 1.+1.5j])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.interp",
+  "flopscope_ref": "fnp.interp",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1338",
-  "href": "/docs/api/interp/",
+  "href": "/docs/api/numpy/interp/",
   "legacy_href": "/docs/api/ops/interp/",
   "module": "numpy",
   "name": "interp",
   "next": {
-    "href": "/docs/api/intersect1d/",
-    "label": "flops.intersect1d"
+    "href": "/docs/api/numpy/intersect1d/",
+    "label": "fnp.intersect1d"
   },
   "notes": "1-D linear interpolation.",
   "notes_sections": [],
@@ -885,10 +885,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/insert/",
-    "label": "flops.insert"
+    "href": "/docs/api/numpy/insert/",
+    "label": "fnp.insert"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.interp",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.interp.html",
   "returns": [
     {
@@ -912,9 +913,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.interp(x, xp, fp, left=None, right=None, period=None)",
+  "signature": "fnp.interp(x, xp, fp, left=None, right=None, period=None)",
   "slug": "interp",
   "summary": "One-dimensional linear interpolation for monotonically increasing sample points.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1505",
   "weight": 1.0
 }

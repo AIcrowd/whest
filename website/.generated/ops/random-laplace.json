@@ -497,7 +497,7 @@
     }
   ],
   "canonical_name": "random.laplace",
-  "canonical_path": "random/laplace",
+  "canonical_path": "numpy/random/laplace",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -530,15 +530,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.laplace",
+  "flopscope_ref": "fnp.random.laplace",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/laplace/",
+  "href": "/docs/api/numpy/random/laplace/",
   "legacy_href": "/docs/api/ops/random-laplace/",
   "module": "numpy.random",
   "name": "random.laplace",
   "next": {
-    "href": "/docs/api/random/logistic/",
-    "label": "flops.random.logistic"
+    "href": "/docs/api/numpy/random/logistic/",
+    "label": "fnp.random.logistic"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -575,10 +575,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/hypergeometric/",
-    "label": "flops.random.hypergeometric"
+    "href": "/docs/api/numpy/random/hypergeometric/",
+    "label": "fnp.random.hypergeometric"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.laplace",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.laplace.html",
   "returns": [
     {
@@ -607,9 +608,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.laplace(loc=0.0, scale=1.0, size=None)",
+  "signature": "fnp.random.laplace(loc=0.0, scale=1.0, size=None)",
   "slug": "random-laplace",
   "summary": "Draw samples from the Laplace or double exponential distribution with specified location (or mean) and scale (decay).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

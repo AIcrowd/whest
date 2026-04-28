@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/standard-t/",
+  "detail_href": "/docs/api/numpy/random/standard-t/",
   "detail_json_href": "/api-data/ops/random-standard_t.json",
   "docs": {
     "sections": [
@@ -527,12 +527,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.standard_t",
+    "flopscope_ref": "fnp.random.standard_t",
     "module": "numpy.random",
     "name": "random.standard_t",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.standard_t",
-    "signature": "flops.random.standard_t(df, size=None)",
+    "signature": "fnp.random.standard_t(df, size=None)",
     "status": "supported",
     "summary": "Draw samples from a standard Student's t distribution with `df` degrees of freedom.",
     "weight": 16.0

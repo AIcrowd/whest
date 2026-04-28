@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/swapaxes/",
+  "detail_href": "/docs/api/numpy/swapaxes/",
   "detail_json_href": "/api-data/ops/swapaxes.json",
   "docs": {
     "sections": [
@@ -182,7 +182,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -275,12 +275,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.swapaxes",
+    "flopscope_ref": "fnp.swapaxes",
     "module": "numpy",
     "name": "swapaxes",
     "notes": "Interchange two axes of an array.",
     "numpy_ref": "np.swapaxes",
-    "signature": "flops.swapaxes(a, axis1, axis2)",
+    "signature": "fnp.swapaxes(a, axis1, axis2)",
     "status": "supported",
     "summary": "Interchange two axes of an array.",
     "weight": 0.0

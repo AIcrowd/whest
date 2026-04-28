@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/multivariate-normal/",
+  "detail_href": "/docs/api/numpy/random/multivariate-normal/",
   "detail_json_href": "/api-data/ops/random-multivariate_normal.json",
   "docs": {
     "sections": [
@@ -534,7 +534,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/cov",
+                        "href": "/docs/api/numpy/cov/",
                         "kind": "link",
                         "target": "cov",
                         "text": "cov"
@@ -558,7 +558,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/cov",
+                        "href": "/docs/api/numpy/cov/",
                         "kind": "link",
                         "target": "cov",
                         "text": "cov"
@@ -814,12 +814,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.multivariate_normal",
+    "flopscope_ref": "fnp.random.multivariate_normal",
     "module": "numpy.random",
     "name": "random.multivariate_normal",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.multivariate_normal",
-    "signature": "flops.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
+    "signature": "fnp.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
     "status": "supported",
     "summary": "Draw random samples from a multivariate normal distribution.",
     "weight": 16.0

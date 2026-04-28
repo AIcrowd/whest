@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/union1d/",
+  "detail_href": "/docs/api/numpy/union1d/",
   "detail_json_href": "/api-data/ops/union1d.json",
   "docs": {
     "sections": [
@@ -104,7 +104,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -155,12 +155,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.union1d",
+    "flopscope_ref": "fnp.union1d",
     "module": "numpy",
     "name": "union1d",
     "notes": "Set union; cost = (n+m)*ceil(log2(n+m)).",
     "numpy_ref": "np.union1d",
-    "signature": "flops.union1d(ar1, ar2)",
+    "signature": "fnp.union1d(ar1, ar2)",
     "status": "supported",
     "summary": "Find the union of two arrays.",
     "weight": 1.0

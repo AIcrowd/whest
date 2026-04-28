@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/corrcoef/",
+  "detail_href": "/docs/api/numpy/corrcoef/",
   "detail_json_href": "/api-data/ops/corrcoef.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/cov",
+                "href": "/docs/api/numpy/cov/",
                 "kind": "link",
                 "target": "cov",
                 "text": "cov"
@@ -402,7 +402,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/cov",
+                "href": "/docs/api/numpy/cov/",
                 "label": "flops.cov",
                 "original_target": "cov",
                 "role": "",
@@ -461,7 +461,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -520,7 +520,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -797,12 +797,12 @@
     "category": "counted_custom",
     "cost_formula": "n^2 * m",
     "cost_formula_latex": "$n^2 \\cdot m$",
-    "flopscope_ref": "flops.corrcoef",
+    "flopscope_ref": "fnp.corrcoef",
     "module": "numpy",
     "name": "corrcoef",
     "notes": "Pearson correlation coefficients.",
     "numpy_ref": "np.corrcoef",
-    "signature": "flops.corrcoef(x, y=None, rowvar=True, bias=<no value>, ddof=<no value>, *, dtype=None)",
+    "signature": "fnp.corrcoef(x, y=None, rowvar=True, bias=<no value>, ddof=<no value>, *, dtype=None)",
     "status": "supported",
     "summary": "Return Pearson product-moment correlation coefficients.",
     "weight": 1.0

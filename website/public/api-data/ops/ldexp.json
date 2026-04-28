@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ldexp/",
+  "detail_href": "/docs/api/numpy/ldexp/",
   "detail_json_href": "/api-data/ops/ldexp.json",
   "docs": {
     "sections": [
@@ -390,7 +390,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/ldexp",
+                    "href": "/docs/api/numpy/ldexp/",
                     "kind": "link",
                     "target": "ldexp",
                     "text": "ldexp"
@@ -401,7 +401,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/frexp",
+                "href": "/docs/api/numpy/frexp/",
                 "label": "flops.frexp",
                 "original_target": "frexp",
                 "role": "",
@@ -429,7 +429,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/ldexp",
+                "href": "/docs/api/numpy/ldexp/",
                 "kind": "link",
                 "target": "ldexp",
                 "text": "ldexp"
@@ -440,7 +440,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/frexp",
+                "href": "/docs/api/numpy/frexp/",
                 "kind": "link",
                 "target": "frexp",
                 "text": "frexp"
@@ -470,7 +470,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -512,12 +512,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.ldexp",
+    "flopscope_ref": "fnp.ldexp",
     "module": "numpy",
     "name": "ldexp",
     "notes": "Return x1 * 2**x2 element-wise.",
     "numpy_ref": "np.ldexp",
-    "signature": "flops.ldexp(*args, **kwargs)",
+    "signature": "fnp.ldexp(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns x1 * 2**x2, element-wise.",
     "weight": 1.0

@@ -143,7 +143,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/result_type",
+              "href": "/docs/api/numpy/result-type/",
               "label": "flops.result_type",
               "original_target": "result_type",
               "role": "",
@@ -165,7 +165,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/can_cast",
+              "href": "/docs/api/numpy/can-cast/",
               "label": "flops.can_cast",
               "original_target": "can_cast",
               "role": "",
@@ -188,7 +188,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/result_type",
+              "href": "/docs/api/numpy/result-type/",
               "kind": "link",
               "target": "result_type",
               "text": "flops.result_type"
@@ -238,7 +238,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -336,7 +336,7 @@
     }
   ],
   "canonical_name": "promote_types",
-  "canonical_path": "promote-types",
+  "canonical_path": "numpy/promote-types",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -347,20 +347,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.promote_types('f4', 'f8')\n\nflops.promote_types('i8', 'f4')\n\nflops.promote_types('>i8', '<c8')\n\nflops.promote_types('i4', 'S8')\n\np = flops.promote_types\n\np('S', p('i1', 'u1'))\n\np(p('S', 'i1'), 'u1')",
+    "code": "import flopscope.numpy as fnp\n\nflops.promote_types('f4', 'f8')\n\nflops.promote_types('i8', 'f4')\n\nflops.promote_types('>i8', '<c8')\n\nflops.promote_types('i4', 'S8')\n\np = flops.promote_types\n\np('S', p('i1', 'u1'))\n\np(p('S', 'i1'), 'u1')",
     "output": "dtype('float64')\n\ndtype('float64')\n\ndtype('complex128')\n\ndtype('S11')\n\ndtype('S6')\n\ndtype('S4')",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.promote_types",
+  "flopscope_ref": "fnp.promote_types",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1405",
-  "href": "/docs/api/promote-types/",
+  "href": "/docs/api/numpy/promote-types/",
   "legacy_href": "/docs/api/ops/promote_types/",
   "module": "numpy",
   "name": "promote_types",
   "next": {
-    "href": "/docs/api/ptp/",
-    "label": "flops.ptp"
+    "href": "/docs/api/numpy/ptp/",
+    "label": "fnp.ptp"
   },
   "notes": "Return smallest type to which both types may be safely cast.",
   "notes_sections": [
@@ -387,10 +387,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/prod/",
-    "label": "flops.prod"
+    "href": "/docs/api/numpy/prod/",
+    "label": "fnp.prod"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.promote_types",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.promote_types.html",
   "returns": [
     {
@@ -406,7 +407,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/result_type",
+      "href": "/docs/api/numpy/result-type/",
       "label": "flops.result_type",
       "original_target": "result_type",
       "role": "",
@@ -428,7 +429,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/can_cast",
+      "href": "/docs/api/numpy/can-cast/",
       "label": "flops.can_cast",
       "original_target": "can_cast",
       "role": "",
@@ -436,9 +437,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.promote_types(*args, **kwargs)",
+  "signature": "fnp.promote_types(*args, **kwargs)",
   "slug": "promote_types",
   "summary": "Returns the data type with the smallest size and smallest scalar kind to which both ``type1`` and ``type2`` may be safely cast. The returned data type is always considered \"canonical\", this mainly means that the promoted dtype will always be in native byte order.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 0.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/vdot/",
+  "detail_href": "/docs/api/numpy/vdot/",
   "detail_json_href": "/api-data/ops/vdot.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/vdot",
+                "href": "/docs/api/numpy/vdot/",
                 "kind": "link",
                 "target": "vdot",
                 "text": "vdot"
@@ -38,7 +38,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "kind": "link",
                 "target": "dot",
                 "text": "dot"
@@ -49,7 +49,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/vdot",
+                "href": "/docs/api/numpy/vdot/",
                 "kind": "link",
                 "target": "vdot",
                 "text": "vdot"
@@ -60,7 +60,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "kind": "link",
                 "target": "dot",
                 "text": "dot"
@@ -295,7 +295,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "label": "flops.dot",
                 "original_target": "dot",
                 "role": "",
@@ -315,7 +315,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -408,12 +408,12 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
-    "flopscope_ref": "flops.vdot",
+    "flopscope_ref": "fnp.vdot",
     "module": "numpy",
     "name": "vdot",
     "notes": "Dot product with conjugation; cost = N (FMA=1).",
     "numpy_ref": "np.vdot",
-    "signature": "flops.vdot(a, b)",
+    "signature": "fnp.vdot(a, b)",
     "status": "supported",
     "summary": "Return the dot product of two vectors.",
     "weight": 1.0

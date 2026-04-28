@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/count-nonzero/",
+  "detail_href": "/docs/api/numpy/count-nonzero/",
   "detail_json_href": "/api-data/ops/count_nonzero.json",
   "docs": {
     "sections": [
@@ -226,7 +226,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/nonzero",
+                "href": "/docs/api/numpy/nonzero/",
                 "label": "flops.nonzero",
                 "original_target": "nonzero",
                 "role": "",
@@ -246,7 +246,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -319,12 +319,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.count_nonzero",
+    "flopscope_ref": "fnp.count_nonzero",
     "module": "numpy",
     "name": "count_nonzero",
     "notes": "Count non-zero elements.",
     "numpy_ref": "np.count_nonzero",
-    "signature": "flops.count_nonzero(a, axis=None, *, keepdims=False)",
+    "signature": "fnp.count_nonzero(a, axis=None, *, keepdims=False)",
     "status": "supported",
     "summary": "Counts the number of non-zero values in the array ``a``.",
     "weight": 1.0

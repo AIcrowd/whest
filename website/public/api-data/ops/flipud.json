@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/flipud/",
+  "detail_href": "/docs/api/numpy/flipud/",
   "detail_json_href": "/api-data/ops/flipud.json",
   "docs": {
     "sections": [
@@ -142,7 +142,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fliplr",
+                "href": "/docs/api/numpy/fliplr/",
                 "label": "flops.fliplr",
                 "original_target": "fliplr",
                 "role": "",
@@ -158,7 +158,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/flip",
+                "href": "/docs/api/numpy/flip/",
                 "label": "flops.flip",
                 "original_target": "flip",
                 "role": "",
@@ -174,7 +174,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/rot90",
+                "href": "/docs/api/numpy/rot90/",
                 "label": "flops.rot90",
                 "original_target": "rot90",
                 "role": "",
@@ -227,7 +227,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -318,12 +318,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.flipud",
+    "flopscope_ref": "fnp.flipud",
     "module": "numpy",
     "name": "flipud",
     "notes": "Flip array up-down.",
     "numpy_ref": "np.flipud",
-    "signature": "flops.flipud(m)",
+    "signature": "fnp.flipud(m)",
     "status": "supported",
     "summary": "Reverse the order of elements along axis 0 (up/down).",
     "weight": 0.0

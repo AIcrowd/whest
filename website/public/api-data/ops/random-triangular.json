@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/triangular/",
+  "detail_href": "/docs/api/numpy/random/triangular/",
   "detail_json_href": "/api-data/ops/random-triangular.json",
   "docs": {
     "sections": [
@@ -482,12 +482,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.triangular",
+    "flopscope_ref": "fnp.random.triangular",
     "module": "numpy.random",
     "name": "random.triangular",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.triangular",
-    "signature": "flops.random.triangular(left, mode, right, size=None)",
+    "signature": "fnp.random.triangular(left, mode, right, size=None)",
     "status": "supported",
     "summary": "Draw samples from the triangular distribution over the interval ``[left, right]``.",
     "weight": 16.0

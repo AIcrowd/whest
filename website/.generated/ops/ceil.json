@@ -331,7 +331,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/floor",
+              "href": "/docs/api/numpy/floor/",
               "label": "flops.floor",
               "original_target": "floor",
               "role": "",
@@ -342,7 +342,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/trunc",
+              "href": "/docs/api/numpy/trunc/",
               "label": "flops.trunc",
               "original_target": "trunc",
               "role": "",
@@ -353,7 +353,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/rint",
+              "href": "/docs/api/numpy/rint/",
               "label": "flops.rint",
               "original_target": "rint",
               "role": "",
@@ -384,7 +384,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -413,7 +413,7 @@
     }
   ],
   "canonical_name": "ceil",
-  "canonical_path": "ceil",
+  "canonical_path": "numpy/ceil",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -431,20 +431,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nflops.ceil(a)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([-1.7, -1.5, -0.2, 0.2, 1.5, 1.7, 2.0])\n\nflops.ceil(a)",
     "output": "array([-1., -1., -0.,  1.,  2.,  2.,  2.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.ceil",
+  "flopscope_ref": "fnp.ceil",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/ceil/",
+  "href": "/docs/api/numpy/ceil/",
   "legacy_href": "/docs/api/ops/ceil/",
   "module": "numpy",
   "name": "ceil",
   "next": {
-    "href": "/docs/api/choose/",
-    "label": "flops.choose"
+    "href": "/docs/api/numpy/choose/",
+    "label": "fnp.choose"
   },
   "notes": "Element-wise ceiling.",
   "notes_sections": [],
@@ -489,10 +489,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/cbrt/",
-    "label": "flops.cbrt"
+    "href": "/docs/api/numpy/cbrt/",
+    "label": "fnp.cbrt"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.ceil",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ceil.html",
   "returns": [
     {
@@ -509,7 +510,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/floor",
+      "href": "/docs/api/numpy/floor/",
       "label": "flops.floor",
       "original_target": "floor",
       "role": "",
@@ -520,7 +521,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/trunc",
+      "href": "/docs/api/numpy/trunc/",
       "label": "flops.trunc",
       "original_target": "trunc",
       "role": "",
@@ -531,7 +532,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/rint",
+      "href": "/docs/api/numpy/rint/",
       "label": "flops.rint",
       "original_target": "rint",
       "role": "",
@@ -550,9 +551,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.ceil(*args, **kwargs)",
+  "signature": "fnp.ceil(*args, **kwargs)",
   "slug": "ceil",
   "summary": "Return the ceiling of the input, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/extract/",
+  "detail_href": "/docs/api/numpy/extract/",
   "detail_json_href": "/api-data/ops/extract.json",
   "docs": {
     "sections": [
@@ -46,7 +46,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/extract",
+                "href": "/docs/api/numpy/extract/",
                 "kind": "link",
                 "target": "extract",
                 "text": "flops.extract"
@@ -74,7 +74,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/place",
+                "href": "/docs/api/numpy/place/",
                 "kind": "link",
                 "target": "place",
                 "text": "place"
@@ -85,7 +85,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/extract",
+                "href": "/docs/api/numpy/extract/",
                 "kind": "link",
                 "target": "extract",
                 "text": "extract"
@@ -260,7 +260,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/take",
+                "href": "/docs/api/numpy/take/",
                 "label": "flops.take",
                 "original_target": "take",
                 "role": "",
@@ -271,7 +271,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/put",
+                "href": "/docs/api/numpy/put/",
                 "label": "flops.put",
                 "original_target": "put",
                 "role": "",
@@ -282,7 +282,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/copyto",
+                "href": "/docs/api/numpy/copyto/",
                 "label": "flops.copyto",
                 "original_target": "copyto",
                 "role": "",
@@ -293,7 +293,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/compress",
+                "href": "/docs/api/numpy/compress/",
                 "label": "flops.compress",
                 "original_target": "compress",
                 "role": "",
@@ -304,7 +304,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/place",
+                "href": "/docs/api/numpy/place/",
                 "label": "flops.place",
                 "original_target": "place",
                 "role": "",
@@ -324,7 +324,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -422,12 +422,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.extract",
+    "flopscope_ref": "fnp.extract",
     "module": "numpy",
     "name": "extract",
     "notes": "Return elements satisfying condition. Cost: numel(input).",
     "numpy_ref": "np.extract",
-    "signature": "flops.extract(condition, arr)",
+    "signature": "fnp.extract(condition, arr)",
     "status": "supported",
     "summary": "Return the elements of an array that satisfy some condition.",
     "weight": 4.0

@@ -416,7 +416,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -476,7 +476,7 @@
     }
   ],
   "canonical_name": "copysign",
-  "canonical_path": "copysign",
+  "canonical_path": "numpy/copysign",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -494,20 +494,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.copysign(1.3, -1)\n\n1/flops.copysign(0, 1)\n\n1/flops.copysign(0, -1)\n\nflops.copysign([-1, 0, 1], -1.1)\n\nflops.copysign([-1, 0, 1], flops.arange(3)-1)",
+    "code": "import flopscope.numpy as fnp\n\nflops.copysign(1.3, -1)\n\n1/flops.copysign(0, 1)\n\n1/flops.copysign(0, -1)\n\nflops.copysign([-1, 0, 1], -1.1)\n\nflops.copysign([-1, 0, 1], flops.arange(3)-1)",
     "output": "-1.3\n\ninf\n\n-inf\n\narray([-1., -0., -1.])\n\narray([-1.,  0.,  1.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.copysign",
+  "flopscope_ref": "fnp.copysign",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/copysign/",
+  "href": "/docs/api/numpy/copysign/",
   "legacy_href": "/docs/api/ops/copysign/",
   "module": "numpy",
   "name": "copysign",
   "next": {
-    "href": "/docs/api/copyto/",
-    "label": "flops.copyto"
+    "href": "/docs/api/numpy/copyto/",
+    "label": "fnp.copyto"
   },
   "notes": "Copy sign of x2 to magnitude of x1 element-wise.",
   "notes_sections": [],
@@ -561,10 +561,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/copy/",
-    "label": "flops.copy"
+    "href": "/docs/api/numpy/copy/",
+    "label": "fnp.copy"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.copysign",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.copysign.html",
   "returns": [
     {
@@ -577,9 +578,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.copysign(*args, **kwargs)",
+  "signature": "fnp.copysign(*args, **kwargs)",
   "slug": "copysign",
   "summary": "Change the sign of x1 to that of x2, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

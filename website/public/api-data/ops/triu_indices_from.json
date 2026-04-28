@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/triu-indices-from/",
+  "detail_href": "/docs/api/numpy/triu-indices-from/",
   "detail_json_href": "/api-data/ops/triu_indices_from.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/triu_indices",
+                "href": "/docs/api/numpy/triu-indices/",
                 "kind": "link",
                 "target": "triu_indices",
                 "text": "triu_indices"
@@ -78,7 +78,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/triu",
+                        "href": "/docs/api/numpy/triu/",
                         "kind": "link",
                         "target": "triu",
                         "text": "triu"
@@ -99,7 +99,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/triu",
+                    "href": "/docs/api/numpy/triu/",
                     "kind": "link",
                     "target": "triu",
                     "text": "triu"
@@ -176,7 +176,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/triu_indices",
+                "href": "/docs/api/numpy/triu-indices/",
                 "label": "flops.triu_indices",
                 "original_target": "triu_indices",
                 "role": "",
@@ -187,7 +187,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/triu",
+                "href": "/docs/api/numpy/triu/",
                 "label": "flops.triu",
                 "original_target": "triu",
                 "role": "",
@@ -198,7 +198,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/tril_indices_from",
+                "href": "/docs/api/numpy/tril-indices-from/",
                 "label": "flops.tril_indices_from",
                 "original_target": "tril_indices_from",
                 "role": "",
@@ -218,7 +218,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -373,12 +373,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.triu_indices_from",
+    "flopscope_ref": "fnp.triu_indices_from",
     "module": "numpy",
     "name": "triu_indices_from",
     "notes": "Return upper-triangle indices for given array.",
     "numpy_ref": "np.triu_indices_from",
-    "signature": "flops.triu_indices_from(arr, k=0)",
+    "signature": "fnp.triu_indices_from(arr, k=0)",
     "status": "supported",
     "summary": "Return the indices for the upper-triangle of arr.",
     "weight": 0.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/kron/",
+  "detail_href": "/docs/api/numpy/kron/",
   "detail_json_href": "/api-data/ops/kron.json",
   "docs": {
     "sections": [
@@ -80,7 +80,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/outer",
+                "href": "/docs/api/numpy/outer/",
                 "label": "flops.outer",
                 "original_target": "outer",
                 "role": "",
@@ -203,7 +203,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -324,12 +324,12 @@
     "category": "counted_custom",
     "cost_formula": "m1*m2 * n1*n2",
     "cost_formula_latex": "$m_1 m_2 \\cdot n_1 n_2$",
-    "flopscope_ref": "flops.kron",
+    "flopscope_ref": "fnp.kron",
     "module": "numpy",
     "name": "kron",
     "notes": "Kronecker product; cost proportional to output size.",
     "numpy_ref": "np.kron",
-    "signature": "flops.kron(a, b)",
+    "signature": "fnp.kron(a, b)",
     "status": "supported",
     "summary": "Kronecker product of two arrays.",
     "weight": 1.0

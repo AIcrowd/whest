@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/blackman/",
+  "detail_href": "/docs/api/numpy/blackman/",
   "detail_json_href": "/api-data/ops/blackman.json",
   "docs": {
     "sections": [
@@ -105,7 +105,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bartlett",
+                "href": "/docs/api/numpy/bartlett/",
                 "label": "flops.bartlett",
                 "original_target": "bartlett",
                 "role": "",
@@ -116,7 +116,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hamming",
+                "href": "/docs/api/numpy/hamming/",
                 "label": "flops.hamming",
                 "original_target": "hamming",
                 "role": "",
@@ -127,7 +127,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hanning",
+                "href": "/docs/api/numpy/hanning/",
                 "label": "flops.hanning",
                 "original_target": "hanning",
                 "role": "",
@@ -138,7 +138,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/kaiser",
+                "href": "/docs/api/numpy/kaiser/",
                 "label": "flops.kaiser",
                 "original_target": "kaiser",
                 "role": "",
@@ -210,7 +210,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -279,12 +279,12 @@
     "category": "counted_custom",
     "cost_formula": "3n",
     "cost_formula_latex": "$3n$",
-    "flopscope_ref": "flops.blackman",
+    "flopscope_ref": "fnp.blackman",
     "module": "flopscope._window",
     "name": "blackman",
     "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
     "numpy_ref": "np.blackman",
-    "signature": "flops.blackman(M)",
+    "signature": "fnp.blackman(M)",
     "status": "supported",
     "summary": "Return the Blackman window.",
     "weight": 16.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/seed/",
+  "detail_href": "/docs/api/numpy/random/seed/",
   "detail_json_href": "/api-data/ops/random-seed.json",
   "docs": {
     "sections": [
@@ -66,12 +66,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.random.seed",
+    "flopscope_ref": "fnp.random.seed",
     "module": "numpy.random",
     "name": "random.seed",
     "notes": "Seed random number generator.",
     "numpy_ref": "np.random.seed",
-    "signature": "flops.random.seed(seed=None)",
+    "signature": "fnp.random.seed(seed=None)",
     "status": "supported",
     "summary": "Reseed the singleton RandomState instance.",
     "weight": 0.0

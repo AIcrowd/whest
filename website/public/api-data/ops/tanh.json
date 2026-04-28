@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/tanh/",
+  "detail_href": "/docs/api/numpy/tanh/",
   "detail_json_href": "/api-data/ops/tanh.json",
   "docs": {
     "sections": [
@@ -343,7 +343,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -427,12 +427,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.tanh",
+    "flopscope_ref": "fnp.tanh",
     "module": "numpy",
     "name": "tanh",
     "notes": "Element-wise hyperbolic tangent.",
     "numpy_ref": "np.tanh",
-    "signature": "flops.tanh(*args, **kwargs)",
+    "signature": "fnp.tanh(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute hyperbolic tangent element-wise.",
     "weight": 16.0

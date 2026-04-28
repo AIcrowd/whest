@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/insert/",
+  "detail_href": "/docs/api/numpy/insert/",
   "detail_json_href": "/api-data/ops/insert.json",
   "docs": {
     "sections": [
@@ -349,7 +349,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/insert",
+                        "href": "/docs/api/numpy/insert/",
                         "kind": "link",
                         "target": "insert",
                         "text": "insert"
@@ -402,7 +402,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/insert",
+                    "href": "/docs/api/numpy/insert/",
                     "kind": "link",
                     "target": "insert",
                     "text": "insert"
@@ -451,7 +451,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/append",
+                "href": "/docs/api/numpy/append/",
                 "label": "flops.append",
                 "original_target": "append",
                 "role": "",
@@ -467,7 +467,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
+                "href": "/docs/api/numpy/concatenate/",
                 "label": "flops.concatenate",
                 "original_target": "concatenate",
                 "role": "",
@@ -483,7 +483,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/delete",
+                "href": "/docs/api/numpy/delete/",
                 "label": "flops.delete",
                 "original_target": "delete",
                 "role": "",
@@ -565,7 +565,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -789,12 +789,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.insert",
+    "flopscope_ref": "fnp.insert",
     "module": "numpy",
     "name": "insert",
     "notes": "Insert values along axis before given indices. Cost: numel(values).",
     "numpy_ref": "np.insert",
-    "signature": "flops.insert(arr, obj, values, axis=None)",
+    "signature": "fnp.insert(arr, obj, values, axis=None)",
     "status": "supported",
     "summary": "Insert values along the given axis before the given indices.",
     "weight": 4.0

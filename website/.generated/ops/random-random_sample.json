@@ -207,7 +207,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/size",
+                      "href": "/docs/api/numpy/size/",
                       "kind": "link",
                       "target": "size",
                       "text": "size"
@@ -236,7 +236,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/size",
+                  "href": "/docs/api/numpy/size/",
                   "kind": "link",
                   "target": "size",
                   "text": "size"
@@ -360,7 +360,7 @@
     }
   ],
   "canonical_name": "random.random_sample",
-  "canonical_path": "random/random-sample",
+  "canonical_path": "numpy/random/random-sample",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -376,15 +376,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.random_sample",
+  "flopscope_ref": "fnp.random.random_sample",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L233",
-  "href": "/docs/api/random/random-sample/",
+  "href": "/docs/api/numpy/random/random-sample/",
   "legacy_href": "/docs/api/ops/random-random_sample/",
   "module": "numpy.random",
   "name": "random.random_sample",
   "next": {
-    "href": "/docs/api/random/rayleigh/",
-    "label": "flops.random.rayleigh"
+    "href": "/docs/api/numpy/random/rayleigh/",
+    "label": "fnp.random.rayleigh"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -401,10 +401,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/random-integers/",
-    "label": "flops.random.random_integers"
+    "href": "/docs/api/numpy/random/random-integers/",
+    "label": "fnp.random.random_integers"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.random_sample",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.random_sample.html",
   "returns": [
     {
@@ -434,9 +435,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.random_sample(size=None)",
+  "signature": "fnp.random.random_sample(size=None)",
   "slug": "random-random_sample",
   "summary": "Return random floats in the half-open interval [0.0, 1.0).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

@@ -332,7 +332,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -351,7 +351,7 @@
     }
   ],
   "canonical_name": "cbrt",
-  "canonical_path": "cbrt",
+  "canonical_path": "numpy/cbrt",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -369,20 +369,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.cbrt([1,8,27])",
+    "code": "import flopscope.numpy as fnp\n\nflops.cbrt([1,8,27])",
     "output": "array([ 1.,  2.,  3.])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.cbrt",
+  "flopscope_ref": "fnp.cbrt",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/cbrt/",
+  "href": "/docs/api/numpy/cbrt/",
   "legacy_href": "/docs/api/ops/cbrt/",
   "module": "numpy",
   "name": "cbrt",
   "next": {
-    "href": "/docs/api/ceil/",
-    "label": "flops.ceil"
+    "href": "/docs/api/numpy/ceil/",
+    "label": "fnp.ceil"
   },
   "notes": "Element-wise cube root.",
   "notes_sections": [],
@@ -427,10 +427,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/can-cast/",
-    "label": "flops.can_cast"
+    "href": "/docs/api/numpy/can-cast/",
+    "label": "fnp.can_cast"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.cbrt",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.cbrt.html",
   "returns": [
     {
@@ -445,9 +446,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.cbrt(*args, **kwargs)",
+  "signature": "fnp.cbrt(*args, **kwargs)",
   "slug": "cbrt",
   "summary": "Return the cube-root of an array, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

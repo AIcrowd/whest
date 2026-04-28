@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/trace/",
+  "detail_href": "/docs/api/numpy/linalg/trace/",
   "detail_json_href": "/api-data/ops/linalg-trace.json",
   "docs": {
     "sections": [
@@ -37,7 +37,7 @@
                 "display_text": "flops.trace",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/trace",
+                "href": "/docs/api/numpy/trace/",
                 "kind": "role_reference",
                 "original_target": "flops.trace",
                 "role": "py:func",
@@ -192,7 +192,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/trace",
+                "href": "/docs/api/numpy/trace/",
                 "label": "flops.trace",
                 "original_target": "numpy.trace",
                 "role": "",
@@ -245,7 +245,7 @@
                 "display_text": "flops.trace",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/trace",
+                "href": "/docs/api/numpy/trace/",
                 "kind": "role_reference",
                 "original_target": "flops.trace",
                 "role": "py:func",
@@ -363,12 +363,12 @@
     "category": "counted_custom",
     "cost_formula": "n",
     "cost_formula_latex": "$n$",
-    "flopscope_ref": "flops.linalg.trace",
+    "flopscope_ref": "fnp.linalg.trace",
     "module": "numpy.linalg",
     "name": "linalg.trace",
     "notes": "Matrix trace. Cost: n (sum of diagonal elements).",
     "numpy_ref": "np.linalg.trace",
-    "signature": "flops.linalg.trace(x, /, *, offset=0, dtype=None)",
+    "signature": "fnp.linalg.trace(x, /, *, offset=0, dtype=None)",
     "status": "supported",
     "summary": "Returns the sum along the specified diagonals of a matrix (or a stack of matrices) ``x``.",
     "weight": 1.0

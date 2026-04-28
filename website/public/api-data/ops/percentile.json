@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/percentile/",
+  "detail_href": "/docs/api/numpy/percentile/",
   "detail_json_href": "/api-data/ops/percentile.json",
   "docs": {
     "sections": [
@@ -723,7 +723,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
+                "href": "/docs/api/numpy/mean/",
                 "label": "flops.mean",
                 "original_target": "mean",
                 "role": "",
@@ -743,7 +743,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/median",
+                "href": "/docs/api/numpy/median/",
                 "label": "flops.median",
                 "original_target": "median",
                 "role": "",
@@ -754,7 +754,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanpercentile",
+                "href": "/docs/api/numpy/nanpercentile/",
                 "label": "flops.nanpercentile",
                 "original_target": "nanpercentile",
                 "role": "",
@@ -770,7 +770,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/quantile",
+                "href": "/docs/api/numpy/quantile/",
                 "label": "flops.quantile",
                 "original_target": "quantile",
                 "role": "",
@@ -793,7 +793,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/percentile",
+                "href": "/docs/api/numpy/percentile/",
                 "kind": "link",
                 "target": "percentile",
                 "text": "flops.percentile"
@@ -812,7 +812,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/quantile",
+                "href": "/docs/api/numpy/quantile/",
                 "kind": "link",
                 "target": "quantile",
                 "text": "flops.quantile"
@@ -831,7 +831,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/quantile",
+                "href": "/docs/api/numpy/quantile/",
                 "kind": "link",
                 "target": "quantile",
                 "text": "flops.quantile"
@@ -863,7 +863,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -1016,12 +1016,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.percentile",
+    "flopscope_ref": "fnp.percentile",
     "module": "numpy",
     "name": "percentile",
     "notes": "q-th percentile of array elements.",
     "numpy_ref": "np.percentile",
-    "signature": "flops.percentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
+    "signature": "fnp.percentile(a, q, axis=None, out=None, overwrite_input=False, method='linear', keepdims=False, *, weights=None, interpolation=None)",
     "status": "supported",
     "summary": "Compute the q-th percentile of the data along the specified axis.",
     "weight": 1.0

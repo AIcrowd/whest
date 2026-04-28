@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/sum/",
+  "detail_href": "/docs/api/numpy/sum/",
   "detail_json_href": "/api-data/ops/sum.json",
   "docs": {
     "sections": [
@@ -200,7 +200,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/sum",
+                        "href": "/docs/api/numpy/sum/",
                         "kind": "link",
                         "target": "sum",
                         "text": "sum"
@@ -464,7 +464,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/add",
+                "href": "/docs/api/numpy/add/",
                 "label": "flops.add",
                 "original_target": "add",
                 "role": "",
@@ -480,7 +480,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/cumsum",
+                "href": "/docs/api/numpy/cumsum/",
                 "label": "flops.cumsum",
                 "original_target": "cumsum",
                 "role": "",
@@ -496,7 +496,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/trapezoid",
+                "href": "/docs/api/numpy/trapezoid/",
                 "label": "flops.trapezoid",
                 "original_target": "trapezoid",
                 "role": "",
@@ -507,7 +507,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
+                "href": "/docs/api/numpy/mean/",
                 "label": "flops.mean",
                 "original_target": "mean",
                 "role": "",
@@ -518,7 +518,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/average",
+                "href": "/docs/api/numpy/average/",
                 "label": "flops.average",
                 "original_target": "average",
                 "role": "",
@@ -632,7 +632,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -746,12 +746,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.sum",
+    "flopscope_ref": "fnp.sum",
     "module": "numpy",
     "name": "sum",
     "notes": "Sum of array elements.",
     "numpy_ref": "np.sum",
-    "signature": "flops.sum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+    "signature": "fnp.sum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
     "status": "supported",
     "summary": "Sum of array elements over a given axis.",
     "weight": 1.0

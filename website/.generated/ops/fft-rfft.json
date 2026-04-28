@@ -670,7 +670,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -723,7 +723,7 @@
     }
   ],
   "canonical_name": "fft.rfft",
-  "canonical_path": "fft/rfft",
+  "canonical_path": "numpy/fft/rfft",
   "category": "counted_custom",
   "cost_formula": "5(n/2) * ceil(log2(n))",
   "cost_formula_latex": "$5(n/2) \\cdot \\lceil\\log_2 n\\rceil$",
@@ -734,20 +734,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.fft.fft([0, 1, 0, 0])\n\nflops.fft.rfft([0, 1, 0, 0])",
+    "code": "import flopscope.numpy as fnp\n\nflops.fft.fft([0, 1, 0, 0])\n\nflops.fft.rfft([0, 1, 0, 0])",
     "output": "array([ 1.+0.j,  0.-1.j, -1.+0.j,  0.+1.j]) # may vary\n\narray([ 1.+0.j,  0.-1.j, -1.+0.j]) # may vary",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.fft.rfft",
+  "flopscope_ref": "fnp.fft.rfft",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L200",
-  "href": "/docs/api/fft/rfft/",
+  "href": "/docs/api/numpy/fft/rfft/",
   "legacy_href": "/docs/api/ops/fft-rfft/",
   "module": "numpy.fft",
   "name": "fft.rfft",
   "next": {
-    "href": "/docs/api/fft/rfft2/",
-    "label": "flops.fft.rfft2"
+    "href": "/docs/api/numpy/fft/rfft2/",
+    "label": "fnp.fft.rfft2"
   },
   "notes": "1-D real FFT. Cost: 5*(n//2)*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -808,10 +808,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/fft/irfftn/",
-    "label": "flops.fft.irfftn"
+    "href": "/docs/api/numpy/fft/irfftn/",
+    "label": "fnp.fft.irfftn"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.rfft",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.rfft.html",
   "returns": [
     {
@@ -931,9 +932,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.fft.rfft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.rfft(a, n=None, axis=-1, norm=None, out=None)",
   "slug": "fft-rfft",
   "summary": "Compute the one-dimensional discrete Fourier Transform for real input.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L318",
   "weight": 1.0
 }

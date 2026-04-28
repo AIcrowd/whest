@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/matrix-power/",
+  "detail_href": "/docs/api/numpy/linalg/matrix-power/",
   "detail_json_href": "/api-data/ops/linalg-matrix_power.json",
   "docs": {
     "sections": [
@@ -245,7 +245,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -379,12 +379,12 @@
     "category": "counted_custom",
     "cost_formula": "log2(k) * n^3",
     "cost_formula_latex": "$\\lfloor\\log_2 k\\rfloor \\cdot n^3$",
-    "flopscope_ref": "flops.linalg.matrix_power",
+    "flopscope_ref": "fnp.linalg.matrix_power",
     "module": "numpy.linalg",
     "name": "linalg.matrix_power",
     "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring).",
     "numpy_ref": "np.linalg.matrix_power",
-    "signature": "flops.linalg.matrix_power(a, n)",
+    "signature": "fnp.linalg.matrix_power(a, n)",
     "status": "supported",
     "summary": "Raise a square matrix to the (integer) power `n`.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/tensorsolve/",
+  "detail_href": "/docs/api/numpy/linalg/tensorsolve/",
   "detail_json_href": "/api-data/ops/linalg-tensorsolve.json",
   "docs": {
     "sections": [
@@ -311,7 +311,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/tensordot",
+                "href": "/docs/api/numpy/tensordot/",
                 "label": "flops.tensordot",
                 "original_target": "numpy.tensordot",
                 "role": "",
@@ -333,7 +333,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "flops.einsum",
                 "original_target": "numpy.einsum",
                 "role": "",
@@ -353,7 +353,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -410,12 +410,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "flops.linalg.tensorsolve",
+    "flopscope_ref": "fnp.linalg.tensorsolve",
     "module": "numpy.linalg",
     "name": "linalg.tensorsolve",
     "notes": "Tensor solve. Cost: $n^3$ after reshape (delegates to solve).",
     "numpy_ref": "np.linalg.tensorsolve",
-    "signature": "flops.linalg.tensorsolve(a, b, axes=None)",
+    "signature": "fnp.linalg.tensorsolve(a, b, axes=None)",
     "status": "supported",
     "summary": "Solve the tensor equation ``a x = b`` for x.",
     "weight": 4.0

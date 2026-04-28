@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linspace/",
+  "detail_href": "/docs/api/numpy/linspace/",
   "detail_json_href": "/api-data/ops/linspace.json",
   "docs": {
     "sections": [
@@ -636,7 +636,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/linspace",
+                    "href": "/docs/api/numpy/linspace/",
                     "kind": "link",
                     "target": "linspace",
                     "text": "linspace"
@@ -647,7 +647,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "label": "flops.arange",
                 "original_target": "arange",
                 "role": "",
@@ -663,7 +663,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/linspace",
+                    "href": "/docs/api/numpy/linspace/",
                     "kind": "link",
                     "target": "linspace",
                     "text": "linspace"
@@ -674,7 +674,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/geomspace",
+                "href": "/docs/api/numpy/geomspace/",
                 "label": "flops.geomspace",
                 "original_target": "geomspace",
                 "role": "",
@@ -690,7 +690,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/geomspace",
+                    "href": "/docs/api/numpy/geomspace/",
                     "kind": "link",
                     "target": "geomspace",
                     "text": "geomspace"
@@ -701,7 +701,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/logspace",
+                "href": "/docs/api/numpy/logspace/",
                 "label": "flops.logspace",
                 "original_target": "logspace",
                 "role": "",
@@ -732,7 +732,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -844,12 +844,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.linspace",
+    "flopscope_ref": "fnp.linspace",
     "module": "numpy",
     "name": "linspace",
     "notes": "Return evenly spaced numbers over interval. Cost: numel(output).",
     "numpy_ref": "np.linspace",
-    "signature": "flops.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, *, device=None)",
+    "signature": "fnp.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, *, device=None)",
     "status": "supported",
     "summary": "Return evenly spaced numbers over a specified interval.",
     "weight": 1.0

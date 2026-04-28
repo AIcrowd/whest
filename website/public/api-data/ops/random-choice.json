@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/choice/",
+  "detail_href": "/docs/api/numpy/random/choice/",
   "detail_json_href": "/api-data/ops/random-choice.json",
   "docs": {
     "sections": [
@@ -600,12 +600,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.choice",
+    "flopscope_ref": "fnp.random.choice",
     "module": "numpy.random",
     "name": "random.choice",
     "notes": "Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not.",
     "numpy_ref": "np.random.choice",
-    "signature": "flops.random.choice(a, size=None, replace=True, p=None)",
+    "signature": "fnp.random.choice(a, size=None, replace=True, p=None)",
     "status": "supported",
     "summary": "Generates a random sample from a given 1-D array",
     "weight": 1.0

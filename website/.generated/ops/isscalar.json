@@ -120,7 +120,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ndim",
+              "href": "/docs/api/numpy/ndim/",
               "label": "flops.ndim",
               "original_target": "ndim",
               "role": "",
@@ -195,7 +195,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/gradient",
+              "href": "/docs/api/numpy/gradient/",
               "kind": "link",
               "target": "gradient",
               "text": "gradient"
@@ -214,7 +214,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/histogram",
+              "href": "/docs/api/numpy/histogram/",
               "kind": "link",
               "target": "histogram",
               "text": "histogram"
@@ -241,7 +241,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -363,7 +363,7 @@
     }
   ],
   "canonical_name": "isscalar",
-  "canonical_path": "isscalar",
+  "canonical_path": "numpy/isscalar",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -379,20 +379,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.isscalar(3.1)\n\nflops.isscalar(flops.array(3.1))\n\nflops.isscalar([3.1])\n\nflops.isscalar(False)\n\nflops.isscalar('numpy')\n\nfrom fractions import Fraction\n\nflops.isscalar(Fraction(5, 17))\n\nfrom numbers import Number\n\nflops.isscalar(Number())",
+    "code": "import flopscope.numpy as fnp\n\nflops.isscalar(3.1)\n\nflops.isscalar(flops.array(3.1))\n\nflops.isscalar([3.1])\n\nflops.isscalar(False)\n\nflops.isscalar('numpy')\n\nfrom fractions import Fraction\n\nflops.isscalar(Fraction(5, 17))\n\nfrom numbers import Number\n\nflops.isscalar(Number())",
     "output": "True\n\nFalse\n\nFalse\n\nTrue\n\nTrue\n\nTrue\n\nTrue",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.isscalar",
+  "flopscope_ref": "fnp.isscalar",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1256",
-  "href": "/docs/api/isscalar/",
+  "href": "/docs/api/numpy/isscalar/",
   "legacy_href": "/docs/api/ops/isscalar/",
   "module": "numpy",
   "name": "isscalar",
   "next": {
-    "href": "/docs/api/issubdtype/",
-    "label": "flops.issubdtype"
+    "href": "/docs/api/numpy/issubdtype/",
+    "label": "fnp.issubdtype"
   },
   "notes": "Return True if input is a scalar.",
   "notes_sections": [
@@ -411,10 +411,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/isrealobj/",
-    "label": "flops.isrealobj"
+    "href": "/docs/api/numpy/isrealobj/",
+    "label": "fnp.isrealobj"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.isscalar",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isscalar.html",
   "returns": [
     {
@@ -435,7 +436,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ndim",
+      "href": "/docs/api/numpy/ndim/",
       "label": "flops.ndim",
       "original_target": "ndim",
       "role": "",
@@ -443,9 +444,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.isscalar(element)",
+  "signature": "fnp.isscalar(element)",
   "slug": "isscalar",
   "summary": "Returns True if the type of `element` is a scalar type.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1927",
   "weight": 0.0
 }

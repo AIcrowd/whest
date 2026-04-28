@@ -476,7 +476,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/arange",
+              "href": "/docs/api/numpy/arange/",
               "label": "flops.arange",
               "original_target": "arange",
               "role": "",
@@ -492,7 +492,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/linspace",
+              "href": "/docs/api/numpy/linspace/",
               "label": "flops.linspace",
               "original_target": "linspace",
               "role": "",
@@ -508,7 +508,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/geomspace",
+              "href": "/docs/api/numpy/geomspace/",
               "label": "flops.geomspace",
               "original_target": "geomspace",
               "role": "",
@@ -578,7 +578,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -699,7 +699,7 @@
     }
   ],
   "canonical_name": "logspace",
-  "canonical_path": "logspace",
+  "canonical_path": "numpy/logspace",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -710,20 +710,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.logspace(2.0, 3.0, num=4)\n\nflops.logspace(2.0, 3.0, num=4, endpoint=False)\n\nflops.logspace(2.0, 3.0, num=4, base=2.0)\n\nflops.logspace(2.0, 3.0, num=4, base=[2.0, 3.0], axis=-1)\n\nimport matplotlib.pyplot as plt\n\nN = 10\n\nx1 = flops.logspace(0.1, 1, N, endpoint=True)\n\nx2 = flops.logspace(0.1, 1, N, endpoint=False)\n\ny = flops.zeros(N)\n\nplt.plot(x1, y, 'o')\n\nplt.plot(x2, y + 0.5, 'o')\n\nplt.ylim([-0.5, 1])\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nflops.logspace(2.0, 3.0, num=4)\n\nflops.logspace(2.0, 3.0, num=4, endpoint=False)\n\nflops.logspace(2.0, 3.0, num=4, base=2.0)\n\nflops.logspace(2.0, 3.0, num=4, base=[2.0, 3.0], axis=-1)\n\nimport matplotlib.pyplot as plt\n\nN = 10\n\nx1 = flops.logspace(0.1, 1, N, endpoint=True)\n\nx2 = flops.logspace(0.1, 1, N, endpoint=False)\n\ny = flops.zeros(N)\n\nplt.plot(x1, y, 'o')\n\nplt.plot(x2, y + 0.5, 'o')\n\nplt.ylim([-0.5, 1])\n\nplt.show()",
     "output": "array([ 100.        ,  215.443469  ,  464.15888336, 1000.        ])\n\narray([100.        ,  177.827941  ,  316.22776602,  562.34132519])\n\narray([4.        ,  5.0396842 ,  6.34960421,  8.        ])\n\narray([[ 4.        ,  5.0396842 ,  6.34960421,  8.        ],\n       [ 9.        , 12.98024613, 18.72075441, 27.        ]])\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n[<matplotlib.lines.Line2D object at 0x...>]\n\n(-0.5, 1)",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.logspace",
+  "flopscope_ref": "fnp.logspace",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L256",
-  "href": "/docs/api/logspace/",
+  "href": "/docs/api/numpy/logspace/",
   "legacy_href": "/docs/api/ops/logspace/",
   "module": "numpy",
   "name": "logspace",
   "next": {
-    "href": "/docs/api/mask-indices/",
-    "label": "flops.mask_indices"
+    "href": "/docs/api/numpy/mask-indices/",
+    "label": "fnp.mask_indices"
   },
   "notes": "Log-spaced generation; cost = num.",
   "notes_sections": [
@@ -795,10 +795,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/logical-xor/",
-    "label": "flops.logical_xor"
+    "href": "/docs/api/numpy/logical-xor/",
+    "label": "fnp.logical_xor"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.logspace",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.logspace.html",
   "returns": [
     {
@@ -819,7 +820,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/arange",
+      "href": "/docs/api/numpy/arange/",
       "label": "flops.arange",
       "original_target": "arange",
       "role": "",
@@ -835,7 +836,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/linspace",
+      "href": "/docs/api/numpy/linspace/",
       "label": "flops.linspace",
       "original_target": "linspace",
       "role": "",
@@ -851,7 +852,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/geomspace",
+      "href": "/docs/api/numpy/geomspace/",
       "label": "flops.geomspace",
       "original_target": "geomspace",
       "role": "",
@@ -870,9 +871,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None, axis=0)",
+  "signature": "fnp.logspace(start, stop, num=50, endpoint=True, base=10.0, dtype=None, axis=0)",
   "slug": "logspace",
   "summary": "Return numbers spaced evenly on a log scale.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/function_base.py#L195",
   "weight": 1.0
 }

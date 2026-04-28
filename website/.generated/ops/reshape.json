@@ -508,7 +508,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -563,7 +563,7 @@
     }
   ],
   "canonical_name": "reshape",
-  "canonical_path": "reshape",
+  "canonical_path": "numpy/reshape",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -581,20 +581,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([[1,2,3], [4,5,6]])\n\nflops.reshape(a, 6)\n\nflops.reshape(a, 6, order='F')\n\nflops.reshape(a, (3,-1))       # the unspecified value is inferred to be 2",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[1,2,3], [4,5,6]])\n\nflops.reshape(a, 6)\n\nflops.reshape(a, 6, order='F')\n\nflops.reshape(a, (3,-1))       # the unspecified value is inferred to be 2",
     "output": "array([1, 2, 3, 4, 5, 6])\n\narray([1, 4, 2, 5, 3, 6])\n\narray([[1, 2],\n       [3, 4],\n       [5, 6]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.reshape",
+  "flopscope_ref": "fnp.reshape",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L292",
-  "href": "/docs/api/reshape/",
+  "href": "/docs/api/numpy/reshape/",
   "legacy_href": "/docs/api/ops/reshape/",
   "module": "numpy",
   "name": "reshape",
   "next": {
-    "href": "/docs/api/resize/",
-    "label": "flops.resize"
+    "href": "/docs/api/numpy/resize/",
+    "label": "fnp.resize"
   },
   "notes": "Reshape array without copying.",
   "notes_sections": [
@@ -661,10 +661,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/require/",
-    "label": "flops.require"
+    "href": "/docs/api/numpy/require/",
+    "label": "fnp.require"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.reshape",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.reshape.html",
   "returns": [
     {
@@ -695,9 +696,11 @@
       "unresolved": true
     }
   ],
-  "signature": "flops.reshape(a, /, shape=None, order='C', *, newshape=None, copy=None)",
+  "signature": "fnp.reshape(a, /, shape=None, order='C', *, newshape=None, copy=None)",
   "slug": "reshape",
   "summary": "Gives a new shape to an array without changing its data.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L211",
   "weight": 0.0
 }

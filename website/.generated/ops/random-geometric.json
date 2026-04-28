@@ -371,7 +371,7 @@
     }
   ],
   "canonical_name": "random.geometric",
-  "canonical_path": "random/geometric",
+  "canonical_path": "numpy/random/geometric",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -387,15 +387,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.geometric",
+  "flopscope_ref": "fnp.random.geometric",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/geometric/",
+  "href": "/docs/api/numpy/random/geometric/",
   "legacy_href": "/docs/api/ops/random-geometric/",
   "module": "numpy.random",
   "name": "random.geometric",
   "next": {
-    "href": "/docs/api/random/get-state/",
-    "label": "flops.random.get_state"
+    "href": "/docs/api/numpy/random/get-state/",
+    "label": "fnp.random.get_state"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -420,10 +420,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/gamma/",
-    "label": "flops.random.gamma"
+    "href": "/docs/api/numpy/random/gamma/",
+    "label": "fnp.random.gamma"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.geometric",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.geometric.html",
   "returns": [
     {
@@ -452,9 +453,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.geometric(p, size=None)",
+  "signature": "fnp.random.geometric(p, size=None)",
   "slug": "random-geometric",
   "summary": "Draw samples from the geometric distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

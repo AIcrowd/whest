@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/average/",
+  "detail_href": "/docs/api/numpy/average/",
   "detail_json_href": "/api-data/ops/average.json",
   "docs": {
     "sections": [
@@ -287,7 +287,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/average",
+                        "href": "/docs/api/numpy/average/",
                         "kind": "link",
                         "target": "average",
                         "text": "average"
@@ -348,7 +348,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/average",
+                    "href": "/docs/api/numpy/average/",
                     "kind": "link",
                     "target": "average",
                     "text": "average"
@@ -964,7 +964,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
+                "href": "/docs/api/numpy/mean/",
                 "label": "flops.mean",
                 "original_target": "mean",
                 "role": "",
@@ -996,7 +996,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/result_type",
+                "href": "/docs/api/numpy/result-type/",
                 "label": "flops.result_type",
                 "original_target": "numpy.result_type",
                 "role": "",
@@ -1016,7 +1016,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -1217,12 +1217,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.average",
+    "flopscope_ref": "fnp.average",
     "module": "numpy",
     "name": "average",
     "notes": "Weighted average of array elements.",
     "numpy_ref": "np.average",
-    "signature": "flops.average(a, axis=None, weights=None, returned=False, *, keepdims=<no value>)",
+    "signature": "fnp.average(a, axis=None, weights=None, returned=False, *, keepdims=<no value>)",
     "status": "supported",
     "summary": "Compute the weighted average along the specified axis.",
     "weight": 1.0

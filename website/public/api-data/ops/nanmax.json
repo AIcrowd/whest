@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/nanmax/",
+  "detail_href": "/docs/api/numpy/nanmax/",
   "detail_json_href": "/api-data/ops/nanmax.json",
   "docs": {
     "sections": [
@@ -185,7 +185,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/max",
+                        "href": "/docs/api/numpy/max/",
                         "kind": "link",
                         "target": "max",
                         "text": "max"
@@ -238,7 +238,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/max",
+                    "href": "/docs/api/numpy/max/",
                     "kind": "link",
                     "target": "max",
                     "text": "max"
@@ -476,7 +476,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmin",
+                "href": "/docs/api/numpy/nanmin/",
                 "label": "flops.nanmin",
                 "original_target": "nanmin",
                 "role": "",
@@ -508,7 +508,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fmax",
+                "href": "/docs/api/numpy/fmax/",
                 "label": "flops.fmax",
                 "original_target": "fmax",
                 "role": "",
@@ -524,7 +524,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/maximum",
+                "href": "/docs/api/numpy/maximum/",
                 "label": "flops.maximum",
                 "original_target": "maximum",
                 "role": "",
@@ -540,7 +540,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
+                "href": "/docs/api/numpy/isnan/",
                 "label": "flops.isnan",
                 "original_target": "isnan",
                 "role": "",
@@ -556,7 +556,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isfinite",
+                "href": "/docs/api/numpy/isfinite/",
                 "label": "flops.isfinite",
                 "original_target": "isfinite",
                 "role": "",
@@ -578,7 +578,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/fmin",
+                "href": "/docs/api/numpy/fmin/",
                 "label": "flops.fmin",
                 "original_target": "fmin",
                 "role": "",
@@ -589,7 +589,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/minimum",
+                "href": "/docs/api/numpy/minimum/",
                 "label": "flops.minimum",
                 "original_target": "minimum",
                 "role": "",
@@ -632,7 +632,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -710,12 +710,12 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
-    "flopscope_ref": "flops.nanmax",
+    "flopscope_ref": "fnp.nanmax",
     "module": "numpy",
     "name": "nanmax",
     "notes": "Maximum ignoring NaNs.",
     "numpy_ref": "np.nanmax",
-    "signature": "flops.nanmax(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+    "signature": "fnp.nanmax(a, axis=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
     "status": "supported",
     "summary": "Return the maximum of an array or maximum along an axis, ignoring any NaNs.  When all-NaN slices are encountered a ``RuntimeWarning`` is raised and NaN is returned for that slice.",
     "weight": 1.0

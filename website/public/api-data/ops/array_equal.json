@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/array-equal/",
+  "detail_href": "/docs/api/numpy/array-equal/",
   "detail_json_href": "/api-data/ops/array_equal.json",
   "docs": {
     "sections": [
@@ -134,7 +134,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/allclose",
+                "href": "/docs/api/numpy/allclose/",
                 "label": "flops.allclose",
                 "original_target": "allclose",
                 "role": "",
@@ -150,7 +150,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/array_equiv",
+                "href": "/docs/api/numpy/array-equiv/",
                 "label": "flops.array_equiv",
                 "original_target": "array_equiv",
                 "role": "",
@@ -170,7 +170,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -332,12 +332,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.array_equal",
+    "flopscope_ref": "fnp.array_equal",
     "module": "numpy",
     "name": "array_equal",
     "notes": "Element-wise equality; cost = numel(a).",
     "numpy_ref": "np.array_equal",
-    "signature": "flops.array_equal(a1, a2, equal_nan=False)",
+    "signature": "fnp.array_equal(a1, a2, equal_nan=False)",
     "status": "supported",
     "summary": "True if two arrays have the same shape and elements, False otherwise.",
     "weight": 1.0

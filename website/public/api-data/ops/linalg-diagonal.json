@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/diagonal/",
+  "detail_href": "/docs/api/numpy/linalg/diagonal/",
   "detail_json_href": "/api-data/ops/linalg-diagonal.json",
   "docs": {
     "sections": [
@@ -37,7 +37,7 @@
                 "display_text": "flops.diagonal",
                 "explicit_title": false,
                 "external_url": "",
-                "href": "/docs/api/ops/diagonal",
+                "href": "/docs/api/numpy/diagonal/",
                 "kind": "role_reference",
                 "original_target": "flops.diagonal",
                 "role": "py:func",
@@ -172,7 +172,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/diagonal",
+                "href": "/docs/api/numpy/diagonal/",
                 "label": "flops.diagonal",
                 "original_target": "numpy.diagonal",
                 "role": "",
@@ -350,7 +350,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/flipud",
+                "href": "/docs/api/numpy/flipud/",
                 "kind": "link",
                 "target": "flipud",
                 "text": "flops.flipud"
@@ -361,7 +361,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/fliplr",
+                "href": "/docs/api/numpy/fliplr/",
                 "kind": "link",
                 "target": "fliplr",
                 "text": "flops.fliplr"
@@ -436,12 +436,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.linalg.diagonal",
+    "flopscope_ref": "fnp.linalg.diagonal",
     "module": "numpy.linalg",
     "name": "linalg.diagonal",
     "notes": "View of diagonal \u2014 delegates to flopscope.diagonal. Cost: 0 FLOPs.",
     "numpy_ref": "np.linalg.diagonal",
-    "signature": "flops.linalg.diagonal(x, /, *, offset=0)",
+    "signature": "fnp.linalg.diagonal(x, /, *, offset=0)",
     "status": "supported",
     "summary": "Returns specified diagonals of a matrix (or a stack of matrices) ``x``.",
     "weight": 0.0

@@ -596,7 +596,7 @@
     }
   ],
   "canonical_name": "random.choice",
-  "canonical_path": "random/choice",
+  "canonical_path": "numpy/random/choice",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -612,15 +612,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.choice",
+  "flopscope_ref": "fnp.random.choice",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L296",
-  "href": "/docs/api/random/choice/",
+  "href": "/docs/api/numpy/random/choice/",
   "legacy_href": "/docs/api/ops/random-choice/",
   "module": "numpy.random",
   "name": "random.choice",
   "next": {
-    "href": "/docs/api/random/default-rng/",
-    "label": "flops.random.default_rng"
+    "href": "/docs/api/numpy/random/default-rng/",
+    "label": "fnp.random.default_rng"
   },
   "notes": "Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not.",
   "notes_sections": [
@@ -665,10 +665,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/chisquare/",
-    "label": "flops.random.chisquare"
+    "href": "/docs/api/numpy/random/chisquare/",
+    "label": "fnp.random.chisquare"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.choice",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.choice.html",
   "returns": [
     {
@@ -730,9 +731,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.choice(a, size=None, replace=True, p=None)",
+  "signature": "fnp.random.choice(a, size=None, replace=True, p=None)",
   "slug": "random-choice",
   "summary": "Generates a random sample from a given 1-D array",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 1.0
 }

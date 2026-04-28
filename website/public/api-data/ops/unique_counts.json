@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/unique-counts/",
+  "detail_href": "/docs/api/numpy/unique-counts/",
   "detail_json_href": "/api-data/ops/unique_counts.json",
   "docs": {
     "sections": [
@@ -164,7 +164,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/unique",
+                "href": "/docs/api/numpy/unique/",
                 "label": "flops.unique",
                 "original_target": "unique",
                 "role": "",
@@ -184,7 +184,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -226,12 +226,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.unique_counts",
+    "flopscope_ref": "fnp.unique_counts",
     "module": "numpy",
     "name": "unique_counts",
     "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.unique_counts",
-    "signature": "flops.unique_counts(x, /)",
+    "signature": "fnp.unique_counts(x, /)",
     "status": "supported",
     "summary": "Find the unique elements and counts of an input array `x`.",
     "weight": 1.0

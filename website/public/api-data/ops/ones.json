@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ones/",
+  "detail_href": "/docs/api/numpy/ones/",
   "detail_json_href": "/api-data/ops/ones.json",
   "docs": {
     "sections": [
@@ -328,7 +328,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ones_like",
+                "href": "/docs/api/numpy/ones-like/",
                 "label": "flops.ones_like",
                 "original_target": "ones_like",
                 "role": "",
@@ -344,7 +344,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/empty",
+                "href": "/docs/api/numpy/empty/",
                 "label": "flops.empty",
                 "original_target": "empty",
                 "role": "",
@@ -360,7 +360,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/zeros",
+                "href": "/docs/api/numpy/zeros/",
                 "label": "flops.zeros",
                 "original_target": "zeros",
                 "role": "",
@@ -376,7 +376,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/full",
+                "href": "/docs/api/numpy/full/",
                 "label": "flops.full",
                 "original_target": "full",
                 "role": "",
@@ -396,7 +396,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -474,12 +474,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.ones",
+    "flopscope_ref": "fnp.ones",
     "module": "numpy",
     "name": "ones",
     "notes": "Create one-filled array.",
     "numpy_ref": "np.ones",
-    "signature": "flops.ones(shape, dtype=None, order='C', *, device=None, like=None)",
+    "signature": "fnp.ones(shape, dtype=None, order='C', *, device=None, like=None)",
     "status": "supported",
     "summary": "Return a new array of given shape and type, filled with ones.",
     "weight": 0.0

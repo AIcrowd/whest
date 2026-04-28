@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/tensordot/",
+  "detail_href": "/docs/api/numpy/linalg/tensordot/",
   "detail_json_href": "/api-data/ops/linalg-tensordot.json",
   "docs": {
     "sections": [
@@ -273,7 +273,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/dot",
+                "href": "/docs/api/numpy/dot/",
                 "label": "flops.dot",
                 "original_target": "dot",
                 "role": "",
@@ -284,7 +284,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
@@ -488,7 +488,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "kind": "link",
                 "target": "einsum",
                 "text": "flops.einsum"
@@ -936,12 +936,12 @@
     "category": "counted_custom",
     "cost_formula": "delegates to flops.tensordot",
     "cost_formula_latex": "delegates to `tensordot`",
-    "flopscope_ref": "flops.linalg.tensordot",
+    "flopscope_ref": "fnp.linalg.tensordot",
     "module": "numpy.linalg",
     "name": "linalg.tensordot",
-    "notes": "Delegates to `we.tensordot` which charges FLOPs based on contraction.",
+    "notes": "Delegates to `fnp.tensordot` which charges FLOPs based on contraction.",
     "numpy_ref": "np.linalg.tensordot",
-    "signature": "flops.linalg.tensordot(x1, x2, /, *, axes=2)",
+    "signature": "fnp.linalg.tensordot(x1, x2, /, *, axes=2)",
     "status": "supported",
     "summary": "Compute tensor dot product along specified axes.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ravel/",
+  "detail_href": "/docs/api/numpy/ravel/",
   "detail_json_href": "/api-data/ops/ravel.json",
   "docs": {
     "sections": [
@@ -341,7 +341,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/ravel",
+                "href": "/docs/api/numpy/ravel/",
                 "kind": "link",
                 "target": "ravel",
                 "text": "ravel"
@@ -368,7 +368,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/reshape",
+                "href": "/docs/api/numpy/reshape/",
                 "kind": "link",
                 "target": "reshape",
                 "text": "reshape"
@@ -407,7 +407,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -596,12 +596,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.ravel",
+    "flopscope_ref": "fnp.ravel",
     "module": "numpy",
     "name": "ravel",
     "notes": "Return contiguous flattened array. Cost: numel(input).",
     "numpy_ref": "np.ravel",
-    "signature": "flops.ravel(a, order='C')",
+    "signature": "fnp.ravel(a, order='C')",
     "status": "supported",
     "summary": "Return a contiguous flattened array.",
     "weight": 0.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/resize/",
+  "detail_href": "/docs/api/numpy/resize/",
   "detail_json_href": "/api-data/ops/resize.json",
   "docs": {
     "sections": [
@@ -148,7 +148,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/reshape",
+                "href": "/docs/api/numpy/reshape/",
                 "label": "flops.reshape",
                 "original_target": "numpy.reshape",
                 "role": "",
@@ -164,7 +164,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/pad",
+                "href": "/docs/api/numpy/pad/",
                 "label": "flops.pad",
                 "original_target": "numpy.pad",
                 "role": "",
@@ -180,7 +180,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/repeat",
+                "href": "/docs/api/numpy/repeat/",
                 "label": "flops.repeat",
                 "original_target": "numpy.repeat",
                 "role": "",
@@ -219,7 +219,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/reshape",
+                "href": "/docs/api/numpy/reshape/",
                 "kind": "link",
                 "target": "reshape",
                 "text": "reshape"
@@ -266,7 +266,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -320,12 +320,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.resize",
+    "flopscope_ref": "fnp.resize",
     "module": "numpy",
     "name": "resize",
     "notes": "Return new array with given shape by repeating. Cost: numel(output).",
     "numpy_ref": "np.resize",
-    "signature": "flops.resize(a, new_shape)",
+    "signature": "fnp.resize(a, new_shape)",
     "status": "supported",
     "summary": "Return a new array with the specified shape.",
     "weight": 1.0

@@ -298,7 +298,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/expm1",
+              "href": "/docs/api/numpy/expm1/",
               "label": "flops.expm1",
               "original_target": "expm1",
               "role": "",
@@ -322,7 +322,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/exp2",
+              "href": "/docs/api/numpy/exp2/",
               "label": "flops.exp2",
               "original_target": "exp2",
               "role": "",
@@ -477,7 +477,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -572,7 +572,7 @@
     }
   ],
   "canonical_name": "exp",
-  "canonical_path": "exp",
+  "canonical_path": "numpy/exp",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -599,20 +599,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nimport matplotlib.pyplot as plt\n\nx = flops.linspace(-2*flops.pi, 2*flops.pi, 100)\n\nxx = x + 1j * x[:, flops.newaxis] # a + ib over complex plane\n\nout = flops.exp(xx)\n\nplt.subplot(121)\n\nplt.imshow(flops.abs(out),\n           extent=[-2*flops.pi, 2*flops.pi, -2*flops.pi, 2*flops.pi], cmap='gray')\n\nplt.title('Magnitude of exp(x)')\n\nplt.subplot(122)\n\nplt.imshow(flops.angle(out),\n           extent=[-2*flops.pi, 2*flops.pi, -2*flops.pi, 2*flops.pi], cmap='hsv')\n\nplt.title('Phase (angle) of exp(x)')\n\nplt.show()",
+    "code": "import flopscope.numpy as fnp\n\nimport matplotlib.pyplot as plt\n\nx = flops.linspace(-2*flops.pi, 2*flops.pi, 100)\n\nxx = x + 1j * x[:, flops.newaxis] # a + ib over complex plane\n\nout = flops.exp(xx)\n\nplt.subplot(121)\n\nplt.imshow(flops.abs(out),\n           extent=[-2*flops.pi, 2*flops.pi, -2*flops.pi, 2*flops.pi], cmap='gray')\n\nplt.title('Magnitude of exp(x)')\n\nplt.subplot(122)\n\nplt.imshow(flops.angle(out),\n           extent=[-2*flops.pi, 2*flops.pi, -2*flops.pi, 2*flops.pi], cmap='hsv')\n\nplt.title('Phase (angle) of exp(x)')\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.exp",
+  "flopscope_ref": "fnp.exp",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
-  "href": "/docs/api/exp/",
+  "href": "/docs/api/numpy/exp/",
   "legacy_href": "/docs/api/ops/exp/",
   "module": "numpy",
   "name": "exp",
   "next": {
-    "href": "/docs/api/exp2/",
-    "label": "flops.exp2"
+    "href": "/docs/api/numpy/exp2/",
+    "label": "fnp.exp2"
   },
   "notes": "Element-wise e^x.",
   "notes_sections": [
@@ -660,10 +660,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/equal/",
-    "label": "flops.equal"
+    "href": "/docs/api/numpy/equal/",
+    "label": "fnp.equal"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.exp",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.exp.html",
   "returns": [
     {
@@ -693,7 +694,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/expm1",
+      "href": "/docs/api/numpy/expm1/",
       "label": "flops.expm1",
       "original_target": "expm1",
       "role": "",
@@ -717,7 +718,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/exp2",
+      "href": "/docs/api/numpy/exp2/",
       "label": "flops.exp2",
       "original_target": "exp2",
       "role": "",
@@ -725,9 +726,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.exp(*args, **kwargs)",
+  "signature": "fnp.exp(*args, **kwargs)",
   "slug": "exp",
   "summary": "Calculate the exponential of all elements in the input array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0
 }

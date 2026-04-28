@@ -349,7 +349,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/greater",
+              "href": "/docs/api/numpy/greater/",
               "label": "flops.greater",
               "original_target": "greater",
               "role": "",
@@ -360,7 +360,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/less",
+              "href": "/docs/api/numpy/less/",
               "label": "flops.less",
               "original_target": "less",
               "role": "",
@@ -371,7 +371,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/less_equal",
+              "href": "/docs/api/numpy/less-equal/",
               "label": "flops.less_equal",
               "original_target": "less_equal",
               "role": "",
@@ -382,7 +382,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/equal",
+              "href": "/docs/api/numpy/equal/",
               "label": "flops.equal",
               "original_target": "equal",
               "role": "",
@@ -393,7 +393,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/not_equal",
+              "href": "/docs/api/numpy/not-equal/",
               "label": "flops.not_equal",
               "original_target": "not_equal",
               "role": "",
@@ -413,7 +413,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -443,7 +443,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/greater_equal",
+              "href": "/docs/api/numpy/greater-equal/",
               "kind": "link",
               "target": "greater_equal",
               "text": "flops.greater_equal"
@@ -484,7 +484,7 @@
     }
   ],
   "canonical_name": "greater_equal",
-  "canonical_path": "greater-equal",
+  "canonical_path": "numpy/greater-equal",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -502,20 +502,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nflops.greater_equal([4, 2, 1], [2, 2, 2])\n\na = flops.array([4, 2, 1])\n\nb = flops.array([2, 2, 2])\n\na >= b",
+    "code": "import flopscope.numpy as fnp\n\nflops.greater_equal([4, 2, 1], [2, 2, 2])\n\na = flops.array([4, 2, 1])\n\nb = flops.array([2, 2, 2])\n\na >= b",
     "output": "array([ True, True, False])\n\narray([ True,  True, False])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.greater_equal",
+  "flopscope_ref": "fnp.greater_equal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
-  "href": "/docs/api/greater-equal/",
+  "href": "/docs/api/numpy/greater-equal/",
   "legacy_href": "/docs/api/ops/greater_equal/",
   "module": "numpy",
   "name": "greater_equal",
   "next": {
-    "href": "/docs/api/hamming/",
-    "label": "flops.hamming"
+    "href": "/docs/api/numpy/hamming/",
+    "label": "fnp.hamming"
   },
   "notes": "Element-wise x1 >= x2.",
   "notes_sections": [],
@@ -562,10 +562,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/greater/",
-    "label": "flops.greater"
+    "href": "/docs/api/numpy/greater/",
+    "label": "fnp.greater"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.greater_equal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.greater_equal.html",
   "returns": [
     {
@@ -583,7 +584,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/greater",
+      "href": "/docs/api/numpy/greater/",
       "label": "flops.greater",
       "original_target": "greater",
       "role": "",
@@ -594,7 +595,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/less",
+      "href": "/docs/api/numpy/less/",
       "label": "flops.less",
       "original_target": "less",
       "role": "",
@@ -605,7 +606,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/less_equal",
+      "href": "/docs/api/numpy/less-equal/",
       "label": "flops.less_equal",
       "original_target": "less_equal",
       "role": "",
@@ -616,7 +617,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/equal",
+      "href": "/docs/api/numpy/equal/",
       "label": "flops.equal",
       "original_target": "equal",
       "role": "",
@@ -627,7 +628,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/not_equal",
+      "href": "/docs/api/numpy/not-equal/",
       "label": "flops.not_equal",
       "original_target": "not_equal",
       "role": "",
@@ -635,9 +636,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.greater_equal(*args, **kwargs)",
+  "signature": "fnp.greater_equal(*args, **kwargs)",
   "slug": "greater_equal",
   "summary": "Return the truth value of (x1 >= x2) element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0
 }

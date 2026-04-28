@@ -534,7 +534,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/cov",
+                      "href": "/docs/api/numpy/cov/",
                       "kind": "link",
                       "target": "cov",
                       "text": "cov"
@@ -558,7 +558,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/cov",
+                      "href": "/docs/api/numpy/cov/",
                       "kind": "link",
                       "target": "cov",
                       "text": "cov"
@@ -810,7 +810,7 @@
     }
   ],
   "canonical_name": "random.multivariate_normal",
-  "canonical_path": "random/multivariate-normal",
+  "canonical_path": "numpy/random/multivariate-normal",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -835,15 +835,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.multivariate_normal",
+  "flopscope_ref": "fnp.random.multivariate_normal",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/multivariate-normal/",
+  "href": "/docs/api/numpy/random/multivariate-normal/",
   "legacy_href": "/docs/api/ops/random-multivariate_normal/",
   "module": "numpy.random",
   "name": "random.multivariate_normal",
   "next": {
-    "href": "/docs/api/random/negative-binomial/",
-    "label": "flops.random.negative_binomial"
+    "href": "/docs/api/numpy/random/negative-binomial/",
+    "label": "fnp.random.negative_binomial"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -901,10 +901,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/multinomial/",
-    "label": "flops.random.multinomial"
+    "href": "/docs/api/numpy/random/multinomial/",
+    "label": "fnp.random.multinomial"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.multivariate_normal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.multivariate_normal.html",
   "returns": [
     {
@@ -937,9 +938,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
+  "signature": "fnp.random.multivariate_normal(mean, cov, size=None, check_valid='warn', tol=1e-08)",
   "slug": "random-multivariate_normal",
   "summary": "Draw random samples from a multivariate normal distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

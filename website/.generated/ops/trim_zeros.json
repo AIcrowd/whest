@@ -196,7 +196,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -321,7 +321,7 @@
     }
   ],
   "canonical_name": "trim_zeros",
-  "canonical_path": "trim-zeros",
+  "canonical_path": "numpy/trim-zeros",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -332,20 +332,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array((0, 0, 0, 1, 2, 3, 0, 2, 1, 0))\n\nflops.trim_zeros(a)\n\nflops.trim_zeros(a, trim='b')\n\nb = flops.array([[0, 0, 2, 3, 0, 0],\n              [0, 1, 0, 3, 0, 0],\n              [0, 0, 0, 0, 0, 0]])\n\nflops.trim_zeros(b)\n\nflops.trim_zeros(b, axis=-1)\n\nflops.trim_zeros([0, 1, 2, 0])",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array((0, 0, 0, 1, 2, 3, 0, 2, 1, 0))\n\nflops.trim_zeros(a)\n\nflops.trim_zeros(a, trim='b')\n\nb = flops.array([[0, 0, 2, 3, 0, 0],\n              [0, 1, 0, 3, 0, 0],\n              [0, 0, 0, 0, 0, 0]])\n\nflops.trim_zeros(b)\n\nflops.trim_zeros(b, axis=-1)\n\nflops.trim_zeros([0, 1, 2, 0])",
     "output": "array([1, 2, 3, 0, 2, 1])\n\narray([0, 0, 0, ..., 0, 2, 1])\n\narray([[0, 2, 3],\n       [1, 0, 3]])\n\narray([[0, 2, 3],\n       [1, 0, 3],\n       [0, 0, 0]])\n\n[1, 2]",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.trim_zeros",
+  "flopscope_ref": "fnp.trim_zeros",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1609",
-  "href": "/docs/api/trim-zeros/",
+  "href": "/docs/api/numpy/trim-zeros/",
   "legacy_href": "/docs/api/ops/trim_zeros/",
   "module": "numpy",
   "name": "trim_zeros",
   "next": {
-    "href": "/docs/api/triu/",
-    "label": "flops.triu"
+    "href": "/docs/api/numpy/triu/",
+    "label": "fnp.triu"
   },
   "notes": "Trim leading/trailing zeros from 1-D array. Cost: num trimmed.",
   "notes_sections": [
@@ -384,10 +384,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/tril-indices-from/",
-    "label": "flops.tril_indices_from"
+    "href": "/docs/api/numpy/tril-indices-from/",
+    "label": "fnp.tril_indices_from"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.trim_zeros",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.trim_zeros.html",
   "returns": [
     {
@@ -400,9 +401,11 @@
     }
   ],
   "see_also": [],
-  "signature": "flops.trim_zeros(filt, trim='fb', axis=None)",
+  "signature": "fnp.trim_zeros(filt, trim='fb', axis=None)",
   "slug": "trim_zeros",
   "summary": "Remove values along a dimension which are zero along all other.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1889",
   "weight": 4.0
 }

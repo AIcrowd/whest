@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/randn/",
+  "detail_href": "/docs/api/numpy/random/randn/",
   "detail_json_href": "/api-data/ops/random-randn.json",
   "docs": {
     "sections": [
@@ -38,7 +38,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/zeros",
+                    "href": "/docs/api/numpy/zeros/",
                     "kind": "link",
                     "target": "zeros",
                     "text": "flops.zeros"
@@ -49,7 +49,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/ones",
+                    "href": "/docs/api/numpy/ones/",
                     "kind": "link",
                     "target": "ones",
                     "text": "flops.ones"
@@ -380,12 +380,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.randn",
+    "flopscope_ref": "fnp.random.randn",
     "module": "numpy.random",
     "name": "random.randn",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.randn",
-    "signature": "flops.random.randn(*args)",
+    "signature": "fnp.random.randn(*args)",
     "status": "supported",
     "summary": "Return a sample (or samples) from the \"standard normal\" distribution.",
     "weight": 16.0

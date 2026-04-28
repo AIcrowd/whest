@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/linalg/slogdet/",
+  "detail_href": "/docs/api/numpy/linalg/slogdet/",
   "detail_json_href": "/api-data/ops/linalg-slogdet.json",
   "docs": {
     "sections": [
@@ -250,7 +250,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -383,12 +383,12 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
-    "flopscope_ref": "flops.linalg.slogdet",
+    "flopscope_ref": "fnp.linalg.slogdet",
     "module": "numpy.linalg",
     "name": "linalg.slogdet",
     "notes": "Sign + log determinant. Cost: $n^3$.",
     "numpy_ref": "np.linalg.slogdet",
-    "signature": "flops.linalg.slogdet(a)",
+    "signature": "fnp.linalg.slogdet(a)",
     "status": "supported",
     "summary": "Compute the sign and (natural) logarithm of the determinant of an array.",
     "weight": 4.0

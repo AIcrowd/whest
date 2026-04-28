@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/trunc/",
+  "detail_href": "/docs/api/numpy/trunc/",
   "detail_json_href": "/api-data/ops/trunc.json",
   "docs": {
     "sections": [
@@ -331,7 +331,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/ceil",
+                "href": "/docs/api/numpy/ceil/",
                 "label": "flops.ceil",
                 "original_target": "ceil",
                 "role": "",
@@ -342,7 +342,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/floor",
+                "href": "/docs/api/numpy/floor/",
                 "label": "flops.floor",
                 "original_target": "floor",
                 "role": "",
@@ -353,7 +353,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/rint",
+                "href": "/docs/api/numpy/rint/",
                 "label": "flops.rint",
                 "original_target": "rint",
                 "role": "",
@@ -384,7 +384,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -412,12 +412,12 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.trunc",
+    "flopscope_ref": "fnp.trunc",
     "module": "numpy",
     "name": "trunc",
     "notes": "Truncate toward zero element-wise.",
     "numpy_ref": "np.trunc",
-    "signature": "flops.trunc(*args, **kwargs)",
+    "signature": "fnp.trunc(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the truncated value of the input, element-wise.",
     "weight": 1.0

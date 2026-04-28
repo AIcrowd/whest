@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/fmin/",
+  "detail_href": "/docs/api/numpy/fmin/",
   "detail_json_href": "/api-data/ops/fmin.json",
   "docs": {
     "sections": [
@@ -352,7 +352,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fmax",
+                "href": "/docs/api/numpy/fmax/",
                 "label": "flops.fmax",
                 "original_target": "fmax",
                 "role": "",
@@ -368,7 +368,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/minimum",
+                "href": "/docs/api/numpy/minimum/",
                 "label": "flops.minimum",
                 "original_target": "minimum",
                 "role": "",
@@ -400,7 +400,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmin",
+                "href": "/docs/api/numpy/nanmin/",
                 "label": "flops.nanmin",
                 "original_target": "nanmin",
                 "role": "",
@@ -411,7 +411,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/maximum",
+                "href": "/docs/api/numpy/maximum/",
                 "label": "flops.maximum",
                 "original_target": "maximum",
                 "role": "",
@@ -433,7 +433,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/nanmax",
+                "href": "/docs/api/numpy/nanmax/",
                 "label": "flops.nanmax",
                 "original_target": "nanmax",
                 "role": "",
@@ -478,7 +478,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -533,12 +533,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.fmin",
+    "flopscope_ref": "fnp.fmin",
     "module": "numpy",
     "name": "fmin",
     "notes": "Element-wise minimum ignoring NaN.",
     "numpy_ref": "np.fmin",
-    "signature": "flops.fmin(*args, **kwargs)",
+    "signature": "fnp.fmin(*args, **kwargs)",
     "status": "supported",
     "summary": "Element-wise minimum of array elements.",
     "weight": 1.0

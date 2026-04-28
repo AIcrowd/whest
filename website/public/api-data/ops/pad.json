@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/pad/",
+  "detail_href": "/docs/api/numpy/pad/",
   "detail_json_href": "/api-data/ops/pad.json",
   "docs": {
     "sections": [
@@ -733,7 +733,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/array",
+                        "href": "/docs/api/numpy/array/",
                         "kind": "link",
                         "target": "array",
                         "text": "array"
@@ -762,7 +762,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/array",
+                    "href": "/docs/api/numpy/array/",
                     "kind": "link",
                     "target": "array",
                     "text": "array"
@@ -931,7 +931,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -1240,12 +1240,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.pad",
+    "flopscope_ref": "fnp.pad",
     "module": "numpy",
     "name": "pad",
     "notes": "Pad array. Cost: numel(output).",
     "numpy_ref": "np.pad",
-    "signature": "flops.pad(array, pad_width, mode='constant', **kwargs)",
+    "signature": "fnp.pad(array, pad_width, mode='constant', **kwargs)",
     "status": "supported",
     "summary": "Pad an array.",
     "weight": 1.0

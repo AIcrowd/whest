@@ -29,7 +29,7 @@
               "display_text": "flops.matmul",
               "explicit_title": false,
               "external_url": "",
-              "href": "/docs/api/ops/matmul",
+              "href": "/docs/api/numpy/matmul/",
               "kind": "role_reference",
               "original_target": "flops.matmul",
               "role": "func",
@@ -249,7 +249,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/matmul",
+              "href": "/docs/api/numpy/matmul/",
               "label": "flops.matmul",
               "original_target": "numpy.matmul",
               "role": "",
@@ -469,7 +469,7 @@
     }
   ],
   "canonical_name": "linalg.matmul",
-  "canonical_path": "linalg/matmul",
+  "canonical_path": "numpy/linalg/matmul",
   "category": "counted_custom",
   "cost_formula": "delegates to flops.matmul",
   "cost_formula_latex": "delegates to `matmul`",
@@ -485,17 +485,17 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.linalg.matmul",
+  "flopscope_ref": "fnp.linalg.matmul",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L16",
-  "href": "/docs/api/linalg/matmul/",
+  "href": "/docs/api/numpy/linalg/matmul/",
   "legacy_href": "/docs/api/ops/linalg-matmul/",
   "module": "numpy.linalg",
   "name": "linalg.matmul",
   "next": {
-    "href": "/docs/api/linalg/matrix-norm/",
-    "label": "flops.linalg.matrix_norm"
+    "href": "/docs/api/numpy/linalg/matrix-norm/",
+    "label": "fnp.linalg.matrix_norm"
   },
-  "notes": "Delegates to `we.matmul` which charges `m*k*n` FLOPs (FMA=1).",
+  "notes": "Delegates to `fnp.matmul` which charges `m*k*n` FLOPs (FMA=1).",
   "notes_sections": [],
   "numpy_ref": "np.linalg.matmul",
   "parameters": [
@@ -515,10 +515,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/linalg/lstsq/",
-    "label": "flops.linalg.lstsq"
+    "href": "/docs/api/numpy/linalg/lstsq/",
+    "label": "fnp.linalg.lstsq"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.matmul",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.matmul.html",
   "returns": [
     {
@@ -535,7 +536,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/matmul",
+      "href": "/docs/api/numpy/matmul/",
       "label": "flops.matmul",
       "original_target": "numpy.matmul",
       "role": "",
@@ -543,9 +544,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.linalg.matmul(x1, x2, /)",
+  "signature": "fnp.linalg.matmul(x1, x2, /)",
   "slug": "linalg-matmul",
   "summary": "Computes the matrix product.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3302",
   "weight": 1.0
 }

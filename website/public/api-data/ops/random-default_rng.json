@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/default-rng/",
+  "detail_href": "/docs/api/numpy/random/default-rng/",
   "detail_json_href": "/api-data/ops/random-default_rng.json",
   "docs": {
     "sections": [
@@ -391,7 +391,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -455,7 +455,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -502,7 +502,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -557,7 +557,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -598,12 +598,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.random.default_rng",
+    "flopscope_ref": "fnp.random.default_rng",
     "module": "numpy.random",
     "name": "random.default_rng",
     "notes": "Construct a new Generator with default BitGenerator.",
     "numpy_ref": "np.random.default_rng",
-    "signature": "flops.random.default_rng(seed=None)",
+    "signature": "fnp.random.default_rng(seed=None)",
     "status": "supported",
     "summary": "Construct a new Generator with the default BitGenerator (PCG64).",
     "weight": 0.0

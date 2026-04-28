@@ -1,213 +1,9 @@
 {
-  "absolute": {
-    "canonical_name": "absolute",
-    "href": "/docs/api/absolute/",
-    "kind": "op",
-    "slug": "absolute"
-  },
-  "add": {
-    "canonical_name": "add",
-    "href": "/docs/api/add/",
-    "kind": "op",
-    "slug": "add"
-  },
-  "all": {
-    "canonical_name": "all",
-    "href": "/docs/api/all/",
-    "kind": "op",
-    "slug": "all"
-  },
-  "allclose": {
-    "canonical_name": "allclose",
-    "href": "/docs/api/allclose/",
-    "kind": "op",
-    "slug": "allclose"
-  },
-  "angle": {
-    "canonical_name": "angle",
-    "href": "/docs/api/angle/",
-    "kind": "op",
-    "slug": "angle"
-  },
-  "any": {
-    "canonical_name": "any",
-    "href": "/docs/api/any/",
-    "kind": "op",
-    "slug": "any"
-  },
-  "append": {
-    "canonical_name": "append",
-    "href": "/docs/api/append/",
-    "kind": "op",
-    "slug": "append"
-  },
-  "apply-along-axis": {
-    "canonical_name": "apply_along_axis",
-    "href": "/docs/api/apply-along-axis/",
-    "kind": "op",
-    "slug": "apply_along_axis"
-  },
-  "apply-over-axes": {
-    "canonical_name": "apply_over_axes",
-    "href": "/docs/api/apply-over-axes/",
-    "kind": "op",
-    "slug": "apply_over_axes"
-  },
-  "arange": {
-    "canonical_name": "arange",
-    "href": "/docs/api/arange/",
-    "kind": "op",
-    "slug": "arange"
-  },
-  "arccos": {
-    "canonical_name": "arccos",
-    "href": "/docs/api/arccos/",
-    "kind": "op",
-    "slug": "arccos"
-  },
-  "arccosh": {
-    "canonical_name": "arccosh",
-    "href": "/docs/api/arccosh/",
-    "kind": "op",
-    "slug": "arccosh"
-  },
-  "arcsin": {
-    "canonical_name": "arcsin",
-    "href": "/docs/api/arcsin/",
-    "kind": "op",
-    "slug": "arcsin"
-  },
-  "arcsinh": {
-    "canonical_name": "arcsinh",
-    "href": "/docs/api/arcsinh/",
-    "kind": "op",
-    "slug": "arcsinh"
-  },
-  "arctan": {
-    "canonical_name": "arctan",
-    "href": "/docs/api/arctan/",
-    "kind": "op",
-    "slug": "arctan"
-  },
-  "arctan2": {
-    "canonical_name": "arctan2",
-    "href": "/docs/api/arctan2/",
-    "kind": "op",
-    "slug": "arctan2"
-  },
-  "arctanh": {
-    "canonical_name": "arctanh",
-    "href": "/docs/api/arctanh/",
-    "kind": "op",
-    "slug": "arctanh"
-  },
-  "argmax": {
-    "canonical_name": "argmax",
-    "href": "/docs/api/argmax/",
-    "kind": "op",
-    "slug": "argmax"
-  },
-  "argmin": {
-    "canonical_name": "argmin",
-    "href": "/docs/api/argmin/",
-    "kind": "op",
-    "slug": "argmin"
-  },
-  "argpartition": {
-    "canonical_name": "argpartition",
-    "href": "/docs/api/argpartition/",
-    "kind": "op",
-    "slug": "argpartition"
-  },
-  "argsort": {
-    "canonical_name": "argsort",
-    "href": "/docs/api/argsort/",
-    "kind": "op",
-    "slug": "argsort"
-  },
-  "argwhere": {
-    "canonical_name": "argwhere",
-    "href": "/docs/api/argwhere/",
-    "kind": "op",
-    "slug": "argwhere"
-  },
-  "array": {
-    "canonical_name": "array",
-    "href": "/docs/api/array/",
-    "kind": "op",
-    "slug": "array"
-  },
-  "array-equal": {
-    "canonical_name": "array_equal",
-    "href": "/docs/api/array-equal/",
-    "kind": "op",
-    "slug": "array_equal"
-  },
-  "array-equiv": {
-    "canonical_name": "array_equiv",
-    "href": "/docs/api/array-equiv/",
-    "kind": "op",
-    "slug": "array_equiv"
-  },
-  "array-split": {
-    "canonical_name": "array_split",
-    "href": "/docs/api/array-split/",
-    "kind": "op",
-    "slug": "array_split"
-  },
   "as-symmetric": {
     "canonical_name": "as_symmetric",
     "href": "/docs/api/as-symmetric/",
     "kind": "symbol",
     "slug": "as-symmetric"
-  },
-  "asarray": {
-    "canonical_name": "asarray",
-    "href": "/docs/api/asarray/",
-    "kind": "op",
-    "slug": "asarray"
-  },
-  "asarray-chkfinite": {
-    "canonical_name": "asarray_chkfinite",
-    "href": "/docs/api/asarray-chkfinite/",
-    "kind": "op",
-    "slug": "asarray_chkfinite"
-  },
-  "astype": {
-    "canonical_name": "astype",
-    "href": "/docs/api/astype/",
-    "kind": "op",
-    "slug": "astype"
-  },
-  "atleast-1d": {
-    "canonical_name": "atleast_1d",
-    "href": "/docs/api/atleast-1d/",
-    "kind": "op",
-    "slug": "atleast_1d"
-  },
-  "atleast-2d": {
-    "canonical_name": "atleast_2d",
-    "href": "/docs/api/atleast-2d/",
-    "kind": "op",
-    "slug": "atleast_2d"
-  },
-  "atleast-3d": {
-    "canonical_name": "atleast_3d",
-    "href": "/docs/api/atleast-3d/",
-    "kind": "op",
-    "slug": "atleast_3d"
-  },
-  "average": {
-    "canonical_name": "average",
-    "href": "/docs/api/average/",
-    "kind": "op",
-    "slug": "average"
-  },
-  "bartlett": {
-    "canonical_name": "bartlett",
-    "href": "/docs/api/bartlett/",
-    "kind": "op",
-    "slug": "bartlett"
   },
   "base-repr": {
     "canonical_name": "base_repr",
@@ -221,95 +17,11 @@
     "kind": "symbol",
     "slug": "binary-repr"
   },
-  "bincount": {
-    "canonical_name": "bincount",
-    "href": "/docs/api/bincount/",
-    "kind": "op",
-    "slug": "bincount"
-  },
-  "bitwise-and": {
-    "canonical_name": "bitwise_and",
-    "href": "/docs/api/bitwise-and/",
-    "kind": "op",
-    "slug": "bitwise_and"
-  },
-  "bitwise-count": {
-    "canonical_name": "bitwise_count",
-    "href": "/docs/api/bitwise-count/",
-    "kind": "op",
-    "slug": "bitwise_count"
-  },
-  "bitwise-left-shift": {
-    "canonical_name": "bitwise_left_shift",
-    "href": "/docs/api/bitwise-left-shift/",
-    "kind": "op",
-    "slug": "bitwise_left_shift"
-  },
-  "bitwise-not": {
-    "canonical_name": "bitwise_not",
-    "href": "/docs/api/bitwise-not/",
-    "kind": "op",
-    "slug": "bitwise_not"
-  },
-  "bitwise-or": {
-    "canonical_name": "bitwise_or",
-    "href": "/docs/api/bitwise-or/",
-    "kind": "op",
-    "slug": "bitwise_or"
-  },
-  "bitwise-right-shift": {
-    "canonical_name": "bitwise_right_shift",
-    "href": "/docs/api/bitwise-right-shift/",
-    "kind": "op",
-    "slug": "bitwise_right_shift"
-  },
-  "bitwise-xor": {
-    "canonical_name": "bitwise_xor",
-    "href": "/docs/api/bitwise-xor/",
-    "kind": "op",
-    "slug": "bitwise_xor"
-  },
-  "blackman": {
-    "canonical_name": "blackman",
-    "href": "/docs/api/blackman/",
-    "kind": "op",
-    "slug": "blackman"
-  },
-  "block": {
-    "canonical_name": "block",
-    "href": "/docs/api/block/",
-    "kind": "op",
-    "slug": "block"
-  },
-  "bmat": {
-    "canonical_name": "bmat",
-    "href": "/docs/api/bmat/",
-    "kind": "op",
-    "slug": "bmat"
-  },
   "broadcast": {
     "canonical_name": "broadcast",
     "href": "/docs/api/broadcast/",
     "kind": "symbol",
     "slug": "broadcast"
-  },
-  "broadcast-arrays": {
-    "canonical_name": "broadcast_arrays",
-    "href": "/docs/api/broadcast-arrays/",
-    "kind": "op",
-    "slug": "broadcast_arrays"
-  },
-  "broadcast-shapes": {
-    "canonical_name": "broadcast_shapes",
-    "href": "/docs/api/broadcast-shapes/",
-    "kind": "op",
-    "slug": "broadcast_shapes"
-  },
-  "broadcast-to": {
-    "canonical_name": "broadcast_to",
-    "href": "/docs/api/broadcast-to/",
-    "kind": "op",
-    "slug": "broadcast_to"
   },
   "budget": {
     "canonical_name": "budget",
@@ -347,65 +59,11 @@
     "kind": "symbol",
     "slug": "budget-summary-dict"
   },
-  "can-cast": {
-    "canonical_name": "can_cast",
-    "href": "/docs/api/can-cast/",
-    "kind": "op",
-    "slug": "can_cast"
-  },
-  "cbrt": {
-    "canonical_name": "cbrt",
-    "href": "/docs/api/cbrt/",
-    "kind": "op",
-    "slug": "cbrt"
-  },
-  "ceil": {
-    "canonical_name": "ceil",
-    "href": "/docs/api/ceil/",
-    "kind": "op",
-    "slug": "ceil"
-  },
-  "choose": {
-    "canonical_name": "choose",
-    "href": "/docs/api/choose/",
-    "kind": "op",
-    "slug": "choose"
-  },
   "clear-einsum-cache": {
     "canonical_name": "clear_einsum_cache",
     "href": "/docs/api/clear-einsum-cache/",
     "kind": "symbol",
     "slug": "clear-einsum-cache"
-  },
-  "clip": {
-    "canonical_name": "clip",
-    "href": "/docs/api/clip/",
-    "kind": "op",
-    "slug": "clip"
-  },
-  "column-stack": {
-    "canonical_name": "column_stack",
-    "href": "/docs/api/column-stack/",
-    "kind": "op",
-    "slug": "column_stack"
-  },
-  "common-type": {
-    "canonical_name": "common_type",
-    "href": "/docs/api/common-type/",
-    "kind": "op",
-    "slug": "common_type"
-  },
-  "compress": {
-    "canonical_name": "compress",
-    "href": "/docs/api/compress/",
-    "kind": "op",
-    "slug": "compress"
-  },
-  "concatenate": {
-    "canonical_name": "concatenate",
-    "href": "/docs/api/concatenate/",
-    "kind": "op",
-    "slug": "concatenate"
   },
   "configure": {
     "canonical_name": "configure",
@@ -413,227 +71,11 @@
     "kind": "symbol",
     "slug": "configure"
   },
-  "conj": {
-    "canonical_name": "conj",
-    "href": "/docs/api/conj/",
-    "kind": "op",
-    "slug": "conj"
-  },
-  "conjugate": {
-    "canonical_name": "conjugate",
-    "href": "/docs/api/conjugate/",
-    "kind": "op",
-    "slug": "conjugate"
-  },
-  "convolve": {
-    "canonical_name": "convolve",
-    "href": "/docs/api/convolve/",
-    "kind": "op",
-    "slug": "convolve"
-  },
-  "copy": {
-    "canonical_name": "copy",
-    "href": "/docs/api/copy/",
-    "kind": "op",
-    "slug": "copy"
-  },
-  "copysign": {
-    "canonical_name": "copysign",
-    "href": "/docs/api/copysign/",
-    "kind": "op",
-    "slug": "copysign"
-  },
-  "copyto": {
-    "canonical_name": "copyto",
-    "href": "/docs/api/copyto/",
-    "kind": "op",
-    "slug": "copyto"
-  },
-  "corrcoef": {
-    "canonical_name": "corrcoef",
-    "href": "/docs/api/corrcoef/",
-    "kind": "op",
-    "slug": "corrcoef"
-  },
-  "correlate": {
-    "canonical_name": "correlate",
-    "href": "/docs/api/correlate/",
-    "kind": "op",
-    "slug": "correlate"
-  },
-  "cos": {
-    "canonical_name": "cos",
-    "href": "/docs/api/cos/",
-    "kind": "op",
-    "slug": "cos"
-  },
-  "cosh": {
-    "canonical_name": "cosh",
-    "href": "/docs/api/cosh/",
-    "kind": "op",
-    "slug": "cosh"
-  },
-  "count-nonzero": {
-    "canonical_name": "count_nonzero",
-    "href": "/docs/api/count-nonzero/",
-    "kind": "op",
-    "slug": "count_nonzero"
-  },
-  "cov": {
-    "canonical_name": "cov",
-    "href": "/docs/api/cov/",
-    "kind": "op",
-    "slug": "cov"
-  },
-  "cross": {
-    "canonical_name": "cross",
-    "href": "/docs/api/cross/",
-    "kind": "op",
-    "slug": "cross"
-  },
-  "cumprod": {
-    "canonical_name": "cumprod",
-    "href": "/docs/api/cumprod/",
-    "kind": "op",
-    "slug": "cumprod"
-  },
-  "cumsum": {
-    "canonical_name": "cumsum",
-    "href": "/docs/api/cumsum/",
-    "kind": "op",
-    "slug": "cumsum"
-  },
-  "cumulative-prod": {
-    "canonical_name": "cumulative_prod",
-    "href": "/docs/api/cumulative-prod/",
-    "kind": "op",
-    "slug": "cumulative_prod"
-  },
-  "cumulative-sum": {
-    "canonical_name": "cumulative_sum",
-    "href": "/docs/api/cumulative-sum/",
-    "kind": "op",
-    "slug": "cumulative_sum"
-  },
-  "degrees": {
-    "canonical_name": "degrees",
-    "href": "/docs/api/degrees/",
-    "kind": "op",
-    "slug": "degrees"
-  },
-  "delete": {
-    "canonical_name": "delete",
-    "href": "/docs/api/delete/",
-    "kind": "op",
-    "slug": "delete"
-  },
-  "diag": {
-    "canonical_name": "diag",
-    "href": "/docs/api/diag/",
-    "kind": "op",
-    "slug": "diag"
-  },
-  "diag-indices": {
-    "canonical_name": "diag_indices",
-    "href": "/docs/api/diag-indices/",
-    "kind": "op",
-    "slug": "diag_indices"
-  },
-  "diag-indices-from": {
-    "canonical_name": "diag_indices_from",
-    "href": "/docs/api/diag-indices-from/",
-    "kind": "op",
-    "slug": "diag_indices_from"
-  },
-  "diagflat": {
-    "canonical_name": "diagflat",
-    "href": "/docs/api/diagflat/",
-    "kind": "op",
-    "slug": "diagflat"
-  },
-  "diagonal": {
-    "canonical_name": "diagonal",
-    "href": "/docs/api/diagonal/",
-    "kind": "op",
-    "slug": "diagonal"
-  },
-  "diff": {
-    "canonical_name": "diff",
-    "href": "/docs/api/diff/",
-    "kind": "op",
-    "slug": "diff"
-  },
-  "digitize": {
-    "canonical_name": "digitize",
-    "href": "/docs/api/digitize/",
-    "kind": "op",
-    "slug": "digitize"
-  },
-  "divide": {
-    "canonical_name": "divide",
-    "href": "/docs/api/divide/",
-    "kind": "op",
-    "slug": "divide"
-  },
-  "dot": {
-    "canonical_name": "dot",
-    "href": "/docs/api/dot/",
-    "kind": "op",
-    "slug": "dot"
-  },
-  "dsplit": {
-    "canonical_name": "dsplit",
-    "href": "/docs/api/dsplit/",
-    "kind": "op",
-    "slug": "dsplit"
-  },
-  "dstack": {
-    "canonical_name": "dstack",
-    "href": "/docs/api/dstack/",
-    "kind": "op",
-    "slug": "dstack"
-  },
-  "ediff1d": {
-    "canonical_name": "ediff1d",
-    "href": "/docs/api/ediff1d/",
-    "kind": "op",
-    "slug": "ediff1d"
-  },
-  "einsum": {
-    "canonical_name": "einsum",
-    "href": "/docs/api/einsum/",
-    "kind": "op",
-    "slug": "einsum"
-  },
   "einsum-cache-info": {
     "canonical_name": "einsum_cache_info",
     "href": "/docs/api/einsum-cache-info/",
     "kind": "symbol",
     "slug": "einsum-cache-info"
-  },
-  "einsum-path": {
-    "canonical_name": "einsum_path",
-    "href": "/docs/api/einsum-path/",
-    "kind": "op",
-    "slug": "einsum_path"
-  },
-  "empty": {
-    "canonical_name": "empty",
-    "href": "/docs/api/empty/",
-    "kind": "op",
-    "slug": "empty"
-  },
-  "empty-like": {
-    "canonical_name": "empty_like",
-    "href": "/docs/api/empty-like/",
-    "kind": "op",
-    "slug": "empty_like"
-  },
-  "equal": {
-    "canonical_name": "equal",
-    "href": "/docs/api/equal/",
-    "kind": "op",
-    "slug": "equal"
   },
   "errstate": {
     "canonical_name": "errstate",
@@ -641,209 +83,11 @@
     "kind": "symbol",
     "slug": "errstate"
   },
-  "exp": {
-    "canonical_name": "exp",
-    "href": "/docs/api/exp/",
-    "kind": "op",
-    "slug": "exp"
-  },
-  "exp2": {
-    "canonical_name": "exp2",
-    "href": "/docs/api/exp2/",
-    "kind": "op",
-    "slug": "exp2"
-  },
-  "expand-dims": {
-    "canonical_name": "expand_dims",
-    "href": "/docs/api/expand-dims/",
-    "kind": "op",
-    "slug": "expand_dims"
-  },
-  "expm1": {
-    "canonical_name": "expm1",
-    "href": "/docs/api/expm1/",
-    "kind": "op",
-    "slug": "expm1"
-  },
-  "extract": {
-    "canonical_name": "extract",
-    "href": "/docs/api/extract/",
-    "kind": "op",
-    "slug": "extract"
-  },
-  "eye": {
-    "canonical_name": "eye",
-    "href": "/docs/api/eye/",
-    "kind": "op",
-    "slug": "eye"
-  },
-  "fabs": {
-    "canonical_name": "fabs",
-    "href": "/docs/api/fabs/",
-    "kind": "op",
-    "slug": "fabs"
-  },
-  "fft/fft": {
-    "canonical_name": "fft.fft",
-    "href": "/docs/api/fft/fft/",
-    "kind": "op",
-    "slug": "fft-fft"
-  },
-  "fft/fft2": {
-    "canonical_name": "fft.fft2",
-    "href": "/docs/api/fft/fft2/",
-    "kind": "op",
-    "slug": "fft-fft2"
-  },
-  "fft/fftfreq": {
-    "canonical_name": "fft.fftfreq",
-    "href": "/docs/api/fft/fftfreq/",
-    "kind": "op",
-    "slug": "fft-fftfreq"
-  },
-  "fft/fftn": {
-    "canonical_name": "fft.fftn",
-    "href": "/docs/api/fft/fftn/",
-    "kind": "op",
-    "slug": "fft-fftn"
-  },
-  "fft/fftshift": {
-    "canonical_name": "fft.fftshift",
-    "href": "/docs/api/fft/fftshift/",
-    "kind": "op",
-    "slug": "fft-fftshift"
-  },
-  "fft/hfft": {
-    "canonical_name": "fft.hfft",
-    "href": "/docs/api/fft/hfft/",
-    "kind": "op",
-    "slug": "fft-hfft"
-  },
-  "fft/ifft": {
-    "canonical_name": "fft.ifft",
-    "href": "/docs/api/fft/ifft/",
-    "kind": "op",
-    "slug": "fft-ifft"
-  },
-  "fft/ifft2": {
-    "canonical_name": "fft.ifft2",
-    "href": "/docs/api/fft/ifft2/",
-    "kind": "op",
-    "slug": "fft-ifft2"
-  },
-  "fft/ifftn": {
-    "canonical_name": "fft.ifftn",
-    "href": "/docs/api/fft/ifftn/",
-    "kind": "op",
-    "slug": "fft-ifftn"
-  },
-  "fft/ifftshift": {
-    "canonical_name": "fft.ifftshift",
-    "href": "/docs/api/fft/ifftshift/",
-    "kind": "op",
-    "slug": "fft-ifftshift"
-  },
-  "fft/ihfft": {
-    "canonical_name": "fft.ihfft",
-    "href": "/docs/api/fft/ihfft/",
-    "kind": "op",
-    "slug": "fft-ihfft"
-  },
-  "fft/irfft": {
-    "canonical_name": "fft.irfft",
-    "href": "/docs/api/fft/irfft/",
-    "kind": "op",
-    "slug": "fft-irfft"
-  },
-  "fft/irfft2": {
-    "canonical_name": "fft.irfft2",
-    "href": "/docs/api/fft/irfft2/",
-    "kind": "op",
-    "slug": "fft-irfft2"
-  },
-  "fft/irfftn": {
-    "canonical_name": "fft.irfftn",
-    "href": "/docs/api/fft/irfftn/",
-    "kind": "op",
-    "slug": "fft-irfftn"
-  },
-  "fft/rfft": {
-    "canonical_name": "fft.rfft",
-    "href": "/docs/api/fft/rfft/",
-    "kind": "op",
-    "slug": "fft-rfft"
-  },
-  "fft/rfft2": {
-    "canonical_name": "fft.rfft2",
-    "href": "/docs/api/fft/rfft2/",
-    "kind": "op",
-    "slug": "fft-rfft2"
-  },
-  "fft/rfftfreq": {
-    "canonical_name": "fft.rfftfreq",
-    "href": "/docs/api/fft/rfftfreq/",
-    "kind": "op",
-    "slug": "fft-rfftfreq"
-  },
-  "fft/rfftn": {
-    "canonical_name": "fft.rfftn",
-    "href": "/docs/api/fft/rfftn/",
-    "kind": "op",
-    "slug": "fft-rfftn"
-  },
-  "fill-diagonal": {
-    "canonical_name": "fill_diagonal",
-    "href": "/docs/api/fill-diagonal/",
-    "kind": "op",
-    "slug": "fill_diagonal"
-  },
   "finfo": {
     "canonical_name": "finfo",
     "href": "/docs/api/finfo/",
     "kind": "symbol",
     "slug": "finfo"
-  },
-  "flatnonzero": {
-    "canonical_name": "flatnonzero",
-    "href": "/docs/api/flatnonzero/",
-    "kind": "op",
-    "slug": "flatnonzero"
-  },
-  "flip": {
-    "canonical_name": "flip",
-    "href": "/docs/api/flip/",
-    "kind": "op",
-    "slug": "flip"
-  },
-  "fliplr": {
-    "canonical_name": "fliplr",
-    "href": "/docs/api/fliplr/",
-    "kind": "op",
-    "slug": "fliplr"
-  },
-  "flipud": {
-    "canonical_name": "flipud",
-    "href": "/docs/api/flipud/",
-    "kind": "op",
-    "slug": "flipud"
-  },
-  "float-power": {
-    "canonical_name": "float_power",
-    "href": "/docs/api/float-power/",
-    "kind": "op",
-    "slug": "float_power"
-  },
-  "floor": {
-    "canonical_name": "floor",
-    "href": "/docs/api/floor/",
-    "kind": "op",
-    "slug": "floor"
-  },
-  "floor-divide": {
-    "canonical_name": "floor_divide",
-    "href": "/docs/api/floor-divide/",
-    "kind": "op",
-    "slug": "floor_divide"
   },
   "flops/bartlett-cost": {
     "canonical_name": "flops.bartlett_cost",
@@ -1139,59 +383,11 @@
     "kind": "symbol",
     "slug": "flopscope-array"
   },
-  "fmax": {
-    "canonical_name": "fmax",
-    "href": "/docs/api/fmax/",
-    "kind": "op",
-    "slug": "fmax"
-  },
-  "fmin": {
-    "canonical_name": "fmin",
-    "href": "/docs/api/fmin/",
-    "kind": "op",
-    "slug": "fmin"
-  },
-  "fmod": {
-    "canonical_name": "fmod",
-    "href": "/docs/api/fmod/",
-    "kind": "op",
-    "slug": "fmod"
-  },
-  "frexp": {
-    "canonical_name": "frexp",
-    "href": "/docs/api/frexp/",
-    "kind": "op",
-    "slug": "frexp"
-  },
-  "from-dlpack": {
-    "canonical_name": "from_dlpack",
-    "href": "/docs/api/from-dlpack/",
-    "kind": "op",
-    "slug": "from_dlpack"
-  },
-  "frombuffer": {
-    "canonical_name": "frombuffer",
-    "href": "/docs/api/frombuffer/",
-    "kind": "op",
-    "slug": "frombuffer"
-  },
   "fromfile": {
     "canonical_name": "fromfile",
     "href": "/docs/api/fromfile/",
     "kind": "symbol",
     "slug": "fromfile"
-  },
-  "fromfunction": {
-    "canonical_name": "fromfunction",
-    "href": "/docs/api/fromfunction/",
-    "kind": "op",
-    "slug": "fromfunction"
-  },
-  "fromiter": {
-    "canonical_name": "fromiter",
-    "href": "/docs/api/fromiter/",
-    "kind": "op",
-    "slug": "fromiter"
   },
   "fromregex": {
     "canonical_name": "fromregex",
@@ -1205,30 +401,6 @@
     "kind": "symbol",
     "slug": "fromstring"
   },
-  "full": {
-    "canonical_name": "full",
-    "href": "/docs/api/full/",
-    "kind": "op",
-    "slug": "full"
-  },
-  "full-like": {
-    "canonical_name": "full_like",
-    "href": "/docs/api/full-like/",
-    "kind": "op",
-    "slug": "full_like"
-  },
-  "gcd": {
-    "canonical_name": "gcd",
-    "href": "/docs/api/gcd/",
-    "kind": "op",
-    "slug": "gcd"
-  },
-  "geomspace": {
-    "canonical_name": "geomspace",
-    "href": "/docs/api/geomspace/",
-    "kind": "op",
-    "slug": "geomspace"
-  },
   "get-printoptions": {
     "canonical_name": "get_printoptions",
     "href": "/docs/api/get-printoptions/",
@@ -1241,149 +413,11 @@
     "kind": "symbol",
     "slug": "geterr"
   },
-  "gradient": {
-    "canonical_name": "gradient",
-    "href": "/docs/api/gradient/",
-    "kind": "op",
-    "slug": "gradient"
-  },
-  "greater": {
-    "canonical_name": "greater",
-    "href": "/docs/api/greater/",
-    "kind": "op",
-    "slug": "greater"
-  },
-  "greater-equal": {
-    "canonical_name": "greater_equal",
-    "href": "/docs/api/greater-equal/",
-    "kind": "op",
-    "slug": "greater_equal"
-  },
-  "hamming": {
-    "canonical_name": "hamming",
-    "href": "/docs/api/hamming/",
-    "kind": "op",
-    "slug": "hamming"
-  },
-  "hanning": {
-    "canonical_name": "hanning",
-    "href": "/docs/api/hanning/",
-    "kind": "op",
-    "slug": "hanning"
-  },
-  "heaviside": {
-    "canonical_name": "heaviside",
-    "href": "/docs/api/heaviside/",
-    "kind": "op",
-    "slug": "heaviside"
-  },
-  "histogram": {
-    "canonical_name": "histogram",
-    "href": "/docs/api/histogram/",
-    "kind": "op",
-    "slug": "histogram"
-  },
-  "histogram-bin-edges": {
-    "canonical_name": "histogram_bin_edges",
-    "href": "/docs/api/histogram-bin-edges/",
-    "kind": "op",
-    "slug": "histogram_bin_edges"
-  },
-  "histogram2d": {
-    "canonical_name": "histogram2d",
-    "href": "/docs/api/histogram2d/",
-    "kind": "op",
-    "slug": "histogram2d"
-  },
-  "histogramdd": {
-    "canonical_name": "histogramdd",
-    "href": "/docs/api/histogramdd/",
-    "kind": "op",
-    "slug": "histogramdd"
-  },
-  "hsplit": {
-    "canonical_name": "hsplit",
-    "href": "/docs/api/hsplit/",
-    "kind": "op",
-    "slug": "hsplit"
-  },
-  "hstack": {
-    "canonical_name": "hstack",
-    "href": "/docs/api/hstack/",
-    "kind": "op",
-    "slug": "hstack"
-  },
-  "hypot": {
-    "canonical_name": "hypot",
-    "href": "/docs/api/hypot/",
-    "kind": "op",
-    "slug": "hypot"
-  },
-  "i0": {
-    "canonical_name": "i0",
-    "href": "/docs/api/i0/",
-    "kind": "op",
-    "slug": "i0"
-  },
-  "identity": {
-    "canonical_name": "identity",
-    "href": "/docs/api/identity/",
-    "kind": "op",
-    "slug": "identity"
-  },
   "iinfo": {
     "canonical_name": "iinfo",
     "href": "/docs/api/iinfo/",
     "kind": "symbol",
     "slug": "iinfo"
-  },
-  "imag": {
-    "canonical_name": "imag",
-    "href": "/docs/api/imag/",
-    "kind": "op",
-    "slug": "imag"
-  },
-  "in1d": {
-    "canonical_name": "in1d",
-    "href": "/docs/api/in1d/",
-    "kind": "op",
-    "slug": "in1d"
-  },
-  "indices": {
-    "canonical_name": "indices",
-    "href": "/docs/api/indices/",
-    "kind": "op",
-    "slug": "indices"
-  },
-  "inner": {
-    "canonical_name": "inner",
-    "href": "/docs/api/inner/",
-    "kind": "op",
-    "slug": "inner"
-  },
-  "insert": {
-    "canonical_name": "insert",
-    "href": "/docs/api/insert/",
-    "kind": "op",
-    "slug": "insert"
-  },
-  "interp": {
-    "canonical_name": "interp",
-    "href": "/docs/api/interp/",
-    "kind": "op",
-    "slug": "interp"
-  },
-  "intersect1d": {
-    "canonical_name": "intersect1d",
-    "href": "/docs/api/intersect1d/",
-    "kind": "op",
-    "slug": "intersect1d"
-  },
-  "invert": {
-    "canonical_name": "invert",
-    "href": "/docs/api/invert/",
-    "kind": "op",
-    "slug": "invert"
   },
   "is-symmetric": {
     "canonical_name": "is_symmetric",
@@ -1391,527 +425,11 @@
     "kind": "symbol",
     "slug": "is-symmetric"
   },
-  "isclose": {
-    "canonical_name": "isclose",
-    "href": "/docs/api/isclose/",
-    "kind": "op",
-    "slug": "isclose"
-  },
-  "iscomplex": {
-    "canonical_name": "iscomplex",
-    "href": "/docs/api/iscomplex/",
-    "kind": "op",
-    "slug": "iscomplex"
-  },
-  "iscomplexobj": {
-    "canonical_name": "iscomplexobj",
-    "href": "/docs/api/iscomplexobj/",
-    "kind": "op",
-    "slug": "iscomplexobj"
-  },
-  "isdtype": {
-    "canonical_name": "isdtype",
-    "href": "/docs/api/isdtype/",
-    "kind": "op",
-    "slug": "isdtype"
-  },
-  "isfinite": {
-    "canonical_name": "isfinite",
-    "href": "/docs/api/isfinite/",
-    "kind": "op",
-    "slug": "isfinite"
-  },
-  "isfortran": {
-    "canonical_name": "isfortran",
-    "href": "/docs/api/isfortran/",
-    "kind": "op",
-    "slug": "isfortran"
-  },
-  "isin": {
-    "canonical_name": "isin",
-    "href": "/docs/api/isin/",
-    "kind": "op",
-    "slug": "isin"
-  },
-  "isinf": {
-    "canonical_name": "isinf",
-    "href": "/docs/api/isinf/",
-    "kind": "op",
-    "slug": "isinf"
-  },
-  "isnan": {
-    "canonical_name": "isnan",
-    "href": "/docs/api/isnan/",
-    "kind": "op",
-    "slug": "isnan"
-  },
   "isnat": {
     "canonical_name": "isnat",
     "href": "/docs/api/isnat/",
     "kind": "symbol",
     "slug": "isnat"
-  },
-  "isneginf": {
-    "canonical_name": "isneginf",
-    "href": "/docs/api/isneginf/",
-    "kind": "op",
-    "slug": "isneginf"
-  },
-  "isposinf": {
-    "canonical_name": "isposinf",
-    "href": "/docs/api/isposinf/",
-    "kind": "op",
-    "slug": "isposinf"
-  },
-  "isreal": {
-    "canonical_name": "isreal",
-    "href": "/docs/api/isreal/",
-    "kind": "op",
-    "slug": "isreal"
-  },
-  "isrealobj": {
-    "canonical_name": "isrealobj",
-    "href": "/docs/api/isrealobj/",
-    "kind": "op",
-    "slug": "isrealobj"
-  },
-  "isscalar": {
-    "canonical_name": "isscalar",
-    "href": "/docs/api/isscalar/",
-    "kind": "op",
-    "slug": "isscalar"
-  },
-  "issubdtype": {
-    "canonical_name": "issubdtype",
-    "href": "/docs/api/issubdtype/",
-    "kind": "op",
-    "slug": "issubdtype"
-  },
-  "iterable": {
-    "canonical_name": "iterable",
-    "href": "/docs/api/iterable/",
-    "kind": "op",
-    "slug": "iterable"
-  },
-  "ix-": {
-    "canonical_name": "ix_",
-    "href": "/docs/api/ix-/",
-    "kind": "op",
-    "slug": "ix_"
-  },
-  "kaiser": {
-    "canonical_name": "kaiser",
-    "href": "/docs/api/kaiser/",
-    "kind": "op",
-    "slug": "kaiser"
-  },
-  "kron": {
-    "canonical_name": "kron",
-    "href": "/docs/api/kron/",
-    "kind": "op",
-    "slug": "kron"
-  },
-  "lcm": {
-    "canonical_name": "lcm",
-    "href": "/docs/api/lcm/",
-    "kind": "op",
-    "slug": "lcm"
-  },
-  "ldexp": {
-    "canonical_name": "ldexp",
-    "href": "/docs/api/ldexp/",
-    "kind": "op",
-    "slug": "ldexp"
-  },
-  "left-shift": {
-    "canonical_name": "left_shift",
-    "href": "/docs/api/left-shift/",
-    "kind": "op",
-    "slug": "left_shift"
-  },
-  "less": {
-    "canonical_name": "less",
-    "href": "/docs/api/less/",
-    "kind": "op",
-    "slug": "less"
-  },
-  "less-equal": {
-    "canonical_name": "less_equal",
-    "href": "/docs/api/less-equal/",
-    "kind": "op",
-    "slug": "less_equal"
-  },
-  "lexsort": {
-    "canonical_name": "lexsort",
-    "href": "/docs/api/lexsort/",
-    "kind": "op",
-    "slug": "lexsort"
-  },
-  "linalg/cholesky": {
-    "canonical_name": "linalg.cholesky",
-    "href": "/docs/api/linalg/cholesky/",
-    "kind": "op",
-    "slug": "linalg-cholesky"
-  },
-  "linalg/cond": {
-    "canonical_name": "linalg.cond",
-    "href": "/docs/api/linalg/cond/",
-    "kind": "op",
-    "slug": "linalg-cond"
-  },
-  "linalg/cross": {
-    "canonical_name": "linalg.cross",
-    "href": "/docs/api/linalg/cross/",
-    "kind": "op",
-    "slug": "linalg-cross"
-  },
-  "linalg/det": {
-    "canonical_name": "linalg.det",
-    "href": "/docs/api/linalg/det/",
-    "kind": "op",
-    "slug": "linalg-det"
-  },
-  "linalg/diagonal": {
-    "canonical_name": "linalg.diagonal",
-    "href": "/docs/api/linalg/diagonal/",
-    "kind": "op",
-    "slug": "linalg-diagonal"
-  },
-  "linalg/eig": {
-    "canonical_name": "linalg.eig",
-    "href": "/docs/api/linalg/eig/",
-    "kind": "op",
-    "slug": "linalg-eig"
-  },
-  "linalg/eigh": {
-    "canonical_name": "linalg.eigh",
-    "href": "/docs/api/linalg/eigh/",
-    "kind": "op",
-    "slug": "linalg-eigh"
-  },
-  "linalg/eigvals": {
-    "canonical_name": "linalg.eigvals",
-    "href": "/docs/api/linalg/eigvals/",
-    "kind": "op",
-    "slug": "linalg-eigvals"
-  },
-  "linalg/eigvalsh": {
-    "canonical_name": "linalg.eigvalsh",
-    "href": "/docs/api/linalg/eigvalsh/",
-    "kind": "op",
-    "slug": "linalg-eigvalsh"
-  },
-  "linalg/inv": {
-    "canonical_name": "linalg.inv",
-    "href": "/docs/api/linalg/inv/",
-    "kind": "op",
-    "slug": "linalg-inv"
-  },
-  "linalg/lstsq": {
-    "canonical_name": "linalg.lstsq",
-    "href": "/docs/api/linalg/lstsq/",
-    "kind": "op",
-    "slug": "linalg-lstsq"
-  },
-  "linalg/matmul": {
-    "canonical_name": "linalg.matmul",
-    "href": "/docs/api/linalg/matmul/",
-    "kind": "op",
-    "slug": "linalg-matmul"
-  },
-  "linalg/matrix-norm": {
-    "canonical_name": "linalg.matrix_norm",
-    "href": "/docs/api/linalg/matrix-norm/",
-    "kind": "op",
-    "slug": "linalg-matrix_norm"
-  },
-  "linalg/matrix-power": {
-    "canonical_name": "linalg.matrix_power",
-    "href": "/docs/api/linalg/matrix-power/",
-    "kind": "op",
-    "slug": "linalg-matrix_power"
-  },
-  "linalg/matrix-rank": {
-    "canonical_name": "linalg.matrix_rank",
-    "href": "/docs/api/linalg/matrix-rank/",
-    "kind": "op",
-    "slug": "linalg-matrix_rank"
-  },
-  "linalg/matrix-transpose": {
-    "canonical_name": "linalg.matrix_transpose",
-    "href": "/docs/api/linalg/matrix-transpose/",
-    "kind": "op",
-    "slug": "linalg-matrix_transpose"
-  },
-  "linalg/multi-dot": {
-    "canonical_name": "linalg.multi_dot",
-    "href": "/docs/api/linalg/multi-dot/",
-    "kind": "op",
-    "slug": "linalg-multi_dot"
-  },
-  "linalg/norm": {
-    "canonical_name": "linalg.norm",
-    "href": "/docs/api/linalg/norm/",
-    "kind": "op",
-    "slug": "linalg-norm"
-  },
-  "linalg/outer": {
-    "canonical_name": "linalg.outer",
-    "href": "/docs/api/linalg/outer/",
-    "kind": "op",
-    "slug": "linalg-outer"
-  },
-  "linalg/pinv": {
-    "canonical_name": "linalg.pinv",
-    "href": "/docs/api/linalg/pinv/",
-    "kind": "op",
-    "slug": "linalg-pinv"
-  },
-  "linalg/qr": {
-    "canonical_name": "linalg.qr",
-    "href": "/docs/api/linalg/qr/",
-    "kind": "op",
-    "slug": "linalg-qr"
-  },
-  "linalg/slogdet": {
-    "canonical_name": "linalg.slogdet",
-    "href": "/docs/api/linalg/slogdet/",
-    "kind": "op",
-    "slug": "linalg-slogdet"
-  },
-  "linalg/solve": {
-    "canonical_name": "linalg.solve",
-    "href": "/docs/api/linalg/solve/",
-    "kind": "op",
-    "slug": "linalg-solve"
-  },
-  "linalg/svd": {
-    "canonical_name": "linalg.svd",
-    "href": "/docs/api/linalg/svd/",
-    "kind": "op",
-    "slug": "linalg-svd"
-  },
-  "linalg/svdvals": {
-    "canonical_name": "linalg.svdvals",
-    "href": "/docs/api/linalg/svdvals/",
-    "kind": "op",
-    "slug": "linalg-svdvals"
-  },
-  "linalg/tensordot": {
-    "canonical_name": "linalg.tensordot",
-    "href": "/docs/api/linalg/tensordot/",
-    "kind": "op",
-    "slug": "linalg-tensordot"
-  },
-  "linalg/tensorinv": {
-    "canonical_name": "linalg.tensorinv",
-    "href": "/docs/api/linalg/tensorinv/",
-    "kind": "op",
-    "slug": "linalg-tensorinv"
-  },
-  "linalg/tensorsolve": {
-    "canonical_name": "linalg.tensorsolve",
-    "href": "/docs/api/linalg/tensorsolve/",
-    "kind": "op",
-    "slug": "linalg-tensorsolve"
-  },
-  "linalg/trace": {
-    "canonical_name": "linalg.trace",
-    "href": "/docs/api/linalg/trace/",
-    "kind": "op",
-    "slug": "linalg-trace"
-  },
-  "linalg/vecdot": {
-    "canonical_name": "linalg.vecdot",
-    "href": "/docs/api/linalg/vecdot/",
-    "kind": "op",
-    "slug": "linalg-vecdot"
-  },
-  "linalg/vector-norm": {
-    "canonical_name": "linalg.vector_norm",
-    "href": "/docs/api/linalg/vector-norm/",
-    "kind": "op",
-    "slug": "linalg-vector_norm"
-  },
-  "linspace": {
-    "canonical_name": "linspace",
-    "href": "/docs/api/linspace/",
-    "kind": "op",
-    "slug": "linspace"
-  },
-  "log": {
-    "canonical_name": "log",
-    "href": "/docs/api/log/",
-    "kind": "op",
-    "slug": "log"
-  },
-  "log10": {
-    "canonical_name": "log10",
-    "href": "/docs/api/log10/",
-    "kind": "op",
-    "slug": "log10"
-  },
-  "log1p": {
-    "canonical_name": "log1p",
-    "href": "/docs/api/log1p/",
-    "kind": "op",
-    "slug": "log1p"
-  },
-  "log2": {
-    "canonical_name": "log2",
-    "href": "/docs/api/log2/",
-    "kind": "op",
-    "slug": "log2"
-  },
-  "logaddexp": {
-    "canonical_name": "logaddexp",
-    "href": "/docs/api/logaddexp/",
-    "kind": "op",
-    "slug": "logaddexp"
-  },
-  "logaddexp2": {
-    "canonical_name": "logaddexp2",
-    "href": "/docs/api/logaddexp2/",
-    "kind": "op",
-    "slug": "logaddexp2"
-  },
-  "logical-and": {
-    "canonical_name": "logical_and",
-    "href": "/docs/api/logical-and/",
-    "kind": "op",
-    "slug": "logical_and"
-  },
-  "logical-not": {
-    "canonical_name": "logical_not",
-    "href": "/docs/api/logical-not/",
-    "kind": "op",
-    "slug": "logical_not"
-  },
-  "logical-or": {
-    "canonical_name": "logical_or",
-    "href": "/docs/api/logical-or/",
-    "kind": "op",
-    "slug": "logical_or"
-  },
-  "logical-xor": {
-    "canonical_name": "logical_xor",
-    "href": "/docs/api/logical-xor/",
-    "kind": "op",
-    "slug": "logical_xor"
-  },
-  "logspace": {
-    "canonical_name": "logspace",
-    "href": "/docs/api/logspace/",
-    "kind": "op",
-    "slug": "logspace"
-  },
-  "mask-indices": {
-    "canonical_name": "mask_indices",
-    "href": "/docs/api/mask-indices/",
-    "kind": "op",
-    "slug": "mask_indices"
-  },
-  "matmul": {
-    "canonical_name": "matmul",
-    "href": "/docs/api/matmul/",
-    "kind": "op",
-    "slug": "matmul"
-  },
-  "matrix-transpose": {
-    "canonical_name": "matrix_transpose",
-    "href": "/docs/api/matrix-transpose/",
-    "kind": "op",
-    "slug": "matrix_transpose"
-  },
-  "matvec": {
-    "canonical_name": "matvec",
-    "href": "/docs/api/matvec/",
-    "kind": "op",
-    "slug": "matvec"
-  },
-  "max": {
-    "canonical_name": "max",
-    "href": "/docs/api/max/",
-    "kind": "op",
-    "slug": "max"
-  },
-  "maximum": {
-    "canonical_name": "maximum",
-    "href": "/docs/api/maximum/",
-    "kind": "op",
-    "slug": "maximum"
-  },
-  "may-share-memory": {
-    "canonical_name": "may_share_memory",
-    "href": "/docs/api/may-share-memory/",
-    "kind": "op",
-    "slug": "may_share_memory"
-  },
-  "mean": {
-    "canonical_name": "mean",
-    "href": "/docs/api/mean/",
-    "kind": "op",
-    "slug": "mean"
-  },
-  "median": {
-    "canonical_name": "median",
-    "href": "/docs/api/median/",
-    "kind": "op",
-    "slug": "median"
-  },
-  "meshgrid": {
-    "canonical_name": "meshgrid",
-    "href": "/docs/api/meshgrid/",
-    "kind": "op",
-    "slug": "meshgrid"
-  },
-  "min": {
-    "canonical_name": "min",
-    "href": "/docs/api/min/",
-    "kind": "op",
-    "slug": "min"
-  },
-  "min-scalar-type": {
-    "canonical_name": "min_scalar_type",
-    "href": "/docs/api/min-scalar-type/",
-    "kind": "op",
-    "slug": "min_scalar_type"
-  },
-  "minimum": {
-    "canonical_name": "minimum",
-    "href": "/docs/api/minimum/",
-    "kind": "op",
-    "slug": "minimum"
-  },
-  "mintypecode": {
-    "canonical_name": "mintypecode",
-    "href": "/docs/api/mintypecode/",
-    "kind": "op",
-    "slug": "mintypecode"
-  },
-  "mod": {
-    "canonical_name": "mod",
-    "href": "/docs/api/mod/",
-    "kind": "op",
-    "slug": "mod"
-  },
-  "modf": {
-    "canonical_name": "modf",
-    "href": "/docs/api/modf/",
-    "kind": "op",
-    "slug": "modf"
-  },
-  "moveaxis": {
-    "canonical_name": "moveaxis",
-    "href": "/docs/api/moveaxis/",
-    "kind": "op",
-    "slug": "moveaxis"
-  },
-  "multiply": {
-    "canonical_name": "multiply",
-    "href": "/docs/api/multiply/",
-    "kind": "op",
-    "slug": "multiply"
   },
   "namespace": {
     "canonical_name": "namespace",
@@ -1919,107 +437,11 @@
     "kind": "symbol",
     "slug": "namespace"
   },
-  "nan-to-num": {
-    "canonical_name": "nan_to_num",
-    "href": "/docs/api/nan-to-num/",
-    "kind": "op",
-    "slug": "nan_to_num"
-  },
-  "nanargmax": {
-    "canonical_name": "nanargmax",
-    "href": "/docs/api/nanargmax/",
-    "kind": "op",
-    "slug": "nanargmax"
-  },
-  "nanargmin": {
-    "canonical_name": "nanargmin",
-    "href": "/docs/api/nanargmin/",
-    "kind": "op",
-    "slug": "nanargmin"
-  },
-  "nancumprod": {
-    "canonical_name": "nancumprod",
-    "href": "/docs/api/nancumprod/",
-    "kind": "op",
-    "slug": "nancumprod"
-  },
-  "nancumsum": {
-    "canonical_name": "nancumsum",
-    "href": "/docs/api/nancumsum/",
-    "kind": "op",
-    "slug": "nancumsum"
-  },
-  "nanmax": {
-    "canonical_name": "nanmax",
-    "href": "/docs/api/nanmax/",
-    "kind": "op",
-    "slug": "nanmax"
-  },
-  "nanmean": {
-    "canonical_name": "nanmean",
-    "href": "/docs/api/nanmean/",
-    "kind": "op",
-    "slug": "nanmean"
-  },
-  "nanmedian": {
-    "canonical_name": "nanmedian",
-    "href": "/docs/api/nanmedian/",
-    "kind": "op",
-    "slug": "nanmedian"
-  },
-  "nanmin": {
-    "canonical_name": "nanmin",
-    "href": "/docs/api/nanmin/",
-    "kind": "op",
-    "slug": "nanmin"
-  },
-  "nanpercentile": {
-    "canonical_name": "nanpercentile",
-    "href": "/docs/api/nanpercentile/",
-    "kind": "op",
-    "slug": "nanpercentile"
-  },
-  "nanprod": {
-    "canonical_name": "nanprod",
-    "href": "/docs/api/nanprod/",
-    "kind": "op",
-    "slug": "nanprod"
-  },
-  "nanquantile": {
-    "canonical_name": "nanquantile",
-    "href": "/docs/api/nanquantile/",
-    "kind": "op",
-    "slug": "nanquantile"
-  },
-  "nanstd": {
-    "canonical_name": "nanstd",
-    "href": "/docs/api/nanstd/",
-    "kind": "op",
-    "slug": "nanstd"
-  },
-  "nansum": {
-    "canonical_name": "nansum",
-    "href": "/docs/api/nansum/",
-    "kind": "op",
-    "slug": "nansum"
-  },
-  "nanvar": {
-    "canonical_name": "nanvar",
-    "href": "/docs/api/nanvar/",
-    "kind": "op",
-    "slug": "nanvar"
-  },
   "ndenumerate": {
     "canonical_name": "ndenumerate",
     "href": "/docs/api/ndenumerate/",
     "kind": "symbol",
     "slug": "ndenumerate"
-  },
-  "ndim": {
-    "canonical_name": "ndim",
-    "href": "/docs/api/ndim/",
-    "kind": "op",
-    "slug": "ndim"
   },
   "ndindex": {
     "canonical_name": "ndindex",
@@ -2033,41 +455,2567 @@
     "kind": "symbol",
     "slug": "nditer"
   },
-  "negative": {
+  "numpy/absolute": {
+    "canonical_name": "absolute",
+    "href": "/docs/api/numpy/absolute/",
+    "kind": "op",
+    "slug": "absolute"
+  },
+  "numpy/add": {
+    "canonical_name": "add",
+    "href": "/docs/api/numpy/add/",
+    "kind": "op",
+    "slug": "add"
+  },
+  "numpy/all": {
+    "canonical_name": "all",
+    "href": "/docs/api/numpy/all/",
+    "kind": "op",
+    "slug": "all"
+  },
+  "numpy/allclose": {
+    "canonical_name": "allclose",
+    "href": "/docs/api/numpy/allclose/",
+    "kind": "op",
+    "slug": "allclose"
+  },
+  "numpy/angle": {
+    "canonical_name": "angle",
+    "href": "/docs/api/numpy/angle/",
+    "kind": "op",
+    "slug": "angle"
+  },
+  "numpy/any": {
+    "canonical_name": "any",
+    "href": "/docs/api/numpy/any/",
+    "kind": "op",
+    "slug": "any"
+  },
+  "numpy/append": {
+    "canonical_name": "append",
+    "href": "/docs/api/numpy/append/",
+    "kind": "op",
+    "slug": "append"
+  },
+  "numpy/apply-along-axis": {
+    "canonical_name": "apply_along_axis",
+    "href": "/docs/api/numpy/apply-along-axis/",
+    "kind": "op",
+    "slug": "apply_along_axis"
+  },
+  "numpy/apply-over-axes": {
+    "canonical_name": "apply_over_axes",
+    "href": "/docs/api/numpy/apply-over-axes/",
+    "kind": "op",
+    "slug": "apply_over_axes"
+  },
+  "numpy/arange": {
+    "canonical_name": "arange",
+    "href": "/docs/api/numpy/arange/",
+    "kind": "op",
+    "slug": "arange"
+  },
+  "numpy/arccos": {
+    "canonical_name": "arccos",
+    "href": "/docs/api/numpy/arccos/",
+    "kind": "op",
+    "slug": "arccos"
+  },
+  "numpy/arccosh": {
+    "canonical_name": "arccosh",
+    "href": "/docs/api/numpy/arccosh/",
+    "kind": "op",
+    "slug": "arccosh"
+  },
+  "numpy/arcsin": {
+    "canonical_name": "arcsin",
+    "href": "/docs/api/numpy/arcsin/",
+    "kind": "op",
+    "slug": "arcsin"
+  },
+  "numpy/arcsinh": {
+    "canonical_name": "arcsinh",
+    "href": "/docs/api/numpy/arcsinh/",
+    "kind": "op",
+    "slug": "arcsinh"
+  },
+  "numpy/arctan": {
+    "canonical_name": "arctan",
+    "href": "/docs/api/numpy/arctan/",
+    "kind": "op",
+    "slug": "arctan"
+  },
+  "numpy/arctan2": {
+    "canonical_name": "arctan2",
+    "href": "/docs/api/numpy/arctan2/",
+    "kind": "op",
+    "slug": "arctan2"
+  },
+  "numpy/arctanh": {
+    "canonical_name": "arctanh",
+    "href": "/docs/api/numpy/arctanh/",
+    "kind": "op",
+    "slug": "arctanh"
+  },
+  "numpy/argmax": {
+    "canonical_name": "argmax",
+    "href": "/docs/api/numpy/argmax/",
+    "kind": "op",
+    "slug": "argmax"
+  },
+  "numpy/argmin": {
+    "canonical_name": "argmin",
+    "href": "/docs/api/numpy/argmin/",
+    "kind": "op",
+    "slug": "argmin"
+  },
+  "numpy/argpartition": {
+    "canonical_name": "argpartition",
+    "href": "/docs/api/numpy/argpartition/",
+    "kind": "op",
+    "slug": "argpartition"
+  },
+  "numpy/argsort": {
+    "canonical_name": "argsort",
+    "href": "/docs/api/numpy/argsort/",
+    "kind": "op",
+    "slug": "argsort"
+  },
+  "numpy/argwhere": {
+    "canonical_name": "argwhere",
+    "href": "/docs/api/numpy/argwhere/",
+    "kind": "op",
+    "slug": "argwhere"
+  },
+  "numpy/array": {
+    "canonical_name": "array",
+    "href": "/docs/api/numpy/array/",
+    "kind": "op",
+    "slug": "array"
+  },
+  "numpy/array-equal": {
+    "canonical_name": "array_equal",
+    "href": "/docs/api/numpy/array-equal/",
+    "kind": "op",
+    "slug": "array_equal"
+  },
+  "numpy/array-equiv": {
+    "canonical_name": "array_equiv",
+    "href": "/docs/api/numpy/array-equiv/",
+    "kind": "op",
+    "slug": "array_equiv"
+  },
+  "numpy/array-split": {
+    "canonical_name": "array_split",
+    "href": "/docs/api/numpy/array-split/",
+    "kind": "op",
+    "slug": "array_split"
+  },
+  "numpy/asarray": {
+    "canonical_name": "asarray",
+    "href": "/docs/api/numpy/asarray/",
+    "kind": "op",
+    "slug": "asarray"
+  },
+  "numpy/asarray-chkfinite": {
+    "canonical_name": "asarray_chkfinite",
+    "href": "/docs/api/numpy/asarray-chkfinite/",
+    "kind": "op",
+    "slug": "asarray_chkfinite"
+  },
+  "numpy/astype": {
+    "canonical_name": "astype",
+    "href": "/docs/api/numpy/astype/",
+    "kind": "op",
+    "slug": "astype"
+  },
+  "numpy/atleast-1d": {
+    "canonical_name": "atleast_1d",
+    "href": "/docs/api/numpy/atleast-1d/",
+    "kind": "op",
+    "slug": "atleast_1d"
+  },
+  "numpy/atleast-2d": {
+    "canonical_name": "atleast_2d",
+    "href": "/docs/api/numpy/atleast-2d/",
+    "kind": "op",
+    "slug": "atleast_2d"
+  },
+  "numpy/atleast-3d": {
+    "canonical_name": "atleast_3d",
+    "href": "/docs/api/numpy/atleast-3d/",
+    "kind": "op",
+    "slug": "atleast_3d"
+  },
+  "numpy/average": {
+    "canonical_name": "average",
+    "href": "/docs/api/numpy/average/",
+    "kind": "op",
+    "slug": "average"
+  },
+  "numpy/bartlett": {
+    "canonical_name": "bartlett",
+    "href": "/docs/api/numpy/bartlett/",
+    "kind": "op",
+    "slug": "bartlett"
+  },
+  "numpy/bincount": {
+    "canonical_name": "bincount",
+    "href": "/docs/api/numpy/bincount/",
+    "kind": "op",
+    "slug": "bincount"
+  },
+  "numpy/bitwise-and": {
+    "canonical_name": "bitwise_and",
+    "href": "/docs/api/numpy/bitwise-and/",
+    "kind": "op",
+    "slug": "bitwise_and"
+  },
+  "numpy/bitwise-count": {
+    "canonical_name": "bitwise_count",
+    "href": "/docs/api/numpy/bitwise-count/",
+    "kind": "op",
+    "slug": "bitwise_count"
+  },
+  "numpy/bitwise-left-shift": {
+    "canonical_name": "bitwise_left_shift",
+    "href": "/docs/api/numpy/bitwise-left-shift/",
+    "kind": "op",
+    "slug": "bitwise_left_shift"
+  },
+  "numpy/bitwise-not": {
+    "canonical_name": "bitwise_not",
+    "href": "/docs/api/numpy/bitwise-not/",
+    "kind": "op",
+    "slug": "bitwise_not"
+  },
+  "numpy/bitwise-or": {
+    "canonical_name": "bitwise_or",
+    "href": "/docs/api/numpy/bitwise-or/",
+    "kind": "op",
+    "slug": "bitwise_or"
+  },
+  "numpy/bitwise-right-shift": {
+    "canonical_name": "bitwise_right_shift",
+    "href": "/docs/api/numpy/bitwise-right-shift/",
+    "kind": "op",
+    "slug": "bitwise_right_shift"
+  },
+  "numpy/bitwise-xor": {
+    "canonical_name": "bitwise_xor",
+    "href": "/docs/api/numpy/bitwise-xor/",
+    "kind": "op",
+    "slug": "bitwise_xor"
+  },
+  "numpy/blackman": {
+    "canonical_name": "blackman",
+    "href": "/docs/api/numpy/blackman/",
+    "kind": "op",
+    "slug": "blackman"
+  },
+  "numpy/block": {
+    "canonical_name": "block",
+    "href": "/docs/api/numpy/block/",
+    "kind": "op",
+    "slug": "block"
+  },
+  "numpy/bmat": {
+    "canonical_name": "bmat",
+    "href": "/docs/api/numpy/bmat/",
+    "kind": "op",
+    "slug": "bmat"
+  },
+  "numpy/broadcast-arrays": {
+    "canonical_name": "broadcast_arrays",
+    "href": "/docs/api/numpy/broadcast-arrays/",
+    "kind": "op",
+    "slug": "broadcast_arrays"
+  },
+  "numpy/broadcast-shapes": {
+    "canonical_name": "broadcast_shapes",
+    "href": "/docs/api/numpy/broadcast-shapes/",
+    "kind": "op",
+    "slug": "broadcast_shapes"
+  },
+  "numpy/broadcast-to": {
+    "canonical_name": "broadcast_to",
+    "href": "/docs/api/numpy/broadcast-to/",
+    "kind": "op",
+    "slug": "broadcast_to"
+  },
+  "numpy/can-cast": {
+    "canonical_name": "can_cast",
+    "href": "/docs/api/numpy/can-cast/",
+    "kind": "op",
+    "slug": "can_cast"
+  },
+  "numpy/cbrt": {
+    "canonical_name": "cbrt",
+    "href": "/docs/api/numpy/cbrt/",
+    "kind": "op",
+    "slug": "cbrt"
+  },
+  "numpy/ceil": {
+    "canonical_name": "ceil",
+    "href": "/docs/api/numpy/ceil/",
+    "kind": "op",
+    "slug": "ceil"
+  },
+  "numpy/choose": {
+    "canonical_name": "choose",
+    "href": "/docs/api/numpy/choose/",
+    "kind": "op",
+    "slug": "choose"
+  },
+  "numpy/clip": {
+    "canonical_name": "clip",
+    "href": "/docs/api/numpy/clip/",
+    "kind": "op",
+    "slug": "clip"
+  },
+  "numpy/column-stack": {
+    "canonical_name": "column_stack",
+    "href": "/docs/api/numpy/column-stack/",
+    "kind": "op",
+    "slug": "column_stack"
+  },
+  "numpy/common-type": {
+    "canonical_name": "common_type",
+    "href": "/docs/api/numpy/common-type/",
+    "kind": "op",
+    "slug": "common_type"
+  },
+  "numpy/compress": {
+    "canonical_name": "compress",
+    "href": "/docs/api/numpy/compress/",
+    "kind": "op",
+    "slug": "compress"
+  },
+  "numpy/concatenate": {
+    "canonical_name": "concatenate",
+    "href": "/docs/api/numpy/concatenate/",
+    "kind": "op",
+    "slug": "concatenate"
+  },
+  "numpy/conj": {
+    "canonical_name": "conj",
+    "href": "/docs/api/numpy/conj/",
+    "kind": "op",
+    "slug": "conj"
+  },
+  "numpy/conjugate": {
+    "canonical_name": "conjugate",
+    "href": "/docs/api/numpy/conjugate/",
+    "kind": "op",
+    "slug": "conjugate"
+  },
+  "numpy/convolve": {
+    "canonical_name": "convolve",
+    "href": "/docs/api/numpy/convolve/",
+    "kind": "op",
+    "slug": "convolve"
+  },
+  "numpy/copy": {
+    "canonical_name": "copy",
+    "href": "/docs/api/numpy/copy/",
+    "kind": "op",
+    "slug": "copy"
+  },
+  "numpy/copysign": {
+    "canonical_name": "copysign",
+    "href": "/docs/api/numpy/copysign/",
+    "kind": "op",
+    "slug": "copysign"
+  },
+  "numpy/copyto": {
+    "canonical_name": "copyto",
+    "href": "/docs/api/numpy/copyto/",
+    "kind": "op",
+    "slug": "copyto"
+  },
+  "numpy/corrcoef": {
+    "canonical_name": "corrcoef",
+    "href": "/docs/api/numpy/corrcoef/",
+    "kind": "op",
+    "slug": "corrcoef"
+  },
+  "numpy/correlate": {
+    "canonical_name": "correlate",
+    "href": "/docs/api/numpy/correlate/",
+    "kind": "op",
+    "slug": "correlate"
+  },
+  "numpy/cos": {
+    "canonical_name": "cos",
+    "href": "/docs/api/numpy/cos/",
+    "kind": "op",
+    "slug": "cos"
+  },
+  "numpy/cosh": {
+    "canonical_name": "cosh",
+    "href": "/docs/api/numpy/cosh/",
+    "kind": "op",
+    "slug": "cosh"
+  },
+  "numpy/count-nonzero": {
+    "canonical_name": "count_nonzero",
+    "href": "/docs/api/numpy/count-nonzero/",
+    "kind": "op",
+    "slug": "count_nonzero"
+  },
+  "numpy/cov": {
+    "canonical_name": "cov",
+    "href": "/docs/api/numpy/cov/",
+    "kind": "op",
+    "slug": "cov"
+  },
+  "numpy/cross": {
+    "canonical_name": "cross",
+    "href": "/docs/api/numpy/cross/",
+    "kind": "op",
+    "slug": "cross"
+  },
+  "numpy/cumprod": {
+    "canonical_name": "cumprod",
+    "href": "/docs/api/numpy/cumprod/",
+    "kind": "op",
+    "slug": "cumprod"
+  },
+  "numpy/cumsum": {
+    "canonical_name": "cumsum",
+    "href": "/docs/api/numpy/cumsum/",
+    "kind": "op",
+    "slug": "cumsum"
+  },
+  "numpy/cumulative-prod": {
+    "canonical_name": "cumulative_prod",
+    "href": "/docs/api/numpy/cumulative-prod/",
+    "kind": "op",
+    "slug": "cumulative_prod"
+  },
+  "numpy/cumulative-sum": {
+    "canonical_name": "cumulative_sum",
+    "href": "/docs/api/numpy/cumulative-sum/",
+    "kind": "op",
+    "slug": "cumulative_sum"
+  },
+  "numpy/degrees": {
+    "canonical_name": "degrees",
+    "href": "/docs/api/numpy/degrees/",
+    "kind": "op",
+    "slug": "degrees"
+  },
+  "numpy/delete": {
+    "canonical_name": "delete",
+    "href": "/docs/api/numpy/delete/",
+    "kind": "op",
+    "slug": "delete"
+  },
+  "numpy/diag": {
+    "canonical_name": "diag",
+    "href": "/docs/api/numpy/diag/",
+    "kind": "op",
+    "slug": "diag"
+  },
+  "numpy/diag-indices": {
+    "canonical_name": "diag_indices",
+    "href": "/docs/api/numpy/diag-indices/",
+    "kind": "op",
+    "slug": "diag_indices"
+  },
+  "numpy/diag-indices-from": {
+    "canonical_name": "diag_indices_from",
+    "href": "/docs/api/numpy/diag-indices-from/",
+    "kind": "op",
+    "slug": "diag_indices_from"
+  },
+  "numpy/diagflat": {
+    "canonical_name": "diagflat",
+    "href": "/docs/api/numpy/diagflat/",
+    "kind": "op",
+    "slug": "diagflat"
+  },
+  "numpy/diagonal": {
+    "canonical_name": "diagonal",
+    "href": "/docs/api/numpy/diagonal/",
+    "kind": "op",
+    "slug": "diagonal"
+  },
+  "numpy/diff": {
+    "canonical_name": "diff",
+    "href": "/docs/api/numpy/diff/",
+    "kind": "op",
+    "slug": "diff"
+  },
+  "numpy/digitize": {
+    "canonical_name": "digitize",
+    "href": "/docs/api/numpy/digitize/",
+    "kind": "op",
+    "slug": "digitize"
+  },
+  "numpy/divide": {
+    "canonical_name": "divide",
+    "href": "/docs/api/numpy/divide/",
+    "kind": "op",
+    "slug": "divide"
+  },
+  "numpy/dot": {
+    "canonical_name": "dot",
+    "href": "/docs/api/numpy/dot/",
+    "kind": "op",
+    "slug": "dot"
+  },
+  "numpy/dsplit": {
+    "canonical_name": "dsplit",
+    "href": "/docs/api/numpy/dsplit/",
+    "kind": "op",
+    "slug": "dsplit"
+  },
+  "numpy/dstack": {
+    "canonical_name": "dstack",
+    "href": "/docs/api/numpy/dstack/",
+    "kind": "op",
+    "slug": "dstack"
+  },
+  "numpy/ediff1d": {
+    "canonical_name": "ediff1d",
+    "href": "/docs/api/numpy/ediff1d/",
+    "kind": "op",
+    "slug": "ediff1d"
+  },
+  "numpy/einsum": {
+    "canonical_name": "einsum",
+    "href": "/docs/api/numpy/einsum/",
+    "kind": "op",
+    "slug": "einsum"
+  },
+  "numpy/einsum-path": {
+    "canonical_name": "einsum_path",
+    "href": "/docs/api/numpy/einsum-path/",
+    "kind": "op",
+    "slug": "einsum_path"
+  },
+  "numpy/empty": {
+    "canonical_name": "empty",
+    "href": "/docs/api/numpy/empty/",
+    "kind": "op",
+    "slug": "empty"
+  },
+  "numpy/empty-like": {
+    "canonical_name": "empty_like",
+    "href": "/docs/api/numpy/empty-like/",
+    "kind": "op",
+    "slug": "empty_like"
+  },
+  "numpy/equal": {
+    "canonical_name": "equal",
+    "href": "/docs/api/numpy/equal/",
+    "kind": "op",
+    "slug": "equal"
+  },
+  "numpy/exp": {
+    "canonical_name": "exp",
+    "href": "/docs/api/numpy/exp/",
+    "kind": "op",
+    "slug": "exp"
+  },
+  "numpy/exp2": {
+    "canonical_name": "exp2",
+    "href": "/docs/api/numpy/exp2/",
+    "kind": "op",
+    "slug": "exp2"
+  },
+  "numpy/expand-dims": {
+    "canonical_name": "expand_dims",
+    "href": "/docs/api/numpy/expand-dims/",
+    "kind": "op",
+    "slug": "expand_dims"
+  },
+  "numpy/expm1": {
+    "canonical_name": "expm1",
+    "href": "/docs/api/numpy/expm1/",
+    "kind": "op",
+    "slug": "expm1"
+  },
+  "numpy/extract": {
+    "canonical_name": "extract",
+    "href": "/docs/api/numpy/extract/",
+    "kind": "op",
+    "slug": "extract"
+  },
+  "numpy/eye": {
+    "canonical_name": "eye",
+    "href": "/docs/api/numpy/eye/",
+    "kind": "op",
+    "slug": "eye"
+  },
+  "numpy/fabs": {
+    "canonical_name": "fabs",
+    "href": "/docs/api/numpy/fabs/",
+    "kind": "op",
+    "slug": "fabs"
+  },
+  "numpy/fft/fft": {
+    "canonical_name": "fft.fft",
+    "href": "/docs/api/numpy/fft/fft/",
+    "kind": "op",
+    "slug": "fft-fft"
+  },
+  "numpy/fft/fft2": {
+    "canonical_name": "fft.fft2",
+    "href": "/docs/api/numpy/fft/fft2/",
+    "kind": "op",
+    "slug": "fft-fft2"
+  },
+  "numpy/fft/fftfreq": {
+    "canonical_name": "fft.fftfreq",
+    "href": "/docs/api/numpy/fft/fftfreq/",
+    "kind": "op",
+    "slug": "fft-fftfreq"
+  },
+  "numpy/fft/fftn": {
+    "canonical_name": "fft.fftn",
+    "href": "/docs/api/numpy/fft/fftn/",
+    "kind": "op",
+    "slug": "fft-fftn"
+  },
+  "numpy/fft/fftshift": {
+    "canonical_name": "fft.fftshift",
+    "href": "/docs/api/numpy/fft/fftshift/",
+    "kind": "op",
+    "slug": "fft-fftshift"
+  },
+  "numpy/fft/hfft": {
+    "canonical_name": "fft.hfft",
+    "href": "/docs/api/numpy/fft/hfft/",
+    "kind": "op",
+    "slug": "fft-hfft"
+  },
+  "numpy/fft/ifft": {
+    "canonical_name": "fft.ifft",
+    "href": "/docs/api/numpy/fft/ifft/",
+    "kind": "op",
+    "slug": "fft-ifft"
+  },
+  "numpy/fft/ifft2": {
+    "canonical_name": "fft.ifft2",
+    "href": "/docs/api/numpy/fft/ifft2/",
+    "kind": "op",
+    "slug": "fft-ifft2"
+  },
+  "numpy/fft/ifftn": {
+    "canonical_name": "fft.ifftn",
+    "href": "/docs/api/numpy/fft/ifftn/",
+    "kind": "op",
+    "slug": "fft-ifftn"
+  },
+  "numpy/fft/ifftshift": {
+    "canonical_name": "fft.ifftshift",
+    "href": "/docs/api/numpy/fft/ifftshift/",
+    "kind": "op",
+    "slug": "fft-ifftshift"
+  },
+  "numpy/fft/ihfft": {
+    "canonical_name": "fft.ihfft",
+    "href": "/docs/api/numpy/fft/ihfft/",
+    "kind": "op",
+    "slug": "fft-ihfft"
+  },
+  "numpy/fft/irfft": {
+    "canonical_name": "fft.irfft",
+    "href": "/docs/api/numpy/fft/irfft/",
+    "kind": "op",
+    "slug": "fft-irfft"
+  },
+  "numpy/fft/irfft2": {
+    "canonical_name": "fft.irfft2",
+    "href": "/docs/api/numpy/fft/irfft2/",
+    "kind": "op",
+    "slug": "fft-irfft2"
+  },
+  "numpy/fft/irfftn": {
+    "canonical_name": "fft.irfftn",
+    "href": "/docs/api/numpy/fft/irfftn/",
+    "kind": "op",
+    "slug": "fft-irfftn"
+  },
+  "numpy/fft/rfft": {
+    "canonical_name": "fft.rfft",
+    "href": "/docs/api/numpy/fft/rfft/",
+    "kind": "op",
+    "slug": "fft-rfft"
+  },
+  "numpy/fft/rfft2": {
+    "canonical_name": "fft.rfft2",
+    "href": "/docs/api/numpy/fft/rfft2/",
+    "kind": "op",
+    "slug": "fft-rfft2"
+  },
+  "numpy/fft/rfftfreq": {
+    "canonical_name": "fft.rfftfreq",
+    "href": "/docs/api/numpy/fft/rfftfreq/",
+    "kind": "op",
+    "slug": "fft-rfftfreq"
+  },
+  "numpy/fft/rfftn": {
+    "canonical_name": "fft.rfftn",
+    "href": "/docs/api/numpy/fft/rfftn/",
+    "kind": "op",
+    "slug": "fft-rfftn"
+  },
+  "numpy/fill-diagonal": {
+    "canonical_name": "fill_diagonal",
+    "href": "/docs/api/numpy/fill-diagonal/",
+    "kind": "op",
+    "slug": "fill_diagonal"
+  },
+  "numpy/flatnonzero": {
+    "canonical_name": "flatnonzero",
+    "href": "/docs/api/numpy/flatnonzero/",
+    "kind": "op",
+    "slug": "flatnonzero"
+  },
+  "numpy/flip": {
+    "canonical_name": "flip",
+    "href": "/docs/api/numpy/flip/",
+    "kind": "op",
+    "slug": "flip"
+  },
+  "numpy/fliplr": {
+    "canonical_name": "fliplr",
+    "href": "/docs/api/numpy/fliplr/",
+    "kind": "op",
+    "slug": "fliplr"
+  },
+  "numpy/flipud": {
+    "canonical_name": "flipud",
+    "href": "/docs/api/numpy/flipud/",
+    "kind": "op",
+    "slug": "flipud"
+  },
+  "numpy/float-power": {
+    "canonical_name": "float_power",
+    "href": "/docs/api/numpy/float-power/",
+    "kind": "op",
+    "slug": "float_power"
+  },
+  "numpy/floor": {
+    "canonical_name": "floor",
+    "href": "/docs/api/numpy/floor/",
+    "kind": "op",
+    "slug": "floor"
+  },
+  "numpy/floor-divide": {
+    "canonical_name": "floor_divide",
+    "href": "/docs/api/numpy/floor-divide/",
+    "kind": "op",
+    "slug": "floor_divide"
+  },
+  "numpy/fmax": {
+    "canonical_name": "fmax",
+    "href": "/docs/api/numpy/fmax/",
+    "kind": "op",
+    "slug": "fmax"
+  },
+  "numpy/fmin": {
+    "canonical_name": "fmin",
+    "href": "/docs/api/numpy/fmin/",
+    "kind": "op",
+    "slug": "fmin"
+  },
+  "numpy/fmod": {
+    "canonical_name": "fmod",
+    "href": "/docs/api/numpy/fmod/",
+    "kind": "op",
+    "slug": "fmod"
+  },
+  "numpy/frexp": {
+    "canonical_name": "frexp",
+    "href": "/docs/api/numpy/frexp/",
+    "kind": "op",
+    "slug": "frexp"
+  },
+  "numpy/from-dlpack": {
+    "canonical_name": "from_dlpack",
+    "href": "/docs/api/numpy/from-dlpack/",
+    "kind": "op",
+    "slug": "from_dlpack"
+  },
+  "numpy/frombuffer": {
+    "canonical_name": "frombuffer",
+    "href": "/docs/api/numpy/frombuffer/",
+    "kind": "op",
+    "slug": "frombuffer"
+  },
+  "numpy/fromfunction": {
+    "canonical_name": "fromfunction",
+    "href": "/docs/api/numpy/fromfunction/",
+    "kind": "op",
+    "slug": "fromfunction"
+  },
+  "numpy/fromiter": {
+    "canonical_name": "fromiter",
+    "href": "/docs/api/numpy/fromiter/",
+    "kind": "op",
+    "slug": "fromiter"
+  },
+  "numpy/full": {
+    "canonical_name": "full",
+    "href": "/docs/api/numpy/full/",
+    "kind": "op",
+    "slug": "full"
+  },
+  "numpy/full-like": {
+    "canonical_name": "full_like",
+    "href": "/docs/api/numpy/full-like/",
+    "kind": "op",
+    "slug": "full_like"
+  },
+  "numpy/gcd": {
+    "canonical_name": "gcd",
+    "href": "/docs/api/numpy/gcd/",
+    "kind": "op",
+    "slug": "gcd"
+  },
+  "numpy/geomspace": {
+    "canonical_name": "geomspace",
+    "href": "/docs/api/numpy/geomspace/",
+    "kind": "op",
+    "slug": "geomspace"
+  },
+  "numpy/gradient": {
+    "canonical_name": "gradient",
+    "href": "/docs/api/numpy/gradient/",
+    "kind": "op",
+    "slug": "gradient"
+  },
+  "numpy/greater": {
+    "canonical_name": "greater",
+    "href": "/docs/api/numpy/greater/",
+    "kind": "op",
+    "slug": "greater"
+  },
+  "numpy/greater-equal": {
+    "canonical_name": "greater_equal",
+    "href": "/docs/api/numpy/greater-equal/",
+    "kind": "op",
+    "slug": "greater_equal"
+  },
+  "numpy/hamming": {
+    "canonical_name": "hamming",
+    "href": "/docs/api/numpy/hamming/",
+    "kind": "op",
+    "slug": "hamming"
+  },
+  "numpy/hanning": {
+    "canonical_name": "hanning",
+    "href": "/docs/api/numpy/hanning/",
+    "kind": "op",
+    "slug": "hanning"
+  },
+  "numpy/heaviside": {
+    "canonical_name": "heaviside",
+    "href": "/docs/api/numpy/heaviside/",
+    "kind": "op",
+    "slug": "heaviside"
+  },
+  "numpy/histogram": {
+    "canonical_name": "histogram",
+    "href": "/docs/api/numpy/histogram/",
+    "kind": "op",
+    "slug": "histogram"
+  },
+  "numpy/histogram-bin-edges": {
+    "canonical_name": "histogram_bin_edges",
+    "href": "/docs/api/numpy/histogram-bin-edges/",
+    "kind": "op",
+    "slug": "histogram_bin_edges"
+  },
+  "numpy/histogram2d": {
+    "canonical_name": "histogram2d",
+    "href": "/docs/api/numpy/histogram2d/",
+    "kind": "op",
+    "slug": "histogram2d"
+  },
+  "numpy/histogramdd": {
+    "canonical_name": "histogramdd",
+    "href": "/docs/api/numpy/histogramdd/",
+    "kind": "op",
+    "slug": "histogramdd"
+  },
+  "numpy/hsplit": {
+    "canonical_name": "hsplit",
+    "href": "/docs/api/numpy/hsplit/",
+    "kind": "op",
+    "slug": "hsplit"
+  },
+  "numpy/hstack": {
+    "canonical_name": "hstack",
+    "href": "/docs/api/numpy/hstack/",
+    "kind": "op",
+    "slug": "hstack"
+  },
+  "numpy/hypot": {
+    "canonical_name": "hypot",
+    "href": "/docs/api/numpy/hypot/",
+    "kind": "op",
+    "slug": "hypot"
+  },
+  "numpy/i0": {
+    "canonical_name": "i0",
+    "href": "/docs/api/numpy/i0/",
+    "kind": "op",
+    "slug": "i0"
+  },
+  "numpy/identity": {
+    "canonical_name": "identity",
+    "href": "/docs/api/numpy/identity/",
+    "kind": "op",
+    "slug": "identity"
+  },
+  "numpy/imag": {
+    "canonical_name": "imag",
+    "href": "/docs/api/numpy/imag/",
+    "kind": "op",
+    "slug": "imag"
+  },
+  "numpy/in1d": {
+    "canonical_name": "in1d",
+    "href": "/docs/api/numpy/in1d/",
+    "kind": "op",
+    "slug": "in1d"
+  },
+  "numpy/indices": {
+    "canonical_name": "indices",
+    "href": "/docs/api/numpy/indices/",
+    "kind": "op",
+    "slug": "indices"
+  },
+  "numpy/inner": {
+    "canonical_name": "inner",
+    "href": "/docs/api/numpy/inner/",
+    "kind": "op",
+    "slug": "inner"
+  },
+  "numpy/insert": {
+    "canonical_name": "insert",
+    "href": "/docs/api/numpy/insert/",
+    "kind": "op",
+    "slug": "insert"
+  },
+  "numpy/interp": {
+    "canonical_name": "interp",
+    "href": "/docs/api/numpy/interp/",
+    "kind": "op",
+    "slug": "interp"
+  },
+  "numpy/intersect1d": {
+    "canonical_name": "intersect1d",
+    "href": "/docs/api/numpy/intersect1d/",
+    "kind": "op",
+    "slug": "intersect1d"
+  },
+  "numpy/invert": {
+    "canonical_name": "invert",
+    "href": "/docs/api/numpy/invert/",
+    "kind": "op",
+    "slug": "invert"
+  },
+  "numpy/isclose": {
+    "canonical_name": "isclose",
+    "href": "/docs/api/numpy/isclose/",
+    "kind": "op",
+    "slug": "isclose"
+  },
+  "numpy/iscomplex": {
+    "canonical_name": "iscomplex",
+    "href": "/docs/api/numpy/iscomplex/",
+    "kind": "op",
+    "slug": "iscomplex"
+  },
+  "numpy/iscomplexobj": {
+    "canonical_name": "iscomplexobj",
+    "href": "/docs/api/numpy/iscomplexobj/",
+    "kind": "op",
+    "slug": "iscomplexobj"
+  },
+  "numpy/isdtype": {
+    "canonical_name": "isdtype",
+    "href": "/docs/api/numpy/isdtype/",
+    "kind": "op",
+    "slug": "isdtype"
+  },
+  "numpy/isfinite": {
+    "canonical_name": "isfinite",
+    "href": "/docs/api/numpy/isfinite/",
+    "kind": "op",
+    "slug": "isfinite"
+  },
+  "numpy/isfortran": {
+    "canonical_name": "isfortran",
+    "href": "/docs/api/numpy/isfortran/",
+    "kind": "op",
+    "slug": "isfortran"
+  },
+  "numpy/isin": {
+    "canonical_name": "isin",
+    "href": "/docs/api/numpy/isin/",
+    "kind": "op",
+    "slug": "isin"
+  },
+  "numpy/isinf": {
+    "canonical_name": "isinf",
+    "href": "/docs/api/numpy/isinf/",
+    "kind": "op",
+    "slug": "isinf"
+  },
+  "numpy/isnan": {
+    "canonical_name": "isnan",
+    "href": "/docs/api/numpy/isnan/",
+    "kind": "op",
+    "slug": "isnan"
+  },
+  "numpy/isneginf": {
+    "canonical_name": "isneginf",
+    "href": "/docs/api/numpy/isneginf/",
+    "kind": "op",
+    "slug": "isneginf"
+  },
+  "numpy/isposinf": {
+    "canonical_name": "isposinf",
+    "href": "/docs/api/numpy/isposinf/",
+    "kind": "op",
+    "slug": "isposinf"
+  },
+  "numpy/isreal": {
+    "canonical_name": "isreal",
+    "href": "/docs/api/numpy/isreal/",
+    "kind": "op",
+    "slug": "isreal"
+  },
+  "numpy/isrealobj": {
+    "canonical_name": "isrealobj",
+    "href": "/docs/api/numpy/isrealobj/",
+    "kind": "op",
+    "slug": "isrealobj"
+  },
+  "numpy/isscalar": {
+    "canonical_name": "isscalar",
+    "href": "/docs/api/numpy/isscalar/",
+    "kind": "op",
+    "slug": "isscalar"
+  },
+  "numpy/issubdtype": {
+    "canonical_name": "issubdtype",
+    "href": "/docs/api/numpy/issubdtype/",
+    "kind": "op",
+    "slug": "issubdtype"
+  },
+  "numpy/iterable": {
+    "canonical_name": "iterable",
+    "href": "/docs/api/numpy/iterable/",
+    "kind": "op",
+    "slug": "iterable"
+  },
+  "numpy/ix-": {
+    "canonical_name": "ix_",
+    "href": "/docs/api/numpy/ix-/",
+    "kind": "op",
+    "slug": "ix_"
+  },
+  "numpy/kaiser": {
+    "canonical_name": "kaiser",
+    "href": "/docs/api/numpy/kaiser/",
+    "kind": "op",
+    "slug": "kaiser"
+  },
+  "numpy/kron": {
+    "canonical_name": "kron",
+    "href": "/docs/api/numpy/kron/",
+    "kind": "op",
+    "slug": "kron"
+  },
+  "numpy/lcm": {
+    "canonical_name": "lcm",
+    "href": "/docs/api/numpy/lcm/",
+    "kind": "op",
+    "slug": "lcm"
+  },
+  "numpy/ldexp": {
+    "canonical_name": "ldexp",
+    "href": "/docs/api/numpy/ldexp/",
+    "kind": "op",
+    "slug": "ldexp"
+  },
+  "numpy/left-shift": {
+    "canonical_name": "left_shift",
+    "href": "/docs/api/numpy/left-shift/",
+    "kind": "op",
+    "slug": "left_shift"
+  },
+  "numpy/less": {
+    "canonical_name": "less",
+    "href": "/docs/api/numpy/less/",
+    "kind": "op",
+    "slug": "less"
+  },
+  "numpy/less-equal": {
+    "canonical_name": "less_equal",
+    "href": "/docs/api/numpy/less-equal/",
+    "kind": "op",
+    "slug": "less_equal"
+  },
+  "numpy/lexsort": {
+    "canonical_name": "lexsort",
+    "href": "/docs/api/numpy/lexsort/",
+    "kind": "op",
+    "slug": "lexsort"
+  },
+  "numpy/linalg/cholesky": {
+    "canonical_name": "linalg.cholesky",
+    "href": "/docs/api/numpy/linalg/cholesky/",
+    "kind": "op",
+    "slug": "linalg-cholesky"
+  },
+  "numpy/linalg/cond": {
+    "canonical_name": "linalg.cond",
+    "href": "/docs/api/numpy/linalg/cond/",
+    "kind": "op",
+    "slug": "linalg-cond"
+  },
+  "numpy/linalg/cross": {
+    "canonical_name": "linalg.cross",
+    "href": "/docs/api/numpy/linalg/cross/",
+    "kind": "op",
+    "slug": "linalg-cross"
+  },
+  "numpy/linalg/det": {
+    "canonical_name": "linalg.det",
+    "href": "/docs/api/numpy/linalg/det/",
+    "kind": "op",
+    "slug": "linalg-det"
+  },
+  "numpy/linalg/diagonal": {
+    "canonical_name": "linalg.diagonal",
+    "href": "/docs/api/numpy/linalg/diagonal/",
+    "kind": "op",
+    "slug": "linalg-diagonal"
+  },
+  "numpy/linalg/eig": {
+    "canonical_name": "linalg.eig",
+    "href": "/docs/api/numpy/linalg/eig/",
+    "kind": "op",
+    "slug": "linalg-eig"
+  },
+  "numpy/linalg/eigh": {
+    "canonical_name": "linalg.eigh",
+    "href": "/docs/api/numpy/linalg/eigh/",
+    "kind": "op",
+    "slug": "linalg-eigh"
+  },
+  "numpy/linalg/eigvals": {
+    "canonical_name": "linalg.eigvals",
+    "href": "/docs/api/numpy/linalg/eigvals/",
+    "kind": "op",
+    "slug": "linalg-eigvals"
+  },
+  "numpy/linalg/eigvalsh": {
+    "canonical_name": "linalg.eigvalsh",
+    "href": "/docs/api/numpy/linalg/eigvalsh/",
+    "kind": "op",
+    "slug": "linalg-eigvalsh"
+  },
+  "numpy/linalg/inv": {
+    "canonical_name": "linalg.inv",
+    "href": "/docs/api/numpy/linalg/inv/",
+    "kind": "op",
+    "slug": "linalg-inv"
+  },
+  "numpy/linalg/lstsq": {
+    "canonical_name": "linalg.lstsq",
+    "href": "/docs/api/numpy/linalg/lstsq/",
+    "kind": "op",
+    "slug": "linalg-lstsq"
+  },
+  "numpy/linalg/matmul": {
+    "canonical_name": "linalg.matmul",
+    "href": "/docs/api/numpy/linalg/matmul/",
+    "kind": "op",
+    "slug": "linalg-matmul"
+  },
+  "numpy/linalg/matrix-norm": {
+    "canonical_name": "linalg.matrix_norm",
+    "href": "/docs/api/numpy/linalg/matrix-norm/",
+    "kind": "op",
+    "slug": "linalg-matrix_norm"
+  },
+  "numpy/linalg/matrix-power": {
+    "canonical_name": "linalg.matrix_power",
+    "href": "/docs/api/numpy/linalg/matrix-power/",
+    "kind": "op",
+    "slug": "linalg-matrix_power"
+  },
+  "numpy/linalg/matrix-rank": {
+    "canonical_name": "linalg.matrix_rank",
+    "href": "/docs/api/numpy/linalg/matrix-rank/",
+    "kind": "op",
+    "slug": "linalg-matrix_rank"
+  },
+  "numpy/linalg/matrix-transpose": {
+    "canonical_name": "linalg.matrix_transpose",
+    "href": "/docs/api/numpy/linalg/matrix-transpose/",
+    "kind": "op",
+    "slug": "linalg-matrix_transpose"
+  },
+  "numpy/linalg/multi-dot": {
+    "canonical_name": "linalg.multi_dot",
+    "href": "/docs/api/numpy/linalg/multi-dot/",
+    "kind": "op",
+    "slug": "linalg-multi_dot"
+  },
+  "numpy/linalg/norm": {
+    "canonical_name": "linalg.norm",
+    "href": "/docs/api/numpy/linalg/norm/",
+    "kind": "op",
+    "slug": "linalg-norm"
+  },
+  "numpy/linalg/outer": {
+    "canonical_name": "linalg.outer",
+    "href": "/docs/api/numpy/linalg/outer/",
+    "kind": "op",
+    "slug": "linalg-outer"
+  },
+  "numpy/linalg/pinv": {
+    "canonical_name": "linalg.pinv",
+    "href": "/docs/api/numpy/linalg/pinv/",
+    "kind": "op",
+    "slug": "linalg-pinv"
+  },
+  "numpy/linalg/qr": {
+    "canonical_name": "linalg.qr",
+    "href": "/docs/api/numpy/linalg/qr/",
+    "kind": "op",
+    "slug": "linalg-qr"
+  },
+  "numpy/linalg/slogdet": {
+    "canonical_name": "linalg.slogdet",
+    "href": "/docs/api/numpy/linalg/slogdet/",
+    "kind": "op",
+    "slug": "linalg-slogdet"
+  },
+  "numpy/linalg/solve": {
+    "canonical_name": "linalg.solve",
+    "href": "/docs/api/numpy/linalg/solve/",
+    "kind": "op",
+    "slug": "linalg-solve"
+  },
+  "numpy/linalg/svd": {
+    "canonical_name": "linalg.svd",
+    "href": "/docs/api/numpy/linalg/svd/",
+    "kind": "op",
+    "slug": "linalg-svd"
+  },
+  "numpy/linalg/svdvals": {
+    "canonical_name": "linalg.svdvals",
+    "href": "/docs/api/numpy/linalg/svdvals/",
+    "kind": "op",
+    "slug": "linalg-svdvals"
+  },
+  "numpy/linalg/tensordot": {
+    "canonical_name": "linalg.tensordot",
+    "href": "/docs/api/numpy/linalg/tensordot/",
+    "kind": "op",
+    "slug": "linalg-tensordot"
+  },
+  "numpy/linalg/tensorinv": {
+    "canonical_name": "linalg.tensorinv",
+    "href": "/docs/api/numpy/linalg/tensorinv/",
+    "kind": "op",
+    "slug": "linalg-tensorinv"
+  },
+  "numpy/linalg/tensorsolve": {
+    "canonical_name": "linalg.tensorsolve",
+    "href": "/docs/api/numpy/linalg/tensorsolve/",
+    "kind": "op",
+    "slug": "linalg-tensorsolve"
+  },
+  "numpy/linalg/trace": {
+    "canonical_name": "linalg.trace",
+    "href": "/docs/api/numpy/linalg/trace/",
+    "kind": "op",
+    "slug": "linalg-trace"
+  },
+  "numpy/linalg/vecdot": {
+    "canonical_name": "linalg.vecdot",
+    "href": "/docs/api/numpy/linalg/vecdot/",
+    "kind": "op",
+    "slug": "linalg-vecdot"
+  },
+  "numpy/linalg/vector-norm": {
+    "canonical_name": "linalg.vector_norm",
+    "href": "/docs/api/numpy/linalg/vector-norm/",
+    "kind": "op",
+    "slug": "linalg-vector_norm"
+  },
+  "numpy/linspace": {
+    "canonical_name": "linspace",
+    "href": "/docs/api/numpy/linspace/",
+    "kind": "op",
+    "slug": "linspace"
+  },
+  "numpy/log": {
+    "canonical_name": "log",
+    "href": "/docs/api/numpy/log/",
+    "kind": "op",
+    "slug": "log"
+  },
+  "numpy/log10": {
+    "canonical_name": "log10",
+    "href": "/docs/api/numpy/log10/",
+    "kind": "op",
+    "slug": "log10"
+  },
+  "numpy/log1p": {
+    "canonical_name": "log1p",
+    "href": "/docs/api/numpy/log1p/",
+    "kind": "op",
+    "slug": "log1p"
+  },
+  "numpy/log2": {
+    "canonical_name": "log2",
+    "href": "/docs/api/numpy/log2/",
+    "kind": "op",
+    "slug": "log2"
+  },
+  "numpy/logaddexp": {
+    "canonical_name": "logaddexp",
+    "href": "/docs/api/numpy/logaddexp/",
+    "kind": "op",
+    "slug": "logaddexp"
+  },
+  "numpy/logaddexp2": {
+    "canonical_name": "logaddexp2",
+    "href": "/docs/api/numpy/logaddexp2/",
+    "kind": "op",
+    "slug": "logaddexp2"
+  },
+  "numpy/logical-and": {
+    "canonical_name": "logical_and",
+    "href": "/docs/api/numpy/logical-and/",
+    "kind": "op",
+    "slug": "logical_and"
+  },
+  "numpy/logical-not": {
+    "canonical_name": "logical_not",
+    "href": "/docs/api/numpy/logical-not/",
+    "kind": "op",
+    "slug": "logical_not"
+  },
+  "numpy/logical-or": {
+    "canonical_name": "logical_or",
+    "href": "/docs/api/numpy/logical-or/",
+    "kind": "op",
+    "slug": "logical_or"
+  },
+  "numpy/logical-xor": {
+    "canonical_name": "logical_xor",
+    "href": "/docs/api/numpy/logical-xor/",
+    "kind": "op",
+    "slug": "logical_xor"
+  },
+  "numpy/logspace": {
+    "canonical_name": "logspace",
+    "href": "/docs/api/numpy/logspace/",
+    "kind": "op",
+    "slug": "logspace"
+  },
+  "numpy/mask-indices": {
+    "canonical_name": "mask_indices",
+    "href": "/docs/api/numpy/mask-indices/",
+    "kind": "op",
+    "slug": "mask_indices"
+  },
+  "numpy/matmul": {
+    "canonical_name": "matmul",
+    "href": "/docs/api/numpy/matmul/",
+    "kind": "op",
+    "slug": "matmul"
+  },
+  "numpy/matrix-transpose": {
+    "canonical_name": "matrix_transpose",
+    "href": "/docs/api/numpy/matrix-transpose/",
+    "kind": "op",
+    "slug": "matrix_transpose"
+  },
+  "numpy/matvec": {
+    "canonical_name": "matvec",
+    "href": "/docs/api/numpy/matvec/",
+    "kind": "op",
+    "slug": "matvec"
+  },
+  "numpy/max": {
+    "canonical_name": "max",
+    "href": "/docs/api/numpy/max/",
+    "kind": "op",
+    "slug": "max"
+  },
+  "numpy/maximum": {
+    "canonical_name": "maximum",
+    "href": "/docs/api/numpy/maximum/",
+    "kind": "op",
+    "slug": "maximum"
+  },
+  "numpy/may-share-memory": {
+    "canonical_name": "may_share_memory",
+    "href": "/docs/api/numpy/may-share-memory/",
+    "kind": "op",
+    "slug": "may_share_memory"
+  },
+  "numpy/mean": {
+    "canonical_name": "mean",
+    "href": "/docs/api/numpy/mean/",
+    "kind": "op",
+    "slug": "mean"
+  },
+  "numpy/median": {
+    "canonical_name": "median",
+    "href": "/docs/api/numpy/median/",
+    "kind": "op",
+    "slug": "median"
+  },
+  "numpy/meshgrid": {
+    "canonical_name": "meshgrid",
+    "href": "/docs/api/numpy/meshgrid/",
+    "kind": "op",
+    "slug": "meshgrid"
+  },
+  "numpy/min": {
+    "canonical_name": "min",
+    "href": "/docs/api/numpy/min/",
+    "kind": "op",
+    "slug": "min"
+  },
+  "numpy/min-scalar-type": {
+    "canonical_name": "min_scalar_type",
+    "href": "/docs/api/numpy/min-scalar-type/",
+    "kind": "op",
+    "slug": "min_scalar_type"
+  },
+  "numpy/minimum": {
+    "canonical_name": "minimum",
+    "href": "/docs/api/numpy/minimum/",
+    "kind": "op",
+    "slug": "minimum"
+  },
+  "numpy/mintypecode": {
+    "canonical_name": "mintypecode",
+    "href": "/docs/api/numpy/mintypecode/",
+    "kind": "op",
+    "slug": "mintypecode"
+  },
+  "numpy/mod": {
+    "canonical_name": "mod",
+    "href": "/docs/api/numpy/mod/",
+    "kind": "op",
+    "slug": "mod"
+  },
+  "numpy/modf": {
+    "canonical_name": "modf",
+    "href": "/docs/api/numpy/modf/",
+    "kind": "op",
+    "slug": "modf"
+  },
+  "numpy/moveaxis": {
+    "canonical_name": "moveaxis",
+    "href": "/docs/api/numpy/moveaxis/",
+    "kind": "op",
+    "slug": "moveaxis"
+  },
+  "numpy/multiply": {
+    "canonical_name": "multiply",
+    "href": "/docs/api/numpy/multiply/",
+    "kind": "op",
+    "slug": "multiply"
+  },
+  "numpy/nan-to-num": {
+    "canonical_name": "nan_to_num",
+    "href": "/docs/api/numpy/nan-to-num/",
+    "kind": "op",
+    "slug": "nan_to_num"
+  },
+  "numpy/nanargmax": {
+    "canonical_name": "nanargmax",
+    "href": "/docs/api/numpy/nanargmax/",
+    "kind": "op",
+    "slug": "nanargmax"
+  },
+  "numpy/nanargmin": {
+    "canonical_name": "nanargmin",
+    "href": "/docs/api/numpy/nanargmin/",
+    "kind": "op",
+    "slug": "nanargmin"
+  },
+  "numpy/nancumprod": {
+    "canonical_name": "nancumprod",
+    "href": "/docs/api/numpy/nancumprod/",
+    "kind": "op",
+    "slug": "nancumprod"
+  },
+  "numpy/nancumsum": {
+    "canonical_name": "nancumsum",
+    "href": "/docs/api/numpy/nancumsum/",
+    "kind": "op",
+    "slug": "nancumsum"
+  },
+  "numpy/nanmax": {
+    "canonical_name": "nanmax",
+    "href": "/docs/api/numpy/nanmax/",
+    "kind": "op",
+    "slug": "nanmax"
+  },
+  "numpy/nanmean": {
+    "canonical_name": "nanmean",
+    "href": "/docs/api/numpy/nanmean/",
+    "kind": "op",
+    "slug": "nanmean"
+  },
+  "numpy/nanmedian": {
+    "canonical_name": "nanmedian",
+    "href": "/docs/api/numpy/nanmedian/",
+    "kind": "op",
+    "slug": "nanmedian"
+  },
+  "numpy/nanmin": {
+    "canonical_name": "nanmin",
+    "href": "/docs/api/numpy/nanmin/",
+    "kind": "op",
+    "slug": "nanmin"
+  },
+  "numpy/nanpercentile": {
+    "canonical_name": "nanpercentile",
+    "href": "/docs/api/numpy/nanpercentile/",
+    "kind": "op",
+    "slug": "nanpercentile"
+  },
+  "numpy/nanprod": {
+    "canonical_name": "nanprod",
+    "href": "/docs/api/numpy/nanprod/",
+    "kind": "op",
+    "slug": "nanprod"
+  },
+  "numpy/nanquantile": {
+    "canonical_name": "nanquantile",
+    "href": "/docs/api/numpy/nanquantile/",
+    "kind": "op",
+    "slug": "nanquantile"
+  },
+  "numpy/nanstd": {
+    "canonical_name": "nanstd",
+    "href": "/docs/api/numpy/nanstd/",
+    "kind": "op",
+    "slug": "nanstd"
+  },
+  "numpy/nansum": {
+    "canonical_name": "nansum",
+    "href": "/docs/api/numpy/nansum/",
+    "kind": "op",
+    "slug": "nansum"
+  },
+  "numpy/nanvar": {
+    "canonical_name": "nanvar",
+    "href": "/docs/api/numpy/nanvar/",
+    "kind": "op",
+    "slug": "nanvar"
+  },
+  "numpy/ndim": {
+    "canonical_name": "ndim",
+    "href": "/docs/api/numpy/ndim/",
+    "kind": "op",
+    "slug": "ndim"
+  },
+  "numpy/negative": {
     "canonical_name": "negative",
-    "href": "/docs/api/negative/",
+    "href": "/docs/api/numpy/negative/",
     "kind": "op",
     "slug": "negative"
   },
-  "nextafter": {
+  "numpy/nextafter": {
     "canonical_name": "nextafter",
-    "href": "/docs/api/nextafter/",
+    "href": "/docs/api/numpy/nextafter/",
     "kind": "op",
     "slug": "nextafter"
   },
-  "nonzero": {
+  "numpy/nonzero": {
     "canonical_name": "nonzero",
-    "href": "/docs/api/nonzero/",
+    "href": "/docs/api/numpy/nonzero/",
     "kind": "op",
     "slug": "nonzero"
   },
-  "not-equal": {
+  "numpy/not-equal": {
     "canonical_name": "not_equal",
-    "href": "/docs/api/not-equal/",
+    "href": "/docs/api/numpy/not-equal/",
     "kind": "op",
     "slug": "not_equal"
   },
-  "ones": {
+  "numpy/ones": {
     "canonical_name": "ones",
-    "href": "/docs/api/ones/",
+    "href": "/docs/api/numpy/ones/",
     "kind": "op",
     "slug": "ones"
   },
-  "ones-like": {
+  "numpy/ones-like": {
     "canonical_name": "ones_like",
-    "href": "/docs/api/ones-like/",
+    "href": "/docs/api/numpy/ones-like/",
     "kind": "op",
     "slug": "ones_like"
+  },
+  "numpy/outer": {
+    "canonical_name": "outer",
+    "href": "/docs/api/numpy/outer/",
+    "kind": "op",
+    "slug": "outer"
+  },
+  "numpy/packbits": {
+    "canonical_name": "packbits",
+    "href": "/docs/api/numpy/packbits/",
+    "kind": "op",
+    "slug": "packbits"
+  },
+  "numpy/pad": {
+    "canonical_name": "pad",
+    "href": "/docs/api/numpy/pad/",
+    "kind": "op",
+    "slug": "pad"
+  },
+  "numpy/partition": {
+    "canonical_name": "partition",
+    "href": "/docs/api/numpy/partition/",
+    "kind": "op",
+    "slug": "partition"
+  },
+  "numpy/percentile": {
+    "canonical_name": "percentile",
+    "href": "/docs/api/numpy/percentile/",
+    "kind": "op",
+    "slug": "percentile"
+  },
+  "numpy/permute-dims": {
+    "canonical_name": "permute_dims",
+    "href": "/docs/api/numpy/permute-dims/",
+    "kind": "op",
+    "slug": "permute_dims"
+  },
+  "numpy/piecewise": {
+    "canonical_name": "piecewise",
+    "href": "/docs/api/numpy/piecewise/",
+    "kind": "op",
+    "slug": "piecewise"
+  },
+  "numpy/place": {
+    "canonical_name": "place",
+    "href": "/docs/api/numpy/place/",
+    "kind": "op",
+    "slug": "place"
+  },
+  "numpy/poly": {
+    "canonical_name": "poly",
+    "href": "/docs/api/numpy/poly/",
+    "kind": "op",
+    "slug": "poly"
+  },
+  "numpy/polyadd": {
+    "canonical_name": "polyadd",
+    "href": "/docs/api/numpy/polyadd/",
+    "kind": "op",
+    "slug": "polyadd"
+  },
+  "numpy/polyder": {
+    "canonical_name": "polyder",
+    "href": "/docs/api/numpy/polyder/",
+    "kind": "op",
+    "slug": "polyder"
+  },
+  "numpy/polydiv": {
+    "canonical_name": "polydiv",
+    "href": "/docs/api/numpy/polydiv/",
+    "kind": "op",
+    "slug": "polydiv"
+  },
+  "numpy/polyfit": {
+    "canonical_name": "polyfit",
+    "href": "/docs/api/numpy/polyfit/",
+    "kind": "op",
+    "slug": "polyfit"
+  },
+  "numpy/polyint": {
+    "canonical_name": "polyint",
+    "href": "/docs/api/numpy/polyint/",
+    "kind": "op",
+    "slug": "polyint"
+  },
+  "numpy/polymul": {
+    "canonical_name": "polymul",
+    "href": "/docs/api/numpy/polymul/",
+    "kind": "op",
+    "slug": "polymul"
+  },
+  "numpy/polysub": {
+    "canonical_name": "polysub",
+    "href": "/docs/api/numpy/polysub/",
+    "kind": "op",
+    "slug": "polysub"
+  },
+  "numpy/polyval": {
+    "canonical_name": "polyval",
+    "href": "/docs/api/numpy/polyval/",
+    "kind": "op",
+    "slug": "polyval"
+  },
+  "numpy/positive": {
+    "canonical_name": "positive",
+    "href": "/docs/api/numpy/positive/",
+    "kind": "op",
+    "slug": "positive"
+  },
+  "numpy/power": {
+    "canonical_name": "power",
+    "href": "/docs/api/numpy/power/",
+    "kind": "op",
+    "slug": "power"
+  },
+  "numpy/prod": {
+    "canonical_name": "prod",
+    "href": "/docs/api/numpy/prod/",
+    "kind": "op",
+    "slug": "prod"
+  },
+  "numpy/promote-types": {
+    "canonical_name": "promote_types",
+    "href": "/docs/api/numpy/promote-types/",
+    "kind": "op",
+    "slug": "promote_types"
+  },
+  "numpy/ptp": {
+    "canonical_name": "ptp",
+    "href": "/docs/api/numpy/ptp/",
+    "kind": "op",
+    "slug": "ptp"
+  },
+  "numpy/put": {
+    "canonical_name": "put",
+    "href": "/docs/api/numpy/put/",
+    "kind": "op",
+    "slug": "put"
+  },
+  "numpy/put-along-axis": {
+    "canonical_name": "put_along_axis",
+    "href": "/docs/api/numpy/put-along-axis/",
+    "kind": "op",
+    "slug": "put_along_axis"
+  },
+  "numpy/putmask": {
+    "canonical_name": "putmask",
+    "href": "/docs/api/numpy/putmask/",
+    "kind": "op",
+    "slug": "putmask"
+  },
+  "numpy/quantile": {
+    "canonical_name": "quantile",
+    "href": "/docs/api/numpy/quantile/",
+    "kind": "op",
+    "slug": "quantile"
+  },
+  "numpy/radians": {
+    "canonical_name": "radians",
+    "href": "/docs/api/numpy/radians/",
+    "kind": "op",
+    "slug": "radians"
+  },
+  "numpy/random/beta": {
+    "canonical_name": "random.beta",
+    "href": "/docs/api/numpy/random/beta/",
+    "kind": "op",
+    "slug": "random-beta"
+  },
+  "numpy/random/binomial": {
+    "canonical_name": "random.binomial",
+    "href": "/docs/api/numpy/random/binomial/",
+    "kind": "op",
+    "slug": "random-binomial"
+  },
+  "numpy/random/bytes": {
+    "canonical_name": "random.bytes",
+    "href": "/docs/api/numpy/random/bytes/",
+    "kind": "op",
+    "slug": "random-bytes"
+  },
+  "numpy/random/chisquare": {
+    "canonical_name": "random.chisquare",
+    "href": "/docs/api/numpy/random/chisquare/",
+    "kind": "op",
+    "slug": "random-chisquare"
+  },
+  "numpy/random/choice": {
+    "canonical_name": "random.choice",
+    "href": "/docs/api/numpy/random/choice/",
+    "kind": "op",
+    "slug": "random-choice"
+  },
+  "numpy/random/default-rng": {
+    "canonical_name": "random.default_rng",
+    "href": "/docs/api/numpy/random/default-rng/",
+    "kind": "op",
+    "slug": "random-default_rng"
+  },
+  "numpy/random/dirichlet": {
+    "canonical_name": "random.dirichlet",
+    "href": "/docs/api/numpy/random/dirichlet/",
+    "kind": "op",
+    "slug": "random-dirichlet"
+  },
+  "numpy/random/exponential": {
+    "canonical_name": "random.exponential",
+    "href": "/docs/api/numpy/random/exponential/",
+    "kind": "op",
+    "slug": "random-exponential"
+  },
+  "numpy/random/f": {
+    "canonical_name": "random.f",
+    "href": "/docs/api/numpy/random/f/",
+    "kind": "op",
+    "slug": "random-f"
+  },
+  "numpy/random/gamma": {
+    "canonical_name": "random.gamma",
+    "href": "/docs/api/numpy/random/gamma/",
+    "kind": "op",
+    "slug": "random-gamma"
+  },
+  "numpy/random/geometric": {
+    "canonical_name": "random.geometric",
+    "href": "/docs/api/numpy/random/geometric/",
+    "kind": "op",
+    "slug": "random-geometric"
+  },
+  "numpy/random/get-state": {
+    "canonical_name": "random.get_state",
+    "href": "/docs/api/numpy/random/get-state/",
+    "kind": "op",
+    "slug": "random-get_state"
+  },
+  "numpy/random/gumbel": {
+    "canonical_name": "random.gumbel",
+    "href": "/docs/api/numpy/random/gumbel/",
+    "kind": "op",
+    "slug": "random-gumbel"
+  },
+  "numpy/random/hypergeometric": {
+    "canonical_name": "random.hypergeometric",
+    "href": "/docs/api/numpy/random/hypergeometric/",
+    "kind": "op",
+    "slug": "random-hypergeometric"
+  },
+  "numpy/random/laplace": {
+    "canonical_name": "random.laplace",
+    "href": "/docs/api/numpy/random/laplace/",
+    "kind": "op",
+    "slug": "random-laplace"
+  },
+  "numpy/random/logistic": {
+    "canonical_name": "random.logistic",
+    "href": "/docs/api/numpy/random/logistic/",
+    "kind": "op",
+    "slug": "random-logistic"
+  },
+  "numpy/random/lognormal": {
+    "canonical_name": "random.lognormal",
+    "href": "/docs/api/numpy/random/lognormal/",
+    "kind": "op",
+    "slug": "random-lognormal"
+  },
+  "numpy/random/logseries": {
+    "canonical_name": "random.logseries",
+    "href": "/docs/api/numpy/random/logseries/",
+    "kind": "op",
+    "slug": "random-logseries"
+  },
+  "numpy/random/multinomial": {
+    "canonical_name": "random.multinomial",
+    "href": "/docs/api/numpy/random/multinomial/",
+    "kind": "op",
+    "slug": "random-multinomial"
+  },
+  "numpy/random/multivariate-normal": {
+    "canonical_name": "random.multivariate_normal",
+    "href": "/docs/api/numpy/random/multivariate-normal/",
+    "kind": "op",
+    "slug": "random-multivariate_normal"
+  },
+  "numpy/random/negative-binomial": {
+    "canonical_name": "random.negative_binomial",
+    "href": "/docs/api/numpy/random/negative-binomial/",
+    "kind": "op",
+    "slug": "random-negative_binomial"
+  },
+  "numpy/random/noncentral-chisquare": {
+    "canonical_name": "random.noncentral_chisquare",
+    "href": "/docs/api/numpy/random/noncentral-chisquare/",
+    "kind": "op",
+    "slug": "random-noncentral_chisquare"
+  },
+  "numpy/random/noncentral-f": {
+    "canonical_name": "random.noncentral_f",
+    "href": "/docs/api/numpy/random/noncentral-f/",
+    "kind": "op",
+    "slug": "random-noncentral_f"
+  },
+  "numpy/random/normal": {
+    "canonical_name": "random.normal",
+    "href": "/docs/api/numpy/random/normal/",
+    "kind": "op",
+    "slug": "random-normal"
+  },
+  "numpy/random/pareto": {
+    "canonical_name": "random.pareto",
+    "href": "/docs/api/numpy/random/pareto/",
+    "kind": "op",
+    "slug": "random-pareto"
+  },
+  "numpy/random/permutation": {
+    "canonical_name": "random.permutation",
+    "href": "/docs/api/numpy/random/permutation/",
+    "kind": "op",
+    "slug": "random-permutation"
+  },
+  "numpy/random/poisson": {
+    "canonical_name": "random.poisson",
+    "href": "/docs/api/numpy/random/poisson/",
+    "kind": "op",
+    "slug": "random-poisson"
+  },
+  "numpy/random/power": {
+    "canonical_name": "random.power",
+    "href": "/docs/api/numpy/random/power/",
+    "kind": "op",
+    "slug": "random-power"
+  },
+  "numpy/random/rand": {
+    "canonical_name": "random.rand",
+    "href": "/docs/api/numpy/random/rand/",
+    "kind": "op",
+    "slug": "random-rand"
+  },
+  "numpy/random/randint": {
+    "canonical_name": "random.randint",
+    "href": "/docs/api/numpy/random/randint/",
+    "kind": "op",
+    "slug": "random-randint"
+  },
+  "numpy/random/randn": {
+    "canonical_name": "random.randn",
+    "href": "/docs/api/numpy/random/randn/",
+    "kind": "op",
+    "slug": "random-randn"
+  },
+  "numpy/random/random": {
+    "canonical_name": "random.random",
+    "href": "/docs/api/numpy/random/random/",
+    "kind": "op",
+    "slug": "random-random"
+  },
+  "numpy/random/random-integers": {
+    "canonical_name": "random.random_integers",
+    "href": "/docs/api/numpy/random/random-integers/",
+    "kind": "op",
+    "slug": "random-random_integers"
+  },
+  "numpy/random/random-sample": {
+    "canonical_name": "random.random_sample",
+    "href": "/docs/api/numpy/random/random-sample/",
+    "kind": "op",
+    "slug": "random-random_sample"
+  },
+  "numpy/random/rayleigh": {
+    "canonical_name": "random.rayleigh",
+    "href": "/docs/api/numpy/random/rayleigh/",
+    "kind": "op",
+    "slug": "random-rayleigh"
+  },
+  "numpy/random/seed": {
+    "canonical_name": "random.seed",
+    "href": "/docs/api/numpy/random/seed/",
+    "kind": "op",
+    "slug": "random-seed"
+  },
+  "numpy/random/set-state": {
+    "canonical_name": "random.set_state",
+    "href": "/docs/api/numpy/random/set-state/",
+    "kind": "op",
+    "slug": "random-set_state"
+  },
+  "numpy/random/shuffle": {
+    "canonical_name": "random.shuffle",
+    "href": "/docs/api/numpy/random/shuffle/",
+    "kind": "op",
+    "slug": "random-shuffle"
+  },
+  "numpy/random/standard-cauchy": {
+    "canonical_name": "random.standard_cauchy",
+    "href": "/docs/api/numpy/random/standard-cauchy/",
+    "kind": "op",
+    "slug": "random-standard_cauchy"
+  },
+  "numpy/random/standard-exponential": {
+    "canonical_name": "random.standard_exponential",
+    "href": "/docs/api/numpy/random/standard-exponential/",
+    "kind": "op",
+    "slug": "random-standard_exponential"
+  },
+  "numpy/random/standard-gamma": {
+    "canonical_name": "random.standard_gamma",
+    "href": "/docs/api/numpy/random/standard-gamma/",
+    "kind": "op",
+    "slug": "random-standard_gamma"
+  },
+  "numpy/random/standard-normal": {
+    "canonical_name": "random.standard_normal",
+    "href": "/docs/api/numpy/random/standard-normal/",
+    "kind": "op",
+    "slug": "random-standard_normal"
+  },
+  "numpy/random/standard-t": {
+    "canonical_name": "random.standard_t",
+    "href": "/docs/api/numpy/random/standard-t/",
+    "kind": "op",
+    "slug": "random-standard_t"
+  },
+  "numpy/random/triangular": {
+    "canonical_name": "random.triangular",
+    "href": "/docs/api/numpy/random/triangular/",
+    "kind": "op",
+    "slug": "random-triangular"
+  },
+  "numpy/random/uniform": {
+    "canonical_name": "random.uniform",
+    "href": "/docs/api/numpy/random/uniform/",
+    "kind": "op",
+    "slug": "random-uniform"
+  },
+  "numpy/random/vonmises": {
+    "canonical_name": "random.vonmises",
+    "href": "/docs/api/numpy/random/vonmises/",
+    "kind": "op",
+    "slug": "random-vonmises"
+  },
+  "numpy/random/wald": {
+    "canonical_name": "random.wald",
+    "href": "/docs/api/numpy/random/wald/",
+    "kind": "op",
+    "slug": "random-wald"
+  },
+  "numpy/random/weibull": {
+    "canonical_name": "random.weibull",
+    "href": "/docs/api/numpy/random/weibull/",
+    "kind": "op",
+    "slug": "random-weibull"
+  },
+  "numpy/random/zipf": {
+    "canonical_name": "random.zipf",
+    "href": "/docs/api/numpy/random/zipf/",
+    "kind": "op",
+    "slug": "random-zipf"
+  },
+  "numpy/ravel": {
+    "canonical_name": "ravel",
+    "href": "/docs/api/numpy/ravel/",
+    "kind": "op",
+    "slug": "ravel"
+  },
+  "numpy/ravel-multi-index": {
+    "canonical_name": "ravel_multi_index",
+    "href": "/docs/api/numpy/ravel-multi-index/",
+    "kind": "op",
+    "slug": "ravel_multi_index"
+  },
+  "numpy/real": {
+    "canonical_name": "real",
+    "href": "/docs/api/numpy/real/",
+    "kind": "op",
+    "slug": "real"
+  },
+  "numpy/real-if-close": {
+    "canonical_name": "real_if_close",
+    "href": "/docs/api/numpy/real-if-close/",
+    "kind": "op",
+    "slug": "real_if_close"
+  },
+  "numpy/reciprocal": {
+    "canonical_name": "reciprocal",
+    "href": "/docs/api/numpy/reciprocal/",
+    "kind": "op",
+    "slug": "reciprocal"
+  },
+  "numpy/remainder": {
+    "canonical_name": "remainder",
+    "href": "/docs/api/numpy/remainder/",
+    "kind": "op",
+    "slug": "remainder"
+  },
+  "numpy/repeat": {
+    "canonical_name": "repeat",
+    "href": "/docs/api/numpy/repeat/",
+    "kind": "op",
+    "slug": "repeat"
+  },
+  "numpy/require": {
+    "canonical_name": "require",
+    "href": "/docs/api/numpy/require/",
+    "kind": "op",
+    "slug": "require"
+  },
+  "numpy/reshape": {
+    "canonical_name": "reshape",
+    "href": "/docs/api/numpy/reshape/",
+    "kind": "op",
+    "slug": "reshape"
+  },
+  "numpy/resize": {
+    "canonical_name": "resize",
+    "href": "/docs/api/numpy/resize/",
+    "kind": "op",
+    "slug": "resize"
+  },
+  "numpy/result-type": {
+    "canonical_name": "result_type",
+    "href": "/docs/api/numpy/result-type/",
+    "kind": "op",
+    "slug": "result_type"
+  },
+  "numpy/right-shift": {
+    "canonical_name": "right_shift",
+    "href": "/docs/api/numpy/right-shift/",
+    "kind": "op",
+    "slug": "right_shift"
+  },
+  "numpy/rint": {
+    "canonical_name": "rint",
+    "href": "/docs/api/numpy/rint/",
+    "kind": "op",
+    "slug": "rint"
+  },
+  "numpy/roll": {
+    "canonical_name": "roll",
+    "href": "/docs/api/numpy/roll/",
+    "kind": "op",
+    "slug": "roll"
+  },
+  "numpy/rollaxis": {
+    "canonical_name": "rollaxis",
+    "href": "/docs/api/numpy/rollaxis/",
+    "kind": "op",
+    "slug": "rollaxis"
+  },
+  "numpy/roots": {
+    "canonical_name": "roots",
+    "href": "/docs/api/numpy/roots/",
+    "kind": "op",
+    "slug": "roots"
+  },
+  "numpy/rot90": {
+    "canonical_name": "rot90",
+    "href": "/docs/api/numpy/rot90/",
+    "kind": "op",
+    "slug": "rot90"
+  },
+  "numpy/row-stack": {
+    "canonical_name": "row_stack",
+    "href": "/docs/api/numpy/row-stack/",
+    "kind": "op",
+    "slug": "row_stack"
+  },
+  "numpy/searchsorted": {
+    "canonical_name": "searchsorted",
+    "href": "/docs/api/numpy/searchsorted/",
+    "kind": "op",
+    "slug": "searchsorted"
+  },
+  "numpy/select": {
+    "canonical_name": "select",
+    "href": "/docs/api/numpy/select/",
+    "kind": "op",
+    "slug": "select"
+  },
+  "numpy/setdiff1d": {
+    "canonical_name": "setdiff1d",
+    "href": "/docs/api/numpy/setdiff1d/",
+    "kind": "op",
+    "slug": "setdiff1d"
+  },
+  "numpy/setxor1d": {
+    "canonical_name": "setxor1d",
+    "href": "/docs/api/numpy/setxor1d/",
+    "kind": "op",
+    "slug": "setxor1d"
+  },
+  "numpy/shape": {
+    "canonical_name": "shape",
+    "href": "/docs/api/numpy/shape/",
+    "kind": "op",
+    "slug": "shape"
+  },
+  "numpy/shares-memory": {
+    "canonical_name": "shares_memory",
+    "href": "/docs/api/numpy/shares-memory/",
+    "kind": "op",
+    "slug": "shares_memory"
+  },
+  "numpy/sign": {
+    "canonical_name": "sign",
+    "href": "/docs/api/numpy/sign/",
+    "kind": "op",
+    "slug": "sign"
+  },
+  "numpy/signbit": {
+    "canonical_name": "signbit",
+    "href": "/docs/api/numpy/signbit/",
+    "kind": "op",
+    "slug": "signbit"
+  },
+  "numpy/sin": {
+    "canonical_name": "sin",
+    "href": "/docs/api/numpy/sin/",
+    "kind": "op",
+    "slug": "sin"
+  },
+  "numpy/sinc": {
+    "canonical_name": "sinc",
+    "href": "/docs/api/numpy/sinc/",
+    "kind": "op",
+    "slug": "sinc"
+  },
+  "numpy/sinh": {
+    "canonical_name": "sinh",
+    "href": "/docs/api/numpy/sinh/",
+    "kind": "op",
+    "slug": "sinh"
+  },
+  "numpy/size": {
+    "canonical_name": "size",
+    "href": "/docs/api/numpy/size/",
+    "kind": "op",
+    "slug": "size"
+  },
+  "numpy/sort": {
+    "canonical_name": "sort",
+    "href": "/docs/api/numpy/sort/",
+    "kind": "op",
+    "slug": "sort"
+  },
+  "numpy/sort-complex": {
+    "canonical_name": "sort_complex",
+    "href": "/docs/api/numpy/sort-complex/",
+    "kind": "op",
+    "slug": "sort_complex"
+  },
+  "numpy/spacing": {
+    "canonical_name": "spacing",
+    "href": "/docs/api/numpy/spacing/",
+    "kind": "op",
+    "slug": "spacing"
+  },
+  "numpy/split": {
+    "canonical_name": "split",
+    "href": "/docs/api/numpy/split/",
+    "kind": "op",
+    "slug": "split"
+  },
+  "numpy/sqrt": {
+    "canonical_name": "sqrt",
+    "href": "/docs/api/numpy/sqrt/",
+    "kind": "op",
+    "slug": "sqrt"
+  },
+  "numpy/square": {
+    "canonical_name": "square",
+    "href": "/docs/api/numpy/square/",
+    "kind": "op",
+    "slug": "square"
+  },
+  "numpy/squeeze": {
+    "canonical_name": "squeeze",
+    "href": "/docs/api/numpy/squeeze/",
+    "kind": "op",
+    "slug": "squeeze"
+  },
+  "numpy/stack": {
+    "canonical_name": "stack",
+    "href": "/docs/api/numpy/stack/",
+    "kind": "op",
+    "slug": "stack"
+  },
+  "numpy/std": {
+    "canonical_name": "std",
+    "href": "/docs/api/numpy/std/",
+    "kind": "op",
+    "slug": "std"
+  },
+  "numpy/subtract": {
+    "canonical_name": "subtract",
+    "href": "/docs/api/numpy/subtract/",
+    "kind": "op",
+    "slug": "subtract"
+  },
+  "numpy/sum": {
+    "canonical_name": "sum",
+    "href": "/docs/api/numpy/sum/",
+    "kind": "op",
+    "slug": "sum"
+  },
+  "numpy/swapaxes": {
+    "canonical_name": "swapaxes",
+    "href": "/docs/api/numpy/swapaxes/",
+    "kind": "op",
+    "slug": "swapaxes"
+  },
+  "numpy/take": {
+    "canonical_name": "take",
+    "href": "/docs/api/numpy/take/",
+    "kind": "op",
+    "slug": "take"
+  },
+  "numpy/take-along-axis": {
+    "canonical_name": "take_along_axis",
+    "href": "/docs/api/numpy/take-along-axis/",
+    "kind": "op",
+    "slug": "take_along_axis"
+  },
+  "numpy/tan": {
+    "canonical_name": "tan",
+    "href": "/docs/api/numpy/tan/",
+    "kind": "op",
+    "slug": "tan"
+  },
+  "numpy/tanh": {
+    "canonical_name": "tanh",
+    "href": "/docs/api/numpy/tanh/",
+    "kind": "op",
+    "slug": "tanh"
+  },
+  "numpy/tensordot": {
+    "canonical_name": "tensordot",
+    "href": "/docs/api/numpy/tensordot/",
+    "kind": "op",
+    "slug": "tensordot"
+  },
+  "numpy/tile": {
+    "canonical_name": "tile",
+    "href": "/docs/api/numpy/tile/",
+    "kind": "op",
+    "slug": "tile"
+  },
+  "numpy/trace": {
+    "canonical_name": "trace",
+    "href": "/docs/api/numpy/trace/",
+    "kind": "op",
+    "slug": "trace"
+  },
+  "numpy/transpose": {
+    "canonical_name": "transpose",
+    "href": "/docs/api/numpy/transpose/",
+    "kind": "op",
+    "slug": "transpose"
+  },
+  "numpy/trapezoid": {
+    "canonical_name": "trapezoid",
+    "href": "/docs/api/numpy/trapezoid/",
+    "kind": "op",
+    "slug": "trapezoid"
+  },
+  "numpy/tri": {
+    "canonical_name": "tri",
+    "href": "/docs/api/numpy/tri/",
+    "kind": "op",
+    "slug": "tri"
+  },
+  "numpy/tril": {
+    "canonical_name": "tril",
+    "href": "/docs/api/numpy/tril/",
+    "kind": "op",
+    "slug": "tril"
+  },
+  "numpy/tril-indices": {
+    "canonical_name": "tril_indices",
+    "href": "/docs/api/numpy/tril-indices/",
+    "kind": "op",
+    "slug": "tril_indices"
+  },
+  "numpy/tril-indices-from": {
+    "canonical_name": "tril_indices_from",
+    "href": "/docs/api/numpy/tril-indices-from/",
+    "kind": "op",
+    "slug": "tril_indices_from"
+  },
+  "numpy/trim-zeros": {
+    "canonical_name": "trim_zeros",
+    "href": "/docs/api/numpy/trim-zeros/",
+    "kind": "op",
+    "slug": "trim_zeros"
+  },
+  "numpy/triu": {
+    "canonical_name": "triu",
+    "href": "/docs/api/numpy/triu/",
+    "kind": "op",
+    "slug": "triu"
+  },
+  "numpy/triu-indices": {
+    "canonical_name": "triu_indices",
+    "href": "/docs/api/numpy/triu-indices/",
+    "kind": "op",
+    "slug": "triu_indices"
+  },
+  "numpy/triu-indices-from": {
+    "canonical_name": "triu_indices_from",
+    "href": "/docs/api/numpy/triu-indices-from/",
+    "kind": "op",
+    "slug": "triu_indices_from"
+  },
+  "numpy/true-divide": {
+    "canonical_name": "true_divide",
+    "href": "/docs/api/numpy/true-divide/",
+    "kind": "op",
+    "slug": "true_divide"
+  },
+  "numpy/trunc": {
+    "canonical_name": "trunc",
+    "href": "/docs/api/numpy/trunc/",
+    "kind": "op",
+    "slug": "trunc"
+  },
+  "numpy/typename": {
+    "canonical_name": "typename",
+    "href": "/docs/api/numpy/typename/",
+    "kind": "op",
+    "slug": "typename"
+  },
+  "numpy/union1d": {
+    "canonical_name": "union1d",
+    "href": "/docs/api/numpy/union1d/",
+    "kind": "op",
+    "slug": "union1d"
+  },
+  "numpy/unique": {
+    "canonical_name": "unique",
+    "href": "/docs/api/numpy/unique/",
+    "kind": "op",
+    "slug": "unique"
+  },
+  "numpy/unique-all": {
+    "canonical_name": "unique_all",
+    "href": "/docs/api/numpy/unique-all/",
+    "kind": "op",
+    "slug": "unique_all"
+  },
+  "numpy/unique-counts": {
+    "canonical_name": "unique_counts",
+    "href": "/docs/api/numpy/unique-counts/",
+    "kind": "op",
+    "slug": "unique_counts"
+  },
+  "numpy/unique-inverse": {
+    "canonical_name": "unique_inverse",
+    "href": "/docs/api/numpy/unique-inverse/",
+    "kind": "op",
+    "slug": "unique_inverse"
+  },
+  "numpy/unique-values": {
+    "canonical_name": "unique_values",
+    "href": "/docs/api/numpy/unique-values/",
+    "kind": "op",
+    "slug": "unique_values"
+  },
+  "numpy/unpackbits": {
+    "canonical_name": "unpackbits",
+    "href": "/docs/api/numpy/unpackbits/",
+    "kind": "op",
+    "slug": "unpackbits"
+  },
+  "numpy/unravel-index": {
+    "canonical_name": "unravel_index",
+    "href": "/docs/api/numpy/unravel-index/",
+    "kind": "op",
+    "slug": "unravel_index"
+  },
+  "numpy/unstack": {
+    "canonical_name": "unstack",
+    "href": "/docs/api/numpy/unstack/",
+    "kind": "op",
+    "slug": "unstack"
+  },
+  "numpy/unwrap": {
+    "canonical_name": "unwrap",
+    "href": "/docs/api/numpy/unwrap/",
+    "kind": "op",
+    "slug": "unwrap"
+  },
+  "numpy/vander": {
+    "canonical_name": "vander",
+    "href": "/docs/api/numpy/vander/",
+    "kind": "op",
+    "slug": "vander"
+  },
+  "numpy/var": {
+    "canonical_name": "var",
+    "href": "/docs/api/numpy/var/",
+    "kind": "op",
+    "slug": "var"
+  },
+  "numpy/vdot": {
+    "canonical_name": "vdot",
+    "href": "/docs/api/numpy/vdot/",
+    "kind": "op",
+    "slug": "vdot"
+  },
+  "numpy/vecdot": {
+    "canonical_name": "vecdot",
+    "href": "/docs/api/numpy/vecdot/",
+    "kind": "op",
+    "slug": "vecdot"
+  },
+  "numpy/vecmat": {
+    "canonical_name": "vecmat",
+    "href": "/docs/api/numpy/vecmat/",
+    "kind": "op",
+    "slug": "vecmat"
+  },
+  "numpy/vsplit": {
+    "canonical_name": "vsplit",
+    "href": "/docs/api/numpy/vsplit/",
+    "kind": "op",
+    "slug": "vsplit"
+  },
+  "numpy/vstack": {
+    "canonical_name": "vstack",
+    "href": "/docs/api/numpy/vstack/",
+    "kind": "op",
+    "slug": "vstack"
+  },
+  "numpy/where": {
+    "canonical_name": "where",
+    "href": "/docs/api/numpy/where/",
+    "kind": "op",
+    "slug": "where"
+  },
+  "numpy/zeros": {
+    "canonical_name": "zeros",
+    "href": "/docs/api/numpy/zeros/",
+    "kind": "op",
+    "slug": "zeros"
+  },
+  "numpy/zeros-like": {
+    "canonical_name": "zeros_like",
+    "href": "/docs/api/numpy/zeros-like/",
+    "kind": "op",
+    "slug": "zeros_like"
   },
   "op-record": {
     "canonical_name": "OpRecord",
@@ -2075,383 +3023,17 @@
     "kind": "symbol",
     "slug": "op-record"
   },
-  "outer": {
-    "canonical_name": "outer",
-    "href": "/docs/api/outer/",
-    "kind": "op",
-    "slug": "outer"
-  },
-  "packbits": {
-    "canonical_name": "packbits",
-    "href": "/docs/api/packbits/",
-    "kind": "op",
-    "slug": "packbits"
-  },
-  "pad": {
-    "canonical_name": "pad",
-    "href": "/docs/api/pad/",
-    "kind": "op",
-    "slug": "pad"
-  },
-  "partition": {
-    "canonical_name": "partition",
-    "href": "/docs/api/partition/",
-    "kind": "op",
-    "slug": "partition"
-  },
   "path-info": {
     "canonical_name": "PathInfo",
     "href": "/docs/api/path-info/",
     "kind": "symbol",
     "slug": "path-info"
   },
-  "percentile": {
-    "canonical_name": "percentile",
-    "href": "/docs/api/percentile/",
-    "kind": "op",
-    "slug": "percentile"
-  },
-  "permute-dims": {
-    "canonical_name": "permute_dims",
-    "href": "/docs/api/permute-dims/",
-    "kind": "op",
-    "slug": "permute_dims"
-  },
-  "piecewise": {
-    "canonical_name": "piecewise",
-    "href": "/docs/api/piecewise/",
-    "kind": "op",
-    "slug": "piecewise"
-  },
-  "place": {
-    "canonical_name": "place",
-    "href": "/docs/api/place/",
-    "kind": "op",
-    "slug": "place"
-  },
-  "poly": {
-    "canonical_name": "poly",
-    "href": "/docs/api/poly/",
-    "kind": "op",
-    "slug": "poly"
-  },
-  "polyadd": {
-    "canonical_name": "polyadd",
-    "href": "/docs/api/polyadd/",
-    "kind": "op",
-    "slug": "polyadd"
-  },
-  "polyder": {
-    "canonical_name": "polyder",
-    "href": "/docs/api/polyder/",
-    "kind": "op",
-    "slug": "polyder"
-  },
-  "polydiv": {
-    "canonical_name": "polydiv",
-    "href": "/docs/api/polydiv/",
-    "kind": "op",
-    "slug": "polydiv"
-  },
-  "polyfit": {
-    "canonical_name": "polyfit",
-    "href": "/docs/api/polyfit/",
-    "kind": "op",
-    "slug": "polyfit"
-  },
-  "polyint": {
-    "canonical_name": "polyint",
-    "href": "/docs/api/polyint/",
-    "kind": "op",
-    "slug": "polyint"
-  },
-  "polymul": {
-    "canonical_name": "polymul",
-    "href": "/docs/api/polymul/",
-    "kind": "op",
-    "slug": "polymul"
-  },
-  "polysub": {
-    "canonical_name": "polysub",
-    "href": "/docs/api/polysub/",
-    "kind": "op",
-    "slug": "polysub"
-  },
-  "polyval": {
-    "canonical_name": "polyval",
-    "href": "/docs/api/polyval/",
-    "kind": "op",
-    "slug": "polyval"
-  },
-  "positive": {
-    "canonical_name": "positive",
-    "href": "/docs/api/positive/",
-    "kind": "op",
-    "slug": "positive"
-  },
-  "power": {
-    "canonical_name": "power",
-    "href": "/docs/api/power/",
-    "kind": "op",
-    "slug": "power"
-  },
   "printoptions": {
     "canonical_name": "printoptions",
     "href": "/docs/api/printoptions/",
     "kind": "symbol",
     "slug": "printoptions"
-  },
-  "prod": {
-    "canonical_name": "prod",
-    "href": "/docs/api/prod/",
-    "kind": "op",
-    "slug": "prod"
-  },
-  "promote-types": {
-    "canonical_name": "promote_types",
-    "href": "/docs/api/promote-types/",
-    "kind": "op",
-    "slug": "promote_types"
-  },
-  "ptp": {
-    "canonical_name": "ptp",
-    "href": "/docs/api/ptp/",
-    "kind": "op",
-    "slug": "ptp"
-  },
-  "put": {
-    "canonical_name": "put",
-    "href": "/docs/api/put/",
-    "kind": "op",
-    "slug": "put"
-  },
-  "put-along-axis": {
-    "canonical_name": "put_along_axis",
-    "href": "/docs/api/put-along-axis/",
-    "kind": "op",
-    "slug": "put_along_axis"
-  },
-  "putmask": {
-    "canonical_name": "putmask",
-    "href": "/docs/api/putmask/",
-    "kind": "op",
-    "slug": "putmask"
-  },
-  "quantile": {
-    "canonical_name": "quantile",
-    "href": "/docs/api/quantile/",
-    "kind": "op",
-    "slug": "quantile"
-  },
-  "radians": {
-    "canonical_name": "radians",
-    "href": "/docs/api/radians/",
-    "kind": "op",
-    "slug": "radians"
-  },
-  "random/beta": {
-    "canonical_name": "random.beta",
-    "href": "/docs/api/random/beta/",
-    "kind": "op",
-    "slug": "random-beta"
-  },
-  "random/binomial": {
-    "canonical_name": "random.binomial",
-    "href": "/docs/api/random/binomial/",
-    "kind": "op",
-    "slug": "random-binomial"
-  },
-  "random/bytes": {
-    "canonical_name": "random.bytes",
-    "href": "/docs/api/random/bytes/",
-    "kind": "op",
-    "slug": "random-bytes"
-  },
-  "random/chisquare": {
-    "canonical_name": "random.chisquare",
-    "href": "/docs/api/random/chisquare/",
-    "kind": "op",
-    "slug": "random-chisquare"
-  },
-  "random/choice": {
-    "canonical_name": "random.choice",
-    "href": "/docs/api/random/choice/",
-    "kind": "op",
-    "slug": "random-choice"
-  },
-  "random/default-rng": {
-    "canonical_name": "random.default_rng",
-    "href": "/docs/api/random/default-rng/",
-    "kind": "op",
-    "slug": "random-default_rng"
-  },
-  "random/dirichlet": {
-    "canonical_name": "random.dirichlet",
-    "href": "/docs/api/random/dirichlet/",
-    "kind": "op",
-    "slug": "random-dirichlet"
-  },
-  "random/exponential": {
-    "canonical_name": "random.exponential",
-    "href": "/docs/api/random/exponential/",
-    "kind": "op",
-    "slug": "random-exponential"
-  },
-  "random/f": {
-    "canonical_name": "random.f",
-    "href": "/docs/api/random/f/",
-    "kind": "op",
-    "slug": "random-f"
-  },
-  "random/gamma": {
-    "canonical_name": "random.gamma",
-    "href": "/docs/api/random/gamma/",
-    "kind": "op",
-    "slug": "random-gamma"
-  },
-  "random/geometric": {
-    "canonical_name": "random.geometric",
-    "href": "/docs/api/random/geometric/",
-    "kind": "op",
-    "slug": "random-geometric"
-  },
-  "random/get-state": {
-    "canonical_name": "random.get_state",
-    "href": "/docs/api/random/get-state/",
-    "kind": "op",
-    "slug": "random-get_state"
-  },
-  "random/gumbel": {
-    "canonical_name": "random.gumbel",
-    "href": "/docs/api/random/gumbel/",
-    "kind": "op",
-    "slug": "random-gumbel"
-  },
-  "random/hypergeometric": {
-    "canonical_name": "random.hypergeometric",
-    "href": "/docs/api/random/hypergeometric/",
-    "kind": "op",
-    "slug": "random-hypergeometric"
-  },
-  "random/laplace": {
-    "canonical_name": "random.laplace",
-    "href": "/docs/api/random/laplace/",
-    "kind": "op",
-    "slug": "random-laplace"
-  },
-  "random/logistic": {
-    "canonical_name": "random.logistic",
-    "href": "/docs/api/random/logistic/",
-    "kind": "op",
-    "slug": "random-logistic"
-  },
-  "random/lognormal": {
-    "canonical_name": "random.lognormal",
-    "href": "/docs/api/random/lognormal/",
-    "kind": "op",
-    "slug": "random-lognormal"
-  },
-  "random/logseries": {
-    "canonical_name": "random.logseries",
-    "href": "/docs/api/random/logseries/",
-    "kind": "op",
-    "slug": "random-logseries"
-  },
-  "random/multinomial": {
-    "canonical_name": "random.multinomial",
-    "href": "/docs/api/random/multinomial/",
-    "kind": "op",
-    "slug": "random-multinomial"
-  },
-  "random/multivariate-normal": {
-    "canonical_name": "random.multivariate_normal",
-    "href": "/docs/api/random/multivariate-normal/",
-    "kind": "op",
-    "slug": "random-multivariate_normal"
-  },
-  "random/negative-binomial": {
-    "canonical_name": "random.negative_binomial",
-    "href": "/docs/api/random/negative-binomial/",
-    "kind": "op",
-    "slug": "random-negative_binomial"
-  },
-  "random/noncentral-chisquare": {
-    "canonical_name": "random.noncentral_chisquare",
-    "href": "/docs/api/random/noncentral-chisquare/",
-    "kind": "op",
-    "slug": "random-noncentral_chisquare"
-  },
-  "random/noncentral-f": {
-    "canonical_name": "random.noncentral_f",
-    "href": "/docs/api/random/noncentral-f/",
-    "kind": "op",
-    "slug": "random-noncentral_f"
-  },
-  "random/normal": {
-    "canonical_name": "random.normal",
-    "href": "/docs/api/random/normal/",
-    "kind": "op",
-    "slug": "random-normal"
-  },
-  "random/pareto": {
-    "canonical_name": "random.pareto",
-    "href": "/docs/api/random/pareto/",
-    "kind": "op",
-    "slug": "random-pareto"
-  },
-  "random/permutation": {
-    "canonical_name": "random.permutation",
-    "href": "/docs/api/random/permutation/",
-    "kind": "op",
-    "slug": "random-permutation"
-  },
-  "random/poisson": {
-    "canonical_name": "random.poisson",
-    "href": "/docs/api/random/poisson/",
-    "kind": "op",
-    "slug": "random-poisson"
-  },
-  "random/power": {
-    "canonical_name": "random.power",
-    "href": "/docs/api/random/power/",
-    "kind": "op",
-    "slug": "random-power"
-  },
-  "random/rand": {
-    "canonical_name": "random.rand",
-    "href": "/docs/api/random/rand/",
-    "kind": "op",
-    "slug": "random-rand"
-  },
-  "random/randint": {
-    "canonical_name": "random.randint",
-    "href": "/docs/api/random/randint/",
-    "kind": "op",
-    "slug": "random-randint"
-  },
-  "random/randn": {
-    "canonical_name": "random.randn",
-    "href": "/docs/api/random/randn/",
-    "kind": "op",
-    "slug": "random-randn"
-  },
-  "random/random": {
-    "canonical_name": "random.random",
-    "href": "/docs/api/random/random/",
-    "kind": "op",
-    "slug": "random-random"
-  },
-  "random/random-integers": {
-    "canonical_name": "random.random_integers",
-    "href": "/docs/api/random/random-integers/",
-    "kind": "op",
-    "slug": "random-random_integers"
-  },
-  "random/random-sample": {
-    "canonical_name": "random.random_sample",
-    "href": "/docs/api/random/random-sample/",
-    "kind": "op",
-    "slug": "random-random_sample"
   },
   "random/random-state": {
     "canonical_name": "random.RandomState",
@@ -2465,23 +3047,11 @@
     "kind": "symbol",
     "slug": "random-ranf"
   },
-  "random/rayleigh": {
-    "canonical_name": "random.rayleigh",
-    "href": "/docs/api/random/rayleigh/",
-    "kind": "op",
-    "slug": "random-rayleigh"
-  },
   "random/sample": {
     "canonical_name": "random.sample",
     "href": "/docs/api/random/sample/",
     "kind": "symbol",
     "slug": "random-sample"
-  },
-  "random/seed": {
-    "canonical_name": "random.seed",
-    "href": "/docs/api/random/seed/",
-    "kind": "op",
-    "slug": "random-seed"
   },
   "random/seed-sequence": {
     "canonical_name": "random.SeedSequence",
@@ -2489,209 +3059,11 @@
     "kind": "symbol",
     "slug": "random-seed-sequence"
   },
-  "random/set-state": {
-    "canonical_name": "random.set_state",
-    "href": "/docs/api/random/set-state/",
-    "kind": "op",
-    "slug": "random-set_state"
-  },
-  "random/shuffle": {
-    "canonical_name": "random.shuffle",
-    "href": "/docs/api/random/shuffle/",
-    "kind": "op",
-    "slug": "random-shuffle"
-  },
-  "random/standard-cauchy": {
-    "canonical_name": "random.standard_cauchy",
-    "href": "/docs/api/random/standard-cauchy/",
-    "kind": "op",
-    "slug": "random-standard_cauchy"
-  },
-  "random/standard-exponential": {
-    "canonical_name": "random.standard_exponential",
-    "href": "/docs/api/random/standard-exponential/",
-    "kind": "op",
-    "slug": "random-standard_exponential"
-  },
-  "random/standard-gamma": {
-    "canonical_name": "random.standard_gamma",
-    "href": "/docs/api/random/standard-gamma/",
-    "kind": "op",
-    "slug": "random-standard_gamma"
-  },
-  "random/standard-normal": {
-    "canonical_name": "random.standard_normal",
-    "href": "/docs/api/random/standard-normal/",
-    "kind": "op",
-    "slug": "random-standard_normal"
-  },
-  "random/standard-t": {
-    "canonical_name": "random.standard_t",
-    "href": "/docs/api/random/standard-t/",
-    "kind": "op",
-    "slug": "random-standard_t"
-  },
   "random/symmetric": {
     "canonical_name": "random.symmetric",
     "href": "/docs/api/random/symmetric/",
     "kind": "symbol",
     "slug": "random-symmetric"
-  },
-  "random/triangular": {
-    "canonical_name": "random.triangular",
-    "href": "/docs/api/random/triangular/",
-    "kind": "op",
-    "slug": "random-triangular"
-  },
-  "random/uniform": {
-    "canonical_name": "random.uniform",
-    "href": "/docs/api/random/uniform/",
-    "kind": "op",
-    "slug": "random-uniform"
-  },
-  "random/vonmises": {
-    "canonical_name": "random.vonmises",
-    "href": "/docs/api/random/vonmises/",
-    "kind": "op",
-    "slug": "random-vonmises"
-  },
-  "random/wald": {
-    "canonical_name": "random.wald",
-    "href": "/docs/api/random/wald/",
-    "kind": "op",
-    "slug": "random-wald"
-  },
-  "random/weibull": {
-    "canonical_name": "random.weibull",
-    "href": "/docs/api/random/weibull/",
-    "kind": "op",
-    "slug": "random-weibull"
-  },
-  "random/zipf": {
-    "canonical_name": "random.zipf",
-    "href": "/docs/api/random/zipf/",
-    "kind": "op",
-    "slug": "random-zipf"
-  },
-  "ravel": {
-    "canonical_name": "ravel",
-    "href": "/docs/api/ravel/",
-    "kind": "op",
-    "slug": "ravel"
-  },
-  "ravel-multi-index": {
-    "canonical_name": "ravel_multi_index",
-    "href": "/docs/api/ravel-multi-index/",
-    "kind": "op",
-    "slug": "ravel_multi_index"
-  },
-  "real": {
-    "canonical_name": "real",
-    "href": "/docs/api/real/",
-    "kind": "op",
-    "slug": "real"
-  },
-  "real-if-close": {
-    "canonical_name": "real_if_close",
-    "href": "/docs/api/real-if-close/",
-    "kind": "op",
-    "slug": "real_if_close"
-  },
-  "reciprocal": {
-    "canonical_name": "reciprocal",
-    "href": "/docs/api/reciprocal/",
-    "kind": "op",
-    "slug": "reciprocal"
-  },
-  "remainder": {
-    "canonical_name": "remainder",
-    "href": "/docs/api/remainder/",
-    "kind": "op",
-    "slug": "remainder"
-  },
-  "repeat": {
-    "canonical_name": "repeat",
-    "href": "/docs/api/repeat/",
-    "kind": "op",
-    "slug": "repeat"
-  },
-  "require": {
-    "canonical_name": "require",
-    "href": "/docs/api/require/",
-    "kind": "op",
-    "slug": "require"
-  },
-  "reshape": {
-    "canonical_name": "reshape",
-    "href": "/docs/api/reshape/",
-    "kind": "op",
-    "slug": "reshape"
-  },
-  "resize": {
-    "canonical_name": "resize",
-    "href": "/docs/api/resize/",
-    "kind": "op",
-    "slug": "resize"
-  },
-  "result-type": {
-    "canonical_name": "result_type",
-    "href": "/docs/api/result-type/",
-    "kind": "op",
-    "slug": "result_type"
-  },
-  "right-shift": {
-    "canonical_name": "right_shift",
-    "href": "/docs/api/right-shift/",
-    "kind": "op",
-    "slug": "right_shift"
-  },
-  "rint": {
-    "canonical_name": "rint",
-    "href": "/docs/api/rint/",
-    "kind": "op",
-    "slug": "rint"
-  },
-  "roll": {
-    "canonical_name": "roll",
-    "href": "/docs/api/roll/",
-    "kind": "op",
-    "slug": "roll"
-  },
-  "rollaxis": {
-    "canonical_name": "rollaxis",
-    "href": "/docs/api/rollaxis/",
-    "kind": "op",
-    "slug": "rollaxis"
-  },
-  "roots": {
-    "canonical_name": "roots",
-    "href": "/docs/api/roots/",
-    "kind": "op",
-    "slug": "roots"
-  },
-  "rot90": {
-    "canonical_name": "rot90",
-    "href": "/docs/api/rot90/",
-    "kind": "op",
-    "slug": "rot90"
-  },
-  "row-stack": {
-    "canonical_name": "row_stack",
-    "href": "/docs/api/row-stack/",
-    "kind": "op",
-    "slug": "row_stack"
-  },
-  "searchsorted": {
-    "canonical_name": "searchsorted",
-    "href": "/docs/api/searchsorted/",
-    "kind": "op",
-    "slug": "searchsorted"
-  },
-  "select": {
-    "canonical_name": "select",
-    "href": "/docs/api/select/",
-    "kind": "op",
-    "slug": "select"
   },
   "set-printoptions": {
     "canonical_name": "set_printoptions",
@@ -2699,119 +3071,11 @@
     "kind": "symbol",
     "slug": "set-printoptions"
   },
-  "setdiff1d": {
-    "canonical_name": "setdiff1d",
-    "href": "/docs/api/setdiff1d/",
-    "kind": "op",
-    "slug": "setdiff1d"
-  },
   "seterr": {
     "canonical_name": "seterr",
     "href": "/docs/api/seterr/",
     "kind": "symbol",
     "slug": "seterr"
-  },
-  "setxor1d": {
-    "canonical_name": "setxor1d",
-    "href": "/docs/api/setxor1d/",
-    "kind": "op",
-    "slug": "setxor1d"
-  },
-  "shape": {
-    "canonical_name": "shape",
-    "href": "/docs/api/shape/",
-    "kind": "op",
-    "slug": "shape"
-  },
-  "shares-memory": {
-    "canonical_name": "shares_memory",
-    "href": "/docs/api/shares-memory/",
-    "kind": "op",
-    "slug": "shares_memory"
-  },
-  "sign": {
-    "canonical_name": "sign",
-    "href": "/docs/api/sign/",
-    "kind": "op",
-    "slug": "sign"
-  },
-  "signbit": {
-    "canonical_name": "signbit",
-    "href": "/docs/api/signbit/",
-    "kind": "op",
-    "slug": "signbit"
-  },
-  "sin": {
-    "canonical_name": "sin",
-    "href": "/docs/api/sin/",
-    "kind": "op",
-    "slug": "sin"
-  },
-  "sinc": {
-    "canonical_name": "sinc",
-    "href": "/docs/api/sinc/",
-    "kind": "op",
-    "slug": "sinc"
-  },
-  "sinh": {
-    "canonical_name": "sinh",
-    "href": "/docs/api/sinh/",
-    "kind": "op",
-    "slug": "sinh"
-  },
-  "size": {
-    "canonical_name": "size",
-    "href": "/docs/api/size/",
-    "kind": "op",
-    "slug": "size"
-  },
-  "sort": {
-    "canonical_name": "sort",
-    "href": "/docs/api/sort/",
-    "kind": "op",
-    "slug": "sort"
-  },
-  "sort-complex": {
-    "canonical_name": "sort_complex",
-    "href": "/docs/api/sort-complex/",
-    "kind": "op",
-    "slug": "sort_complex"
-  },
-  "spacing": {
-    "canonical_name": "spacing",
-    "href": "/docs/api/spacing/",
-    "kind": "op",
-    "slug": "spacing"
-  },
-  "split": {
-    "canonical_name": "split",
-    "href": "/docs/api/split/",
-    "kind": "op",
-    "slug": "split"
-  },
-  "sqrt": {
-    "canonical_name": "sqrt",
-    "href": "/docs/api/sqrt/",
-    "kind": "op",
-    "slug": "sqrt"
-  },
-  "square": {
-    "canonical_name": "square",
-    "href": "/docs/api/square/",
-    "kind": "op",
-    "slug": "square"
-  },
-  "squeeze": {
-    "canonical_name": "squeeze",
-    "href": "/docs/api/squeeze/",
-    "kind": "op",
-    "slug": "squeeze"
-  },
-  "stack": {
-    "canonical_name": "stack",
-    "href": "/docs/api/stack/",
-    "kind": "op",
-    "slug": "stack"
   },
   "stats/cauchy": {
     "canonical_name": "stats.cauchy",
@@ -3005,35 +3269,11 @@
     "kind": "op",
     "slug": "stats-uniform-ppf"
   },
-  "std": {
-    "canonical_name": "std",
-    "href": "/docs/api/std/",
-    "kind": "op",
-    "slug": "std"
-  },
   "step-info": {
     "canonical_name": "StepInfo",
     "href": "/docs/api/step-info/",
     "kind": "symbol",
     "slug": "step-info"
-  },
-  "subtract": {
-    "canonical_name": "subtract",
-    "href": "/docs/api/subtract/",
-    "kind": "op",
-    "slug": "subtract"
-  },
-  "sum": {
-    "canonical_name": "sum",
-    "href": "/docs/api/sum/",
-    "kind": "op",
-    "slug": "sum"
-  },
-  "swapaxes": {
-    "canonical_name": "swapaxes",
-    "href": "/docs/api/swapaxes/",
-    "kind": "op",
-    "slug": "swapaxes"
   },
   "symmetric-tensor": {
     "canonical_name": "SymmetricTensor",
@@ -3053,36 +3293,6 @@
     "kind": "symbol",
     "slug": "symmetry-group"
   },
-  "take": {
-    "canonical_name": "take",
-    "href": "/docs/api/take/",
-    "kind": "op",
-    "slug": "take"
-  },
-  "take-along-axis": {
-    "canonical_name": "take_along_axis",
-    "href": "/docs/api/take-along-axis/",
-    "kind": "op",
-    "slug": "take_along_axis"
-  },
-  "tan": {
-    "canonical_name": "tan",
-    "href": "/docs/api/tan/",
-    "kind": "op",
-    "slug": "tan"
-  },
-  "tanh": {
-    "canonical_name": "tanh",
-    "href": "/docs/api/tanh/",
-    "kind": "op",
-    "slug": "tanh"
-  },
-  "tensordot": {
-    "canonical_name": "tensordot",
-    "href": "/docs/api/tensordot/",
-    "kind": "op",
-    "slug": "tensordot"
-  },
   "testing/assert-allclose": {
     "canonical_name": "testing.assert_allclose",
     "href": "/docs/api/testing/assert-allclose/",
@@ -3094,215 +3304,5 @@
     "href": "/docs/api/testing/assert-array-equal/",
     "kind": "symbol",
     "slug": "testing-assert-array-equal"
-  },
-  "tile": {
-    "canonical_name": "tile",
-    "href": "/docs/api/tile/",
-    "kind": "op",
-    "slug": "tile"
-  },
-  "trace": {
-    "canonical_name": "trace",
-    "href": "/docs/api/trace/",
-    "kind": "op",
-    "slug": "trace"
-  },
-  "transpose": {
-    "canonical_name": "transpose",
-    "href": "/docs/api/transpose/",
-    "kind": "op",
-    "slug": "transpose"
-  },
-  "trapezoid": {
-    "canonical_name": "trapezoid",
-    "href": "/docs/api/trapezoid/",
-    "kind": "op",
-    "slug": "trapezoid"
-  },
-  "tri": {
-    "canonical_name": "tri",
-    "href": "/docs/api/tri/",
-    "kind": "op",
-    "slug": "tri"
-  },
-  "tril": {
-    "canonical_name": "tril",
-    "href": "/docs/api/tril/",
-    "kind": "op",
-    "slug": "tril"
-  },
-  "tril-indices": {
-    "canonical_name": "tril_indices",
-    "href": "/docs/api/tril-indices/",
-    "kind": "op",
-    "slug": "tril_indices"
-  },
-  "tril-indices-from": {
-    "canonical_name": "tril_indices_from",
-    "href": "/docs/api/tril-indices-from/",
-    "kind": "op",
-    "slug": "tril_indices_from"
-  },
-  "trim-zeros": {
-    "canonical_name": "trim_zeros",
-    "href": "/docs/api/trim-zeros/",
-    "kind": "op",
-    "slug": "trim_zeros"
-  },
-  "triu": {
-    "canonical_name": "triu",
-    "href": "/docs/api/triu/",
-    "kind": "op",
-    "slug": "triu"
-  },
-  "triu-indices": {
-    "canonical_name": "triu_indices",
-    "href": "/docs/api/triu-indices/",
-    "kind": "op",
-    "slug": "triu_indices"
-  },
-  "triu-indices-from": {
-    "canonical_name": "triu_indices_from",
-    "href": "/docs/api/triu-indices-from/",
-    "kind": "op",
-    "slug": "triu_indices_from"
-  },
-  "true-divide": {
-    "canonical_name": "true_divide",
-    "href": "/docs/api/true-divide/",
-    "kind": "op",
-    "slug": "true_divide"
-  },
-  "trunc": {
-    "canonical_name": "trunc",
-    "href": "/docs/api/trunc/",
-    "kind": "op",
-    "slug": "trunc"
-  },
-  "typename": {
-    "canonical_name": "typename",
-    "href": "/docs/api/typename/",
-    "kind": "op",
-    "slug": "typename"
-  },
-  "union1d": {
-    "canonical_name": "union1d",
-    "href": "/docs/api/union1d/",
-    "kind": "op",
-    "slug": "union1d"
-  },
-  "unique": {
-    "canonical_name": "unique",
-    "href": "/docs/api/unique/",
-    "kind": "op",
-    "slug": "unique"
-  },
-  "unique-all": {
-    "canonical_name": "unique_all",
-    "href": "/docs/api/unique-all/",
-    "kind": "op",
-    "slug": "unique_all"
-  },
-  "unique-counts": {
-    "canonical_name": "unique_counts",
-    "href": "/docs/api/unique-counts/",
-    "kind": "op",
-    "slug": "unique_counts"
-  },
-  "unique-inverse": {
-    "canonical_name": "unique_inverse",
-    "href": "/docs/api/unique-inverse/",
-    "kind": "op",
-    "slug": "unique_inverse"
-  },
-  "unique-values": {
-    "canonical_name": "unique_values",
-    "href": "/docs/api/unique-values/",
-    "kind": "op",
-    "slug": "unique_values"
-  },
-  "unpackbits": {
-    "canonical_name": "unpackbits",
-    "href": "/docs/api/unpackbits/",
-    "kind": "op",
-    "slug": "unpackbits"
-  },
-  "unravel-index": {
-    "canonical_name": "unravel_index",
-    "href": "/docs/api/unravel-index/",
-    "kind": "op",
-    "slug": "unravel_index"
-  },
-  "unstack": {
-    "canonical_name": "unstack",
-    "href": "/docs/api/unstack/",
-    "kind": "op",
-    "slug": "unstack"
-  },
-  "unwrap": {
-    "canonical_name": "unwrap",
-    "href": "/docs/api/unwrap/",
-    "kind": "op",
-    "slug": "unwrap"
-  },
-  "vander": {
-    "canonical_name": "vander",
-    "href": "/docs/api/vander/",
-    "kind": "op",
-    "slug": "vander"
-  },
-  "var": {
-    "canonical_name": "var",
-    "href": "/docs/api/var/",
-    "kind": "op",
-    "slug": "var"
-  },
-  "vdot": {
-    "canonical_name": "vdot",
-    "href": "/docs/api/vdot/",
-    "kind": "op",
-    "slug": "vdot"
-  },
-  "vecdot": {
-    "canonical_name": "vecdot",
-    "href": "/docs/api/vecdot/",
-    "kind": "op",
-    "slug": "vecdot"
-  },
-  "vecmat": {
-    "canonical_name": "vecmat",
-    "href": "/docs/api/vecmat/",
-    "kind": "op",
-    "slug": "vecmat"
-  },
-  "vsplit": {
-    "canonical_name": "vsplit",
-    "href": "/docs/api/vsplit/",
-    "kind": "op",
-    "slug": "vsplit"
-  },
-  "vstack": {
-    "canonical_name": "vstack",
-    "href": "/docs/api/vstack/",
-    "kind": "op",
-    "slug": "vstack"
-  },
-  "where": {
-    "canonical_name": "where",
-    "href": "/docs/api/where/",
-    "kind": "op",
-    "slug": "where"
-  },
-  "zeros": {
-    "canonical_name": "zeros",
-    "href": "/docs/api/zeros/",
-    "kind": "op",
-    "slug": "zeros"
-  },
-  "zeros-like": {
-    "canonical_name": "zeros_like",
-    "href": "/docs/api/zeros-like/",
-    "kind": "op",
-    "slug": "zeros_like"
   }
 }

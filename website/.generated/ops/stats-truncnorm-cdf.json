@@ -9,7 +9,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Cumulative distribution function of the given RV."
+              "text": "Evaluate the cumulative distribution function."
             }
           ],
           "type": "paragraph"
@@ -27,7 +27,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "quantiles"
+                      "text": "Points at which to evaluate the cumulative probability."
                     }
                   ],
                   "type": "paragraph"
@@ -37,7 +37,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "quantiles"
+                  "text": "Points at which to evaluate the cumulative probability."
                 }
               ],
               "name": "x",
@@ -49,20 +49,20 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                      "text": "Lower standardized bound."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "array_like",
+              "data_type": "float",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                  "text": "Lower standardized bound."
                 }
               ],
-              "name": "arg1, arg2, arg3,...",
+              "name": "a",
               "type": "field_list"
             },
             {
@@ -71,17 +71,55 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "location parameter (default=0)"
+                      "text": "Upper standardized bound."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "array_like, optional",
+              "data_type": "float",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "location parameter (default=0)"
+                  "text": "Upper standardized bound."
+                }
+              ],
+              "name": "b",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Mean of the underlying normal distribution. Defaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "0"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "float, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Mean of the underlying normal distribution. Defaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "0"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
               "name": "loc",
@@ -93,17 +131,33 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "scale parameter (default=1)"
+                      "text": "Standard deviation of the underlying normal distribution.\nDefaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "1"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "array_like, optional",
+              "data_type": "float, optional",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "scale parameter (default=1)"
+                  "text": "Standard deviation of the underlying normal distribution.\nDefaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "1"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
               "name": "scale",
@@ -126,28 +180,36 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Cumulative distribution function evaluated at "
+                      "text": "Cumulative probability evaluated elementwise at "
                     },
                     {
                       "kind": "code",
                       "text": "x"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "ndarray",
+              "data_type": "FlopscopeArray",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Cumulative distribution function evaluated at "
+                  "text": "Cumulative probability evaluated elementwise at "
                 },
                 {
                   "kind": "code",
                   "text": "x"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
-              "name": "cdf",
+              "name": "",
               "type": "field_list"
             }
           ],
@@ -156,6 +218,73 @@
         }
       ],
       "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.cdf(x, a, b, loc, scale).html",
+              "href": "",
+              "kind": "link",
+              "target": "stats.truncnorm.cdf(x, a, b, loc, scale)",
+              "text": "scipy.stats.truncnorm.cdf(x, a, b, loc, scale)"
+            },
+            {
+              "kind": "text",
+              "text": ".\nFLOP cost: "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(x)"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "x = flops.array([-0.5, 0.0, 0.5])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.round(flops.stats.truncnorm.cdf(x, a=-1.0, b=1.0), 3)"
+            },
+            {
+              "kind": "output",
+              "text": "array([0.22, 0.5 , 0.78])"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "stats.truncnorm.cdf",
@@ -169,10 +298,14 @@
     "unresolved_references": [],
     "unsupported_directives": []
   },
-  "example": null,
+  "example": {
+    "code": "import flopscope.numpy as fnp\n\nimport flopscope as flops\n\nx = flops.array([-0.5, 0.0, 0.5])\n\nflops.round(flops.stats.truncnorm.cdf(x, a=-1.0, b=1.0), 3)",
+    "output": "array([0.22, 0.5 , 0.78])",
+    "source": "derived"
+  },
   "flopscope_examples_html": "",
   "flopscope_ref": "flops.stats.truncnorm.cdf",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_truncnorm.py#L84",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_truncnorm.py#L87",
   "href": "/docs/api/stats/truncnorm/cdf/",
   "legacy_href": "/docs/api/ops/stats-truncnorm-cdf/",
   "module": "flopscope.stats",
@@ -182,58 +315,70 @@
     "label": "flops.stats.truncnorm.pdf"
   },
   "notes": "Truncated normal CDF; cost = numel(input).",
-  "notes_sections": [],
-  "numpy_ref": "np.stats.truncnorm.cdf",
+  "notes_sections": [
+    "Equivalent to ``scipy.stats.truncnorm.cdf(x, a, b, loc, scale)``. FLOP cost: ``1 * numel(x)``."
+  ],
+  "numpy_ref": "scipy.stats.truncnorm.cdf",
   "parameters": [
     {
       "body": [
-        "quantiles"
+        "Points at which to evaluate the cumulative probability."
       ],
       "name": "x",
       "type": "array_like"
     },
     {
       "body": [
-        "The shape parameter(s) for the distribution (see docstring of the",
-        "instance object for more information)"
+        "Lower standardized bound."
       ],
-      "name": "arg1, arg2, arg3,...",
-      "type": "array_like"
+      "name": "a",
+      "type": "float"
     },
     {
       "body": [
-        "location parameter (default=0)"
+        "Upper standardized bound."
+      ],
+      "name": "b",
+      "type": "float"
+    },
+    {
+      "body": [
+        "Mean of the underlying normal distribution. Defaults to ``0``."
       ],
       "name": "loc",
-      "type": "array_like, optional"
+      "type": "float, optional"
     },
     {
       "body": [
-        "scale parameter (default=1)"
+        "Standard deviation of the underlying normal distribution.",
+        "Defaults to ``1``."
       ],
       "name": "scale",
-      "type": "array_like, optional"
+      "type": "float, optional"
     }
   ],
   "previous": {
     "href": "/docs/api/stats/norm/ppf/",
     "label": "flops.stats.norm.ppf"
   },
-  "provenance_label": "Adapted from NumPy docs",
+  "provenance_label": "Adapted from SciPy docs",
+  "provenance_ref": "scipy.stats.truncnorm",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.html",
   "returns": [
     {
       "body": [
-        "Cumulative distribution function evaluated at `x`"
+        "Cumulative probability evaluated elementwise at ``x``."
       ],
-      "name": "cdf",
-      "type": "ndarray"
+      "name": "",
+      "type": "FlopscopeArray"
     }
   ],
   "see_also": [],
   "signature": "flops.stats.truncnorm.cdf(x, a, b, loc=0, scale=1)",
   "slug": "stats-truncnorm-cdf",
-  "summary": "Cumulative distribution function of the given RV.",
-  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
+  "summary": "Evaluate the cumulative distribution function.",
+  "upstream_ref_label": "SciPy Ref",
+  "upstream_source_label": "scipy source",
+  "upstream_source_url": "",
   "weight": 16.0
 }

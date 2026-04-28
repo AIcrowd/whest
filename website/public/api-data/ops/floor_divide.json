@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/floor-divide/",
+  "detail_href": "/docs/api/numpy/floor-divide/",
   "detail_json_href": "/api-data/ops/floor_divide.json",
   "docs": {
     "sections": [
@@ -29,7 +29,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/remainder",
+                "href": "/docs/api/numpy/remainder/",
                 "kind": "link",
                 "target": "remainder",
                 "text": "remainder"
@@ -395,7 +395,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/remainder",
+                "href": "/docs/api/numpy/remainder/",
                 "label": "flops.remainder",
                 "original_target": "remainder",
                 "role": "",
@@ -427,7 +427,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/divide",
+                "href": "/docs/api/numpy/divide/",
                 "label": "flops.divide",
                 "original_target": "divide",
                 "role": "",
@@ -443,7 +443,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/floor",
+                "href": "/docs/api/numpy/floor/",
                 "label": "flops.floor",
                 "original_target": "floor",
                 "role": "",
@@ -459,7 +459,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ceil",
+                "href": "/docs/api/numpy/ceil/",
                 "label": "flops.ceil",
                 "original_target": "ceil",
                 "role": "",
@@ -479,7 +479,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -518,7 +518,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/floor_divide",
+                "href": "/docs/api/numpy/floor-divide/",
                 "kind": "link",
                 "target": "floor_divide",
                 "text": "flops.floor_divide"
@@ -558,12 +558,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.floor_divide",
+    "flopscope_ref": "fnp.floor_divide",
     "module": "numpy",
     "name": "floor_divide",
     "notes": "Element-wise floor division.",
     "numpy_ref": "np.floor_divide",
-    "signature": "flops.floor_divide(*args, **kwargs)",
+    "signature": "fnp.floor_divide(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the largest integer smaller or equal to the division of the inputs. It is equivalent to the Python ``//`` operator and pairs with the Python ``%`` (`remainder`), function so that ``a = a % b + b * (a // b)`` up to roundoff.",
     "weight": 16.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/histogram-bin-edges/",
+  "detail_href": "/docs/api/numpy/histogram-bin-edges/",
   "detail_json_href": "/api-data/ops/histogram_bin_edges.json",
   "docs": {
     "sections": [
@@ -13,7 +13,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "kind": "link",
                 "target": "histogram",
                 "text": "histogram"
@@ -97,7 +97,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/histogram_bin_edges",
+                        "href": "/docs/api/numpy/histogram-bin-edges/",
                         "kind": "link",
                         "target": "histogram_bin_edges",
                         "text": "histogram_bin_edges"
@@ -438,7 +438,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/histogram",
+                        "href": "/docs/api/numpy/histogram/",
                         "kind": "link",
                         "target": "histogram",
                         "text": "histogram"
@@ -455,7 +455,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/histogram",
+                    "href": "/docs/api/numpy/histogram/",
                     "kind": "link",
                     "target": "histogram",
                     "text": "histogram"
@@ -479,7 +479,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/histogram",
+                "href": "/docs/api/numpy/histogram/",
                 "label": "flops.histogram",
                 "original_target": "histogram",
                 "role": "",
@@ -526,7 +526,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/ptp",
+                "href": "/docs/api/numpy/ptp/",
                 "kind": "link",
                 "target": "ptp",
                 "text": "ptp"
@@ -690,7 +690,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -866,12 +866,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.histogram_bin_edges",
+    "flopscope_ref": "fnp.histogram_bin_edges",
     "module": "numpy",
     "name": "histogram_bin_edges",
     "notes": "Bin edge computation; cost = numel(a).",
     "numpy_ref": "np.histogram_bin_edges",
-    "signature": "flops.histogram_bin_edges(a, bins=10, range=None, weights=None)",
+    "signature": "fnp.histogram_bin_edges(a, bins=10, range=None, weights=None)",
     "status": "supported",
     "summary": "Function to calculate only the edges of the bins used by the `histogram` function.",
     "weight": 1.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/outer/",
+  "detail_href": "/docs/api/numpy/outer/",
   "detail_json_href": "/api-data/ops/outer.json",
   "docs": {
     "sections": [
@@ -194,7 +194,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/inner",
+                "href": "/docs/api/numpy/inner/",
                 "label": "flops.inner",
                 "original_target": "inner",
                 "role": "",
@@ -214,7 +214,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
+                "href": "/docs/api/numpy/einsum/",
                 "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
@@ -254,7 +254,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/outer",
+                    "href": "/docs/api/numpy/outer/",
                     "kind": "link",
                     "target": "outer",
                     "text": "flops.outer"
@@ -265,7 +265,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-outer",
+                "href": "/docs/api/numpy/linalg/outer/",
                 "label": "flops.linalg.outer",
                 "original_target": "linalg.outer",
                 "role": "",
@@ -285,7 +285,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/tensordot",
+                "href": "/docs/api/numpy/tensordot/",
                 "label": "flops.tensordot",
                 "original_target": "tensordot",
                 "role": "",
@@ -332,7 +332,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -472,12 +472,12 @@
     "category": "counted_custom",
     "cost_formula": "m * n",
     "cost_formula_latex": "$m \\cdot n$",
-    "flopscope_ref": "flops.outer",
+    "flopscope_ref": "fnp.outer",
     "module": "numpy",
     "name": "outer",
     "notes": "Outer product of two vectors; cost = M*N.",
     "numpy_ref": "np.outer",
-    "signature": "flops.outer(a, b, out=None)",
+    "signature": "fnp.outer(a, b, out=None)",
     "status": "supported",
     "summary": "Compute the outer product of two vectors.",
     "weight": 1.0

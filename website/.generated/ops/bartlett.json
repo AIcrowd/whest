@@ -105,7 +105,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/blackman",
+              "href": "/docs/api/numpy/blackman/",
               "label": "flops.blackman",
               "original_target": "blackman",
               "role": "",
@@ -116,7 +116,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/hamming",
+              "href": "/docs/api/numpy/hamming/",
               "label": "flops.hamming",
               "original_target": "hamming",
               "role": "",
@@ -127,7 +127,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/hanning",
+              "href": "/docs/api/numpy/hanning/",
               "label": "flops.hanning",
               "original_target": "hanning",
               "role": "",
@@ -138,7 +138,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/kaiser",
+              "href": "/docs/api/numpy/kaiser/",
               "label": "flops.kaiser",
               "original_target": "kaiser",
               "role": "",
@@ -225,7 +225,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -286,7 +286,7 @@
     }
   ],
   "canonical_name": "bartlett",
-  "canonical_path": "bartlett",
+  "canonical_path": "numpy/bartlett",
   "category": "counted_custom",
   "cost_formula": "n",
   "cost_formula_latex": "$n$",
@@ -323,20 +323,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nimport matplotlib.pyplot as plt\n\nflops.bartlett(12)",
+    "code": "import flopscope.numpy as fnp\n\nimport matplotlib.pyplot as plt\n\nflops.bartlett(12)",
     "output": "array([ 0.        ,  0.18181818,  0.36363636,  0.54545455,  0.72727273, # may vary\n        0.90909091,  0.90909091,  0.72727273,  0.54545455,  0.36363636,\n        0.18181818,  0.        ])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.bartlett",
+  "flopscope_ref": "fnp.bartlett",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L33",
-  "href": "/docs/api/bartlett/",
+  "href": "/docs/api/numpy/bartlett/",
   "legacy_href": "/docs/api/ops/bartlett/",
   "module": "flopscope._window",
   "name": "bartlett",
   "next": {
-    "href": "/docs/api/bincount/",
-    "label": "flops.bincount"
+    "href": "/docs/api/numpy/bincount/",
+    "label": "fnp.bincount"
   },
   "notes": "Bartlett window. Cost: n (one linear eval per sample).",
   "notes_sections": [
@@ -356,10 +356,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/average/",
-    "label": "flops.average"
+    "href": "/docs/api/numpy/average/",
+    "label": "fnp.average"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.bartlett",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.bartlett.html",
   "returns": [
     {
@@ -377,7 +378,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/blackman",
+      "href": "/docs/api/numpy/blackman/",
       "label": "flops.blackman",
       "original_target": "blackman",
       "role": "",
@@ -388,7 +389,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/hamming",
+      "href": "/docs/api/numpy/hamming/",
       "label": "flops.hamming",
       "original_target": "hamming",
       "role": "",
@@ -399,7 +400,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/hanning",
+      "href": "/docs/api/numpy/hanning/",
       "label": "flops.hanning",
       "original_target": "hanning",
       "role": "",
@@ -410,7 +411,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/kaiser",
+      "href": "/docs/api/numpy/kaiser/",
       "label": "flops.kaiser",
       "original_target": "kaiser",
       "role": "",
@@ -418,9 +419,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.bartlett(M)",
+  "signature": "fnp.bartlett(M)",
   "slug": "bartlett",
   "summary": "Return the Bartlett window.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3158",
   "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/random/noncentral-f/",
+  "detail_href": "/docs/api/numpy/random/noncentral-f/",
   "detail_json_href": "/api-data/ops/random-noncentral_f.json",
   "docs": {
     "sections": [
@@ -491,12 +491,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.random.noncentral_f",
+    "flopscope_ref": "fnp.random.noncentral_f",
     "module": "numpy.random",
     "name": "random.noncentral_f",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.noncentral_f",
-    "signature": "flops.random.noncentral_f(dfnum, dfden, nonc, size=None)",
+    "signature": "fnp.random.noncentral_f(dfnum, dfden, nonc, size=None)",
     "status": "supported",
     "summary": "Draw samples from the noncentral F distribution.",
     "weight": 16.0

@@ -273,7 +273,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/dot",
+              "href": "/docs/api/numpy/dot/",
               "label": "flops.dot",
               "original_target": "dot",
               "role": "",
@@ -284,7 +284,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "label": "flops.einsum",
               "original_target": "einsum",
               "role": "",
@@ -488,7 +488,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
+              "href": "/docs/api/numpy/einsum/",
               "kind": "link",
               "target": "einsum",
               "text": "flops.einsum"
@@ -932,7 +932,7 @@
     }
   ],
   "canonical_name": "tensordot",
-  "canonical_path": "tensordot",
+  "canonical_path": "numpy/tensordot",
   "category": "counted_custom",
   "cost_formula": "product of contracted dims * output size",
   "cost_formula_latex": "$\\prod_i d_i$",
@@ -948,15 +948,15 @@
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.tensordot",
+  "flopscope_ref": "fnp.tensordot",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1045",
-  "href": "/docs/api/tensordot/",
+  "href": "/docs/api/numpy/tensordot/",
   "legacy_href": "/docs/api/ops/tensordot/",
   "module": "numpy",
   "name": "tensordot",
   "next": {
-    "href": "/docs/api/tile/",
-    "label": "flops.tile"
+    "href": "/docs/api/numpy/tile/",
+    "label": "fnp.tile"
   },
   "notes": "Tensor dot product along specified axes.",
   "notes_sections": [
@@ -988,10 +988,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/tanh/",
-    "label": "flops.tanh"
+    "href": "/docs/api/numpy/tanh/",
+    "label": "fnp.tanh"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.tensordot",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.tensordot.html",
   "returns": [
     {
@@ -1007,7 +1008,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/dot",
+      "href": "/docs/api/numpy/dot/",
       "label": "flops.dot",
       "original_target": "dot",
       "role": "",
@@ -1018,7 +1019,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/einsum",
+      "href": "/docs/api/numpy/einsum/",
       "label": "flops.einsum",
       "original_target": "einsum",
       "role": "",
@@ -1026,9 +1027,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.tensordot(a, b, axes=2)",
+  "signature": "fnp.tensordot(a, b, axes=2)",
   "slug": "tensordot",
   "summary": "Compute tensor dot product along specified axes.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L968",
   "weight": 1.0
 }

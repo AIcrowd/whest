@@ -185,7 +185,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/argmin",
+              "href": "/docs/api/numpy/argmin/",
               "label": "flops.argmin",
               "original_target": "argmin",
               "role": "",
@@ -196,7 +196,7 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanargmax",
+              "href": "/docs/api/numpy/nanargmax/",
               "label": "flops.nanargmax",
               "original_target": "nanargmax",
               "role": "",
@@ -216,7 +216,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -267,7 +267,7 @@
     }
   ],
   "canonical_name": "nanargmin",
-  "canonical_path": "nanargmin",
+  "canonical_path": "numpy/nanargmin",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -278,20 +278,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\na = flops.array([[flops.nan, 4], [2, 3]])\n\nflops.argmin(a)\n\nflops.nanargmin(a)\n\nflops.nanargmin(a, axis=0)\n\nflops.nanargmin(a, axis=1)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[flops.nan, 4], [2, 3]])\n\nflops.argmin(a)\n\nflops.nanargmin(a)\n\nflops.nanargmin(a, axis=0)\n\nflops.nanargmin(a, axis=1)",
     "output": "0\n\n2\n\narray([1, 1])\n\narray([1, 0])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.nanargmin",
+  "flopscope_ref": "fnp.nanargmin",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
-  "href": "/docs/api/nanargmin/",
+  "href": "/docs/api/numpy/nanargmin/",
   "legacy_href": "/docs/api/ops/nanargmin/",
   "module": "numpy",
   "name": "nanargmin",
   "next": {
-    "href": "/docs/api/nancumprod/",
-    "label": "flops.nancumprod"
+    "href": "/docs/api/numpy/nancumprod/",
+    "label": "fnp.nancumprod"
   },
   "notes": "Index of minimum ignoring NaNs.",
   "notes_sections": [],
@@ -334,10 +334,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/nanargmax/",
-    "label": "flops.nanargmax"
+    "href": "/docs/api/numpy/nanargmax/",
+    "label": "fnp.nanargmax"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nanargmin",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nanargmin.html",
   "returns": [
     {
@@ -353,7 +354,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/argmin",
+      "href": "/docs/api/numpy/argmin/",
       "label": "flops.argmin",
       "original_target": "argmin",
       "role": "",
@@ -364,7 +365,7 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanargmax",
+      "href": "/docs/api/numpy/nanargmax/",
       "label": "flops.nanargmax",
       "original_target": "nanargmax",
       "role": "",
@@ -372,9 +373,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.nanargmin(a, axis=None, out=None, *, keepdims=<no value>)",
+  "signature": "fnp.nanargmin(a, axis=None, out=None, *, keepdims=<no value>)",
   "slug": "nanargmin",
   "summary": "Return the indices of the minimum values in the specified axis ignoring NaNs. For all-NaN slices ``ValueError`` is raised. Warning: the results cannot be trusted if a slice contains only NaNs and Infs.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L511",
   "weight": 1.0
 }

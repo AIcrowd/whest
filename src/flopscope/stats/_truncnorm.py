@@ -1,8 +1,4 @@
-"""Truncated normal distribution with FLOP counting.
-
-Mimics ``scipy.stats.truncnorm`` — see
-https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.html
-"""
+"""Truncated normal distribution for :mod:`flopscope.stats`."""
 
 from __future__ import annotations
 
@@ -29,77 +25,136 @@ def _std_norm_pdf(x):
 class TruncnormDistribution(ContinuousDistribution):
     """Truncated normal continuous random variable.
 
-    Equivalent to ``scipy.stats.truncnorm``.  Parameters ``a`` and ``b``
-    are **standardised** bounds — the distribution is truncated to
-    ``[a * scale + loc, b * scale + loc]``.
-
-    .. note::
-
-       ``a`` and ``b`` are the **first two positional arguments**,
-       matching scipy's signature:
-       ``truncnorm.pdf(x, a, b, loc=0, scale=1)``.
+    This object mirrors ``scipy.stats.truncnorm``.
 
     Methods
     -------
     pdf(x, a, b, loc=0, scale=1)
-        Probability density function.
+        Evaluate the probability density function.
     cdf(x, a, b, loc=0, scale=1)
-        Cumulative distribution function.
+        Evaluate the cumulative distribution function.
     ppf(q, a, b, loc=0, scale=1)
-        Percent-point function (inverse of CDF).
+        Evaluate the percent-point function.
+
+    Notes
+    -----
+    ``a`` and ``b`` are standardized lower and upper bounds. The truncated
+    support is ``[a * scale + loc, b * scale + loc]``, and both bounds appear
+    before ``loc`` and ``scale`` to match SciPy's signature. Each public
+    method deducts ``1 * numel(input)`` FLOPs from the active budget.
     """
 
     def __init__(self):
         super().__init__("truncnorm")
 
     def pdf(self, x, a, b, loc=0, scale=1):
-        """Probability density function at *x*.
-
-        Equivalent to ``scipy.stats.truncnorm.pdf(x, a, b, loc, scale)``.
-
-        FLOP Cost
-        ---------
-        1 * numel(x) FLOPs
+        """Evaluate the probability density function.
 
         Parameters
         ----------
         x : array_like
-            Quantiles.
+            Points at which to evaluate the density.
         a : float
-            Lower standardised bound.
+            Lower standardized bound.
         b : float
-            Upper standardised bound.
+            Upper standardized bound.
         loc : float, optional
-            Mean of the un-truncated normal (default 0).
+            Mean of the underlying normal distribution. Defaults to ``0``.
         scale : float, optional
-            Standard deviation of the un-truncated normal (default 1).
+            Standard deviation of the underlying normal distribution.
+            Defaults to ``1``.
 
         Returns
         -------
         FlopscopeArray
-            PDF evaluated at *x*.
+            Probability density evaluated elementwise at ``x``.
+
+        Notes
+        -----
+        Equivalent to ``scipy.stats.truncnorm.pdf(x, a, b, loc, scale)``.
+        FLOP cost: ``1 * numel(x)``.
+
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import flopscope as flops
+        >>> x = np.array([-0.5, 0.0, 0.5])
+        >>> np.round(flops.stats.truncnorm.pdf(x, a=-1.0, b=1.0), 3)
+        array([0.516, 0.584, 0.516])
         """
         return self._deduct_and_call("pdf", 1, x, a, b, loc=loc, scale=scale)
 
     def cdf(self, x, a, b, loc=0, scale=1):
-        """Cumulative distribution function at *x*.
+        """Evaluate the cumulative distribution function.
 
+        Parameters
+        ----------
+        x : array_like
+            Points at which to evaluate the cumulative probability.
+        a : float
+            Lower standardized bound.
+        b : float
+            Upper standardized bound.
+        loc : float, optional
+            Mean of the underlying normal distribution. Defaults to ``0``.
+        scale : float, optional
+            Standard deviation of the underlying normal distribution.
+            Defaults to ``1``.
+
+        Returns
+        -------
+        FlopscopeArray
+            Cumulative probability evaluated elementwise at ``x``.
+
+        Notes
+        -----
         Equivalent to ``scipy.stats.truncnorm.cdf(x, a, b, loc, scale)``.
+        FLOP cost: ``1 * numel(x)``.
 
-        FLOP Cost
-        ---------
-        1 * numel(x) FLOPs
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import flopscope as flops
+        >>> x = np.array([-0.5, 0.0, 0.5])
+        >>> np.round(flops.stats.truncnorm.cdf(x, a=-1.0, b=1.0), 3)
+        array([0.22, 0.5 , 0.78])
         """
         return self._deduct_and_call("cdf", 1, x, a, b, loc=loc, scale=scale)
 
     def ppf(self, q, a, b, loc=0, scale=1):
-        """Percent-point function (inverse CDF) at *q*.
+        """Evaluate the percent-point function.
 
+        Parameters
+        ----------
+        q : array_like
+            Probabilities in ``[0, 1]``.
+        a : float
+            Lower standardized bound.
+        b : float
+            Upper standardized bound.
+        loc : float, optional
+            Mean of the underlying normal distribution. Defaults to ``0``.
+        scale : float, optional
+            Standard deviation of the underlying normal distribution.
+            Defaults to ``1``.
+
+        Returns
+        -------
+        FlopscopeArray
+            Quantiles corresponding to ``q``.
+
+        Notes
+        -----
         Equivalent to ``scipy.stats.truncnorm.ppf(q, a, b, loc, scale)``.
+        FLOP cost: ``1 * numel(q)``.
 
-        FLOP Cost
-        ---------
-        1 * numel(q) FLOPs
+        Examples
+        --------
+        >>> import numpy as np
+        >>> import flopscope as flops
+        >>> q = np.array([0.25, 0.5, 0.75])
+        >>> np.round(flops.stats.truncnorm.ppf(q, a=-1.0, b=1.0), 3)
+        array([-0.442,  0.   ,  0.442])
         """
         return self._deduct_and_call("ppf", 1, q, a, b, loc=loc, scale=scale)
 

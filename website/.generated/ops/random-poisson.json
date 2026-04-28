@@ -391,7 +391,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -454,7 +454,7 @@
     }
   ],
   "canonical_name": "random.poisson",
-  "canonical_path": "random/poisson",
+  "canonical_path": "numpy/random/poisson",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -474,20 +474,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\ns = flops.random.poisson(5, 10000)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, 14, density=True)\n\nplt.show()\n\ns = flops.random.poisson(lam=(100., 500.), size=(100, 2))",
+    "code": "import flopscope.numpy as fnp\n\ns = flops.random.poisson(5, 10000)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, 14, density=True)\n\nplt.show()\n\ns = flops.random.poisson(lam=(100., 500.), size=(100, 2))",
     "output": "",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.random.poisson",
+  "flopscope_ref": "fnp.random.poisson",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
-  "href": "/docs/api/random/poisson/",
+  "href": "/docs/api/numpy/random/poisson/",
   "legacy_href": "/docs/api/ops/random-poisson/",
   "module": "numpy.random",
   "name": "random.poisson",
   "next": {
-    "href": "/docs/api/random/power/",
-    "label": "flops.random.power"
+    "href": "/docs/api/numpy/random/power/",
+    "label": "fnp.random.power"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -519,10 +519,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/random/permutation/",
-    "label": "flops.random.permutation"
+    "href": "/docs/api/numpy/random/permutation/",
+    "label": "fnp.random.permutation"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.poisson",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.poisson.html",
   "returns": [
     {
@@ -551,9 +552,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.random.poisson(lam=1.0, size=None)",
+  "signature": "fnp.random.poisson(lam=1.0, size=None)",
   "slug": "random-poisson",
   "summary": "Draw samples from a Poisson distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
   "weight": 16.0
 }

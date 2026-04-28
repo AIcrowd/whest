@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/in1d/",
+  "detail_href": "/docs/api/numpy/in1d/",
   "detail_json_href": "/api-data/ops/in1d.json",
   "docs": {
     "sections": [
@@ -465,7 +465,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isin",
+                "href": "/docs/api/numpy/isin/",
                 "label": "flops.isin",
                 "original_target": "isin",
                 "role": "",
@@ -484,7 +484,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/in1d",
+                "href": "/docs/api/numpy/in1d/",
                 "kind": "link",
                 "target": "in1d",
                 "text": "in1d"
@@ -606,7 +606,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -676,12 +676,12 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
-    "flopscope_ref": "flops.in1d",
+    "flopscope_ref": "fnp.in1d",
     "module": "numpy",
     "name": "in1d",
     "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)). Removed in numpy 2.4; use `isin` instead.",
     "numpy_ref": "np.in1d",
-    "signature": "flops.in1d(ar1, ar2, assume_unique=False, invert=False, *, kind=None)",
+    "signature": "fnp.in1d(ar1, ar2, assume_unique=False, invert=False, *, kind=None)",
     "status": "supported",
     "summary": "Test whether each element of a 1-D array is also present in a second array.",
     "weight": 1.0

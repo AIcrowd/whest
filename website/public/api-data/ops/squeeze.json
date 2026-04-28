@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/squeeze/",
+  "detail_href": "/docs/api/numpy/squeeze/",
   "detail_json_href": "/api-data/ops/squeeze.json",
   "docs": {
     "sections": [
@@ -207,7 +207,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/expand_dims",
+                "href": "/docs/api/numpy/expand-dims/",
                 "label": "flops.expand_dims",
                 "original_target": "expand_dims",
                 "role": "",
@@ -223,7 +223,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/reshape",
+                "href": "/docs/api/numpy/reshape/",
                 "label": "flops.reshape",
                 "original_target": "reshape",
                 "role": "",
@@ -243,7 +243,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -361,12 +361,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.squeeze",
+    "flopscope_ref": "fnp.squeeze",
     "module": "numpy",
     "name": "squeeze",
     "notes": "Remove size-1 dimensions.",
     "numpy_ref": "np.squeeze",
-    "signature": "flops.squeeze(a, axis=None)",
+    "signature": "fnp.squeeze(a, axis=None)",
     "status": "supported",
     "summary": "Remove axes of length one from `a`.",
     "weight": 0.0

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/power/",
+  "detail_href": "/docs/api/numpy/power/",
   "detail_json_href": "/api-data/ops/power.json",
   "docs": {
     "sections": [
@@ -456,7 +456,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/float_power",
+                "href": "/docs/api/numpy/float-power/",
                 "label": "flops.float_power",
                 "original_target": "float_power",
                 "role": "",
@@ -476,7 +476,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -607,7 +607,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/power",
+                "href": "/docs/api/numpy/power/",
                 "kind": "link",
                 "target": "power",
                 "text": "flops.power"
@@ -734,12 +734,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.power",
+    "flopscope_ref": "fnp.power",
     "module": "numpy",
     "name": "power",
     "notes": "Element-wise exponentiation x**y.",
     "numpy_ref": "np.power",
-    "signature": "flops.power(*args, **kwargs)",
+    "signature": "fnp.power(*args, **kwargs)",
     "status": "supported",
     "summary": "First array elements raised to powers from second array, element-wise.",
     "weight": 16.0

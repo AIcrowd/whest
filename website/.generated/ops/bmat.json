@@ -188,7 +188,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/block",
+              "href": "/docs/api/numpy/block/",
               "label": "flops.block",
               "original_target": "block",
               "role": "",
@@ -208,7 +208,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import flopscope as flops"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -315,7 +315,7 @@
     }
   ],
   "canonical_name": "bmat",
-  "canonical_path": "bmat",
+  "canonical_path": "numpy/bmat",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -326,20 +326,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import flopscope as flops\n\nA = flops.asmatrix('1 1; 1 1')\n\nB = flops.asmatrix('2 2; 2 2')\n\nC = flops.asmatrix('3 4; 5 6')\n\nD = flops.asmatrix('7 8; 9 0')\n\nflops.bmat([[A, B], [C, D]])\n\nflops.bmat(flops.r_[flops.c_[A, B], flops.c_[C, D]])\n\nflops.bmat('A,B; C,D')",
+    "code": "import flopscope.numpy as fnp\n\nA = flops.asmatrix('1 1; 1 1')\n\nB = flops.asmatrix('2 2; 2 2')\n\nC = flops.asmatrix('3 4; 5 6')\n\nD = flops.asmatrix('7 8; 9 0')\n\nflops.bmat([[A, B], [C, D]])\n\nflops.bmat(flops.r_[flops.c_[A, B], flops.c_[C, D]])\n\nflops.bmat('A,B; C,D')",
     "output": "matrix([[1, 1, 2, 2],\n        [1, 1, 2, 2],\n        [3, 4, 7, 8],\n        [5, 6, 9, 0]])\n\nmatrix([[1, 1, 2, 2],\n        [1, 1, 2, 2],\n        [3, 4, 7, 8],\n        [5, 6, 9, 0]])\n\nmatrix([[1, 1, 2, 2],\n        [1, 1, 2, 2],\n        [3, 4, 7, 8],\n        [5, 6, 9, 0]])",
     "source": "derived"
   },
   "flopscope_examples_html": "",
-  "flopscope_ref": "flops.bmat",
+  "flopscope_ref": "fnp.bmat",
   "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L841",
-  "href": "/docs/api/bmat/",
+  "href": "/docs/api/numpy/bmat/",
   "legacy_href": "/docs/api/ops/bmat/",
   "module": "numpy",
   "name": "bmat",
   "next": {
-    "href": "/docs/api/broadcast-arrays/",
-    "label": "flops.broadcast_arrays"
+    "href": "/docs/api/numpy/broadcast-arrays/",
+    "label": "fnp.broadcast_arrays"
   },
   "notes": "Build matrix from nested list of matrices. Cost: numel(output).",
   "notes_sections": [],
@@ -371,10 +371,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/block/",
-    "label": "flops.block"
+    "href": "/docs/api/numpy/block/",
+    "label": "fnp.block"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.bmat",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.bmat.html",
   "returns": [
     {
@@ -395,7 +396,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/block",
+      "href": "/docs/api/numpy/block/",
       "label": "flops.block",
       "original_target": "block",
       "role": "",
@@ -403,9 +404,11 @@
       "unresolved": false
     }
   ],
-  "signature": "flops.bmat(obj, ldict=None, gdict=None)",
+  "signature": "fnp.bmat(obj, ldict=None, gdict=None)",
   "slug": "bmat",
   "summary": "Build a matrix object from a string, nested sequence, or array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/matrixlib/defmatrix.py#L1041",
   "weight": 4.0
 }

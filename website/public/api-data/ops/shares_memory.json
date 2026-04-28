@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/shares-memory/",
+  "detail_href": "/docs/api/numpy/shares-memory/",
   "detail_json_href": "/api-data/ops/shares_memory.json",
   "docs": {
     "sections": [
@@ -38,7 +38,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/may_share_memory",
+                    "href": "/docs/api/numpy/may-share-memory/",
                     "kind": "link",
                     "target": "may_share_memory",
                     "text": "flops.may_share_memory"
@@ -225,7 +225,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/may_share_memory",
+                "href": "/docs/api/numpy/may-share-memory/",
                 "label": "flops.may_share_memory",
                 "original_target": "may_share_memory",
                 "role": "",
@@ -245,7 +245,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -389,12 +389,12 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
-    "flopscope_ref": "flops.shares_memory",
+    "flopscope_ref": "fnp.shares_memory",
     "module": "numpy",
     "name": "shares_memory",
     "notes": "Determine if two arrays share memory.",
     "numpy_ref": "np.shares_memory",
-    "signature": "flops.shares_memory(*args, **kwargs)",
+    "signature": "fnp.shares_memory(*args, **kwargs)",
     "status": "supported",
     "summary": "Determine if two arrays share memory.",
     "weight": 0.0

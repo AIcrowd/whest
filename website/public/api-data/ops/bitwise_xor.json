@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/bitwise-xor/",
+  "detail_href": "/docs/api/numpy/bitwise-xor/",
   "detail_json_href": "/api-data/ops/bitwise_xor.json",
   "docs": {
     "sections": [
@@ -323,7 +323,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_xor",
+                "href": "/docs/api/numpy/logical-xor/",
                 "label": "flops.logical_xor",
                 "original_target": "logical_xor",
                 "role": "",
@@ -334,7 +334,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_and",
+                "href": "/docs/api/numpy/bitwise-and/",
                 "label": "flops.bitwise_and",
                 "original_target": "bitwise_and",
                 "role": "",
@@ -345,7 +345,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_or",
+                "href": "/docs/api/numpy/bitwise-or/",
                 "label": "flops.bitwise_or",
                 "original_target": "bitwise_or",
                 "role": "",
@@ -381,7 +381,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import flopscope as flops"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -504,7 +504,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/bitwise_xor",
+                "href": "/docs/api/numpy/bitwise-xor/",
                 "kind": "link",
                 "target": "bitwise_xor",
                 "text": "flops.bitwise_xor"
@@ -549,12 +549,12 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
-    "flopscope_ref": "flops.bitwise_xor",
+    "flopscope_ref": "fnp.bitwise_xor",
     "module": "numpy",
     "name": "bitwise_xor",
     "notes": "Element-wise bitwise XOR.",
     "numpy_ref": "np.bitwise_xor",
-    "signature": "flops.bitwise_xor(*args, **kwargs)",
+    "signature": "fnp.bitwise_xor(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the bit-wise XOR of two arrays element-wise.",
     "weight": 1.0
