@@ -494,6 +494,7 @@ export default function ComponentCostView({
           costModel={costModel}
           selectedOrbitIdx={selectedOrbitIdx}
           onSelectOrbit={onSelectOrbit}
+          onHover={onGraphHover}
         />
         <TypedPartitionDemo
           componentData={componentData}

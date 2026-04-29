@@ -35,11 +35,29 @@ export default function BranchingDemo({
   costModel,
   selectedOrbitIdx = -1,
   onSelectOrbit = () => {},
+  onHover = null,
 }) {
   const themeId = getActiveExplorerThemeId();
   const [useCurated, setUseCurated] = useState(false);
 
   if (!componentData || !costModel) return null;
+
+  // When the user hovers/focuses the orbit selector, emit a cross-spotlight
+  // payload so the masthead halos matching letters and the classification
+  // tree spotlights the leaves this preset routes through. Same contract
+  // as LabelInteractionGraph and DecisionLadder: { labels, leafKeys }.
+  function emitHoverPayload() {
+    if (!onHover) return;
+    const components = componentData.components ?? [];
+    const labels = components.flatMap((c) => c.labels ?? []);
+    const leafKeys = components
+      .flatMap((c) => [c.shape, c.accumulation?.regimeId])
+      .filter(Boolean);
+    onHover({ labels, leafKeys });
+  }
+  function clearHoverPayload() {
+    if (onHover) onHover(null);
+  }
 
   const liveOrbitRows = costModel.orbitRows ?? [];
   const liveBranches = liveOrbitRows.some((row) => (row.outputs?.length ?? 0) > 1);
@@ -95,6 +113,10 @@ export default function BranchingDemo({
             }}
             value={safeIdx >= 0 ? safeIdx : 0}
             onChange={(e) => onSelectOrbit(Number(e.target.value))}
+            onFocus={emitHoverPayload}
+            onBlur={clearHoverPayload}
+            onMouseEnter={emitHoverPayload}
+            onMouseLeave={clearHoverPayload}
             disabled={orbitRows.length === 0}
           >
             {orbitRows.length === 0 && (
