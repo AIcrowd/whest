@@ -79,9 +79,6 @@ export default function PublicApiSymbolPage({
         <OperationDocBody
           sections={symbol.body_sections}
           headerSummary=""
-          signature={symbol.signature}
-          flopscopeSourceUrl={symbol.source_url}
-          upstreamSourceUrl={symbol.upstream_source_url}
         />
       ) : (
         <OperationDocSignature

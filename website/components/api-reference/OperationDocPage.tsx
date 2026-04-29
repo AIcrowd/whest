@@ -31,17 +31,9 @@ export default async function OperationDocPage({op}: {op: ApiDocRecord}) {
         <OperationDocBody
           sections={op.body_sections}
           headerSummary={op.summary}
-          signature={op.signature}
-          flopscopeSourceUrl={op.flopscope_source_url}
-          upstreamSourceUrl={op.upstream_source_url}
         />
       ) : (
         <>
-          <OperationDocSignature
-            signature={op.signature}
-            flopscopeSourceUrl={op.flopscope_source_url}
-            upstreamSourceUrl={op.upstream_source_url}
-          />
           <OperationDocSection title="Parameters" fields={op.parameters} />
           <OperationDocSection title="Returns" fields={op.returns} />
           <OperationDocSection title="See also" links={op.see_also} />
