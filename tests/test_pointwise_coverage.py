@@ -887,6 +887,61 @@ class TestCustomOps:
         # contracted = 4, result.size = 15, cost = 60
         assert budget.flops_used == 60
 
+    def test_tensordot_no_symmetry_unchanged(self):
+        """Without any input symmetry, the cost equals the dense
+        formula (a.size * b.size / contracted) — no behaviour change
+        from the pre-symmetry-adjustment code."""
+        n = 6
+        a = numpy.ones((n, n))
+        b = numpy.ones((n, n))
+        with BudgetContext(flop_budget=10**8) as budget:
+            tensordot(a, b, axes=1)
+        # output shape (n, n) = 36 elements, contracted = n = 6,
+        # dense = 6*6*6 = 216
+        assert budget.flops_used == n * n * n
+
+    def test_tensordot_surviving_symmetry_lowers_cost(self):
+        """A 4D × 4D contraction that preserves S₂ symmetry on each
+        operand's surviving (uncontracted) axes charges fewer FLOPs
+        than the dense baseline. Output symmetry is the direct product
+        of the two surviving S₂ groups."""
+        n = 8
+        sym = PermutationGroup.symmetric(axes=(0, 1))
+
+        with BudgetContext(flop_budget=10**10) as dense_bc:
+            a = numpy.ones((n, n, n, n))
+            b = numpy.ones((n, n, n, n))
+            dense_result = tensordot(a, b, axes=((2,), (2,)))
+
+        with BudgetContext(flop_budget=10**10) as sym_bc:
+            a_sym = as_symmetric(numpy.ones((n, n, n, n)), symmetry=sym)
+            b_sym = as_symmetric(numpy.ones((n, n, n, n)), symmetry=sym)
+            sym_result = tensordot(a_sym, b_sym, axes=((2,), (2,)))
+
+        # Output shape unchanged.
+        assert sym_result.shape == dense_result.shape == (n, n, n, n, n, n)
+        # Symmetric path's tensordot cost is strictly lower.
+        assert sym_bc.flops_used < dense_bc.flops_used
+        # Output retains the direct-product symmetry on (0,1) and (3,4).
+        assert isinstance(sym_result, SymmetricTensor)
+        assert sym_result.symmetry is not None
+        assert set(sym_result.symmetry.axes) == {0, 1, 3, 4}
+
+    def test_tensordot_contraction_through_sym_axis_drops_symmetry(self):
+        """If the contracted axes overlap with the input's symmetry
+        axes (e.g. a = (n,n) sym(0,1), contract axis 1), the surviving
+        axis is alone — no symmetry survives."""
+        n = 5
+        sym = PermutationGroup.symmetric(axes=(0, 1))
+        a_sym = as_symmetric(numpy.ones((n, n)), symmetry=sym)
+        b = numpy.ones((n, n))
+        with BudgetContext(flop_budget=10**6):
+            result = tensordot(a_sym, b, axes=1)
+        # Output shape = (n, n) — surviving axes are a's axis 0 and b's axis 1.
+        assert result.shape == (n, n)
+        # No surviving axis pair has the original S2 symmetry.
+        assert getattr(result, "symmetry", None) is None
+
     def test_kron_basic(self):
         a = numpy.array([[1, 0], [0, 1]])
         b = numpy.array([[1, 2], [3, 4]])

@@ -294,31 +294,104 @@ def test_inplace_add_refuses_when_symmetry_would_be_destroyed():
             A += B
 
 
-# ----- Unsupported ufunc methods fail loudly -----
+# ----- ufunc.outer / .reduceat / .at / generic .reduce / .accumulate -----
 
 
-def test_np_add_outer_fails_loudly():
-    """ufunc.outer is not yet implemented; must raise rather than silently
-    bypass tracking."""
-    a = we.random.randn(4)
-    b = we.random.randn(3)
-    with we.BudgetContext(flop_budget=int(1e9)):
-        with pytest.raises((NotImplementedError, TypeError)):
-            np.add.outer(a, b)
+def test_np_add_outer_routes_through_array_ufunc():
+    """``np.add.outer(WhestArray, WhestArray)`` produces a tracked
+    WhestArray of shape ``a.shape + b.shape`` with FLOPs deducted."""
+    with we.BudgetContext(flop_budget=int(1e10)) as bc:
+        a = we.array([1.0, 2.0, 3.0])
+        b = we.array([10.0, 20.0])
+        result = np.add.outer(a, b)
+    assert isinstance(result, WhestArray)
+    assert result.shape == (3, 2)
+    np.testing.assert_array_equal(np.asarray(result), [[11, 21], [12, 22], [13, 23]])
+    assert bc.flops_used > 0
 
 
-def test_np_add_reduceat_fails_loudly():
-    a = we.random.randn(8)
-    with we.BudgetContext(flop_budget=int(1e9)):
-        with pytest.raises((NotImplementedError, TypeError)):
-            np.add.reduceat(a, [0, 4])
+def test_np_add_outer_preserves_direct_product_symmetry():
+    """``np.add.outer(A, B)`` for ``A``, ``B`` SymmetricTensors produces
+    a SymmetricTensor whose symmetry is the direct product of the
+    inputs', with ``B``'s axes lifted past ``A``'s ndim."""
+    with we.BudgetContext(flop_budget=int(1e10)):
+        sym = we.SymmetryGroup.symmetric(axes=(0, 1))
+        A = we.symmetrize(we.array([[1.0, 2.0], [2.0, 3.0]]), symmetry=sym)
+        B = we.symmetrize(we.array([[5.0, 6.0], [6.0, 7.0]]), symmetry=sym)
+        result = np.add.outer(A, B)
+    assert isinstance(result, we.SymmetricTensor)
+    assert result.shape == (2, 2, 2, 2)
+    # Output symmetry has both S2 generators (one on (0,1), one on (2,3)).
+    assert result.symmetry is not None
+    assert set(result.symmetry.axes) == {0, 1, 2, 3}
 
 
-def test_np_add_at_fails_loudly():
-    a = we.random.randn(8)
-    with we.BudgetContext(flop_budget=int(1e9)):
-        with pytest.raises((NotImplementedError, TypeError)):
-            np.add.at(a, [0, 1], 1.0)
+def test_np_add_outer_symmetric_cost_lower_than_dense():
+    """Symmetric outer charges fewer FLOPs than dense outer (placeholder
+    cost = dense × unique_output / dense_output ratio)."""
+    n = 10
+    sym = we.SymmetryGroup.symmetric(axes=(0, 1))
+    with we.BudgetContext(flop_budget=int(1e10)) as dense_bc:
+        a = we.random.randn(n, n)
+        b = we.random.randn(n, n)
+        _ = np.add.outer(a, b)
+    with we.BudgetContext(flop_budget=int(1e10)) as sym_bc:
+        a = we.symmetrize(we.random.randn(n, n), symmetry=sym)
+        b = we.symmetrize(we.random.randn(n, n), symmetry=sym)
+        _ = np.add.outer(a, b)
+    # Symmetric is strictly cheaper than dense (input setup cost is the
+    # same for both; only the outer-op portion shrinks).
+    assert sym_bc.flops_used < dense_bc.flops_used
+
+
+def test_np_subtract_reduce_uses_generic_path():
+    """Non-table reduces (``subtract``, ``true_divide``, …) route through
+    the generic ``_counted_ufunc_reduce_generic`` fallback."""
+    with we.BudgetContext(flop_budget=int(1e10)) as bc:
+        a = we.array([10.0, 3.0, 2.0, 1.0])
+        result = np.subtract.reduce(a)
+    assert float(result) == 4.0  # 10 - 3 - 2 - 1
+    assert bc.flops_used > 0
+
+
+def test_np_subtract_accumulate_uses_generic_path():
+    with we.BudgetContext(flop_budget=int(1e10)) as bc:
+        a = we.array([10.0, 3.0, 2.0, 1.0])
+        result = np.subtract.accumulate(a)
+    np.testing.assert_array_equal(np.asarray(result), [10.0, 7.0, 5.0, 4.0])
+    assert bc.flops_used > 0
+
+
+def test_np_add_reduceat_routes_through_array_ufunc():
+    """``ufunc.reduceat`` segments are tracked; output symmetry is
+    dropped (segment boundaries don't respect axis-permutation
+    invariance)."""
+    with we.BudgetContext(flop_budget=int(1e10)) as bc:
+        a = we.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
+        result = np.add.reduceat(a, [0, 3])
+    np.testing.assert_array_equal(np.asarray(result), [6.0, 15.0])
+    assert bc.flops_used > 0
+
+
+def test_np_add_at_on_plain_whest_array_mutates_in_place():
+    """``np.add.at(WhestArray, indices, values)`` mutates the underlying
+    array — repeated indices accumulate (unlike ``a[indices] +=``)."""
+    with we.BudgetContext(flop_budget=int(1e10)) as bc:
+        a = we.array([0.0, 0.0, 0.0])
+        result = np.add.at(a, [0, 0, 1], [1.0, 2.0, 3.0])
+    assert result is None  # ufunc.at returns None
+    np.testing.assert_array_equal(np.asarray(a), [3.0, 3.0, 0.0])
+    assert bc.flops_used > 0
+
+
+def test_np_add_at_on_symmetric_tensor_refuses():
+    """``ufunc.at`` on a SymmetricTensor would corrupt the tagged
+    symmetry; whest refuses with a directive to downgrade first."""
+    with we.BudgetContext(flop_budget=int(1e10)):
+        sym = we.SymmetryGroup.symmetric(axes=(0, 1))
+        S = we.symmetrize(we.array([[1.0, 2.0], [2.0, 3.0]]), symmetry=sym)
+        with pytest.raises(ValueError, match="symmetry"):
+            np.add.at(S, ([0],), 1.0)
 
 
 # ----- Multi-output ufuncs route through __array_ufunc__ -----

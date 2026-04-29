@@ -322,66 +322,15 @@ XFAIL_PATTERNS: dict[str, str] = {
         "type(obj) != np.ndarray checks; returns NotImplemented then crashes on [0]"
     ),
     # ------------------------------------------------------------------ #
-    # NOT_IMPLEMENTED — ufunc method/protocol rejections                  #
+    # NOT_IMPLEMENTED — private gufuncs and remaining edge cases          #
     # ------------------------------------------------------------------ #
-    # Whest's __array_ufunc__ deliberately rejects ``ufunc.at``,
-    # ``ufunc.reduce``, ``ufunc.reduceat``, ``ufunc.accumulate`` and
-    # ``ufunc.outer`` so that callers cannot silently bypass FLOP
-    # tracking. Equivalent counted whest functions exist for the
-    # underlying operations — but tests that exercise the raw ufunc
-    # method protocol have no whest path and therefore fail with
-    # NotImplemented. (Multi-output ufuncs like ``divmod`` / ``frexp`` /
-    # ``modf`` are now supported via ``__array_ufunc__`` and route to
-    # the corresponding ``we.*`` wrapper.)
-    "*TestUfunc::test_ufunc_at_inner_loops*": (
-        "NOT_IMPLEMENTED: ufunc.at rejected by __array_ufunc__ (deliberate, "
-        "use we.* counted functions instead)"
-    ),
-    "*TestUfunc::test_ufunc_at_scalar_value_fastpath*": (
-        "NOT_IMPLEMENTED: ufunc.at rejected by __array_ufunc__ (deliberate, "
-        "use we.* counted functions instead)"
-    ),
-    "*TestUfunc::test_ufunc_at_negative": (
-        "NOT_IMPLEMENTED: ufunc.at rejected by __array_ufunc__ (deliberate)"
-    ),
-    "*TestUfunc::test_ufunc_at_large": (
-        "NOT_IMPLEMENTED: ufunc.at rejected by __array_ufunc__ (deliberate)"
-    ),
-    "*TestUfunc::test_ufunc_at_ellipsis": (
-        "NOT_IMPLEMENTED: ufunc.at rejected by __array_ufunc__ (deliberate)"
-    ),
-    "*TestUfunc::test_at_no_loop_for_op": (
-        "NOT_IMPLEMENTED: ufunc.at rejected by __array_ufunc__ (deliberate)"
-    ),
-    "*TestUfunc::test_cast_index_fastpath": (
-        "NOT_IMPLEMENTED: ufunc.at rejected by __array_ufunc__ (deliberate)"
-    ),
-    "*TestUfunc::test_object_array_reduceat_inplace": (
-        "NOT_IMPLEMENTED: ufunc.reduceat rejected by __array_ufunc__ (deliberate)"
-    ),
-    "*TestUfunc::test_reducelike_output_needs_identical_cast": (
-        "NOT_IMPLEMENTED: ufunc.reduceat rejected by __array_ufunc__ (deliberate)"
-    ),
-    "*TestUfunc::test_reduce_zero_axis": (
-        "NOT_IMPLEMENTED: ufunc.accumulate rejected by __array_ufunc__ (deliberate)"
-    ),
-    "*TestUfunc::test_empty_reduction_and_identity": (
-        "NOT_IMPLEMENTED: ufunc.reduce rejected by __array_ufunc__ (deliberate)"
-    ),
-    "test_logical_ufuncs_support_anything[logical_xor]": (
-        "NOT_IMPLEMENTED: ufunc.reduce rejected by __array_ufunc__ (deliberate); "
-        "logical_and/or pass because their reduce reaches a terminating "
-        "scalar value before our rejection fires"
-    ),
-    "*test_umath.py::test_reduceat": (
-        "NOT_IMPLEMENTED: ufunc.reduceat rejected by __array_ufunc__ (deliberate)"
-    ),
-    "*test_umath.py::test_reduceat_empty": (
-        "NOT_IMPLEMENTED: ufunc.reduceat rejected by __array_ufunc__ (deliberate)"
-    ),
-    "*test_umath.py::test_outer_exceeds_maxdims": (
-        "NOT_IMPLEMENTED: ufunc.outer rejected by __array_ufunc__ (deliberate)"
-    ),
+    # ``ufunc.outer`` / ``reduceat`` / ``at`` and the generic
+    # ``reduce`` / ``accumulate`` fallback are now supported via
+    # ``__array_ufunc__`` (Section 15 of the PR description). Multi-
+    # output ufuncs (``divmod`` / ``frexp`` / ``modf``) are also
+    # supported (Section 8). The remaining xfails below are for
+    # private numpy gufuncs and a handful of genuine semantic
+    # divergences.
     # Private numpy gufuncs (cross1d, matrix_multiply, conv1d_full, test_add,
     # euclidean_pdist) live in ``numpy._core.umath_tests`` and are not part
     # of the public NumPy API. Whest's __array_function__ allowlist does not

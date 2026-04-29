@@ -127,9 +127,12 @@ class WhestArray(_np.ndarray):
         """Route ufunc calls through whest's counted functions.
 
         Triggered for:
-        - ``np.add(whest, x)``         → method='__call__'
-        - ``np.add.reduce(whest)``     → method='reduce'
-        - ``np.add.accumulate(whest)`` → method='accumulate'
+        - ``np.add(whest, x)``           → method='__call__'
+        - ``np.add.reduce(whest)``       → method='reduce'
+        - ``np.add.accumulate(whest)``   → method='accumulate'
+        - ``np.add.outer(whest, w2)``    → method='outer'
+        - ``np.add.reduceat(whest, ix)`` → method='reduceat'
+        - ``np.add.at(whest, ix, val)``  → method='at'
 
         ``out`` is passed by NumPy as a tuple of length ``ufunc.nout``.
         For single-output ufuncs we unwrap the 1-tuple to ``out=arr``;
@@ -137,55 +140,98 @@ class WhestArray(_np.ndarray):
         forward the tuple as-is to the corresponding ``we.*`` wrapper,
         which knows how to handle per-slot stripping and identity.
 
-        Unsupported ufunc methods (``outer``, ``reduceat``, ``at``)
-        raise ``NotImplementedError`` so callers cannot silently bypass
-        tracking.
+        ``reduce`` / ``accumulate`` first try the optimized routing in
+        :attr:`_REDUCE_TO_WHEST` / :attr:`_ACCUMULATE_TO_WHEST`; on a
+        miss (e.g. ``np.subtract.reduce``) they fall back to a generic
+        path in :mod:`whest._pointwise` that strips, charges
+        :func:`reduction_cost`, and routes back through the raw
+        ``ufunc.<method>``. ``outer`` / ``reduceat`` / ``at`` always
+        use the generic path. ``ufunc.at`` refuses on SymmetricTensor
+        operands (the in-place fancy-index write would break symmetry).
         """
         me = _me()
 
         np_target_name = None  # used to drive _filter_to_np_signature below
+        whest_fn = None
         if method == "__call__":
             whest_fn = getattr(me, ufunc.__name__, None)
             np_target_name = ufunc.__name__
         elif method == "reduce":
             target = self._REDUCE_TO_WHEST.get(ufunc.__name__)
-            whest_fn = getattr(me, target, None) if target else None
-            np_target_name = target
-            # NumPy's ufunc.reduce defaults to axis=0; whest's me.sum etc.
-            # default to axis=None (full reduction). Force NumPy default.
-            kwargs.setdefault("axis", 0)
+            if target is not None:
+                whest_fn = getattr(me, target, None)
+                np_target_name = target
+                # NumPy's ufunc.reduce defaults to axis=0; whest's me.sum etc.
+                # default to axis=None (full reduction). Force NumPy default.
+                kwargs.setdefault("axis", 0)
         elif method == "accumulate":
             target = self._ACCUMULATE_TO_WHEST.get(ufunc.__name__)
-            whest_fn = getattr(me, target, None) if target else None
-            np_target_name = target
-            kwargs.setdefault("axis", 0)
-        elif method in ("outer", "reduceat", "at"):
-            raise NotImplementedError(
-                f"ufunc.{method} is not yet supported on WhestArray "
-                f"(operation: {ufunc.__name__}); use the equivalent "
-                f"whest function instead, or open an issue if you need this."
+            if target is not None:
+                whest_fn = getattr(me, target, None)
+                np_target_name = target
+                kwargs.setdefault("axis", 0)
+
+        if whest_fn is not None:
+            # Optimized routing-table path: forward to the dedicated
+            # ``we.*`` wrapper.
+            #
+            # Unwrap single-output ``out`` tuple.
+            if out is not None:
+                if isinstance(out, tuple) and len(out) == 1:
+                    kwargs["out"] = out[0]
+                else:
+                    kwargs["out"] = out
+            # Filter kwargs against the target NumPy callable's signature so
+            # ufunc-internal kwargs (e.g. ``dtype=`` from np.all → np.add.reduce)
+            # don't reach a function-form whest wrapper that doesn't accept
+            # them.
+            if np_target_name is not None:
+                kwargs = _filter_to_np_signature(
+                    getattr(_np, np_target_name, None), kwargs
+                )
+            return whest_fn(*inputs, **kwargs)
+
+        # Generic ufunc-method paths for ops without a dedicated whest
+        # equivalent. Lazy-imported to avoid the _ndarray ↔ _pointwise
+        # circular-dependency loop.
+        if method in ("outer", "reduce", "accumulate", "reduceat", "at"):
+            from whest._pointwise import (
+                _counted_ufunc_accumulate_generic,
+                _counted_ufunc_at,
+                _counted_ufunc_outer,
+                _counted_ufunc_reduce_generic,
+                _counted_ufunc_reduceat,
             )
-        else:
-            whest_fn = None
 
-        if whest_fn is None:
-            return NotImplemented
+            # Unwrap single-output ``out`` tuple for the generic paths
+            # too. ``ufunc.at`` doesn't take ``out``.
+            out_for_generic = out
+            if out is not None and isinstance(out, tuple) and len(out) == 1:
+                out_for_generic = out[0]
 
-        # Unwrap single-output ``out`` tuple.
-        if out is not None:
-            if isinstance(out, tuple) and len(out) == 1:
-                kwargs["out"] = out[0]
-            else:
-                kwargs["out"] = out
+            if method == "outer":
+                return _counted_ufunc_outer(
+                    ufunc, *inputs, out=out_for_generic, **kwargs
+                )
+            if method == "reduce":
+                kwargs.setdefault("axis", 0)
+                return _counted_ufunc_reduce_generic(
+                    ufunc, *inputs, out=out_for_generic, **kwargs
+                )
+            if method == "accumulate":
+                kwargs.setdefault("axis", 0)
+                return _counted_ufunc_accumulate_generic(
+                    ufunc, *inputs, out=out_for_generic, **kwargs
+                )
+            if method == "reduceat":
+                return _counted_ufunc_reduceat(
+                    ufunc, *inputs, out=out_for_generic, **kwargs
+                )
+            if method == "at":
+                # ``ufunc.at`` does not accept ``out=``.
+                return _counted_ufunc_at(ufunc, *inputs, **kwargs)
 
-        # Filter kwargs against the target NumPy callable's signature so
-        # ufunc-internal kwargs (e.g. ``dtype=`` from np.all → np.add.reduce)
-        # don't reach a function-form whest wrapper that doesn't accept
-        # them.
-        if np_target_name is not None:
-            kwargs = _filter_to_np_signature(getattr(_np, np_target_name, None), kwargs)
-
-        return whest_fn(*inputs, **kwargs)
+        return NotImplemented
 
     # ----- numpy array-function protocol (NEP 18) -----
 

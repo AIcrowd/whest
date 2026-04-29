@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import builtins as _builtins
 import inspect as _inspect
+from math import prod as _math_prod
 
 import numpy as _np
 
@@ -27,7 +28,15 @@ from whest._symmetric import (
 from whest._symmetric import (
     is_symmetric as _is_symmetric,
 )
-from whest._symmetry_utils import broadcast_group, intersect_groups, reduce_group
+from whest._symmetry_utils import (
+    broadcast_group,
+    direct_product_groups,
+    intersect_groups,
+    reduce_group,
+    remap_group_axes,
+    restrict_group_to_axes,
+    unique_elements_for_shape,
+)
 from whest._validation import check_nan_inf, require_budget
 from whest.errors import SymmetryError, UnsupportedFunctionError
 
@@ -74,6 +83,41 @@ def _validate_result_symmetry(result, symmetry):
         if axes is None:
             axes = tuple(range(symmetry.degree))
         raise SymmetryError(axes=tuple(axes), max_deviation=float("inf"))
+
+
+def _symmetry_adjusted_cost(dense_cost, output_shape, output_symmetry):
+    """Scale a dense FLOP cost by the output's symmetry-savings ratio.
+
+    Placeholder model: for an output of shape ``output_shape`` with
+    permutation symmetry ``output_symmetry``, the number of *unique*
+    elements is at most ``unique_elements_for_shape(output_symmetry,
+    output_shape)``. We scale the dense cost by ``unique / dense`` so
+    the budget reflects the symmetry savings a symmetry-aware
+    implementation could realise.
+
+    For non-symmetric outputs, the ratio is ``1.0`` and ``cost ==
+    dense_cost`` (no behaviour change for users without
+    SymmetricTensor inputs). For symmetric outputs, the ratio drops
+    below 1 and captures redundant-element savings.
+
+    TODO: this is a placeholder. The real algorithmic cost depends on
+    whether the underlying NumPy call (or the whest wrapper) actually
+    skips redundant work — today, our wrappers compute the dense
+    output and discard the duplicates. Replace with a per-op
+    algorithmic-cost model when one is available.
+    """
+    if output_symmetry is None:
+        return int(dense_cost)
+    # Use the Python builtins to avoid the module-level ``max`` /
+    # ``prod`` reduction wrappers that shadow them in this module.
+    dense_output = _builtins.max(_math_prod(output_shape), 1)
+    if dense_output <= 1:
+        return int(dense_cost)
+    unique = unique_elements_for_shape(output_symmetry, output_shape)
+    if unique >= dense_output:
+        return int(dense_cost)
+    # Integer-division form avoids float drift on large arrays.
+    return _builtins.max(int(dense_cost) * int(unique) // dense_output, 1)
 
 
 def _call_with_optional_out(np_func, *args, out=None, supports_out=False, **kwargs):
@@ -426,6 +470,221 @@ def _counted_binary_multi(np_func, op_name: str):
     except (ValueError, TypeError):
         pass
     return wrapper
+
+
+# ---------------------------------------------------------------------------
+# Generic ufunc-method helpers (outer, reduceat, at, generic reduce/accumulate)
+# ---------------------------------------------------------------------------
+
+
+def _counted_ufunc_outer(ufunc, a, b, *, out=None, **kwargs):
+    """Cost-tracked ``ufunc.outer(a, b)`` for any binary ufunc.
+
+    Output shape is ``a.shape + b.shape``; output symmetry is the direct
+    product of the input symmetries (with ``b``'s axes lifted by
+    ``a.ndim`` so they refer to the correct slots in the combined
+    output). Cost is symmetry-adjusted: dense ``a.size * b.size``
+    scaled by ``unique / dense`` of the output (see
+    :func:`_symmetry_adjusted_cost`).
+    """
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    if not isinstance(b, _np.ndarray):
+        b = _np.asarray(b)
+    a_sym = _symmetry_of(a)
+    b_sym = _symmetry_of(b)
+    output_shape = tuple(a.shape) + tuple(b.shape)
+    # Lift ``b``'s symmetry axes into the combined output's slot range.
+    b_sym_lifted = b_sym
+    if b_sym is not None and b_sym.axes is not None:
+        axis_map = {ax: ax + a.ndim for ax in b_sym.axes}
+        b_sym_lifted = remap_group_axes(b_sym, axis_map)
+    out_sym = direct_product_groups(a_sym, b_sym_lifted)
+    dense = _builtins.max(a.size * b.size, 1)
+    cost = _symmetry_adjusted_cost(dense, output_shape, out_sym)
+    out_stripped = _to_base_ndarray(out) if out is not None else None
+    with budget.deduct(
+        f"{ufunc.__name__}.outer",
+        flop_cost=cost,
+        subscripts=None,
+        shapes=(a.shape, b.shape),
+    ):
+        result = ufunc.outer(
+            _to_base_ndarray(a),
+            _to_base_ndarray(b),
+            out=out_stripped,
+            **kwargs,
+        )
+    return _wrap_result(result, out=out, symmetry=out_sym)
+
+
+def _counted_ufunc_reduce_generic(
+    ufunc, a, *, axis=0, out=None, keepdims=False, **kwargs
+):
+    """Cost-tracked fallback for ``ufunc.reduce`` of arbitrary binary ufuncs.
+
+    Used for ufuncs not in :class:`WhestArray._REDUCE_TO_WHEST` (e.g.
+    ``subtract``, ``logical_xor``, ``bitwise_or``). Cost equals
+    :func:`reduction_cost` (numel of input, or the symmetry-aware
+    unique count); output symmetry follows
+    :func:`reduce_group(symmetry, ndim, axis, keepdims)`.
+    """
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    sym = _symmetry_of(a)
+    cost = reduction_cost(a.shape, axis=axis, symmetry=sym)
+    out_sym = (
+        reduce_group(sym, ndim=a.ndim, axis=axis, keepdims=keepdims)
+        if sym is not None
+        else None
+    )
+    out_stripped = _to_base_ndarray(out) if out is not None else None
+    with budget.deduct(
+        f"{ufunc.__name__}.reduce",
+        flop_cost=cost,
+        subscripts=None,
+        shapes=(a.shape,),
+    ):
+        result = ufunc.reduce(
+            _to_base_ndarray(a),
+            axis=axis,
+            out=out_stripped,
+            keepdims=keepdims,
+            **kwargs,
+        )
+    return _wrap_result(result, out=out, symmetry=out_sym)
+
+
+def _counted_ufunc_accumulate_generic(ufunc, a, *, axis=0, out=None, **kwargs):
+    """Cost-tracked fallback for ``ufunc.accumulate`` of arbitrary binary ufuncs.
+
+    Used for ufuncs not in :class:`WhestArray._ACCUMULATE_TO_WHEST`.
+    Cost equals :func:`reduction_cost` (cumulative ops touch every
+    element). Output shape matches input shape, but accumulation along
+    ``axis`` breaks any permutation symmetry that includes that axis.
+    Output symmetry: surviving stabilizer with ``keepdims=True`` (drops
+    symmetry on the accumulate axis only).
+    """
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    sym = _symmetry_of(a)
+    cost = reduction_cost(a.shape, axis=axis, symmetry=sym)
+    out_sym = (
+        reduce_group(sym, ndim=a.ndim, axis=axis, keepdims=True)
+        if sym is not None
+        else None
+    )
+    out_stripped = _to_base_ndarray(out) if out is not None else None
+    with budget.deduct(
+        f"{ufunc.__name__}.accumulate",
+        flop_cost=cost,
+        subscripts=None,
+        shapes=(a.shape,),
+    ):
+        result = ufunc.accumulate(
+            _to_base_ndarray(a),
+            axis=axis,
+            out=out_stripped,
+            **kwargs,
+        )
+    return _wrap_result(result, out=out, symmetry=out_sym)
+
+
+def _counted_ufunc_reduceat(ufunc, a, indices, *, axis=0, out=None, **kwargs):
+    """Cost-tracked ``ufunc.reduceat(a, indices, axis=...)``.
+
+    Cost is dense ``numel(input)`` — every element is touched by
+    exactly one segment. Output symmetry is ``None``: arbitrary segment
+    boundaries don't respect any axis-permutation group action.
+    """
+    budget = require_budget()
+    if not isinstance(a, _np.ndarray):
+        a = _np.asarray(a)
+    cost = _builtins.max(int(a.size), 1)
+    out_stripped = _to_base_ndarray(out) if out is not None else None
+    # Strip ``indices`` only when it's already a whest-typed ndarray —
+    # otherwise let numpy handle the dtype coercion (e.g. an empty
+    # Python list must reach numpy as-is so it doesn't get the float64
+    # default that ``np.asarray([])`` would assign).
+    indices_stripped = (
+        _to_base_ndarray(indices) if isinstance(indices, _np.ndarray) else indices
+    )
+    with budget.deduct(
+        f"{ufunc.__name__}.reduceat",
+        flop_cost=cost,
+        subscripts=None,
+        shapes=(a.shape,),
+    ):
+        result = ufunc.reduceat(
+            _to_base_ndarray(a),
+            indices_stripped,
+            axis=axis,
+            out=out_stripped,
+            **kwargs,
+        )
+    return _wrap_result(result, out=out, symmetry=None)
+
+
+def _counted_ufunc_at(ufunc, a, indices, *args, **kwargs):
+    """Cost-tracked ``ufunc.at(a, indices[, values])`` (in-place fancy index).
+
+    ``ufunc.at`` is the in-place unbuffered counterpart to fancy
+    indexing — for repeated indices, each application is performed
+    rather than deduplicated. The mutation propagates back through
+    :func:`_to_base_ndarray`'s zero-copy view-cast.
+
+    **Refusal on SymmetricTensor**: the asymmetric-index write almost
+    certainly breaks the tagged symmetry, so we refuse rather than
+    silently corrupt metadata. Users can downgrade with
+    ``_asplainwhest(a)`` first if they really want the unbuffered
+    update on a view.
+    """
+    if isinstance(a, SymmetricTensor):
+        sym = a.symmetry
+        sym_axes = sym.axes if sym is not None else None
+        raise ValueError(
+            f"in-place ufunc.{ufunc.__name__}.at on a SymmetricTensor would "
+            f"break symmetry on axes {sym_axes}; downgrade to plain WhestArray "
+            f"(e.g. via ``_asplainwhest(a)``) before calling "
+            f"np.{ufunc.__name__}.at(...)."
+        )
+    budget = require_budget()
+    # ``indices`` can be many things: int, list of ints, ndarray, slice,
+    # Ellipsis, or a tuple thereof (for multi-axis fancy indexing).
+    # ``ufunc.at`` accepts all of these. Only convert to ndarray when
+    # it's already array-like; let scalars / slices / Ellipsis through
+    # unchanged so numpy's own semantics apply.
+    indices_stripped = (
+        _to_base_ndarray(indices) if isinstance(indices, _np.ndarray) else indices
+    )
+    if isinstance(indices, _np.ndarray):
+        n_ops = _builtins.max(int(_np.size(indices)), 1)
+    elif hasattr(a, "size"):
+        # Conservative for non-array index forms (slice / Ellipsis): use
+        # the input size as an upper bound on the touched cells.
+        n_ops = _builtins.max(int(a.size), 1)
+    else:
+        n_ops = 1
+    # Strip any whest-typed positional values too.
+    stripped_args = tuple(
+        _to_base_ndarray(v) if isinstance(v, _np.ndarray) else v for v in args
+    )
+    with budget.deduct(
+        f"{ufunc.__name__}.at",
+        flop_cost=n_ops,
+        subscripts=None,
+        shapes=(a.shape,) if hasattr(a, "shape") else (),
+    ):
+        ufunc.at(
+            _to_base_ndarray(a),
+            indices_stripped,
+            *stripped_args,
+            **kwargs,
+        )
+    return None  # numpy's ufunc.at returns None (mutation is the side effect)
 
 
 def _counted_reduction(
@@ -1273,6 +1532,42 @@ def outer(a, b, out=None):
 attach_docstring(outer, _np.outer, "counted_custom", "m * n FLOPs")
 
 
+def _tensordot_parse_axes(a_ndim, b_ndim, axes):
+    """Parse ``np.tensordot``'s ``axes`` argument into ``(a_axes, b_axes)``.
+
+    Accepts the same forms as numpy: ``int N`` (contract last N of ``a``
+    with first N of ``b``), ``(int, int)`` (single-axis pair), or
+    ``(iterable, iterable)`` (per-axis pairing). Returns a pair of
+    tuples of contracted axis indices.
+    """
+    if isinstance(axes, int):
+        return (
+            tuple(range(a_ndim - axes, a_ndim)),
+            tuple(range(axes)),
+        )
+    a_spec, b_spec = axes
+    a_axes = (a_spec,) if isinstance(a_spec, int) else tuple(a_spec)
+    b_axes = (b_spec,) if isinstance(b_spec, int) else tuple(b_spec)
+    return a_axes, b_axes
+
+
+def _surviving_symmetry_after_contraction(group, surviving_axes):
+    """Restrict ``group`` to the axes that remain after contraction.
+
+    Returns ``None`` if the surviving axes don't carry any of the
+    group's permutations (e.g. the contraction broke a 2-axis S₂).
+    The returned group is still indexed in the *original* tensor's
+    axis space — call :func:`remap_group_axes` afterwards to relabel.
+    """
+    if group is None:
+        return None
+    group_axes = group.axes if group.axes is not None else tuple(range(group.degree))
+    wanted = tuple(ax for ax in surviving_axes if ax in group_axes)
+    if len(wanted) < 2:
+        return None
+    return restrict_group_to_axes(group, axes=wanted)
+
+
 def tensordot(a, b, axes=2):
     """Counted version of np.tensordot."""
     budget = require_budget()
@@ -1280,26 +1575,49 @@ def tensordot(a, b, axes=2):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
         b = _np.asarray(b)
-    if isinstance(axes, int):
-        contracted = 1
-        for i in range(axes):
-            contracted *= a.shape[a.ndim - axes + i]
-    else:
-        ax0 = axes[0]
-        contracted = 1
-        if isinstance(ax0, int):
-            # axes=(scalar, scalar) form — single axis contracted
-            contracted *= a.shape[ax0] if ax0 < a.ndim else 1
-        else:
-            for i in ax0:
-                contracted *= a.shape[i]
+    a_contract_axes, b_contract_axes = _tensordot_parse_axes(a.ndim, b.ndim, axes)
+    contracted = 1
+    for ax in a_contract_axes:
+        if 0 <= ax < a.ndim:
+            contracted *= a.shape[ax]
+    # Surviving (non-contracted) axes for each operand.
+    a_surviving = tuple(i for i in range(a.ndim) if i not in a_contract_axes)
+    b_surviving = tuple(i for i in range(b.ndim) if i not in b_contract_axes)
+    output_shape = tuple(a.shape[i] for i in a_surviving) + tuple(
+        b.shape[j] for j in b_surviving
+    )
     # output_size * contracted = (a.size / contracted) * (b.size / contracted) * contracted
     # = a.size * b.size / contracted
-    cost = _builtins.max(a.size * b.size // contracted, 1) if contracted > 0 else 1
+    dense = _builtins.max(a.size * b.size // contracted, 1) if contracted > 0 else 1
+    # Compose output symmetry from each input's surviving symmetry, with
+    # b's axes lifted past a's surviving count so they refer to their
+    # final slots in the combined output.
+    a_sym = _symmetry_of(a)
+    b_sym = _symmetry_of(b)
+    a_sym_kept = _surviving_symmetry_after_contraction(a_sym, a_surviving)
+    b_sym_kept = _surviving_symmetry_after_contraction(b_sym, b_surviving)
+    a_sym_remapped = (
+        remap_group_axes(a_sym_kept, {ax: new for new, ax in enumerate(a_surviving)})
+        if a_sym_kept is not None
+        else None
+    )
+    b_offset = len(a_surviving)
+    b_sym_remapped = (
+        remap_group_axes(
+            b_sym_kept,
+            {ax: new + b_offset for new, ax in enumerate(b_surviving)},
+        )
+        if b_sym_kept is not None
+        else None
+    )
+    out_sym = direct_product_groups(a_sym_remapped, b_sym_remapped)
+    cost = _symmetry_adjusted_cost(dense, output_shape, out_sym)
     with budget.deduct(
         "tensordot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
         result = _np.tensordot(_to_base_ndarray(a), _to_base_ndarray(b), axes=axes)
+    if out_sym is not None:
+        return _wrap_result(result, symmetry=out_sym)
     return result
 
 
