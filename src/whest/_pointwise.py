@@ -683,7 +683,7 @@ def isclose(a, b, **kwargs):
     with budget.deduct(
         "isclose", flop_cost=cost, subscripts=None, shapes=(a_arr.shape, b_arr.shape)
     ):
-        result = _np.isclose(a, b, **kwargs)
+        result = _np.isclose(_to_base_ndarray(a), _to_base_ndarray(b), **kwargs)
     if a_is_scalar and b_is_scalar and _np.ndim(result) == 0:
         return result
     return _wrap_result(result, symmetry=out_symmetry)
@@ -992,7 +992,10 @@ else:
             a = _np.asarray(a)
         cost = reduction_cost(a.shape, axis)
         with budget.deduct("ptp", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-            result = _np.max(a, axis=axis, **kwargs) - _np.min(a, axis=axis, **kwargs)
+            stripped = _to_base_ndarray(a)
+            result = _np.max(stripped, axis=axis, **kwargs) - _np.min(
+                stripped, axis=axis, **kwargs
+            )
         return result
 
     attach_docstring(ptp, _np.max, "counted_reduction", "numel(input) FLOPs")
@@ -1113,7 +1116,7 @@ def inner(a, b):
     with budget.deduct(
         "inner", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _np.inner(a, b)
+        result = _np.inner(_to_base_ndarray(a), _to_base_ndarray(b))
     return result
 
 
@@ -1137,8 +1140,8 @@ def outer(a, b, out=None):
         "outer", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
         result = _np.outer(
-            a,
-            b,
+            _to_base_ndarray(a),
+            _to_base_ndarray(b),
             out=None if isinstance(out, SymmetricTensor) else out,
         )
     if target_symmetry is None:
@@ -1177,7 +1180,7 @@ def tensordot(a, b, axes=2):
     with budget.deduct(
         "tensordot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _np.tensordot(a, b, axes=axes)
+        result = _np.tensordot(_to_base_ndarray(a), _to_base_ndarray(b), axes=axes)
     return result
 
 
@@ -1195,7 +1198,7 @@ def vdot(a, b):
     with budget.deduct(
         "vdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _np.vdot(a, b)
+        result = _np.vdot(_to_base_ndarray(a), _to_base_ndarray(b))
     return result
 
 
@@ -1214,7 +1217,7 @@ def kron(a, b):
     with budget.deduct(
         "kron", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _np.kron(a, b)
+        result = _np.kron(_to_base_ndarray(a), _to_base_ndarray(b))
     return result
 
 
@@ -1230,7 +1233,7 @@ def cross(a, b, **kwargs):
         b = _np.asarray(b)
     # np.cross supports axisa/axisb/axisc kwargs that change output shape,
     # so we compute the result first, then deduct based on actual output size.
-    result = _np.cross(a, b, **kwargs)
+    result = _np.cross(_to_base_ndarray(a), _to_base_ndarray(b), **kwargs)
     cost = _builtins.max(_np.asarray(result).size * 3, 1)
     with budget.deduct(
         "cross",
@@ -1263,7 +1266,7 @@ def diff(a, n=1, axis=-1, **kwargs):
         subscripts=None,
         shapes=(a.shape,),
     ):
-        result = _np.diff(a, n=n, axis=axis, **kwargs)
+        result = _np.diff(_to_base_ndarray(a), n=n, axis=axis, **kwargs)
     return result
 
 
@@ -1279,7 +1282,11 @@ def gradient(f, *varargs, **kwargs):
     with budget.deduct(
         "gradient", flop_cost=f.size, subscripts=None, shapes=(f.shape,)
     ):
-        result = _np.gradient(f, *varargs, **kwargs)
+        result = _np.gradient(
+            _to_base_ndarray(f),
+            *[_to_base_ndarray(v) for v in varargs],
+            **kwargs,
+        )
     return result
 
 
@@ -1329,7 +1336,7 @@ def convolve(a, v, mode="full"):
         subscripts=None,
         shapes=(a.shape, v.shape),
     ):
-        result = _np.convolve(a, v, mode=mode)
+        result = _np.convolve(_to_base_ndarray(a), _to_base_ndarray(v), mode=mode)
     return result
 
 
@@ -1350,7 +1357,7 @@ def correlate(a, v, mode="valid"):
         subscripts=None,
         shapes=(a.shape, v.shape),
     ):
-        result = _np.correlate(a, v, mode=mode)
+        result = _np.correlate(_to_base_ndarray(a), _to_base_ndarray(v), mode=mode)
     return result
 
 

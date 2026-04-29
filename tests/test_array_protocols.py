@@ -188,16 +188,14 @@ def test_np_add_out_allows_matching_symmetric_out():
     assert bc.flops_used > 0
 
 
-def test_np_transpose_on_whest_fails_loudly_until_supported():
-    """Structural NumPy ops are intentionally NOT in the
-    ``__array_function__`` allowlist. ``np.transpose(whest)`` must
-    therefore raise ``TypeError`` rather than silently strip
-    symmetry. ``A.T`` (property form) goes through ``__array_finalize__``
-    and continues to work — covered by
-    ``test_transpose_of_symmetric_preserves_type`` below."""
+def test_np_transpose_of_whest_returns_whest():
+    """Post-Stage-4: np.transpose dispatches via __array_function__ to
+    me.transpose, which works on WhestArray (zero-FLOP shape op)."""
     a = we.random.randn(2, 3)
-    with pytest.raises(TypeError):
-        np.transpose(a)
+    with we.BudgetContext(flop_budget=int(1e9)):
+        r = np.transpose(a)
+    assert isinstance(r, we.ndarray)
+    assert r.shape == (3, 2)
 
 
 def test_np_add_where_kwarg_tracks():

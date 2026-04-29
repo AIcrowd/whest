@@ -8,6 +8,7 @@ import numpy as _np
 
 from whest._docstrings import attach_docstring
 from whest._flops import search_cost, sort_cost
+from whest._ndarray import _to_base_ndarray, _to_base_ndarray_tree
 from whest._validation import require_budget
 from whest.errors import UnsupportedFunctionError
 
@@ -54,7 +55,7 @@ def sort(a, axis=-1, **kwargs):
         ax = axis % a.ndim
         cost = _sort_cost_nd(a, ax)
     with budget.deduct("sort", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.sort(a, axis=axis, **kwargs)
+        result = _np.sort(_to_base_ndarray(a), axis=axis, **kwargs)
     return result
 
 
@@ -75,7 +76,7 @@ def argsort(a, axis=-1, **kwargs):
         ax = axis % a.ndim
         cost = _sort_cost_nd(a, ax)
     with budget.deduct("argsort", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.argsort(a, axis=axis, **kwargs)
+        result = _np.argsort(_to_base_ndarray(a), axis=axis, **kwargs)
     return result
 
 
@@ -103,7 +104,7 @@ def lexsort(keys, axis=-1):
         cost = max(k * sort_cost(n), 1)
     shapes = tuple(_np.asarray(key).shape for key in keys_list)
     with budget.deduct("lexsort", flop_cost=cost, subscripts=None, shapes=shapes):
-        result = _np.lexsort(keys_list, axis=axis)
+        result = _np.lexsort(_to_base_ndarray_tree(keys_list), axis=axis)
     return result
 
 
@@ -129,7 +130,7 @@ def partition(a, kth, axis=-1, **kwargs):
         num_slices = numel // n if n > 0 else 1
         cost = max(num_slices * n * kth_count, 1)
     with budget.deduct("partition", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.partition(a, kth, axis=axis, **kwargs)
+        result = _np.partition(_to_base_ndarray(a), kth, axis=axis, **kwargs)
     return result
 
 
@@ -160,7 +161,7 @@ def argpartition(a, kth, axis=-1, **kwargs):
     with budget.deduct(
         "argpartition", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.argpartition(a, kth, axis=axis, **kwargs)
+        result = _np.argpartition(_to_base_ndarray(a), kth, axis=axis, **kwargs)
     return result
 
 
@@ -196,7 +197,7 @@ def searchsorted(a, v, **kwargs):
         subscripts=None,
         shapes=(a.shape, v_arr.shape),
     ):
-        result = _np.searchsorted(a, v, **kwargs)
+        result = _np.searchsorted(_to_base_ndarray(a), _to_base_ndarray(v), **kwargs)
     return result
 
 
@@ -225,7 +226,7 @@ def digitize(x, bins, **kwargs):
         subscripts=None,
         shapes=(x_arr.shape, bins_arr.shape),
     ):
-        result = _np.digitize(x, bins, **kwargs)
+        result = _np.digitize(_to_base_ndarray(x), _to_base_ndarray(bins), **kwargs)
     return result
 
 
@@ -277,7 +278,7 @@ def unique(ar, **kwargs):
         and not _returns_tuple
         and ar_arr.dtype.kind in _UNSORTED_IN_NP_2_3
     ):
-        result = _np.sort(result)
+        result = _np.sort(_to_base_ndarray(result))
     return result
 
 
@@ -375,7 +376,7 @@ if hasattr(_np, "in1d"):
         with budget.deduct(
             "in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
         ):
-            result = _np.in1d(ar1, ar2, **kwargs)
+            result = _np.in1d(_to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
         return result
 
     attach_docstring(in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
@@ -396,7 +397,7 @@ def isin(element, test_elements, **kwargs):
     with budget.deduct(
         "isin", flop_cost=cost, subscripts=None, shapes=(el.shape, te.shape)
     ):
-        result = _np.isin(element, test_elements, **kwargs)
+        result = _np.isin(_to_base_ndarray(element), _to_base_ndarray(test_elements), **kwargs)
     return result
 
 
@@ -413,7 +414,7 @@ def intersect1d(ar1, ar2, **kwargs):
     with budget.deduct(
         "intersect1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _np.intersect1d(ar1, ar2, **kwargs)
+        result = _np.intersect1d(_to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
     return result
 
 
@@ -432,7 +433,7 @@ def union1d(ar1, ar2):
     with budget.deduct(
         "union1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _np.union1d(ar1, ar2)
+        result = _np.union1d(_to_base_ndarray(ar1), _to_base_ndarray(ar2))
     return result
 
 
@@ -448,7 +449,7 @@ def setdiff1d(ar1, ar2, **kwargs):
     with budget.deduct(
         "setdiff1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _np.setdiff1d(ar1, ar2, **kwargs)
+        result = _np.setdiff1d(_to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
     return result
 
 
@@ -467,7 +468,7 @@ def setxor1d(ar1, ar2, **kwargs):
     with budget.deduct(
         "setxor1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _np.setxor1d(ar1, ar2, **kwargs)
+        result = _np.setxor1d(_to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
     return result
 
 

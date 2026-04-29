@@ -27,10 +27,11 @@ def cross(x1, x2, /, *, axis=-1):
     """Cross product (linalg namespace). Uses np.linalg.cross for strict validation."""
     import builtins as _builtins
 
-    from whest._ndarray import _aswhest
+    from whest._ndarray import WhestArray, _aswhest, _to_base_ndarray
     from whest._validation import require_budget
 
     budget = require_budget()
+    inputs_were_whest = isinstance(x1, WhestArray) or isinstance(x2, WhestArray)
     x1_arr = _np.asarray(x1)
     x2_arr = _np.asarray(x2)
     out_shape = _np.broadcast_shapes(x1_arr.shape, x2_arr.shape)
@@ -43,8 +44,8 @@ def cross(x1, x2, /, *, axis=-1):
         subscripts=None,
         shapes=(x1_arr.shape, x2_arr.shape),
     ):
-        result = _np.linalg.cross(x1, x2, axis=axis)
-    if isinstance(result, _np.ndarray):
+        result = _np.linalg.cross(_to_base_ndarray(x1), _to_base_ndarray(x2), axis=axis)
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
         return _aswhest(result)
     return result
 

@@ -6,6 +6,7 @@ from __future__ import annotations
 import numpy as _np
 
 from whest._docstrings import attach_docstring
+from whest._ndarray import WhestArray, _aswhest, _to_base_ndarray
 from whest._symmetric import SymmetricTensor, as_symmetric
 from whest._validation import require_budget
 from whest.errors import SymmetryError
@@ -53,6 +54,7 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
 def solve(a, b):
     """Solve linear system with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, WhestArray) or isinstance(b, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
@@ -63,7 +65,9 @@ def solve(a, b):
     with budget.deduct(
         "linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.solve(a, b)
+        result = _np.linalg.solve(_to_base_ndarray(a), _to_base_ndarray(b))
+    if inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -98,6 +102,7 @@ def inv_cost(n: int, symmetric: bool = False) -> int:
 def inv(a):
     """Matrix inverse with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     n = a.shape[-1]
@@ -110,12 +115,14 @@ def inv(a):
     with budget.deduct(
         "linalg.inv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.inv(a)
+        result = _np.linalg.inv(_to_base_ndarray(a))
     if is_symmetric:
         try:
             result = as_symmetric(result, symmetry=input_symmetry)
         except SymmetryError:
             pass
+    if inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -152,6 +159,7 @@ def lstsq_cost(m: int, n: int) -> int:
 def lstsq(a, b, rcond=None):
     """Least-squares solution with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, WhestArray) or isinstance(b, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     m, n = a.shape[-2], a.shape[-1]
@@ -160,8 +168,12 @@ def lstsq(a, b, rcond=None):
     with budget.deduct(
         "linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.lstsq(a, b, rcond=rcond)
-    return result
+        result = _np.linalg.lstsq(_to_base_ndarray(a), _to_base_ndarray(b), rcond=rcond)
+    # lstsq returns (solution, residuals, rank, singular_values); wrap arrays
+    # only when inputs were whest.
+    if inputs_were_whest:
+        return tuple(_aswhest(r) if isinstance(r, _np.ndarray) else r for r in result)
+    return tuple(result)
 
 
 attach_docstring(
@@ -194,6 +206,7 @@ def pinv_cost(m: int, n: int) -> int:
 def pinv(a, rcond=None, hermitian=False, *, rtol=None):
     """Pseudoinverse with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     m, n = a.shape[-2], a.shape[-1]
@@ -207,7 +220,9 @@ def pinv(a, rcond=None, hermitian=False, *, rtol=None):
     with budget.deduct(
         "linalg.pinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.pinv(a, **kwargs)
+        result = _np.linalg.pinv(_to_base_ndarray(a), **kwargs)
+    if inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -246,13 +261,16 @@ def tensorsolve_cost(a_shape: tuple, ind: int | None = None) -> int:
 def tensorsolve(a, b, axes=None):
     """Tensor solve with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, WhestArray) or isinstance(b, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     cost = tensorsolve_cost(a.shape)
     with budget.deduct(
         "linalg.tensorsolve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.tensorsolve(a, b, axes=axes)
+        result = _np.linalg.tensorsolve(_to_base_ndarray(a), _to_base_ndarray(b), axes=axes)
+    if inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -292,13 +310,16 @@ def tensorinv_cost(a_shape: tuple, ind: int = 2) -> int:
 def tensorinv(a, ind=2):
     """Tensor inverse with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     cost = tensorinv_cost(a.shape, ind=ind)
     with budget.deduct(
         "linalg.tensorinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.tensorinv(a, ind=ind)
+        result = _np.linalg.tensorinv(_to_base_ndarray(a), ind=ind)
+    if inputs_were_whest:
+        return _aswhest(result)
     return result
 
 

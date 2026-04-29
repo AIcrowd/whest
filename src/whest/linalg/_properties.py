@@ -7,7 +7,7 @@ import numpy as _np
 from numpy.linalg._linalg import SlogdetResult
 
 from whest._docstrings import attach_docstring
-from whest._ndarray import _to_base_ndarray
+from whest._ndarray import WhestArray, _aswhest, _to_base_ndarray
 from whest._symmetric import SymmetricTensor
 from whest._validation import require_budget
 from whest.linalg._solvers import _batch_size, _has_zero_dim
@@ -36,6 +36,7 @@ def trace_cost(n: int) -> int:
 def trace(x, /, *, offset=0, dtype=None):
     """Matrix trace with FLOP counting (numpy 2.0 linalg.trace signature)."""
     budget = require_budget()
+    inputs_were_whest = isinstance(x, WhestArray)
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     n = min(x.shape[-2], x.shape[-1])
@@ -48,7 +49,9 @@ def trace(x, /, *, offset=0, dtype=None):
     with budget.deduct(
         "linalg.trace", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
-        result = _np.linalg.trace(x, offset=offset, dtype=dtype)
+        result = _np.linalg.trace(_to_base_ndarray(x), offset=offset, dtype=dtype)
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -80,6 +83,7 @@ def det_cost(n: int, symmetric: bool = False) -> int:
 def det(a):
     """Determinant with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     n = a.shape[-1]
@@ -91,7 +95,9 @@ def det(a):
     with budget.deduct(
         "linalg.det", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.det(a)
+        result = _np.linalg.det(_to_base_ndarray(a))
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -123,6 +129,7 @@ def slogdet_cost(n: int, symmetric: bool = False) -> int:
 def slogdet(a):
     """Sign and log-determinant with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     n = a.shape[-1]
@@ -136,8 +143,13 @@ def slogdet(a):
     with budget.deduct(
         "linalg.slogdet", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.slogdet(a)
-    return SlogdetResult(*result)
+        result = _np.linalg.slogdet(_to_base_ndarray(a))
+    if inputs_were_whest:
+        return SlogdetResult(
+            _aswhest(result.sign) if isinstance(result.sign, _np.ndarray) else result.sign,
+            _aswhest(result.logabsdet) if isinstance(result.logabsdet, _np.ndarray) else result.logabsdet,
+        )
+    return result
 
 
 attach_docstring(slogdet, _np.linalg.slogdet, "linalg", r"$n^3$ FLOPs")
@@ -189,6 +201,7 @@ def norm_cost(shape: tuple, ord=None) -> int:
 def norm(x, ord=None, axis=None, keepdims=False):
     """Matrix or vector norm with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(x, WhestArray)
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     # Compute effective shape for FLOP cost, guarding against invalid axis.
@@ -201,18 +214,26 @@ def norm(x, ord=None, axis=None, keepdims=False):
             ndim = x.ndim
             norm_axis = axis + ndim if axis < 0 else axis
             if norm_axis < 0 or norm_axis >= max(ndim, 1):
-                return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
+                return _np.linalg.norm(
+                    _to_base_ndarray(x), ord=ord, axis=axis, keepdims=keepdims
+                )
             effective_shape = (x.shape[norm_axis],) if ndim > 0 else ()
         else:
             effective_shape = tuple(x.shape[ax] for ax in axis)
         cost = norm_cost(effective_shape, ord=ord)
     except (IndexError, ValueError):
         # Let numpy raise the proper error with the right type/message
-        return _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
+        return _np.linalg.norm(
+            _to_base_ndarray(x), ord=ord, axis=axis, keepdims=keepdims
+        )
     with budget.deduct(
         "linalg.norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
-        result = _np.linalg.norm(x, ord=ord, axis=axis, keepdims=keepdims)
+        result = _np.linalg.norm(
+            _to_base_ndarray(x), ord=ord, axis=axis, keepdims=keepdims
+        )
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -252,6 +273,7 @@ def vector_norm_cost(shape: tuple, ord=None) -> int:
 def vector_norm(x, ord=2, axis=None, keepdims=False):
     """Vector norm with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(x, WhestArray)
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     if axis is not None:
@@ -265,7 +287,11 @@ def vector_norm(x, ord=2, axis=None, keepdims=False):
     with budget.deduct(
         "linalg.vector_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
-        result = _np.linalg.vector_norm(x, ord=ord, axis=axis, keepdims=keepdims)
+        result = _np.linalg.vector_norm(
+            _to_base_ndarray(x), ord=ord, axis=axis, keepdims=keepdims
+        )
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -311,13 +337,18 @@ def matrix_norm_cost(shape: tuple, ord=None) -> int:
 def matrix_norm(x, ord="fro", keepdims=False):
     """Matrix norm with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(x, WhestArray)
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     cost = matrix_norm_cost(x.shape, ord=ord)
     with budget.deduct(
         "linalg.matrix_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
-        result = _np.linalg.matrix_norm(x, ord=ord, keepdims=keepdims)
+        result = _np.linalg.matrix_norm(
+            _to_base_ndarray(x), ord=ord, keepdims=keepdims
+        )
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -360,6 +391,7 @@ def cond_cost(m: int, n: int, p=None) -> int:
 def cond(x, p=None):
     """Condition number with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(x, WhestArray)
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     m, n = x.shape[-2], x.shape[-1]
@@ -375,7 +407,7 @@ def cond(x, p=None):
             # Batch with NaN: process each matrix individually so NaN
             # propagates per-matrix rather than SVD failing the whole batch.
             batch_shape = x.shape[:-2]
-            flat = x.reshape(-1, x.shape[-2], x.shape[-1])
+            flat = _to_base_ndarray(x).reshape(-1, x.shape[-2], x.shape[-1])
             out = _np.empty(flat.shape[0], dtype=_np.float64)
             for i in range(flat.shape[0]):
                 try:
@@ -386,11 +418,13 @@ def cond(x, p=None):
         elif has_nan:
             # Single matrix with NaN: SVD may fail; return NaN instead.
             try:
-                result = _np.linalg.cond(x, p=p)
+                result = _np.linalg.cond(_to_base_ndarray(x), p=p)
             except _np.linalg.LinAlgError:
                 result = _np.float64(_np.nan)
         else:
-            result = _np.linalg.cond(x, p=p)
+            result = _np.linalg.cond(_to_base_ndarray(x), p=p)
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -427,6 +461,7 @@ def matrix_rank_cost(m: int, n: int) -> int:
 def matrix_rank(A, tol=None, hermitian=False, *, rtol=None):
     """Matrix rank with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(A, WhestArray)
     if not isinstance(A, _np.ndarray):
         A = _np.asarray(A)
     if A.ndim < 2:
@@ -445,7 +480,9 @@ def matrix_rank(A, tol=None, hermitian=False, *, rtol=None):
     with budget.deduct(
         "linalg.matrix_rank", flop_cost=cost, subscripts=None, shapes=(A.shape,)
     ):
-        result = _np.linalg.matrix_rank(A, **kwargs)
+        result = _np.linalg.matrix_rank(_to_base_ndarray(A), **kwargs)
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
+        return _aswhest(result)
     return result
 
 

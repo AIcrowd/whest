@@ -29,6 +29,34 @@ def _me():
     return _whest
 
 
+# Eagerly captured at import time so ``tests/numpy_compat`` monkeypatching
+# (which replaces ``np.<name>`` with ``we.<name>``) doesn't accidentally
+# install the whest-replacements into ``_PASSTHROUGH``. The set holds the
+# *original* numpy callables.
+_PASSTHROUGH_NAMES = (
+    # Zero-FLOP type/shape queries:
+    "ndim", "shape", "size",
+    # Zero-FLOP type-system queries (added by Task 4 for #62/#58 followup):
+    "result_type", "can_cast", "min_scalar_type", "promote_types",
+    "find_common_type", "mintypecode",
+    # Test-harness assertion that should not count FLOPs:
+    "array_equal",
+)
+
+
+def _build_passthrough():
+    """Build the ``_PASSTHROUGH`` set, eagerly at import time."""
+    s = set()
+    for name in _PASSTHROUGH_NAMES:
+        fn = getattr(_np, name, None)
+        if fn is not None:
+            s.add(fn)
+    return s
+
+
+_INITIAL_PASSTHROUGH = _build_passthrough()
+
+
 class WhestArray(_np.ndarray):
     """A numpy ndarray subclass with FLOP-tracked operators.
 
@@ -162,6 +190,155 @@ class WhestArray(_np.ndarray):
             )
 
         return whest_fn(*inputs, **kwargs)
+
+    # ----- numpy array-function protocol (NEP 18) -----
+
+    # Lazy-built dispatch map. Populated on first __array_function__ call
+    # because whest's namespace uses lazy submodule loading.
+    _ARRAY_FUNCTION_DISPATCH: dict | None = None
+    _PASSTHROUGH: set | None = None
+
+    @classmethod
+    def _get_array_function_dispatch(cls):
+        """Build (once) and return the np-callable → whest-callable map."""
+        if cls._ARRAY_FUNCTION_DISPATCH is not None:
+            return cls._ARRAY_FUNCTION_DISPATCH
+
+        me = _me()
+        d: dict = {}
+
+        def _bind(np_attr_path, we_attr_path):
+            """Look up np.<path> and me.<path>, add to dispatch map.
+
+            Silently skip pairs where one side is missing (e.g. linalg
+            functions added in newer NumPy versions).
+            """
+            np_obj = _np
+            for part in np_attr_path.split("."):
+                np_obj = getattr(np_obj, part, None)
+                if np_obj is None:
+                    return
+            we_obj = me
+            for part in we_attr_path.split("."):
+                we_obj = getattr(we_obj, part, None)
+                if we_obj is None:
+                    return
+            if callable(np_obj) and callable(we_obj):
+                d[np_obj] = we_obj
+
+        # ----- Reductions -----
+        for name in (
+            "sum", "prod", "mean", "min", "max", "std", "var", "all", "any",
+            "cumsum", "cumprod", "argmin", "argmax", "ptp", "median",
+            "average", "percentile", "quantile",
+        ):
+            _bind(name, name)
+
+        # ----- Sorting / selection -----
+        for name in (
+            "sort", "argsort", "lexsort", "partition", "argpartition",
+            "searchsorted", "digitize",
+        ):
+            _bind(name, name)
+
+        # ----- Set / unique -----
+        for name in (
+            "unique", "unique_all", "unique_counts", "unique_inverse",
+            "unique_values", "in1d", "isin", "intersect1d", "union1d",
+            "setdiff1d", "setxor1d",
+        ):
+            _bind(name, name)
+
+        # ----- Free / structural (asarray excluded) -----
+        for name in (
+            "where", "tile", "repeat", "flip", "roll", "pad", "triu", "tril",
+            "diagonal", "broadcast_to", "meshgrid", "copy",
+            "astype", "trace", "diff", "gradient", "clip", "round",
+        ):
+            _bind(name, name)
+
+        # ----- Shape / view ops -----
+        # The whest counterparts (``me.transpose``, ``me.swapaxes``,
+        # ``me.moveaxis``, etc.) handle ``SymmetricTensor`` axis
+        # remapping correctly via ``wrap_with_symmetry`` /
+        # ``remap_group_axes``. Routing through the allowlist preserves
+        # symmetry; PASSTHROUGH would silently strip it via
+        # ``_to_base_ndarray_tree`` before the raw NumPy call.
+        for name in (
+            "transpose", "swapaxes", "moveaxis", "reshape", "ravel",
+            "expand_dims", "squeeze",
+            "concatenate", "stack", "vstack", "hstack", "column_stack",
+            "split", "hsplit", "vsplit", "dsplit",
+            "atleast_1d", "atleast_2d", "atleast_3d",
+            "broadcast_to",
+            "matrix_transpose",  # numpy 2.x ufunc-like
+        ):
+            _bind(name, name)
+
+        # ----- Linear algebra -----
+        for name in (
+            "dot", "matmul", "einsum", "tensordot", "inner", "outer", "cross",
+        ):
+            _bind(name, name)
+
+        # ----- Comparisons -----
+        for name in (
+            "allclose", "isclose", "array_equiv",
+            # NOTE: array_equal is in _PASSTHROUGH instead.
+        ):
+            _bind(name, name)
+
+        # ----- Histograms / counts -----
+        for name in (
+            "histogram", "histogram2d", "histogramdd", "histogram_bin_edges",
+            "bincount", "vander", "apply_over_axes", "piecewise",
+        ):
+            _bind(name, name)
+
+        # ----- linalg submodule -----
+        for name in (
+            "norm", "solve", "det", "inv", "pinv", "eig", "eigh", "eigvals",
+            "eigvalsh", "svd", "qr", "cholesky", "matrix_rank", "lstsq",
+            "multi_dot", "matrix_power", "slogdet",
+        ):
+            _bind(f"linalg.{name}", f"linalg.{name}")
+
+        cls._ARRAY_FUNCTION_DISPATCH = d
+        return d
+
+    @classmethod
+    def _get_passthrough(cls):
+        """Return the eagerly-captured passthrough set."""
+        if cls._PASSTHROUGH is not None:
+            return cls._PASSTHROUGH
+        cls._PASSTHROUGH = set(_INITIAL_PASSTHROUGH)
+        return cls._PASSTHROUGH
+
+    def __array_function__(self, func, types, args, kwargs):
+        """Route ``np.<func>(whest, ...)`` calls through whest via an
+        explicit allowlist (see ``_get_array_function_dispatch``).
+
+        Functions in ``_PASSTHROUGH`` are zero-FLOP type/shape queries
+        that bypass tracking and call the underlying NumPy function
+        directly with stripped args.
+
+        Functions not in either set return ``NotImplemented``. NumPy
+        will then raise ``TypeError`` rather than silently bypassing
+        tracking.
+        """
+        # PASSTHROUGH check first: zero-FLOP queries bypass dispatch.
+        if func in self._get_passthrough():
+            stripped_args = _to_base_ndarray_tree(args)
+            stripped_kwargs = {
+                k: _to_base_ndarray_tree(v) for k, v in kwargs.items()
+            }
+            return func(*stripped_args, **stripped_kwargs)
+
+        dispatch = self._get_array_function_dispatch()
+        we_func = dispatch.get(func)
+        if we_func is None:
+            return NotImplemented
+        return we_func(*args, **kwargs)
 
     # ----- Binary arithmetic -----
 
@@ -429,6 +606,12 @@ def _to_base_ndarray(x):
     NumPy's protocol dispatch (which would route WhestArray inputs back
     through ``me.<func>``) does not recurse infinitely.
 
+    Only ``WhestArray`` instances (and subclasses like
+    ``SymmetricTensor``) are stripped — other ``numpy.ndarray``
+    subclasses (e.g. ``np.matrix``, user-defined ``ArraySubclass``)
+    pass through unchanged so NumPy's standard subclass-propagation
+    behaviour preserves their type on the result.
+
     Non-array inputs (Python scalars, lists) pass through unchanged so
     that NEP 50 weak-typing rules continue to apply when whest wrappers
     forward these to NumPy.
@@ -441,7 +624,7 @@ def _to_base_ndarray(x):
     >>> _to_base_ndarray(2.0) == 2.0
     True
     """
-    if isinstance(x, _np.ndarray):
+    if isinstance(x, WhestArray):
         return x.view(_np.ndarray)
     return x
 
@@ -465,8 +648,14 @@ def _to_base_ndarray_tree(x):
 
     Intentional scope: tuples, lists, namedtuples, and bare arrays only.
     Dicts and other generic mappings are NOT recursed into.
+
+    Only ``WhestArray`` instances (and subclasses like
+    ``SymmetricTensor``) are stripped — other ``numpy.ndarray``
+    subclasses (e.g. ``np.matrix``, user-defined ``ArraySubclass``)
+    pass through unchanged so NumPy's standard subclass-propagation
+    behaviour preserves their type on the result.
     """
-    if isinstance(x, _np.ndarray):
+    if isinstance(x, WhestArray):
         return x.view(_np.ndarray)
     if isinstance(x, tuple):
         stripped = tuple(_to_base_ndarray_tree(e) for e in x)
