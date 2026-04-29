@@ -131,25 +131,17 @@ class WhestArray(_np.ndarray):
         - ``np.add.reduce(whest)``     → method='reduce'
         - ``np.add.accumulate(whest)`` → method='accumulate'
 
-        ``out`` is passed by NumPy as a tuple (e.g. ``(out_arr,)`` for a
-        single-output ufunc). Whest functions expect ``out=arr``, so we
-        unwrap the single-element tuple before forwarding.
+        ``out`` is passed by NumPy as a tuple of length ``ufunc.nout``.
+        For single-output ufuncs we unwrap the 1-tuple to ``out=arr``;
+        for multi-output ufuncs (``divmod``, ``frexp``, ``modf``) we
+        forward the tuple as-is to the corresponding ``we.*`` wrapper,
+        which knows how to handle per-slot stripping and identity.
 
-        Unsupported ufunc methods (``outer``, ``reduceat``, ``at``) and
-        multi-output ufuncs (``modf``, ``frexp`` — anything with
-        ``ufunc.nout != 1``) raise ``NotImplementedError`` so callers
-        cannot silently bypass tracking.
+        Unsupported ufunc methods (``outer``, ``reduceat``, ``at``)
+        raise ``NotImplementedError`` so callers cannot silently bypass
+        tracking.
         """
         me = _me()
-
-        # Reject multi-output ufuncs explicitly — whest wrappers do not
-        # currently honor multi-output ``out=(out1, out2)``.
-        if ufunc.nout != 1:
-            raise NotImplementedError(
-                f"ufuncs with nout != 1 are not yet supported on WhestArray "
-                f"(operation: {ufunc.__name__}, nout={ufunc.nout}); use the "
-                f"equivalent whest function (e.g. ``we.modf(a)``) instead."
-            )
 
         np_target_name = None  # used to drive _filter_to_np_signature below
         if method == "__call__":

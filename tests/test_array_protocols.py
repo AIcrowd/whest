@@ -14,6 +14,7 @@ import numpy as np
 import pytest
 
 import whest as we
+from whest._ndarray import WhestArray
 
 # ----- __array_ufunc__: ufunc.__call__ -----
 
@@ -320,39 +321,182 @@ def test_np_add_at_fails_loudly():
             np.add.at(a, [0, 1], 1.0)
 
 
-# ----- Multi-output ufuncs fail loudly -----
+# ----- Multi-output ufuncs route through __array_ufunc__ -----
 
 
-def test_np_modf_fails_loudly():
-    """``np.modf`` is a multi-output ufunc (nout=2). Until whest supports
-    multi-output ``out=(out1, out2)`` properly, it must raise rather than
-    silently bypass tracking on either return slot."""
-    a = we.random.randn(8) + 0.5
-    with we.BudgetContext(flop_budget=int(1e9)):
-        with pytest.raises((NotImplementedError, TypeError)):
-            np.modf(a)
+def test_np_divmod_routes_to_we_divmod():
+    """``np.divmod(WhestArray, WhestArray)`` dispatches to ``we.divmod``
+    via ``__array_ufunc__``, returns a tuple of WhestArrays, and
+    deducts FLOPs."""
+    with we.BudgetContext(flop_budget=int(1e10)) as bc:
+        a = we.array([10.0, 20.0, 30.0])
+        b = we.array([3.0, 4.0, 5.0])
+        q, r = np.divmod(a, b)
+    assert isinstance(q, WhestArray)
+    assert isinstance(r, WhestArray)
+    np.testing.assert_array_equal(np.asarray(q), [3.0, 5.0, 6.0])
+    np.testing.assert_array_equal(np.asarray(r), [1.0, 0.0, 0.0])
+    assert bc.flops_used > 0
 
 
-def test_np_frexp_fails_loudly():
-    a = we.random.randn(8) + 1.5
-    with we.BudgetContext(flop_budget=int(1e9)):
-        with pytest.raises((NotImplementedError, TypeError)):
-            np.frexp(a)
+def test_np_modf_routes_to_we_modf():
+    """``np.modf`` (nout=2) routes through ``__array_ufunc__`` and
+    returns ``(frac, integer)`` as WhestArrays with FLOPs deducted."""
+    with we.BudgetContext(flop_budget=int(1e10)) as bc:
+        a = we.array([1.5, 2.7, 3.0])
+        frac, integer = np.modf(a)
+    assert isinstance(frac, WhestArray)
+    assert isinstance(integer, WhestArray)
+    np.testing.assert_allclose(np.asarray(integer), [1.0, 2.0, 3.0])
+    np.testing.assert_allclose(np.asarray(frac), [0.5, 0.7, 0.0], atol=1e-12)
+    assert bc.flops_used > 0
 
 
-def test_we_modf_rejects_out_kwarg():
-    """The direct ``we.modf(a, out=...)`` path goes through
-    ``_counted_unary_multi`` (not ``__array_ufunc__``) because the
-    operands are already whest. It must reject ``out=`` explicitly with
-    NotImplementedError rather than silently letting NumPy write into
-    whest-typed buffers (which would recurse through
-    ``__array_function__`` and double-charge)."""
-    a = we.random.randn(8) + 0.5
-    out1 = we.empty_like(a)
-    out2 = we.empty_like(a)
-    with we.BudgetContext(flop_budget=int(1e9)):
-        with pytest.raises(NotImplementedError, match="out"):
-            we.modf(a, out=(out1, out2))
+def test_np_frexp_routes_to_we_frexp():
+    """``np.frexp`` returns ``(mantissa, exponent)`` with the exponent
+    in integer dtype; both reach the caller as WhestArrays."""
+    with we.BudgetContext(flop_budget=int(1e10)) as bc:
+        a = we.array([1.5, 2.7, 3.0])
+        mantissa, exponent = np.frexp(a)
+    assert isinstance(mantissa, WhestArray)
+    assert isinstance(exponent, WhestArray)
+    assert np.issubdtype(exponent.dtype, np.integer)
+    assert bc.flops_used > 0
+
+
+def test_np_divmod_with_out_tuple_preserves_identity():
+    """``np.divmod(a, b, out=(q, r))`` writes through both buffers and
+    returns the same Python objects (per-slot identity contract)."""
+    with we.BudgetContext(flop_budget=int(1e10)):
+        a = we.array([10.0, 20.0])
+        b = we.array([3.0, 4.0])
+        q = we.zeros(2)
+        r = we.zeros(2)
+        result = np.divmod(a, b, out=(q, r))
+    assert result[0] is q
+    assert result[1] is r
+    np.testing.assert_array_equal(np.asarray(q), [3.0, 5.0])
+    np.testing.assert_array_equal(np.asarray(r), [1.0, 0.0])
+
+
+def test_np_modf_with_out_tuple_preserves_identity():
+    with we.BudgetContext(flop_budget=int(1e10)):
+        a = we.array([1.5, 2.7, 3.0])
+        frac = we.zeros(3)
+        integer = we.zeros(3)
+        result = np.modf(a, out=(frac, integer))
+    assert result[0] is frac
+    assert result[1] is integer
+    np.testing.assert_allclose(np.asarray(integer), [1.0, 2.0, 3.0])
+
+
+def test_np_divmod_with_partial_out_allocates_remaining():
+    """``out=(q, None)`` writes through ``q`` and lets numpy allocate
+    the second buffer; the freshly-allocated slot comes back as a
+    WhestArray."""
+    with we.BudgetContext(flop_budget=int(1e10)):
+        a = we.array([10.0, 20.0])
+        b = we.array([3.0, 4.0])
+        q = we.zeros(2)
+        result = np.divmod(a, b, out=(q, None))
+    assert result[0] is q
+    assert isinstance(result[1], WhestArray)
+    np.testing.assert_array_equal(np.asarray(q), [3.0, 5.0])
+    np.testing.assert_array_equal(np.asarray(result[1]), [1.0, 0.0])
+
+
+def test_np_modf_with_positional_out_args():
+    """NumPy normalises positional out args (``np.modf(a, o1, o2)``)
+    into ``out=(o1, o2)`` before reaching ``__array_ufunc__``."""
+    with we.BudgetContext(flop_budget=int(1e10)):
+        a = we.array([1.5, 2.7, 3.0])
+        o1 = we.zeros(3)
+        o2 = we.zeros(3)
+        result = np.modf(a, o1, o2)
+    assert result[0] is o1
+    assert result[1] is o2
+
+
+def test_np_divmod_preserves_shared_symmetry():
+    """``np.divmod`` of two SymmetricTensors that share an axis-permutation
+    group produces both outputs as SymmetricTensors with the same
+    symmetry."""
+    with we.BudgetContext(flop_budget=int(1e10)):
+        sym = we.SymmetryGroup.symmetric(axes=(0, 1))
+        a = we.symmetrize(we.array([[10.0, 12.0], [12.0, 14.0]]), symmetry=sym)
+        b = we.symmetrize(we.array([[3.0, 4.0], [4.0, 5.0]]), symmetry=sym)
+        q, r = np.divmod(a, b)
+    assert isinstance(q, we.SymmetricTensor)
+    assert isinstance(r, we.SymmetricTensor)
+    assert q.symmetry == sym
+    assert r.symmetry == sym
+
+
+def test_np_modf_preserves_input_symmetry():
+    """``np.modf`` is unary elementwise; both outputs inherit the
+    SymmetricTensor symmetry of the input."""
+    with we.BudgetContext(flop_budget=int(1e10)):
+        sym = we.SymmetryGroup.symmetric(axes=(0, 1))
+        S = we.symmetrize(we.array([[1.5, 2.5], [2.5, 3.5]]), symmetry=sym)
+        frac, integer = np.modf(S)
+    assert isinstance(frac, we.SymmetricTensor)
+    assert isinstance(integer, we.SymmetricTensor)
+    assert frac.symmetry == sym
+    assert integer.symmetry == sym
+
+
+def test_np_divmod_loses_unshared_symmetry_with_warning():
+    """When inputs don't share symmetry, both outputs degrade to plain
+    WhestArray and a SymmetryLossWarning is emitted (parity with
+    single-output binary ufuncs)."""
+    import warnings as _warnings
+
+    with we.BudgetContext(flop_budget=int(1e10)):
+        a = we.symmetrize(
+            we.array([[10.0, 12.0], [12.0, 14.0]]),
+            symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
+        )
+        b = we.array([[3.0, 4.0], [5.0, 6.0]])  # not symmetric
+        with _warnings.catch_warnings(record=True) as caught:
+            _warnings.simplefilter("always")
+            q, r = np.divmod(a, b)
+    messages = [str(item.message).lower() for item in caught]
+    assert any("symmetry" in m for m in messages), messages
+    assert type(q) is WhestArray
+    assert type(r) is WhestArray
+
+
+def test_np_divmod_scalar_left_preserves_array_symmetry():
+    """``np.divmod(scalar, symmetric)`` inherits the array's symmetry on
+    both outputs (scalar special-case in ``_counted_binary_multi``)."""
+    with we.BudgetContext(flop_budget=int(1e10)):
+        sym = we.SymmetryGroup.symmetric(axes=(0, 1))
+        S = we.symmetrize(we.array([[3.0, 4.0], [4.0, 5.0]]), symmetry=sym)
+        q, r = np.divmod(20.0, S)
+    assert isinstance(q, we.SymmetricTensor)
+    assert isinstance(r, we.SymmetricTensor)
+    assert q.symmetry == sym
+
+
+def test_we_modf_invalid_out_tuple_length_raises():
+    """``out=`` of wrong length is rejected by the multi-output helper
+    rather than silently passed through to numpy (which would error
+    later with a less helpful message)."""
+    with we.BudgetContext(flop_budget=int(1e10)):
+        a = we.array([1.5, 2.5, 3.0])
+        single = we.zeros(3)
+        with pytest.raises(TypeError, match="length"):
+            we.modf(a, out=(single,))
+
+
+def test_we_modf_invalid_out_type_raises():
+    """``out=`` that is not a tuple is rejected by the multi-output
+    helper for clarity."""
+    with we.BudgetContext(flop_budget=int(1e10)):
+        a = we.array([1.5, 2.5, 3.0])
+        single = we.zeros(3)
+        with pytest.raises(TypeError, match="tuple"):
+            we.modf(a, out=single)
 
 
 # ----- Recursion guard for raw whest functions -----

@@ -299,6 +299,12 @@ XFAIL_PATTERNS: dict[str, str] = {
         "NUMPY_INTERNAL: refcount check sees unexpected count due to WhestArray subclass "
         "wrapping (fails on numpy 2.2; xpassed on 2.3/2.4 which is acceptable)"
     ),
+    "*TestOut::test_out_wrap_subok": (
+        "SUBCLASS_RETURN: ``subok=False`` semantics not honored — whest always "
+        "wraps freshly-allocated outputs as WhestArray (an ndarray subclass), "
+        "even when the caller asked for plain ndarray. Same root cause as the "
+        "other SUBCLASS_RETURN entries."
+    ),
     # ------------------------------------------------------------------ #
     # SUBCLASS_RETURN — numpy 2.4 ufunc __array_ufunc__ dispatch change  #
     # ------------------------------------------------------------------ #
@@ -319,12 +325,14 @@ XFAIL_PATTERNS: dict[str, str] = {
     # NOT_IMPLEMENTED — ufunc method/protocol rejections                  #
     # ------------------------------------------------------------------ #
     # Whest's __array_ufunc__ deliberately rejects ``ufunc.at``,
-    # ``ufunc.reduce``, ``ufunc.reduceat``, ``ufunc.accumulate``,
-    # ``ufunc.outer`` and multi-output ufuncs (``divmod``, ``frexp``,
-    # ``modf``) so that callers cannot silently bypass FLOP tracking.
-    # Equivalent counted whest functions exist (``we.divmod``,
-    # ``we.modf`` etc.) — but tests that exercise the raw ufunc method
-    # protocol have no whest path and therefore fail with NotImplemented.
+    # ``ufunc.reduce``, ``ufunc.reduceat``, ``ufunc.accumulate`` and
+    # ``ufunc.outer`` so that callers cannot silently bypass FLOP
+    # tracking. Equivalent counted whest functions exist for the
+    # underlying operations — but tests that exercise the raw ufunc
+    # method protocol have no whest path and therefore fail with
+    # NotImplemented. (Multi-output ufuncs like ``divmod`` / ``frexp`` /
+    # ``modf`` are now supported via ``__array_ufunc__`` and route to
+    # the corresponding ``we.*`` wrapper.)
     "*TestUfunc::test_ufunc_at_inner_loops*": (
         "NOT_IMPLEMENTED: ufunc.at rejected by __array_ufunc__ (deliberate, "
         "use we.* counted functions instead)"
@@ -373,43 +381,6 @@ XFAIL_PATTERNS: dict[str, str] = {
     ),
     "*test_umath.py::test_outer_exceeds_maxdims": (
         "NOT_IMPLEMENTED: ufunc.outer rejected by __array_ufunc__ (deliberate)"
-    ),
-    # Multi-output ufuncs (divmod, frexp, modf) — counted whest equivalents
-    # exist (``we.divmod`` / ``we.modf`` / ``we.frexp``) but they are not
-    # ufuncs, so direct ``np.divmod(...)`` of a WhestArray raises.
-    "*TestDivisionIntegerOverflowsAndDivideByZero::test_divide_by_zero*": (
-        "NOT_IMPLEMENTED: ufuncs with nout != 1 (np.divmod) rejected by "
-        "__array_ufunc__; whest provides we.divmod as a counted alternative"
-    ),
-    "*TestDivisionIntegerOverflowsAndDivideByZero::test_signed_division_overflow*": (
-        "NOT_IMPLEMENTED: ufuncs with nout != 1 (np.divmod) rejected by "
-        "__array_ufunc__; whest provides we.divmod as a counted alternative"
-    ),
-    # Substring patterns (the `[name]` brackets prevent fnmatch wildcards
-    # from matching, so we rely on conftest's substring-fallback).
-    "test_ufunc_types[divmod]": (
-        "NOT_IMPLEMENTED: ufuncs with nout != 1 rejected by __array_ufunc__"
-    ),
-    "test_ufunc_types[frexp]": (
-        "NOT_IMPLEMENTED: ufuncs with nout != 1 rejected by __array_ufunc__"
-    ),
-    "test_ufunc_types[modf]": (
-        "NOT_IMPLEMENTED: ufuncs with nout != 1 rejected by __array_ufunc__"
-    ),
-    "test_ufunc_noncontiguous[divmod]": (
-        "NOT_IMPLEMENTED: ufuncs with nout != 1 rejected by __array_ufunc__"
-    ),
-    "test_ufunc_noncontiguous[frexp]": (
-        "NOT_IMPLEMENTED: ufuncs with nout != 1 rejected by __array_ufunc__"
-    ),
-    "test_ufunc_noncontiguous[modf]": (
-        "NOT_IMPLEMENTED: ufuncs with nout != 1 rejected by __array_ufunc__"
-    ),
-    "*TestOut::test_out_subok": (
-        "NOT_IMPLEMENTED: ufuncs with nout != 1 (np.frexp) rejected by __array_ufunc__"
-    ),
-    "*TestOut::test_out_wrap_subok": (
-        "NOT_IMPLEMENTED: ufuncs with nout != 1 (np.frexp) rejected by __array_ufunc__"
     ),
     # Private numpy gufuncs (cross1d, matrix_multiply, conv1d_full, test_add,
     # euclidean_pdist) live in ``numpy._core.umath_tests`` and are not part

@@ -102,6 +102,44 @@ def _call_with_optional_out(np_func, *args, out=None, supports_out=False, **kwar
     return out
 
 
+def _call_with_optional_multi_out(np_func, *args, out=None, nout, **kwargs):
+    """Multi-output sibling of :func:`_call_with_optional_out`.
+
+    ``out`` is either ``None`` (numpy allocates all outputs) or a tuple of
+    length ``nout``. Each slot is either an ndarray write-target or
+    ``None`` (let numpy allocate that one slot).
+
+    Returns a tuple of length ``nout``. Identity is preserved per-slot:
+    if the caller supplied a non-``None`` array at slot *i*, the
+    returned tuple's *i*-th element is exactly the same object. ``None``
+    slots are filled with the freshly-allocated plain ndarray that numpy
+    returned.
+    """
+    args = tuple(_to_base_ndarray(a) for a in args)
+    for k, v in list(kwargs.items()):
+        if isinstance(v, _np.ndarray):
+            kwargs[k] = _to_base_ndarray(v)
+        elif isinstance(v, (tuple, list)):
+            kwargs[k] = _to_base_ndarray_tree(v)
+    if out is None:
+        return np_func(*args, **kwargs)
+    if not isinstance(out, tuple) or len(out) != nout:
+        length_repr = len(out) if hasattr(out, "__len__") else "?"
+        raise TypeError(
+            f"multi-output {getattr(np_func, '__name__', '?')} requires "
+            f"out= to be a tuple of length {nout}; got "
+            f"{type(out).__name__} of length {length_repr}"
+        )
+    stripped = tuple(_to_base_ndarray(o) if o is not None else None for o in out)
+    result = np_func(*args, out=stripped, **kwargs)
+    # Numpy returns a tuple of the stripped buffers (or fresh allocations
+    # for None slots). Replace each non-None slot with the caller's
+    # original to preserve object identity.
+    return tuple(
+        orig if orig is not None else r for orig, r in zip(out, result, strict=True)
+    )
+
+
 def _wrap_result(result, *, out=None, symmetry=None):
     if out is not None:
         if not isinstance(out, SymmetricTensor):
@@ -116,10 +154,24 @@ def _wrap_result(result, *, out=None, symmetry=None):
     return _aswhest(result)
 
 
-def _wrap_multi_result(result, *, symmetry=None):
-    if isinstance(result, tuple):
+def _wrap_multi_result(result, *, out=None, symmetry=None):
+    """Wrap each element of a multi-output result tuple.
+
+    For elementwise multi-output ufuncs (``divmod`` / ``frexp`` /
+    ``modf``), every output inherits the same ``symmetry`` as the
+    (broadcast) input. ``out`` is an optional tuple of caller-provided
+    write targets matching ``result`` 1:1; ``None`` slots get fresh
+    wrappers, non-``None`` slots get identity + symmetry validation
+    routed through :func:`_wrap_result`.
+    """
+    if not isinstance(result, tuple):
+        return _wrap_result(result, out=out, symmetry=symmetry)
+    if out is None:
         return tuple(_wrap_result(part, symmetry=symmetry) for part in result)
-    return _wrap_result(result, symmetry=symmetry)
+    return tuple(
+        _wrap_result(part, out=o, symmetry=symmetry)
+        for part, o in zip(result, out, strict=True)
+    )
 
 
 def _pointwise_symmetry(operands, output_shape):
@@ -189,27 +241,30 @@ def _counted_unary(np_func, op_name: str):
 
 
 def _counted_unary_multi(np_func, op_name: str):
-    """Factory for unary functions that return multiple arrays (e.g., modf, frexp)."""
+    """Factory for unary functions that return multiple arrays (modf, frexp).
+
+    Supports ``out=(out1, out2)`` (or with ``None`` slots for partial
+    allocation) — per-slot stripping and identity preservation are routed
+    through :func:`_call_with_optional_multi_out`. Symmetry of the input
+    is inherited by every output (elementwise ufuncs).
+    """
+    nout = getattr(np_func, "nout", 2)
 
     def wrapper(x, out=None, **kwargs):
-        if out is not None:
-            # Multi-output ``out=(out1, out2)`` requires per-buffer strip +
-            # identity preservation; not implemented yet. Fail loudly so
-            # callers know their ``out=`` was rejected, rather than silently
-            # double-charging FLOPs through __array_function__ recursion.
-            raise NotImplementedError(
-                f"`out=` is not supported by counted multi-output wrappers "
-                f"(op: {op_name}); call without `out=` and assign the "
-                f"returned tuple instead."
-            )
         budget = require_budget()
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
         symmetry = _symmetry_of(x)
         cost = pointwise_cost(x.shape, symmetry=symmetry)
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-            result = np_func(_to_base_ndarray(x), **kwargs)
-        return _wrap_multi_result(result, symmetry=symmetry)
+            result = _call_with_optional_multi_out(
+                np_func,
+                x,
+                out=out,
+                nout=nout,
+                **kwargs,
+            )
+        return _wrap_multi_result(result, out=out, symmetry=symmetry)
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -295,30 +350,73 @@ def _counted_binary(np_func, op_name: str):
 
 
 def _counted_binary_multi(np_func, op_name: str):
-    """Factory for binary functions that return multiple arrays (e.g., divmod)."""
+    """Factory for binary functions that return multiple arrays (divmod).
+
+    Mirrors :func:`_counted_binary` for the multi-output case: scalar
+    operand special-case, symmetry-loss warning on unshared input
+    groups, per-slot ``out=`` identity preservation. Cost is charged
+    once (the underlying numpy ufunc produces all outputs in a single
+    pass).
+    """
+    nout = getattr(np_func, "nout", 2)
 
     def wrapper(x, y, out=None, **kwargs):
-        if out is not None:
-            raise NotImplementedError(
-                f"`out=` is not supported by counted multi-output wrappers "
-                f"(op: {op_name}); call without `out=` and assign the "
-                f"returned tuple instead."
-            )
         budget = require_budget()
+        # Preserve original (possibly Python-scalar) values for the actual
+        # numpy call so that NEP 50 weak-typing rules apply correctly. We
+        # only need ndarray views for shape and symmetry inspection below.
+        x_orig, y_orig = x, y
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
         if not isinstance(y, _np.ndarray):
             y = _np.asarray(y)
         output_shape = _np.broadcast_shapes(x.shape, y.shape)
-        out_symmetry, _ = _pointwise_symmetry(
-            ((x, _symmetry_of(x)), (y, _symmetry_of(y))), output_shape
-        )
+        x_sym = _symmetry_of(x)
+        y_sym = _symmetry_of(y)
+        x_is_scalar = x.ndim == 0
+        y_is_scalar = y.ndim == 0
+        if x_is_scalar ^ y_is_scalar:
+            out_symmetry = y_sym if x_is_scalar else x_sym
+            aligned_inputs = [out_symmetry] if out_symmetry is not None else []
+        else:
+            out_symmetry, aligned_inputs = _pointwise_symmetry(
+                ((x, x_sym), (y, y_sym)),
+                output_shape,
+            )
         cost = pointwise_cost(output_shape, symmetry=out_symmetry)
         with budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         ):
-            result = np_func(_to_base_ndarray(x), _to_base_ndarray(y), **kwargs)
-        return _wrap_multi_result(result, symmetry=out_symmetry)
+            # Pass the ORIGINAL inputs so NEP 50 dtype-promotion rules
+            # apply at the NumPy boundary. Stripping happens inside the
+            # helper for ndarray-typed values only.
+            result = _call_with_optional_multi_out(
+                np_func,
+                x_orig,
+                y_orig,
+                out=out,
+                nout=nout,
+                **kwargs,
+            )
+        # Symmetry-loss warnings (parity with _counted_binary).
+        if out_symmetry is not None:
+            lost = []
+            for group in aligned_inputs:
+                if group != out_symmetry and group.axes is not None:
+                    lost.append(group.axes)
+            if lost:
+                _warn_symmetry_loss(
+                    list(dict.fromkeys(lost)),
+                    f"{op_name} — groups not shared by both operands",
+                )
+        else:
+            lost = [group.axes for group in aligned_inputs if group.axes is not None]
+            if lost:
+                _warn_symmetry_loss(
+                    list(dict.fromkeys(lost)),
+                    f"{op_name} — no symmetry groups shared by both operands",
+                )
+        return _wrap_multi_result(result, out=out, symmetry=out_symmetry)
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name

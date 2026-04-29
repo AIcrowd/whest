@@ -664,6 +664,70 @@ class TestMultiOutputOps:
         assert numpy.allclose(result[0], ref[0])
         assert numpy.allclose(result[1], ref[1])
 
+    def test_modf_with_out_tuple(self):
+        x = numpy.array([1.5, 2.7, -3.2])
+        out_frac = numpy.zeros(3)
+        out_int = numpy.zeros(3)
+        with BudgetContext(flop_budget=10**6):
+            result = modf(x, out=(out_frac, out_int))
+        assert result[0] is out_frac
+        assert result[1] is out_int
+        ref = numpy.modf(x)
+        assert numpy.allclose(out_frac, ref[0])
+        assert numpy.allclose(out_int, ref[1])
+
+    def test_frexp_with_out_tuple(self):
+        x = numpy.array([2.0, 4.0, 8.0])
+        out_mant = numpy.zeros(3)
+        out_exp = numpy.zeros(3, dtype=numpy.int32)
+        with BudgetContext(flop_budget=10**6):
+            result = frexp(x, out=(out_mant, out_exp))
+        assert result[0] is out_mant
+        assert result[1] is out_exp
+        ref = numpy.frexp(x)
+        assert numpy.allclose(out_mant, ref[0])
+        assert numpy.array_equal(out_exp, ref[1])
+
+    def test_divmod_with_out_tuple(self):
+        x = numpy.array([7.0, 10.0, 13.0])
+        y = numpy.array([3.0, 4.0, 5.0])
+        out_q = numpy.zeros(3)
+        out_r = numpy.zeros(3)
+        with BudgetContext(flop_budget=10**6):
+            result = divmod(x, y, out=(out_q, out_r))
+        assert result[0] is out_q
+        assert result[1] is out_r
+        ref = numpy.divmod(x, y)
+        assert numpy.allclose(out_q, ref[0])
+        assert numpy.allclose(out_r, ref[1])
+
+    def test_divmod_with_partial_out(self):
+        x = numpy.array([7.0, 10.0])
+        y = numpy.array([3.0, 4.0])
+        out_q = numpy.zeros(2)
+        with BudgetContext(flop_budget=10**6):
+            result = divmod(x, y, out=(out_q, None))
+        assert result[0] is out_q
+        # Second slot was allocated by numpy; should still be a usable array
+        assert result[1] is not None
+        ref = numpy.divmod(x, y)
+        assert numpy.allclose(out_q, ref[0])
+        assert numpy.allclose(result[1], ref[1])
+
+    def test_modf_invalid_out_length_raises(self):
+        x = numpy.array([1.5, 2.7])
+        single = numpy.zeros(2)
+        with BudgetContext(flop_budget=10**6):
+            with pytest.raises(TypeError, match="length"):
+                modf(x, out=(single,))
+
+    def test_modf_invalid_out_type_raises(self):
+        x = numpy.array([1.5, 2.7])
+        single = numpy.zeros(2)
+        with BudgetContext(flop_budget=10**6):
+            with pytest.raises(TypeError, match="tuple"):
+                modf(x, out=single)
+
 
 # ---------------------------------------------------------------------------
 # 10. Scalar / 0-d array paths in unary and binary ops
