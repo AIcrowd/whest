@@ -84,14 +84,17 @@ test('at least one regime fires on every ctx (bruteForce is the floor)', () => {
   }
 });
 
-test('regime tooltip copy reflects the updated direct-product, Young, and brute-force descriptions', () => {
+test('regime tooltip copy reflects the updated functional-projection, Young, and brute-force descriptions', () => {
+  // The legacy directProduct entry was retired; functionalProjection covers
+  // every case where every g ∈ G preserves V as a set (no-cross + coupled
+  // V-preserving + all-visible + all-summed).
   assert.equal(
-    REGIME_SPEC.directProduct.when,
-    'No element crosses V/W and the materialized group satisfies |G| = |G_V| · |G_W|, with both projections nontrivial.',
+    REGIME_SPEC.functionalProjection.when,
+    'Every detected symmetry preserves the output-label set V as a set, so projection descends to a single stored output representative per product orbit.',
   );
   assert.equal(
-    REGIME_SPEC.directProduct.description,
-    'The action factors independently over visible and summed labels. Visible assignments still choose output bins directly, while the summed side is quotient-counted by size-aware Burnside.',
+    REGIME_SPEC.functionalProjection.description,
+    'Every detected symmetry preserves the output-label set, so each product orbit reaches one stored output representative. The accumulation count equals the product-orbit count.',
   );
   assert.equal(
     REGIME_SPEC.young.when,
@@ -99,11 +102,11 @@ test('regime tooltip copy reflects the updated direct-product, Young, and brute-
   );
   assert.equal(
     REGIME_SPEC.young.description,
-    'The full symmetric action lets α be counted through the pointwise V-stabilizer. The summed labels contribute a multiset count, giving the closed form shown here.',
+    'Full symmetry turns visible and summed assignments into multisets. The visible factor counts stored output representatives directly; the summed factor counts the multisets that combine independently with each visible multiset to form a product orbit.',
   );
   assert.equal(
     REGIME_SPEC.bruteForceOrbit.description,
-    'Exact enumeration of product orbits and their visible projections. It is used only when no analytic regime applies and the pair-touch budget is small enough for the interactive page.',
+    'Enumerates product orbits and canonicalizes projected outputs under the derived output action H. Used only when no analytic regime applies and the pair-touch budget is small enough for the interactive page.',
   );
   assert.equal(
     REGIME_SPEC.bruteForceOrbit.glossary.find((entry) => entry.term === 'budget').definition,
@@ -120,7 +123,7 @@ test('preset descriptions use the updated explanatory copy', () => {
   );
   assert.equal(
     byId.get('bilinear-trace-3'),
-    'Three identical ops → diagonal S₃ on V and W; no cross-V/W elements, but direct-product check fails because |G|=6 while |G_V||G_W|=36.',
+    'Three identical ops → diagonal S₃ on V and W; no cross-V/W elements. Under the unified metric every g preserves V as a set, so functionalProjection fires (α = M).',
   );
   assert.equal(
     byId.get('frobenius'),

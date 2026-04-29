@@ -77,9 +77,12 @@ test('approved mathematically safer prose appears in the narrative data', () => 
 
   assert.match(section4, /full assignment grid/i);
   assert.match(section4, /product orbit|representative products/i);
-  assert.match(section4, /output bin/i);
-  assert.match(section4, /projects an assignment orbit onto visible\/output labels/i);
-  assert.match(section4, /output symmetry and accumulation symmetry are different/i);
+  // Output-orbit refactor banned "output bin"; α is now defined as the count of
+  // (O, Q) pairs in X/G × Y/H where the projection meets Q.
+  assert.match(section4, /stored output representative/i);
+  assert.match(section4, /\\mathrm\{Stab\}_\{G_\{\\text\{pt\}\}\}\(V\)/);
+  assert.match(section4, /projection is not always a function/i);
+  assert.doesNotMatch(section4, /output bin/i);
 });
 
 test('Acts 1 through 4 still distinguish declared and detected symmetry in the new prose', () => {
@@ -96,7 +99,7 @@ test('Acts 1 through 4 still distinguish declared and detected symmetry in the n
   assert.match(joinedCopy, /declared .*symmetr/i);
   assert.match(joinedCopy, /detected pointwise group/i);
   assert.match(joinedCopy, /product orbits/i);
-  assert.match(joinedCopy, /projects an assignment orbit onto visible\/output labels|output symmetry and accumulation symmetry are different/i);
+  assert.match(joinedCopy, /stored output representative|projection is not always a function/i);
 });
 
 test('pickTopVisibleAct prefers the top-most visible act and falls back safely', () => {

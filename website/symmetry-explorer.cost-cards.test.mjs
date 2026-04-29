@@ -111,7 +111,7 @@ test('TotalCostView compares dense and symmetry-aware direct event counts with p
   assert.doesNotMatch(src, /label:\s*'Symmetry-Aware Cost'/);
   assert.doesNotMatch(src, /n\^\{\|L\|\}/);
   assert.match(src, /support-connected component decomposition/);
-  assert.match(src, /let \$M_a\$ be the number of product orbits and let \$\\alpha_a\$ be the number of output-bin updates induced by those orbits/);
+  assert.match(src, /let \$M_a\$ be the number of product orbits and let \$\\alpha_a\$ be the number of accumulation updates from those product-orbit representatives into stored output representatives via H = \\\\mathrm\{Stab\}_\{G_a\}\(V_a\)\|_\{V_a\}/);
   assert.match(src, /Under the independent-component factorization, \$M = \\prod_a M_a\$ and \$\\alpha = \\prod_a \\alpha_a\$/);
   assert.match(src, /reported unavailable instead of being guessed/);
 });

@@ -90,16 +90,18 @@ test('glossary copy includes the updated pointwise/formal/direct-cost terminolog
     'μ is the multiplication-chain event count derived from representative products: μ = (k - 1)M for k operand tensors. μ is not the product-orbit count itself.',
   );
   assert.equal(
-    byTerm.get('accumulation cost α'),
-    'α is the direct output-bin update count. It is an orbit-projection count: sum over product orbits O of the number of distinct visible/output projections touched by O. It is not output storage and not generally equal to M.',
+    byTerm.get('accumulation count A or alpha'),
+    'The number of updates from product-orbit representatives into stored output representatives. Formally, the number of pairs (O, Q) where O is a product orbit in X/G_pt and Q is a stored output representative orbit in Y/H hit by projecting O to the visible labels.',
   );
   assert.equal(
     byTerm.get('component'),
     "A support-connected block of labels induced by the detected generators. Each component has labels L_a, output labels V_a, summed labels W_a, and restricted group G_a. The decomposition is safe for the displayed product equation; algebraically independent factors that remain inside a support-connected block are handled by the regime ladder.",
   );
+  // The legacy "Factorization check" entry was retired with the directProduct
+  // regime; its successor is "functional projection" (G preserves V as a set).
   assert.equal(
-    byTerm.get('Factorization check'),
-    'The direct-product recognizer checks that no group element crosses V/W and that |G| = |G_V| · |G_W|. Passing means the action factors over visible and summed labels, so the direct-product α equation is exact.',
+    byTerm.get('functional projection'),
+    'A regime that fires when every g ∈ G preserves V as a set: projection π_V then descends from product orbits to stored output representatives functionally, and α = M = |X/G|.',
   );
 });
 
@@ -108,24 +110,25 @@ test('shape tooltip copy reflects the updated M and α semantics', async () => {
     './components/symmetry-aware-einsum-contractions/engine/shapeSpec.js'
   );
 
+  // Shape descriptions are now semantic rather than formula-owning under the
+  // unified output-orbit metric — the regime ladder picks the cheapest exact
+  // counter for one universal α. Each shape says when it routes through which
+  // branch of the ladder, not a standalone formula.
   assert.equal(
     SHAPE_SPEC.trivial.description,
-    'No detected pointwise symmetry in this component, so every full assignment remains its own product/update representative.',
+    'Each full assignment is its own product orbit, so each update goes to exactly one stored output representative.',
   );
   assert.equal(
     SHAPE_SPEC.allVisible.description,
-    'No summed labels in this component. Product symmetry can reduce M, but the dense output still has one bin for every visible-label tuple.',
+    'There is no summation. Product representatives and stored output representatives are the same quotient.',
   );
   assert.equal(
-    SHAPE_SPEC.allVisible.glossary.find((entry) => entry.term.includes('\\text{-symmetry}')).definition,
-    'Symmetry on $V_{\\mathrm{free}}$ can reduce representative products, but it does not reduce direct output-bin updates in an all-visible dense output. Every visible tuple is still an output bin.',
+    SHAPE_SPEC.allVisible.glossary.find((entry) => entry.term.includes('H = G')).definition,
+    'with $V = L$ every $g \\in G$ trivially preserves $V$, so $H = G$ and product orbits and stored output representatives coincide. $\\alpha = M$.',
   );
   assert.equal(
     SHAPE_SPEC.allSummed.description,
-    'No visible labels in this component. Every product orbit updates the single scalar output once, so α equals the product-orbit count.',
+    'The output is one scalar representative. Each product orbit updates it once.',
   );
-  assert.equal(
-    SHAPE_SPEC.mixed.description,
-    'Both $V_{\\mathrm{free}}$ and $W_{\\mathrm{summed}}$ are present. α must count output projections of product orbits, so the component dispatches to the regime ladder.',
-  );
+  assert.match(SHAPE_SPEC.mixed.description, /Projection may have one destination per product orbit, or it may branch/);
 });

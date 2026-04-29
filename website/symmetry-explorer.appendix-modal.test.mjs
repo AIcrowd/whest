@@ -100,15 +100,20 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
   assert.match(section5, /supportClassName="space-y-5 xl:pt-1"/);
   assert.doesNotMatch(section5, /supportClassName=\{APPENDIX_SUPPORT_SHELF_CLASS\}/);
 
+  // Section 6 was rewritten (Task 9) around the unified output-orbit metric.
+  // The legacy savings-comparison table, scopeLabel, tableNote, and footnote
+  // slots are gone; the section now renders an intro slot followed by a
+  // footer band.
   assert.doesNotMatch(section6, /AppendixSupportSplit/);
-  assert.match(section6, /Storage-only saving/);
-  assert.match(section6, /deckClassName="max-w-none"/);
-  assert.match(section6, /-mx-6 -mb-10 mt-8 border-t border-stone-200\/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10/);
-  assert.match(section6, /appendixSection6\.slots\.scopeLabel/);
-  assert.match(section6, /text-\[12\.5px\] leading-6 text-stone-700/);
+  assert.doesNotMatch(section6, /Storage-only saving/);
+  assert.doesNotMatch(section6, /appendixSection6\.slots\.scopeLabel/);
+  assert.doesNotMatch(section6, /appendixSection6\.slots\.tableNote/);
   assert.doesNotMatch(section6, /max-w-\[78ch\]/);
-  assert(section6.indexOf('Storage-only saving') < section6.indexOf('-mx-6 -mb-10 mt-8 border-t border-stone-200/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10'), 'footer band should come after the table');
-  assert(section6.indexOf('appendixSection6.slots.tableNote') > section6.indexOf('Storage-only saving'), 'storage explanatory paragraph should move below the table');
+  assert.match(section6, /deckClassName="max-w-none"/);
+  assert.match(section6, /appendixSection6\.slots\.intro/);
+  assert.match(section6, /appendixSection6\.slots\.footer/);
+  assert.match(section6, /-mx-6 -mb-10 mt-8 border-t border-stone-200\/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10/);
+  assert(section6.indexOf('appendixSection6.slots.intro') < section6.indexOf('appendixSection6.slots.footer'), 'intro should render before footer');
 
   assert.match(appendixSectionSource, /anchorId = ''/);
   assert.match(appendixSectionSource, /deckClassName = ''/);
@@ -303,48 +308,33 @@ test('section 5 uses alphaComparison branches and the bilinear witness to reject
   assert(presetsIdx < mismatchIdx, 'preset jump row should appear before the branch-specific explanation block');
 });
 
-test('section 6 frames storage as a separate optimization axis with α_engine and α_storage', () => {
+test('section 6 explains the unified output-orbit accumulation count', () => {
+  // Task-9 rewrite: section 6 dropped the storage-savings table, the
+  // alpha_engine vs alpha_storage comparison, the Model 1/2/3 framing, and
+  // the buildStorageSavingsRows/savingsTableRows machinery. It now renders
+  // the intro slot followed by the footer band — both describe how H is
+  // induced from G_pt and why the legacy G_out / storage-only model is
+  // subsumed by the unified metric.
   assert.match(source, /n=\{6\}[\s\S]*title=\{appendixSection6\.title\}/);
   assert.match(source, /n=\{6\}[\s\S]*deckClassName="max-w-none"/);
   assert.match(source, /n=\{6\}[\s\S]*deck=\{\s*<InlineMathText>\s*\{normalizeAppendixDisplayText\(appendixSection6\.deck\)\}\s*<\/InlineMathText>\s*\}/);
   assert.match(source, /n=\{6\}[\s\S]*appendixSection6\.slots\.intro/);
-  assert.match(source, /n=\{6\}[\s\S]*renderAppendixSingleBlock\(appendixSection6\.slots\.footnote, 0\)/);
-  assert.match(source, /n=\{6\}[\s\S]*renderAppendixSingleBlock\(appendixSection6\.slots\.tableNote, 0\)/);
-  assert.match(source, /n=\{6\}[\s\S]*renderAppendixSingleBlock\(appendixSection6\.slots\.scopeLabel, 0\)/);
   assert.match(source, /n=\{6\}[\s\S]*appendixSection6\.slots\.footer/);
-  assert.match(source, /n=\{6\}[\s\S]*const isModelBlock = index >= 1 && index <= 3;/);
-  assert.match(source, /n=\{6\}[\s\S]*rounded-lg border border-stone-200\/70 bg-stone-50\/60 px-4 py-3/);
-  assert.match(source, /n=\{6\}[\s\S]*strongClassName: isModelBlock \? 'font-semibold text-\[var\(--primary\)\]' : null/);
-  assert.match(source, /n=\{6\}[\s\S]*const operandChips = operands\.map\(\(operand\) => \(\{/);
-  assert.match(source, /n=\{6\}[\s\S]*chipName: operand\.count > 1 \? `\$\{operand\.name\}×\$\{operand\.count\}` : operand\.name/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="flex flex-wrap gap-1\.5">\s*\{operandChips\.map\(\(operand\) => \(/);
-  assert.match(source, /n=\{6\}[\s\S]*<SymmetryChip key=\{`\$\{operand\.name\}-\$\{operand\.sym\}`\} name=\{operand\.chipName\} symmetry=\{operand\.sym\} \/>/);
-  assert.match(source, /import \{ buildStorageSavingsRows \} from '\.\.\/engine\/storageSavings\.js';/);
-  assert.match(source, /const savingsTableRows = useMemo\(\s*\(\) => buildStorageSavingsRows\(EXAMPLES, 3\),\s*\[\],\s*\)/);
-  assert.doesNotMatch(source, /const SAVINGS_TABLE_ROWS = \[/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*<span className="font-mono font-semibold">\{o\.name\}<\/span>/);
-  assert.match(source, /Accumulation representatives/);
-  assert.match(source, /Output-orbit representatives/);
-  assert.match(source, /Storage-only saving/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="text-\[13px\] font-semibold text-gray-900">\s*<Latex math="\\alpha_\{\\text\{engine\}\}" \/>/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Accumulation representatives<\/div>/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="text-\[13px\] font-semibold text-gray-900">\s*<Latex math="\\alpha_\{\\text\{storage\}\}" \/>/);
-  assert.match(source, /n=\{6\}[\s\S]*<div className="mt-1 text-\[11px\] font-normal leading-5 text-gray-500">Output-orbit representatives<\/div>/);
-  assert.match(source, /n=\{6\}[\s\S]*r\.vLatex === '\\\\varnothing' \? '\\\\varnothing' : `\\\\\{\$\{r\.vLatex\}\\\\\}`/);
-  assert.match(source, /n=\{6\}[\s\S]*<Latex math=\{r\.vSubLatex\} \/>/);
-  assert.match(source, /n=\{6\}[\s\S]*\{r\.alphaEngine\}/);
-  assert.match(source, /n=\{6\}[\s\S]*\{r\.alphaStorage\}/);
-  assert.match(source, /n=\{6\}[\s\S]*\$\{r\.saving\} \(\$\{r\.savingPct\}%\)/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*Accumulation is governed by \$\$\{notationLatex\('g_pointwise'\)\}\$/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*Output storage is governed by \$\$\{notationLatex\('g_output'\)\}\$/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*The dummy-label group \$\$\{notationLatex\('s_w_summed'\)\}\$ contributes nothing to output storage/);
-  assert.doesNotMatch(source, /Appendix note/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*SCOPE/);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*The \$\\alpha\$ shown on the main page counts distinct accumulation operations in the enumerate-and-accumulate evaluation model with \$\$\{notationLatex\('g_pointwise'\)\}\$ as the summand-value equivalence relation\./);
-  assert.doesNotMatch(source, /n=\{6\}[\s\S]*Output-tensor storage collapse, algebraic restructuring such as factoring \$R = v v\^\\top\$, and contraction re-ordering all sit outside that scope and require different machinery than the pointwise orbit compression measured on the main page\./);
-  assert.doesNotMatch(source, /This appendix separates three optimization questions/);
-  assert.doesNotMatch(source, /The formal group \$\$\{notationLatex\('g_formal'\)\}\$ is essential for explaining expression-level label-renaming symmetry/);
-  assert.doesNotMatch(source, /space-y-3 text-\[13px\] leading-6 text-gray-700/);
+
+  // Removed in Task 9.
+  assert.doesNotMatch(source, /import \{ buildStorageSavingsRows \}/);
+  assert.doesNotMatch(source, /buildStorageSavingsRows\(EXAMPLES, 3\)/);
+  assert.doesNotMatch(source, /const savingsTableRows = useMemo/);
+  assert.doesNotMatch(source, /n=\{6\}[\s\S]*appendixSection6\.slots\.footnote/);
+  assert.doesNotMatch(source, /n=\{6\}[\s\S]*appendixSection6\.slots\.tableNote/);
+  assert.doesNotMatch(source, /n=\{6\}[\s\S]*appendixSection6\.slots\.scopeLabel/);
+  assert.doesNotMatch(source, /Accumulation representatives/);
+  assert.doesNotMatch(source, /Output-orbit representatives/);
+  assert.doesNotMatch(source, /Storage-only saving/);
+  assert.doesNotMatch(source, /\\alpha_\{\\text\{engine\}\}/);
+  assert.doesNotMatch(source, /\\alpha_\{\\text\{storage\}\}/);
+  assert.doesNotMatch(source, /n=\{6\}[\s\S]*\{r\.alphaEngine\}/);
+  assert.doesNotMatch(source, /n=\{6\}[\s\S]*\{r\.alphaStorage\}/);
 });
 
 test('appendix avoids raw unthemed math literals for key semantic symbols and example algebra', () => {

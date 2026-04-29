@@ -16,7 +16,6 @@ import appendixSection4 from '../content/appendix/section4.ts';
 import appendixSection5 from '../content/appendix/section5.ts';
 import appendixSection6 from '../content/appendix/section6.ts';
 import { computeExpressionAlphaComparison } from '../engine/comparisonAlpha.js';
-import { buildStorageSavingsRows } from '../engine/storageSavings.js';
 import { EXAMPLES } from '../data/examples.js';
 import { formatGeneratorNotation, variableSymmetryLabel } from '../lib/symmetryLabel.js';
 import { explorerThemeColor, getActiveExplorerThemeId } from '../lib/explorerTheme.js';
