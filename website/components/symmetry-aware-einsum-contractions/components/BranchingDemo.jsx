@@ -3,6 +3,7 @@ import InlineMathText from './InlineMathText.jsx';
 import FanView from './branchingViews/FanView.jsx';
 import ArcsView from './branchingViews/ArcsView.jsx';
 import GridsView from './branchingViews/GridsView.jsx';
+import PileBucketsView from './branchingViews/PileBucketsView.jsx';
 import {
   explorerThemeColor,
   explorerThemeTint,
@@ -91,11 +92,7 @@ export default function BranchingDemo({
         {activeView === 'fan' && <FanView orbit={null} reachedReps={[]} />}
         {activeView === 'arcs' && <ArcsView orbit={null} reachedReps={[]} />}
         {activeView === 'grids' && <GridsView orbit={null} allOrbits={[]} reachedReps={[]} hClasses={[]} />}
-        {activeView === 'pile-buckets' && (
-          <div className="text-center text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-            pile-buckets view lands in a subsequent task.
-          </div>
-        )}
+        {activeView === 'pile-buckets' && <PileBucketsView orbit={null} reachedReps={[]} />}
       </div>
     </section>
   );

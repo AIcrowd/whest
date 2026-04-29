@@ -70,3 +70,15 @@ test('BranchingDemo wires GridsView for view-id="grids"', () => {
   assert.match(src, /import GridsView from '\.\/branchingViews\/GridsView\.jsx'/);
   assert.match(src, /activeView === 'grids' && <GridsView/);
 });
+
+test('PileBucketsView exports a default React component with no raw hex', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/PileBucketsView.jsx');
+  assert.match(src, /export default function PileBucketsView/);
+  assert.doesNotMatch(src, /#[0-9A-Fa-f]{3}\b|#[0-9A-Fa-f]{6}\b/);
+});
+
+test('BranchingDemo wires PileBucketsView for view-id="pile-buckets"', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
+  assert.match(src, /import PileBucketsView from '\.\/branchingViews\/PileBucketsView\.jsx'/);
+  assert.match(src, /activeView === 'pile-buckets' && <PileBucketsView/);
+});
