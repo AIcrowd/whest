@@ -108,14 +108,15 @@ def test_legacy_pickle_payload_is_rejected():
 
 
 def test_public_exports_only_current_surface():
-    assert hasattr(fnp, "SymmetryGroup")
-    assert hasattr(fnp, "SymmetricTensor")
-    assert hasattr(fnp, "as_symmetric")
-    assert hasattr(fnp, "symmetrize")
-    assert not hasattr(fnp, "PermutationGroup")
-    assert not hasattr(fnp, "Permutation")
-    assert not hasattr(fnp, "Cycle")
-    assert not hasattr(fnp, "SymmetryInfo")
+    # Symmetry primitives live at the top-level ``flopscope`` package.
+    assert hasattr(flops, "SymmetryGroup")
+    assert hasattr(flops, "SymmetricTensor")
+    assert hasattr(flops, "as_symmetric")
+    assert hasattr(flops, "symmetrize")
+    assert not hasattr(flops, "PermutationGroup")
+    assert not hasattr(flops, "Permutation")
+    assert not hasattr(flops, "Cycle")
+    assert not hasattr(flops, "SymmetryInfo")
 
 
 def test_symmetrize_uses_symmetry_keyword():
@@ -135,8 +136,8 @@ def test_random_symmetric_uses_group_object():
 
 
 def test_flops_module_no_longer_exports_symmetry_info():
-    assert not hasattr(fnp.flops, "SymmetryInfo")
-    assert "SymmetryInfo" not in fnp.flops.__all__
+    assert not hasattr(flops.accounting, "SymmetryInfo")
+    assert "SymmetryInfo" not in flops.accounting.__all__
 
 
 def test_einsum_output_uses_symmetry_keyword():

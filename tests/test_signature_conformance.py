@@ -126,11 +126,11 @@ def test_symmetrize_and_random_symmetric_use_new_keyword():
 
 
 def test_public_flop_apis_use_symmetry_keyword():
-    for fn in (fnp.flops.pointwise_cost, fnp.flops.reduction_cost):
+    for fn in (flops.accounting.pointwise_cost, flops.accounting.reduction_cost):
         params = inspect.signature(fn).parameters
         assert "symmetry" in params
         assert "symmetric_axes" not in params
 
-    einsum_params = inspect.signature(fnp.flops.einsum_cost).parameters
+    einsum_params = inspect.signature(flops.accounting.einsum_cost).parameters
     assert "operand_symmetries" in einsum_params
     assert "symmetric_axes" not in einsum_params

@@ -187,10 +187,19 @@ class TestSubmoduleParity:
             )
 
     def test_core_submodule_init_files_exist(self):
+        # Core (server) library uses JAX-style structure: numpy-shaped
+        # submodules (linalg, fft, random) live under flopscope.numpy/, while
+        # stats sits at the top level. The client keeps the flat layout.
+        core_paths = {
+            "linalg": CORE_SRC / "flopscope" / "numpy" / "linalg" / "__init__.py",
+            "fft": CORE_SRC / "flopscope" / "numpy" / "fft" / "__init__.py",
+            "random": CORE_SRC / "flopscope" / "numpy" / "random" / "__init__.py",
+            "stats": CORE_SRC / "flopscope" / "stats" / "__init__.py",
+        }
         for submod in self._SUBMODULES:
-            init_path = CORE_SRC / "flopscope" / submod / "__init__.py"
+            init_path = core_paths[submod]
             assert init_path.exists(), (
-                f"Core submodule flopscope/{submod}/__init__.py not found at {init_path}"
+                f"Core submodule for '{submod}' not found at {init_path}"
             )
 
     def test_client_submodule_init_files_are_non_empty(self):

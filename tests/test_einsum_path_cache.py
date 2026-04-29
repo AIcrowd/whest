@@ -196,17 +196,17 @@ def test_configure_rebuilds_cache():
         configure(einsum_path_cache_size=original)
 
 
-import flopscope
+import flopscope.numpy as fnp
 
 
 def test_public_api_clear():
-    flopscope.clear_einsum_cache()
-    info = flopscope.einsum_cache_info()
+    fnp.clear_einsum_cache()
+    info = fnp.einsum_cache_info()
     assert info.currsize == 0
 
 
 def test_public_api_cache_info():
-    info = flopscope.einsum_cache_info()
+    info = fnp.einsum_cache_info()
     assert hasattr(info, "hits")
     assert hasattr(info, "misses")
     assert hasattr(info, "maxsize")

@@ -713,7 +713,7 @@ class TestRandomDimsSamplerNoArgs:
     """Cover line 79: dims sampler with no args (returns scalar)."""
 
     def test_rand_no_args(self):
-        from flopscope import random as merandom
+        from flopscope.numpy import random as merandom
 
         with BudgetContext(flop_budget=10**6) as budget:
             result = merandom.rand()
@@ -721,7 +721,7 @@ class TestRandomDimsSamplerNoArgs:
         assert budget.flops_used == 1
 
     def test_randn_no_args(self):
-        from flopscope import random as merandom
+        from flopscope.numpy import random as merandom
 
         with BudgetContext(flop_budget=10**6) as budget:
             result = merandom.randn()
@@ -733,7 +733,7 @@ class TestRandomSizeOnlySampler:
     """Cover lines 161-165: size-only samplers."""
 
     def test_random_with_size(self):
-        from flopscope import random as merandom
+        from flopscope.numpy import random as merandom
 
         with BudgetContext(flop_budget=10**6) as budget:
             result = merandom.random(size=(3, 4))
@@ -741,7 +741,7 @@ class TestRandomSizeOnlySampler:
         assert budget.flops_used == 12
 
     def test_random_no_size(self):
-        from flopscope import random as merandom
+        from flopscope.numpy import random as merandom
 
         with BudgetContext(flop_budget=10**6) as budget:
             result = merandom.random()
@@ -752,8 +752,8 @@ class TestRandomChoice:
     """Cover lines 223-234: choice with replace=False."""
 
     def test_choice_without_replacement(self):
-        from flopscope import random as merandom
         from flopscope._flops import sort_cost
+        from flopscope.numpy import random as merandom
 
         n = 20
         with BudgetContext(flop_budget=10**6) as budget:
@@ -761,7 +761,7 @@ class TestRandomChoice:
         assert budget.flops_used == sort_cost(n)
 
     def test_choice_from_array(self):
-        from flopscope import random as merandom
+        from flopscope.numpy import random as merandom
 
         arr = numpy.arange(10)
         with BudgetContext(flop_budget=10**6) as budget:
@@ -773,7 +773,7 @@ class TestRandomBytes:
     """Cover lines 242-245: bytes sampler."""
 
     def test_bytes(self):
-        from flopscope import random as merandom
+        from flopscope.numpy import random as merandom
 
         with BudgetContext(flop_budget=10**6) as budget:
             result = merandom.bytes(16)
@@ -785,7 +785,7 @@ class TestRandomShuffle:
     """Cover lines 207: shuffle with list input."""
 
     def test_shuffle_list(self):
-        from flopscope import random as merandom
+        from flopscope.numpy import random as merandom
 
         lst = list(range(10))
         with BudgetContext(flop_budget=10**6) as budget:
@@ -797,13 +797,13 @@ class TestRandomGetattr:
     """Cover line 255: __getattr__ fallback for unknown attrs."""
 
     def test_getattr_existing(self):
-        from flopscope import random as merandom
+        from flopscope.numpy import random as merandom
 
         # Access something that exists in numpy.random but not explicitly wrapped
         assert hasattr(merandom, "get_state")
 
     def test_getattr_missing(self):
-        from flopscope import random as merandom
+        from flopscope.numpy import random as merandom
 
         with pytest.raises(AttributeError, match="does not provide"):
             _ = merandom.totally_nonexistent_attr_xyz
