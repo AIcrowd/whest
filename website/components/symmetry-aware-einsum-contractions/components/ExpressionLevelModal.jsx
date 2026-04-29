@@ -830,10 +830,6 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
     () => buildFormalOrbitExampleData({ example, labelOrder: analysis?.symmetry?.allLabels ?? [], witness: alphaComparison.witness }),
     [analysis?.symmetry?.allLabels, alphaComparison.witness, example],
   );
-  const savingsTableRows = useMemo(
-    () => buildStorageSavingsRows(EXAMPLES, 3),
-    [],
-  );
   const showBilinearFormalOrbitExample =
     example?.id === 'bilinear-trace' &&
     alphaComparison.state === 'mismatch' &&
@@ -1778,91 +1774,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
               ))}
             </div>
 
-            <div className="mt-6 overflow-x-auto">
-              <table className="w-full border-collapse text-[12px]">
-                <thead className="border-b border-gray-200">
-                  <tr className="text-left text-[12px] text-muted-foreground">
-                    <th className="px-2 py-2 font-semibold">Preset</th>
-                    <th className="px-2 py-2 font-semibold">Einsum</th>
-                    <th className="px-2 py-2 font-semibold">Operand sym.</th>
-                    <th className="px-2 py-2 font-semibold"><Latex math={APPENDIX_SHORT_V_LATEX()} /></th>
-                    <th className="px-2 py-2 font-semibold"><Latex math={notationLatex('g_output')} /></th>
-                    <th className="px-2 py-2 font-semibold text-right">
-                      <div className="text-[13px] font-semibold text-gray-900">
-                        <Latex math="\alpha_{\text{engine}}" />
-                      </div>
-                      <div className="mt-1 text-[11px] font-normal leading-5 text-gray-500">Accumulation representatives</div>
-                    </th>
-                    <th className="px-2 py-2 font-semibold text-right">
-                      <div className="text-[13px] font-semibold text-gray-900">
-                        <Latex math="\alpha_{\text{storage}}" />
-                      </div>
-                      <div className="mt-1 text-[11px] font-normal leading-5 text-gray-500">Output-orbit representatives</div>
-                    </th>
-                    <th className="px-2 py-2 font-semibold text-right">
-                      <div>Storage-only saving</div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="[&_tr]:border-b [&_tr]:border-gray-100">
-                  {savingsTableRows.map((r) => {
-                    const hasSaving = r.saving > 0;
-                    const preset = EXAMPLES_BY_ID.get(r.id);
-                    const subs = preset?.expression?.subscripts ?? '';
-                    const output = preset?.expression?.output ?? '';
-                    const operands = describeOperands(preset);
-                    const operandChips = operands.map((operand) => ({
-                      ...operand,
-                      chipName: operand.count > 1 ? `${operand.name}×${operand.count}` : operand.name,
-                    }));
-                    const groupLabel = preset?.expectedGroup ?? appendixGroupLabel(r.vSubLatex);
-                    return (
-                      <tr key={r.id} className={hasSaving ? '' : 'text-muted-foreground'}>
-                        <td className="px-2 py-2 whitespace-nowrap">
-                          <AppendixPresetHoverLabel preset={preset} groupLabel={groupLabel} />
-                        </td>
-                        <td className="px-2 py-2 font-mono whitespace-nowrap">
-                          <AppendixEinsumHoverCell
-                            subs={subs}
-                            output={output}
-                            preset={preset}
-                            groupLabel={groupLabel}
-                          />
-                        </td>
-                        <td className="px-2 py-2">
-                          <div className="flex flex-wrap gap-1.5">
-                            {operandChips.map((operand) => (
-                              <SymmetryChip key={`${operand.name}-${operand.sym}`} name={operand.chipName} symmetry={operand.sym} />
-                            ))}
-                          </div>
-                        </td>
-                        <td className="px-2 py-2 whitespace-nowrap">
-                          <Latex math={r.vLatex === '\\varnothing' ? '\\varnothing' : `\\{${r.vLatex}\\}`} />
-                        </td>
-                        <td className="px-2 py-2 whitespace-nowrap"><Latex math={r.vSubLatex} /></td>
-                        <td className="px-2 py-2 text-right font-mono">{r.alphaEngine}</td>
-                        <td className="px-2 py-2 text-right font-mono">{r.alphaStorage}</td>
-                        <td className={`px-2 py-2 text-right font-mono whitespace-nowrap ${hasSaving ? 'text-[var(--status-success)]' : ''}`}>
-                          {hasSaving ? `${r.saving} (${r.savingPct}%)` : '—'}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <p className={`mt-2 ${APPENDIX_FOOTNOTE_CLASS}`}>
-                {renderAppendixSingleBlock(appendixSection6.slots.footnote, 0)}
-              </p>
-            </div>
-
-            <p className="mt-4 text-[12.5px] leading-6 text-stone-700">
-              {renderAppendixSingleBlock(appendixSection6.slots.tableNote, 0)}
-            </p>
-
             <div className="-mx-6 -mb-10 mt-8 border-t border-stone-200/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10">
-              <div className="font-sans text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
-                {renderAppendixSingleBlock(appendixSection6.slots.scopeLabel, 0)}
-              </div>
               {renderAppendixSlot(appendixSection6.slots.footer).map((content, index) => (
                 <p
                   key={`appendix-6-footer-${index}`}

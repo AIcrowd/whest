@@ -8,7 +8,7 @@ const section5 = {
   deck: 'The tempting shortcut is to apply Burnside to $G_{\\text{f}}$. That shortcut is invalid for accumulation because formal orbits may contain unequal summands.',
   slots: {
     intro: [
-      p('The main page’s $\\alpha$ counts direct output-bin updates. Such a representative is valid only when every assignment in its orbit contributes the same indexed product. That condition holds for $G_{\\text{pt}}$ by construction. It need not hold for $G_{\\text{f}}$, because the domain-compatible dummy-label factor can rename bound variables only after the terms have already been summed.'),
+      p('The main page’s $\\alpha$ counts accumulation updates from product-orbit representatives into stored output representatives — pairs $(O, Q) \\in X/G_{\\text{pt}} \\times Y/H$ where $\\pi_V(O) \\cap Q \\neq \\varnothing$ and $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$. Such a representative is valid only when every assignment in its orbit contributes the same indexed product. That condition holds for $G_{\\text{pt}}$ by construction. It need not hold for $G_{\\text{f}}$, because the domain-compatible dummy-label renamings act only after the terms have already been summed.'),
       p('Therefore, Burnside over $G_{\\text{f}}$ answers a different question: it counts orbits of formal label renamings in the completed expression. It does not, in general, count the number of distinct summand computations or direct updates required during accumulation.'),
     ],
     mismatchLead: [
