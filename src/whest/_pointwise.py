@@ -18,7 +18,7 @@ from whest._flops import (
 from whest._flops import (
     analytical_reduction_cost as reduction_cost,
 )
-from whest._ndarray import _aswhest
+from whest._ndarray import _aswhest, _to_base_ndarray, _to_base_ndarray_tree
 from whest._perm_group import SymmetryGroup
 from whest._symmetric import (
     SymmetricTensor,
@@ -77,12 +77,28 @@ def _validate_result_symmetry(result, symmetry):
 
 
 def _call_with_optional_out(np_func, *args, out=None, supports_out=False, **kwargs):
+    # Strip whest subclasses (WhestArray / SymmetricTensor) from arrays so
+    # the raw NumPy call does not re-dispatch through ``__array_ufunc__`` /
+    # ``__array_function__`` and recurse infinitely. Python scalars and
+    # other non-array values pass through unchanged so NEP 50 weak-typing
+    # rules continue to apply at the NumPy boundary.
+    args = tuple(_to_base_ndarray(a) for a in args)
+    # ``where=`` kwarg may be a WhestArray bool mask; strip it. Other
+    # array-valued kwargs (e.g. ``axes`` lists for matmul / einsum
+    # tensor-axis specs) typically aren't ndarrays, but tree-strip is
+    # cheap and safe for nested arg containers.
+    for k, v in list(kwargs.items()):
+        if isinstance(v, _np.ndarray):
+            kwargs[k] = _to_base_ndarray(v)
+        elif isinstance(v, (tuple, list)):
+            kwargs[k] = _to_base_ndarray_tree(v)
+    out_stripped = _to_base_ndarray(out) if out is not None else None
     if out is None:
         return np_func(*args, **kwargs)
     if supports_out:
-        return np_func(*args, out=out, **kwargs)
+        return np_func(*args, out=out_stripped, **kwargs)
     result = np_func(*args, **kwargs)
-    _np.copyto(out, _np.asarray(result), casting="unsafe")
+    _np.copyto(out_stripped, _np.asarray(result), casting="unsafe")
     return out
 
 
@@ -759,7 +775,7 @@ if hasattr(_np, "vecdot"):
         with budget.deduct(
             "vecdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
         ):
-            result = _np.vecdot(a, b, **kwargs)
+            result = _np.vecdot(_to_base_ndarray(a), _to_base_ndarray(b), **kwargs)
         return result
 
 else:
@@ -792,7 +808,7 @@ if hasattr(_np, "matvec"):
         with budget.deduct(
             "matvec", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
         ):
-            result = _np.matvec(a, b, **kwargs)
+            result = _np.matvec(_to_base_ndarray(a), _to_base_ndarray(b), **kwargs)
         return result
 
 else:
@@ -825,7 +841,7 @@ if hasattr(_np, "vecmat"):
         with budget.deduct(
             "vecmat", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
         ):
-            result = _np.vecmat(a, b, **kwargs)
+            result = _np.vecmat(_to_base_ndarray(a), _to_base_ndarray(b), **kwargs)
         return result
 
 else:
@@ -1014,12 +1030,22 @@ def dot(a, b):
         )
     else:
         cost = a.size * b.size
+    # Track whether either operand was already a whest subclass; if so,
+    # preserve the subclass on the result the way ``__array_wrap__`` did
+    # pre-Stage-3 when the raw call dispatched through it. With Stage 3
+    # we strip subclasses before the raw NumPy call (to avoid recursion),
+    # so the wrap must be re-applied explicitly here.
+    inputs_were_whest = isinstance(a, _np.ndarray) and (
+        type(a) is not _np.ndarray or type(b) is not _np.ndarray
+    )
     with budget.deduct(
         "dot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _np.dot(a, b)
+        # Strip whest subclasses so the raw NumPy call does not re-dispatch
+        # through __array_ufunc__ (matmul is a ufunc) / __array_function__.
+        result = _np.dot(_to_base_ndarray(a), _to_base_ndarray(b))
     check_nan_inf(result, "dot")
-    return result
+    return _aswhest(result) if inputs_were_whest else result
 
 
 attach_docstring(dot, _np.dot, "counted_custom", "depends on operand dimensions")
@@ -1052,13 +1078,16 @@ def matmul(a, b):
         )
     else:
         cost = a.size * b.size
+    inputs_were_whest = isinstance(a, _np.ndarray) and (
+        type(a) is not _np.ndarray or type(b) is not _np.ndarray
+    )
     with budget.deduct(
         "matmul", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
         with _np.errstate(divide="ignore", over="ignore", invalid="ignore"):
-            result = _np.matmul(a, b)
+            result = _np.matmul(_to_base_ndarray(a), _to_base_ndarray(b))
     check_nan_inf(result, "matmul")
-    return result
+    return _aswhest(result) if inputs_were_whest else result
 
 
 attach_docstring(matmul, _np.matmul, "counted_custom", "depends on operand dimensions")

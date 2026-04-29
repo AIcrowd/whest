@@ -74,6 +74,95 @@ class WhestArray(_np.ndarray):
             return out_arr[()]
         return super().__array_wrap__(out_arr, context, return_scalar)
 
+    # ----- numpy ufunc protocol (NEP 13) -----
+
+    _REDUCE_TO_WHEST = {
+        "add": "sum",
+        "multiply": "prod",
+        "maximum": "max",
+        "minimum": "min",
+        "logical_and": "all",
+        "logical_or": "any",
+    }
+    _ACCUMULATE_TO_WHEST = {
+        "add": "cumsum",
+        "multiply": "cumprod",
+    }
+
+    def __array_ufunc__(self, ufunc, method, *inputs, out=None, **kwargs):
+        """Route ufunc calls through whest's counted functions.
+
+        Triggered for:
+        - ``np.add(whest, x)``         → method='__call__'
+        - ``np.add.reduce(whest)``     → method='reduce'
+        - ``np.add.accumulate(whest)`` → method='accumulate'
+
+        ``out`` is passed by NumPy as a tuple (e.g. ``(out_arr,)`` for a
+        single-output ufunc). Whest functions expect ``out=arr``, so we
+        unwrap the single-element tuple before forwarding.
+
+        Unsupported ufunc methods (``outer``, ``reduceat``, ``at``) and
+        multi-output ufuncs (``modf``, ``frexp`` — anything with
+        ``ufunc.nout != 1``) raise ``NotImplementedError`` so callers
+        cannot silently bypass tracking.
+        """
+        me = _me()
+
+        # Reject multi-output ufuncs explicitly — whest wrappers do not
+        # currently honor multi-output ``out=(out1, out2)``.
+        if ufunc.nout != 1:
+            raise NotImplementedError(
+                f"ufuncs with nout != 1 are not yet supported on WhestArray "
+                f"(operation: {ufunc.__name__}, nout={ufunc.nout}); use the "
+                f"equivalent whest function (e.g. ``we.modf(a)``) instead."
+            )
+
+        np_target_name = None  # used to drive _filter_to_np_signature below
+        if method == "__call__":
+            whest_fn = getattr(me, ufunc.__name__, None)
+            np_target_name = ufunc.__name__
+        elif method == "reduce":
+            target = self._REDUCE_TO_WHEST.get(ufunc.__name__)
+            whest_fn = getattr(me, target, None) if target else None
+            np_target_name = target
+            # NumPy's ufunc.reduce defaults to axis=0; whest's me.sum etc.
+            # default to axis=None (full reduction). Force NumPy default.
+            kwargs.setdefault("axis", 0)
+        elif method == "accumulate":
+            target = self._ACCUMULATE_TO_WHEST.get(ufunc.__name__)
+            whest_fn = getattr(me, target, None) if target else None
+            np_target_name = target
+            kwargs.setdefault("axis", 0)
+        elif method in ("outer", "reduceat", "at"):
+            raise NotImplementedError(
+                f"ufunc.{method} is not yet supported on WhestArray "
+                f"(operation: {ufunc.__name__}); use the equivalent "
+                f"whest function instead, or open an issue if you need this."
+            )
+        else:
+            whest_fn = None
+
+        if whest_fn is None:
+            return NotImplemented
+
+        # Unwrap single-output ``out`` tuple.
+        if out is not None:
+            if isinstance(out, tuple) and len(out) == 1:
+                kwargs["out"] = out[0]
+            else:
+                kwargs["out"] = out
+
+        # Filter kwargs against the target NumPy callable's signature so
+        # ufunc-internal kwargs (e.g. ``dtype=`` from np.all → np.add.reduce)
+        # don't reach a function-form whest wrapper that doesn't accept
+        # them.
+        if np_target_name is not None:
+            kwargs = _filter_to_np_signature(
+                getattr(_np, np_target_name, None), kwargs
+            )
+
+        return whest_fn(*inputs, **kwargs)
+
     # ----- Binary arithmetic -----
 
     def __add__(self, other):

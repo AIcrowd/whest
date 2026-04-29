@@ -7,6 +7,7 @@ import numpy as _np
 from numpy.linalg._linalg import SlogdetResult
 
 from whest._docstrings import attach_docstring
+from whest._ndarray import _to_base_ndarray
 from whest._symmetric import SymmetricTensor
 from whest._validation import require_budget
 from whest.linalg._solvers import _batch_size, _has_zero_dim
@@ -364,7 +365,9 @@ def cond(x, p=None):
     m, n = x.shape[-2], x.shape[-1]
     batch = _batch_size(x.shape)
     cost = cond_cost(m, n, p=p) * batch if not _has_zero_dim(x.shape) else 0
-    has_nan = not _has_zero_dim(x.shape) and bool(_np.any(_np.isnan(x)))
+    has_nan = not _has_zero_dim(x.shape) and bool(
+        _np.any(_np.isnan(_to_base_ndarray(x)))
+    )
     with budget.deduct(
         "linalg.cond", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):

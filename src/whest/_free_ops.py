@@ -13,6 +13,7 @@ from functools import lru_cache
 import numpy as _np
 
 from whest._docstrings import attach_docstring
+from whest._ndarray import _to_base_ndarray
 from whest._perm_group import SymmetryGroup
 from whest._symmetric import SymmetricTensor
 from whest._symmetry_utils import (
@@ -672,7 +673,9 @@ def isnan(x, **kwargs):
     x_arr = _np.asarray(x)
     cost = x_arr.size
     with budget.deduct("isnan", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)):
-        result = _np.isnan(x, **kwargs)
+        # Strip whest subclasses so the raw NumPy ufunc does not
+        # re-dispatch through __array_ufunc__ and recurse.
+        result = _np.isnan(_to_base_ndarray(x), **kwargs)
     return result
 
 
@@ -687,7 +690,7 @@ def isfinite(x, **kwargs):
     with budget.deduct(
         "isfinite", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
     ):
-        result = _np.isfinite(x, **kwargs)
+        result = _np.isfinite(_to_base_ndarray(x), **kwargs)
     return result
 
 
@@ -700,7 +703,7 @@ def isinf(x, **kwargs):
     x_arr = _np.asarray(x)
     cost = x_arr.size
     with budget.deduct("isinf", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)):
-        result = _np.isinf(x, **kwargs)
+        result = _np.isinf(_to_base_ndarray(x), **kwargs)
     return result
 
 
