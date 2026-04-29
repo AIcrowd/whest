@@ -651,7 +651,7 @@
     "name": "bitwise_not",
     "notes": "Element-wise bitwise NOT.",
     "numpy_ref": "np.bitwise_not",
-    "signature": "we.bitwise_not(x)",
+    "signature": "we.bitwise_not(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute bit-wise inversion, or bit-wise NOT, element-wise.",
     "weight": 1.0,
@@ -661,6 +661,6 @@
   "slug": "bitwise_not",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

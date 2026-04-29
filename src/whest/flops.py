@@ -21,6 +21,7 @@ from whest._flops import (
 from whest._flops import (
     svd_cost as _analytical_svd_cost,
 )
+from whest._perm_group import SymmetryGroup
 from whest._polynomial import (
     poly_cost as _analytical_poly_cost,
 )
@@ -51,7 +52,6 @@ from whest._polynomial import (
 from whest._polynomial import (
     roots_cost as _analytical_roots_cost,
 )
-from whest._symmetric import SymmetryInfo
 from whest._unwrap import unwrap_cost as _analytical_unwrap_cost
 from whest._weights import get_weight
 from whest._window import (
@@ -186,7 +186,7 @@ def pointwise_cost(
     op_name: str,
     *,
     shape: tuple[int, ...],
-    symmetry_info: SymmetryInfo | None = None,
+    symmetry: SymmetryGroup | None = None,
 ) -> int:
     """Weighted FLOP cost of a pointwise operation.
 
@@ -196,7 +196,7 @@ def pointwise_cost(
         Operation name used for weight lookup, e.g. ``"exp"`` or ``"add"``.
     shape : tuple of int
         Output shape of the pointwise operation.
-    symmetry_info : SymmetryInfo or None, optional
+    symmetry : SymmetryGroup or None, optional
         If provided, only unique elements are counted analytically before the
         operation weight is applied.
 
@@ -209,7 +209,7 @@ def pointwise_cost(
         raise TypeError("pointwise_cost() requires op_name as the first argument")
     return _weight_cost(
         op_name,
-        _analytical_pointwise_cost(shape, symmetry_info=symmetry_info),
+        _analytical_pointwise_cost(shape, symmetry=symmetry),
     )
 
 
@@ -218,7 +218,7 @@ def reduction_cost(
     *,
     input_shape: tuple[int, ...],
     axis: int | None = None,
-    symmetry_info: SymmetryInfo | None = None,
+    symmetry: SymmetryGroup | None = None,
 ) -> int:
     """Weighted FLOP cost of a reduction operation.
 
@@ -230,7 +230,7 @@ def reduction_cost(
         Shape of the reduction input.
     axis : int or None, optional
         Reduction axis. Accepted for API consistency with the analytical helper.
-    symmetry_info : SymmetryInfo or None, optional
+    symmetry : SymmetryGroup or None, optional
         If provided, only unique elements are counted analytically before the
         operation weight is applied.
 
@@ -246,7 +246,7 @@ def reduction_cost(
         _analytical_reduction_cost(
             input_shape,
             axis=axis,
-            symmetry_info=symmetry_info,
+            symmetry=symmetry,
         ),
     )
 
@@ -376,6 +376,4 @@ __all__ = [
     "kaiser_cost",
     # Other
     "unwrap_cost",
-    # Symmetric
-    "SymmetryInfo",
 ]

@@ -163,6 +163,6 @@
   "slug": "array_split",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L742",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L606"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L680"
   }
 }

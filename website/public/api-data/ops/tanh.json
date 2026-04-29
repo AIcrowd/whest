@@ -431,7 +431,7 @@
     "name": "tanh",
     "notes": "Element-wise hyperbolic tangent.",
     "numpy_ref": "np.tanh",
-    "signature": "we.tanh(x)",
+    "signature": "we.tanh(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute hyperbolic tangent element-wise.",
     "weight": 16.0,
@@ -441,6 +441,6 @@
   "slug": "tanh",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

@@ -971,6 +971,6 @@
   "slug": "choose",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L333",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L747"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L833"
   }
 }

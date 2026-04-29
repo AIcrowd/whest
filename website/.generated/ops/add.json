@@ -559,12 +559,12 @@
     }
   ],
   "see_also": [],
-  "signature": "we.add(x, y)",
+  "signature": "we.add(*args, **kwargs)",
   "slug": "add",
   "summary": "Add arguments element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.add",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

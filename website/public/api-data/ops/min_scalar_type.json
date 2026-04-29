@@ -267,6 +267,6 @@
   "slug": "min_scalar_type",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.min_scalar_type.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1171"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1257"
   }
 }

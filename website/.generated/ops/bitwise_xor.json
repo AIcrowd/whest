@@ -684,12 +684,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.bitwise_xor(x, y)",
+  "signature": "we.bitwise_xor(*args, **kwargs)",
   "slug": "bitwise_xor",
   "summary": "Compute the bit-wise XOR of two arrays element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.bitwise_xor",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

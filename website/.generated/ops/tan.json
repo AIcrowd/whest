@@ -508,12 +508,12 @@
     }
   ],
   "see_also": [],
-  "signature": "we.tan(x)",
+  "signature": "we.tan(*args, **kwargs)",
   "slug": "tan",
   "summary": "Compute tangent element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.tan",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

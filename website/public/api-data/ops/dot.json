@@ -811,6 +811,6 @@
   "slug": "dot",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.dot.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L781"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L904"
   }
 }

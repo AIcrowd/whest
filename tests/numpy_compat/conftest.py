@@ -91,6 +91,14 @@ _WHEST_MODULES_WITH_NPR = [
     "whest.random",
 ]
 
+# Internal modules that import numpy as `np` instead of `_np`. These sit on
+# hot paths used by constructor-side symmetry tagging and SymmetricTensor
+# creation, so they also need the frozen numpy copy during compat patching.
+_WHEST_MODULES_WITH_PLAIN_NP = [
+    "whest._symmetry_utils",
+    "whest._symmetric",
+]
+
 
 def _snapshot_numpy_module(source_np):
     """Create an unfrozen snapshot copy of numpy and key submodules."""
@@ -143,6 +151,13 @@ def _rebind_whest_np(frozen_np):
         if mod is not None and hasattr(mod, "_npr"):
             _REBOUND[mod_name + "._npr"] = mod._npr
             mod._npr = frozen_np.random
+    for mod_name in _WHEST_MODULES_WITH_PLAIN_NP:
+        mod = sys.modules.get(mod_name)
+        if mod is None:
+            mod = importlib.import_module(mod_name)
+        if mod is not None and hasattr(mod, "np"):
+            _REBOUND[mod_name + ".np"] = mod.np
+            mod.np = frozen_np
 
 
 def _restore_whest_np():
@@ -153,6 +168,11 @@ def _restore_whest_np():
             mod = sys.modules.get(mod_name)
             if mod is not None:
                 mod._npr = original
+        elif key.endswith(".np"):
+            mod_name = key[: -len(".np")]
+            mod = sys.modules.get(mod_name)
+            if mod is not None:
+                mod.np = original
         else:
             mod = sys.modules.get(key)
             if mod is not None:

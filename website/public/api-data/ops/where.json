@@ -543,6 +543,6 @@
   "slug": "where",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.where.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L357"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L424"
   }
 }

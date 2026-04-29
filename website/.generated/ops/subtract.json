@@ -556,12 +556,12 @@
     }
   ],
   "see_also": [],
-  "signature": "we.subtract(x, y)",
+  "signature": "we.subtract(*args, **kwargs)",
   "slug": "subtract",
   "summary": "Subtract arguments, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.subtract",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

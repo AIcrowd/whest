@@ -59,23 +59,17 @@ class WhestArray(_np.ndarray):
         WhestArrays — keeping operator overloads and FLOP tracking
         intact for chained expressions.
 
-        When the ufunc allocated a fresh output array (out_arr.owndata is
-        True), numpy's view-casting to WhestArray loses the OWNDATA flag.
-        We copy the result in that case so the WhestArray correctly reports
-        OWNDATA=True, matching the flag semantics of the underlying data.
+        Whest does not guarantee ndarray flag fidelity for subclass
+        results. In particular, view-casting a fresh ufunc result into a
+        subclass often reports ``OWNDATA=False`` because the subclass is a
+        view over the ufunc's base ndarray. We intentionally keep that
+        no-copy behaviour because ndarray-subclass operations are on a hot
+        path and avoiding extra copies is a higher priority than exact
+        flag parity with bare ndarrays.
         """
         if return_scalar:
             return out_arr[()]
-        result = super().__array_wrap__(out_arr, context, return_scalar)
-        # numpy's view-cast drops OWNDATA; restore it when the ufunc
-        # allocated a fresh buffer (out_arr owns its data).
-        if (
-            isinstance(result, WhestArray)
-            and out_arr.flags.owndata
-            and not result.flags.owndata
-        ):
-            result = result.copy(order="A")
-        return result
+        return super().__array_wrap__(out_arr, context, return_scalar)
 
     # ----- Binary arithmetic -----
 
@@ -296,16 +290,18 @@ def wrap_module_returns(module, skip_names=None, check_module=True):
 
 
 def _aswhest(x):
-    """Convert any array-like to WhestArray, preserving OWNDATA flag.
+    """Convert any array-like to WhestArray without forcing ownership copies.
 
     - WhestArray: returned as-is
     - numpy.ndarray subclass (e.g. SymmetricTensor): returned as-is to
       preserve subclass metadata
-    - plain numpy.ndarray that owns its data: copied so OWNDATA is
-      preserved on the resulting WhestArray
-    - plain numpy.ndarray view (OWNDATA=False): view-cast to WhestArray
-      (zero-copy); OWNDATA remains False, which is correct for views
-    - other: np.asarray first, then same logic as plain ndarray
+    - plain numpy.ndarray: view-cast to WhestArray (zero-copy)
+    - other: np.asarray first, then view-cast (also zero-copy with
+      respect to the ndarray returned by ``np.asarray``)
+
+    Whest deliberately does not promise ``OWNDATA`` parity for subclass
+    results. Avoiding extra copies is preferred because this conversion
+    sits on a hot path for many small-array operations.
     """
     if isinstance(x, WhestArray):
         return x
@@ -313,12 +309,19 @@ def _aswhest(x):
         # Other ndarray subclass (e.g. SymmetricTensor) — preserve as-is.
         return x
     if isinstance(x, _np.ndarray):
-        result = x.view(WhestArray)
-        if x.flags.owndata:
-            result = result.copy(order="A")
-        return result
+        return x.view(WhestArray)
     arr = _np.asarray(x)
-    result = arr.view(WhestArray)
-    if arr.flags.owndata:
-        result = result.copy(order="A")
-    return result
+    return arr.view(WhestArray)
+
+
+def _asplainwhest(x):
+    """Convert any array-like to a base WhestArray.
+
+    Unlike :func:`_aswhest`, this always drops ndarray subclasses so callers can
+    explicitly return a plain tracked array after metadata becomes invalid.
+    As with :func:`_aswhest`, this is intentionally no-copy: the result may
+    report ``OWNDATA=False`` even when the underlying base ndarray owns the
+    data.
+    """
+    arr = _np.asarray(x)
+    return arr.view(WhestArray)

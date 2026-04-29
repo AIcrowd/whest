@@ -214,6 +214,10 @@ XFAIL_PATTERNS: dict[str, str] = {
     "*TestRequire::test_ensure_array": (
         "SUBCLASS_RETURN: np.require with subok=False can't strip WhestArray"
     ),
+    "*TestRequire::test_non_array_input": (
+        "SUBCLASS_RETURN: np.require wraps a newly allocated owning ndarray "
+        "as WhestArray, so OWNDATA flag parity is intentionally lost"
+    ),
     "*TestArrayComparisons::test_compare_unstructured_voids*": (
         "SUBCLASS_RETURN: void comparison preserves WhestArray subclass"
     ),
@@ -236,17 +240,48 @@ XFAIL_PATTERNS: dict[str, str] = {
         "SUBCLASS_RETURN: *_like strides don't match prototype when prototype is WhestArray"
     ),
     # ------------------------------------------------------------------ #
+    # SUBCLASS_RETURN — strict flags checks after dropping OWNDATA parity #
+    # ------------------------------------------------------------------ #
+    # Whest no longer guarantees ndarray flag parity for subclass results.
+    # These clip tests use assert_array_strict_equal(...), which compares
+    # x.flags == y.flags in addition to values/dtype. Our patched clip path
+    # now returns view-backed WhestArray results with OWNDATA=False where
+    # NumPy returns owning ndarrays with OWNDATA=True.
+    "*TestClip::test_simple_*": (
+        "SUBCLASS_RETURN: clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_type_cast_*": (
+        "SUBCLASS_RETURN: clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_clip_with_out_*": (
+        "SUBCLASS_RETURN: clip out= path preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_clip_inplace_*": (
+        "SUBCLASS_RETURN: in-place clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_array_double": (
+        "SUBCLASS_RETURN: clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_clip_complex": (
+        "SUBCLASS_RETURN: clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_clip_non_contig": (
+        "SUBCLASS_RETURN: clip preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    "*TestClip::test_clip_func_takes_out": (
+        "SUBCLASS_RETURN: clip out= path preserves values but not strict ndarray "
+        "flags/OWNDATA parity"
+    ),
+    # ------------------------------------------------------------------ #
     # NUMPY_INTERNAL — fromiter/resize edge cases                         #
     # ------------------------------------------------------------------ #
-    "*TestCreationFuncs::test_zeros": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
-    "*TestCreationFuncs::test_ones": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
-    "*TestCreationFuncs::test_empty": (
-        "SUBCLASS_RETURN: _aswhest OWNDATA copy interacts with _symmetric_2d wrapping"
-    ),
     "*TestResize::test_reshape_from_zero": (
         "SUBCLASS_RETURN: np.resize returns WhestArray; the subsequent "
         "assert_array_equal invokes WhestArray.__eq__ -> we.equal -> "

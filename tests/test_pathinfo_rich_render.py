@@ -10,7 +10,7 @@ import pytest
 from rich.console import Console
 
 import whest as we
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup
 
 ANSI_RE = re.compile(r"\x1b\[[0-9;]*m")
 
@@ -45,7 +45,7 @@ def _style_at(text, needle: str, start: int = 0):
     raise AssertionError(f"no span covers {needle!r} in {text.plain!r}")
 
 
-def _symmetrized_tensor(shape, group: PermutationGroup):
+def _symmetrized_tensor(shape, group: SymmetryGroup):
     data = np.random.RandomState(0).randn(*shape)
     axes = group.axes if group.axes is not None else tuple(range(group.degree))
     total = np.zeros_like(data)
@@ -121,7 +121,7 @@ def test_symmetry_class_styles_are_consistent_on_real_cases():
     _, s2_outer = we.einsum_path("i,j->ij", v, v)
     _, c3_trace = we.einsum_path("ij,jk,ki->", a, a, a)
 
-    d4_group = PermutationGroup.dihedral(4, axes=(1, 2, 3, 4))
+    d4_group = SymmetryGroup.dihedral(axes=(1, 2, 3, 4))
     t = _symmetrized_tensor((4, 4, 4, 4, 4), d4_group)
     w = np.ones((4, 4))
     _, d4_case = we.einsum_path("aijkl,ab->ijklb", t, w)
@@ -208,7 +208,7 @@ def test_index_sizes_pill_preserves_label_styles():
 
 @pytest.fixture
 def d4_case_info():
-    d4_group = PermutationGroup.dihedral(4, axes=(1, 2, 3, 4))
+    d4_group = SymmetryGroup.dihedral(axes=(1, 2, 3, 4))
     tensor = _symmetrized_tensor((4, 4, 4, 4, 4), d4_group)
     _, info = we.einsum_path("aijkl,ab->ijklb", tensor, np.ones((4, 4)))
     return info

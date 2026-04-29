@@ -669,7 +669,7 @@
     "name": "float_power",
     "notes": "Element-wise exponentiation in float64.",
     "numpy_ref": "np.float_power",
-    "signature": "we.float_power(x, y)",
+    "signature": "we.float_power(*args, **kwargs)",
     "status": "supported",
     "summary": "First array elements raised to powers from second array, element-wise.",
     "weight": 16.0,
@@ -679,6 +679,6 @@
   "slug": "float_power",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

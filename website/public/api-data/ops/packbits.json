@@ -337,6 +337,6 @@
   "slug": "packbits",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.packbits.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1210"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1296"
   }
 }

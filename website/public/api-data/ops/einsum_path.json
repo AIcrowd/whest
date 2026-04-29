@@ -553,6 +553,6 @@
   "slug": "einsum_path",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/einsumfunc.py#L742",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L316"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L374"
   }
 }

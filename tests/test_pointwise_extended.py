@@ -244,7 +244,7 @@ def test_interp():
 def test_binary_op_symmetric_x_scalar():
     """x is SymmetricTensor, y is scalar — result should preserve symmetry."""
     data = numpy.array([[1.0, 2.0], [2.0, 3.0]])
-    x = as_symmetric(data, (0, 1))
+    x = as_symmetric(data, symmetry=(0, 1))
     y = numpy.array(2.0)
     with BudgetContext(flop_budget=10**6):
         result = ops.add(x, y)
@@ -254,7 +254,7 @@ def test_binary_op_symmetric_x_scalar():
 def test_binary_op_scalar_symmetric_y():
     """x is scalar, y is SymmetricTensor — result should preserve symmetry."""
     data = numpy.array([[1.0, 2.0], [2.0, 3.0]])
-    y = as_symmetric(data, (0, 1))
+    y = as_symmetric(data, symmetry=(0, 1))
     x = numpy.array(1.0)
     with BudgetContext(flop_budget=10**6):
         result = ops.add(x, y)
@@ -265,7 +265,7 @@ def test_binary_op_mismatched_symmetry_returns_plain():
     """x and y have different symmetric dims — result should be plain array."""
     d1 = numpy.array([[1.0, 2.0], [2.0, 3.0]])
     d2 = numpy.array([[4.0, 5.0], [5.0, 6.0]])
-    x = as_symmetric(d1, (0, 1))
+    x = as_symmetric(d1, symmetry=(0, 1))
     # y is a plain ndarray (no symmetry_info)
     with BudgetContext(flop_budget=10**6):
         result = ops.add(x, d2)
@@ -280,7 +280,7 @@ def test_binary_op_mismatched_symmetry_returns_plain():
 
 def test_unary_op_symmetric_result():
     data = numpy.array([[1.0, 2.0], [2.0, 3.0]])
-    x = as_symmetric(data, (0, 1))
+    x = as_symmetric(data, symmetry=(0, 1))
     with BudgetContext(flop_budget=10**6):
         result = ops.exp(x)
     assert isinstance(result, SymmetricTensor)

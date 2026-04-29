@@ -508,7 +508,7 @@
     "name": "arctanh",
     "notes": "Element-wise inverse hyperbolic tangent.",
     "numpy_ref": "np.arctanh",
-    "signature": "we.arctanh(x)",
+    "signature": "we.arctanh(*args, **kwargs)",
     "status": "supported",
     "summary": "Inverse hyperbolic tangent element-wise.",
     "weight": 16.0,
@@ -518,6 +518,6 @@
   "slug": "arctanh",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

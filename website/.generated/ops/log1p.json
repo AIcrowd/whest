@@ -688,12 +688,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.log1p(x)",
+  "signature": "we.log1p(*args, **kwargs)",
   "slug": "log1p",
   "summary": "Return the natural logarithm of one plus the input array, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.log1p",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
 }

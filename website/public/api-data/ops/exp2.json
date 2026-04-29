@@ -348,7 +348,7 @@
     "name": "exp2",
     "notes": "Element-wise 2^x.",
     "numpy_ref": "np.exp2",
-    "signature": "we.exp2(x)",
+    "signature": "we.exp2(*args, **kwargs)",
     "status": "supported",
     "summary": "Calculate `2**p` for all `p` in the input array.",
     "weight": 16.0,
@@ -358,6 +358,6 @@
   "slug": "exp2",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

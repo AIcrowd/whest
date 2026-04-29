@@ -2542,12 +2542,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.einsum(subscripts: 'str', *operands: '_np.ndarray', out=None, optimize: 'str | bool | list' = 'auto', symmetric_axes: 'list[tuple[int, ...]] | None' = None, symmetry: 'PermutationGroup | list[PermutationGroup] | None' = None, **kwargs) -> '_np.ndarray'",
+  "signature": "we.einsum(subscripts: 'str', *operands: '_np.ndarray', out=None, optimize: 'str | bool | list' = 'auto', symmetry=None, **kwargs) -> '_np.ndarray'",
   "slug": "einsum",
   "summary": "Evaluates the Einstein summation convention on the operands.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/einsumfunc.py#L1057",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.einsum",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L183"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_einsum.py#L268"
 }

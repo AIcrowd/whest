@@ -294,6 +294,6 @@
   "slug": "isneginf",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_ufunclike_impl.py#L140",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

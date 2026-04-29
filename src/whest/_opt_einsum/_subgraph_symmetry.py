@@ -22,8 +22,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from whest._perm_group import Permutation as Perm
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup
+from whest._perm_group import _Permutation as Perm
 
 from ._symmetry import SubsetSymmetry
 
@@ -244,7 +244,7 @@ def _collect_pi_permutations(
         return v_perms, w_perms
 
     row_gens = [Perm(list(g)) for g in row_perm_generators]
-    row_group = PermutationGroup(*row_gens)
+    row_group = SymmetryGroup(*row_gens)
 
     for sigma_perm in row_group.elements():
         sigma_row_perm = sigma_perm.array_form
@@ -321,13 +321,13 @@ class EinsumBipartite:
     # Declared symmetry groups per operand, preserved from construction
     # so the fingerprint fast path can use exact declared groups instead
     # of always promoting to S_k.
-    per_op_groups: tuple[tuple[PermutationGroup, ...] | None, ...]
+    per_op_groups: tuple[tuple[SymmetryGroup, ...] | None, ...]
 
 
 def _build_bipartite(
     operands: list[Any],
     subscript_parts: list[str],
-    per_op_groups: list[list[PermutationGroup] | None],
+    per_op_groups: list[list[SymmetryGroup] | None],
     output_chars: str,
 ) -> EinsumBipartite:
     """Construct the bipartite graph for an einsum expression.
@@ -341,7 +341,7 @@ def _build_bipartite(
         Per-operand subscript strings (e.g., ["ij", "jk"]).
     per_op_groups : list
         Declared symmetry for each operand, as a list of
-        PermutationGroup objects (with ``_labels`` set), or None.
+        SymmetryGroup objects (with ``_labels`` set), or None.
     output_chars : str
         Output subscript string.
     """
@@ -468,7 +468,7 @@ class SubgraphSymmetryOracle:
         self,
         operands: list[Any],
         subscript_parts: list[str],
-        per_op_groups: list[list[PermutationGroup] | None],
+        per_op_groups: list[list[SymmetryGroup] | None],
         output_chars: str,
     ) -> None:
         self._graph = _build_bipartite(
@@ -515,15 +515,15 @@ def _compute_subset_symmetry(
     w_sorted = tuple(sorted(sub.w_labels))
 
     # Build V-side group (only from σ-loop results, no fast path).
-    v_group: PermutationGroup | None = None
+    v_group: SymmetryGroup | None = None
     if v_perms:
-        v_group = PermutationGroup(*v_perms, axes=tuple(range(len(v_sorted))))
+        v_group = SymmetryGroup(*v_perms, axes=tuple(range(len(v_sorted))))
         v_group._labels = v_sorted
 
     # Build W-side group (only from σ-loop results, no fast path).
-    w_group: PermutationGroup | None = None
+    w_group: SymmetryGroup | None = None
     if w_perms:
-        w_group = PermutationGroup(*w_perms, axes=tuple(range(len(w_sorted))))
+        w_group = SymmetryGroup(*w_perms, axes=tuple(range(len(w_sorted))))
         w_group._labels = w_sorted
 
     return SubsetSymmetry(output=v_group, inner=w_group)

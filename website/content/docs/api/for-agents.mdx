@@ -188,9 +188,9 @@ configured limit for diagnostics.
 
 **6. Exploit symmetry for cost savings.**
 
-- Use `symmetric_axes` for symmetric outputs:
-  `we.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])`
-- Wrap known-symmetric matrices with `we.as_symmetric(data, symmetric_axes=(0, 1))`
+- Use `symmetry=` with explicit groups for symmetric outputs:
+  `we.einsum('ki,kj->ij', X, X, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))`
+- Wrap known-symmetric matrices with `we.as_symmetric(data, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))`
   for automatic savings in downstream ops
 
 ## Common mistakes agents make

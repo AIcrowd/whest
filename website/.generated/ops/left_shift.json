@@ -754,12 +754,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.left_shift(x, y)",
+  "signature": "we.left_shift(*args, **kwargs)",
   "slug": "left_shift",
   "summary": "Shift the bits of an integer to the left.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.left_shift",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

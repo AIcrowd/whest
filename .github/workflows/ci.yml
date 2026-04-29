@@ -18,15 +18,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Install ruff
-        run: pip install ruff
+      - name: Install ruff and gitlint
+        run: pip install ruff gitlint
 
       - name: Ruff lint check
         run: ruff check .
 
       - name: Ruff format check
         run: ruff format --check .
+
+      - name: Conventional commits (gitlint)
+        run: gitlint --commits origin/main..HEAD
 
   test:
     runs-on: ubuntu-latest
@@ -63,18 +68,39 @@ jobs:
       - name: Run tests with coverage
         run: uv run pytest --cov=whest --cov-fail-under=85
 
-      - name: NumPy compatibility tests
+      - name: "NumPy compat: core umath"
         if: contains(fromJson('["2.2","2.3","2.4"]'), matrix.numpy-version)
-        run: |
-          uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q
-          uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_ufunc -n auto -q
-          uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_numeric -n auto -q \
-            -k "not test_for_reference_leak"
-          uv run pytest tests/numpy_compat/ --pyargs numpy.linalg.tests.test_linalg -n auto -q
-          uv run pytest tests/numpy_compat/ --pyargs numpy.fft.tests.test_pocketfft -n auto -q
-          uv run pytest tests/numpy_compat/ --pyargs numpy.fft.tests.test_helper -n auto -q
-          uv run pytest tests/numpy_compat/ --pyargs numpy.polynomial.tests.test_polynomial -n auto -q
-          uv run pytest tests/numpy_compat/ --pyargs numpy.random.tests.test_random -n auto -q
+        run: uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_umath -n auto -q
+
+      - name: "NumPy compat: core ufunc"
+        if: contains(fromJson('["2.2","2.3","2.4"]'), matrix.numpy-version)
+        run: uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_ufunc -n auto -q
+
+      - name: "NumPy compat: core numeric"
+        if: contains(fromJson('["2.2","2.3","2.4"]'), matrix.numpy-version)
+        run: >
+          uv run pytest tests/numpy_compat/ --pyargs numpy._core.tests.test_numeric -n auto -q
+          -k "not test_for_reference_leak"
+
+      - name: "NumPy compat: linalg"
+        if: contains(fromJson('["2.2","2.3","2.4"]'), matrix.numpy-version)
+        run: uv run pytest tests/numpy_compat/ --pyargs numpy.linalg.tests.test_linalg -n auto -q
+
+      - name: "NumPy compat: fft pocketfft"
+        if: contains(fromJson('["2.2","2.3","2.4"]'), matrix.numpy-version)
+        run: uv run pytest tests/numpy_compat/ --pyargs numpy.fft.tests.test_pocketfft -n auto -q
+
+      - name: "NumPy compat: fft helper"
+        if: contains(fromJson('["2.2","2.3","2.4"]'), matrix.numpy-version)
+        run: uv run pytest tests/numpy_compat/ --pyargs numpy.fft.tests.test_helper -n auto -q
+
+      - name: "NumPy compat: polynomial"
+        if: contains(fromJson('["2.2","2.3","2.4"]'), matrix.numpy-version)
+        run: uv run pytest tests/numpy_compat/ --pyargs numpy.polynomial.tests.test_polynomial -n auto -q
+
+      - name: "NumPy compat: random"
+        if: contains(fromJson('["2.2","2.3","2.4"]'), matrix.numpy-version)
+        run: uv run pytest tests/numpy_compat/ --pyargs numpy.random.tests.test_random -n auto -q
 
   client-server-sync:
     runs-on: ubuntu-latest

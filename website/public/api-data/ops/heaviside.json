@@ -428,7 +428,7 @@
     "name": "heaviside",
     "notes": "Heaviside step function element-wise.",
     "numpy_ref": "np.heaviside",
-    "signature": "we.heaviside(x, y)",
+    "signature": "we.heaviside(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the Heaviside step function.",
     "weight": 1.0,
@@ -438,6 +438,6 @@
   "slug": "heaviside",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }

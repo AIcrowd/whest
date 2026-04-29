@@ -6036,7 +6036,7 @@
       "numpy_ref": "np.random.default_rng",
       "slug": "random-default_rng",
       "status": "supported",
-      "summary": "Construct a new Generator with the default BitGenerator (PCG64).",
+      "summary": "default_rng(seed=None) Construct a new Generator with the default BitGenerator (PCG64).",
       "weight": 0.0,
       "whest_ref": "we.random.default_rng"
     },
@@ -7676,7 +7676,7 @@
       "numpy_ref": "np.stats.cauchy.cdf",
       "slug": "stats-cauchy-cdf",
       "status": "supported",
-      "summary": "Cumulative distribution function of the given RV.",
+      "summary": "Cumulative distribution function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.cauchy.cdf"
     },
@@ -7696,7 +7696,7 @@
       "numpy_ref": "np.stats.cauchy.pdf",
       "slug": "stats-cauchy-pdf",
       "status": "supported",
-      "summary": "Probability density function at x of the given RV.",
+      "summary": "Probability density function at *x*.",
       "weight": 4.0,
       "whest_ref": "we.stats.cauchy.pdf"
     },
@@ -7716,7 +7716,7 @@
       "numpy_ref": "np.stats.cauchy.ppf",
       "slug": "stats-cauchy-ppf",
       "status": "supported",
-      "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+      "summary": "Percent-point function (inverse CDF) at *q*.",
       "weight": 16.0,
       "whest_ref": "we.stats.cauchy.ppf"
     },
@@ -7736,7 +7736,7 @@
       "numpy_ref": "np.stats.expon.cdf",
       "slug": "stats-expon-cdf",
       "status": "supported",
-      "summary": "Cumulative distribution function of the given RV.",
+      "summary": "Cumulative distribution function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.expon.cdf"
     },
@@ -7756,7 +7756,7 @@
       "numpy_ref": "np.stats.expon.pdf",
       "slug": "stats-expon-pdf",
       "status": "supported",
-      "summary": "Probability density function at x of the given RV.",
+      "summary": "Probability density function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.expon.pdf"
     },
@@ -7776,7 +7776,7 @@
       "numpy_ref": "np.stats.expon.ppf",
       "slug": "stats-expon-ppf",
       "status": "supported",
-      "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+      "summary": "Percent-point function (inverse CDF) at *q*.",
       "weight": 16.0,
       "whest_ref": "we.stats.expon.ppf"
     },
@@ -7796,7 +7796,7 @@
       "numpy_ref": "np.stats.laplace.cdf",
       "slug": "stats-laplace-cdf",
       "status": "supported",
-      "summary": "Cumulative distribution function of the given RV.",
+      "summary": "Cumulative distribution function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.laplace.cdf"
     },
@@ -7816,7 +7816,7 @@
       "numpy_ref": "np.stats.laplace.pdf",
       "slug": "stats-laplace-pdf",
       "status": "supported",
-      "summary": "Probability density function at x of the given RV.",
+      "summary": "Probability density function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.laplace.pdf"
     },
@@ -7836,7 +7836,7 @@
       "numpy_ref": "np.stats.laplace.ppf",
       "slug": "stats-laplace-ppf",
       "status": "supported",
-      "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+      "summary": "Percent-point function (inverse CDF) at *q*.",
       "weight": 16.0,
       "whest_ref": "we.stats.laplace.ppf"
     },
@@ -7856,7 +7856,7 @@
       "numpy_ref": "np.stats.logistic.cdf",
       "slug": "stats-logistic-cdf",
       "status": "supported",
-      "summary": "Cumulative distribution function of the given RV.",
+      "summary": "Cumulative distribution function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.logistic.cdf"
     },
@@ -7876,7 +7876,7 @@
       "numpy_ref": "np.stats.logistic.pdf",
       "slug": "stats-logistic-pdf",
       "status": "supported",
-      "summary": "Probability density function at x of the given RV.",
+      "summary": "Probability density function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.logistic.pdf"
     },
@@ -7896,7 +7896,7 @@
       "numpy_ref": "np.stats.logistic.ppf",
       "slug": "stats-logistic-ppf",
       "status": "supported",
-      "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+      "summary": "Percent-point function (inverse CDF) at *q*.",
       "weight": 16.0,
       "whest_ref": "we.stats.logistic.ppf"
     },
@@ -7916,7 +7916,7 @@
       "numpy_ref": "np.stats.lognorm.cdf",
       "slug": "stats-lognorm-cdf",
       "status": "supported",
-      "summary": "Cumulative distribution function of the given RV.",
+      "summary": "Cumulative distribution function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.lognorm.cdf"
     },
@@ -7936,7 +7936,7 @@
       "numpy_ref": "np.stats.lognorm.pdf",
       "slug": "stats-lognorm-pdf",
       "status": "supported",
-      "summary": "Probability density function at x of the given RV.",
+      "summary": "Probability density function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.lognorm.pdf"
     },
@@ -7956,7 +7956,7 @@
       "numpy_ref": "np.stats.lognorm.ppf",
       "slug": "stats-lognorm-ppf",
       "status": "supported",
-      "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+      "summary": "Percent-point function (inverse CDF) at *q*.",
       "weight": 16.0,
       "whest_ref": "we.stats.lognorm.ppf"
     },
@@ -7976,7 +7976,7 @@
       "numpy_ref": "np.stats.norm.cdf",
       "slug": "stats-norm-cdf",
       "status": "supported",
-      "summary": "Cumulative distribution function of the given RV.",
+      "summary": "Cumulative distribution function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.norm.cdf"
     },
@@ -7996,7 +7996,7 @@
       "numpy_ref": "np.stats.norm.pdf",
       "slug": "stats-norm-pdf",
       "status": "supported",
-      "summary": "Probability density function at x of the given RV.",
+      "summary": "Probability density function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.norm.pdf"
     },
@@ -8016,7 +8016,7 @@
       "numpy_ref": "np.stats.norm.ppf",
       "slug": "stats-norm-ppf",
       "status": "supported",
-      "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+      "summary": "Percent-point function (inverse CDF) at *q*.",
       "weight": 16.0,
       "whest_ref": "we.stats.norm.ppf"
     },
@@ -8036,7 +8036,7 @@
       "numpy_ref": "np.stats.truncnorm.cdf",
       "slug": "stats-truncnorm-cdf",
       "status": "supported",
-      "summary": "Cumulative distribution function of the given RV.",
+      "summary": "Cumulative distribution function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.truncnorm.cdf"
     },
@@ -8056,7 +8056,7 @@
       "numpy_ref": "np.stats.truncnorm.pdf",
       "slug": "stats-truncnorm-pdf",
       "status": "supported",
-      "summary": "Probability density function at x of the given RV.",
+      "summary": "Probability density function at *x*.",
       "weight": 16.0,
       "whest_ref": "we.stats.truncnorm.pdf"
     },
@@ -8076,7 +8076,7 @@
       "numpy_ref": "np.stats.truncnorm.ppf",
       "slug": "stats-truncnorm-ppf",
       "status": "supported",
-      "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+      "summary": "Percent-point function (inverse CDF) at *q*.",
       "weight": 16.0,
       "whest_ref": "we.stats.truncnorm.ppf"
     },
@@ -8096,7 +8096,7 @@
       "numpy_ref": "np.stats.uniform.cdf",
       "slug": "stats-uniform-cdf",
       "status": "supported",
-      "summary": "Cumulative distribution function of the given RV.",
+      "summary": "Cumulative distribution function at *x*.",
       "weight": 1.0,
       "whest_ref": "we.stats.uniform.cdf"
     },
@@ -8116,7 +8116,7 @@
       "numpy_ref": "np.stats.uniform.pdf",
       "slug": "stats-uniform-pdf",
       "status": "supported",
-      "summary": "Probability density function at x of the given RV.",
+      "summary": "Probability density function at *x*.",
       "weight": 1.0,
       "whest_ref": "we.stats.uniform.pdf"
     },
@@ -8136,7 +8136,7 @@
       "numpy_ref": "np.stats.uniform.ppf",
       "slug": "stats-uniform-ppf",
       "status": "supported",
-      "summary": "Percent point function (inverse of `cdf`) at q of the given RV.",
+      "summary": "Percent-point function (inverse CDF) at *q*.",
       "weight": 1.0,
       "whest_ref": "we.stats.uniform.ppf"
     },

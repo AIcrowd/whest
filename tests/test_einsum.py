@@ -3,6 +3,7 @@
 import numpy
 import pytest
 
+from whest import SymmetryGroup
 from whest._budget import BudgetContext
 from whest._einsum import einsum
 from whest.errors import BudgetExhaustedError, SymmetryError
@@ -28,8 +29,8 @@ def test_trace():
     A = numpy.eye(10)
     with BudgetContext(flop_budget=10**6) as budget:
         result = einsum("ii->", A)
-        assert result == 10.0
         assert budget.flops_used == 10  # 10 * op_factor(1), FMA=1
+    assert float(result) == 10.0
 
 
 def test_outer_product():
@@ -49,21 +50,32 @@ def test_batch_matmul():
         assert budget.flops_used == 120  # 2*3*4*5 * op_factor(1), FMA=1
 
 
-def test_symmetric_axes_valid():
+def test_symmetry_valid():
     x = numpy.ones((3, 10))
     y = numpy.ones((3, 10))
     A = numpy.eye(3)
     with BudgetContext(flop_budget=10**8) as budget:
-        result = einsum("ai,bj,ab->ij", x, y, A, symmetric_axes=[(0, 1)])
+        result = einsum(
+            "ai,bj,ab->ij",
+            x,
+            y,
+            A,
+            symmetry=SymmetryGroup.symmetric(axes=(0, 1)),
+        )
         assert budget.flops_used > 0  # cost comes from opt_einsum now
 
 
-def test_symmetric_axes_invalid():
+def test_symmetry_invalid():
     x = numpy.array([[1.0, 0.0], [0.0, 1.0]])
     y = numpy.array([[1.0, 2.0], [3.0, 4.0]])
     with BudgetContext(flop_budget=10**8):
         with pytest.raises(SymmetryError):
-            einsum("ij,jk->ik", x, y, symmetric_axes=[(0, 1)])
+            einsum(
+                "ij,jk->ik",
+                x,
+                y,
+                symmetry=SymmetryGroup.symmetric(axes=(0, 1)),
+            )
 
 
 def test_outside_context():

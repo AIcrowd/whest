@@ -334,6 +334,6 @@
   "slug": "hsplit",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L886",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L297"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L361"
   }
 }

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from typing import Any
 
 import numpy as np
 
@@ -19,14 +20,14 @@ class ArrayStore:
     """
 
     def __init__(self) -> None:
-        self._arrays: dict[str, np.ndarray] = {}
+        self._arrays: dict[str, Any] = {}
         self._counter: int = 0
 
     # ------------------------------------------------------------------
     # Core operations
     # ------------------------------------------------------------------
 
-    def put(self, arr: np.ndarray) -> str:
+    def put(self, arr: Any) -> str:
         """Store *arr* and return its handle ID.
 
         Raises
@@ -41,7 +42,7 @@ class ArrayStore:
         self._counter += 1
         return handle
 
-    def get(self, handle: str) -> np.ndarray:
+    def get(self, handle: str) -> Any:
         """Return the array for *handle*.
 
         Raises
@@ -67,11 +68,15 @@ class ArrayStore:
             If *handle* is not in the store.
         """
         arr = self.get(handle)  # propagates KeyError with helpful message
-        return {
+        meta = {
             "id": handle,
             "shape": list(arr.shape),
             "dtype": str(arr.dtype),
         }
+        symmetry = getattr(arr, "symmetry", None)
+        if symmetry is not None:
+            meta["symmetry"] = symmetry.to_payload()
+        return meta
 
     def free(self, handles: list[str]) -> None:
         """Remove arrays by handle; silently ignore unknown handles."""

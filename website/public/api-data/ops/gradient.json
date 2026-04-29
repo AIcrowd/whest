@@ -924,6 +924,6 @@
   "slug": "gradient",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L976",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1023"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1146"
   }
 }

@@ -8,20 +8,80 @@ outside a :class:`~whest._budget.BudgetContext`.
 from __future__ import annotations
 
 import inspect as _inspect
+from functools import lru_cache
 
 import numpy as _np
 
 from whest._docstrings import attach_docstring
+from whest._perm_group import SymmetryGroup
 from whest._symmetric import SymmetricTensor
+from whest._symmetry_utils import (
+    broadcast_group,
+    remap_group_axes,
+    remap_group_for_expand_dims,
+    validate_symmetry_group,
+    wrap_with_symmetry,
+    wrap_with_trusted_symmetry,
+)
 from whest._validation import require_budget
-from whest.errors import UnsupportedFunctionError
+from whest.errors import SymmetryError, UnsupportedFunctionError
 
 
-def _symmetric_2d(result):
-    """Wrap a 2D square result as SymmetricTensor with axes (0,1)."""
-    if result.ndim == 2 and result.shape[0] == result.shape[1]:
-        return SymmetricTensor(result, symmetric_axes=[(0, 1)])
-    return result
+@lru_cache(maxsize=1024)
+def _infer_constant_shape_symmetry(shape):
+    if len(shape) < 2:
+        return None
+
+    blocks_by_extent: dict[int, list[int]] = {}
+    for axis, extent in enumerate(shape):
+        blocks_by_extent.setdefault(int(extent), []).append(axis)
+
+    blocks = tuple(tuple(axes) for axes in blocks_by_extent.values() if len(axes) >= 2)
+    if not blocks:
+        return None
+    if len(blocks) == 1:
+        return SymmetryGroup.symmetric(axes=blocks[0])
+    return SymmetryGroup.young(blocks=blocks)
+
+
+def _wrap_constant_fill(result):
+    symmetry = _infer_constant_shape_symmetry(result.shape)
+    if symmetry is None:
+        return result
+    return wrap_with_trusted_symmetry(result, symmetry)
+
+
+def _compatible_symmetry_for_shape(symmetry, shape):
+    """Return ``symmetry`` only when ``shape`` still supports it exactly."""
+    if symmetry is None:
+        return None
+    try:
+        validate_symmetry_group(symmetry, ndim=len(shape), shape=shape)
+    except (SymmetryError, ValueError):
+        return None
+    return symmetry
+
+
+def _normalize_axis_order(axes, ndim):
+    return tuple(axis % ndim for axis in axes)
+
+
+def _infer_structural_constructor_symmetry(*, kind, N=None, M=None, k=0, v_ndim=None):
+    if kind == "eye":
+        if k == 0 and (M is None or M == N):
+            return SymmetryGroup.symmetric(axes=(0, 1))
+        return None
+    if kind == "identity":
+        return SymmetryGroup.symmetric(axes=(0, 1))
+    if kind == "diag":
+        if v_ndim == 1 and k == 0:
+            return SymmetryGroup.symmetric(axes=(0, 1))
+        return None
+    if kind == "diagflat":
+        if k == 0:
+            return SymmetryGroup.symmetric(axes=(0, 1))
+        return None
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -47,7 +107,7 @@ attach_docstring(array, _np.array, "counted_custom", "numel(input) FLOPs")
 
 def zeros(shape, dtype=float, **kwargs):
     """Return array of zeros. Wraps ``numpy.zeros``. Cost: 0 FLOPs."""
-    return _symmetric_2d(_np.zeros(shape, dtype=dtype, **kwargs))
+    return _wrap_constant_fill(_np.zeros(shape, dtype=dtype, **kwargs))
 
 
 attach_docstring(zeros, _np.zeros, "free", "0 FLOPs")
@@ -55,7 +115,7 @@ attach_docstring(zeros, _np.zeros, "free", "0 FLOPs")
 
 def ones(shape, dtype=float, **kwargs):
     """Return array of ones. Wraps ``numpy.ones``. Cost: 0 FLOPs."""
-    return _symmetric_2d(_np.ones(shape, dtype=dtype, **kwargs))
+    return _wrap_constant_fill(_np.ones(shape, dtype=dtype, **kwargs))
 
 
 attach_docstring(ones, _np.ones, "free", "0 FLOPs")
@@ -67,7 +127,7 @@ def full(shape, fill_value, dtype=None, **kwargs):
     result = _np.full(shape, fill_value, dtype=dtype, **kwargs)
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct("full", flop_cost=cost, subscripts=None, shapes=()):
-        result = _symmetric_2d(result)
+        result = _wrap_constant_fill(result)
     return result
 
 
@@ -77,8 +137,9 @@ attach_docstring(full, _np.full, "free", "0 FLOPs")
 def eye(N, M=None, k=0, dtype=float, **kwargs):
     """Return identity matrix. Wraps ``numpy.eye``. Cost: 0 FLOPs."""
     result = _np.eye(N, M=M, k=k, dtype=dtype, **kwargs)
-    if k == 0 and (M is None or M == N):
-        return SymmetricTensor(result, symmetric_axes=[(0, 1)])
+    symmetry = _infer_structural_constructor_symmetry(kind="eye", N=N, M=M, k=k)
+    if symmetry is not None:
+        return wrap_with_trusted_symmetry(result, symmetry)
     return result
 
 
@@ -102,8 +163,9 @@ def diag(v, k=0):
         cost = min(m, n)
     with budget.deduct("diag", flop_cost=cost, subscripts=None, shapes=(v.shape,)):
         result = _np.diag(v, k=k)
-    if v.ndim == 1 and k == 0:
-        return SymmetricTensor(result, symmetric_axes=[(0, 1)])
+    symmetry = _infer_structural_constructor_symmetry(kind="diag", k=k, v_ndim=v.ndim)
+    if symmetry is not None:
+        return wrap_with_trusted_symmetry(result, symmetry)
     return result
 
 
@@ -140,9 +202,16 @@ attach_docstring(linspace, _np.linspace, "counted_custom", "numel(output) FLOPs"
 def zeros_like(a, dtype=None, **kwargs):
     """Return array of zeros with same shape. Wraps ``numpy.zeros_like``. Cost: 0 FLOPs."""
     result = _np.zeros_like(a, dtype=dtype, **kwargs)
-    if isinstance(a, SymmetricTensor) and a._symmetric_axes:
-        return SymmetricTensor(result, symmetric_axes=list(a._symmetric_axes))
-    return result
+    symmetry = None
+    if isinstance(a, SymmetricTensor):
+        symmetry = _compatible_symmetry_for_shape(a.symmetry, result.shape)
+    if symmetry is None:
+        symmetry = _infer_constant_shape_symmetry(result.shape)
+    if symmetry is None:
+        if isinstance(a, SymmetricTensor):
+            return _np.array(result, copy=False, subok=False)
+        return result
+    return wrap_with_trusted_symmetry(result, symmetry)
 
 
 attach_docstring(zeros_like, _np.zeros_like, "free", "0 FLOPs")
@@ -151,9 +220,16 @@ attach_docstring(zeros_like, _np.zeros_like, "free", "0 FLOPs")
 def ones_like(a, dtype=None, **kwargs):
     """Return array of ones with same shape. Wraps ``numpy.ones_like``. Cost: 0 FLOPs."""
     result = _np.ones_like(a, dtype=dtype, **kwargs)
-    if isinstance(a, SymmetricTensor) and a._symmetric_axes:
-        return SymmetricTensor(result, symmetric_axes=list(a._symmetric_axes))
-    return result
+    symmetry = None
+    if isinstance(a, SymmetricTensor):
+        symmetry = _compatible_symmetry_for_shape(a.symmetry, result.shape)
+    if symmetry is None:
+        symmetry = _infer_constant_shape_symmetry(result.shape)
+    if symmetry is None:
+        if isinstance(a, SymmetricTensor):
+            return _np.array(result, copy=False, subok=False)
+        return result
+    return wrap_with_trusted_symmetry(result, symmetry)
 
 
 attach_docstring(ones_like, _np.ones_like, "free", "0 FLOPs")
@@ -166,9 +242,16 @@ def full_like(a, fill_value, dtype=None, **kwargs):
     cost = max(a_arr.size, 1)
     with budget.deduct("full_like", flop_cost=cost, subscripts=None, shapes=()):
         result = _np.full_like(a, fill_value, dtype=dtype, **kwargs)
-    if isinstance(a, SymmetricTensor) and a._symmetric_axes:
-        return SymmetricTensor(result, symmetric_axes=list(a._symmetric_axes))
-    return result
+    symmetry = None
+    if isinstance(a, SymmetricTensor):
+        symmetry = _compatible_symmetry_for_shape(a.symmetry, result.shape)
+    if symmetry is None:
+        symmetry = _infer_constant_shape_symmetry(result.shape)
+    if symmetry is None:
+        if isinstance(a, SymmetricTensor):
+            return _np.array(result, copy=False, subok=False)
+        return result
+    return wrap_with_trusted_symmetry(result, symmetry)
 
 
 attach_docstring(full_like, _np.full_like, "free", "0 FLOPs")
@@ -193,7 +276,10 @@ attach_docstring(empty_like, _np.empty_like, "free", "0 FLOPs")
 def identity(n, dtype=float):
     """Return identity matrix. Wraps ``numpy.identity``. Cost: 0 FLOPs."""
     result = _np.identity(n, dtype=dtype)
-    return SymmetricTensor(result, symmetric_axes=[(0, 1)])
+    symmetry = _infer_structural_constructor_symmetry(kind="identity")
+    if symmetry is not None:
+        return wrap_with_trusted_symmetry(result, symmetry)
+    return result
 
 
 attach_docstring(identity, _np.identity, "free", "0 FLOPs")
@@ -205,7 +291,7 @@ attach_docstring(identity, _np.identity, "free", "0 FLOPs")
 
 def reshape(a, /, *args, **kwargs):
     """Reshape an array. Wraps ``numpy.reshape``. Cost: 0 FLOPs."""
-    return _np.reshape(a, *args, **kwargs)
+    return _np.reshape(_np.asarray(a), *args, **kwargs)
 
 
 attach_docstring(reshape, _np.reshape, "free", "0 FLOPs")
@@ -213,7 +299,15 @@ attach_docstring(reshape, _np.reshape, "free", "0 FLOPs")
 
 def transpose(a, axes=None):
     """Permute array dimensions. Wraps ``numpy.transpose``. Cost: 0 FLOPs."""
-    return _np.transpose(a, axes=axes)
+    if not isinstance(a, SymmetricTensor):
+        return _np.transpose(a, axes=axes)
+    result = _np.transpose(_np.asarray(a), axes=axes)
+    if axes is None:
+        order = tuple(reversed(range(a.ndim)))
+    else:
+        order = _normalize_axis_order(tuple(axes), a.ndim)
+    mapping = {old: new for new, old in enumerate(order)}
+    return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))
 
 
 attach_docstring(transpose, _np.transpose, "free", "0 FLOPs")
@@ -221,7 +315,15 @@ attach_docstring(transpose, _np.transpose, "free", "0 FLOPs")
 
 def swapaxes(a, axis1, axis2):
     """Swap two axes. Wraps ``numpy.swapaxes``. Cost: 0 FLOPs."""
-    return _np.swapaxes(a, axis1, axis2)
+    if not isinstance(a, SymmetricTensor):
+        return _np.swapaxes(a, axis1, axis2)
+    result = _np.swapaxes(_np.asarray(a), axis1, axis2)
+    order = list(range(a.ndim))
+    axis1 %= a.ndim
+    axis2 %= a.ndim
+    order[axis1], order[axis2] = order[axis2], order[axis1]
+    mapping = {old: new for new, old in enumerate(order)}
+    return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))
 
 
 attach_docstring(swapaxes, _np.swapaxes, "free", "0 FLOPs")
@@ -229,7 +331,24 @@ attach_docstring(swapaxes, _np.swapaxes, "free", "0 FLOPs")
 
 def moveaxis(a, source, destination):
     """Move axes to new positions. Wraps ``numpy.moveaxis``. Cost: 0 FLOPs."""
-    return _np.moveaxis(a, source, destination)
+    if not isinstance(a, SymmetricTensor):
+        return _np.moveaxis(a, source, destination)
+    result = _np.moveaxis(_np.asarray(a), source, destination)
+    if _np.ndim(source) == 0:
+        source_axes = (int(source),)
+    else:
+        source_axes = tuple(source)
+    if _np.ndim(destination) == 0:
+        destination_axes = (int(destination),)
+    else:
+        destination_axes = tuple(destination)
+    source_axes = _normalize_axis_order(source_axes, a.ndim)
+    destination_axes = _normalize_axis_order(destination_axes, a.ndim)
+    order = [axis for axis in range(a.ndim) if axis not in source_axes]
+    for dest, src in sorted(zip(destination_axes, source_axes, strict=True)):
+        order.insert(dest, src)
+    mapping = {old: new for new, old in enumerate(order)}
+    return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))
 
 
 attach_docstring(moveaxis, _np.moveaxis, "free", "0 FLOPs")
@@ -327,7 +446,14 @@ attach_docstring(squeeze, _np.squeeze, "free", "0 FLOPs")
 
 def expand_dims(a, axis):
     """Insert a new axis. Wraps ``numpy.expand_dims``. Cost: 0 FLOPs."""
-    return _np.expand_dims(a, axis=axis)
+    a_arr = _np.asarray(a)
+    result = _np.expand_dims(_np.asarray(a), axis=axis)
+    symmetry = remap_group_for_expand_dims(
+        a.symmetry if isinstance(a, SymmetricTensor) else None,
+        ndim=a_arr.ndim,
+        axis=axis,
+    )
+    return wrap_with_symmetry(result, symmetry) if symmetry is not None else result
 
 
 attach_docstring(expand_dims, _np.expand_dims, "free", "0 FLOPs")
@@ -339,7 +465,7 @@ def ravel(a, **kwargs):
     a_arr = _np.asarray(a)
     cost = max(a_arr.size, 1)
     with budget.deduct("ravel", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)):
-        result = _np.ravel(a, **kwargs)
+        result = _np.ravel(a_arr, **kwargs)
     return result
 
 
@@ -348,7 +474,10 @@ attach_docstring(ravel, _np.ravel, "free", "0 FLOPs")
 
 def copy(a, **kwargs):
     """Return copy of array. Wraps ``numpy.copy``. Cost: 0 FLOPs."""
-    return _np.copy(a, **kwargs)
+    result = _np.copy(_np.asarray(a), **kwargs)
+    if isinstance(a, SymmetricTensor):
+        return wrap_with_symmetry(result, a.symmetry)
+    return result
 
 
 attach_docstring(copy, _np.copy, "free", "0 FLOPs")
@@ -480,11 +609,18 @@ attach_docstring(diagonal, _np.diagonal, "free", "0 FLOPs")
 
 def broadcast_to(array, shape):
     """Broadcast array to shape. Cost: numel(output)."""
+    output_shape = (shape,) if isinstance(shape, int) else tuple(shape)
+    input_array = _np.asarray(array)
     budget = require_budget()
-    cost = max(int(_np.prod(shape)), 1)
+    cost = max(int(_np.prod(output_shape)), 1)
     with budget.deduct("broadcast_to", flop_cost=cost, subscripts=None, shapes=()):
-        result = _np.broadcast_to(array, shape)
-    return result
+        result = _np.broadcast_to(input_array, output_shape)
+    symmetry = broadcast_group(
+        array.symmetry if isinstance(array, SymmetricTensor) else None,
+        input_shape=input_array.shape,
+        output_shape=output_shape,
+    )
+    return wrap_with_symmetry(result, symmetry)
 
 
 attach_docstring(broadcast_to, _np.broadcast_to, "free", "0 FLOPs")
@@ -717,12 +853,24 @@ attach_docstring(bmat, _np.bmat, "free", "0 FLOPs")
 
 def broadcast_arrays(*args, **kwargs):
     """Broadcast any number of arrays. Cost: numel(output)."""
+    arrays = tuple(_np.asarray(arg) for arg in args)
     budget = require_budget()
-    result = _np.broadcast_arrays(*args, **kwargs)
+    result = _np.broadcast_arrays(*arrays, **kwargs)
     cost = sum(a.size for a in result)
     with budget.deduct("broadcast_arrays", flop_cost=cost, subscripts=None, shapes=()):
         pass  # numpy call already executed above
-    return result
+    if not result:
+        return result
+    output_shape = result[0].shape
+    wrapped = []
+    for original, array, broadcasted in zip(args, arrays, result, strict=True):
+        symmetry = broadcast_group(
+            original.symmetry if isinstance(original, SymmetricTensor) else None,
+            input_shape=array.shape,
+            output_shape=output_shape,
+        )
+        wrapped.append(wrap_with_symmetry(broadcasted, symmetry))
+    return tuple(wrapped)
 
 
 attach_docstring(broadcast_arrays, _np.broadcast_arrays, "free", "0 FLOPs")
@@ -864,8 +1012,11 @@ def diagflat(v, k=0):
         "diagflat", flop_cost=cost, subscripts=None, shapes=(v_arr.shape,)
     ):
         pass  # numpy call already executed above
-    if k == 0:
-        return SymmetricTensor(result, symmetric_axes=[(0, 1)])
+    symmetry = _infer_structural_constructor_symmetry(
+        kind="diagflat", k=k, v_ndim=v_arr.ndim
+    )
+    if symmetry is not None:
+        return wrap_with_trusted_symmetry(result, symmetry)
     return result
 
 

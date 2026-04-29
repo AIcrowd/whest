@@ -352,6 +352,6 @@
   "slug": "result_type",
   "source": {
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.result_type.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1334"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1420"
   }
 }

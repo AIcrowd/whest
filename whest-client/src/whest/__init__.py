@@ -34,11 +34,7 @@ from whest._budget import (  # noqa: E402
 )
 from whest._display import budget_live, budget_summary  # noqa: E402
 from whest._math_compat import e, inf, nan, pi  # noqa: E402
-from whest._perm_group import (  # noqa: E402
-    Cycle,
-    Permutation,
-    PermutationGroup,
-)
+from whest._perm_group import SymmetryGroup  # noqa: E402
 
 # ---------------------------------------------------------------------------
 # Remote types
@@ -50,7 +46,6 @@ from whest._remote_array import (  # noqa: E402
     _encode_arg,
     _result_from_response,
 )
-from whest._symmetric_info import SymmetryInfo  # noqa: E402
 from whest.errors import (  # noqa: E402
     BudgetExhaustedError,
     NoBudgetContextError,

@@ -919,12 +919,12 @@
       "unresolved": false
     }
   ],
-  "signature": "we.remainder(x, y)",
+  "signature": "we.remainder(*args, **kwargs)",
   "slug": "remainder",
   "summary": "Returns the element-wise remainder of division.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 16.0,
   "whest_examples_html": "",
   "whest_ref": "we.remainder",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

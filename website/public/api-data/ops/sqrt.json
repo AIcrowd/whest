@@ -503,7 +503,7 @@
     "name": "sqrt",
     "notes": "Element-wise square root.",
     "numpy_ref": "np.sqrt",
-    "signature": "we.sqrt(x)",
+    "signature": "we.sqrt(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the non-negative square-root of an array, element-wise.",
     "weight": 1.0,
@@ -513,6 +513,6 @@
   "slug": "sqrt",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L38"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
   }
 }

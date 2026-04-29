@@ -10,6 +10,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "gitlint>=0.19",
     "pytest>=7.0",
     "pytest-cov",
     "psutil>=5.9",

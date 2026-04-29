@@ -11,19 +11,19 @@ from whest._opt_einsum._subgraph_symmetry import (
     _build_bipartite,
     _induce_subgraph,
 )
-from whest._perm_group import PermutationGroup
+from whest._perm_group import SymmetryGroup
 
 
-def _sym_group(*labels: str) -> PermutationGroup:
-    """Create a full symmetric PermutationGroup on the given labels."""
+def _sym_group(*labels: str) -> SymmetryGroup:
+    """Create a full symmetric SymmetryGroup on the given labels."""
     k = len(labels)
-    pg = PermutationGroup.symmetric(k, axes=tuple(range(k)))
+    pg = SymmetryGroup.symmetric(axes=tuple(range(k)))
     pg._labels = tuple(labels)
     return pg
 
 
-def _has_labels(pg: PermutationGroup | None, *expected_labels: str) -> bool:
-    """Check that a PermutationGroup covers the given labels (sorted)."""
+def _has_labels(pg: SymmetryGroup | None, *expected_labels: str) -> bool:
+    """Check that a SymmetryGroup covers the given labels (sorted)."""
     if pg is None:
         return False
     if pg._labels is None:
@@ -31,7 +31,7 @@ def _has_labels(pg: PermutationGroup | None, *expected_labels: str) -> bool:
     return set(pg._labels) == set(expected_labels)
 
 
-def _is_s_k(pg: PermutationGroup | None, k: int, *labels: str) -> bool:
+def _is_s_k(pg: SymmetryGroup | None, k: int, *labels: str) -> bool:
     """Check that pg is S_k on the given labels."""
     if pg is None:
         return False
@@ -438,9 +438,9 @@ class TestOldSymIsSubsetOfNewSym:
             output_chars=output_chars,
         )
         result = oracle.sym(frozenset(range(len(operands))))
-        new_pg = result.output  # PermutationGroup or None
+        new_pg = result.output  # SymmetryGroup or None
 
-        # For each old group, assert that the new PermutationGroup covers
+        # For each old group, assert that the new SymmetryGroup covers
         # those labels.
         if old:
             assert new_pg is not None, (
@@ -464,16 +464,16 @@ class TestSubsetSymmetryDataclass:
         assert ss.inner is None
 
     def test_output_only(self):
-        pg = PermutationGroup.symmetric(2)
+        pg = SymmetryGroup.symmetric(axes=(0, 1))
         pg._labels = ("a", "b")
         ss = SubsetSymmetry(output=pg, inner=None)
         assert ss.output is pg
         assert ss.inner is None
 
     def test_both_populated(self):
-        v = PermutationGroup.symmetric(2)
+        v = SymmetryGroup.symmetric(axes=(0, 1))
         v._labels = ("a", "b")
-        w = PermutationGroup.symmetric(2)
+        w = SymmetryGroup.symmetric(axes=(0, 1))
         w._labels = ("i", "j")
         ss = SubsetSymmetry(output=v, inner=w)
         assert ss.output is v
@@ -484,7 +484,7 @@ class TestSubsetSymmetryDataclass:
         import pytest
 
         with pytest.raises(AttributeError):
-            ss.output = PermutationGroup.symmetric(1)  # type: ignore[misc]
+            ss.output = SymmetryGroup.symmetric(axes=(0,))  # type: ignore[misc]
 
 
 from whest._opt_einsum._subgraph_symmetry import (
@@ -697,10 +697,10 @@ class TestExactGroupDetection:
 
 class TestBurnsideFLOPCount:
     def test_c3_unique_via_perm_group(self):
-        from whest._perm_group import PermutationGroup as PG
+        from whest._perm_group import SymmetryGroup
 
         n = 10
-        c3 = PG.cyclic(3)
+        c3 = SymmetryGroup.cyclic(axes=(0, 1, 2))
         result = unique_elements(
             frozenset({"i", "j", "k"}),
             {"i": n, "j": n, "k": n},
@@ -709,10 +709,10 @@ class TestBurnsideFLOPCount:
         assert result == (n**3 + 2 * n) // 3
 
     def test_s3_unique_via_perm_group_gives_correct_value(self):
-        from whest._perm_group import PermutationGroup as PG
+        from whest._perm_group import SymmetryGroup
 
         n = 10
-        s3 = PG.symmetric(3)
+        s3 = SymmetryGroup.symmetric(axes=(0, 1, 2))
         result_pg = unique_elements(
             frozenset({"i", "j", "k"}),
             {"i": n, "j": n, "k": n},
@@ -752,9 +752,9 @@ class TestDeclaredGroupNotPromoted:
     def test_declared_c3_not_promoted_to_s3(self):
         """C_3 on T in 'ijk,ai->ajk': single-operand subset {0} should
         report C_3 on {i,j,k}, not S_3."""
-        from whest._perm_group import PermutationGroup
+        from whest._perm_group import SymmetryGroup
 
-        c3 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        c3 = SymmetryGroup.cyclic(axes=(0, 1, 2))
         c3._labels = ("i", "j", "k")
 
         T = np.ones((5, 5, 5))
@@ -777,9 +777,9 @@ class TestDeclaredGroupNotPromoted:
 
     def test_declared_s3_still_works(self):
         """S_3 declared on T should still be detected as S_3."""
-        from whest._perm_group import PermutationGroup
+        from whest._perm_group import SymmetryGroup
 
-        s3 = PermutationGroup.symmetric(3, axes=(0, 1, 2))
+        s3 = SymmetryGroup.symmetric(axes=(0, 1, 2))
         s3._labels = ("i", "j", "k")
 
         T = np.ones((5, 5, 5))
@@ -822,10 +822,10 @@ class TestC3AxisMergingBug:
         causing the fingerprint fast path to falsely detect S2{i,k}.
         The result is numerically NOT symmetric: Result[i,k] != Result[k,i].
         """
-        from whest._perm_group import PermutationGroup
+        from whest._perm_group import SymmetryGroup
 
         n = 4
-        c3 = PermutationGroup.cyclic(3, axes=(0, 1, 2))
+        c3 = SymmetryGroup.cyclic(axes=(0, 1, 2))
         c3._labels = ("i", "j", "k")
 
         T = np.ones((n, n, n))
@@ -847,10 +847,10 @@ class TestC3AxisMergingBug:
     def test_c3_declared_uses_sigma_loop(self):
         """Declared C3 on T in 'aijk,ab->ijkb' should be found via σ-loop
         generators, not the (now-removed) fingerprint fast path."""
-        from whest._perm_group import PermutationGroup
+        from whest._perm_group import SymmetryGroup
 
         n = 4
-        c3 = PermutationGroup.cyclic(3, axes=(1, 2, 3))
+        c3 = SymmetryGroup.cyclic(axes=(1, 2, 3))
         c3._labels = ("a", "i", "j", "k")
 
         T = np.ones((n, n, n, n))

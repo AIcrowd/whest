@@ -499,12 +499,12 @@
     }
   ],
   "see_also": [],
-  "signature": "we.nextafter(x, y)",
+  "signature": "we.nextafter(*args, **kwargs)",
   "slug": "nextafter",
   "summary": "Return the next floating-point value after x1 towards x2, element-wise.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
   "weight": 1.0,
   "whest_examples_html": "",
   "whest_ref": "we.nextafter",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
 }

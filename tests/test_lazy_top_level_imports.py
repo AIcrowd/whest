@@ -78,3 +78,23 @@ def test_numpy_compat_rebind_imports_lazy_random_before_patching_numpy():
     finally:
         numpy_compat_conftest._unpatch_numpy()
         numpy_compat_conftest._restore_whest_np()
+
+
+def test_numpy_compat_rebinds_plain_np_aliases_in_internal_hot_paths():
+    _fresh_whest()
+
+    import whest._symmetric as symmetric_mod
+    import whest._symmetry_utils as symmetry_utils_mod
+
+    original_symmetry_utils_np = symmetry_utils_mod.np
+    original_symmetric_np = symmetric_mod.np
+
+    frozen = numpy_compat_conftest._freeze_numpy()
+    numpy_compat_conftest._rebind_whest_np(frozen)
+    try:
+        assert symmetry_utils_mod.np is frozen
+        assert symmetric_mod.np is frozen
+    finally:
+        numpy_compat_conftest._restore_whest_np()
+        assert symmetry_utils_mod.np is original_symmetry_utils_np
+        assert symmetric_mod.np is original_symmetric_np

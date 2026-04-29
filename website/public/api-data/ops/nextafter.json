@@ -411,7 +411,7 @@
     "name": "nextafter",
     "notes": "Return next float after x1 toward x2 element-wise.",
     "numpy_ref": "np.nextafter",
-    "signature": "we.nextafter(x, y)",
+    "signature": "we.nextafter(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the next floating-point value after x1 towards x2, element-wise.",
     "weight": 1.0,
@@ -421,6 +421,6 @@
   "slug": "nextafter",
   "source": {
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L82"
+    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
   }
 }
