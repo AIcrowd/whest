@@ -6,16 +6,20 @@ import {
   explorerThemeTint,
   getActiveExplorerThemeId,
 } from '../lib/explorerTheme.js';
-import { notationColor, notationLatex } from '../lib/notationSystem.js';
+import { notationColor } from '../lib/notationSystem.js';
 import {
   generateTypedSetPartitions,
   partitionOrbitReps,
   typedLabelingCount,
   inducedBlockActionSize,
   inducedPrefixMaps,
+  countMapOrbitsUnderH,
   partitionKey,
   numBlocks,
 } from '../engine/partition/typedPartitions.js';
+import {
+  restrictStabilizerToPositions,
+} from '../engine/outputOrbit.js';
 
 const TITLE = 'When projection branches, count equality patterns';
 const DECK = 'Partition counting is the exact compressed counter behind the general branching case.';
@@ -49,8 +53,10 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
   const components = componentData.components ?? [];
   const activeComponent = components[selectedComponentIdx] ?? null;
   const sizes = activeComponent?.sizes ?? [];
-  const elements = activeComponent?.fullGroupElements ?? [];
-  const visiblePositions = activeComponent?.visiblePositions ?? [];
+  const elements = activeComponent?.elements ?? [];
+  const visiblePositions = activeComponent
+    ? activeComponent.va.map((label) => activeComponent.labels.indexOf(label))
+    : [];
 
   const allPartitions = sizes.length > 0 ? generateTypedSetPartitions(sizes) : [];
   const orbitReps = elements.length > 0 ? partitionOrbitReps(allPartitions, elements) : allPartitions;
@@ -63,18 +69,21 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
     blockActionSize: inducedBlockActionSize(partition, elements),
   }));
 
+  const hElements = elements.length > 0 ? restrictStabilizerToPositions(elements, visiblePositions) : [];
   const activeChip = chips.find((chip) => chip.key === selectedPatternKey) ?? chips[0] ?? null;
   const inducedMaps = activeChip
     ? inducedPrefixMaps(activeChip.partition, elements, visiblePositions)
     : new Set();
-  const reachCount = inducedMaps?.size ?? 0;
+  const reachCount = activeChip
+    ? countMapOrbitsUnderH(inducedMaps, hElements)
+    : 0;
   const contribution = activeChip
     ? Math.round((activeChip.labelings / Math.max(activeChip.blockActionSize, 1)) * reachCount)
     : 0;
 
   const cumulativeRows = chips.map((chip) => {
     const maps = inducedPrefixMaps(chip.partition, elements, visiblePositions);
-    const reach = maps?.size ?? 0;
+    const reach = countMapOrbitsUnderH(maps, hElements);
     const labelOver = chip.blockActionSize > 0 ? chip.labelings / chip.blockActionSize : 0;
     return {
       ...chip,
@@ -87,7 +96,9 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
   const componentRegimeId = activeComponent?.accumulation?.regimeId ?? null;
   const partitionBudgetExceeded =
     componentRegimeId === 'bruteForceOrbit' &&
-    /partition budget exceeded|partition.*over budget/i.test(activeComponent?.accumulation?.reason ?? '');
+    (activeComponent?.accumulation?.trace ?? []).some(
+      (step) => step.regimeId === 'partitionCount' && step.decision === 'refused'
+    );
 
   let caption;
   if (componentRegimeId === 'partitionCount') {
