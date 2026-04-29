@@ -109,7 +109,7 @@ def unique_elements_for_shape(
     return _unique_elements_for_shape_cached(group, tuple(shape))
 
 
-@functools.lru_cache(maxsize=None)
+@functools.cache
 def _unique_elements_for_shape_cached(
     group: SymmetryGroup,
     shape: tuple[int, ...],
