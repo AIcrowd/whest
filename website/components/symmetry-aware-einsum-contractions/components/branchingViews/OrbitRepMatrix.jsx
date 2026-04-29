@@ -325,7 +325,7 @@ function OrbitRepMatrix({
 
   // Derive role-coded labels from componentInfo for the legend chip row.
   // Tuple values themselves don't appear on the axes anymore — they live in
-  // the always-visible WorkedExamplePanel on the right of BranchingDemo.
+  // the OrbitDetailCard (rendered on click-pin or in the modal).
   const allLabels = orbitRows.length > 0 ? Object.keys(orbitRows[0].repTuple ?? {}) : [];
   const vLabelSet = new Set(componentInfo?.vLabels ?? []);
   const dimensionN = componentInfo?.dimensionN ?? null;
@@ -368,7 +368,7 @@ function OrbitRepMatrix({
       </div>
 
       {/* Canvas frame with permanent axis labels — tuple values appear in
-          the WorkedExamplePanel on the right of BranchingDemo. Fixed-size
+          the OrbitDetailCard (on click-pin or in the modal). Fixed-size
           square canvas with rectangular cells when numRows ≠ numCols; no
           internal scroll. */}
       <div

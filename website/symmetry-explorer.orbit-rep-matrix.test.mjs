@@ -214,7 +214,7 @@ test('OrbitRepMatrix uses a faint cell-level hover marker (no row/col wash, no s
   // Row/column wash and sticky strip are gone.
   assert.doesNotMatch(src, /rowColWash/);
   assert.doesNotMatch(src, /orbit-rep-matrix-sticky-header/);
-  // Y/X tuple bands are gone — tuples live in the WorkedExamplePanel now.
+  // Y/X tuple bands are gone — tuples now live in the OrbitDetailCard (rendered on click-pin or in the modal).
   assert.doesNotMatch(src, /orbit-rep-matrix-y-band/);
   assert.doesNotMatch(src, /orbit-rep-matrix-x-band/);
 });

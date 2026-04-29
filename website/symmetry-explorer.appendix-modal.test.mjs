@@ -392,7 +392,7 @@ test('appendix hover surfaces and shared typography registers remain intact', ()
   assert.match(source, /pointer-events-none fixed z-\[9999\]/);
   // APPENDIX_PROSE_CLASS and APPENDIX_MONO_LEDGER_CLASS were hoisted into
   // the shared workedExample module in Task 1 of the orbit-rep-matrix
-  // redesign so a future WorkedExamplePanel can reuse them. Verify the
+  // redesign so OrbitDetailCard and similar surfaces can reuse them. Verify the
   // canonical declarations there, and confirm ExpressionLevelModal pulls
   // them in via the import. The remaining APPENDIX_* class constants
   // (justified prose, article lane, app text, etc.) still live alongside

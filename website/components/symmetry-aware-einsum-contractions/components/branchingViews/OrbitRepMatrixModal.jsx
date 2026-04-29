@@ -18,7 +18,7 @@ export default function OrbitRepMatrixModal({
   componentInfo,
   selectedOrbitIdx = -1,
   onSelectOrbit = () => {},
-  onHover = null,           // ignored — modal uses tooltip for hover, but keep prop for compat
+  onHover = null,           // forwarded to inner matrix for compat with the legacy hover-graph callback
 }) {
   useEffect(() => {
     if (!open) return;
