@@ -1368,7 +1368,8 @@ attach_docstring(matrix_transpose, _np.matrix_transpose, "free", "0 FLOPs")
 
 def may_share_memory(*args, **kwargs):
     """Determine if two arrays might share memory. Wraps ``numpy.may_share_memory``. Cost: 0 FLOPs."""
-    return _np.may_share_memory(*args, **kwargs)
+    stripped_args = tuple(_to_base_ndarray(a) for a in args)
+    return _np.may_share_memory(*stripped_args, **kwargs)
 
 
 attach_docstring(may_share_memory, _np.may_share_memory, "free", "0 FLOPs")

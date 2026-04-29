@@ -208,7 +208,7 @@ def _counted_unary_multi(np_func, op_name: str):
         symmetry = _symmetry_of(x)
         cost = pointwise_cost(x.shape, symmetry=symmetry)
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-            result = np_func(x, **kwargs)
+            result = np_func(_to_base_ndarray(x), **kwargs)
         return _wrap_multi_result(result, symmetry=symmetry)
 
     wrapper.__name__ = op_name
@@ -317,7 +317,7 @@ def _counted_binary_multi(np_func, op_name: str):
         with budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         ):
-            result = np_func(x, y, **kwargs)
+            result = np_func(_to_base_ndarray(x), _to_base_ndarray(y), **kwargs)
         return _wrap_multi_result(result, symmetry=out_symmetry)
 
     wrapper.__name__ = op_name
@@ -650,7 +650,7 @@ def sort_complex(a):
     with budget.deduct(
         "sort_complex", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.sort_complex(a)
+        result = _np.sort_complex(_to_base_ndarray(a))
     return result
 
 
@@ -1314,7 +1314,12 @@ def ediff1d(ary, **kwargs):
         subscripts=None,
         shapes=(ary.shape,),
     ):
-        result = _np.ediff1d(ary, **kwargs)
+        # ``to_begin`` / ``to_end`` kwargs may be WhestArrays — strip via tree.
+        stripped_kwargs = {
+            k: _to_base_ndarray(v) if isinstance(v, _np.ndarray) else v
+            for k, v in kwargs.items()
+        }
+        result = _np.ediff1d(_to_base_ndarray(ary), **stripped_kwargs)
     return result
 
 
@@ -1390,7 +1395,11 @@ def corrcoef(x, y=None, **kwargs):
         x = _np.asarray(x)
     cost = _cov_cost(x, y)
     with budget.deduct("corrcoef", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-        result = _np.corrcoef(x, y=y, **kwargs)
+        result = _np.corrcoef(
+            _to_base_ndarray(x),
+            y=_to_base_ndarray(y) if y is not None else None,
+            **kwargs,
+        )
     return result
 
 
@@ -1405,7 +1414,11 @@ def cov(m, y=None, **kwargs):
         m = _np.asarray(m)
     cost = _cov_cost(m, y)
     with budget.deduct("cov", flop_cost=cost, subscripts=None, shapes=(m.shape,)):
-        result = _np.cov(m, y=y, **kwargs)
+        result = _np.cov(
+            _to_base_ndarray(m),
+            y=_to_base_ndarray(y) if y is not None else None,
+            **kwargs,
+        )
     return result
 
 
@@ -1421,7 +1434,12 @@ def trapezoid(y, x=None, dx=1.0, axis=-1):
     with budget.deduct(
         "trapezoid", flop_cost=y.size, subscripts=None, shapes=(y.shape,)
     ):
-        result = _np.trapezoid(y, x=x, dx=dx, axis=axis)
+        result = _np.trapezoid(
+            _to_base_ndarray(y),
+            x=_to_base_ndarray(x) if x is not None else None,
+            dx=dx,
+            axis=axis,
+        )
     return result
 
 
@@ -1438,7 +1456,12 @@ if hasattr(_np, "trapz"):
         with budget.deduct(
             "trapz", flop_cost=y.size, subscripts=None, shapes=(y.shape,)
         ):
-            result = _np.trapz(y, x=x, dx=dx, axis=axis)
+            result = _np.trapz(
+                _to_base_ndarray(y),
+                x=_to_base_ndarray(x) if x is not None else None,
+                dx=dx,
+                axis=axis,
+            )
         return result
 
     attach_docstring(trapz, _np.trapz, "counted_custom", "numel(input) FLOPs")
@@ -1463,7 +1486,12 @@ def interp(x, xp, fp, **kwargs):
     with budget.deduct(
         "interp", flop_cost=cost, subscripts=None, shapes=(x.shape, xp_arr.shape)
     ):
-        result = _np.interp(x, xp, fp, **kwargs)
+        result = _np.interp(
+            _to_base_ndarray(x),
+            _to_base_ndarray(xp),
+            _to_base_ndarray(fp),
+            **kwargs,
+        )
     return result
 
 
