@@ -17,21 +17,25 @@ test('symmetry explorer acts use prose-first intros and output framing', () => {
     'utf8',
   );
   assert.match(appSource, /import SectionIntroProse from '\.\/components\/SectionIntroProse\.jsx';/);
-  assert.equal(countMatches(appSource, /EXPLORER_ACTS\[[0-4]\]\.introParagraphs/g), 4);
-  assert.match(appSource, /title={EXPLORER_ACTS\[4\]\.heading}/);
-  assert.match(appSource, /description={<InlineMathText>{EXPLORER_ACTS\[4\]\.question}<\/InlineMathText>}/);
+  // After the Partition Counting section was inserted, intros now appear in
+  // 5 acts: §1 setup, §2 structure, §3 proof, §4 decompose, §5 partition counting.
+  // §6 cost-savings still has no intro (it goes straight into TotalCostView).
+  assert.equal(countMatches(appSource, /EXPLORER_ACTS\[[0-5]\]\.introParagraphs/g), 5);
+  assert.match(appSource, /title={EXPLORER_ACTS\[5\]\.heading}/);
+  assert.match(appSource, /description={<InlineMathText>{EXPLORER_ACTS\[5\]\.question}<\/InlineMathText>}/);
   assert.match(introSource, /md:grid-cols-2/);
   assert.match(introSource, /textAlign:\s*'justify'/);
-  assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.supportingSentence/);
-  assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.introParagraphs/);
+  assert.doesNotMatch(appSource, /EXPLORER_ACTS\[5\]\.supportingSentence/);
+  assert.doesNotMatch(appSource, /EXPLORER_ACTS\[5\]\.introParagraphs/);
   assert.equal(countMatches(appSource, /label="Interpretation"/g), 0);
   assert.equal(countMatches(appSource, /label="Approach"/g), 0);
-  assert.equal(countMatches(appSource, /label="What this produces"/g), 4);
+  // 5 intro-bearing acts × "What this produces" callout each.
+  assert.equal(countMatches(appSource, /label="What this produces"/g), 5);
   assert.match(appSource, /Scope of the calculation/);
   assert.equal(countMatches(appSource, /tone="preamble"/g), 2);
   assert.equal(countMatches(appSource, /label="Candidate, not proof"/g), 0);
   assert.equal(countMatches(appSource, /label="What the model accepts"/g), 0);
-  assert.doesNotMatch(appSource, /EXPLORER_ACTS\[4\]\.why/);
+  assert.doesNotMatch(appSource, /EXPLORER_ACTS\[5\]\.why/);
   assert.doesNotMatch(appSource, /onOpenModalSection=\{/);
 });
 

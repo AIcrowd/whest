@@ -11,7 +11,7 @@ import {
   pickTopVisibleAct,
 } from './components/symmetry-aware-einsum-contractions/lib/activeAct.js';
 
-test('EXPLORER_ACTS defines the five narrative acts in the updated story order', () => {
+test('EXPLORER_ACTS defines the six narrative acts in the updated story order', () => {
   assert.deepEqual(
     EXPLORER_ACTS.map(({ id, navTitle, heading }) => ({ id, navTitle, heading })),
     [
@@ -19,27 +19,29 @@ test('EXPLORER_ACTS defines the five narrative acts in the updated story order',
       { id: 'structure', navTitle: 'See Structure', heading: 'Encode the Structural Candidates' },
       { id: 'proof', navTitle: 'Prove Symmetry', heading: 'Certify the Pointwise Symmetry Group' },
       { id: 'decompose', navTitle: 'Decompose Action', heading: 'Count Product Orbits and Output Projections' },
+      { id: 'partition-counting', navTitle: 'Partition Counting', heading: 'Partition Counting' },
       { id: 'cost-savings', navTitle: 'Cost Savings', heading: 'Assemble the Direct Cost Model' },
     ],
   );
 });
 
-test('Acts 1 through 4 ask algorithmic questions rather than product-tour questions', () => {
+test('Acts 1 through 5 ask algorithmic questions rather than product-tour questions', () => {
   assert.match(EXPLORER_ACTS[0].question, /what exact indexed computation is being counted/i);
   assert.match(EXPLORER_ACTS[1].question, /which relabelings are even possible/i);
   assert.match(EXPLORER_ACTS[2].question, /preserve the summand itself/i);
   assert.match(EXPLORER_ACTS[3].question, /pointwise group become multiplication and accumulation cost/i);
-  assert.match(EXPLORER_ACTS[4].question, /final direct-event cost of the symmetry-aware computation/i);
+  assert.match(EXPLORER_ACTS[4].question, /typed equality patterns/i);
+  assert.match(EXPLORER_ACTS[5].question, /final direct-event cost of the symmetry-aware computation/i);
 });
 
-test('Acts 1 through 4 expose introParagraphs and no longer expose paired-callout copy fields', () => {
-  for (const act of EXPLORER_ACTS.slice(0, 4)) {
+test('Acts 1 through 5 expose introParagraphs and no longer expose paired-callout copy fields', () => {
+  for (const act of EXPLORER_ACTS.slice(0, 5)) {
     assert.ok(Array.isArray(act.introParagraphs));
     assert.ok(act.introParagraphs.length >= 2);
     assert.ok(act.introParagraphs.every((paragraph) => typeof paragraph === 'string' && paragraph.length > 40));
   }
 
-  for (const act of EXPLORER_ACTS.slice(0, 4)) {
+  for (const act of EXPLORER_ACTS.slice(0, 5)) {
     assert.equal(typeof act.produces, 'string');
     assert.ok(act.produces.length > 10);
   }
@@ -51,7 +53,8 @@ test('EXPLORER_ACTS no longer carries legacy paired-callout compatibility fields
       assert.equal(legacyField in act, false, `did not expect ${legacyField} on ${act.id}`);
     }
   }
-  assert.equal('supportingSentence' in EXPLORER_ACTS[4], false);
+  // §6 cost-savings is the only act without intro/produces fields.
+  assert.equal('supportingSentence' in EXPLORER_ACTS[5], false);
 });
 
 test('approved mathematically safer prose appears in the narrative data', () => {

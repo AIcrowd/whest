@@ -25,6 +25,7 @@ import DiminoView from './components/DiminoView.jsx';
 import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import { LabelInteractionGraph } from './components/ComponentView.jsx';
+import TypedPartitionDemo from './components/TypedPartitionDemo.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import {
@@ -631,6 +632,27 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
                     title={EXPLORER_ACTS[4].heading}
                     description={<InlineMathText>{EXPLORER_ACTS[4].question}</InlineMathText>}
+                    className="border-gray-200 bg-white"
+                    contentClassName="pt-5"
+                  >
+                    <SectionIntroProse paragraphs={EXPLORER_ACTS[4].introParagraphs} />
+                    <div className="mt-6">
+                      <TypedPartitionDemo
+                        componentData={componentData}
+                        costModel={cost}
+                      />
+                    </div>
+                    <div className="mt-4">
+                      <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[4].produces}</NarrativeCallout>
+                    </div>
+                  </ExplorerSectionCard>
+                </section>
+
+                <section id={EXPLORER_ACTS[5].id} className="mb-12 scroll-mt-24">
+                  <ExplorerSectionCard
+                    eyebrow={<SectionEyebrow n={6} anchorId={EXPLORER_ACTS[5].id} />}
+                    title={EXPLORER_ACTS[5].heading}
+                    description={<InlineMathText>{EXPLORER_ACTS[5].question}</InlineMathText>}
                     className="border-gray-200 bg-white"
                     contentClassName="pt-5"
                   >

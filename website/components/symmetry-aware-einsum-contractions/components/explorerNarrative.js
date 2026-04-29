@@ -3,6 +3,7 @@ import {
   mainSection2,
   mainSection3,
   mainSection4,
+  mainPartitionCounting,
   mainSection5,
 } from '../content/main/index.js';
 
@@ -43,6 +44,14 @@ export const EXPLORER_ACTS = [
     question: mainSection4.deck,
     introParagraphs: getParagraphTexts(mainSection4.slots.intro),
     produces: getFirstParagraphText(mainSection4.slots.produces),
+  },
+  {
+    id: 'partition-counting',
+    navTitle: 'Partition Counting',
+    heading: mainPartitionCounting.title,
+    question: mainPartitionCounting.deck,
+    introParagraphs: getParagraphTexts(mainPartitionCounting.slots.intro),
+    produces: getFirstParagraphText(mainPartitionCounting.slots.produces),
   },
   {
     id: 'cost-savings',
