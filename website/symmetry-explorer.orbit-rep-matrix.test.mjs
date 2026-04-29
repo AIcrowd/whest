@@ -143,15 +143,28 @@ test('OrbitRepMatrix renders into <canvas> using layout helpers', () => {
   assert.match(src, /cellAtPoint/);
 });
 
-test('OrbitRepMatrix uses a ref for hover (no React render per cell), state for pin', () => {
+test('OrbitRepMatrix uses a ref for hover (no React render per cell), controlled pin prop', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
   // Hover lives in a ref so mousemove paints the canvas without re-rendering React.
   assert.match(src, /hoverRef\s*=\s*useRef/);
   assert.match(src, /hoverRef\.current/);
-  // Pin still drives a React state slot (it propagates to the panel).
-  assert.match(src, /useState[^;]*pin/);
+  // Pin is now a controlled prop (not internal state) — parent owns it.
+  assert.doesNotMatch(src, /useState[^;]*pin/);
   // Click handler.
   assert.match(src, /onClick=/);
+});
+
+test('OrbitRepMatrix uses tooltipRef + onPin contract (no debounced parent bridge)', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // tooltipRef receives the imperative API from MatrixHoverTooltip.
+  assert.match(src, /tooltipRef/);
+  // The mousemove path calls .update on the tooltip ref directly.
+  assert.match(src, /tooltipRef\.current\?\.update|tooltipRef\.current\.update/);
+  // Click pin returns cell + click coords.
+  assert.match(src, /onPin\(\{[^}]*row[^}]*col[^}]*clickX[^}]*clickY[^}]*\}/s);
+  // No more onHoverDeferred / debounced timer.
+  assert.doesNotMatch(src, /onHoverDeferred/);
+  assert.doesNotMatch(src, /deferredHoverTimerRef/);
 });
 
 test('OrbitRepMatrix passes numRows + numCols to cellAtPoint for bounds rejection', () => {

@@ -10,6 +10,17 @@ import {
   FIXED_CANVAS_HEIGHT,
 } from './orbitRepMatrixLayout.js';
 
+// Build tooltip content lines for the floating MatrixHoverTooltip.
+// Called inside the rAF callback — no React state involved.
+function tooltipContent(row, rep, coeff, vLabels) {
+  const orbit = `O ${row?.repTuple ? `(${Object.values(row.repTuple).join(', ')})` : ''}`;
+  const repLine = `Q ${rep?.tuple ? `(${Object.values(rep.tuple).join(', ')})` : ''}`;
+  const result = coeff !== null
+    ? `→ R[${vLabels.map((l) => rep.tuple[l]).join(', ')}]  ·  +1 to α`
+    : '↛  cell empty';
+  return [orbit, repLine, result];
+}
+
 // Token palette anchored to design-system colors_and_type.css.
 // `cellGrid` is near-invisible by design — the grid is a structural hint, not chrome.
 // `cellFilled` is now bright enough to read at small cell sizes; `cellPinned` is the
@@ -26,22 +37,22 @@ const COLOR = {
 
 function OrbitRepMatrix({
   orbitRows = [],
-  // selectedOrbitIdx, expressionInfo, componentInfo are read by Tasks 4-9
-  // (axis labels, label legend chip, worked-example panel) — stubbed here
-  // so the prop API stays stable across the multi-task redesign.
   selectedOrbitIdx = -1,
   onSelectOrbit = () => {},
   onHover = null,
   expressionInfo = null,
   componentInfo = null,
-  /** ({hover, pin}) => void — surfaces both slots so BranchingDemo's
-   *  WorkedExamplePanel can render the right-side worked example. */
-  onStateChange = null,
-  /** (cell|null) => void — debounced bridge for the WorkedExamplePanel's
-   *  hover-driven updates. Fires ~80 ms after the mouse settles on a cell
-   *  (or immediately on mouse-leave). Quick mouse sweeps don't trigger
-   *  panel re-renders; pausing on a cell does. */
-  onHoverDeferred = null,
+  /** Ref to a MatrixHoverTooltip imperative API (update + hide). The matrix
+   *  calls `tooltipRef.current.update(...)` from its rAF callback on every
+   *  hover; no React state for tooltip content. */
+  tooltipRef = null,
+  /** ({row, col, clickX, clickY}|null) => void — fires on cell click. Parent
+   *  uses this to set pin state + position the OrbitDetailCard. Pass null to
+   *  clear (when the same cell is clicked twice). */
+  onPin = null,
+  /** ({row, col, clickX, clickY}|null) — current pin (controlled). Matrix uses
+   *  this to draw the strong-coral fill on the pinned cell. */
+  pin = null,
   /** () => void — opens the matrix in a viewport-sized modal. The trigger
    *  button is rendered as a prominent overlay in the canvas's top-right. */
   onExpand = null,
@@ -54,13 +65,6 @@ function OrbitRepMatrix({
   // schedules a manual rAF paint that reads from the ref. No React re-render
   // per hover — that's what makes hover feel instant on big matrices.
   const hoverRef = useRef(null);
-  // Separate timer that surfaces the latest hovered cell to the parent
-  // (`onHoverDeferred`) ~80 ms after the mouse settles. Quick mouse sweeps
-  // collapse to a single panel update; pausing on a cell updates the panel
-  // ~80 ms later. Without this, the panel would render at 60 Hz, which costs
-  // ~200 ms per render in dev (StrictMode double-render).
-  const deferredHoverTimerRef = useRef(null);
-  const [pin, setPin] = useState(/* pin: { row, col } | null */ null);
   const [containerWidth, setContainerWidth] = useState(SQUARE_FRAME);
 
   const reps = useMemo(() => derivePreReps(orbitRows), [orbitRows]);
@@ -89,17 +93,10 @@ function OrbitRepMatrix({
     return () => ro.disconnect();
   }, [orbitRows.length === 0]);
 
-  // Surface PIN changes to the parent (panel reads pin only — hover is
-  // canvas-only, lives in a ref, and never triggers a React render).
-  useEffect(() => {
-    if (onStateChange) onStateChange({ hover: null, pin });
-  }, [pin, onStateChange]);
-
-  // Cancel any in-flight rAF + deferred-hover timer on unmount.
+  // Cancel any in-flight rAF on unmount.
   useEffect(() => {
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-      if (deferredHoverTimerRef.current !== null) clearTimeout(deferredHoverTimerRef.current);
     };
   }, []);
 
@@ -260,6 +257,8 @@ function OrbitRepMatrix({
   function handleMouseMove(e) {
     // Capture pointer immediately (SyntheticEvent gets reused).
     const pt = pointerCoords(e);
+    const clientX = e.clientX;
+    const clientY = e.clientY;
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     rafRef.current = requestAnimationFrame(() => {
       rafRef.current = null;
@@ -271,14 +270,21 @@ function OrbitRepMatrix({
       hoverRef.current = cell;
       paintOverlay();
 
-      // Surface to the panel after a short settle window. Sweeps collapse
-      // (each new mousemove resets the timer); pauses fire the update.
-      if (onHoverDeferred) {
-        if (deferredHoverTimerRef.current !== null) clearTimeout(deferredHoverTimerRef.current);
-        deferredHoverTimerRef.current = setTimeout(() => {
-          deferredHoverTimerRef.current = null;
-          onHoverDeferred(hoverRef.current);
-        }, 80);
+      // Drive the floating tooltip imperatively — no React state, no re-render.
+      if (tooltipRef?.current) {
+        if (cell) {
+          const row = orbitRows[cell.row];
+          const rep = reps[cell.col];
+          const coeff = cells[cell.row]?.[cell.col] ?? null;
+          const vLabels = componentInfo?.vLabels ?? Object.keys(rep?.tuple ?? {});
+          tooltipRef.current.update({
+            contentLines: tooltipContent(row, rep, coeff, vLabels),
+            x: clientX + 12,
+            y: clientY + 12,
+          });
+        } else {
+          tooltipRef.current.hide();
+        }
       }
     });
   }
@@ -287,24 +293,21 @@ function OrbitRepMatrix({
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
-    if (deferredHoverTimerRef.current !== null) {
-      clearTimeout(deferredHoverTimerRef.current);
-      deferredHoverTimerRef.current = null;
-    }
     if (hoverRef.current !== null) {
       hoverRef.current = null;
       paintOverlay();
     }
-    if (onHoverDeferred) onHoverDeferred(null);
+    if (tooltipRef?.current) tooltipRef.current.hide();
   }
   function handleClick(e) {
-    const cell = pointToCell(pointerCoords(e));
+    const pt = pointerCoords(e);
+    const cell = pointToCell(pt);
     if (!cell) return;
     if (pin && pin.row === cell.row && pin.col === cell.col) {
-      setPin(null);
+      if (onPin) onPin(null); // toggle off when clicking the pinned cell again
     } else {
-      setPin(cell);
-      onSelectOrbit(cell.row);
+      if (onPin) onPin({ row: cell.row, col: cell.col, clickX: e.clientX, clickY: e.clientY });
+      if (onSelectOrbit) onSelectOrbit(cell.row);
     }
   }
 
@@ -472,8 +475,8 @@ function OrbitRepMatrix({
   );
 }
 
-// Memoize: BranchingDemo re-renders on every hover/pin update, but
-// OrbitRepMatrix's props don't depend on hover/pin (those live in the matrix's
-// own internal state). React.memo with default shallow-prop equality skips
-// the re-render when the parent re-renders for an unrelated reason.
+// Memoize: BranchingDemo re-renders when pin/tooltip state changes, but
+// OrbitRepMatrix's props are stable objects (orbitRows, componentInfo, etc.).
+// React.memo with default shallow-prop equality skips the re-render when the
+// parent re-renders for an unrelated reason.
 export default memo(OrbitRepMatrix);
