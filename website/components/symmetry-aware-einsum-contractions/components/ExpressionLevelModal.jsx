@@ -209,6 +209,10 @@ const APPENDIX_KICKER_CLASS = 'text-[10px] font-semibold uppercase tracking-[0.1
 const APPENDIX_FOOTNOTE_CLASS = 'text-[11px] italic text-muted-foreground';
 const APPENDIX_ARTICLE_LANE_CLASS = 'max-w-[78ch] space-y-4 [&_p]:text-justify';
 const APPENDIX_SUPPORT_SHELF_CLASS = 'rounded-xl border border-gray-200 bg-white p-4 md:p-5';
+// Section 6 (partition-counting theorem) opts into the same colored-variable
+// theme that main-page Section 5 uses so the equation and its glossary share
+// the noir math palette (α, L, G colored consistently with TotalCostView).
+const APPENDIX_SECTION_SIX_THEME_OVERRIDE = 'editorial-noir-math';
 const APPENDIX_SHORT_V_LATEX = () => notationColoredLatex('v_free', 'V');
 const APPENDIX_SHORT_W_LATEX = () => notationColoredLatex('w_summed', 'W');
 const APPENDIX_SHORT_S_W_LATEX = () => notationColoredLatex('s_w_summed', 'S(W)');
@@ -244,7 +248,7 @@ function replaceAppendixDisplayText(text = '', replacements = []) {
   );
 }
 
-function renderAppendixSlot(blocks = [], { replacements = [], renderCallout, slotKey = 'appendix-slot', strongClassName = null } = {}) {
+function renderAppendixSlot(blocks = [], { replacements = [], renderCallout, slotKey = 'appendix-slot', strongClassName = null, themeOverride = null } = {}) {
   const requiredBlocks = invariantAppendixSlot(blocks, slotKey);
   const normalizedBlocks = requiredBlocks.map((block) => ({
     ...block,
@@ -253,7 +257,7 @@ function renderAppendixSlot(blocks = [], { replacements = [], renderCallout, slo
       replacements,
     ),
   }));
-  return renderProseBlocks(normalizedBlocks, { renderCallout, strongClassName, keyPrefix: slotKey });
+  return renderProseBlocks(normalizedBlocks, { renderCallout, strongClassName, keyPrefix: slotKey, themeOverride });
 }
 
 function renderAppendixSingleBlock(blocks = [], index = 0, options = {}) {
@@ -1761,21 +1765,25 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                   <p className={APPENDIX_PROSE_CLASS}>
                     {renderAppendixSingleBlock(appendixSection6.slots.intro, 0, {
                       slotKey: 'appendix-section6-intro',
+                      themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
                     })}
                   </p>
                   <p className={APPENDIX_PROSE_CLASS}>
                     {renderAppendixSingleBlock(appendixSection6.slots.intro, 1, {
                       slotKey: 'appendix-section6-intro',
+                      themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
                     })}
                   </p>
                   <p className={APPENDIX_PROSE_CLASS}>
                     {renderAppendixSingleBlock(appendixSection6.slots.intro, 2, {
                       slotKey: 'appendix-section6-intro',
+                      themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
                     })}
                   </p>
                   <p className={APPENDIX_PROSE_CLASS}>
                     {renderAppendixSingleBlock(appendixSection6.slots.footer, 0, {
                       slotKey: 'appendix-section6-footer',
+                      themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
                     })}
                   </p>
                   <div className="mt-4">
@@ -1783,6 +1791,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     <p className={`mt-2 ${APPENDIX_PROSE_CLASS}`}>
                       {renderAppendixSingleBlock(appendixSection6.slots.footer, 1, {
                         slotKey: 'appendix-section6-footer',
+                        themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
                       })}
                     </p>
                   </div>
@@ -1793,7 +1802,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                 return (
                   <div className="space-y-2 text-center">
                     <div className="text-[1.3em]">
-                      <Latex math={equationLatex} display />
+                      <Latex math={equationLatex} display themeOverride={APPENDIX_SECTION_SIX_THEME_OVERRIDE} />
                     </div>
                     <div className="pt-3 font-serif text-[14px] italic text-gray-500">where</div>
                     <div className="space-y-1.5">
@@ -1804,6 +1813,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                         >
                           {renderAppendixSingleBlock(appendixSection6.slots.intro, idx, {
                             slotKey: 'appendix-section6-glossary',
+                            themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
                           })}
                         </p>
                       ))}

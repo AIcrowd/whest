@@ -3,7 +3,7 @@ import InlineMathText from '../components/InlineMathText.jsx';
 
 export function renderProseBlocks(
   blocks = [],
-  { renderCallout, strongClassName = null, keyPrefix = 'prose' } = {},
+  { renderCallout, strongClassName = null, keyPrefix = 'prose', themeOverride = null } = {},
 ) {
   return blocks.map((block, index) => {
     const blockKey = `${keyPrefix}-${block.kind}-${index}`;
@@ -13,12 +13,12 @@ export function renderProseBlocks(
           {renderCallout(block, index)}
         </Fragment>
       ) : (
-        <InlineMathText key={blockKey} strongClassName={strongClassName}>{block.text}</InlineMathText>
+        <InlineMathText key={blockKey} strongClassName={strongClassName} themeOverride={themeOverride}>{block.text}</InlineMathText>
       );
     }
 
     return (
-      <InlineMathText key={blockKey} strongClassName={strongClassName}>
+      <InlineMathText key={blockKey} strongClassName={strongClassName} themeOverride={themeOverride}>
         {block.text}
       </InlineMathText>
     );

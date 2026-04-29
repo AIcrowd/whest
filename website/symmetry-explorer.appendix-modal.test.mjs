@@ -109,7 +109,8 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
   // and the negative-margin footer band are gone.
   assert.match(section6, /AppendixSupportSplit/);
   assert.doesNotMatch(section6, /AppendixDefinitionPanel/);
-  assert.match(section6, /<Latex\s+math=\{[^}]+\}\s+display\s*\/>/);
+  assert.match(section6, /<Latex\s+math=\{[^}]+\}\s+display[^/]*\/>/);
+  assert.match(section6, /themeOverride=\{APPENDIX_SECTION_SIX_THEME_OVERRIDE\}/);
   assert.match(section6, /deckClassName="max-w-none"/);
   assert.match(section6, /appendixSection6\.slots\.intro/);
   assert.match(section6, /appendixSection6\.slots\.footer/);

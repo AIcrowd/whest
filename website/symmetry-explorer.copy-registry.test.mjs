@@ -62,13 +62,13 @@ test('copy renderers thread stable key prefixes through singleton prose helpers'
   const algorithm = readFromWebsiteRoot('components/symmetry-aware-einsum-contractions/components/AlgorithmAtAGlance.jsx');
   const appendix = readFromWebsiteRoot('components/symmetry-aware-einsum-contractions/components/ExpressionLevelModal.jsx');
 
-  assert.match(renderer, /renderProseBlocks\(\s*blocks = \[\],\s*\{ renderCallout, strongClassName = null, keyPrefix = 'prose' \} = \{\},\s*\)/);
+  assert.match(renderer, /renderProseBlocks\(\s*blocks = \[\],\s*\{ renderCallout, strongClassName = null, keyPrefix = 'prose', themeOverride = null \} = \{\},\s*\)/);
   assert.match(renderer, /const blockKey = `\$\{keyPrefix\}-\$\{block\.kind\}-\$\{index\}`;/);
   assert.match(renderer, /<Fragment key=\{blockKey\}>/);
-  assert.match(renderer, /<InlineMathText key=\{blockKey\} strongClassName=\{strongClassName\}>/);
+  assert.match(renderer, /<InlineMathText key=\{blockKey\} strongClassName=\{strongClassName\} themeOverride=\{themeOverride\}>/);
   assert.match(algorithm, /function renderSingleProseBlock\(blocks = \[\], keyPrefix = 'main-prose-block'\)/);
   assert.match(algorithm, /return renderProseBlocks\(blocks, \{ keyPrefix \}\)\[0\] \?\? null;/);
-  assert.match(appendix, /return renderProseBlocks\(normalizedBlocks, \{ renderCallout, strongClassName, keyPrefix: slotKey \}\);/);
+  assert.match(appendix, /return renderProseBlocks\(normalizedBlocks, \{ renderCallout, strongClassName, keyPrefix: slotKey, themeOverride \}\);/);
   assert.match(appendix, /return renderAppendixSlot\(\[block\], \{ \.\.\.options, slotKey: `\$\{slotKey\}-\$\{index\}` \}\)\[0\] \?\? null;/);
 });
 
