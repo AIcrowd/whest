@@ -94,11 +94,19 @@ export default function BranchingDemo({
           hover={hover}
           onExpand={handleOpenModal}
         />
+        {/* Hero α answer — the figure's takeaway. Big numeric + small-caps caption.
+            Faint top-divider gives the answer breathing room from the canvas. */}
         <div
-          className="mt-3 font-mono text-[11px] text-gray-600"
+          className="mt-6 pt-4 border-t"
           data-testid="branching-alpha-total"
+          style={{ borderColor: '#ECEFEF' }}
         >
-          across all {liveOrbitRows.length} orbits: α = <strong className="text-gray-900">{liveAlpha}</strong>
+          <div className="text-[28px] font-semibold tracking-tight text-gray-900 leading-none font-sans">
+            α = {liveAlpha}
+          </div>
+          <div className="mt-1.5 text-[10px] uppercase tracking-[0.18em] text-gray-400 font-sans">
+            total updates · across {liveOrbitRows.length} orbit{liveOrbitRows.length === 1 ? '' : 's'}
+          </div>
         </div>
       </div>
 

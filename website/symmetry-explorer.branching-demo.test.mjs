@@ -120,3 +120,16 @@ test('ComponentCostView forwards dimensionN to BranchingDemo', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
   assert.match(src, /dimensionN=\{dimensionN\}[\s\S]{0,200}<BranchingDemo|<BranchingDemo[\s\S]{0,200}dimensionN=\{dimensionN\}/);
 });
+
+test('BranchingDemo α footer uses hero typography with caption (not debug-log voice)', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
+  // Hero numeric display: large + tracking-tight + sans semibold.
+  assert.match(src, /text-\[28px\]/);
+  assert.match(src, /tracking-tight/);
+  // Caption below: small caps, gray-400, sans, with the orbit count.
+  assert.match(src, /total updates · across/);
+  // Faint top-divider gives breathing room between canvas and answer.
+  assert.match(src, /border-t/);
+  // Old debug-log copy is gone.
+  assert.doesNotMatch(src, /across all \{liveOrbitRows\.length\} orbits: α =/);
+});
