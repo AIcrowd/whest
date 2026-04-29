@@ -134,6 +134,10 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
           Equality pattern
         </div>
         <div className="mt-2 flex flex-wrap items-center gap-1.5">
+          {/* Pattern chips render as design-system .chip pills:
+              rounded-full, 1px border, mono 11–12px, gray text on white.
+              Active state uses the .chip--coral recipe — coral-light fill,
+              coral-tinted border, coral-hover text. */}
           {visibleChips.map((chip) => {
             const isActive = chip.key === selectedPatternKey;
             return (
@@ -142,11 +146,11 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
                 key={chip.key}
                 data-pattern-chip={chip.key}
                 onClick={() => setSelectedPatternKey(chip.key)}
-                className="rounded px-2.5 py-1 font-mono text-[11px] font-semibold transition-colors"
+                className="rounded-full border px-2.5 py-1 font-mono text-[11px] font-medium transition-colors"
                 style={{
-                  background: isActive ? explorerThemeTint(themeId, 'hero', 0.12) : 'transparent',
-                  color: isActive ? explorerThemeColor(themeId, 'hero') : explorerThemeColor(themeId, 'body'),
-                  border: `1px solid ${isActive ? explorerThemeColor(themeId, 'hero') : explorerThemeColor(themeId, 'border')}`,
+                  background: isActive ? explorerThemeTint(themeId, 'hero', 0.08) : explorerThemeColor(themeId, 'surface'),
+                  color: isActive ? explorerThemeColor(themeId, 'hero') : explorerThemeColor(themeId, 'muted'),
+                  borderColor: isActive ? explorerThemeTint(themeId, 'hero', 0.25) : explorerThemeColor(themeId, 'border'),
                 }}
               >
                 {chip.key}
@@ -158,12 +162,10 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
               type="button"
               data-action="toggle-all-chips"
               onClick={toggleChips}
-              className="rounded border-dashed px-2 py-1 text-[11px] font-medium"
+              className="rounded-full px-2.5 py-1 text-[11px] font-medium transition-colors"
               style={{
-                borderColor: explorerThemeColor(themeId, 'border'),
-                borderWidth: 1,
-                borderStyle: 'dashed',
                 color: explorerThemeColor(themeId, 'muted'),
+                background: 'transparent',
               }}
             >
               {showAllChips ? 'show fewer patterns' : `+${hiddenChipCount} more patterns`}
@@ -177,15 +179,19 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
         </div>
       </div>
 
+      {/* Breakdown panel for the active chip. No inner card chrome; the
+          surfaceInset background alone separates it from the surrounding
+          prose. Two columns share an eyebrow + values pattern matching
+          the diptych in design-system/preview/components.html. */}
       {activeChip && (
         <div
           data-testid="partition-breakdown-panel"
-          className="mt-3 rounded-md border p-3"
-          style={{ borderColor: explorerThemeColor(themeId, 'border'), background: explorerThemeColor(themeId, 'surfaceInset') }}
+          className="mt-3 rounded-md p-3"
+          style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}
         >
           <div className="grid gap-4 lg:grid-cols-2">
             <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
                 Block structure · {activeChip.key}
               </div>
               <div className="mt-1 font-mono text-[11px] leading-6" style={{ color: explorerThemeColor(themeId, 'body') }}>
@@ -195,7 +201,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
               </div>
             </div>
             <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
                 Projection reach
               </div>
               <div className="mt-1 font-mono text-[11px] leading-6" style={{ color: explorerThemeColor(themeId, 'body') }}>

@@ -6,9 +6,8 @@
 // styling decisions are passed in via the themeId, and the consumer is
 // expected to map the role names back to colours.
 
-import { explorerThemeColor } from '../../lib/explorerTheme.js';
+import { explorerThemeColor, explorerThemeTint } from '../../lib/explorerTheme.js';
 import { notationColor } from '../../lib/notationSystem.js';
-import { readableTextOn } from '../../lib/nodeColorUtils.js';
 
 export const NODE_W = 88;
 export const MEMBER_NODE_H = 32;
@@ -34,20 +33,23 @@ export function buildOrbitProjectionGraph({
     return { nodes: [], edges: [] };
   }
 
-  const memberFill = notationColor('m_component');
-  const memberBorder = notationColor('m_component');
+  // Editorial chip palette — light tinted backgrounds with coloured text +
+  // subtle 1px borders. Reads as a chip strip, not flag-coloured pills.
+  // Matches the design-system .chip family (rgba(...,0.08) bg,
+  // colour-tinted border, colour-saturated text).
+  const memberRoleColor = notationColor('m_component');
+  const memberFill = explorerThemeTint(themeId, 'symmetryObject', 0.08);
+  const memberBorder = explorerThemeTint(themeId, 'symmetryObject', 0.3);
+  const memberText = memberRoleColor;
   const orbitFill = explorerThemeColor(themeId, 'surfaceInset');
-  const orbitBorder = notationColor('m_component');
+  const orbitBorder = explorerThemeColor(themeId, 'border');
   const orbitText = explorerThemeColor(themeId, 'ink');
-  const repFill = explorerThemeColor(themeId, 'surface');
-  const repBorder = notationColor('h_output');
-  const repText = notationColor('h_output');
-  // WCAG-aware member text: white on dark member fills, dark on light fills.
-  // Without this, the rotating notation palette could produce illegible
-  // member labels (e.g. white text on a pale-yellow alphaFamily background).
-  const memberText = readableTextOn(memberFill);
-  const edgeColor = explorerThemeColor(themeId, 'muted');
-  const projectionEdgeColor = notationColor('h_output');
+  const repRoleColor = notationColor('h_output');
+  const repFill = explorerThemeTint(themeId, 'hero', 0.08);
+  const repBorder = explorerThemeTint(themeId, 'hero', 0.25);
+  const repText = repRoleColor;
+  const edgeColor = explorerThemeColor(themeId, 'border');
+  const projectionEdgeColor = repRoleColor;
 
   const members = orbit.members ?? [];
   const memberCount = members.length;

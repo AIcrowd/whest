@@ -4,6 +4,7 @@ import InlineMathText from './InlineMathText.jsx';
 import OrbitProjectionGraph from './branchingViews/OrbitProjectionGraph.jsx';
 import {
   explorerThemeColor,
+  explorerThemeTint,
   getActiveExplorerThemeId,
 } from '../lib/explorerTheme.js';
 import { notationColor } from '../lib/notationSystem.js';
@@ -103,13 +104,17 @@ export default function BranchingDemo({
       <div className="mt-3 flex flex-wrap items-center gap-2 text-[12px]" data-testid="branching-controls">
         <label className="flex items-center gap-2">
           <span className="font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>Orbit</span>
+          {/* Native <select> styled to match design-system input rule:
+              gray-50 fill, 1px gray-200 border, gray-50 hover; coral focus
+              ring inherited from the page's :focus-visible style. Mono
+              type (matches the rest of the cost line + chip font). */}
           <select
             data-action="select-orbit"
-            className="rounded border px-2 py-1 font-mono text-[11px]"
+            className="rounded border px-2 py-1 font-mono text-[11px] transition-colors hover:bg-stone-100"
             style={{
               borderColor: explorerThemeColor(themeId, 'border'),
               color: explorerThemeColor(themeId, 'body'),
-              background: explorerThemeColor(themeId, 'surface'),
+              background: explorerThemeColor(themeId, 'surfaceInset'),
             }}
             value={safeIdx >= 0 ? safeIdx : 0}
             onChange={(e) => onSelectOrbit(Number(e.target.value))}
@@ -134,12 +139,18 @@ export default function BranchingDemo({
         </label>
 
         {!liveBranches && liveOrbitRows.length > 0 && (
+          // chip--coral recipe from the design system: coral-light fill,
+          // coral-tinted border, coral-hover text. Sits in the chip family.
           <button
             type="button"
             data-action="toggle-curated"
             onClick={() => setUseCurated((v) => !v)}
-            className="ml-auto rounded border px-2 py-1 text-[11px] font-semibold"
-            style={{ borderColor: explorerThemeColor(themeId, 'hero'), color: explorerThemeColor(themeId, 'hero') }}
+            className="ml-auto rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors"
+            style={{
+              background: explorerThemeTint(themeId, 'hero', 0.08),
+              borderColor: explorerThemeTint(themeId, 'hero', 0.25),
+              color: explorerThemeColor(themeId, 'heroMuted'),
+            }}
           >
             {useCurated ? '← back to live preset' : 'see a branching example →'}
           </button>

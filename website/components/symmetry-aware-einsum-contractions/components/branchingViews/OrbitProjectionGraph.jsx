@@ -23,10 +23,14 @@ import { buildOrbitProjectionGraph } from './orbitProjectionLayout.js';
 // The pure layout helper buildOrbitProjectionGraph lives in a sibling .js
 // file so node-test can import it without a JSX loader.
 
+// Members render as small monospace pills — chip language, not card language.
+// 1px border, full radius, white-on-coloured fill so the orbit-side palette
+// reads at a glance. Compare to design-system .chip rule (4px×10px padding,
+// 11px text, 20px radius).
 function MemberNode({ data }) {
   return (
     <div
-      className="box-border flex h-full w-full items-center justify-center rounded-full border text-[11px] font-mono"
+      className="box-border flex h-full w-full items-center justify-center rounded-full border font-mono text-[11px]"
       style={{
         background: data.fill,
         borderColor: data.border,
@@ -40,10 +44,13 @@ function MemberNode({ data }) {
   );
 }
 
+// Orbit-center pill — a soft inset card, not a heavy border. Matches the
+// design-system .callout rule: gray-50 bg, 1px gray-200 border, no shadow.
+// The branchSummary text uses the same gray-400 eyebrow voice as elsewhere.
 function OrbitCenterNode({ data }) {
   return (
     <div
-      className="box-border flex h-full w-full flex-col items-center justify-center rounded-lg border-2 px-3 py-2 text-center text-[12px] font-semibold leading-tight"
+      className="box-border flex h-full w-full flex-col items-center justify-center rounded-lg border px-3 py-2 text-center leading-tight"
       style={{
         background: data.fill,
         borderColor: data.border,
@@ -53,17 +60,19 @@ function OrbitCenterNode({ data }) {
     >
       <Handle id="left" type="target" position={Position.Left} className="pointer-events-none opacity-0" />
       <Handle id="right" type="source" position={Position.Right} className="pointer-events-none opacity-0" />
-      <div className="text-[13px] font-bold">{data.title}</div>
-      <div className="mt-0.5 text-[11px] font-mono opacity-90">size {data.size}</div>
-      <div className="text-[10px] font-medium opacity-80">{data.branchSummary}</div>
+      <div className="font-serif text-[13px] font-semibold">{data.title}</div>
+      <div className="mt-0.5 font-mono text-[10px] opacity-70">size {data.size}</div>
+      <div className="text-[9.5px] font-semibold uppercase tracking-[0.12em] opacity-70">{data.branchSummary}</div>
     </div>
   );
 }
 
+// Rep nodes — match the design-system chip rule (rounded-full, 1px border,
+// font-mono, 11–12px). The × weight badge sits inline; no separate card.
 function RepNode({ data }) {
   return (
     <div
-      className="box-border flex h-full w-full items-center justify-center gap-1.5 rounded-md border px-2 py-1 text-[12px] font-mono"
+      className="box-border flex h-full w-full items-center justify-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[12px]"
       style={{
         background: data.fill,
         borderColor: data.border,
@@ -73,7 +82,7 @@ function RepNode({ data }) {
     >
       <Handle id="left" type="target" position={Position.Left} className="pointer-events-none opacity-0" />
       <span className="font-semibold">{data.label}</span>
-      <span className="opacity-80">{data.weightLabel}</span>
+      <span className="opacity-70">{data.weightLabel}</span>
     </div>
   );
 }
@@ -100,12 +109,8 @@ export default function OrbitProjectionGraph({
   if (nodes.length === 0) {
     return (
       <div
-        className="flex h-[260px] w-full items-center justify-center rounded-md border text-[12px]"
-        style={{
-          borderColor: explorerThemeColor(themeId, 'border'),
-          background: explorerThemeColor(themeId, 'surfaceInset'),
-          color: explorerThemeColor(themeId, 'muted'),
-        }}
+        className="flex h-[260px] w-full items-center justify-center text-[12px]"
+        style={{ color: explorerThemeColor(themeId, 'muted') }}
         data-testid="orbit-projection-empty"
       >
         no orbit selected
@@ -113,13 +118,12 @@ export default function OrbitProjectionGraph({
     );
   }
 
+  // Float the graph in the prose flow — no card chrome, no shadow, no border.
+  // Matches the visual rhythm of the μ + α-hard formula displays earlier in
+  // Section 4: the diagram IS the visual, the surrounding card mustn't compete.
   return (
     <div
-      className="h-[280px] w-full rounded-md border"
-      style={{
-        borderColor: explorerThemeColor(themeId, 'border'),
-        background: explorerThemeColor(themeId, 'surface'),
-      }}
+      className="h-[260px] w-full"
       data-testid="orbit-projection-graph"
     >
       <ReactFlowProvider>
