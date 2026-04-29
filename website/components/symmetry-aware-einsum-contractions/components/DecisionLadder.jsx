@@ -166,11 +166,11 @@ const QUESTIONS = [
   },
   {
     id: 'q_direct',
-    short: 'Factorization check passes ?',
-    checks: 'Three post-dimino conditions, all required: (1) no element of $G$ maps a $V$-label to a $W$-label (no cross), (2) $|G| = |G_V| \\cdot |G_W|$ where $G_V$, $G_W$ are the projections onto $V$ and $W$, and (3) both $|G_V| > 1$ and $|G_W| > 1$ (meaningfulness guard).',
-    why: 'All three together say $G$ is exactly the direct product of its $V$-action and its $W$-action, with no coupling. $\\alpha$ then decomposes: for each $V$-tuple, Burnside runs independently on the $W$-side. Closed form: $\\alpha = (\\prod_{\\ell \\in V} n_\\ell) \\cdot |[n]^W / G_W|$.',
-    intuition: '"No cross" alone is not enough — *bilinear-trace* has no cross elements but $|G|=2 \\neq |G_V| \\cdot |G_W| = 4$ because its single non-identity element $(i\\;j)(k\\;l)$ is a *coupled* $\\mathbb{Z}_2$ (swapping $V$ forces swapping $W$). Passing examples: *four-A-grid*, *direct-s2-s2*, *direct-s2-c3*, *direct-s3-s2*.',
-    onTrue: 'directProduct', onFalse: 'q_crossVW',
+    short: 'Every g preserves V ?',
+    checks: 'For every $g \\in G$, does $g$ map the visible-label set $V$ into itself as a set? Equivalently: does no element of $G$ cross $V$/$W$? This is the post-dimino setwise check.',
+    why: 'When every $g$ preserves $V$ as a set, projection $\\pi_V$ descends from product orbits to stored output representatives functionally — each product orbit reaches exactly one $Q \\in Y/H$. So $\\alpha = M = |X/G|$, computed by size-aware Burnside.',
+    intuition: 'This is the "one destination per product orbit" branch. It includes coupled symmetries that pair $V$-labels with $V$-labels and $W$-labels with $W$-labels (like *bilinear-trace* $\\mathbb{Z}_2$), independent direct products like *direct-s2-s2*, and any element that simply does not cross $V$/$W$. The earlier "factorization" formulation was a strict subset; the corrected setwise check covers more cases.',
+    onTrue: 'functionalProjection', onFalse: 'q_crossVW',
     stage: 2,
   },
   {
@@ -637,12 +637,12 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
-  // q_direct yes → directProduct leaf on the left.
-  nodes.push(leafNode('directProduct', Q_DIRECT_Y));
+  // q_direct yes → functionalProjection leaf on the left.
+  nodes.push(leafNode('functionalProjection', Q_DIRECT_Y));
   edges.push({
-    id: `${directQ.id}-directProduct`,
+    id: `${directQ.id}-functionalProjection`,
     source: directQ.id, sourceHandle: 'side',
-    target: 'directProduct', targetHandle: 'right',
+    target: 'functionalProjection', targetHandle: 'right',
     label: EDGE_YES.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_HORIZONTAL },
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },

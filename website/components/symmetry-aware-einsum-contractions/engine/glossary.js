@@ -30,8 +30,20 @@ export const GLOSSARY = [
     definition: 'μ is the multiplication-chain event count derived from representative products: μ = (k - 1)M for k operand tensors. μ is not the product-orbit count itself.',
   },
   {
-    term: 'accumulation cost α',
-    definition: 'α is the direct output-bin update count. It is an orbit-projection count: sum over product orbits O of the number of distinct visible/output projections touched by O. It is not output storage and not generally equal to M.',
+    term: 'accumulation count A or alpha',
+    definition: 'The number of updates from product-orbit representatives into stored output representatives. Formally, the number of pairs (O, Q) where O is a product orbit in X/G_pt and Q is a stored output representative orbit in Y/H hit by projecting O to the visible labels.',
+  },
+  {
+    term: 'stored output representative',
+    definition: 'One stored entry of the output tensor after applying the output symmetry H = Stab_{G_pt}(V)|_V inherited from the detected pointwise group. Q ∈ Y/H denotes one such stored representative.',
+  },
+  {
+    term: 'output representative group H',
+    definition: 'H = Stab_{G_pt}(V)|_V. The part of the detected pointwise group that preserves the visible labels V as a set, restricted to V. This is the output-side action used by the main accumulation count.',
+  },
+  {
+    term: 'typed partition count',
+    definition: 'An equality-pattern count that respects label dimensions. Blocks may merge only positions with the same domain class, and each domain class contributes its own falling factorial (n_s)_{b_s}.',
   },
   {
     term: 'wreath product',
@@ -67,15 +79,11 @@ export const GLOSSARY = [
   },
   {
     term: 'pointwise V-stabilizer',
-    definition: 'The subgroup of G whose elements fix every V-label individually. When G = Sym(L), this is Sym(W). The Young regime uses α = |X / pointwise-V-stabilizer|, a multinomial closed form.',
+    definition: 'The subgroup of G whose elements fix every V-label individually. When G = Sym(L), this is Sym(W). Distinct from H = Stab_G(V)|_V, which is the SETWISE stabilizer of V restricted to V — H is the output representative action used for accumulation counting.',
   },
   {
-    term: 'Factorization check',
-    definition: 'The direct-product recognizer checks that no group element crosses V/W and that |G| = |G_V| · |G_W|. Passing means the action factors over visible and summed labels, so the direct-product α equation is exact.',
-  },
-  {
-    term: 'meaningfulness guard',
-    definition: 'An additional predicate in the directProduct recognizer requiring both projection sizes |G_V| > 1 AND |G_W| > 1. Prevents directProduct from firing on trivial-projection cases where simpler regimes (allVisible, allSummed) carry the same content.',
+    term: 'functional projection',
+    definition: 'A regime that fires when every g ∈ G preserves V as a set: projection π_V then descends from product orbits to stored output representatives functionally, and α = M = |X/G|.',
   },
 ];
 

@@ -10,8 +10,9 @@ import { notationColor } from '../lib/notationSystem.js';
 /**
  * Rendering metadata for each regime or shape id.
  *
- * Entries for regimes (singleton, directProduct, bruteForceOrbit) come from REGIME_SPEC.
- * Entries for shapes (trivial, allVisible, allSummed, mixed) come from SHAPE_SPEC.
+ * Entries for regimes (functionalProjection, singleton, young, partitionCount,
+ * bruteForceOrbit) come from REGIME_SPEC. Entries for shapes (trivial,
+ * allVisible, allSummed, mixed) come from SHAPE_SPEC.
  */
 
 function presentationColorFromSpec(spec, themeOverride = null) {

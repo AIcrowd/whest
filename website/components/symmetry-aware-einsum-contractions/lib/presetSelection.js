@@ -5,9 +5,10 @@ const PRESET_GLYPHS_BY_CLASSIFICATION = {
   allVisible: '◌',
   allSummed: '●',
   mixed: '⟡',
+  functionalProjection: '⊙',
   singleton: '①',
-  directProduct: '⊗',
   young: 'Y',
+  partitionCount: '⊕',
   bruteForceOrbit: '◎',
 };
 
@@ -38,7 +39,7 @@ export function getPresetSummary(ex) {
   const leafId = ex.regimeId ?? ex.shapeId ?? null;
   const caseIds = leafId == null
     ? []
-    : ['singleton', 'directProduct', 'young', 'bruteForceOrbit'].includes(leafId)
+    : ['functionalProjection', 'singleton', 'young', 'partitionCount', 'bruteForceOrbit'].includes(leafId)
       ? ['mixed', leafId]
       : [leafId];
 
