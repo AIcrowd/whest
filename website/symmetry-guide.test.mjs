@@ -34,8 +34,11 @@ async function runPythonInRepo(source) {
 test('symmetry guide documents every declaration style', async () => {
   const source = await readSymmetryGuide();
 
-  assert.match(source, /symmetry=we\.SymmetryGroup\.symmetric\(axes=\(0, 1\)\)/);
-  assert.match(source, /symmetry=we\.SymmetryGroup\.young\(blocks=\(\(0, 1\), \(2, 3\)\)\)/);
+  assert.match(source, /symmetry=flops\.SymmetryGroup\.symmetric\(axes=\(0, 1\)\)/);
+  assert.match(
+    source,
+    /symmetry=flops\.SymmetryGroup\.young\(blocks=\(\(0, 1\), \(2, 3\)\)\)/,
+  );
   assert.match(
     source,
     /SymmetryGroup\.symmetric\(axes=\(0, 1, 2\)\)/,
@@ -50,7 +53,7 @@ test('symmetry guide documents every declaration style', async () => {
   );
   assert.match(
     source,
-    /we\.SymmetryGroup\.from_generators\(\s*\[\[2, 3, 0, 1\]\]/,
+    /flops\.SymmetryGroup\.from_generators\(\s*\[\[2, 3, 0, 1\]\]/,
   );
 });
 
@@ -58,8 +61,8 @@ test('symmetry guide includes the Reynolds section and flopscope-only indexing e
   const source = await readSymmetryGuide();
 
   assert.match(source, /Generating example data with the Reynolds operator/);
-  assert.match(source, /we\.newaxis/);
-  assert.match(source, /we\.array\(\[0, 1\]\)/);
+  assert.match(source, /fnp\.newaxis/);
+  assert.match(source, /fnp\.array\(\[0, 1\]\)/);
 });
 
 test('symmetry guide avoids overclaiming Reynolds helper exactness', async () => {
