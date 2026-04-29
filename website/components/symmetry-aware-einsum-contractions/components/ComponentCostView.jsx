@@ -399,6 +399,7 @@ export default function ComponentCostView({
   onSelectOrbit,
   onGraphHover,
   spotlightLeafIds,
+  expressionInfo = null,
 }) {
   if (!componentData || !costModel) return null;
 
@@ -495,6 +496,7 @@ export default function ComponentCostView({
           selectedOrbitIdx={selectedOrbitIdx}
           onSelectOrbit={onSelectOrbit}
           onHover={onGraphHover}
+          expressionInfo={expressionInfo}
         />
         <TypedPartitionDemo
           componentData={componentData}

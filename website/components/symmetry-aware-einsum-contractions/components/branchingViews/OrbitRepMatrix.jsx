@@ -6,6 +6,10 @@ import {
   getActiveExplorerThemeId,
 } from '../../lib/explorerTheme.js';
 import { notationColor } from '../../lib/notationSystem.js';
+import {
+  canonicalTupleUnderGroup,
+  visibleTupleFromFullTuple,
+} from '../../engine/outputOrbit.js';
 
 // OrbitRepMatrix — bipartite (orbit × stored output rep) matrix.
 //
@@ -55,11 +59,70 @@ const SQUARE_SIZE = 320;
 const MIN_CELL = 4;
 const MAX_CELL = 32;
 
+// Canonical-form LaTeX for the einsum equation (the same form shown in the
+// Section 1 "tensor operation written as one equation" block). Falls back
+// to a simple `R[V] = sum_W ...` placeholder if expressionInfo is missing.
+function canonicalEquationLatex(expressionInfo) {
+  if (!expressionInfo) return null;
+  const { subscripts = [], output = '', operandNames = [] } = expressionInfo;
+  if (subscripts.length === 0 || output.length === 0) return null;
+
+  // Summed labels = labels in operands but not in output.
+  const inOperands = new Set();
+  subscripts.forEach((sub) => [...sub].forEach((c) => inOperands.add(c)));
+  const outChars = [...output];
+  const outSet = new Set(outChars);
+  const summedChars = [...inOperands].filter((c) => !outSet.has(c)).sort();
+
+  const opTerms = subscripts.map((sub, i) => {
+    const name = operandNames[i] ?? operandNames[0] ?? 'X';
+    return `${name}[${[...sub].join(',')}]`;
+  });
+  const sumPrefix = summedChars.length > 0 ? `\\sum_{${summedChars.join(',')}}\\,` : '';
+  return `R[${outChars.join(',')}] \\;=\\; ${sumPrefix}${opTerms.join(' \\cdot ')}`;
+}
+
+// LaTeX for one concrete contribution line:
+//   R[<output indices for member>] \mathrel{+}=\;<operand_1>[<member indices>] \cdot <operand_2>[...] ...
+function memberContributionLatex(member, expressionInfo) {
+  if (!expressionInfo || !member) return '';
+  const { subscripts = [], output = '', operandNames = [] } = expressionInfo;
+  const outIdx = [...output].map((c) => member[c]).join(',');
+  const opTerms = subscripts.map((sub, i) => {
+    const name = operandNames[i] ?? operandNames[0] ?? 'X';
+    const idx = [...sub].map((c) => member[c]).join(',');
+    return `${name}[${idx}]`;
+  });
+  return `R[${outIdx}] \\mathrel{+}{=} ${opTerms.join(' \\cdot ')}`;
+}
+
+// Find which orbit members project (under H) to this cell's stored rep.
+// Returns the array of member tuples (objects keyed by label name).
+function membersProjectingTo(orbit, repTuple, componentInfo) {
+  if (!orbit?.orbitTuples || !componentInfo) return [];
+  const { labels, vLabels, hElements } = componentInfo;
+  if (!labels || !vLabels || !hElements) return [];
+
+  // Target canonical key for this cell.
+  const targetVisibleArray = vLabels.map((l) => repTuple?.[l]);
+  const targetKey = canonicalTupleUnderGroup(targetVisibleArray, hElements);
+
+  return orbit.orbitTuples.filter((member) => {
+    const fullArray = labels.map((l) => member[l]);
+    const visiblePositions = vLabels.map((l) => labels.indexOf(l));
+    const memberVisible = visibleTupleFromFullTuple(fullArray, visiblePositions);
+    const memberKey = canonicalTupleUnderGroup(memberVisible, hElements);
+    return memberKey === targetKey;
+  });
+}
+
 export default function OrbitRepMatrix({
   orbitRows = [],
   selectedOrbitIdx = -1,
   onSelectOrbit = () => {},
   onHover = null,
+  expressionInfo = null,
+  componentInfo = null,
 }) {
   const themeId = getActiveExplorerThemeId();
   const [hover, setHover] = useState(null); // { i, j, x, y } when over a cell
@@ -366,34 +429,104 @@ export default function OrbitRepMatrix({
 
             {/* LaTeX contribution + English explanation */}
             <div className="mt-2 border-t pt-2" style={{ borderColor: border }}>
-              {filled ? (
-                <>
-                  <div className="overflow-x-auto">
-                    <Latex
-                      math={String.raw`\#\{m \in \mathrm{orbit}\,${tupleLatex(row.repTuple)} \,:\, \pi_V(m) \in \mathrm{rep}\,${tupleLatex(rep.tuple)}\} = ${coeff}`}
-                      display
-                    />
-                  </div>
-                  <p
-                    className="mt-1 font-serif text-[12.5px] leading-6"
-                    style={{ color: body }}
-                  >
-                    {coeff === 1 ? 'Exactly one' : `${coeff} of ${orbitSize}`}{' '}
-                    member{coeff === 1 ? '' : 's'} of this orbit{' '}
-                    {coeff === 1 ? 'projects' : 'project'} (under π<sub>V</sub>,
-                    canonicalized by H) to this stored rep — so the orbit{' '}
-                    <em>writes to this output bin</em>. Each filled cell adds
-                    1 to α regardless of the member count.
-                    {reachCount > 1 && (
-                      <>
-                        {' '}This orbit is <strong>branching</strong>: its{' '}
-                        {orbitSize} members map to {reachCount} distinct
-                        stored reps (different output bins) under H.
-                      </>
+              {filled ? (() => {
+                // Canonical einsum form (e.g. R[a,b,c] = sum_i X[i,a]·X[i,b]·X[i,c])
+                const canonical = canonicalEquationLatex(expressionInfo);
+                // Concrete members of this orbit that project to this stored
+                // rep under H. With branching, multiple members can land on
+                // the same canonical bin.
+                const contributing = membersProjectingTo(row, rep.tuple, componentInfo);
+                const allOrbitOutputs = (row.outputs ?? []);
+                return (
+                  <>
+                    {canonical && (
+                      <div className="mb-2 overflow-x-auto">
+                        <div
+                          className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em]"
+                          style={{ color: muted }}
+                        >
+                          einsum equation
+                        </div>
+                        <Latex math={canonical} display />
+                      </div>
                     )}
-                  </p>
-                </>
-              ) : (
+
+                    {/* Concrete expanded contribution. For branching cells
+                        with multiple members landing here, render each line
+                        separately so the reader sees how the orbit's members
+                        collect into this output bin. */}
+                    {contributing.length > 0 && expressionInfo ? (
+                      <div className="overflow-x-auto">
+                        <div
+                          className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em]"
+                          style={{ color: muted }}
+                        >
+                          this orbit&apos;s contribution to this output bin
+                        </div>
+                        {contributing.map((m, mi) => (
+                          <Latex
+                            key={mi}
+                            math={memberContributionLatex(m, expressionInfo)}
+                            display
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="overflow-x-auto">
+                        <Latex
+                          math={String.raw`\#\{m \in \mathrm{orbit}\,${tupleLatex(row.repTuple)} \,:\, \pi_V(m) \in \mathrm{rep}\,${tupleLatex(rep.tuple)}\} = ${coeff}`}
+                          display
+                        />
+                      </div>
+                    )}
+
+                    {/* English summary. For branching cells, additionally
+                        show the FULL set of bins this orbit reaches, so
+                        readers see the multi-bin collection at a glance. */}
+                    <p
+                      className="mt-2 font-serif text-[12.5px] leading-6"
+                      style={{ color: body }}
+                    >
+                      {coeff === 1 ? 'Exactly one' : `${coeff} of ${orbitSize}`}{' '}
+                      member{coeff === 1 ? '' : 's'} of this orbit{' '}
+                      {coeff === 1 ? 'writes' : 'write'} to{' '}
+                      <strong>R[{[...(expressionInfo?.output ?? '')].map((c) => rep.tuple[c]).join(', ')}]</strong>
+                      {coeff > 1 && expressionInfo && (
+                        <>
+                          {' '}— different orbit members
+                          {' '}<em>collect into the same output bin</em>{' '}
+                          because their visible-side projections agree under
+                          H = Stab<sub>G</sub>(V)|<sub>V</sub>.
+                        </>
+                      )}
+                      {' '}Each filled cell adds 1 to α regardless of member
+                      count.
+                      {reachCount > 1 && expressionInfo && (
+                        <>
+                          {' '}This orbit also reaches{' '}
+                          {allOrbitOutputs
+                            .filter((o) => JSON.stringify(o.outTuple) !== JSON.stringify(rep.tuple))
+                            .map((o, i, arr) => {
+                              const bin = [...(expressionInfo.output ?? '')]
+                                .map((c) => o.outTuple[c])
+                                .join(', ');
+                              return (
+                                <span key={i}>
+                                  <code className="rounded px-1 font-mono text-[11px]" style={{ background: surfaceInset }}>
+                                    R[{bin}]
+                                  </code>
+                                  {i < arr.length - 1 ? ', ' : ''}
+                                </span>
+                              );
+                            })}
+                          {' '}— branching means the orbit&apos;s members
+                          split across <strong>{reachCount} output bins</strong>.
+                        </>
+                      )}
+                    </p>
+                  </>
+                );
+              })() : (
                 <>
                   <div className="overflow-x-auto">
                     <Latex

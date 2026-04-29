@@ -133,9 +133,24 @@ test('OrbitRepMatrix renders a floating tooltip with LaTeX + English explanation
   // LaTeX equation rendered via the existing Latex component.
   assert.match(src, /import Latex from '\.\.\/Latex\.jsx'/);
   assert.match(src, /<Latex/);
-  // Counts and English explanation cover both filled and empty cells.
+  // Eyebrow + status copy covers both filled and empty cells.
   assert.match(src, /Orbit · Rep contribution/);
   assert.match(src, /No projection at this cell/);
-  assert.match(src, /writes to this output bin/);
   assert.match(src, /branching/);
+});
+
+test('OrbitRepMatrix tooltip shows the canonical einsum equation + per-member contributions', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // Helpers for canonical form + per-member contribution.
+  assert.match(src, /canonicalEquationLatex/);
+  assert.match(src, /memberContributionLatex/);
+  // The tooltip enumerates members projecting to the cell's stored rep.
+  assert.match(src, /membersProjectingTo/);
+  // Eyebrows for the two LaTeX blocks.
+  assert.match(src, /einsum equation/);
+  assert.match(src, /this orbit(?:'|&apos;)s contribution to this output bin/);
+  // Branching prose mentions multi-bin collection + the explicit "collect
+  // into the same output bin" framing the user asked for.
+  assert.match(src, /collect into the same output bin/);
+  assert.match(src, /split across/);
 });

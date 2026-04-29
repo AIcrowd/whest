@@ -598,6 +598,14 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         onSelectOrbit={setSelectedOrbitIdx}
                         onGraphHover={handleGraphHover}
                         spotlightLeafIds={spotlightLeafSet}
+                        expressionInfo={normalizedExample ? {
+                          subscripts: normalizedExample.subscripts ?? [],
+                          output: normalizedExample.output ?? '',
+                          operandNames: (normalizedExample.expression?.operandNames ?? '')
+                            .split(',')
+                            .map((s) => s.trim())
+                            .filter(Boolean),
+                        } : null}
                       />
                     </div>
 
