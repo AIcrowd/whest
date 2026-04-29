@@ -15,7 +15,7 @@ import { notationColor, notationLatex } from '../lib/notationSystem.js';
 // Same scenario the retired PartitionCountingExplainer used as its
 // "Why branching happens" worked example.
 const CURATED_BRANCHING_EXAMPLE = {
-  caption: '$R[i,j] = \sum_k T[i,j,k]$ with $T$ fully symmetric, $n = 3$',
+  caption: String.raw`$R[i,j] = \sum_k T[i,j,k]$ with $T$ fully symmetric, $n = 3$`,
   // The orbit rows below are pre-computed for n=3, S_3 acting on {i,j,k},
   // V = {i,j}, H = Stab_G(V)|_V = {(),(ij)} restricted to V.
   // Total α for this scenario is 9 = 3·1 + 3·2 (verified against engine
