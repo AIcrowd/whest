@@ -38,7 +38,16 @@ test('appendix modal shell keeps the editorial rail and the new cost-vs-expressi
   assert.match(source, /throw new Error\(APPENDIX_REQUIRED_SLOT_ERRORS\[slotKey\] \?\? `Missing appendix slot: \$\{slotKey\}`\)/);
   assert.match(source, /throw new Error\(`Missing appendix slot block: \$\{slotKey\}\[\$\{index\}\]`\)/);
   assert.match(source, /renderProseBlocks\(normalizedBlocks/);
-  assert.match(source, /import \{ explorerThemeColor, getActiveExplorerThemeId \} from '\.\.\/lib\/explorerTheme\.js';/);
+  // Theme color helpers (vStyle/wStyle) live in the shared workedExample
+  // module after the Task-1 hoist; ExpressionLevelModal pulls them in via
+  // that module rather than importing explorerTheme.js directly. The new
+  // module is the source of truth for the colored coordinate styling.
+  assert.match(source, /vStyle,\s*\n\s*wStyle,\s*\n\}\s*from\s*'\.\/workedExample\/index\.jsx'/);
+  const workedExampleSource = fs.readFileSync(
+    new URL('./components/symmetry-aware-einsum-contractions/components/workedExample/index.jsx', import.meta.url),
+    'utf8',
+  );
+  assert.match(workedExampleSource, /import \{ explorerThemeColor, getActiveExplorerThemeId \} from '\.\.\/\.\.\/lib\/explorerTheme\.js';/);
   assert.match(source, /relative w-full max-w-\[(1460px|var\(--content-max\))\] rounded-lg border border-gray-200 bg-white shadow-2xl/);
   assert.match(source, /appendixRailClass = 'mx-auto w-full max-w-\[(1460px|var\(--content-max\))\] px-6 md:px-8 lg:px-10'/);
   assert.match(source, /id="expr-modal-heading"[\s\S]*>\s*Why expression symmetry is not the cost symmetry\s*<span style=\{\{ color: 'var\(--coral\)' \}\}>/);
@@ -243,13 +252,29 @@ test('section 5 uses alphaComparison branches and the bilinear witness to reject
   assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.genericOrbitLead/);
   assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.genericAssignmentTemplate/);
   assert.match(source, /n=\{5\}[\s\S]*appendixSection5\.slots\.genericNoteTemplate/);
-  assert.match(source, /function WorkedExampleIndex\(/);
-  assert.match(source, /function WorkedExampleCoords\(/);
-  assert.match(source, /function WorkedExampleTensorRef\(/);
-  assert.match(source, /function WorkedExampleTensorProduct\(/);
-  assert.match(source, /function WorkedExampleDisplayEquation\(/);
-  assert.match(source, /function vStyle\(\) \{\s*return \{\s*color: explorerThemeColor\(getActiveExplorerThemeId\(\), 'hero'\),\s*fontWeight: 600,\s*\};\s*\}/);
-  assert.match(source, /function wStyle\(\) \{\s*return \{\s*color: explorerThemeColor\(getActiveExplorerThemeId\(\), 'summedSide'\),\s*fontWeight: 600,\s*\};\s*\}/);
+  // Worked-example primitives (and the vStyle/wStyle theme helpers they
+  // build on) were hoisted into a sibling shared module in Task 1 of the
+  // orbit-rep-matrix redesign. ExpressionLevelModal now imports them
+  // rather than redefining; the bodies live (verbatim) in
+  // components/workedExample/index.jsx. Pin the imports here, and check
+  // the function bodies in the shared module instead.
+  {
+    const workedExampleSource = fs.readFileSync(
+      new URL('./components/symmetry-aware-einsum-contractions/components/workedExample/index.jsx', import.meta.url),
+      'utf8',
+    );
+    assert.match(workedExampleSource, /export function WorkedExampleIndex\(/);
+    assert.match(workedExampleSource, /export function WorkedExampleCoords\(/);
+    assert.match(workedExampleSource, /export function WorkedExampleTensorRef\(/);
+    assert.match(workedExampleSource, /export function WorkedExampleTensorProduct\(/);
+    assert.match(workedExampleSource, /export function WorkedExampleDisplayEquation\(/);
+    assert.match(workedExampleSource, /export function vStyle\(\) \{\s*return \{\s*color: explorerThemeColor\(getActiveExplorerThemeId\(\), 'hero'\),\s*fontWeight: 600,\s*\};\s*\}/);
+    assert.match(workedExampleSource, /export function wStyle\(\) \{\s*return \{\s*color: explorerThemeColor\(getActiveExplorerThemeId\(\), 'summedSide'\),\s*fontWeight: 600,\s*\};\s*\}/);
+    assert.match(source, /WorkedExampleTensorRef,/);
+    assert.match(source, /WorkedExampleCoords,/);
+    assert.match(source, /WorkedExampleTensorProduct,/);
+    assert.match(source, /WorkedExampleDisplayEquation,/);
+  }
   assert.match(source, /function buildWorkedExampleFactors\(/);
   assert.match(source, /alphaComparison\.state === 'mismatch'/);
   assert.match(source, /alphaComparison\.state === 'coincident'/);
@@ -365,12 +390,27 @@ test('appendix hover surfaces and shared typography registers remain intact', ()
   assert.match(source, /function AppendixPresetHoverLabel\(/);
   assert.match(source, /createPortal\(/);
   assert.match(source, /pointer-events-none fixed z-\[9999\]/);
-  assert.match(source, /const APPENDIX_PROSE_CLASS = 'font-serif text-\[17px\] leading-\[1\.75\] text-gray-900';/);
+  // APPENDIX_PROSE_CLASS and APPENDIX_MONO_LEDGER_CLASS were hoisted into
+  // the shared workedExample module in Task 1 of the orbit-rep-matrix
+  // redesign so a future WorkedExamplePanel can reuse them. Verify the
+  // canonical declarations there, and confirm ExpressionLevelModal pulls
+  // them in via the import. The remaining APPENDIX_* class constants
+  // (justified prose, article lane, app text, etc.) still live alongside
+  // the modal's local helpers.
+  {
+    const workedExampleSource = fs.readFileSync(
+      new URL('./components/symmetry-aware-einsum-contractions/components/workedExample/index.jsx', import.meta.url),
+      'utf8',
+    );
+    assert.match(workedExampleSource, /export const APPENDIX_PROSE_CLASS = 'font-serif text-\[17px\] leading-\[1\.75\] text-gray-900';/);
+    assert.match(workedExampleSource, /export const APPENDIX_MONO_LEDGER_CLASS = 'font-mono text-\[13px\] leading-relaxed text-gray-900';/);
+    assert.match(source, /APPENDIX_PROSE_CLASS,/);
+    assert.match(source, /APPENDIX_MONO_LEDGER_CLASS,/);
+  }
   assert.match(source, /const APPENDIX_PROSE_JUSTIFIED_CLASS = `\$\{APPENDIX_PROSE_CLASS\} text-justify`;/);
   assert.match(source, /const APPENDIX_ARTICLE_LANE_CLASS = 'max-w-\[78ch\] space-y-4 \[\&_p\]:text-justify';/);
   assert.match(source, /const APPENDIX_APP_TEXT_CLASS = 'text-\[13px\] leading-\[1\.55\] text-gray-700';/);
   assert.match(source, /const APPENDIX_SMALL_TEXT_CLASS = 'text-\[12px\] leading-5 text-gray-600';/);
-  assert.match(source, /const APPENDIX_MONO_LEDGER_CLASS = 'font-mono text-\[13px\] leading-relaxed text-gray-900';/);
   assert.match(source, /const APPENDIX_KICKER_CLASS = 'text-\[10px\] font-semibold uppercase tracking-\[0\.16em\] text-gray-400';/);
   assert.match(source, /const APPENDIX_FOOTNOTE_CLASS = 'text-\[11px\] italic text-muted-foreground';/);
 });

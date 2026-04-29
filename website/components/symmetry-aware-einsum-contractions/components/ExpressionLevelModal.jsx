@@ -18,8 +18,20 @@ import appendixSection6 from '../content/appendix/section6.ts';
 import { computeExpressionAlphaComparison } from '../engine/comparisonAlpha.js';
 import { EXAMPLES } from '../data/examples.js';
 import { formatGeneratorNotation, variableSymmetryLabel } from '../lib/symmetryLabel.js';
-import { explorerThemeColor, getActiveExplorerThemeId } from '../lib/explorerTheme.js';
 import { notationColor, notationColoredLatex, notationLatex } from '../lib/notationSystem.js';
+import {
+  WorkedExampleTensorRef,
+  WorkedExampleCoords,
+  WorkedExampleTensorProduct,
+  WorkedExampleDisplayEquation,
+  WorkedExampleEquation,
+  WorkedExampleEquationLedger,
+  WorkedExampleNote,
+  APPENDIX_PROSE_CLASS,
+  APPENDIX_MONO_LEDGER_CLASS,
+  vStyle,
+  wStyle,
+} from './workedExample/index.jsx';
 
 // Lookup map keyed by preset id so §7's savings table can pull the raw
 // einsum and per-operand symmetry declarations straight from the source
@@ -184,27 +196,11 @@ function EinsumConstructionTooltip({ preset, groupLabel }) {
   );
 }
 
-function vStyle() {
-  return {
-    color: explorerThemeColor(getActiveExplorerThemeId(), 'hero'),
-    fontWeight: 600,
-  };
-}
-
-function wStyle() {
-  return {
-    color: explorerThemeColor(getActiveExplorerThemeId(), 'summedSide'),
-    fontWeight: 600,
-  };
-}
-
-const APPENDIX_PROSE_CLASS = 'font-serif text-[17px] leading-[1.75] text-gray-900';
 const APPENDIX_PROSE_JUSTIFIED_CLASS = `${APPENDIX_PROSE_CLASS} text-justify`;
 const APPENDIX_FORMAL_PROSE_CLASS = 'font-serif text-[17px] leading-[1.85] text-gray-800';
 const APPENDIX_APP_TEXT_CLASS = 'text-[13px] leading-[1.55] text-gray-700';
 const APPENDIX_APP_TEXT_STRONG_CLASS = 'text-[13px] leading-[1.55] text-gray-900';
 const APPENDIX_SMALL_TEXT_CLASS = 'text-[12px] leading-5 text-gray-600';
-const APPENDIX_MONO_LEDGER_CLASS = 'font-mono text-[13px] leading-relaxed text-gray-900';
 const APPENDIX_KICKER_CLASS = 'text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400';
 const APPENDIX_FOOTNOTE_CLASS = 'text-[11px] italic text-muted-foreground';
 const APPENDIX_ARTICLE_LANE_CLASS = 'max-w-[78ch] space-y-4 [&_p]:text-justify';
@@ -463,122 +459,6 @@ function AppendixWorkedExample({
         </div>
       ) : null}
       <div className="space-y-4">{children}</div>
-    </div>
-  );
-}
-
-function WorkedExampleIndex({ value, role = 'plain' }) {
-  const style =
-    role === 'v' ? vStyle() :
-    role === 'w' ? wStyle() :
-    undefined;
-  return <span style={style}>{value}</span>;
-}
-
-function WorkedExampleCoords({ coords = [], roles = [] }) {
-  return coords.map((coord, idx) => (
-    <span key={`${coord}-${idx}`}>
-      {idx > 0 ? ',' : null}
-      <WorkedExampleIndex value={coord} role={roles[idx] ?? 'plain'} />
-    </span>
-  ));
-}
-
-function WorkedExampleTensorRef({ name, coords = [], roles = [] }) {
-  if (!coords.length) return <>{name}</>;
-  return (
-    <>
-      {name}[<WorkedExampleCoords coords={coords} roles={roles} />]
-    </>
-  );
-}
-
-function WorkedExampleTensorProduct({ factors = [], scalarValues = null, total = null }) {
-  return (
-    <>
-      {factors.map((factor, idx) => (
-        <span key={`${factor.name}-${idx}`}>
-          {idx > 0 ? ' · ' : null}
-          <WorkedExampleTensorRef
-            name={factor.name}
-            coords={factor.coords}
-            roles={factor.roles}
-          />
-        </span>
-      ))}
-      {Array.isArray(scalarValues) && scalarValues.length ? (
-        <>
-          {' = '}
-          {scalarValues.map((value, idx) => (
-            <span key={`${value}-${idx}`}>
-              {idx > 0 ? ' · ' : null}
-              {value}
-            </span>
-          ))}
-          {total !== null ? (
-            <>
-              {' = '}
-              <strong>{total}</strong>
-            </>
-          ) : null}
-        </>
-      ) : null}
-    </>
-  );
-}
-
-function WorkedExampleDisplayEquation({
-  outputCoords = [],
-  outputRoles = [],
-  sumCoords = [],
-  sumRoles = [],
-  factors = [],
-}) {
-  return (
-    <div className={`pl-0 sm:pl-4 ${APPENDIX_MONO_LEDGER_CLASS}`}>
-      <div>
-        <WorkedExampleTensorRef name="R" coords={outputCoords} roles={outputRoles} />
-        {' = '}
-        {sumCoords.length ? (
-          <>
-            ∑
-            <sub className="text-[0.72em]">
-              <WorkedExampleCoords coords={sumCoords} roles={sumRoles} />
-            </sub>
-            {' '}
-          </>
-        ) : null}
-        <WorkedExampleTensorProduct factors={factors} />
-      </div>
-    </div>
-  );
-}
-
-function WorkedExampleEquation({ assignment, numeric }) {
-  return (
-    <div className="space-y-1">
-      <div className="text-gray-900">{assignment}</div>
-      <div className="pl-[5.5ch] text-gray-700">{numeric}</div>
-    </div>
-  );
-}
-
-function WorkedExampleEquationLedger({ children }) {
-  return (
-    <div className={APPENDIX_MONO_LEDGER_CLASS}>
-      <div className="space-y-3">{children}</div>
-    </div>
-  );
-}
-
-function WorkedExampleNote({ tone = 'neutral', children }) {
-  const contentClass =
-    tone === 'success'
-      ? APPENDIX_PROSE_CLASS.replace('text-gray-900', 'text-gray-800')
-      : APPENDIX_PROSE_CLASS.replace('text-gray-900', 'text-gray-700');
-  return (
-    <div className={contentClass}>
-      {children}
     </div>
   );
 }
