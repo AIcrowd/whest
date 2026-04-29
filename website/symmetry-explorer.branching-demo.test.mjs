@@ -79,18 +79,20 @@ test('OrbitRepMatrix renders the "How to read this matrix" reading guide', () =>
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
   assert.match(src, /data-testid="orbit-rep-matrix-reading-guide"/);
   assert.match(src, /How to read this matrix/);
-  // The four bullets on rows / columns / filled cells / multi-cell rows
-  // (use \s+ to accept JSX-wrapped whitespace between words).
-  assert.match(src, /Rows[\s\S]*?product\s+orbits/);
-  assert.match(src, /Columns[\s\S]*?stored\s+output\s+representatives/);
+  // The four bullets — keyed by the new Y-axis / X-axis voice.
+  assert.match(src, /Y-axis \(Orbit\)[\s\S]*?product\s+orbits/);
+  assert.match(src, /X-axis \(Rep\)[\s\S]*?stored\s+output\s+representatives/);
   assert.match(src, /Filled cell/);
-  assert.match(src, /Multi-cell rows/);
+  assert.match(src, /Hover any cell/);
 });
 
-test('OrbitRepMatrix wraps the table in PanZoomCanvas for zoom + pan', () => {
+test('OrbitRepMatrix sizes cells to keep the grid square', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  assert.match(src, /import PanZoomCanvas from '\.\.\/PanZoomCanvas\.jsx'/);
-  assert.match(src, /<PanZoomCanvas/);
+  // Cell size = min(square / cols, square / rows), clamped to [MIN_CELL, MAX_CELL].
+  assert.match(src, /SQUARE_SIZE/);
+  assert.match(src, /MIN_CELL/);
+  assert.match(src, /MAX_CELL/);
+  assert.match(src, /Math\.floor\(SQUARE_SIZE \/ denom\)/);
 });
 
 test('OrbitRepMatrix uses the labelled tuple format on hover (k=v style)', () => {
@@ -112,23 +114,28 @@ test('OrbitRepMatrix derivation: collects unique reps + builds the cell grid', a
   assert.match(src, /tupleKey\(out\.outTuple\)/);
 });
 
-test('OrbitRepMatrix renders a label-position legend over actual label names', () => {
+test('OrbitRepMatrix uses single Y/X axis labels (Orbit, Rep) instead of per-tuple ticks', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  assert.match(src, /rowLabels/);
-  assert.match(src, /colLabels/);
-  assert.match(src, /orbit reps over/);
-  assert.match(src, /stored reps over/);
+  // The Y-axis label "Orbit" (vertical-rl) and X-axis label "Rep".
+  assert.match(src, />\s*Orbit\s*</);
+  assert.match(src, />\s*Rep\s*</);
+  assert.match(src, /writingMode: 'vertical-rl'/);
 });
 
-test('OrbitRepMatrix renders a hover-cell detail panel with rich orbit-rep info', () => {
+test('OrbitRepMatrix renders a floating tooltip with LaTeX + English explanation', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  assert.match(src, /data-testid="orbit-rep-matrix-detail"/);
-  // Eyebrow + labelled-tuple + status copy.
-  assert.match(src, /Focus[\s\S]*?cell/);
+  assert.match(src, /data-testid="orbit-rep-matrix-tooltip"/);
+  // Tooltip is positioned with fixed coords from the hovered cell.
+  assert.match(src, /position: 'fixed'|fixed z-50/);
+  // Both labelled tuples appear inside the tooltip.
   assert.match(src, /orbit&nbsp;rep:/);
   assert.match(src, /stored&nbsp;rep:/);
-  assert.match(src, /contributes 1 to α/);
-  assert.match(src, /does not contribute/);
-  // Branching annotation.
-  assert.match(src, /This orbit branches/);
+  // LaTeX equation rendered via the existing Latex component.
+  assert.match(src, /import Latex from '\.\.\/Latex\.jsx'/);
+  assert.match(src, /<Latex/);
+  // Counts and English explanation cover both filled and empty cells.
+  assert.match(src, /Orbit · Rep contribution/);
+  assert.match(src, /No projection at this cell/);
+  assert.match(src, /writes to this output bin/);
+  assert.match(src, /branching/);
 });
