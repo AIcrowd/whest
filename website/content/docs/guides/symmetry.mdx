@@ -411,8 +411,8 @@ declared symmetry`.
 If you know the asymmetric write is intentional, downgrade first:
 
 ```python
-A_plain = np.asarray(A_sym).view(we.WhestArray)  # plain WhestArray, no symmetry
-A_plain += B_plain                                # works
+A_plain = A_sym.view(we.ndarray)   # zero-copy view as plain WhestArray, no symmetry
+A_plain += B_plain                  # works
 ```
 
 The same guard applies to `__isub__`, `__imul__`, `__itruediv__`,
@@ -442,12 +442,12 @@ repeat of an index applies again (unlike `a[indices] += values` which dedupes).
 On a `SymmetricTensor` this almost certainly breaks symmetry, so whest
 refuses:
 
-```python
+```text
 np.add.at(A_sym, ([0], [1]), 1.0)   # ValueError
 ```
 
-Downgrade with `np.asarray(A_sym).view(we.WhestArray)` first if you really need
-the unbuffered update.
+Downgrade with `A_sym.view(we.ndarray)` first if you really need the unbuffered
+update.
 
 ### `ufunc.outer` produces direct-product symmetry
 
@@ -455,7 +455,7 @@ When both operands are symmetric, the output of `np.<ufunc>.outer(A, B)`
 inherits the **direct product** of the input symmetries — `A`'s symmetry on
 its own axes, `B`'s symmetry on the lifted slots `A.ndim..A.ndim+B.ndim-1`:
 
-```python
+```text
 A = we.symmetrize(we.random.randn(3, 3),
                   symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
 B = we.symmetrize(we.random.randn(2, 2),
@@ -475,7 +475,7 @@ sym = we.SymmetryGroup.symmetric(axes=(0, 1))
 A = we.symmetrize(we.random.randn(4, 4, 4, 4), symmetry=sym)  # axes (0,1) symmetric
 B = we.symmetrize(we.random.randn(4, 4, 4, 4), symmetry=sym)
 
-C = np.tensordot(A, B, axes=((2,), (2,)))
+C = we.tensordot(A, B, axes=((2,), (2,)))
 # A's surviving axes: (0, 1, 3) → S_2 on (0, 1) survives
 # B's surviving axes: (0, 1, 3) → S_2 on (0, 1) survives
 # C: shape (4,4,4,4,4,4), SymmetricTensor with S_2 on (0,1) × S_2 on (3,4)
@@ -493,7 +493,7 @@ inherit the same symmetry as their inputs:
 S = we.symmetrize(we.array([[1.5, 2.5], [2.5, 3.5]]),
                   symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
 
-frac, integer = np.modf(S)   # both SymmetricTensor with the same symmetry
+frac, integer = we.modf(S)   # both SymmetricTensor with the same symmetry
 ```
 
 `out=(o1, o2)` works (per-slot identity is preserved), and `out=(o1, None)`
@@ -516,7 +516,11 @@ import warnings
 deep = we.ones((1,) * 33)   # auto-inferred S_33 symmetry
 with warnings.catch_warnings(record=True) as caught:
     warnings.simplefilter("always")
-    np.add.outer(deep, deep)   # CostFallbackWarning: bailed to dense
+    with we.BudgetContext(flop_budget=int(1e10)):
+        try:
+            we.tensordot(deep, deep, axes=0)   # CostFallbackWarning: bailed to dense
+        except ValueError:
+            pass   # ndim>64 — the warning still fires before numpy refuses
 ```
 
 This is rare in practice — common user tensors have degree ≤ 8 — but high-rank

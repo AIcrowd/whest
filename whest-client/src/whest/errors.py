@@ -54,14 +54,7 @@ class SymmetryLossWarning(WhestWarning):
 
 
 class CostFallbackWarning(WhestWarning):
-    """Warning issued when whest skips its symmetry-aware cost adjustment.
-
-    Surfaces when the output's symmetry group is too large for the
-    placeholder cost model's Burnside enumeration (degree above the
-    per-call threshold). The op runs correctly with the dense cost
-    charged instead. Suppress with
-    ``we.configure(symmetry_warnings=False)``.
-    """
+    """Warning issued when whest skips its symmetry-aware cost adjustment (e.g. ``ufunc.outer`` / ``tensordot`` on a symmetry group whose degree exceeds the per-call Burnside-enumeration threshold). The op runs correctly with the dense cost charged instead. Suppress with ``we.configure(symmetry_warnings=False)``."""
 
 
 class WhestServerError(WhestError):
