@@ -33,3 +33,27 @@ test('ExpressionLevelModal imports from workedExample/ rather than redefining', 
   assert.doesNotMatch(src, /^function WorkedExampleEquation\(/m);
   assert.doesNotMatch(src, /^function WorkedExampleNote/m);
 });
+
+test('WorkedExamplePanel renders three states distinguishable in source', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/WorkedExamplePanel.jsx');
+  assert.match(src, /data-testid="worked-example-panel"/);
+  assert.match(src, /Hover any cell on the left/);
+  assert.match(src, /Worked example/);
+  assert.match(src, /clear pin|× clear/i);
+});
+
+test('WorkedExamplePanel renders mini row preview, projection sketch, and two ledgers', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/WorkedExamplePanel.jsx');
+  assert.match(src, /data-testid="worked-example-row-preview"/);
+  assert.match(src, /data-testid="worked-example-projection"/);
+  assert.match(src, /this Q|THIS Q/);
+  assert.match(src, /other reached|OTHER Q/);
+});
+
+test('WorkedExamplePanel reuses the workedExample/ primitives + Latex', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/WorkedExamplePanel.jsx');
+  // Latex import for the einsum equation
+  assert.match(src, /import Latex from '\.\.\/Latex\.jsx'/);
+  // Pulls helpers from the layout module (labelledTuple, tupleKey)
+  assert.match(src, /from '\.\/orbitRepMatrixLayout\.js'/);
+});
