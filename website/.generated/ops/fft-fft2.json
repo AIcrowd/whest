@@ -291,7 +291,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "we.fft"
+                      "text": "flops.fft"
                     },
                     {
                       "kind": "text",
@@ -322,7 +322,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "we.fft"
+                  "text": "flops.fft"
                 },
                 {
                   "kind": "text",
@@ -617,7 +617,7 @@
               ],
               "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
               "href": "",
-              "label": "we.fft",
+              "label": "flops.fft",
               "original_target": "numpy.fft",
               "role": "",
               "target": "fft",
@@ -768,7 +768,7 @@
               "href": "",
               "kind": "link",
               "target": "fft",
-              "text": "we.fft"
+              "text": "flops.fft"
             },
             {
               "kind": "text",
@@ -787,17 +787,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.mgrid[:5, :5][0]"
+              "text": "a = flops.mgrid[:5, :5][0]"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.fft2(a)"
+              "text": "flops.fft.fft2(a)"
             },
             {
               "kind": "output",
@@ -847,6 +847,7 @@
     }
   ],
   "canonical_name": "fft.fft2",
+  "canonical_path": "numpy/fft/fft2",
   "category": "counted_custom",
   "cost_formula": "5N * ceil(log2(N))",
   "cost_formula_latex": "$5N \\cdot \\lceil\\log_2 N\\rceil$",
@@ -857,22 +858,26 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.mgrid[:5, :5][0]\n\nwe.fft.fft2(a)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.mgrid[:5, :5][0]\n\nflops.fft.fft2(a)",
     "output": "array([[ 50.  +0.j        ,   0.  +0.j        ,   0.  +0.j        , # may vary\n          0.  +0.j        ,   0.  +0.j        ],\n       [-12.5+17.20477401j,   0.  +0.j        ,   0.  +0.j        ,\n          0.  +0.j        ,   0.  +0.j        ],\n       [-12.5 +4.0614962j ,   0.  +0.j        ,   0.  +0.j        ,\n          0.  +0.j        ,   0.  +0.j        ],\n       [-12.5 -4.0614962j ,   0.  +0.j        ,   0.  +0.j        ,\n          0.  +0.j        ,   0.  +0.j        ],\n       [-12.5-17.20477401j,   0.  +0.j        ,   0.  +0.j        ,\n          0.  +0.j        ,   0.  +0.j        ]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-fft2/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.fft2",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L235",
+  "href": "/docs/api/numpy/fft/fft2/",
+  "legacy_href": "/docs/api/ops/fft-fft2/",
   "module": "numpy.fft",
   "name": "fft.fft2",
   "next": {
-    "href": "/docs/api/ops/fft-fftfreq/",
-    "label": "we.fft.fftfreq"
+    "href": "/docs/api/numpy/fft/fftfreq/",
+    "label": "fnp.fft.fftfreq"
   },
   "notes": "2-D complex FFT. Cost: 5*N*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
     "`fft2` is just `fftn` with a different default for `axes`.",
     "The output, analogously to `fft`, contains the term for zero frequency in the low-order corner of the transformed axes, the positive frequency terms in the first half of these axes, the term for the Nyquist frequency in the middle of the axes and the negative frequency terms in the second half of the axes, in order of decreasingly negative frequency.",
-    "See `fftn` for details and a plotting example, and `we.fft` for definitions and conventions used."
+    "See `fftn` for details and a plotting example, and `flops.fft` for definitions and conventions used."
   ],
   "numpy_ref": "np.fft.fft2",
   "parameters": [
@@ -929,7 +934,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `we.fft`). Default is \"backward\".",
+        "Normalization mode (see `flops.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -953,10 +958,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-fft/",
-    "label": "we.fft.fft"
+    "href": "/docs/api/numpy/fft/fft/",
+    "label": "fnp.fft.fft"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.fft2",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.fft2.html",
   "returns": [
     {
@@ -979,7 +985,7 @@
       ],
       "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.html",
       "href": "",
-      "label": "we.fft",
+      "label": "flops.fft",
       "original_target": "numpy.fft",
       "role": "",
       "target": "fft",
@@ -1058,12 +1064,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.fft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
+  "signature": "fnp.fft.fft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
   "slug": "fft-fft2",
   "summary": "Compute the 2-dimensional discrete Fourier Transform.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1013",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.fft2",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L235"
+  "weight": 1.0
 }

@@ -7,8 +7,8 @@ import json
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-RICH_WEIGHTS = REPO_ROOT / "src" / "whest" / "data" / "weights.json"
-DEFAULT_WEIGHTS = REPO_ROOT / "src" / "whest" / "data" / "default_weights.json"
+RICH_WEIGHTS = REPO_ROOT / "src" / "flopscope" / "data" / "weights.json"
+DEFAULT_WEIGHTS = REPO_ROOT / "src" / "flopscope" / "data" / "default_weights.json"
 
 
 def main() -> None:

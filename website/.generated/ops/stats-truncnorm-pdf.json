@@ -9,46 +9,13 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Probability density function at "
-            },
-            {
-              "kind": "emphasis",
-              "text": "x"
-            },
-            {
-              "kind": "text",
-              "text": "."
+              "text": "Evaluate the probability density function."
             }
           ],
           "type": "paragraph"
         }
       ],
       "title": "Summary"
-    },
-    {
-      "blocks": [
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "Equivalent to "
-            },
-            {
-              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.pdf(x, a, b, loc, scale).html",
-              "href": "",
-              "kind": "link",
-              "target": "stats.truncnorm.pdf(x, a, b, loc, scale)",
-              "text": "scipy.stats.truncnorm.pdf(x, a, b, loc, scale)"
-            },
-            {
-              "kind": "text",
-              "text": "."
-            }
-          ],
-          "type": "paragraph"
-        }
-      ],
-      "title": "Extended Summary"
     },
     {
       "blocks": [
@@ -60,7 +27,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Quantiles."
+                      "text": "Points at which to evaluate the density."
                     }
                   ],
                   "type": "paragraph"
@@ -70,7 +37,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Quantiles."
+                  "text": "Points at which to evaluate the density."
                 }
               ],
               "name": "x",
@@ -82,7 +49,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Lower standardised bound."
+                      "text": "Lower standardized bound."
                     }
                   ],
                   "type": "paragraph"
@@ -92,7 +59,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Lower standardised bound."
+                  "text": "Lower standardized bound."
                 }
               ],
               "name": "a",
@@ -104,7 +71,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Upper standardised bound."
+                      "text": "Upper standardized bound."
                     }
                   ],
                   "type": "paragraph"
@@ -114,7 +81,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Upper standardised bound."
+                  "text": "Upper standardized bound."
                 }
               ],
               "name": "b",
@@ -126,7 +93,15 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Mean of the un-truncated normal (default 0)."
+                      "text": "Mean of the underlying normal distribution. Defaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "0"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
@@ -136,7 +111,15 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Mean of the un-truncated normal (default 0)."
+                  "text": "Mean of the underlying normal distribution. Defaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "0"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
               "name": "loc",
@@ -148,7 +131,15 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Standard deviation of the un-truncated normal (default 1)."
+                      "text": "Standard deviation of the underlying normal distribution.\nDefaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "1"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
                     }
                   ],
                   "type": "paragraph"
@@ -158,7 +149,15 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Standard deviation of the un-truncated normal (default 1)."
+                  "text": "Standard deviation of the underlying normal distribution.\nDefaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "1"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
                 }
               ],
               "name": "scale",
@@ -181,10 +180,10 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "PDF evaluated at "
+                      "text": "Probability density evaluated elementwise at "
                     },
                     {
-                      "kind": "emphasis",
+                      "kind": "code",
                       "text": "x"
                     },
                     {
@@ -195,14 +194,14 @@
                   "type": "paragraph"
                 }
               ],
-              "data_type": "WhestArray",
+              "data_type": "FlopscopeArray",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "PDF evaluated at "
+                  "text": "Probability density evaluated elementwise at "
                 },
                 {
-                  "kind": "emphasis",
+                  "kind": "code",
                   "text": "x"
                 },
                 {
@@ -219,9 +218,77 @@
         }
       ],
       "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Equivalent to "
+            },
+            {
+              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.pdf(x, a, b, loc, scale).html",
+              "href": "",
+              "kind": "link",
+              "target": "stats.truncnorm.pdf(x, a, b, loc, scale)",
+              "text": "scipy.stats.truncnorm.pdf(x, a, b, loc, scale)"
+            },
+            {
+              "kind": "text",
+              "text": ".\nFLOP cost: "
+            },
+            {
+              "kind": "code",
+              "text": "1 * numel(x)"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope as flops"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "x = flops.array([-0.5, 0.0, 0.5])"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "flops.round(flops.stats.truncnorm.pdf(x, a=-1.0, b=1.0), 3)"
+            },
+            {
+              "kind": "output",
+              "text": "array([0.516, 0.584, 0.516])"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "stats.truncnorm.pdf",
+  "canonical_path": "stats/truncnorm/pdf",
   "category": "counted_custom",
   "cost_formula": "30n",
   "cost_formula_latex": "$30n$",
@@ -231,76 +298,87 @@
     "unresolved_references": [],
     "unsupported_directives": []
   },
-  "example": null,
-  "href": "/docs/api/ops/stats-truncnorm-pdf/",
-  "module": "whest.stats",
+  "example": {
+    "code": "import flopscope.numpy as fnp\n\nimport flopscope as flops\n\nx = flops.array([-0.5, 0.0, 0.5])\n\nflops.round(flops.stats.truncnorm.pdf(x, a=-1.0, b=1.0), 3)",
+    "output": "array([0.516, 0.584, 0.516])",
+    "source": "derived"
+  },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "flops.stats.truncnorm.pdf",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_truncnorm.py#L50",
+  "href": "/docs/api/stats/truncnorm/pdf/",
+  "legacy_href": "/docs/api/ops/stats-truncnorm-pdf/",
+  "module": "flopscope.stats",
   "name": "stats.truncnorm.pdf",
   "next": {
-    "href": "/docs/api/ops/stats-truncnorm-ppf/",
-    "label": "we.stats.truncnorm.ppf"
+    "href": "/docs/api/stats/truncnorm/ppf/",
+    "label": "flops.stats.truncnorm.ppf"
   },
   "notes": "Truncated normal PDF; cost = numel(input).",
-  "notes_sections": [],
-  "numpy_ref": "np.stats.truncnorm.pdf",
+  "notes_sections": [
+    "Equivalent to ``scipy.stats.truncnorm.pdf(x, a, b, loc, scale)``. FLOP cost: ``1 * numel(x)``."
+  ],
+  "numpy_ref": "scipy.stats.truncnorm.pdf",
   "parameters": [
     {
       "body": [
-        "Quantiles."
+        "Points at which to evaluate the density."
       ],
       "name": "x",
       "type": "array_like"
     },
     {
       "body": [
-        "Lower standardised bound."
+        "Lower standardized bound."
       ],
       "name": "a",
       "type": "float"
     },
     {
       "body": [
-        "Upper standardised bound."
+        "Upper standardized bound."
       ],
       "name": "b",
       "type": "float"
     },
     {
       "body": [
-        "Mean of the un-truncated normal (default 0)."
+        "Mean of the underlying normal distribution. Defaults to ``0``."
       ],
       "name": "loc",
       "type": "float, optional"
     },
     {
       "body": [
-        "Standard deviation of the un-truncated normal (default 1)."
+        "Standard deviation of the underlying normal distribution.",
+        "Defaults to ``1``."
       ],
       "name": "scale",
       "type": "float, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-truncnorm-cdf/",
-    "label": "we.stats.truncnorm.cdf"
+    "href": "/docs/api/stats/truncnorm/cdf/",
+    "label": "flops.stats.truncnorm.cdf"
   },
-  "provenance_label": "Adapted from NumPy docs",
+  "provenance_label": "Adapted from SciPy docs",
+  "provenance_ref": "scipy.stats.truncnorm",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.truncnorm.html",
   "returns": [
     {
       "body": [
-        "PDF evaluated at *x*."
+        "Probability density evaluated elementwise at ``x``."
       ],
       "name": "",
-      "type": "WhestArray"
+      "type": "FlopscopeArray"
     }
   ],
   "see_also": [],
-  "signature": "we.stats.truncnorm.pdf(x, a, b, loc=0, scale=1)",
+  "signature": "flops.stats.truncnorm.pdf(x, a, b, loc=0, scale=1)",
   "slug": "stats-truncnorm-pdf",
-  "summary": "Probability density function at *x*.",
+  "summary": "Evaluate the probability density function.",
+  "upstream_ref_label": "SciPy Ref",
+  "upstream_source_label": "scipy source",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.stats.truncnorm.pdf",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_truncnorm.py#L55"
+  "weight": 16.0
 }

@@ -1,0 +1,58 @@
+{
+  "aliases": [
+    "flops.StepInfo"
+  ],
+  "area": "flopscope",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Per-step diagnostics for a contraction path."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    }
+  ],
+  "canonical_name": "flopscope.StepInfo",
+  "canonical_path": "/docs/api/flopscope/step-info/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.StepInfo",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": null,
+  "flopscope_ref": "flopscope.StepInfo",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_opt_einsum/_contract.py#L47",
+  "href": "/docs/api/flopscope/step-info/",
+  "import_path": "flopscope.StepInfo",
+  "is_operation_cost_leaf": false,
+  "kind": "class",
+  "legacy_href": "/docs/api/flopscope/step-info/",
+  "module": "flopscope._opt_einsum._contract",
+  "name": "StepInfo",
+  "next": null,
+  "notes": "",
+  "notes_sections": [],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [],
+  "previous": null,
+  "returns": [],
+  "schema_version": 1,
+  "see_also": [],
+  "signature": "flopscope.StepInfo(subscript: str, flop_cost: int, input_shapes: list[tuple[int, ...]], output_shape: tuple[int, ...], input_groups: list[flopscope._perm_group.SymmetryGroup | None], output_group: flopscope._perm_group.SymmetryGroup | None, dense_flop_cost: int, symmetry_savings: float, blas_type: str | bool = False, inner_group: flopscope._perm_group.SymmetryGroup | None = None, path_indices: tuple[int, ...] = (), inner_applied: bool = False, merged_subset: frozenset[int] | None = None) -> None",
+  "slug": "flopscope-step-info",
+  "summary": "Per-step diagnostics for a contraction path.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

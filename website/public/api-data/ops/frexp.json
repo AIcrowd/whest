@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/frexp/",
+  "detail_href": "/docs/api/numpy/frexp/",
   "detail_json_href": "/api-data/ops/frexp.json",
   "docs": {
     "sections": [
@@ -434,7 +434,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/frexp",
+                    "href": "/docs/api/numpy/frexp/",
                     "kind": "link",
                     "target": "frexp",
                     "text": "frexp"
@@ -445,8 +445,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ldexp",
-                "label": "we.ldexp",
+                "href": "/docs/api/numpy/ldexp/",
+                "label": "flops.ldexp",
                 "original_target": "ldexp",
                 "role": "",
                 "target": "ldexp",
@@ -479,17 +479,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(9)"
+                "text": "x = flops.arange(9)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y1, y2 = we.frexp(x)"
+                "text": "y1, y2 = flops.frexp(x)"
               },
               {
                 "kind": "input",
@@ -534,20 +534,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.frexp",
     "module": "numpy",
     "name": "frexp",
     "notes": "Decompose x into mantissa and exponent element-wise.",
     "numpy_ref": "np.frexp",
-    "signature": "we.frexp(*args, **kwargs)",
+    "signature": "fnp.frexp(*args, **kwargs)",
     "status": "supported",
     "summary": "Decompose the elements of x into mantissa and twos exponent.",
-    "weight": 1.0,
-    "whest_ref": "we.frexp"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "frexp",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L175"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L178",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

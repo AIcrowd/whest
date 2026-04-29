@@ -390,7 +390,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/ldexp",
+                  "href": "/docs/api/numpy/ldexp/",
                   "kind": "link",
                   "target": "ldexp",
                   "text": "ldexp"
@@ -401,8 +401,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/frexp",
-              "label": "we.frexp",
+              "href": "/docs/api/numpy/frexp/",
+              "label": "flops.frexp",
               "original_target": "frexp",
               "role": "",
               "target": "frexp",
@@ -429,7 +429,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/ldexp",
+              "href": "/docs/api/numpy/ldexp/",
               "kind": "link",
               "target": "ldexp",
               "text": "ldexp"
@@ -440,7 +440,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/frexp",
+              "href": "/docs/api/numpy/frexp/",
               "kind": "link",
               "target": "frexp",
               "text": "frexp"
@@ -470,12 +470,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ldexp(5, we.arange(4))"
+              "text": "flops.ldexp(5, flops.arange(4))"
             },
             {
               "kind": "output",
@@ -489,12 +489,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(6)"
+              "text": "x = flops.arange(6)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ldexp(*we.frexp(x))"
+              "text": "flops.ldexp(*flops.frexp(x))"
             },
             {
               "kind": "output",
@@ -508,6 +508,7 @@
     }
   ],
   "canonical_name": "ldexp",
+  "canonical_path": "numpy/ldexp",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -525,16 +526,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.ldexp(5, we.arange(4))\n\nx = we.arange(6)\n\nwe.ldexp(*we.frexp(x))",
+    "code": "import flopscope.numpy as fnp\n\nflops.ldexp(5, flops.arange(4))\n\nx = flops.arange(6)\n\nflops.ldexp(*flops.frexp(x))",
     "output": "array([ 5., 10., 20., 40.], dtype=float16)\n\narray([ 0.,  1.,  2.,  3.,  4.,  5.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ldexp/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.ldexp",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+  "href": "/docs/api/numpy/ldexp/",
+  "legacy_href": "/docs/api/ops/ldexp/",
   "module": "numpy",
   "name": "ldexp",
   "next": {
-    "href": "/docs/api/ops/left_shift/",
-    "label": "we.left_shift"
+    "href": "/docs/api/numpy/left-shift/",
+    "label": "fnp.left_shift"
   },
   "notes": "Return x1 * 2**x2 element-wise.",
   "notes_sections": [
@@ -591,10 +596,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/lcm/",
-    "label": "we.lcm"
+    "href": "/docs/api/numpy/lcm/",
+    "label": "fnp.lcm"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.ldexp",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ldexp.html",
   "returns": [
     {
@@ -624,7 +630,7 @@
         },
         {
           "external_url": "",
-          "href": "/docs/api/ops/ldexp",
+          "href": "/docs/api/numpy/ldexp/",
           "kind": "link",
           "target": "ldexp",
           "text": "ldexp"
@@ -635,20 +641,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/frexp",
-      "label": "we.frexp",
+      "href": "/docs/api/numpy/frexp/",
+      "label": "flops.frexp",
       "original_target": "frexp",
       "role": "",
       "target": "frexp",
       "unresolved": false
     }
   ],
-  "signature": "we.ldexp(*args, **kwargs)",
+  "signature": "fnp.ldexp(*args, **kwargs)",
   "slug": "ldexp",
   "summary": "Returns x1 * 2**x2, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.ldexp",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+  "weight": 1.0
 }

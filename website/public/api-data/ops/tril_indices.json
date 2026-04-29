@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/tril_indices/",
+  "detail_href": "/docs/api/numpy/tril-indices/",
   "detail_json_href": "/api-data/ops/tril_indices.json",
   "docs": {
     "sections": [
@@ -53,7 +53,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/tril",
+                        "href": "/docs/api/numpy/tril/",
                         "kind": "link",
                         "target": "tril",
                         "text": "tril"
@@ -74,7 +74,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/tril",
+                    "href": "/docs/api/numpy/tril/",
                     "kind": "link",
                     "target": "tril",
                     "text": "tril"
@@ -194,8 +194,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/triu_indices",
-                "label": "we.triu_indices",
+                "href": "/docs/api/numpy/triu-indices/",
+                "label": "flops.triu_indices",
                 "original_target": "triu_indices",
                 "role": "",
                 "target": "triu_indices",
@@ -210,8 +210,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/mask_indices",
-                "label": "we.mask_indices",
+                "href": "/docs/api/numpy/mask-indices/",
+                "label": "flops.mask_indices",
                 "original_target": "mask_indices",
                 "role": "",
                 "target": "mask_indices",
@@ -221,8 +221,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/tril",
-                "label": "we.tril",
+                "href": "/docs/api/numpy/tril/",
+                "label": "flops.tril",
                 "original_target": "tril",
                 "role": "",
                 "target": "tril",
@@ -232,8 +232,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/triu",
-                "label": "we.triu",
+                "href": "/docs/api/numpy/triu/",
+                "label": "flops.triu",
                 "original_target": "triu",
                 "role": "",
                 "target": "triu",
@@ -252,7 +252,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               }
             ],
             "type": "doctest_block"
@@ -271,7 +271,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "il1 = we.tril_indices(4)"
+                "text": "il1 = flops.tril_indices(4)"
               },
               {
                 "kind": "input",
@@ -299,7 +299,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(16).reshape(4, 4)"
+                "text": "a = flops.arange(16).reshape(4, 4)"
               },
               {
                 "kind": "input",
@@ -402,7 +402,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "il2 = we.tril_indices(4, 2)"
+                "text": "il2 = flops.tril_indices(4, 2)"
               },
               {
                 "kind": "input",
@@ -442,20 +442,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.tril_indices",
     "module": "numpy",
     "name": "tril_indices",
     "notes": "Return lower-triangle indices for n x n array.",
     "numpy_ref": "np.tril_indices",
-    "signature": "we.tril_indices(n, k=0, m=None)",
+    "signature": "fnp.tril_indices(n, k=0, m=None)",
     "status": "supported",
     "summary": "Return the indices for the lower-triangle of an (n, m) array.",
-    "weight": 0.0,
-    "whest_ref": "we.tril_indices"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "tril_indices",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L894",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1528"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1593",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L894"
   }
 }

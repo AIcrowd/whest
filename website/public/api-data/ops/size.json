@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/size/",
+  "detail_href": "/docs/api/numpy/size/",
   "detail_json_href": "/api-data/ops/size.json",
   "docs": {
     "sections": [
@@ -118,8 +118,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/shape",
-                "label": "we.shape",
+                "href": "/docs/api/numpy/shape/",
+                "label": "flops.shape",
                 "original_target": "shape",
                 "role": "",
                 "target": "shape",
@@ -170,17 +170,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1,2,3],[4,5,6]])"
+                "text": "a = flops.array([[1,2,3],[4,5,6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.size(a)"
+                "text": "flops.size(a)"
               },
               {
                 "kind": "output",
@@ -189,7 +189,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.size(a,1)"
+                "text": "flops.size(a,1)"
               },
               {
                 "kind": "output",
@@ -198,7 +198,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.size(a,0)"
+                "text": "flops.size(a,0)"
               },
               {
                 "kind": "output",
@@ -216,20 +216,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.size",
     "module": "numpy",
     "name": "size",
     "notes": "Return number of elements in array.",
     "numpy_ref": "np.size",
-    "signature": "we.size(a, axis=None)",
+    "signature": "fnp.size(a, axis=None)",
     "status": "supported",
     "summary": "Return the number of elements along a given axis.",
-    "weight": 0.0,
-    "whest_ref": "we.size"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "size",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3566",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1486"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1551",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3566"
   }
 }

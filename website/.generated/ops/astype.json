@@ -27,7 +27,7 @@
             },
             {
               "kind": "code",
-              "text": "we.ndarray.astype"
+              "text": "flops.ndarray.astype"
             },
             {
               "kind": "text",
@@ -305,12 +305,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr = we.array([1, 2, 3]); arr"
+              "text": "arr = flops.array([1, 2, 3]); arr"
             },
             {
               "kind": "output",
@@ -319,7 +319,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.astype(arr, we.float64)"
+              "text": "flops.astype(arr, flops.float64)"
             },
             {
               "kind": "output",
@@ -342,17 +342,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr = we.array([1, 2, 3])"
+              "text": "arr = flops.array([1, 2, 3])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr_noncpy = we.astype(arr, arr.dtype, copy=False)"
+              "text": "arr_noncpy = flops.astype(arr, arr.dtype, copy=False)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.shares_memory(arr, arr_noncpy)"
+              "text": "flops.shares_memory(arr, arr_noncpy)"
             },
             {
               "kind": "output",
@@ -366,6 +366,7 @@
     }
   ],
   "canonical_name": "astype",
+  "canonical_path": "numpy/astype",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -383,16 +384,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\narr = we.array([1, 2, 3]); arr\n\nwe.astype(arr, we.float64)\n\narr = we.array([1, 2, 3])\n\narr_noncpy = we.astype(arr, arr.dtype, copy=False)\n\nwe.shares_memory(arr, arr_noncpy)",
+    "code": "import flopscope.numpy as fnp\n\narr = flops.array([1, 2, 3]); arr\n\nflops.astype(arr, flops.float64)\n\narr = flops.array([1, 2, 3])\n\narr_noncpy = flops.astype(arr, arr.dtype, copy=False)\n\nflops.shares_memory(arr, arr_noncpy)",
     "output": "array([1, 2, 3])\n\narray([1., 2., 3.])\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/astype/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.astype",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L648",
+  "href": "/docs/api/numpy/astype/",
+  "legacy_href": "/docs/api/ops/astype/",
   "module": "numpy",
   "name": "astype",
   "next": {
-    "href": "/docs/api/ops/atleast_1d/",
-    "label": "we.atleast_1d"
+    "href": "/docs/api/numpy/atleast-1d/",
+    "label": "fnp.atleast_1d"
   },
   "notes": "Cast array to specified type.",
   "notes_sections": [],
@@ -437,10 +442,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/asarray_chkfinite/",
-    "label": "we.asarray_chkfinite"
+    "href": "/docs/api/numpy/asarray-chkfinite/",
+    "label": "fnp.asarray_chkfinite"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.astype",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.astype.html",
   "returns": [
     {
@@ -464,12 +470,11 @@
       "unresolved": true
     }
   ],
-  "signature": "we.astype(x, dtype, /, *, copy=True, device=None)",
+  "signature": "fnp.astype(x, dtype, /, *, copy=True, device=None)",
   "slug": "astype",
   "summary": "Copies an array to a specified data type.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L2618",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.astype",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L586"
+  "weight": 0.0
 }

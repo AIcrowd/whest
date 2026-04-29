@@ -287,7 +287,7 @@
             },
             {
               "kind": "code",
-              "text": "spacing(we.float64(1)) == we.finfo(we.float64).eps"
+              "text": "spacing(flops.float64(1)) == flops.finfo(flops.float64).eps"
             },
             {
               "kind": "text",
@@ -323,12 +323,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.spacing(1) == we.finfo(we.float64).eps"
+              "text": "flops.spacing(1) == flops.finfo(flops.float64).eps"
             },
             {
               "kind": "output",
@@ -342,6 +342,7 @@
     }
   ],
   "canonical_name": "spacing",
+  "canonical_path": "numpy/spacing",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -359,20 +360,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.spacing(1) == we.finfo(we.float64).eps",
+    "code": "import flopscope.numpy as fnp\n\nflops.spacing(1) == flops.finfo(flops.float64).eps",
     "output": "True",
     "source": "derived"
   },
-  "href": "/docs/api/ops/spacing/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.spacing",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+  "href": "/docs/api/numpy/spacing/",
+  "legacy_href": "/docs/api/ops/spacing/",
   "module": "numpy",
   "name": "spacing",
   "next": {
-    "href": "/docs/api/ops/split/",
-    "label": "we.split"
+    "href": "/docs/api/numpy/split/",
+    "label": "fnp.split"
   },
   "notes": "Return ULP spacing for each element.",
   "notes_sections": [
-    "It can be considered as a generalization of EPS: ``spacing(we.float64(1)) == we.finfo(we.float64).eps``, and there should not be any representable number between ``x + spacing(x)`` and x for any finite x.",
+    "It can be considered as a generalization of EPS: ``spacing(flops.float64(1)) == flops.finfo(flops.float64).eps``, and there should not be any representable number between ``x + spacing(x)`` and x for any finite x.",
     "Spacing of +- inf and NaN is NaN."
   ],
   "numpy_ref": "np.spacing",
@@ -416,10 +421,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sort_complex/",
-    "label": "we.sort_complex"
+    "href": "/docs/api/numpy/sort-complex/",
+    "label": "fnp.sort_complex"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.spacing",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.spacing.html",
   "returns": [
     {
@@ -432,12 +438,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.spacing(*args, **kwargs)",
+  "signature": "fnp.spacing(*args, **kwargs)",
   "slug": "spacing",
   "summary": "Return the distance between x and the nearest adjacent number.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.spacing",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 1.0
 }

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/log10/",
+  "detail_href": "/docs/api/numpy/log10/",
   "detail_json_href": "/api-data/ops/log10.json",
   "docs": {
     "sections": [
@@ -357,7 +357,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log10",
+                "href": "/docs/api/numpy/log10/",
                 "kind": "link",
                 "target": "log10",
                 "text": "log10"
@@ -393,7 +393,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log10",
+                "href": "/docs/api/numpy/log10/",
                 "kind": "link",
                 "target": "log10",
                 "text": "log10"
@@ -412,7 +412,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log10",
+                "href": "/docs/api/numpy/log10/",
                 "kind": "link",
                 "target": "log10",
                 "text": "log10"
@@ -474,12 +474,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.log10([1e-15, -3.])"
+                "text": "flops.log10([1e-15, -3.])"
               },
               {
                 "kind": "output",
@@ -497,20 +497,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.log10",
     "module": "numpy",
     "name": "log10",
     "notes": "Element-wise base-10 logarithm.",
     "numpy_ref": "np.log10",
-    "signature": "we.log10(*args, **kwargs)",
+    "signature": "fnp.log10(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the base 10 logarithm of the input array, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.log10"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "log10",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

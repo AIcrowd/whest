@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/add/",
+  "detail_href": "/docs/api/numpy/add/",
   "detail_json_href": "/api-data/ops/add.json",
   "docs": {
     "sections": [
@@ -362,12 +362,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.add(1.0, 4.0)"
+                "text": "flops.add(1.0, 4.0)"
               },
               {
                 "kind": "output",
@@ -376,17 +376,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.arange(9.0).reshape((3, 3))"
+                "text": "x1 = flops.arange(9.0).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.arange(3.0)"
+                "text": "x2 = flops.arange(3.0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.add(x1, x2)"
+                "text": "flops.add(x1, x2)"
               },
               {
                 "kind": "output",
@@ -419,10 +419,10 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/add",
+                "href": "/docs/api/numpy/add/",
                 "kind": "link",
                 "target": "add",
-                "text": "we.add"
+                "text": "flops.add"
               },
               {
                 "kind": "text",
@@ -436,12 +436,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.arange(9.0).reshape((3, 3))"
+                "text": "x1 = flops.arange(9.0).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.arange(3.0)"
+                "text": "x2 = flops.arange(3.0)"
               },
               {
                 "kind": "input",
@@ -472,20 +472,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.add",
     "module": "numpy",
     "name": "add",
     "notes": "Element-wise addition.",
     "numpy_ref": "np.add",
-    "signature": "we.add(*args, **kwargs)",
+    "signature": "fnp.add(*args, **kwargs)",
     "status": "supported",
     "summary": "Add arguments element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.add"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "add",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

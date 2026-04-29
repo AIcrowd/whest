@@ -240,8 +240,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/cumprod",
-              "label": "we.cumprod",
+              "href": "/docs/api/numpy/cumprod/",
+              "label": "flops.cumprod",
               "original_target": "numpy.cumprod",
               "role": "",
               "target": "cumprod",
@@ -256,8 +256,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isnan",
-              "label": "we.isnan",
+              "href": "/docs/api/numpy/isnan/",
+              "label": "flops.isnan",
               "original_target": "isnan",
               "role": "",
               "target": "isnan",
@@ -276,12 +276,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumprod(1)"
+              "text": "flops.nancumprod(1)"
             },
             {
               "kind": "output",
@@ -290,7 +290,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumprod([1])"
+              "text": "flops.nancumprod([1])"
             },
             {
               "kind": "output",
@@ -299,7 +299,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumprod([1, we.nan])"
+              "text": "flops.nancumprod([1, flops.nan])"
             },
             {
               "kind": "output",
@@ -308,12 +308,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 2], [3, we.nan]])"
+              "text": "a = flops.array([[1, 2], [3, flops.nan]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumprod(a)"
+              "text": "flops.nancumprod(a)"
             },
             {
               "kind": "output",
@@ -322,7 +322,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumprod(a, axis=0)"
+              "text": "flops.nancumprod(a, axis=0)"
             },
             {
               "kind": "output",
@@ -335,7 +335,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nancumprod(a, axis=1)"
+              "text": "flops.nancumprod(a, axis=1)"
             },
             {
               "kind": "output",
@@ -353,6 +353,7 @@
     }
   ],
   "canonical_name": "nancumprod",
+  "canonical_path": "numpy/nancumprod",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -363,16 +364,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.nancumprod(1)\n\nwe.nancumprod([1])\n\nwe.nancumprod([1, we.nan])\n\na = we.array([[1, 2], [3, we.nan]])\n\nwe.nancumprod(a)\n\nwe.nancumprod(a, axis=0)\n\nwe.nancumprod(a, axis=1)",
+    "code": "import flopscope.numpy as fnp\n\nflops.nancumprod(1)\n\nflops.nancumprod([1])\n\nflops.nancumprod([1, flops.nan])\n\na = flops.array([[1, 2], [3, flops.nan]])\n\nflops.nancumprod(a)\n\nflops.nancumprod(a, axis=0)\n\nflops.nancumprod(a, axis=1)",
     "output": "array([1])\n\narray([1])\n\narray([1.,  1.])\n\narray([1.,  2.,  6.,  6.])\n\narray([[1.,  2.],\n       [3.,  2.]])\n\narray([[1.,  2.],\n       [3.,  3.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nancumprod/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.nancumprod",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
+  "href": "/docs/api/numpy/nancumprod/",
+  "legacy_href": "/docs/api/ops/nancumprod/",
   "module": "numpy",
   "name": "nancumprod",
   "next": {
-    "href": "/docs/api/ops/nancumsum/",
-    "label": "we.nancumsum"
+    "href": "/docs/api/numpy/nancumsum/",
+    "label": "fnp.nancumsum"
   },
   "notes": "Cumulative product ignoring NaNs.",
   "notes_sections": [],
@@ -415,10 +420,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nanargmin/",
-    "label": "we.nanargmin"
+    "href": "/docs/api/numpy/nanargmin/",
+    "label": "fnp.nanargmin"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nancumprod",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nancumprod.html",
   "returns": [
     {
@@ -440,8 +446,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/cumprod",
-      "label": "we.cumprod",
+      "href": "/docs/api/numpy/cumprod/",
+      "label": "flops.cumprod",
       "original_target": "numpy.cumprod",
       "role": "",
       "target": "cumprod",
@@ -456,20 +462,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isnan",
-      "label": "we.isnan",
+      "href": "/docs/api/numpy/isnan/",
+      "label": "flops.isnan",
       "original_target": "isnan",
       "role": "",
       "target": "isnan",
       "unresolved": false
     }
   ],
-  "signature": "we.nancumprod(a, axis=None, dtype=None, out=None)",
+  "signature": "fnp.nancumprod(a, axis=None, dtype=None, out=None)",
   "slug": "nancumprod",
   "summary": "Return the cumulative product of array elements over a given axis treating Not a Numbers (NaNs) as one.  The cumulative product does not change when NaNs are encountered and leading NaNs are replaced by ones.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L887",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.nancumprod",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L299"
+  "weight": 1.0
 }

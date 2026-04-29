@@ -113,7 +113,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.negative_binomial`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~flops.random.Generator.negative_binomial`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -218,7 +218,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(n, p).size"
+                      "text": "flops.broadcast(n, p).size"
                     },
                     {
                       "kind": "text",
@@ -276,7 +276,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(n, p).size"
+                  "text": "flops.broadcast(n, p).size"
                 },
                 {
                   "kind": "text",
@@ -500,7 +500,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.negative_binomial(1, 0.1, 100000)"
+              "text": "s = flops.random.negative_binomial(1, 0.1, 100000)"
             },
             {
               "kind": "input",
@@ -525,6 +525,7 @@
     }
   ],
   "canonical_name": "random.negative_binomial",
+  "canonical_path": "numpy/random/negative-binomial",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -544,16 +545,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "s = we.random.negative_binomial(1, 0.1, 100000)\n\nfor i in range(1, 11): # doctest: +SKIP\n   probability = sum(s<i) / 100000.\n   print(i, \"wells drilled, probability of one success =\", probability)",
+    "code": "s = flops.random.negative_binomial(1, 0.1, 100000)\n\nfor i in range(1, 11): # doctest: +SKIP\n   probability = sum(s<i) / 100000.\n   print(i, \"wells drilled, probability of one success =\", probability)",
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-negative_binomial/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.negative_binomial",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+  "href": "/docs/api/numpy/random/negative-binomial/",
+  "legacy_href": "/docs/api/ops/random-negative_binomial/",
   "module": "numpy.random",
   "name": "random.negative_binomial",
   "next": {
-    "href": "/docs/api/ops/random-noncentral_chisquare/",
-    "label": "we.random.noncentral_chisquare"
+    "href": "/docs/api/numpy/random/noncentral-chisquare/",
+    "label": "fnp.random.noncentral_chisquare"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -583,17 +588,18 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``n`` and ``p`` are both scalars.",
-        "Otherwise, ``we.broadcast(n, p).size`` samples are drawn."
+        "Otherwise, ``flops.broadcast(n, p).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-multivariate_normal/",
-    "label": "we.random.multivariate_normal"
+    "href": "/docs/api/numpy/random/multivariate-normal/",
+    "label": "fnp.random.multivariate_normal"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.negative_binomial",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.negative_binomial.html",
   "returns": [
     {
@@ -634,12 +640,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.negative_binomial(n, p, size=None)",
+  "signature": "fnp.random.negative_binomial(n, p, size=None)",
   "slug": "random-negative_binomial",
   "summary": "Draw samples from a negative binomial distribution.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.negative_binomial",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

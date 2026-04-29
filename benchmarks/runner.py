@@ -1,4 +1,4 @@
-"""Benchmark runner — CLI orchestrator for whest benchmarks.
+"""Benchmark runner — CLI orchestrator for flopscope benchmarks.
 
 Methodology v2.0
 -----------------
@@ -185,7 +185,7 @@ def _load_known_free_ops() -> set[str]:
     if src_root not in sys.path:
         sys.path.insert(0, src_root)
 
-    from whest._registry import REGISTRY  # type: ignore
+    from flopscope._registry import REGISTRY  # type: ignore
 
     return {name for name, info in REGISTRY.items() if info.get("category") == "free"}
 
@@ -351,7 +351,7 @@ def _enrich_details(
     """
     # -- registry notes ----------------------------------------------------
     try:
-        from whest._registry import REGISTRY
+        from flopscope._registry import REGISTRY
     except ImportError:
         REGISTRY = {}  # type: ignore[assignment]
 
@@ -473,11 +473,11 @@ def run_benchmarks(
     timing_alphas: dict[str, float] = {}
     timing_baseline: float = 0.0
 
-    if mode == "perf" and not os.environ.get("WHEST_SKIP_VALIDATION"):
+    if mode == "perf" and not os.environ.get("FLOPSCOPE_SKIP_VALIDATION"):
         _log("Running timing-mode validation loop ...")
         # Force timing mode for the re-run
-        _orig_env = os.environ.get("WHEST_FORCE_TIMING")
-        os.environ["WHEST_FORCE_TIMING"] = "1"
+        _orig_env = os.environ.get("FLOPSCOPE_FORCE_TIMING")
+        os.environ["FLOPSCOPE_FORCE_TIMING"] = "1"
         try:
             timing_baseline = measure_baseline(dtype=dtype, repeats=repeats)
             timing_alphas, _timing_details = _run_category_loop(
@@ -485,9 +485,9 @@ def run_benchmarks(
             )
         finally:
             if _orig_env is None:
-                os.environ.pop("WHEST_FORCE_TIMING", None)
+                os.environ.pop("FLOPSCOPE_FORCE_TIMING", None)
             else:
-                os.environ["WHEST_FORCE_TIMING"] = _orig_env
+                os.environ["FLOPSCOPE_FORCE_TIMING"] = _orig_env
 
         timing_weights = normalize_weights(timing_alphas, timing_baseline)
         timing_weights = {k: round(v, 4) for k, v in timing_weights.items()}
@@ -535,7 +535,7 @@ def run_benchmarks(
         "baseline_alpha_abs_raw": round(baselines.alpha_abs, 6),
         **baselines.to_dict(),
         "note": (
-            "analytical_FLOPs from whest registry (FMA=1); "
+            "analytical_FLOPs from flopscope registry (FMA=1); "
             "perf_instructions are SIMD-width-weighted "
             "fp_arith_inst_retired counts; "
             "ufunc overhead subtracted per category; "
@@ -590,7 +590,7 @@ def run_benchmarks(
 def main() -> None:
     """CLI entry-point for the benchmark runner."""
     parser = argparse.ArgumentParser(
-        description="Run whest benchmarks and produce FPE weight tables.",
+        description="Run flopscope benchmarks and produce FPE weight tables.",
     )
     parser.add_argument(
         "--dtype",

@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fromiter/",
+  "detail_href": "/docs/api/numpy/fromiter/",
   "detail_json_href": "/api-data/ops/fromiter.json",
   "docs": {
     "sections": [
@@ -235,7 +235,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/fromiter",
+                "href": "/docs/api/numpy/fromiter/",
                 "kind": "link",
                 "target": "fromiter",
                 "text": "fromiter"
@@ -257,7 +257,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -267,7 +267,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fromiter(iterable, float)"
+                "text": "flops.fromiter(iterable, float)"
               },
               {
                 "kind": "output",
@@ -295,7 +295,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fromiter(iterable, dtype=we.dtype((int, 2)))"
+                "text": "flops.fromiter(iterable, dtype=flops.dtype((int, 2)))"
               },
               {
                 "kind": "output",
@@ -329,20 +329,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.fromiter",
     "module": "numpy",
     "name": "fromiter",
     "notes": "Create array from an iterable. Cost: numel(output).",
     "numpy_ref": "np.fromiter",
-    "signature": "we.fromiter(*args, **kwargs)",
+    "signature": "fnp.fromiter(*args, **kwargs)",
     "status": "supported",
     "summary": "Create a new 1-dimensional array from an iterable object.",
-    "weight": 16.0,
-    "whest_ref": "we.fromiter"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "fromiter",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fromiter.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1102"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1167",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.fromiter.html"
   }
 }

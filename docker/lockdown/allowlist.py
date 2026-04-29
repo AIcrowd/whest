@@ -4,7 +4,7 @@ Used by:
 - strip_stdlib.py (build time): keep only these modules on the filesystem
 - sitecustomize.py (runtime): gate __import__ to only allow these modules
 
-Participant packages (whest, pyzmq, msgpack) are always allowed — they
+Participant packages (flopscope, pyzmq, msgpack) are always allowed — they
 live in site-packages, not in the stdlib directory.
 """
 
@@ -20,7 +20,7 @@ PARTICIPANT_MODULES = frozenset({
     "contextlib",
 })
 
-# Modules needed by Python internals, whest-client, pyzmq, or msgpack
+# Modules needed by Python internals, flopscope-client, pyzmq, or msgpack
 INFRASTRUCTURE_MODULES = frozenset({
     # Python startup / core
     "sys",

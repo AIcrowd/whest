@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/fromfunction/",
+  "detail_href": "/docs/api/numpy/fromfunction/",
   "detail_json_href": "/api-data/ops/fromfunction.json",
   "docs": {
     "sections": [
@@ -61,7 +61,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/shape",
+                        "href": "/docs/api/numpy/shape/",
                         "kind": "link",
                         "target": "shape",
                         "text": "shape"
@@ -72,7 +72,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/shape",
+                        "href": "/docs/api/numpy/shape/",
                         "kind": "link",
                         "target": "shape",
                         "text": "shape"
@@ -113,7 +113,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/shape",
+                    "href": "/docs/api/numpy/shape/",
                     "kind": "link",
                     "target": "shape",
                     "text": "shape"
@@ -124,7 +124,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/shape",
+                    "href": "/docs/api/numpy/shape/",
                     "kind": "link",
                     "target": "shape",
                     "text": "shape"
@@ -342,7 +342,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/fromfunction",
+                        "href": "/docs/api/numpy/fromfunction/",
                         "kind": "link",
                         "target": "fromfunction",
                         "text": "fromfunction"
@@ -369,7 +369,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/fromfunction",
+                        "href": "/docs/api/numpy/fromfunction/",
                         "kind": "link",
                         "target": "fromfunction",
                         "text": "fromfunction"
@@ -380,7 +380,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/shape",
+                        "href": "/docs/api/numpy/shape/",
                         "kind": "link",
                         "target": "shape",
                         "text": "shape"
@@ -409,7 +409,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/fromfunction",
+                    "href": "/docs/api/numpy/fromfunction/",
                     "kind": "link",
                     "target": "fromfunction",
                     "text": "fromfunction"
@@ -436,7 +436,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/fromfunction",
+                    "href": "/docs/api/numpy/fromfunction/",
                     "kind": "link",
                     "target": "fromfunction",
                     "text": "fromfunction"
@@ -447,7 +447,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/shape",
+                    "href": "/docs/api/numpy/shape/",
                     "kind": "link",
                     "target": "shape",
                     "text": "shape"
@@ -475,8 +475,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/indices",
-                "label": "we.indices",
+                "href": "/docs/api/numpy/indices/",
+                "label": "flops.indices",
                 "original_target": "indices",
                 "role": "",
                 "target": "indices",
@@ -486,8 +486,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/meshgrid",
-                "label": "we.meshgrid",
+                "href": "/docs/api/numpy/meshgrid/",
+                "label": "flops.meshgrid",
                 "original_target": "meshgrid",
                 "role": "",
                 "target": "meshgrid",
@@ -544,12 +544,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fromfunction(lambda i, j: i, (2, 2), dtype=float)"
+                "text": "flops.fromfunction(lambda i, j: i, (2, 2), dtype=float)"
               },
               {
                 "kind": "output",
@@ -567,7 +567,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fromfunction(lambda i, j: j, (2, 2), dtype=float)"
+                "text": "flops.fromfunction(lambda i, j: j, (2, 2), dtype=float)"
               },
               {
                 "kind": "output",
@@ -585,7 +585,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fromfunction(lambda i, j: i == j, (3, 3), dtype=int)"
+                "text": "flops.fromfunction(lambda i, j: i == j, (3, 3), dtype=int)"
               },
               {
                 "kind": "output",
@@ -607,7 +607,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.fromfunction(lambda i, j: i + j, (3, 3), dtype=int)"
+                "text": "flops.fromfunction(lambda i, j: i + j, (3, 3), dtype=int)"
               },
               {
                 "kind": "output",
@@ -633,20 +633,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.fromfunction",
     "module": "numpy",
     "name": "fromfunction",
     "notes": "Construct array by executing function over each coordinate. Cost: numel(output).",
     "numpy_ref": "np.fromfunction",
-    "signature": "we.fromfunction(function, shape, *, dtype=<class 'float'>, like=None, **kwargs)",
+    "signature": "fnp.fromfunction(function, shape, *, dtype=<class 'float'>, like=None, **kwargs)",
     "status": "supported",
     "summary": "Construct an array by executing a function over each coordinate.",
-    "weight": 1.0,
-    "whest_ref": "we.fromfunction"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "fromfunction",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1847",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1089"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1154",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1847"
   }
 }

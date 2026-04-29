@@ -8,9 +8,9 @@ from math import comb
 
 import numpy as np
 
-import whest as we
-from whest._opt_einsum._contract import contract_path
-from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+import flopscope as we
+from flopscope._opt_einsum._contract import contract_path
+from flopscope._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
 
 
 def multiset(n: int, k: int) -> int:

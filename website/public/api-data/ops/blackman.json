@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/blackman/",
+  "detail_href": "/docs/api/numpy/blackman/",
   "detail_json_href": "/api-data/ops/blackman.json",
   "docs": {
     "sections": [
@@ -105,8 +105,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bartlett",
-                "label": "we.bartlett",
+                "href": "/docs/api/numpy/bartlett/",
+                "label": "flops.bartlett",
                 "original_target": "bartlett",
                 "role": "",
                 "target": "bartlett",
@@ -116,8 +116,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hamming",
-                "label": "we.hamming",
+                "href": "/docs/api/numpy/hamming/",
+                "label": "flops.hamming",
                 "original_target": "hamming",
                 "role": "",
                 "target": "hamming",
@@ -127,8 +127,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hanning",
-                "label": "we.hanning",
+                "href": "/docs/api/numpy/hanning/",
+                "label": "flops.hanning",
                 "original_target": "hanning",
                 "role": "",
                 "target": "hanning",
@@ -138,8 +138,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/kaiser",
-                "label": "we.kaiser",
+                "href": "/docs/api/numpy/kaiser/",
+                "label": "flops.kaiser",
                 "original_target": "kaiser",
                 "role": "",
                 "target": "kaiser",
@@ -210,7 +210,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -220,7 +220,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.blackman(12)"
+                "text": "flops.blackman(12)"
               },
               {
                 "kind": "output",
@@ -255,7 +255,7 @@
             "content_blocks": [
               {
                 "language": "python",
-                "text": "import matplotlib.pyplot as plt\nfrom we.fft import fft, fftshift\nwindow = we.blackman(51)\nplt.plot(window)\nplt.title(\"Blackman window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()  # doctest: +SKIP\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = we.abs(fftshift(A))\nfreq = we.linspace(-0.5, 0.5, len(A))\nwith we.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * we.log10(mag)\nresponse = we.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Blackman window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
+                "text": "import matplotlib.pyplot as plt\nfrom flops.fft import fft, fftshift\nwindow = flops.blackman(51)\nplt.plot(window)\nplt.title(\"Blackman window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()  # doctest: +SKIP\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = flops.abs(fftshift(A))\nfreq = flops.linspace(-0.5, 0.5, len(A))\nwith flops.errstate(divide='ignore', invalid='ignore'):\n    response = 20 * flops.log10(mag)\nresponse = flops.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Blackman window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
                 "type": "literal_block"
               }
             ],
@@ -279,20 +279,20 @@
     "category": "counted_custom",
     "cost_formula": "3n",
     "cost_formula_latex": "$3n$",
-    "module": "whest._window",
+    "flopscope_ref": "fnp.blackman",
+    "module": "flopscope._window",
     "name": "blackman",
     "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
     "numpy_ref": "np.blackman",
-    "signature": "we.blackman(M)",
+    "signature": "fnp.blackman(M)",
     "status": "supported",
     "summary": "Return the Blackman window.",
-    "weight": 16.0,
-    "whest_ref": "we.blackman"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "blackman",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3058",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L64"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L64",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3058"
   }
 }

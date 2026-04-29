@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/permute_dims/",
+  "detail_href": "/docs/api/numpy/permute-dims/",
   "detail_json_href": "/api-data/ops/permute_dims.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "kind": "code",
-                "text": "we.atleast_2d(a).T"
+                "text": "flops.atleast_2d(a).T"
               },
               {
                 "kind": "text",
@@ -35,7 +35,7 @@
               },
               {
                 "kind": "code",
-                "text": "a[:, we.newaxis]"
+                "text": "a[:, flops.newaxis]"
               },
               {
                 "kind": "text",
@@ -228,8 +228,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/moveaxis",
-                "label": "we.moveaxis",
+                "href": "/docs/api/numpy/moveaxis/",
+                "label": "flops.moveaxis",
                 "original_target": "moveaxis",
                 "role": "",
                 "target": "moveaxis",
@@ -244,8 +244,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
-                "label": "we.argsort",
+                "href": "/docs/api/numpy/argsort/",
+                "label": "flops.argsort",
                 "original_target": "argsort",
                 "role": "",
                 "target": "argsort",
@@ -294,12 +294,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 2], [3, 4]])"
+                "text": "a = flops.array([[1, 2], [3, 4]])"
               },
               {
                 "kind": "input",
@@ -317,7 +317,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.transpose(a)"
+                "text": "flops.transpose(a)"
               },
               {
                 "kind": "output",
@@ -335,7 +335,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2, 3, 4])"
+                "text": "a = flops.array([1, 2, 3, 4])"
               },
               {
                 "kind": "input",
@@ -349,7 +349,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.transpose(a)"
+                "text": "flops.transpose(a)"
               },
               {
                 "kind": "output",
@@ -363,12 +363,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.ones((1, 2, 3))"
+                "text": "a = flops.ones((1, 2, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.transpose(a, (1, 0, 2)).shape"
+                "text": "flops.transpose(a, (1, 0, 2)).shape"
               },
               {
                 "kind": "output",
@@ -382,12 +382,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.ones((2, 3, 4, 5))"
+                "text": "a = flops.ones((2, 3, 4, 5))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.transpose(a).shape"
+                "text": "flops.transpose(a).shape"
               },
               {
                 "kind": "output",
@@ -401,12 +401,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.arange(3*4*5).reshape((3, 4, 5))"
+                "text": "a = flops.arange(3*4*5).reshape((3, 4, 5))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.transpose(a, (-1, 0, -2)).shape"
+                "text": "flops.transpose(a, (-1, 0, -2)).shape"
               },
               {
                 "kind": "output",
@@ -424,20 +424,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.permute_dims",
     "module": "numpy",
     "name": "permute_dims",
     "notes": "Permute dimensions (NumPy 2.x array API).",
     "numpy_ref": "np.permute_dims",
-    "signature": "we.permute_dims(a, axes=None)",
+    "signature": "fnp.permute_dims(a, axes=None)",
     "status": "supported",
     "summary": "Returns an array with axes transposed.",
-    "weight": 0.0,
-    "whest_ref": "we.permute_dims"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "permute_dims",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L630",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1317"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1382",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L630"
   }
 }

@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/isrealobj",
+              "href": "/docs/api/numpy/isrealobj/",
               "kind": "link",
               "target": "isrealobj",
               "text": "isrealobj"
@@ -132,8 +132,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/iscomplexobj",
-              "label": "we.iscomplexobj",
+              "href": "/docs/api/numpy/iscomplexobj/",
+              "label": "flops.iscomplexobj",
               "original_target": "iscomplexobj",
               "role": "",
               "target": "iscomplexobj",
@@ -143,8 +143,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isreal",
-              "label": "we.isreal",
+              "href": "/docs/api/numpy/isreal/",
+              "label": "flops.isreal",
               "original_target": "isreal",
               "role": "",
               "target": "isreal",
@@ -172,7 +172,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isrealobj('A string')"
+              "text": "flops.isrealobj('A string')"
             },
             {
               "kind": "output",
@@ -181,7 +181,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isrealobj(False)"
+              "text": "flops.isrealobj(False)"
             },
             {
               "kind": "output",
@@ -190,7 +190,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isrealobj(None)"
+              "text": "flops.isrealobj(None)"
             },
             {
               "kind": "output",
@@ -209,12 +209,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isrealobj(1)"
+              "text": "flops.isrealobj(1)"
             },
             {
               "kind": "output",
@@ -223,7 +223,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isrealobj(1+0j)"
+              "text": "flops.isrealobj(1+0j)"
             },
             {
               "kind": "output",
@@ -232,7 +232,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isrealobj([3, 1+0j, True])"
+              "text": "flops.isrealobj([3, 1+0j, True])"
             },
             {
               "kind": "output",
@@ -246,6 +246,7 @@
     }
   ],
   "canonical_name": "isrealobj",
+  "canonical_path": "numpy/isrealobj",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -256,21 +257,25 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.isrealobj(1)\n\nwe.isrealobj(1+0j)\n\nwe.isrealobj([3, 1+0j, True])",
+    "code": "import flopscope.numpy as fnp\n\nflops.isrealobj(1)\n\nflops.isrealobj(1+0j)\n\nflops.isrealobj([3, 1+0j, True])",
     "output": "True\n\nFalse\n\nFalse",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isrealobj/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.isrealobj",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+  "href": "/docs/api/numpy/isrealobj/",
+  "legacy_href": "/docs/api/ops/isrealobj/",
   "module": "numpy",
   "name": "isrealobj",
   "next": {
-    "href": "/docs/api/ops/isscalar/",
-    "label": "we.isscalar"
+    "href": "/docs/api/numpy/isscalar/",
+    "label": "fnp.isscalar"
   },
   "notes": "Return True if x is a not complex type or array.",
   "notes_sections": [
     "The function is only meant for arrays with numerical values but it accepts all other objects. Since it assumes array input, the return value of other objects may be True.",
-    ">>> we.isrealobj('A string') True >>> we.isrealobj(False) True >>> we.isrealobj(None) True"
+    ">>> flops.isrealobj('A string') True >>> flops.isrealobj(False) True >>> flops.isrealobj(None) True"
   ],
   "numpy_ref": "np.isrealobj",
   "parameters": [
@@ -283,10 +288,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isreal/",
-    "label": "we.isreal"
+    "href": "/docs/api/numpy/isreal/",
+    "label": "fnp.isreal"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.isrealobj",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isrealobj.html",
   "returns": [
     {
@@ -302,8 +308,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/iscomplexobj",
-      "label": "we.iscomplexobj",
+      "href": "/docs/api/numpy/iscomplexobj/",
+      "label": "flops.iscomplexobj",
       "original_target": "iscomplexobj",
       "role": "",
       "target": "iscomplexobj",
@@ -313,20 +319,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isreal",
-      "label": "we.isreal",
+      "href": "/docs/api/numpy/isreal/",
+      "label": "flops.isreal",
       "original_target": "isreal",
       "role": "",
       "target": "isreal",
       "unresolved": false
     }
   ],
-  "signature": "we.isrealobj(x)",
+  "signature": "fnp.isrealobj(x)",
   "slug": "isrealobj",
   "summary": "Return True if x is a not complex type or an array of complex numbers.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L312",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.isrealobj",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 1.0
 }

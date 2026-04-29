@@ -1,0 +1,46 @@
+{
+  "aliases": [
+    "StepInfo",
+    "flops.StepInfo",
+    "flopscope.StepInfo",
+    "fnp.StepInfo",
+    "flopscope.numpy.StepInfo"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Per-step diagnostics for a contraction path."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    }
+  ],
+  "canonical_name": "StepInfo",
+  "canonical_path": "step-info",
+  "display_name": "flops.StepInfo",
+  "href": "/docs/api/step-info/",
+  "import_path": "flops.StepInfo",
+  "kind": "class",
+  "members": [],
+  "module": "flopscope._opt_einsum._contract",
+  "name": "StepInfo",
+  "related_guides": [
+    {
+      "href": "/docs/guides/einsum",
+      "title": "Einsum Guide"
+    }
+  ],
+  "signature": "flops.StepInfo(subscript: str, flop_cost: int, input_shapes: list[tuple[int, ...]], output_shape: tuple[int, ...], input_groups: list[flopscope._perm_group.SymmetryGroup | None], output_group: flopscope._perm_group.SymmetryGroup | None, dense_flop_cost: int, symmetry_savings: float, blas_type: str | bool = False, inner_group: flopscope._perm_group.SymmetryGroup | None = None, path_indices: tuple[int, ...] = (), inner_applied: bool = False, merged_subset: frozenset[int] | None = None) -> None",
+  "slug": "step-info",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_opt_einsum/_contract.py#L47",
+  "status_note": "",
+  "summary": "Per-step diagnostics for a contraction path.",
+  "upstream_source_url": ""
+}

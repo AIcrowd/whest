@@ -354,12 +354,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.subtract(1.0, 4.0)"
+              "text": "flops.subtract(1.0, 4.0)"
             },
             {
               "kind": "output",
@@ -373,17 +373,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.arange(9.0).reshape((3, 3))"
+              "text": "x1 = flops.arange(9.0).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = we.arange(3.0)"
+              "text": "x2 = flops.arange(3.0)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.subtract(x1, x2)"
+              "text": "flops.subtract(x1, x2)"
             },
             {
               "kind": "output",
@@ -416,10 +416,10 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/subtract",
+              "href": "/docs/api/numpy/subtract/",
               "kind": "link",
               "target": "subtract",
-              "text": "we.subtract"
+              "text": "flops.subtract"
             },
             {
               "kind": "text",
@@ -433,12 +433,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.arange(9.0).reshape((3, 3))"
+              "text": "x1 = flops.arange(9.0).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = we.arange(3.0)"
+              "text": "x2 = flops.arange(3.0)"
             },
             {
               "kind": "input",
@@ -465,6 +465,7 @@
     }
   ],
   "canonical_name": "subtract",
+  "canonical_path": "numpy/subtract",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -482,16 +483,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.subtract(1.0, 4.0)\n\nx1 = we.arange(9.0).reshape((3, 3))\n\nx2 = we.arange(3.0)\n\nwe.subtract(x1, x2)\n\nx1 = we.arange(9.0).reshape((3, 3))\n\nx2 = we.arange(3.0)\n\nx1 - x2",
+    "code": "import flopscope.numpy as fnp\n\nflops.subtract(1.0, 4.0)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nflops.subtract(x1, x2)\n\nx1 = flops.arange(9.0).reshape((3, 3))\n\nx2 = flops.arange(3.0)\n\nx1 - x2",
     "output": "-3.0\n\narray([[ 0.,  0.,  0.],\n       [ 3.,  3.,  3.],\n       [ 6.,  6.,  6.]])\n\narray([[0., 0., 0.],\n       [3., 3., 3.],\n       [6., 6., 6.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/subtract/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.subtract",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+  "href": "/docs/api/numpy/subtract/",
+  "legacy_href": "/docs/api/ops/subtract/",
   "module": "numpy",
   "name": "subtract",
   "next": {
-    "href": "/docs/api/ops/sum/",
-    "label": "we.sum"
+    "href": "/docs/api/numpy/sum/",
+    "label": "fnp.sum"
   },
   "notes": "Element-wise subtraction.",
   "notes_sections": [
@@ -540,10 +545,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/std/",
-    "label": "we.std"
+    "href": "/docs/api/numpy/std/",
+    "label": "fnp.std"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.subtract",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.subtract.html",
   "returns": [
     {
@@ -556,12 +562,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.subtract(*args, **kwargs)",
+  "signature": "fnp.subtract(*args, **kwargs)",
   "slug": "subtract",
   "summary": "Subtract arguments, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.subtract",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+  "weight": 1.0
 }

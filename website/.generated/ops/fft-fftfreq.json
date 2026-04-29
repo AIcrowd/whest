@@ -244,17 +244,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "signal = we.array([-2, 8, 6, 4, 1, 0, 3, 5], dtype=float)"
+              "text": "signal = flops.array([-2, 8, 6, 4, 1, 0, 3, 5], dtype=float)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "fourier = we.fft.fft(signal)"
+              "text": "fourier = flops.fft.fft(signal)"
             },
             {
               "kind": "input",
@@ -269,7 +269,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "freq = we.fft.fftfreq(n, d=timestep)"
+              "text": "freq = flops.fft.fftfreq(n, d=timestep)"
             },
             {
               "kind": "input",
@@ -288,6 +288,7 @@
     }
   ],
   "canonical_name": "fft.fftfreq",
+  "canonical_path": "numpy/fft/fftfreq",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -298,16 +299,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nsignal = we.array([-2, 8, 6, 4, 1, 0, 3, 5], dtype=float)\n\nfourier = we.fft.fft(signal)\n\nn = signal.size\n\ntimestep = 0.1\n\nfreq = we.fft.fftfreq(n, d=timestep)\n\nfreq",
+    "code": "import flopscope.numpy as fnp\n\nsignal = flops.array([-2, 8, 6, 4, 1, 0, 3, 5], dtype=float)\n\nfourier = flops.fft.fft(signal)\n\nn = signal.size\n\ntimestep = 0.1\n\nfreq = flops.fft.fftfreq(n, d=timestep)\n\nfreq",
     "output": "array([ 0.  ,  1.25,  2.5 , ..., -3.75, -2.5 , -1.25])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-fftfreq/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.fftfreq",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L11",
+  "href": "/docs/api/numpy/fft/fftfreq/",
+  "legacy_href": "/docs/api/ops/fft-fftfreq/",
   "module": "numpy.fft",
   "name": "fft.fftfreq",
   "next": {
-    "href": "/docs/api/ops/fft-fftn/",
-    "label": "we.fft.fftn"
+    "href": "/docs/api/numpy/fft/fftn/",
+    "label": "fnp.fft.fftn"
   },
   "notes": "FFT sample frequencies. No arithmetic; returns index array.",
   "notes_sections": [],
@@ -339,10 +344,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-fft2/",
-    "label": "we.fft.fft2"
+    "href": "/docs/api/numpy/fft/fft2/",
+    "label": "fnp.fft.fft2"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.fftfreq",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.fftfreq.html",
   "returns": [
     {
@@ -354,12 +360,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.fft.fftfreq(n, d=1.0, device=None)",
+  "signature": "fnp.fft.fftfreq(n, d=1.0, device=None)",
   "slug": "fft-fftfreq",
   "summary": "Return the Discrete Fourier Transform sample frequencies.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L125",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.fftfreq",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_free.py#L11"
+  "weight": 0.0
 }

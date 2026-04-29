@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/stats-norm-ppf/",
+  "detail_href": "/docs/api/stats/norm/ppf/",
   "detail_json_href": "/api-data/ops/stats-norm-ppf.json",
   "docs": {
     "sections": [
@@ -9,46 +9,13 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Percent-point function (inverse CDF) at "
-              },
-              {
-                "kind": "emphasis",
-                "text": "q"
-              },
-              {
-                "kind": "text",
-                "text": "."
+                "text": "Evaluate the percent-point function."
               }
             ],
             "type": "paragraph"
           }
         ],
         "title": "Summary"
-      },
-      {
-        "blocks": [
-          {
-            "inline": [
-              {
-                "kind": "text",
-                "text": "Equivalent to "
-              },
-              {
-                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.ppf(q, loc, scale).html",
-                "href": "",
-                "kind": "link",
-                "target": "stats.norm.ppf(q, loc, scale)",
-                "text": "scipy.stats.norm.ppf(q, loc, scale)"
-              },
-              {
-                "kind": "text",
-                "text": "."
-              }
-            ],
-            "type": "paragraph"
-          }
-        ],
-        "title": "Extended Summary"
       },
       {
         "blocks": [
@@ -60,7 +27,15 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Quantiles in [0, 1]."
+                        "text": "Probabilities in "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "[0, 1]"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
@@ -70,7 +45,15 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Quantiles in [0, 1]."
+                    "text": "Probabilities in "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "[0, 1]"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "q",
@@ -82,7 +65,15 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Mean of the distribution (default 0)."
+                        "text": "Mean of the distribution. Defaults to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "0"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
@@ -92,7 +83,15 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Mean of the distribution (default 0)."
+                    "text": "Mean of the distribution. Defaults to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "0"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "loc",
@@ -104,7 +103,15 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Standard deviation (default 1)."
+                        "text": "Standard deviation of the distribution. Defaults to "
+                      },
+                      {
+                        "kind": "code",
+                        "text": "1"
+                      },
+                      {
+                        "kind": "text",
+                        "text": "."
                       }
                     ],
                     "type": "paragraph"
@@ -114,7 +121,15 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Standard deviation (default 1)."
+                    "text": "Standard deviation of the distribution. Defaults to "
+                  },
+                  {
+                    "kind": "code",
+                    "text": "1"
+                  },
+                  {
+                    "kind": "text",
+                    "text": "."
                   }
                 ],
                 "name": "scale",
@@ -137,10 +152,10 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "PPF evaluated at "
+                        "text": "Quantiles corresponding to "
                       },
                       {
-                        "kind": "emphasis",
+                        "kind": "code",
                         "text": "q"
                       },
                       {
@@ -151,14 +166,14 @@
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "WhestArray",
+                "data_type": "FlopscopeArray",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "PPF evaluated at "
+                    "text": "Quantiles corresponding to "
                   },
                   {
-                    "kind": "emphasis",
+                    "kind": "code",
                     "text": "q"
                   },
                   {
@@ -175,6 +190,73 @@
           }
         ],
         "title": "Returns"
+      },
+      {
+        "blocks": [
+          {
+            "inline": [
+              {
+                "kind": "text",
+                "text": "Equivalent to "
+              },
+              {
+                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.ppf(q, loc, scale).html",
+                "href": "",
+                "kind": "link",
+                "target": "stats.norm.ppf(q, loc, scale)",
+                "text": "scipy.stats.norm.ppf(q, loc, scale)"
+              },
+              {
+                "kind": "text",
+                "text": ".\nFLOP cost: "
+              },
+              {
+                "kind": "code",
+                "text": "1 * numel(q)"
+              },
+              {
+                "kind": "text",
+                "text": "."
+              }
+            ],
+            "type": "paragraph"
+          }
+        ],
+        "title": "Notes"
+      },
+      {
+        "blocks": [
+          {
+            "lines": [
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import flopscope.numpy as fnp"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "import flopscope as flops"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "q = flops.array([0.25, 0.5, 0.75])"
+              },
+              {
+                "kind": "input",
+                "prompt": ">>>",
+                "text": "flops.round(flops.stats.norm.ppf(q), 3)"
+              },
+              {
+                "kind": "output",
+                "text": "array([-0.674,  0.   ,  0.674])"
+              }
+            ],
+            "type": "doctest_block"
+          }
+        ],
+        "title": "Examples"
       }
     ]
   },
@@ -182,20 +264,20 @@
     "category": "counted_custom",
     "cost_formula": "40n",
     "cost_formula_latex": "$40n$",
-    "module": "whest.stats",
+    "flopscope_ref": "flops.stats.norm.ppf",
+    "module": "flopscope.stats",
     "name": "stats.norm.ppf",
     "notes": "Normal PPF (inverse CDF); cost = numel(input).",
-    "numpy_ref": "np.stats.norm.ppf",
-    "signature": "we.stats.norm.ppf(q, loc=0, scale=1)",
+    "numpy_ref": "scipy.stats.norm.ppf",
+    "signature": "flops.stats.norm.ppf(q, loc=0, scale=1)",
     "status": "supported",
-    "summary": "Percent-point function (inverse CDF) at *q*.",
-    "weight": 16.0,
-    "whest_ref": "we.stats.norm.ppf"
+    "summary": "Evaluate the percent-point function.",
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "stats-norm-ppf",
   "source": {
-    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_norm.py#L88"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_norm.py#L103",
+    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html"
   }
 }

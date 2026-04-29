@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/spacing/",
+  "detail_href": "/docs/api/numpy/spacing/",
   "detail_json_href": "/api-data/ops/spacing.json",
   "docs": {
     "sections": [
@@ -287,7 +287,7 @@
               },
               {
                 "kind": "code",
-                "text": "spacing(we.float64(1)) == we.finfo(we.float64).eps"
+                "text": "spacing(flops.float64(1)) == flops.finfo(flops.float64).eps"
               },
               {
                 "kind": "text",
@@ -323,12 +323,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.spacing(1) == we.finfo(we.float64).eps"
+                "text": "flops.spacing(1) == flops.finfo(flops.float64).eps"
               },
               {
                 "kind": "output",
@@ -346,20 +346,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.spacing",
     "module": "numpy",
     "name": "spacing",
     "notes": "Return ULP spacing for each element.",
     "numpy_ref": "np.spacing",
-    "signature": "we.spacing(*args, **kwargs)",
+    "signature": "fnp.spacing(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the distance between x and the nearest adjacent number.",
-    "weight": 1.0,
-    "whest_ref": "we.spacing"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "spacing",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

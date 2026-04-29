@@ -27,10 +27,10 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/diagonal",
+              "href": "/docs/api/numpy/diagonal/",
               "kind": "link",
               "target": "diagonal",
-              "text": "we.diagonal"
+              "text": "flops.diagonal"
             },
             {
               "kind": "text",
@@ -255,8 +255,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/diagonal",
-              "label": "we.diagonal",
+              "href": "/docs/api/numpy/diagonal/",
+              "label": "flops.diagonal",
               "original_target": "diagonal",
               "role": "",
               "target": "diagonal",
@@ -271,8 +271,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/diagflat",
-              "label": "we.diagflat",
+              "href": "/docs/api/numpy/diagflat/",
+              "label": "flops.diagflat",
               "original_target": "diagflat",
               "role": "",
               "target": "diagflat",
@@ -287,8 +287,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/trace",
-              "label": "we.trace",
+              "href": "/docs/api/numpy/trace/",
+              "label": "flops.trace",
               "original_target": "trace",
               "role": "",
               "target": "trace",
@@ -303,8 +303,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/triu",
-              "label": "we.triu",
+              "href": "/docs/api/numpy/triu/",
+              "label": "flops.triu",
               "original_target": "triu",
               "role": "",
               "target": "triu",
@@ -319,8 +319,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/tril",
-              "label": "we.tril",
+              "href": "/docs/api/numpy/tril/",
+              "label": "flops.tril",
               "original_target": "tril",
               "role": "",
               "target": "tril",
@@ -339,12 +339,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(9).reshape((3,3))"
+              "text": "x = flops.arange(9).reshape((3,3))"
             },
             {
               "kind": "input",
@@ -371,7 +371,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.diag(x)"
+              "text": "flops.diag(x)"
             },
             {
               "kind": "output",
@@ -380,7 +380,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.diag(x, k=1)"
+              "text": "flops.diag(x, k=1)"
             },
             {
               "kind": "output",
@@ -389,7 +389,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.diag(x, k=-1)"
+              "text": "flops.diag(x, k=-1)"
             },
             {
               "kind": "output",
@@ -403,7 +403,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.diag(we.diag(x))"
+              "text": "flops.diag(flops.diag(x))"
             },
             {
               "kind": "output",
@@ -425,6 +425,7 @@
     }
   ],
   "canonical_name": "diag",
+  "canonical_path": "numpy/diag",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -435,16 +436,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(9).reshape((3,3))\n\nx\n\nwe.diag(x)\n\nwe.diag(x, k=1)\n\nwe.diag(x, k=-1)\n\nwe.diag(we.diag(x))",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.arange(9).reshape((3,3))\n\nx\n\nflops.diag(x)\n\nflops.diag(x, k=1)\n\nflops.diag(x, k=-1)\n\nflops.diag(flops.diag(x))",
     "output": "array([[0, 1, 2],\n       [3, 4, 5],\n       [6, 7, 8]])\n\narray([0, 4, 8])\n\narray([1, 5])\n\narray([3, 7])\n\narray([[0, 0, 0],\n       [0, 4, 0],\n       [0, 0, 8]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/diag/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.diag",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L149",
+  "href": "/docs/api/numpy/diag/",
+  "legacy_href": "/docs/api/ops/diag/",
   "module": "numpy",
   "name": "diag",
   "next": {
-    "href": "/docs/api/ops/diag_indices/",
-    "label": "we.diag_indices"
+    "href": "/docs/api/numpy/diag-indices/",
+    "label": "fnp.diag_indices"
   },
   "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal).",
   "notes_sections": [],
@@ -470,10 +475,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/delete/",
-    "label": "we.delete"
+    "href": "/docs/api/numpy/delete/",
+    "label": "fnp.delete"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.diag",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.diag.html",
   "returns": [
     {
@@ -494,8 +500,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/diagonal",
-      "label": "we.diagonal",
+      "href": "/docs/api/numpy/diagonal/",
+      "label": "flops.diagonal",
       "original_target": "diagonal",
       "role": "",
       "target": "diagonal",
@@ -510,8 +516,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/diagflat",
-      "label": "we.diagflat",
+      "href": "/docs/api/numpy/diagflat/",
+      "label": "flops.diagflat",
       "original_target": "diagflat",
       "role": "",
       "target": "diagflat",
@@ -526,8 +532,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/trace",
-      "label": "we.trace",
+      "href": "/docs/api/numpy/trace/",
+      "label": "flops.trace",
       "original_target": "trace",
       "role": "",
       "target": "trace",
@@ -542,8 +548,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/triu",
-      "label": "we.triu",
+      "href": "/docs/api/numpy/triu/",
+      "label": "flops.triu",
       "original_target": "triu",
       "role": "",
       "target": "triu",
@@ -558,20 +564,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/tril",
-      "label": "we.tril",
+      "href": "/docs/api/numpy/tril/",
+      "label": "flops.tril",
       "original_target": "tril",
       "role": "",
       "target": "tril",
       "unresolved": false
     }
   ],
-  "signature": "we.diag(v, k=0)",
+  "signature": "fnp.diag(v, k=0)",
   "slug": "diag",
   "summary": "Extract a diagonal or construct a diagonal array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L245",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.diag",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L110"
+  "weight": 4.0
 }

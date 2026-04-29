@@ -299,8 +299,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isinf",
-              "label": "we.isinf",
+              "href": "/docs/api/numpy/isinf/",
+              "label": "flops.isinf",
               "original_target": "isinf",
               "role": "",
               "target": "isinf",
@@ -310,8 +310,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isneginf",
-              "label": "we.isneginf",
+              "href": "/docs/api/numpy/isneginf/",
+              "label": "flops.isneginf",
               "original_target": "isneginf",
               "role": "",
               "target": "isneginf",
@@ -321,8 +321,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isposinf",
-              "label": "we.isposinf",
+              "href": "/docs/api/numpy/isposinf/",
+              "label": "flops.isposinf",
               "original_target": "isposinf",
               "role": "",
               "target": "isposinf",
@@ -332,8 +332,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isnan",
-              "label": "we.isnan",
+              "href": "/docs/api/numpy/isnan/",
+              "label": "flops.isnan",
               "original_target": "isnan",
               "role": "",
               "target": "isnan",
@@ -383,12 +383,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfinite(1)"
+              "text": "flops.isfinite(1)"
             },
             {
               "kind": "output",
@@ -397,7 +397,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfinite(0)"
+              "text": "flops.isfinite(0)"
             },
             {
               "kind": "output",
@@ -406,7 +406,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfinite(we.nan)"
+              "text": "flops.isfinite(flops.nan)"
             },
             {
               "kind": "output",
@@ -415,7 +415,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfinite(we.inf)"
+              "text": "flops.isfinite(flops.inf)"
             },
             {
               "kind": "output",
@@ -424,7 +424,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfinite(-we.inf)"
+              "text": "flops.isfinite(-flops.inf)"
             },
             {
               "kind": "output",
@@ -433,7 +433,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfinite([we.log(-1.),1.,we.log(0)])"
+              "text": "flops.isfinite([flops.log(-1.),1.,flops.log(0)])"
             },
             {
               "kind": "output",
@@ -447,17 +447,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([-we.inf, 0., we.inf])"
+              "text": "x = flops.array([-flops.inf, 0., flops.inf])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.array([2, 2, 2])"
+              "text": "y = flops.array([2, 2, 2])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.isfinite(x, y)"
+              "text": "flops.isfinite(x, y)"
             },
             {
               "kind": "output",
@@ -480,6 +480,7 @@
     }
   ],
   "canonical_name": "isfinite",
+  "canonical_path": "numpy/isfinite",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -497,16 +498,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.isfinite(1)\n\nwe.isfinite(0)\n\nwe.isfinite(we.nan)\n\nwe.isfinite(we.inf)\n\nwe.isfinite(-we.inf)\n\nwe.isfinite([we.log(-1.),1.,we.log(0)])\n\nx = we.array([-we.inf, 0., we.inf])\n\ny = we.array([2, 2, 2])\n\nwe.isfinite(x, y)\n\ny",
+    "code": "import flopscope.numpy as fnp\n\nflops.isfinite(1)\n\nflops.isfinite(0)\n\nflops.isfinite(flops.nan)\n\nflops.isfinite(flops.inf)\n\nflops.isfinite(-flops.inf)\n\nflops.isfinite([flops.log(-1.),1.,flops.log(0)])\n\nx = flops.array([-flops.inf, 0., flops.inf])\n\ny = flops.array([2, 2, 2])\n\nflops.isfinite(x, y)\n\ny",
     "output": "True\n\nTrue\n\nFalse\n\nFalse\n\nFalse\n\narray([False,  True, False])\n\narray([0, 1, 0])\n\narray([0, 1, 0])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/isfinite/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.isfinite",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L682",
+  "href": "/docs/api/numpy/isfinite/",
+  "legacy_href": "/docs/api/ops/isfinite/",
   "module": "numpy",
   "name": "isfinite",
   "next": {
-    "href": "/docs/api/ops/isfortran/",
-    "label": "we.isfortran"
+    "href": "/docs/api/numpy/isfortran/",
+    "label": "fnp.isfortran"
   },
   "notes": "Test for finite values element-wise. Cost: numel(input).",
   "notes_sections": [
@@ -554,10 +559,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isdtype/",
-    "label": "we.isdtype"
+    "href": "/docs/api/numpy/isdtype/",
+    "label": "fnp.isdtype"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.isfinite",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.isfinite.html",
   "returns": [
     {
@@ -575,8 +581,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isinf",
-      "label": "we.isinf",
+      "href": "/docs/api/numpy/isinf/",
+      "label": "flops.isinf",
       "original_target": "isinf",
       "role": "",
       "target": "isinf",
@@ -586,8 +592,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isneginf",
-      "label": "we.isneginf",
+      "href": "/docs/api/numpy/isneginf/",
+      "label": "flops.isneginf",
       "original_target": "isneginf",
       "role": "",
       "target": "isneginf",
@@ -597,8 +603,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isposinf",
-      "label": "we.isposinf",
+      "href": "/docs/api/numpy/isposinf/",
+      "label": "flops.isposinf",
       "original_target": "isposinf",
       "role": "",
       "target": "isposinf",
@@ -608,20 +614,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isnan",
-      "label": "we.isnan",
+      "href": "/docs/api/numpy/isnan/",
+      "label": "flops.isnan",
       "original_target": "isnan",
       "role": "",
       "target": "isnan",
       "unresolved": false
     }
   ],
-  "signature": "we.isfinite(*args, **kwargs)",
+  "signature": "fnp.isfinite(*args, **kwargs)",
   "slug": "isfinite",
   "summary": "Test element-wise for finiteness (not infinity and not Not a Number).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.isfinite",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L620"
+  "weight": 1.0
 }

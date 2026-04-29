@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/sqrt/",
+  "detail_href": "/docs/api/numpy/sqrt/",
   "detail_json_href": "/api-data/ops/sqrt.json",
   "docs": {
     "sections": [
@@ -448,12 +448,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sqrt([1,4,9])"
+                "text": "flops.sqrt([1,4,9])"
               },
               {
                 "kind": "output",
@@ -467,7 +467,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sqrt([4, -1, -3+4J])"
+                "text": "flops.sqrt([4, -1, -3+4J])"
               },
               {
                 "kind": "output",
@@ -481,7 +481,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sqrt([4, -1, we.inf])"
+                "text": "flops.sqrt([4, -1, flops.inf])"
               },
               {
                 "kind": "output",
@@ -499,20 +499,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.sqrt",
     "module": "numpy",
     "name": "sqrt",
     "notes": "Element-wise square root.",
     "numpy_ref": "np.sqrt",
-    "signature": "we.sqrt(*args, **kwargs)",
+    "signature": "fnp.sqrt(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the non-negative square-root of an array, element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.sqrt"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "sqrt",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

@@ -105,8 +105,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/isreal",
-              "label": "we.isreal",
+              "href": "/docs/api/numpy/isreal/",
+              "label": "flops.isreal",
               "original_target": "isreal",
               "role": "",
               "target": "isreal",
@@ -121,8 +121,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/iscomplexobj",
-              "label": "we.iscomplexobj",
+              "href": "/docs/api/numpy/iscomplexobj/",
+              "label": "flops.iscomplexobj",
               "original_target": "iscomplexobj",
               "role": "",
               "target": "iscomplexobj",
@@ -141,12 +141,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])"
+              "text": "flops.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])"
             },
             {
               "kind": "output",
@@ -160,6 +160,7 @@
     }
   ],
   "canonical_name": "iscomplex",
+  "canonical_path": "numpy/iscomplex",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -170,16 +171,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])",
+    "code": "import flopscope.numpy as fnp\n\nflops.iscomplex([1+1j, 1+0j, 4.5, 3, 2, 2j])",
     "output": "array([ True, False, False, False, False,  True])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/iscomplex/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.iscomplex",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+  "href": "/docs/api/numpy/iscomplex/",
+  "legacy_href": "/docs/api/ops/iscomplex/",
   "module": "numpy",
   "name": "iscomplex",
   "next": {
-    "href": "/docs/api/ops/iscomplexobj/",
-    "label": "we.iscomplexobj"
+    "href": "/docs/api/numpy/iscomplexobj/",
+    "label": "fnp.iscomplexobj"
   },
   "notes": "Test if element is complex element-wise.",
   "notes_sections": [],
@@ -194,10 +199,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/isclose/",
-    "label": "we.isclose"
+    "href": "/docs/api/numpy/isclose/",
+    "label": "fnp.isclose"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.iscomplex",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.iscomplex.html",
   "returns": [
     {
@@ -213,8 +219,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/isreal",
-      "label": "we.isreal",
+      "href": "/docs/api/numpy/isreal/",
+      "label": "flops.isreal",
       "original_target": "isreal",
       "role": "",
       "target": "isreal",
@@ -229,20 +235,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/iscomplexobj",
-      "label": "we.iscomplexobj",
+      "href": "/docs/api/numpy/iscomplexobj/",
+      "label": "flops.iscomplexobj",
       "original_target": "iscomplexobj",
       "role": "",
       "target": "iscomplexobj",
       "unresolved": false
     }
   ],
-  "signature": "we.iscomplex(x)",
+  "signature": "fnp.iscomplex(x)",
   "slug": "iscomplex",
   "summary": "Returns a bool array, where True if input element is complex.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L175",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.iscomplex",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 1.0
 }

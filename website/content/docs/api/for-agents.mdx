@@ -2,24 +2,24 @@
 title: "For AI Agents"
 ---
 
-*Use this page if you are an AI coding assistant (or building one) that needs to generate whest code correctly.*
+*Use this page if you are an AI coding assistant (or building one) that needs to generate flopscope code correctly.*
 
 **You will learn:**
 - How to orient yourself with llms.txt, ops.json, per-op JSON, and the cheat sheet
-- The five rules for generating correct whest code
-- How to avoid common mistakes AI agents make with whest
+- The five rules for generating correct flopscope code
+- How to avoid common mistakes AI agents make with flopscope
 
 This page is for AI coding assistants (Claude, Cursor, Copilot, etc.) helping
-users write whest code. It explains what resources are available, how to
+users write flopscope code. It explains what resources are available, how to
 access them, and the key things you must know before generating code.
 
 ---
 
 ## Quick orientation
 
-**whest is NOT NumPy.** It wraps a subset of NumPy with analytical FLOP
+**flopscope is NOT NumPy.** It wraps a subset of NumPy with analytical FLOP
 counting. Every arithmetic operation is charged against a budget. Code that
-works with NumPy may fail or behave differently with whest:
+works with NumPy may fail or behave differently with flopscope:
 
 - All counted operations require an active `BudgetContext`
 - 35 operations are blocked entirely (I/O, config, state)
@@ -38,7 +38,7 @@ works with NumPy may fail or behave differently with whest:
 
 ### How to use llms.txt
 
-If you're an agent encountering whest for the first time:
+If you're an agent encountering flopscope for the first time:
 
 1. Fetch `llms.txt` — this gives you the doc map in ~300 words
 2. Identify which page answers your question from the section descriptions
@@ -67,10 +67,10 @@ payload for one operation:
 {
   "name": "einsum",
   "slug": "einsum",
-  "detail_href": "/docs/api/ops/einsum/",
+  "detail_href": "/docs/api/einsum/",
   "detail_json_href": "/api-data/ops/einsum.json",
   "module": "numpy",
-  "whest_ref": "we.einsum",
+  "flopscope_ref": "fnp.einsum",
   "numpy_ref": "np.einsum",
   "category": "counted_custom",
   "cost_formula": "product of all index dims (FMA=1)",
@@ -88,7 +88,7 @@ Use this to:
 - Check if an operation is supported: filter by `"blocked": false`
 - Get the cost formula for a specific operation: look up by `name`
 - List all free operations: filter by `"free": true`
-- Map between NumPy and whest calls: use `numpy_ref` and `whest_ref`
+- Map between NumPy and flopscope calls: use `numpy_ref` and `flopscope_ref`
 - Jump to the standalone page or full payload: use `detail_href` and `detail_json_href`
 
 ### How to use per-op JSON
@@ -108,7 +108,7 @@ For example:
 These payloads include:
 
 - top-level metadata (`slug`, `detail_href`, `detail_json_href`)
-- source links (`source.whest`, `source.numpy`)
+- source links (`source.flopscope`, `source.numpy`)
 - operation metadata (`op.*`)
 - normalized doc sections under `docs.sections[]`
 
@@ -116,26 +116,29 @@ Fetch the per-op JSON when you need the full signature, summary, notes,
 parameter list, returns, or examples for a single function without loading the
 entire reference surface.
 
-## Five rules for generating whest code
+## Five rules for generating flopscope code
 
 **1. A global default budget is active automatically — use `BudgetContext` for control.**
 
-A global default budget auto-activates when whest is imported, so quick
+A global default budget auto-activates when flopscope is imported, so quick
 scripts work without any setup. For precise budget control and namespacing,
 use an explicit `BudgetContext`. Both forms are valid:
 
 ```python
+import flopscope as flops
+import flopscope.numpy as fnp
+
 # Quick work — global default handles budget tracking automatically
-result = we.einsum('ij,jk->ik', A, B)
+result = fnp.einsum('ij,jk->ik', A, B)
 
 # Recommended for budget control and namespacing
-with we.BudgetContext(flop_budget=10**8) as budget:
-    result = we.einsum('ij,jk->ik', A, B)
+with flops.BudgetContext(flop_budget=10**8) as budget:
+    result = fnp.einsum('ij,jk->ik', A, B)
 
 # Decorator form for functions
-@we.BudgetContext(flop_budget=10**8)
+@flops.BudgetContext(flop_budget=10**8)
 def my_forward_pass(x):
-    return we.einsum('ij,j->i', W, x)
+    return fnp.einsum('ij,j->i', W, x)
 ```
 
 **2. Know what's free and what's counted.**
@@ -155,16 +158,16 @@ Blocked: `save`, `load`, `geterr`, `seterr`, and 28 others. These raise
 
 When in doubt, check `ops.json`, the relevant `/api-data/ops/<slug>.json`, or the [API Reference](/docs/api/).
 
-**3. Use `we.flops.*` to estimate costs before running.**
+**3. Use `flops.accounting.*` to estimate costs before running.**
 
 ```python
-cost = we.flops.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
-cost = we.flops.svd_cost(m=256, n=256, k=10)
+cost = flops.accounting.einsum_cost('ij,jk->ik', shapes=[(256, 256), (256, 256)])
+cost = flops.accounting.svd_cost(m=256, n=256, k=10)
 ```
 
 These are pure functions — no `BudgetContext` needed.
 
-**4. Use `we.einsum` as the primary computation primitive.**
+**4. Use `fnp.einsum` as the primary computation primitive.**
 
 Most linear algebra can be expressed as einsum. The cost is simply the
 product of all index dimensions — each FMA (fused multiply-add) counts
@@ -177,7 +180,7 @@ In competition evaluation, submissions run under both a FLOP budget and a
 wall-clock time limit. Test locally with:
 
 ```python
-with we.BudgetContext(flop_budget=10**9, wall_time_limit_s=5.0) as budget:
+with flops.BudgetContext(flop_budget=10**9, wall_time_limit_s=5.0) as budget:
     # your code — must complete within 5 seconds
     ...
 ```
@@ -188,20 +191,20 @@ configured limit for diagnostics.
 
 **6. Exploit symmetry for cost savings.**
 
-- Use `symmetry=` with explicit groups for symmetric outputs:
-  `we.einsum('ki,kj->ij', X, X, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))`
-- Wrap known-symmetric matrices with `we.as_symmetric(data, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))`
+- Use `symmetric_axes` for symmetric outputs:
+  `fnp.einsum('ki,kj->ij', X, X, symmetric_axes=[(0, 1)])`
+- Wrap known-symmetric matrices with `flops.as_symmetric(data, symmetric_axes=(0, 1))`
   for automatic savings in downstream ops
 
 ## Common mistakes agents make
 
 | Mistake | What happens | Fix |
 |---------|-------------|-----|
-| Using `np.einsum` instead of `we.einsum` | FLOPs not counted, budget not checked | Always use `we.*` for operations you want tracked |
+| Using `np.einsum` instead of `fnp.einsum` | FLOPs not counted, budget not checked | Always use `fnp.*` for counted NumPy-like operations |
 | Skipping `BudgetContext` entirely | No error (global default handles it), but budget is harder to track and namespace | Use an explicit `BudgetContext` for any work you want to measure or label |
 | Assuming `array`, `linspace`, `concatenate`, `where` are free | Underestimates budget usage — each charges `numel(output)` FLOPs | These are custom-cost ops, not free; check the cheat sheet |
 | Assuming `sort` is free | Underestimates budget usage | `sort` costs `n*ceil(log2(n))` per slice — check the cheat sheet |
-| Using `we.save()` or `we.load()` | `AttributeError` — blocked | Use `numpy` directly for I/O |
+| Using `fnp.save()` or `fnp.load()` | `AttributeError` — blocked | Use `numpy` directly for I/O |
 | Nesting two explicit `BudgetContext` blocks | `RuntimeError` | Use a single explicit context; nesting with the global default is fine |
 | Ignoring `wall_time_limit_s` in testing | `TimeExhaustedError` in competition | Test with a time limit locally to catch slow code early |
 

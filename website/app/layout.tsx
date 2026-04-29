@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Four type registers from the Whest Design System.
+// Four type registers from the Flopscope Design System.
 // - App (UI chrome, buttons, dense panels):      Inter
 // - Editorial / display (wordmark, h1–h3):        Newsreader (variable opsz 6–72)
 // - Paper (long-form body prose ≥ 15px):          Source Serif 4 (variable opsz 8–60)

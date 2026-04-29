@@ -156,8 +156,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/gcd",
-              "label": "we.gcd",
+              "href": "/docs/api/numpy/gcd/",
+              "label": "flops.gcd",
               "original_target": "gcd",
               "role": "",
               "target": "gcd",
@@ -176,12 +176,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.lcm(12, 20)"
+              "text": "flops.lcm(12, 20)"
             },
             {
               "kind": "output",
@@ -190,7 +190,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.lcm.reduce([3, 12, 20])"
+              "text": "flops.lcm.reduce([3, 12, 20])"
             },
             {
               "kind": "output",
@@ -199,7 +199,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.lcm.reduce([40, 12, 20])"
+              "text": "flops.lcm.reduce([40, 12, 20])"
             },
             {
               "kind": "output",
@@ -208,7 +208,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.lcm(we.arange(6), 20)"
+              "text": "flops.lcm(flops.arange(6), 20)"
             },
             {
               "kind": "output",
@@ -222,6 +222,7 @@
     }
   ],
   "canonical_name": "lcm",
+  "canonical_path": "numpy/lcm",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -232,16 +233,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.lcm(12, 20)\n\nwe.lcm.reduce([3, 12, 20])\n\nwe.lcm.reduce([40, 12, 20])\n\nwe.lcm(we.arange(6), 20)",
+    "code": "import flopscope.numpy as fnp\n\nflops.lcm(12, 20)\n\nflops.lcm.reduce([3, 12, 20])\n\nflops.lcm.reduce([40, 12, 20])\n\nflops.lcm(flops.arange(6), 20)",
     "output": "60\n\n60\n\n120\n\narray([ 0, 20, 20, 60, 20, 20])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/lcm/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.lcm",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+  "href": "/docs/api/numpy/lcm/",
+  "legacy_href": "/docs/api/ops/lcm/",
   "module": "numpy",
   "name": "lcm",
   "next": {
-    "href": "/docs/api/ops/ldexp/",
-    "label": "we.ldexp"
+    "href": "/docs/api/numpy/ldexp/",
+    "label": "fnp.ldexp"
   },
   "notes": "Element-wise least common multiple.",
   "notes_sections": [],
@@ -258,10 +263,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/kron/",
-    "label": "we.kron"
+    "href": "/docs/api/numpy/kron/",
+    "label": "fnp.kron"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.lcm",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.lcm.html",
   "returns": [
     {
@@ -283,20 +289,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/gcd",
-      "label": "we.gcd",
+      "href": "/docs/api/numpy/gcd/",
+      "label": "flops.gcd",
       "original_target": "gcd",
       "role": "",
       "target": "gcd",
       "unresolved": false
     }
   ],
-  "signature": "we.lcm(*args, **kwargs)",
+  "signature": "fnp.lcm(*args, **kwargs)",
   "slug": "lcm",
   "summary": "Returns the lowest common multiple of ``|x1|`` and ``|x2|``",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.lcm",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+  "weight": 16.0
 }

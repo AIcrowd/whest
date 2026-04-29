@@ -118,8 +118,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/shape",
-              "label": "we.shape",
+              "href": "/docs/api/numpy/shape/",
+              "label": "flops.shape",
               "original_target": "shape",
               "role": "",
               "target": "shape",
@@ -170,17 +170,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1,2,3],[4,5,6]])"
+              "text": "a = flops.array([[1,2,3],[4,5,6]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.size(a)"
+              "text": "flops.size(a)"
             },
             {
               "kind": "output",
@@ -189,7 +189,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.size(a,1)"
+              "text": "flops.size(a,1)"
             },
             {
               "kind": "output",
@@ -198,7 +198,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.size(a,0)"
+              "text": "flops.size(a,0)"
             },
             {
               "kind": "output",
@@ -212,6 +212,7 @@
     }
   ],
   "canonical_name": "size",
+  "canonical_path": "numpy/size",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -235,16 +236,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[1,2,3],[4,5,6]])\n\nwe.size(a)\n\nwe.size(a,1)\n\nwe.size(a,0)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[1,2,3],[4,5,6]])\n\nflops.size(a)\n\nflops.size(a,1)\n\nflops.size(a,0)",
     "output": "6\n\n3\n\n2",
     "source": "derived"
   },
-  "href": "/docs/api/ops/size/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.size",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1551",
+  "href": "/docs/api/numpy/size/",
+  "legacy_href": "/docs/api/ops/size/",
   "module": "numpy",
   "name": "size",
   "next": {
-    "href": "/docs/api/ops/sort/",
-    "label": "we.sort"
+    "href": "/docs/api/numpy/sort/",
+    "label": "fnp.sort"
   },
   "notes": "Return number of elements in array.",
   "notes_sections": [],
@@ -267,10 +272,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/sinh/",
-    "label": "we.sinh"
+    "href": "/docs/api/numpy/sinh/",
+    "label": "fnp.sinh"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.size",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.size.html",
   "returns": [
     {
@@ -291,8 +297,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/shape",
-      "label": "we.shape",
+      "href": "/docs/api/numpy/shape/",
+      "label": "flops.shape",
       "original_target": "shape",
       "role": "",
       "target": "shape",
@@ -331,12 +337,11 @@
       "unresolved": true
     }
   ],
-  "signature": "we.size(a, axis=None)",
+  "signature": "fnp.size(a, axis=None)",
   "slug": "size",
   "summary": "Return the number of elements along a given axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3566",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.size",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1486"
+  "weight": 0.0
 }

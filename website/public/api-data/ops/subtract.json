@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/subtract/",
+  "detail_href": "/docs/api/numpy/subtract/",
   "detail_json_href": "/api-data/ops/subtract.json",
   "docs": {
     "sections": [
@@ -354,12 +354,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.subtract(1.0, 4.0)"
+                "text": "flops.subtract(1.0, 4.0)"
               },
               {
                 "kind": "output",
@@ -373,17 +373,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.arange(9.0).reshape((3, 3))"
+                "text": "x1 = flops.arange(9.0).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.arange(3.0)"
+                "text": "x2 = flops.arange(3.0)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.subtract(x1, x2)"
+                "text": "flops.subtract(x1, x2)"
               },
               {
                 "kind": "output",
@@ -416,10 +416,10 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/subtract",
+                "href": "/docs/api/numpy/subtract/",
                 "kind": "link",
                 "target": "subtract",
-                "text": "we.subtract"
+                "text": "flops.subtract"
               },
               {
                 "kind": "text",
@@ -433,12 +433,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x1 = we.arange(9.0).reshape((3, 3))"
+                "text": "x1 = flops.arange(9.0).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x2 = we.arange(3.0)"
+                "text": "x2 = flops.arange(3.0)"
               },
               {
                 "kind": "input",
@@ -469,20 +469,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.subtract",
     "module": "numpy",
     "name": "subtract",
     "notes": "Element-wise subtraction.",
     "numpy_ref": "np.subtract",
-    "signature": "we.subtract(*args, **kwargs)",
+    "signature": "fnp.subtract(*args, **kwargs)",
     "status": "supported",
     "summary": "Subtract arguments, element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.subtract"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "subtract",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

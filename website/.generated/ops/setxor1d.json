@@ -126,22 +126,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([1, 2, 3, 2, 4])"
+              "text": "a = flops.array([1, 2, 3, 2, 4])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array([2, 3, 5, 7, 5])"
+              "text": "b = flops.array([2, 3, 5, 7, 5])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.setxor1d(a,b)"
+              "text": "flops.setxor1d(a,b)"
             },
             {
               "kind": "output",
@@ -155,6 +155,7 @@
     }
   ],
   "canonical_name": "setxor1d",
+  "canonical_path": "numpy/setxor1d",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -165,16 +166,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([1, 2, 3, 2, 4])\n\nb = we.array([2, 3, 5, 7, 5])\n\nwe.setxor1d(a,b)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([1, 2, 3, 2, 4])\n\nb = flops.array([2, 3, 5, 7, 5])\n\nflops.setxor1d(a,b)",
     "output": "array([1, 4, 5, 7])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/setxor1d/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.setxor1d",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L461",
+  "href": "/docs/api/numpy/setxor1d/",
+  "legacy_href": "/docs/api/ops/setxor1d/",
   "module": "numpy",
   "name": "setxor1d",
   "next": {
-    "href": "/docs/api/ops/shape/",
-    "label": "we.shape"
+    "href": "/docs/api/numpy/shape/",
+    "label": "fnp.shape"
   },
   "notes": "Symmetric set difference; cost = (n+m)*ceil(log2(n+m)).",
   "notes_sections": [],
@@ -197,10 +202,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/setdiff1d/",
-    "label": "we.setdiff1d"
+    "href": "/docs/api/numpy/setdiff1d/",
+    "label": "fnp.setdiff1d"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.setxor1d",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.setxor1d.html",
   "returns": [
     {
@@ -213,12 +219,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.setxor1d(ar1, ar2, assume_unique=False)",
+  "signature": "fnp.setxor1d(ar1, ar2, assume_unique=False)",
   "slug": "setxor1d",
   "summary": "Find the set exclusive-or of two arrays.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L713",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.setxor1d",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L461"
+  "weight": 1.0
 }

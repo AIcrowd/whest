@@ -1,0 +1,214 @@
+{
+  "aliases": [
+    "flops.accounting.matrix_power_cost"
+  ],
+  "area": "accounting",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost of matrix power A**k."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of columns in the input matrix."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of columns in the input matrix."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Target rank or number of singular components to estimate."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Target rank or number of singular components to estimate."
+                }
+              ],
+              "name": "k",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This helper multiplies the analytical FLOP count by the active weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "flopscope._weights"
+            },
+            {
+              "kind": "text",
+              "text": " and then applies "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " so public estimates match budget deductions."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Uses exponentiation by repeated squaring. For $k < 0$, adds $n^3$ for\nthe initial matrix inversion."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flopscope.accounting.matrix_power_cost",
+  "canonical_path": "/docs/api/accounting/matrix-power-cost/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.accounting.matrix_power_cost",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": null,
+  "flopscope_ref": "flopscope.accounting.matrix_power_cost",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L81",
+  "href": "/docs/api/accounting/matrix-power-cost/",
+  "import_path": "flopscope.accounting.matrix_power_cost",
+  "is_operation_cost_leaf": false,
+  "kind": "function",
+  "legacy_href": "/docs/api/accounting/matrix-power-cost/",
+  "module": "flopscope.numpy.linalg._compound",
+  "name": "matrix_power_cost",
+  "next": null,
+  "notes": "",
+  "notes_sections": [
+    "This helper multiplies the analytical FLOP count by the active weight from ``flopscope._weights`` and then applies ``int(...)`` so public estimates match budget deductions.",
+    "Uses exponentiation by repeated squaring. For $k < 0$, adds $n^3$ for the initial matrix inversion."
+  ],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [
+    {
+      "body": [
+        "Number of columns in the input matrix."
+      ],
+      "name": "n",
+      "type": "int"
+    },
+    {
+      "body": [
+        "Target rank or number of singular components to estimate."
+      ],
+      "name": "k",
+      "type": "int"
+    }
+  ],
+  "previous": null,
+  "returns": [
+    {
+      "body": [
+        "Weighted public cost estimate, floored to match runtime accounting."
+      ],
+      "name": "",
+      "type": "int"
+    }
+  ],
+  "schema_version": 1,
+  "see_also": [],
+  "signature": "flopscope.accounting.matrix_power_cost(n: 'int', k: 'int') -> 'int'",
+  "slug": "flopscope-accounting-matrix-power-cost",
+  "summary": "Weighted FLOP cost of matrix power A**k.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

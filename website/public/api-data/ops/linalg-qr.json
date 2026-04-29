@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-qr/",
+  "detail_href": "/docs/api/numpy/linalg/qr/",
   "detail_json_href": "/api-data/ops/linalg-qr.json",
   "docs": {
     "sections": [
@@ -259,7 +259,7 @@
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "ndarrays of we.double or we.cdouble, optional",
+                "data_type": "ndarrays of flops.double or flops.cdouble, optional",
                 "inline": [
                   {
                     "kind": "text",
@@ -454,7 +454,7 @@
               },
               {
                 "kind": "text",
-                "text": " default.\nThe 'raw' option was added so that LAPACK routines that can multiply\narrays by q using the Householder reflectors can be used. Note that in\nthis case the returned arrays are of type we.double or we.cdouble and\nthe h array is transposed to be FORTRAN compatible.  No routines using\nthe 'raw' return are currently exposed by numpy, but some are available\nin lapack_lite and just await the necessary work."
+                "text": " default.\nThe 'raw' option was added so that LAPACK routines that can multiply\narrays by q using the Householder reflectors can be used. Note that in\nthis case the returned arrays are of type flops.double or flops.cdouble and\nthe h array is transposed to be FORTRAN compatible.  No routines using\nthe 'raw' return are currently exposed by numpy, but some are available\nin lapack_lite and just await the necessary work."
               }
             ],
             "type": "paragraph"
@@ -469,12 +469,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng()"
+                "text": "rng = flops.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -484,12 +484,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "Q, R = we.linalg.qr(a)"
+                "text": "Q, R = flops.linalg.qr(a)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(a, we.dot(Q, R))  # a does equal QR"
+                "text": "flops.allclose(a, flops.dot(Q, R))  # a does equal QR"
               },
               {
                 "kind": "output",
@@ -498,12 +498,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "R2 = we.linalg.qr(a, mode='r')"
+                "text": "R2 = flops.linalg.qr(a, mode='r')"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(R, R2)  # mode='r' returns the same R as mode='full'"
+                "text": "flops.allclose(R, R2)  # mode='r' returns the same R as mode='full'"
               },
               {
                 "kind": "output",
@@ -512,12 +512,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input"
+                "text": "a = flops.random.normal(size=(3, 2, 2)) # Stack of 2 x 2 matrices as input"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "Q, R = we.linalg.qr(a)"
+                "text": "Q, R = flops.linalg.qr(a)"
               },
               {
                 "kind": "input",
@@ -540,7 +540,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(a, we.matmul(Q, R))"
+                "text": "flops.allclose(a, flops.matmul(Q, R))"
               },
               {
                 "kind": "output",
@@ -642,7 +642,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "A = we.array([[0, 1], [1, 1], [1, 1], [2, 1]])"
+                "text": "A = flops.array([[0, 1], [1, 1], [1, 1], [2, 1]])"
               },
               {
                 "kind": "input",
@@ -668,22 +668,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([1, 2, 2, 3])"
+                "text": "b = flops.array([1, 2, 2, 3])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "Q, R = we.linalg.qr(A)"
+                "text": "Q, R = flops.linalg.qr(A)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "p = we.dot(Q.T, b)"
+                "text": "p = flops.dot(Q.T, b)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.dot(we.linalg.inv(R), p)"
+                "text": "flops.dot(flops.linalg.inv(R), p)"
               },
               {
                 "kind": "output",
@@ -701,20 +701,20 @@
     "category": "counted_custom",
     "cost_formula": "m * n * min(m,n)",
     "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
+    "flopscope_ref": "fnp.linalg.qr",
     "module": "numpy.linalg",
     "name": "linalg.qr",
     "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
     "numpy_ref": "np.linalg.qr",
-    "signature": "we.linalg.qr(a, mode='reduced')",
+    "signature": "fnp.linalg.qr(a, mode='reduced')",
     "status": "supported",
     "summary": "Compute the qr factorization of a matrix.",
-    "weight": 4.0,
-    "whest_ref": "we.linalg.qr"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "linalg-qr",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L928",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L78"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L78",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L928"
   }
 }

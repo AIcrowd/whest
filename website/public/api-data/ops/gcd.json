@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/gcd/",
+  "detail_href": "/docs/api/numpy/gcd/",
   "detail_json_href": "/api-data/ops/gcd.json",
   "docs": {
     "sections": [
@@ -156,8 +156,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/lcm",
-                "label": "we.lcm",
+                "href": "/docs/api/numpy/lcm/",
+                "label": "flops.lcm",
                 "original_target": "lcm",
                 "role": "",
                 "target": "lcm",
@@ -176,12 +176,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gcd(12, 20)"
+                "text": "flops.gcd(12, 20)"
               },
               {
                 "kind": "output",
@@ -190,7 +190,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gcd.reduce([15, 25, 35])"
+                "text": "flops.gcd.reduce([15, 25, 35])"
               },
               {
                 "kind": "output",
@@ -199,7 +199,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.gcd(we.arange(6), 20)"
+                "text": "flops.gcd(flops.arange(6), 20)"
               },
               {
                 "kind": "output",
@@ -217,20 +217,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.gcd",
     "module": "numpy",
     "name": "gcd",
     "notes": "Element-wise greatest common divisor.",
     "numpy_ref": "np.gcd",
-    "signature": "we.gcd(*args, **kwargs)",
+    "signature": "fnp.gcd(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the greatest common divisor of ``|x1|`` and ``|x2|``",
-    "weight": 16.0,
-    "whest_ref": "we.gcd"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "gcd",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

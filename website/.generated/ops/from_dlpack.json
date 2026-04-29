@@ -317,7 +317,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.from_dlpack(x)  # doctest: +SKIP"
+              "text": "y = flops.from_dlpack(x)  # doctest: +SKIP"
             }
           ],
           "type": "doctest_block"
@@ -327,6 +327,7 @@
     }
   ],
   "canonical_name": "from_dlpack",
+  "canonical_path": "numpy/from-dlpack",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -356,16 +357,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import torch  # doctest: +SKIP\n\nx = torch.arange(10)  # doctest: +SKIP\n\ny = we.from_dlpack(x)  # doctest: +SKIP",
+    "code": "import torch  # doctest: +SKIP\n\nx = torch.arange(10)  # doctest: +SKIP\n\ny = flops.from_dlpack(x)  # doctest: +SKIP",
     "output": "",
     "source": "derived"
   },
-  "href": "/docs/api/ops/from_dlpack/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.from_dlpack",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1115",
+  "href": "/docs/api/numpy/from-dlpack/",
+  "legacy_href": "/docs/api/ops/from_dlpack/",
   "module": "numpy",
   "name": "from_dlpack",
   "next": {
-    "href": "/docs/api/ops/frombuffer/",
-    "label": "we.frombuffer"
+    "href": "/docs/api/numpy/frombuffer/",
+    "label": "fnp.frombuffer"
   },
   "notes": "Create ndarray from DLPack object (zero-copy). Cost: numel(output).",
   "notes_sections": [],
@@ -403,10 +408,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/frexp/",
-    "label": "we.frexp"
+    "href": "/docs/api/numpy/frexp/",
+    "label": "fnp.frexp"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.from_dlpack",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.from_dlpack.html",
   "returns": [
     {
@@ -416,12 +422,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.from_dlpack(*args, **kwargs)",
+  "signature": "fnp.from_dlpack(*args, **kwargs)",
   "slug": "from_dlpack",
   "summary": "Create a NumPy array from an object implementing the ``__dlpack__`` protocol. Generally, the returned NumPy array is a view of the input object. See [1]_ and [2]_ for more details.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.from_dlpack",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1050"
+  "weight": 0.0
 }

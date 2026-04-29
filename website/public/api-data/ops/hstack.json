@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/hstack/",
+  "detail_href": "/docs/api/numpy/hstack/",
   "detail_json_href": "/api-data/ops/hstack.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/hsplit",
+                "href": "/docs/api/numpy/hsplit/",
                 "kind": "link",
                 "target": "hsplit",
                 "text": "hsplit"
@@ -47,7 +47,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
+                "href": "/docs/api/numpy/concatenate/",
                 "kind": "link",
                 "target": "concatenate",
                 "text": "concatenate"
@@ -58,7 +58,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/stack",
+                "href": "/docs/api/numpy/stack/",
                 "kind": "link",
                 "target": "stack",
                 "text": "stack"
@@ -69,7 +69,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/block",
+                "href": "/docs/api/numpy/block/",
                 "kind": "link",
                 "target": "block",
                 "text": "block"
@@ -243,8 +243,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/concatenate",
-                "label": "we.concatenate",
+                "href": "/docs/api/numpy/concatenate/",
+                "label": "flops.concatenate",
                 "original_target": "concatenate",
                 "role": "",
                 "target": "concatenate",
@@ -259,8 +259,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/stack",
-                "label": "we.stack",
+                "href": "/docs/api/numpy/stack/",
+                "label": "flops.stack",
                 "original_target": "stack",
                 "role": "",
                 "target": "stack",
@@ -275,8 +275,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/block",
-                "label": "we.block",
+                "href": "/docs/api/numpy/block/",
+                "label": "flops.block",
                 "original_target": "block",
                 "role": "",
                 "target": "block",
@@ -291,8 +291,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/vstack",
-                "label": "we.vstack",
+                "href": "/docs/api/numpy/vstack/",
+                "label": "flops.vstack",
                 "original_target": "vstack",
                 "role": "",
                 "target": "vstack",
@@ -307,8 +307,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/dstack",
-                "label": "we.dstack",
+                "href": "/docs/api/numpy/dstack/",
+                "label": "flops.dstack",
                 "original_target": "dstack",
                 "role": "",
                 "target": "dstack",
@@ -323,8 +323,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/column_stack",
-                "label": "we.column_stack",
+                "href": "/docs/api/numpy/column-stack/",
+                "label": "flops.column_stack",
                 "original_target": "column_stack",
                 "role": "",
                 "target": "column_stack",
@@ -339,8 +339,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/hsplit",
-                "label": "we.hsplit",
+                "href": "/docs/api/numpy/hsplit/",
+                "label": "flops.hsplit",
                 "original_target": "hsplit",
                 "role": "",
                 "target": "hsplit",
@@ -355,8 +355,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/unstack",
-                "label": "we.unstack",
+                "href": "/docs/api/numpy/unstack/",
+                "label": "flops.unstack",
                 "original_target": "unstack",
                 "role": "",
                 "target": "unstack",
@@ -375,22 +375,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array((1,2,3))"
+                "text": "a = flops.array((1,2,3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array((4,5,6))"
+                "text": "b = flops.array((4,5,6))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.hstack((a,b))"
+                "text": "flops.hstack((a,b))"
               },
               {
                 "kind": "output",
@@ -399,17 +399,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1],[2],[3]])"
+                "text": "a = flops.array([[1],[2],[3]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "b = we.array([[4],[5],[6]])"
+                "text": "b = flops.array([[4],[5],[6]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.hstack((a,b))"
+                "text": "flops.hstack((a,b))"
               },
               {
                 "kind": "output",
@@ -435,20 +435,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.hstack",
     "module": "numpy",
     "name": "hstack",
     "notes": "Stack arrays horizontally.",
     "numpy_ref": "np.hstack",
-    "signature": "we.hstack(tup, *, dtype=None, casting='same_kind')",
+    "signature": "fnp.hstack(tup, *, dtype=None, casting='same_kind')",
     "status": "supported",
     "summary": "Stack arrays in sequence horizontally (column wise).",
-    "weight": 0.0,
-    "whest_ref": "we.hstack"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "hstack",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L295",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L338"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L393",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/shape_base.py#L295"
   }
 }

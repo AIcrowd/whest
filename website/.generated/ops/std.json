@@ -268,7 +268,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/std",
+                      "href": "/docs/api/numpy/std/",
                       "kind": "link",
                       "target": "std",
                       "text": "std"
@@ -521,8 +521,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/var",
-              "label": "we.var",
+              "href": "/docs/api/numpy/var/",
+              "label": "flops.var",
               "original_target": "var",
               "role": "",
               "target": "var",
@@ -532,8 +532,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/mean",
-              "label": "we.mean",
+              "href": "/docs/api/numpy/mean/",
+              "label": "flops.mean",
               "original_target": "mean",
               "role": "",
               "target": "mean",
@@ -543,8 +543,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanmean",
-              "label": "we.nanmean",
+              "href": "/docs/api/numpy/nanmean/",
+              "label": "flops.nanmean",
               "original_target": "nanmean",
               "role": "",
               "target": "nanmean",
@@ -554,8 +554,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanstd",
-              "label": "we.nanstd",
+              "href": "/docs/api/numpy/nanstd/",
+              "label": "flops.nanstd",
               "original_target": "nanstd",
               "role": "",
               "target": "nanstd",
@@ -565,8 +565,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/nanvar",
-              "label": "we.nanvar",
+              "href": "/docs/api/numpy/nanvar/",
+              "label": "flops.nanvar",
               "original_target": "nanvar",
               "role": "",
               "target": "nanvar",
@@ -607,7 +607,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/mean",
+              "href": "/docs/api/numpy/mean/",
               "kind": "link",
               "target": "mean",
               "text": "mean"
@@ -752,7 +752,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/std",
+              "href": "/docs/api/numpy/std/",
               "kind": "link",
               "target": "std",
               "text": "std"
@@ -791,17 +791,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 2], [3, 4]])"
+              "text": "a = flops.array([[1, 2], [3, 4]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.std(a)"
+              "text": "flops.std(a)"
             },
             {
               "kind": "output",
@@ -810,7 +810,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.std(a, axis=0)"
+              "text": "flops.std(a, axis=0)"
             },
             {
               "kind": "output",
@@ -819,7 +819,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.std(a, axis=1)"
+              "text": "flops.std(a, axis=1)"
             },
             {
               "kind": "output",
@@ -842,7 +842,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.zeros((2, 512*512), dtype=we.float32)"
+              "text": "a = flops.zeros((2, 512*512), dtype=flops.float32)"
             },
             {
               "kind": "input",
@@ -857,11 +857,11 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.std(a)"
+              "text": "flops.std(a)"
             },
             {
               "kind": "output",
-              "text": "we.float32(0.45000005)"
+              "text": "flops.float32(0.45000005)"
             }
           ],
           "type": "doctest_block"
@@ -880,7 +880,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.std(a, dtype=we.float64)"
+              "text": "flops.std(a, dtype=flops.float64)"
             },
             {
               "kind": "output",
@@ -903,12 +903,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])"
+              "text": "a = flops.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.std(a)"
+              "text": "flops.std(a)"
             },
             {
               "kind": "output",
@@ -917,7 +917,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.std(a, where=[[True], [True], [False]])"
+              "text": "flops.std(a, where=[[True], [True], [False]])"
             },
             {
               "kind": "output",
@@ -940,7 +940,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -950,12 +950,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])"
+              "text": "a = flops.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "mean = we.mean(a, axis=1, keepdims=True)"
+              "text": "mean = flops.mean(a, axis=1, keepdims=True)"
             },
             {
               "kind": "input",
@@ -975,12 +975,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "t1 = timeit(\"std = we.std(a, axis=1, mean=mean)\", globals=g, number=n)"
+              "text": "t1 = timeit(\"std = flops.std(a, axis=1, mean=mean)\", globals=g, number=n)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "t2 = timeit(\"std = we.std(a, axis=1)\", globals=g, number=n)"
+              "text": "t2 = timeit(\"std = flops.std(a, axis=1)\", globals=g, number=n)"
             },
             {
               "kind": "input",
@@ -1003,6 +1003,7 @@
     }
   ],
   "canonical_name": "std",
+  "canonical_path": "numpy/std",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -1013,16 +1014,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array([[1, 2], [3, 4]])\n\nwe.std(a)\n\nwe.std(a, axis=0)\n\nwe.std(a, axis=1)\n\na = we.zeros((2, 512*512), dtype=we.float32)\n\na[0, :] = 1.0\n\na[1, :] = 0.1\n\nwe.std(a)\n\nwe.std(a, dtype=we.float64)\n\na = we.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nwe.std(a)\n\nwe.std(a, where=[[True], [True], [False]])\n\nimport whest as we\n\nfrom timeit import timeit\n\na = we.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nmean = we.mean(a, axis=1, keepdims=True)\n\ng = globals()\n\nn = 10000\n\nt1 = timeit(\"std = we.std(a, axis=1, mean=mean)\", globals=g, number=n)\n\nt2 = timeit(\"std = we.std(a, axis=1)\", globals=g, number=n)\n\nprint(f'Percentage execution time saved {100*(t2-t1)/t2:.0f}%')",
-    "output": "1.1180339887498949 # may vary\n\narray([1.,  1.])\n\narray([0.5,  0.5])\n\nwe.float32(0.45000005)\n\n0.44999999925494177 # may vary\n\n2.614064523559687 # may vary\n\n2.0\n\n#doctest: +SKIP\nPercentage execution time saved 30%",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array([[1, 2], [3, 4]])\n\nflops.std(a)\n\nflops.std(a, axis=0)\n\nflops.std(a, axis=1)\n\na = flops.zeros((2, 512*512), dtype=flops.float32)\n\na[0, :] = 1.0\n\na[1, :] = 0.1\n\nflops.std(a)\n\nflops.std(a, dtype=flops.float64)\n\na = flops.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nflops.std(a)\n\nflops.std(a, where=[[True], [True], [False]])\n\nimport flopscope.numpy as fnp\n\nfrom timeit import timeit\n\na = flops.array([[14, 8, 11, 10], [7, 9, 10, 11], [10, 15, 5, 10]])\n\nmean = flops.mean(a, axis=1, keepdims=True)\n\ng = globals()\n\nn = 10000\n\nt1 = timeit(\"std = flops.std(a, axis=1, mean=mean)\", globals=g, number=n)\n\nt2 = timeit(\"std = flops.std(a, axis=1)\", globals=g, number=n)\n\nprint(f'Percentage execution time saved {100*(t2-t1)/t2:.0f}%')",
+    "output": "1.1180339887498949 # may vary\n\narray([1.,  1.])\n\narray([0.5,  0.5])\n\nflops.float32(0.45000005)\n\n0.44999999925494177 # may vary\n\n2.614064523559687 # may vary\n\n2.0\n\n#doctest: +SKIP\nPercentage execution time saved 30%",
     "source": "derived"
   },
-  "href": "/docs/api/ops/std/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.std",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
+  "href": "/docs/api/numpy/std/",
+  "legacy_href": "/docs/api/ops/std/",
   "module": "numpy",
   "name": "std",
   "next": {
-    "href": "/docs/api/ops/subtract/",
-    "label": "we.subtract"
+    "href": "/docs/api/numpy/subtract/",
+    "label": "fnp.subtract"
   },
   "notes": "Standard deviation; cost_multiplier=2 (two passes).",
   "notes_sections": [
@@ -1104,7 +1109,7 @@
     {
       "body": [
         "Elements to include in the standard deviation.",
-        "See `~we.ufunc.reduce` for details.",
+        "See `~flops.ufunc.reduce` for details.",
         "",
         ".. versionadded:: 1.20.0"
       ],
@@ -1135,10 +1140,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/stats-uniform-ppf/",
-    "label": "we.stats.uniform.ppf"
+    "href": "/docs/api/stats/uniform/ppf/",
+    "label": "flops.stats.uniform.ppf"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.std",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.std.html",
   "returns": [
     {
@@ -1155,8 +1161,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/var",
-      "label": "we.var",
+      "href": "/docs/api/numpy/var/",
+      "label": "flops.var",
       "original_target": "var",
       "role": "",
       "target": "var",
@@ -1166,8 +1172,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/mean",
-      "label": "we.mean",
+      "href": "/docs/api/numpy/mean/",
+      "label": "flops.mean",
       "original_target": "mean",
       "role": "",
       "target": "mean",
@@ -1177,8 +1183,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanmean",
-      "label": "we.nanmean",
+      "href": "/docs/api/numpy/nanmean/",
+      "label": "flops.nanmean",
       "original_target": "nanmean",
       "role": "",
       "target": "nanmean",
@@ -1188,8 +1194,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanstd",
-      "label": "we.nanstd",
+      "href": "/docs/api/numpy/nanstd/",
+      "label": "flops.nanstd",
       "original_target": "nanstd",
       "role": "",
       "target": "nanstd",
@@ -1199,8 +1205,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/nanvar",
-      "label": "we.nanvar",
+      "href": "/docs/api/numpy/nanvar/",
+      "label": "flops.nanvar",
       "original_target": "nanvar",
       "role": "",
       "target": "nanvar",
@@ -1218,12 +1224,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.std(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
+  "signature": "fnp.std(a, axis=None, dtype=None, out=None, ddof=0, keepdims=<no value>, *, where=<no value>, mean=<no value>, correction=<no value>)",
   "slug": "std",
   "summary": "Compute the standard deviation along the specified axis.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3869",
-  "weight": 2.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.std",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L299"
+  "weight": 2.0
 }

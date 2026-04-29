@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/log/",
+  "detail_href": "/docs/api/numpy/log/",
   "detail_json_href": "/api-data/ops/log.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log",
+                "href": "/docs/api/numpy/log/",
                 "kind": "link",
                 "target": "log",
                 "text": "log"
@@ -326,8 +326,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/log10",
-                "label": "we.log10",
+                "href": "/docs/api/numpy/log10/",
+                "label": "flops.log10",
                 "original_target": "log10",
                 "role": "",
                 "target": "log10",
@@ -337,8 +337,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/log2",
-                "label": "we.log2",
+                "href": "/docs/api/numpy/log2/",
+                "label": "flops.log2",
                 "original_target": "log2",
                 "role": "",
                 "target": "log2",
@@ -348,8 +348,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/log1p",
-                "label": "we.log1p",
+                "href": "/docs/api/numpy/log1p/",
+                "label": "flops.log1p",
                 "original_target": "log1p",
                 "role": "",
                 "target": "log1p",
@@ -431,7 +431,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log",
+                "href": "/docs/api/numpy/log/",
                 "kind": "link",
                 "target": "log",
                 "text": "log"
@@ -467,7 +467,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log",
+                "href": "/docs/api/numpy/log/",
                 "kind": "link",
                 "target": "log",
                 "text": "log"
@@ -486,7 +486,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/log",
+                "href": "/docs/api/numpy/log/",
                 "kind": "link",
                 "target": "log",
                 "text": "log"
@@ -548,12 +548,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.log([1, we.e, we.e**2, 0])"
+                "text": "flops.log([1, flops.e, flops.e**2, 0])"
               },
               {
                 "kind": "output",
@@ -571,20 +571,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.log",
     "module": "numpy",
     "name": "log",
     "notes": "Element-wise natural logarithm.",
     "numpy_ref": "np.log",
-    "signature": "we.log(*args, **kwargs)",
+    "signature": "fnp.log(*args, **kwargs)",
     "status": "supported",
     "summary": "Natural logarithm, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.log"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "log",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

@@ -1,22 +1,22 @@
-"""Tests for whest error classes — message formatting invariants."""
+"""Tests for flopscope error classes — message formatting invariants."""
 
 from __future__ import annotations
 
 import pytest
 
-from whest.errors import (
+from flopscope.errors import (
     BudgetExhaustedError,
+    FlopscopeError,
+    FlopscopeWarning,
     NoBudgetContextError,
     SymmetryError,
     TimeExhaustedError,
     UnsupportedFunctionError,
-    WhestError,
-    WhestWarning,
 )
 
 
-def test_budget_exhausted_error_is_whest_error():
-    with pytest.raises(WhestError):
+def test_budget_exhausted_error_is_flopscope_error():
+    with pytest.raises(FlopscopeError):
         raise BudgetExhaustedError("einsum", flop_cost=100, flops_remaining=50)
 
 
@@ -30,8 +30,8 @@ def test_budget_exhausted_error_attributes():
     assert "50" in str(err)
 
 
-def test_no_budget_context_error_is_whest_error():
-    with pytest.raises(WhestError):
+def test_no_budget_context_error_is_flopscope_error():
+    with pytest.raises(FlopscopeError):
         raise NoBudgetContextError()
 
 
@@ -48,24 +48,25 @@ def test_symmetry_error_attributes():
 
 
 def test_error_docs_links_use_hosted_fallback(monkeypatch):
-    monkeypatch.delenv("WHEST_DOCS_ROOT", raising=False)
+    monkeypatch.delenv("FLOPSCOPE_DOCS_ROOT", raising=False)
 
-    assert "https://aicrowd.github.io/whest/docs/guides/budget-planning" in str(
+    assert "https://aicrowd.github.io/flopscope/docs/guides/budget-planning" in str(
         BudgetExhaustedError("einsum", flop_cost=100, flops_remaining=50)
     )
-    assert "https://aicrowd.github.io/whest/docs/guides/budget-planning" in str(
+    assert "https://aicrowd.github.io/flopscope/docs/guides/budget-planning" in str(
         TimeExhaustedError("matmul", elapsed_s=1.5, limit_s=1.0)
     )
-    assert "https://aicrowd.github.io/whest/docs/getting-started/competition" in str(
-        NoBudgetContextError()
+    assert (
+        "https://aicrowd.github.io/flopscope/docs/getting-started/competition"
+        in str(NoBudgetContextError())
     )
-    assert "https://aicrowd.github.io/whest/docs/guides/symmetry" in str(
+    assert "https://aicrowd.github.io/flopscope/docs/guides/symmetry" in str(
         SymmetryError(axes=(0, 1), max_deviation=0.5)
     )
 
 
 def test_error_docs_links_use_env_override(monkeypatch):
-    monkeypatch.setenv("WHEST_DOCS_ROOT", "http://localhost:3000/docs")
+    monkeypatch.setenv("FLOPSCOPE_DOCS_ROOT", "http://localhost:3000/docs")
 
     assert "http://localhost:3000/docs/guides/budget-planning" in str(
         BudgetExhaustedError("einsum", flop_cost=100, flops_remaining=50)
@@ -82,7 +83,7 @@ def test_error_docs_links_use_env_override(monkeypatch):
 
 
 def test_error_docs_links_normalize_trailing_slash(monkeypatch):
-    monkeypatch.setenv("WHEST_DOCS_ROOT", "http://localhost:3000/docs/")
+    monkeypatch.setenv("FLOPSCOPE_DOCS_ROOT", "http://localhost:3000/docs/")
 
     assert "http://localhost:3000/docs/guides/budget-planning" in str(
         TimeExhaustedError("matmul", elapsed_s=1.5, limit_s=1.0)
@@ -93,15 +94,15 @@ def test_error_docs_links_normalize_trailing_slash(monkeypatch):
 
 
 def test_error_docs_links_blank_env_uses_hosted_fallback(monkeypatch):
-    monkeypatch.setenv("WHEST_DOCS_ROOT", "   ")
+    monkeypatch.setenv("FLOPSCOPE_DOCS_ROOT", "   ")
 
-    assert "https://aicrowd.github.io/whest/docs/guides/budget-planning" in str(
+    assert "https://aicrowd.github.io/flopscope/docs/guides/budget-planning" in str(
         BudgetExhaustedError("einsum", flop_cost=100, flops_remaining=50)
     )
 
 
-def test_whest_warning_is_warning():
-    assert issubclass(WhestWarning, UserWarning)
+def test_flopscope_warning_is_warning():
+    assert issubclass(FlopscopeWarning, UserWarning)
 
 
 def test_min_version_message_unchanged():
@@ -135,4 +136,4 @@ def test_neither_version_set():
     err = UnsupportedFunctionError("some_op")
     msg = str(err)
     assert "some_op" in msg
-    assert "not supported by whest" in msg
+    assert "not supported by flopscope" in msg

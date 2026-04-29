@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/lexsort/",
+  "detail_href": "/docs/api/numpy/lexsort/",
   "detail_json_href": "/api-data/ops/lexsort.json",
   "docs": {
     "sections": [
@@ -212,8 +212,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
-                "label": "we.argsort",
+                "href": "/docs/api/numpy/argsort/",
+                "label": "flops.argsort",
                 "original_target": "argsort",
                 "role": "",
                 "target": "argsort",
@@ -244,8 +244,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/sort",
-                "label": "we.sort",
+                "href": "/docs/api/numpy/sort/",
+                "label": "flops.sort",
                 "original_target": "sort",
                 "role": "",
                 "target": "sort",
@@ -273,7 +273,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -288,7 +288,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ind = we.lexsort((first_names, surnames))"
+                "text": "ind = flops.lexsort((first_names, surnames))"
               },
               {
                 "kind": "input",
@@ -356,7 +356,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ind = we.lexsort((b, a))  # Sort by `a`, then by `b`"
+                "text": "ind = flops.lexsort((b, a))  # Sort by `a`, then by `b`"
               },
               {
                 "kind": "input",
@@ -387,7 +387,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "kind": "link",
                 "target": "argsort",
                 "text": "argsort"
@@ -404,7 +404,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.argsort((b, a), kind='stable')"
+                "text": "flops.argsort((b, a), kind='stable')"
               },
               {
                 "kind": "output",
@@ -425,7 +425,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/argsort",
+                "href": "/docs/api/numpy/argsort/",
                 "kind": "link",
                 "target": "argsort",
                 "text": "argsort"
@@ -442,17 +442,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array([(ai, bi) for ai, bi in zip(a, b)],"
+                "text": "x = flops.array([(ai, bi) for ai, bi in zip(a, b)],"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "dtype = we.dtype([('x', int), ('y', int)]))"
+                "text": "dtype = flops.dtype([('x', int), ('y', int)]))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.argsort(x)  # or we.argsort(x, order=('x', 'y'))"
+                "text": "flops.argsort(x)  # or flops.argsort(x, order=('x', 'y'))"
               },
               {
                 "kind": "output",
@@ -483,17 +483,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = we.asarray([b, a])"
+                "text": "arr = flops.asarray([b, a])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ind2 = we.lexsort(arr)"
+                "text": "ind2 = flops.lexsort(arr)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.testing.assert_equal(ind2, ind)"
+                "text": "flops.testing.assert_equal(ind2, ind)"
               }
             ],
             "type": "doctest_block"
@@ -560,12 +560,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.testing.assert_equal(we.lexsort(arr, axis=0),"
+                "text": "flops.testing.assert_equal(flops.lexsort(arr, axis=0),"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "we.lexsort(arr, axis=-1))"
+                "text": "flops.lexsort(arr, axis=-1))"
               }
             ],
             "type": "doctest_block"
@@ -578,7 +578,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/lexsort",
+                "href": "/docs/api/numpy/lexsort/",
                 "kind": "link",
                 "target": "lexsort",
                 "text": "lexsort"
@@ -625,7 +625,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.lexsort((x, y), axis=1)"
+                "text": "flops.lexsort((x, y), axis=1)"
               },
               {
                 "kind": "output",
@@ -650,7 +650,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/lexsort",
+                "href": "/docs/api/numpy/lexsort/",
                 "kind": "link",
                 "target": "lexsort",
                 "text": "lexsort"
@@ -672,7 +672,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "print(we.lexsort((x[i], y[i])))"
+                "text": "print(flops.lexsort((x[i], y[i])))"
               },
               {
                 "kind": "output",
@@ -698,20 +698,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.lexsort",
     "module": "numpy",
     "name": "lexsort",
     "notes": "Multi-key sort; cost = k*n*ceil(log2(n)).",
     "numpy_ref": "np.lexsort",
-    "signature": "we.lexsort(keys, axis=-1)",
+    "signature": "fnp.lexsort(keys, axis=-1)",
     "status": "supported",
     "summary": "Perform an indirect stable sort using a sequence of keys.",
-    "weight": 1.0,
-    "whest_ref": "we.lexsort"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "lexsort",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L88"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L88",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html"
   }
 }

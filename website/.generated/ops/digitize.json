@@ -265,8 +265,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bincount",
-              "label": "we.bincount",
+              "href": "/docs/api/numpy/bincount/",
+              "label": "flops.bincount",
               "original_target": "bincount",
               "role": "",
               "target": "bincount",
@@ -276,8 +276,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/histogram",
-              "label": "we.histogram",
+              "href": "/docs/api/numpy/histogram/",
+              "label": "flops.histogram",
               "original_target": "histogram",
               "role": "",
               "target": "histogram",
@@ -287,8 +287,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/unique",
-              "label": "we.unique",
+              "href": "/docs/api/numpy/unique/",
+              "label": "flops.unique",
               "original_target": "unique",
               "role": "",
               "target": "unique",
@@ -298,8 +298,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/searchsorted",
-              "label": "we.searchsorted",
+              "href": "/docs/api/numpy/searchsorted/",
+              "label": "flops.searchsorted",
               "original_target": "searchsorted",
               "role": "",
               "target": "searchsorted",
@@ -337,7 +337,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/digitize",
+              "href": "/docs/api/numpy/digitize/",
               "kind": "link",
               "target": "digitize",
               "text": "digitize"
@@ -363,10 +363,10 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/digitize",
+              "href": "/docs/api/numpy/digitize/",
               "kind": "link",
               "target": "digitize",
-              "text": "we.digitize"
+              "text": "flops.digitize"
             },
             {
               "kind": "text",
@@ -374,10 +374,10 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/searchsorted",
+              "href": "/docs/api/numpy/searchsorted/",
               "kind": "link",
               "target": "searchsorted",
-              "text": "we.searchsorted"
+              "text": "flops.searchsorted"
             },
             {
               "kind": "text",
@@ -413,7 +413,7 @@
         },
         {
           "language": null,
-          "text": "we.digitize(x, bins, right=True)\nwe.searchsorted(bins, x, side='left')",
+          "text": "flops.digitize(x, bins, right=True)\nflops.searchsorted(bins, x, side='left')",
           "type": "literal_block"
         },
         {
@@ -424,7 +424,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/searchsorted",
+              "href": "/docs/api/numpy/searchsorted/",
               "kind": "link",
               "target": "searchsorted",
               "text": "searchsorted"
@@ -446,22 +446,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([0.2, 6.4, 3.0, 1.6])"
+              "text": "x = flops.array([0.2, 6.4, 3.0, 1.6])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "bins = we.array([0.0, 1.0, 2.5, 4.0, 10.0])"
+              "text": "bins = flops.array([0.0, 1.0, 2.5, 4.0, 10.0])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "inds = we.digitize(x, bins)"
+              "text": "inds = flops.digitize(x, bins)"
             },
             {
               "kind": "input",
@@ -511,17 +511,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([1.2, 10.0, 12.4, 15.5, 20.])"
+              "text": "x = flops.array([1.2, 10.0, 12.4, 15.5, 20.])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "bins = we.array([0, 5, 10, 15, 20])"
+              "text": "bins = flops.array([0, 5, 10, 15, 20])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.digitize(x,bins,right=True)"
+              "text": "flops.digitize(x,bins,right=True)"
             },
             {
               "kind": "output",
@@ -530,7 +530,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.digitize(x,bins,right=False)"
+              "text": "flops.digitize(x,bins,right=False)"
             },
             {
               "kind": "output",
@@ -544,6 +544,7 @@
     }
   ],
   "canonical_name": "digitize",
+  "canonical_path": "numpy/digitize",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -559,24 +560,28 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.array([0.2, 6.4, 3.0, 1.6])\n\nbins = we.array([0.0, 1.0, 2.5, 4.0, 10.0])\n\ninds = we.digitize(x, bins)\n\ninds\n\nfor n in range(x.size):\n  print(bins[inds[n]-1], \"<=\", x[n], \"<\", bins[inds[n]])\n\nx = we.array([1.2, 10.0, 12.4, 15.5, 20.])\n\nbins = we.array([0, 5, 10, 15, 20])\n\nwe.digitize(x,bins,right=True)\n\nwe.digitize(x,bins,right=False)",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.array([0.2, 6.4, 3.0, 1.6])\n\nbins = flops.array([0.0, 1.0, 2.5, 4.0, 10.0])\n\ninds = flops.digitize(x, bins)\n\ninds\n\nfor n in range(x.size):\n  print(bins[inds[n]-1], \"<=\", x[n], \"<\", bins[inds[n]])\n\nx = flops.array([1.2, 10.0, 12.4, 15.5, 20.])\n\nbins = flops.array([0, 5, 10, 15, 20])\n\nflops.digitize(x,bins,right=True)\n\nflops.digitize(x,bins,right=False)",
     "output": "array([1, 4, 3, 2])\n\n0.0 <= 0.2 < 1.0\n4.0 <= 6.4 < 10.0\n2.5 <= 3.0 < 4.0\n1.0 <= 1.6 < 2.5\n\narray([1, 2, 3, 4, 4])\n\narray([1, 3, 3, 4, 5])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/digitize/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.digitize",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L212",
+  "href": "/docs/api/numpy/digitize/",
+  "legacy_href": "/docs/api/ops/digitize/",
   "module": "numpy",
   "name": "digitize",
   "next": {
-    "href": "/docs/api/ops/divide/",
-    "label": "we.divide"
+    "href": "/docs/api/numpy/divide/",
+    "label": "fnp.divide"
   },
   "notes": "Bin search; cost = n*ceil(log2(bins)).",
   "notes_sections": [
     "If values in `x` are such that they fall outside the bin range, attempting to index `bins` with the indices that `digitize` returns will result in an IndexError.",
     ".. versionadded:: 1.10.0",
-    "`we.digitize` is  implemented in terms of `we.searchsorted`. This means that a binary search is used to bin the values, which scales much better for larger number of bins than the previous linear search. It also removes the requirement for the input array to be 1-dimensional.",
+    "`flops.digitize` is  implemented in terms of `flops.searchsorted`. This means that a binary search is used to bin the values, which scales much better for larger number of bins than the previous linear search. It also removes the requirement for the input array to be 1-dimensional.",
     "For monotonically *increasing* `bins`, the following are equivalent::",
-    "we.digitize(x, bins, right=True) we.searchsorted(bins, x, side='left')",
+    "flops.digitize(x, bins, right=True) flops.searchsorted(bins, x, side='left')",
     "Note that as the order of the arguments are reversed, the side must be too. The `searchsorted` call is marginally faster, as it does not do any monotonicity checks. Perhaps more importantly, it supports all dtypes."
   ],
   "numpy_ref": "np.digitize",
@@ -609,10 +614,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/diff/",
-    "label": "we.diff"
+    "href": "/docs/api/numpy/diff/",
+    "label": "fnp.diff"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.digitize",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.digitize.html",
   "returns": [
     {
@@ -628,8 +634,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bincount",
-      "label": "we.bincount",
+      "href": "/docs/api/numpy/bincount/",
+      "label": "flops.bincount",
       "original_target": "bincount",
       "role": "",
       "target": "bincount",
@@ -639,8 +645,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/histogram",
-      "label": "we.histogram",
+      "href": "/docs/api/numpy/histogram/",
+      "label": "flops.histogram",
       "original_target": "histogram",
       "role": "",
       "target": "histogram",
@@ -650,8 +656,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/unique",
-      "label": "we.unique",
+      "href": "/docs/api/numpy/unique/",
+      "label": "flops.unique",
       "original_target": "unique",
       "role": "",
       "target": "unique",
@@ -661,20 +667,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/searchsorted",
-      "label": "we.searchsorted",
+      "href": "/docs/api/numpy/searchsorted/",
+      "label": "flops.searchsorted",
       "original_target": "searchsorted",
       "role": "",
       "target": "searchsorted",
       "unresolved": false
     }
   ],
-  "signature": "we.digitize(x, bins, right=False)",
+  "signature": "fnp.digitize(x, bins, right=False)",
   "slug": "digitize",
   "summary": "Return the indices of the bins to which each value in input array belongs.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5718",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.digitize",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L212"
+  "weight": 1.0
 }

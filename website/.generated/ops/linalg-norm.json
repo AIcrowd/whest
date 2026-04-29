@@ -542,7 +542,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -552,7 +552,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(9) - 4"
+              "text": "a = flops.arange(9) - 4"
             },
             {
               "kind": "input",
@@ -620,7 +620,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "LA.norm(a, we.inf)"
+              "text": "LA.norm(a, flops.inf)"
             },
             {
               "kind": "output",
@@ -629,7 +629,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "LA.norm(b, we.inf)"
+              "text": "LA.norm(b, flops.inf)"
             },
             {
               "kind": "output",
@@ -638,7 +638,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "LA.norm(a, -we.inf)"
+              "text": "LA.norm(a, -flops.inf)"
             },
             {
               "kind": "output",
@@ -647,7 +647,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "LA.norm(b, -we.inf)"
+              "text": "LA.norm(b, -flops.inf)"
             },
             {
               "kind": "output",
@@ -778,7 +778,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "c = we.array([[ 1, 2, 3],"
+              "text": "c = flops.array([[ 1, 2, 3],"
             },
             {
               "kind": "input",
@@ -837,7 +837,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "m = we.arange(8).reshape(2,2,2)"
+              "text": "m = flops.arange(8).reshape(2,2,2)"
             },
             {
               "kind": "input",
@@ -865,6 +865,7 @@
     }
   ],
   "canonical_name": "linalg.norm",
+  "canonical_path": "numpy/linalg/norm",
   "category": "counted_custom",
   "cost_formula": "depends on ord",
   "cost_formula_latex": "varies",
@@ -889,16 +890,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nfrom numpy import linalg as LA\n\na = we.arange(9) - 4\n\na\n\nb = a.reshape((3, 3))\n\nb\n\nLA.norm(a)\n\nLA.norm(b)\n\nLA.norm(b, 'fro')\n\nLA.norm(a, we.inf)\n\nLA.norm(b, we.inf)\n\nLA.norm(a, -we.inf)\n\nLA.norm(b, -we.inf)\n\nLA.norm(a, 1)\n\nLA.norm(b, 1)\n\nLA.norm(a, -1)\n\nLA.norm(b, -1)\n\nLA.norm(a, 2)\n\nLA.norm(b, 2)\n\nLA.norm(a, -2)\n\nLA.norm(b, -2)\n\nLA.norm(a, 3)\n\nLA.norm(a, -3)\n\nc = we.array([[ 1, 2, 3],\n              [-1, 1, 4]])\n\nLA.norm(c, axis=0)\n\nLA.norm(c, axis=1)\n\nLA.norm(c, ord=1, axis=1)\n\nm = we.arange(8).reshape(2,2,2)\n\nLA.norm(m, axis=(1,2))\n\nLA.norm(m[0, :, :]), LA.norm(m[1, :, :])",
+    "code": "import flopscope.numpy as fnp\n\nfrom numpy import linalg as LA\n\na = flops.arange(9) - 4\n\na\n\nb = a.reshape((3, 3))\n\nb\n\nLA.norm(a)\n\nLA.norm(b)\n\nLA.norm(b, 'fro')\n\nLA.norm(a, flops.inf)\n\nLA.norm(b, flops.inf)\n\nLA.norm(a, -flops.inf)\n\nLA.norm(b, -flops.inf)\n\nLA.norm(a, 1)\n\nLA.norm(b, 1)\n\nLA.norm(a, -1)\n\nLA.norm(b, -1)\n\nLA.norm(a, 2)\n\nLA.norm(b, 2)\n\nLA.norm(a, -2)\n\nLA.norm(b, -2)\n\nLA.norm(a, 3)\n\nLA.norm(a, -3)\n\nc = flops.array([[ 1, 2, 3],\n              [-1, 1, 4]])\n\nLA.norm(c, axis=0)\n\nLA.norm(c, axis=1)\n\nLA.norm(c, ord=1, axis=1)\n\nm = flops.arange(8).reshape(2,2,2)\n\nLA.norm(m, axis=(1,2))\n\nLA.norm(m[0, :, :]), LA.norm(m[1, :, :])",
     "output": "array([-4, -3, -2, ...,  2,  3,  4])\n\narray([[-4, -3, -2],\n       [-1,  0,  1],\n       [ 2,  3,  4]])\n\n7.745966692414834\n\n7.745966692414834\n\n7.745966692414834\n\n4.0\n\n9.0\n\n0.0\n\n2.0\n\n20.0\n\n7.0\n\n-4.6566128774142013e-010\n\n6.0\n\n7.745966692414834\n\n7.3484692283495345\n\n0.0\n\n1.8570331885190563e-016 # may vary\n\n5.8480354764257312 # may vary\n\n0.0\n\narray([ 1.41421356,  2.23606798,  5.        ])\n\narray([ 3.74165739,  4.24264069])\n\narray([ 6.,  6.])\n\narray([  3.74165739,  11.22497216])\n\n(3.7416573867739413, 11.224972160321824)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-norm/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.norm",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L188",
+  "href": "/docs/api/numpy/linalg/norm/",
+  "legacy_href": "/docs/api/ops/linalg-norm/",
   "module": "numpy.linalg",
   "name": "linalg.norm",
   "next": {
-    "href": "/docs/api/ops/linalg-outer/",
-    "label": "we.linalg.outer"
+    "href": "/docs/api/numpy/linalg/outer/",
+    "label": "fnp.linalg.outer"
   },
   "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
   "notes_sections": [
@@ -953,10 +958,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-multi_dot/",
-    "label": "we.linalg.multi_dot"
+    "href": "/docs/api/numpy/linalg/multi-dot/",
+    "label": "fnp.linalg.multi_dot"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.norm",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html",
   "returns": [
     {
@@ -985,12 +991,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.norm(x, ord=None, axis=None, keepdims=False)",
+  "signature": "fnp.linalg.norm(x, ord=None, axis=None, keepdims=False)",
   "slug": "linalg-norm",
   "summary": "Matrix or vector norm.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2575",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.norm",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L188"
+  "weight": 1.0
 }

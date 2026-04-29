@@ -72,7 +72,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.standard_normal`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~flops.random.Generator.standard_normal`\n    method of a `~flops.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -158,7 +158,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/size",
+                      "href": "/docs/api/numpy/size/",
                       "kind": "link",
                       "target": "size",
                       "text": "size"
@@ -169,7 +169,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/size",
+                      "href": "/docs/api/numpy/size/",
                       "kind": "link",
                       "target": "size",
                       "text": "size"
@@ -190,7 +190,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/size",
+                  "href": "/docs/api/numpy/size/",
                   "kind": "link",
                   "target": "size",
                   "text": "size"
@@ -201,7 +201,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/size",
+                  "href": "/docs/api/numpy/size/",
                   "kind": "link",
                   "target": "size",
                   "text": "size"
@@ -308,7 +308,7 @@
         },
         {
           "language": null,
-          "text": "mu + sigma * we.random.standard_normal(size=...)\nwe.random.normal(mu, sigma, size=...)",
+          "text": "mu + sigma * flops.random.standard_normal(size=...)\nflops.random.normal(mu, sigma, size=...)",
           "type": "literal_block"
         }
       ],
@@ -321,7 +321,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.standard_normal()"
+              "text": "flops.random.standard_normal()"
             },
             {
               "kind": "output",
@@ -335,7 +335,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.standard_normal(8000)"
+              "text": "s = flops.random.standard_normal(8000)"
             },
             {
               "kind": "input",
@@ -362,7 +362,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.standard_normal(size=(3, 4, 2))"
+              "text": "s = flops.random.standard_normal(size=(3, 4, 2))"
             },
             {
               "kind": "input",
@@ -390,7 +390,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "3 + 2.5 * we.random.standard_normal(size=(2, 4))"
+              "text": "3 + 2.5 * flops.random.standard_normal(size=(2, 4))"
             },
             {
               "kind": "output",
@@ -408,6 +408,7 @@
     }
   ],
   "canonical_name": "random.standard_normal",
+  "canonical_path": "numpy/random/standard-normal",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -418,21 +419,25 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.random.standard_normal()\n\ns = we.random.standard_normal(8000)\n\ns\n\ns.shape\n\ns = we.random.standard_normal(size=(3, 4, 2))\n\ns.shape\n\n3 + 2.5 * we.random.standard_normal(size=(2, 4))",
+    "code": "flops.random.standard_normal()\n\ns = flops.random.standard_normal(8000)\n\ns\n\ns.shape\n\ns = flops.random.standard_normal(size=(3, 4, 2))\n\ns.shape\n\n3 + 2.5 * flops.random.standard_normal(size=(2, 4))",
     "output": "2.1923875335537315 #random\n\narray([ 0.6888893 ,  0.78096262, -0.89086505, ...,  0.49876311,  # random\n       -0.38672696, -0.4685006 ])                                # random\n\n(8000,)\n\n(3, 4, 2)\n\narray([[-4.49401501,  4.00950034, -1.81814867,  7.29718677],   # random\n       [ 0.39924804,  4.68456316,  4.99394529,  4.84057254]])  # random",
     "source": "derived"
   },
-  "href": "/docs/api/ops/random-standard_normal/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.standard_normal",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+  "href": "/docs/api/numpy/random/standard-normal/",
+  "legacy_href": "/docs/api/ops/random-standard_normal/",
   "module": "numpy.random",
   "name": "random.standard_normal",
   "next": {
-    "href": "/docs/api/ops/random-standard_t/",
-    "label": "we.random.standard_t"
+    "href": "/docs/api/numpy/random/standard-t/",
+    "label": "fnp.random.standard_t"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
     "For random samples from the normal distribution with mean ``mu`` and standard deviation ``sigma``, use one of::",
-    "mu + sigma * we.random.standard_normal(size=...) we.random.normal(mu, sigma, size=...)"
+    "mu + sigma * flops.random.standard_normal(size=...) flops.random.normal(mu, sigma, size=...)"
   ],
   "numpy_ref": "np.random.standard_normal",
   "parameters": [
@@ -447,10 +452,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/random-standard_gamma/",
-    "label": "we.random.standard_gamma"
+    "href": "/docs/api/numpy/random/standard-gamma/",
+    "label": "fnp.random.standard_gamma"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.random.standard_normal",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_normal.html",
   "returns": [
     {
@@ -512,12 +518,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.standard_normal(size=None)",
+  "signature": "fnp.random.standard_normal(size=None)",
   "slug": "random-standard_normal",
   "summary": "Draw samples from a standard Normal distribution (mean=0, stdev=1).",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.standard_normal",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

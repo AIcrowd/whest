@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/cos/",
+  "detail_href": "/docs/api/numpy/cos/",
   "detail_json_href": "/api-data/ops/cos.json",
   "docs": {
     "sections": [
@@ -312,12 +312,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cos(we.array([0, we.pi/2, we.pi]))"
+                "text": "flops.cos(flops.array([0, flops.pi/2, flops.pi]))"
               },
               {
                 "kind": "output",
@@ -336,12 +336,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out1 = we.array([0], dtype='d')"
+                "text": "out1 = flops.array([0], dtype='d')"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "out2 = we.cos([0.1], out1)"
+                "text": "out2 = flops.cos([0.1], out1)"
               },
               {
                 "kind": "input",
@@ -365,7 +365,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cos(we.zeros((3,3)),we.zeros((2,2)))"
+                "text": "flops.cos(flops.zeros((3,3)),flops.zeros((2,2)))"
               },
               {
                 "kind": "output",
@@ -391,20 +391,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.cos",
     "module": "numpy",
     "name": "cos",
     "notes": "Element-wise cosine.",
     "numpy_ref": "np.cos",
-    "signature": "we.cos(*args, **kwargs)",
+    "signature": "fnp.cos(*args, **kwargs)",
     "status": "supported",
     "summary": "Cosine element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.cos"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "cos",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

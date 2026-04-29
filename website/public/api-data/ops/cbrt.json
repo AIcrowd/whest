@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/cbrt/",
+  "detail_href": "/docs/api/numpy/cbrt/",
   "detail_json_href": "/api-data/ops/cbrt.json",
   "docs": {
     "sections": [
@@ -332,12 +332,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.cbrt([1,8,27])"
+                "text": "flops.cbrt([1,8,27])"
               },
               {
                 "kind": "output",
@@ -355,20 +355,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.cbrt",
     "module": "numpy",
     "name": "cbrt",
     "notes": "Element-wise cube root.",
     "numpy_ref": "np.cbrt",
-    "signature": "we.cbrt(*args, **kwargs)",
+    "signature": "fnp.cbrt(*args, **kwargs)",
     "status": "supported",
     "summary": "Return the cube-root of an array, element-wise.",
-    "weight": 16.0,
-    "whest_ref": "we.cbrt"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "cbrt",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

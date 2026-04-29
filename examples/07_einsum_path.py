@@ -7,7 +7,7 @@ tuple that you can inspect and later feed back to ``we.einsum``.
 Run: uv run python examples/07_einsum_path.py
 """
 
-import whest as we
+import flopscope as we
 
 # ---------------------------------------------------------------------------
 # 1. Path analysis for a three-matrix chain multiply

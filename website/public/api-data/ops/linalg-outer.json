@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-outer/",
+  "detail_href": "/docs/api/numpy/linalg/outer/",
   "detail_json_href": "/api-data/ops/linalg-outer.json",
   "docs": {
     "sections": [
@@ -27,10 +27,10 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/outer",
+                "href": "/docs/api/numpy/outer/",
                 "kind": "link",
                 "target": "outer",
-                "text": "we.outer"
+                "text": "flops.outer"
               },
               {
                 "kind": "text",
@@ -170,8 +170,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/outer",
-                "label": "we.outer",
+                "href": "/docs/api/numpy/outer/",
+                "label": "flops.outer",
                 "original_target": "outer",
                 "role": "",
                 "target": "outer",
@@ -207,7 +207,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rl = we.linalg.outer(we.ones((5,)), we.linspace(-2, 2, 5))"
+                "text": "rl = flops.linalg.outer(flops.ones((5,)), flops.linspace(-2, 2, 5))"
               },
               {
                 "kind": "input",
@@ -237,7 +237,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "im = we.linalg.outer(1j*we.linspace(2, -2, 5), we.ones((5,)))"
+                "text": "im = flops.linalg.outer(1j*flops.linspace(2, -2, 5), flops.ones((5,)))"
               },
               {
                 "kind": "input",
@@ -311,12 +311,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array(['a', 'b', 'c'], dtype=object)"
+                "text": "x = flops.array(['a', 'b', 'c'], dtype=object)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.linalg.outer(x, [1, 2, 3])"
+                "text": "flops.linalg.outer(x, [1, 2, 3])"
               },
               {
                 "kind": "output",
@@ -340,22 +340,22 @@
   },
   "op": {
     "category": "counted_custom",
-    "cost_formula": "delegates to we.outer",
+    "cost_formula": "delegates to flops.outer",
     "cost_formula_latex": "delegates to `outer`",
+    "flopscope_ref": "fnp.linalg.outer",
     "module": "numpy.linalg",
     "name": "linalg.outer",
-    "notes": "Delegates to `we.outer` which charges `m*n` FLOPs.",
+    "notes": "Delegates to `fnp.outer` which charges `m*n` FLOPs.",
     "numpy_ref": "np.linalg.outer",
-    "signature": "we.linalg.outer(x1, x2, /)",
+    "signature": "fnp.linalg.outer(x1, x2, /)",
     "status": "supported",
     "summary": "Compute the outer product of two vectors.",
-    "weight": 1.0,
-    "whest_ref": "we.linalg.outer"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "linalg-outer",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L850",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_aliases.py#L57"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L57",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L850"
   }
 }

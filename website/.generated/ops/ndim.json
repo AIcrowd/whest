@@ -128,8 +128,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/shape",
-              "label": "we.shape",
+              "href": "/docs/api/numpy/shape/",
+              "label": "flops.shape",
               "original_target": "shape",
               "role": "",
               "target": "shape",
@@ -164,12 +164,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ndim([[1,2,3],[4,5,6]])"
+              "text": "flops.ndim([[1,2,3],[4,5,6]])"
             },
             {
               "kind": "output",
@@ -178,7 +178,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ndim(we.array([[1,2,3],[4,5,6]]))"
+              "text": "flops.ndim(flops.array([[1,2,3],[4,5,6]]))"
             },
             {
               "kind": "output",
@@ -187,7 +187,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ndim(1)"
+              "text": "flops.ndim(1)"
             },
             {
               "kind": "output",
@@ -201,6 +201,7 @@
     }
   ],
   "canonical_name": "ndim",
+  "canonical_path": "numpy/ndim",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -224,16 +225,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.ndim([[1,2,3],[4,5,6]])\n\nwe.ndim(we.array([[1,2,3],[4,5,6]]))\n\nwe.ndim(1)",
+    "code": "import flopscope.numpy as fnp\n\nflops.ndim([[1,2,3],[4,5,6]])\n\nflops.ndim(flops.array([[1,2,3],[4,5,6]]))\n\nflops.ndim(1)",
     "output": "2\n\n2\n\n0",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ndim/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.ndim",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1338",
+  "href": "/docs/api/numpy/ndim/",
+  "legacy_href": "/docs/api/ops/ndim/",
   "module": "numpy",
   "name": "ndim",
   "next": {
-    "href": "/docs/api/ops/negative/",
-    "label": "we.negative"
+    "href": "/docs/api/numpy/negative/",
+    "label": "fnp.negative"
   },
   "notes": "Return number of dimensions of array.",
   "notes_sections": [],
@@ -249,10 +254,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nanvar/",
-    "label": "we.nanvar"
+    "href": "/docs/api/numpy/nanvar/",
+    "label": "fnp.nanvar"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.ndim",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ndim.html",
   "returns": [
     {
@@ -289,8 +295,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/shape",
-      "label": "we.shape",
+      "href": "/docs/api/numpy/shape/",
+      "label": "flops.shape",
       "original_target": "shape",
       "role": "",
       "target": "shape",
@@ -313,12 +319,11 @@
       "unresolved": true
     }
   ],
-  "signature": "we.ndim(a)",
+  "signature": "fnp.ndim(a)",
   "slug": "ndim",
   "summary": "Return the number of dimensions of an array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L3523",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.ndim",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1273"
+  "weight": 0.0
 }

@@ -1,12 +1,12 @@
 """
-Demo: A participant's submission that uses whest exactly like they would locally.
+Demo: A participant's submission that uses flopscope exactly like they would locally.
 This runs inside a container with NO numpy installed.
 """
 
-import whest as we
+import flopscope as we
 
 print("=" * 60)
-print("  Whest Client-Server Demo")
+print("  Flopscope Client-Server Demo")
 print("  (this container has NO numpy installed)")
 print("=" * 60)
 
@@ -18,7 +18,7 @@ try:
 except ImportError:
     print("\nConfirmed: numpy is NOT installed in this container")
 
-print(f"whest version: {we.__version__}")
+print(f"flopscope version: {we.__version__}")
 print()
 
 with we.BudgetContext(flop_budget=1_000_000) as budget:

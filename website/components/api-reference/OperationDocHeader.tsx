@@ -1,16 +1,25 @@
 import styles from './styles.module.css';
-import type {OperationDocRecord} from './op-doc-types';
 
-export default function OperationDocHeader({op}: {op: OperationDocRecord}) {
+export default function OperationDocHeader({
+  summary,
+  provenanceLabel,
+  provenanceUrl,
+  provenanceRef,
+}: {
+  summary?: string | null;
+  provenanceLabel?: string | null;
+  provenanceUrl?: string | null;
+  provenanceRef?: string | null;
+}) {
   return (
     <header className={styles.docHeader}>
-      {op.summary ? <p className={styles.docSummary}>{op.summary}</p> : null}
+      {summary ? <p className={styles.docSummary}>{summary}</p> : null}
       <div className={styles.docMetaLine}>
-        {op.provenance_label && op.provenance_url ? (
+        {provenanceLabel && provenanceUrl && provenanceRef ? (
           <p className={styles.docProvenance}>
-            {op.provenance_label}{' '}
-            <a href={op.provenance_url} target="_blank" rel="noreferrer">
-              {op.numpy_ref}
+            {provenanceLabel}{' '}
+            <a href={provenanceUrl} target="_blank" rel="noreferrer">
+              {provenanceRef}
             </a>
           </p>
         ) : null}

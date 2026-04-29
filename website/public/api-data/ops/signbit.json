@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/signbit/",
+  "detail_href": "/docs/api/numpy/signbit/",
   "detail_json_href": "/api-data/ops/signbit.json",
   "docs": {
     "sections": [
@@ -284,12 +284,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.signbit(-1.2)"
+                "text": "flops.signbit(-1.2)"
               },
               {
                 "kind": "output",
@@ -298,7 +298,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.signbit(we.array([1, -2.3, 2.1]))"
+                "text": "flops.signbit(flops.array([1, -2.3, 2.1]))"
               },
               {
                 "kind": "output",
@@ -316,20 +316,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.signbit",
     "module": "numpy",
     "name": "signbit",
     "notes": "Returns True for elements with negative sign bit.",
     "numpy_ref": "np.signbit",
-    "signature": "we.signbit(*args, **kwargs)",
+    "signature": "fnp.signbit(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns element-wise True where signbit is set (less than zero).",
-    "weight": 1.0,
-    "whest_ref": "we.signbit"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "signbit",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

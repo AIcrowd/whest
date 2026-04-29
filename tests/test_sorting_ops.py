@@ -5,9 +5,9 @@ from __future__ import annotations
 import numpy
 import pytest
 
-from whest._budget import BudgetContext
-from whest._flops import search_cost, sort_cost
-from whest._sorting_ops import (
+from flopscope._budget import BudgetContext
+from flopscope._flops import search_cost, sort_cost
+from flopscope._sorting_ops import (
     argpartition,
     argsort,
     digitize,

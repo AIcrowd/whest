@@ -196,7 +196,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "fft",
-                      "text": "we.fft"
+                      "text": "flops.fft"
                     },
                     {
                       "kind": "text",
@@ -227,7 +227,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "fft",
-                  "text": "we.fft"
+                  "text": "flops.fft"
                 },
                 {
                   "kind": "text",
@@ -690,17 +690,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "signal = we.array([1, 2, 3, 4, 3, 2])"
+              "text": "signal = flops.array([1, 2, 3, 4, 3, 2])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.fft(signal)"
+              "text": "flops.fft.fft(signal)"
             },
             {
               "kind": "output",
@@ -709,7 +709,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.hfft(signal[:4]) # Input first half of signal"
+              "text": "flops.fft.hfft(signal[:4]) # Input first half of signal"
             },
             {
               "kind": "output",
@@ -718,7 +718,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.fft.hfft(signal, 6)  # Input entire signal and truncate"
+              "text": "flops.fft.hfft(signal, 6)  # Input entire signal and truncate"
             },
             {
               "kind": "output",
@@ -732,12 +732,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "signal = we.array([[1, 1.j], [-1.j, 2]])"
+              "text": "signal = flops.array([[1, 1.j], [-1.j, 2]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.conj(signal.T) - signal   # check Hermitian symmetry"
+              "text": "flops.conj(signal.T) - signal   # check Hermitian symmetry"
             },
             {
               "kind": "output",
@@ -750,7 +750,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "freq_spectrum = we.fft.hfft(signal)"
+              "text": "freq_spectrum = flops.fft.hfft(signal)"
             },
             {
               "kind": "input",
@@ -773,6 +773,7 @@
     }
   ],
   "canonical_name": "fft.hfft",
+  "canonical_path": "numpy/fft/hfft",
   "category": "counted_custom",
   "cost_formula": "5n * ceil(log2(n))",
   "cost_formula_latex": "$5n \\cdot \\lceil\\log_2 n\\rceil$",
@@ -783,16 +784,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nsignal = we.array([1, 2, 3, 4, 3, 2])\n\nwe.fft.fft(signal)\n\nwe.fft.hfft(signal[:4]) # Input first half of signal\n\nwe.fft.hfft(signal, 6)  # Input entire signal and truncate\n\nsignal = we.array([[1, 1.j], [-1.j, 2]])\n\nwe.conj(signal.T) - signal   # check Hermitian symmetry\n\nfreq_spectrum = we.fft.hfft(signal)\n\nfreq_spectrum",
+    "code": "import flopscope.numpy as fnp\n\nsignal = flops.array([1, 2, 3, 4, 3, 2])\n\nflops.fft.fft(signal)\n\nflops.fft.hfft(signal[:4]) # Input first half of signal\n\nflops.fft.hfft(signal, 6)  # Input entire signal and truncate\n\nsignal = flops.array([[1, 1.j], [-1.j, 2]])\n\nflops.conj(signal.T) - signal   # check Hermitian symmetry\n\nfreq_spectrum = flops.fft.hfft(signal)\n\nfreq_spectrum",
     "output": "array([15.+0.j,  -4.+0.j,   0.+0.j,  -1.-0.j,   0.+0.j,  -4.+0.j]) # may vary\n\narray([15.,  -4.,   0.,  -1.,   0.,  -4.])\n\narray([15.,  -4.,   0.,  -1.,   0.,  -4.])\n\narray([[ 0.-0.j,  -0.+0.j], # may vary\n       [ 0.+0.j,  0.-0.j]])\n\narray([[ 1.,  1.],\n       [ 2., -2.]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/fft-hfft/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.fft.hfft",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L452",
+  "href": "/docs/api/numpy/fft/hfft/",
+  "legacy_href": "/docs/api/ops/fft-hfft/",
   "module": "numpy.fft",
   "name": "fft.hfft",
   "next": {
-    "href": "/docs/api/ops/fft-ifft/",
-    "label": "we.fft.ifft"
+    "href": "/docs/api/numpy/fft/ifft/",
+    "label": "fnp.fft.ifft"
   },
   "notes": "FFT of Hermitian-symmetric signal. Cost: 5*n_out*ceil(log2(n_out)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
   "notes_sections": [
@@ -831,7 +836,7 @@
     },
     {
       "body": [
-        "Normalization mode (see `we.fft`). Default is \"backward\".",
+        "Normalization mode (see `flops.fft`). Default is \"backward\".",
         "Indicates which direction of the forward/backward pair of transforms",
         "is scaled and with what normalization factor.",
         "",
@@ -854,10 +859,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/fft-fftshift/",
-    "label": "we.fft.fftshift"
+    "href": "/docs/api/numpy/fft/fftshift/",
+    "label": "fnp.fft.fftshift"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.fft.hfft",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.fft.hfft.html",
   "returns": [
     {
@@ -915,12 +921,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.fft.hfft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.hfft(a, n=None, axis=-1, norm=None, out=None)",
   "slug": "fft-hfft",
   "summary": "Compute the FFT of a signal that has Hermitian symmetry, i.e., a real spectrum.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L523",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.fft.hfft",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/fft/_transforms.py#L452"
+  "weight": 1.0
 }

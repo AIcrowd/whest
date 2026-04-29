@@ -1,0 +1,291 @@
+{
+  "aliases": [
+    "flops.cond_cost",
+    "flops.accounting.cond_cost",
+    "flopscope.accounting.cond_cost",
+    "cond_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost of condition number."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of rows in the input matrix."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of rows in the input matrix."
+                }
+              ],
+              "name": "m",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of columns in the input matrix."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of columns in the input matrix."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Argument forwarded to the analytical "
+                    },
+                    {
+                      "external_url": "",
+                      "href": "/docs/api/numpy/linalg/cond/",
+                      "kind": "link",
+                      "target": "linalg.cond",
+                      "text": "linalg.cond"
+                    },
+                    {
+                      "kind": "text",
+                      "text": " cost formula. Defaults to "
+                    },
+                    {
+                      "kind": "code",
+                      "text": "None"
+                    },
+                    {
+                      "kind": "text",
+                      "text": "."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "object, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Argument forwarded to the analytical "
+                },
+                {
+                  "external_url": "",
+                  "href": "/docs/api/numpy/linalg/cond/",
+                  "kind": "link",
+                  "target": "linalg.cond",
+                  "text": "linalg.cond"
+                },
+                {
+                  "kind": "text",
+                  "text": " cost formula. Defaults to "
+                },
+                {
+                  "kind": "code",
+                  "text": "None"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "name": "p",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This helper multiplies the analytical FLOP count by the active weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "flopscope._weights"
+            },
+            {
+              "kind": "text",
+              "text": " and then applies "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " so public estimates match budget deductions."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "For "
+            },
+            {
+              "kind": "code",
+              "text": "p=None"
+            },
+            {
+              "kind": "text",
+              "text": ", "
+            },
+            {
+              "kind": "code",
+              "text": "p=2"
+            },
+            {
+              "kind": "text",
+              "text": ", or "
+            },
+            {
+              "kind": "code",
+              "text": "p=-2"
+            },
+            {
+              "kind": "text",
+              "text": ", computed via SVD (cost m*n*min(m,n)).\nFor "
+            },
+            {
+              "kind": "code",
+              "text": "p=1"
+            },
+            {
+              "kind": "text",
+              "text": ", "
+            },
+            {
+              "kind": "code",
+              "text": "p=-1"
+            },
+            {
+              "kind": "text",
+              "text": ", "
+            },
+            {
+              "kind": "code",
+              "text": "p=inf"
+            },
+            {
+              "kind": "text",
+              "text": ", or "
+            },
+            {
+              "kind": "code",
+              "text": "p=-inf"
+            },
+            {
+              "kind": "text",
+              "text": ", computed via LU factorization\n(cost ~min(m,n)^3 + m*n for norm)."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.cond_cost",
+  "canonical_path": "flops/cond-cost",
+  "display_name": "flops.flops.cond_cost",
+  "href": "/docs/api/flops/cond-cost/",
+  "import_path": "flops.flops.cond_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "flopscope.numpy.linalg._properties",
+  "name": "flops.cond_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "flops.flops.cond_cost(m: 'int', n: 'int', p=None) -> 'int'",
+  "slug": "flops-cond-cost",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L328",
+  "status_note": "",
+  "summary": "Weighted FLOP cost of condition number.",
+  "upstream_source_url": ""
+}

@@ -311,8 +311,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/tensordot",
-              "label": "we.tensordot",
+              "href": "/docs/api/numpy/tensordot/",
+              "label": "flops.tensordot",
               "original_target": "numpy.tensordot",
               "role": "",
               "target": "tensordot",
@@ -333,8 +333,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/einsum",
-              "label": "we.einsum",
+              "href": "/docs/api/numpy/einsum/",
+              "label": "flops.einsum",
               "original_target": "numpy.einsum",
               "role": "",
               "target": "einsum",
@@ -353,12 +353,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.eye(2*3*4)"
+              "text": "a = flops.eye(2*3*4)"
             },
             {
               "kind": "input",
@@ -368,7 +368,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "rng = we.random.default_rng()"
+              "text": "rng = flops.random.default_rng()"
             },
             {
               "kind": "input",
@@ -378,7 +378,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linalg.tensorsolve(a, b)"
+              "text": "x = flops.linalg.tensorsolve(a, b)"
             },
             {
               "kind": "input",
@@ -392,7 +392,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.allclose(we.tensordot(a, x, axes=3), b)"
+              "text": "flops.allclose(flops.tensordot(a, x, axes=3), b)"
             },
             {
               "kind": "output",
@@ -406,6 +406,7 @@
     }
   ],
   "canonical_name": "linalg.tensorsolve",
+  "canonical_path": "numpy/linalg/tensorsolve",
   "category": "counted_custom",
   "cost_formula": "n^3",
   "cost_formula_latex": "$n^3$",
@@ -416,16 +417,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.eye(2*3*4)\n\na.shape = (2*3, 4, 2, 3, 4)\n\nrng = we.random.default_rng()\n\nb = rng.normal(size=(2*3, 4))\n\nx = we.linalg.tensorsolve(a, b)\n\nx.shape\n\nwe.allclose(we.tensordot(a, x, axes=3), b)",
+    "code": "import flopscope.numpy as fnp\n\na = flops.eye(2*3*4)\n\na.shape = (2*3, 4, 2, 3, 4)\n\nrng = flops.random.default_rng()\n\nb = rng.normal(size=(2*3, 4))\n\nx = flops.linalg.tensorsolve(a, b)\n\nx.shape\n\nflops.allclose(flops.tensordot(a, x, axes=3), b)",
     "output": "(2, 3, 4)\n\nTrue",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-tensorsolve/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.tensorsolve",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L246",
+  "href": "/docs/api/numpy/linalg/tensorsolve/",
+  "legacy_href": "/docs/api/ops/linalg-tensorsolve/",
   "module": "numpy.linalg",
   "name": "linalg.tensorsolve",
   "next": {
-    "href": "/docs/api/ops/linalg-trace/",
-    "label": "we.linalg.trace"
+    "href": "/docs/api/numpy/linalg/trace/",
+    "label": "fnp.linalg.trace"
   },
   "notes": "Tensor solve. Cost: $n^3$ after reshape (delegates to solve).",
   "notes_sections": [],
@@ -459,10 +464,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-tensorinv/",
-    "label": "we.linalg.tensorinv"
+    "href": "/docs/api/numpy/linalg/tensorinv/",
+    "label": "fnp.linalg.tensorinv"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.tensorsolve",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.tensorsolve.html",
   "returns": [
     {
@@ -476,8 +482,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/tensordot",
-      "label": "we.tensordot",
+      "href": "/docs/api/numpy/tensordot/",
+      "label": "flops.tensordot",
       "original_target": "numpy.tensordot",
       "role": "",
       "target": "tensordot",
@@ -498,20 +504,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/einsum",
-      "label": "we.einsum",
+      "href": "/docs/api/numpy/einsum/",
+      "label": "flops.einsum",
       "original_target": "numpy.einsum",
       "role": "",
       "target": "einsum",
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.tensorsolve(a, b, axes=None)",
+  "signature": "fnp.linalg.tensorsolve(a, b, axes=None)",
   "slug": "linalg-tensorsolve",
   "summary": "Solve the tensor equation ``a x = b`` for x.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L237",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.tensorsolve",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L245"
+  "weight": 4.0
 }

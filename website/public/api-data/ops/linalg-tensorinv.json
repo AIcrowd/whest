@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/linalg-tensorinv/",
+  "detail_href": "/docs/api/numpy/linalg/tensorinv/",
   "detail_json_href": "/api-data/ops/linalg-tensorinv.json",
   "docs": {
     "sections": [
@@ -240,8 +240,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/tensordot",
-                "label": "we.tensordot",
+                "href": "/docs/api/numpy/tensordot/",
+                "label": "flops.tensordot",
                 "original_target": "numpy.tensordot",
                 "role": "",
                 "target": "tensordot",
@@ -271,12 +271,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.eye(4*6)"
+                "text": "a = flops.eye(4*6)"
               },
               {
                 "kind": "input",
@@ -286,7 +286,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ainv = we.linalg.tensorinv(a, ind=2)"
+                "text": "ainv = flops.linalg.tensorinv(a, ind=2)"
               },
               {
                 "kind": "input",
@@ -300,7 +300,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng()"
+                "text": "rng = flops.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -310,7 +310,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(we.tensordot(ainv, b), we.linalg.tensorsolve(a, b))"
+                "text": "flops.allclose(flops.tensordot(ainv, b), flops.linalg.tensorsolve(a, b))"
               },
               {
                 "kind": "output",
@@ -324,7 +324,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.eye(4*6)"
+                "text": "a = flops.eye(4*6)"
               },
               {
                 "kind": "input",
@@ -334,7 +334,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "ainv = we.linalg.tensorinv(a, ind=1)"
+                "text": "ainv = flops.linalg.tensorinv(a, ind=1)"
               },
               {
                 "kind": "input",
@@ -348,7 +348,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rng = we.random.default_rng()"
+                "text": "rng = flops.random.default_rng()"
               },
               {
                 "kind": "input",
@@ -358,7 +358,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.allclose(we.tensordot(ainv, b, 1), we.linalg.tensorsolve(a, b))"
+                "text": "flops.allclose(flops.tensordot(ainv, b, 1), flops.linalg.tensorsolve(a, b))"
               },
               {
                 "kind": "output",
@@ -376,20 +376,20 @@
     "category": "counted_custom",
     "cost_formula": "n^3",
     "cost_formula_latex": "$n^3$",
+    "flopscope_ref": "fnp.linalg.tensorinv",
     "module": "numpy.linalg",
     "name": "linalg.tensorinv",
     "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv).",
     "numpy_ref": "np.linalg.tensorinv",
-    "signature": "we.linalg.tensorinv(a, ind=2)",
+    "signature": "fnp.linalg.tensorinv(a, ind=2)",
     "status": "supported",
     "summary": "Compute the 'inverse' of an N-dimensional array.",
-    "weight": 4.0,
-    "whest_ref": "we.linalg.tensorinv"
+    "weight": 4.0
   },
   "schema_version": 1,
   "slug": "linalg-tensorinv",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L419",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_solvers.py#L291"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L292",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L419"
   }
 }

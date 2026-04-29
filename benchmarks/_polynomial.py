@@ -36,7 +36,7 @@ _FORMULA_STRINGS: dict[str, str] = {
 def _analytical_cost(op: str, n: int, degree: int) -> int:
     """Return the analytical FLOP cost for a polynomial operation.
 
-    These formulas match whest's runtime cost model so that the
+    These formulas match flopscope's runtime cost model so that the
     benchmark denominator and the budget deduction use the same formula.
     """
     if op == "polyval":

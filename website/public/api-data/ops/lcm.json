@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/lcm/",
+  "detail_href": "/docs/api/numpy/lcm/",
   "detail_json_href": "/api-data/ops/lcm.json",
   "docs": {
     "sections": [
@@ -156,8 +156,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/gcd",
-                "label": "we.gcd",
+                "href": "/docs/api/numpy/gcd/",
+                "label": "flops.gcd",
                 "original_target": "gcd",
                 "role": "",
                 "target": "gcd",
@@ -176,12 +176,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.lcm(12, 20)"
+                "text": "flops.lcm(12, 20)"
               },
               {
                 "kind": "output",
@@ -190,7 +190,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.lcm.reduce([3, 12, 20])"
+                "text": "flops.lcm.reduce([3, 12, 20])"
               },
               {
                 "kind": "output",
@@ -199,7 +199,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.lcm.reduce([40, 12, 20])"
+                "text": "flops.lcm.reduce([40, 12, 20])"
               },
               {
                 "kind": "output",
@@ -208,7 +208,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.lcm(we.arange(6), 20)"
+                "text": "flops.lcm(flops.arange(6), 20)"
               },
               {
                 "kind": "output",
@@ -226,20 +226,20 @@
     "category": "counted_binary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.lcm",
     "module": "numpy",
     "name": "lcm",
     "notes": "Element-wise least common multiple.",
     "numpy_ref": "np.lcm",
-    "signature": "we.lcm(*args, **kwargs)",
+    "signature": "fnp.lcm(*args, **kwargs)",
     "status": "supported",
     "summary": "Returns the lowest common multiple of ``|x1|`` and ``|x2|``",
-    "weight": 16.0,
-    "whest_ref": "we.lcm"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "lcm",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

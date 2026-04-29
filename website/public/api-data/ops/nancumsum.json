@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nancumsum/",
+  "detail_href": "/docs/api/numpy/nancumsum/",
   "detail_json_href": "/api-data/ops/nancumsum.json",
   "docs": {
     "sections": [
@@ -336,8 +336,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/cumsum",
-                "label": "we.cumsum",
+                "href": "/docs/api/numpy/cumsum/",
+                "label": "flops.cumsum",
                 "original_target": "numpy.cumsum",
                 "role": "",
                 "target": "cumsum",
@@ -352,8 +352,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/isnan",
-                "label": "we.isnan",
+                "href": "/docs/api/numpy/isnan/",
+                "label": "flops.isnan",
                 "original_target": "isnan",
                 "role": "",
                 "target": "isnan",
@@ -372,12 +372,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nancumsum(1)"
+                "text": "flops.nancumsum(1)"
               },
               {
                 "kind": "output",
@@ -386,7 +386,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nancumsum([1])"
+                "text": "flops.nancumsum([1])"
               },
               {
                 "kind": "output",
@@ -395,7 +395,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nancumsum([1, we.nan])"
+                "text": "flops.nancumsum([1, flops.nan])"
               },
               {
                 "kind": "output",
@@ -404,12 +404,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[1, 2], [3, we.nan]])"
+                "text": "a = flops.array([[1, 2], [3, flops.nan]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nancumsum(a)"
+                "text": "flops.nancumsum(a)"
               },
               {
                 "kind": "output",
@@ -418,7 +418,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nancumsum(a, axis=0)"
+                "text": "flops.nancumsum(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -431,7 +431,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nancumsum(a, axis=1)"
+                "text": "flops.nancumsum(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -453,20 +453,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.nancumsum",
     "module": "numpy",
     "name": "nancumsum",
     "notes": "Cumulative sum ignoring NaNs.",
     "numpy_ref": "np.nancumsum",
-    "signature": "we.nancumsum(a, axis=None, dtype=None, out=None)",
+    "signature": "fnp.nancumsum(a, axis=None, dtype=None, out=None)",
     "status": "supported",
     "summary": "Return the cumulative sum of array elements over a given axis treating Not a Numbers (NaNs) as zero.  The cumulative sum does not change when NaNs are encountered and leading NaNs are replaced by zeros.",
-    "weight": 1.0,
-    "whest_ref": "we.nancumsum"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "nancumsum",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L818",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L299"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L818"
   }
 }

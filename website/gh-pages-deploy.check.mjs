@@ -1,13 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, readFile, readdir } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { JSDOM } from 'jsdom';
+import {
+  collectHtmlFiles,
+  DEFAULT_ALLOWED_ORIGINS,
+  DEFAULT_DEPLOY_BASE_PATH,
+  inspectLinksFromHtml,
+} from './gh-pages-link-audit.mjs';
 
 const websiteRoot = path.dirname(fileURLToPath(import.meta.url));
 const outRoot = path.join(websiteRoot, 'out');
-const DEPLOY_BASE_PATH = '/whest';
 
 async function readSource(relativePath) {
   return readFile(path.join(websiteRoot, relativePath), 'utf8');
@@ -25,12 +29,9 @@ test('for-agents links use normal static paths for machine-readable artifacts', 
 
 test('docs route stays GH Pages-safe and avoids runtime filesystem reads', async () => {
   const source = await readSource('app/docs/[[...slug]]/page.tsx');
-  const opSource = await readSource('app/docs/api/ops/[slug]/page.tsx');
 
   assert.doesNotMatch(source, /node:fs|node:fs\/promises|from 'fs'|from "fs"/);
   assert.doesNotMatch(source, /process\.cwd\(/);
-  assert.doesNotMatch(opSource, /node:fs|node:fs\/promises|from 'fs'|from "fs"/);
-  assert.doesNotMatch(opSource, /process\.cwd\(/);
 });
 
 test('build-generated public artifacts exist and are non-empty', async () => {
@@ -52,53 +53,20 @@ test('build-generated public artifacts exist and are non-empty', async () => {
   const llmsFull = await readFile(llmsFullPath, 'utf8');
   const sampleDetail = await readFile(sampleDetailPath, 'utf8');
 
-  assert.match(llms, /^# whest/m);
+  assert.match(llms, /^# flopscope/m);
   assert.ok(llms.length > 100);
   assert.ok(llmsFull.length > 1000);
   assert.match(sampleDetail, /"schema_version": 1/);
   assert.match(sampleDetail, /"detail_json_href": "\/api-data\/ops\/einsum\.json"/);
 });
 
-async function collectHtmlFiles(dir) {
-  const entries = await readdir(dir, { withFileTypes: true });
-  const files = [];
-
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...(await collectHtmlFiles(fullPath)));
-      continue;
-    }
-    if (entry.isFile() && entry.name.endsWith('.html')) {
-      files.push(fullPath);
-    }
-  }
-
-  return files;
-}
-
-function outputPathForHref(href) {
-  if (!href.startsWith('/')) return null;
-  if (!href.startsWith(DEPLOY_BASE_PATH)) return null;
-
-  const relative = href.slice(DEPLOY_BASE_PATH.length) || '/';
-  if (!relative.endsWith('/') && path.extname(relative)) {
-    return path.join(outRoot, relative.replace(/^\//, ''));
-  }
-
-  const withoutQuery = relative.split('#', 1)[0].split('?', 1)[0];
-  const normalized = withoutQuery === '/' ? '' : withoutQuery.replace(/^\//, '');
-  return path.join(outRoot, normalized, 'index.html');
-}
-
-test('exported site has no broken same-origin HTML links or hardcoded root logo paths', async () => {
+test('exported site avoids hardcoded root logo paths and root-relative links without deploy base path', async () => {
   const htmlFiles = await collectHtmlFiles(outRoot);
-  const brokenTargets = [];
+  const missingBasePathLinks = [];
 
   for (const htmlFile of htmlFiles) {
     const html = await readFile(htmlFile, 'utf8');
-    const dom = new JSDOM(html);
-    const anchors = [...dom.window.document.querySelectorAll('a[href]')];
+    const page = path.relative(outRoot, htmlFile);
 
     assert.doesNotMatch(
       html,
@@ -106,33 +74,19 @@ test('exported site has no broken same-origin HTML links or hardcoded root logo 
       `hardcoded root logo path found in ${path.relative(outRoot, htmlFile)}`,
     );
 
-    for (const anchor of anchors) {
-      const href = anchor.getAttribute('href');
-      if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) {
-        continue;
-      }
-      if (href.startsWith('/') && !href.startsWith(DEPLOY_BASE_PATH)) {
-        brokenTargets.push({
-          page: path.relative(outRoot, htmlFile),
-          href,
-          target: 'missing-base-path',
-        });
-        continue;
-      }
-      const outputTarget = outputPathForHref(href);
-      if (!outputTarget) continue;
+    const { brokenTargets } = inspectLinksFromHtml({
+      html,
+      page,
+      deployBasePath: DEFAULT_DEPLOY_BASE_PATH,
+      allowedOrigins: DEFAULT_ALLOWED_ORIGINS,
+    });
 
-      try {
-        await access(outputTarget);
-      } catch {
-        brokenTargets.push({
-          page: path.relative(outRoot, htmlFile),
-          href,
-          target: path.relative(outRoot, outputTarget),
-        });
-      }
-    }
+    missingBasePathLinks.push(
+      ...brokenTargets
+        .filter((item) => item.target === 'missing-base-path')
+        .map(({ page: brokenPage, href }) => ({ page: brokenPage, href })),
+    );
   }
 
-  assert.deepEqual(brokenTargets, []);
+  assert.deepEqual(missingBasePathLinks, []);
 });

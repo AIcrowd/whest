@@ -254,7 +254,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/mean",
+                      "href": "/docs/api/numpy/mean/",
                       "kind": "link",
                       "target": "mean",
                       "text": "mean"
@@ -265,7 +265,7 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/sum",
+                      "href": "/docs/api/numpy/sum/",
                       "kind": "link",
                       "target": "sum",
                       "text": "sum"
@@ -553,8 +553,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/sum",
-              "label": "we.sum",
+              "href": "/docs/api/numpy/sum/",
+              "label": "flops.sum",
               "original_target": "numpy.sum",
               "role": "",
               "target": "sum",
@@ -569,8 +569,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isnan",
-              "label": "we.isnan",
+              "href": "/docs/api/numpy/isnan/",
+              "label": "flops.isnan",
               "original_target": "isnan",
               "role": "",
               "target": "isnan",
@@ -585,8 +585,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/isfinite",
-              "label": "we.isfinite",
+              "href": "/docs/api/numpy/isfinite/",
+              "label": "flops.isfinite",
               "original_target": "isfinite",
               "role": "",
               "target": "isfinite",
@@ -619,12 +619,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nansum(1)"
+              "text": "flops.nansum(1)"
             },
             {
               "kind": "output",
@@ -633,7 +633,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nansum([1])"
+              "text": "flops.nansum([1])"
             },
             {
               "kind": "output",
@@ -642,7 +642,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nansum([1, we.nan])"
+              "text": "flops.nansum([1, flops.nan])"
             },
             {
               "kind": "output",
@@ -651,12 +651,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 1], [1, we.nan]])"
+              "text": "a = flops.array([[1, 1], [1, flops.nan]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nansum(a)"
+              "text": "flops.nansum(a)"
             },
             {
               "kind": "output",
@@ -665,7 +665,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nansum(a, axis=0)"
+              "text": "flops.nansum(a, axis=0)"
             },
             {
               "kind": "output",
@@ -674,7 +674,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nansum([1, we.nan, we.inf])"
+              "text": "flops.nansum([1, flops.nan, flops.inf])"
             },
             {
               "kind": "output",
@@ -683,7 +683,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nansum([1, we.nan, -we.inf])"
+              "text": "flops.nansum([1, flops.nan, -flops.inf])"
             },
             {
               "kind": "output",
@@ -692,21 +692,21 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "from we.testing import suppress_warnings"
+              "text": "from flops.testing import suppress_warnings"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "with we.errstate(invalid=\"ignore\"):"
+              "text": "with flops.errstate(invalid=\"ignore\"):"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "we.nansum([1, we.nan, we.inf, -we.inf]) # both +/- infinity present"
+              "text": "flops.nansum([1, flops.nan, flops.inf, -flops.inf]) # both +/- infinity present"
             },
             {
               "kind": "output",
-              "text": "we.float64(nan)"
+              "text": "flops.float64(nan)"
             }
           ],
           "type": "doctest_block"
@@ -716,6 +716,7 @@
     }
   ],
   "canonical_name": "nansum",
+  "canonical_path": "numpy/nansum",
   "category": "counted_reduction",
   "cost_formula": "numel(input)",
   "cost_formula_latex": "$\\text{numel}(\\text{input})$",
@@ -726,16 +727,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.nansum(1)\n\nwe.nansum([1])\n\nwe.nansum([1, we.nan])\n\na = we.array([[1, 1], [1, we.nan]])\n\nwe.nansum(a)\n\nwe.nansum(a, axis=0)\n\nwe.nansum([1, we.nan, we.inf])\n\nwe.nansum([1, we.nan, -we.inf])\n\nfrom we.testing import suppress_warnings\n\nwith we.errstate(invalid=\"ignore\"):\n    we.nansum([1, we.nan, we.inf, -we.inf]) # both +/- infinity present",
-    "output": "1\n\n1\n\n1.0\n\n3.0\n\narray([2.,  1.])\n\ninf\n\n-inf\n\nwe.float64(nan)",
+    "code": "import flopscope.numpy as fnp\n\nflops.nansum(1)\n\nflops.nansum([1])\n\nflops.nansum([1, flops.nan])\n\na = flops.array([[1, 1], [1, flops.nan]])\n\nflops.nansum(a)\n\nflops.nansum(a, axis=0)\n\nflops.nansum([1, flops.nan, flops.inf])\n\nflops.nansum([1, flops.nan, -flops.inf])\n\nfrom flops.testing import suppress_warnings\n\nwith flops.errstate(invalid=\"ignore\"):\n    flops.nansum([1, flops.nan, flops.inf, -flops.inf]) # both +/- infinity present",
+    "output": "1\n\n1\n\n1.0\n\n3.0\n\narray([2.,  1.])\n\ninf\n\n-inf\n\nflops.float64(nan)",
     "source": "derived"
   },
-  "href": "/docs/api/ops/nansum/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.nansum",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
+  "href": "/docs/api/numpy/nansum/",
+  "legacy_href": "/docs/api/ops/nansum/",
   "module": "numpy",
   "name": "nansum",
   "next": {
-    "href": "/docs/api/ops/nanvar/",
-    "label": "we.nanvar"
+    "href": "/docs/api/numpy/nanvar/",
+    "label": "fnp.nanvar"
   },
   "notes": "Sum ignoring NaNs.",
   "notes_sections": [
@@ -798,7 +803,7 @@
     },
     {
       "body": [
-        "Starting value for the sum. See `~we.ufunc.reduce` for details.",
+        "Starting value for the sum. See `~flops.ufunc.reduce` for details.",
         "",
         ".. versionadded:: 1.22.0"
       ],
@@ -807,7 +812,7 @@
     },
     {
       "body": [
-        "Elements to include in the sum. See `~we.ufunc.reduce` for details.",
+        "Elements to include in the sum. See `~flops.ufunc.reduce` for details.",
         "",
         ".. versionadded:: 1.22.0"
       ],
@@ -816,10 +821,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/nanstd/",
-    "label": "we.nanstd"
+    "href": "/docs/api/numpy/nanstd/",
+    "label": "fnp.nanstd"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.nansum",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nansum.html",
   "returns": [
     {
@@ -843,8 +849,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/sum",
-      "label": "we.sum",
+      "href": "/docs/api/numpy/sum/",
+      "label": "flops.sum",
       "original_target": "numpy.sum",
       "role": "",
       "target": "sum",
@@ -859,8 +865,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isnan",
-      "label": "we.isnan",
+      "href": "/docs/api/numpy/isnan/",
+      "label": "flops.isnan",
       "original_target": "isnan",
       "role": "",
       "target": "isnan",
@@ -875,20 +881,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/isfinite",
-      "label": "we.isfinite",
+      "href": "/docs/api/numpy/isfinite/",
+      "label": "flops.isfinite",
       "original_target": "isfinite",
       "role": "",
       "target": "isfinite",
       "unresolved": false
     }
   ],
-  "signature": "we.nansum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+  "signature": "fnp.nansum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
   "slug": "nansum",
   "summary": "Return the sum of array elements over a given axis treating Not a Numbers (NaNs) as zero.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L635",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.nansum",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L299"
+  "weight": 1.0
 }

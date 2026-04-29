@@ -162,25 +162,42 @@ export interface OperationNavLink {
   label: string;
 }
 
-export interface OperationDocRecord {
+export interface ApiDocOperationMeta {
+  name: string;
+  category: string;
+  free: boolean;
+  blocked: boolean;
+  cost_formula?: string;
+  cost_formula_latex?: string;
+}
+
+export interface ApiDocRecord {
   name: string;
   canonical_name: string;
   slug: string;
+  href: string;
+  canonical_path?: string;
+  legacy_href?: string;
   module: string;
-  whest_ref: string;
-  numpy_ref: string;
+  flopscope_ref: string;
+  import_path?: string;
+  display_name?: string;
+  numpy_ref?: string;
   signature: string;
   summary: string;
-  area: string;
-  display_type: string;
-  weight: number;
+  area?: string;
+  display_type?: string;
+  weight?: number;
   aliases: string[];
-  notes: string;
-  cost_formula: string;
-  cost_formula_latex: string;
+  notes?: string;
+  cost_formula?: string;
+  cost_formula_latex?: string;
   provenance_label?: string;
   provenance_url?: string;
-  whest_source_url?: string;
+  provenance_ref?: string;
+  upstream_ref_label?: string;
+  upstream_source_label?: string;
+  flopscope_source_url?: string;
   upstream_source_url?: string;
   parameters: DocField[];
   returns: DocField[];
@@ -191,7 +208,11 @@ export interface OperationDocRecord {
   doc_coverage?: Record<string, unknown>;
   previous?: OperationNavLink | null;
   next?: OperationNavLink | null;
+  kind?: string;
+  operation?: ApiDocOperationMeta | null;
 }
+
+export type OperationDocRecord = ApiDocRecord;
 
 export interface RelatedGuideLink {
   title: string;
@@ -203,6 +224,7 @@ export interface PublicApiSymbolRecord {
   canonical_name: string;
   slug: string;
   href: string;
+  canonical_path: string;
   kind: string;
   module: string;
   import_path: string;
@@ -213,5 +235,7 @@ export interface PublicApiSymbolRecord {
   source_url?: string;
   upstream_source_url?: string;
   related_guides?: RelatedGuideLink[];
+  members?: OperationNavLink[];
+  status_note?: string;
   body_sections?: DocSection[];
 }

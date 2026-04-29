@@ -1,0 +1,175 @@
+{
+  "aliases": [
+    "flops.matrix_power_cost",
+    "flops.accounting.matrix_power_cost",
+    "flopscope.accounting.matrix_power_cost",
+    "matrix_power_cost"
+  ],
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Weighted FLOP cost of matrix power A**k."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Number of columns in the input matrix."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Number of columns in the input matrix."
+                }
+              ],
+              "name": "n",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Target rank or number of singular components to estimate."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Target rank or number of singular components to estimate."
+                }
+              ],
+              "name": "k",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "Weighted public cost estimate, floored to match runtime accounting."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "int",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "Weighted public cost estimate, floored to match runtime accounting."
+                }
+              ],
+              "name": "",
+              "type": "field_list"
+            }
+          ],
+          "title": "Returns",
+          "type": "field_list"
+        }
+      ],
+      "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "This helper multiplies the analytical FLOP count by the active weight from "
+            },
+            {
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy._weights.html",
+              "href": "",
+              "kind": "link",
+              "target": "_weights",
+              "text": "flopscope._weights"
+            },
+            {
+              "kind": "text",
+              "text": " and then applies "
+            },
+            {
+              "kind": "code",
+              "text": "int(...)"
+            },
+            {
+              "kind": "text",
+              "text": " so public estimates match budget deductions."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Uses exponentiation by repeated squaring. For $k < 0$, adds $n^3$ for\nthe initial matrix inversion."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Notes"
+    }
+  ],
+  "canonical_name": "flops.matrix_power_cost",
+  "canonical_path": "flops/matrix-power-cost",
+  "display_name": "flops.flops.matrix_power_cost",
+  "href": "/docs/api/flops/matrix-power-cost/",
+  "import_path": "flops.flops.matrix_power_cost",
+  "kind": "cost_helper",
+  "members": [],
+  "module": "flopscope.numpy.linalg._compound",
+  "name": "flops.matrix_power_cost",
+  "related_guides": [
+    {
+      "href": "/docs/guides/budget-planning",
+      "title": "Budget Planning & Debugging"
+    }
+  ],
+  "signature": "flops.flops.matrix_power_cost(n: 'int', k: 'int') -> 'int'",
+  "slug": "flops-matrix-power-cost",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L81",
+  "status_note": "",
+  "summary": "Weighted FLOP cost of matrix power A**k.",
+  "upstream_source_url": ""
+}

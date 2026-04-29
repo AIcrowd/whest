@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/sum/",
+  "detail_href": "/docs/api/numpy/sum/",
   "detail_json_href": "/api-data/ops/sum.json",
   "docs": {
     "sections": [
@@ -200,7 +200,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/sum",
+                        "href": "/docs/api/numpy/sum/",
                         "kind": "link",
                         "target": "sum",
                         "text": "sum"
@@ -452,11 +452,11 @@
                 "unresolved": true
               },
               {
-                "description": "``we.add.reduce`` equivalent function.",
+                "description": "``flops.add.reduce`` equivalent function.",
                 "description_inline": [
                   {
                     "kind": "code",
-                    "text": "we.add.reduce"
+                    "text": "flops.add.reduce"
                   },
                   {
                     "kind": "text",
@@ -464,8 +464,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/add",
-                "label": "we.add",
+                "href": "/docs/api/numpy/add/",
+                "label": "flops.add",
                 "original_target": "add",
                 "role": "",
                 "target": "add",
@@ -480,8 +480,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/cumsum",
-                "label": "we.cumsum",
+                "href": "/docs/api/numpy/cumsum/",
+                "label": "flops.cumsum",
                 "original_target": "cumsum",
                 "role": "",
                 "target": "cumsum",
@@ -496,8 +496,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/trapezoid",
-                "label": "we.trapezoid",
+                "href": "/docs/api/numpy/trapezoid/",
+                "label": "flops.trapezoid",
                 "original_target": "trapezoid",
                 "role": "",
                 "target": "trapezoid",
@@ -507,8 +507,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
-                "label": "we.mean",
+                "href": "/docs/api/numpy/mean/",
+                "label": "flops.mean",
                 "original_target": "mean",
                 "role": "",
                 "target": "mean",
@@ -518,8 +518,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/average",
-                "label": "we.average",
+                "href": "/docs/api/numpy/average/",
+                "label": "flops.average",
                 "original_target": "average",
                 "role": "",
                 "target": "average",
@@ -556,7 +556,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum([])"
+                "text": "flops.sum([])"
               },
               {
                 "kind": "output",
@@ -573,7 +573,7 @@
               },
               {
                 "kind": "code",
-                "text": "we.add.reduce"
+                "text": "flops.add.reduce"
               },
               {
                 "kind": "text",
@@ -632,12 +632,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum([0.5, 1.5])"
+                "text": "flops.sum([0.5, 1.5])"
               },
               {
                 "kind": "output",
@@ -646,16 +646,16 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum([0.5, 0.7, 0.2, 1.5], dtype=we.int32)"
+                "text": "flops.sum([0.5, 0.7, 0.2, 1.5], dtype=flops.int32)"
               },
               {
                 "kind": "output",
-                "text": "we.int32(1)"
+                "text": "flops.int32(1)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum([[0, 1], [0, 5]])"
+                "text": "flops.sum([[0, 1], [0, 5]])"
               },
               {
                 "kind": "output",
@@ -664,7 +664,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum([[0, 1], [0, 5]], axis=0)"
+                "text": "flops.sum([[0, 1], [0, 5]], axis=0)"
               },
               {
                 "kind": "output",
@@ -673,7 +673,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum([[0, 1], [0, 5]], axis=1)"
+                "text": "flops.sum([[0, 1], [0, 5]], axis=1)"
               },
               {
                 "kind": "output",
@@ -682,7 +682,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum([[0, 1], [we.nan, 5]], where=[False, True], axis=1)"
+                "text": "flops.sum([[0, 1], [flops.nan, 5]], where=[False, True], axis=1)"
               },
               {
                 "kind": "output",
@@ -705,11 +705,11 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.ones(128, dtype=we.int8).sum(dtype=we.int8)"
+                "text": "flops.ones(128, dtype=flops.int8).sum(dtype=flops.int8)"
               },
               {
                 "kind": "output",
-                "text": "we.int8(-128)"
+                "text": "flops.int8(-128)"
               }
             ],
             "type": "doctest_block"
@@ -728,7 +728,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.sum([10], initial=5)"
+                "text": "flops.sum([10], initial=5)"
               },
               {
                 "kind": "output",
@@ -746,20 +746,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.sum",
     "module": "numpy",
     "name": "sum",
     "notes": "Sum of array elements.",
     "numpy_ref": "np.sum",
-    "signature": "we.sum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
+    "signature": "fnp.sum(a, axis=None, dtype=None, out=None, keepdims=<no value>, initial=<no value>, where=<no value>)",
     "status": "supported",
     "summary": "Sum of array elements over a given axis.",
-    "weight": 1.0,
-    "whest_ref": "we.sum"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "sum",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2338",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L299"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2338"
   }
 }

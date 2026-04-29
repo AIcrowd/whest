@@ -47,7 +47,7 @@
               "href": "",
               "kind": "link",
               "target": "svdvals(x)",
-              "text": "we.svdvals(x)"
+              "text": "flops.svdvals(x)"
             },
             {
               "kind": "text",
@@ -58,7 +58,7 @@
               "href": "",
               "kind": "link",
               "target": "svd(x, compute_uv=False, hermitian=False)",
-              "text": "we.svd(x, compute_uv=False, hermitian=False)"
+              "text": "flops.svd(x, compute_uv=False, hermitian=False)"
             },
             {
               "kind": "text",
@@ -169,7 +169,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.linalg.svdvals([[1, 2, 3, 4, 5],"
+              "text": "flops.linalg.svdvals([[1, 2, 3, 4, 5],"
             },
             {
               "kind": "input",
@@ -202,7 +202,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.linalg.svdvals([[1, 2, 3],"
+              "text": "s = flops.linalg.svdvals([[1, 2, 3],"
             },
             {
               "kind": "input",
@@ -221,7 +221,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.count_nonzero(s > 1e-10)  # Matrix of rank 2"
+              "text": "flops.count_nonzero(s > 1e-10)  # Matrix of rank 2"
             },
             {
               "kind": "output",
@@ -235,6 +235,7 @@
     }
   ],
   "canonical_name": "linalg.svdvals",
+  "canonical_path": "numpy/linalg/svdvals",
   "category": "counted_custom",
   "cost_formula": "m * n * min(m,n)",
   "cost_formula_latex": "$m \\cdot n \\cdot \\min(m,n)$",
@@ -245,16 +246,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.linalg.svdvals([[1, 2, 3, 4, 5],\n                   [1, 4, 9, 16, 25],\n                   [1, 8, 27, 64, 125]])\n\ns = we.linalg.svdvals([[1, 2, 3],\n                       [2, 4, 6],\n                       [-1, 1, -1]]); s\n\nwe.count_nonzero(s > 1e-10)  # Matrix of rank 2",
+    "code": "flops.linalg.svdvals([[1, 2, 3, 4, 5],\n                   [1, 4, 9, 16, 25],\n                   [1, 8, 27, 64, 125]])\n\ns = flops.linalg.svdvals([[1, 2, 3],\n                       [2, 4, 6],\n                       [-1, 1, -1]]); s\n\nflops.count_nonzero(s > 1e-10)  # Matrix of rank 2",
     "output": "array([146.68862757,   5.57510612,   0.60393245])\n\narray([8.38434191e+00, 1.64402274e+00, 2.31534378e-16])\n\n2",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-svdvals/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.svdvals",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L274",
+  "href": "/docs/api/numpy/linalg/svdvals/",
+  "legacy_href": "/docs/api/ops/linalg-svdvals/",
   "module": "numpy.linalg",
   "name": "linalg.svdvals",
   "next": {
-    "href": "/docs/api/ops/linalg-tensordot/",
-    "label": "we.linalg.tensordot"
+    "href": "/docs/api/numpy/linalg/tensordot/",
+    "label": "fnp.linalg.tensordot"
   },
   "notes": "Singular values only. Cost: m*n*min(m,n) (Golub-Reinsch).",
   "notes_sections": [],
@@ -271,10 +276,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-svd/",
-    "label": "we.linalg.svd"
+    "href": "/docs/api/numpy/linalg/svd/",
+    "label": "fnp.linalg.svd"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.svdvals",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.svdvals.html",
   "returns": [
     {
@@ -304,12 +310,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.svdvals(x, /, *, k: 'int | None' = None)",
+  "signature": "fnp.linalg.svdvals(x, /, *, k: 'int | None' = None)",
   "slug": "linalg-svdvals",
   "summary": "Returns the singular values of a matrix (or a stack of matrices) ``x``. When x is a stack of matrices, the function will compute the singular values for each matrix in the stack.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1831",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.svdvals",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_decompositions.py#L274"
+  "weight": 4.0
 }

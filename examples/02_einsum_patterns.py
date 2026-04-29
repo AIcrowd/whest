@@ -3,7 +3,7 @@
 Run: uv run python examples/02_einsum_patterns.py
 """
 
-import whest as we
+import flopscope as we
 
 patterns = [
     ("Matrix-vector", "ij,j->i", [(256, 256), (256,)]),

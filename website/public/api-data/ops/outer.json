@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/outer/",
+  "detail_href": "/docs/api/numpy/outer/",
   "detail_json_href": "/api-data/ops/outer.json",
   "docs": {
     "sections": [
@@ -194,8 +194,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/inner",
-                "label": "we.inner",
+                "href": "/docs/api/numpy/inner/",
+                "label": "flops.inner",
                 "original_target": "inner",
                 "role": "",
                 "target": "inner",
@@ -214,15 +214,15 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/einsum",
-                "label": "we.einsum",
+                "href": "/docs/api/numpy/einsum/",
+                "label": "flops.einsum",
                 "original_target": "einsum",
                 "role": "",
                 "target": "einsum",
                 "unresolved": false
               },
               {
-                "description": "A generalization to dimensions other than 1D and other operations. ``we.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.",
+                "description": "A generalization to dimensions other than 1D and other operations. ``flops.multiply.outer(a.ravel(), b.ravel())`` is the equivalent.",
                 "description_inline": [
                   {
                     "kind": "text",
@@ -230,7 +230,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.multiply.outer(a.ravel(), b.ravel())"
+                    "text": "flops.multiply.outer(a.ravel(), b.ravel())"
                   },
                   {
                     "kind": "text",
@@ -246,7 +246,7 @@
                 "unresolved": false
               },
               {
-                "description": "An Array API compatible variation of ``we.outer``, which accepts 1-dimensional inputs only.",
+                "description": "An Array API compatible variation of ``flops.outer``, which accepts 1-dimensional inputs only.",
                 "description_inline": [
                   {
                     "kind": "text",
@@ -254,10 +254,10 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/outer",
+                    "href": "/docs/api/numpy/outer/",
                     "kind": "link",
                     "target": "outer",
-                    "text": "we.outer"
+                    "text": "flops.outer"
                   },
                   {
                     "kind": "text",
@@ -265,19 +265,19 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linalg-outer",
-                "label": "we.linalg.outer",
+                "href": "/docs/api/numpy/linalg/outer/",
+                "label": "flops.linalg.outer",
                 "original_target": "linalg.outer",
                 "role": "",
                 "target": "linalg.outer",
                 "unresolved": false
               },
               {
-                "description": "``we.tensordot(a.ravel(), b.ravel(), axes=((), ()))`` is the equivalent.",
+                "description": "``flops.tensordot(a.ravel(), b.ravel(), axes=((), ()))`` is the equivalent.",
                 "description_inline": [
                   {
                     "kind": "code",
-                    "text": "we.tensordot(a.ravel(), b.ravel(), axes=((), ()))"
+                    "text": "flops.tensordot(a.ravel(), b.ravel(), axes=((), ()))"
                   },
                   {
                     "kind": "text",
@@ -285,8 +285,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/tensordot",
-                "label": "we.tensordot",
+                "href": "/docs/api/numpy/tensordot/",
+                "label": "flops.tensordot",
                 "original_target": "tensordot",
                 "role": "",
                 "target": "tensordot",
@@ -332,12 +332,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "rl = we.outer(we.ones((5,)), we.linspace(-2, 2, 5))"
+                "text": "rl = flops.outer(flops.ones((5,)), flops.linspace(-2, 2, 5))"
               },
               {
                 "kind": "input",
@@ -367,7 +367,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "im = we.outer(1j*we.linspace(2, -2, 5), we.ones((5,)))"
+                "text": "im = flops.outer(1j*flops.linspace(2, -2, 5), flops.ones((5,)))"
               },
               {
                 "kind": "input",
@@ -441,12 +441,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.array(['a', 'b', 'c'], dtype=object)"
+                "text": "x = flops.array(['a', 'b', 'c'], dtype=object)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.outer(x, [1, 2, 3])"
+                "text": "flops.outer(x, [1, 2, 3])"
               },
               {
                 "kind": "output",
@@ -472,20 +472,20 @@
     "category": "counted_custom",
     "cost_formula": "m * n",
     "cost_formula_latex": "$m \\cdot n$",
+    "flopscope_ref": "fnp.outer",
     "module": "numpy",
     "name": "outer",
     "notes": "Outer product of two vectors; cost = M*N.",
     "numpy_ref": "np.outer",
-    "signature": "we.outer(a, b, out=None)",
+    "signature": "fnp.outer(a, b, out=None)",
     "status": "supported",
     "summary": "Compute the outer product of two vectors.",
-    "weight": 1.0,
-    "whest_ref": "we.outer"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "outer",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L876",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L1008"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1014",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L876"
   }
 }

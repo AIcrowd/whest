@@ -312,8 +312,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ones_like",
-              "label": "we.ones_like",
+              "href": "/docs/api/numpy/ones-like/",
+              "label": "flops.ones_like",
               "original_target": "ones_like",
               "role": "",
               "target": "ones_like",
@@ -328,8 +328,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/zeros_like",
-              "label": "we.zeros_like",
+              "href": "/docs/api/numpy/zeros-like/",
+              "label": "flops.zeros_like",
               "original_target": "zeros_like",
               "role": "",
               "target": "zeros_like",
@@ -344,8 +344,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/full_like",
-              "label": "we.full_like",
+              "href": "/docs/api/numpy/full-like/",
+              "label": "flops.full_like",
               "original_target": "full_like",
               "role": "",
               "target": "full_like",
@@ -360,8 +360,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/empty",
-              "label": "we.empty",
+              "href": "/docs/api/numpy/empty/",
+              "label": "flops.empty",
               "original_target": "empty",
               "role": "",
               "target": "empty",
@@ -383,7 +383,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/zeros_like",
+              "href": "/docs/api/numpy/zeros-like/",
               "kind": "link",
               "target": "zeros_like",
               "text": "zeros_like"
@@ -394,7 +394,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/ones_like",
+              "href": "/docs/api/numpy/ones-like/",
               "kind": "link",
               "target": "ones_like",
               "text": "ones_like"
@@ -405,7 +405,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/full_like",
+              "href": "/docs/api/numpy/full-like/",
               "kind": "link",
               "target": "full_like",
               "text": "full_like"
@@ -416,7 +416,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/empty_like",
+              "href": "/docs/api/numpy/empty-like/",
               "kind": "link",
               "target": "empty_like",
               "text": "empty_like"
@@ -438,7 +438,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
@@ -448,7 +448,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.empty_like(a)"
+              "text": "flops.empty_like(a)"
             },
             {
               "kind": "output",
@@ -461,12 +461,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1., 2., 3.],[4.,5.,6.]])"
+              "text": "a = flops.array([[1., 2., 3.],[4.,5.,6.]])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.empty_like(a)"
+              "text": "flops.empty_like(a)"
             },
             {
               "kind": "output",
@@ -484,6 +484,7 @@
     }
   ],
   "canonical_name": "empty_like",
+  "canonical_path": "numpy/empty-like",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -494,16 +495,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = ([1,2,3], [4,5,6])                         # a is array-like\n\nwe.empty_like(a)\n\na = we.array([[1., 2., 3.],[4.,5.,6.]])\n\nwe.empty_like(a)",
+    "code": "import flopscope.numpy as fnp\n\na = ([1,2,3], [4,5,6])                         # a is array-like\n\nflops.empty_like(a)\n\na = flops.array([[1., 2., 3.],[4.,5.,6.]])\n\nflops.empty_like(a)",
     "output": "array([[-1073741821, -1073741821,           3],    # uninitialized\n       [          0,           0, -1073741821]])\n\narray([[ -2.00000715e+000,   1.48219694e-323,  -2.00000572e+000], # uninitialized\n       [  4.38791518e-305,  -2.00000715e+000,   4.17269252e-309]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/empty_like/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.empty_like",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L268",
+  "href": "/docs/api/numpy/empty-like/",
+  "legacy_href": "/docs/api/ops/empty_like/",
   "module": "numpy",
   "name": "empty_like",
   "next": {
-    "href": "/docs/api/ops/equal/",
-    "label": "we.equal"
+    "href": "/docs/api/numpy/equal/",
+    "label": "fnp.equal"
   },
   "notes": "Uninitialized array with same shape/type as input.",
   "notes_sections": [
@@ -566,10 +571,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/empty/",
-    "label": "we.empty"
+    "href": "/docs/api/numpy/empty/",
+    "label": "fnp.empty"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.empty_like",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.empty_like.html",
   "returns": [
     {
@@ -591,8 +597,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ones_like",
-      "label": "we.ones_like",
+      "href": "/docs/api/numpy/ones-like/",
+      "label": "flops.ones_like",
       "original_target": "ones_like",
       "role": "",
       "target": "ones_like",
@@ -607,8 +613,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/zeros_like",
-      "label": "we.zeros_like",
+      "href": "/docs/api/numpy/zeros-like/",
+      "label": "flops.zeros_like",
       "original_target": "zeros_like",
       "role": "",
       "target": "zeros_like",
@@ -623,8 +629,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/full_like",
-      "label": "we.full_like",
+      "href": "/docs/api/numpy/full-like/",
+      "label": "flops.full_like",
       "original_target": "full_like",
       "role": "",
       "target": "full_like",
@@ -639,20 +645,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/empty",
-      "label": "we.empty",
+      "href": "/docs/api/numpy/empty/",
+      "label": "flops.empty",
       "original_target": "empty",
       "role": "",
       "target": "empty",
       "unresolved": false
     }
   ],
-  "signature": "we.empty_like(a, dtype=None, **kwargs)",
+  "signature": "fnp.empty_like(a, dtype=None, **kwargs)",
   "slug": "empty_like",
   "summary": "Return a new array with the same shape and type as a given array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.empty_like",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L216"
+  "weight": 0.0
 }

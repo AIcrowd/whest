@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/meshgrid/",
+  "detail_href": "/docs/api/numpy/meshgrid/",
   "detail_json_href": "/api-data/ops/meshgrid.json",
   "docs": {
     "sections": [
@@ -478,7 +478,7 @@
           },
           {
             "language": null,
-            "text": "xv, yv = we.meshgrid(x, y, indexing='ij')\nfor i in range(nx):\n    for j in range(ny):\n        # treat xv[i,j], yv[i,j]\n\nxv, yv = we.meshgrid(x, y, indexing='xy')\nfor i in range(nx):\n    for j in range(ny):\n        # treat xv[j,i], yv[j,i]",
+            "text": "xv, yv = flops.meshgrid(x, y, indexing='ij')\nfor i in range(nx):\n    for j in range(ny):\n        # treat xv[i,j], yv[i,j]\n\nxv, yv = flops.meshgrid(x, y, indexing='xy')\nfor i in range(nx):\n    for j in range(ny):\n        # treat xv[j,i], yv[j,i]",
             "type": "literal_block"
           },
           {
@@ -500,7 +500,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -510,17 +510,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(0, 1, nx)"
+                "text": "x = flops.linspace(0, 1, nx)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.linspace(0, 1, ny)"
+                "text": "y = flops.linspace(0, 1, ny)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xv, yv = we.meshgrid(x, y)"
+                "text": "xv, yv = flops.meshgrid(x, y)"
               },
               {
                 "kind": "input",
@@ -559,7 +559,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/meshgrid",
+                "href": "/docs/api/numpy/meshgrid/",
                 "kind": "link",
                 "target": "meshgrid",
                 "text": "meshgrid"
@@ -605,7 +605,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xv, yv = we.meshgrid(x, y, sparse=True)"
+                "text": "xv, yv = flops.meshgrid(x, y, sparse=True)"
               },
               {
                 "kind": "input",
@@ -636,7 +636,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/meshgrid",
+                "href": "/docs/api/numpy/meshgrid/",
                 "kind": "link",
                 "target": "meshgrid",
                 "text": "meshgrid"
@@ -653,12 +653,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.linspace(-5, 5, 101)"
+                "text": "x = flops.linspace(-5, 5, 101)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "y = we.linspace(-5, 5, 101)"
+                "text": "y = flops.linspace(-5, 5, 101)"
               },
               {
                 "kind": "input",
@@ -668,12 +668,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xx, yy = we.meshgrid(x, y)"
+                "text": "xx, yy = flops.meshgrid(x, y)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "zz = we.sqrt(xx**2 + yy**2)"
+                "text": "zz = flops.sqrt(xx**2 + yy**2)"
               },
               {
                 "kind": "input",
@@ -692,12 +692,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "xs, ys = we.meshgrid(x, y, sparse=True)"
+                "text": "xs, ys = flops.meshgrid(x, y, sparse=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "zs = we.sqrt(xs**2 + ys**2)"
+                "text": "zs = flops.sqrt(xs**2 + ys**2)"
               },
               {
                 "kind": "input",
@@ -711,7 +711,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.array_equal(zz, zs)"
+                "text": "flops.array_equal(zz, zs)"
               },
               {
                 "kind": "output",
@@ -754,20 +754,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.meshgrid",
     "module": "numpy",
     "name": "meshgrid",
     "notes": "Coordinate matrices from coordinate vectors. Cost: numel(output).",
     "numpy_ref": "np.meshgrid",
-    "signature": "we.meshgrid(*xi, copy=True, sparse=False, indexing='xy')",
+    "signature": "fnp.meshgrid(*xi, copy=True, sparse=False, indexing='xy')",
     "status": "supported",
     "summary": "Return a tuple of coordinate matrices from coordinate vectors.",
-    "weight": 1.0,
-    "whest_ref": "we.meshgrid"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "meshgrid",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5117",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L567"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L629",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L5117"
   }
 }

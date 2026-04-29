@@ -253,8 +253,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/place",
-              "label": "we.place",
+              "href": "/docs/api/numpy/place/",
+              "label": "flops.place",
               "original_target": "place",
               "role": "",
               "target": "place",
@@ -264,8 +264,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/put",
-              "label": "we.put",
+              "href": "/docs/api/numpy/put/",
+              "label": "flops.put",
               "original_target": "put",
               "role": "",
               "target": "put",
@@ -275,8 +275,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/take",
-              "label": "we.take",
+              "href": "/docs/api/numpy/take/",
+              "label": "flops.take",
               "original_target": "take",
               "role": "",
               "target": "take",
@@ -286,8 +286,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/copyto",
-              "label": "we.copyto",
+              "href": "/docs/api/numpy/copyto/",
+              "label": "flops.copyto",
               "original_target": "copyto",
               "role": "",
               "target": "copyto",
@@ -306,17 +306,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(6).reshape(2, 3)"
+              "text": "x = flops.arange(6).reshape(2, 3)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.putmask(x, x>2, x**2)"
+              "text": "flops.putmask(x, x>2, x**2)"
             },
             {
               "kind": "input",
@@ -364,12 +364,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(5)"
+              "text": "x = flops.arange(5)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.putmask(x, x>1, [-33, -44])"
+              "text": "flops.putmask(x, x>1, [-33, -44])"
             },
             {
               "kind": "input",
@@ -388,6 +388,7 @@
     }
   ],
   "canonical_name": "putmask",
+  "canonical_path": "numpy/putmask",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -398,16 +399,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(6).reshape(2, 3)\n\nwe.putmask(x, x>2, x**2)\n\nx\n\nx = we.arange(5)\n\nwe.putmask(x, x>1, [-33, -44])\n\nx",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.arange(6).reshape(2, 3)\n\nflops.putmask(x, x>2, x**2)\n\nx\n\nx = flops.arange(5)\n\nflops.putmask(x, x>1, [-33, -44])\n\nx",
     "output": "array([[ 0,  1,  2],\n       [ 9, 16, 25]])\n\narray([  0,   1, -33, -44, -33])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/putmask/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.putmask",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1441",
+  "href": "/docs/api/numpy/putmask/",
+  "legacy_href": "/docs/api/ops/putmask/",
   "module": "numpy",
   "name": "putmask",
   "next": {
-    "href": "/docs/api/ops/quantile/",
-    "label": "we.quantile"
+    "href": "/docs/api/numpy/quantile/",
+    "label": "fnp.quantile"
   },
   "notes": "Change elements of array based on condition and input values. Cost: numel(input).",
   "notes_sections": [],
@@ -437,10 +442,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/put_along_axis/",
-    "label": "we.put_along_axis"
+    "href": "/docs/api/numpy/put-along-axis/",
+    "label": "fnp.put_along_axis"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.putmask",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.putmask.html",
   "returns": [],
   "see_also": [
@@ -448,8 +454,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/place",
-      "label": "we.place",
+      "href": "/docs/api/numpy/place/",
+      "label": "flops.place",
       "original_target": "place",
       "role": "",
       "target": "place",
@@ -459,8 +465,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/put",
-      "label": "we.put",
+      "href": "/docs/api/numpy/put/",
+      "label": "flops.put",
       "original_target": "put",
       "role": "",
       "target": "put",
@@ -470,8 +476,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/take",
-      "label": "we.take",
+      "href": "/docs/api/numpy/take/",
+      "label": "flops.take",
       "original_target": "take",
       "role": "",
       "target": "take",
@@ -481,20 +487,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/copyto",
-      "label": "we.copyto",
+      "href": "/docs/api/numpy/copyto/",
+      "label": "flops.copyto",
       "original_target": "copyto",
       "role": "",
       "target": "copyto",
       "unresolved": false
     }
   ],
-  "signature": "we.putmask(a, mask, values, *args, **kwargs)",
+  "signature": "fnp.putmask(a, mask, values, *args, **kwargs)",
   "slug": "putmask",
   "summary": "Changes elements of an array based on conditional and input values.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.putmask",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1376"
+  "weight": 4.0
 }

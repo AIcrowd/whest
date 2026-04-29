@@ -62,7 +62,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.asarray(condition).nonzero()"
+                  "text": "flops.asarray(condition).nonzero()"
                 },
                 {
                   "kind": "text",
@@ -70,7 +70,7 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/nonzero",
+                  "href": "/docs/api/numpy/nonzero/",
                   "kind": "link",
                   "target": "nonzero",
                   "text": "nonzero"
@@ -85,7 +85,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    When only `condition` is provided, this function is a shorthand for\n    ``we.asarray(condition).nonzero()``. Using `nonzero` directly should be\n    preferred, as it behaves correctly for subclasses. The rest of this\n    documentation covers only the case where all three arguments are\n    provided.",
+          "raw_source": ".. note::\n    When only `condition` is provided, this function is a shorthand for\n    ``flops.asarray(condition).nonzero()``. Using `nonzero` directly should be\n    preferred, as it behaves correctly for subclasses. The rest of this\n    documentation covers only the case where all three arguments are\n    provided.",
           "supported": true,
           "type": "directive_block"
         }
@@ -316,8 +316,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/choose",
-              "label": "we.choose",
+              "href": "/docs/api/numpy/choose/",
+              "label": "flops.choose",
               "original_target": "choose",
               "role": "",
               "target": "choose",
@@ -332,8 +332,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/nonzero",
-              "label": "we.nonzero",
+              "href": "/docs/api/numpy/nonzero/",
+              "label": "flops.nonzero",
               "original_target": "nonzero",
               "role": "",
               "target": "nonzero",
@@ -355,7 +355,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/where",
+              "href": "/docs/api/numpy/where/",
               "kind": "link",
               "target": "where",
               "text": "where"
@@ -382,12 +382,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(10)"
+              "text": "a = flops.arange(10)"
             },
             {
               "kind": "input",
@@ -401,7 +401,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.where(a < 5, a, 10*a)"
+              "text": "flops.where(a < 5, a, 10*a)"
             },
             {
               "kind": "output",
@@ -424,7 +424,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.where([[True, False], [True, True]],"
+              "text": "flops.where([[True, False], [True, True]],"
             },
             {
               "kind": "input",
@@ -461,12 +461,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x, y = we.ogrid[:3, :4]"
+              "text": "x, y = flops.ogrid[:3, :4]"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.where(x < y, x, 10 + y)  # both x and 10+y are broadcast"
+              "text": "flops.where(x < y, x, 10 + y)  # both x and 10+y are broadcast"
             },
             {
               "kind": "output",
@@ -488,7 +488,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[0, 1, 2],"
+              "text": "a = flops.array([[0, 1, 2],"
             },
             {
               "kind": "input",
@@ -503,7 +503,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.where(a < 4, a, -1)  # -1 is broadcast"
+              "text": "flops.where(a < 4, a, -1)  # -1 is broadcast"
             },
             {
               "kind": "output",
@@ -525,6 +525,7 @@
     }
   ],
   "canonical_name": "where",
+  "canonical_path": "numpy/where",
   "category": "counted_custom",
   "cost_formula": "per-operation",
   "cost_formula_latex": "varies",
@@ -535,16 +536,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.arange(10)\n\na\n\nwe.where(a < 5, a, 10*a)\n\nwe.where([[True, False], [True, True]],\n         [[1, 2], [3, 4]],\n         [[9, 8], [7, 6]])\n\nx, y = we.ogrid[:3, :4]\n\nwe.where(x < y, x, 10 + y)  # both x and 10+y are broadcast\n\na = we.array([[0, 1, 2],\n              [0, 2, 4],\n              [0, 3, 6]])\n\nwe.where(a < 4, a, -1)  # -1 is broadcast",
+    "code": "import flopscope.numpy as fnp\n\na = flops.arange(10)\n\na\n\nflops.where(a < 5, a, 10*a)\n\nflops.where([[True, False], [True, True]],\n         [[1, 2], [3, 4]],\n         [[9, 8], [7, 6]])\n\nx, y = flops.ogrid[:3, :4]\n\nflops.where(x < y, x, 10 + y)  # both x and 10+y are broadcast\n\na = flops.array([[0, 1, 2],\n              [0, 2, 4],\n              [0, 3, 6]])\n\nflops.where(a < 4, a, -1)  # -1 is broadcast",
     "output": "array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([ 0,  1,  2,  3,  4, 50, 60, 70, 80, 90])\n\narray([[1, 8],\n       [3, 4]])\n\narray([[10,  0,  0,  0],\n       [10, 11,  1,  1],\n       [10, 11, 12,  2]])\n\narray([[ 0,  1,  2],\n       [ 0,  2, -1],\n       [ 0,  3, -1]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/where/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.where",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L486",
+  "href": "/docs/api/numpy/where/",
+  "legacy_href": "/docs/api/ops/where/",
   "module": "numpy",
   "name": "where",
   "next": {
-    "href": "/docs/api/ops/zeros/",
-    "label": "we.zeros"
+    "href": "/docs/api/numpy/zeros/",
+    "label": "fnp.zeros"
   },
   "notes": "Select elements based on condition. Cost: numel(input).",
   "notes_sections": [
@@ -570,10 +575,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/vstack/",
-    "label": "we.vstack"
+    "href": "/docs/api/numpy/vstack/",
+    "label": "fnp.vstack"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.where",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.where.html",
   "returns": [
     {
@@ -590,8 +596,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/choose",
-      "label": "we.choose",
+      "href": "/docs/api/numpy/choose/",
+      "label": "flops.choose",
       "original_target": "choose",
       "role": "",
       "target": "choose",
@@ -606,20 +612,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/nonzero",
-      "label": "we.nonzero",
+      "href": "/docs/api/numpy/nonzero/",
+      "label": "flops.nonzero",
       "original_target": "nonzero",
       "role": "",
       "target": "nonzero",
       "unresolved": false
     }
   ],
-  "signature": "we.where(condition, x=None, y=None)",
+  "signature": "fnp.where(condition, x=None, y=None)",
   "slug": "where",
   "summary": "Return elements chosen from `x` or `y` depending on `condition`.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "",
-  "weight": 4.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.where",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L424"
+  "weight": 4.0
 }

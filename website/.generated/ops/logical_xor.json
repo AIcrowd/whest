@@ -365,8 +365,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_and",
-              "label": "we.logical_and",
+              "href": "/docs/api/numpy/logical-and/",
+              "label": "flops.logical_and",
               "original_target": "logical_and",
               "role": "",
               "target": "logical_and",
@@ -376,8 +376,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_or",
-              "label": "we.logical_or",
+              "href": "/docs/api/numpy/logical-or/",
+              "label": "flops.logical_or",
               "original_target": "logical_or",
               "role": "",
               "target": "logical_or",
@@ -387,8 +387,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_not",
-              "label": "we.logical_not",
+              "href": "/docs/api/numpy/logical-not/",
+              "label": "flops.logical_not",
               "original_target": "logical_not",
               "role": "",
               "target": "logical_not",
@@ -398,8 +398,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_xor",
-              "label": "we.bitwise_xor",
+              "href": "/docs/api/numpy/bitwise-xor/",
+              "label": "flops.bitwise_xor",
               "original_target": "bitwise_xor",
               "role": "",
               "target": "bitwise_xor",
@@ -418,12 +418,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.logical_xor(True, False)"
+              "text": "flops.logical_xor(True, False)"
             },
             {
               "kind": "output",
@@ -432,7 +432,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.logical_xor([True, True, False, False], [True, False, True, False])"
+              "text": "flops.logical_xor([True, True, False, False], [True, False, True, False])"
             },
             {
               "kind": "output",
@@ -446,12 +446,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(5)"
+              "text": "x = flops.arange(5)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.logical_xor(x < 1, x > 3)"
+              "text": "flops.logical_xor(x < 1, x > 3)"
             },
             {
               "kind": "output",
@@ -474,7 +474,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.logical_xor(0, we.eye(2))"
+              "text": "flops.logical_xor(0, flops.eye(2))"
             },
             {
               "kind": "output",
@@ -492,6 +492,7 @@
     }
   ],
   "canonical_name": "logical_xor",
+  "canonical_path": "numpy/logical-xor",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -509,16 +510,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.logical_xor(True, False)\n\nwe.logical_xor([True, True, False, False], [True, False, True, False])\n\nx = we.arange(5)\n\nwe.logical_xor(x < 1, x > 3)\n\nwe.logical_xor(0, we.eye(2))",
+    "code": "import flopscope.numpy as fnp\n\nflops.logical_xor(True, False)\n\nflops.logical_xor([True, True, False, False], [True, False, True, False])\n\nx = flops.arange(5)\n\nflops.logical_xor(x < 1, x > 3)\n\nflops.logical_xor(0, flops.eye(2))",
     "output": "True\n\narray([False,  True,  True, False])\n\narray([ True, False, False, False,  True])\n\narray([[ True, False],\n       [False,  True]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/logical_xor/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.logical_xor",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+  "href": "/docs/api/numpy/logical-xor/",
+  "legacy_href": "/docs/api/ops/logical_xor/",
   "module": "numpy",
   "name": "logical_xor",
   "next": {
-    "href": "/docs/api/ops/logspace/",
-    "label": "we.logspace"
+    "href": "/docs/api/numpy/logspace/",
+    "label": "fnp.logspace"
   },
   "notes": "Element-wise logical XOR.",
   "notes_sections": [],
@@ -565,10 +570,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/logical_or/",
-    "label": "we.logical_or"
+    "href": "/docs/api/numpy/logical-or/",
+    "label": "fnp.logical_or"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.logical_xor",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.logical_xor.html",
   "returns": [
     {
@@ -586,8 +592,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_and",
-      "label": "we.logical_and",
+      "href": "/docs/api/numpy/logical-and/",
+      "label": "flops.logical_and",
       "original_target": "logical_and",
       "role": "",
       "target": "logical_and",
@@ -597,8 +603,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_or",
-      "label": "we.logical_or",
+      "href": "/docs/api/numpy/logical-or/",
+      "label": "flops.logical_or",
       "original_target": "logical_or",
       "role": "",
       "target": "logical_or",
@@ -608,8 +614,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_not",
-      "label": "we.logical_not",
+      "href": "/docs/api/numpy/logical-not/",
+      "label": "flops.logical_not",
       "original_target": "logical_not",
       "role": "",
       "target": "logical_not",
@@ -619,20 +625,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_xor",
-      "label": "we.bitwise_xor",
+      "href": "/docs/api/numpy/bitwise-xor/",
+      "label": "flops.bitwise_xor",
       "original_target": "bitwise_xor",
       "role": "",
       "target": "bitwise_xor",
       "unresolved": false
     }
   ],
-  "signature": "we.logical_xor(*args, **kwargs)",
+  "signature": "fnp.logical_xor(*args, **kwargs)",
   "slug": "logical_xor",
   "summary": "Compute the truth value of x1 XOR x2, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.logical_xor",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+  "weight": 1.0
 }

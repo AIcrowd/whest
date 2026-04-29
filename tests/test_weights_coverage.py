@@ -20,10 +20,10 @@ from pathlib import Path
 
 import pytest
 
-from whest._registry import REGISTRY
+from flopscope._registry import REGISTRY
 
 ROOT = Path(__file__).resolve().parent.parent
-WEIGHTS_PATH = ROOT / "src" / "whest" / "data" / "weights.json"
+WEIGHTS_PATH = ROOT / "src" / "flopscope" / "data" / "weights.json"
 DOCS_PATH = ROOT / "website" / "content" / "docs" / "development" / "calibration.mdx"
 OPS_INDEX_PATH = ROOT / "website" / "public" / "ops.json"
 

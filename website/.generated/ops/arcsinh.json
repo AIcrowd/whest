@@ -285,7 +285,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/arcsinh",
+              "href": "/docs/api/numpy/arcsinh/",
               "kind": "link",
               "target": "arcsinh",
               "text": "arcsinh"
@@ -345,7 +345,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arcsinh",
+              "href": "/docs/api/numpy/arcsinh/",
               "kind": "link",
               "target": "arcsinh",
               "text": "arcsinh"
@@ -381,7 +381,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arcsinh",
+              "href": "/docs/api/numpy/arcsinh/",
               "kind": "link",
               "target": "arcsinh",
               "text": "arcsinh"
@@ -462,12 +462,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.arcsinh(we.array([we.e, 10.0]))"
+              "text": "flops.arcsinh(flops.array([flops.e, 10.0]))"
             },
             {
               "kind": "output",
@@ -481,6 +481,7 @@
     }
   ],
   "canonical_name": "arcsinh",
+  "canonical_path": "numpy/arcsinh",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -507,16 +508,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.arcsinh(we.array([we.e, 10.0]))",
+    "code": "import flopscope.numpy as fnp\n\nflops.arcsinh(flops.array([flops.e, 10.0]))",
     "output": "array([ 1.72538256,  2.99822295])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/arcsinh/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.arcsinh",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+  "href": "/docs/api/numpy/arcsinh/",
+  "legacy_href": "/docs/api/ops/arcsinh/",
   "module": "numpy",
   "name": "arcsinh",
   "next": {
-    "href": "/docs/api/ops/arctan/",
-    "label": "we.arctan"
+    "href": "/docs/api/numpy/arctan/",
+    "label": "fnp.arctan"
   },
   "notes": "Element-wise inverse hyperbolic sine.",
   "notes_sections": [
@@ -566,10 +571,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/arcsin/",
-    "label": "we.arcsin"
+    "href": "/docs/api/numpy/arcsin/",
+    "label": "fnp.arcsin"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.arcsinh",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.arcsinh.html",
   "returns": [
     {
@@ -582,12 +588,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.arcsinh(*args, **kwargs)",
+  "signature": "fnp.arcsinh(*args, **kwargs)",
   "slug": "arcsinh",
   "summary": "Inverse hyperbolic sine element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.arcsinh",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 16.0
 }

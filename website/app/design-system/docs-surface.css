@@ -1,5 +1,5 @@
 /* =========================================================================
-   Whest Design System — Docs Surface Adapter
+   Flopscope Design System — Docs Surface Adapter
    Local composition layer. Responsibilities:
    - Foundation white surface register (light mode)
    - Bridge canonical tokens into shadcn (--color-*) + Fumadocs (--fd-*)
@@ -70,7 +70,7 @@
 }
 
 /* -------------------------------------------------------------------------
-   Prose headings — Whest Design System spec
+   Prose headings — Flopscope Design System spec
    H1–H3 = Newsreader display serif with opsz presets (--vs-display-*)
    H4    = Inter app-sans
    ------------------------------------------------------------------------- */

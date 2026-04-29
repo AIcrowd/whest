@@ -323,8 +323,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/logical_or",
-              "label": "we.logical_or",
+              "href": "/docs/api/numpy/logical-or/",
+              "label": "flops.logical_or",
               "original_target": "logical_or",
               "role": "",
               "target": "logical_or",
@@ -334,8 +334,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_and",
-              "label": "we.bitwise_and",
+              "href": "/docs/api/numpy/bitwise-and/",
+              "label": "flops.bitwise_and",
               "original_target": "bitwise_and",
               "role": "",
               "target": "bitwise_and",
@@ -345,8 +345,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_xor",
-              "label": "we.bitwise_xor",
+              "href": "/docs/api/numpy/bitwise-xor/",
+              "label": "flops.bitwise_xor",
               "original_target": "bitwise_xor",
               "role": "",
               "target": "bitwise_xor",
@@ -381,7 +381,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             }
           ],
           "type": "doctest_block"
@@ -424,7 +424,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_or(13, 16)"
+              "text": "flops.bitwise_or(13, 16)"
             },
             {
               "kind": "output",
@@ -433,7 +433,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.binary_repr(29)"
+              "text": "flops.binary_repr(29)"
             },
             {
               "kind": "output",
@@ -447,7 +447,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_or(32, 2)"
+              "text": "flops.bitwise_or(32, 2)"
             },
             {
               "kind": "output",
@@ -456,7 +456,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_or([33, 4], 1)"
+              "text": "flops.bitwise_or([33, 4], 1)"
             },
             {
               "kind": "output",
@@ -465,7 +465,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_or([33, 4], [1, 2])"
+              "text": "flops.bitwise_or([33, 4], [1, 2])"
             },
             {
               "kind": "output",
@@ -479,7 +479,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_or(we.array([2, 5, 255]), we.array([4, 4, 4]))"
+              "text": "flops.bitwise_or(flops.array([2, 5, 255]), flops.array([4, 4, 4]))"
             },
             {
               "kind": "output",
@@ -488,7 +488,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.array([2, 5, 255]) | we.array([4, 4, 4])"
+              "text": "flops.array([2, 5, 255]) | flops.array([4, 4, 4])"
             },
             {
               "kind": "output",
@@ -497,12 +497,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_or(we.array([2, 5, 255, 2147483647], dtype=we.int32),"
+              "text": "flops.bitwise_or(flops.array([2, 5, 255, 2147483647], dtype=flops.int32),"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "we.array([4, 4, 4, 2147483647], dtype=we.int32))"
+              "text": "flops.array([4, 4, 4, 2147483647], dtype=flops.int32))"
             },
             {
               "kind": "output",
@@ -511,7 +511,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.bitwise_or([True, True], [False, True])"
+              "text": "flops.bitwise_or([True, True], [False, True])"
             },
             {
               "kind": "output",
@@ -536,10 +536,10 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/bitwise_or",
+              "href": "/docs/api/numpy/bitwise-or/",
               "kind": "link",
               "target": "bitwise_or",
-              "text": "we.bitwise_or"
+              "text": "flops.bitwise_or"
             },
             {
               "kind": "text",
@@ -553,12 +553,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x1 = we.array([2, 5, 255])"
+              "text": "x1 = flops.array([2, 5, 255])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x2 = we.array([4, 4, 4])"
+              "text": "x2 = flops.array([4, 4, 4])"
             },
             {
               "kind": "input",
@@ -577,6 +577,7 @@
     }
   ],
   "canonical_name": "bitwise_or",
+  "canonical_path": "numpy/bitwise-or",
   "category": "counted_binary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -594,16 +595,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.bitwise_or(13, 16)\n\nwe.binary_repr(29)\n\nwe.bitwise_or(32, 2)\n\nwe.bitwise_or([33, 4], 1)\n\nwe.bitwise_or([33, 4], [1, 2])\n\nwe.bitwise_or(we.array([2, 5, 255]), we.array([4, 4, 4]))\n\nwe.array([2, 5, 255]) | we.array([4, 4, 4])\n\nwe.bitwise_or(we.array([2, 5, 255, 2147483647], dtype=we.int32),\n              we.array([4, 4, 4, 2147483647], dtype=we.int32))\n\nwe.bitwise_or([True, True], [False, True])\n\nx1 = we.array([2, 5, 255])\n\nx2 = we.array([4, 4, 4])\n\nx1 | x2",
+    "code": "import flopscope.numpy as fnp\n\nflops.bitwise_or(13, 16)\n\nflops.binary_repr(29)\n\nflops.bitwise_or(32, 2)\n\nflops.bitwise_or([33, 4], 1)\n\nflops.bitwise_or([33, 4], [1, 2])\n\nflops.bitwise_or(flops.array([2, 5, 255]), flops.array([4, 4, 4]))\n\nflops.array([2, 5, 255]) | flops.array([4, 4, 4])\n\nflops.bitwise_or(flops.array([2, 5, 255, 2147483647], dtype=flops.int32),\n              flops.array([4, 4, 4, 2147483647], dtype=flops.int32))\n\nflops.bitwise_or([True, True], [False, True])\n\nx1 = flops.array([2, 5, 255])\n\nx2 = flops.array([4, 4, 4])\n\nx1 | x2",
     "output": "29\n\n'11101'\n\n34\n\narray([33,  5])\n\narray([33,  6])\n\narray([  6,   5, 255])\n\narray([  6,   5, 255])\n\narray([         6,          5,        255, 2147483647], dtype=int32)\n\narray([ True,  True])\n\narray([  6,   5, 255])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/bitwise_or/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.bitwise_or",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+  "href": "/docs/api/numpy/bitwise-or/",
+  "legacy_href": "/docs/api/ops/bitwise_or/",
   "module": "numpy",
   "name": "bitwise_or",
   "next": {
-    "href": "/docs/api/ops/bitwise_right_shift/",
-    "label": "we.bitwise_right_shift"
+    "href": "/docs/api/numpy/bitwise-right-shift/",
+    "label": "fnp.bitwise_right_shift"
   },
   "notes": "Element-wise bitwise OR.",
   "notes_sections": [],
@@ -650,10 +655,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/bitwise_not/",
-    "label": "we.bitwise_not"
+    "href": "/docs/api/numpy/bitwise-not/",
+    "label": "fnp.bitwise_not"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.bitwise_or",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.bitwise_or.html",
   "returns": [
     {
@@ -670,8 +676,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/logical_or",
-      "label": "we.logical_or",
+      "href": "/docs/api/numpy/logical-or/",
+      "label": "flops.logical_or",
       "original_target": "logical_or",
       "role": "",
       "target": "logical_or",
@@ -681,8 +687,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_and",
-      "label": "we.bitwise_and",
+      "href": "/docs/api/numpy/bitwise-and/",
+      "label": "flops.bitwise_and",
       "original_target": "bitwise_and",
       "role": "",
       "target": "bitwise_and",
@@ -692,8 +698,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/bitwise_xor",
-      "label": "we.bitwise_xor",
+      "href": "/docs/api/numpy/bitwise-xor/",
+      "label": "flops.bitwise_xor",
       "original_target": "bitwise_xor",
       "role": "",
       "target": "bitwise_xor",
@@ -716,12 +722,11 @@
       "unresolved": false
     }
   ],
-  "signature": "we.bitwise_or(*args, **kwargs)",
+  "signature": "fnp.bitwise_or(*args, **kwargs)",
   "slug": "bitwise_or",
   "summary": "Compute the bit-wise OR of two arrays element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.bitwise_or",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L198"
+  "weight": 1.0
 }

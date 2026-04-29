@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/kaiser/",
+  "detail_href": "/docs/api/numpy/kaiser/",
   "detail_json_href": "/api-data/ops/kaiser.json",
   "docs": {
     "sections": [
@@ -127,8 +127,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/bartlett",
-                "label": "we.bartlett",
+                "href": "/docs/api/numpy/bartlett/",
+                "label": "flops.bartlett",
                 "original_target": "bartlett",
                 "role": "",
                 "target": "bartlett",
@@ -138,8 +138,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/blackman",
-                "label": "we.blackman",
+                "href": "/docs/api/numpy/blackman/",
+                "label": "flops.blackman",
                 "original_target": "blackman",
                 "role": "",
                 "target": "blackman",
@@ -149,8 +149,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hamming",
-                "label": "we.hamming",
+                "href": "/docs/api/numpy/hamming/",
+                "label": "flops.hamming",
                 "original_target": "hamming",
                 "role": "",
                 "target": "hamming",
@@ -160,8 +160,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/hanning",
-                "label": "we.hanning",
+                "href": "/docs/api/numpy/hanning/",
+                "label": "flops.hanning",
                 "original_target": "hanning",
                 "role": "",
                 "target": "hanning",
@@ -293,7 +293,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
@@ -303,7 +303,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.kaiser(12, 14)"
+                "text": "flops.kaiser(12, 14)"
               },
               {
                 "kind": "output",
@@ -338,7 +338,7 @@
             "content_blocks": [
               {
                 "language": "python",
-                "text": "import matplotlib.pyplot as plt\nfrom we.fft import fft, fftshift\nwindow = we.kaiser(51, 14)\nplt.plot(window)\nplt.title(\"Kaiser window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = we.abs(fftshift(A))\nfreq = we.linspace(-0.5, 0.5, len(A))\nresponse = 20 * we.log10(mag)\nresponse = we.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Kaiser window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
+                "text": "import matplotlib.pyplot as plt\nfrom flops.fft import fft, fftshift\nwindow = flops.kaiser(51, 14)\nplt.plot(window)\nplt.title(\"Kaiser window\")\nplt.ylabel(\"Amplitude\")\nplt.xlabel(\"Sample\")\nplt.show()\n\nplt.figure()\nA = fft(window, 2048) / 25.5\nmag = flops.abs(fftshift(A))\nfreq = flops.linspace(-0.5, 0.5, len(A))\nresponse = 20 * flops.log10(mag)\nresponse = flops.clip(response, -100, 100)\nplt.plot(freq, response)\nplt.title(\"Frequency response of Kaiser window\")\nplt.ylabel(\"Magnitude [dB]\")\nplt.xlabel(\"Normalized frequency [cycles per sample]\")\nplt.axis('tight')\nplt.show()",
                 "type": "literal_block"
               }
             ],
@@ -362,20 +362,20 @@
     "category": "counted_custom",
     "cost_formula": "3n",
     "cost_formula_latex": "$3n$",
-    "module": "whest._window",
+    "flopscope_ref": "fnp.kaiser",
+    "module": "flopscope._window",
     "name": "kaiser",
     "notes": "Kaiser window. Cost: 3*n (Bessel function eval per sample).",
     "numpy_ref": "np.kaiser",
-    "signature": "we.kaiser(M, beta)",
+    "signature": "fnp.kaiser(M, beta)",
     "status": "supported",
     "summary": "Return the Kaiser window.",
-    "weight": 16.0,
-    "whest_ref": "we.kaiser"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "kaiser",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3617",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_window.py#L157"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L157",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3617"
   }
 }

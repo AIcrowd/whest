@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/nanmedian/",
+  "detail_href": "/docs/api/numpy/nanmedian/",
   "detail_json_href": "/api-data/ops/nanmedian.json",
   "docs": {
     "sections": [
@@ -119,7 +119,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/median",
+                        "href": "/docs/api/numpy/median/",
                         "kind": "link",
                         "target": "median",
                         "text": "median"
@@ -180,7 +180,7 @@
                   },
                   {
                     "external_url": "",
-                    "href": "/docs/api/ops/median",
+                    "href": "/docs/api/numpy/median/",
                     "kind": "link",
                     "target": "median",
                     "text": "median"
@@ -252,7 +252,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/mean",
+                        "href": "/docs/api/numpy/mean/",
                         "kind": "link",
                         "target": "mean",
                         "text": "mean"
@@ -263,7 +263,7 @@
                       },
                       {
                         "external_url": "",
-                        "href": "/docs/api/ops/mean",
+                        "href": "/docs/api/numpy/mean/",
                         "kind": "link",
                         "target": "mean",
                         "text": "mean"
@@ -334,7 +334,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "float64",
-                        "text": "we.float64"
+                        "text": "flops.float64"
                       },
                       {
                         "kind": "text",
@@ -371,7 +371,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "float64",
-                    "text": "we.float64"
+                    "text": "flops.float64"
                   },
                   {
                     "kind": "text",
@@ -404,8 +404,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/mean",
-                "label": "we.mean",
+                "href": "/docs/api/numpy/mean/",
+                "label": "flops.mean",
                 "original_target": "mean",
                 "role": "",
                 "target": "mean",
@@ -415,8 +415,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/median",
-                "label": "we.median",
+                "href": "/docs/api/numpy/median/",
+                "label": "flops.median",
                 "original_target": "median",
                 "role": "",
                 "target": "median",
@@ -426,8 +426,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/percentile",
-                "label": "we.percentile",
+                "href": "/docs/api/numpy/percentile/",
+                "label": "flops.percentile",
                 "original_target": "percentile",
                 "role": "",
                 "target": "percentile",
@@ -532,17 +532,17 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([[10.0, 7, 4], [3, 2, 1]])"
+                "text": "a = flops.array([[10.0, 7, 4], [3, 2, 1]])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a[0, 1] = we.nan"
+                "text": "a[0, 1] = flops.nan"
               },
               {
                 "kind": "input",
@@ -560,16 +560,16 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.median(a)"
+                "text": "flops.median(a)"
               },
               {
                 "kind": "output",
-                "text": "we.float64(nan)"
+                "text": "flops.float64(nan)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmedian(a)"
+                "text": "flops.nanmedian(a)"
               },
               {
                 "kind": "output",
@@ -578,7 +578,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmedian(a, axis=0)"
+                "text": "flops.nanmedian(a, axis=0)"
               },
               {
                 "kind": "output",
@@ -587,7 +587,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.median(a, axis=1)"
+                "text": "flops.median(a, axis=1)"
               },
               {
                 "kind": "output",
@@ -601,7 +601,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmedian(b, axis=1, overwrite_input=True)"
+                "text": "flops.nanmedian(b, axis=1, overwrite_input=True)"
               },
               {
                 "kind": "output",
@@ -610,7 +610,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "assert not we.all(a==b)"
+                "text": "assert not flops.all(a==b)"
               },
               {
                 "kind": "input",
@@ -620,7 +620,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.nanmedian(b, axis=None, overwrite_input=True)"
+                "text": "flops.nanmedian(b, axis=None, overwrite_input=True)"
               },
               {
                 "kind": "output",
@@ -629,7 +629,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "assert not we.all(a==b)"
+                "text": "assert not flops.all(a==b)"
               }
             ],
             "type": "doctest_block"
@@ -643,20 +643,20 @@
     "category": "counted_reduction",
     "cost_formula": "numel(input)",
     "cost_formula_latex": "$\\text{numel}(\\text{input})$",
+    "flopscope_ref": "fnp.nanmedian",
     "module": "numpy",
     "name": "nanmedian",
     "notes": "Median ignoring NaNs.",
     "numpy_ref": "np.nanmedian",
-    "signature": "we.nanmedian(a, axis=None, out=None, overwrite_input=False, keepdims=<no value>)",
+    "signature": "fnp.nanmedian(a, axis=None, out=None, overwrite_input=False, keepdims=<no value>)",
     "status": "supported",
     "summary": "Compute the median along the specified axis, while ignoring NaNs.",
-    "weight": 1.0,
-    "whest_ref": "we.nanmedian"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "nanmedian",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L1127",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L299"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L1127"
   }
 }

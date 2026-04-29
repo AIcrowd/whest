@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/iscomplexobj/",
+  "detail_href": "/docs/api/numpy/iscomplexobj/",
   "detail_json_href": "/api-data/ops/iscomplexobj.json",
   "docs": {
     "sections": [
@@ -27,7 +27,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/iscomplexobj",
+                "href": "/docs/api/numpy/iscomplexobj/",
                 "kind": "link",
                 "target": "iscomplexobj",
                 "text": "iscomplexobj"
@@ -132,8 +132,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/isrealobj",
-                "label": "we.isrealobj",
+                "href": "/docs/api/numpy/isrealobj/",
+                "label": "flops.isrealobj",
                 "original_target": "isrealobj",
                 "role": "",
                 "target": "isrealobj",
@@ -143,8 +143,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/iscomplex",
-                "label": "we.iscomplex",
+                "href": "/docs/api/numpy/iscomplex/",
+                "label": "flops.iscomplex",
                 "original_target": "iscomplex",
                 "role": "",
                 "target": "iscomplex",
@@ -163,12 +163,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.iscomplexobj(1)"
+                "text": "flops.iscomplexobj(1)"
               },
               {
                 "kind": "output",
@@ -177,7 +177,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.iscomplexobj(1+0j)"
+                "text": "flops.iscomplexobj(1+0j)"
               },
               {
                 "kind": "output",
@@ -186,7 +186,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.iscomplexobj([3, 1+0j, True])"
+                "text": "flops.iscomplexobj([3, 1+0j, True])"
               },
               {
                 "kind": "output",
@@ -204,20 +204,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.iscomplexobj",
     "module": "numpy",
     "name": "iscomplexobj",
     "notes": "Return True if input is a complex type or array.",
     "numpy_ref": "np.iscomplexobj",
-    "signature": "we.iscomplexobj(x)",
+    "signature": "fnp.iscomplexobj(x)",
     "status": "supported",
     "summary": "Check for a complex type or an array of complex numbers.",
-    "weight": 1.0,
-    "whest_ref": "we.iscomplexobj"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "iscomplexobj",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L270",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L270"
   }
 }

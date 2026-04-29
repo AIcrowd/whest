@@ -3,9 +3,9 @@
 import numpy
 import pytest
 
-from whest._budget import BudgetContext
-from whest._symmetric import as_symmetric
-from whest.linalg._decompositions import (
+from flopscope._budget import BudgetContext
+from flopscope._symmetric import as_symmetric
+from flopscope.numpy.linalg._decompositions import (
     cholesky,
     cholesky_cost,
     eig,
@@ -21,7 +21,7 @@ from whest.linalg._decompositions import (
     svdvals,
     svdvals_cost,
 )
-from whest.linalg._properties import (
+from flopscope.numpy.linalg._properties import (
     cond,
     det,
     det_cost,

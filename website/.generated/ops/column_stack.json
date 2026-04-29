@@ -27,7 +27,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/hstack",
+              "href": "/docs/api/numpy/hstack/",
               "kind": "link",
               "target": "hstack",
               "text": "hstack"
@@ -116,8 +116,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/stack",
-              "label": "we.stack",
+              "href": "/docs/api/numpy/stack/",
+              "label": "flops.stack",
               "original_target": "stack",
               "role": "",
               "target": "stack",
@@ -127,8 +127,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/hstack",
-              "label": "we.hstack",
+              "href": "/docs/api/numpy/hstack/",
+              "label": "flops.hstack",
               "original_target": "hstack",
               "role": "",
               "target": "hstack",
@@ -138,8 +138,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/vstack",
-              "label": "we.vstack",
+              "href": "/docs/api/numpy/vstack/",
+              "label": "flops.vstack",
               "original_target": "vstack",
               "role": "",
               "target": "vstack",
@@ -149,8 +149,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/concatenate",
-              "label": "we.concatenate",
+              "href": "/docs/api/numpy/concatenate/",
+              "label": "flops.concatenate",
               "original_target": "concatenate",
               "role": "",
               "target": "concatenate",
@@ -169,22 +169,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array((1,2,3))"
+              "text": "a = flops.array((1,2,3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array((2,3,4))"
+              "text": "b = flops.array((2,3,4))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.column_stack((a,b))"
+              "text": "flops.column_stack((a,b))"
             },
             {
               "kind": "output",
@@ -206,6 +206,7 @@
     }
   ],
   "canonical_name": "column_stack",
+  "canonical_path": "numpy/column-stack",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -216,16 +217,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\na = we.array((1,2,3))\n\nb = we.array((2,3,4))\n\nwe.column_stack((a,b))",
+    "code": "import flopscope.numpy as fnp\n\na = flops.array((1,2,3))\n\nb = flops.array((2,3,4))\n\nflops.column_stack((a,b))",
     "output": "array([[1, 2],\n       [2, 3],\n       [3, 4]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/column_stack/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.column_stack",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L908",
+  "href": "/docs/api/numpy/column-stack/",
+  "legacy_href": "/docs/api/ops/column_stack/",
   "module": "numpy",
   "name": "column_stack",
   "next": {
-    "href": "/docs/api/ops/common_type/",
-    "label": "we.common_type"
+    "href": "/docs/api/numpy/common-type/",
+    "label": "fnp.common_type"
   },
   "notes": "Stack 1-D arrays as columns into 2-D array.",
   "notes_sections": [],
@@ -240,10 +245,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/clip/",
-    "label": "we.clip"
+    "href": "/docs/api/numpy/clip/",
+    "label": "fnp.clip"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.column_stack",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.column_stack.html",
   "returns": [
     {
@@ -259,8 +265,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/stack",
-      "label": "we.stack",
+      "href": "/docs/api/numpy/stack/",
+      "label": "flops.stack",
       "original_target": "stack",
       "role": "",
       "target": "stack",
@@ -270,8 +276,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/hstack",
-      "label": "we.hstack",
+      "href": "/docs/api/numpy/hstack/",
+      "label": "flops.hstack",
       "original_target": "hstack",
       "role": "",
       "target": "hstack",
@@ -281,8 +287,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/vstack",
-      "label": "we.vstack",
+      "href": "/docs/api/numpy/vstack/",
+      "label": "flops.vstack",
       "original_target": "vstack",
       "role": "",
       "target": "vstack",
@@ -292,20 +298,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/concatenate",
-      "label": "we.concatenate",
+      "href": "/docs/api/numpy/concatenate/",
+      "label": "flops.concatenate",
       "original_target": "concatenate",
       "role": "",
       "target": "concatenate",
       "unresolved": false
     }
   ],
-  "signature": "we.column_stack(tup)",
+  "signature": "fnp.column_stack(tup)",
   "slug": "column_stack",
   "summary": "Stack 1-D arrays as columns into a 2-D array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L621",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.column_stack",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L846"
+  "weight": 0.0
 }

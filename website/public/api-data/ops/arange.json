@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/arange/",
+  "detail_href": "/docs/api/numpy/arange/",
   "detail_json_href": "/api-data/ops/arange.json",
   "docs": {
     "sections": [
@@ -23,7 +23,7 @@
             "inline": [
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "kind": "link",
                 "target": "arange",
                 "text": "arange"
@@ -181,10 +181,10 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "kind": "link",
                 "target": "linspace",
-                "text": "we.linspace"
+                "text": "flops.linspace"
               },
               {
                 "kind": "text",
@@ -623,8 +623,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
-                "label": "we.linspace",
+                "href": "/docs/api/numpy/linspace/",
+                "label": "flops.linspace",
                 "original_target": "numpy.linspace",
                 "role": "",
                 "target": "linspace",
@@ -640,7 +640,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.ogrid.html",
                 "href": "",
-                "label": "we.ogrid",
+                "label": "flops.ogrid",
                 "original_target": "numpy.ogrid",
                 "role": "",
                 "target": "ogrid",
@@ -656,7 +656,7 @@
                 ],
                 "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.mgrid.html",
                 "href": "",
-                "label": "we.mgrid",
+                "label": "flops.mgrid",
                 "original_target": "numpy.mgrid",
                 "role": "",
                 "target": "mgrid",
@@ -698,10 +698,10 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "kind": "link",
                 "target": "arange",
-                "text": "we.arange"
+                "text": "flops.arange"
               },
               {
                 "kind": "text",
@@ -744,7 +744,7 @@
           },
           {
             "language": null,
-            "text": ">>> we.arange(0, 5, 0.5, dtype=int)\narray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])\n>>> we.arange(-3, 3, 0.5, dtype=int)\narray([-3, -2, -1,  0,  1,  2,  3,  4,  5,  6,  7,  8])",
+            "text": ">>> flops.arange(0, 5, 0.5, dtype=int)\narray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])\n>>> flops.arange(-3, 3, 0.5, dtype=int)\narray([-3, -2, -1,  0,  1,  2,  3,  4,  5,  6,  7,  8])",
             "type": "literal_block"
           },
           {
@@ -755,10 +755,10 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/linspace",
+                "href": "/docs/api/numpy/linspace/",
                 "kind": "link",
                 "target": "linspace",
-                "text": "we.linspace"
+                "text": "flops.linspace"
               },
               {
                 "kind": "text",
@@ -799,10 +799,10 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arange",
+                "href": "/docs/api/numpy/arange/",
                 "kind": "link",
                 "target": "arange",
-                "text": "we.arange"
+                "text": "flops.arange"
               },
               {
                 "kind": "text",
@@ -813,7 +813,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "int32",
-                "text": "we.int32"
+                "text": "flops.int32"
               },
               {
                 "kind": "text",
@@ -824,7 +824,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "int64",
-                "text": "we.int64"
+                "text": "flops.int64"
               },
               {
                 "kind": "text",
@@ -845,7 +845,7 @@
           },
           {
             "language": null,
-            "text": ">>> power = 40\n>>> modulo = 10000\n>>> x1 = [(n ** power) % modulo for n in range(8)]\n>>> x2 = [(n ** power) % modulo for n in we.arange(8)]\n>>> print(x1)\n[0, 1, 7776, 8801, 6176, 625, 6576, 4001]  # correct\n>>> print(x2)\n[0, 1, 7776, 7185, 0, 5969, 4816, 3361]  # incorrect",
+            "text": ">>> power = 40\n>>> modulo = 10000\n>>> x1 = [(n ** power) % modulo for n in range(8)]\n>>> x2 = [(n ** power) % modulo for n in flops.arange(8)]\n>>> print(x1)\n[0, 1, 7776, 8801, 6176, 625, 6576, 4001]  # correct\n>>> print(x2)\n[0, 1, 7776, 7185, 0, 5969, 4816, 3361]  # incorrect",
             "type": "literal_block"
           }
         ],
@@ -858,12 +858,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arange(3)"
+                "text": "flops.arange(3)"
               },
               {
                 "kind": "output",
@@ -872,7 +872,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arange(3.0)"
+                "text": "flops.arange(3.0)"
               },
               {
                 "kind": "output",
@@ -881,7 +881,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arange(3,7)"
+                "text": "flops.arange(3,7)"
               },
               {
                 "kind": "output",
@@ -890,7 +890,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.arange(3,7,2)"
+                "text": "flops.arange(3,7,2)"
               },
               {
                 "kind": "output",
@@ -908,20 +908,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.arange",
     "module": "numpy",
     "name": "arange",
     "notes": "Return evenly spaced values in given interval. Cost: numel(output).",
     "numpy_ref": "np.arange",
-    "signature": "we.arange(*args, **kwargs)",
+    "signature": "fnp.arange(*args, **kwargs)",
     "status": "supported",
     "summary": "Return evenly spaced values within a given interval.",
-    "weight": 1.0,
-    "whest_ref": "we.arange"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "arange",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.arange.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L135"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L175",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.arange.html"
   }
 }

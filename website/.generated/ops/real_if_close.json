@@ -191,8 +191,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/real",
-              "label": "we.real",
+              "href": "/docs/api/numpy/real/",
+              "label": "flops.real",
               "original_target": "real",
               "role": "",
               "target": "real",
@@ -202,8 +202,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/imag",
-              "label": "we.imag",
+              "href": "/docs/api/numpy/imag/",
+              "label": "flops.imag",
               "original_target": "imag",
               "role": "",
               "target": "imag",
@@ -213,8 +213,8 @@
               "description": "",
               "description_inline": [],
               "external_url": "",
-              "href": "/docs/api/ops/angle",
-              "label": "we.angle",
+              "href": "/docs/api/numpy/angle/",
+              "label": "flops.angle",
               "original_target": "angle",
               "role": "",
               "target": "angle",
@@ -232,7 +232,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Machine epsilon varies from machine to machine and between data types\nbut Python floats on most platforms have a machine epsilon equal to\n2.2204460492503131e-16.  You can use 'we.finfo(float).eps' to print\nout the machine epsilon for floats."
+              "text": "Machine epsilon varies from machine to machine and between data types\nbut Python floats on most platforms have a machine epsilon equal to\n2.2204460492503131e-16.  You can use 'flops.finfo(float).eps' to print\nout the machine epsilon for floats."
             }
           ],
           "type": "paragraph"
@@ -247,12 +247,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.finfo(float).eps"
+              "text": "flops.finfo(float).eps"
             },
             {
               "kind": "output",
@@ -266,7 +266,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.real_if_close([2.1 + 4e-14j, 5.2 + 3e-15j], tol=1000)"
+              "text": "flops.real_if_close([2.1 + 4e-14j, 5.2 + 3e-15j], tol=1000)"
             },
             {
               "kind": "output",
@@ -275,7 +275,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.real_if_close([2.1 + 4e-13j, 5.2 + 3e-15j], tol=1000)"
+              "text": "flops.real_if_close([2.1 + 4e-13j, 5.2 + 3e-15j], tol=1000)"
             },
             {
               "kind": "output",
@@ -289,6 +289,7 @@
     }
   ],
   "canonical_name": "real_if_close",
+  "canonical_path": "numpy/real-if-close",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -299,20 +300,24 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.finfo(float).eps\n\nwe.real_if_close([2.1 + 4e-14j, 5.2 + 3e-15j], tol=1000)\n\nwe.real_if_close([2.1 + 4e-13j, 5.2 + 3e-15j], tol=1000)",
+    "code": "import flopscope.numpy as fnp\n\nflops.finfo(float).eps\n\nflops.real_if_close([2.1 + 4e-14j, 5.2 + 3e-15j], tol=1000)\n\nflops.real_if_close([2.1 + 4e-13j, 5.2 + 3e-15j], tol=1000)",
     "output": "2.2204460492503131e-16 # may vary\n\narray([2.1, 5.2])\n\narray([2.1+4.e-13j, 5.2 + 3e-15j])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/real_if_close/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.real_if_close",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+  "href": "/docs/api/numpy/real-if-close/",
+  "legacy_href": "/docs/api/ops/real_if_close/",
   "module": "numpy",
   "name": "real_if_close",
   "next": {
-    "href": "/docs/api/ops/reciprocal/",
-    "label": "we.reciprocal"
+    "href": "/docs/api/numpy/reciprocal/",
+    "label": "fnp.reciprocal"
   },
   "notes": "Return real array if imaginary part is negligible.",
   "notes_sections": [
-    "Machine epsilon varies from machine to machine and between data types but Python floats on most platforms have a machine epsilon equal to 2.2204460492503131e-16.  You can use 'we.finfo(float).eps' to print out the machine epsilon for floats."
+    "Machine epsilon varies from machine to machine and between data types but Python floats on most platforms have a machine epsilon equal to 2.2204460492503131e-16.  You can use 'flops.finfo(float).eps' to print out the machine epsilon for floats."
   ],
   "numpy_ref": "np.real_if_close",
   "parameters": [
@@ -334,10 +339,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/real/",
-    "label": "we.real"
+    "href": "/docs/api/numpy/real/",
+    "label": "fnp.real"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.real_if_close",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.real_if_close.html",
   "returns": [
     {
@@ -354,8 +360,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/real",
-      "label": "we.real",
+      "href": "/docs/api/numpy/real/",
+      "label": "flops.real",
       "original_target": "real",
       "role": "",
       "target": "real",
@@ -365,8 +371,8 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/imag",
-      "label": "we.imag",
+      "href": "/docs/api/numpy/imag/",
+      "label": "flops.imag",
       "original_target": "imag",
       "role": "",
       "target": "imag",
@@ -376,20 +382,19 @@
       "description": "",
       "description_inline": [],
       "external_url": "",
-      "href": "/docs/api/ops/angle",
-      "label": "we.angle",
+      "href": "/docs/api/numpy/angle/",
+      "label": "flops.angle",
       "original_target": "angle",
       "role": "",
       "target": "angle",
       "unresolved": false
     }
   ],
-  "signature": "we.real_if_close(a, tol=100)",
+  "signature": "fnp.real_if_close(a, tol=100)",
   "slug": "real_if_close",
   "summary": "If input is complex with all imaginary parts close to zero, return real parts.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_type_check_impl.py#L489",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.real_if_close",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 1.0
 }

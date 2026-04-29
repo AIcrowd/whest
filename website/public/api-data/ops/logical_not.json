@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/logical_not/",
+  "detail_href": "/docs/api/numpy/logical-not/",
   "detail_json_href": "/api-data/ops/logical_not.json",
   "docs": {
     "sections": [
@@ -317,8 +317,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_and",
-                "label": "we.logical_and",
+                "href": "/docs/api/numpy/logical-and/",
+                "label": "flops.logical_and",
                 "original_target": "logical_and",
                 "role": "",
                 "target": "logical_and",
@@ -328,8 +328,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_or",
-                "label": "we.logical_or",
+                "href": "/docs/api/numpy/logical-or/",
+                "label": "flops.logical_or",
                 "original_target": "logical_or",
                 "role": "",
                 "target": "logical_or",
@@ -339,8 +339,8 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/logical_xor",
-                "label": "we.logical_xor",
+                "href": "/docs/api/numpy/logical-xor/",
+                "label": "flops.logical_xor",
                 "original_target": "logical_xor",
                 "role": "",
                 "target": "logical_xor",
@@ -359,12 +359,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_not(3)"
+                "text": "flops.logical_not(3)"
               },
               {
                 "kind": "output",
@@ -373,7 +373,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_not([True, False, 0, 1])"
+                "text": "flops.logical_not([True, False, 0, 1])"
               },
               {
                 "kind": "output",
@@ -387,12 +387,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(5)"
+                "text": "x = flops.arange(5)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.logical_not(x<3)"
+                "text": "flops.logical_not(x<3)"
               },
               {
                 "kind": "output",
@@ -410,20 +410,20 @@
     "category": "counted_unary",
     "cost_formula": "numel(output)",
     "cost_formula_latex": "$\\text{numel}(\\text{output})$",
+    "flopscope_ref": "fnp.logical_not",
     "module": "numpy",
     "name": "logical_not",
     "notes": "Element-wise logical NOT.",
     "numpy_ref": "np.logical_not",
-    "signature": "we.logical_not(*args, **kwargs)",
+    "signature": "fnp.logical_not(*args, **kwargs)",
     "status": "supported",
     "summary": "Compute the truth value of NOT x element-wise.",
-    "weight": 1.0,
-    "whest_ref": "we.logical_not"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "logical_not",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

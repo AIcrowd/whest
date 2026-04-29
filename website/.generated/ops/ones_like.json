@@ -312,8 +312,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/empty_like",
-              "label": "we.empty_like",
+              "href": "/docs/api/numpy/empty-like/",
+              "label": "flops.empty_like",
               "original_target": "empty_like",
               "role": "",
               "target": "empty_like",
@@ -328,8 +328,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/zeros_like",
-              "label": "we.zeros_like",
+              "href": "/docs/api/numpy/zeros-like/",
+              "label": "flops.zeros_like",
               "original_target": "zeros_like",
               "role": "",
               "target": "zeros_like",
@@ -344,8 +344,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/full_like",
-              "label": "we.full_like",
+              "href": "/docs/api/numpy/full-like/",
+              "label": "flops.full_like",
               "original_target": "full_like",
               "role": "",
               "target": "full_like",
@@ -360,8 +360,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/ones",
-              "label": "we.ones",
+              "href": "/docs/api/numpy/ones/",
+              "label": "flops.ones",
               "original_target": "ones",
               "role": "",
               "target": "ones",
@@ -380,12 +380,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(6)"
+              "text": "x = flops.arange(6)"
             },
             {
               "kind": "input",
@@ -408,7 +408,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ones_like(x)"
+              "text": "flops.ones_like(x)"
             },
             {
               "kind": "output",
@@ -426,7 +426,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "y = we.arange(3, dtype=float)"
+              "text": "y = flops.arange(3, dtype=float)"
             },
             {
               "kind": "input",
@@ -440,7 +440,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.ones_like(y)"
+              "text": "flops.ones_like(y)"
             },
             {
               "kind": "output",
@@ -454,6 +454,7 @@
     }
   ],
   "canonical_name": "ones_like",
+  "canonical_path": "numpy/ones-like",
   "category": "free",
   "cost_formula": "0",
   "cost_formula_latex": "$0$",
@@ -464,16 +465,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.arange(6)\n\nx = x.reshape((2, 3))\n\nx\n\nwe.ones_like(x)\n\ny = we.arange(3, dtype=float)\n\ny\n\nwe.ones_like(y)",
+    "code": "import flopscope.numpy as fnp\n\nx = flops.arange(6)\n\nx = x.reshape((2, 3))\n\nx\n\nflops.ones_like(x)\n\ny = flops.arange(3, dtype=float)\n\ny\n\nflops.ones_like(y)",
     "output": "array([[0, 1, 2],\n       [3, 4, 5]])\n\narray([[1, 1, 1],\n       [1, 1, 1]])\n\narray([0., 1., 2.])\n\narray([1.,  1.,  1.])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/ones_like/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.ones_like",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L220",
+  "href": "/docs/api/numpy/ones-like/",
+  "legacy_href": "/docs/api/ops/ones_like/",
   "module": "numpy",
   "name": "ones_like",
   "next": {
-    "href": "/docs/api/ops/outer/",
-    "label": "we.outer"
+    "href": "/docs/api/numpy/outer/",
+    "label": "fnp.outer"
   },
   "notes": "Array of ones with same shape/type as input.",
   "notes_sections": [],
@@ -534,10 +539,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/ones/",
-    "label": "we.ones"
+    "href": "/docs/api/numpy/ones/",
+    "label": "fnp.ones"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.ones_like",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.ones_like.html",
   "returns": [
     {
@@ -558,8 +564,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/empty_like",
-      "label": "we.empty_like",
+      "href": "/docs/api/numpy/empty-like/",
+      "label": "flops.empty_like",
       "original_target": "empty_like",
       "role": "",
       "target": "empty_like",
@@ -574,8 +580,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/zeros_like",
-      "label": "we.zeros_like",
+      "href": "/docs/api/numpy/zeros-like/",
+      "label": "flops.zeros_like",
       "original_target": "zeros_like",
       "role": "",
       "target": "zeros_like",
@@ -590,8 +596,8 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/full_like",
-      "label": "we.full_like",
+      "href": "/docs/api/numpy/full-like/",
+      "label": "flops.full_like",
       "original_target": "full_like",
       "role": "",
       "target": "full_like",
@@ -606,20 +612,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/ones",
-      "label": "we.ones",
+      "href": "/docs/api/numpy/ones/",
+      "label": "flops.ones",
       "original_target": "ones",
       "role": "",
       "target": "ones",
       "unresolved": false
     }
   ],
-  "signature": "we.ones_like(a, dtype=None, order='K', subok=True, shape=None, *, device=None)",
+  "signature": "fnp.ones_like(a, dtype=None, order='K', subok=True, shape=None, *, device=None)",
   "slug": "ones_like",
   "summary": "Return an array of ones with the same shape and type as a given array.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L213",
-  "weight": 0.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.ones_like",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L176"
+  "weight": 0.0
 }

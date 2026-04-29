@@ -191,10 +191,10 @@
                     },
                     {
                       "external_url": "",
-                      "href": "/docs/api/ops/linalg-norm",
+                      "href": "/docs/api/numpy/linalg/norm/",
                       "kind": "link",
                       "target": "linalg.norm",
-                      "text": "we.linalg.norm"
+                      "text": "flops.linalg.norm"
                     },
                     {
                       "kind": "text",
@@ -220,10 +220,10 @@
                 },
                 {
                   "external_url": "",
-                  "href": "/docs/api/ops/linalg-norm",
+                  "href": "/docs/api/numpy/linalg/norm/",
                   "kind": "link",
                   "target": "linalg.norm",
-                  "text": "we.linalg.norm"
+                  "text": "flops.linalg.norm"
                 },
                 {
                   "kind": "text",
@@ -253,8 +253,8 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/linalg-norm",
-              "label": "we.linalg.norm",
+              "href": "/docs/api/numpy/linalg/norm/",
+              "label": "flops.linalg.norm",
               "original_target": "numpy.linalg.norm",
               "role": "",
               "target": "linalg.norm",
@@ -278,7 +278,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.arange(9) + 1"
+              "text": "a = flops.arange(9) + 1"
             },
             {
               "kind": "input",
@@ -328,7 +328,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "LA.vector_norm(b, ord=we.inf)"
+              "text": "LA.vector_norm(b, ord=flops.inf)"
             },
             {
               "kind": "output",
@@ -337,7 +337,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "LA.vector_norm(b, ord=-we.inf)"
+              "text": "LA.vector_norm(b, ord=-flops.inf)"
             },
             {
               "kind": "output",
@@ -401,6 +401,7 @@
     }
   ],
   "canonical_name": "linalg.vector_norm",
+  "canonical_path": "numpy/linalg/vector-norm",
   "category": "counted_custom",
   "cost_formula": "numel",
   "cost_formula_latex": "$n$",
@@ -411,16 +412,20 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "from numpy import linalg as LA\n\na = we.arange(9) + 1\n\na\n\nb = a.reshape((3, 3))\n\nb\n\nLA.vector_norm(b)\n\nLA.vector_norm(b, ord=we.inf)\n\nLA.vector_norm(b, ord=-we.inf)\n\nLA.vector_norm(b, ord=0)\n\nLA.vector_norm(b, ord=1)\n\nLA.vector_norm(b, ord=-1)\n\nLA.vector_norm(b, ord=2)\n\nLA.vector_norm(b, ord=-2)",
+    "code": "from numpy import linalg as LA\n\na = flops.arange(9) + 1\n\na\n\nb = a.reshape((3, 3))\n\nb\n\nLA.vector_norm(b)\n\nLA.vector_norm(b, ord=flops.inf)\n\nLA.vector_norm(b, ord=-flops.inf)\n\nLA.vector_norm(b, ord=0)\n\nLA.vector_norm(b, ord=1)\n\nLA.vector_norm(b, ord=-1)\n\nLA.vector_norm(b, ord=2)\n\nLA.vector_norm(b, ord=-2)",
     "output": "array([1, 2, 3, 4, 5, 6, 7, 8, 9])\n\narray([[1, 2, 3],\n       [4, 5, 6],\n       [7, 8, 9]])\n\n16.881943016134134\n\n9.0\n\n1.0\n\n9.0\n\n45.0\n\n0.3534857623790153\n\n16.881943016134134\n\n0.8058837395885292",
     "source": "derived"
   },
-  "href": "/docs/api/ops/linalg-vector_norm/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.linalg.vector_norm",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L251",
+  "href": "/docs/api/numpy/linalg/vector-norm/",
+  "legacy_href": "/docs/api/ops/linalg-vector_norm/",
   "module": "numpy.linalg",
   "name": "linalg.vector_norm",
   "next": {
-    "href": "/docs/api/ops/linspace/",
-    "label": "we.linspace"
+    "href": "/docs/api/numpy/linspace/",
+    "label": "fnp.linspace"
   },
   "notes": "Vector norm. Cost: numel (or 2*numel for general p-norm).",
   "notes_sections": [],
@@ -456,17 +461,18 @@
     {
       "body": [
         "The order of the norm. For details see the table under ``Notes``",
-        "in `we.linalg.norm`."
+        "in `flops.linalg.norm`."
       ],
       "name": "ord",
       "type": "{int, float, inf, -inf}, optional"
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/linalg-vecdot/",
-    "label": "we.linalg.vecdot"
+    "href": "/docs/api/numpy/linalg/vecdot/",
+    "label": "fnp.linalg.vecdot"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.linalg.vector_norm",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.vector_norm.html",
   "returns": [],
   "see_also": [
@@ -479,20 +485,19 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/linalg-norm",
-      "label": "we.linalg.norm",
+      "href": "/docs/api/numpy/linalg/norm/",
+      "label": "flops.linalg.norm",
       "original_target": "numpy.linalg.norm",
       "role": "",
       "target": "linalg.norm",
       "unresolved": false
     }
   ],
-  "signature": "we.linalg.vector_norm(x, ord=2, axis=None, keepdims=False)",
+  "signature": "fnp.linalg.vector_norm(x, ord=2, axis=None, keepdims=False)",
   "slug": "linalg-vector_norm",
   "summary": "Computes the vector norm of a vector (or batch of vectors) ``x``.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3481",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.linalg.vector_norm",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/linalg/_properties.py#L251"
+  "weight": 1.0
 }

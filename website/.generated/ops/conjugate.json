@@ -313,7 +313,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/conj",
+              "href": "/docs/api/numpy/conj/",
               "kind": "link",
               "target": "conj",
               "text": "conj"
@@ -324,7 +324,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/conjugate",
+              "href": "/docs/api/numpy/conjugate/",
               "kind": "link",
               "target": "conjugate",
               "text": "conjugate"
@@ -341,7 +341,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.conj is we.conjugate"
+              "text": "flops.conj is flops.conjugate"
             },
             {
               "kind": "output",
@@ -360,12 +360,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope.numpy as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.conjugate(1+2j)"
+              "text": "flops.conjugate(1+2j)"
             },
             {
               "kind": "output",
@@ -379,12 +379,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.eye(2) + 1j * we.eye(2)"
+              "text": "x = flops.eye(2) + 1j * flops.eye(2)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.conjugate(x)"
+              "text": "flops.conjugate(x)"
             },
             {
               "kind": "output",
@@ -402,6 +402,7 @@
     }
   ],
   "canonical_name": "conjugate",
+  "canonical_path": "numpy/conjugate",
   "category": "counted_unary",
   "cost_formula": "numel(output)",
   "cost_formula_latex": "$\\text{numel}(\\text{output})$",
@@ -419,21 +420,25 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.conjugate(1+2j)\n\nx = we.eye(2) + 1j * we.eye(2)\n\nwe.conjugate(x)",
+    "code": "import flopscope.numpy as fnp\n\nflops.conjugate(1+2j)\n\nx = flops.eye(2) + 1j * flops.eye(2)\n\nflops.conjugate(x)",
     "output": "(1-2j)\n\narray([[ 1.-1.j,  0.-0.j],\n       [ 0.-0.j,  1.-1.j]])",
     "source": "derived"
   },
-  "href": "/docs/api/ops/conjugate/",
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.conjugate",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+  "href": "/docs/api/numpy/conjugate/",
+  "legacy_href": "/docs/api/ops/conjugate/",
   "module": "numpy",
   "name": "conjugate",
   "next": {
-    "href": "/docs/api/ops/convolve/",
-    "label": "we.convolve"
+    "href": "/docs/api/numpy/convolve/",
+    "label": "fnp.convolve"
   },
   "notes": "Complex conjugate element-wise.",
   "notes_sections": [
     "`conj` is an alias for `conjugate`:",
-    ">>> we.conj is we.conjugate True"
+    ">>> flops.conj is flops.conjugate True"
   ],
   "numpy_ref": "np.conjugate",
   "parameters": [
@@ -476,10 +481,11 @@
     }
   ],
   "previous": {
-    "href": "/docs/api/ops/conj/",
-    "label": "we.conj"
+    "href": "/docs/api/numpy/conj/",
+    "label": "fnp.conj"
   },
   "provenance_label": "Adapted from NumPy docs",
+  "provenance_ref": "np.conjugate",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.conjugate.html",
   "returns": [
     {
@@ -492,12 +498,11 @@
     }
   ],
   "see_also": [],
-  "signature": "we.conjugate(*args, **kwargs)",
+  "signature": "fnp.conjugate(*args, **kwargs)",
   "slug": "conjugate",
   "summary": "Return the complex conjugate, element-wise.",
+  "upstream_ref_label": "NumPy Ref",
+  "upstream_source_label": "numpy source",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.conjugate",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_pointwise.py#L144"
+  "weight": 1.0
 }

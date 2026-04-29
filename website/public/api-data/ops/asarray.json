@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/asarray/",
+  "detail_href": "/docs/api/numpy/asarray/",
   "detail_json_href": "/api-data/ops/asarray.json",
   "docs": {
     "sections": [
@@ -524,8 +524,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/asarray_chkfinite",
-                "label": "we.asarray_chkfinite",
+                "href": "/docs/api/numpy/asarray-chkfinite/",
+                "label": "flops.asarray_chkfinite",
                 "original_target": "asarray_chkfinite",
                 "role": "",
                 "target": "asarray_chkfinite",
@@ -540,8 +540,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fromiter",
-                "label": "we.fromiter",
+                "href": "/docs/api/numpy/fromiter/",
+                "label": "flops.fromiter",
                 "original_target": "fromiter",
                 "role": "",
                 "target": "fromiter",
@@ -556,8 +556,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/fromfunction",
-                "label": "we.fromfunction",
+                "href": "/docs/api/numpy/fromfunction/",
+                "label": "flops.fromfunction",
                 "original_target": "fromfunction",
                 "role": "",
                 "target": "fromfunction",
@@ -590,12 +590,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.asarray(a)"
+                "text": "flops.asarray(a)"
               },
               {
                 "kind": "output",
@@ -618,12 +618,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2])"
+                "text": "a = flops.array([1, 2])"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.asarray(a) is a"
+                "text": "flops.asarray(a) is a"
               },
               {
                 "kind": "output",
@@ -654,12 +654,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([1, 2], dtype=we.float32)"
+                "text": "a = flops.array([1, 2], dtype=flops.float32)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.shares_memory(we.asarray(a, dtype=we.float32), a)"
+                "text": "flops.shares_memory(flops.asarray(a, dtype=flops.float32), a)"
               },
               {
                 "kind": "output",
@@ -668,7 +668,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.shares_memory(we.asarray(a, dtype=we.float64), a)"
+                "text": "flops.shares_memory(flops.asarray(a, dtype=flops.float64), a)"
               },
               {
                 "kind": "output",
@@ -699,7 +699,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "issubclass(we.recarray, we.ndarray)"
+                "text": "issubclass(flops.recarray, flops.ndarray)"
               },
               {
                 "kind": "output",
@@ -708,12 +708,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "a = we.array([(1., 2), (3., 4)], dtype='f4,i4').view(we.recarray)"
+                "text": "a = flops.array([(1., 2), (3., 4)], dtype='f4,i4').view(flops.recarray)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.asarray(a) is a"
+                "text": "flops.asarray(a) is a"
               },
               {
                 "kind": "output",
@@ -722,7 +722,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.asanyarray(a) is a"
+                "text": "flops.asanyarray(a) is a"
               },
               {
                 "kind": "output",
@@ -740,20 +740,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.asarray",
     "module": "numpy",
     "name": "asarray",
     "notes": "Convert input to array. Cost: numel(input).",
     "numpy_ref": "np.asarray",
-    "signature": "we.asarray(a, dtype=None, **kwargs)",
+    "signature": "fnp.asarray(a, dtype=None, **kwargs)",
     "status": "supported",
     "summary": "Convert the input to an array.",
-    "weight": 0.0,
-    "whest_ref": "we.asarray"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "asarray",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.asarray.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L591"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L653",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.asarray.html"
   }
 }

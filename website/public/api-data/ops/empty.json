@@ -1,5 +1,5 @@
 {
-  "detail_href": "/docs/api/ops/empty/",
+  "detail_href": "/docs/api/numpy/empty/",
   "detail_json_href": "/api-data/ops/empty.json",
   "docs": {
     "sections": [
@@ -88,7 +88,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "int8",
-                        "text": "we.int8"
+                        "text": "flops.int8"
                       },
                       {
                         "kind": "text",
@@ -99,7 +99,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "float64",
-                        "text": "we.float64"
+                        "text": "flops.float64"
                       },
                       {
                         "kind": "text",
@@ -120,7 +120,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "int8",
-                    "text": "we.int8"
+                    "text": "flops.int8"
                   },
                   {
                     "kind": "text",
@@ -131,7 +131,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "float64",
-                    "text": "we.float64"
+                    "text": "flops.float64"
                   },
                   {
                     "kind": "text",
@@ -344,8 +344,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/empty_like",
-                "label": "we.empty_like",
+                "href": "/docs/api/numpy/empty-like/",
+                "label": "flops.empty_like",
                 "original_target": "empty_like",
                 "role": "",
                 "target": "empty_like",
@@ -360,8 +360,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/ones",
-                "label": "we.ones",
+                "href": "/docs/api/numpy/ones/",
+                "label": "flops.ones",
                 "original_target": "ones",
                 "role": "",
                 "target": "ones",
@@ -376,8 +376,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/zeros",
-                "label": "we.zeros",
+                "href": "/docs/api/numpy/zeros/",
+                "label": "flops.zeros",
                 "original_target": "zeros",
                 "role": "",
                 "target": "zeros",
@@ -392,8 +392,8 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/full",
-                "label": "we.full",
+                "href": "/docs/api/numpy/full/",
+                "label": "flops.full",
                 "original_target": "full",
                 "role": "",
                 "target": "full",
@@ -415,7 +415,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/zeros",
+                "href": "/docs/api/numpy/zeros/",
                 "kind": "link",
                 "target": "zeros",
                 "text": "zeros"
@@ -426,7 +426,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/ones",
+                "href": "/docs/api/numpy/ones/",
                 "kind": "link",
                 "target": "ones",
                 "text": "ones"
@@ -437,7 +437,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/full",
+                "href": "/docs/api/numpy/full/",
                 "kind": "link",
                 "target": "full",
                 "text": "full"
@@ -448,7 +448,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/empty",
+                "href": "/docs/api/numpy/empty/",
                 "kind": "link",
                 "target": "empty",
                 "text": "empty"
@@ -470,12 +470,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope.numpy as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.empty([2, 2])"
+                "text": "flops.empty([2, 2])"
               },
               {
                 "kind": "output",
@@ -493,7 +493,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.empty([2, 2], dtype=int)"
+                "text": "flops.empty([2, 2], dtype=int)"
               },
               {
                 "kind": "output",
@@ -515,20 +515,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.empty",
     "module": "numpy",
     "name": "empty",
     "notes": "Uninitialized array allocation.",
     "numpy_ref": "np.empty",
-    "signature": "we.empty(shape, dtype=<class 'float'>, **kwargs)",
+    "signature": "fnp.empty(shape, dtype=<class 'float'>, **kwargs)",
     "status": "supported",
     "summary": "Return a new array of given shape and type, without initializing entries.",
-    "weight": 0.0,
-    "whest_ref": "we.empty"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "empty",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.empty.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L208"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L260",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.empty.html"
   }
 }

@@ -14,7 +14,7 @@ const targetedDocs = [
 ];
 
 for (const relativePath of targetedDocs) {
-  test(`${relativePath} uses whest-only operations in runnable examples`, async () => {
+  test(`${relativePath} uses flopscope-only operations in runnable examples`, async () => {
     const file = path.join(websiteRoot, relativePath);
     const source = await readFile(file, 'utf8');
     const pythonFences = [...source.matchAll(/```python\n([\s\S]*?)```/g)].map(

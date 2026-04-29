@@ -4,16 +4,16 @@ from unittest.mock import patch
 
 import pytest
 
-import whest as we
-from whest._budget import BudgetContext
-from whest._display import _plain_text_summary, budget_live, render_budget_summary
+import flopscope as flops
+from flopscope._budget import BudgetContext
+from flopscope._display import _plain_text_summary, budget_live, render_budget_summary
 
 
 def test_plain_text_summary_default_omits_namespace_section():
     with BudgetContext(flop_budget=1000, namespace="train", quiet=True) as ctx:
         with ctx.deduct("add", flop_cost=100, subscripts=None, shapes=()):
             pass
-        with we.namespace("precompute"):
+        with flops.namespace("precompute"):
             with ctx.deduct("mul", flop_cost=200, subscripts=None, shapes=()):
                 pass
 
@@ -28,7 +28,7 @@ def test_plain_text_summary_by_namespace_shows_dotted_rows():
     with BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
         with ctx.deduct("mul", flop_cost=50, subscripts=None, shapes=()):
             pass
-        with we.namespace("precompute"):
+        with flops.namespace("precompute"):
             with ctx.deduct("add", flop_cost=100, subscripts=None, shapes=()):
                 pass
 
@@ -51,7 +51,7 @@ def test_plain_text_summary_no_data():
 def test_render_budget_summary_falls_back_to_text():
     """When Rich is not available, render_budget_summary returns plain text."""
     with BudgetContext(flop_budget=1000, namespace="test", quiet=True) as ctx:
-        with we.namespace("nested"):
+        with flops.namespace("nested"):
             with ctx.deduct("add", flop_cost=100, subscripts=None, shapes=()):
                 pass
 
