@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import Latex from '../Latex.jsx';
 import { labelledTuple, tupleKey } from './orbitRepMatrixLayout.js';
 
@@ -37,7 +38,32 @@ function canonicalEquationLatex(expressionInfo) {
   return `R[${[...output].join(',')}] \\;=\\; ${sumPrefix}${opTerms.join(' \\cdot ')}`;
 }
 
-export default function WorkedExamplePanel({
+// Custom equality check: focus is determined by `pin || hover`. Two renders
+// that resolve to the same focused cell (same row+col) shouldn't re-execute
+// the heavy LaTeX + member-projection path. Compares the OUTCOME of `pin || hover`
+// for both renders, plus the data refs that affect the rendered content.
+function panelPropsEqual(prev, next) {
+  const prevFocus = prev.pin || prev.hover;
+  const nextFocus = next.pin || next.hover;
+  const sameFocus =
+    prevFocus === nextFocus
+    || (prevFocus && nextFocus && prevFocus.row === nextFocus.row && prevFocus.col === nextFocus.col);
+  if (!sameFocus) return false;
+  // Pin presence matters for the × clear-pin button + branching-note voice.
+  const prevHasPin = !!prev.pin;
+  const nextHasPin = !!next.pin;
+  if (prevHasPin !== nextHasPin) return false;
+  // Data refs.
+  return (
+    prev.orbitRows === next.orbitRows
+    && prev.reps === next.reps
+    && prev.cells === next.cells
+    && prev.expressionInfo === next.expressionInfo
+    && prev.componentInfo === next.componentInfo
+  );
+}
+
+function WorkedExamplePanel({
   hover, pin,
   orbitRows = [], reps = [], cells = [],
   expressionInfo = null, componentInfo = null,
@@ -243,3 +269,5 @@ export default function WorkedExamplePanel({
     </div>
   );
 }
+
+export default memo(WorkedExamplePanel, panelPropsEqual);

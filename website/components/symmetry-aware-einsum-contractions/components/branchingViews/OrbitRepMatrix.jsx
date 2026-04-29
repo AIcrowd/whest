@@ -38,6 +38,7 @@ export default function OrbitRepMatrix({
   onStateChange = null,
 }) {
   const canvasRef = useRef(null);
+  const offscreenRef = useRef(null); // cached base layer (grid + filled cells)
   const containerRef = useRef(null);
   const scrollRef = useRef(null);
   const rafRef = useRef(null);
@@ -82,9 +83,25 @@ export default function OrbitRepMatrix({
     };
   }, []);
 
-  // Imperative canvas sizing — runs only when layout changes.
-  // Split out from drawing because setting canvas.width clears canvas state,
-  // which we want to avoid on every hover update.
+  // ─── Three-stage draw pipeline ────────────────────────────────────────────
+  //
+  // Drawing 18k+ cells on every mousemove is too expensive — the user feels it
+  // as sluggishness. We split into three stages so per-hover cost is tiny:
+  //
+  //   1. SIZING (deps: [layout])      — set canvas + offscreen dimensions, DPR.
+  //   2. BASE   (deps: [layout, cells, pin]) — paint grid + filled cells into
+  //                                            an offscreen canvas. Pin is in
+  //                                            the base because pinned cells
+  //                                            use the stronger coral fill.
+  //   3. PAINT  (deps: [layout, hover, pin, cells]) — drawImage(base) + small
+  //                                                   branching outlines +
+  //                                                   hover marker. <1 ms even
+  //                                                   on 18k-cell matrices.
+  //
+  // Per mousemove only PAINT runs; BASE only runs when the data or pin
+  // changes, which is rare relative to mousemove frequency.
+
+  // Stage 1: SIZING — runs only when layout changes.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || layout.cellSize === 0) return;
@@ -96,37 +113,44 @@ export default function OrbitRepMatrix({
     canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
     const ctx = canvas.getContext('2d');
-    // Reset transform then re-apply DPR scale.
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
+
+    // Mirror the offscreen canvas's dimensions so drawImage maps 1:1.
+    if (!offscreenRef.current) {
+      offscreenRef.current = document.createElement('canvas');
+    }
+    const off = offscreenRef.current;
+    off.width = canvas.width;
+    off.height = canvas.height;
+    const offCtx = off.getContext('2d');
+    offCtx.setTransform(1, 0, 0, 1, 0, 0);
+    offCtx.scale(dpr, dpr);
   }, [layout]);
 
-  // Imperative canvas draw — runs on layout, data, and focus changes.
+  // Stage 2: BASE — paint grid + filled cells into the offscreen canvas.
+  // Re-runs only when the data or pin changes (rare).
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas || layout.cellSize === 0) return;
-    const ctx = canvas.getContext('2d');
-    // Clear in logical coordinates (the DPR scale was already applied in the sizing effect).
+    const off = offscreenRef.current;
+    if (!off || layout.cellSize === 0) return;
+    const ctx = off.getContext('2d');
+
+    // Clear (logical coords; DPR scale already applied in stage 1).
     ctx.fillStyle = COLOR.bg;
     ctx.fillRect(0, 0, layout.contentWidth, layout.contentHeight);
 
-    // Cells: filled fills. Pinned cell gets the stronger coral; everything else
-    // uses the regular filled tint. Hover gets a 2 px border (drawn after the
-    // grid lines below) so it sits on top without obscuring the cell's content.
+    // Filled cells. Pinned cell gets the stronger coral.
     for (let r = 0; r < orbitRows.length; r += 1) {
       for (let c = 0; c < reps.length; c += 1) {
         const coeff = cells[r][c];
-        const filled = coeff !== null;
-        if (!filled) continue;
-        const x = c * layout.cellSize;
-        const y = r * layout.cellSize;
+        if (coeff === null) continue;
         const isPin = pin && pin.row === r && pin.col === c;
         ctx.fillStyle = isPin ? COLOR.cellPinned : COLOR.cellFilled;
-        ctx.fillRect(x, y, layout.cellSize, layout.cellSize);
+        ctx.fillRect(c * layout.cellSize, r * layout.cellSize, layout.cellSize, layout.cellSize);
       }
     }
 
-    // Grid lines — drawn once each so internal cells aren't double-stroked.
+    // Grid lines — single pass, each line drawn once (symmetric).
     ctx.strokeStyle = COLOR.cellGrid;
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -141,10 +165,25 @@ export default function OrbitRepMatrix({
       ctx.lineTo(x, layout.contentHeight);
     }
     ctx.stroke();
+  }, [layout, orbitRows, reps, cells, pin]);
+
+  // Stage 3: PAINT — composite the cached base + dynamic overlays onto the
+  // visible canvas. Runs on every hover/pin change. Cost: drawImage + a few
+  // strokeRects, which is <1 ms even for very large matrices.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const off = offscreenRef.current;
+    if (!canvas || !off || layout.cellSize === 0) return;
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+
+    // Reset transform so drawImage maps device-pixel-1:1, then re-apply
+    // DPR scale for the logical-coord overlay drawing below.
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.drawImage(off, 0, 0);
+    ctx.scale(dpr, dpr);
 
     // Branching outlines for the orbit's other reached cells in the focused row.
-    // Visible while either pinning or hovering — they're the "where else does
-    // this orbit go" hint.
     const focus = pin || hover;
     if (focus) {
       ctx.strokeStyle = COLOR.branchOutline;
@@ -158,9 +197,8 @@ export default function OrbitRepMatrix({
       }
     }
 
-    // Faint cell-level hover marker (only when NOT pinned — pin already has its
-    // own stronger fill). 2 px coral border anchors the eye on the cell the
-    // mouse is over without re-fillng the cell.
+    // Faint cell-level hover marker — 2 px coral border on the hovered cell
+    // (only when NOT pinned; pin uses the stronger fill in the base layer).
     if (hover && !pin) {
       const x = hover.col * layout.cellSize;
       const y = hover.row * layout.cellSize;
