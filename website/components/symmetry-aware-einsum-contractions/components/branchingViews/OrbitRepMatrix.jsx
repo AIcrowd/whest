@@ -10,21 +10,10 @@ import {
   FIXED_CANVAS_HEIGHT,
 } from './orbitRepMatrixLayout.js';
 
-// Build tooltip content lines for the floating MatrixHoverTooltip.
-// Called inside the rAF callback — no React state involved.
-function tooltipContent(row, rep, coeff, vLabels) {
-  const orbit = `O ${row?.repTuple ? `(${Object.values(row.repTuple).join(', ')})` : ''}`;
-  const repLine = `Q ${rep?.tuple ? `(${Object.values(rep.tuple).join(', ')})` : ''}`;
-  const result = coeff !== null
-    ? `→ R[${vLabels.map((l) => rep.tuple[l]).join(', ')}]  ·  +1 to α`
-    : '↛  cell empty';
-  return [orbit, repLine, result];
-}
-
 // Token palette anchored to design-system colors_and_type.css.
 // `cellGrid` is near-invisible by design — the grid is a structural hint, not chrome.
 // `cellFilled` is now bright enough to read at small cell sizes; `cellPinned` is the
-// stronger "this cell is the reading anchor" treatment when click-pinned.
+// stronger "this cell is the reading anchor" treatment when hover-focused.
 const COLOR = {
   bg: '#FFFFFF',
   cellGrid: '#F4F6F6',
@@ -42,17 +31,13 @@ function OrbitRepMatrix({
   onHover = null,
   expressionInfo = null,
   componentInfo = null,
-  /** Ref to a MatrixHoverTooltip imperative API (update + hide). The matrix
-   *  calls `tooltipRef.current.update(...)` from its rAF callback on every
-   *  hover; no React state for tooltip content. */
-  tooltipRef = null,
-  /** ({row, col, clickX, clickY}|null) => void — fires on cell click. Parent
-   *  uses this to set pin state + position the OrbitDetailCard. Pass null to
-   *  clear (when the same cell is clicked twice). */
-  onPin = null,
-  /** ({row, col, clickX, clickY}|null) — current pin (controlled). Matrix uses
-   *  this to draw the strong-coral fill on the pinned cell. */
-  pin = null,
+  /** ({row, col, clickX, clickY}|null) => void — fires when hover enters a new cell.
+   *  clickX/clickY are pointer clientX/clientY (kept for naming continuity with the
+   *  floating-card flip math, even though no click is involved). */
+  onHoverChange = null,
+  /** ({row, col, clickX, clickY}|null) — current hover (controlled). Drives the
+   *  strong-coral fill on the canvas + the position of the floating card. */
+  hover = null,
   /** () => void — opens the matrix in a viewport-sized modal. The trigger
    *  button is rendered as a prominent overlay in the canvas's top-right. */
   onExpand = null,
@@ -106,16 +91,16 @@ function OrbitRepMatrix({
   // as sluggishness. We split into three stages so per-hover cost is tiny:
   //
   //   1. SIZING (deps: [layout])      — set canvas + offscreen dimensions, DPR.
-  //   2. BASE   (deps: [layout, cells, pin]) — paint grid + filled cells into
-  //                                            an offscreen canvas. Pin is in
-  //                                            the base because pinned cells
-  //                                            use the stronger coral fill.
-  //   3. PAINT  (deps: [layout, hover, pin, cells]) — drawImage(base) + small
-  //                                                   branching outlines +
-  //                                                   hover marker. <1 ms even
-  //                                                   on 18k-cell matrices.
+  //   2. BASE   (deps: [layout, cells, hover]) — paint grid + filled cells into
+  //                                              an offscreen canvas. Hover is in
+  //                                              the base because hovered cells
+  //                                              use the stronger coral fill.
+  //   3. PAINT  (deps: [layout, hover, cells]) — drawImage(base) + small
+  //                                              branching outlines +
+  //                                              hover marker. <1 ms even
+  //                                              on 18k-cell matrices.
   //
-  // Per mousemove only PAINT runs; BASE only runs when the data or pin
+  // Per mousemove only PAINT runs; BASE only runs when the data or hover
   // changes, which is rare relative to mousemove frequency.
 
   // Stage 1: SIZING — runs only when layout changes.
@@ -146,7 +131,7 @@ function OrbitRepMatrix({
   }, [layout]);
 
   // Stage 2: BASE — paint grid + filled cells into the offscreen canvas.
-  // Re-runs only when the data or pin changes (rare).
+  // Re-runs only when the data or hover changes (rare).
   useEffect(() => {
     const off = offscreenRef.current;
     if (!off || !layout.cellWidth || !layout.cellHeight) return;
@@ -158,13 +143,13 @@ function OrbitRepMatrix({
     ctx.fillStyle = COLOR.bg;
     ctx.fillRect(0, 0, layout.contentWidth, layout.contentHeight);
 
-    // Filled cells. Pinned cell gets the stronger coral.
+    // Filled cells. Focused (hovered) cell gets the stronger coral.
     for (let r = 0; r < orbitRows.length; r += 1) {
       for (let c = 0; c < reps.length; c += 1) {
         const coeff = cells[r][c];
         if (coeff === null) continue;
-        const isPin = pin && pin.row === r && pin.col === c;
-        ctx.fillStyle = isPin ? COLOR.cellPinned : COLOR.cellFilled;
+        const isFocus = hover && hover.row === r && hover.col === c;
+        ctx.fillStyle = isFocus ? COLOR.cellPinned : COLOR.cellFilled;
         ctx.fillRect(c * cw, r * ch, cw, ch);
       }
     }
@@ -188,7 +173,7 @@ function OrbitRepMatrix({
       }
       ctx.stroke();
     }
-  }, [layout, orbitRows, reps, cells, pin]);
+  }, [layout, orbitRows, reps, cells, hover]);
 
   // Stage 3: PAINT — composite the cached base + dynamic overlays.
   // Imperative, called from event handlers via rAF. Reads hover from a ref
@@ -201,13 +186,13 @@ function OrbitRepMatrix({
     const dpr = window.devicePixelRatio || 1;
     const cw = layout.cellWidth;
     const ch = layout.cellHeight;
-    const hover = hoverRef.current;
+    const hoverCell = hoverRef.current;
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.drawImage(off, 0, 0);
     ctx.scale(dpr, dpr);
 
-    const focus = pin || hover;
+    const focus = hoverCell;
     if (focus && cw > 2 && ch > 2) {
       ctx.strokeStyle = COLOR.branchOutline;
       ctx.lineWidth = 1;
@@ -218,19 +203,19 @@ function OrbitRepMatrix({
       }
     }
 
-    if (hover && !pin) {
+    if (hoverCell) {
       ctx.strokeStyle = COLOR.hoverMarker;
       ctx.lineWidth = 2;
-      ctx.strokeRect(hover.col * cw + 1, hover.row * ch + 1, Math.max(cw - 2, 0), Math.max(ch - 2, 0));
+      ctx.strokeRect(hoverCell.col * cw + 1, hoverCell.row * ch + 1, Math.max(cw - 2, 0), Math.max(ch - 2, 0));
     }
   }
 
-  // After layout/data/pin changes, repaint once so the static base + any
-  // existing pin overlay re-renders. (Hover refreshes happen via mousemove.)
+  // After layout/data/hover changes, repaint once so the static base + any
+  // existing hover overlay re-renders. (Hover refreshes happen via mousemove.)
   useEffect(() => {
     paintOverlay();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [layout, orbitRows, reps, cells, pin]);
+  }, [layout, orbitRows, reps, cells, hover]);
 
   // Pointer event helpers. The canvas is fixed-size with no internal scroll,
   // so coords are simply mouse-relative-to-canvas.
@@ -270,20 +255,14 @@ function OrbitRepMatrix({
       hoverRef.current = cell;
       paintOverlay();
 
-      // Drive the floating tooltip imperatively — no React state, no re-render.
-      if (tooltipRef?.current) {
+      // Surface the hover-cell change to the parent so the floating card
+      // updates content + position.
+      if (onHoverChange) {
         if (cell) {
-          const row = orbitRows[cell.row];
-          const rep = reps[cell.col];
-          const coeff = cells[cell.row]?.[cell.col] ?? null;
-          const vLabels = componentInfo?.vLabels ?? Object.keys(rep?.tuple ?? {});
-          tooltipRef.current.update({
-            contentLines: tooltipContent(row, rep, coeff, vLabels),
-            x: clientX + 12,
-            y: clientY + 12,
-          });
+          onHoverChange({ row: cell.row, col: cell.col, clickX: clientX, clickY: clientY });
+          if (onSelectOrbit) onSelectOrbit(cell.row);
         } else {
-          tooltipRef.current.hide();
+          onHoverChange(null);
         }
       }
     });
@@ -297,18 +276,7 @@ function OrbitRepMatrix({
       hoverRef.current = null;
       paintOverlay();
     }
-    if (tooltipRef?.current) tooltipRef.current.hide();
-  }
-  function handleClick(e) {
-    const pt = pointerCoords(e);
-    const cell = pointToCell(pt);
-    if (!cell) return;
-    if (pin && pin.row === cell.row && pin.col === cell.col) {
-      if (onPin) onPin(null); // toggle off when clicking the pinned cell again
-    } else {
-      if (onPin) onPin({ row: cell.row, col: cell.col, clickX: e.clientX, clickY: e.clientY });
-      if (onSelectOrbit) onSelectOrbit(cell.row);
-    }
+    if (onHoverChange) onHoverChange(null);
   }
 
   if (orbitRows.length === 0) {
@@ -325,7 +293,7 @@ function OrbitRepMatrix({
 
   // Derive role-coded labels from componentInfo for the legend chip row.
   // Tuple values themselves don't appear on the axes anymore — they live in
-  // the OrbitDetailCard (rendered on click-pin or in the modal).
+  // the OrbitDetailCard (rendered on hover or in the modal).
   const allLabels = orbitRows.length > 0 ? Object.keys(orbitRows[0].repTuple ?? {}) : [];
   const vLabelSet = new Set(componentInfo?.vLabels ?? []);
   const dimensionN = componentInfo?.dimensionN ?? null;
@@ -368,7 +336,7 @@ function OrbitRepMatrix({
       </div>
 
       {/* Canvas frame with permanent axis labels — tuple values appear in
-          the OrbitDetailCard (on click-pin or in the modal). Fixed-size
+          the OrbitDetailCard (on hover or in the modal). Fixed-size
           square canvas with rectangular cells when numRows ≠ numCols; no
           internal scroll. */}
       <div
@@ -407,11 +375,10 @@ function OrbitRepMatrix({
             background: COLOR.bg,
             borderLeft: `1px solid ${COLOR.border}`,
             borderBottom: `1px solid ${COLOR.border}`,
-            cursor: 'pointer',
+            cursor: 'default',
           }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          onClick={handleClick}
         >
           <canvas ref={canvasRef} />
           {onExpand && (
@@ -475,7 +442,7 @@ function OrbitRepMatrix({
   );
 }
 
-// Memoize: BranchingDemo re-renders when pin/tooltip state changes, but
+// Memoize: BranchingDemo re-renders when hover state changes, but
 // OrbitRepMatrix's props are stable objects (orbitRows, componentInfo, etc.).
 // React.memo with default shallow-prop equality skips the re-render when the
 // parent re-renders for an unrelated reason.

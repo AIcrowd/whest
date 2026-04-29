@@ -143,28 +143,26 @@ test('OrbitRepMatrix renders into <canvas> using layout helpers', () => {
   assert.match(src, /cellAtPoint/);
 });
 
-test('OrbitRepMatrix uses a ref for hover (no React render per cell), controlled pin prop', () => {
+test('OrbitRepMatrix uses a ref for hover (no React render per cell), controlled hover prop', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
   // Hover lives in a ref so mousemove paints the canvas without re-rendering React.
   assert.match(src, /hoverRef\s*=\s*useRef/);
   assert.match(src, /hoverRef\.current/);
-  // Pin is now a controlled prop (not internal state) — parent owns it.
-  assert.doesNotMatch(src, /useState[^;]*pin/);
-  // Click handler.
-  assert.match(src, /onClick=/);
+  // hover is now a controlled prop (not internal state) — parent owns it.
+  assert.doesNotMatch(src, /useState[^;]*hover/);
+  // No click pin handler.
+  assert.doesNotMatch(src, /onClick=\{handleClick\}/);
 });
 
-test('OrbitRepMatrix uses tooltipRef + onPin contract (no debounced parent bridge)', () => {
+test('OrbitRepMatrix uses onHoverChange + hover contract (no tooltipRef, no click pin)', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  // tooltipRef receives the imperative API from MatrixHoverTooltip.
-  assert.match(src, /tooltipRef/);
-  // The mousemove path calls .update on the tooltip ref directly.
-  assert.match(src, /tooltipRef\.current\?\.update|tooltipRef\.current\.update/);
-  // Click pin returns cell + click coords.
-  assert.match(src, /onPin\(\{[^}]*row[^}]*col[^}]*clickX[^}]*clickY[^}]*\}/s);
-  // No more onHoverDeferred / debounced timer.
-  assert.doesNotMatch(src, /onHoverDeferred/);
-  assert.doesNotMatch(src, /deferredHoverTimerRef/);
+  assert.match(src, /onHoverChange/);
+  assert.match(src, /hover\s*=\s*null/); // controlled prop default
+  // No more click-pin wiring.
+  assert.doesNotMatch(src, /onPin/);
+  assert.doesNotMatch(src, /onClick=\{handleClick\}/);
+  // No more imperative tooltip ref.
+  assert.doesNotMatch(src, /tooltipRef/);
 });
 
 test('OrbitRepMatrix passes numRows + numCols to cellAtPoint for bounds rejection', () => {

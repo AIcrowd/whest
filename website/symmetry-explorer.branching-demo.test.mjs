@@ -37,28 +37,23 @@ test('BranchingDemo renders OrbitRepMatrix as a full-width figure (no 2-col grid
   assert.doesNotMatch(src, /WorkedExamplePanel/);
 });
 
-test('BranchingDemo wires MatrixHoverTooltip via tooltipRef', () => {
+test('BranchingDemo no longer mounts MatrixHoverTooltip (hover surfaces in OrbitDetailCard)', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  assert.match(src, /import MatrixHoverTooltip from '\.\/branchingViews\/MatrixHoverTooltip\.jsx'/);
-  assert.match(src, /<MatrixHoverTooltip\b[\s\S]{0,80}ref=/);
-  assert.match(src, /tooltipRef=\{tooltipRef\}/);
+  assert.doesNotMatch(src, /MatrixHoverTooltip/);
+  assert.doesNotMatch(src, /tooltipRef/);
 });
 
-test('BranchingDemo wires OrbitDetailCard with floating mode and pin state', () => {
+test('BranchingDemo wires hover-driven OrbitDetailCard', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
   assert.match(src, /import OrbitDetailCard from '\.\/branchingViews\/OrbitDetailCard\.jsx'/);
   assert.match(src, /<OrbitDetailCard\b[\s\S]*?mode=['"]floating['"]/);
-  assert.match(src, /pin=\{pin\}/);
+  assert.match(src, /hover=\{hover\}/);
 });
 
-test('BranchingDemo holds pin in React state but no debounced hover bridge', () => {
+test('BranchingDemo holds hover in React state (no click-pin)', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  // Pin is React state — const [pin, setPin] = useState(...)
-  assert.match(src, /\[pin[\s\S]{0,30}\]\s*=\s*useState/);
-  // No deferredHover bridge anywhere.
-  assert.doesNotMatch(src, /panelHover/);
-  assert.doesNotMatch(src, /handleDeferredHover/);
-  assert.doesNotMatch(src, /onHoverDeferred/);
+  assert.match(src, /\[hover[\s\S]{0,30}\]\s*=\s*useState/);
+  assert.doesNotMatch(src, /\[pin,/);
 });
 
 test('BranchingDemo passes a matrixRef to OrbitDetailCard so it can auto-dismiss on scroll-out', () => {

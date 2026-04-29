@@ -2,7 +2,6 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
 import Latex from './Latex.jsx';
 import OrbitRepMatrix from './branchingViews/OrbitRepMatrix.jsx';
-import MatrixHoverTooltip from './branchingViews/MatrixHoverTooltip.jsx';
 import OrbitDetailCard from './branchingViews/OrbitDetailCard.jsx';
 import OrbitRepMatrixModal from './branchingViews/OrbitRepMatrixModal.jsx';
 import {
@@ -16,15 +15,16 @@ export default function BranchingDemo({
   costModel,
   selectedOrbitIdx = -1,
   onSelectOrbit = () => {},
-  onHover = null,           // ignored — we no longer propagate hover up
+  onHover = null,           // legacy; no longer wired
   expressionInfo = null,
   dimensionN = null,
 }) {
-  // Pin is the only React state on this surface. Hover lives in OrbitRepMatrix's
-  // ref + a directly-mutated tooltip DOM node, both bypassing React entirely.
-  const [pin, setPin] = useState(/* { row, col, clickX, clickY } | null */ null);
+  // Hover is the only React state on this surface besides `modalOpen`.
+  // OrbitRepMatrix's own `hoverRef` still drives the canvas paint without React;
+  // BranchingDemo's `hover` mirrors the cell-level transitions only, so the
+  // floating card body re-renders once per cell change (via memo).
+  const [hover, setHover] = useState(/* { row, col, clickX, clickY } | null */ null);
   const [modalOpen, setModalOpen] = useState(false);
-  const tooltipRef = useRef(null);
   const matrixRef = useRef(null);
 
   const liveOrbitRows = costModel?.orbitRows ?? [];
@@ -49,20 +49,20 @@ export default function BranchingDemo({
     };
   }, [componentData, dimensionN]);
 
-  // Clear pin on preset switch (costModel ref change). We use a render-time
-  // guard so a stale pin row/col never references rows that no longer exist.
+  // Clear hover on preset switch (costModel ref change). We use a render-time
+  // guard so a stale hover row/col never references rows that no longer exist.
   const lastCostModelRef = useRef(costModel);
   if (lastCostModelRef.current !== costModel) {
     lastCostModelRef.current = costModel;
-    if (pin !== null) setPin(null);
+    if (hover !== null) setHover(null);
   }
 
-  const handlePin = useCallback((nextPin) => {
-    setPin(nextPin);
-    if (nextPin && onSelectOrbit) onSelectOrbit(nextPin.row);
+  const handleHoverChange = useCallback((nextHover) => {
+    setHover(nextHover);
+    if (nextHover && onSelectOrbit) onSelectOrbit(nextHover.row);
   }, [onSelectOrbit]);
 
-  const handleDismiss = useCallback(() => setPin(null), []);
+  const handleDismiss = useCallback(() => setHover(null), []);
   const handleOpenModal = useCallback(() => setModalOpen(true), []);
 
   if (!componentData || !costModel) return null;
@@ -86,9 +86,8 @@ export default function BranchingDemo({
           onHover={null}
           expressionInfo={expressionInfo}
           componentInfo={liveComponentInfo}
-          tooltipRef={tooltipRef}
-          onPin={handlePin}
-          pin={pin}
+          onHoverChange={handleHoverChange}
+          hover={hover}
           onExpand={handleOpenModal}
         />
         <div
@@ -99,13 +98,10 @@ export default function BranchingDemo({
         </div>
       </div>
 
-      {/* Imperative hover tooltip — written into via tooltipRef.current.update. */}
-      <MatrixHoverTooltip ref={tooltipRef} />
-
-      {/* Floating pin-detail card — visible when pin is set; auto-dismisses
-          on Esc or when the matrix scrolls offscreen. */}
+      {/* Hover-driven floating card. Auto-dismisses on mouse-leave-matrix
+          (handled by OrbitRepMatrix calling onHoverChange(null)) or Esc. */}
       <OrbitDetailCard
-        pin={pin}
+        hover={hover}
         orbitRows={liveOrbitRows}
         reps={reps}
         cells={cells}
@@ -116,16 +112,14 @@ export default function BranchingDemo({
         mode="floating"
       />
 
-      {/* Modal — hosts the same OrbitDetailCard at viewport size. Task 6
-          updates the modal's signature; for now we pass the new shape. */}
       <OrbitRepMatrixModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         orbitRows={liveOrbitRows}
         reps={reps}
         cells={cells}
-        pin={pin}
-        onPin={handlePin}
+        hover={hover}
+        onHoverChange={handleHoverChange}
         expressionInfo={expressionInfo}
         componentInfo={liveComponentInfo}
         selectedOrbitIdx={selectedOrbitIdx}

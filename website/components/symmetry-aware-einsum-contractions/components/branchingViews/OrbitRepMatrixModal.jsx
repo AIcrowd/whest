@@ -12,8 +12,8 @@ export default function OrbitRepMatrixModal({
   orbitRows,
   reps,
   cells,
-  pin,
-  onPin,
+  hover,                    // was `pin`
+  onHoverChange,            // was `onPin`
   expressionInfo,
   componentInfo,
   selectedOrbitIdx = -1,
@@ -63,17 +63,17 @@ export default function OrbitRepMatrixModal({
             onHover={onHover}
             expressionInfo={expressionInfo}
             componentInfo={componentInfo}
-            pin={pin}
-            onPin={onPin}
+            hover={hover}
+            onHoverChange={onHoverChange}
           />
           <OrbitDetailCard
-            pin={pin}
+            hover={hover}
             orbitRows={orbitRows}
             reps={reps}
             cells={cells}
             expressionInfo={expressionInfo}
             componentInfo={componentInfo}
-            onDismiss={() => onPin && onPin(null)}
+            onDismiss={() => onHoverChange && onHoverChange(null)}
             mode="inline"
           />
         </div>

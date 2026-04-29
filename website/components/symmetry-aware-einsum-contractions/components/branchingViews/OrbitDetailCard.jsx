@@ -4,7 +4,7 @@ import { labelledTuple, tupleKey } from './orbitRepMatrixLayout.js';
 import { flipPosition } from './floatingPosition.js';
 
 // Big floating detail card. Two modes:
-//   - 'floating' (default): position:fixed near the click point, flip on
+//   - 'floating' (default): position:fixed near the hover point, flip on
 //     viewport edges, dismiss on Esc + when the matrix scrolls offscreen
 //   - 'inline':  no fixed positioning, no flip math, no dismiss handlers.
 //     Used inside OrbitRepMatrixModal where the modal already owns the
@@ -20,7 +20,7 @@ const COLOR = {
   empty: '#F8F9F9',
 };
 
-// Padding from the click point to the card edge.
+// Padding from the hover point to the card edge.
 const FLOAT_PADDING = 12;
 // Default card dimensions used for flip math (the card uses min/max-content
 // in practice; we pass a conservative max here so the flip doesn't overflow).
@@ -57,13 +57,13 @@ function canonicalEquationLatex(expressionInfo) {
 }
 
 function OrbitDetailCard({
-  pin,                       // { row, col, clickX, clickY } | null — when null, render nothing
+  hover,                     // was `pin`. { row, col, clickX, clickY } | null — when null, render nothing
   orbitRows = [],
   reps = [],
   cells = [],
   expressionInfo = null,
   componentInfo = null,
-  onDismiss = () => {},      // called on Esc, scroll-out, or × clear
+  onDismiss = () => {},      // called on Esc, scroll-out, or × close
   matrixRef = null,          // ref to the matrix outer element — used by IntersectionObserver
   mode = 'floating',         // 'floating' | 'inline'
 }) {
@@ -75,31 +75,31 @@ function OrbitDetailCard({
 
   // Esc to dismiss (floating mode only — modal mode handles its own Esc).
   useEffect(() => {
-    if (mode !== 'floating' || !pin) return undefined;
+    if (mode !== 'floating' || !hover) return undefined;
     const onKey = (e) => { if (e.key === 'Escape') onDismissRef.current(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [mode, pin]);
+  }, [mode, hover]);
 
   // Auto-dismiss when matrix scrolls offscreen (floating mode only).
   useEffect(() => {
-    if (mode !== 'floating' || !pin || !matrixRef?.current) return undefined;
+    if (mode !== 'floating' || !hover || !matrixRef?.current) return undefined;
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.intersectionRatio < 0.05) onDismissRef.current();
     }, { threshold: 0.05 });
     observer.observe(matrixRef.current);
     return () => observer.disconnect();
-  }, [mode, pin, matrixRef]);
+  }, [mode, hover, matrixRef]);
 
-  // Compute floating position when pin changes (and on window resize).
+  // Compute floating position when hover changes (and on window resize).
   useLayoutEffect(() => {
-    if (mode !== 'floating' || !pin) return undefined;
+    if (mode !== 'floating' || !hover) return undefined;
     let rafId = null;
     const compute = () => {
       rafId = null;
       const next = flipPosition({
-        clickX: pin.clickX ?? 0,
-        clickY: pin.clickY ?? 0,
+        clickX: hover.clickX ?? 0,
+        clickY: hover.clickY ?? 0,
         cardW: CARD_W,
         cardH: CARD_H,
         viewportW: window.innerWidth,
@@ -118,13 +118,13 @@ function OrbitDetailCard({
       if (rafId !== null) cancelAnimationFrame(rafId);
       window.removeEventListener('resize', onResize);
     };
-  }, [mode, pin]);
+  }, [mode, hover]);
 
-  if (!pin) return null;
+  if (!hover) return null;
 
-  const row = orbitRows[pin.row];
-  const rep = reps[pin.col];
-  const coeff = cells[pin.row]?.[pin.col] ?? null;
+  const row = orbitRows[hover.row];
+  const rep = reps[hover.col];
+  const coeff = cells[hover.row]?.[hover.col] ?? null;
   const filled = coeff !== null;
 
   if (!row || !rep) return null;
@@ -166,7 +166,7 @@ function OrbitDetailCard({
       style={wrapperStyle}
       className="p-4"
     >
-      {/* Eyebrow + clear-pin */}
+      {/* Eyebrow + close button */}
       <div className="flex items-baseline gap-3">
         <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-900">
           Worked example · O → Q
@@ -177,7 +177,7 @@ function OrbitDetailCard({
           onClick={onDismiss}
           className="ml-auto text-[10px] font-medium text-gray-600 hover:text-gray-900 transition-colors"
         >
-          × clear pin
+          × close
         </button>
       </div>
 
@@ -205,8 +205,8 @@ function OrbitDetailCard({
           </div>
           <div className="flex gap-[2px] h-5">
             {reps.map((r, c) => {
-              const coef = cells[pin.row]?.[c] ?? null;
-              const isThis = c === pin.col;
+              const coef = cells[hover.row]?.[c] ?? null;
+              const isThis = c === hover.col;
               const isOther = !isThis && coef !== null;
               return (
                 <div
@@ -313,14 +313,14 @@ function OrbitDetailCard({
   );
 }
 
-// Memo by structural equality on pin (row/col/clickX/clickY) + reference equality on data refs.
+// Memo by structural equality on hover (row/col/clickX/clickY) + reference equality on data refs.
 function detailPropsEqual(prev, next) {
-  const prevPin = prev.pin;
-  const nextPin = next.pin;
-  const samePin = prevPin === nextPin
-    || (prevPin && nextPin && prevPin.row === nextPin.row && prevPin.col === nextPin.col
-        && prevPin.clickX === nextPin.clickX && prevPin.clickY === nextPin.clickY);
-  if (!samePin) return false;
+  const prevH = prev.hover;
+  const nextH = next.hover;
+  const sameHover = prevH === nextH
+    || (prevH && nextH && prevH.row === nextH.row && prevH.col === nextH.col
+        && prevH.clickX === nextH.clickX && prevH.clickY === nextH.clickY);
+  if (!sameHover) return false;
   return (
     prev.orbitRows === next.orbitRows
     && prev.reps === next.reps
