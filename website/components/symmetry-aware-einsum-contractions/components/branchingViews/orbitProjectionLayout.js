@@ -8,6 +8,7 @@
 
 import { explorerThemeColor } from '../../lib/explorerTheme.js';
 import { notationColor } from '../../lib/notationSystem.js';
+import { readableTextOn } from '../../lib/nodeColorUtils.js';
 
 export const NODE_W = 88;
 export const MEMBER_NODE_H = 32;
@@ -41,7 +42,10 @@ export function buildOrbitProjectionGraph({
   const repFill = explorerThemeColor(themeId, 'surface');
   const repBorder = notationColor('h_output');
   const repText = notationColor('h_output');
-  const memberText = explorerThemeColor(themeId, 'surface');
+  // WCAG-aware member text: white on dark member fills, dark on light fills.
+  // Without this, the rotating notation palette could produce illegible
+  // member labels (e.g. white text on a pale-yellow alphaFamily background).
+  const memberText = readableTextOn(memberFill);
   const edgeColor = explorerThemeColor(themeId, 'muted');
   const projectionEdgeColor = notationColor('h_output');
 

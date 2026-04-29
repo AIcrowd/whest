@@ -10,6 +10,12 @@ import { SHAPE_SPEC } from '../engine/shapeSpec.js';
 import { REGIME_SPEC } from '../engine/regimeSpec.js';
 import { explorerThemeColor, getActiveExplorerThemeId } from '../lib/explorerTheme.js';
 import { notationColor, notationTint } from '../lib/notationSystem.js';
+import {
+  mixWithWhite,
+  mixWithBlack,
+  relativeLuminance,
+  isDarkColor,
+} from '../lib/nodeColorUtils.js';
 
 // ─── DecisionLadder (two-stage hybrid) ─────────────────────────────────
 //
@@ -196,37 +202,11 @@ const QUESTIONS = [
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────
-
-function mixWithWhite(hex, amount) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  const mix = (c) => Math.round(c + (255 - c) * amount);
-  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
-}
-
-function mixWithBlack(hex, amount) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  const mix = (c) => Math.round(c * (1 - amount));
-  return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
-}
-
-function relativeLuminance(hex) {
-  const rgb = [hex.slice(1, 3), hex.slice(3, 5), hex.slice(5, 7)]
-    .map((part) => parseInt(part, 16) / 255)
-    .map((channel) => (
-      channel <= 0.03928
-        ? channel / 12.92
-        : ((channel + 0.055) / 1.055) ** 2.4
-    ));
-  return (0.2126 * rgb[0]) + (0.7152 * rgb[1]) + (0.0722 * rgb[2]);
-}
-
-function isDarkColor(hex) {
-  return relativeLuminance(hex) < 0.28;
-}
+//
+// Color-mixing helpers (mixWithWhite, mixWithBlack, relativeLuminance,
+// isDarkColor) live in lib/nodeColorUtils.js so OrbitProjectionGraph and
+// future xyflow node renderers can reuse them without duplicating the
+// WCAG luminance calculation.
 
 function specFor(leafId) {
   return SHAPE_SPEC[leafId] || REGIME_SPEC[leafId] || null;
