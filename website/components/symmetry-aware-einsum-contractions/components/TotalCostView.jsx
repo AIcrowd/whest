@@ -38,7 +38,7 @@ const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
 const SECTION_FIVE_THEME_OVERRIDE = 'editorial-noir-math';
 const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\\x\end{matrix}}\right.`;
 const PIECEWISE_SCOPE_NOTE =
-  `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$. It counts pairs $(O, Q)$ where $O$ is a product orbit and $Q$ is a stored output representative reached by $\\pi_V(O)$: an orbit that reaches several stored output representatives contributes once to each such representative.`;
+  `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$. It counts pairs $(O, Q)$ where $O$ is a product orbit and $Q$ is a stored output representative reached by $${notationLatex('projection_pi_v_free')}$: an orbit that reaches several stored output representatives contributes once to each such representative.`;
 
 
 // Helper: \textcolor wrapper for composing LaTeX with a role color. The

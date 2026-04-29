@@ -138,8 +138,9 @@ test('PresetSidebar matches the design-system preset-list spec (flat container, 
   assert.match(presetSelectionSource, /allSummed: '●'/);
   assert.match(presetSelectionSource, /mixed: '⟡'/);
   assert.match(presetSelectionSource, /singleton: '①'/);
-  assert.match(presetSelectionSource, /directProduct: '⊗'/);
+  assert.match(presetSelectionSource, /functionalProjection: '⊙'/);
   assert.match(presetSelectionSource, /young: 'Y'/);
+  assert.match(presetSelectionSource, /partitionCount: '⊕'/);
   assert.match(presetSelectionSource, /bruteForceOrbit: '◎'/);
   assert.doesNotMatch(presetSelectionSource, /expectedGroup.*includes/);
 });

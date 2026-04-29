@@ -85,9 +85,9 @@ test('DecisionLadder Stage-2 routing: q_singleton splits into singleton (yes) an
   assert.match(src, /id:\s*'q_singleton',[\s\S]*?onTrue:\s*'singleton',\s*onFalse:\s*'q_direct'/);
 });
 
-test('DecisionLadder Stage-2 routing: q_direct splits into directProduct (yes) and q_crossVW (no)', () => {
+test('DecisionLadder Stage-2 routing: q_direct splits into functionalProjection (yes) and q_crossVW (no)', () => {
   const src = read();
-  assert.match(src, /id:\s*'q_direct',[\s\S]*?onTrue:\s*'directProduct',\s*onFalse:\s*'q_crossVW'/);
+  assert.match(src, /id:\s*'q_direct',[\s\S]*?onTrue:\s*'functionalProjection',\s*onFalse:\s*'q_crossVW'/);
 });
 
 test('DecisionLadder q_direct is in Stage 2 (F-check inspects post-dimino elements)', () => {

@@ -66,6 +66,10 @@ export const REGIME_SPEC = {
       { term: `|${notationLatex('w_summed')}|`, definition: 'number of summed (contracted) labels in the component.' },
       { term: `\\binom{n_L + |${notationLatex('v_free')}| - 1}{|${notationLatex('v_free')}|}`, definition: 'number of size-$|V|$ multisets from $[n_L]$ — equivalently $|Y/H|$, the count of stored output representatives.' },
       { term: `\\binom{n_L + |${notationLatex('w_summed')}| - 1}{|${notationLatex('w_summed')}|}`, definition: 'number of size-$|W|$ multisets from $[n_L]$ — the summed-side multisets that combine independently with each visible multiset.' },
+      {
+        term: `\\mathrm{Sym}(${notationLatex('w_summed')})`,
+        definition: `the symmetric group on the summed labels. When $G = \\mathrm{Sym}(${notationLatex('l_labels')})$, the pointwise $${notationLatex('v_free')}$-stabilizer is the Young subgroup $\\mathrm{Sym}(${notationLatex('w_summed')})$ — the same combinatorics that produces the multiset count on the summed side.`,
+      },
     ],
     themeRole: 'caseYoung',
   },

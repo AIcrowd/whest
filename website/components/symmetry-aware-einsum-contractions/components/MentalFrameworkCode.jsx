@@ -134,7 +134,7 @@ function buildLines(example) {
       return { ...line, code: `    base_val = product_at(rep)${baseValueComment}` };
     }
     if (line.id === 'reduce') {
-      return { ...line, code: `        R[out] += coeff(rep, out) * base_val${reduceComment}` };
+      return { ...line, code: `        R[out_rep] += coeff(rep, out_rep) * base_val${reduceComment}` };
     }
     return line;
   });

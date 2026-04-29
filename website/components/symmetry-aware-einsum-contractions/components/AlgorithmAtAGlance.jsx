@@ -170,7 +170,7 @@ function MentalFrameworkColumn({ example }) {
         {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBetweenRepSetAndOuts, 'mental-framework-between-repset-outs')}
         <code className="explorer-inline-code">Outs(rep)</code>
         {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroBetweenOutsAndCoeff, 'mental-framework-between-outs-coeff')}
-        <code className="explorer-inline-code">coeff(rep, out)</code>
+        <code className="explorer-inline-code">coeff(rep, out_rep)</code>
         {renderSingleProseBlock(mainPreamble.slots.mentalFrameworkIntroAfterCoeff, 'mental-framework-after-coeff')}
       </p>
 

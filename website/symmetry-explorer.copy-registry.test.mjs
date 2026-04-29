@@ -166,13 +166,18 @@ test('appendix section 3 takeaway states that G_out is inherited from G_pt', () 
   assert.doesNotMatch(source, /symmetry-aware accumulation model/);
 });
 
-test('appendix section 6 names the three evaluator models for output symmetry', () => {
+test('appendix section 6 explains the unified output-orbit accumulation count', () => {
   const source = read('appendix/section6.ts');
 
-  assert.match(source, /Model 1 — current page\./);
-  assert.match(source, /Model 2 — symmetry-aware storage only\./);
-  assert.match(source, /Model 3 — symmetry-aware storage plus symmetry-aware accumulation\./);
-  assert.match(source, /output-orbit representatives/);
+  // The legacy Model-1/2/3 storage-comparison framing was replaced (Task 9)
+  // by a single section that derives H from G_pt and explains why the old
+  // standalone G_out / storage-only optimization is now subsumed.
+  assert.match(source, /How the unified accumulation count uses output symmetry/);
+  assert.match(source, /\\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)/);
+  assert.match(source, /stored output representatives/);
+  assert.doesNotMatch(source, /Model 1/);
+  assert.doesNotMatch(source, /Model 2/);
+  assert.doesNotMatch(source, /Model 3/);
 });
 
 test('copy modules use canonical notation keys for pointwise and formal groups', () => {
