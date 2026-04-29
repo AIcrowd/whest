@@ -51,6 +51,20 @@ test('ComponentCostView uses the shared support prose tier under subsection head
   const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
   assert.match(src, /className="explorer-support-prose mt-2"/);
   assert.match(src, /editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2/);
+  assert.match(src, /id="interaction-graph"[\s\S]*?className="bg-white p-4 scroll-mt-24"/);
+  assert.match(src, /id="two-cost-cards"[\s\S]*?className="[^"]*grid gap-6 lg:grid-cols-2[^"]*"/);
+  assert.match(src, /<MultiplicationCostCard/);
+  assert.match(src, /<AccumulationHardCard/);
+});
+
+test('ComponentCostView renders DecisionLadder before BranchingDemo + TypedPartitionDemo', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
+  const treeIdx = src.indexOf('<DecisionLadder');
+  const branchingIdx = src.indexOf('<BranchingDemo');
+  const partitionIdx = src.indexOf('<TypedPartitionDemo');
+  assert.ok(treeIdx > 0, 'DecisionLadder should be present');
+  assert.ok(branchingIdx > treeIdx, 'BranchingDemo should come after DecisionLadder');
+  assert.ok(partitionIdx > branchingIdx, 'TypedPartitionDemo should come after BranchingDemo');
 });
 
 test('ComponentCostView imports the two new cards + renders the CLASSIFICATION TREE section', () => {
