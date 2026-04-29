@@ -11,6 +11,25 @@ import {
 } from '../lib/explorerTheme.js';
 import { notationColor, notationLatex } from '../lib/notationSystem.js';
 
+// Curated example used when the live preset has no branching to show.
+// Same scenario the retired PartitionCountingExplainer used as its
+// "Why branching happens" worked example.
+const CURATED_BRANCHING_EXAMPLE = {
+  caption: '$R[i,j] = \sum_k T[i,j,k]$ with $T$ fully symmetric, $n = 3$',
+  // The orbit rows below are pre-computed for n=3, S_3 acting on {i,j,k},
+  // V = {i,j}, H = Stab_G(V)|_V = {(),(ij)} restricted to V.
+  // Total α for this scenario is 9 = 3·1 + 3·2 (verified against engine
+  // brute-force in tests/output-orbit.test.mjs).
+  orbitRows: [
+    { repTuple: { i: 0, j: 0, k: 0 }, outputs: [{ outTuple: { i: 0, j: 0 }, coeff: 1 }], orbitSize: 1 },
+    { repTuple: { i: 1, j: 1, k: 1 }, outputs: [{ outTuple: { i: 1, j: 1 }, coeff: 1 }], orbitSize: 1 },
+    { repTuple: { i: 2, j: 2, k: 2 }, outputs: [{ outTuple: { i: 2, j: 2 }, coeff: 1 }], orbitSize: 1 },
+    { repTuple: { i: 0, j: 0, k: 1 }, outputs: [{ outTuple: { i: 0, j: 0 }, coeff: 1 }, { outTuple: { i: 0, j: 1 }, coeff: 1 }], orbitSize: 3 },
+    { repTuple: { i: 0, j: 0, k: 2 }, outputs: [{ outTuple: { i: 0, j: 0 }, coeff: 1 }, { outTuple: { i: 0, j: 2 }, coeff: 1 }], orbitSize: 3 },
+    { repTuple: { i: 1, j: 1, k: 2 }, outputs: [{ outTuple: { i: 1, j: 1 }, coeff: 1 }, { outTuple: { i: 1, j: 2 }, coeff: 1 }], orbitSize: 3 },
+  ],
+};
+
 const TITLE = 'When projection branches, watch one orbit fan out';
 const DECK = 'Branching = one product orbit reaches multiple stored output representatives. Pick a view, pick an orbit, see it.';
 
@@ -46,10 +65,16 @@ export default function BranchingDemo({
 }) {
   const themeId = getActiveExplorerThemeId();
   const [activeView, setActiveView] = useState('fan');
+  const [useCurated, setUseCurated] = useState(false);
 
   if (!componentData || !costModel) return null;
 
-  const orbitRows = costModel.orbitRows ?? [];
+  const liveOrbitRows = costModel.orbitRows ?? [];
+  const liveBranches = liveOrbitRows.some((row) => (row.outputs?.length ?? 0) > 1);
+  const sourceLabel = useCurated || (!liveBranches && liveOrbitRows.length > 0)
+    ? 'curated'
+    : 'live';
+  const orbitRows = sourceLabel === 'curated' ? CURATED_BRANCHING_EXAMPLE.orbitRows : liveOrbitRows;
   const safeIdx = orbitRows.length === 0
     ? -1
     : Math.min(Math.max(0, selectedOrbitIdx >= 0 ? selectedOrbitIdx : 0), orbitRows.length - 1);
@@ -120,6 +145,22 @@ export default function BranchingDemo({
           <button type="button" data-view-id="pile-buckets" onClick={() => setActiveView('pile-buckets')} className="rounded px-2.5 py-1 text-[11px] font-semibold transition-colors" style={tabStyle(themeId, activeView === 'pile-buckets')}>δ Pile→buckets</button>
         </div>
       </div>
+
+      {!liveBranches && liveOrbitRows.length > 0 && (
+        <div className="mt-3 flex items-center gap-2 text-[11px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+          <span>this preset has functional projection — every orbit reaches one rep, so α = M.</span>
+          <button
+            type="button"
+            data-action="toggle-curated"
+            onClick={() => setUseCurated((v) => !v)}
+            className="rounded border px-2 py-1 text-[11px] font-semibold"
+            style={{ borderColor: explorerThemeColor(themeId, 'hero'), color: explorerThemeColor(themeId, 'hero') }}
+          >
+            {useCurated ? 'back to live preset' : 'see a branching example'}
+          </button>
+          {useCurated && <InlineMathText>{CURATED_BRANCHING_EXAMPLE.caption}</InlineMathText>}
+        </div>
+      )}
 
       <div className="mt-3 flex items-center gap-3 text-[12px]">
         <span className="font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>Orbit</span>

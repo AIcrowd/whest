@@ -94,3 +94,10 @@ test('BranchingDemo derives orbit data from costModel.orbitRows', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
   assert.match(src, /costModel\.orbitRows/);
 });
+
+test('BranchingDemo offers a curated fallback example with a toggle', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
+  assert.match(src, /CURATED_BRANCHING_EXAMPLE/);
+  assert.match(src, /data-action="toggle-curated"/);
+  assert.match(src, /R\[i,j\] = \\sum_k T\[i,j,k\]/);
+});
