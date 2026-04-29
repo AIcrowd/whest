@@ -15,15 +15,17 @@ import numpy as _np
 
 
 def _me():
-    """Lazy import of flopscope namespace to avoid circular imports.
+    """Lazy import of flopscope.numpy to avoid circular imports.
 
-    The dunder methods need fnp.add, fnp.multiply etc. but those are
-    defined in flopscope/__init__.py which itself imports this module.
-    Defer the import until first use.
+    The dunder methods need fnp.add, fnp.multiply etc. — these counted
+    numpy ops live under flopscope.numpy in the JAX-style public API
+    (top-level flopscope exposes only primitives like BudgetContext).
+    Defer the import until first use to break the import cycle:
+    flopscope.numpy → flopscope._free_ops/etc. → this module.
     """
-    import flopscope as _flopscope
+    import flopscope.numpy as _fnp
 
-    return _flopscope
+    return _fnp
 
 
 class FlopscopeArray(_np.ndarray):
