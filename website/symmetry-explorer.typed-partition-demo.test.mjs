@@ -44,3 +44,10 @@ test('TypedPartitionDemo renders pattern chips area with chip-id attributes', ()
   assert.match(src, /data-pattern-chip/);
   assert.match(src, /Equality pattern/i);
 });
+
+test('TypedPartitionDemo renders a 2-column breakdown panel for the selected pattern', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
+  assert.match(src, /data-testid="partition-breakdown-panel"/);
+  assert.match(src, /Block structure/i);
+  assert.match(src, /Projection reach/i);
+});

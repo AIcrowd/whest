@@ -63,6 +63,15 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
     blockActionSize: inducedBlockActionSize(partition, elements),
   }));
 
+  const activeChip = chips.find((chip) => chip.key === selectedPatternKey) ?? chips[0] ?? null;
+  const inducedMaps = activeChip
+    ? inducedPrefixMaps(activeChip.partition, elements, visiblePositions)
+    : new Set();
+  const reachCount = inducedMaps?.size ?? 0;
+  const contribution = activeChip
+    ? Math.round((activeChip.labelings / Math.max(activeChip.blockActionSize, 1)) * reachCount)
+    : 0;
+
   return (
     <section
       id="typed-partition-demo"
@@ -128,8 +137,41 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
         </div>
       </div>
 
-      <div className="mt-6 text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-        breakdown panel and cumulative table land in subsequent tasks.
+      {activeChip && (
+        <div
+          data-testid="partition-breakdown-panel"
+          className="mt-4 rounded-md border p-4"
+          style={{ borderColor: explorerThemeColor(themeId, 'border'), background: explorerThemeColor(themeId, 'surfaceInset') }}
+        >
+          <div className="grid gap-5 lg:grid-cols-2">
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                Block structure · {activeChip.key}
+              </div>
+              <div className="mt-2 font-mono text-[12px] leading-7" style={{ color: explorerThemeColor(themeId, 'body') }}>
+                blocks: {activeChip.blocks}<br/>
+                labelings ∏ₛ (nₛ)_{`{bₛ}`} = <strong>{activeChip.labelings}</strong><br/>
+                |Ḡ_x̃| (block-action image) = <strong>{activeChip.blockActionSize}</strong>
+              </div>
+            </div>
+            <div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                Projection reach · |A_x̃ / H|
+              </div>
+              <div className="mt-2 font-mono text-[12px] leading-7" style={{ color: explorerThemeColor(themeId, 'body') }}>
+                induced maps |A_x̃| = <strong>{inducedMaps?.size ?? 0}</strong><br/>
+                quotient by H gives <strong>|A_x̃/H| = {reachCount}</strong>
+              </div>
+            </div>
+          </div>
+          <div className="mt-3 border-t pt-3 font-mono text-[12px]" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
+            contribution = (∏ (nₛ)_{`{bₛ}`} / |Ḡ_x̃|) · |A_x̃/H| = ({activeChip.labelings} / {activeChip.blockActionSize}) · {reachCount} = <strong style={{ color: notationColor('alpha_total') }}>{contribution}</strong>
+          </div>
+        </div>
+      )}
+
+      <div className="mt-4 text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+        cumulative table lands in the next task.
       </div>
 
       <p className="mt-6 max-w-[78ch] font-serif text-[15px] leading-7" style={{ color: explorerThemeColor(themeId, 'body') }}>
