@@ -79,7 +79,7 @@ test('Young declines: mixed label sizes', () => {
   assert.equal(verdict.fired, false);
 });
 
-test('Young compute at n=2: α = 2^2 · C(2+1-1, 1) = 4 · 2 = 8', () => {
+test('Young compute at n=2: α = C(2+2-1,2) · C(2+1-1,1) = 3 · 2 = 6', () => {
   const result = youngRegime.compute({
     labels: ['a', 'b', 'c'],
     va: ['a', 'b'],
@@ -87,10 +87,10 @@ test('Young compute at n=2: α = 2^2 · C(2+1-1, 1) = 4 · 2 = 8', () => {
     elements: s3OnThreeLabels(),
     sizes: [2, 2, 2],
   });
-  assert.equal(result.count, 8);
+  assert.equal(result.count, 6);
 });
 
-test('Young compute at n=3: α = 3^2 · C(3, 1) = 9 · 3 = 27', () => {
+test('Young compute at n=3: α = C(3+2-1,2) · C(3+1-1,1) = 6 · 3 = 18', () => {
   const result = youngRegime.compute({
     labels: ['a', 'b', 'c'],
     va: ['a', 'b'],
@@ -98,10 +98,10 @@ test('Young compute at n=3: α = 3^2 · C(3, 1) = 9 · 3 = 27', () => {
     elements: s3OnThreeLabels(),
     sizes: [3, 3, 3],
   });
-  assert.equal(result.count, 27);
+  assert.equal(result.count, 18);
 });
 
-test('Young compute: abcd→ab at n=3 = 3^2 · C(4, 2) = 9 · 6 = 54', () => {
+test('Young compute: abcd→ab at n=3 = C(3+2-1,2) · C(3+2-1,2) = 6 · 6 = 36', () => {
   const result = youngRegime.compute({
     labels: ['a', 'b', 'c', 'd'],
     va: ['a', 'b'],
@@ -109,5 +109,5 @@ test('Young compute: abcd→ab at n=3 = 3^2 · C(4, 2) = 9 · 6 = 54', () => {
     elements: new Array(24), // only length matters in compute
     sizes: [3, 3, 3, 3],
   });
-  assert.equal(result.count, 54);
+  assert.equal(result.count, 36);
 });

@@ -40,8 +40,15 @@ test('mixed shape spec uses notation-aware inline math in its prose fields', () 
   assert.ok(SHAPE_SPEC.mixed.when.includes(`$${notationLatex('w_summed')}$`));
 });
 
-test('directProduct uses the shorter preset-facing label', () => {
-  assert.equal(REGIME_SPEC.directProduct.label, 'Direct Product');
+test('functionalProjection covers the no-cross / setwise-V cases that used to fire directProduct', () => {
+  assert.equal(REGIME_SPEC.functionalProjection.label, 'One destination per product orbit');
+});
+
+test('partitionCount fires after young in the priority list', () => {
+  const youngIdx = REGIME_PRIORITY.indexOf('young');
+  const partitionIdx = REGIME_PRIORITY.indexOf('partitionCount');
+  assert.ok(youngIdx >= 0);
+  assert.ok(partitionIdx > youngIdx);
 });
 
 test('singleton spec routes c_Ω(g) through the shared notation registry', () => {
