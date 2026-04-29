@@ -428,15 +428,27 @@ function OrbitRepMatrix({
                   type="button"
                   data-action="open-modal"
                   onClick={(e) => { e.stopPropagation(); onExpand(); }}
-                  className="absolute top-2 right-2 inline-flex items-center gap-1.5 rounded-md border bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors hover:bg-gray-50"
-                  style={{
-                    color: '#B23E3A',
-                    borderColor: 'rgba(240,82,77,0.45)',
-                    cursor: 'pointer',
-                  }}
+                  className="absolute top-2 right-2 inline-flex h-7 w-7 items-center justify-center rounded-md bg-transparent opacity-50 transition-opacity duration-150 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+                  style={{ color: '#9AA0A0', cursor: 'pointer' }}
                   aria-label="Expand matrix to full screen"
                 >
-                  expand <span aria-hidden="true">↗</span>
+                  {/* Corner-arrows-out: universal "expand to fullscreen" signifier. */}
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <polyline points="9,2 13,2 13,6" />
+                    <polyline points="5,12 1,12 1,8" />
+                    <line x1="13" y1="2" x2="8" y2="7" />
+                    <line x1="1" y1="12" x2="6" y2="7" />
+                  </svg>
                 </button>
               )}
             </div>

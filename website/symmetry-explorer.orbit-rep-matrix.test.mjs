@@ -244,6 +244,20 @@ test('OrbitRepMatrix legend uses hairline-only inline label grouping (no chip bo
   assert.match(src, /summed:/);
 });
 
+test('OrbitRepMatrix expand affordance is a quiet gray glyph (no coral border, no small caps)', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // Trigger element still wired with the same data-action + aria-label.
+  assert.match(src, /data-action="open-modal"/);
+  assert.match(src, /aria-label="Expand matrix to full screen"/);
+  // No more coral border, small caps, or "expand" text label.
+  assert.doesNotMatch(src, /borderColor:\s*['"]rgba\(240,82,77,0\.45\)['"]/);
+  assert.doesNotMatch(src, />\s*expand\s*<span/);
+  // Quiet glyph: SVG with stroke="currentColor", opacity transition.
+  assert.match(src, /<svg[^>]*viewBox/);
+  assert.match(src, /opacity-50/);
+  assert.match(src, /hover:opacity-100/);
+});
+
 test('OrbitRepMatrixModal renders modal shell with ESC + backdrop close', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrixModal.jsx');
   assert.match(src, /export default function OrbitRepMatrixModal/);
