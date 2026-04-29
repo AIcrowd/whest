@@ -388,17 +388,17 @@ function OrbitRepMatrix({
           Orbit <Latex math="O" />
         </div>
 
-        {/* Canvas — fixed size, no scroll wrapper. The expand button overlays
-            the top-right of the canvas frame so it sits where the user is
-            already looking when interacting with the matrix. */}
+        {/* Canvas — fixed size, no scroll wrapper. Chart-style axes: left
+            border (Y-axis line) + bottom border (X-axis line) only. No top
+            or right border — the matrix reads as a plot, not a panel. */}
         <div
           style={{
             gridColumn: 2, gridRow: 1,
             position: 'relative',
             width: layout.canvasW, height: layout.canvasH,
             background: COLOR.bg,
-            border: `1px solid ${COLOR.border}`,
-            borderRadius: 4,
+            borderLeft: `1px solid ${COLOR.border}`,
+            borderBottom: `1px solid ${COLOR.border}`,
             cursor: 'pointer',
           }}
           onMouseMove={handleMouseMove}

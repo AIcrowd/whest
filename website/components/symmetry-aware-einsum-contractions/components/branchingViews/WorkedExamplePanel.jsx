@@ -73,18 +73,10 @@ function WorkedExamplePanel({
 
   // Empty state.
   if (!focus) {
-    return (
-      <div
-        data-testid="worked-example-panel"
-        className="rounded-lg border p-4 text-center text-[12px] italic"
-        style={{ background: COLOR.empty, borderColor: COLOR.border, color: '#9AA0A0' }}
-      >
-        <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400 not-italic mb-2">
-          Worked example
-        </div>
-        Hover any cell on the left to see its (O, Q) projection and contribution. Click to pin.
-      </div>
-    );
+    // Empty state: nothing visible. The panel reserves its column space but
+    // doesn't draw any chrome — no card, no border, no copy. The "Worked
+    // example" eyebrow appears the moment a cell is hovered/pinned.
+    return <div data-testid="worked-example-panel" className="bg-white p-4" />;
   }
 
   const row = orbitRows[focus.row];
@@ -93,12 +85,10 @@ function WorkedExamplePanel({
   const filled = coeff !== null;
 
   if (!row || !rep) {
-    // Defensive — shouldn't happen but guards against stale state.
     return (
       <div
         data-testid="worked-example-panel"
-        className="rounded-lg border p-4 text-center text-[12px] italic"
-        style={{ background: COLOR.empty, borderColor: COLOR.border, color: '#9AA0A0' }}
+        className="bg-white p-4 text-[12px] italic text-gray-400"
       >
         Worked example unavailable
       </div>
@@ -120,12 +110,13 @@ function WorkedExamplePanel({
   return (
     <div
       data-testid="worked-example-panel"
-      className="rounded-lg border bg-white p-4"
-      style={{ borderColor: COLOR.border }}
+      className="bg-white p-4"
     >
-      {/* Eyebrow + clear-pin button */}
+      {/* Eyebrow + clear-pin button. Eyebrow is gray-900 (black), not coral
+          — the panel itself is the accent surface; the eyebrow is plain
+          editorial register. */}
       <div className="flex items-baseline gap-3">
-        <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: COLOR.coral }}>
+        <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-900">
           Worked example · O → Q
         </div>
         {pin && (

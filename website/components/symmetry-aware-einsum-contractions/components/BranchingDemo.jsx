@@ -97,8 +97,12 @@ export default function BranchingDemo({
         Each row is one product orbit <Latex math="O" /> · each column is one stored output representative <Latex math="Q" /> · a filled cell means orbit <Latex math="O" />'s members project onto <Latex math="Q" /> via <Latex math="\pi_V" />. Counting filled cells gives <Latex math="\alpha" />.
       </p>
 
-      {/* 2-column body: matrix on left, worked-example panel on right */}
-      <div className="mt-4 grid gap-6 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      {/* 2-column body: matrix on the left at a FIXED width so its cell
+          dimensions don't drift when the panel content changes (a few
+          subpixels of column-width negotiation jump cellWidth by 1 px on
+          dense matrices, which reads as a proportion shift). The panel
+          takes whatever's left. */}
+      <div className="mt-4 grid gap-6 grid-cols-1 lg:grid-cols-[400px_minmax(0,1fr)]">
         <OrbitRepMatrix
           orbitRows={liveOrbitRows}
           selectedOrbitIdx={selectedOrbitIdx}
