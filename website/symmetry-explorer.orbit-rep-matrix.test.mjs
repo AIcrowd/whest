@@ -193,11 +193,10 @@ test('OrbitRepMatrix renders permanent axis labels Orbit O and Rep Q', () => {
   assert.match(src, /import Latex from/);
 });
 
-test('OrbitRepMatrix renders the label-legend chip row', () => {
+test('OrbitRepMatrix renders the label-legend', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
   assert.match(src, /data-testid="orbit-rep-matrix-legend"/);
-  // Uses V chip and W chip styling — V at #4A7CFF, W at #64748B.
-  assert.match(src, /#4A7CFF/);
+  // Uses #64748B as the legend's default text color (design token).
   assert.match(src, /#64748B/);
   // Surfaces n.
   assert.match(src, /n\s*=/);
@@ -230,6 +229,19 @@ test('OrbitRepMatrix renders Y/X axis tick gutters with computeAxisTicks', () =>
   assert.match(src, /computeAxisTicks/);
   assert.match(src, /data-testid="orbit-rep-matrix-y-ticks"/);
   assert.match(src, /data-testid="orbit-rep-matrix-x-ticks"/);
+});
+
+test('OrbitRepMatrix legend uses hairline-only inline label grouping (no chip borders)', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // Legend wrapper still exists for screen-reader context.
+  assert.match(src, /data-testid="orbit-rep-matrix-legend"/);
+  // No more chip-border treatment on V/W labels.
+  assert.doesNotMatch(src, /rounded-full border px-2/);
+  // No more "LABELS" eyebrow uppercase chrome.
+  assert.doesNotMatch(src, />labels<\/span>/i);
+  // Visible / summed groupings shown as plain inline text.
+  assert.match(src, /visible:/);
+  assert.match(src, /summed:/);
 });
 
 test('OrbitRepMatrixModal renders modal shell with ESC + backdrop close', () => {

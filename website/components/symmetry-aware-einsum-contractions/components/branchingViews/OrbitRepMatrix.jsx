@@ -313,35 +313,39 @@ function OrbitRepMatrix({
       data-testid="orbit-rep-matrix"
       className="w-full"
     >
-      {/* Label legend chip row */}
+      {/* Quiet inline legend — hairline-only, comma-grouped V/W labels with the
+          dimension info merged inline. No chip borders, no eyebrow. */}
       <div
         data-testid="orbit-rep-matrix-legend"
-        className="mb-3 flex flex-wrap items-baseline gap-2 text-[11px] text-gray-600"
+        className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[11px]"
+        style={{ color: '#64748B' }}
       >
-        <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400">labels</span>
-        {allLabels.map((l) => {
-          const isV = vLabelSet.has(l);
+        {(() => {
+          const visibleLabels = allLabels.filter((l) => vLabelSet.has(l));
+          const summedLabels = allLabels.filter((l) => !vLabelSet.has(l));
           return (
-            <span
-              key={l}
-              className="inline-flex items-center gap-1 rounded-full border px-2 py-[2px] font-mono"
-              style={{
-                background: isV ? 'rgba(74,124,255,0.08)' : 'rgba(100,116,139,0.08)',
-                color: isV ? '#4A7CFF' : '#64748B',
-                borderColor: isV ? 'rgba(74,124,255,0.30)' : 'rgba(100,116,139,0.30)',
-              }}
-            >
-              {l}
-              <span className="ml-1 text-[9px] tracking-[0.12em] text-gray-400">{isV ? 'V' : 'W'}</span>
-            </span>
+            <>
+              {visibleLabels.length > 0 && (
+                <span className="font-mono">
+                  <span className="mr-1 text-gray-400">visible:</span>
+                  <span className="text-gray-700">{visibleLabels.join(', ')}</span>
+                </span>
+              )}
+              {summedLabels.length > 0 && (
+                <span className="font-mono">
+                  <span className="mr-1 text-gray-400">summed:</span>
+                  <span className="text-gray-700">{summedLabels.join(', ')}</span>
+                </span>
+              )}
+              {dimensionN !== null && (
+                <span className="ml-auto font-mono text-gray-400">
+                  n = <strong className="text-gray-700 font-semibold">{dimensionN}</strong>
+                  <span className="ml-1">{`· {0..${dimensionN - 1}}`}</span>
+                </span>
+              )}
+            </>
           );
-        })}
-        {dimensionN !== null && (
-          <span className="ml-auto font-mono text-[10px] text-gray-600">
-            n = <strong className="text-gray-900">{dimensionN}</strong>
-            <span className="ml-1 text-gray-400">{`· values {0..${dimensionN - 1}}`}</span>
-          </span>
-        )}
+        })()}
       </div>
 
       {/* Canvas frame with permanent axis labels + tick gutters.
