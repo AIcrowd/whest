@@ -51,3 +51,16 @@ test('TypedPartitionDemo renders a 2-column breakdown panel for the selected pat
   assert.match(src, /Block structure/i);
   assert.match(src, /Projection reach/i);
 });
+
+test('TypedPartitionDemo renders the cumulative table and α total', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
+  assert.match(src, /data-testid="partition-cumulative-table"/);
+  assert.match(src, /data-testid="partition-alpha-total"/);
+});
+
+test('TypedPartitionDemo handles the four regime coverage cases with explicit captions', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
+  assert.match(src, /partitionCount/);
+  assert.match(src, /this component fires/);
+  assert.match(src, /the partition budget is exceeded/);
+});

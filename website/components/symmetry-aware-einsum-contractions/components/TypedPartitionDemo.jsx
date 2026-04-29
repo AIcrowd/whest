@@ -72,6 +72,34 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
     ? Math.round((activeChip.labelings / Math.max(activeChip.blockActionSize, 1)) * reachCount)
     : 0;
 
+  const cumulativeRows = chips.map((chip) => {
+    const maps = inducedPrefixMaps(chip.partition, elements, visiblePositions);
+    const reach = maps?.size ?? 0;
+    const labelOver = chip.blockActionSize > 0 ? chip.labelings / chip.blockActionSize : 0;
+    return {
+      ...chip,
+      reach,
+      contribution: Math.round(labelOver * reach),
+    };
+  });
+  const cumulativeAlpha = cumulativeRows.reduce((acc, row) => acc + row.contribution, 0);
+
+  const componentRegimeId = activeComponent?.accumulation?.regimeId ?? null;
+  const partitionBudgetExceeded =
+    componentRegimeId === 'bruteForceOrbit' &&
+    /partition budget exceeded|partition.*over budget/i.test(activeComponent?.accumulation?.reason ?? '');
+
+  let caption;
+  if (componentRegimeId === 'partitionCount') {
+    caption = "this component fires partitionCount in the live engine; the breakdown above matches the engine's α directly.";
+  } else if (componentRegimeId && componentRegimeId !== 'bruteForceOrbit') {
+    caption = `this component fires ${componentRegimeId} in the live engine; partition counting would give the same α this way.`;
+  } else if (partitionBudgetExceeded) {
+    caption = 'the partition budget is exceeded for this preset; the engine falls back to corrected brute-force enumeration.';
+  } else {
+    caption = 'this component fires bruteForceOrbit in the live engine; partition counting fits the budget here and gives the same α.';
+  }
+
   return (
     <section
       id="typed-partition-demo"
@@ -170,8 +198,43 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
         </div>
       )}
 
-      <div className="mt-4 text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-        cumulative table lands in the next task.
+      <div data-testid="partition-cumulative-table" className="mt-4 border-t pt-3" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
+        <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+          Sum over patterns · live
+        </div>
+        <table className="mt-2 w-full font-mono text-[12px]" style={{ borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}>
+              <th className="p-1 text-left">pattern x̃</th>
+              <th className="p-1 text-right">labelings / |Ḡ|</th>
+              <th className="p-1 text-right">|A_x̃/H|</th>
+              <th className="p-1 text-right">contribution</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cumulativeRows.map((row) => (
+              <tr
+                key={row.key}
+                onMouseEnter={() => setSelectedPatternKey(row.key)}
+                style={{ background: row.key === selectedPatternKey ? explorerThemeTint(themeId, 'hero', 0.06) : 'transparent' }}
+              >
+                <td className="p-1">{row.key}</td>
+                <td className="p-1 text-right">{row.labelings} / {row.blockActionSize}</td>
+                <td className="p-1 text-right">{row.reach}</td>
+                <td className="p-1 text-right">{row.contribution}</td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr style={{ borderTop: `1.5px solid ${explorerThemeColor(themeId, 'ink')}` }}>
+              <td className="p-1 font-semibold" colSpan={3}>α =</td>
+              <td className="p-1 text-right font-semibold" data-testid="partition-alpha-total" style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</td>
+            </tr>
+          </tfoot>
+        </table>
+        <p className="mt-3 text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+          {caption}
+        </p>
       </div>
 
       <p className="mt-6 max-w-[78ch] font-serif text-[15px] leading-7" style={{ color: explorerThemeColor(themeId, 'body') }}>
