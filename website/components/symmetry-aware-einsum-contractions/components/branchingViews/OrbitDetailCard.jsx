@@ -26,8 +26,6 @@ const FLOAT_PADDING = 12;
 // in practice; we pass a conservative max here so the flip doesn't overflow).
 const CARD_W = 440;
 const CARD_H = 480;
-// Maximum reps before we hide the mini row preview (it stops being readable past this).
-const ROW_PREVIEW_MAX_REPS = 30;
 
 // TODO(mobile): floating mode currently has no tap-outside dismiss. Esc +
 // IntersectionObserver cover desktop and scroll-out cases; touch users
@@ -176,7 +174,7 @@ function OrbitDetailCard({
       style={wrapperStyle}
       className="p-4"
     >
-      {/* Eyebrow + close button */}
+      {/* Zone 1 — Header: eyebrow + close + tuples + branching caption */}
       <div className="flex items-baseline gap-3">
         <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-900">
           Worked example · O → Q
@@ -205,35 +203,22 @@ function OrbitDetailCard({
           <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400 mr-2 font-sans">stored rep Q</span>
           <strong>{labelledTuple(rep.tuple)}</strong>
         </div>
+        {/* Branching caption — small, italic, gray. Replaces the bottom paragraph. */}
+        <div
+          data-testid="orbit-detail-branching-caption"
+          className="mt-2 text-[11px] italic font-serif text-gray-500 leading-snug"
+        >
+          {branchCount > 1 ? (
+            <>This orbit fills <strong className="not-italic font-semibold text-gray-700">{branchCount} cells in its row</strong> — α for this orbit alone is {branchCount}.</>
+          ) : filled ? (
+            <><strong className="not-italic font-semibold text-gray-700">{contributing.length}</strong> of {row.orbitSize} member{row.orbitSize === 1 ? '' : 's'} project{contributing.length === 1 ? 's' : ''} to this Q. +1 to α.</>
+          ) : (
+            <>No member projects to this Q. The cell is empty.</>
+          )}
+        </div>
       </div>
 
-      {/* Mini row preview — only when reps.length is small enough to be readable. */}
-      {reps.length <= ROW_PREVIEW_MAX_REPS && (
-        <div data-testid="worked-example-row-preview" className="mt-3 rounded p-2.5" style={{ background: COLOR.empty }}>
-          <div className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400 mb-2">
-            orbit O's row in the O → Q matrix
-          </div>
-          <div className="flex gap-[2px] h-5">
-            {reps.map((r, c) => {
-              const coef = cells[hover.row]?.[c] ?? null;
-              const isThis = c === hover.col;
-              const isOther = !isThis && coef !== null;
-              return (
-                <div
-                  key={c}
-                  className="flex-1 rounded-sm"
-                  style={{
-                    background: isThis ? COLOR.coral : (isOther ? COLOR.coralLight : COLOR.bg),
-                    border: isOther ? '1px solid rgba(240,82,77,0.45)' : `1px solid ${COLOR.border}`,
-                  }}
-                />
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* π_V projection sketch */}
+      {/* Zone 2 — Projection: π_V projection sketch */}
       {(row.orbitTuples?.length ?? 0) > 0 && (
         <div data-testid="worked-example-projection" className="mt-3 rounded p-2.5 font-mono text-[10.5px] leading-7" style={{ background: COLOR.empty }}>
           <div className="grid grid-cols-[1fr_auto_1fr] gap-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400 font-sans mb-1">
@@ -258,7 +243,7 @@ function OrbitDetailCard({
         </div>
       )}
 
-      {/* Einsum equation */}
+      {/* Zone 3 — Equation + this-Q ledger */}
       {expressionInfo && canonicalEquationLatex(expressionInfo) && (
         <div className="mt-3 pt-2 border-t" style={{ borderColor: COLOR.divider }}>
           <div className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400 mb-1.5">einsum equation</div>
@@ -268,9 +253,12 @@ function OrbitDetailCard({
         </div>
       )}
 
-      {/* This Q's contributions */}
       {filled && expressionInfo && contributing.length > 0 && (
-        <div className="mt-3 pt-2 border-t" style={{ borderColor: COLOR.divider }}>
+        <div
+          data-testid="orbit-detail-this-q-ledger"
+          className="mt-3 pt-2 border-t"
+          style={{ borderColor: COLOR.divider }}
+        >
           <div className="text-[9px] font-semibold uppercase tracking-[0.16em] mb-1.5" style={{ color: COLOR.coral }}>
             contribution to R[{vLabels.map((l) => rep.tuple[l]).join(', ')}] · this Q
           </div>
@@ -284,41 +272,26 @@ function OrbitDetailCard({
         </div>
       )}
 
-      {/* Other Qs (dimmed) */}
-      {otherReached.length > 0 && expressionInfo && (
-        <div className="mt-3 pt-2 border-t" style={{ borderColor: COLOR.divider }}>
-          <div className="italic text-[10px] font-semibold tracking-[0.16em] uppercase mb-1.5" style={{ color: COLOR.coralMuted }}>
-            contribution to other Qs · the orbit's other reached bins
-          </div>
-          {otherReached.map((entry, ei) => (
-            <div key={ei} className="pl-2 font-mono text-[11px] leading-7 text-gray-700 mt-2 first:mt-0">
-              <div className="text-[10px] uppercase tracking-[0.16em] text-gray-400 mb-1 font-sans">
-                R[{vLabels.map((l) => entry.outTuple[l]).join(', ')}]
-              </div>
-              {entry.members.map((m, i) => (
-                <div key={i}>
-                  If ({allLabels.join(', ')}) = ({allLabels.map((l) => m[l]).join(', ')}), then R[{vLabels.map((l) => m[l]).join(', ')}] += {operandName}[{allLabels.map((l) => m[l]).join(', ')}]
-                </div>
-              ))}
-            </div>
+      {/* Zone 4 — Other-reached summary (1-line, first 3 destinations + N more) */}
+      {otherReached.length > 0 && (
+        <div
+          data-testid="orbit-detail-other-reached-summary"
+          className="mt-3 pt-2 border-t font-mono text-[11px] leading-snug text-gray-500"
+          style={{ borderColor: COLOR.divider }}
+        >
+          <span className="text-[9px] uppercase tracking-[0.18em] text-gray-400 font-sans mr-2">
+            also reaches
+          </span>
+          {otherReached.slice(0, 3).map((entry, ei) => (
+            <span key={ei} className="mr-2 last:mr-0">
+              R[{vLabels.map((l) => entry.outTuple[l]).join(', ')}]{ei < Math.min(otherReached.length, 3) - 1 ? ',' : ''}
+            </span>
           ))}
+          {otherReached.length > 3 && (
+            <span className="text-gray-400">+ {otherReached.length - 3} more</span>
+          )}
         </div>
       )}
-
-      {/* Branching note */}
-      <div className="mt-3 pt-2 border-t font-serif text-[12.5px] italic leading-7 text-gray-700" style={{ borderColor: COLOR.divider }}>
-        {branchCount > 1 ? (
-          <>
-            <strong className="not-italic text-gray-900">Branching:</strong> this single product orbit O fills <strong className="not-italic text-gray-900">{branchCount} cells in its row</strong>. α for this orbit alone is {branchCount} — one update per filled cell, regardless of member count.
-          </>
-        ) : filled ? (
-          <>
-            <strong className="not-italic text-gray-900">{contributing.length}</strong> of {row.orbitSize} member{row.orbitSize === 1 ? '' : 's'} of this orbit project{contributing.length === 1 ? 's' : ''} to this output bin. Each filled cell adds 1 to α.
-          </>
-        ) : (
-          <>No member of this orbit projects to this Q. The cell stays empty and contributes nothing to α.</>
-        )}
-      </div>
     </div>
   );
 }

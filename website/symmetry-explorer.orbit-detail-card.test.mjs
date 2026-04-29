@@ -20,14 +20,17 @@ test('OrbitDetailCard uses flipPosition for viewport-edge handling', () => {
   assert.match(src, /flipPosition\(/);
 });
 
-test('OrbitDetailCard renders the relocated worked-example body (tuples + projection sketch + ledgers + branching note)', () => {
+test('OrbitDetailCard renders consolidated 4-zone layout (header, projection, equation+ledger, other-reached summary)', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitDetailCard.jsx');
-  assert.match(src, /Worked example/);
-  assert.match(src, /MEMBERS OF O|members of O/i);
-  assert.match(src, /einsum equation/);
-  assert.match(src, /this Q|THIS Q/);
-  assert.match(src, /other reached|OTHER Q/i);
-  assert.match(src, /Branching:|branchCount/);
+  // Branching caption now lives near the header, not as a bottom paragraph.
+  assert.match(src, /data-testid="orbit-detail-branching-caption"/);
+  // Mini row preview is gone (redundant with the canvas underneath).
+  assert.doesNotMatch(src, /data-testid="worked-example-row-preview"/);
+  // Projection sketch survives.
+  assert.match(src, /data-testid="worked-example-projection"/);
+  // Two ledgers consolidated — one block for "this Q", one summary for "other reached".
+  assert.match(src, /data-testid="orbit-detail-this-q-ledger"/);
+  assert.match(src, /data-testid="orbit-detail-other-reached-summary"/);
 });
 
 test('OrbitDetailCard supports two modes: floating (default) and inline (modal) — only floating uses position:fixed', () => {
