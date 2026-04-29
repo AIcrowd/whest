@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && node scripts/generate-llmstxt.mjs",
+    "check:deploy-links": "node exported-link-manifest.mjs && node deploy-link-audit.check.mjs",
     "check:gh-pages": "node --test gh-pages-deploy.check.mjs",
     "test": "node --test",
     "start": "next start"

@@ -221,6 +221,9 @@ jobs:
       - name: Run GH Pages compatibility checks
         run: cd website && npm run check:gh-pages
 
+      - name: Run deploy-only internal link audit
+        run: cd website && npm run check:deploy-links
+
       - name: Verify deploy artifact contents
         run: |
           test -f website/out/.nojekyll
