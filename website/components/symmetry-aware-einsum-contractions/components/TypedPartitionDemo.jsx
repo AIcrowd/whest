@@ -46,6 +46,23 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
 
   if (!componentData || !costModel) return null;
 
+  const components = componentData.components ?? [];
+  const activeComponent = components[selectedComponentIdx] ?? null;
+  const sizes = activeComponent?.sizes ?? [];
+  const elements = activeComponent?.fullGroupElements ?? [];
+  const visiblePositions = activeComponent?.visiblePositions ?? [];
+
+  const allPartitions = sizes.length > 0 ? generateTypedSetPartitions(sizes) : [];
+  const orbitReps = elements.length > 0 ? partitionOrbitReps(allPartitions, elements) : allPartitions;
+
+  const chips = orbitReps.map((partition) => ({
+    key: partitionKey(partition),
+    partition,
+    blocks: numBlocks(partition),
+    labelings: typedLabelingCount(partition, sizes),
+    blockActionSize: inducedBlockActionSize(partition, elements),
+  }));
+
   return (
     <section
       id="typed-partition-demo"
@@ -79,8 +96,40 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
         <Latex math={FORMULA} display />
       </div>
 
+      <div className="mt-5">
+        <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+          Equality pattern
+        </div>
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {chips.map((chip) => {
+            const isActive = chip.key === selectedPatternKey;
+            return (
+              <button
+                type="button"
+                key={chip.key}
+                data-pattern-chip={chip.key}
+                onClick={() => setSelectedPatternKey(chip.key)}
+                className="rounded px-2.5 py-1 font-mono text-[11px] font-semibold transition-colors"
+                style={{
+                  background: isActive ? explorerThemeTint(themeId, 'hero', 0.12) : 'transparent',
+                  color: isActive ? explorerThemeColor(themeId, 'hero') : explorerThemeColor(themeId, 'body'),
+                  border: `1px solid ${isActive ? explorerThemeColor(themeId, 'hero') : explorerThemeColor(themeId, 'border')}`,
+                }}
+              >
+                {chip.key}
+              </button>
+            );
+          })}
+          {chips.length === 0 && (
+            <span className="text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+              no partition data available for this preset
+            </span>
+          )}
+        </div>
+      </div>
+
       <div className="mt-6 text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-        pattern chips, breakdown panel, and cumulative table land in subsequent tasks.
+        breakdown panel and cumulative table land in subsequent tasks.
       </div>
 
       <p className="mt-6 max-w-[78ch] font-serif text-[15px] leading-7" style={{ color: explorerThemeColor(themeId, 'body') }}>

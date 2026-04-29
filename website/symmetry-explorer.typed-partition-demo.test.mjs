@@ -38,3 +38,9 @@ test('TypedPartitionDemo imports the engine partition exports', () => {
   assert.match(src, /inducedBlockActionSize/);
   assert.match(src, /inducedPrefixMaps/);
 });
+
+test('TypedPartitionDemo renders pattern chips area with chip-id attributes', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
+  assert.match(src, /data-pattern-chip/);
+  assert.match(src, /Equality pattern/i);
+});
