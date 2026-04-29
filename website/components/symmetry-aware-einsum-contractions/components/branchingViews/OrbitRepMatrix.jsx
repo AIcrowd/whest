@@ -11,7 +11,6 @@ import {
 const COLOR = {
   bg: '#FFFFFF',
   cellGrid: '#ECEFEF',
-  cellEmpty: '#FFFFFF',
   cellFilled: 'rgba(240,82,77,0.22)',
   cellHovered: '#F0524D',
   branchOutline: 'rgba(240,82,77,0.45)',
@@ -21,6 +20,9 @@ const COLOR = {
 
 export default function OrbitRepMatrix({
   orbitRows = [],
+  // selectedOrbitIdx, expressionInfo, componentInfo are read by Tasks 4-9
+  // (axis labels, label legend chip, worked-example panel) — stubbed here
+  // so the prop API stays stable across the multi-task redesign.
   selectedOrbitIdx = -1,
   onSelectOrbit = () => {},
   onHover = null,
@@ -49,6 +51,9 @@ export default function OrbitRepMatrix({
   );
 
   // Observe container width — keep cell sizing responsive.
+  // Dep `orbitRows.length === 0` is a boolean: re-runs only when the
+  // empty/populated branch flips, so the observer re-attaches to the
+  // newly-mounted wrapper instead of the discarded empty-state node.
   useEffect(() => {
     if (!containerRef.current) return;
     const el = containerRef.current;
@@ -57,7 +62,7 @@ export default function OrbitRepMatrix({
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [orbitRows.length === 0]);
 
   // Surface state changes to the parent.
   useEffect(() => {
