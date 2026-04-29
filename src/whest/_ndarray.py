@@ -1,12 +1,41 @@
-"""Subclass of numpy.ndarray whose operators track FLOP usage.
+"""Subclass of ``numpy.ndarray`` that routes every operation through
+whest's FLOP-counted ``me.*`` functions.
 
-This module defines WhestArray, a thin numpy.ndarray subclass
-that overrides arithmetic, matmul, unary, comparison, bitwise, and
-shift operators to route through whest's FLOP-counted me.*
-functions.
+``WhestArray`` overrides:
 
-Because WhestArray inherits from numpy.ndarray, isinstance(x,
-numpy.ndarray) returns True. All me.* functions return WhestArray.
+- **Arithmetic / comparison / bitwise / shift dunders** so ``a + b``,
+  ``a @ b``, ``a == b``, ``a & b``, ``a << b`` etc. route through
+  ``me.add``, ``me.matmul``, etc.
+- **In-place dunders** (``__iadd__``, …, ``__imatmul__``) with a
+  symmetry-corruption guard that refuses ``A_sym += B`` when the
+  result would weaken or destroy ``A_sym``'s tagged symmetry. ``A @= B``
+  on shape-changing matmul falls back to CPython's documented
+  rebind-the-name semantics.
+- **25 ndarray methods** (``sum``, ``mean``, ``dot``, ``argsort``,
+  ``compress``, ``trace``, ``round``, ``clip``, ``ptp``, …) so
+  ``a.sum()`` and ``we.sum(a)`` produce the same FLOP count.
+- **In-place ``sort`` / ``partition``** which refuse on a
+  ``SymmetricTensor`` (the reorder would break symmetry).
+
+It also implements two NumPy protocols:
+
+- ``__array_ufunc__`` (NEP 13) — ``np.add(a, b)``, ``np.add.reduce(a)``,
+  ``np.add.outer(a, b)``, ``np.add.at(a, idx, val)``, multi-output
+  ufuncs (``np.divmod`` / ``np.frexp`` / ``np.modf``), etc.
+- ``__array_function__`` (NEP 18) — explicit allowlist routing
+  ``np.<func>(whest, …)`` for ~108 callables (reductions, sorting,
+  shape ops, linear algebra, comparisons, histograms, …) plus a
+  ``_PASSTHROUGH`` set of zero-FLOP type/shape queries.
+
+Recursion-prevention helpers (``_to_base_ndarray``,
+``_to_base_ndarray_tree``) view-cast ``WhestArray`` to plain
+``np.ndarray`` for the inner NumPy call, breaking the cycle that
+would otherwise re-dispatch through these protocols.
+
+Because ``WhestArray`` inherits from ``numpy.ndarray``,
+``isinstance(x, numpy.ndarray)`` returns ``True``. All ``me.*``
+functions return ``WhestArray`` (or ``SymmetricTensor`` when symmetry
+survives the operation). See PR #67 for the complete protocol design.
 """
 
 from __future__ import annotations
@@ -705,8 +734,7 @@ class WhestArray(_np.ndarray):
         # mismatch; we follow the CPython fallback so typical pipelines
         # using ``A @= B`` to grow state work cleanly.
         result = _me().matmul(self, other)
-        result_arr = _np.asarray(result)
-        if result_arr.shape != self.shape:
+        if result.shape != self.shape:
             return result
         return self._inplace_from_result(result, "matmul")
 
