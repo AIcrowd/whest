@@ -148,7 +148,7 @@
   },
   "example": null,
   "flopscope_ref": "flopscope.accounting.multi_dot_cost",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L23",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L24",
   "href": "/docs/api/accounting/multi-dot-cost/",
   "import_path": "flopscope.accounting.multi_dot_cost",
   "is_operation_cost_leaf": false,

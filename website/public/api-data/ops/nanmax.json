@@ -492,7 +492,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/max",
+                "href": "/docs/api/numpy/max/",
                 "label": "flops.max",
                 "original_target": "amax",
                 "role": "",
@@ -567,7 +567,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/min",
+                "href": "/docs/api/numpy/min/",
                 "label": "flops.min",
                 "original_target": "amin",
                 "role": "",
@@ -723,7 +723,7 @@
   "schema_version": 1,
   "slug": "nanmax",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L812",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_nanfunctions_impl.py#L383"
   }
 }

@@ -274,7 +274,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/min",
+              "href": "/docs/api/numpy/min/",
               "label": "flops.min",
               "original_target": "amin",
               "role": "",
@@ -602,7 +602,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.argmin",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L306",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L812",
   "href": "/docs/api/numpy/argmin/",
   "import_path": "flopscope.numpy.argmin",
   "is_operation_cost_leaf": true,
@@ -715,7 +715,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/min",
+      "href": "/docs/api/numpy/min/",
       "label": "flops.min",
       "original_target": "amin",
       "role": "",

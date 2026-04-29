@@ -436,7 +436,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arctanh",
+                "href": "/docs/api/numpy/arctanh/",
                 "kind": "link",
                 "target": "arctanh",
                 "text": "atanh"
@@ -517,7 +517,7 @@
   "schema_version": 1,
   "slug": "arctanh",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L334",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

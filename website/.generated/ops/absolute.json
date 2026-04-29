@@ -25,7 +25,7 @@
           "inline": [
             {
               "external_url": "",
-              "href": "/docs/api/ops/absolute",
+              "href": "/docs/api/numpy/absolute/",
               "kind": "link",
               "target": "absolute",
               "text": "flops.abs"
@@ -451,7 +451,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/absolute",
+              "href": "/docs/api/numpy/absolute/",
               "kind": "link",
               "target": "absolute",
               "text": "abs"
@@ -522,7 +522,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.absolute",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L334",
   "href": "/docs/api/numpy/absolute/",
   "legacy_href": "/docs/api/ops/absolute/",
   "module": "numpy",

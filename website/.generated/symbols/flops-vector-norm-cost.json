@@ -206,7 +206,7 @@
   ],
   "signature": "flops.flops.vector_norm_cost(shape: 'tuple', ord=None) -> 'int'",
   "slug": "flops-vector-norm-cost",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L223",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L249",
   "status_note": "",
   "summary": "Weighted FLOP cost of vector norm.",
   "upstream_source_url": ""

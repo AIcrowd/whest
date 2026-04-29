@@ -201,7 +201,7 @@
   "related_guides": [],
   "signature": "fnp.einsum_cache_info()",
   "slug": "einsum-cache-info",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L148",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L149",
   "status_note": "",
   "summary": "Return einsum path cache statistics.",
   "upstream_source_url": ""

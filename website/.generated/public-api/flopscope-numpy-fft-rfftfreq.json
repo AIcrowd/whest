@@ -348,7 +348,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.rfftfreq",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L22",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L23",
   "href": "/docs/api/numpy/fft/rfftfreq/",
   "import_path": "flopscope.numpy.fft.rfftfreq",
   "is_operation_cost_leaf": true,

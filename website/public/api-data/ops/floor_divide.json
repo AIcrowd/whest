@@ -411,7 +411,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/floor_divide",
+                "href": "/docs/api/numpy/floor-divide/",
                 "label": "flops.floor_divide",
                 "original_target": "divmod",
                 "role": "",
@@ -571,7 +571,7 @@
   "schema_version": 1,
   "slug": "floor_divide",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L401",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

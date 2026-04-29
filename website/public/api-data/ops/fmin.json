@@ -384,7 +384,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/min",
+                "href": "/docs/api/numpy/min/",
                 "label": "flops.min",
                 "original_target": "amin",
                 "role": "",
@@ -422,7 +422,7 @@
                 "description": "",
                 "description_inline": [],
                 "external_url": "",
-                "href": "/docs/api/ops/max",
+                "href": "/docs/api/numpy/max/",
                 "label": "flops.max",
                 "original_target": "amax",
                 "role": "",
@@ -546,7 +546,7 @@
   "schema_version": 1,
   "slug": "fmin",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L401",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }
