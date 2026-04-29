@@ -6,7 +6,7 @@
 // The displayed μ and α come from `aggregateComponentCosts`, which walks the
 // per-component decomposition. This test verifies, preset by preset, that
 // that per-component aggregation matches the brute-force ground truth from
-// `computeExactCostModel` (a global enumeration of orbits and output bins).
+// `computeExactCostModel` (a global enumeration of orbits and stored output representatives).
 //
 // If decomposition ever produces components that aren't truly independent —
 // or if the per-component M_a / α_a fields drift — this test fails before

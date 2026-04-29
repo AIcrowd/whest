@@ -18,7 +18,7 @@ export default function OrbitInspector({
   onSelectOrbit,
   title = 'Explore one representative orbit',
   kicker = 'Orbit Inspector',
-  description = 'Each orbit is one evaluation representative. The projected outputs show why reduction cost can stay high even when evaluation cost drops.',
+  description = 'Each orbit is one product-orbit representative. The projected outputs show why the number of stored-output-representative updates can stay high even when the product-orbit count drops.',
   showHeader = true,
   formulaMath = null,
   dimensionN = null,

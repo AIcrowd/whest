@@ -283,7 +283,7 @@ function ComponentSummaryTable({
                             ? explorerThemeColor(explorerThemeId, 'quantity')
                             : explorerThemeColor(explorerThemeId, 'freeSide'),
                         }}
-                        title={`Per-component direct savings: multiplication uses ${M_a?.toLocaleString?.() ?? '—'} product orbits and accumulation uses ${actualAcc?.toLocaleString?.() ?? '—'} output-projection updates, compared with ${denseCell.toLocaleString()} dense assignments.`}
+                        title={`Per-component direct savings: multiplication uses ${M_a?.toLocaleString?.() ?? '—'} product orbits and accumulation uses ${actualAcc?.toLocaleString?.() ?? '—'} stored-output-representative updates, compared with ${denseCell.toLocaleString()} dense assignments.`}
                       >
                         {totalSavingsPct}%
                       </span>

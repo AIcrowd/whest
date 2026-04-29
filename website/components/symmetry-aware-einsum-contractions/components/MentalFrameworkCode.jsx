@@ -13,13 +13,14 @@ import { notationLatex } from '../lib/notationSystem.js';
  *      "annotation rows" sit at the exact indent of the lines they describe,
  *      carrying a coloured bar marker:
  *         ┃ Step 1 · multiply once    (coral, indent 4, before base_val)
- *         ┃ Step 2 · accumulate many  (coral, indent 8, before R[out] +=)
+ *         ┃ Step 2 · accumulate many  (coral, indent 8, before R[out_rep] +=)
  *
  * Key goal: the reader sees the "multiply once, accumulate many" shape
  * directly in the code, with step labels anchored at the exact spot they
  * explain — no visual discontinuity between annotation and the code it
- * annotates. The accumulation line shows `coeff(rep, out) * base_val` so
- * the weighting (how many orbit members land on a bin) is visible.
+ * annotates. The accumulation line shows `coeff(rep, out_rep) * base_val`
+ * so the weighting (how many orbit members reach a stored output
+ * representative) is visible.
  */
 
 const TOKEN_CLASS = {

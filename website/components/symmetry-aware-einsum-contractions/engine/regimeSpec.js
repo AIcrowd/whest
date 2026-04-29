@@ -67,8 +67,8 @@ export const REGIME_SPEC = {
       { term: `\\binom{n_L + |${notationLatex('v_free')}| - 1}{|${notationLatex('v_free')}|}`, definition: 'number of size-$|V|$ multisets from $[n_L]$ — equivalently $|Y/H|$, the count of stored output representatives.' },
       { term: `\\binom{n_L + |${notationLatex('w_summed')}| - 1}{|${notationLatex('w_summed')}|}`, definition: 'number of size-$|W|$ multisets from $[n_L]$ — the summed-side multisets that combine independently with each visible multiset.' },
       {
-        term: `\\mathrm{Sym}(${notationLatex('w_summed')})`,
-        definition: `the symmetric group on the summed labels. When $G = \\mathrm{Sym}(${notationLatex('l_labels')})$, the pointwise $${notationLatex('v_free')}$-stabilizer is the Young subgroup $\\mathrm{Sym}(${notationLatex('w_summed')})$ — the same combinatorics that produces the multiset count on the summed side.`,
+        term: 'H, V, W',
+        definition: `When $G = \\mathrm{Sym}(${notationLatex('l_labels')})$, the output action $H$ is $\\mathrm{Sym}(${notationLatex('v_free')})$, so stored output representatives are visible multisets. The remaining summed coordinates contribute summed multisets.`,
       },
     ],
     themeRole: 'caseYoung',
@@ -95,7 +95,7 @@ export const REGIME_SPEC = {
     id: 'bruteForceOrbit',
     label: 'Corrected brute-force orbit count',
     shortLabel: 'Brute',
-    when: 'Terminal leaf — fires when no closed form applies, gated by $|X| \\cdot |G| \\leq 1{,}500{,}000$ to bound page latency.',
+    when: 'Fires when closed forms do not apply, typed partition counting is unavailable or over budget, and explicit tuple-orbit enumeration still fits the interactive budget ($|X| \\cdot |G| \\leq 1{,}500{,}000$).',
     latex: String.raw`\alpha = \sum_{${notationLatex('orbit_o')} \in ${notationLatex('x_space')} / ${notationLatex('g_detected')}} |\pi_V(${notationLatex('orbit_o')})/H|`,
     description: 'Enumerates product orbits and canonicalizes projected outputs under the derived output action H. Used only when no analytic regime applies and the pair-touch budget is small enough for the interactive page.',
     glossary: [

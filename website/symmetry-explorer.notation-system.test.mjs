@@ -543,8 +543,11 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(appendixSource, /notationLatex\('h_output'\)/);
   assert.match(appendixSource, /notationColoredLatex\('s_w_summed', 'S\(W\)'\)/);
   assert.match(appendixSource, /appendixSection6\.title/);
-  assert.match(regimeSpecSource, /\$\$\{notationLatex\('v_free'\)\}\$/);
-  assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('w_summed'\)\}\)/);
+  // V4: Young glossary entry now frames H = Sym(V) as the output action
+  // when G = Sym(L), instead of overemphasising Sym(W) as the Young subgroup.
+  assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('v_free'\)\}\)/);
+  assert.match(regimeSpecSource, /\\mathrm\{Sym\}\(\$\{notationLatex\('l_labels'\)\}\)/);
+  assert.doesNotMatch(regimeSpecSource, /Young subgroup/);
   assert.match(regimeSpecSource, /notationLatex\('c_omega_cycles'\)/);
 });
 
