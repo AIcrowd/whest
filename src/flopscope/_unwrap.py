@@ -6,6 +6,7 @@ from __future__ import annotations
 import numpy as _np
 
 from flopscope._docstrings import attach_docstring
+from flopscope._ndarray import _to_base_ndarray
 from flopscope._validation import require_budget
 
 
@@ -41,7 +42,7 @@ def unwrap(p, discont=None, axis=-1, *, period=6.283185307179586):
     if discont is not None:
         kwargs["discont"] = discont
     with budget.deduct("unwrap", flop_cost=cost, subscripts=None, shapes=(p.shape,)):
-        result = _np.unwrap(p, **kwargs)
+        result = _np.unwrap(_to_base_ndarray(p), **kwargs)
     return result
 
 

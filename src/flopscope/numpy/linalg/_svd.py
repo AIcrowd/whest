@@ -6,6 +6,7 @@ import numpy as _np
 from numpy.linalg._linalg import SVDResult
 
 from flopscope._flops import svd_cost
+from flopscope._ndarray import FlopscopeArray, _asflopscope, _to_base_ndarray
 from flopscope._validation import check_nan_inf, require_budget
 
 
@@ -60,6 +61,7 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None):
         S : ndarray
     """
     budget = require_budget()
+    inputs_were_whest = isinstance(a, FlopscopeArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if a.ndim < 2:
@@ -78,19 +80,27 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None):
         if compute_uv:
             # When k is specified, always use economy decomposition then slice.
             fm = full_matrices if k is None else False
-            U, S, Vt = _np.linalg.svd(a, full_matrices=fm, hermitian=hermitian)
+            U, S, Vt = _np.linalg.svd(
+                _to_base_ndarray(a), full_matrices=fm, hermitian=hermitian
+            )
             if k is not None:
                 S = S[..., :k]
                 U = U[..., :k]
                 Vt = Vt[..., :k, :]
             check_nan_inf(S, "linalg.svd")
         else:
-            S = _np.linalg.svd(a, compute_uv=False, hermitian=hermitian)
+            S = _np.linalg.svd(
+                _to_base_ndarray(a), compute_uv=False, hermitian=hermitian
+            )
             if k is not None:
                 S = S[..., :k]
             check_nan_inf(S, "linalg.svd")
 
     if compute_uv:
+        if inputs_were_whest:
+            return SVDResult(_asflopscope(U), _asflopscope(S), _asflopscope(Vt))
         return SVDResult(U, S, Vt)
     else:
+        if inputs_were_whest:
+            return _asflopscope(S)
         return S

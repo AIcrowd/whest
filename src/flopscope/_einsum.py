@@ -7,6 +7,7 @@ import functools
 import numpy as _np
 
 from flopscope._config import get_setting
+from flopscope._ndarray import _to_base_ndarray
 from flopscope._perm_group import SymmetryGroup
 from flopscope._pointwise import _prepare_symmetric_out, _validate_result_symmetry
 from flopscope._symmetric import SymmetricTensor
@@ -176,7 +177,7 @@ def _execute_pairwise(path_info, operands: list):
         # Pop operands in reverse sorted order (same as opt_einsum convention)
         inds = sorted(contract_inds, reverse=True)
         tensors = [ops.pop(i) for i in inds]
-        result = _np.einsum(step.subscript, *tensors)
+        result = _np.einsum(step.subscript, *[_to_base_ndarray(t) for t in tensors])
         ops.append(result)
     return ops[0]
 
@@ -383,7 +384,9 @@ def einsum(
         if path_info.steps:
             result = _execute_pairwise(path_info, list(operands))
         else:
-            result = _np.einsum(canonical_subscripts, *operands)
+            result = _np.einsum(
+                canonical_subscripts, *[_to_base_ndarray(o) for o in operands]
+            )
 
     if out is not None:
         _validate_result_symmetry(result, target_symmetry)

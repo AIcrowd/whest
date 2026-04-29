@@ -6,6 +6,7 @@ from __future__ import annotations
 import numpy as _np
 
 from flopscope._docstrings import attach_docstring
+from flopscope._ndarray import _to_base_ndarray
 
 
 def fftfreq(n, d=1.0, device=None):
@@ -32,7 +33,7 @@ attach_docstring(rfftfreq, _np.fft.rfftfreq, "free", "0 FLOPs")
 
 def fftshift(x, axes=None):
     """Shift zero-frequency component to center. Cost: 0 FLOPs."""
-    return _np.fft.fftshift(x, axes=axes)
+    return _np.fft.fftshift(_to_base_ndarray(x), axes=axes)
 
 
 attach_docstring(fftshift, _np.fft.fftshift, "free", "0 FLOPs")
@@ -40,7 +41,7 @@ attach_docstring(fftshift, _np.fft.fftshift, "free", "0 FLOPs")
 
 def ifftshift(x, axes=None):
     """Inverse of fftshift. Cost: 0 FLOPs."""
-    return _np.fft.ifftshift(x, axes=axes)
+    return _np.fft.ifftshift(_to_base_ndarray(x), axes=axes)
 
 
 attach_docstring(ifftshift, _np.fft.ifftshift, "free", "0 FLOPs")

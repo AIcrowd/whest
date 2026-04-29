@@ -11,6 +11,7 @@ import numpy as _np
 from numpy.linalg._linalg import EighResult, EigResult, QRResult
 
 from flopscope._docstrings import attach_docstring
+from flopscope._ndarray import FlopscopeArray, _asflopscope, _to_base_ndarray
 from flopscope._validation import require_budget
 from flopscope.numpy.linalg._solvers import _batch_size, _has_zero_dim
 
@@ -38,6 +39,7 @@ def cholesky_cost(n: int) -> int:
 def cholesky(a, /, *, upper=False):
     """Cholesky decomposition with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, FlopscopeArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     n = a.shape[-1]
@@ -46,7 +48,9 @@ def cholesky(a, /, *, upper=False):
     with budget.deduct(
         "linalg.cholesky", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.cholesky(a, upper=upper)
+        result = _np.linalg.cholesky(_to_base_ndarray(a), upper=upper)
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
+        return _asflopscope(result)
     return result
 
 
@@ -76,17 +80,41 @@ def qr_cost(m: int, n: int) -> int:
 
 
 def qr(a, mode="reduced"):
-    """QR decomposition with FLOP counting."""
+    """QR decomposition with FLOP counting.
+
+    Returns vary by ``mode``:
+
+    - ``"reduced"`` (default) / ``"complete"`` → ``QRResult(q, r)``
+    - ``"r"`` → ``r`` only
+    - ``"raw"`` → 2-tuple ``(h, tau)`` of two ndarrays with mismatched
+      shapes (preserved as a tuple rather than collapsed via
+      ``_asflopscope``, which would otherwise fail with
+      ``ValueError: ... inhomogeneous shape``)
+    """
     budget = require_budget()
+    inputs_were_whest = isinstance(a, FlopscopeArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     m, n = a.shape[-2], a.shape[-1]
     batch = _batch_size(a.shape)
     cost = qr_cost(m, n) * batch if not _has_zero_dim(a.shape) else 0
     with budget.deduct("linalg.qr", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.linalg.qr(a, mode=mode)
+        result = _np.linalg.qr(_to_base_ndarray(a), mode=mode)
     if mode in ("reduced", "complete"):
-        return QRResult(*result)
+        q, r = result
+        if inputs_were_whest:
+            return QRResult(_asflopscope(q), _asflopscope(r))
+        return QRResult(q, r)
+    if mode == "raw":
+        # ``raw`` returns a (h, tau) tuple of two ndarrays with different
+        # shapes — preserve the tuple structure rather than collapsing to
+        # a single array via ``_asflopscope``.
+        h, tau = result
+        if inputs_were_whest:
+            return _asflopscope(h), _asflopscope(tau)
+        return h, tau
+    if inputs_were_whest:
+        return _asflopscope(result)
     return result
 
 
@@ -116,6 +144,7 @@ def eig_cost(n: int) -> int:
 def eig(a):
     """Eigendecomposition with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, FlopscopeArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     n = a.shape[-1]
@@ -124,8 +153,10 @@ def eig(a):
     with budget.deduct(
         "linalg.eig", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.eig(a)
-    return EigResult(*result)
+        result = _np.linalg.eig(_to_base_ndarray(a))
+    if inputs_were_whest:
+        return EigResult(_asflopscope(result.eigenvalues), _asflopscope(result.eigenvectors))
+    return result
 
 
 attach_docstring(eig, _np.linalg.eig, "linalg", r"$n^3$ FLOPs")
@@ -154,6 +185,7 @@ def eigh_cost(n: int) -> int:
 def eigh(a, UPLO="L"):
     """Symmetric eigendecomposition with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, FlopscopeArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     n = a.shape[-1]
@@ -162,8 +194,10 @@ def eigh(a, UPLO="L"):
     with budget.deduct(
         "linalg.eigh", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.eigh(a, UPLO=UPLO)
-    return EighResult(_np.asarray(result.eigenvalues), _np.asarray(result.eigenvectors))
+        result = _np.linalg.eigh(_to_base_ndarray(a), UPLO=UPLO)
+    if inputs_were_whest:
+        return EighResult(_asflopscope(result.eigenvalues), _asflopscope(result.eigenvectors))
+    return result
 
 
 attach_docstring(eigh, _np.linalg.eigh, "linalg", r"$n^3$ FLOPs")
@@ -192,6 +226,7 @@ def eigvals_cost(n: int) -> int:
 def eigvals(a):
     """Eigenvalues (nonsymmetric) with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, FlopscopeArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     n = a.shape[-1]
@@ -200,7 +235,9 @@ def eigvals(a):
     with budget.deduct(
         "linalg.eigvals", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.eigvals(a)
+        result = _np.linalg.eigvals(_to_base_ndarray(a))
+    if inputs_were_whest:
+        return _asflopscope(result)
     return result
 
 
@@ -230,6 +267,7 @@ def eigvalsh_cost(n: int) -> int:
 def eigvalsh(a, UPLO="L"):
     """Eigenvalues (symmetric) with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, FlopscopeArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     n = a.shape[-1]
@@ -238,7 +276,9 @@ def eigvalsh(a, UPLO="L"):
     with budget.deduct(
         "linalg.eigvalsh", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.eigvalsh(a, UPLO=UPLO)
+        result = _np.linalg.eigvalsh(_to_base_ndarray(a), UPLO=UPLO)
+    if inputs_were_whest:
+        return _asflopscope(result)
     return result
 
 
@@ -274,6 +314,7 @@ def svdvals_cost(m: int, n: int, k: int | None = None) -> int:
 def svdvals(x, /, *, k: int | None = None):
     """Singular values with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(x, FlopscopeArray)
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
     m, n = x.shape[-2], x.shape[-1]
@@ -286,9 +327,11 @@ def svdvals(x, /, *, k: int | None = None):
     with budget.deduct(
         "linalg.svdvals", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
-        result = _np.linalg.svdvals(x)
+        result = _np.linalg.svdvals(_to_base_ndarray(x))
     if k < min(m, n):
         result = result[..., :k]
+    if inputs_were_whest:
+        return _asflopscope(result)
     return result
 
 

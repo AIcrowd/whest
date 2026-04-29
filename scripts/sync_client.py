@@ -128,6 +128,18 @@ def _generate_errors() -> str:
             "FlopscopeWarning",
             "Warning issued when an operation causes loss of symmetry metadata.",
         ),
+        (
+            "CostFallbackWarning",
+            "FlopscopeWarning",
+            (
+                "Warning issued when flopscope skips its symmetry-aware cost "
+                "adjustment (e.g. ``ufunc.outer`` / ``tensordot`` on a "
+                "symmetry group whose degree exceeds the per-call "
+                "Burnside-enumeration threshold). The op runs correctly "
+                "with the dense cost charged instead. Suppress with "
+                "``flops.configure(symmetry_warnings=False)``."
+            ),
+        ),
         # client-only
         (
             "FlopscopeServerError",

@@ -7,7 +7,7 @@ divergences are listed in xfails.py.
 Key trick: before patching numpy, fnp freeze a copy of the original
 numpy module and rebind flopscope's internal `_np` references to it.
 This breaks the infinite recursion that would otherwise occur when
-flopscope functions call _np.func() → numpy.func() → we.func() → ...
+flopscope functions call _np.func() → numpy.func() → fnp.func() → ...
 """
 
 import fnmatch
@@ -65,6 +65,7 @@ _REBOUND: dict[str, object] = {}
 
 # All flopscope submodules that import numpy as _np
 _FLOPSCOPE_MODULES_WITH_NP = [
+    "flopscope._ndarray",
     "flopscope._pointwise",
     "flopscope._free_ops",
     "flopscope._sorting_ops",
@@ -223,7 +224,7 @@ def _patch_numpy():
             pass
 
         # Skip functions where flopscope delegates to a different numpy function
-        # than the one being patched (e.g., we.linalg.outer → np.outer, not
+        # than the one being patched (e.g., fnp.linalg.outer → np.outer, not
         # np.linalg.outer). Patching causes collection-time errors in tests that
         # check the real np.linalg.outer's behaviour at class-definition time.
         _SKIP_PATCH = {

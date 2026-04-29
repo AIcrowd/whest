@@ -72,7 +72,7 @@ What fnp DON'T patch (and why):
       _np.func() via module lookup. Same recursion issue.
     - Submodule functions (38): linalg.*, fft.*. Same recursion issue.
     - Blacklisted (32): intentionally unsupported.
-    - linalg.outer: we.linalg.outer delegates to np.outer (not
+    - linalg.outer: fnp.linalg.outer delegates to np.outer (not
       np.linalg.outer), so patching it causes a collection-time error
       in test_linalg.py which checks ValueError for 2D input at class
       definition time.
@@ -167,12 +167,12 @@ XFAIL_PATTERNS: dict[str, str] = {
     # test_shuffle iterates the shuffle over 11 array variants and does
     # assert_array_equal after each. The shuffle itself succeeds; the
     # failure is in the equality check for structured-dtype arrays
-    # (FlopscopeArray.__eq__ -> we.equal -> np.equal raises _UFuncNoLoopError
+    # (FlopscopeArray.__eq__ -> fnp.equal -> np.equal raises _UFuncNoLoopError
     # on VoidDType) and the dtype=object case (legacy RandomState shuffle
     # order differs from what the test hard-codes, which numpy documents
     # as "will not be fixed" — see the UserWarning emitted during the run).
     "*TestRandomDist::test_shuffle": (
-        "SUBCLASS_RETURN: FlopscopeArray.__eq__ routes through we.equal which "
+        "SUBCLASS_RETURN: FlopscopeArray.__eq__ routes through fnp.equal which "
         "lacks a ufunc loop for structured dtypes; same root cause as the "
         "other SUBCLASS_RETURN entries"
     ),
@@ -190,7 +190,7 @@ XFAIL_PATTERNS: dict[str, str] = {
     # SUBCLASS_RETURN — FlopscopeArray subclass propagation               #
     # ------------------------------------------------------------------ #
     # flopscope wraps return values in FlopscopeArray (an ndarray subclass)
-    # so that operator overloads can route through FLOP-tracked we.* funcs.
+    # so that operator overloads can route through FLOP-tracked fnp.* funcs.
     # NumPy's tests use strict `type(x) is np.ndarray` checks that fail when
     # the result is a subclass. These tests are inherent limitations of the
     # subclass design.
@@ -284,20 +284,26 @@ XFAIL_PATTERNS: dict[str, str] = {
     # ------------------------------------------------------------------ #
     "*TestResize::test_reshape_from_zero": (
         "SUBCLASS_RETURN: np.resize returns FlopscopeArray; the subsequent "
-        "assert_array_equal invokes FlopscopeArray.__eq__ -> we.equal -> "
+        "assert_array_equal invokes FlopscopeArray.__eq__ -> fnp.equal -> "
         "np.equal, which has no ufunc loop for VoidDType (the test uses "
         "dtype=[('a', np.float32)], a structured dtype). Same root cause "
         "as other SUBCLASS_RETURN entries."
     ),
     "*TestFromiter::test_growth_and_complicated_dtypes*i,O*": (
         "SUBCLASS_RETURN: fromiter returns FlopscopeArray; the subsequent "
-        "assert_array_equal invokes FlopscopeArray.__eq__ -> we.equal -> "
+        "assert_array_equal invokes FlopscopeArray.__eq__ -> fnp.equal -> "
         "np.equal, which has no ufunc loop for VoidDType (structured "
         "dtypes). Same root cause as other SUBCLASS_RETURN entries."
     ),
     "*TestOut::test_out_wrap_no_leak": (
         "NUMPY_INTERNAL: refcount check sees unexpected count due to FlopscopeArray subclass "
         "wrapping (fails on numpy 2.2; xpassed on 2.3/2.4 which is acceptable)"
+    ),
+    "*TestOut::test_out_wrap_subok": (
+        "SUBCLASS_RETURN: ``subok=False`` semantics not honored — flopscope always "
+        "wraps freshly-allocated outputs as FlopscopeArray (an ndarray subclass), "
+        "even when the caller asked for plain ndarray. Same root cause as the "
+        "other SUBCLASS_RETURN entries."
     ),
     # ------------------------------------------------------------------ #
     # SUBCLASS_RETURN — numpy 2.4 ufunc __array_ufunc__ dispatch change  #
@@ -314,5 +320,68 @@ XFAIL_PATTERNS: dict[str, str] = {
         "SUBCLASS_RETURN: numpy 2.4 ufunc dispatch routes FlopscopeArray (from patched "
         "np.zeros) as out= into OverriddenArray._unwrap which does strict "
         "type(obj) != np.ndarray checks; returns NotImplemented then crashes on [0]"
+    ),
+    # ------------------------------------------------------------------ #
+    # NOT_IMPLEMENTED — private gufuncs and remaining edge cases          #
+    # ------------------------------------------------------------------ #
+    # ``ufunc.outer`` / ``reduceat`` / ``at`` and the generic
+    # ``reduce`` / ``accumulate`` fallback are now supported via
+    # ``__array_ufunc__`` (Section 15 of the PR description). Multi-
+    # output ufuncs (``divmod`` / ``frexp`` / ``modf``) are also
+    # supported (Section 8). The remaining xfails below are for
+    # private numpy gufuncs and a handful of genuine semantic
+    # divergences.
+    # Private numpy gufuncs (cross1d, matrix_multiply, conv1d_full, test_add,
+    # euclidean_pdist) live in ``numpy._core.umath_tests`` and are not part
+    # of the public NumPy API. Flopscope's __array_function__ allowlist does not
+    # include them, so calls raise TypeError (NotImplemented).
+    "*TestUfunc::test_cross1d": (
+        "NOT_IMPLEMENTED: private gufunc numpy._core.umath_tests.cross1d not in "
+        "__array_function__ allowlist"
+    ),
+    "*TestUfunc::test_axes_argument": (
+        "NOT_IMPLEMENTED: private gufunc matrix_multiply not in allowlist"
+    ),
+    "*TestUfunc::test_keepdims_argument": (
+        "NOT_IMPLEMENTED: private gufunc matrix_multiply not in allowlist"
+    ),
+    "*TestUfunc::test_can_ignore_signature": (
+        "NOT_IMPLEMENTED: private gufunc matrix_multiply not in allowlist"
+    ),
+    "*TestUfunc::test_matrix_multiply_umath_empty": (
+        "NOT_IMPLEMENTED: private gufunc matrix_multiply not in allowlist"
+    ),
+    "*TestUfunc::test_euclidean_pdist": (
+        "NOT_IMPLEMENTED: private gufunc euclidean_pdist not in allowlist"
+    ),
+    "*TestUfunc::test_ufunc_custom_out": (
+        "NOT_IMPLEMENTED: private gufunc test_add not in allowlist"
+    ),
+    "*TestGUFuncProcessCoreDims::test_conv1d_full_with_out": (
+        "NOT_IMPLEMENTED: private gufunc conv1d_full not in allowlist"
+    ),
+    "*TestGUFuncProcessCoreDims::test_bad_out_shape": (
+        "NOT_IMPLEMENTED: private gufunc conv1d_full not in allowlist"
+    ),
+    "*TestFrompyfunc::test_identity": (
+        "NOT_IMPLEMENTED: frompyfunc creates a custom ufunc whose dispatch "
+        "is not in flopscope's __array_function__ allowlist"
+    ),
+    # ------------------------------------------------------------------ #
+    # BEHAVIORAL_SHIM — __array_ufunc__ activates symmetry validation     #
+    # ------------------------------------------------------------------ #
+    # ``np.zeros_like(plain_3x3)`` returns a SymmetricTensor (flopscope auto-
+    # infers symmetry from constant-fill arrays of square shape, since
+    # all-zeros is symmetric in any axis order). On main, ``np.positive(
+    # plain_3x3, out=symmetric_zeros, where=mask)`` worked because numpy
+    # bypassed flopscope validation entirely (no __array_ufunc__). On v2,
+    # __array_ufunc__ activates ``_prepare_symmetric_out`` which refuses
+    # to write non-symmetric data into a SymmetricTensor — surfacing a
+    # latent semantic conflict the auto-inference creates.
+    "*TestUfunc::test_reduction_with_where*": (
+        "BEHAVIORAL_SHIM: np.zeros_like auto-infers SymmetryGroup on square "
+        "shapes; __array_ufunc__ then validates the write via "
+        "_prepare_symmetric_out and refuses non-symmetric assignments. Main "
+        "bypassed this path (no __array_ufunc__)."
     ),
 }
