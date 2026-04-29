@@ -18,16 +18,18 @@ test('TypedPartitionDemo uses theme helpers and contains zero raw hex codes', ()
   assert.doesNotMatch(src, /#[0-9A-Fa-f]{3}\b|#[0-9A-Fa-f]{6}\b/);
 });
 
-test('TypedPartitionDemo carries the relocated section4 ¶4 prose verbatim', () => {
+test('TypedPartitionDemo uses the editorial subsection style (ExplorerSubsectionHeader, no card wrapper)', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
-  assert.match(src, /When projection branches, the explorer can count exactly without expanding the full assignment grid/);
+  assert.match(src, /import ExplorerSubsectionHeader/);
+  assert.match(src, /<ExplorerSubsectionHeader anchorId="typed-partition-demo"/);
+  assert.match(src, /id="typed-partition-demo" className="bg-white p-4 scroll-mt-24"/);
+  assert.doesNotMatch(src, /rounded-xl border bg-white px-6 py-6 shadow-sm/);
 });
 
-test('TypedPartitionDemo carries the relocated PartitionCountingExplainer body ¶3, ¶4, ¶5 prose verbatim', () => {
+test('TypedPartitionDemo no longer carries the relocated prose paragraphs (they live back in section4 intro)', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
-  assert.match(src, /The partition-counting method groups assignments by equality pattern/);
-  assert.match(src, /For a fixed typed equality pattern, the block-labeling factor counts how many product orbits live above that pattern/);
-  assert.match(src, /This is not an approximation\. When both are feasible, the typed partition count and corrected brute-force orbit enumeration must give the same/);
+  assert.doesNotMatch(src, /When projection branches, the explorer can count exactly without expanding the full assignment grid/);
+  assert.doesNotMatch(src, /The partition-counting method groups assignments by equality pattern/);
 });
 
 test('TypedPartitionDemo imports the engine partition exports', () => {
@@ -58,9 +60,20 @@ test('TypedPartitionDemo renders the cumulative table and α total', () => {
   assert.match(src, /data-testid="partition-alpha-total"/);
 });
 
-test('TypedPartitionDemo handles the four regime coverage cases with explicit captions', () => {
+test('TypedPartitionDemo emits captions only for partitionCount + bruteForceOrbit cases', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
   assert.match(src, /partitionCount/);
-  assert.match(src, /this component fires/);
   assert.match(src, /the partition budget is exceeded/);
+  assert.match(src, /bruteForceOrbit/);
+  // The functionalProjection / closed-form caption was noisy; it has been removed.
+  assert.doesNotMatch(src, /partition counting would give the same/);
+});
+
+test('TypedPartitionDemo limits visible chips and table rows with a +N more affordance', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
+  assert.match(src, /VISIBLE_LIMIT\s*=\s*8/);
+  assert.match(src, /data-action="toggle-all-chips"/);
+  assert.match(src, /data-action="toggle-all-rows"/);
+  assert.match(src, /more patterns/);
+  assert.match(src, /more rows/);
 });
