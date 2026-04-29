@@ -19,7 +19,9 @@ export default function BranchingDemo({
   expressionInfo = null,
   dimensionN = null,
 }) {
-  const [hover, setHover] = useState(/* hover: { row, col } | null */ null);
+  // Hover lives in the matrix as a ref (not React state) — it paints the
+  // canvas marker imperatively and never propagates here. The panel updates
+  // only on click-pin. Empty state copy is "Click any cell …".
   const [pin, setPin] = useState(/* pin: { row, col } | null */ null);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -49,18 +51,20 @@ export default function BranchingDemo({
   }, [componentData, dimensionN]);
 
   // Stable callback identities so OrbitRepMatrix's onStateChange effect
-  // doesn't re-fire on every parent render (Task 3 review caveat).
-  const handleStateChange = useCallback(({ hover: h, pin: p }) => {
-    setHover(h);
+  // doesn't re-fire on every parent render.
+  //
+  // Critical perf note: we DO NOT propagate hover to the App-level `onHover`
+  // (cross-spotlight). That handler used to fire `setGraphHover` on every
+  // cell-to-cell hover, which forced the entire App to re-render (cost cards,
+  // classification tree, summary table, partition counter, every section).
+  // For matrices with many cells, mousemove was 500–1000 ms per cell. The
+  // cross-spotlight payload is the orbit's label set, which is identical for
+  // every orbit in a given preset — so per-hover propagation was pure waste.
+  // Pin still propagates `onSelectOrbit` (rare; click-only).
+  const handleStateChange = useCallback(({ pin: p }) => {
     setPin(p);
-    if (onHover && h) {
-      const labels = Object.keys(liveOrbitRows[h.row]?.repTuple ?? {});
-      onHover({ labels, leafKeys: [] });
-    } else if (onHover && !h) {
-      onHover(null);
-    }
     if (p && onSelectOrbit) onSelectOrbit(p.row);
-  }, [liveOrbitRows, onHover, onSelectOrbit]);
+  }, [onSelectOrbit]);
 
   const handleClearPin = useCallback(() => {
     setPin(null);
@@ -103,7 +107,7 @@ export default function BranchingDemo({
           onStateChange={handleStateChange}
         />
         <WorkedExamplePanel
-          hover={hover}
+          hover={null}
           pin={pin}
           orbitRows={liveOrbitRows}
           reps={reps}
@@ -129,7 +133,7 @@ export default function BranchingDemo({
         orbitRows={liveOrbitRows}
         reps={reps}
         cells={cells}
-        hover={hover}
+        hover={null}
         pin={pin}
         onStateChange={handleStateChange}
         onClearPin={handleClearPin}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import Latex from '../Latex.jsx';
 import {
   derivePreReps,
@@ -23,7 +23,7 @@ const COLOR = {
   border: '#D9DCDC',
 };
 
-export default function OrbitRepMatrix({
+function OrbitRepMatrix({
   orbitRows = [],
   // selectedOrbitIdx, expressionInfo, componentInfo are read by Tasks 4-9
   // (axis labels, label legend chip, worked-example panel) — stubbed here
@@ -40,9 +40,11 @@ export default function OrbitRepMatrix({
   const canvasRef = useRef(null);
   const offscreenRef = useRef(null); // cached base layer (grid + filled cells)
   const containerRef = useRef(null);
-  const scrollRef = useRef(null);
   const rafRef = useRef(null);
-  const [hover, setHover] = useState(/* hover: { row, col } | null */ null);
+  // Hover lives in a ref, not React state. Mousemove updates the ref and
+  // schedules a manual rAF paint that reads from the ref. No React re-render
+  // per hover — that's what makes hover feel instant on big matrices.
+  const hoverRef = useRef(null);
   const [pin, setPin] = useState(/* pin: { row, col } | null */ null);
   const [containerWidth, setContainerWidth] = useState(SQUARE_FRAME);
 
@@ -71,12 +73,13 @@ export default function OrbitRepMatrix({
     return () => ro.disconnect();
   }, [orbitRows.length === 0]);
 
-  // Surface state changes to the parent.
+  // Surface PIN changes to the parent (panel reads pin only — hover is
+  // canvas-only, lives in a ref, and never triggers a React render).
   useEffect(() => {
-    if (onStateChange) onStateChange({ hover, pin });
-  }, [hover, pin, onStateChange]);
+    if (onStateChange) onStateChange({ hover: null, pin });
+  }, [pin, onStateChange]);
 
-  // Cancel any in-flight rAF on unmount so we don't fire setHover after teardown.
+  // Cancel any in-flight rAF on unmount.
   useEffect(() => {
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
@@ -104,7 +107,7 @@ export default function OrbitRepMatrix({
   // Stage 1: SIZING — runs only when layout changes.
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || layout.cellSize === 0) return;
+    if (!canvas || !layout.cellWidth || !layout.cellHeight) return;
     const dpr = window.devicePixelRatio || 1;
     const w = layout.contentWidth;
     const h = layout.contentHeight;
@@ -132,8 +135,10 @@ export default function OrbitRepMatrix({
   // Re-runs only when the data or pin changes (rare).
   useEffect(() => {
     const off = offscreenRef.current;
-    if (!off || layout.cellSize === 0) return;
+    if (!off || !layout.cellWidth || !layout.cellHeight) return;
     const ctx = off.getContext('2d');
+    const cw = layout.cellWidth;
+    const ch = layout.cellHeight;
 
     // Clear (logical coords; DPR scale already applied in stage 1).
     ctx.fillStyle = COLOR.bg;
@@ -146,74 +151,79 @@ export default function OrbitRepMatrix({
         if (coeff === null) continue;
         const isPin = pin && pin.row === r && pin.col === c;
         ctx.fillStyle = isPin ? COLOR.cellPinned : COLOR.cellFilled;
-        ctx.fillRect(c * layout.cellSize, r * layout.cellSize, layout.cellSize, layout.cellSize);
+        ctx.fillRect(c * cw, r * ch, cw, ch);
       }
     }
 
-    // Grid lines — single pass, each line drawn once (symmetric).
-    ctx.strokeStyle = COLOR.cellGrid;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    for (let r = 0; r <= orbitRows.length; r += 1) {
-      const y = r * layout.cellSize + 0.5;
-      ctx.moveTo(0, y);
-      ctx.lineTo(layout.contentWidth, y);
+    // Grid lines — single pass, each line drawn once (symmetric). Skip when
+    // cells are too small to leave room for a 1-px grid line (≤ 2 px cells:
+    // grid would dominate the cell).
+    if (cw > 2 && ch > 2) {
+      ctx.strokeStyle = COLOR.cellGrid;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      for (let r = 0; r <= orbitRows.length; r += 1) {
+        const y = r * ch + 0.5;
+        ctx.moveTo(0, y);
+        ctx.lineTo(layout.contentWidth, y);
+      }
+      for (let c = 0; c <= reps.length; c += 1) {
+        const x = c * cw + 0.5;
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, layout.contentHeight);
+      }
+      ctx.stroke();
     }
-    for (let c = 0; c <= reps.length; c += 1) {
-      const x = c * layout.cellSize + 0.5;
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, layout.contentHeight);
-    }
-    ctx.stroke();
   }, [layout, orbitRows, reps, cells, pin]);
 
-  // Stage 3: PAINT — composite the cached base + dynamic overlays onto the
-  // visible canvas. Runs on every hover/pin change. Cost: drawImage + a few
-  // strokeRects, which is <1 ms even for very large matrices.
-  useEffect(() => {
+  // Stage 3: PAINT — composite the cached base + dynamic overlays.
+  // Imperative, called from event handlers via rAF. Reads hover from a ref
+  // so React never re-renders for hover. <1 ms per call even on big matrices.
+  function paintOverlay() {
     const canvas = canvasRef.current;
     const off = offscreenRef.current;
-    if (!canvas || !off || layout.cellSize === 0) return;
+    if (!canvas || !off || !layout.cellWidth || !layout.cellHeight) return;
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
+    const cw = layout.cellWidth;
+    const ch = layout.cellHeight;
+    const hover = hoverRef.current;
 
-    // Reset transform so drawImage maps device-pixel-1:1, then re-apply
-    // DPR scale for the logical-coord overlay drawing below.
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.drawImage(off, 0, 0);
     ctx.scale(dpr, dpr);
 
-    // Branching outlines for the orbit's other reached cells in the focused row.
     const focus = pin || hover;
-    if (focus) {
+    if (focus && cw > 2 && ch > 2) {
       ctx.strokeStyle = COLOR.branchOutline;
       ctx.lineWidth = 1;
       for (let c = 0; c < reps.length; c += 1) {
         if (c === focus.col) continue;
         if (cells[focus.row][c] === null) continue;
-        const x = c * layout.cellSize;
-        const y = focus.row * layout.cellSize;
-        ctx.strokeRect(x + 1.5, y + 1.5, layout.cellSize - 3, layout.cellSize - 3);
+        ctx.strokeRect(c * cw + 1.5, focus.row * ch + 1.5, cw - 3, ch - 3);
       }
     }
 
-    // Faint cell-level hover marker — 2 px coral border on the hovered cell
-    // (only when NOT pinned; pin uses the stronger fill in the base layer).
     if (hover && !pin) {
-      const x = hover.col * layout.cellSize;
-      const y = hover.row * layout.cellSize;
       ctx.strokeStyle = COLOR.hoverMarker;
       ctx.lineWidth = 2;
-      ctx.strokeRect(x + 1, y + 1, layout.cellSize - 2, layout.cellSize - 2);
+      ctx.strokeRect(hover.col * cw + 1, hover.row * ch + 1, Math.max(cw - 2, 0), Math.max(ch - 2, 0));
     }
-  }, [layout, orbitRows, reps, cells, hover, pin]);
+  }
 
-  // Pointer event helpers.
+  // After layout/data/pin changes, repaint once so the static base + any
+  // existing pin overlay re-renders. (Hover refreshes happen via mousemove.)
+  useEffect(() => {
+    paintOverlay();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [layout, orbitRows, reps, cells, pin]);
+
+  // Pointer event helpers. The canvas is fixed-size with no internal scroll,
+  // so coords are simply mouse-relative-to-canvas.
   function pointerCoords(e) {
     const canvas = canvasRef.current;
-    const scrollEl = scrollRef.current;
-    if (!canvas || !scrollEl) return null;
-    const rect = scrollEl.getBoundingClientRect();
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
     return {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top,
@@ -221,31 +231,28 @@ export default function OrbitRepMatrix({
   }
   function pointToCell(pt) {
     if (!pt) return null;
-    const scrollEl = scrollRef.current;
     return cellAtPoint(pt, {
-      cellSize: layout.cellSize,
+      cellWidth: layout.cellWidth,
+      cellHeight: layout.cellHeight,
       canvasW: layout.canvasW,
       canvasH: layout.canvasH,
-      scrollTop: scrollEl?.scrollTop ?? 0,
-      scrollLeft: scrollEl?.scrollLeft ?? 0,
       numRows: orbitRows.length,
       numCols: reps.length,
     });
   }
   function handleMouseMove(e) {
-    // Capture the pointer position immediately (the SyntheticEvent is reused).
+    // Capture pointer immediately (SyntheticEvent gets reused).
     const pt = pointerCoords(e);
     if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     rafRef.current = requestAnimationFrame(() => {
       rafRef.current = null;
       const cell = pointToCell(pt);
-      setHover((prev) => {
-        // Skip the setState if the cell hasn't changed — avoid useless re-renders.
-        if (prev === cell) return prev;
-        if (prev && cell && prev.row === cell.row && prev.col === cell.col) return prev;
-        return cell;
-      });
-      if (onHover) onHover(cell);
+      const prev = hoverRef.current;
+      // Skip if cell hasn't changed.
+      if (prev === cell) return;
+      if (prev && cell && prev.row === cell.row && prev.col === cell.col) return;
+      hoverRef.current = cell;
+      paintOverlay();
     });
   }
   function handleMouseLeave() {
@@ -253,8 +260,10 @@ export default function OrbitRepMatrix({
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
-    setHover(null);
-    if (onHover) onHover(null);
+    if (hoverRef.current !== null) {
+      hoverRef.current = null;
+      paintOverlay();
+    }
   }
   function handleClick(e) {
     const cell = pointToCell(pointerCoords(e));
@@ -324,12 +333,14 @@ export default function OrbitRepMatrix({
       </div>
 
       {/* Canvas frame with permanent axis labels — tuple values appear in
-          the WorkedExamplePanel on the right of BranchingDemo. */}
+          the WorkedExamplePanel on the right of BranchingDemo. Fixed-size
+          square canvas with rectangular cells when numRows ≠ numCols; no
+          internal scroll. */}
       <div
         className="grid"
         style={{
           gridTemplateColumns: '22px minmax(0, 1fr)',
-          gridTemplateRows: `${layout.canvasH}px 22px`,
+          gridTemplateRows: 'auto 22px',
         }}
       >
         {/* Y axis label */}
@@ -345,17 +356,14 @@ export default function OrbitRepMatrix({
           Orbit <Latex math="O" />
         </div>
 
-        {/* Canvas */}
+        {/* Canvas — fixed size, no scroll wrapper. */}
         <div
-          ref={scrollRef}
           style={{
             gridColumn: 2, gridRow: 1,
             width: layout.canvasW, height: layout.canvasH,
             background: COLOR.bg,
             border: `1px solid ${COLOR.border}`,
             borderRadius: 4,
-            overflowY: layout.overflowY ? 'auto' : 'hidden',
-            overflowX: layout.overflowX ? 'auto' : 'hidden',
             cursor: 'pointer',
           }}
           onMouseMove={handleMouseMove}
@@ -407,3 +415,9 @@ export default function OrbitRepMatrix({
     </div>
   );
 }
+
+// Memoize: BranchingDemo re-renders on every hover/pin update, but
+// OrbitRepMatrix's props don't depend on hover/pin (those live in the matrix's
+// own internal state). React.memo with default shallow-prop equality skips
+// the re-render when the parent re-renders for an unrelated reason.
+export default memo(OrbitRepMatrix);

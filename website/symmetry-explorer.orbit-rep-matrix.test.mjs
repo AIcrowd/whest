@@ -33,50 +33,38 @@ test('labelledTuple keeps k=v form', () => {
   assert.equal(labelledTuple({ i: 0, j: 0, k: 1 }), '(i=0, j=0, k=1)');
 });
 
-test('layoutFor: square cells, canvas height capped at canvas width', () => {
-  // 6 × 6: cell = floor(360/6) = 60, ≤ MAX_CELL=64 → cell=60 (fills column)
-  // contentW = 6*60 = 360, contentH = 6*60 = 360, both ≤ 360 → no overflow
+test('layoutFor: fixed square canvas, rectangular cells when numRows ≠ numCols', () => {
+  // 6 × 6 (square): cellWidth = cellHeight = 60. Canvas 360 × 360.
   assert.deepEqual(layoutFor({ canvasWidth: 360, numRows: 6, numCols: 6 }), {
-    cellSize: 60,
-    canvasW: 360,
-    canvasH: 360,
-    overflowY: false,
-    overflowX: false,
-    contentWidth: 360,
-    contentHeight: 360,
+    cellWidth: 60, cellHeight: 60,
+    canvasW: 360, canvasH: 360,
+    contentWidth: 360, contentHeight: 360,
   });
-  // 14 × 10: cell = floor(360/14) = 25, contentH = 25*10 = 250 ≤ 360 → no overflow
+  // 14 × 10 (rectangular): cellWidth = floor(360/14) = 25, cellHeight = floor(360/10) = 36.
   assert.deepEqual(layoutFor({ canvasWidth: 360, numRows: 10, numCols: 14 }), {
-    cellSize: 25,
-    canvasW: 350,
-    canvasH: 250,
-    overflowY: false,
-    overflowX: false,
-    contentWidth: 350,
-    contentHeight: 250,
+    cellWidth: 25, cellHeight: 36,
+    canvasW: 350, canvasH: 360,
+    contentWidth: 350, contentHeight: 360,
   });
-  // 10 × 165 (Trilinear): cell = floor(360/10) = 36, ≤ MAX_CELL=64 → cell=36
-  // contentW = 10*36 = 360, contentH = 165*36 = 5940 → overflowY engages
+  // 165 × 10 (Trilinear, very tall): cellWidth = 36, cellHeight = 2.
+  // Canvas stays fixed-size (360 × 360); cells become rectangles.
   const trilinear = layoutFor({ canvasWidth: 360, numRows: 165, numCols: 10 });
-  assert.equal(trilinear.cellSize, 36);
+  assert.equal(trilinear.cellWidth, 36);
+  assert.equal(trilinear.cellHeight, 2);
   assert.equal(trilinear.canvasW, 360);
-  assert.equal(trilinear.canvasH, 360);
-  assert.equal(trilinear.overflowY, true);
-  assert.equal(trilinear.contentHeight, 36 * 165);
+  assert.equal(trilinear.canvasH, 330); // 165 × 2
 });
 
-test('layoutFor floors cell at MIN_CELL=4', () => {
-  // 200 cols × 360 width → 1.8 px per cell → clamped to MIN_CELL=4
-  // contentW = 4*200 = 800 > canvasW=360 → overflowX engages
+test('layoutFor floors at MIN_CELL=1 (no zero-size cells)', () => {
+  // 200 cols × 360 width → 1.8 px per cell → floored to 1.
   const tiny = layoutFor({ canvasWidth: 360, numRows: 50, numCols: 200 });
-  assert.equal(tiny.cellSize, 4);
-  // canvasW capped at canvasWidth (360) since contentW exceeds it
-  assert.equal(tiny.canvasW, 360);
-  assert.equal(tiny.overflowX, true);
+  assert.equal(tiny.cellWidth, 1);
+  // canvasW = 1 * 200 = 200 (fits inside 360)
+  assert.equal(tiny.canvasW, 200);
 });
 
 test('cellAtPoint maps pixel coords to (row, col)', () => {
-  const layout = { cellSize: 20, canvasW: 200, canvasH: 200, scrollTop: 0, scrollLeft: 0 };
+  const layout = { cellWidth: 20, cellHeight: 20, canvasW: 200, canvasH: 200 };
   assert.deepEqual(cellAtPoint({ x: 0, y: 0 }, layout), { row: 0, col: 0 });
   assert.deepEqual(cellAtPoint({ x: 25, y: 5 }, layout), { row: 0, col: 1 });
   assert.deepEqual(cellAtPoint({ x: 150, y: 80 }, layout), { row: 4, col: 7 });
@@ -85,10 +73,12 @@ test('cellAtPoint maps pixel coords to (row, col)', () => {
   assert.equal(cellAtPoint({ x: 0, y: 250 }, layout), null);
 });
 
-test('cellAtPoint accounts for scrollTop on tall matrices', () => {
-  const layout = { cellSize: 20, canvasW: 200, canvasH: 200, scrollTop: 100, scrollLeft: 0 };
-  // y=10 viewport-relative + scrollTop=100 = absolute y=110 → row=5
-  assert.deepEqual(cellAtPoint({ x: 5, y: 10 }, layout), { row: 5, col: 0 });
+test('cellAtPoint handles rectangular cells (cellWidth ≠ cellHeight)', () => {
+  // Rectangular cells: 36 wide × 2 tall.
+  const layout = { cellWidth: 36, cellHeight: 2, canvasW: 360, canvasH: 330 };
+  assert.deepEqual(cellAtPoint({ x: 5, y: 1 }, layout), { row: 0, col: 0 });
+  assert.deepEqual(cellAtPoint({ x: 38, y: 1 }, layout), { row: 0, col: 1 });
+  assert.deepEqual(cellAtPoint({ x: 5, y: 100 }, layout), { row: 50, col: 0 });
 });
 
 test('derivePreReps + deriveCells pull stored reps + filled-coeff matrix', () => {
@@ -115,29 +105,29 @@ test('module is JS only — no JSX, no React import', () => {
 });
 
 test('cellAtPoint rejects coords beyond numRows / numCols', () => {
-  const layout = { cellSize: 20, canvasW: 200, canvasH: 200, scrollTop: 0, scrollLeft: 0, numRows: 5, numCols: 4 };
+  const layout = { cellWidth: 20, cellHeight: 20, canvasW: 200, canvasH: 200, numRows: 5, numCols: 4 };
   // valid in-bounds
   assert.deepEqual(cellAtPoint({ x: 5, y: 5 }, layout), { row: 0, col: 0 });
   assert.deepEqual(cellAtPoint({ x: 75, y: 95 }, layout), { row: 4, col: 3 });
-  // col >= numCols
+  // col >= numCols (canvas extends past content)
   assert.equal(cellAtPoint({ x: 95, y: 5 }, { ...layout, canvasW: 300 }), null);
-  // row >= numRows (with scroll past bottom)
-  assert.equal(cellAtPoint({ x: 5, y: 5 }, { ...layout, scrollTop: 200, canvasH: 300 }), null);
+  // row >= numRows
+  assert.equal(cellAtPoint({ x: 5, y: 105 }, { ...layout, canvasH: 300 }), null);
 });
 
-test('cellAtPoint short-circuits when cellSize is invalid', () => {
-  assert.equal(cellAtPoint({ x: 0, y: 0 }, { cellSize: 0, canvasW: 0, canvasH: 0 }), null);
-  assert.equal(cellAtPoint({ x: 0, y: 0 }, { cellSize: null, canvasW: 100, canvasH: 100 }), null);
+test('cellAtPoint short-circuits when cell dimensions are invalid', () => {
+  assert.equal(cellAtPoint({ x: 0, y: 0 }, { cellWidth: 0, cellHeight: 0, canvasW: 0, canvasH: 0 }), null);
+  assert.equal(cellAtPoint({ x: 0, y: 0 }, { cellWidth: null, cellHeight: 20, canvasW: 100, canvasH: 100 }), null);
+  assert.equal(cellAtPoint({ x: 0, y: 0 }, { cellWidth: 20, cellHeight: null, canvasW: 100, canvasH: 100 }), null);
 });
 
 test('layoutFor returns a clean empty layout for 0 rows / 0 cols / NaN / negative', () => {
   for (const bad of [{ numRows: 0, numCols: 5 }, { numRows: 5, numCols: 0 }, { numRows: NaN, numCols: 5 }, { numRows: 5, numCols: -3 }]) {
     const out = layoutFor({ canvasWidth: 360, ...bad });
-    assert.equal(out.cellSize, 0, `cellSize 0 for ${JSON.stringify(bad)}`);
+    assert.equal(out.cellWidth, 0, `cellWidth 0 for ${JSON.stringify(bad)}`);
+    assert.equal(out.cellHeight, 0);
     assert.equal(out.canvasW, 0);
     assert.equal(out.canvasH, 0);
-    assert.equal(out.overflowX, false);
-    assert.equal(out.overflowY, false);
     assert.equal(out.contentWidth, 0);
     assert.equal(out.contentHeight, 0);
   }
@@ -154,10 +144,12 @@ test('OrbitRepMatrix renders into <canvas> using layout helpers', () => {
   assert.match(src, /cellAtPoint/);
 });
 
-test('OrbitRepMatrix tracks hover + pin state separately', () => {
+test('OrbitRepMatrix uses a ref for hover (no React render per cell), state for pin', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  // Two distinct useState slots.
-  assert.match(src, /useState[^;]*hover/);
+  // Hover lives in a ref so mousemove paints the canvas without re-rendering React.
+  assert.match(src, /hoverRef\s*=\s*useRef/);
+  assert.match(src, /hoverRef\.current/);
+  // Pin still drives a React state slot (it propagates to the panel).
   assert.match(src, /useState[^;]*pin/);
   // Click handler.
   assert.match(src, /onClick=/);

@@ -82,7 +82,7 @@ function WorkedExamplePanel({
         <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-400 not-italic mb-2">
           Worked example
         </div>
-        Hover any cell on the left to see the (O, Q) projection and contribution.
+        Click any cell on the left to pin it and read the (O, Q) projection and contribution.
       </div>
     );
   }

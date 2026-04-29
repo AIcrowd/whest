@@ -37,11 +37,13 @@ test('BranchingDemo mounts OrbitRepMatrix + WorkedExamplePanel side-by-side', ()
   assert.match(src, /<WorkedExamplePanel/);
 });
 
-test('BranchingDemo wires shared hover + pin state', () => {
+test('BranchingDemo holds pin state and skips per-hover propagation for perf', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  // Two distinct useState slots for hover and pin.
-  assert.match(src, /useState[\s\S]{0,200}hover/);
+  // Pin state: still React state (drives the WorkedExamplePanel and modal).
   assert.match(src, /useState[\s\S]{0,200}pin/);
+  // Hover does NOT live in BranchingDemo state — it's a ref inside
+  // OrbitRepMatrix that paints the canvas marker without React.
+  assert.doesNotMatch(src, /useState\([^)]*\)[^;]{0,80}hover/);
 });
 
 test('BranchingDemo renders the modal trigger and mounts OrbitRepMatrixModal', () => {
