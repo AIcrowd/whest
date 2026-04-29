@@ -225,3 +225,14 @@ test('OrbitRepMatrix renders an sr-only mirror table for accessibility', () => {
   // Each <td> has aria-label describing (O, Q) + filled/empty.
   assert.match(src, /aria-label=\{[^}]*labelledTuple/);
 });
+
+test('OrbitRepMatrixModal renders modal shell with ESC + backdrop close', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrixModal.jsx');
+  assert.match(src, /export default function OrbitRepMatrixModal/);
+  assert.match(src, /role="dialog"/);
+  assert.match(src, /Escape/);
+  assert.match(src, /aria-modal/);
+  // Must mount the matrix + panel inside the modal panel.
+  assert.match(src, /import OrbitRepMatrix from/);
+  assert.match(src, /import WorkedExamplePanel from/);
+});
