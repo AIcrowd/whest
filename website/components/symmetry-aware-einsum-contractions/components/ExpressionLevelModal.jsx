@@ -1788,26 +1788,29 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                   </div>
                 </>
               )}
-              support={(
-                <div className="space-y-3 text-center">
-                  <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>Equation 6.1</div>
-                  <div>
-                    <Latex
-                      math={normalizeAppendixDisplayText(appendixSection6.slots.intro[3].text).replace(/^\$|\$$/g, '')}
-                      display
-                    />
+              support={(() => {
+                const equationLatex = `${normalizeAppendixDisplayText(appendixSection6.slots.intro[3].text).replace(/^\$|\$$/g, '')}\\tag{6.1}`;
+                return (
+                  <div className="space-y-2 text-center">
+                    <div className="text-[1.3em]">
+                      <Latex math={equationLatex} display />
+                    </div>
+                    <div className="pt-3 font-serif text-[14px] italic text-gray-500">where</div>
+                    <div className="space-y-1.5">
+                      {[4, 5, 6, 7, 8, 9].map((idx) => (
+                        <p
+                          key={`appendix-6-glossary-${idx}`}
+                          className="font-serif text-[15px] leading-[1.7] text-gray-700"
+                        >
+                          {renderAppendixSingleBlock(appendixSection6.slots.intro, idx, {
+                            slotKey: 'appendix-section6-glossary',
+                          })}
+                        </p>
+                      ))}
+                    </div>
                   </div>
-                  <div className="space-y-2 pt-2">
-                    {[4, 5, 6, 7, 8, 9].map((idx) => (
-                      <p key={`appendix-6-glossary-${idx}`} className={APPENDIX_PROSE_CLASS}>
-                        {renderAppendixSingleBlock(appendixSection6.slots.intro, idx, {
-                          slotKey: 'appendix-section6-glossary',
-                        })}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              )}
+                );
+              })()}
             />
           </AppendixSection>
         </div>
