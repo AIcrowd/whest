@@ -91,18 +91,16 @@ function OrbitRepMatrix({
   // Drawing 18k+ cells on every mousemove is too expensive — the user feels it
   // as sluggishness. We split into three stages so per-hover cost is tiny:
   //
-  //   1. SIZING (deps: [layout])      — set canvas + offscreen dimensions, DPR.
-  //   2. BASE   (deps: [layout, cells, hover]) — paint grid + filled cells into
-  //                                              an offscreen canvas. Hover is in
-  //                                              the base because hovered cells
-  //                                              use the stronger coral fill.
-  //   3. PAINT  (deps: [layout, hover, cells]) — drawImage(base) + small
-  //                                              branching outlines +
-  //                                              hover marker. <1 ms even
-  //                                              on 18k-cell matrices.
+  //   1. SIZING (deps: [layout])        — set canvas + offscreen dimensions, DPR.
+  //   2. BASE   (deps: [layout, cells]) — paint grid + all filled cells (uniform
+  //                                       COLOR.cellFilled) into an offscreen canvas.
+  //                                       hover is NOT a dep — BASE never re-runs
+  //                                       on cell changes.
+  //   3. PAINT  (imperative, rAF)       — drawImage(base) + focused-cell strong fill
+  //                                       + branching outlines + hover marker.
+  //                                       <1 ms even on 18k-cell matrices.
   //
-  // Per mousemove only PAINT runs; BASE only runs when the data or hover
-  // changes, which is rare relative to mousemove frequency.
+  // Per mousemove only PAINT runs; BASE only re-runs on layout/data changes.
 
   // Stage 1: SIZING — runs only when layout changes.
   useEffect(() => {
@@ -131,8 +129,8 @@ function OrbitRepMatrix({
     offCtx.scale(dpr, dpr);
   }, [layout]);
 
-  // Stage 2: BASE — paint grid + filled cells into the offscreen canvas.
-  // Re-runs only when the data or hover changes (rare).
+  // Stage 2: BASE — paint grid + all filled cells into the offscreen canvas.
+  // Re-runs only when layout or data changes — NOT on hover changes.
   useEffect(() => {
     const off = offscreenRef.current;
     if (!off || !layout.cellWidth || !layout.cellHeight) return;
@@ -144,13 +142,14 @@ function OrbitRepMatrix({
     ctx.fillStyle = COLOR.bg;
     ctx.fillRect(0, 0, layout.contentWidth, layout.contentHeight);
 
-    // Filled cells. Focused (hovered) cell gets the stronger coral.
+    // Filled cells — all use the standard fill. The focused-cell strong-fill
+    // (COLOR.cellPinned) is applied in Stage 3 PAINT so BASE never re-runs on
+    // hover changes.
     for (let r = 0; r < orbitRows.length; r += 1) {
       for (let c = 0; c < reps.length; c += 1) {
         const coeff = cells[r][c];
         if (coeff === null) continue;
-        const isFocus = hover && hover.row === r && hover.col === c;
-        ctx.fillStyle = isFocus ? COLOR.cellPinned : COLOR.cellFilled;
+        ctx.fillStyle = COLOR.cellFilled;
         ctx.fillRect(c * cw, r * ch, cw, ch);
       }
     }
@@ -174,7 +173,7 @@ function OrbitRepMatrix({
       }
       ctx.stroke();
     }
-  }, [layout, orbitRows, reps, cells, hover]);
+  }, [layout, orbitRows, reps, cells]);
 
   // Stage 3: PAINT — composite the cached base + dynamic overlays.
   // Imperative, called from event handlers via rAF. Reads hover from a ref
@@ -194,6 +193,13 @@ function OrbitRepMatrix({
     ctx.scale(dpr, dpr);
 
     const focus = hoverCell;
+    if (focus && cw > 2 && ch > 2 && cells[focus.row]?.[focus.col] !== null) {
+      // Strong-coral fill on the focused cell — done here so BASE doesn't
+      // re-paint on every hover change.
+      ctx.fillStyle = COLOR.cellPinned;
+      ctx.fillRect(focus.col * cw, focus.row * ch, cw, ch);
+    }
+
     if (focus && cw > 2 && ch > 2) {
       ctx.strokeStyle = COLOR.branchOutline;
       ctx.lineWidth = 1;
@@ -257,11 +263,13 @@ function OrbitRepMatrix({
       paintOverlay();
 
       // Surface the hover-cell change to the parent so the floating card
-      // updates content + position.
+      // updates content + position. Note: onSelectOrbit is intentionally NOT
+      // called here — it cascades to ComponentCostView's selectedOrbitIdx and
+      // triggers re-renders of cost cards, classification tree, and summary
+      // table on every hover-cell change. Keep onSelectOrbit for click-only use.
       if (onHoverChange) {
         if (cell) {
           onHoverChange({ row: cell.row, col: cell.col, clickX: clientX, clickY: clientY });
-          if (onSelectOrbit) onSelectOrbit(cell.row);
         } else {
           onHoverChange(null);
         }

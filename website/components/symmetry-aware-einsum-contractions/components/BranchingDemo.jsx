@@ -59,8 +59,12 @@ export default function BranchingDemo({
 
   const handleHoverChange = useCallback((nextHover) => {
     setHover(nextHover);
-    if (nextHover && onSelectOrbit) onSelectOrbit(nextHover.row);
-  }, [onSelectOrbit]);
+    // Note: we deliberately do NOT call onSelectOrbit on hover — it propagates
+    // to ComponentCostView's selectedOrbitIdx, which cascades into cost cards,
+    // classification tree, and summary table re-rendering. The original
+    // click-pin model only fired this on click; the new hover-driven model
+    // would fire it 60+ times/sec on dense presets without this guard.
+  }, []);
 
   const handleDismiss = useCallback(() => setHover(null), []);
   const handleOpenModal = useCallback(() => setModalOpen(true), []);

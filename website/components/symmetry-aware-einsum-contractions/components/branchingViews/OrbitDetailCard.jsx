@@ -1,4 +1,4 @@
-import { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { memo, useEffect, useLayoutEffect, useRef } from 'react';
 import Latex from '../Latex.jsx';
 import { labelledTuple, tupleKey } from './orbitRepMatrixLayout.js';
 import { flipPosition } from './floatingPosition.js';
@@ -67,36 +67,44 @@ function OrbitDetailCard({
   matrixRef = null,          // ref to the matrix outer element — used by IntersectionObserver
   mode = 'floating',         // 'floating' | 'inline'
 }) {
-  const [position, setPosition] = useState({ left: 0, top: 0 });
+  const cardRef = useRef(null);
   // Capture onDismiss in a ref so the three effects below don't re-run when
   // callers pass an unstable arrow. Effects call `onDismissRef.current()` instead.
   const onDismissRef = useRef(onDismiss);
   useEffect(() => { onDismissRef.current = onDismiss; }, [onDismiss]);
 
+  // `active` collapses hover from an object reference to a boolean, so the
+  // two effects below only re-run on show/hide transitions (not on every
+  // cell change within the hover session).
+  const active = hover !== null;
+
   // Esc to dismiss (floating mode only — modal mode handles its own Esc).
   useEffect(() => {
-    if (mode !== 'floating' || !hover) return undefined;
+    if (mode !== 'floating' || !active) return undefined;
     const onKey = (e) => { if (e.key === 'Escape') onDismissRef.current(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [mode, hover]);
+  }, [mode, active]);
 
   // Auto-dismiss when matrix scrolls offscreen (floating mode only).
   useEffect(() => {
-    if (mode !== 'floating' || !hover || !matrixRef?.current) return undefined;
+    if (mode !== 'floating' || !active || !matrixRef?.current) return undefined;
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.intersectionRatio < 0.05) onDismissRef.current();
     }, { threshold: 0.05 });
     observer.observe(matrixRef.current);
     return () => observer.disconnect();
-  }, [mode, hover, matrixRef]);
+  }, [mode, active, matrixRef]);
 
   // Compute floating position when hover changes (and on window resize).
+  // Writes el.style imperatively — no React state, no double render per hover.
   useLayoutEffect(() => {
     if (mode !== 'floating' || !hover) return undefined;
     let rafId = null;
     const compute = () => {
       rafId = null;
+      const el = cardRef.current;
+      if (!el) return;
       const next = flipPosition({
         clickX: hover.clickX ?? 0,
         clickY: hover.clickY ?? 0,
@@ -106,7 +114,8 @@ function OrbitDetailCard({
         viewportH: window.innerHeight,
         padding: FLOAT_PADDING,
       });
-      setPosition(next);
+      el.style.left = `${next.left}px`;
+      el.style.top = `${next.top}px`;
     };
     const onResize = () => {
       if (rafId !== null) return;
@@ -144,8 +153,8 @@ function OrbitDetailCard({
   const wrapperStyle = mode === 'floating'
     ? {
         position: 'fixed',
-        left: position.left,
-        top: position.top,
+        left: 0,                    // initial; useLayoutEffect overwrites synchronously
+        top: 0,
         width: CARD_W,
         maxHeight: `min(${CARD_H}px, calc(100vh - ${2 * FLOAT_PADDING}px))`,
         overflowY: 'auto',
@@ -161,6 +170,7 @@ function OrbitDetailCard({
 
   return (
     <div
+      ref={cardRef}
       data-testid="orbit-detail-card"
       data-mode={mode}
       style={wrapperStyle}
