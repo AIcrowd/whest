@@ -57,6 +57,12 @@ test('OrbitDetailCard imports Latex + the orbitRepMatrixLayout helpers it actual
   assert.match(src, /tupleKey/);
 });
 
+test('OrbitDetailCard wrapper uses p-5 padding for breathing room', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitDetailCard.jsx');
+  // The card outer div uses p-5 (Tailwind: 1.25rem = 20px) instead of p-4.
+  assert.match(src, /data-testid="orbit-detail-card"[\s\S]{0,200}className="p-5"/);
+});
+
 test('OrbitDetailCard uses no raw hex outside design tokens', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitDetailCard.jsx');
   const allowed = new Set([

@@ -285,6 +285,14 @@ test('OrbitRepMatrix renders an eased CSS overlay over the focused cell (not jus
   assert.match(src, /transition:\s*['"]opacity 120ms/);
 });
 
+test('OrbitRepMatrix paints a 1px depth lip on filled cells (subtle Apple-style depth)', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // The depth-lip block is gated on cellH > 4 to avoid dominating tiny cells.
+  assert.match(src, /showDepthLip\s*=\s*ch\s*>\s*4/);
+  // The 1 px top-edge fill uses the darker coral variant.
+  assert.match(src, /rgba\(178,\s*62,\s*58,\s*0\.18\)/);
+});
+
 test('OrbitRepMatrix axis labels use refined typography (lowercase, lighter weight, lighter color)', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
   // Tighter tracking + medium weight (not semibold/uppercase).

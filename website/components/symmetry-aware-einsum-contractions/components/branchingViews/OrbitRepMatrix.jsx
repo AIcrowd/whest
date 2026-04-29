@@ -142,15 +142,22 @@ function OrbitRepMatrix({
     ctx.fillStyle = COLOR.bg;
     ctx.fillRect(0, 0, layout.contentWidth, layout.contentHeight);
 
-    // Filled cells — all use the standard fill. The focused-cell strong-fill
-    // (COLOR.cellPinned) is applied in Stage 3 PAINT so BASE never re-runs on
-    // hover changes.
+    // Filled cells with a 1px darker top edge — gives subtle depth without
+    // adding visual noise. Skip the depth lip when cells are too short
+    // (cellH ≤ 4 px) since the lip would dominate the cell.
+    const showDepthLip = ch > 4;
     for (let r = 0; r < orbitRows.length; r += 1) {
       for (let c = 0; c < reps.length; c += 1) {
         const coeff = cells[r][c];
         if (coeff === null) continue;
+        const x = c * cw;
+        const y = r * ch;
         ctx.fillStyle = COLOR.cellFilled;
-        ctx.fillRect(c * cw, r * ch, cw, ch);
+        ctx.fillRect(x, y, cw, ch);
+        if (showDepthLip) {
+          ctx.fillStyle = 'rgba(178, 62, 58, 0.18)'; // a darker variant of the coral tone
+          ctx.fillRect(x, y, cw, 1);
+        }
       }
     }
 

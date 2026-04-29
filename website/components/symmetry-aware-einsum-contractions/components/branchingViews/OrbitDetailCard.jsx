@@ -172,7 +172,7 @@ function OrbitDetailCard({
       data-testid="orbit-detail-card"
       data-mode={mode}
       style={wrapperStyle}
-      className="p-4"
+      className="p-5"
     >
       {/* Zone 1 — Header: eyebrow + close + tuples + branching caption */}
       <div className="flex items-baseline gap-3">
