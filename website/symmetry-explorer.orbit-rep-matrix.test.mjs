@@ -174,10 +174,39 @@ test('OrbitRepMatrix uses no raw hex outside design tokens', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
   const allowed = new Set([
     '#F0524D', '#FEF2F1', '#D9DCDC', '#F8F9F9', '#FFFFFF', '#1F2526',
-    '#ECEFEF', '#4A7CFF', '#64748B', '#9AA0A0',
+    '#ECEFEF', '#4A7CFF', '#64748B', '#9AA0A0', '#B23E3A',
   ]);
   const hexes = src.match(/#[0-9A-Fa-f]{3,6}\b/g) ?? [];
   for (const h of hexes) {
     assert.ok(allowed.has(h.toUpperCase()), `disallowed hex ${h} — use a design token`);
   }
+});
+
+test('OrbitRepMatrix renders permanent axis labels Orbit O and Rep Q', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // Look for "Orbit" + math O and "Rep" + math Q in axis label slots.
+  assert.match(src, /Orbit/);
+  assert.match(src, /Rep/);
+  assert.match(src, /writingMode:\s*'vertical-rl'/);
+  assert.match(src, /import Latex from/);
+});
+
+test('OrbitRepMatrix renders the label-legend chip row', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /data-testid="orbit-rep-matrix-legend"/);
+  // Uses V chip and W chip styling — V at #4A7CFF, W at #64748B.
+  assert.match(src, /#4A7CFF/);
+  assert.match(src, /#64748B/);
+  // Surfaces n.
+  assert.match(src, /n\s*=/);
+});
+
+test('OrbitRepMatrix renders hover-driven tuple bands aligned to focused row/col', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /data-testid="orbit-rep-matrix-y-band"/);
+  assert.match(src, /data-testid="orbit-rep-matrix-x-band"/);
+  // Coral-light tint policy.
+  assert.match(src, /rgba\(240,82,77,0\.06\)/);
+  // Bands render the labelled tuple form.
+  assert.match(src, /labelledTuple/);
 });

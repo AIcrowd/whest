@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import Latex from '../Latex.jsx';
 import {
   derivePreReps,
   deriveCells,
   layoutFor,
   cellAtPoint,
+  labelledTuple,
   SQUARE_FRAME,
 } from './orbitRepMatrixLayout.js';
 
@@ -183,30 +185,134 @@ export default function OrbitRepMatrix({
     );
   }
 
+  // Derive role-coded labels from componentInfo (stubbed in Task 3, used here).
+  const focused = pin || hover;
+  const yTuple = focused ? labelledTuple(orbitRows[focused.row]?.repTuple) : null;
+  const xTuple = focused ? labelledTuple(reps[focused.col]?.tuple) : null;
+  const allLabels = orbitRows.length > 0 ? Object.keys(orbitRows[0].repTuple ?? {}) : [];
+  const vLabelSet = new Set(componentInfo?.vLabels ?? []);
+  const dimensionN = componentInfo?.dimensionN ?? null;
+
   return (
     <div
       ref={containerRef}
       data-testid="orbit-rep-matrix"
       className="w-full"
     >
+      {/* Label legend chip row */}
       <div
-        ref={scrollRef}
-        className="relative rounded"
-        style={{
-          border: `1px solid ${COLOR.border}`,
-          width: layout.canvasW,
-          height: layout.canvasH,
-          background: COLOR.bg,
-          cursor: 'pointer',
-          overflowY: layout.overflowY ? 'auto' : 'hidden',
-          overflowX: layout.overflowX ? 'auto' : 'hidden',
-          transition: 'background 180ms cubic-bezier(0.4, 0, 0.2, 1)',
-        }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
+        data-testid="orbit-rep-matrix-legend"
+        className="mb-3 flex flex-wrap items-baseline gap-2 text-[11px] text-gray-600"
       >
-        <canvas ref={canvasRef} />
+        <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400">labels</span>
+        {allLabels.map((l) => {
+          const isV = vLabelSet.has(l);
+          return (
+            <span
+              key={l}
+              className="inline-flex items-center gap-1 rounded-full border px-2 py-[2px] font-mono"
+              style={{
+                background: isV ? 'rgba(74,124,255,0.08)' : 'rgba(100,116,139,0.08)',
+                color: isV ? '#4A7CFF' : '#64748B',
+                borderColor: isV ? 'rgba(74,124,255,0.30)' : 'rgba(100,116,139,0.30)',
+              }}
+            >
+              {l}
+              <span className="ml-1 text-[9px] tracking-[0.12em] text-gray-400">{isV ? 'V' : 'W'}</span>
+            </span>
+          );
+        })}
+        {dimensionN !== null && (
+          <span className="ml-auto font-mono text-[10px] text-gray-600">
+            n = <strong className="text-gray-900">{dimensionN}</strong>
+            <span className="ml-1 text-gray-400">{`· values {0..${dimensionN - 1}}`}</span>
+          </span>
+        )}
+      </div>
+
+      {/* Canvas frame with axis labels + tuple bands */}
+      <div
+        className="grid"
+        style={{
+          gridTemplateColumns: '22px 90px minmax(0, 1fr)',
+          gridTemplateRows: `${layout.canvasH}px 26px 22px`,
+        }}
+      >
+        {/* Y axis label */}
+        <div
+          style={{
+            gridColumn: 1, gridRow: 1,
+            writingMode: 'vertical-rl',
+            transform: 'rotate(180deg)',
+            color: '#1F2526',
+          }}
+          className="flex items-center justify-center text-[10px] font-semibold uppercase tracking-[0.16em] font-sans"
+        >
+          Orbit <Latex math="O" />
+        </div>
+
+        {/* Y tuple band — visible only when a cell is focused */}
+        <div
+          data-testid="orbit-rep-matrix-y-band"
+          style={{
+            gridColumn: 2, gridRow: 1,
+            background: yTuple ? 'rgba(240,82,77,0.06)' : 'transparent',
+            borderRight: yTuple ? '1px solid rgba(240,82,77,0.25)' : 'none',
+            writingMode: 'vertical-rl',
+            transform: 'rotate(180deg)',
+            color: '#B23E3A',
+          }}
+          className="flex items-center justify-center font-mono text-[11px] font-semibold"
+        >
+          {yTuple || ''}
+        </div>
+
+        {/* Canvas — keep the existing scroll wrapper here */}
+        <div
+          ref={scrollRef}
+          style={{
+            gridColumn: 3, gridRow: 1,
+            width: layout.canvasW, height: layout.canvasH,
+            background: COLOR.bg,
+            border: `1px solid ${COLOR.border}`,
+            borderRadius: 4,
+            overflowY: layout.overflowY ? 'auto' : 'hidden',
+            overflowX: layout.overflowX ? 'auto' : 'hidden',
+            cursor: 'pointer',
+            transition: 'background 180ms cubic-bezier(0.4, 0, 0.2, 1)',
+          }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          onClick={handleClick}
+        >
+          <canvas ref={canvasRef} />
+        </div>
+
+        {/* X tuple band — visible only when a cell is focused */}
+        <div
+          data-testid="orbit-rep-matrix-x-band"
+          style={{
+            gridColumn: 3, gridRow: 2,
+            background: xTuple ? 'rgba(240,82,77,0.06)' : 'transparent',
+            borderTop: xTuple ? '1px solid rgba(240,82,77,0.25)' : 'none',
+            color: '#B23E3A',
+          }}
+          className="flex items-center px-1 font-mono text-[11px] font-semibold"
+        >
+          {xTuple ? (
+            <span style={{ marginLeft: focused ? `${focused.col * layout.cellSize - 14}px` : 0 }}>
+              {xTuple}
+            </span>
+          ) : ''}
+        </div>
+
+        {/* X axis label */}
+        <div
+          style={{ gridColumn: 3, gridRow: 3, color: '#1F2526' }}
+          className="text-center text-[10px] font-semibold uppercase tracking-[0.16em] font-sans"
+        >
+          Rep <Latex math="Q" />
+        </div>
       </div>
     </div>
   );
