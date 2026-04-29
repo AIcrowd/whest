@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 import flopscope as flops
-from flopscope import flops as public_flops
+from flopscope import accounting as public_flops
 from flopscope._budget import BudgetContext
 from flopscope._flops import (
     _ceil_log2,
