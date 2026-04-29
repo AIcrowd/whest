@@ -30,7 +30,7 @@ lint-commits:  ## Conventional-commit check on PR commits (origin/main..HEAD)
 	@if ! git rev-parse --verify origin/main >/dev/null 2>&1; then \
 		echo "lint-commits: origin/main not found; run 'git fetch origin main' first"; exit 1; \
 	fi
-	$(UV) gitlint --commits origin/main..HEAD
+	$(UV) gitlint --ignore-stdin --commits origin/main..HEAD
 
 .PHONY: fmt
 fmt:  ## Auto-fix lint and format issues
