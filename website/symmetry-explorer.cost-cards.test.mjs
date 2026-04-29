@@ -67,6 +67,16 @@ test('ComponentCostView renders DecisionLadder before BranchingDemo + TypedParti
   assert.ok(partitionIdx > branchingIdx, 'TypedPartitionDemo should come after BranchingDemo');
 });
 
+test('ComponentCostView wraps BranchingDemo + TypedPartitionDemo in a 2-col grid', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
+  assert.match(src, /id="demos-2col"[\s\S]*?className="[^"]*grid gap-6 lg:grid-cols-2[^"]*"/);
+  // The pair lives inside the same #demos-2col container.
+  const pairBlockMatch = src.match(/id="demos-2col"[\s\S]*?<\/div>/);
+  assert.ok(pairBlockMatch, 'demos-2col container must wrap both demos');
+  assert.match(pairBlockMatch[0], /<BranchingDemo/);
+  assert.match(pairBlockMatch[0], /<TypedPartitionDemo/);
+});
+
 test('ComponentCostView imports the two new cards + renders the CLASSIFICATION TREE section', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
   assert.match(src, /import MultiplicationCostCard/);

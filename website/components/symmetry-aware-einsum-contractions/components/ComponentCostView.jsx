@@ -486,19 +486,20 @@ export default function ComponentCostView({
         </div>
       </div>
 
-      {/* ROW 4 — BranchingDemo (interactive, drills into one orbit's branching) */}
-      <BranchingDemo
-        componentData={componentData}
-        costModel={costModel}
-        selectedOrbitIdx={selectedOrbitIdx}
-        onSelectOrbit={onSelectOrbit}
-      />
-
-      {/* ROW 5 — TypedPartitionDemo (interactive, counts via equality patterns) */}
-      <TypedPartitionDemo
-        componentData={componentData}
-        costModel={costModel}
-      />
+      {/* ROW 4 — BranchingDemo + TypedPartitionDemo paired in a 2-col grid,
+          matching the μ + α-hard pattern earlier in the section. */}
+      <div id="demos-2col" className="editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2">
+        <BranchingDemo
+          componentData={componentData}
+          costModel={costModel}
+          selectedOrbitIdx={selectedOrbitIdx}
+          onSelectOrbit={onSelectOrbit}
+        />
+        <TypedPartitionDemo
+          componentData={componentData}
+          costModel={costModel}
+        />
+      </div>
 
       {/* ROW 6 — Per-component summary table */}
       <ComponentSummaryTable
