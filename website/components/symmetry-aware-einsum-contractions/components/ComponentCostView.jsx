@@ -7,7 +7,6 @@ import RoleBadge from './RoleBadge.jsx';
 import SymmetryBadge from './SymmetryBadge.jsx';
 import NotationSymbol from './NotationSymbol.jsx';
 import { AnchorLink } from './ExplorerSectionCard.jsx';
-import { LabelInteractionGraph } from './ComponentView.jsx';
 import DecisionLadder from './DecisionLadder.jsx';
 import PanZoomCanvas from './PanZoomCanvas.jsx';
 import ExplorerModal from './ExplorerModal.jsx';
@@ -15,7 +14,6 @@ import MultiplicationCostCard from './MultiplicationCostCard.jsx';
 import AccumulationHardCard from './AccumulationHardCard.jsx';
 import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
 import BranchingDemo from './BranchingDemo.jsx';
-import TypedPartitionDemo from './TypedPartitionDemo.jsx';
 import { getRegimePresentation } from './regimePresentation.js';
 import {
   explorerThemeColor,
@@ -410,38 +408,6 @@ export default function ComponentCostView({
 
   return (
     <div className="min-w-0 space-y-6">
-      {/* ROW 1 — Interaction graph (own row) */}
-      <div id="interaction-graph" className="bg-white p-4 scroll-mt-24">
-        <div className="min-w-0">
-          <ExplorerSubsectionHeader anchorId="interaction-graph" labelText="Interaction Graph">
-            Interaction Graph
-          </ExplorerSubsectionHeader>
-          <p className="explorer-support-prose mt-2">
-            Nodes are <strong className="font-semibold text-foreground">labels</strong>;
-            an edge marks labels that a generator of&nbsp;<Latex math="G" />&nbsp;moves
-            together. Disjoint components factor the assignment space into independent
-            sub-problems. For each component, the cost model counts representative product
-            orbits and then counts how many visible output projections those orbits touch.
-          </p>
-          <InteractionGraphMetricStrip
-            labelCount={allLabels.length}
-            edgeCount={componentData.interactionGraph?.edges?.length ?? 0}
-            componentCount={components.length}
-          />
-        </div>
-        <PanZoomCanvas className="mt-4 h-[620px]" ariaLabel="Interaction graph (zoomable)">
-          <LabelInteractionGraph
-            allLabels={allLabels}
-            vLabels={vLabels}
-            interactionGraph={componentData.interactionGraph}
-            components={components}
-            fullGenerators={fullGenerators}
-            onHover={onGraphHover}
-          />
-        </PanZoomCanvas>
-        <InteractionGraphLegend />
-      </div>
-
       {/* ROW 2 — μ vs α-hard (the right contrast) */}
       <div id="two-cost-cards" className="editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2">
         <MultiplicationCostCard
@@ -487,20 +453,17 @@ export default function ComponentCostView({
         </div>
       </div>
 
-      {/* ROW 4 — BranchingDemo + TypedPartitionDemo paired in a 2-col grid,
-          matching the μ + α-hard pattern earlier in the section. */}
-      <div id="demos-2col" className="editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2">
+      {/* ROW 4 — BranchingDemo (full-width). TypedPartitionDemo migrated out
+          of §4 (will live in a future Partition Counting section). */}
+      <div id="demos-1col" className="border-y border-gray-100 py-6">
         <BranchingDemo
+          dimensionN={dimensionN}
           componentData={componentData}
           costModel={costModel}
           selectedOrbitIdx={selectedOrbitIdx}
           onSelectOrbit={onSelectOrbit}
           onHover={onGraphHover}
           expressionInfo={expressionInfo}
-        />
-        <TypedPartitionDemo
-          componentData={componentData}
-          costModel={costModel}
         />
       </div>
 

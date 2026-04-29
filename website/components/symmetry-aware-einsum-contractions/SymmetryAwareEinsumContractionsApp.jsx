@@ -24,6 +24,7 @@ import SigmaLoop from './components/SigmaLoop.jsx';
 import DiminoView from './components/DiminoView.jsx';
 import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
+import { LabelInteractionGraph } from './components/ComponentView.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import {
@@ -560,6 +561,16 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           selectedPairIndex={selectedSigmaPairIndex}
                         />
                       </div>
+                    </div>
+                    <div className="mt-6">
+                      <LabelInteractionGraph
+                        allLabels={group?.allLabels ?? []}
+                        vLabels={group?.vLabels ?? []}
+                        interactionGraph={componentData?.interactionGraph}
+                        components={componentData?.components ?? null}
+                        fullGenerators={group?.fullGenerators ?? []}
+                        onHover={handleGraphHover}
+                      />
                     </div>
                     <div className="mt-4">
                       <NarrativeCallout tone="preamble">

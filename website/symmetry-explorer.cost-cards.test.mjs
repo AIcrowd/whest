@@ -49,32 +49,26 @@ test('AccumulationHardCard exports a default React component with shared support
 
 test('ComponentCostView uses the shared support prose tier under subsection headers', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
-  assert.match(src, /className="explorer-support-prose mt-2"/);
   assert.match(src, /editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2/);
-  assert.match(src, /id="interaction-graph"[\s\S]*?className="bg-white p-4 scroll-mt-24"/);
   assert.match(src, /id="two-cost-cards"[\s\S]*?className="[^"]*grid gap-6 lg:grid-cols-2[^"]*"/);
   assert.match(src, /<MultiplicationCostCard/);
   assert.match(src, /<AccumulationHardCard/);
 });
 
-test('ComponentCostView renders DecisionLadder before BranchingDemo + TypedPartitionDemo', () => {
+test('ComponentCostView renders DecisionLadder before BranchingDemo', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
   const treeIdx = src.indexOf('<DecisionLadder');
   const branchingIdx = src.indexOf('<BranchingDemo');
-  const partitionIdx = src.indexOf('<TypedPartitionDemo');
   assert.ok(treeIdx > 0, 'DecisionLadder should be present');
   assert.ok(branchingIdx > treeIdx, 'BranchingDemo should come after DecisionLadder');
-  assert.ok(partitionIdx > branchingIdx, 'TypedPartitionDemo should come after BranchingDemo');
 });
 
-test('ComponentCostView wraps BranchingDemo + TypedPartitionDemo in a 2-col grid', () => {
+test('ComponentCostView mounts BranchingDemo full-width (single-column, no TypedPartitionDemo)', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
-  assert.match(src, /id="demos-2col"[\s\S]*?className="[^"]*grid gap-6 lg:grid-cols-2[^"]*"/);
-  // The pair lives inside the same #demos-2col container.
-  const pairBlockMatch = src.match(/id="demos-2col"[\s\S]*?<\/div>/);
-  assert.ok(pairBlockMatch, 'demos-2col container must wrap both demos');
-  assert.match(pairBlockMatch[0], /<BranchingDemo/);
-  assert.match(pairBlockMatch[0], /<TypedPartitionDemo/);
+  // After the §4 partition split, BranchingDemo lives on its own row (not paired
+  // with TypedPartitionDemo, which migrated to a future Partition Counting section).
+  assert.match(src, /id="demos-1col"[\s\S]*?<BranchingDemo/);
+  assert.doesNotMatch(src, /<TypedPartitionDemo/);
 });
 
 test('ComponentCostView imports the two new cards + renders the CLASSIFICATION TREE section', () => {

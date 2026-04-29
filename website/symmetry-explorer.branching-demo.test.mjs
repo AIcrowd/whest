@@ -74,3 +74,20 @@ test('BranchingDemo uses no raw hex outside design tokens', () => {
     assert.ok(allowed.has(h.toUpperCase()), `disallowed hex ${h} — use a design token`);
   }
 });
+
+test('§4 ComponentCostView no longer mounts LabelInteractionGraph or TypedPartitionDemo', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
+  assert.doesNotMatch(src, /<LabelInteractionGraph/);
+  assert.doesNotMatch(src, /<TypedPartitionDemo/);
+});
+
+test('§3 mounts LabelInteractionGraph in the App', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
+  assert.match(src, /import \{[^}]*LabelInteractionGraph/);
+  assert.match(src, /<LabelInteractionGraph/);
+});
+
+test('ComponentCostView forwards dimensionN to BranchingDemo', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
+  assert.match(src, /dimensionN=\{dimensionN\}[\s\S]{0,200}<BranchingDemo|<BranchingDemo[\s\S]{0,200}dimensionN=\{dimensionN\}/);
+});
