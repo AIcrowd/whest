@@ -2,9 +2,22 @@
 
 /**
  * Ground-truth oracle for A (accumulation count) and M (orbit count) with
- * heterogeneous label sizes. Port of followup_verification/generic_utils.py
- * used only from tests — not shipped in the app bundle.
+ * heterogeneous label sizes. Used only from tests — not shipped in the app
+ * bundle.
+ *
+ * A is the unified output-orbit accumulation count:
+ *
+ *   A = #{ (O, Q) ∈ X/G × Y/H : π_V(O) ∩ Q ≠ ∅ },   H = Stab_G(V)|_V.
+ *
+ * Implementation matches engine/regimes/bruteForceOrbit.js#compute and the
+ * sympy ground-truth oracle in .aicrowd/sympy-validation-scripts/.
  */
+
+import {
+  canonicalTupleUnderGroup,
+  restrictStabilizerToPositions,
+  visibleTupleFromFullTuple,
+} from '../outputOrbit.js';
 
 export function allAssignments(sizes) {
   const out = [];
@@ -58,11 +71,13 @@ export function computeMBruteforce(elements, sizes) {
 }
 
 export function computeABruteforce(elements, sizes, visiblePositions) {
+  const hElements = restrictStabilizerToPositions(elements, visiblePositions);
   let total = 0;
   for (const orbit of orbitsOfAssignments(elements, sizes)) {
     const projected = new Set();
     for (const a of orbit) {
-      projected.add(visiblePositions.map((p) => a[p]).join('|'));
+      const v = visibleTupleFromFullTuple(a, visiblePositions);
+      projected.add(canonicalTupleUnderGroup(v, hElements));
     }
     total += projected.size;
   }
