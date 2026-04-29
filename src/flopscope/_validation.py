@@ -53,8 +53,12 @@ def check_nan_inf(result: np.ndarray, op_name: str) -> None:
     # values to detect, so skip the check.
     if result.dtype.kind not in ("f", "c"):
         return
-    nan_count = int(np.isnan(result).sum())
-    inf_count = int(np.isinf(result).sum())
+    # Strip flopscope subclasses so np.isnan / np.isinf do not re-dispatch
+    # through __array_ufunc__ and recurse into me.isnan / me.isfinite,
+    # which in turn would call check_nan_inf again.
+    plain = result.view(np.ndarray) if type(result) is not np.ndarray else result
+    nan_count = int(np.isnan(plain).sum())
+    inf_count = int(np.isinf(plain).sum())
     if nan_count > 0 or inf_count > 0:
         warnings.warn(
             f"{op_name} produced {nan_count} NaN and {inf_count} Inf values "
