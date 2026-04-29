@@ -55,12 +55,14 @@ test('ComponentCostView uses the shared support prose tier under subsection head
   assert.match(src, /<AccumulationHardCard/);
 });
 
-test('ComponentCostView renders DecisionLadder before BranchingDemo', () => {
+test('ComponentCostView renders BranchingDemo before the cost cards + classification tree', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/ComponentCostView.jsx');
-  const treeIdx = src.indexOf('<DecisionLadder');
   const branchingIdx = src.indexOf('<BranchingDemo');
-  assert.ok(treeIdx > 0, 'DecisionLadder should be present');
-  assert.ok(branchingIdx > treeIdx, 'BranchingDemo should come after DecisionLadder');
+  const muCardIdx = src.indexOf('<MultiplicationCostCard');
+  const treeIdx = src.indexOf('<DecisionLadder');
+  assert.ok(branchingIdx > 0, 'BranchingDemo should be present');
+  assert.ok(muCardIdx > branchingIdx, 'BranchingDemo should come BEFORE MultiplicationCostCard (lifted to right after the §4 intro)');
+  assert.ok(treeIdx > branchingIdx, 'BranchingDemo should come BEFORE DecisionLadder');
 });
 
 test('ComponentCostView mounts BranchingDemo full-width (single-column, no TypedPartitionDemo)', () => {

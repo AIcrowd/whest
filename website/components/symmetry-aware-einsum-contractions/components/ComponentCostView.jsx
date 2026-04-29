@@ -408,6 +408,22 @@ export default function ComponentCostView({
 
   return (
     <div className="min-w-0 space-y-6">
+      {/* ROW 0 — BranchingDemo lifted to right after the §4 intro so the matrix
+          visualizes "product orbit" and "stored output rep" the moment the prose
+          introduces those terms. The cost cards / classification tree / summary
+          follow below. */}
+      <div id="demos-1col" className="border-b border-gray-100 pb-6">
+        <BranchingDemo
+          dimensionN={dimensionN}
+          componentData={componentData}
+          costModel={costModel}
+          selectedOrbitIdx={selectedOrbitIdx}
+          onSelectOrbit={onSelectOrbit}
+          onHover={onGraphHover}
+          expressionInfo={expressionInfo}
+        />
+      </div>
+
       {/* ROW 2 — μ vs α-hard (the right contrast) */}
       <div id="two-cost-cards" className="editorial-two-col-divider-lg editorial-two-col-divider-lg-inset border-y border-gray-100 py-6 grid gap-6 lg:grid-cols-2">
         <MultiplicationCostCard
@@ -451,20 +467,6 @@ export default function ComponentCostView({
             })()}
           />
         </div>
-      </div>
-
-      {/* ROW 4 — BranchingDemo (full-width). TypedPartitionDemo migrated out
-          of §4 (will live in a future Partition Counting section). */}
-      <div id="demos-1col" className="border-y border-gray-100 py-6">
-        <BranchingDemo
-          dimensionN={dimensionN}
-          componentData={componentData}
-          costModel={costModel}
-          selectedOrbitIdx={selectedOrbitIdx}
-          onSelectOrbit={onSelectOrbit}
-          onHover={onGraphHover}
-          expressionInfo={expressionInfo}
-        />
       </div>
 
       {/* ROW 6 — Per-component summary table */}
