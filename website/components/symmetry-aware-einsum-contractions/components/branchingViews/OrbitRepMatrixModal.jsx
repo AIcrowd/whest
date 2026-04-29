@@ -14,6 +14,7 @@ export default function OrbitRepMatrixModal({
   expressionInfo, componentInfo,
   selectedOrbitIdx = -1, onSelectOrbit = () => {},
   onHover = null,
+  onHoverDeferred = null,
 }) {
   useEffect(() => {
     if (!open) return;
@@ -59,6 +60,7 @@ export default function OrbitRepMatrixModal({
             expressionInfo={expressionInfo}
             componentInfo={componentInfo}
             onStateChange={onStateChange}
+            onHoverDeferred={onHoverDeferred}
           />
           <WorkedExamplePanel
             hover={hover}

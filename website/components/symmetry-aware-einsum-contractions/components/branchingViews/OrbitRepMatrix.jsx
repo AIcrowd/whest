@@ -7,6 +7,7 @@ import {
   cellAtPoint,
   labelledTuple,
   SQUARE_FRAME,
+  FIXED_CANVAS_HEIGHT,
 } from './orbitRepMatrixLayout.js';
 
 // Token palette anchored to design-system colors_and_type.css.
@@ -36,6 +37,14 @@ function OrbitRepMatrix({
   /** ({hover, pin}) => void — surfaces both slots so BranchingDemo's
    *  WorkedExamplePanel can render the right-side worked example. */
   onStateChange = null,
+  /** (cell|null) => void — debounced bridge for the WorkedExamplePanel's
+   *  hover-driven updates. Fires ~80 ms after the mouse settles on a cell
+   *  (or immediately on mouse-leave). Quick mouse sweeps don't trigger
+   *  panel re-renders; pausing on a cell does. */
+  onHoverDeferred = null,
+  /** () => void — opens the matrix in a viewport-sized modal. The trigger
+   *  button is rendered as a prominent overlay in the canvas's top-right. */
+  onExpand = null,
 }) {
   const canvasRef = useRef(null);
   const offscreenRef = useRef(null); // cached base layer (grid + filled cells)
@@ -45,6 +54,12 @@ function OrbitRepMatrix({
   // schedules a manual rAF paint that reads from the ref. No React re-render
   // per hover — that's what makes hover feel instant on big matrices.
   const hoverRef = useRef(null);
+  // Separate timer that surfaces the latest hovered cell to the parent
+  // (`onHoverDeferred`) ~80 ms after the mouse settles. Quick mouse sweeps
+  // collapse to a single panel update; pausing on a cell updates the panel
+  // ~80 ms later. Without this, the panel would render at 60 Hz, which costs
+  // ~200 ms per render in dev (StrictMode double-render).
+  const deferredHoverTimerRef = useRef(null);
   const [pin, setPin] = useState(/* pin: { row, col } | null */ null);
   const [containerWidth, setContainerWidth] = useState(SQUARE_FRAME);
 
@@ -53,6 +68,7 @@ function OrbitRepMatrix({
   const layout = useMemo(
     () => layoutFor({
       canvasWidth: containerWidth,
+      canvasHeight: FIXED_CANVAS_HEIGHT,
       numRows: orbitRows.length,
       numCols: reps.length,
     }),
@@ -79,10 +95,11 @@ function OrbitRepMatrix({
     if (onStateChange) onStateChange({ hover: null, pin });
   }, [pin, onStateChange]);
 
-  // Cancel any in-flight rAF on unmount.
+  // Cancel any in-flight rAF + deferred-hover timer on unmount.
   useEffect(() => {
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      if (deferredHoverTimerRef.current !== null) clearTimeout(deferredHoverTimerRef.current);
     };
   }, []);
 
@@ -253,6 +270,16 @@ function OrbitRepMatrix({
       if (prev && cell && prev.row === cell.row && prev.col === cell.col) return;
       hoverRef.current = cell;
       paintOverlay();
+
+      // Surface to the panel after a short settle window. Sweeps collapse
+      // (each new mousemove resets the timer); pauses fire the update.
+      if (onHoverDeferred) {
+        if (deferredHoverTimerRef.current !== null) clearTimeout(deferredHoverTimerRef.current);
+        deferredHoverTimerRef.current = setTimeout(() => {
+          deferredHoverTimerRef.current = null;
+          onHoverDeferred(hoverRef.current);
+        }, 80);
+      }
     });
   }
   function handleMouseLeave() {
@@ -260,10 +287,15 @@ function OrbitRepMatrix({
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
+    if (deferredHoverTimerRef.current !== null) {
+      clearTimeout(deferredHoverTimerRef.current);
+      deferredHoverTimerRef.current = null;
+    }
     if (hoverRef.current !== null) {
       hoverRef.current = null;
       paintOverlay();
     }
+    if (onHoverDeferred) onHoverDeferred(null);
   }
   function handleClick(e) {
     const cell = pointToCell(pointerCoords(e));
@@ -356,10 +388,13 @@ function OrbitRepMatrix({
           Orbit <Latex math="O" />
         </div>
 
-        {/* Canvas — fixed size, no scroll wrapper. */}
+        {/* Canvas — fixed size, no scroll wrapper. The expand button overlays
+            the top-right of the canvas frame so it sits where the user is
+            already looking when interacting with the matrix. */}
         <div
           style={{
             gridColumn: 2, gridRow: 1,
+            position: 'relative',
             width: layout.canvasW, height: layout.canvasH,
             background: COLOR.bg,
             border: `1px solid ${COLOR.border}`,
@@ -371,6 +406,22 @@ function OrbitRepMatrix({
           onClick={handleClick}
         >
           <canvas ref={canvasRef} />
+          {onExpand && (
+            <button
+              type="button"
+              data-action="open-modal"
+              onClick={(e) => { e.stopPropagation(); onExpand(); }}
+              className="absolute top-2 right-2 inline-flex items-center gap-1.5 rounded-md border bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors hover:bg-gray-50"
+              style={{
+                color: '#B23E3A',
+                borderColor: 'rgba(240,82,77,0.45)',
+                cursor: 'pointer',
+              }}
+              aria-label="Expand matrix to full screen"
+            >
+              expand <span aria-hidden="true">↗</span>
+            </button>
+          )}
         </div>
 
         {/* X axis label */}

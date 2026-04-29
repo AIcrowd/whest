@@ -19,9 +19,11 @@ export default function BranchingDemo({
   expressionInfo = null,
   dimensionN = null,
 }) {
-  // Hover lives in the matrix as a ref (not React state) — it paints the
-  // canvas marker imperatively and never propagates here. The panel updates
-  // only on click-pin. Empty state copy is "Click any cell …".
+  // Live hover for the WorkedExamplePanel. The matrix owns hover in a ref
+  // for instant canvas paint; it surfaces the latest cell here ~80 ms after
+  // the mouse settles via `onHoverDeferred`. So sweeps don't trigger panel
+  // re-renders, but pauses do — visually live without the 60 Hz render storm.
+  const [hover, setHover] = useState(/* hover: { row, col } | null */ null);
   const [pin, setPin] = useState(/* pin: { row, col } | null */ null);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -66,29 +68,29 @@ export default function BranchingDemo({
     if (p && onSelectOrbit) onSelectOrbit(p.row);
   }, [onSelectOrbit]);
 
+  const handleDeferredHover = useCallback((cell) => {
+    setHover((prev) => {
+      if (prev === cell) return prev;
+      if (prev && cell && prev.row === cell.row && prev.col === cell.col) return prev;
+      return cell;
+    });
+  }, []);
+
   const handleClearPin = useCallback(() => {
     setPin(null);
   }, []);
 
   if (!componentData || !costModel) return null;
 
+  const handleOpenModal = useCallback(() => setModalOpen(true), []);
+
   return (
     <div id="orbit-rep-matrix" className="bg-white p-4 scroll-mt-24">
-      {/* Header row: subsection title + expand trigger */}
-      <div className="flex items-baseline justify-between gap-3">
-        <ExplorerSubsectionHeader anchorId="orbit-rep-matrix" labelText="Branching">
-          The O <Latex math="\to" /> Q matrix
-        </ExplorerSubsectionHeader>
-        <button
-          type="button"
-          data-action="open-modal"
-          onClick={() => setModalOpen(true)}
-          className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-600 transition-colors"
-          style={{ cursor: 'pointer' }}
-        >
-          expand ↗
-        </button>
-      </div>
+      {/* Header row: subsection title only — expand button now lives next
+          to the canvas where it's discoverable. */}
+      <ExplorerSubsectionHeader anchorId="orbit-rep-matrix" labelText="Branching">
+        The O <Latex math="\to" /> Q matrix
+      </ExplorerSubsectionHeader>
 
       {/* Deck */}
       <p className="explorer-support-prose mt-2">
@@ -105,9 +107,11 @@ export default function BranchingDemo({
           expressionInfo={expressionInfo}
           componentInfo={liveComponentInfo}
           onStateChange={handleStateChange}
+          onHoverDeferred={handleDeferredHover}
+          onExpand={handleOpenModal}
         />
         <WorkedExamplePanel
-          hover={null}
+          hover={hover}
           pin={pin}
           orbitRows={liveOrbitRows}
           reps={reps}
@@ -133,7 +137,7 @@ export default function BranchingDemo({
         orbitRows={liveOrbitRows}
         reps={reps}
         cells={cells}
-        hover={null}
+        hover={hover}
         pin={pin}
         onStateChange={handleStateChange}
         onClearPin={handleClearPin}
@@ -141,6 +145,7 @@ export default function BranchingDemo({
         componentInfo={liveComponentInfo}
         selectedOrbitIdx={selectedOrbitIdx}
         onSelectOrbit={onSelectOrbit}
+        onHoverDeferred={handleDeferredHover}
       />
     </div>
   );

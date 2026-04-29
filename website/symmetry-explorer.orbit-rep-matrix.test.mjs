@@ -33,22 +33,22 @@ test('labelledTuple keeps k=v form', () => {
   assert.equal(labelledTuple({ i: 0, j: 0, k: 1 }), '(i=0, j=0, k=1)');
 });
 
-test('layoutFor: fixed square canvas, rectangular cells when numRows ≠ numCols', () => {
-  // 6 × 6 (square): cellWidth = cellHeight = 60. Canvas 360 × 360.
-  assert.deepEqual(layoutFor({ canvasWidth: 360, numRows: 6, numCols: 6 }), {
+test('layoutFor: fixed canvas dimensions; cell width adapts to numCols, cell height to numRows', () => {
+  // 6 × 6 (square): cellWidth = floor(360/6) = 60, cellHeight = floor(360/6) = 60.
+  assert.deepEqual(layoutFor({ canvasWidth: 360, canvasHeight: 360, numRows: 6, numCols: 6 }), {
     cellWidth: 60, cellHeight: 60,
     canvasW: 360, canvasH: 360,
     contentWidth: 360, contentHeight: 360,
   });
-  // 14 × 10 (rectangular): cellWidth = floor(360/14) = 25, cellHeight = floor(360/10) = 36.
-  assert.deepEqual(layoutFor({ canvasWidth: 360, numRows: 10, numCols: 14 }), {
+  // 14 × 10: cellWidth = floor(360/14) = 25, cellHeight = floor(360/10) = 36.
+  assert.deepEqual(layoutFor({ canvasWidth: 360, canvasHeight: 360, numRows: 10, numCols: 14 }), {
     cellWidth: 25, cellHeight: 36,
     canvasW: 350, canvasH: 360,
     contentWidth: 350, contentHeight: 360,
   });
-  // 165 × 10 (Trilinear, very tall): cellWidth = 36, cellHeight = 2.
-  // Canvas stays fixed-size (360 × 360); cells become rectangles.
-  const trilinear = layoutFor({ canvasWidth: 360, numRows: 165, numCols: 10 });
+  // 165 × 10 (Trilinear, very tall): cellWidth = 36, cellHeight = floor(360/165) = 2.
+  // Canvas dimensions are fixed; cells become rectangles (wide-but-short rows).
+  const trilinear = layoutFor({ canvasWidth: 360, canvasHeight: 360, numRows: 165, numCols: 10 });
   assert.equal(trilinear.cellWidth, 36);
   assert.equal(trilinear.cellHeight, 2);
   assert.equal(trilinear.canvasW, 360);
@@ -57,9 +57,8 @@ test('layoutFor: fixed square canvas, rectangular cells when numRows ≠ numCols
 
 test('layoutFor floors at MIN_CELL=1 (no zero-size cells)', () => {
   // 200 cols × 360 width → 1.8 px per cell → floored to 1.
-  const tiny = layoutFor({ canvasWidth: 360, numRows: 50, numCols: 200 });
+  const tiny = layoutFor({ canvasWidth: 360, canvasHeight: 360, numRows: 50, numCols: 200 });
   assert.equal(tiny.cellWidth, 1);
-  // canvasW = 1 * 200 = 200 (fits inside 360)
   assert.equal(tiny.canvasW, 200);
 });
 
@@ -123,7 +122,7 @@ test('cellAtPoint short-circuits when cell dimensions are invalid', () => {
 
 test('layoutFor returns a clean empty layout for 0 rows / 0 cols / NaN / negative', () => {
   for (const bad of [{ numRows: 0, numCols: 5 }, { numRows: 5, numCols: 0 }, { numRows: NaN, numCols: 5 }, { numRows: 5, numCols: -3 }]) {
-    const out = layoutFor({ canvasWidth: 360, ...bad });
+    const out = layoutFor({ canvasWidth: 360, canvasHeight: 360, ...bad });
     assert.equal(out.cellWidth, 0, `cellWidth 0 for ${JSON.stringify(bad)}`);
     assert.equal(out.cellHeight, 0);
     assert.equal(out.canvasW, 0);

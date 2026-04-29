@@ -46,11 +46,22 @@ test('BranchingDemo holds pin state and skips per-hover propagation for perf', (
   assert.doesNotMatch(src, /useState\([^)]*\)[^;]{0,80}hover/);
 });
 
-test('BranchingDemo renders the modal trigger and mounts OrbitRepMatrixModal', () => {
+test('BranchingDemo wires the modal trigger via onExpand and mounts OrbitRepMatrixModal', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  assert.match(src, /data-action="open-modal"/);
+  // The expand button itself lives inside OrbitRepMatrix as a corner overlay
+  // (separate test in orbit-rep-matrix.test.mjs); BranchingDemo just passes
+  // an onExpand callback that opens the modal.
+  assert.match(src, /onExpand=\{handleOpenModal\}/);
   assert.match(src, /import OrbitRepMatrixModal from '\.\/branchingViews\/OrbitRepMatrixModal\.jsx'/);
   assert.match(src, /<OrbitRepMatrixModal/);
+});
+
+test('OrbitRepMatrix renders the prominent expand button as a canvas-corner overlay', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /data-action="open-modal"/);
+  assert.match(src, /onExpand/);
+  // Stop propagation so the click doesn't accidentally pin a cell.
+  assert.match(src, /e\.stopPropagation\(\);\s*onExpand\(\)/);
 });
 
 test('BranchingDemo derives reps + cells from costModel.orbitRows', () => {

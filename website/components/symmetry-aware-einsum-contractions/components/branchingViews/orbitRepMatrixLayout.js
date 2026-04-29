@@ -11,6 +11,7 @@
 //   - components/BranchingDemo.jsx (parent that owns hover/pin state)
 
 export const SQUARE_FRAME = 360;       // default canvas width on lg
+export const FIXED_CANVAS_HEIGHT = 360; // canvas height — fixed; cell height adapts to numRows
 export const MIN_CELL = 1;             // 1-px floor — never invisible
 
 export function tupleKey(tuple) {
@@ -47,18 +48,20 @@ export function deriveCells(orbitRows = [], reps = []) {
 }
 
 /**
- * Fixed-size square canvas with rectangular cells.
+ * Fixed-dimensions canvas with adaptive rectangular cells.
  *
- * `canvasW = canvasH = canvasWidth` (square frame).
+ * `canvasW = canvasWidth` (responsive to the container)
+ * `canvasH = canvasHeight` (fixed — defaults to FIXED_CANVAS_HEIGHT)
  * `cellWidth  = floor(canvasW / numCols)`
  * `cellHeight = floor(canvasH / numRows)`
  *
- * Cells are squares only when numRows === numCols; otherwise they're rectangles
- * by design — the user explicitly asked for fixed canvas with adaptive
- * row/column dimensions, no internal scroll.
+ * Cells fill the canvas: column count adjusts cellWidth, row count adjusts
+ * cellHeight. This is the user's explicit design — fixed canvas dimensions,
+ * row height + column width both adapt to the matrix shape, no scroll.
  */
-export function layoutFor({ canvasWidth, numRows, numCols }) {
+export function layoutFor({ canvasWidth, canvasHeight, numRows, numCols }) {
   const safeWidth = Math.max(canvasWidth || SQUARE_FRAME, MIN_CELL * 2);
+  const safeHeight = Math.max(canvasHeight || FIXED_CANVAS_HEIGHT, MIN_CELL * 2);
   const safeRows = Math.max(Math.floor(numRows) || 0, 0);
   const safeCols = Math.max(Math.floor(numCols) || 0, 0);
   if (safeRows === 0 || safeCols === 0) {
@@ -69,10 +72,9 @@ export function layoutFor({ canvasWidth, numRows, numCols }) {
     };
   }
   const cellWidth = Math.max(MIN_CELL, Math.floor(safeWidth / safeCols));
-  const cellHeight = Math.max(MIN_CELL, Math.floor(safeWidth / safeRows));
+  const cellHeight = Math.max(MIN_CELL, Math.floor(safeHeight / safeRows));
   const contentWidth = cellWidth * safeCols;
   const contentHeight = cellHeight * safeRows;
-  // Canvas exactly hugs content — no overflow, no scroll.
   return {
     cellWidth, cellHeight,
     canvasW: contentWidth, canvasH: contentHeight,
