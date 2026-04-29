@@ -81,11 +81,13 @@ test('article route still wires the appendix modal while the main page stays app
   assert.match(appSource, /onClick=\{\(\) => openAppendix\(\)\}/);
   assert.match(appSource, /<ExpressionLevelModal[\s\S]*onClose=\{closeAppendix\}/);
   assert.match(appSource, /Is this the full symmetry of the final expression\?/);
-  assert.match(appSource, /The cost above uses .*notationLatex\('g_pointwise'\).* for accumulation/);
-  assert.match(appSource, /The fully summed expression can have a larger label-renaming formal symmetry/);
-  assert.match(appSource, /String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`/);
-  assert.match(appSource, /where each <Latex math=\{String\.raw`W_d`\} \/> is a same-domain block of summed labels/);
-  assert.match(appSource, /notationLatex\('g_output'\)/);
+  // V4 rewrote the appendix-button paragraph to introduce H = Stab_{G_pt}(V)|_V
+  // alongside G_pt and to use the new G_f = H × ∏_d S(W_d) formula.
+  assert.match(appSource, /The cost above uses .*notationLatex\('g_pointwise'\).* on product assignments/);
+  assert.match(appSource, /notationLatex\('h_output'\)/);
+  assert.match(appSource, /String\.raw`H = \\mathrm\{Stab\}_\{G_\{\\text\{pt\}\}\}\(V\)\|_V`/);
+  assert.match(appSource, /String\.raw`G_\{\\text\{f\}\} = H \\times \\prod_d S\(W_d\)`/);
+  assert.match(appSource, /Its dummy-label factor acts after summation/);
   assert.match(appSource, /accepted explicit-index einsum language uses lowercase[\s\S]*explicit outputs[\s\S]*forbids[\s\S]*duplicate output labels/);
   assert.doesNotMatch(section1Copy, /restricted explicit-index einsum language/);
   assert.doesNotMatch(appSource, /VERBATIM, AUDIT-VERIFIED/);

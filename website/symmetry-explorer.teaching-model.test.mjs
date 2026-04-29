@@ -20,7 +20,7 @@ test('PSEUDOCODE_LINES defines a stable teaching scaffold', () => {
       '# Those pi relabelings generate the full symmetry group G for this step.',
       '# multiplication_cost counts one product evaluation per G-orbit representative.',
       'multiplication_cost = 0',
-      '# accumulation_cost counts one accumulation per distinct projected output bin.',
+      '# accumulation_cost counts one update per stored output representative reached.',
       'accumulation_cost = 0',
       '',
       '# RepSet = one representative full tuple from each orbit of G.',

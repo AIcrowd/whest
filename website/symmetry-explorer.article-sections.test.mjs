@@ -7,14 +7,21 @@ import { ARTICLE_SECTIONS, EXPLORER_ACTS } from './components/symmetry-aware-ein
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-test('ARTICLE_SECTIONS exports 8 Distill-style sections with id, heading, lede', () => {
+test('ARTICLE_SECTIONS exports the V4 6-section narrative arc with id, heading, lede', () => {
+  // V4 collapsed the legacy 8-section arc (problem / shape / ladder / 3 spotlights /
+  // playground / appendix) into a tighter 6-section story aligned with the
+  // output-orbit narrative.
   assert.ok(Array.isArray(ARTICLE_SECTIONS));
-  assert.equal(ARTICLE_SECTIONS.length, 8);
+  assert.equal(ARTICLE_SECTIONS.length, 6);
   for (const s of ARTICLE_SECTIONS) {
     assert.equal(typeof s.id, 'string');
     assert.equal(typeof s.heading, 'string');
     assert.equal(typeof s.lede, 'string');
   }
+  assert.deepEqual(
+    ARTICLE_SECTIONS.map((s) => s.id),
+    ['problem', 'pointwise-group', 'output-action', 'branching', 'partition-counting', 'appendix'],
+  );
 });
 
 test('EXPLORER_ACTS still exported (backward compat)', () => {

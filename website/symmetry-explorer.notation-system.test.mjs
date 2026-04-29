@@ -522,7 +522,9 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(priceSavingsSource, /notationLatex\('g_component'\)/);
   assert.match(constructionSource, /Formal-group construction/);
   assert.match(constructionSource, /notationLatex\('g_formal'\)/);
-  assert.match(constructionSource, /notationLatex\('g_output'\)/);
+  // V4: VSubSwConstruction switched the visible output action from
+  // notationLatex('g_output') to notationLatex('h_output') (= H).
+  assert.match(constructionSource, /notationLatex\('h_output'\)/);
   assert.match(constructionSource, /const COLOR_V = explorerThemeColor\(explorerThemeId, 'hero'\)/);
   assert.match(constructionSource, /const COLOR_W = explorerThemeColor\(explorerThemeId, 'summedSide'\)/);
   assert.match(constructionSource, /InlineMathText>\{`\(\s*visible output action, inherited from \$\$\{notationLatex\('g_pointwise'\)\}\$\s*\)`\}<\/InlineMathText>/);

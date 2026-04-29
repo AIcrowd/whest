@@ -33,7 +33,7 @@ export function buildMentalModelLines(selectedOrbitRow = null) {
     { id: 'intro-2', number: 2, code: '# Those pi relabelings generate the full symmetry group G for this step.' },
     { id: 'intro-3', number: 3, code: '# multiplication_cost counts one product evaluation per G-orbit representative.' },
     { id: 'init-eval', number: 4, code: 'multiplication_cost = 0' },
-    { id: 'intro-4', number: 5, code: '# accumulation_cost counts one accumulation per distinct projected output bin.' },
+    { id: 'intro-4', number: 5, code: '# accumulation_cost counts one update per stored output representative reached.' },
     { id: 'init-reduce', number: 6, code: 'accumulation_cost = 0' },
     { id: 'blank-1', number: 7, code: '' },
     { id: 'rep-comment-1', number: 8, code: '# RepSet = one representative full tuple from each orbit of G.' },

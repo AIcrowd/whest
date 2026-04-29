@@ -19,7 +19,7 @@ test('MultiplicationCostCard exports a default React component', () => {
 test('MultiplicationCostCard uses the aligned M/μ/α event labels and caption', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/MultiplicationCostCard.jsx');
   assert.match(src, /Multiplication Events \(μ\)/);
-  assert.match(src, /<InlineMathText>\{String\.raw`\$M\$ counts representative product values\. \$\\mu = \(k-1\)M\$ counts multiplication-chain events\. \$\\alpha\$ counts direct output-bin updates induced by product orbits\.`\}<\/InlineMathText>/);
+  assert.match(src, /<InlineMathText>\{String\.raw`\$M\$ counts representative product values\. \$\\mu = \(k-1\)M\$ counts multiplication-chain events\. \$\\alpha\$ counts accumulation updates from product-orbit representatives into stored output representatives\.`\}<\/InlineMathText>/);
   assert.match(src, /Live for this example/i);
   assert.match(src, /\\mu\s*\\;=\\;\s*\(/);
   assert.match(src, /num_terms/);

@@ -72,7 +72,12 @@ test('approved mathematically safer prose appears in the narrative data', () => 
   assert.match(section3, /accepted witness/i);
   assert.match(section3, /detected pointwise group/i);
   assert.match(section3, /H_i \\wr S_\{m_i\}/);
-  assert.match(section3, /used for product and accumulation counting/i);
+  // V4 main/section3.js was rephrased away from "the group used for product
+  // and accumulation counting" toward separate roles: G_pt is the product-side
+  // group; H = Stab_{G_pt}(V_free)|_{V_free} is the output representative action.
+  assert.match(section3, /product-side group/i);
+  assert.match(section3, /output(-side)? representative/i);
+  assert.match(section3, /\\mathrm\{Stab\}_\{G_\{\\text\{pt\}\}\}/);
   assert.doesNotMatch(section3, /derivePi/);
 
   assert.match(section4, /full assignment grid/i);

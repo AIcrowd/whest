@@ -30,7 +30,7 @@ export default function OrbitInspector({
         <div className="orbit-inspector-header">
           <span className="orbit-inspector-kicker">{kicker}</span>
           <h3>Representative orbits will appear here</h3>
-          <p>Once the engine has orbit rows, this panel shows one representative, its full orbit, and the output bins it updates.</p>
+          <p>Once the engine has orbit rows, this panel shows one representative, its full orbit, and the stored output representatives it updates.</p>
         </div>
       </div>
     );

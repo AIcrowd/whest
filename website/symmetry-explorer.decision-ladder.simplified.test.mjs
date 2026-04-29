@@ -97,14 +97,19 @@ test('DecisionLadder q_direct is in Stage 2 (F-check inspects post-dimino elemen
   assert.equal(match[1], '2', 'q_direct must be in Stage 2 after the element-level F-check upgrade');
 });
 
-test('DecisionLadder Stage-2 routing: q_crossVW splits into q_fullSym (yes) and bruteForceOrbit (no)', () => {
+test('DecisionLadder Stage-2 routing: q_crossVW splits into young (yes) and q_fullSym (no)', () => {
+  // V4 retitled q_crossVW to 'Full Sym(L), one domain ?' — yes goes directly
+  // to the Young multiset closed form; no goes to the typed-partitions
+  // feasibility check.
   const src = read();
-  assert.match(src, /id:\s*'q_crossVW',[\s\S]*?onTrue:\s*'q_fullSym',[\s\S]*?onFalse:\s*'bruteForceOrbit'/);
+  assert.match(src, /id:\s*'q_crossVW',[\s\S]*?onTrue:\s*'young',[\s\S]*?onFalse:\s*'q_fullSym'/);
 });
 
-test('DecisionLadder Stage-2 routing: q_fullSym splits into young (yes) and bruteForceOrbit (no)', () => {
+test('DecisionLadder Stage-2 routing: q_fullSym splits into partitionCount (yes) and bruteForceOrbit (no)', () => {
+  // V4 repurposed q_fullSym as 'Typed partitions feasible ?' — yes runs the
+  // typed partition counter; no falls back to corrected brute-force.
   const src = read();
-  assert.match(src, /id:\s*'q_fullSym',[\s\S]*?onTrue:\s*'young',[\s\S]*?onFalse:\s*'bruteForceOrbit'/);
+  assert.match(src, /id:\s*'q_fullSym',[\s\S]*?onTrue:\s*'partitionCount',[\s\S]*?onFalse:\s*'bruteForceOrbit'/);
 });
 
 test('DecisionLadder marks questions with their stage (1 structural, 2 symmetry)', () => {
