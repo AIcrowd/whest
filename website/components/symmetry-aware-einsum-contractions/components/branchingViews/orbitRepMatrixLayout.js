@@ -8,7 +8,7 @@
 
 export const SQUARE_FRAME = 360;       // default canvas width on lg
 export const MIN_CELL = 4;             // smallest visible cell side
-export const MAX_CELL = 32;            // largest cell side (small presets)
+export const MAX_CELL = 64;            // largest cell side (small presets fill the column)
 
 export function tupleKey(tuple) {
   return JSON.stringify(tuple ?? {});

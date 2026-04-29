@@ -34,16 +34,16 @@ test('labelledTuple keeps k=v form', () => {
 });
 
 test('layoutFor: square cells, canvas height capped at canvas width', () => {
-  // 6 × 6: cell = floor(360/6) = 60, clamped to MAX_CELL=32 → cell=32
-  // contentW = 6*32 = 192, contentH = 6*32 = 192, both ≤ 360 → no overflow
+  // 6 × 6: cell = floor(360/6) = 60, ≤ MAX_CELL=64 → cell=60 (fills column)
+  // contentW = 6*60 = 360, contentH = 6*60 = 360, both ≤ 360 → no overflow
   assert.deepEqual(layoutFor({ canvasWidth: 360, numRows: 6, numCols: 6 }), {
-    cellSize: 32,
-    canvasW: 192,
-    canvasH: 192,
+    cellSize: 60,
+    canvasW: 360,
+    canvasH: 360,
     overflowY: false,
     overflowX: false,
-    contentWidth: 192,
-    contentHeight: 192,
+    contentWidth: 360,
+    contentHeight: 360,
   });
   // 14 × 10: cell = floor(360/14) = 25, contentH = 25*10 = 250 ≤ 360 → no overflow
   assert.deepEqual(layoutFor({ canvasWidth: 360, numRows: 10, numCols: 14 }), {
@@ -55,14 +55,14 @@ test('layoutFor: square cells, canvas height capped at canvas width', () => {
     contentWidth: 350,
     contentHeight: 250,
   });
-  // 10 × 165 (Trilinear): cell = floor(360/10) = 36, clamped to 32 → cell=32
-  // contentW = 10*32 = 320, contentH = 165*32 = 5280 → overflowY engages
+  // 10 × 165 (Trilinear): cell = floor(360/10) = 36, ≤ MAX_CELL=64 → cell=36
+  // contentW = 10*36 = 360, contentH = 165*36 = 5940 → overflowY engages
   const trilinear = layoutFor({ canvasWidth: 360, numRows: 165, numCols: 10 });
-  assert.equal(trilinear.cellSize, 32);
-  assert.equal(trilinear.canvasW, 320);
+  assert.equal(trilinear.cellSize, 36);
+  assert.equal(trilinear.canvasW, 360);
   assert.equal(trilinear.canvasH, 360);
   assert.equal(trilinear.overflowY, true);
-  assert.equal(trilinear.contentHeight, 32 * 165);
+  assert.equal(trilinear.contentHeight, 36 * 165);
 });
 
 test('layoutFor floors cell at MIN_CELL=4', () => {
