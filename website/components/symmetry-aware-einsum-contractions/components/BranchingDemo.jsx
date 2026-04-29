@@ -49,6 +49,39 @@ export default function BranchingDemo({
 
   if (!componentData || !costModel) return null;
 
+  const orbitRows = costModel.orbitRows ?? [];
+  const safeIdx = orbitRows.length === 0
+    ? -1
+    : Math.min(Math.max(0, selectedOrbitIdx >= 0 ? selectedOrbitIdx : 0), orbitRows.length - 1);
+  const activeRow = safeIdx >= 0 ? orbitRows[safeIdx] : null;
+
+  // Synthesize a normalized "orbit" view-payload from the costModel row.
+  // Members are anonymous placeholders — coeff[i] copies of a member that
+  // maps to output rep i. The exact tuple values aren't visualised; the
+  // shape (how many members → which Q) is what the views need.
+  function makeOrbitPayload(row) {
+    if (!row) return null;
+    const members = [];
+    (row.outputs ?? []).forEach((out, repIndex) => {
+      for (let j = 0; j < (out.coeff ?? 1); j += 1) {
+        members.push({ repIndex });
+      }
+    });
+    return {
+      size: row.orbitSize ?? members.length,
+      members,
+    };
+  }
+  const activeOrbit = makeOrbitPayload(activeRow);
+  const reachedReps = (activeRow?.outputs ?? []).map((out) => ({ weight: out.coeff ?? 1 }));
+  const liveAlpha = orbitRows.reduce((acc, row) => acc + (row.outputs?.length ?? 0), 0);
+
+  function step(delta) {
+    if (orbitRows.length === 0) return;
+    const next = (safeIdx + delta + orbitRows.length) % orbitRows.length;
+    onSelectOrbit(next);
+  }
+
   return (
     <section
       id="branching-demo"
@@ -88,11 +121,25 @@ export default function BranchingDemo({
         </div>
       </div>
 
+      <div className="mt-3 flex items-center gap-3 text-[12px]">
+        <span className="font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>Orbit</span>
+        <button type="button" data-action="prev-orbit" onClick={() => step(-1)} className="rounded border px-2 py-1 text-[11px]" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>◀ prev</button>
+        <span className="font-mono">orbit {orbitRows.length === 0 ? '—' : safeIdx + 1} / {orbitRows.length}</span>
+        <button type="button" data-action="next-orbit" onClick={() => step(1)} className="rounded border px-2 py-1 text-[11px]" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>next ▶</button>
+        <span className="ml-auto font-mono" style={{ color: notationColor('h_output') }}>
+          reaches <strong>{reachedReps.length}</strong> stored output reps
+        </span>
+      </div>
+
       <div className="mt-4 rounded-md border p-4" style={{ borderColor: explorerThemeColor(themeId, 'border'), background: explorerThemeColor(themeId, 'surfaceInset') }}>
-        {activeView === 'fan' && <FanView orbit={null} reachedReps={[]} />}
-        {activeView === 'arcs' && <ArcsView orbit={null} reachedReps={[]} />}
-        {activeView === 'grids' && <GridsView orbit={null} allOrbits={[]} reachedReps={[]} hClasses={[]} />}
-        {activeView === 'pile-buckets' && <PileBucketsView orbit={null} reachedReps={[]} />}
+        {activeView === 'fan' && <FanView orbit={activeOrbit} reachedReps={reachedReps} />}
+        {activeView === 'arcs' && <ArcsView orbit={activeOrbit} reachedReps={reachedReps} />}
+        {activeView === 'grids' && <GridsView orbit={activeOrbit} allOrbits={orbitRows} reachedReps={reachedReps} hClasses={[]} />}
+        {activeView === 'pile-buckets' && <PileBucketsView orbit={activeOrbit} reachedReps={reachedReps} />}
+      </div>
+
+      <div className="mt-3 font-mono text-[11px]" data-testid="branching-alpha-total" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+        across all {orbitRows.length} orbits: α = <strong style={{ color: notationColor('alpha_total') }}>{liveAlpha}</strong>
       </div>
     </section>
   );

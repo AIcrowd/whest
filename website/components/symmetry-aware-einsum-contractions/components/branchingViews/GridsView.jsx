@@ -1,4 +1,4 @@
-import { explorerThemeColor, explorerThemeTint, getActiveExplorerThemeId, getExplorerThemeOperandPalette } from '../../lib/explorerTheme.js';
+import { explorerThemeColor, getActiveExplorerThemeId, getExplorerThemeOperandPalette } from '../../lib/explorerTheme.js';
 
 export default function GridsView({ orbit, allOrbits, reachedReps, hClasses }) {
   const themeId = getActiveExplorerThemeId();
@@ -14,7 +14,12 @@ export default function GridsView({ orbit, allOrbits, reachedReps, hClasses }) {
     return palette[idx % palette.length] ?? explorerThemeColor(themeId, 'muted');
   }
   function colourForHClass(idx) {
-    return palette[idx % palette.length] ?? explorerThemeColor(themeId, 'muted');
+    // Offset into the palette so an H-class with the same numeric id as an
+    // orbit gets a visually distinct colour from that orbit. With 15 colours
+    // in the editorial-noir-rich palette, an offset of half the palette length
+    // gives maximal hue separation.
+    const offset = Math.floor(palette.length / 2);
+    return palette[(idx + offset) % palette.length] ?? explorerThemeColor(themeId, 'muted');
   }
 
   const cellSize = 28;

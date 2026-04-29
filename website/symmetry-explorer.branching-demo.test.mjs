@@ -82,3 +82,15 @@ test('BranchingDemo wires PileBucketsView for view-id="pile-buckets"', () => {
   assert.match(src, /import PileBucketsView from '\.\/branchingViews\/PileBucketsView\.jsx'/);
   assert.match(src, /activeView === 'pile-buckets' && <PileBucketsView/);
 });
+
+test('BranchingDemo renders prev/next orbit buttons + a live α counter', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
+  assert.match(src, /data-action="prev-orbit"/);
+  assert.match(src, /data-action="next-orbit"/);
+  assert.match(src, /data-testid="branching-alpha-total"/);
+});
+
+test('BranchingDemo derives orbit data from costModel.orbitRows', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
+  assert.match(src, /costModel\.orbitRows/);
+});
