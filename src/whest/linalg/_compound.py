@@ -68,10 +68,15 @@ def multi_dot(arrays, *, out=None):
     arrays = [a if isinstance(a, _np.ndarray) else _np.asarray(a) for a in arrays]
     shapes = [arr.shape for arr in arrays]
     cost = multi_dot_cost(shapes)
+    out_stripped = _to_base_ndarray(out) if out is not None else None
     with budget.deduct(
         "linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes)
     ):
-        result = _np.linalg.multi_dot([_to_base_ndarray(a) for a in arrays], out=out)
+        result = _np.linalg.multi_dot(
+            [_to_base_ndarray(a) for a in arrays], out=out_stripped
+        )
+    if out is not None:
+        return out
     if isinstance(result, _np.ndarray) and inputs_were_whest:
         return _aswhest(result)
     return result

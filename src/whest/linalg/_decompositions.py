@@ -95,6 +95,14 @@ def qr(a, mode="reduced"):
         if inputs_were_whest:
             return QRResult(_aswhest(q), _aswhest(r))
         return QRResult(q, r)
+    if mode == "raw":
+        # ``raw`` returns a (h, tau) tuple of two ndarrays with different
+        # shapes — preserve the tuple structure rather than collapsing to
+        # a single array via ``_aswhest``.
+        h, tau = result
+        if inputs_were_whest:
+            return _aswhest(h), _aswhest(tau)
+        return h, tau
     if inputs_were_whest:
         return _aswhest(result)
     return result

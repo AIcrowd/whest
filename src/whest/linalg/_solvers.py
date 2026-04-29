@@ -54,7 +54,10 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
 def solve(a, b):
     """Solve linear system with FLOP counting."""
     budget = require_budget()
-    inputs_were_whest = isinstance(a, WhestArray) or isinstance(b, WhestArray)
+    # Match NumPy's ``linalg.solve`` subclass-return policy: the result
+    # adopts the subclass of ``b``. ``np.linalg.solve(WhestArray, plain)``
+    # therefore returns plain ndarray to keep parity with raw NumPy.
+    b_was_whest = isinstance(b, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     if not isinstance(b, _np.ndarray):
@@ -66,7 +69,7 @@ def solve(a, b):
         "linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
         result = _np.linalg.solve(_to_base_ndarray(a), _to_base_ndarray(b))
-    if inputs_were_whest:
+    if b_was_whest:
         return _aswhest(result)
     return result
 
@@ -159,7 +162,10 @@ def lstsq_cost(m: int, n: int) -> int:
 def lstsq(a, b, rcond=None):
     """Least-squares solution with FLOP counting."""
     budget = require_budget()
-    inputs_were_whest = isinstance(a, WhestArray) or isinstance(b, WhestArray)
+    # Match NumPy's ``linalg.lstsq`` subclass-return policy: the solution
+    # adopts the subclass of ``b``. The residuals and singular-values
+    # arrays follow the same rule (whatever wrapping ``b`` would imply).
+    b_was_whest = isinstance(b, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     m, n = a.shape[-2], a.shape[-1]
@@ -169,9 +175,7 @@ def lstsq(a, b, rcond=None):
         "linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
         result = _np.linalg.lstsq(_to_base_ndarray(a), _to_base_ndarray(b), rcond=rcond)
-    # lstsq returns (solution, residuals, rank, singular_values); wrap arrays
-    # only when inputs were whest.
-    if inputs_were_whest:
+    if b_was_whest:
         return tuple(_aswhest(r) if isinstance(r, _np.ndarray) else r for r in result)
     return tuple(result)
 

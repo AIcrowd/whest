@@ -1553,8 +1553,12 @@ attach_docstring(ravel_multi_index, _np.ravel_multi_index, "free", "0 FLOPs")
 
 def require(*args, **kwargs):
     """Return array satisfying requirements. Wraps ``numpy.require``. Cost: 0 FLOPs."""
-    stripped_args = _to_base_ndarray_tree(args)
-    return _np.require(*stripped_args, **kwargs)
+    # Pass args through unstripped: ``_np.require`` is a thin Python
+    # helper around ``np.asanyarray`` and does not enter the
+    # ``__array_function__`` dispatch path, so passing a WhestArray
+    # cannot recurse. Stripping would break ``np.require(x).is(x)``
+    # identity for already-conforming inputs.
+    return _np.require(*args, **kwargs)
 
 
 attach_docstring(require, _np.require, "free", "0 FLOPs")

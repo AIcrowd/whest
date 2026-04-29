@@ -25,11 +25,17 @@ def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
     budget = require_budget()
     a = _np.asarray(a)
     cost = _builtins.max(_builtins.min(a.shape[axis1], a.shape[axis2]), 1)
+    out_stripped = _to_base_ndarray(out) if out is not None else None
     with budget.deduct("trace", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
         result = _np.trace(
-            a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out
+            _to_base_ndarray(a),
+            offset=offset,
+            axis1=axis1,
+            axis2=axis2,
+            dtype=dtype,
+            out=out_stripped,
         )
-    return result
+    return out if out is not None else result
 
 
 attach_docstring(

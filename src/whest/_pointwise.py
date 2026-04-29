@@ -772,11 +772,18 @@ if hasattr(_np, "vecdot"):
             if out_shape
             else contracted
         )
+        out = kwargs.pop("out", None)
+        out_stripped = _to_base_ndarray(out) if out is not None else None
         with budget.deduct(
             "vecdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
         ):
-            result = _np.vecdot(_to_base_ndarray(a), _to_base_ndarray(b), **kwargs)
-        return result
+            result = _np.vecdot(
+                _to_base_ndarray(a),
+                _to_base_ndarray(b),
+                out=out_stripped,
+                **kwargs,
+            )
+        return out if out is not None else result
 
 else:
 
@@ -805,11 +812,18 @@ if hasattr(_np, "matvec"):
             int(_np.prod(batch)) * out_m * contracted if batch else out_m * contracted,
             1,
         )
+        out = kwargs.pop("out", None)
+        out_stripped = _to_base_ndarray(out) if out is not None else None
         with budget.deduct(
             "matvec", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
         ):
-            result = _np.matvec(_to_base_ndarray(a), _to_base_ndarray(b), **kwargs)
-        return result
+            result = _np.matvec(
+                _to_base_ndarray(a),
+                _to_base_ndarray(b),
+                out=out_stripped,
+                **kwargs,
+            )
+        return out if out is not None else result
 
 else:
 
@@ -838,11 +852,18 @@ if hasattr(_np, "vecmat"):
             int(_np.prod(batch)) * out_m * contracted if batch else out_m * contracted,
             1,
         )
+        out = kwargs.pop("out", None)
+        out_stripped = _to_base_ndarray(out) if out is not None else None
         with budget.deduct(
             "vecmat", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
         ):
-            result = _np.vecmat(_to_base_ndarray(a), _to_base_ndarray(b), **kwargs)
-        return result
+            result = _np.vecmat(
+                _to_base_ndarray(a),
+                _to_base_ndarray(b),
+                out=out_stripped,
+                **kwargs,
+            )
+        return out if out is not None else result
 
 else:
 

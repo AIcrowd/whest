@@ -250,6 +250,11 @@ class WhestArray(_np.ndarray):
             "average",
             "percentile",
             "quantile",
+            # NumPy 2.x retained ``amax``/``amin`` as exported aliases
+            # for ``max``/``min``. Bind them so ``np.amax(WhestArray)``
+            # routes through whest instead of raising TypeError.
+            "amax",
+            "amin",
         ):
             _bind(name, name)
 
