@@ -24,7 +24,6 @@ import SigmaLoop from './components/SigmaLoop.jsx';
 import DiminoView from './components/DiminoView.jsx';
 import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
-import PartitionCountingExplainer from './components/PartitionCountingExplainer.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import {
@@ -586,9 +585,6 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     contentClassName="pt-5"
                   >
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[3].introParagraphs} />
-                    <div className="mt-6">
-                      <PartitionCountingExplainer />
-                    </div>
                     <div className="mt-6">
                       <ComponentCostView
                         componentData={componentData}
