@@ -267,10 +267,13 @@ class SymmetryGroup:
         self._elements: list[_Permutation] | None = None
         self._order: int | None = None
         self._labels: tuple[str, ...] | None = None
-        self._canonical_action_cache: tuple[
-            tuple[str, ...] | None,
-            tuple[tuple[Any, ...], tuple[tuple[Any, ...], ...]],
-        ] | None = None
+        self._canonical_action_cache: (
+            tuple[
+                tuple[str, ...] | None,
+                tuple[tuple[Any, ...], tuple[tuple[Any, ...], ...]],
+            ]
+            | None
+        ) = None
 
     @classmethod
     def from_generators(
