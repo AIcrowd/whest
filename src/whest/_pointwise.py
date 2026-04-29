@@ -85,6 +85,23 @@ def _validate_result_symmetry(result, symmetry):
         raise SymmetryError(axes=tuple(axes), max_deviation=float("inf"))
 
 
+# Permutation groups with degree above this threshold are skipped from
+# symmetry-aware cost adjustment. ``SymmetryGroup.order()`` enumerates
+# the group's elements; for ``S_n`` that's ``n!`` work, which already
+# blows past Python's recursion / memory limits at ``n ≈ 20``.
+# ``np.ones((1,)*33)`` produces an S_33 auto-inferred symmetry — the
+# cost adjustment is irrelevant for length-1 axes anyway. Above this
+# rank we bail out and charge dense cost.
+_MAX_SYMMETRY_DEGREE_FOR_COST = 12
+
+
+def _is_oversized_for_cost_model(group):
+    """``True`` if walking ``group``'s elements would be prohibitively slow."""
+    if group is None:
+        return False
+    return group.degree > _MAX_SYMMETRY_DEGREE_FOR_COST
+
+
 def _symmetry_adjusted_cost(dense_cost, output_shape, output_symmetry):
     """Scale a dense FLOP cost by the output's symmetry-savings ratio.
 
@@ -495,14 +512,23 @@ def _counted_ufunc_outer(ufunc, a, b, *, out=None, **kwargs):
     a_sym = _symmetry_of(a)
     b_sym = _symmetry_of(b)
     output_shape = tuple(a.shape) + tuple(b.shape)
-    # Lift ``b``'s symmetry axes into the combined output's slot range.
-    b_sym_lifted = b_sym
-    if b_sym is not None and b_sym.axes is not None:
-        axis_map = {ax: ax + a.ndim for ax in b_sym.axes}
-        b_sym_lifted = remap_group_axes(b_sym, axis_map)
-    out_sym = direct_product_groups(a_sym, b_sym_lifted)
     dense = _builtins.max(a.size * b.size, 1)
-    cost = _symmetry_adjusted_cost(dense, output_shape, out_sym)
+    # Bail on the symmetry composition for high-degree groups: the
+    # direct-product call enumerates ``|a_sym| * |b_sym|`` group
+    # elements, which explodes for auto-inferred S_n on (1,)*n shapes
+    # (np.ones((1,)*33) → S_33 with 33! elements). The cost adjustment
+    # is irrelevant when the output is trivially small anyway.
+    if _is_oversized_for_cost_model(a_sym) or _is_oversized_for_cost_model(b_sym):
+        out_sym = None
+        cost = dense
+    else:
+        # Lift ``b``'s symmetry axes into the combined output's slot range.
+        b_sym_lifted = b_sym
+        if b_sym is not None and b_sym.axes is not None:
+            axis_map = {ax: ax + a.ndim for ax in b_sym.axes}
+            b_sym_lifted = remap_group_axes(b_sym, axis_map)
+        out_sym = direct_product_groups(a_sym, b_sym_lifted)
+        cost = _symmetry_adjusted_cost(dense, output_shape, out_sym)
     out_stripped = _to_base_ndarray(out) if out is not None else None
     with budget.deduct(
         f"{ufunc.__name__}.outer",
@@ -1591,27 +1617,34 @@ def tensordot(a, b, axes=2):
     dense = _builtins.max(a.size * b.size // contracted, 1) if contracted > 0 else 1
     # Compose output symmetry from each input's surviving symmetry, with
     # b's axes lifted past a's surviving count so they refer to their
-    # final slots in the combined output.
+    # final slots in the combined output. Bail on the composition for
+    # high-degree groups (see ``_is_oversized_for_cost_model``).
     a_sym = _symmetry_of(a)
     b_sym = _symmetry_of(b)
-    a_sym_kept = _surviving_symmetry_after_contraction(a_sym, a_surviving)
-    b_sym_kept = _surviving_symmetry_after_contraction(b_sym, b_surviving)
-    a_sym_remapped = (
-        remap_group_axes(a_sym_kept, {ax: new for new, ax in enumerate(a_surviving)})
-        if a_sym_kept is not None
-        else None
-    )
-    b_offset = len(a_surviving)
-    b_sym_remapped = (
-        remap_group_axes(
-            b_sym_kept,
-            {ax: new + b_offset for new, ax in enumerate(b_surviving)},
+    if _is_oversized_for_cost_model(a_sym) or _is_oversized_for_cost_model(b_sym):
+        out_sym = None
+        cost = dense
+    else:
+        a_sym_kept = _surviving_symmetry_after_contraction(a_sym, a_surviving)
+        b_sym_kept = _surviving_symmetry_after_contraction(b_sym, b_surviving)
+        a_sym_remapped = (
+            remap_group_axes(
+                a_sym_kept, {ax: new for new, ax in enumerate(a_surviving)}
+            )
+            if a_sym_kept is not None
+            else None
         )
-        if b_sym_kept is not None
-        else None
-    )
-    out_sym = direct_product_groups(a_sym_remapped, b_sym_remapped)
-    cost = _symmetry_adjusted_cost(dense, output_shape, out_sym)
+        b_offset = len(a_surviving)
+        b_sym_remapped = (
+            remap_group_axes(
+                b_sym_kept,
+                {ax: new + b_offset for new, ax in enumerate(b_surviving)},
+            )
+            if b_sym_kept is not None
+            else None
+        )
+        out_sym = direct_product_groups(a_sym_remapped, b_sym_remapped)
+        cost = _symmetry_adjusted_cost(dense, output_shape, out_sym)
     with budget.deduct(
         "tensordot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
