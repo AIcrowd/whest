@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import InlineMathText from './InlineMathText.jsx';
 import FanView from './branchingViews/FanView.jsx';
+import ArcsView from './branchingViews/ArcsView.jsx';
 import {
   explorerThemeColor,
   explorerThemeTint,
@@ -87,7 +88,8 @@ export default function BranchingDemo({
 
       <div className="mt-4 rounded-md border p-4" style={{ borderColor: explorerThemeColor(themeId, 'border'), background: explorerThemeColor(themeId, 'surfaceInset') }}>
         {activeView === 'fan' && <FanView orbit={null} reachedReps={[]} />}
-        {activeView !== 'fan' && (
+        {activeView === 'arcs' && <ArcsView orbit={null} reachedReps={[]} />}
+        {(activeView === 'grids' || activeView === 'pile-buckets') && (
           <div className="text-center text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
             {activeView} view lands in a subsequent task.
           </div>

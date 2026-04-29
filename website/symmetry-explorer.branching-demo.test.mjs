@@ -46,3 +46,15 @@ test('FanView exports a default React component with no raw hex', () => {
   assert.doesNotMatch(src, /#[0-9A-Fa-f]{3}\b|#[0-9A-Fa-f]{6}\b/);
   assert.match(src, /<svg/);
 });
+
+test('ArcsView exports a default React component with no raw hex', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/ArcsView.jsx');
+  assert.match(src, /export default function ArcsView/);
+  assert.doesNotMatch(src, /#[0-9A-Fa-f]{3}\b|#[0-9A-Fa-f]{6}\b/);
+});
+
+test('BranchingDemo wires ArcsView for view-id="arcs"', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
+  assert.match(src, /import ArcsView from '\.\/branchingViews\/ArcsView\.jsx'/);
+  assert.match(src, /activeView === 'arcs' && <ArcsView/);
+});
