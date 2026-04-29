@@ -80,7 +80,17 @@ def qr_cost(m: int, n: int) -> int:
 
 
 def qr(a, mode="reduced"):
-    """QR decomposition with FLOP counting."""
+    """QR decomposition with FLOP counting.
+
+    Returns vary by ``mode``:
+
+    - ``"reduced"`` (default) / ``"complete"`` → ``QRResult(q, r)``
+    - ``"r"`` → ``r`` only
+    - ``"raw"`` → 2-tuple ``(h, tau)`` of two ndarrays with mismatched
+      shapes (preserved as a tuple rather than collapsed via
+      ``_aswhest``, which would otherwise fail with
+      ``ValueError: ... inhomogeneous shape``)
+    """
     budget = require_budget()
     inputs_were_whest = isinstance(a, WhestArray)
     if not isinstance(a, _np.ndarray):

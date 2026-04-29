@@ -7,6 +7,48 @@ title: Changelog
 
 ### Added
 
+- **NumPy `__array_ufunc__` (NEP 13) and `__array_function__` (NEP 18) protocols on
+  `WhestArray`.** Calls like `np.add(whest, x)`, `np.add.reduce(a)`,
+  `np.add.outer(a, b)`, `np.divmod(a, b)`, `np.modf(a)`, `np.frexp(a)`,
+  `np.add.at(a, idx, val)`, `np.add.reduceat(a, idx)`, plus ~108
+  function-form callables (`np.sort`, `np.transpose`, `np.linalg.solve`, …)
+  now route through whest's FLOP-counted wrappers automatically. Closes #58
+  (ndarray methods bypassing tracking), #38 (in-place dunders on
+  `SymmetricTensor` rebinding instead of mutating), and #62 (no-symmetry
+  `SymmetricTensor` type ambiguity). See the new
+  [Edge cases when SymmetricTensors meet NumPy protocols](/docs/guides/symmetry/#edge-cases-when-symmetrictensors-meet-numpy-protocols)
+  section for the corner-case rules.
+
+- **25 ndarray method overrides on `WhestArray`.** `a.sum()`, `a.dot(b)`,
+  `a.argsort()`, `a.compress()`, `a.trace()`, `a.round()`, `a.clip()`, etc.
+  now produce the same FLOP count as `we.sum(a)`, `we.dot(a, b)`, etc.
+
+- **In-place dunder rewrites with symmetry-corruption guards.** `A_sym += B`
+  mutates `A_sym` in place when the result preserves `A_sym`'s declared
+  symmetry, and raises `ValueError` when it would weaken or destroy it
+  (instead of silently rebinding to a new array, the pre-#67 behaviour).
+  Covers `__iadd__`, `__isub__`, `__imul__`, `__itruediv__`, `__ifloordiv__`,
+  `__imod__`, `__ipow__`, `__iand__`, `__ior__`, `__ixor__`, `__ilshift__`,
+  `__irshift__`, `__imatmul__`. In-place `sort` / `partition` similarly refuse
+  on `SymmetricTensor`.
+
+- **Multi-output ufuncs `np.divmod` / `np.frexp` / `np.modf`** now route through
+  whest with full `out=(o1, o2)` support, including partial allocation
+  (`out=(o1, None)`). Both outputs preserve any symmetry the input had.
+
+- **Symmetry-aware cost adjustment for `ufunc.outer` and `tensordot`** —
+  placeholder model charges `dense_cost × unique_output_elements /
+  dense_output_elements` to reflect the savings a symmetry-aware
+  implementation could realise. Above `SymmetryGroup` degree 12, the
+  adjustment is skipped (Burnside enumeration on `S_n` for `n > 12` is
+  infeasible) and a new `CostFallbackWarning` fires once per
+  `(op_name, degree)` pair per process. Suppress via
+  `we.configure(symmetry_warnings=False)` (shares the flag with
+  `SymmetryLossWarning`).
+
+- **`CostFallbackWarning`** added to both the core library and the client
+  package. Subclass of `WhestWarning`.
+
 - **Wall-clock time limits.** `BudgetContext` now accepts `wall_time_limit_s` to
   set a wall-clock deadline. When exceeded, `TimeExhaustedError` is raised at the
   next operation boundary with diagnostic info (operation name, elapsed time, limit).

@@ -52,7 +52,13 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
 
 
 def solve(a, b):
-    """Solve linear system with FLOP counting."""
+    """Solve linear system ``a @ x = b`` with FLOP counting.
+
+    The result adopts the subclass of ``b`` (matching numpy's
+    ``np.linalg.solve`` policy): if ``b`` is a plain ndarray the
+    solution is plain ndarray even when ``a`` is a ``WhestArray``;
+    if ``b`` is a ``WhestArray`` the solution is wrapped accordingly.
+    """
     budget = require_budget()
     # Match NumPy's ``linalg.solve`` subclass-return policy: the result
     # adopts the subclass of ``b``. ``np.linalg.solve(WhestArray, plain)``
@@ -160,7 +166,15 @@ def lstsq_cost(m: int, n: int) -> int:
 
 
 def lstsq(a, b, rcond=None):
-    """Least-squares solution with FLOP counting."""
+    """Least-squares solution with FLOP counting.
+
+    Returns a 4-tuple ``(solution, residuals, rank, singular_values)``.
+    The solution and the array elements adopt the subclass of ``b``
+    (matching numpy's ``np.linalg.lstsq`` policy): if ``b`` is a plain
+    ndarray the outputs are plain ndarray even when ``a`` is a
+    ``WhestArray``; if ``b`` is a ``WhestArray`` they are wrapped
+    accordingly.
+    """
     budget = require_budget()
     # Match NumPy's ``linalg.lstsq`` subclass-return policy: the solution
     # adopts the subclass of ``b``. The residuals and singular-values

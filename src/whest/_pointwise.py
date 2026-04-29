@@ -1657,7 +1657,16 @@ def _surviving_symmetry_after_contraction(group, surviving_axes):
 
 
 def tensordot(a, b, axes=2):
-    """Counted version of np.tensordot."""
+    """Counted version of ``np.tensordot``.
+
+    The dense FLOP cost is ``a.size * b.size / contracted_size``. When
+    either operand carries a :class:`SymmetricTensor` symmetry, whest
+    composes the surviving (post-contraction) symmetry on the output
+    axes via :func:`whest._symmetry_utils.direct_product_groups` and
+    scales the cost by the unique-element fraction of the output (see
+    :func:`_symmetry_adjusted_cost`). Above degree 12 the adjustment is
+    skipped and :class:`whest.errors.CostFallbackWarning` fires.
+    """
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
