@@ -53,10 +53,15 @@ export function deriveCells(orbitRows = [], reps = []) {
  */
 export function layoutFor({ canvasWidth, numRows, numCols }) {
   const safeWidth = Math.max(canvasWidth || SQUARE_FRAME, MIN_CELL * 2);
-  const cellByCols = Math.floor(safeWidth / Math.max(numCols, 1));
+  const safeRows = Math.max(Math.floor(numRows) || 0, 0);
+  const safeCols = Math.max(Math.floor(numCols) || 0, 0);
+  if (safeRows === 0 || safeCols === 0) {
+    return { cellSize: 0, canvasW: 0, canvasH: 0, overflowY: false, overflowX: false, contentWidth: 0, contentHeight: 0 };
+  }
+  const cellByCols = Math.floor(safeWidth / safeCols);
   const cellSize = Math.max(MIN_CELL, Math.min(MAX_CELL, cellByCols));
-  const contentWidth = cellSize * numCols;
-  const contentHeight = cellSize * numRows;
+  const contentWidth = cellSize * safeCols;
+  const contentHeight = cellSize * safeRows;
   const canvasW = Math.min(contentWidth, safeWidth);
   const canvasH = Math.min(contentHeight, safeWidth);
   const overflowY = contentHeight > canvasH;
@@ -71,10 +76,13 @@ export function layoutFor({ canvasWidth, numRows, numCols }) {
  */
 export function cellAtPoint({ x, y }, layout) {
   if (!layout) return null;
-  const { cellSize, canvasW, canvasH, scrollTop = 0, scrollLeft = 0 } = layout;
+  const { cellSize, canvasW, canvasH, scrollTop = 0, scrollLeft = 0, numRows, numCols } = layout;
+  if (!cellSize || cellSize <= 0) return null;
   if (x < 0 || y < 0 || x >= canvasW || y >= canvasH) return null;
   const col = Math.floor((x + scrollLeft) / cellSize);
   const row = Math.floor((y + scrollTop) / cellSize);
   if (col < 0 || row < 0) return null;
+  if (Number.isFinite(numRows) && row >= numRows) return null;
+  if (Number.isFinite(numCols) && col >= numCols) return null;
   return { row, col };
 }

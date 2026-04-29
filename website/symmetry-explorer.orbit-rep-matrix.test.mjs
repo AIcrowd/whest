@@ -113,3 +113,32 @@ test('module is JS only — no JSX, no React import', () => {
   assert.doesNotMatch(src, /from 'react'/);
   assert.doesNotMatch(src, /<[A-Z]/);
 });
+
+test('cellAtPoint rejects coords beyond numRows / numCols', () => {
+  const layout = { cellSize: 20, canvasW: 200, canvasH: 200, scrollTop: 0, scrollLeft: 0, numRows: 5, numCols: 4 };
+  // valid in-bounds
+  assert.deepEqual(cellAtPoint({ x: 5, y: 5 }, layout), { row: 0, col: 0 });
+  assert.deepEqual(cellAtPoint({ x: 75, y: 95 }, layout), { row: 4, col: 3 });
+  // col >= numCols
+  assert.equal(cellAtPoint({ x: 95, y: 5 }, { ...layout, canvasW: 300 }), null);
+  // row >= numRows (with scroll past bottom)
+  assert.equal(cellAtPoint({ x: 5, y: 5 }, { ...layout, scrollTop: 200, canvasH: 300 }), null);
+});
+
+test('cellAtPoint short-circuits when cellSize is invalid', () => {
+  assert.equal(cellAtPoint({ x: 0, y: 0 }, { cellSize: 0, canvasW: 0, canvasH: 0 }), null);
+  assert.equal(cellAtPoint({ x: 0, y: 0 }, { cellSize: null, canvasW: 100, canvasH: 100 }), null);
+});
+
+test('layoutFor returns a clean empty layout for 0 rows / 0 cols / NaN / negative', () => {
+  for (const bad of [{ numRows: 0, numCols: 5 }, { numRows: 5, numCols: 0 }, { numRows: NaN, numCols: 5 }, { numRows: 5, numCols: -3 }]) {
+    const out = layoutFor({ canvasWidth: 360, ...bad });
+    assert.equal(out.cellSize, 0, `cellSize 0 for ${JSON.stringify(bad)}`);
+    assert.equal(out.canvasW, 0);
+    assert.equal(out.canvasH, 0);
+    assert.equal(out.overflowX, false);
+    assert.equal(out.overflowY, false);
+    assert.equal(out.contentWidth, 0);
+    assert.equal(out.contentHeight, 0);
+  }
+});
