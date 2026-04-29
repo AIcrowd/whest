@@ -54,3 +54,59 @@ test('countMapOrbitsUnderH quotients maps by output action', () => {
   const maps = new Set(['0|1', '1|0', '0|2']);
   assert.equal(countMapOrbitsUnderH(maps, h), 2);
 });
+
+import { partitionCountRegime } from './components/symmetry-aware-einsum-contractions/engine/regimes/partitionCount.js';
+
+test('partition count gives n^2 for d=2 r=1 S2 example', () => {
+  const elements = dimino([new Permutation([1, 0])]);
+  const ctx = {
+    labels: ['i', 'j'],
+    va: ['i'],
+    wa: ['j'],
+    elements,
+    sizes: [6, 6],
+    visiblePositions: [0],
+    generators: [new Permutation([1, 0])],
+  };
+  assert.equal(partitionCountRegime.recognize(ctx).fired, true);
+  const result = partitionCountRegime.compute(ctx);
+  assert.equal(result.count, 36);
+});
+
+test('partition count gives n^2(n+1)/2 for S3 to S2 reduction', () => {
+  const s01 = new Permutation([1, 0, 2]);
+  const s12 = new Permutation([0, 2, 1]);
+  const elements = dimino([s01, s12]);
+  const ctx = {
+    labels: ['i', 'j', 'k'],
+    va: ['i', 'j'],
+    wa: ['k'],
+    elements,
+    sizes: [4, 4, 4],
+    visiblePositions: [0, 1],
+    generators: [s01, s12],
+  };
+  const result = partitionCountRegime.compute(ctx);
+  assert.equal(result.count, 40);
+});
+
+test('partition count supports heterogeneous typed partitions', () => {
+  // Independent S2 x S2 on the (3,3,5,5) shape: matches the plan's stated
+  // expectation C(3+2-1,2) * C(5+2-1,2) = 6 * 15 = 90. The plan-as-written
+  // used a single coupled generator (1,0,3,2) which gives alpha = M = 120,
+  // not 90; that pairing does not correspond to the cited multiset formula.
+  const visSwap = new Permutation([1, 0, 2, 3]);
+  const sumSwap = new Permutation([0, 1, 3, 2]);
+  const elements = dimino([visSwap, sumSwap]);
+  const ctx = {
+    labels: ['i', 'j', 'k', 'l'],
+    va: ['i', 'j'],
+    wa: ['k', 'l'],
+    elements,
+    sizes: [3, 3, 5, 5],
+    visiblePositions: [0, 1],
+    generators: [visSwap, sumSwap],
+  };
+  const result = partitionCountRegime.compute(ctx);
+  assert.equal(result.count, 90);
+});
