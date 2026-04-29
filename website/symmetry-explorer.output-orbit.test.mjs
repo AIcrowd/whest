@@ -68,3 +68,53 @@ test('exact oracle handles heterogeneous no-cross output representatives', () =>
 
   assert.equal(result.reductionCostExact, result.orbitCount);
 });
+
+import { computeAccumulation } from './components/symmetry-aware-einsum-contractions/engine/accumulationCount.js';
+
+test('all-visible accumulation equals product orbit count, not raw output cells', () => {
+  const gen = new Permutation([1, 0]);
+  const elements = dimino([gen]);
+  const result = computeAccumulation({
+    labels: ['i', 'j'],
+    va: ['i', 'j'],
+    wa: [],
+    elements,
+    sizes: [5, 5],
+    visiblePositions: [0, 1],
+    generators: [gen],
+  });
+  assert.equal(result.count, 15);
+  assert.equal(result.regimeId, 'functionalProjection');
+});
+
+test('all-summed accumulation remains product orbit count', () => {
+  const gen = new Permutation([1, 0]);
+  const elements = dimino([gen]);
+  const result = computeAccumulation({
+    labels: ['i', 'j'],
+    va: [],
+    wa: ['i', 'j'],
+    elements,
+    sizes: [5, 5],
+    visiblePositions: [],
+    generators: [gen],
+  });
+  assert.equal(result.count, 15);
+  assert.equal(result.regimeId, 'functionalProjection');
+});
+
+test('mixed no-cross coupled action has alpha equal M', () => {
+  const gen = new Permutation([1, 0, 3, 2]);
+  const elements = dimino([gen]);
+  const result = computeAccumulation({
+    labels: ['i', 'j', 'k', 'l'],
+    va: ['i', 'j'],
+    wa: ['k', 'l'],
+    elements,
+    sizes: [3, 3, 5, 5],
+    visiblePositions: [0, 1],
+    generators: [gen],
+  });
+  assert.equal(result.count, 120);
+  assert.equal(result.regimeId, 'functionalProjection');
+});
