@@ -8,6 +8,7 @@ import {
   getActiveExplorerThemeId,
 } from '../lib/explorerTheme.js';
 import { notationColor } from '../lib/notationSystem.js';
+import { useShowMore } from '../lib/useShowMore.js';
 import {
   generateTypedSetPartitions,
   partitionOrbitReps,
@@ -36,8 +37,6 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
   const themeId = getActiveExplorerThemeId();
   const [selectedComponentIdx] = useState(0);
   const [selectedPatternKey, setSelectedPatternKey] = useState(null);
-  const [showAllChips, setShowAllChips] = useState(false);
-  const [showAllRows, setShowAllRows] = useState(false);
 
   if (!componentData || !costModel) return null;
 
@@ -104,10 +103,18 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
     caption = 'this component fires bruteForceOrbit in the live engine; partition counting fits the budget here and gives the same α.';
   }
 
-  const visibleChips = showAllChips ? chips : chips.slice(0, VISIBLE_LIMIT);
-  const hiddenChipCount = Math.max(0, chips.length - VISIBLE_LIMIT);
-  const visibleRows = showAllRows ? cumulativeRows : cumulativeRows.slice(0, VISIBLE_LIMIT);
-  const hiddenRowCount = Math.max(0, cumulativeRows.length - VISIBLE_LIMIT);
+  const {
+    visible: visibleChips,
+    showAll: showAllChips,
+    toggle: toggleChips,
+    hidden: hiddenChipCount,
+  } = useShowMore(chips, VISIBLE_LIMIT);
+  const {
+    visible: visibleRows,
+    showAll: showAllRows,
+    toggle: toggleRows,
+    hidden: hiddenRowCount,
+  } = useShowMore(cumulativeRows, VISIBLE_LIMIT);
 
   return (
     <div id="typed-partition-demo" className="bg-white p-4 scroll-mt-24">
@@ -150,7 +157,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
             <button
               type="button"
               data-action="toggle-all-chips"
-              onClick={() => setShowAllChips((v) => !v)}
+              onClick={toggleChips}
               className="rounded border-dashed px-2 py-1 text-[11px] font-medium"
               style={{
                 borderColor: explorerThemeColor(themeId, 'border'),
@@ -241,7 +248,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
           <button
             type="button"
             data-action="toggle-all-rows"
-            onClick={() => setShowAllRows((v) => !v)}
+            onClick={toggleRows}
             className="mt-2 text-[11px] font-medium underline-offset-2 hover:underline"
             style={{ color: explorerThemeColor(themeId, 'muted') }}
           >
