@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import InlineMathText from './InlineMathText.jsx';
+import FanView from './branchingViews/FanView.jsx';
 import {
   explorerThemeColor,
   explorerThemeTint,
@@ -18,6 +19,21 @@ const INTRO_PARAGRAPHS = [
   // Relocated from PartitionCountingExplainer.jsx BODY ¶2 (verbatim).
   'Counting product orbits alone is therefore not enough: a single product orbit can update multiple stored output representatives, so the accumulation count needs an extra reach factor on top of the orbit count.',
 ];
+
+const VIEW_MODES = [
+  { id: 'fan',          label: 'α Fan'          },
+  { id: 'arcs',         label: 'β Arcs'         },
+  { id: 'grids',        label: 'γ Grids'        },
+  { id: 'pile-buckets', label: 'δ Pile→buckets' },
+];
+
+function tabStyle(themeId, active) {
+  return {
+    background: active ? explorerThemeTint(themeId, 'hero', 0.12) : 'transparent',
+    color: active ? explorerThemeColor(themeId, 'hero') : explorerThemeColor(themeId, 'body'),
+    border: `1px solid ${active ? explorerThemeColor(themeId, 'hero') : explorerThemeColor(themeId, 'border')}`,
+  };
+}
 
 export default function BranchingDemo({
   componentData,
@@ -59,8 +75,23 @@ export default function BranchingDemo({
         ))}
       </div>
 
-      <div className="mt-6 text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-        view-mode tabs and the active renderer land in Task 2 onward; orbit selector + live α land in Task 6.
+      <div className="mt-6 flex items-center gap-2 text-[12px] uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+        <span>View</span>
+        <div className="flex flex-wrap gap-1.5">
+          <button type="button" data-view-id="fan"          onClick={() => setActiveView('fan')}          className="rounded px-2.5 py-1 text-[11px] font-semibold transition-colors" style={tabStyle(themeId, activeView === 'fan')}>α Fan</button>
+          <button type="button" data-view-id="arcs"         onClick={() => setActiveView('arcs')}         className="rounded px-2.5 py-1 text-[11px] font-semibold transition-colors" style={tabStyle(themeId, activeView === 'arcs')}>β Arcs</button>
+          <button type="button" data-view-id="grids"        onClick={() => setActiveView('grids')}        className="rounded px-2.5 py-1 text-[11px] font-semibold transition-colors" style={tabStyle(themeId, activeView === 'grids')}>γ Grids</button>
+          <button type="button" data-view-id="pile-buckets" onClick={() => setActiveView('pile-buckets')} className="rounded px-2.5 py-1 text-[11px] font-semibold transition-colors" style={tabStyle(themeId, activeView === 'pile-buckets')}>δ Pile→buckets</button>
+        </div>
+      </div>
+
+      <div className="mt-4 rounded-md border p-4" style={{ borderColor: explorerThemeColor(themeId, 'border'), background: explorerThemeColor(themeId, 'surfaceInset') }}>
+        {activeView === 'fan' && <FanView orbit={null} reachedReps={[]} />}
+        {activeView !== 'fan' && (
+          <div className="text-center text-[12px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+            {activeView} view lands in a subsequent task.
+          </div>
+        )}
       </div>
     </section>
   );

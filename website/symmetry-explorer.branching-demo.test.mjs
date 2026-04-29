@@ -31,3 +31,18 @@ test('BranchingDemo carries the relocated PartitionCountingExplainer body Â¶1, Â
   assert.match(src, /A product orbit may contain many full assignments\. When those assignments are projected to the output labels/);
   assert.match(src, /Counting product orbits alone is therefore not enough: a single product orbit can update multiple stored output representatives/);
 });
+
+test('BranchingDemo renders four view-mode tabs (fan / arcs / grids / pile-buckets)', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
+  assert.match(src, /data-view-id="fan"/);
+  assert.match(src, /data-view-id="arcs"/);
+  assert.match(src, /data-view-id="grids"/);
+  assert.match(src, /data-view-id="pile-buckets"/);
+});
+
+test('FanView exports a default React component with no raw hex', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/FanView.jsx');
+  assert.match(src, /export default function FanView/);
+  assert.doesNotMatch(src, /#[0-9A-Fa-f]{3}\b|#[0-9A-Fa-f]{6}\b/);
+  assert.match(src, /<svg/);
+});
