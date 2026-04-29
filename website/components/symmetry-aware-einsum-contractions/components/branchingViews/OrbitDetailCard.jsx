@@ -24,8 +24,8 @@ const COLOR = {
 const FLOAT_PADDING = 12;
 // Default card dimensions used for flip math (the card uses min/max-content
 // in practice; we pass a conservative max here so the flip doesn't overflow).
-const CARD_W = 480;
-const CARD_H = 700;
+const CARD_W = 440;
+const CARD_H = 480;
 // Maximum reps before we hide the mini row preview (it stops being readable past this).
 const ROW_PREVIEW_MAX_REPS = 30;
 
