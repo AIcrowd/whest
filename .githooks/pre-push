@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Discard git's pre-push protocol data (which it pipes to us on stdin) so
+# downstream tools don't pick it up. See `make lint-commits` — gitlint also
+# uses --ignore-stdin defensively.
+exec </dev/null
+
 echo "Running pre-push checks (lint + test)..."
 uv sync --all-extras --quiet
 make ci
