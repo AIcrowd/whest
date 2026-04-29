@@ -36,14 +36,13 @@ test('BranchingDemo renders an orbit dropdown with reach hints, no prev/next but
   assert.doesNotMatch(src, /data-action="next-orbit"/);
 });
 
-test('BranchingDemo wires OrbitProjectionGraph (drops the four old view tabs)', () => {
+test('BranchingDemo wires OrbitRepMatrix instead of the old fan', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  assert.match(src, /import OrbitProjectionGraph from '\.\/branchingViews\/OrbitProjectionGraph\.jsx'/);
-  assert.match(src, /<OrbitProjectionGraph/);
-  assert.doesNotMatch(src, /data-view-id="fan"/);
-  assert.doesNotMatch(src, /data-view-id="arcs"/);
-  assert.doesNotMatch(src, /data-view-id="grids"/);
-  assert.doesNotMatch(src, /data-view-id="pile-buckets"/);
+  assert.match(src, /import OrbitRepMatrix from '\.\/branchingViews\/OrbitRepMatrix\.jsx'/);
+  assert.match(src, /<OrbitRepMatrix/);
+  // Old fan + view-mode tabs are gone.
+  assert.doesNotMatch(src, /OrbitProjectionGraph/);
+  assert.doesNotMatch(src, /data-view-id=/);
 });
 
 test('BranchingDemo no longer carries the relocated prose paragraphs (they live back in section4 intro)', () => {
@@ -70,55 +69,46 @@ test('BranchingDemo emits a live α total via data-testid="branching-alpha-total
   assert.match(src, /data-testid="branching-alpha-total"/);
 });
 
-test('OrbitProjectionGraph exports a default React component using @xyflow/react', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitProjectionGraph.jsx');
-  assert.match(src, /export default function OrbitProjectionGraph/);
-  assert.match(src, /from '@xyflow\/react'/);
-  assert.match(src, /<ReactFlow/);
-  assert.match(src, /ReactFlowProvider/);
-});
-
-test('OrbitProjectionGraph defines member, orbitCenter, rep node types and uses theme helpers only', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitProjectionGraph.jsx');
-  assert.match(src, /function MemberNode/);
-  assert.match(src, /function OrbitCenterNode/);
-  assert.match(src, /function RepNode/);
-  assert.match(src, /opgNodeTypes/);
-  assert.match(src, /explorerThemeColor|notationColor/);
+test('OrbitRepMatrix exports a default React component with no raw hex', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /export default function OrbitRepMatrix/);
+  assert.match(src, /explorerThemeColor|explorerThemeTint|notationColor/);
   assert.doesNotMatch(src, /#[0-9A-Fa-f]{3}\b|#[0-9A-Fa-f]{6}\b/);
 });
 
-test('orbitProjectionLayout helper yields the right node + edge counts for the curated branching orbit', async () => {
-  const { buildOrbitProjectionGraph } = await import('./components/symmetry-aware-einsum-contractions/components/branchingViews/orbitProjectionLayout.js');
-  // Curated orbit 4 (i=0, j=0, k=1): orbit of size 3 reaching Q1 (×1) and Q2 (×2).
-  const orbit = {
-    size: 3,
-    members: [{ repIndex: 0 }, { repIndex: 1 }, { repIndex: 1 }],
-  };
-  const reachedReps = [{ weight: 1 }, { weight: 2 }];
-  const { nodes, edges } = buildOrbitProjectionGraph({ orbit, reachedReps, orbitIdx: 3, totalOrbits: 6, themeId: 'editorial-noir' });
-
-  // 3 member + 1 orbit-center + 2 rep nodes = 6 nodes total.
-  assert.equal(nodes.length, 6);
-  assert.equal(nodes.filter((n) => n.type === 'member').length, 3);
-  assert.equal(nodes.filter((n) => n.type === 'orbitCenter').length, 1);
-  assert.equal(nodes.filter((n) => n.type === 'rep').length, 2);
-
-  // 3 member->orbit edges + 2 orbit->rep edges = 5 edges total.
-  assert.equal(edges.length, 5);
-  assert.equal(edges.filter((e) => e.target === 'orbit-center').length, 3);
-  assert.equal(edges.filter((e) => e.source === 'orbit-center').length, 2);
+test('OrbitRepMatrix renders the "How to read this matrix" reading guide', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /data-testid="orbit-rep-matrix-reading-guide"/);
+  assert.match(src, /How to read this matrix/);
+  // The four bullets on rows / columns / filled cells / multi-cell rows
+  // (use \s+ to accept JSX-wrapped whitespace between words).
+  assert.match(src, /Rows[\s\S]*?product\s+orbits/);
+  assert.match(src, /Columns[\s\S]*?stored\s+output\s+representatives/);
+  assert.match(src, /Filled cell/);
+  assert.match(src, /Multi-cell rows/);
 });
 
-test('orbitProjectionLayout helper returns empty result when no orbit is selected', async () => {
-  const { buildOrbitProjectionGraph } = await import('./components/symmetry-aware-einsum-contractions/components/branchingViews/orbitProjectionLayout.js');
-  const { nodes, edges } = buildOrbitProjectionGraph({ orbit: null, reachedReps: [], orbitIdx: 0, totalOrbits: 0, themeId: 'editorial-noir' });
-  assert.equal(nodes.length, 0);
-  assert.equal(edges.length, 0);
+test('OrbitRepMatrix wraps the table in PanZoomCanvas for zoom + pan', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /import PanZoomCanvas from '\.\.\/PanZoomCanvas\.jsx'/);
+  assert.match(src, /<PanZoomCanvas/);
 });
 
-test('OrbitProjectionGraph imports the pure layout helper from the .js sibling', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitProjectionGraph.jsx');
-  assert.match(src, /buildOrbitProjectionGraph/);
-  assert.match(src, /from '\.\/orbitProjectionLayout\.js'/);
+test('OrbitRepMatrix uses the labelled tuple format on hover (k=v style)', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // Must produce the (i=0, j=0, k=1) form for tooltips, matching
+  // OrbitInspector.formatTuple's contract.
+  assert.match(src, /labelledTuple/);
+  assert.match(src, /\$\{k\}=\$\{v\}/);
+});
+
+test('OrbitRepMatrix derivation: collects unique reps + builds the cell grid', async () => {
+  // The component is JSX so we can't import it here, but the source-grep
+  // assertions above plus the visual-smoke check in the dev preview cover
+  // the structural contract. This sentinel test just confirms the
+  // derivation references the right field names.
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /orbitRows\.forEach/);
+  assert.match(src, /row\.outputs/);
+  assert.match(src, /tupleKey\(out\.outTuple\)/);
 });

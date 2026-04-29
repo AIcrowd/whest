@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
 import InlineMathText from './InlineMathText.jsx';
-import OrbitProjectionGraph from './branchingViews/OrbitProjectionGraph.jsx';
+import OrbitRepMatrix from './branchingViews/OrbitRepMatrix.jsx';
 import {
   explorerThemeColor,
   explorerThemeTint,
@@ -69,27 +69,10 @@ export default function BranchingDemo({
   const safeIdx = orbitRows.length === 0
     ? -1
     : Math.min(Math.max(0, selectedOrbitIdx >= 0 ? selectedOrbitIdx : 0), orbitRows.length - 1);
-  const activeRow = safeIdx >= 0 ? orbitRows[safeIdx] : null;
 
-  // Synthesize a normalized "orbit" view-payload from the costModel row.
-  // Members are anonymous placeholders — coeff[i] copies of a member that
-  // maps to output rep i. The exact tuple values aren't visualised; the
-  // shape (how many members → which Q) is what the graph needs.
-  function makeOrbitPayload(row) {
-    if (!row) return null;
-    const members = [];
-    (row.outputs ?? []).forEach((out, repIndex) => {
-      for (let j = 0; j < (out.coeff ?? 1); j += 1) {
-        members.push({ repIndex });
-      }
-    });
-    return {
-      size: row.orbitSize ?? members.length,
-      members,
-    };
-  }
-  const activeOrbit = makeOrbitPayload(activeRow);
-  const reachedReps = (activeRow?.outputs ?? []).map((out) => ({ weight: out.coeff ?? 1 }));
+  // Live α total — sum of (orbit, rep) pairs where projection lands. The
+  // matrix's filled-cell count must equal this; it doubles as a sanity
+  // check.
   const liveAlpha = orbitRows.reduce((acc, row) => acc + (row.outputs?.length ?? 0), 0);
 
   return (
@@ -164,11 +147,11 @@ export default function BranchingDemo({
       )}
 
       <div className="mt-3">
-        <OrbitProjectionGraph
-          orbit={activeOrbit}
-          reachedReps={reachedReps}
-          orbitIdx={safeIdx}
-          totalOrbits={orbitRows.length}
+        <OrbitRepMatrix
+          orbitRows={orbitRows}
+          selectedOrbitIdx={safeIdx}
+          onSelectOrbit={onSelectOrbit}
+          onHover={onHover}
         />
       </div>
 
