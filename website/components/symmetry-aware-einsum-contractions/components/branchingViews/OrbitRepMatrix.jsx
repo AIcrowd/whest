@@ -10,13 +10,16 @@ import {
 } from './orbitRepMatrixLayout.js';
 
 // Token palette anchored to design-system colors_and_type.css.
+// `cellGrid` is near-invisible by design — the grid is a structural hint, not chrome.
+// `cellFilled` is now bright enough to read at small cell sizes; `cellPinned` is the
+// stronger "this cell is the reading anchor" treatment when click-pinned.
 const COLOR = {
   bg: '#FFFFFF',
-  cellGrid: '#ECEFEF',
-  cellFilled: 'rgba(240,82,77,0.22)',
-  cellHovered: '#F0524D',
-  branchOutline: 'rgba(240,82,77,0.45)',
-  rowColWash: 'rgba(240,82,77,0.06)',
+  cellGrid: '#F4F6F6',
+  cellFilled: 'rgba(240, 82, 77, 0.55)',
+  cellPinned: '#F0524D',
+  hoverMarker: '#F0524D',
+  branchOutline: 'rgba(240, 82, 77, 0.55)',
   border: '#D9DCDC',
 };
 
@@ -107,15 +110,9 @@ export default function OrbitRepMatrix({
     ctx.fillStyle = COLOR.bg;
     ctx.fillRect(0, 0, layout.contentWidth, layout.contentHeight);
 
-    const focus = pin || hover;
-    // Row + col wash for focused cell.
-    if (focus) {
-      ctx.fillStyle = COLOR.rowColWash;
-      ctx.fillRect(0, focus.row * layout.cellSize, layout.contentWidth, layout.cellSize);
-      ctx.fillRect(focus.col * layout.cellSize, 0, layout.cellSize, layout.contentHeight);
-    }
-
-    // Cells: filled fills only (no per-cell stroke — grid lines drawn separately).
+    // Cells: filled fills. Pinned cell gets the stronger coral; everything else
+    // uses the regular filled tint. Hover gets a 2 px border (drawn after the
+    // grid lines below) so it sits on top without obscuring the cell's content.
     for (let r = 0; r < orbitRows.length; r += 1) {
       for (let c = 0; c < reps.length; c += 1) {
         const coeff = cells[r][c];
@@ -123,8 +120,8 @@ export default function OrbitRepMatrix({
         if (!filled) continue;
         const x = c * layout.cellSize;
         const y = r * layout.cellSize;
-        const isFocus = focus && focus.row === r && focus.col === c;
-        ctx.fillStyle = isFocus ? COLOR.cellHovered : COLOR.cellFilled;
+        const isPin = pin && pin.row === r && pin.col === c;
+        ctx.fillStyle = isPin ? COLOR.cellPinned : COLOR.cellFilled;
         ctx.fillRect(x, y, layout.cellSize, layout.cellSize);
       }
     }
@@ -145,7 +142,10 @@ export default function OrbitRepMatrix({
     }
     ctx.stroke();
 
-    // Branching outlines for orbit's other reached cells in focused row.
+    // Branching outlines for the orbit's other reached cells in the focused row.
+    // Visible while either pinning or hovering — they're the "where else does
+    // this orbit go" hint.
+    const focus = pin || hover;
     if (focus) {
       ctx.strokeStyle = COLOR.branchOutline;
       ctx.lineWidth = 1;
@@ -156,6 +156,17 @@ export default function OrbitRepMatrix({
         const y = focus.row * layout.cellSize;
         ctx.strokeRect(x + 1.5, y + 1.5, layout.cellSize - 3, layout.cellSize - 3);
       }
+    }
+
+    // Faint cell-level hover marker (only when NOT pinned — pin already has its
+    // own stronger fill). 2 px coral border anchors the eye on the cell the
+    // mouse is over without re-fillng the cell.
+    if (hover && !pin) {
+      const x = hover.col * layout.cellSize;
+      const y = hover.row * layout.cellSize;
+      ctx.strokeStyle = COLOR.hoverMarker;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(x + 1, y + 1, layout.cellSize - 2, layout.cellSize - 2);
     }
   }, [layout, orbitRows, reps, cells, hover, pin]);
 
@@ -230,10 +241,9 @@ export default function OrbitRepMatrix({
     );
   }
 
-  // Derive role-coded labels from componentInfo (stubbed in Task 3, used here).
-  const focused = pin || hover;
-  const yTuple = focused ? labelledTuple(orbitRows[focused.row]?.repTuple) : null;
-  const xTuple = focused ? labelledTuple(reps[focused.col]?.tuple) : null;
+  // Derive role-coded labels from componentInfo for the legend chip row.
+  // Tuple values themselves don't appear on the axes anymore — they live in
+  // the always-visible WorkedExamplePanel on the right of BranchingDemo.
   const allLabels = orbitRows.length > 0 ? Object.keys(orbitRows[0].repTuple ?? {}) : [];
   const vLabelSet = new Set(componentInfo?.vLabels ?? []);
   const dimensionN = componentInfo?.dimensionN ?? null;
@@ -275,12 +285,13 @@ export default function OrbitRepMatrix({
         )}
       </div>
 
-      {/* Canvas frame with axis labels + tuple bands */}
+      {/* Canvas frame with permanent axis labels — tuple values appear in
+          the WorkedExamplePanel on the right of BranchingDemo. */}
       <div
         className="grid"
         style={{
-          gridTemplateColumns: '22px 90px minmax(0, 1fr)',
-          gridTemplateRows: `${layout.canvasH}px 26px 22px`,
+          gridTemplateColumns: '22px minmax(0, 1fr)',
+          gridTemplateRows: `${layout.canvasH}px 22px`,
         }}
       >
         {/* Y axis label */}
@@ -296,27 +307,11 @@ export default function OrbitRepMatrix({
           Orbit <Latex math="O" />
         </div>
 
-        {/* Y tuple band — visible only when a cell is focused */}
-        <div
-          data-testid="orbit-rep-matrix-y-band"
-          style={{
-            gridColumn: 2, gridRow: 1,
-            background: yTuple ? 'rgba(240,82,77,0.06)' : 'transparent',
-            borderRight: yTuple ? '1px solid rgba(240,82,77,0.25)' : 'none',
-            writingMode: 'vertical-rl',
-            transform: 'rotate(180deg)',
-            color: '#B23E3A',
-          }}
-          className="flex items-center justify-center font-mono text-[11px] font-semibold"
-        >
-          {yTuple || ''}
-        </div>
-
-        {/* Canvas — keep the existing scroll wrapper here */}
+        {/* Canvas */}
         <div
           ref={scrollRef}
           style={{
-            gridColumn: 3, gridRow: 1,
+            gridColumn: 2, gridRow: 1,
             width: layout.canvasW, height: layout.canvasH,
             background: COLOR.bg,
             border: `1px solid ${COLOR.border}`,
@@ -324,51 +319,17 @@ export default function OrbitRepMatrix({
             overflowY: layout.overflowY ? 'auto' : 'hidden',
             overflowX: layout.overflowX ? 'auto' : 'hidden',
             cursor: 'pointer',
-            transition: 'background 180ms cubic-bezier(0.4, 0, 0.2, 1)',
           }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           onClick={handleClick}
         >
-          {layout.overflowY && (
-            <div
-              data-testid="orbit-rep-matrix-sticky-header"
-              style={{
-                position: 'sticky',
-                top: 0,
-                width: layout.canvasW,
-                height: 4,
-                background: 'rgba(240,82,77,0.08)',
-                borderBottom: '1px solid rgba(240,82,77,0.25)',
-                pointerEvents: 'none',
-                zIndex: 1,
-              }}
-            />
-          )}
           <canvas ref={canvasRef} />
-        </div>
-
-        {/* X tuple band — visible only when a cell is focused */}
-        <div
-          data-testid="orbit-rep-matrix-x-band"
-          style={{
-            gridColumn: 3, gridRow: 2,
-            background: xTuple ? 'rgba(240,82,77,0.06)' : 'transparent',
-            borderTop: xTuple ? '1px solid rgba(240,82,77,0.25)' : 'none',
-            color: '#B23E3A',
-          }}
-          className="flex items-center px-1 font-mono text-[11px] font-semibold"
-        >
-          {xTuple ? (
-            <span style={{ marginLeft: focused ? `${focused.col * layout.cellSize - 14}px` : 0 }}>
-              {xTuple}
-            </span>
-          ) : ''}
         </div>
 
         {/* X axis label */}
         <div
-          style={{ gridColumn: 3, gridRow: 3, color: '#1F2526' }}
+          style={{ gridColumn: 2, gridRow: 2, color: '#1F2526' }}
           className="text-center text-[10px] font-semibold uppercase tracking-[0.16em] font-sans"
         >
           Rep <Latex math="Q" />
