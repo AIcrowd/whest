@@ -1,5 +1,16 @@
 // website/components/symmetry-aware-einsum-contractions/engine/regimes/bruteForceOrbit.js
+//
+// Corrected explicit orbit enumeration. For each product orbit, project to
+// visible positions and canonicalize under H = Stab_G(V)|_V. The number of
+// stored output representatives reached is |pi_V(O)/H|, summed across all
+// product orbits.
+
 import { withinBruteForceBudget, bruteForceEstimate } from '../budget.js';
+import {
+  canonicalTupleUnderGroup,
+  restrictStabilizerToPositions,
+  visibleTupleFromFullTuple,
+} from '../outputOrbit.js';
 
 function allAssignments(sizes) {
   const out = [];
@@ -32,6 +43,7 @@ export const bruteForceOrbitRegime = {
     };
   },
   compute({ elements, sizes, visiblePositions }) {
+    const hElements = restrictStabilizerToPositions(elements, visiblePositions);
     const remaining = new Map();
     for (const a of allAssignments(sizes)) remaining.set(key(a), a);
     let total = 0;
@@ -44,14 +56,17 @@ export const bruteForceOrbitRegime = {
         if (!orbit.has(k)) orbit.set(k, moved);
         remaining.delete(k);
       }
-      const projected = new Set();
-      for (const m of orbit.values()) projected.add(visiblePositions.map((p) => m[p]).join('|'));
-      total += projected.size;
+      const projectedOutputReps = new Set();
+      for (const m of orbit.values()) {
+        const visibleTuple = visibleTupleFromFullTuple(m, visiblePositions);
+        projectedOutputReps.add(canonicalTupleUnderGroup(visibleTuple, hElements));
+      }
+      total += projectedOutputReps.size;
     }
     return {
       count: total,
-      latex: String.raw`A = \sum_{O \in X/G} |\pi_V(O)|`,
-      latexSymbolic: String.raw`A = \sum_{O \in X/G} |\pi_V(O)|`,
+      latex: String.raw`A = \sum_{O\in X/G} |\pi_V(O)/H|`,
+      latexSymbolic: String.raw`A = \#\{(O,Q): \pi_V(O)\cap Q\ne\varnothing\}`,
       subTrace: undefined,
     };
   },

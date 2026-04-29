@@ -3,17 +3,14 @@
 // Young regime: fires when G = Sym(L_c) (the full symmetric group on the
 // component's labels), there's at least one cross-V/W element, and |V_c| ≥ 2.
 //
-// When G is full Sym(L) with cross elements, the V-pointwise-stabilizer is
-// the Young subgroup Sym(W) — and α can be computed via a multinomial
-// closed form instead of orbit enumeration.
+// Under output-orbit accumulation, both the visible side and the summed side
+// quotient down to multisets when G is the full symmetric group:
 //
-// For |V_c| = 1, the singleton regime handles the case with its own closed
-// form (equivalent; see Theorem 4 in the design doc). For no-cross cases,
-// directProduct fires. The Young regime fills the |V_c| ≥ 2 cross-V/W
-// full-Sym gap.
+//   alpha = C(n + |V| - 1, |V|) * C(n + |W| - 1, |W|)
 //
-// Formula: α = n_L^|V| · C(n_L + |W| − 1, |W|)
-//   where n_L is the common dimension of all component labels.
+// The visible factor is |Y/H| (output representatives = unordered visible
+// multisets); the summed factor is the number of summed-side multisets that
+// independently combine with each visible multiset to form a product orbit.
 
 function factorial(n) {
   let result = 1;
@@ -75,12 +72,21 @@ export const youngRegime = {
   },
   compute({ va, wa, sizes }) {
     const nL = sizes[0];
-    const vPart = (nL) ** va.length;
-    const wPart = multisetCount(nL, wa.length);
+    const visibleMultisets = multisetCount(nL, va.length);
+    const summedMultisets = multisetCount(nL, wa.length);
     return {
-      count: vPart * wPart,
-      latex: String.raw`A = n_L^{|V|} \cdot \binom{n_L + |W| - 1}{|W|}`,
-      latexSymbolic: String.raw`A = |X / \mathrm{Stab}_G(V\text{ pointwise})|`,
+      count: visibleMultisets * summedMultisets,
+      latex: String.raw`A = \binom{n_L + |V| - 1}{|V|}\binom{n_L + |W| - 1}{|W|}`,
+      latexSymbolic: String.raw`A = |\mathrm{Multiset}_n(V)|\,|\mathrm{Multiset}_n(W)|`,
+      subTrace: [{
+        step: 'full-symmetric-output-orbit-formula',
+        n: nL,
+        vCount: va.length,
+        wCount: wa.length,
+        visibleMultisets,
+        summedMultisets,
+        count: visibleMultisets * summedMultisets,
+      }],
     };
   },
 };

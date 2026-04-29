@@ -97,7 +97,7 @@ export const singletonRegime = {
     return {
       count,
       latex: String.raw`A = \frac{n_\Omega}{|G|} \sum_{g \in G} \left(\prod_{c \in R} n_c\right)\left(n_\Omega^{c_\Omega(g)} - (n_\Omega - 1)^{c_\Omega(g)}\right)`,
-      latexSymbolic: String.raw`A = \frac{n_\Omega}{|G|} \sum_{g \in G} \left(\prod_{c \in R} n_c\right)\left(n_\Omega^{c_\Omega(g)} - (n_\Omega - 1)^{c_\Omega(g)}\right)`,
+      latexSymbolic: String.raw`A = \#\{(O,Q): \pi_V(O)\cap Q\ne\varnothing\},\ |V|=1`,
     };
   },
 };

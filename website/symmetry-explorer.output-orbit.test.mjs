@@ -118,3 +118,20 @@ test('mixed no-cross coupled action has alpha equal M', () => {
   assert.equal(result.count, 120);
   assert.equal(result.regimeId, 'functionalProjection');
 });
+
+test('full symmetric mixed regime uses visible multiset times summed multiset', () => {
+  const s01 = new Permutation([1, 0, 2]);
+  const s12 = new Permutation([0, 2, 1]);
+  const elements = dimino([s01, s12]);
+  const result = computeAccumulation({
+    labels: ['i', 'j', 'k'],
+    va: ['i', 'j'],
+    wa: ['k'],
+    elements,
+    sizes: [4, 4, 4],
+    visiblePositions: [0, 1],
+    generators: [s01, s12],
+  });
+  assert.equal(result.count, 40);
+  assert.equal(result.regimeId, 'young');
+});
