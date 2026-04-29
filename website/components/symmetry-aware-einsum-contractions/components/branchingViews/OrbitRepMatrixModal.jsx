@@ -1,20 +1,24 @@
 import { useEffect } from 'react';
 import OrbitRepMatrix from './OrbitRepMatrix.jsx';
-import WorkedExamplePanel from './WorkedExamplePanel.jsx';
+import OrbitDetailCard from './OrbitDetailCard.jsx';
 
 const COLOR = {
   backdrop: 'rgba(41, 44, 45, 0.6)',  // gray-900 at 0.6 opacity
-  divider: '#ECEFEF',
 };
 
 export default function OrbitRepMatrixModal({
-  open, onClose,
-  orbitRows, reps, cells,
-  hover, pin, onStateChange, onClearPin,
-  expressionInfo, componentInfo,
-  selectedOrbitIdx = -1, onSelectOrbit = () => {},
-  onHover = null,
-  onHoverDeferred = null,
+  open,
+  onClose,
+  orbitRows,
+  reps,
+  cells,
+  pin,
+  onPin,
+  expressionInfo,
+  componentInfo,
+  selectedOrbitIdx = -1,
+  onSelectOrbit = () => {},
+  onHover = null,           // ignored — modal uses tooltip for hover, but keep prop for compat
 }) {
   useEffect(() => {
     if (!open) return;
@@ -59,18 +63,18 @@ export default function OrbitRepMatrixModal({
             onHover={onHover}
             expressionInfo={expressionInfo}
             componentInfo={componentInfo}
-            onStateChange={onStateChange}
-            onHoverDeferred={onHoverDeferred}
+            pin={pin}
+            onPin={onPin}
           />
-          <WorkedExamplePanel
-            hover={hover}
+          <OrbitDetailCard
             pin={pin}
             orbitRows={orbitRows}
             reps={reps}
             cells={cells}
             expressionInfo={expressionInfo}
             componentInfo={componentInfo}
-            onClearPin={onClearPin}
+            onDismiss={() => onPin && onPin(null)}
+            mode="inline"
           />
         </div>
       </div>

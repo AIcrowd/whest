@@ -233,7 +233,8 @@ test('OrbitRepMatrixModal renders modal shell with ESC + backdrop close', () => 
   assert.match(src, /role="dialog"/);
   assert.match(src, /Escape/);
   assert.match(src, /aria-modal/);
-  // Must mount the matrix + panel inside the modal panel.
+  // Must mount the matrix + OrbitDetailCard (inline mode) inside the modal panel.
   assert.match(src, /import OrbitRepMatrix from/);
-  assert.match(src, /import WorkedExamplePanel from/);
+  assert.match(src, /import OrbitDetailCard from/);
+  assert.match(src, /mode="inline"/);
 });
