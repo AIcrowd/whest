@@ -175,14 +175,24 @@ def _counted_unary(np_func, op_name: str):
 def _counted_unary_multi(np_func, op_name: str):
     """Factory for unary functions that return multiple arrays (e.g., modf, frexp)."""
 
-    def wrapper(x):
+    def wrapper(x, out=None, **kwargs):
+        if out is not None:
+            # Multi-output ``out=(out1, out2)`` requires per-buffer strip +
+            # identity preservation; not implemented yet. Fail loudly so
+            # callers know their ``out=`` was rejected, rather than silently
+            # double-charging FLOPs through __array_function__ recursion.
+            raise NotImplementedError(
+                f"`out=` is not supported by counted multi-output wrappers "
+                f"(op: {op_name}); call without `out=` and assign the "
+                f"returned tuple instead."
+            )
         budget = require_budget()
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
         symmetry = _symmetry_of(x)
         cost = pointwise_cost(x.shape, symmetry=symmetry)
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-            result = np_func(x)
+            result = np_func(x, **kwargs)
         return _wrap_multi_result(result, symmetry=symmetry)
 
     wrapper.__name__ = op_name
@@ -271,7 +281,13 @@ def _counted_binary(np_func, op_name: str):
 def _counted_binary_multi(np_func, op_name: str):
     """Factory for binary functions that return multiple arrays (e.g., divmod)."""
 
-    def wrapper(x, y):
+    def wrapper(x, y, out=None, **kwargs):
+        if out is not None:
+            raise NotImplementedError(
+                f"`out=` is not supported by counted multi-output wrappers "
+                f"(op: {op_name}); call without `out=` and assign the "
+                f"returned tuple instead."
+            )
         budget = require_budget()
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
@@ -285,7 +301,7 @@ def _counted_binary_multi(np_func, op_name: str):
         with budget.deduct(
             op_name, flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
         ):
-            result = np_func(x, y)
+            result = np_func(x, y, **kwargs)
         return _wrap_multi_result(result, symmetry=out_symmetry)
 
     wrapper.__name__ = op_name
@@ -303,13 +319,56 @@ def _counted_reduction(
 ):
     supports_out = _supports_out_argument(np_func)
 
-    def wrapper(a, axis=None, **kwargs):
+    # Per-factory signature introspection for positional `out`.
+    # NumPy reductions place `out` at different positional slots;
+    # method overrides forwarding through ``*args`` need to find it
+    # correctly for each underlying function. ``_axis_is_second_positional``
+    # tracks whether `axis` is at slot 1 AND positional-acceptable (true for
+    # sum/prod/argmax) or otherwise (false for cumulative_sum where axis is
+    # KEYWORD_ONLY, and for percentile/quantile whose slot 1 is `q`).
+    try:
+        _sig_params = _inspect.signature(np_func).parameters
+        _params = list(_sig_params)
+    except (ValueError, TypeError):
+        _sig_params = {}
+        _params = []
+    _axis_is_second_positional = (
+        len(_params) >= 2
+        and _params[1] == "axis"
+        and _sig_params["axis"].kind
+        in (
+            _inspect.Parameter.POSITIONAL_ONLY,
+            _inspect.Parameter.POSITIONAL_OR_KEYWORD,
+        )
+    )
+    _args_offset = 2 if _axis_is_second_positional else 1
+    _out_args_idx = (
+        _params.index("out") - _args_offset
+        if "out" in _params and _params.index("out") >= _args_offset
+        else None
+    )
+
+    def wrapper(a, axis=None, *args, **kwargs):
         budget = require_budget()
         if not isinstance(a, _np.ndarray):
             a = _np.asarray(a)
         symmetry = a.symmetry if isinstance(a, SymmetricTensor) else None
         keepdims = kwargs.get("keepdims", False)
-        out = kwargs.get("out")
+
+        # Resolve `out` from either kwargs OR a positional slot in args
+        # (per-function — see _out_args_idx computed at factory build time).
+        args_list = list(args)
+        out = kwargs.pop("out", None)
+        out_came_from_args = False
+        if (
+            out is None
+            and _out_args_idx is not None
+            and 0 <= _out_args_idx < len(args_list)
+            and isinstance(args_list[_out_args_idx], _np.ndarray)
+        ):
+            out = args_list[_out_args_idx]
+            out_came_from_args = True
+
         new_symmetry = (
             reduce_group(symmetry, ndim=len(a.shape), axis=axis, keepdims=keepdims)
             if symmetry is not None
@@ -329,17 +388,38 @@ def _counted_reduction(
                     out_shape = a.shape[:ax] + a.shape[ax + 1 :]
                 extra_cost = pointwise_cost(out_shape)
             cost += extra_cost
-        numpy_kwargs = dict(kwargs)
-        numpy_kwargs.pop("out", None)
+        out_for_np = None if isinstance(out, SymmetricTensor) else out
+        if out_came_from_args:
+            # Stripped out goes back into the same positional slot.
+            args_list[_out_args_idx] = out_for_np
+            np_out_kwarg = None
+            np_supports_out_for_call = False
+        else:
+            np_out_kwarg = out_for_np
+            np_supports_out_for_call = supports_out
+
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-            result = _call_with_optional_out(
-                np_func,
-                a,
-                axis=axis,
-                out=None if isinstance(out, SymmetricTensor) else out,
-                supports_out=supports_out,
-                **numpy_kwargs,
-            )
+            if _axis_is_second_positional:
+                result = _call_with_optional_out(
+                    np_func,
+                    a,
+                    axis,
+                    *args_list,
+                    out=np_out_kwarg,
+                    supports_out=np_supports_out_for_call,
+                    **kwargs,
+                )
+            else:
+                # axis is keyword-only or at slot 3+; pass via kwargs.
+                result = _call_with_optional_out(
+                    np_func,
+                    a,
+                    *args_list,
+                    axis=axis,
+                    out=np_out_kwarg,
+                    supports_out=np_supports_out_for_call,
+                    **kwargs,
+                )
 
         # Propagate symmetry through reduction.
         if out is not None:

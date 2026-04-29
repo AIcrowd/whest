@@ -11,6 +11,9 @@ numpy.ndarray) returns True. All me.* functions return WhestArray.
 
 from __future__ import annotations
 
+import functools as _functools
+import inspect as _inspect
+
 import numpy as _np
 
 
@@ -325,3 +328,117 @@ def _asplainwhest(x):
     """
     arr = _np.asarray(x)
     return arr.view(WhestArray)
+
+
+def _to_base_ndarray(x):
+    """View a whest array as a plain ``np.ndarray`` (zero-copy).
+
+    Distinct from :func:`_asplainwhest` (which returns a ``WhestArray`` —
+    still a numpy subclass that triggers ``__array_function__``).
+    Required before calling ``_np.<func>(x)`` from inside our own
+    ``__array_ufunc__`` / ``__array_function__`` handlers, so that
+    NumPy's protocol dispatch (which would route WhestArray inputs back
+    through ``me.<func>``) does not recurse infinitely.
+
+    Non-array inputs (Python scalars, lists) pass through unchanged so
+    that NEP 50 weak-typing rules continue to apply when whest wrappers
+    forward these to NumPy.
+
+    Examples
+    --------
+    >>> a = WhestArray((4,), dtype=float)
+    >>> type(_to_base_ndarray(a)) is _np.ndarray
+    True
+    >>> _to_base_ndarray(2.0) == 2.0
+    True
+    """
+    if isinstance(x, _np.ndarray):
+        return x.view(_np.ndarray)
+    return x
+
+
+def _to_base_ndarray_tree(x):
+    """Recursively strip whest subclasses from arrays inside tuples/lists.
+
+    Use for arguments that accept *containers* of arrays passed through
+    ``__array_function__``:
+    - ``np.lexsort(keys)`` — keys is a sequence of arrays.
+    - ``np.meshgrid(*xi)`` — xi is a tuple of arrays.
+    - ``np.concatenate(arrays)`` / ``np.stack(arrays)`` — arrays is a sequence.
+    - ``out=(out1, out2)`` — multi-output ufunc out tuples.
+
+    Plain ``_to_base_ndarray`` only handles a single array; using it on
+    a list of WhestArrays leaves the inner WhestArrays intact and
+    recursion can still happen through them.
+
+    Preserves namedtuples (e.g. ``UniqueAllResult``) by re-constructing
+    the type with stripped fields.
+
+    Intentional scope: tuples, lists, namedtuples, and bare arrays only.
+    Dicts and other generic mappings are NOT recursed into.
+    """
+    if isinstance(x, _np.ndarray):
+        return x.view(_np.ndarray)
+    if isinstance(x, tuple):
+        stripped = tuple(_to_base_ndarray_tree(e) for e in x)
+        # Preserve namedtuple type if present.
+        if type(x) is not tuple and hasattr(type(x), "_fields"):
+            return type(x)(*stripped)
+        return stripped
+    if isinstance(x, list):
+        return [_to_base_ndarray_tree(e) for e in x]
+    return x
+
+
+@_functools.cache
+def _signature_kwargs_accepted(np_func):
+    """Return frozenset of kwarg names accepted by ``np_func``.
+
+    Returns:
+    - ``None`` if ``np_func`` is ``None`` or signature inspection fails.
+    - Empty frozenset if ``np_func`` accepts ``**kwargs`` (sentinel meaning
+      "accepts every kwarg name; do not filter").
+    - Otherwise a frozenset of accepted parameter names.
+
+    Cached: NumPy callable identities are stable for the process
+    lifetime, so ``@functools.cache`` is safe and necessary on this hot
+    path. PR #51 memoized similar per-call introspection
+    (``unique_elements_for_shape``, ``_canonical_axis_action``); this
+    follows the same pattern. See PR #51 perf comment for why per-call
+    ``inspect.signature`` is unacceptable.
+    """
+    if np_func is None:
+        return None
+    try:
+        sig = _inspect.signature(np_func)
+    except (ValueError, TypeError):
+        return None
+    for p in sig.parameters.values():
+        if p.kind == _inspect.Parameter.VAR_KEYWORD:
+            return frozenset()  # sentinel: accepts everything
+    return frozenset(
+        n for n, p in sig.parameters.items()
+        if p.kind != _inspect.Parameter.VAR_POSITIONAL
+    )
+
+
+def _filter_to_np_signature(np_func, kwargs):
+    """Drop kwargs that ``np_func`` does not accept.
+
+    NumPy's ``ufunc.reduce`` always supplies ``dtype=`` / ``keepdims=`` /
+    ``out=``, but the equivalent function-form wrapper (``np.all``,
+    ``np.any``, etc.) accepts only a subset. Forwarding the full
+    ufunc-reduce kwarg set to those function-form wrappers raises
+    ``TypeError``.
+
+    Falls back to the original kwargs when ``inspect.signature`` cannot
+    introspect (e.g. C-implemented functions). Per-function signature
+    lookup is cached via :func:`_signature_kwargs_accepted` — this is on
+    the per-ufunc-call hot path; uncached lookup would be a perf cliff.
+    """
+    accepted = _signature_kwargs_accepted(np_func)
+    if accepted is None:
+        return kwargs
+    if not accepted:  # empty frozenset = sentinel for **kwargs accepted
+        return kwargs
+    return {k: v for k, v in kwargs.items() if k in accepted}
