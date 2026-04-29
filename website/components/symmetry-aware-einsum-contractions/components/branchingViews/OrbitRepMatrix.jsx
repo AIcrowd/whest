@@ -210,11 +210,6 @@ function OrbitRepMatrix({
       }
     }
 
-    if (hoverCell) {
-      ctx.strokeStyle = COLOR.hoverMarker;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(hoverCell.col * cw + 1, hoverCell.row * ch + 1, Math.max(cw - 2, 0), Math.max(ch - 2, 0));
-    }
   }
 
   // After layout/data/hover changes, repaint once so the static base + any
@@ -473,6 +468,28 @@ function OrbitRepMatrix({
                   </svg>
                 </button>
               )}
+              {/* CSS overlay for the focused cell — eased opacity + position reveal.
+                  The canvas's PAINT stage already draws the strong-coral FILL on the
+                  focused cell (instant for clarity); this overlay layers a 2px coral
+                  border on top with a 120ms opacity transition and 80ms position
+                  transition so the eye sees a smooth "lock-on" rather than a snap. */}
+              <div
+                data-testid="orbit-rep-matrix-focus-overlay"
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  pointerEvents: 'none',
+                  top: hover ? hover.row * layout.cellHeight : 0,
+                  left: hover ? hover.col * layout.cellWidth : 0,
+                  width: layout.cellWidth || 0,
+                  height: layout.cellHeight || 0,
+                  boxSizing: 'border-box',
+                  border: '2px solid #F0524D',
+                  borderRadius: 2,
+                  opacity: hover ? 1 : 0,
+                  transition: 'opacity 120ms cubic-bezier(0.4, 0, 0.2, 1), top 80ms cubic-bezier(0.4, 0, 0.2, 1), left 80ms cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+              />
             </div>
 
             {/* X tick gutter — labels + 4px hairline tick marks flush to the canvas

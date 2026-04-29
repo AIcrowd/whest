@@ -276,3 +276,11 @@ test('OrbitRepMatrix axis ticks render hairline tick marks alongside labels', ()
   assert.match(src, /data-testid="orbit-rep-matrix-y-tick-marks"/);
   assert.match(src, /data-testid="orbit-rep-matrix-x-tick-marks"/);
 });
+
+test('OrbitRepMatrix renders an eased CSS overlay over the focused cell (not just a canvas stroke)', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // The CSS-overlay div for the focused cell.
+  assert.match(src, /data-testid="orbit-rep-matrix-focus-overlay"/);
+  // Transition on opacity for the eased reveal.
+  assert.match(src, /transition:\s*['"]opacity 120ms/);
+});
