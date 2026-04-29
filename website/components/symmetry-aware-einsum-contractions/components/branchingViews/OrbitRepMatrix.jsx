@@ -376,21 +376,23 @@ function OrbitRepMatrix({
               Orbit <Latex math="O" />
             </div>
 
-            {/* Y tick gutter — col 2, row 1 */}
+            {/* Y tick gutter — labels + 4px hairline tick marks. Marks sit flush
+                against the canvas's left edge so they read as a real chart tick. */}
             <div
               style={{ gridColumn: 2, gridRow: 1, position: 'relative' }}
               aria-hidden="true"
               data-testid="orbit-rep-matrix-y-ticks"
             >
+              {/* Labels */}
               {yTicks.map((rowIdx) => {
                 const y = (rowIdx + 0.5) * layout.cellHeight;
                 return (
                   <span
-                    key={rowIdx}
+                    key={`label-${rowIdx}`}
                     className="font-mono"
                     style={{
                       position: 'absolute',
-                      right: 6,
+                      right: 10,
                       top: y,
                       transform: 'translateY(-50%)',
                       fontSize: 9,
@@ -402,6 +404,26 @@ function OrbitRepMatrix({
                   </span>
                 );
               })}
+              {/* Hairline tick marks: 4px horizontal lines flush to the canvas left edge. */}
+              <div data-testid="orbit-rep-matrix-y-tick-marks" aria-hidden="true">
+                {yTicks.map((rowIdx) => {
+                  const y = (rowIdx + 0.5) * layout.cellHeight;
+                  return (
+                    <span
+                      key={`mark-${rowIdx}`}
+                      style={{
+                        position: 'absolute',
+                        right: 0,
+                        top: y,
+                        width: 4,
+                        height: 1,
+                        background: '#D9DCDC',
+                        transform: 'translateY(-50%)',
+                      }}
+                    />
+                  );
+                })}
+              </div>
             </div>
 
             {/* Canvas — col 3, row 1. Fixed size, no scroll wrapper.
@@ -453,21 +475,23 @@ function OrbitRepMatrix({
               )}
             </div>
 
-            {/* X tick gutter — col 3, row 2 */}
+            {/* X tick gutter — labels + 4px hairline tick marks flush to the canvas
+                bottom edge. */}
             <div
               style={{ gridColumn: 3, gridRow: 2, position: 'relative' }}
               aria-hidden="true"
               data-testid="orbit-rep-matrix-x-ticks"
             >
+              {/* Labels */}
               {xTicks.map((colIdx) => {
                 const x = (colIdx + 0.5) * layout.cellWidth;
                 return (
                   <span
-                    key={colIdx}
+                    key={`label-${colIdx}`}
                     className="font-mono"
                     style={{
                       position: 'absolute',
-                      top: 4,
+                      top: 6,
                       left: x,
                       transform: 'translateX(-50%)',
                       fontSize: 9,
@@ -479,6 +503,26 @@ function OrbitRepMatrix({
                   </span>
                 );
               })}
+              {/* Hairline tick marks: 4px vertical lines flush to the canvas bottom edge. */}
+              <div data-testid="orbit-rep-matrix-x-tick-marks" aria-hidden="true">
+                {xTicks.map((colIdx) => {
+                  const x = (colIdx + 0.5) * layout.cellWidth;
+                  return (
+                    <span
+                      key={`mark-${colIdx}`}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: x,
+                        width: 1,
+                        height: 4,
+                        background: '#D9DCDC',
+                        transform: 'translateX(-50%)',
+                      }}
+                    />
+                  );
+                })}
+              </div>
             </div>
 
             {/* X axis label — col 3, row 3 */}

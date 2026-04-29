@@ -269,3 +269,10 @@ test('OrbitRepMatrixModal renders modal shell with ESC + backdrop close', () => 
   assert.match(src, /import OrbitDetailCard from/);
   assert.match(src, /mode="inline"/);
 });
+
+test('OrbitRepMatrix axis ticks render hairline tick marks alongside labels', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // Two new tick-mark testids — one per axis.
+  assert.match(src, /data-testid="orbit-rep-matrix-y-tick-marks"/);
+  assert.match(src, /data-testid="orbit-rep-matrix-x-tick-marks"/);
+});
