@@ -18,15 +18,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Install ruff
-        run: pip install ruff
+      - name: Install ruff and gitlint
+        run: pip install ruff gitlint
 
       - name: Ruff lint check
         run: ruff check .
 
       - name: Ruff format check
         run: ruff format --check .
+
+      - name: Conventional commits (gitlint)
+        run: gitlint --commits origin/main..HEAD
 
   test:
     runs-on: ubuntu-latest
