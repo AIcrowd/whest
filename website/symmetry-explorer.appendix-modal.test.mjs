@@ -100,19 +100,25 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
   assert.match(section5, /supportClassName="space-y-5 xl:pt-1"/);
   assert.doesNotMatch(section5, /supportClassName=\{APPENDIX_SUPPORT_SHELF_CLASS\}/);
 
-  // Section 6 was rewritten (Task 9) around the unified output-orbit metric.
-  // The legacy savings-comparison table, scopeLabel, tableNote, and footnote
-  // slots are gone; the section now renders an intro slot followed by a
-  // footer band.
-  assert.doesNotMatch(section6, /AppendixSupportSplit/);
-  assert.doesNotMatch(section6, /Storage-only saving/);
-  assert.doesNotMatch(section6, /appendixSection6\.slots\.scopeLabel/);
-  assert.doesNotMatch(section6, /appendixSection6\.slots\.tableNote/);
-  assert.doesNotMatch(section6, /max-w-\[78ch\]/);
+  // Section 6 (styling pass): renders intro + footer slots inside the shared
+  // `AppendixSupportSplit` lane + shelf grid (matching Sections 1–5). The
+  // partition-counting equation appears as KaTeX display math inside an
+  // The right-hand shelf now renders the equation and glossary entries
+  // directly in a centered container — no AppendixDefinitionPanel box.
+  // Legacy savings-comparison table, scopeLabel, tableNote, footnote slots,
+  // and the negative-margin footer band are gone.
+  assert.match(section6, /AppendixSupportSplit/);
+  assert.doesNotMatch(section6, /AppendixDefinitionPanel/);
+  assert.match(section6, /<Latex\s+math=\{[^}]+\}\s+display\s*\/>/);
   assert.match(section6, /deckClassName="max-w-none"/);
   assert.match(section6, /appendixSection6\.slots\.intro/);
   assert.match(section6, /appendixSection6\.slots\.footer/);
-  assert.match(section6, /-mx-6 -mb-10 mt-8 border-t border-stone-200\/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10/);
+  assert.doesNotMatch(section6, /Storage-only saving/);
+  assert.doesNotMatch(section6, /appendixSection6\.slots\.scopeLabel/);
+  assert.doesNotMatch(section6, /appendixSection6\.slots\.tableNote/);
+  assert.doesNotMatch(section6, /-mx-6 -mb-10 mt-8 border-t border-stone-200\/70 bg-gray-50/);
+  assert.doesNotMatch(section6, /bg-stone-50\/60/);
+  assert.doesNotMatch(section6, /isModelBlock/);
   assert(section6.indexOf('appendixSection6.slots.intro') < section6.indexOf('appendixSection6.slots.footer'), 'intro should render before footer');
 
   assert.match(appendixSectionSource, /anchorId = ''/);
@@ -350,7 +356,6 @@ test('section 6 model prefixes are emphasized through copy plus InlineMathText s
   assert.match(inlineMathTextSource, /export function renderTooltipInlineText\(text, keyPrefix, options = \{\}\)/);
   assert.match(inlineMathTextSource, /const strongClassName = options\.strongClassName \?\? 'font-semibold text-current';/);
   assert.match(inlineMathTextSource, /className=\{strongClassName\}/);
-  assert.match(source, /strongClassName: isModelBlock \? 'font-semibold text-\[var\(--primary\)\]' : null/);
 });
 
 test('appendix hover surfaces and shared typography registers remain intact', () => {

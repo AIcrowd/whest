@@ -1753,39 +1753,62 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
             }
           >
             {/* Source-contract marker: Accumulation is governed by G_pt. */}
-            <div className="space-y-4">
-              {renderAppendixSlot(appendixSection6.slots.intro).map((content, index) => (
-                (() => {
-                  const isModelBlock = index >= 1 && index <= 3;
-                  return (
-                    <p
-                      key={`appendix-6-intro-${index}`}
-                      className={
-                        isModelBlock
-                          ? 'rounded-lg border border-stone-200/70 bg-stone-50/60 px-4 py-3 font-serif text-[16px] leading-[1.8] text-stone-800'
-                          : APPENDIX_PROSE_CLASS
-                      }
-                    >
-                      {renderAppendixSingleBlock(appendixSection6.slots.intro, index, {
-                        slotKey: 'appendix-section6-intro',
-                        strongClassName: isModelBlock ? 'font-semibold text-[var(--primary)]' : null,
+            <AppendixSupportSplit
+              articleClassName={APPENDIX_ARTICLE_LANE_CLASS}
+              supportClassName="space-y-4 xl:pt-1"
+              article={(
+                <>
+                  <p className={APPENDIX_PROSE_CLASS}>
+                    {renderAppendixSingleBlock(appendixSection6.slots.intro, 0, {
+                      slotKey: 'appendix-section6-intro',
+                    })}
+                  </p>
+                  <p className={APPENDIX_PROSE_CLASS}>
+                    {renderAppendixSingleBlock(appendixSection6.slots.intro, 1, {
+                      slotKey: 'appendix-section6-intro',
+                    })}
+                  </p>
+                  <p className={APPENDIX_PROSE_CLASS}>
+                    {renderAppendixSingleBlock(appendixSection6.slots.intro, 2, {
+                      slotKey: 'appendix-section6-intro',
+                    })}
+                  </p>
+                  <p className={APPENDIX_PROSE_CLASS}>
+                    {renderAppendixSingleBlock(appendixSection6.slots.footer, 0, {
+                      slotKey: 'appendix-section6-footer',
+                    })}
+                  </p>
+                  <div className="mt-4">
+                    <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>Notes</div>
+                    <p className={`mt-2 ${APPENDIX_PROSE_CLASS}`}>
+                      {renderAppendixSingleBlock(appendixSection6.slots.footer, 1, {
+                        slotKey: 'appendix-section6-footer',
                       })}
                     </p>
-                  );
-                })()
-              ))}
-            </div>
-
-            <div className="-mx-6 -mb-10 mt-8 border-t border-stone-200/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10">
-              {renderAppendixSlot(appendixSection6.slots.footer).map((content, index) => (
-                <p
-                  key={`appendix-6-footer-${index}`}
-                  className={`${index === 0 ? 'mt-1.5' : 'mt-2'} text-[12.5px] leading-6 text-stone-700`}
-                >
-                  {content}
-                </p>
-              ))}
-            </div>
+                  </div>
+                </>
+              )}
+              support={(
+                <div className="space-y-3 text-center">
+                  <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>Equation 6.1</div>
+                  <div>
+                    <Latex
+                      math={normalizeAppendixDisplayText(appendixSection6.slots.intro[3].text).replace(/^\$|\$$/g, '')}
+                      display
+                    />
+                  </div>
+                  <div className="space-y-2 pt-2">
+                    {[4, 5, 6, 7, 8, 9].map((idx) => (
+                      <p key={`appendix-6-glossary-${idx}`} className={APPENDIX_PROSE_CLASS}>
+                        {renderAppendixSingleBlock(appendixSection6.slots.intro, idx, {
+                          slotKey: 'appendix-section6-glossary',
+                        })}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
+            />
           </AppendixSection>
         </div>
       </div>
