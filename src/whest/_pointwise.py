@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import builtins as _builtins
+import functools as _functools
 import inspect as _inspect
+import warnings as _warnings
 from math import prod as _math_prod
 
 import numpy as _np
 
+from whest._config import get_setting as _get_setting
 from whest._docstrings import attach_docstring
 from whest._flops import (
     _ceil_log2,
@@ -38,7 +41,11 @@ from whest._symmetry_utils import (
     unique_elements_for_shape,
 )
 from whest._validation import check_nan_inf, require_budget
-from whest.errors import SymmetryError, UnsupportedFunctionError
+from whest.errors import (
+    CostFallbackWarning,
+    SymmetryError,
+    UnsupportedFunctionError,
+)
 
 # ---------------------------------------------------------------------------
 # Factory helpers
@@ -100,6 +107,57 @@ def _is_oversized_for_cost_model(group):
     if group is None:
         return False
     return group.degree > _MAX_SYMMETRY_DEGREE_FOR_COST
+
+
+@_functools.cache
+def _seen_oversized(op_name: str, degree: int) -> bool:
+    """Return ``True`` once per ``(op, degree)`` pair, ``False`` thereafter.
+
+    The ``lru_cache`` deduplicates: the first call for a given
+    ``(op_name, degree)`` returns ``True`` (and the cache stores it);
+    subsequent identical calls hit the cache and return the stored
+    ``True`` — but we use the *miss-vs-hit* discipline at the call
+    site (``if cache_clear() is None`` style) instead of relying on
+    the value. The simpler pattern is to just call the function and
+    let ``lru_cache`` track which keys we've already seen, then
+    actually emit the warning at the call site only when we know
+    we're on a fresh key. See :func:`_warn_oversized_once`.
+    """
+    return True
+
+
+def _warn_oversized_once(op_name: str, degree: int) -> None:
+    """Emit :class:`CostFallbackWarning` once per ``(op_name, degree)``.
+
+    Hot paths (e.g. numpy compat tests doing thousands of ufunc calls
+    on the same auto-inferred ``S_n`` symmetry) would otherwise spam
+    one warning per call. The warning fires once per process for each
+    ``(op, degree)`` pair so users get the diagnostic without log
+    flooding.
+
+    Honours ``we.configure(symmetry_warnings=False)`` — shares the
+    flag with :class:`SymmetryLossWarning` since both are
+    symmetry-related diagnostics.
+    """
+    if not _get_setting("symmetry_warnings"):
+        return
+    # The miss-vs-hit trick: ``cache_info().hits`` increments only on
+    # a cache hit. We snapshot before, call the cached function (which
+    # is cheap — just returns True), and check whether ``hits`` rose.
+    # If it didn't, this is the first call for this key.
+    info_before = _seen_oversized.cache_info()
+    _seen_oversized(op_name, degree)
+    if _seen_oversized.cache_info().hits > info_before.hits:
+        return  # already warned for this (op, degree) pair
+    _warnings.warn(
+        f"{op_name}: skipping symmetry-aware cost adjustment for a "
+        f"SymmetryGroup of degree {degree} (threshold "
+        f"{_MAX_SYMMETRY_DEGREE_FOR_COST}); charging dense cost. "
+        f"Burnside enumeration on |S_{degree}| = {degree}! is "
+        f"infeasible. Suppress with we.configure(symmetry_warnings=False).",
+        CostFallbackWarning,
+        stacklevel=4,
+    )
 
 
 def _symmetry_adjusted_cost(dense_cost, output_shape, output_symmetry):
@@ -519,6 +577,10 @@ def _counted_ufunc_outer(ufunc, a, b, *, out=None, **kwargs):
     # (np.ones((1,)*33) → S_33 with 33! elements). The cost adjustment
     # is irrelevant when the output is trivially small anyway.
     if _is_oversized_for_cost_model(a_sym) or _is_oversized_for_cost_model(b_sym):
+        oversized_degree = (
+            a_sym.degree if _is_oversized_for_cost_model(a_sym) else b_sym.degree
+        )
+        _warn_oversized_once(f"{ufunc.__name__}.outer", oversized_degree)
         out_sym = None
         cost = dense
     else:
@@ -1622,6 +1684,10 @@ def tensordot(a, b, axes=2):
     a_sym = _symmetry_of(a)
     b_sym = _symmetry_of(b)
     if _is_oversized_for_cost_model(a_sym) or _is_oversized_for_cost_model(b_sym):
+        oversized_degree = (
+            a_sym.degree if _is_oversized_for_cost_model(a_sym) else b_sym.degree
+        )
+        _warn_oversized_once("tensordot", oversized_degree)
         out_sym = None
         cost = dense
     else:

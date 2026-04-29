@@ -344,6 +344,55 @@ def test_np_add_outer_symmetric_cost_lower_than_dense():
     assert sym_bc.flops_used < dense_bc.flops_used
 
 
+def test_np_add_outer_warns_and_bails_on_oversized_symmetry():
+    """High-degree symmetry groups (e.g. ``S_n`` from ``np.ones((1,)*n)``
+    for large ``n``) would require Burnside enumeration on ``n!``
+    elements, which is infeasible. The wrapper bails to dense cost and
+    emits :class:`CostFallbackWarning` once per ``(op, degree)``."""
+    import warnings as _warnings
+
+    from whest.errors import CostFallbackWarning
+
+    deep = we.ones((1,) * 33)  # S_33 auto-inferred symmetry
+    assert isinstance(deep, we.SymmetricTensor)
+    with we.BudgetContext(flop_budget=int(1e10)):
+        with _warnings.catch_warnings(record=True) as caught:
+            _warnings.simplefilter("always")
+            # The op itself raises ValueError because numpy refuses
+            # ndim > 32 — but our wrapper still emits the warning before
+            # numpy raises.
+            with pytest.raises(ValueError):
+                np.add.outer(deep, deep)
+    cost_warnings = [w for w in caught if issubclass(w.category, CostFallbackWarning)]
+    assert len(cost_warnings) == 1, [str(w.message) for w in caught]
+    assert "degree 33" in str(cost_warnings[0].message)
+
+
+def test_cost_fallback_warning_suppressed_by_configure():
+    """``we.configure(symmetry_warnings=False)`` silences
+    :class:`CostFallbackWarning` (shares the flag with
+    :class:`SymmetryLossWarning` since both are symmetry diagnostics)."""
+    import warnings as _warnings
+
+    from whest.errors import CostFallbackWarning
+
+    # Use a fresh degree (not 33, which the previous test already cached)
+    # so we hit a cold cache key and the warning would otherwise fire.
+    # rank-20 → output ndim=40 which fits inside numpy 2.x's 64-axis
+    # limit, so the op itself succeeds.
+    deep = we.ones((1,) * 20)
+    we.configure(symmetry_warnings=False)
+    try:
+        with we.BudgetContext(flop_budget=int(1e10)):
+            with _warnings.catch_warnings(record=True) as caught:
+                _warnings.simplefilter("always")
+                np.add.outer(deep, deep)
+    finally:
+        we.configure(symmetry_warnings=True)
+    cost_warnings = [w for w in caught if issubclass(w.category, CostFallbackWarning)]
+    assert cost_warnings == [], [str(w.message) for w in cost_warnings]
+
+
 def test_np_subtract_reduce_uses_generic_path():
     """Non-table reduces (``subtract``, ``true_divide``, …) route through
     the generic ``_counted_ufunc_reduce_generic`` fallback."""

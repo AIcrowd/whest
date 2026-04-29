@@ -53,6 +53,17 @@ class SymmetryLossWarning(WhestWarning):
     """Warning issued when an operation causes loss of symmetry metadata."""
 
 
+class CostFallbackWarning(WhestWarning):
+    """Warning issued when whest skips its symmetry-aware cost adjustment.
+
+    Surfaces when the output's symmetry group is too large for the
+    placeholder cost model's Burnside enumeration (degree above the
+    per-call threshold). The op runs correctly with the dense cost
+    charged instead. Suppress with
+    ``we.configure(symmetry_warnings=False)``.
+    """
+
+
 class WhestServerError(WhestError):
     """Server-side error that does not map to a more specific exception."""
 
