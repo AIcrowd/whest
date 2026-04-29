@@ -44,10 +44,14 @@ test('OrbitDetailCard listens for Escape and IntersectionObserver auto-dismiss w
   assert.match(src, /IntersectionObserver/);
 });
 
-test('OrbitDetailCard reuses the workedExample/ primitives + Latex (DRY with appendix worked examples)', () => {
+test('OrbitDetailCard imports Latex + the orbitRepMatrixLayout helpers it actually consumes', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitDetailCard.jsx');
+  // Latex for the einsum equation.
   assert.match(src, /import Latex from '\.\.\/Latex\.jsx'/);
-  assert.match(src, /from '\.\.\/workedExample\/index\.jsx'|labelledTuple/);
+  // labelledTuple + tupleKey for tuple display + projection-match keys.
+  assert.match(src, /from '\.\/orbitRepMatrixLayout\.js'/);
+  assert.match(src, /labelledTuple/);
+  assert.match(src, /tupleKey/);
 });
 
 test('OrbitDetailCard uses no raw hex outside design tokens', () => {

@@ -26,6 +26,13 @@ const FLOAT_PADDING = 12;
 // in practice; we pass a conservative max here so the flip doesn't overflow).
 const CARD_W = 480;
 const CARD_H = 700;
+// Maximum reps before we hide the mini row preview (it stops being readable past this).
+const ROW_PREVIEW_MAX_REPS = 30;
+
+// TODO(mobile): floating mode currently has no tap-outside dismiss. Esc +
+// IntersectionObserver cover desktop and scroll-out cases; touch users
+// dismiss via the × button only. Plan defers mobile gestures to a
+// follow-up — see plan §"Open follow-ups".
 
 function membersProjectingTo(orbit, repTuple, componentInfo) {
   if (!orbit?.orbitTuples || !componentInfo) return [];
@@ -60,31 +67,36 @@ function OrbitDetailCard({
   matrixRef = null,          // ref to the matrix outer element — used by IntersectionObserver
   mode = 'floating',         // 'floating' | 'inline'
 }) {
-  const cardRef = useRef(null);
   const [position, setPosition] = useState({ left: 0, top: 0 });
+  // Capture onDismiss in a ref so the three effects below don't re-run when
+  // callers pass an unstable arrow. Effects call `onDismissRef.current()` instead.
+  const onDismissRef = useRef(onDismiss);
+  useEffect(() => { onDismissRef.current = onDismiss; }, [onDismiss]);
 
   // Esc to dismiss (floating mode only — modal mode handles its own Esc).
   useEffect(() => {
     if (mode !== 'floating' || !pin) return undefined;
-    const onKey = (e) => { if (e.key === 'Escape') onDismiss(); };
+    const onKey = (e) => { if (e.key === 'Escape') onDismissRef.current(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [mode, pin, onDismiss]);
+  }, [mode, pin]);
 
   // Auto-dismiss when matrix scrolls offscreen (floating mode only).
   useEffect(() => {
     if (mode !== 'floating' || !pin || !matrixRef?.current) return undefined;
     const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) onDismiss();
+      if (entry.intersectionRatio < 0.05) onDismissRef.current();
     }, { threshold: 0.05 });
     observer.observe(matrixRef.current);
     return () => observer.disconnect();
-  }, [mode, pin, matrixRef, onDismiss]);
+  }, [mode, pin, matrixRef]);
 
   // Compute floating position when pin changes (and on window resize).
   useLayoutEffect(() => {
     if (mode !== 'floating' || !pin) return undefined;
+    let rafId = null;
     const compute = () => {
+      rafId = null;
       const next = flipPosition({
         clickX: pin.clickX ?? 0,
         clickY: pin.clickY ?? 0,
@@ -96,9 +108,16 @@ function OrbitDetailCard({
       });
       setPosition(next);
     };
-    compute();
-    window.addEventListener('resize', compute);
-    return () => window.removeEventListener('resize', compute);
+    const onResize = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(compute);
+    };
+    compute(); // initial position is synchronous
+    window.addEventListener('resize', onResize);
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', onResize);
+    };
   }, [mode, pin]);
 
   if (!pin) return null;
@@ -142,7 +161,6 @@ function OrbitDetailCard({
 
   return (
     <div
-      ref={cardRef}
       data-testid="orbit-detail-card"
       data-mode={mode}
       style={wrapperStyle}
@@ -180,14 +198,14 @@ function OrbitDetailCard({
       </div>
 
       {/* Mini row preview — only when reps.length is small enough to be readable. */}
-      {reps.length <= 30 && (
+      {reps.length <= ROW_PREVIEW_MAX_REPS && (
         <div data-testid="worked-example-row-preview" className="mt-3 rounded p-2.5" style={{ background: COLOR.empty }}>
           <div className="text-[9px] font-semibold uppercase tracking-[0.16em] text-gray-400 mb-2">
             orbit O's row in the O → Q matrix
           </div>
           <div className="flex gap-[2px] h-5">
             {reps.map((r, c) => {
-              const coef = cells[pin.row][c];
+              const coef = cells[pin.row]?.[c] ?? null;
               const isThis = c === pin.col;
               const isOther = !isThis && coef !== null;
               return (
@@ -295,7 +313,7 @@ function OrbitDetailCard({
   );
 }
 
-// Memo by deep prop equality on (pin, data refs).
+// Memo by structural equality on pin (row/col/clickX/clickY) + reference equality on data refs.
 function detailPropsEqual(prev, next) {
   const prevPin = prev.pin;
   const nextPin = next.pin;
