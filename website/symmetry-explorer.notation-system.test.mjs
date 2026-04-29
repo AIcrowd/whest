@@ -326,7 +326,9 @@ test('section five formulas route visible noir-math symbols through distinct not
   assert.match(totalCostSource, /tc\(SYM\.projection, notationLatex\('projection_pi_v_free'\)\)/);
   assert.match(totalCostSource, /notationLatex\('r_complement'\)/);
   assert.match(totalCostSource, /notationLatex\('l_labels'\)/);
-  assert.match(totalCostSource, /notationLatex\('g_w_factor'\)/);
+  // g_w_factor was a directProduct-only role; that row was removed in V4 because
+  // directProduct is no longer a primary regime under the unified output-orbit
+  // metric. The summed-side group still appears in the legend glossary.
   assert.match(totalCostSource, /notationLatex\('n_omega'\)/);
   assert.match(totalCostSource, /notationLatex\('c_omega_cycles'\)/);
 
@@ -334,10 +336,8 @@ test('section five formulas route visible noir-math symbols through distinct not
     String.raw`\frac{n_\Omega}{|G_a|} \sum_g \Bigl(\prod_{c \in R} n_c\Bigr)\Bigl(n_\Omega^{c_\Omega(g)} - (n_\Omega - 1)^{c_\Omega(g)}\Bigr)`,
   );
 
-  assert.match(totalCostSource, /tc\(SYM\.ambient, 'X'\)/);
-  assert.match(totalCostSource, /tc\(SYM\.wlabel, notationLatex\('w_summed'\)\)/);
-  assert.match(totalCostSource, /tc\(SYM\.summedGroup, notationLatex\('g_w_factor'\)\)/);
-
+  // The directProduct row's X_W / w_summed / summedGroup colors were removed
+  // when that row was retired (V4: every regime computes the same alpha).
   assert.match(singletonColored, /#4A7E9A/);
   assert.match(singletonColored, /#4A6288/);
   assert.match(singletonColored, /#557048/);

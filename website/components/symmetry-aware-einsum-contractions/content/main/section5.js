@@ -10,7 +10,7 @@ const section5 = {
       p('Is this the full symmetry of the final expression?'),
     ],
     appendixNoteBody: [
-      p('The direct cost above uses $G_{\\text{pt}}$ because accumulation happens before the summed labels have disappeared. The completed expression can have a larger formal label-renaming group, $G_{\\text{f}} = G_{\\mathrm{out}} \\times \\prod_d S(W_d)$, where each $W_d$ is a same-domain block of summed labels. That larger group explains expression-level equality after summation. It must not replace $G_{\\text{pt}}$ for accumulation, although its visible output part $G_{\\mathrm{out}}$ can still reduce output storage.'),
+      p('The direct cost above uses two actions derived from the same detected pointwise symmetry: $G_{\\text{pt}}$ on product assignments and $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$ on stored output representatives. The completed expression can have a larger formal label-renaming group, $G_{\\text{f}} = H \\times \\prod_d S(W_d)$, where each $W_d$ is a same-domain block of summed labels. That larger group explains expression-level equality after summation. Its dummy-label factor must not replace the product-orbit/output-representative relation used for $\\alpha$.'),
     ],
   },
 };

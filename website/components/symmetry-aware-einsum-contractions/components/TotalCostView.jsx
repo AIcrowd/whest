@@ -36,7 +36,7 @@ const SECTION_FIVE_TOTAL_FORMULA = String.raw`\mathrm{Total\ Cost} = \mu + \alph
 const SECTION_FIVE_MU_FORMULA = String.raw`\mu = (k-1)\prod_a M_a`;
 const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
 const SECTION_FIVE_THEME_OVERRIDE = 'editorial-noir-math';
-const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\\x\end{matrix}}\right.`;
+const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\\x\\x\\x\end{matrix}}\right.`;
 const PIECEWISE_SCOPE_NOTE =
   `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$. It counts pairs $(O, Q)$ where $O$ is a product orbit and $Q$ is a stored output representative reached by $${notationLatex('projection_pi_v_free')}$: an orbit that reaches several stored output representatives contributes once to each such representative.`;
 
@@ -134,17 +134,20 @@ function getAggregationLegend(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
     {
       symbol: `${tc(SYM.alpha, notationLatex('alpha_total'))},\\ ${tc(SYM.alpha, notationLatex('alpha_component'))}`,
       color: SYM.alpha,
-      definition: `accumulation/output-update cost. Per component, $${tc(SYM.alpha, notationLatex('alpha_component'))}$ counts one update for each stored output representative reached by each product orbit. Equivalently, it is the sum over product orbits of the number of distinct free-label projections they touch. Globally, independent components multiply to $${tc(SYM.alpha, notationLatex('alpha_total'))} = ${productOver('a', tc(SYM.alpha, notationLatex('alpha_component')))}$.`,
+      definition: `accumulation count. Per component, $${tc(SYM.alpha, notationLatex('alpha_component'))}$ counts one update for each stored output representative reached by each product orbit. Equivalently, it is the sum over product orbits of the number of distinct stored output representatives reached by their free-label projections. Globally, independent components multiply to $${tc(SYM.alpha, notationLatex('alpha_total'))} = ${productOver('a', tc(SYM.alpha, notationLatex('alpha_component')))}$.`,
     },
   ];
 }
 
-// Six leaves of the current SHAPE × REGIME classification (see shapeSpec.js +
-// regimeSpec.js). Each entry bundles the α_a formula and its layer tag; the
-// leaf *id* is the canonical regime/shape id so CaseBadge can resolve its
+// Visible formulas for the one alpha metric. Shape rows cover familiar easy
+// cases; regime rows cover mixed-component counting methods. Every row computes
+// the same output-orbit accumulation definition
+// alpha = #{(O, Q) in X/G x Y/H : pi_V(O) ∩ Q ≠ ∅}, with H = Stab_G(V)|_V.
+// The leaf id is the canonical regime/shape id so CaseBadge can resolve its
 // color + tooltip from the live spec — no duplicated content here.
 function getAggregationLeaves(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
   const SYM = getSymPalette(themeOverride);
+  const orbitCount = String.raw`|${tc(SYM.ambient, notationLatex('x_space'))}/${tc(SYM.localGroup, notationLatex('g_component'))}|`;
   return [
     {
       id: 'trivial',
@@ -154,12 +157,17 @@ function getAggregationLeaves(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
     {
       id: 'allVisible',
       layer: 'shape',
-      formula: String.raw`\prod_{\ell \in ${tc(SYM.vlabel, notationLatex('v_free'))}} ${tc(SYM.labelCount, notationLatex('n_label'))}`,
+      formula: orbitCount,
     },
     {
       id: 'allSummed',
       layer: 'shape',
-      formula: String.raw`|${tc(SYM.ambient, notationLatex('x_space'))}/${tc(SYM.localGroup, notationLatex('g_component'))}| = \tfrac{1}{|${tc(SYM.localGroup, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, notationLatex('g_element')))} ${productOver('c', tc(SYM.cycleCount, notationLatex('n_cycle')))}`,
+      formula: String.raw`${orbitCount} = \tfrac{1}{|${tc(SYM.localGroup, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, notationLatex('g_element')))} ${productOver('c', tc(SYM.cycleCount, notationLatex('n_cycle')))}`,
+    },
+    {
+      id: 'functionalProjection',
+      layer: 'regime',
+      formula: orbitCount,
     },
     {
       id: 'singleton',
@@ -167,19 +175,19 @@ function getAggregationLeaves(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
       formula: String.raw`\tfrac{${tc(SYM.omegaSize, notationLatex('n_omega'))}}{|${tc(SYM.localGroup, notationLatex('g_component'))}|} ${sumOver(tc(SYM.element, notationLatex('g_element')))} \Bigl(${productOver(`c \\in ${notationLatex('r_complement')}`, tc(SYM.cycleCount, notationLatex('n_cycle')))}\Bigr)\!\Bigl(${tc(SYM.omegaSize, notationLatex('n_omega'))}^{\,${tc(SYM.omegaExponent, notationLatex('c_omega_cycles'))}} - (${tc(SYM.omegaSize, notationLatex('n_omega'))} - 1)^{\,${tc(SYM.omegaExponent, notationLatex('c_omega_cycles'))}}\Bigr)`,
     },
     {
-      id: 'directProduct',
-      layer: 'regime',
-      formula: String.raw`\Bigl(${productOver(`\\ell \\in ${tc(SYM.vlabel, notationLatex('v_free'))}`, tc(SYM.labelCount, notationLatex('n_label')))}\Bigr) \cdot |${tc(SYM.ambient, 'X')}_{${tc(SYM.wlabel, notationLatex('w_summed'))}} / ${tc(SYM.summedGroup, notationLatex('g_w_factor'))}|`,
-    },
-    {
       id: 'young',
       layer: 'regime',
-      formula: String.raw`${tc(SYM.youngCount, notationLatex('n_l'))}^{|${tc(SYM.vlabel, notationLatex('v_free'))}|} \cdot \binom{${tc(SYM.youngCount, notationLatex('n_l'))} + |${tc(SYM.wlabel, notationLatex('w_summed'))}| - 1}{|${tc(SYM.wlabel, notationLatex('w_summed'))}|}`,
+      formula: String.raw`\binom{${tc(SYM.youngCount, notationLatex('n_l'))} + |${tc(SYM.vlabel, notationLatex('v_free'))}| - 1}{|${tc(SYM.vlabel, notationLatex('v_free'))}|} \binom{${tc(SYM.youngCount, notationLatex('n_l'))} + |${tc(SYM.wlabel, notationLatex('w_summed'))}| - 1}{|${tc(SYM.wlabel, notationLatex('w_summed'))}|}`,
+    },
+    {
+      id: 'partitionCount',
+      layer: 'regime',
+      formula: String.raw`\sum_{\tilde{x}\in P_{\mathrm{typed}}(${notationLatex('l_labels')})/${tc(SYM.localGroup, notationLatex('g_component'))}} \frac{\prod_s (n_s)_{b_s(\tilde{x})}}{|\overline{G}_{\tilde{x}}|}\, |A_{\tilde{x}}/H|`,
     },
     {
       id: 'bruteForceOrbit',
       layer: 'regime',
-      formula: String.raw`${sumOver(`${tc(SYM.orbitObject, notationLatex('orbit_o'))} \\in ${tc(SYM.ambient, notationLatex('x_space'))}/${tc(SYM.localGroup, notationLatex('g_component'))}`)} |${tc(SYM.projection, notationLatex('projection_pi_v_free'))}_{${tc(SYM.vlabel, notationLatex('v_free'))}}(${tc(SYM.orbitObject, notationLatex('orbit_o'))})|`,
+      formula: String.raw`${sumOver(`${tc(SYM.orbitObject, notationLatex('orbit_o'))} \\in ${tc(SYM.ambient, notationLatex('x_space'))}/${tc(SYM.localGroup, notationLatex('g_component'))}`)} \bigl|${tc(SYM.projection, notationLatex('projection_pi_v_free'))}(${tc(SYM.orbitObject, notationLatex('orbit_o'))})/H\bigr|`,
     },
   ];
 }

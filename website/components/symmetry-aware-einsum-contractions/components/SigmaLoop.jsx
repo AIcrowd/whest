@@ -388,13 +388,13 @@ function kindLabel(kind) {
 
 function kindCaption(kind) {
   if (kind === 'cross') {
-    return 'This symmetry keeps one evaluation representative but can still update multiple output bins because it crosses the V/W boundary.';
+    return 'This symmetry keeps one product representative but may still branch to several stored output representatives because it crosses the visible/summed boundary.';
   }
   if (kind === 'w-only') {
-    return 'This symmetry preserves the output bin and only compresses the summed side, so it can reduce both evaluation and reduction work.';
+    return 'This symmetry preserves the visible-label set, so each product orbit has one stored output destination; it can still reduce the product-orbit count.';
   }
   if (kind === 'v-only') {
-    return 'This symmetry acts only on output labels, so it shrinks the representative set but can still scatter into multiple output bins.';
+    return 'This symmetry acts only on output labels, so it changes the stored output representative action H without creating projection branching.';
   }
   if (kind === 'correlated') {
     return 'This symmetry acts on both V and W without crossing between them, so the full group still matters even though the V/W roles stay separate.';
