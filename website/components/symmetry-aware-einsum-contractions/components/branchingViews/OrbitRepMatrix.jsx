@@ -285,6 +285,21 @@ export default function OrbitRepMatrix({
           onMouseLeave={handleMouseLeave}
           onClick={handleClick}
         >
+          {layout.overflowY && (
+            <div
+              data-testid="orbit-rep-matrix-sticky-header"
+              style={{
+                position: 'sticky',
+                top: 0,
+                width: layout.canvasW,
+                height: 4,
+                background: 'rgba(240,82,77,0.08)',
+                borderBottom: '1px solid rgba(240,82,77,0.25)',
+                pointerEvents: 'none',
+                zIndex: 1,
+              }}
+            />
+          )}
           <canvas ref={canvasRef} />
         </div>
 
@@ -314,6 +329,37 @@ export default function OrbitRepMatrix({
           Rep <Latex math="Q" />
         </div>
       </div>
+
+      {/* Off-screen mirror table for screen-reader / keyboard a11y. */}
+      <table className="sr-only" aria-label="The O → Q matrix">
+        <thead>
+          <tr>
+            <th scope="col">Orbit</th>
+            {reps.map((rep, c) => (
+              <th key={c} scope="col">{labelledTuple(rep.tuple)}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {orbitRows.map((row, r) => (
+            <tr key={r}>
+              <th scope="row">{labelledTuple(row.repTuple)}</th>
+              {reps.map((rep, c) => {
+                const coeff = cells[r][c];
+                const filled = coeff !== null;
+                return (
+                  <td
+                    key={c}
+                    aria-label={`${labelledTuple(row.repTuple)} ${filled ? 'reaches' : 'does not reach'} ${labelledTuple(rep.tuple)}${filled ? `, contributes ${coeff} update${coeff === 1 ? '' : 's'} to alpha` : ''}`}
+                  >
+                    {filled ? '●' : ''}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

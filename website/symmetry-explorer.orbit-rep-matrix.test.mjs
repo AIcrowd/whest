@@ -210,3 +210,18 @@ test('OrbitRepMatrix renders hover-driven tuple bands aligned to focused row/col
   // Bands render the labelled tuple form.
   assert.match(src, /labelledTuple/);
 });
+
+test('OrbitRepMatrix paints a sticky column header strip when overflowY engages', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /position:\s*'sticky'/);
+  assert.match(src, /data-testid="orbit-rep-matrix-sticky-header"/);
+  assert.match(src, /layout\.overflowY/);
+});
+
+test('OrbitRepMatrix renders an sr-only mirror table for accessibility', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /<table[^>]*className="sr-only"/);
+  assert.match(src, /aria-label="The O → Q matrix"/);
+  // Each <td> has aria-label describing (O, Q) + filled/empty.
+  assert.match(src, /aria-label=\{[^}]*labelledTuple/);
+});
