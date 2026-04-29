@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import numpy as _np
 
-import flopscope as _me
+import flopscope.numpy as _me
 from flopscope._docstrings import attach_docstring
 
 

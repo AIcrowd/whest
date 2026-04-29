@@ -388,12 +388,28 @@ class RequestHandler:
 
 
 def _get_flopscope_func(op_name: str):
-    """Look up a flopscope function by dotted name (e.g. 'linalg.svd')."""
+    """Look up a flopscope function by dotted name (e.g. 'linalg.svd').
+
+    Numpy-shaped operations live under ``flopscope.numpy`` in the JAX-style
+    layout, but clients still send unprefixed names like ``"add"`` or
+    ``"linalg.svd"``. Resolve those by trying ``flopscope`` first (for
+    primitives like ``as_symmetric``) and falling back to
+    ``flopscope.numpy`` (for numpy ops and namespaces such as ``linalg``,
+    ``fft``, ``random``).
+    """
     parts = op_name.split(".")
-    obj = flops
-    for part in parts:
-        obj = getattr(obj, part)
-    return obj
+    try:
+        obj = flops
+        for part in parts:
+            obj = getattr(obj, part)
+        return obj
+    except AttributeError:
+        import flopscope.numpy as fnp
+
+        obj = fnp
+        for part in parts:
+            obj = getattr(obj, part)
+        return obj
 
 
 def _decode_index_key(raw_key):
