@@ -8,6 +8,7 @@ import numpy as _np
 
 from whest._cost_model import FMA_COST
 from whest._docstrings import attach_docstring
+from whest._ndarray import WhestArray, _aswhest, _to_base_ndarray
 from whest._validation import require_budget
 from whest.linalg._solvers import _batch_size, _has_zero_dim
 
@@ -63,13 +64,21 @@ def multi_dot_cost(shapes: list[tuple[int, ...]]) -> int:
 def multi_dot(arrays, *, out=None):
     """Efficient multi-matrix dot product with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = any(isinstance(a, WhestArray) for a in arrays)
     arrays = [a if isinstance(a, _np.ndarray) else _np.asarray(a) for a in arrays]
     shapes = [arr.shape for arr in arrays]
     cost = multi_dot_cost(shapes)
+    out_stripped = _to_base_ndarray(out) if out is not None else None
     with budget.deduct(
         "linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes)
     ):
-        result = _np.linalg.multi_dot(arrays, out=out)
+        result = _np.linalg.multi_dot(
+            [_to_base_ndarray(a) for a in arrays], out=out_stripped
+        )
+    if out is not None:
+        return out
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
+        return _aswhest(result)
     return result
 
 
@@ -109,6 +118,7 @@ def matrix_power_cost(n: int, k: int) -> int:
 def matrix_power(a, n):
     """Matrix power with FLOP counting."""
     budget = require_budget()
+    inputs_were_whest = isinstance(a, WhestArray)
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
     size = a.shape[-1]
@@ -117,7 +127,9 @@ def matrix_power(a, n):
     with budget.deduct(
         "linalg.matrix_power", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.matrix_power(a, n)
+        result = _np.linalg.matrix_power(_to_base_ndarray(a), n)
+    if isinstance(result, _np.ndarray) and inputs_were_whest:
+        return _aswhest(result)
     return result
 
 

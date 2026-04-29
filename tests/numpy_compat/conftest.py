@@ -65,6 +65,7 @@ _REBOUND: dict[str, object] = {}
 
 # All whest submodules that import numpy as _np
 _WHEST_MODULES_WITH_NP = [
+    "whest._ndarray",
     "whest._pointwise",
     "whest._free_ops",
     "whest._sorting_ops",

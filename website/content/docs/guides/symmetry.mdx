@@ -380,6 +380,157 @@ possible partial weakening via `SymmetryLossWarning`. Treat the warning system
 as helpful guidance, not as a complete audit of every same-axis subgroup
 change.
 
+## Edge cases when SymmetricTensors meet NumPy protocols
+
+Once your tensors flow through arbitrary user code (or third-party libraries), they
+inevitably hit NumPy's `__array_ufunc__` and `__array_function__` machinery —
+`np.add(A, B)`, `np.divmod(A, B)`, `np.add.outer(A, B)`, `np.add.at(A, idx, vals)`,
+`A @= B`, `np.tensordot(A, B, axes=...)`, and so on. Whest's
+protocol implementations are conservative: when an operation would silently
+corrupt your declared symmetry, whest **refuses or strips** rather than letting
+it through. This section is a tour of those edge cases.
+
+### In-place dunders refuse symmetry-corrupting writes
+
+```python
+A_sym = we.symmetrize(
+    we.random.randn(4, 4),
+    symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
+)
+B_plain = we.random.randn(4, 4)  # not symmetric
+
+A_sym += B_plain   # raises ValueError
+```
+
+The right-hand-side has no symmetry, so `A_sym + B_plain` returns a plain
+`WhestArray`. Writing that result back into `A_sym`'s buffer would leave the
+metadata claiming symmetry while the data is asymmetric. Whest refuses with
+`ValueError: in-place add on a SymmetricTensor would weaken or destroy the
+declared symmetry`.
+
+If you know the asymmetric write is intentional, downgrade first:
+
+```python
+A_plain = A_sym.view(we.ndarray)   # zero-copy view as plain WhestArray, no symmetry
+A_plain += B_plain                  # works
+```
+
+The same guard applies to `__isub__`, `__imul__`, `__itruediv__`,
+`__ifloordiv__`, `__imod__`, `__ipow__`, `__iand__`, `__ior__`, `__ixor__`,
+`__ilshift__`, `__irshift__`, and `__imatmul__` (which additionally falls back
+to CPython's rebind-the-name semantics when the matmul output shape differs
+from `self.shape`).
+
+### In-place sort / partition refuse on SymmetricTensor
+
+```python
+A_sym.sort(axis=0)                # raises ValueError
+A_sym.partition(2)                # raises ValueError
+```
+
+A reorder along any axis breaks the permutation invariance. Use the out-of-place
+forms instead:
+
+```python
+sorted_arr = we.sort(A_sym, axis=0)   # plain WhestArray, no symmetry
+```
+
+### `ufunc.at` refuses on SymmetricTensor
+
+`np.add.at(a, indices, values)` does an unbuffered fancy-index write — every
+repeat of an index applies again (unlike `a[indices] += values` which dedupes).
+On a `SymmetricTensor` this almost certainly breaks symmetry, so whest
+refuses:
+
+```text
+np.add.at(A_sym, ([0], [1]), 1.0)   # ValueError
+```
+
+Downgrade with `A_sym.view(we.ndarray)` first if you really need the unbuffered
+update.
+
+### `ufunc.outer` produces direct-product symmetry
+
+When both operands are symmetric, the output of `np.<ufunc>.outer(A, B)`
+inherits the **direct product** of the input symmetries — `A`'s symmetry on
+its own axes, `B`'s symmetry on the lifted slots `A.ndim..A.ndim+B.ndim-1`:
+
+```text
+A = we.symmetrize(we.random.randn(3, 3),
+                  symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
+B = we.symmetrize(we.random.randn(2, 2),
+                  symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
+
+C = np.add.outer(A, B)   # shape (3, 3, 2, 2), SymmetricTensor
+                         # symmetry: S_2 on (0, 1) × S_2 on (2, 3)
+```
+
+### `tensordot` keeps surviving direct-product symmetry
+
+The contracted axes drop out of each operand's symmetry; what's left of each
+operand's symmetry on the surviving (uncontracted) axes is direct-producted:
+
+```python
+sym = we.SymmetryGroup.symmetric(axes=(0, 1))
+A = we.symmetrize(we.random.randn(4, 4, 4, 4), symmetry=sym)  # axes (0,1) symmetric
+B = we.symmetrize(we.random.randn(4, 4, 4, 4), symmetry=sym)
+
+C = we.tensordot(A, B, axes=((2,), (2,)))
+# A's surviving axes: (0, 1, 3) → S_2 on (0, 1) survives
+# B's surviving axes: (0, 1, 3) → S_2 on (0, 1) survives
+# C: shape (4,4,4,4,4,4), SymmetricTensor with S_2 on (0,1) × S_2 on (3,4)
+```
+
+If the contracted axis is part of the symmetry group, that group is destroyed
+on the corresponding side.
+
+### Multi-output ufuncs preserve symmetry on every output
+
+`np.divmod(A, B)`, `np.frexp(A)`, `np.modf(A)` are elementwise — both outputs
+inherit the same symmetry as their inputs:
+
+```python
+S = we.symmetrize(we.array([[1.5, 2.5], [2.5, 3.5]]),
+                  symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
+
+frac, integer = we.modf(S)   # both SymmetricTensor with the same symmetry
+```
+
+`out=(o1, o2)` works (per-slot identity is preserved), and `out=(o1, None)`
+lets numpy allocate just the second slot.
+
+### Cost model is a placeholder above degree 12
+
+Whest charges `dense_cost × unique_output_elements / dense_output_elements` for
+`ufunc.outer` and `tensordot` as a coarse proxy for the savings a
+symmetry-aware implementation could realise. The underlying NumPy call still
+does dense work; only the budget reflects the savings.
+
+For a `SymmetryGroup` with degree above **12**, whest skips this adjustment and
+charges the full dense cost — `Burnside` enumeration on `S_n` for `n > 12`
+becomes infeasible (`13! ≈ 6.2 × 10⁹`). The skip is announced via
+`CostFallbackWarning`:
+
+```python
+import warnings
+deep = we.ones((1,) * 33)   # auto-inferred S_33 symmetry
+with warnings.catch_warnings(record=True) as caught:
+    warnings.simplefilter("always")
+    with we.BudgetContext(flop_budget=int(1e10)):
+        try:
+            we.tensordot(deep, deep, axes=0)   # CostFallbackWarning: bailed to dense
+        except ValueError:
+            pass   # ndim>64 — the warning still fires before numpy refuses
+```
+
+This is rare in practice — common user tensors have degree ≤ 8 — but high-rank
+auto-inferred symmetries on degenerate shapes (`(1,)*N` for large `N`) trip
+the cap. The warning fires once per `(op_name, degree)` pair per process to
+avoid log flooding. Suppress with `we.configure(symmetry_warnings=False)`,
+which shares the flag with `SymmetryLossWarning`.
+
+A proper algorithmic-cost model is a follow-up.
+
 ## Under the hood
 
 The propagation rules are easier to predict if you keep three ideas in mind:

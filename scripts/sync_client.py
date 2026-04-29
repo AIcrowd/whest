@@ -126,6 +126,18 @@ def _generate_errors() -> str:
             "WhestWarning",
             "Warning issued when an operation causes loss of symmetry metadata.",
         ),
+        (
+            "CostFallbackWarning",
+            "WhestWarning",
+            (
+                "Warning issued when whest skips its symmetry-aware cost "
+                "adjustment (e.g. ``ufunc.outer`` / ``tensordot`` on a "
+                "symmetry group whose degree exceeds the per-call "
+                "Burnside-enumeration threshold). The op runs correctly "
+                "with the dense cost charged instead. Suppress with "
+                "``we.configure(symmetry_warnings=False)``."
+            ),
+        ),
         # client-only
         (
             "WhestServerError",

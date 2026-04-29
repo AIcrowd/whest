@@ -1,15 +1,47 @@
-"""Subclass of numpy.ndarray whose operators track FLOP usage.
+"""Subclass of ``numpy.ndarray`` that routes every operation through
+whest's FLOP-counted ``me.*`` functions.
 
-This module defines WhestArray, a thin numpy.ndarray subclass
-that overrides arithmetic, matmul, unary, comparison, bitwise, and
-shift operators to route through whest's FLOP-counted me.*
-functions.
+``WhestArray`` overrides:
 
-Because WhestArray inherits from numpy.ndarray, isinstance(x,
-numpy.ndarray) returns True. All me.* functions return WhestArray.
+- **Arithmetic / comparison / bitwise / shift dunders** so ``a + b``,
+  ``a @ b``, ``a == b``, ``a & b``, ``a << b`` etc. route through
+  ``me.add``, ``me.matmul``, etc.
+- **In-place dunders** (``__iadd__``, …, ``__imatmul__``) with a
+  symmetry-corruption guard that refuses ``A_sym += B`` when the
+  result would weaken or destroy ``A_sym``'s tagged symmetry. ``A @= B``
+  on shape-changing matmul falls back to CPython's documented
+  rebind-the-name semantics.
+- **25 ndarray methods** (``sum``, ``mean``, ``dot``, ``argsort``,
+  ``compress``, ``trace``, ``round``, ``clip``, ``ptp``, …) so
+  ``a.sum()`` and ``we.sum(a)`` produce the same FLOP count.
+- **In-place ``sort`` / ``partition``** which refuse on a
+  ``SymmetricTensor`` (the reorder would break symmetry).
+
+It also implements two NumPy protocols:
+
+- ``__array_ufunc__`` (NEP 13) — ``np.add(a, b)``, ``np.add.reduce(a)``,
+  ``np.add.outer(a, b)``, ``np.add.at(a, idx, val)``, multi-output
+  ufuncs (``np.divmod`` / ``np.frexp`` / ``np.modf``), etc.
+- ``__array_function__`` (NEP 18) — explicit allowlist routing
+  ``np.<func>(whest, …)`` for ~108 callables (reductions, sorting,
+  shape ops, linear algebra, comparisons, histograms, …) plus a
+  ``_PASSTHROUGH`` set of zero-FLOP type/shape queries.
+
+Recursion-prevention helpers (``_to_base_ndarray``,
+``_to_base_ndarray_tree``) view-cast ``WhestArray`` to plain
+``np.ndarray`` for the inner NumPy call, breaking the cycle that
+would otherwise re-dispatch through these protocols.
+
+Because ``WhestArray`` inherits from ``numpy.ndarray``,
+``isinstance(x, numpy.ndarray)`` returns ``True``. All ``me.*``
+functions return ``WhestArray`` (or ``SymmetricTensor`` when symmetry
+survives the operation). See PR #67 for the complete protocol design.
 """
 
 from __future__ import annotations
+
+import functools as _functools
+import inspect as _inspect
 
 import numpy as _np
 
@@ -24,6 +56,40 @@ def _me():
     import whest as _whest
 
     return _whest
+
+
+# Eagerly captured at import time so ``tests/numpy_compat`` monkeypatching
+# (which replaces ``np.<name>`` with ``we.<name>``) doesn't accidentally
+# install the whest-replacements into ``_PASSTHROUGH``. The set holds the
+# *original* numpy callables.
+_PASSTHROUGH_NAMES = (
+    # Zero-FLOP type/shape queries:
+    "ndim",
+    "shape",
+    "size",
+    # Zero-FLOP type-system queries (added by Task 4 for #62/#58 followup):
+    "result_type",
+    "can_cast",
+    "min_scalar_type",
+    "promote_types",
+    "find_common_type",
+    "mintypecode",
+    # Test-harness assertion that should not count FLOPs:
+    "array_equal",
+)
+
+
+def _build_passthrough():
+    """Build the ``_PASSTHROUGH`` set, eagerly at import time."""
+    s = set()
+    for name in _PASSTHROUGH_NAMES:
+        fn = getattr(_np, name, None)
+        if fn is not None:
+            s.add(fn)
+    return s
+
+
+_INITIAL_PASSTHROUGH = _build_passthrough()
 
 
 class WhestArray(_np.ndarray):
@@ -71,6 +137,517 @@ class WhestArray(_np.ndarray):
             return out_arr[()]
         return super().__array_wrap__(out_arr, context, return_scalar)
 
+    # ----- numpy ufunc protocol (NEP 13) -----
+
+    _REDUCE_TO_WHEST = {
+        "add": "sum",
+        "multiply": "prod",
+        "maximum": "max",
+        "minimum": "min",
+        "logical_and": "all",
+        "logical_or": "any",
+    }
+    _ACCUMULATE_TO_WHEST = {
+        "add": "cumsum",
+        "multiply": "cumprod",
+    }
+
+    def __array_ufunc__(self, ufunc, method, *inputs, out=None, **kwargs):
+        """Route ufunc calls through whest's counted functions.
+
+        Triggered for:
+        - ``np.add(whest, x)``           → method='__call__'
+        - ``np.add.reduce(whest)``       → method='reduce'
+        - ``np.add.accumulate(whest)``   → method='accumulate'
+        - ``np.add.outer(whest, w2)``    → method='outer'
+        - ``np.add.reduceat(whest, ix)`` → method='reduceat'
+        - ``np.add.at(whest, ix, val)``  → method='at'
+
+        ``out`` is passed by NumPy as a tuple of length ``ufunc.nout``.
+        For single-output ufuncs we unwrap the 1-tuple to ``out=arr``;
+        for multi-output ufuncs (``divmod``, ``frexp``, ``modf``) we
+        forward the tuple as-is to the corresponding ``we.*`` wrapper,
+        which knows how to handle per-slot stripping and identity.
+
+        ``reduce`` / ``accumulate`` first try the optimized routing in
+        :attr:`_REDUCE_TO_WHEST` / :attr:`_ACCUMULATE_TO_WHEST`; on a
+        miss (e.g. ``np.subtract.reduce``) they fall back to a generic
+        path in :mod:`whest._pointwise` that strips, charges
+        :func:`reduction_cost`, and routes back through the raw
+        ``ufunc.<method>``. ``outer`` / ``reduceat`` / ``at`` always
+        use the generic path. ``ufunc.at`` refuses on SymmetricTensor
+        operands (the in-place fancy-index write would break symmetry).
+        """
+        me = _me()
+
+        np_target_name = None  # used to drive _filter_to_np_signature below
+        whest_fn = None
+        if method == "__call__":
+            whest_fn = getattr(me, ufunc.__name__, None)
+            np_target_name = ufunc.__name__
+        elif method == "reduce":
+            target = self._REDUCE_TO_WHEST.get(ufunc.__name__)
+            if target is not None:
+                whest_fn = getattr(me, target, None)
+                np_target_name = target
+                # NumPy's ufunc.reduce defaults to axis=0; whest's me.sum etc.
+                # default to axis=None (full reduction). Force NumPy default.
+                kwargs.setdefault("axis", 0)
+        elif method == "accumulate":
+            target = self._ACCUMULATE_TO_WHEST.get(ufunc.__name__)
+            if target is not None:
+                whest_fn = getattr(me, target, None)
+                np_target_name = target
+                kwargs.setdefault("axis", 0)
+
+        if whest_fn is not None:
+            # Optimized routing-table path: forward to the dedicated
+            # ``we.*`` wrapper.
+            #
+            # Unwrap single-output ``out`` tuple.
+            if out is not None:
+                if isinstance(out, tuple) and len(out) == 1:
+                    kwargs["out"] = out[0]
+                else:
+                    kwargs["out"] = out
+            # Filter kwargs against the target NumPy callable's signature so
+            # ufunc-internal kwargs (e.g. ``dtype=`` from np.all → np.add.reduce)
+            # don't reach a function-form whest wrapper that doesn't accept
+            # them.
+            if np_target_name is not None:
+                kwargs = _filter_to_np_signature(
+                    getattr(_np, np_target_name, None), kwargs
+                )
+            return whest_fn(*inputs, **kwargs)
+
+        # Generic ufunc-method paths for ops without a dedicated whest
+        # equivalent. Lazy-imported to avoid the _ndarray ↔ _pointwise
+        # circular-dependency loop.
+        if method in ("outer", "reduce", "accumulate", "reduceat", "at"):
+            from whest._pointwise import (
+                _counted_ufunc_accumulate_generic,
+                _counted_ufunc_at,
+                _counted_ufunc_outer,
+                _counted_ufunc_reduce_generic,
+                _counted_ufunc_reduceat,
+            )
+
+            # Unwrap single-output ``out`` tuple for the generic paths
+            # too. ``ufunc.at`` doesn't take ``out``.
+            out_for_generic = out
+            if out is not None and isinstance(out, tuple) and len(out) == 1:
+                out_for_generic = out[0]
+
+            if method == "outer":
+                return _counted_ufunc_outer(
+                    ufunc, *inputs, out=out_for_generic, **kwargs
+                )
+            if method == "reduce":
+                kwargs.setdefault("axis", 0)
+                return _counted_ufunc_reduce_generic(
+                    ufunc, *inputs, out=out_for_generic, **kwargs
+                )
+            if method == "accumulate":
+                kwargs.setdefault("axis", 0)
+                return _counted_ufunc_accumulate_generic(
+                    ufunc, *inputs, out=out_for_generic, **kwargs
+                )
+            if method == "reduceat":
+                return _counted_ufunc_reduceat(
+                    ufunc, *inputs, out=out_for_generic, **kwargs
+                )
+            if method == "at":
+                # ``ufunc.at`` does not accept ``out=``.
+                return _counted_ufunc_at(ufunc, *inputs, **kwargs)
+
+        return NotImplemented
+
+    # ----- numpy array-function protocol (NEP 18) -----
+
+    # Lazy-built dispatch map. Populated on first __array_function__ call
+    # because whest's namespace uses lazy submodule loading.
+    _ARRAY_FUNCTION_DISPATCH: dict | None = None
+    _PASSTHROUGH: set | None = None
+
+    @classmethod
+    def _get_array_function_dispatch(cls):
+        """Build (once) and return the np-callable → whest-callable map."""
+        if cls._ARRAY_FUNCTION_DISPATCH is not None:
+            return cls._ARRAY_FUNCTION_DISPATCH
+
+        me = _me()
+        d: dict = {}
+
+        def _bind(np_attr_path, we_attr_path):
+            """Look up np.<path> and me.<path>, add to dispatch map.
+
+            Silently skip pairs where one side is missing (e.g. linalg
+            functions added in newer NumPy versions).
+            """
+            np_obj = _np
+            for part in np_attr_path.split("."):
+                np_obj = getattr(np_obj, part, None)
+                if np_obj is None:
+                    return
+            we_obj = me
+            for part in we_attr_path.split("."):
+                we_obj = getattr(we_obj, part, None)
+                if we_obj is None:
+                    return
+            if callable(np_obj) and callable(we_obj):
+                d[np_obj] = we_obj
+
+        # ----- Reductions -----
+        for name in (
+            "sum",
+            "prod",
+            "mean",
+            "min",
+            "max",
+            "std",
+            "var",
+            "all",
+            "any",
+            "cumsum",
+            "cumprod",
+            "argmin",
+            "argmax",
+            "ptp",
+            "median",
+            "average",
+            "percentile",
+            "quantile",
+            # NumPy 2.x retained ``amax``/``amin`` as exported aliases
+            # for ``max``/``min``. Bind them so ``np.amax(WhestArray)``
+            # routes through whest instead of raising TypeError.
+            "amax",
+            "amin",
+        ):
+            _bind(name, name)
+
+        # ----- Sorting / selection -----
+        for name in (
+            "sort",
+            "argsort",
+            "lexsort",
+            "partition",
+            "argpartition",
+            "searchsorted",
+            "digitize",
+        ):
+            _bind(name, name)
+
+        # ----- Set / unique -----
+        for name in (
+            "unique",
+            "unique_all",
+            "unique_counts",
+            "unique_inverse",
+            "unique_values",
+            "in1d",
+            "isin",
+            "intersect1d",
+            "union1d",
+            "setdiff1d",
+            "setxor1d",
+        ):
+            _bind(name, name)
+
+        # ----- Free / structural (asarray excluded) -----
+        for name in (
+            "where",
+            "tile",
+            "repeat",
+            "flip",
+            "roll",
+            "pad",
+            "triu",
+            "tril",
+            "diagonal",
+            "broadcast_to",
+            "meshgrid",
+            "copy",
+            "astype",
+            "trace",
+            "diff",
+            "gradient",
+            "clip",
+            "round",
+        ):
+            _bind(name, name)
+
+        # ----- Shape / view ops -----
+        # The whest counterparts (``me.transpose``, ``me.swapaxes``,
+        # ``me.moveaxis``, etc.) handle ``SymmetricTensor`` axis
+        # remapping correctly via ``wrap_with_symmetry`` /
+        # ``remap_group_axes``. Routing through the allowlist preserves
+        # symmetry; PASSTHROUGH would silently strip it via
+        # ``_to_base_ndarray_tree`` before the raw NumPy call.
+        for name in (
+            "transpose",
+            "swapaxes",
+            "moveaxis",
+            "reshape",
+            "ravel",
+            "expand_dims",
+            "squeeze",
+            "concatenate",
+            "stack",
+            "vstack",
+            "hstack",
+            "column_stack",
+            "split",
+            "hsplit",
+            "vsplit",
+            "dsplit",
+            "atleast_1d",
+            "atleast_2d",
+            "atleast_3d",
+            "broadcast_to",
+            "matrix_transpose",  # numpy 2.x ufunc-like
+        ):
+            _bind(name, name)
+
+        # ----- Linear algebra -----
+        for name in (
+            "dot",
+            "matmul",
+            "einsum",
+            "tensordot",
+            "inner",
+            "outer",
+            "cross",
+        ):
+            _bind(name, name)
+
+        # ----- Comparisons -----
+        for name in (
+            "allclose",
+            "isclose",
+            "array_equiv",
+            # NOTE: array_equal is in _PASSTHROUGH instead.
+        ):
+            _bind(name, name)
+
+        # ----- Histograms / counts -----
+        for name in (
+            "histogram",
+            "histogram2d",
+            "histogramdd",
+            "histogram_bin_edges",
+            "bincount",
+            "vander",
+            "apply_over_axes",
+            "piecewise",
+        ):
+            _bind(name, name)
+
+        # ----- linalg submodule -----
+        for name in (
+            "norm",
+            "solve",
+            "det",
+            "inv",
+            "pinv",
+            "eig",
+            "eigh",
+            "eigvals",
+            "eigvalsh",
+            "svd",
+            "qr",
+            "cholesky",
+            "matrix_rank",
+            "lstsq",
+            "multi_dot",
+            "matrix_power",
+            "slogdet",
+        ):
+            _bind(f"linalg.{name}", f"linalg.{name}")
+
+        cls._ARRAY_FUNCTION_DISPATCH = d
+        return d
+
+    @classmethod
+    def _get_passthrough(cls):
+        """Return the eagerly-captured passthrough set."""
+        if cls._PASSTHROUGH is not None:
+            return cls._PASSTHROUGH
+        cls._PASSTHROUGH = set(_INITIAL_PASSTHROUGH)
+        return cls._PASSTHROUGH
+
+    def __array_function__(self, func, types, args, kwargs):
+        """Route ``np.<func>(whest, ...)`` calls through whest via an
+        explicit allowlist (see ``_get_array_function_dispatch``).
+
+        Functions in ``_PASSTHROUGH`` are zero-FLOP type/shape queries
+        that bypass tracking and call the underlying NumPy function
+        directly with stripped args.
+
+        Functions not in either set return ``NotImplemented``. NumPy
+        will then raise ``TypeError`` rather than silently bypassing
+        tracking.
+        """
+        # PASSTHROUGH check first: zero-FLOP queries bypass dispatch.
+        if func in self._get_passthrough():
+            stripped_args = _to_base_ndarray_tree(args)
+            stripped_kwargs = {k: _to_base_ndarray_tree(v) for k, v in kwargs.items()}
+            return func(*stripped_args, **stripped_kwargs)
+
+        dispatch = self._get_array_function_dispatch()
+        we_func = dispatch.get(func)
+        if we_func is None:
+            return NotImplemented
+        return we_func(*args, **kwargs)
+
+    # ----- ndarray method overrides (route through me.* for budget parity) -----
+    # We forward *args, **kwargs to be forward-compatible with NumPy's
+    # evolving method signatures (dtype, out, where, casting, keepdims, axis
+    # as positional or keyword).
+
+    def sum(self, *args, **kwargs):
+        return _me().sum(self, *args, **kwargs)
+
+    def mean(self, *args, **kwargs):
+        return _me().mean(self, *args, **kwargs)
+
+    def prod(self, *args, **kwargs):
+        return _me().prod(self, *args, **kwargs)
+
+    def min(self, *args, **kwargs):
+        return _me().min(self, *args, **kwargs)
+
+    def max(self, *args, **kwargs):
+        return _me().max(self, *args, **kwargs)
+
+    def std(self, *args, **kwargs):
+        return _me().std(self, *args, **kwargs)
+
+    def var(self, *args, **kwargs):
+        return _me().var(self, *args, **kwargs)
+
+    def all(self, *args, **kwargs):
+        return _me().all(self, *args, **kwargs)
+
+    def any(self, *args, **kwargs):
+        return _me().any(self, *args, **kwargs)
+
+    def cumsum(self, *args, **kwargs):
+        return _me().cumsum(self, *args, **kwargs)
+
+    def cumprod(self, *args, **kwargs):
+        return _me().cumprod(self, *args, **kwargs)
+
+    def argmin(self, *args, **kwargs):
+        return _me().argmin(self, *args, **kwargs)
+
+    def argmax(self, *args, **kwargs):
+        return _me().argmax(self, *args, **kwargs)
+
+    def ptp(self, *args, **kwargs):
+        return _me().ptp(self, *args, **kwargs)
+
+    def trace(self, *args, **kwargs):
+        return _me().trace(self, *args, **kwargs)
+
+    def round(self, *args, **kwargs):
+        return _me().round(self, *args, **kwargs)
+
+    def clip(self, *args, **kwargs):
+        return _me().clip(self, *args, **kwargs)
+
+    # ----- Other ndarray methods -----
+
+    def dot(self, *args, **kwargs):
+        return _me().dot(self, *args, **kwargs)
+
+    def conj(self):
+        return _me().conjugate(self)
+
+    def conjugate(self):
+        return _me().conjugate(self)
+
+    def argsort(self, *args, **kwargs):
+        return _me().argsort(self, *args, **kwargs)
+
+    def argpartition(self, kth, *args, **kwargs):
+        return _me().argpartition(self, kth, *args, **kwargs)
+
+    def take(self, indices, *args, **kwargs):
+        return _me().take(self, indices, *args, **kwargs)
+
+    def repeat(self, repeats, *args, **kwargs):
+        return _me().repeat(self, repeats, *args, **kwargs)
+
+    def searchsorted(self, v, *args, **kwargs):
+        return _me().searchsorted(self, v, *args, **kwargs)
+
+    def compress(self, condition, *args, **kwargs):
+        # ndarray.compress(condition) -> np.compress(condition, arr)
+        return _me().compress(condition, self, *args, **kwargs)
+
+    # In-place sort/partition: NumPy mutates self and returns None.
+    # Charge FLOPs through me.sort/partition, then copy result into self.
+    # Guard against in-place mutation that would silently break symmetry.
+
+    def _check_inplace_breaks_symmetry(self, op_name):
+        """Refuse in-place ops that would invalidate SymmetricTensor metadata.
+
+        ``self._symmetry`` is set by SymmetricTensor; plain WhestArrays
+        do not have it (or it's None). Guarding via getattr keeps this
+        method valid on both subclasses without a forward reference.
+        """
+        sym = getattr(self, "_symmetry", None)
+        if sym is not None:
+            raise ValueError(
+                f"in-place {op_name} on a SymmetricTensor would break "
+                f"symmetry on axes {sym.axes}; call we.{op_name}(arr) for "
+                f"an unsymmetric copy instead."
+            )
+
+    def sort(self, *args, **kwargs):
+        self._check_inplace_breaks_symmetry("sort")
+        result = _me().sort(self, *args, **kwargs)
+        # Strip both self and result before np.copyto: keeps the
+        # invariant ("never pass a whest subclass to a raw NumPy call")
+        # explicit even though np.copyto is currently NOT in the
+        # __array_function__ allowlist.
+        _np.copyto(_to_base_ndarray(self), _to_base_ndarray(result))
+
+    def partition(self, kth, *args, **kwargs):
+        self._check_inplace_breaks_symmetry("partition")
+        result = _me().partition(self, kth, *args, **kwargs)
+        _np.copyto(_to_base_ndarray(self), _to_base_ndarray(result))
+
+    def _inplace_from_result(self, result, op_name):
+        """Apply ``result`` into ``self`` in place; refuse if the
+        operation would destroy or weaken symmetry metadata.
+
+        Compare ``self.symmetry`` and ``result.symmetry`` directly via
+        ``SymmetryGroup.__eq__`` (PR #51 made these value-equal with an
+        identity short-circuit and per-instance canonical-action cache).
+        Scalar in-place ops (``a += 1.0``) keep every group identically,
+        so the comparison passes via the identity short-circuit and the
+        copy proceeds cleanly.
+
+        ``_to_base_ndarray(self)`` is required around ``np.copyto``
+        because ``np.copyto`` could otherwise dispatch via
+        ``__array_function__`` if it ever lands in the allowlist --
+        without the strip, the call would recurse back through whest.
+        """
+        self_sym = getattr(self, "_symmetry", None)
+        result_sym = getattr(result, "_symmetry", None)
+        if self_sym is not None:
+            if self_sym != result_sym:
+                raise ValueError(
+                    f"in-place {op_name} would destroy or weaken symmetry "
+                    f"metadata on axes {self_sym.axes} (result symmetry: "
+                    f"{result_sym.axes if result_sym is not None else None}); "
+                    f"use ``self = we.{op_name}(self, other)`` to accept the "
+                    f"new result explicitly."
+                )
+        _np.copyto(_to_base_ndarray(self), _to_base_ndarray(result))
+        return self
+
     # ----- Binary arithmetic -----
 
     def __add__(self, other):
@@ -80,7 +657,8 @@ class WhestArray(_np.ndarray):
         return _me().add(other, self)
 
     def __iadd__(self, other):
-        return _me().add(self, other)
+        result = _me().add(self, other)
+        return self._inplace_from_result(result, "add")
 
     def __sub__(self, other):
         return _me().subtract(self, other)
@@ -89,7 +667,8 @@ class WhestArray(_np.ndarray):
         return _me().subtract(other, self)
 
     def __isub__(self, other):
-        return _me().subtract(self, other)
+        result = _me().subtract(self, other)
+        return self._inplace_from_result(result, "subtract")
 
     def __mul__(self, other):
         return _me().multiply(self, other)
@@ -98,7 +677,8 @@ class WhestArray(_np.ndarray):
         return _me().multiply(other, self)
 
     def __imul__(self, other):
-        return _me().multiply(self, other)
+        result = _me().multiply(self, other)
+        return self._inplace_from_result(result, "multiply")
 
     def __truediv__(self, other):
         return _me().true_divide(self, other)
@@ -107,7 +687,8 @@ class WhestArray(_np.ndarray):
         return _me().true_divide(other, self)
 
     def __itruediv__(self, other):
-        return _me().true_divide(self, other)
+        result = _me().true_divide(self, other)
+        return self._inplace_from_result(result, "true_divide")
 
     def __floordiv__(self, other):
         return _me().floor_divide(self, other)
@@ -116,7 +697,8 @@ class WhestArray(_np.ndarray):
         return _me().floor_divide(other, self)
 
     def __ifloordiv__(self, other):
-        return _me().floor_divide(self, other)
+        result = _me().floor_divide(self, other)
+        return self._inplace_from_result(result, "floor_divide")
 
     def __mod__(self, other):
         return _me().mod(self, other)
@@ -125,7 +707,8 @@ class WhestArray(_np.ndarray):
         return _me().mod(other, self)
 
     def __imod__(self, other):
-        return _me().mod(self, other)
+        result = _me().mod(self, other)
+        return self._inplace_from_result(result, "mod")
 
     def __pow__(self, other):
         return _me().power(self, other)
@@ -134,7 +717,8 @@ class WhestArray(_np.ndarray):
         return _me().power(other, self)
 
     def __ipow__(self, other):
-        return _me().power(self, other)
+        result = _me().power(self, other)
+        return self._inplace_from_result(result, "power")
 
     def __matmul__(self, other):
         return _me().matmul(self, other)
@@ -143,7 +727,16 @@ class WhestArray(_np.ndarray):
         return _me().matmul(other, self)
 
     def __imatmul__(self, other):
-        return _me().matmul(self, other)
+        # __imatmul__ is special: matmul output shape may differ from
+        # self.shape, in which case in-place mutation is impossible.
+        # CPython's documented in-place fallback rebinds the name to the
+        # new (out-of-place) result. NumPy raises ValueError on shape
+        # mismatch; we follow the CPython fallback so typical pipelines
+        # using ``A @= B`` to grow state work cleanly.
+        result = _me().matmul(self, other)
+        if result.shape != self.shape:
+            return result
+        return self._inplace_from_result(result, "matmul")
 
     # ----- Unary arithmetic -----
 
@@ -192,7 +785,8 @@ class WhestArray(_np.ndarray):
         return _me().bitwise_and(other, self)
 
     def __iand__(self, other):
-        return _me().bitwise_and(self, other)
+        result = _me().bitwise_and(self, other)
+        return self._inplace_from_result(result, "bitwise_and")
 
     def __or__(self, other):
         return _me().bitwise_or(self, other)
@@ -201,7 +795,8 @@ class WhestArray(_np.ndarray):
         return _me().bitwise_or(other, self)
 
     def __ior__(self, other):
-        return _me().bitwise_or(self, other)
+        result = _me().bitwise_or(self, other)
+        return self._inplace_from_result(result, "bitwise_or")
 
     def __xor__(self, other):
         return _me().bitwise_xor(self, other)
@@ -210,7 +805,8 @@ class WhestArray(_np.ndarray):
         return _me().bitwise_xor(other, self)
 
     def __ixor__(self, other):
-        return _me().bitwise_xor(self, other)
+        result = _me().bitwise_xor(self, other)
+        return self._inplace_from_result(result, "bitwise_xor")
 
     def __lshift__(self, other):
         return _me().left_shift(self, other)
@@ -219,7 +815,8 @@ class WhestArray(_np.ndarray):
         return _me().left_shift(other, self)
 
     def __ilshift__(self, other):
-        return _me().left_shift(self, other)
+        result = _me().left_shift(self, other)
+        return self._inplace_from_result(result, "left_shift")
 
     def __rshift__(self, other):
         return _me().right_shift(self, other)
@@ -228,7 +825,8 @@ class WhestArray(_np.ndarray):
         return _me().right_shift(other, self)
 
     def __irshift__(self, other):
-        return _me().right_shift(self, other)
+        result = _me().right_shift(self, other)
+        return self._inplace_from_result(result, "right_shift")
 
 
 def wrap_module_returns(module, skip_names=None, check_module=True):
@@ -325,3 +923,130 @@ def _asplainwhest(x):
     """
     arr = _np.asarray(x)
     return arr.view(WhestArray)
+
+
+def _to_base_ndarray(x):
+    """View a whest array as a plain ``np.ndarray`` (zero-copy).
+
+    Distinct from :func:`_asplainwhest` (which returns a ``WhestArray`` —
+    still a numpy subclass that triggers ``__array_function__``).
+    Required before calling ``_np.<func>(x)`` from inside our own
+    ``__array_ufunc__`` / ``__array_function__`` handlers, so that
+    NumPy's protocol dispatch (which would route WhestArray inputs back
+    through ``me.<func>``) does not recurse infinitely.
+
+    Only ``WhestArray`` instances (and subclasses like
+    ``SymmetricTensor``) are stripped — other ``numpy.ndarray``
+    subclasses (e.g. ``np.matrix``, user-defined ``ArraySubclass``)
+    pass through unchanged so NumPy's standard subclass-propagation
+    behaviour preserves their type on the result.
+
+    Non-array inputs (Python scalars, lists) pass through unchanged so
+    that NEP 50 weak-typing rules continue to apply when whest wrappers
+    forward these to NumPy.
+
+    Examples
+    --------
+    >>> a = WhestArray((4,), dtype=float)
+    >>> type(_to_base_ndarray(a)) is _np.ndarray
+    True
+    >>> _to_base_ndarray(2.0) == 2.0
+    True
+    """
+    if isinstance(x, WhestArray):
+        return x.view(_np.ndarray)
+    return x
+
+
+def _to_base_ndarray_tree(x):
+    """Recursively strip whest subclasses from arrays inside tuples/lists.
+
+    Use for arguments that accept *containers* of arrays passed through
+    ``__array_function__``:
+    - ``np.lexsort(keys)`` — keys is a sequence of arrays.
+    - ``np.meshgrid(*xi)`` — xi is a tuple of arrays.
+    - ``np.concatenate(arrays)`` / ``np.stack(arrays)`` — arrays is a sequence.
+    - ``out=(out1, out2)`` — multi-output ufunc out tuples.
+
+    Plain ``_to_base_ndarray`` only handles a single array; using it on
+    a list of WhestArrays leaves the inner WhestArrays intact and
+    recursion can still happen through them.
+
+    Preserves namedtuples (e.g. ``UniqueAllResult``) by re-constructing
+    the type with stripped fields.
+
+    Intentional scope: tuples, lists, namedtuples, and bare arrays only.
+    Dicts and other generic mappings are NOT recursed into.
+
+    Only ``WhestArray`` instances (and subclasses like
+    ``SymmetricTensor``) are stripped — other ``numpy.ndarray``
+    subclasses (e.g. ``np.matrix``, user-defined ``ArraySubclass``)
+    pass through unchanged so NumPy's standard subclass-propagation
+    behaviour preserves their type on the result.
+    """
+    if isinstance(x, WhestArray):
+        return x.view(_np.ndarray)
+    if isinstance(x, tuple):
+        stripped = tuple(_to_base_ndarray_tree(e) for e in x)
+        # Preserve namedtuple type if present.
+        if type(x) is not tuple and hasattr(type(x), "_fields"):
+            return type(x)(*stripped)
+        return stripped
+    if isinstance(x, list):
+        return [_to_base_ndarray_tree(e) for e in x]
+    return x
+
+
+@_functools.cache
+def _signature_kwargs_accepted(np_func):
+    """Return frozenset of kwarg names accepted by ``np_func``.
+
+    Returns:
+    - ``None`` if ``np_func`` is ``None`` or signature inspection fails.
+    - Empty frozenset if ``np_func`` accepts ``**kwargs`` (sentinel meaning
+      "accepts every kwarg name; do not filter").
+    - Otherwise a frozenset of accepted parameter names.
+
+    Cached: NumPy callable identities are stable for the process
+    lifetime, so ``@functools.cache`` is safe and necessary on this hot
+    path. PR #51 memoized similar per-call introspection
+    (``unique_elements_for_shape``, ``_canonical_axis_action``); this
+    follows the same pattern. See PR #51 perf comment for why per-call
+    ``inspect.signature`` is unacceptable.
+    """
+    if np_func is None:
+        return None
+    try:
+        sig = _inspect.signature(np_func)
+    except (ValueError, TypeError):
+        return None
+    for p in sig.parameters.values():
+        if p.kind == _inspect.Parameter.VAR_KEYWORD:
+            return frozenset()  # sentinel: accepts everything
+    return frozenset(
+        n
+        for n, p in sig.parameters.items()
+        if p.kind != _inspect.Parameter.VAR_POSITIONAL
+    )
+
+
+def _filter_to_np_signature(np_func, kwargs):
+    """Drop kwargs that ``np_func`` does not accept.
+
+    NumPy's ``ufunc.reduce`` always supplies ``dtype=`` / ``keepdims=`` /
+    ``out=``, but the equivalent function-form wrapper (``np.all``,
+    ``np.any``, etc.) accepts only a subset. Forwarding the full
+    ufunc-reduce kwarg set to those function-form wrappers raises
+    ``TypeError``.
+
+    Falls back to the original kwargs when ``inspect.signature`` cannot
+    introspect (e.g. C-implemented functions). Per-function signature
+    lookup is cached via :func:`_signature_kwargs_accepted` — this is on
+    the per-ufunc-call hot path; uncached lookup would be a perf cliff.
+    """
+    accepted = _signature_kwargs_accepted(np_func)
+    if accepted is None:
+        return kwargs
+    if not accepted:  # empty frozenset = sentinel for **kwargs accepted
+        return kwargs
+    return {k: v for k, v in kwargs.items() if k in accepted}

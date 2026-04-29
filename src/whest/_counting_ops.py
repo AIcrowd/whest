@@ -13,6 +13,7 @@ import numpy as _np
 
 from whest._docstrings import attach_docstring
 from whest._flops import _ceil_log2
+from whest._ndarray import _to_base_ndarray, _to_base_ndarray_tree
 from whest._validation import require_budget
 
 # ---------------------------------------------------------------------------
@@ -24,11 +25,17 @@ def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
     budget = require_budget()
     a = _np.asarray(a)
     cost = _builtins.max(_builtins.min(a.shape[axis1], a.shape[axis2]), 1)
+    out_stripped = _to_base_ndarray(out) if out is not None else None
     with budget.deduct("trace", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
         result = _np.trace(
-            a, offset=offset, axis1=axis1, axis2=axis2, dtype=dtype, out=out
+            _to_base_ndarray(a),
+            offset=offset,
+            axis1=axis1,
+            axis2=axis2,
+            dtype=dtype,
+            out=out_stripped,
         )
-    return result
+    return out if out is not None else result
 
 
 attach_docstring(
@@ -302,7 +309,7 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
     budget = require_budget()
     if not isinstance(arr, _np.ndarray):
         arr = _np.asarray(arr)
-    result = _np.apply_along_axis(func1d, axis, arr, *args, **kwargs)
+    result = _np.apply_along_axis(func1d, axis, _to_base_ndarray(arr), *args, **kwargs)
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct(
         "apply_along_axis", flop_cost=cost, subscripts=None, shapes=(arr.shape,)
@@ -324,7 +331,7 @@ def apply_over_axes(func, a, axes):
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
-    result = _np.apply_over_axes(func, a, axes)
+    result = _np.apply_over_axes(func, _to_base_ndarray(a), axes)
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct(
         "apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,)
@@ -346,7 +353,9 @@ def piecewise(x, condlist, funclist, *args, **kw):
     budget = require_budget()
     if not isinstance(x, _np.ndarray):
         x = _np.asarray(x)
-    result = _np.piecewise(x, condlist, funclist, *args, **kw)
+    result = _np.piecewise(
+        _to_base_ndarray(x), _to_base_ndarray_tree(condlist), funclist, *args, **kw
+    )
     cost = x.size
     with budget.deduct("piecewise", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
         pass
