@@ -142,3 +142,42 @@ test('layoutFor returns a clean empty layout for 0 rows / 0 cols / NaN / negativ
     assert.equal(out.contentHeight, 0);
   }
 });
+
+test('OrbitRepMatrix renders into <canvas> using layout helpers', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // Imports the layout module (no inline duplication of the math).
+  assert.match(src, /from '\.\/orbitRepMatrixLayout\.js'/);
+  // Uses <canvas> + getContext('2d') for the grid.
+  assert.match(src, /<canvas\b/);
+  assert.match(src, /getContext\('2d'\)/);
+  // Hit testing through cellAtPoint, not DOM events on per-cell <td>.
+  assert.match(src, /cellAtPoint/);
+});
+
+test('OrbitRepMatrix tracks hover + pin state separately', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // Two distinct useState slots.
+  assert.match(src, /useState[^;]*hover/);
+  assert.match(src, /useState[^;]*pin/);
+  // Click handler.
+  assert.match(src, /onClick=/);
+});
+
+test('OrbitRepMatrix passes numRows + numCols to cellAtPoint for bounds rejection', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // The layout object passed into cellAtPoint must include numRows/numCols
+  // (Task 2's bounds-check guard).
+  assert.match(src, /numRows[\s\S]{0,200}cellAtPoint|cellAtPoint[\s\S]{0,200}numRows/);
+});
+
+test('OrbitRepMatrix uses no raw hex outside design tokens', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  const allowed = new Set([
+    '#F0524D', '#FEF2F1', '#D9DCDC', '#F8F9F9', '#FFFFFF', '#1F2526',
+    '#ECEFEF', '#4A7CFF', '#64748B', '#9AA0A0',
+  ]);
+  const hexes = src.match(/#[0-9A-Fa-f]{3,6}\b/g) ?? [];
+  for (const h of hexes) {
+    assert.ok(allowed.has(h.toUpperCase()), `disallowed hex ${h} — use a design token`);
+  }
+});
