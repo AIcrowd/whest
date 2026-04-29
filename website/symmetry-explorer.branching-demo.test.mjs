@@ -58,3 +58,15 @@ test('BranchingDemo wires ArcsView for view-id="arcs"', () => {
   assert.match(src, /import ArcsView from '\.\/branchingViews\/ArcsView\.jsx'/);
   assert.match(src, /activeView === 'arcs' && <ArcsView/);
 });
+
+test('GridsView exports a default React component with no raw hex', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/GridsView.jsx');
+  assert.match(src, /export default function GridsView/);
+  assert.doesNotMatch(src, /#[0-9A-Fa-f]{3}\b|#[0-9A-Fa-f]{6}\b/);
+});
+
+test('BranchingDemo wires GridsView for view-id="grids"', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
+  assert.match(src, /import GridsView from '\.\/branchingViews\/GridsView\.jsx'/);
+  assert.match(src, /activeView === 'grids' && <GridsView/);
+});
