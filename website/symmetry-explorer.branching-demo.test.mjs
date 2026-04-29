@@ -14,53 +14,48 @@ test('BranchingDemo exports a default React component', () => {
   assert.match(src, /export default function BranchingDemo/);
 });
 
-test('BranchingDemo uses theme helpers and contains zero raw hex codes', () => {
+test('BranchingDemo renders the new title "The O → Q matrix"', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  assert.match(src, /explorerThemeColor|explorerThemeTint|notationColor/);
-  assert.doesNotMatch(src, /#[0-9A-Fa-f]{3}\b|#[0-9A-Fa-f]{6}\b/);
+  // The matrix title is rendered via <Latex math="\to" /> between O and Q,
+  // so assert just the surrounding "O" and "Q matrix" tokens.
+  assert.match(src, /The O\s/);
+  assert.match(src, /Q matrix/);
 });
 
-test('BranchingDemo uses the editorial subsection style (ExplorerSubsectionHeader, no card wrapper)', () => {
+test('BranchingDemo renders the deck defining O, Q, filled cells, and α', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  assert.match(src, /import ExplorerSubsectionHeader/);
-  assert.match(src, /<ExplorerSubsectionHeader anchorId="branching-demo"/);
-  assert.match(src, /id="branching-demo" className="bg-white p-4 scroll-mt-24"/);
-  assert.doesNotMatch(src, /rounded-xl border bg-white px-6 py-6 shadow-sm/);
+  assert.match(src, /product orbit/);
+  assert.match(src, /stored output representative/);
+  assert.match(src, /Counting filled cells gives/);
 });
 
-test('BranchingDemo no longer renders an orbit dropdown or prev/next (selection happens in the matrix)', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  assert.doesNotMatch(src, /data-action="select-orbit"/);
-  assert.doesNotMatch(src, /data-action="prev-orbit"/);
-  assert.doesNotMatch(src, /data-action="next-orbit"/);
-});
-
-test('BranchingDemo wires OrbitRepMatrix instead of the old fan', () => {
+test('BranchingDemo mounts OrbitRepMatrix + WorkedExamplePanel side-by-side', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
   assert.match(src, /import OrbitRepMatrix from '\.\/branchingViews\/OrbitRepMatrix\.jsx'/);
+  assert.match(src, /import WorkedExamplePanel from '\.\/branchingViews\/WorkedExamplePanel\.jsx'/);
   assert.match(src, /<OrbitRepMatrix/);
-  // Old fan + view-mode tabs are gone.
-  assert.doesNotMatch(src, /OrbitProjectionGraph/);
-  assert.doesNotMatch(src, /data-view-id=/);
+  assert.match(src, /<WorkedExamplePanel/);
 });
 
-test('BranchingDemo no longer carries the relocated prose paragraphs (they live back in section4 intro)', () => {
+test('BranchingDemo wires shared hover + pin state', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  assert.doesNotMatch(src, /A product-orbit representative can contain many full index assignments/);
-  assert.doesNotMatch(src, /A product orbit may contain many full assignments\./);
-  assert.doesNotMatch(src, /Counting product orbits alone is therefore not enough/);
+  // Two distinct useState slots for hover and pin.
+  assert.match(src, /useState[\s\S]{0,200}hover/);
+  assert.match(src, /useState[\s\S]{0,200}pin/);
 });
 
-test('BranchingDemo derives orbit data from costModel.orbitRows', () => {
+test('BranchingDemo renders the modal trigger and mounts OrbitRepMatrixModal', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  assert.match(src, /costModel\.orbitRows/);
+  assert.match(src, /data-action="open-modal"/);
+  assert.match(src, /import OrbitRepMatrixModal from '\.\/branchingViews\/OrbitRepMatrixModal\.jsx'/);
+  assert.match(src, /<OrbitRepMatrixModal/);
 });
 
-test('BranchingDemo offers a curated fallback example with a toggle', () => {
+test('BranchingDemo derives reps + cells from costModel.orbitRows', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  assert.match(src, /CURATED_BRANCHING_EXAMPLE/);
-  assert.match(src, /data-action="toggle-curated"/);
-  assert.match(src, /R\[i,j\] = \\sum_k T\[i,j,k\]/);
+  assert.match(src, /costModel\?\.orbitRows/);
+  assert.match(src, /derivePreReps\(/);
+  assert.match(src, /deriveCells\(/);
 });
 
 test('BranchingDemo emits a live α total via data-testid="branching-alpha-total"', () => {
@@ -68,89 +63,14 @@ test('BranchingDemo emits a live α total via data-testid="branching-alpha-total
   assert.match(src, /data-testid="branching-alpha-total"/);
 });
 
-test('OrbitRepMatrix exports a default React component with no raw hex', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  assert.match(src, /export default function OrbitRepMatrix/);
-  assert.match(src, /explorerThemeColor|explorerThemeTint|notationColor/);
-  assert.doesNotMatch(src, /#[0-9A-Fa-f]{3}\b|#[0-9A-Fa-f]{6}\b/);
-});
-
-test('OrbitRepMatrix renders the "How to read this matrix" reading guide', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  assert.match(src, /data-testid="orbit-rep-matrix-reading-guide"/);
-  assert.match(src, /How to read this matrix/);
-  // The four bullets — keyed by the new Y-axis / X-axis voice.
-  assert.match(src, /Y-axis \(Orbit\)[\s\S]*?product\s+orbits/);
-  assert.match(src, /X-axis \(Rep\)[\s\S]*?stored\s+output\s+representatives/);
-  assert.match(src, /Filled cell/);
-  assert.match(src, /Hover any cell/);
-});
-
-test('OrbitRepMatrix sizes cells to keep the grid square', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  // Cell size = min(square / cols, square / rows), clamped to [MIN_CELL, MAX_CELL].
-  assert.match(src, /SQUARE_SIZE/);
-  assert.match(src, /MIN_CELL/);
-  assert.match(src, /MAX_CELL/);
-  assert.match(src, /Math\.floor\(SQUARE_SIZE \/ denom\)/);
-});
-
-test('OrbitRepMatrix uses the labelled tuple format on hover (k=v style)', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  // Must produce the (i=0, j=0, k=1) form for tooltips, matching
-  // OrbitInspector.formatTuple's contract.
-  assert.match(src, /labelledTuple/);
-  assert.match(src, /\$\{k\}=\$\{v\}/);
-});
-
-test('OrbitRepMatrix derivation: collects unique reps + builds the cell grid', async () => {
-  // The component is JSX so we can't import it here, but the source-grep
-  // assertions above plus the visual-smoke check in the dev preview cover
-  // the structural contract. This sentinel test just confirms the
-  // derivation references the right field names.
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  assert.match(src, /orbitRows\.forEach/);
-  assert.match(src, /row\.outputs/);
-  assert.match(src, /tupleKey\(out\.outTuple\)/);
-});
-
-test('OrbitRepMatrix uses single Y/X axis labels (Orbit, Rep) instead of per-tuple ticks', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  // The Y-axis label "Orbit" (vertical-rl) and X-axis label "Rep".
-  assert.match(src, />\s*Orbit\s*</);
-  assert.match(src, />\s*Rep\s*</);
-  assert.match(src, /writingMode: 'vertical-rl'/);
-});
-
-test('OrbitRepMatrix renders a floating tooltip with LaTeX + English explanation', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  assert.match(src, /data-testid="orbit-rep-matrix-tooltip"/);
-  // Tooltip is positioned with fixed coords from the hovered cell.
-  assert.match(src, /position: 'fixed'|fixed z-50/);
-  // Both labelled tuples appear inside the tooltip.
-  assert.match(src, /orbit&nbsp;rep:/);
-  assert.match(src, /stored&nbsp;rep:/);
-  // LaTeX equation rendered via the existing Latex component.
-  assert.match(src, /import Latex from '\.\.\/Latex\.jsx'/);
-  assert.match(src, /<Latex/);
-  // Eyebrow + status copy covers both filled and empty cells.
-  assert.match(src, /Orbit · Rep contribution/);
-  assert.match(src, /No projection at this cell/);
-  assert.match(src, /branching/);
-});
-
-test('OrbitRepMatrix tooltip shows the canonical einsum equation + per-member contributions', () => {
-  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
-  // Helpers for canonical form + per-member contribution.
-  assert.match(src, /canonicalEquationLatex/);
-  assert.match(src, /memberContributionLatex/);
-  // The tooltip enumerates members projecting to the cell's stored rep.
-  assert.match(src, /membersProjectingTo/);
-  // Eyebrows for the two LaTeX blocks.
-  assert.match(src, /einsum equation/);
-  assert.match(src, /this orbit(?:'|&apos;)s contribution to this output bin/);
-  // Branching prose mentions multi-bin collection + the explicit "collect
-  // into the same output bin" framing the user asked for.
-  assert.match(src, /collect into the same output bin/);
-  assert.match(src, /split across/);
+test('BranchingDemo uses no raw hex outside design tokens', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
+  const allowed = new Set([
+    '#F0524D', '#FEF2F1', '#D9DCDC', '#F8F9F9', '#FFFFFF', '#1F2526',
+    '#ECEFEF', '#4A7CFF', '#64748B', '#9AA0A0', '#B23E3A',
+  ]);
+  const hexes = src.match(/#[0-9A-Fa-f]{3,6}\b/g) ?? [];
+  for (const h of hexes) {
+    assert.ok(allowed.has(h.toUpperCase()), `disallowed hex ${h} — use a design token`);
+  }
 });

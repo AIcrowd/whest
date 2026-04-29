@@ -1,113 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import ExplorerSubsectionHeader from './ExplorerSubsectionHeader.jsx';
-import InlineMathText from './InlineMathText.jsx';
+import Latex from './Latex.jsx';
 import OrbitRepMatrix from './branchingViews/OrbitRepMatrix.jsx';
+import WorkedExamplePanel from './branchingViews/WorkedExamplePanel.jsx';
+import OrbitRepMatrixModal from './branchingViews/OrbitRepMatrixModal.jsx';
 import {
-  explorerThemeColor,
-  explorerThemeTint,
-  getActiveExplorerThemeId,
-} from '../lib/explorerTheme.js';
-import { notationColor } from '../lib/notationSystem.js';
+  derivePreReps,
+  deriveCells,
+} from './branchingViews/orbitRepMatrixLayout.js';
 import { restrictStabilizerToPositions } from '../engine/outputOrbit.js';
-
-// Curated example used when the live preset has no branching to show.
-// Same scenario the retired PartitionCountingExplainer used as its
-// "Why branching happens" worked example.
-//
-// The orbit rows below are pre-computed for n=3, S_3 acting on {i,j,k},
-// V = {i,j}, H = Stab_G(V)|_V = {(),(ij)} restricted to V.
-// Total α for this scenario is 9 = 3·1 + 3·2 (verified against engine
-// brute-force in tests/output-orbit.test.mjs).
-//
-// The orbitTuples + componentInfo + expressionInfo blocks let the
-// matrix tooltip render the full expanded contribution form even when
-// no live engine output is around to derive them from.
-const CURATED_BRANCHING_EXAMPLE = {
-  caption: String.raw`$R[i,j] = \sum_k T[i,j,k]$ with $T$ fully symmetric, $n = 3$`,
-  // S_3 = {e, (ij), (ik), (jk), (ijk), (ikj)} on labels [i, j, k]
-  // (positions 0, 1, 2).  Each permutation expressed in array form
-  // perm[i] = where position i maps to.
-  componentInfo: {
-    labels: ['i', 'j', 'k'],
-    vLabels: ['i', 'j'],
-    visiblePositions: [0, 1],
-    elements: [
-      { arr: [0, 1, 2] }, // e
-      { arr: [1, 0, 2] }, // (ij)
-      { arr: [2, 1, 0] }, // (ik)
-      { arr: [0, 2, 1] }, // (jk)
-      { arr: [1, 2, 0] }, // (ijk)
-      { arr: [2, 0, 1] }, // (ikj)
-    ],
-  },
-  expressionInfo: {
-    subscripts: ['ijk'],
-    output: 'ij',
-    operandNames: ['T'],
-  },
-  orbitRows: [
-    {
-      repTuple: { i: 0, j: 0, k: 0 },
-      orbitTuples: [{ i: 0, j: 0, k: 0 }],
-      outputs: [{ outTuple: { i: 0, j: 0 }, coeff: 1 }],
-      orbitSize: 1,
-    },
-    {
-      repTuple: { i: 1, j: 1, k: 1 },
-      orbitTuples: [{ i: 1, j: 1, k: 1 }],
-      outputs: [{ outTuple: { i: 1, j: 1 }, coeff: 1 }],
-      orbitSize: 1,
-    },
-    {
-      repTuple: { i: 2, j: 2, k: 2 },
-      orbitTuples: [{ i: 2, j: 2, k: 2 }],
-      outputs: [{ outTuple: { i: 2, j: 2 }, coeff: 1 }],
-      orbitSize: 1,
-    },
-    {
-      repTuple: { i: 0, j: 0, k: 1 },
-      orbitTuples: [
-        { i: 0, j: 0, k: 1 },
-        { i: 1, j: 0, k: 0 },
-        { i: 0, j: 1, k: 0 },
-      ],
-      outputs: [
-        { outTuple: { i: 0, j: 0 }, coeff: 1 },
-        { outTuple: { i: 0, j: 1 }, coeff: 2 },
-      ],
-      orbitSize: 3,
-    },
-    {
-      repTuple: { i: 0, j: 0, k: 2 },
-      orbitTuples: [
-        { i: 0, j: 0, k: 2 },
-        { i: 2, j: 0, k: 0 },
-        { i: 0, j: 2, k: 0 },
-      ],
-      outputs: [
-        { outTuple: { i: 0, j: 0 }, coeff: 1 },
-        { outTuple: { i: 0, j: 2 }, coeff: 2 },
-      ],
-      orbitSize: 3,
-    },
-    {
-      repTuple: { i: 1, j: 1, k: 2 },
-      orbitTuples: [
-        { i: 1, j: 1, k: 2 },
-        { i: 2, j: 1, k: 1 },
-        { i: 1, j: 2, k: 1 },
-      ],
-      outputs: [
-        { outTuple: { i: 1, j: 1 }, coeff: 1 },
-        { outTuple: { i: 1, j: 2 }, coeff: 2 },
-      ],
-      orbitSize: 3,
-    },
-  ],
-};
-
-const TITLE = 'Branching Demo';
-const DECK = 'Branching = one product orbit reaches multiple stored output representatives. Pick an orbit, see it.';
 
 export default function BranchingDemo({
   componentData,
@@ -116,13 +17,23 @@ export default function BranchingDemo({
   onSelectOrbit = () => {},
   onHover = null,
   expressionInfo = null,
+  dimensionN = null,
 }) {
-  const themeId = getActiveExplorerThemeId();
-  const [useCurated, setUseCurated] = useState(false);
+  const [hover, setHover] = useState(/* hover: { row, col } | null */ null);
+  const [pin, setPin] = useState(/* pin: { row, col } | null */ null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const liveOrbitRows = costModel?.orbitRows ?? [];
+  const reps = useMemo(() => derivePreReps(liveOrbitRows), [liveOrbitRows]);
+  const cells = useMemo(() => deriveCells(liveOrbitRows, reps), [liveOrbitRows, reps]);
+  const liveAlpha = cells.reduce(
+    (acc, row) => acc + row.filter((c) => c !== null).length,
+    0,
+  );
 
   // Derive H = Stab_G(V)|_V for the active component, and pull V labels.
-  // Used by OrbitRepMatrix's tooltip to canonicalize each orbit member's
-  // π_V projection so the expanded equation can show concrete tuples.
+  // Used by WorkedExamplePanel + OrbitRepMatrix legend chip to render the
+  // role-coded labels and the per-member projection ledger.
   const liveComponentInfo = useMemo(() => {
     const c = componentData?.components?.[0];
     if (!c) return null;
@@ -133,91 +44,100 @@ export default function BranchingDemo({
       visiblePositions,
       elements: c.elements,
       hElements: restrictStabilizerToPositions(c.elements ?? [], visiblePositions),
+      dimensionN,
     };
-  }, [componentData]);
+  }, [componentData, dimensionN]);
+
+  // Stable callback identities so OrbitRepMatrix's onStateChange effect
+  // doesn't re-fire on every parent render (Task 3 review caveat).
+  const handleStateChange = useCallback(({ hover: h, pin: p }) => {
+    setHover(h);
+    setPin(p);
+    if (onHover && h) {
+      const labels = Object.keys(liveOrbitRows[h.row]?.repTuple ?? {});
+      onHover({ labels, leafKeys: [] });
+    } else if (onHover && !h) {
+      onHover(null);
+    }
+    if (p && onSelectOrbit) onSelectOrbit(p.row);
+  }, [liveOrbitRows, onHover, onSelectOrbit]);
+
+  const handleClearPin = useCallback(() => {
+    setPin(null);
+  }, []);
 
   if (!componentData || !costModel) return null;
 
-  // Cross-spotlight payload is emitted by OrbitRepMatrix on row hover —
-  // BranchingDemo just forwards the onHover prop to the matrix.
-
-  const liveOrbitRows = costModel.orbitRows ?? [];
-  const liveBranches = liveOrbitRows.some((row) => (row.outputs?.length ?? 0) > 1);
-  const sourceLabel = useCurated || (!liveBranches && liveOrbitRows.length > 0)
-    ? 'curated'
-    : 'live';
-  const orbitRows = sourceLabel === 'curated' ? CURATED_BRANCHING_EXAMPLE.orbitRows : liveOrbitRows;
-  const activeComponentInfo = sourceLabel === 'curated'
-    ? {
-        ...CURATED_BRANCHING_EXAMPLE.componentInfo,
-        hElements: restrictStabilizerToPositions(
-          CURATED_BRANCHING_EXAMPLE.componentInfo.elements,
-          CURATED_BRANCHING_EXAMPLE.componentInfo.visiblePositions,
-        ),
-      }
-    : liveComponentInfo;
-  const activeExpressionInfo = sourceLabel === 'curated'
-    ? CURATED_BRANCHING_EXAMPLE.expressionInfo
-    : expressionInfo;
-  const safeIdx = orbitRows.length === 0
-    ? -1
-    : Math.min(Math.max(0, selectedOrbitIdx >= 0 ? selectedOrbitIdx : 0), orbitRows.length - 1);
-
-  // Live α total — sum of (orbit, rep) pairs where projection lands. The
-  // matrix's filled-cell count must equal this; it doubles as a sanity
-  // check.
-  const liveAlpha = orbitRows.reduce((acc, row) => acc + (row.outputs?.length ?? 0), 0);
-
   return (
-    <div id="branching-demo" className="bg-white p-4 scroll-mt-24" data-source-label={sourceLabel}>
-      <ExplorerSubsectionHeader anchorId="branching-demo" labelText="Branching demo">
-        {TITLE}
-      </ExplorerSubsectionHeader>
+    <div id="orbit-rep-matrix" className="bg-white p-4 scroll-mt-24">
+      {/* Header row: subsection title + expand trigger */}
+      <div className="flex items-baseline justify-between gap-3">
+        <ExplorerSubsectionHeader anchorId="orbit-rep-matrix" labelText="Branching">
+          The O <Latex math="\to" /> Q matrix
+        </ExplorerSubsectionHeader>
+        <button
+          type="button"
+          data-action="open-modal"
+          onClick={() => setModalOpen(true)}
+          className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-600 transition-colors"
+          style={{ cursor: 'pointer' }}
+        >
+          expand ↗
+        </button>
+      </div>
+
+      {/* Deck */}
       <p className="explorer-support-prose mt-2">
-        {DECK}
+        Each row is one product orbit <Latex math="O" /> · each column is one stored output representative <Latex math="Q" /> · a filled cell means orbit <Latex math="O" />'s members project onto <Latex math="Q" /> via <Latex math="\pi_V" />. Counting filled cells gives <Latex math="\alpha" />.
       </p>
 
-      {/* Orbit selection now lives inside the matrix (click any row to
-          select). The curated-fallback toggle stays — it's the only way
-          to see a branching example when the live preset is functional
-          projection. */}
-      {!liveBranches && liveOrbitRows.length > 0 && (
-        <div className="mt-3 flex items-center gap-2 text-[11px]">
-          <button
-            type="button"
-            data-action="toggle-curated"
-            onClick={() => setUseCurated((v) => !v)}
-            className="rounded-full border px-2.5 py-1 font-medium transition-colors"
-            style={{
-              background: explorerThemeTint(themeId, 'hero', 0.08),
-              borderColor: explorerThemeTint(themeId, 'hero', 0.25),
-              color: explorerThemeColor(themeId, 'heroMuted'),
-            }}
-          >
-            {useCurated ? '← back to live preset' : 'see a branching example →'}
-          </button>
-          {useCurated && (
-            <span style={{ color: explorerThemeColor(themeId, 'muted') }}>
-              curated: <InlineMathText>{CURATED_BRANCHING_EXAMPLE.caption}</InlineMathText>
-            </span>
-          )}
-        </div>
-      )}
-
-      <div className="mt-3">
+      {/* 2-column body: matrix on left, worked-example panel on right */}
+      <div className="mt-4 grid gap-6 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <OrbitRepMatrix
-          orbitRows={orbitRows}
-          selectedOrbitIdx={safeIdx}
+          orbitRows={liveOrbitRows}
+          selectedOrbitIdx={selectedOrbitIdx}
           onSelectOrbit={onSelectOrbit}
-          onHover={onHover}
-          expressionInfo={activeExpressionInfo}
-          componentInfo={activeComponentInfo}
+          onHover={null}
+          expressionInfo={expressionInfo}
+          componentInfo={liveComponentInfo}
+          onStateChange={handleStateChange}
+        />
+        <WorkedExamplePanel
+          hover={hover}
+          pin={pin}
+          orbitRows={liveOrbitRows}
+          reps={reps}
+          cells={cells}
+          expressionInfo={expressionInfo}
+          componentInfo={liveComponentInfo}
+          onClearPin={handleClearPin}
         />
       </div>
 
-      <div className="mt-3 font-mono text-[11px]" data-testid="branching-alpha-total" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-        across all {orbitRows.length} orbits: α = <strong style={{ color: notationColor('alpha_total') }}>{liveAlpha}</strong>
+      {/* Live α footer */}
+      <div
+        className="mt-3 font-mono text-[11px] text-gray-600"
+        data-testid="branching-alpha-total"
+      >
+        across all {liveOrbitRows.length} orbits: α = <strong className="text-gray-900">{liveAlpha}</strong>
       </div>
+
+      {/* Modal */}
+      <OrbitRepMatrixModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        orbitRows={liveOrbitRows}
+        reps={reps}
+        cells={cells}
+        hover={hover}
+        pin={pin}
+        onStateChange={handleStateChange}
+        onClearPin={handleClearPin}
+        expressionInfo={expressionInfo}
+        componentInfo={liveComponentInfo}
+        selectedOrbitIdx={selectedOrbitIdx}
+        onSelectOrbit={onSelectOrbit}
+      />
     </div>
   );
 }
