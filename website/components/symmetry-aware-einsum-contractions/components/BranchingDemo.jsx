@@ -98,22 +98,35 @@ export default function BranchingDemo({
       </p>
 
       {/* 2-column body: matrix on the left at a FIXED width so its cell
-          dimensions don't drift when the panel content changes (a few
-          subpixels of column-width negotiation jump cellWidth by 1 px on
-          dense matrices, which reads as a proportion shift). The panel
-          takes whatever's left. */}
-      <div className="mt-4 grid gap-6 grid-cols-1 lg:grid-cols-[400px_minmax(0,1fr)]">
-        <OrbitRepMatrix
-          orbitRows={liveOrbitRows}
-          selectedOrbitIdx={selectedOrbitIdx}
-          onSelectOrbit={onSelectOrbit}
-          onHover={null}
-          expressionInfo={expressionInfo}
-          componentInfo={liveComponentInfo}
-          onStateChange={handleStateChange}
-          onHoverDeferred={handleDeferredHover}
-          onExpand={handleOpenModal}
-        />
+          dimensions don't drift when the panel content changes. The panel
+          takes whatever's left. `items-start` keeps each column at its
+          natural height — without it, when the panel grows on hover the
+          grid row stretches to match and leaves dead whitespace below
+          the matrix. */}
+      <div className="mt-4 grid gap-6 grid-cols-1 items-start lg:grid-cols-[400px_minmax(0,1fr)]">
+        {/* Matrix column — wraps the matrix + alpha footer together so the
+            footer sits directly beneath the canvas instead of below the
+            full-grid (which would put it under the much-taller panel and
+            leave dead space between matrix and footer). */}
+        <div>
+          <OrbitRepMatrix
+            orbitRows={liveOrbitRows}
+            selectedOrbitIdx={selectedOrbitIdx}
+            onSelectOrbit={onSelectOrbit}
+            onHover={null}
+            expressionInfo={expressionInfo}
+            componentInfo={liveComponentInfo}
+            onStateChange={handleStateChange}
+            onHoverDeferred={handleDeferredHover}
+            onExpand={handleOpenModal}
+          />
+          <div
+            className="mt-3 font-mono text-[11px] text-gray-600"
+            data-testid="branching-alpha-total"
+          >
+            across all {liveOrbitRows.length} orbits: α = <strong className="text-gray-900">{liveAlpha}</strong>
+          </div>
+        </div>
         <WorkedExamplePanel
           hover={hover}
           pin={pin}
@@ -124,14 +137,6 @@ export default function BranchingDemo({
           componentInfo={liveComponentInfo}
           onClearPin={handleClearPin}
         />
-      </div>
-
-      {/* Live α footer */}
-      <div
-        className="mt-3 font-mono text-[11px] text-gray-600"
-        data-testid="branching-alpha-total"
-      >
-        across all {liveOrbitRows.length} orbits: α = <strong className="text-gray-900">{liveAlpha}</strong>
       </div>
 
       {/* Modal */}
