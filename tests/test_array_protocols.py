@@ -574,3 +574,56 @@ def test_perf_array_ufunc_dispatch_does_not_copy():
         f"are we re-introducing per-call copies or O(|G|) work in "
         f"__array_ufunc__ / _filter_to_np_signature?"
     )
+
+
+def test_perf_warm_inplace_add_scalar_on_symmetric_is_fast():
+    """Warm ``A_sym += 1.0`` on a rank-4 SymmetricTensor must finish
+    well under 50 ms, AND must preserve the symmetry object identity.
+
+    This pins three PR #51 fast paths for the in-place dunder rewrite:
+    - class 4 (``_counted_binary`` scalar fast path) — ``A_sym + 1.0``
+      flows through the scalar branch that returns the operand's
+      symmetry unchanged (same object reference).
+    - class 5 (``SymmetryGroup.__eq__`` identity short-circuit) —
+      ``_inplace_from_result`` does ``self_sym != result_sym``; for
+      scalar ops these are the SAME instance, hitting the identity
+      short-circuit and skipping the O(|G|) ``_canonical_axis_action``
+      comparison.
+    - class 6 (per-instance ``_canonical_axis_action`` cache) — even
+      if identity short-circuit somehow misses, the cache still keeps
+      subsequent calls O(1).
+
+    If this test fails with elapsed > 50 ms or identity is lost, the
+    in-place dunder rewrite is constructing a fresh ``SymmetryGroup``
+    for comparison or wrapping the scalar into an array somewhere
+    along the dispatch chain.
+    """
+    import time
+    arr = we.random.randn(4, 4, 4, 4)
+    A_sym = we.symmetrize(
+        arr, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1, 2, 3))
+    )
+    original_symmetry_ref = A_sym._symmetry
+    # Warm-up: prime caches and dispatch tables.
+    with we.BudgetContext(flop_budget=int(1e12)):
+        A_sym += 1.0
+    # The above mutated A_sym; verify identity preserved through warm-up.
+    assert A_sym._symmetry is original_symmetry_ref, (
+        "warm-up in-place add lost symmetry object identity; "
+        "_inplace_from_result is constructing a fresh group somewhere"
+    )
+    # Measure the warm path.
+    with we.BudgetContext(flop_budget=int(1e12)):
+        t0 = time.perf_counter()
+        A_sym += 1.0
+        elapsed = time.perf_counter() - t0
+    assert elapsed < 0.05, (
+        f"warm A_sym += 1.0 took {elapsed*1000:.1f}ms; "
+        f"PR #51 made this the scalar fast path. Are we missing the "
+        f"identity short-circuit in _inplace_from_result, or wrapping "
+        f"the scalar in an array in __iadd__ before dispatch?"
+    )
+    assert A_sym._symmetry is original_symmetry_ref, (
+        f"warm in-place add lost symmetry object identity; "
+        f"_inplace_from_result is constructing a fresh group somewhere"
+    )

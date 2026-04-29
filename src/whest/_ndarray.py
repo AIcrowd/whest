@@ -340,6 +340,155 @@ class WhestArray(_np.ndarray):
             return NotImplemented
         return we_func(*args, **kwargs)
 
+    # ----- ndarray method overrides (route through me.* for budget parity) -----
+    # We forward *args, **kwargs to be forward-compatible with NumPy's
+    # evolving method signatures (dtype, out, where, casting, keepdims, axis
+    # as positional or keyword).
+
+    def sum(self, *args, **kwargs):
+        return _me().sum(self, *args, **kwargs)
+
+    def mean(self, *args, **kwargs):
+        return _me().mean(self, *args, **kwargs)
+
+    def prod(self, *args, **kwargs):
+        return _me().prod(self, *args, **kwargs)
+
+    def min(self, *args, **kwargs):
+        return _me().min(self, *args, **kwargs)
+
+    def max(self, *args, **kwargs):
+        return _me().max(self, *args, **kwargs)
+
+    def std(self, *args, **kwargs):
+        return _me().std(self, *args, **kwargs)
+
+    def var(self, *args, **kwargs):
+        return _me().var(self, *args, **kwargs)
+
+    def all(self, *args, **kwargs):
+        return _me().all(self, *args, **kwargs)
+
+    def any(self, *args, **kwargs):
+        return _me().any(self, *args, **kwargs)
+
+    def cumsum(self, *args, **kwargs):
+        return _me().cumsum(self, *args, **kwargs)
+
+    def cumprod(self, *args, **kwargs):
+        return _me().cumprod(self, *args, **kwargs)
+
+    def argmin(self, *args, **kwargs):
+        return _me().argmin(self, *args, **kwargs)
+
+    def argmax(self, *args, **kwargs):
+        return _me().argmax(self, *args, **kwargs)
+
+    def ptp(self, *args, **kwargs):
+        return _me().ptp(self, *args, **kwargs)
+
+    def trace(self, *args, **kwargs):
+        return _me().trace(self, *args, **kwargs)
+
+    def round(self, *args, **kwargs):
+        return _me().round(self, *args, **kwargs)
+
+    def clip(self, *args, **kwargs):
+        return _me().clip(self, *args, **kwargs)
+
+    # ----- Other ndarray methods -----
+
+    def dot(self, *args, **kwargs):
+        return _me().dot(self, *args, **kwargs)
+
+    def conj(self):
+        return _me().conjugate(self)
+
+    def conjugate(self):
+        return _me().conjugate(self)
+
+    def argsort(self, *args, **kwargs):
+        return _me().argsort(self, *args, **kwargs)
+
+    def argpartition(self, kth, *args, **kwargs):
+        return _me().argpartition(self, kth, *args, **kwargs)
+
+    def take(self, indices, *args, **kwargs):
+        return _me().take(self, indices, *args, **kwargs)
+
+    def repeat(self, repeats, *args, **kwargs):
+        return _me().repeat(self, repeats, *args, **kwargs)
+
+    def searchsorted(self, v, *args, **kwargs):
+        return _me().searchsorted(self, v, *args, **kwargs)
+
+    def compress(self, condition, *args, **kwargs):
+        # ndarray.compress(condition) -> np.compress(condition, arr)
+        return _me().compress(condition, self, *args, **kwargs)
+
+    # In-place sort/partition: NumPy mutates self and returns None.
+    # Charge FLOPs through me.sort/partition, then copy result into self.
+    # Guard against in-place mutation that would silently break symmetry.
+
+    def _check_inplace_breaks_symmetry(self, op_name):
+        """Refuse in-place ops that would invalidate SymmetricTensor metadata.
+
+        ``self._symmetry`` is set by SymmetricTensor; plain WhestArrays
+        do not have it (or it's None). Guarding via getattr keeps this
+        method valid on both subclasses without a forward reference.
+        """
+        sym = getattr(self, "_symmetry", None)
+        if sym is not None:
+            raise ValueError(
+                f"in-place {op_name} on a SymmetricTensor would break "
+                f"symmetry on axes {sym.axes}; call we.{op_name}(arr) for "
+                f"an unsymmetric copy instead."
+            )
+
+    def sort(self, *args, **kwargs):
+        self._check_inplace_breaks_symmetry("sort")
+        result = _me().sort(self, *args, **kwargs)
+        # Strip both self and result before np.copyto: keeps the
+        # invariant ("never pass a whest subclass to a raw NumPy call")
+        # explicit even though np.copyto is currently NOT in the
+        # __array_function__ allowlist.
+        _np.copyto(_to_base_ndarray(self), _to_base_ndarray(result))
+
+    def partition(self, kth, *args, **kwargs):
+        self._check_inplace_breaks_symmetry("partition")
+        result = _me().partition(self, kth, *args, **kwargs)
+        _np.copyto(_to_base_ndarray(self), _to_base_ndarray(result))
+
+    def _inplace_from_result(self, result, op_name):
+        """Apply ``result`` into ``self`` in place; refuse if the
+        operation would destroy or weaken symmetry metadata.
+
+        Compare ``self.symmetry`` and ``result.symmetry`` directly via
+        ``SymmetryGroup.__eq__`` (PR #51 made these value-equal with an
+        identity short-circuit and per-instance canonical-action cache).
+        Scalar in-place ops (``a += 1.0``) keep every group identically,
+        so the comparison passes via the identity short-circuit and the
+        copy proceeds cleanly.
+
+        ``_to_base_ndarray(self)`` is required around ``np.copyto``
+        because ``np.copyto`` could otherwise dispatch via
+        ``__array_function__`` if it ever lands in the allowlist --
+        without the strip, the call would recurse back through whest.
+        """
+        self_sym = getattr(self, "_symmetry", None)
+        result_sym = getattr(result, "_symmetry", None)
+        if self_sym is not None:
+            if self_sym != result_sym:
+                raise ValueError(
+                    f"in-place {op_name} would destroy or weaken symmetry "
+                    f"metadata on axes {self_sym.axes} (result symmetry: "
+                    f"{result_sym.axes if result_sym is not None else None}); "
+                    f"use ``self = we.{op_name}(self, other)`` to accept the "
+                    f"new result explicitly."
+                )
+        _np.copyto(_to_base_ndarray(self), _to_base_ndarray(result))
+        return self
+
     # ----- Binary arithmetic -----
 
     def __add__(self, other):
@@ -349,7 +498,8 @@ class WhestArray(_np.ndarray):
         return _me().add(other, self)
 
     def __iadd__(self, other):
-        return _me().add(self, other)
+        result = _me().add(self, other)
+        return self._inplace_from_result(result, "add")
 
     def __sub__(self, other):
         return _me().subtract(self, other)
@@ -358,7 +508,8 @@ class WhestArray(_np.ndarray):
         return _me().subtract(other, self)
 
     def __isub__(self, other):
-        return _me().subtract(self, other)
+        result = _me().subtract(self, other)
+        return self._inplace_from_result(result, "subtract")
 
     def __mul__(self, other):
         return _me().multiply(self, other)
@@ -367,7 +518,8 @@ class WhestArray(_np.ndarray):
         return _me().multiply(other, self)
 
     def __imul__(self, other):
-        return _me().multiply(self, other)
+        result = _me().multiply(self, other)
+        return self._inplace_from_result(result, "multiply")
 
     def __truediv__(self, other):
         return _me().true_divide(self, other)
@@ -376,7 +528,8 @@ class WhestArray(_np.ndarray):
         return _me().true_divide(other, self)
 
     def __itruediv__(self, other):
-        return _me().true_divide(self, other)
+        result = _me().true_divide(self, other)
+        return self._inplace_from_result(result, "true_divide")
 
     def __floordiv__(self, other):
         return _me().floor_divide(self, other)
@@ -385,7 +538,8 @@ class WhestArray(_np.ndarray):
         return _me().floor_divide(other, self)
 
     def __ifloordiv__(self, other):
-        return _me().floor_divide(self, other)
+        result = _me().floor_divide(self, other)
+        return self._inplace_from_result(result, "floor_divide")
 
     def __mod__(self, other):
         return _me().mod(self, other)
@@ -394,7 +548,8 @@ class WhestArray(_np.ndarray):
         return _me().mod(other, self)
 
     def __imod__(self, other):
-        return _me().mod(self, other)
+        result = _me().mod(self, other)
+        return self._inplace_from_result(result, "mod")
 
     def __pow__(self, other):
         return _me().power(self, other)
@@ -403,7 +558,8 @@ class WhestArray(_np.ndarray):
         return _me().power(other, self)
 
     def __ipow__(self, other):
-        return _me().power(self, other)
+        result = _me().power(self, other)
+        return self._inplace_from_result(result, "power")
 
     def __matmul__(self, other):
         return _me().matmul(self, other)
@@ -412,7 +568,17 @@ class WhestArray(_np.ndarray):
         return _me().matmul(other, self)
 
     def __imatmul__(self, other):
-        return _me().matmul(self, other)
+        # __imatmul__ is special: matmul output shape may differ from
+        # self.shape, in which case in-place mutation is impossible.
+        # CPython's documented in-place fallback rebinds the name to the
+        # new (out-of-place) result. NumPy raises ValueError on shape
+        # mismatch; we follow the CPython fallback so typical pipelines
+        # using ``A @= B`` to grow state work cleanly.
+        result = _me().matmul(self, other)
+        result_arr = _np.asarray(result)
+        if result_arr.shape != self.shape:
+            return result
+        return self._inplace_from_result(result, "matmul")
 
     # ----- Unary arithmetic -----
 
@@ -461,7 +627,8 @@ class WhestArray(_np.ndarray):
         return _me().bitwise_and(other, self)
 
     def __iand__(self, other):
-        return _me().bitwise_and(self, other)
+        result = _me().bitwise_and(self, other)
+        return self._inplace_from_result(result, "bitwise_and")
 
     def __or__(self, other):
         return _me().bitwise_or(self, other)
@@ -470,7 +637,8 @@ class WhestArray(_np.ndarray):
         return _me().bitwise_or(other, self)
 
     def __ior__(self, other):
-        return _me().bitwise_or(self, other)
+        result = _me().bitwise_or(self, other)
+        return self._inplace_from_result(result, "bitwise_or")
 
     def __xor__(self, other):
         return _me().bitwise_xor(self, other)
@@ -479,7 +647,8 @@ class WhestArray(_np.ndarray):
         return _me().bitwise_xor(other, self)
 
     def __ixor__(self, other):
-        return _me().bitwise_xor(self, other)
+        result = _me().bitwise_xor(self, other)
+        return self._inplace_from_result(result, "bitwise_xor")
 
     def __lshift__(self, other):
         return _me().left_shift(self, other)
@@ -488,7 +657,8 @@ class WhestArray(_np.ndarray):
         return _me().left_shift(other, self)
 
     def __ilshift__(self, other):
-        return _me().left_shift(self, other)
+        result = _me().left_shift(self, other)
+        return self._inplace_from_result(result, "left_shift")
 
     def __rshift__(self, other):
         return _me().right_shift(self, other)
@@ -497,7 +667,8 @@ class WhestArray(_np.ndarray):
         return _me().right_shift(other, self)
 
     def __irshift__(self, other):
-        return _me().right_shift(self, other)
+        result = _me().right_shift(self, other)
+        return self._inplace_from_result(result, "right_shift")
 
 
 def wrap_module_returns(module, skip_names=None, check_module=True):
