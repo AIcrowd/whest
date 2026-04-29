@@ -397,7 +397,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
           >
             Given a tensor contraction written in explicit einsum notation, this explorer
             detects structural pointwise relabelings certified by the declared operand
-            symmetries, then counts the representative products and output-bin updates
+            symmetries, then counts the representative products and accumulation updates into stored output representatives
             required by a direct symmetry-aware evaluator. The visualizations update as
             the contraction, declared symmetries, and label sizes change.
           </p>
@@ -417,7 +417,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
               style={{ textAlign: 'justify' }}
             >
               <InlineMathText>
-                {`This page reports a direct indexed scalar-event count: multiplication-chain events for representative products plus direct output-bin update events. It is not whest’s general FMA FLOP convention, not wall-clock time, and not a contraction-path or memory-traffic model. The cost model uses orbit projections, not naive division by the group order, because one product orbit can touch several output bins.`}
+                {`This page reports a direct indexed scalar-event count: multiplication-chain events for representative products plus accumulation updates into stored output representatives. It is not whest's general FMA FLOP convention, not wall-clock time, and not a contraction-path or memory-traffic model. The output is assumed to be stored by the output symmetry inherited from the detected pointwise group, so one product-orbit representative may update several stored output representatives when projection branches.`}
               </InlineMathText>
             </p>
             <p className="mt-2 text-[12.5px] leading-6 text-stone-600">

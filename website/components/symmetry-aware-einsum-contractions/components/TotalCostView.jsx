@@ -25,10 +25,10 @@ import {
 // of the visible labels alone.
 const AGGREGATION_FORMULA = String.raw`\text{Total Cost} \;=\; (k-1) \cdot \prod_{a} \tfrac{1}{|G_a|} \sum_{g \in G_a} \prod_{c} n_c \;+\; \prod_{a} \alpha_a`;
 const SECTION_FIVE_INTRO_PARAGRAPH =
-  'The preceding sections have produced a detected pointwise group and a support-connected component decomposition of its label action. The final step is to combine the two quantities a direct symmetry-aware evaluator needs: representative products and the output-bin updates induced by those representatives.';
+  'The preceding sections have produced a detected pointwise group and a support-connected component decomposition of its label action. The final step is to combine the two quantities a direct symmetry-aware evaluator needs: representative products and accumulation updates from those product-orbit representatives into stored output representatives.';
 
 const SECTION_FIVE_INTRO_LEAD =
-  String.raw`For component $a$, let $M_a$ be the number of product orbits and let $\alpha_a$ be the number of output-bin updates induced by those orbits. Under the independent-component factorization, $M = \prod_a M_a$ and $\alpha = \prod_a \alpha_a$. With $k$ operand tensors, the direct scalar-event cost reported here is`;
+  String.raw`For component $a$, let $M_a$ be the number of product orbits and let $\alpha_a$ be the number of accumulation updates from those product-orbit representatives into stored output representatives via H = \\mathrm{Stab}_{G_a}(V_a)|_{V_a}. Under the independent-component factorization, $M = \prod_a M_a$ and $\alpha = \prod_a \alpha_a$. With $k$ operand tensors, the direct scalar-event cost reported here is`;
 
 const SECTION_FIVE_INTRO_CLOSE =
   String.raw`$M_a$ is a size-aware Burnside orbit count when a closed form applies; $\alpha_a$ is selected by the shape and regime ladder. If a mixed component falls outside the analytic regimes and exceeds the brute-force budget, the count is reported unavailable instead of being guessed.`;
@@ -38,7 +38,7 @@ const SECTION_FIVE_ALPHA_FORMULA = String.raw`\alpha = \prod_a \alpha_a`;
 const SECTION_FIVE_THEME_OVERRIDE = 'editorial-noir-math';
 const PIECEWISE_BRACE = String.raw`\left\{\vphantom{\begin{matrix}x\\x\\x\\x\\x\\x\end{matrix}}\right.`;
 const PIECEWISE_SCOPE_NOTE =
-  `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$. It counts output projections of product orbits: an orbit that touches several output bins contributes once to each such bin.`;
+  `The brace below defines only the per-component accumulation term $${notationLatex('alpha_component')}$. It counts pairs $(O, Q)$ where $O$ is a product orbit and $Q$ is a stored output representative reached by $\\pi_V(O)$: an orbit that reaches several stored output representatives contributes once to each such representative.`;
 
 
 // Helper: \textcolor wrapper for composing LaTeX with a role color. The
@@ -124,7 +124,7 @@ function getAggregationLegend(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
     {
       symbol: `${tc(SYM.ambient, notationLatex('x_space'))},\\ ${tc(SYM.ambient, notationLatex('orbit_space_component'))},\\ ${tc(SYM.orbitObject, notationLatex('orbit_o'))},\\ ${tc(SYM.projection, notationLatex('projection_pi_v_free'))}`,
       color: SYM.ambient,
-      definition: `assignment space $${tc(SYM.ambient, notationLatex('x_space'))}$; quotient $${tc(SYM.ambient, notationLatex('orbit_space_component'))}$ of full assignments by the pointwise component group; one product orbit $${tc(SYM.orbitObject, notationLatex('orbit_o'))}$; and the projection $${tc(SYM.projection, notationLatex('projection_pi_v_free'))}$ that records which output bins that orbit touches.`,
+      definition: `assignment space $${tc(SYM.ambient, notationLatex('x_space'))}$; quotient $${tc(SYM.ambient, notationLatex('orbit_space_component'))}$ of full assignments by the pointwise component group; one product orbit $${tc(SYM.orbitObject, notationLatex('orbit_o'))}$; and the projection $${tc(SYM.projection, notationLatex('projection_pi_v_free'))}$ that records which stored output representatives that orbit reaches.`,
     },
     {
       symbol: `${tc(SYM.orbitObject, notationLatex('omega_orbit'))},\\ ${tc(SYM.omegaSize, notationLatex('n_omega'))},\\ ${tc(SYM.omegaExponent, notationLatex('c_omega_cycles'))}`,
@@ -134,7 +134,7 @@ function getAggregationLegend(themeOverride = SECTION_FIVE_THEME_OVERRIDE) {
     {
       symbol: `${tc(SYM.alpha, notationLatex('alpha_total'))},\\ ${tc(SYM.alpha, notationLatex('alpha_component'))}`,
       color: SYM.alpha,
-      definition: `accumulation/output-update cost. Per component, $${tc(SYM.alpha, notationLatex('alpha_component'))}$ counts one update for each output bin touched by each product orbit. Equivalently, it is the sum over product orbits of the number of distinct free-label projections they touch. Globally, independent components multiply to $${tc(SYM.alpha, notationLatex('alpha_total'))} = ${productOver('a', tc(SYM.alpha, notationLatex('alpha_component')))}$.`,
+      definition: `accumulation/output-update cost. Per component, $${tc(SYM.alpha, notationLatex('alpha_component'))}$ counts one update for each stored output representative reached by each product orbit. Equivalently, it is the sum over product orbits of the number of distinct free-label projections they touch. Globally, independent components multiply to $${tc(SYM.alpha, notationLatex('alpha_total'))} = ${productOver('a', tc(SYM.alpha, notationLatex('alpha_component')))}$.`,
     },
   ];
 }
