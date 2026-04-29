@@ -32,11 +32,14 @@ test('computeMBruteforce for S_2 on 2 labels uniform n=3: M = 6', () => {
   assert.equal(computeMBruteforce([e, swap], [3, 3]), 6);
 });
 
-test('computeABruteforce on Gram symmetry with V = {1, 2} and uniform n=2: A = 8', () => {
+test('computeABruteforce on Gram symmetry with V = {1, 2} and uniform n=2: A = M = 6', () => {
+  // swap12 sends 1↔2, both in V={1,2}, so V is preserved as a set: H = Stab_G(V)|_V
+  // is a nontrivial S_2 on V. Functional projection ⇒ A = M = |X/G|.
+  // Burnside: |X|=2³=8, |Fix(swap12)| = {x : x[1]=x[2]} = 2·2 = 4, so M = (8+4)/2 = 6.
   const e = Permutation.identity(3);
   const swap12 = new Permutation([0, 2, 1]);
   const visible = [1, 2];
-  assert.equal(computeABruteforce([e, swap12], [2, 2, 2], visible), 8);
+  assert.equal(computeABruteforce([e, swap12], [2, 2, 2], visible), 6);
 });
 
 test('computeABruteforce on trivial group: A = Π_V n_ℓ for trivial group restricted', () => {
