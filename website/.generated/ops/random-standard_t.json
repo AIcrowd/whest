@@ -105,7 +105,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.standard_t`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.standard_t`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -180,7 +180,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(df).size"
+                      "text": "fnp.array(df).size"
                     },
                     {
                       "kind": "text",
@@ -230,7 +230,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(df).size"
+                  "text": "fnp.array(df).size"
                 },
                 {
                   "kind": "text",
@@ -383,7 +383,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "intake = we.array([5260., 5470, 5640, 6180, 6390, 6515, 6805, 7515, \\"
+              "text": "intake = fnp.array([5260., 5470, 5640, 6180, 6390, 6515, 6805, 7515, \\"
             },
             {
               "kind": "input",
@@ -416,7 +416,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.mean(intake)"
+              "text": "fnp.mean(intake)"
             },
             {
               "kind": "output",
@@ -434,7 +434,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "t = (we.mean(intake)-7725)/(intake.std(ddof=1)/we.sqrt(len(intake)))"
+              "text": "t = (fnp.mean(intake)-7725)/(intake.std(ddof=1)/fnp.sqrt(len(intake)))"
             },
             {
               "kind": "input",
@@ -467,7 +467,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.standard_t(10, size=1000000)"
+              "text": "s = fnp.random.standard_t(10, size=1000000)"
             },
             {
               "kind": "input",
@@ -491,7 +491,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.sum(we.abs(t) < we.abs(s)) / float(len(s))"
+              "text": "fnp.sum(fnp.abs(t) < fnp.abs(s)) / float(len(s))"
             },
             {
               "kind": "output",
@@ -547,16 +547,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "intake = we.array([5260., 5470, 5640, 6180, 6390, 6515, 6805, 7515, \\\n                   7515, 8230, 8770])\n\nwe.mean(intake)\n\nintake.std(ddof=1)\n\nt = (we.mean(intake)-7725)/(intake.std(ddof=1)/we.sqrt(len(intake)))\n\nt\n\nimport matplotlib.pyplot as plt\n\ns = we.random.standard_t(10, size=1000000)\n\nh = plt.hist(s, bins=100, density=True)\n\nwe.sum(we.abs(t) < we.abs(s)) / float(len(s))",
+    "code": "intake = fnp.array([5260., 5470, 5640, 6180, 6390, 6515, 6805, 7515, \\\n                   7515, 8230, 8770])\n\nfnp.mean(intake)\n\nintake.std(ddof=1)\n\nt = (fnp.mean(intake)-7725)/(intake.std(ddof=1)/fnp.sqrt(len(intake)))\n\nt\n\nimport matplotlib.pyplot as plt\n\ns = fnp.random.standard_t(10, size=1000000)\n\nh = plt.hist(s, bins=100, density=True)\n\nfnp.sum(fnp.abs(t) < fnp.abs(s)) / float(len(s))",
     "output": "6753.636363636364\n\n1142.1232221373727\n\n-2.8207540608310198\n\n0.018318  #random < 0.05, statistic is in critical region",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.standard_t",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-standard_t/",
   "module": "numpy.random",
   "name": "random.standard_t",
   "next": {
     "href": "/docs/api/ops/random-triangular/",
-    "label": "we.random.triangular"
+    "label": "fnp.random.triangular"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -579,7 +582,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``df`` is a scalar.  Otherwise,",
-        "``we.array(df).size`` samples are drawn."
+        "``fnp.array(df).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -587,7 +590,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-standard_normal/",
-    "label": "we.random.standard_normal"
+    "label": "fnp.random.standard_normal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.standard_t.html",
@@ -618,12 +621,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.standard_t(df, size=None)",
+  "signature": "fnp.random.standard_t(df, size=None)",
   "slug": "random-standard_t",
   "summary": "Draw samples from a standard Student's t distribution with `df` degrees of freedom.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.standard_t",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

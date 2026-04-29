@@ -14,7 +14,7 @@ function joinClassNames(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(' ');
 }
 
-// Canonical renderer for operation links so supported whest ops always link consistently.
+// Canonical renderer for operation links so supported flopscope ops always link consistently.
 export default function OperationDocLink({
   label,
   href,

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Strip the Python stdlib to only modules required by the allowlist.
 
-Run in the Docker builder stage AFTER installing whest-client, pyzmq,
+Run in the Docker builder stage AFTER installing flopscope-client, pyzmq,
 and msgpack.  Discovers transitive dependencies by importing everything
 on the allowlist and inspecting sys.modules, then deletes all other
 stdlib files.
@@ -48,7 +48,7 @@ def _discover_kept_files() -> set[str]:
             )
 
     # Also import the packages we need in site-packages
-    for pkg in ("zmq", "msgpack", "whest"):
+    for pkg in ("zmq", "msgpack", "flopscope"):
         try:
             __import__(pkg)
         except ImportError:
@@ -97,7 +97,7 @@ def _collect_stdlib_files() -> list[str]:
     """Return all files under stdlib and platstdlib directories.
 
     Skips site-packages and dist-packages directories — those contain
-    installed packages (pyzmq, msgpack, whest) that must not be touched.
+    installed packages (pyzmq, msgpack, flopscope) that must not be touched.
     """
     dirs = {_stdlib_dir(), _platstdlib_dir()}
     skip_dirs = {"site-packages", "dist-packages"}

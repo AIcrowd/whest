@@ -52,7 +52,7 @@ export default function OperationDocOverlay({op}: {op: OperationDocRecord}) {
 
       {op.notes ? (
         <div className={styles.docMetaRow}>
-          <span className={styles.docMetaLabel}>Whest Context</span>
+          <span className={styles.docMetaLabel}>Flopscope Context</span>
           <p className={styles.docBodyText}>{op.notes}</p>
         </div>
       ) : null}

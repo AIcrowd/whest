@@ -41,7 +41,7 @@
                     "href": "/docs/api/ops/zeros",
                     "kind": "link",
                     "target": "zeros",
-                    "text": "we.zeros"
+                    "text": "fnp.zeros"
                   },
                   {
                     "kind": "text",
@@ -52,7 +52,7 @@
                     "href": "/docs/api/ops/ones",
                     "kind": "link",
                     "target": "ones",
-                    "text": "we.ones"
+                    "text": "fnp.ones"
                   },
                   {
                     "kind": "text",
@@ -64,7 +64,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    This is a convenience function for users porting code from Matlab,\n    and wraps `random_sample`. That function takes a\n    tuple to specify the size of the output, which is consistent with\n    other NumPy functions like `we.zeros` and `we.ones`.",
+            "raw_source": ".. note::\n    This is a convenience function for users porting code from Matlab,\n    and wraps `random_sample`. That function takes a\n    tuple to specify the size of the output, which is consistent with\n    other NumPy functions like `fnp.zeros` and `fnp.ones`.",
             "supported": true,
             "type": "directive_block"
           },
@@ -182,7 +182,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.rand(3,2)"
+                "text": "fnp.random.rand(3,2)"
               },
               {
                 "kind": "output",
@@ -208,20 +208,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.rand",
     "module": "numpy.random",
     "name": "random.rand",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.rand",
-    "signature": "we.random.rand(*args)",
+    "signature": "fnp.random.rand(*args)",
     "status": "supported",
     "summary": "Random values in a given shape.",
-    "weight": 1.0,
-    "whest_ref": "we.random.rand"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "random-rand",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.rand.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L83"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L83",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.rand.html"
   }
 }

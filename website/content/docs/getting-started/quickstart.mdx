@@ -14,18 +14,18 @@ title: "Quickstart"
 
 ## Quickest possible start
 
-You do not need to set up a budget context to start counting FLOPs. whest activates a global default context the first time any counted operation runs. The default budget is 1e15 FLOPs (configurable via the `WHEST_DEFAULT_BUDGET` environment variable).
+You do not need to set up a budget context to start counting FLOPs. flopscope activates a global default context the first time any counted operation runs. The default budget is 1e15 FLOPs (configurable via the `FLOPSCOPE_DEFAULT_BUDGET` environment variable).
 
 Save this as `first_budget.py`:
 
 ```python
-import whest as we
+import flopscope as we
 
 depth = 10   # number of layers
 width = 256  # hidden dimension
 
 # No BudgetContext needed — the global default activates automatically
-scale = we.sqrt(2.0 / width)     # Kaiming init scale: counted through whest
+scale = we.sqrt(2.0 / width)     # Kaiming init scale: counted through flopscope
 weights = [
     we.array(we.multiply(we.random.randn(width, width), scale))
     for _ in range(depth)
@@ -52,7 +52,7 @@ uv run python first_budget.py
 ## What you'll see
 
 ```text
-whest FLOP Budget Summary
+flopscope FLOP Budget Summary
 =========================
   Total budget:    1,000,000,000,000,000
   Used:                       2,624,513  (0.0%)

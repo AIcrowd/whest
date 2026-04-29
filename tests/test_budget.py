@@ -2,8 +2,8 @@
 
 import pytest
 
-from whest._budget import BudgetContext, OpRecord, get_active_budget
-from whest.errors import BudgetExhaustedError
+from flopscope._budget import BudgetContext, OpRecord, get_active_budget
+from flopscope.errors import BudgetExhaustedError
 
 
 def test_budget_context_basic():
@@ -111,7 +111,7 @@ def test_summary():
 
 
 def test_time_exhausted_error_attributes():
-    from whest.errors import TimeExhaustedError
+    from flopscope.errors import TimeExhaustedError
 
     err = TimeExhaustedError("matmul", elapsed_s=1.5, limit_s=1.0)
     assert err.op_name == "matmul"
@@ -122,64 +122,68 @@ def test_time_exhausted_error_attributes():
     assert "1.000" in str(err)
 
 
-def test_time_exhausted_error_is_whest_error():
-    from whest.errors import TimeExhaustedError, WhestError
+def test_time_exhausted_error_is_flopscope_error():
+    from flopscope.errors import FlopscopeError, TimeExhaustedError
 
     err = TimeExhaustedError("add", elapsed_s=2.0, limit_s=1.0)
-    assert isinstance(err, WhestError)
+    assert isinstance(err, FlopscopeError)
 
 
 import time as _time
 
 
 def test_budget_context_tracks_wall_time():
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e9)) as b:
-        _ = whest.ones((100,))
+    with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
+        _ = flopscope.numpy.ones((100,))
         _time.sleep(0.01)
     assert b.wall_time_s is not None
     assert b.wall_time_s >= 0.01
 
 
 def test_budget_context_wall_time_none_before_exit():
-    import whest
+    import flopscope
 
-    b = whest.BudgetContext(flop_budget=int(1e9))
+    b = flopscope.BudgetContext(flop_budget=int(1e9))
     assert b.wall_time_s is None
 
 
 def test_budget_context_elapsed_s_live():
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e9)) as b:
+    with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
         _time.sleep(0.01)
         assert b.elapsed_s >= 0.01
 
 
 def test_budget_context_wall_time_limit_s_property():
-    import whest
+    import flopscope
 
-    b = whest.BudgetContext(flop_budget=int(1e9), wall_time_limit_s=5.0)
+    b = flopscope.BudgetContext(flop_budget=int(1e9), wall_time_limit_s=5.0)
     assert b.wall_time_limit_s == 5.0
-    b2 = whest.BudgetContext(flop_budget=int(1e9))
+    b2 = flopscope.BudgetContext(flop_budget=int(1e9))
     assert b2.wall_time_limit_s is None
 
 
 def test_budget_context_total_tracked_time():
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e9)) as b:
-        _ = whest.add(whest.ones((1000,)), whest.ones((1000,)))
+    with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((1000,)), flopscope.numpy.ones((1000,))
+        )
     assert b.total_tracked_time >= 0
     assert b.total_tracked_time <= b.wall_time_s
 
 
 def test_budget_context_untracked_time():
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e9)) as b:
-        _ = whest.add(whest.ones((1000,)), whest.ones((1000,)))
+    with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((1000,)), flopscope.numpy.ones((1000,))
+        )
         _time.sleep(0.01)
     assert b.untracked_time is not None
     assert b.untracked_time >= 0
@@ -188,25 +192,25 @@ def test_budget_context_untracked_time():
 def test_wall_time_limit_raises_time_exhausted():
     import pytest
 
-    import whest
-    from whest.errors import TimeExhaustedError
+    import flopscope
+    from flopscope.errors import TimeExhaustedError
 
     with pytest.raises(TimeExhaustedError) as exc_info:
-        with whest.BudgetContext(flop_budget=int(1e15), wall_time_limit_s=0.001):
-            a = whest.ones((10,))
+        with flopscope.BudgetContext(flop_budget=int(1e15), wall_time_limit_s=0.001):
+            a = flopscope.numpy.ones((10,))
             for _ in range(100_000):
-                a = whest.add(a, a)
+                a = flopscope.numpy.add(a, a)
     assert exc_info.value.limit_s == 0.001
     assert exc_info.value.elapsed_s >= 0.001
 
 
 def test_oprecord_timestamps_monotonic():
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e9)) as b:
-        a = whest.ones((10,))
+    with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
+        a = flopscope.numpy.ones((10,))
         for _ in range(5):
-            a = whest.add(a, a)
+            a = flopscope.numpy.add(a, a)
     timestamps = [r.timestamp for r in b.op_log if r.timestamp is not None]
     assert len(timestamps) >= 5
     for i in range(1, len(timestamps)):
@@ -214,9 +218,9 @@ def test_oprecord_timestamps_monotonic():
 
 
 def test_oprecord_has_timestamp_and_duration_fields():
-    import whest
+    import flopscope
 
-    rec = whest.OpRecord(
+    rec = flopscope.OpRecord(
         op_name="add",
         subscripts=None,
         shapes=((3,),),
@@ -229,11 +233,11 @@ def test_oprecord_has_timestamp_and_duration_fields():
 
 def test_oprecord_durations_populated():
     """OpRecord durations are populated for ops using with-deduct pattern."""
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e9)) as b:
-        a = whest.ones((10,))
-        _ = whest.add(a, a)
+    with flopscope.BudgetContext(flop_budget=int(1e9)) as b:
+        a = flopscope.numpy.ones((10,))
+        _ = flopscope.numpy.add(a, a)
     add_records = [r for r in b.op_log if r.op_name == "add"]
     assert len(add_records) >= 1
     assert all(r.duration is not None for r in add_records)
@@ -242,17 +246,19 @@ def test_oprecord_durations_populated():
 
 def test_durations_populated_across_op_types():
     """Verify durations populated for various operation types."""
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e12)) as b:
-        a = whest.array([1.0, 2.0, 3.0])  # free_ops (charged)
-        c = whest.add(a, whest.ones((3,)))  # pointwise binary (Task 3)
-        d = whest.exp(c)  # pointwise unary (Task 3)
-        e = whest.sum(d)  # reduction (Task 3)
-        f = whest.concatenate([a, c])  # free_ops (charged)
-        g = whest.linspace(0, 1, 10)  # free_ops (charged)
-        h = whest.dot(a, a)  # standalone pointwise
-        i = whest.sort(a.copy())  # sorting
+    with flopscope.BudgetContext(flop_budget=int(1e12)) as b:
+        a = flopscope.numpy.array([1.0, 2.0, 3.0])  # free_ops (charged)
+        c = flopscope.numpy.add(
+            a, flopscope.numpy.ones((3,))
+        )  # pointwise binary (Task 3)
+        d = flopscope.numpy.exp(c)  # pointwise unary (Task 3)
+        e = flopscope.numpy.sum(d)  # reduction (Task 3)
+        f = flopscope.numpy.concatenate([a, c])  # free_ops (charged)
+        g = flopscope.numpy.linspace(0, 1, 10)  # free_ops (charged)
+        h = flopscope.numpy.dot(a, a)  # standalone pointwise
+        i = flopscope.numpy.sort(a.copy())  # sorting
 
     records_without = [r for r in b.op_log if r.duration is None]
     assert len(records_without) == 0, (
@@ -261,21 +267,21 @@ def test_durations_populated_across_op_types():
 
 
 def test_budget_factory_passes_wall_time_limit():
-    import whest
+    import flopscope
 
-    b = whest.budget(flop_budget=int(1e9), wall_time_limit_s=2.0)
+    b = flopscope.budget(flop_budget=int(1e9), wall_time_limit_s=2.0)
     assert b.wall_time_limit_s == 2.0
 
 
 def test_plain_text_summary_includes_timing():
     """Plain-text summary should show wall time and tracked/untracked."""
-    import whest
-    from whest._display import _plain_text_summary
+    import flopscope
+    from flopscope._display import _plain_text_summary
 
-    whest.budget_reset()
-    with whest.BudgetContext(flop_budget=int(1e12), namespace="test", quiet=True):
-        a = whest.ones((100,))
-        _ = whest.add(a, a)
+    flopscope.budget_reset()
+    with flopscope.BudgetContext(flop_budget=int(1e12), namespace="test", quiet=True):
+        a = flopscope.numpy.ones((100,))
+        _ = flopscope.numpy.add(a, a)
 
     text = _plain_text_summary()
     assert "Wall time:" in text
@@ -284,12 +290,16 @@ def test_plain_text_summary_includes_timing():
 
 
 def test_namespace_record_includes_time():
-    import whest
+    import flopscope
 
-    whest.budget_reset()
-    with whest.BudgetContext(flop_budget=int(1e9), namespace="test", quiet=True) as b:
-        _ = whest.add(whest.ones((10,)), whest.ones((10,)))
-    data = whest.budget_summary_dict(by_namespace=True)
+    flopscope.budget_reset()
+    with flopscope.BudgetContext(
+        flop_budget=int(1e9), namespace="test", quiet=True
+    ) as b:
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+        )
+    data = flopscope.budget_summary_dict(by_namespace=True)
     assert "wall_time_s" in data
     assert data["wall_time_s"] is not None
     assert data["wall_time_s"] > 0
@@ -298,14 +308,16 @@ def test_namespace_record_includes_time():
     ns_data = data["by_namespace"]["test"]
     assert "tracked_time_s" in ns_data
     assert "wall_time_s" not in ns_data
-    whest.budget_reset()
+    flopscope.budget_reset()
 
 
 def test_summary_includes_time_section():
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
-        _ = whest.add(whest.ones((10,)), whest.ones((10,)))
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        _ = flopscope.numpy.add(
+            flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+        )
     summary = b.summary()
     assert "Wall time:" in summary
     assert "Tracked time:" in summary
@@ -313,7 +325,7 @@ def test_summary_includes_time_section():
 
 def test_deduct_without_with_leaves_duration_none():
     """Calling deduct() without 'with' leaves OpRecord.duration as None."""
-    from whest._budget import BudgetContext
+    from flopscope._budget import BudgetContext
 
     ctx = BudgetContext(flop_budget=int(1e9), quiet=True)
     ctx.__enter__()
@@ -330,17 +342,21 @@ import threading
 
 def test_thread_isolation_time_tracking():
     """Two threads with separate BudgetContexts track time independently."""
-    import whest
-    from whest._budget import _reset_global_default
+    import flopscope
+    from flopscope._budget import _reset_global_default
 
     results = {}
 
     def worker(name, sleep_time):
         _reset_global_default()
-        with whest.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
-            _ = whest.add(whest.ones((10,)), whest.ones((10,)))
+        with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+            _ = flopscope.numpy.add(
+                flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+            )
             _time.sleep(sleep_time)
-            _ = whest.add(whest.ones((10,)), whest.ones((10,)))
+            _ = flopscope.numpy.add(
+                flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
+            )
         results[name] = b.wall_time_s
 
     t1 = threading.Thread(target=worker, args=("fast", 0.01))
@@ -357,13 +373,13 @@ def test_thread_isolation_time_tracking():
 
 def test_pointwise_ops_have_duration():
     """Pointwise factory ops (add, exp, sum) must record duration."""
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e12)) as b:
-        a = whest.ones((100,))
-        _ = whest.add(a, a)
-        _ = whest.exp(a)
-        _ = whest.sum(a)
+    with flopscope.BudgetContext(flop_budget=int(1e12)) as b:
+        a = flopscope.numpy.ones((100,))
+        _ = flopscope.numpy.add(a, a)
+        _ = flopscope.numpy.exp(a)
+        _ = flopscope.numpy.sum(a)
 
     for rec in b.op_log:
         if rec.op_name in ("add", "exp", "sum"):
@@ -373,14 +389,14 @@ def test_pointwise_ops_have_duration():
 
 def test_linalg_ops_have_duration():
     """Linalg ops must record duration."""
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e12)) as b:
-        A = whest.array([[1.0, 2.0], [3.0, 4.0]])
-        _ = whest.linalg.det(A)
-        _ = whest.linalg.solve(A, whest.array([1.0, 2.0]))
-        _ = whest.linalg.svd(A)
-        _ = whest.linalg.cholesky(A @ A.T + 2 * whest.eye(2))
+    with flopscope.BudgetContext(flop_budget=int(1e12)) as b:
+        A = flopscope.numpy.array([[1.0, 2.0], [3.0, 4.0]])
+        _ = flopscope.numpy.linalg.det(A)
+        _ = flopscope.numpy.linalg.solve(A, flopscope.numpy.array([1.0, 2.0]))
+        _ = flopscope.numpy.linalg.svd(A)
+        _ = flopscope.numpy.linalg.cholesky(A @ A.T + 2 * flopscope.numpy.eye(2))
 
     linalg_records = [r for r in b.op_log if r.op_name.startswith("linalg.")]
     assert len(linalg_records) >= 4
@@ -391,13 +407,13 @@ def test_linalg_ops_have_duration():
 
 def test_counting_ops_have_duration():
     """Counting ops (trace, histogram, bincount, etc.) must record duration."""
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e12)) as b:
-        a = whest.array([1.0, 2.0, 3.0, 4.0])
-        _ = whest.trace(whest.eye(3))
-        _ = whest.histogram(a, bins=5)
-        _ = whest.logspace(0, 1, 10)
+    with flopscope.BudgetContext(flop_budget=int(1e12)) as b:
+        a = flopscope.numpy.array([1.0, 2.0, 3.0, 4.0])
+        _ = flopscope.numpy.trace(flopscope.numpy.eye(3))
+        _ = flopscope.numpy.histogram(a, bins=5)
+        _ = flopscope.numpy.logspace(0, 1, 10)
 
     counting_ops = {"trace", "histogram", "logspace"}
     for rec in b.op_log:
@@ -408,9 +424,9 @@ def test_counting_ops_have_duration():
 
 def test_banner_shows_time_limit(capsys):
     """Banner should include time limit when wall_time_limit_s is set."""
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e6), wall_time_limit_s=5.0):
+    with flopscope.BudgetContext(flop_budget=int(1e6), wall_time_limit_s=5.0):
         pass
     captured = capsys.readouterr()
     assert "time limit: 5.0s" in captured.err
@@ -418,9 +434,9 @@ def test_banner_shows_time_limit(capsys):
 
 def test_banner_no_time_limit(capsys):
     """Banner should not mention time limit when wall_time_limit_s is None."""
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=int(1e6)):
+    with flopscope.BudgetContext(flop_budget=int(1e6)):
         pass
     captured = capsys.readouterr()
     assert "time limit" not in captured.err
@@ -432,12 +448,14 @@ def test_post_op_deadline_check():
 
     import pytest
 
-    import whest
-    from whest.errors import TimeExhaustedError
+    import flopscope
+    from flopscope.errors import TimeExhaustedError
 
     with pytest.raises(TimeExhaustedError) as exc_info:
-        with whest.BudgetContext(flop_budget=int(1e15), wall_time_limit_s=0.05) as b:
-            a = whest.ones((10,))
+        with flopscope.BudgetContext(
+            flop_budget=int(1e15), wall_time_limit_s=0.05
+        ) as b:
+            a = flopscope.numpy.ones((10,))
             timer = b.deduct("test_op", flop_cost=1, subscripts=None, shapes=((10,),))
             with timer:
                 time.sleep(0.1)  # Exceeds 0.05s limit
@@ -446,14 +464,14 @@ def test_post_op_deadline_check():
 
 def test_budget_summary_dict_includes_op_duration():
     """budget_summary_dict() should include per-op duration."""
-    import whest
+    import flopscope
 
-    whest.budget_reset()
-    with whest.BudgetContext(flop_budget=int(1e12), namespace="test", quiet=True):
-        a = whest.ones((100,))
-        _ = whest.add(a, a)
+    flopscope.budget_reset()
+    with flopscope.BudgetContext(flop_budget=int(1e12), namespace="test", quiet=True):
+        a = flopscope.numpy.ones((100,))
+        _ = flopscope.numpy.add(a, a)
 
-    data = whest.budget_summary_dict(by_namespace=True)
+    data = flopscope.budget_summary_dict(by_namespace=True)
     ops = data["operations"]
     assert "add" in ops
     assert "duration" in ops["add"]
@@ -494,14 +512,14 @@ def test_budget_context_summary_dict_live_and_closed():
 def test_budget_summary_dict_shows_live_timing_for_active_context():
     import time
 
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(flop_budget=100, quiet=True) as budget:
+    with flopscope.BudgetContext(flop_budget=100, quiet=True) as budget:
         with budget.deduct("add", flop_cost=10, subscripts=None, shapes=()):
             pass
         time.sleep(0.01)
 
-        live = whest.budget_summary_dict()
+        live = flopscope.budget_summary_dict()
         assert live["wall_time_s"] is not None
         assert live["wall_time_s"] >= 0.01
         assert live["tracked_time_s"] >= 0.0
@@ -511,30 +529,30 @@ def test_budget_summary_dict_shows_live_timing_for_active_context():
 
 
 def test_budget_summary_dict_includes_global_default_while_explicit_context_is_open():
-    import whest
+    import flopscope
 
-    a = whest.ones((10,))
-    _ = whest.add(a, a)
+    a = flopscope.numpy.ones((10,))
+    _ = flopscope.numpy.add(a, a)
 
-    with whest.BudgetContext(flop_budget=100, quiet=True) as budget:
+    with flopscope.BudgetContext(flop_budget=100, quiet=True) as budget:
         with budget.deduct("mul", flop_cost=7, subscripts=None, shapes=()):
             pass
 
-        live = whest.budget_summary_dict()
+        live = flopscope.budget_summary_dict()
         assert live["flops_used"] == 17
         assert live["operations"]["add"]["flop_cost"] == 10
         assert live["operations"]["mul"]["flop_cost"] == 7
 
 
 def test_budget_context_summary_dict_by_namespace_uses_exact_op_namespace():
-    import whest
+    import flopscope
 
-    with whest.BudgetContext(
+    with flopscope.BudgetContext(
         flop_budget=1000, namespace="predict..raw", quiet=True
     ) as budget:
         with budget.deduct("mul", flop_cost=5, subscripts=None, shapes=()):
             pass
-        with whest.namespace("precompute"):
+        with flopscope.namespace("precompute"):
             with budget.deduct("add", flop_cost=25, subscripts=None, shapes=()):
                 pass
 

@@ -41,7 +41,7 @@
                     "href": "/docs/api/ops/zeros",
                     "kind": "link",
                     "target": "zeros",
-                    "text": "we.zeros"
+                    "text": "fnp.zeros"
                   },
                   {
                     "kind": "text",
@@ -52,7 +52,7 @@
                     "href": "/docs/api/ops/ones",
                     "kind": "link",
                     "target": "ones",
-                    "text": "we.ones"
+                    "text": "fnp.ones"
                   },
                   {
                     "kind": "text",
@@ -64,7 +64,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    This is a convenience function for users porting code from Matlab,\n    and wraps `standard_normal`. That function takes a\n    tuple to specify the size of the output, which is consistent with\n    other NumPy functions like `we.zeros` and `we.ones`.",
+            "raw_source": ".. note::\n    This is a convenience function for users porting code from Matlab,\n    and wraps `standard_normal`. That function takes a\n    tuple to specify the size of the output, which is consistent with\n    other NumPy functions like `fnp.zeros` and `fnp.ones`.",
             "supported": true,
             "type": "directive_block"
           },
@@ -121,7 +121,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.standard_normal`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.standard_normal`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           },
@@ -322,7 +322,7 @@
           },
           {
             "language": null,
-            "text": "sigma * we.random.randn(...) + mu",
+            "text": "sigma * fnp.random.randn(...) + mu",
             "type": "literal_block"
           }
         ],
@@ -335,7 +335,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.randn()"
+                "text": "fnp.random.randn()"
               },
               {
                 "kind": "output",
@@ -358,7 +358,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "3 + 2.5 * we.random.randn(2, 4)"
+                "text": "3 + 2.5 * fnp.random.randn(2, 4)"
               },
               {
                 "kind": "output",
@@ -380,20 +380,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.randn",
     "module": "numpy.random",
     "name": "random.randn",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.randn",
-    "signature": "we.random.randn(*args)",
+    "signature": "fnp.random.randn(*args)",
     "status": "supported",
     "summary": "Return a sample (or samples) from the \"standard normal\" distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.randn"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-randn",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.randn.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L83"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L83",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.randn.html"
   }
 }

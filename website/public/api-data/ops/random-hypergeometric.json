@@ -113,7 +113,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.hypergeometric`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.hypergeometric`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -264,7 +264,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.broadcast(ngood, nbad, nsample).size"
+                        "text": "fnp.broadcast(ngood, nbad, nsample).size"
                       },
                       {
                         "kind": "text",
@@ -330,7 +330,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.broadcast(ngood, nbad, nsample).size"
+                    "text": "fnp.broadcast(ngood, nbad, nsample).size"
                   },
                   {
                     "kind": "text",
@@ -639,7 +639,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.hypergeometric(ngood, nbad, nsamp, 1000)"
+                "text": "s = fnp.random.hypergeometric(ngood, nbad, nsamp, 1000)"
               },
               {
                 "kind": "input",
@@ -672,7 +672,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.hypergeometric(15, 15, 15, 100000)"
+                "text": "s = fnp.random.hypergeometric(15, 15, 15, 100000)"
               },
               {
                 "kind": "input",
@@ -695,20 +695,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.hypergeometric",
     "module": "numpy.random",
     "name": "random.hypergeometric",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.hypergeometric",
-    "signature": "we.random.hypergeometric(ngood, nbad, nsample, size=None)",
+    "signature": "fnp.random.hypergeometric(ngood, nbad, nsample, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Hypergeometric distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.hypergeometric"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-hypergeometric",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.hypergeometric.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.hypergeometric.html"
   }
 }

@@ -3,7 +3,7 @@
 Run: uv run python examples/05_budget_planning.py
 """
 
-import whest as we
+import flopscope as we
 
 # Plan a two-layer forward pass
 width = 256

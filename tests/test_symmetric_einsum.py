@@ -2,17 +2,17 @@
 
 import numpy
 
-import whest as we
-from whest._budget import BudgetContext
-from whest._einsum import einsum
-from whest._symmetric import SymmetricTensor, as_symmetric
+import flopscope as flops
+from flopscope._budget import BudgetContext
+from flopscope._einsum import einsum
+from flopscope._symmetric import SymmetricTensor, as_symmetric
 
 
 class TestEinsumSymmetricInput:
     def test_symmetric_input_reduces_cost(self):
         S = as_symmetric(
             numpy.ones((10, 10, 5)),
-            symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)),
+            symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1)),
         )
         v = numpy.ones(5)
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
@@ -32,7 +32,7 @@ class TestEinsumSymmetricInput:
 class TestEinsumSymmetricOutput:
     def test_symmetry_returns_symmetric_tensor(self):
         X = numpy.ones((5, 10))
-        target = we.SymmetryGroup.symmetric(axes=(0, 1))
+        target = flops.SymmetryGroup.symmetric(axes=(0, 1))
         with BudgetContext(flop_budget=10**8, quiet=True):
             result = einsum("ki,kj->ij", X, X, symmetry=target)
             assert isinstance(result, SymmetricTensor)
@@ -49,7 +49,7 @@ class TestEinsumSymmetricOutput:
 class TestEinsumSymmetryParam:
     def test_symmetry_param_returns_symmetric_tensor(self):
         X = numpy.ones((5, 10))
-        g = we.SymmetryGroup.symmetric(axes=(0, 1))
+        g = flops.SymmetryGroup.symmetric(axes=(0, 1))
         with BudgetContext(flop_budget=10**8, quiet=True):
             result = einsum("ki,kj->ij", X, X, symmetry=g)
             assert isinstance(result, SymmetricTensor)
@@ -60,4 +60,4 @@ class TestEinsumSymmetryParam:
         with BudgetContext(flop_budget=10**8, quiet=True):
             result = einsum("ki,kj->ij", X, X, symmetry=(0, 1))
             assert isinstance(result, SymmetricTensor)
-            assert result.symmetry == we.SymmetryGroup.symmetric(axes=(0, 1))
+            assert result.symmetry == flops.SymmetryGroup.symmetric(axes=(0, 1))

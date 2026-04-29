@@ -89,7 +89,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.triangular`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.triangular`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -256,7 +256,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.broadcast(left, mode, right).size"
+                        "text": "fnp.broadcast(left, mode, right).size"
                       },
                       {
                         "kind": "text",
@@ -322,7 +322,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.broadcast(left, mode, right).size"
+                    "text": "fnp.broadcast(left, mode, right).size"
                   },
                   {
                     "kind": "text",
@@ -458,7 +458,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "h = plt.hist(we.random.triangular(-3, 0, 8, 100000), bins=200,"
+                "text": "h = plt.hist(fnp.random.triangular(-3, 0, 8, 100000), bins=200,"
               },
               {
                 "kind": "input",
@@ -482,20 +482,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.triangular",
     "module": "numpy.random",
     "name": "random.triangular",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.triangular",
-    "signature": "we.random.triangular(left, mode, right, size=None)",
+    "signature": "fnp.random.triangular(left, mode, right, size=None)",
     "status": "supported",
     "summary": "Draw samples from the triangular distribution over the interval ``[left, right]``.",
-    "weight": 16.0,
-    "whest_ref": "we.random.triangular"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-triangular",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.triangular.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.triangular.html"
   }
 }

@@ -2,10 +2,10 @@
 title: "Migrate from NumPy"
 ---
 
-*Use this page when converting existing NumPy code to whest.*
+*Use this page when converting existing NumPy code to flopscope.*
 
 **You will learn:**
-- How to convert NumPy imports and operations to whest equivalents
+- How to convert NumPy imports and operations to flopscope equivalents
 - Which NumPy behaviors stay the same and which change
 - How to avoid common pitfalls when migrating
 
@@ -29,10 +29,10 @@ h = np.dot(W, x)
 h = np.maximum(h, 0)
 ```
 
-**After (whest) — simplest form:**
+**After (flopscope) — simplest form:**
 
 ```python
-import whest as we
+import flopscope as we
 
 # No setup needed — global default budget tracks FLOPs automatically
 W = we.random.randn(256, 256)
@@ -43,10 +43,10 @@ h = we.maximum(h, 0)
 we.budget_summary()  # see what you spent
 ```
 
-**After (whest) — with explicit budget control:**
+**After (flopscope) — with explicit budget control:**
 
 ```python
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=20_000_000) as budget:
     W = we.random.randn(256, 256)
@@ -63,9 +63,9 @@ with we.BudgetContext(flop_budget=20_000_000) as budget:
 
 ## What changes
 
-| NumPy | whest | Notes |
+| NumPy | flopscope | Notes |
 |-------|-----------|-------|
-| `import numpy as np` | `import whest as we` | Drop-in replacement |
+| `import numpy as np` | `import flopscope as we` | Drop-in replacement |
 | Call ops anywhere | Works anywhere too | A global default budget auto-activates; use explicit `BudgetContext` for limits and namespacing |
 | `np.linalg.svd(A)` | `we.linalg.svd(A, k=10)` | Truncated SVD with explicit `k` |
 | Plain `ndarray` only | `SymmetricTensor` available | Wrap with `we.as_symmetric()` for cost savings |
@@ -80,7 +80,7 @@ with we.BudgetContext(flop_budget=20_000_000) as budget:
 
 **Symptom:** Using `np.linalg.svd` instead of `we.linalg.svd`
 
-**Fix:** If you import NumPy alongside whest, make sure to use `we.` for operations you want counted. Operations called through `np.` bypass FLOP counting entirely.
+**Fix:** If you import NumPy alongside flopscope, make sure to use `we.` for operations you want counted. Operations called through `np.` bypass FLOP counting entirely.
 
 ## Related pages
 

@@ -81,7 +81,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.poisson`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.poisson`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -156,7 +156,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(lam).size"
+                      "text": "fnp.array(lam).size"
                     },
                     {
                       "kind": "text",
@@ -206,7 +206,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(lam).size"
+                  "text": "fnp.array(lam).size"
                 },
                 {
                   "kind": "text",
@@ -391,12 +391,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.poisson(5, 10000)"
+              "text": "s = fnp.random.poisson(5, 10000)"
             }
           ],
           "type": "doctest_block"
@@ -444,7 +444,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.poisson(lam=(100., 500.), size=(100, 2))"
+              "text": "s = fnp.random.poisson(lam=(100., 500.), size=(100, 2))"
             }
           ],
           "type": "doctest_block"
@@ -473,16 +473,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\ns = we.random.poisson(5, 10000)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, 14, density=True)\n\nplt.show()\n\ns = we.random.poisson(lam=(100., 500.), size=(100, 2))",
+    "code": "import flopscope as fnp\n\ns = fnp.random.poisson(5, 10000)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, 14, density=True)\n\nplt.show()\n\ns = fnp.random.poisson(lam=(100., 500.), size=(100, 2))",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.poisson",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-poisson/",
   "module": "numpy.random",
   "name": "random.poisson",
   "next": {
     "href": "/docs/api/ops/random-power/",
-    "label": "we.random.power"
+    "label": "fnp.random.power"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -507,7 +510,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``lam`` is a scalar. Otherwise,",
-        "``we.array(lam).size`` samples are drawn."
+        "``fnp.array(lam).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -515,7 +518,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-permutation/",
-    "label": "we.random.permutation"
+    "label": "fnp.random.permutation"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.poisson.html",
@@ -546,12 +549,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.poisson(lam=1.0, size=None)",
+  "signature": "fnp.random.poisson(lam=1.0, size=None)",
   "slug": "random-poisson",
   "summary": "Draw samples from a Poisson distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.poisson",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

@@ -89,7 +89,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.permutation`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.permutation`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -121,7 +121,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "arange(x)",
-                      "text": "we.arange(x)"
+                      "text": "fnp.arange(x)"
                     },
                     {
                       "kind": "text",
@@ -158,7 +158,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "arange(x)",
-                  "text": "we.arange(x)"
+                  "text": "fnp.arange(x)"
                 },
                 {
                   "kind": "text",
@@ -249,7 +249,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.permutation(10)"
+              "text": "fnp.random.permutation(10)"
             },
             {
               "kind": "output",
@@ -263,7 +263,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.permutation([1, 4, 9, 12, 15])"
+              "text": "fnp.random.permutation([1, 4, 9, 12, 15])"
             },
             {
               "kind": "output",
@@ -277,12 +277,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr = we.arange(9).reshape((3, 3))"
+              "text": "arr = fnp.arange(9).reshape((3, 3))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.permutation(arr)"
+              "text": "fnp.random.permutation(arr)"
             },
             {
               "kind": "output",
@@ -314,16 +314,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.random.permutation(10)\n\nwe.random.permutation([1, 4, 9, 12, 15])\n\narr = we.arange(9).reshape((3, 3))\n\nwe.random.permutation(arr)",
+    "code": "fnp.random.permutation(10)\n\nfnp.random.permutation([1, 4, 9, 12, 15])\n\narr = fnp.arange(9).reshape((3, 3))\n\nfnp.random.permutation(arr)",
     "output": "array([1, 7, 4, 3, 0, 9, 2, 5, 8, 6]) # random\n\narray([15,  1,  9,  4, 12]) # random\n\narray([[6, 7, 8], # random\n       [0, 1, 2],\n       [3, 4, 5]])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.permutation",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L208",
   "href": "/docs/api/ops/random-permutation/",
   "module": "numpy.random",
   "name": "random.permutation",
   "next": {
     "href": "/docs/api/ops/random-poisson/",
-    "label": "we.random.poisson"
+    "label": "fnp.random.poisson"
   },
   "notes": "Shuffle; cost = n*ceil(log2(n)).",
   "notes_sections": [],
@@ -331,7 +334,7 @@
   "parameters": [
     {
       "body": [
-        "If `x` is an integer, randomly permute ``we.arange(x)``.",
+        "If `x` is an integer, randomly permute ``fnp.arange(x)``.",
         "If `x` is an array, make a copy and shuffle the elements",
         "randomly."
       ],
@@ -341,7 +344,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-pareto/",
-    "label": "we.random.pareto"
+    "label": "fnp.random.pareto"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.permutation.html",
@@ -372,12 +375,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.permutation(x)",
+  "signature": "fnp.random.permutation(x)",
   "slug": "random-permutation",
   "summary": "Randomly permute a sequence, or return a permuted range.",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.permutation",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L208"
+  "weight": 1.0
 }

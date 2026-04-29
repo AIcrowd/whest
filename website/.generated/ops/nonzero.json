@@ -192,7 +192,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/flatnonzero",
-              "label": "we.flatnonzero",
+              "label": "fnp.flatnonzero",
               "original_target": "flatnonzero",
               "role": "",
               "target": "flatnonzero",
@@ -224,7 +224,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/count_nonzero",
-              "label": "we.count_nonzero",
+              "label": "fnp.count_nonzero",
               "original_target": "count_nonzero",
               "role": "",
               "target": "count_nonzero",
@@ -281,12 +281,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])"
+              "text": "x = fnp.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])"
             },
             {
               "kind": "input",
@@ -308,7 +308,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nonzero(x)"
+              "text": "fnp.nonzero(x)"
             },
             {
               "kind": "output",
@@ -322,7 +322,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x[we.nonzero(x)]"
+              "text": "x[fnp.nonzero(x)]"
             },
             {
               "kind": "output",
@@ -331,7 +331,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.transpose(we.nonzero(x))"
+              "text": "fnp.transpose(fnp.nonzero(x))"
             },
             {
               "kind": "output",
@@ -383,7 +383,7 @@
             },
             {
               "kind": "text",
-              "text": " > 3 is a\nboolean array and since False is interpreted as 0, we.nonzero(a > 3)\nyields the indices of the "
+              "text": " > 3 is a\nboolean array and since False is interpreted as 0, fnp.nonzero(a > 3)\nyields the indices of the "
             },
             {
               "kind": "code",
@@ -401,7 +401,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a = we.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])"
+              "text": "a = fnp.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])"
             },
             {
               "kind": "input",
@@ -423,7 +423,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.nonzero(a > 3)"
+              "text": "fnp.nonzero(a > 3)"
             },
             {
               "kind": "output",
@@ -454,7 +454,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "a[we.nonzero(a > 3)]"
+              "text": "a[fnp.nonzero(a > 3)]"
             },
             {
               "kind": "output",
@@ -533,16 +533,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nx = we.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])\n\nx\n\nwe.nonzero(x)\n\nx[we.nonzero(x)]\n\nwe.transpose(we.nonzero(x))\n\na = we.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])\n\na > 3\n\nwe.nonzero(a > 3)\n\na[we.nonzero(a > 3)]\n\na[a > 3]  # prefer this spelling\n\n(a > 3).nonzero()",
+    "code": "import flopscope as fnp\n\nx = fnp.array([[3, 0, 0], [0, 4, 0], [5, 6, 0]])\n\nx\n\nfnp.nonzero(x)\n\nx[fnp.nonzero(x)]\n\nfnp.transpose(fnp.nonzero(x))\n\na = fnp.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])\n\na > 3\n\nfnp.nonzero(a > 3)\n\na[fnp.nonzero(a > 3)]\n\na[a > 3]  # prefer this spelling\n\n(a > 3).nonzero()",
     "output": "array([[3, 0, 0],\n       [0, 4, 0],\n       [5, 6, 0]])\n\n(array([0, 1, 2, 2]), array([0, 1, 0, 1]))\n\narray([3, 4, 5, 6])\n\narray([[0, 0],\n       [1, 1],\n       [2, 0],\n       [2, 1]])\n\narray([[False, False, False],\n       [ True,  True,  True],\n       [ True,  True,  True]])\n\n(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))\n\narray([4, 5, 6, 7, 8, 9])\n\narray([4, 5, 6, 7, 8, 9])\n\n(array([1, 1, 1, 2, 2, 2]), array([0, 1, 2, 0, 1, 2]))",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.nonzero",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1346",
   "href": "/docs/api/ops/nonzero/",
   "module": "numpy",
   "name": "nonzero",
   "next": {
     "href": "/docs/api/ops/not_equal/",
-    "label": "we.not_equal"
+    "label": "fnp.not_equal"
   },
   "notes": "Return indices of non-zero elements. Cost: numel(input).",
   "notes_sections": [
@@ -560,7 +563,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/nextafter/",
-    "label": "we.nextafter"
+    "label": "fnp.nextafter"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.nonzero.html",
@@ -584,7 +587,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/flatnonzero",
-      "label": "we.flatnonzero",
+      "label": "fnp.flatnonzero",
       "original_target": "flatnonzero",
       "role": "",
       "target": "flatnonzero",
@@ -616,19 +619,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/count_nonzero",
-      "label": "we.count_nonzero",
+      "label": "fnp.count_nonzero",
       "original_target": "count_nonzero",
       "role": "",
       "target": "count_nonzero",
       "unresolved": false
     }
   ],
-  "signature": "we.nonzero(a)",
+  "signature": "fnp.nonzero(a)",
   "slug": "nonzero",
   "summary": "Return the indices of the elements that are non-zero.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L2018",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.nonzero",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_free_ops.py#L1281"
+  "weight": 1.0
 }

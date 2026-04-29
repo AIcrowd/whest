@@ -97,7 +97,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.noncentral_chisquare`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.noncentral_chisquare`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -202,7 +202,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.broadcast(df, nonc).size"
+                        "text": "fnp.broadcast(df, nonc).size"
                       },
                       {
                         "kind": "text",
@@ -260,7 +260,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.broadcast(df, nonc).size"
+                    "text": "fnp.broadcast(df, nonc).size"
                   },
                   {
                     "kind": "text",
@@ -404,7 +404,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "values = plt.hist(we.random.noncentral_chisquare(3, 20, 100000),"
+                "text": "values = plt.hist(fnp.random.noncentral_chisquare(3, 20, 100000),"
               },
               {
                 "kind": "input",
@@ -438,22 +438,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "values = plt.hist(we.random.noncentral_chisquare(3, .0000001, 100000),"
+                "text": "values = plt.hist(fnp.random.noncentral_chisquare(3, .0000001, 100000),"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "bins=we.arange(0., 25, .1), density=True)"
+                "text": "bins=fnp.arange(0., 25, .1), density=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "values2 = plt.hist(we.random.chisquare(3, 100000),"
+                "text": "values2 = plt.hist(fnp.random.chisquare(3, 100000),"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "bins=we.arange(0., 25, .1), density=True)"
+                "text": "bins=fnp.arange(0., 25, .1), density=True)"
               },
               {
                 "kind": "input",
@@ -487,7 +487,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "values = plt.hist(we.random.noncentral_chisquare(3, 20, 100000),"
+                "text": "values = plt.hist(fnp.random.noncentral_chisquare(3, 20, 100000),"
               },
               {
                 "kind": "input",
@@ -511,20 +511,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.noncentral_chisquare",
     "module": "numpy.random",
     "name": "random.noncentral_chisquare",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.noncentral_chisquare",
-    "signature": "we.random.noncentral_chisquare(df, nonc, size=None)",
+    "signature": "fnp.random.noncentral_chisquare(df, nonc, size=None)",
     "status": "supported",
     "summary": "Draw samples from a noncentral chi-square distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.noncentral_chisquare"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-noncentral_chisquare",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.noncentral_chisquare.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.noncentral_chisquare.html"
   }
 }

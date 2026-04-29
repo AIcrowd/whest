@@ -105,7 +105,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.noncentral_f`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.noncentral_f`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -240,7 +240,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(dfnum, dfden, nonc).size"
+                      "text": "fnp.broadcast(dfnum, dfden, nonc).size"
                     },
                     {
                       "kind": "text",
@@ -306,7 +306,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(dfnum, dfden, nonc).size"
+                  "text": "fnp.broadcast(dfnum, dfden, nonc).size"
                 },
                 {
                   "kind": "text",
@@ -442,22 +442,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "nc_vals = we.random.noncentral_f(dfnum, dfden, nonc, 1000000)"
+              "text": "nc_vals = fnp.random.noncentral_f(dfnum, dfden, nonc, 1000000)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "NF = we.histogram(nc_vals, bins=50, density=True)"
+              "text": "NF = fnp.histogram(nc_vals, bins=50, density=True)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "c_vals = we.random.f(dfnum, dfden, 1000000)"
+              "text": "c_vals = fnp.random.f(dfnum, dfden, 1000000)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "F = we.histogram(c_vals, bins=50, density=True)"
+              "text": "F = fnp.histogram(c_vals, bins=50, density=True)"
             },
             {
               "kind": "input",
@@ -506,16 +506,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "dfnum = 3 # between group deg of freedom\n\ndfden = 20 # within groups degrees of freedom\n\nnonc = 3.0\n\nnc_vals = we.random.noncentral_f(dfnum, dfden, nonc, 1000000)\n\nNF = we.histogram(nc_vals, bins=50, density=True)\n\nc_vals = we.random.f(dfnum, dfden, 1000000)\n\nF = we.histogram(c_vals, bins=50, density=True)\n\nimport matplotlib.pyplot as plt\n\nplt.plot(F[1][1:], F[0])\n\nplt.plot(NF[1][1:], NF[0])\n\nplt.show()",
+    "code": "dfnum = 3 # between group deg of freedom\n\ndfden = 20 # within groups degrees of freedom\n\nnonc = 3.0\n\nnc_vals = fnp.random.noncentral_f(dfnum, dfden, nonc, 1000000)\n\nNF = fnp.histogram(nc_vals, bins=50, density=True)\n\nc_vals = fnp.random.f(dfnum, dfden, 1000000)\n\nF = fnp.histogram(c_vals, bins=50, density=True)\n\nimport matplotlib.pyplot as plt\n\nplt.plot(F[1][1:], F[0])\n\nplt.plot(NF[1][1:], NF[0])\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.noncentral_f",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-noncentral_f/",
   "module": "numpy.random",
   "name": "random.noncentral_f",
   "next": {
     "href": "/docs/api/ops/random-normal/",
-    "label": "we.random.normal"
+    "label": "fnp.random.normal"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -550,7 +553,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``dfnum``, ``dfden``, and ``nonc``",
-        "are all scalars.  Otherwise, ``we.broadcast(dfnum, dfden, nonc).size``",
+        "are all scalars.  Otherwise, ``fnp.broadcast(dfnum, dfden, nonc).size``",
         "samples are drawn."
       ],
       "name": "size",
@@ -559,7 +562,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-noncentral_chisquare/",
-    "label": "we.random.noncentral_chisquare"
+    "label": "fnp.random.noncentral_chisquare"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.noncentral_f.html",
@@ -590,12 +593,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.noncentral_f(dfnum, dfden, nonc, size=None)",
+  "signature": "fnp.random.noncentral_f(dfnum, dfden, nonc, size=None)",
   "slug": "random-noncentral_f",
   "summary": "Draw samples from the noncentral F distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.noncentral_f",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

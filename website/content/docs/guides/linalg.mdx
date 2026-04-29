@@ -66,7 +66,7 @@ ignored in the cost model.
 Pass a `SymmetricTensor` to get automatic cost reductions:
 
 ```python
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=10**8) as budget:
     A = we.as_symmetric(we.multiply(we.eye(10), 2.0), symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))

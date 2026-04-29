@@ -105,7 +105,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.noncentral_f`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.noncentral_f`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -240,7 +240,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.broadcast(dfnum, dfden, nonc).size"
+                        "text": "fnp.broadcast(dfnum, dfden, nonc).size"
                       },
                       {
                         "kind": "text",
@@ -306,7 +306,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.broadcast(dfnum, dfden, nonc).size"
+                    "text": "fnp.broadcast(dfnum, dfden, nonc).size"
                   },
                   {
                     "kind": "text",
@@ -442,22 +442,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "nc_vals = we.random.noncentral_f(dfnum, dfden, nonc, 1000000)"
+                "text": "nc_vals = fnp.random.noncentral_f(dfnum, dfden, nonc, 1000000)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "NF = we.histogram(nc_vals, bins=50, density=True)"
+                "text": "NF = fnp.histogram(nc_vals, bins=50, density=True)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "c_vals = we.random.f(dfnum, dfden, 1000000)"
+                "text": "c_vals = fnp.random.f(dfnum, dfden, 1000000)"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "F = we.histogram(c_vals, bins=50, density=True)"
+                "text": "F = fnp.histogram(c_vals, bins=50, density=True)"
               },
               {
                 "kind": "input",
@@ -491,20 +491,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.noncentral_f",
     "module": "numpy.random",
     "name": "random.noncentral_f",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.noncentral_f",
-    "signature": "we.random.noncentral_f(dfnum, dfden, nonc, size=None)",
+    "signature": "fnp.random.noncentral_f(dfnum, dfden, nonc, size=None)",
     "status": "supported",
     "summary": "Draw samples from the noncentral F distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.noncentral_f"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-noncentral_f",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.noncentral_f.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.noncentral_f.html"
   }
 }

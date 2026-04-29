@@ -180,7 +180,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "in1d(a, b, invert=True)",
-                        "text": "we.in1d(a, b, invert=True)"
+                        "text": "fnp.in1d(a, b, invert=True)"
                       },
                       {
                         "kind": "text",
@@ -191,7 +191,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "invert(in1d(a, b))",
-                        "text": "we.invert(in1d(a, b))"
+                        "text": "fnp.invert(in1d(a, b))"
                       },
                       {
                         "kind": "text",
@@ -228,7 +228,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "in1d(a, b, invert=True)",
-                    "text": "we.in1d(a, b, invert=True)"
+                    "text": "fnp.in1d(a, b, invert=True)"
                   },
                   {
                     "kind": "text",
@@ -239,7 +239,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "invert(in1d(a, b))",
-                    "text": "we.invert(in1d(a, b))"
+                    "text": "fnp.invert(in1d(a, b))"
                   },
                   {
                     "kind": "text",
@@ -466,7 +466,7 @@
                 ],
                 "external_url": "",
                 "href": "/docs/api/ops/isin",
-                "label": "we.isin",
+                "label": "fnp.isin",
                 "original_target": "isin",
                 "role": "",
                 "target": "isin",
@@ -514,7 +514,7 @@
                 "href": "",
                 "kind": "link",
                 "target": "array([item in b for item in a])",
-                "text": "we.array([item in b for item in a])"
+                "text": "fnp.array([item in b for item in a])"
               },
               {
                 "kind": "text",
@@ -606,12 +606,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "import whest as we"
+                "text": "import flopscope as fnp"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "test = we.array([0, 1, 2, 5, 0])"
+                "text": "test = fnp.array([0, 1, 2, 5, 0])"
               },
               {
                 "kind": "input",
@@ -621,7 +621,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "mask = we.in1d(test, states)"
+                "text": "mask = fnp.in1d(test, states)"
               },
               {
                 "kind": "input",
@@ -644,7 +644,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "mask = we.in1d(test, states, invert=True)"
+                "text": "mask = fnp.in1d(test, states, invert=True)"
               },
               {
                 "kind": "input",
@@ -676,20 +676,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.in1d",
     "module": "numpy",
     "name": "in1d",
     "notes": "Set membership; cost = (n+m)*ceil(log2(n+m)). Removed in numpy 2.4; use `isin` instead.",
     "numpy_ref": "np.in1d",
-    "signature": "we.in1d(ar1, ar2, assume_unique=False, invert=False, *, kind=None)",
+    "signature": "fnp.in1d(ar1, ar2, assume_unique=False, invert=False, *, kind=None)",
     "status": "supported",
     "summary": "Test whether each element of a 1-D array is also present in a second array.",
-    "weight": 1.0,
-    "whest_ref": "we.in1d"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "in1d",
   "source": {
-    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L762",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L369"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L369",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L762"
   }
 }

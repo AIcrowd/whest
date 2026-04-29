@@ -3,7 +3,7 @@
 Run: uv run python examples/03_symmetry_savings.py
 """
 
-import whest as we
+import flopscope as we
 
 # With symmetry: x passed twice (same object)
 with we.BudgetContext(flop_budget=10**8) as budget:

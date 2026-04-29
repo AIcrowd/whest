@@ -8,7 +8,7 @@ methods.
 Run: uv run python examples/11_stats_distributions.py
 """
 
-import whest as we
+import flopscope as we
 
 # ---------------------------------------------------------------------------
 # 1. Basic usage — normal distribution

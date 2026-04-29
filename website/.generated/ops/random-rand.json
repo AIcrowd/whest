@@ -41,7 +41,7 @@
                   "href": "/docs/api/ops/zeros",
                   "kind": "link",
                   "target": "zeros",
-                  "text": "we.zeros"
+                  "text": "fnp.zeros"
                 },
                 {
                   "kind": "text",
@@ -52,7 +52,7 @@
                   "href": "/docs/api/ops/ones",
                   "kind": "link",
                   "target": "ones",
-                  "text": "we.ones"
+                  "text": "fnp.ones"
                 },
                 {
                   "kind": "text",
@@ -64,7 +64,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    This is a convenience function for users porting code from Matlab,\n    and wraps `random_sample`. That function takes a\n    tuple to specify the size of the output, which is consistent with\n    other NumPy functions like `we.zeros` and `we.ones`.",
+          "raw_source": ".. note::\n    This is a convenience function for users porting code from Matlab,\n    and wraps `random_sample`. That function takes a\n    tuple to specify the size of the output, which is consistent with\n    other NumPy functions like `fnp.zeros` and `fnp.ones`.",
           "supported": true,
           "type": "directive_block"
         },
@@ -182,7 +182,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.rand(3,2)"
+              "text": "fnp.random.rand(3,2)"
             },
             {
               "kind": "output",
@@ -214,16 +214,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.random.rand(3,2)",
+    "code": "fnp.random.rand(3,2)",
     "output": "array([[ 0.14022471,  0.96360618],  #random\n       [ 0.37601032,  0.25528411],  #random\n       [ 0.49313049,  0.94909878]]) #random",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.rand",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L83",
   "href": "/docs/api/ops/random-rand/",
   "module": "numpy.random",
   "name": "random.rand",
   "next": {
     "href": "/docs/api/ops/random-randint/",
-    "label": "we.random.randint"
+    "label": "fnp.random.randint"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -240,7 +243,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-power/",
-    "label": "we.random.power"
+    "label": "fnp.random.power"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.rand.html",
@@ -266,12 +269,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.rand(*args)",
+  "signature": "fnp.random.rand(*args)",
   "slug": "random-rand",
   "summary": "Random values in a given shape.",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.rand",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L83"
+  "weight": 1.0
 }

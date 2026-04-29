@@ -81,7 +81,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.gumbel`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.gumbel`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -186,7 +186,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.broadcast(loc, scale).size"
+                        "text": "fnp.broadcast(loc, scale).size"
                       },
                       {
                         "kind": "text",
@@ -244,7 +244,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.broadcast(loc, scale).size"
+                    "text": "fnp.broadcast(loc, scale).size"
                   },
                   {
                     "kind": "text",
@@ -497,7 +497,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.gumbel(mu, beta, 1000)"
+                "text": "s = fnp.random.gumbel(mu, beta, 1000)"
               }
             ],
             "type": "doctest_block"
@@ -526,12 +526,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(bins, (1/beta)*we.exp(-(bins - mu)/beta)"
+                "text": "plt.plot(bins, (1/beta)*fnp.exp(-(bins - mu)/beta)"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "* we.exp( -we.exp( -(bins - mu) /beta) ),"
+                "text": "* fnp.exp( -fnp.exp( -(bins - mu) /beta) ),"
               },
               {
                 "kind": "input",
@@ -575,7 +575,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "a = we.random.normal(mu, beta, 1000)"
+                "text": "a = fnp.random.normal(mu, beta, 1000)"
               },
               {
                 "kind": "input",
@@ -595,22 +595,22 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "beta = we.std(maxima) * we.sqrt(6) / we.pi"
+                "text": "beta = fnp.std(maxima) * fnp.sqrt(6) / fnp.pi"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "mu = we.mean(maxima) - 0.57721*beta"
+                "text": "mu = fnp.mean(maxima) - 0.57721*beta"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(bins, (1/beta)*we.exp(-(bins - mu)/beta)"
+                "text": "plt.plot(bins, (1/beta)*fnp.exp(-(bins - mu)/beta)"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "* we.exp(-we.exp(-(bins - mu)/beta)),"
+                "text": "* fnp.exp(-fnp.exp(-(bins - mu)/beta)),"
               },
               {
                 "kind": "input",
@@ -620,12 +620,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "plt.plot(bins, 1/(beta * we.sqrt(2 * we.pi))"
+                "text": "plt.plot(bins, 1/(beta * fnp.sqrt(2 * fnp.pi))"
               },
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "* we.exp(-(bins - mu)**2 / (2 * beta**2)),"
+                "text": "* fnp.exp(-(bins - mu)**2 / (2 * beta**2)),"
               },
               {
                 "kind": "input",
@@ -649,20 +649,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.gumbel",
     "module": "numpy.random",
     "name": "random.gumbel",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.gumbel",
-    "signature": "we.random.gumbel(loc=0.0, scale=1.0, size=None)",
+    "signature": "fnp.random.gumbel(loc=0.0, scale=1.0, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Gumbel distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.gumbel"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-gumbel",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.gumbel.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.gumbel.html"
   }
 }

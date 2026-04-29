@@ -54,7 +54,7 @@ test('symmetry guide documents every declaration style', async () => {
   );
 });
 
-test('symmetry guide includes the Reynolds section and whest-only indexing examples', async () => {
+test('symmetry guide includes the Reynolds section and flopscope-only indexing examples', async () => {
   const source = await readSymmetryGuide();
 
   assert.match(source, /Generating example data with the Reynolds operator/);
@@ -101,7 +101,7 @@ test('symmetry guide documents exact unary pointwise preservation for non-full g
 test('symmetry guide representative propagation claims match runtime behavior', async () => {
   const stdout = await runPythonInRepo(`
 import json
-import whest as we
+import flopscope as we
 
 we.configure(symmetry_warnings=False)
 
@@ -214,12 +214,12 @@ print(json.dumps({
   const runtimeBehavior = JSON.parse(stdout.trim());
 
   assert.deepEqual(runtimeBehavior, {
-    row_slice_type: 'WhestArray',
-    advanced_index_slice_type: 'WhestArray',
+    row_slice_type: 'FlopscopeArray',
+    advanced_index_slice_type: 'FlopscopeArray',
     s3_slice_type: 'SymmetricTensor',
     s3_slice_order: 2,
     s3_slice_axes: [0, 1],
-    c3_slice_type: 'WhestArray',
+    c3_slice_type: 'FlopscopeArray',
     c3_slice_has_symmetry: false,
     c4_reduced_type: 'SymmetricTensor',
     c4_reduced_order: 2,

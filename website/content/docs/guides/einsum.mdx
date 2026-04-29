@@ -2,7 +2,7 @@
 title: "Einsum Patterns"
 ---
 
-*Use this page to understand `we.einsum` -- the core computation primitive in whest.*
+*Use this page to understand `we.einsum` -- the core computation primitive in flopscope.*
 
 **You will learn:**
 - How to write common einsum patterns and understand their FLOP costs
@@ -17,7 +17,7 @@ title: "Einsum Patterns"
 ## Common patterns
 
 ```python
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=10**8) as budget:
     A = we.ones((256, 256))
@@ -60,7 +60,7 @@ For `'ij,jk->ik'` with shapes `(256, 256)` and `(256, 256)`:
 - Indices: i=256, j=256, k=256
 - Cost: 256 x 256 x 256 = 16,777,216
 
-For multi-operand einsums (3+ tensors), whest automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
+For multi-operand einsums (3+ tensors), flopscope automatically decomposes the contraction into optimal pairwise steps. The total cost is the sum of per-step costs.
 
 When symmetric tensors are involved, each step's cost is further reduced by the ratio of unique output elements to total output elements. See [Symmetry Savings](/docs/guides/symmetry/) for the full practical guide.
 
@@ -102,7 +102,7 @@ For the full symmetry guide, see [Symmetry Savings](/docs/guides/symmetry/).
 `we.einsum_path()` previews the contraction plan without executing the contraction itself. Planning is cheap: it records a nominal 1-FLOP `einsum_path` event, but none of the contraction FLOPs are spent.
 
 ```python
-import whest as we
+import flopscope as we
 
 n = 10
 T = we.as_symmetric(we.ones((n, n, n)), symmetry=we.SymmetryGroup.symmetric(axes=(0, 1, 2)))
@@ -123,8 +123,8 @@ print(f"Optimizer used: {info.optimizer_used}")
 ```text
 Path: [(0, 1), (0, 2), (0, 1)]
   Complete contraction:  ijk,ai,bj,ck->abc
-      Naive cost (whest):  3,000,000
-  Optimized cost (whest):  25,500
+      Naive cost (flopscope):  3,000,000
+  Optimized cost (flopscope):  25,500
                      Speedup:  117.647x
        Largest intermediate:  1,000 elements
                 Index sizes:  a=b=c=i=j=k=10
@@ -154,10 +154,10 @@ print(f"Matmul cost: {cost:,}")  # 16,777,216
 
 ## Custom contraction paths
 
-By default whest finds the optimal contraction order automatically. You can override this by passing an explicit path — a list of int-tuples specifying which operand positions to contract at each step:
+By default flopscope finds the optimal contraction order automatically. You can override this by passing an explicit path — a list of int-tuples specifying which operand positions to contract at each step:
 
 ```python
-import whest as we
+import flopscope as we
 
 A = we.ones((3, 4))
 B = we.ones((4, 5))

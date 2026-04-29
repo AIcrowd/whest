@@ -113,7 +113,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.hypergeometric`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.hypergeometric`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -264,7 +264,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(ngood, nbad, nsample).size"
+                      "text": "fnp.broadcast(ngood, nbad, nsample).size"
                     },
                     {
                       "kind": "text",
@@ -330,7 +330,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(ngood, nbad, nsample).size"
+                  "text": "fnp.broadcast(ngood, nbad, nsample).size"
                 },
                 {
                   "kind": "text",
@@ -639,7 +639,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.hypergeometric(ngood, nbad, nsamp, 1000)"
+              "text": "s = fnp.random.hypergeometric(ngood, nbad, nsamp, 1000)"
             },
             {
               "kind": "input",
@@ -672,7 +672,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.hypergeometric(15, 15, 15, 100000)"
+              "text": "s = fnp.random.hypergeometric(15, 15, 15, 100000)"
             },
             {
               "kind": "input",
@@ -714,16 +714,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "ngood, nbad, nsamp = 100, 2, 10\n\ns = we.random.hypergeometric(ngood, nbad, nsamp, 1000)\n\nfrom matplotlib.pyplot import hist\n\nhist(s)\n\ns = we.random.hypergeometric(15, 15, 15, 100000)\n\nsum(s>=12)/100000. + sum(s<=3)/100000.",
+    "code": "ngood, nbad, nsamp = 100, 2, 10\n\ns = fnp.random.hypergeometric(ngood, nbad, nsamp, 1000)\n\nfrom matplotlib.pyplot import hist\n\nhist(s)\n\ns = fnp.random.hypergeometric(15, 15, 15, 100000)\n\nsum(s>=12)/100000. + sum(s<=3)/100000.",
     "output": "# number of good, number of bad, and number of samples\n\n#   note that it is very unlikely to grab both bad items\n\n#   answer = 0.003 ... pretty unlikely!",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.hypergeometric",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-hypergeometric/",
   "module": "numpy.random",
   "name": "random.hypergeometric",
   "next": {
     "href": "/docs/api/ops/random-laplace/",
-    "label": "we.random.laplace"
+    "label": "fnp.random.laplace"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -763,7 +766,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if `ngood`, `nbad`, and `nsample`",
-        "are all scalars.  Otherwise, ``we.broadcast(ngood, nbad, nsample).size``",
+        "are all scalars.  Otherwise, ``fnp.broadcast(ngood, nbad, nsample).size``",
         "samples are drawn."
       ],
       "name": "size",
@@ -772,7 +775,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-gumbel/",
-    "label": "we.random.gumbel"
+    "label": "fnp.random.gumbel"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.hypergeometric.html",
@@ -821,12 +824,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.hypergeometric(ngood, nbad, nsample, size=None)",
+  "signature": "fnp.random.hypergeometric(ngood, nbad, nsample, size=None)",
   "slug": "random-hypergeometric",
   "summary": "Draw samples from a Hypergeometric distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.hypergeometric",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

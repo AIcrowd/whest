@@ -32,7 +32,7 @@ test('main copy does not overclaim n^5 divided by group order', () => {
 test('scope copy names direct event model and unsupported features', () => {
   const app = read('components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx');
   assert.match(app, /direct indexed scalar-event count/);
-  assert.match(app, /not whest’s general FMA FLOP convention/);
+  assert.match(app, /not flopscope’s general FMA FLOP convention/);
   assert.match(app, /repeated operand names denote the same tensor object/);
   assert.match(app, /forbids[\s\S]*ellipsis, broadcasting, repeated labels within one input, and[\s\S]*duplicate output labels/);
 });

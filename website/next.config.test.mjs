@@ -43,7 +43,7 @@ test('development config serves docs from the root path', async () => {
 test('production config keeps the GitHub Pages base path', async () => {
   const config = await loadConfig('production');
 
-  assert.equal(config.basePath, '/whest');
+  assert.equal(config.basePath, '/flopscope');
 });
 
 test('docs app route avoids runtime filesystem reads', async () => {

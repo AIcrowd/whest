@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 from scipy import stats as sp_stats
 
-from whest._budget import BudgetContext
+from flopscope._budget import BudgetContext
 
 # ============================================================
 # lognorm
@@ -16,7 +16,7 @@ from whest._budget import BudgetContext
 class TestLognormPdf:
     @pytest.mark.parametrize("s,loc,scale", [(1, 0, 1), (0.5, 0, 1), (1, 1, 2)])
     def test_accuracy(self, s, loc, scale):
-        from whest.stats import lognorm
+        from flopscope.stats import lognorm
 
         x = np.linspace(loc + 0.01, loc + 10 * scale, 500)
         result = np.asarray(lognorm.pdf(x, s, loc=loc, scale=scale))
@@ -27,7 +27,7 @@ class TestLognormPdf:
 class TestLognormCdf:
     @pytest.mark.parametrize("s,loc,scale", [(1, 0, 1), (0.5, 0, 1), (1, 1, 2)])
     def test_accuracy(self, s, loc, scale):
-        from whest.stats import lognorm
+        from flopscope.stats import lognorm
 
         x = np.linspace(loc + 0.01, loc + 10 * scale, 500)
         result = np.asarray(lognorm.cdf(x, s, loc=loc, scale=scale))
@@ -38,7 +38,7 @@ class TestLognormCdf:
 class TestLognormPpf:
     @pytest.mark.parametrize("s,loc,scale", [(1, 0, 1), (0.5, 0, 1), (1, 1, 2)])
     def test_accuracy(self, s, loc, scale):
-        from whest.stats import lognorm
+        from flopscope.stats import lognorm
 
         q = np.array([0.001, 0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99, 0.999])
         result = np.asarray(lognorm.ppf(q, s, loc=loc, scale=scale))
@@ -46,7 +46,7 @@ class TestLognormPpf:
         np.testing.assert_allclose(result, expected, atol=1e-11, rtol=1e-11)
 
     def test_roundtrip(self):
-        from whest.stats import lognorm
+        from flopscope.stats import lognorm
 
         s = 0.5
         q = np.linspace(0.01, 0.99, 50)
@@ -54,7 +54,7 @@ class TestLognormPpf:
         np.testing.assert_allclose(roundtrip, q, atol=1e-11, rtol=1e-11)
 
     def test_flop_cost(self):
-        from whest.stats import lognorm
+        from flopscope.stats import lognorm
 
         q = np.random.rand(60)
         with BudgetContext(flop_budget=10**6) as b:
@@ -72,7 +72,7 @@ class TestTruncnormPdf:
         "a,b,loc,scale", [(-2, 2, 0, 1), (-1, 3, 1, 2), (0, 5, 0, 1)]
     )
     def test_accuracy(self, a, b, loc, scale):
-        from whest.stats import truncnorm
+        from flopscope.stats import truncnorm
 
         x = np.linspace(a * scale + loc - 0.5, b * scale + loc + 0.5, 500)
         result = np.asarray(truncnorm.pdf(x, a, b, loc=loc, scale=scale))
@@ -85,7 +85,7 @@ class TestTruncnormCdf:
         "a,b,loc,scale", [(-2, 2, 0, 1), (-1, 3, 1, 2), (0, 5, 0, 1)]
     )
     def test_accuracy(self, a, b, loc, scale):
-        from whest.stats import truncnorm
+        from flopscope.stats import truncnorm
 
         x = np.linspace(a * scale + loc - 0.5, b * scale + loc + 0.5, 500)
         result = np.asarray(truncnorm.cdf(x, a, b, loc=loc, scale=scale))
@@ -98,7 +98,7 @@ class TestTruncnormPpf:
         "a,b,loc,scale", [(-2, 2, 0, 1), (-1, 3, 1, 2), (0, 5, 0, 1)]
     )
     def test_accuracy(self, a, b, loc, scale):
-        from whest.stats import truncnorm
+        from flopscope.stats import truncnorm
 
         q = np.array([0.001, 0.01, 0.1, 0.25, 0.5, 0.75, 0.9, 0.99, 0.999])
         result = np.asarray(truncnorm.ppf(q, a, b, loc=loc, scale=scale))
@@ -106,7 +106,7 @@ class TestTruncnormPpf:
         np.testing.assert_allclose(result, expected, atol=1e-11, rtol=1e-11)
 
     def test_roundtrip(self):
-        from whest.stats import truncnorm
+        from flopscope.stats import truncnorm
 
         a, b = -2, 2
         q = np.linspace(0.01, 0.99, 50)
@@ -114,7 +114,7 @@ class TestTruncnormPpf:
         np.testing.assert_allclose(roundtrip, q, atol=1e-11, rtol=1e-11)
 
     def test_flop_cost(self):
-        from whest.stats import truncnorm
+        from flopscope.stats import truncnorm
 
         x = np.random.randn(40)
         with BudgetContext(flop_budget=10**6) as b:

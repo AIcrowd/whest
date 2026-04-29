@@ -98,7 +98,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.zipf`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.zipf`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -173,7 +173,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(a).size"
+                      "text": "fnp.array(a).size"
                     },
                     {
                       "kind": "text",
@@ -223,7 +223,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(a).size"
+                  "text": "fnp.array(a).size"
                 },
                 {
                   "kind": "text",
@@ -405,7 +405,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.zipf(a, n)"
+              "text": "s = fnp.random.zipf(a, n)"
             }
           ],
           "type": "doctest_block"
@@ -455,12 +455,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "count = we.bincount(s)"
+              "text": "count = fnp.bincount(s)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "k = we.arange(1, s.max() + 1)"
+              "text": "k = fnp.arange(1, s.max() + 1)"
             }
           ],
           "type": "doctest_block"
@@ -530,16 +530,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "a = 4.0\n\nn = 20000\n\ns = we.random.zipf(a, n)\n\nimport matplotlib.pyplot as plt\n\nfrom scipy.special import zeta  # doctest: +SKIP\n\ncount = we.bincount(s)\n\nk = we.arange(1, s.max() + 1)\n\nplt.bar(k, count[1:], alpha=0.5, label='sample count')\n\nplt.plot(k, n*(k**-a)/zeta(a), 'k.-', alpha=0.5,\n         label='expected count')   # doctest: +SKIP\n\nplt.semilogy()\n\nplt.grid(alpha=0.4)\n\nplt.legend()\n\nplt.title(f'Zipf sample, a={a}, size={n}')\n\nplt.show()",
+    "code": "a = 4.0\n\nn = 20000\n\ns = fnp.random.zipf(a, n)\n\nimport matplotlib.pyplot as plt\n\nfrom scipy.special import zeta  # doctest: +SKIP\n\ncount = fnp.bincount(s)\n\nk = fnp.arange(1, s.max() + 1)\n\nplt.bar(k, count[1:], alpha=0.5, label='sample count')\n\nplt.plot(k, n*(k**-a)/zeta(a), 'k.-', alpha=0.5,\n         label='expected count')   # doctest: +SKIP\n\nplt.semilogy()\n\nplt.grid(alpha=0.4)\n\nplt.legend()\n\nplt.title(f'Zipf sample, a={a}, size={n}')\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.zipf",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-zipf/",
   "module": "numpy.random",
   "name": "random.zipf",
   "next": {
     "href": "/docs/api/ops/ravel/",
-    "label": "we.ravel"
+    "label": "fnp.ravel"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -562,7 +565,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``a`` is a scalar. Otherwise,",
-        "``we.array(a).size`` samples are drawn."
+        "``fnp.array(a).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -570,7 +573,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-weibull/",
-    "label": "we.random.weibull"
+    "label": "fnp.random.weibull"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.zipf.html",
@@ -617,12 +620,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.zipf(a, size=None)",
+  "signature": "fnp.random.zipf(a, size=None)",
   "slug": "random-zipf",
   "summary": "Draw samples from a Zipf distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.zipf",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

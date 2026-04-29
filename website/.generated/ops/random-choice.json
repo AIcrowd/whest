@@ -72,7 +72,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.choice`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.choice`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         },
@@ -115,7 +115,7 @@
                       "href": "",
                       "kind": "link",
                       "target": "arange(a)",
-                      "text": "we.arange(a)"
+                      "text": "fnp.arange(a)"
                     }
                   ],
                   "type": "paragraph"
@@ -132,7 +132,7 @@
                   "href": "",
                   "kind": "link",
                   "target": "arange(a)",
-                  "text": "we.arange(a)"
+                  "text": "fnp.arange(a)"
                 }
               ],
               "name": "a",
@@ -461,7 +461,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Generate a uniform random sample from we.arange(5) of size 3:"
+              "text": "Generate a uniform random sample from fnp.arange(5) of size 3:"
             }
           ],
           "type": "paragraph"
@@ -471,7 +471,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.choice(5, 3)"
+              "text": "fnp.random.choice(5, 3)"
             },
             {
               "kind": "output",
@@ -480,7 +480,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "#This is equivalent to we.random.randint(0,5,3)"
+              "text": "#This is equivalent to fnp.random.randint(0,5,3)"
             }
           ],
           "type": "doctest_block"
@@ -489,7 +489,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Generate a non-uniform random sample from we.arange(5) of size 3:"
+              "text": "Generate a non-uniform random sample from fnp.arange(5) of size 3:"
             }
           ],
           "type": "paragraph"
@@ -499,7 +499,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.choice(5, 3, p=[0.1, 0, 0.3, 0.6, 0])"
+              "text": "fnp.random.choice(5, 3, p=[0.1, 0, 0.3, 0.6, 0])"
             },
             {
               "kind": "output",
@@ -512,7 +512,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Generate a uniform random sample from we.arange(5) of size 3 without\nreplacement:"
+              "text": "Generate a uniform random sample from fnp.arange(5) of size 3 without\nreplacement:"
             }
           ],
           "type": "paragraph"
@@ -522,7 +522,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.choice(5, 3, replace=False)"
+              "text": "fnp.random.choice(5, 3, replace=False)"
             },
             {
               "kind": "output",
@@ -531,7 +531,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "#This is equivalent to we.random.permutation(we.arange(5))[:3]"
+              "text": "#This is equivalent to fnp.random.permutation(fnp.arange(5))[:3]"
             }
           ],
           "type": "doctest_block"
@@ -540,7 +540,7 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Generate a non-uniform random sample from we.arange(5) of size\n3 without replacement:"
+              "text": "Generate a non-uniform random sample from fnp.arange(5) of size\n3 without replacement:"
             }
           ],
           "type": "paragraph"
@@ -550,7 +550,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.choice(5, 3, replace=False, p=[0.1, 0, 0.3, 0.6, 0])"
+              "text": "fnp.random.choice(5, 3, replace=False, p=[0.1, 0, 0.3, 0.6, 0])"
             },
             {
               "kind": "output",
@@ -578,7 +578,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.choice(aa_milne_arr, 5, p=[0.5, 0.1, 0.1, 0.3])"
+              "text": "fnp.random.choice(aa_milne_arr, 5, p=[0.5, 0.1, 0.1, 0.3])"
             },
             {
               "kind": "output",
@@ -606,16 +606,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.random.choice(5, 3)\n\nwe.random.choice(5, 3, p=[0.1, 0, 0.3, 0.6, 0])\n\nwe.random.choice(5, 3, replace=False)\n\nwe.random.choice(5, 3, replace=False, p=[0.1, 0, 0.3, 0.6, 0])\n\naa_milne_arr = ['pooh', 'rabbit', 'piglet', 'Christopher']\n\nwe.random.choice(aa_milne_arr, 5, p=[0.5, 0.1, 0.1, 0.3])",
+    "code": "fnp.random.choice(5, 3)\n\nfnp.random.choice(5, 3, p=[0.1, 0, 0.3, 0.6, 0])\n\nfnp.random.choice(5, 3, replace=False)\n\nfnp.random.choice(5, 3, replace=False, p=[0.1, 0, 0.3, 0.6, 0])\n\naa_milne_arr = ['pooh', 'rabbit', 'piglet', 'Christopher']\n\nfnp.random.choice(aa_milne_arr, 5, p=[0.5, 0.1, 0.1, 0.3])",
     "output": "array([0, 3, 4]) # random\n\narray([3, 3, 0]) # random\n\narray([3,1,0]) # random\n\narray([2, 3, 0]) # random\n\narray(['pooh', 'pooh', 'pooh', 'Christopher', 'piglet'], # random\n      dtype='<U11')",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.choice",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L240",
   "href": "/docs/api/ops/random-choice/",
   "module": "numpy.random",
   "name": "random.choice",
   "next": {
     "href": "/docs/api/ops/random-default_rng/",
-    "label": "we.random.default_rng"
+    "label": "fnp.random.default_rng"
   },
   "notes": "Sampling; cost = numel(output) if replace, n*ceil(log2(n)) if not.",
   "notes_sections": [
@@ -627,7 +630,7 @@
     {
       "body": [
         "If an ndarray, a random sample is generated from its elements.",
-        "If an int, the random sample is generated as if it were ``we.arange(a)``"
+        "If an int, the random sample is generated as if it were ``fnp.arange(a)``"
       ],
       "name": "a",
       "type": "1-D array-like or int"
@@ -661,7 +664,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-chisquare/",
-    "label": "we.random.chisquare"
+    "label": "fnp.random.chisquare"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.choice.html",
@@ -725,12 +728,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.choice(a, size=None, replace=True, p=None)",
+  "signature": "fnp.random.choice(a, size=None, replace=True, p=None)",
   "slug": "random-choice",
   "summary": "Generates a random sample from a given 1-D array",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.choice",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L240"
+  "weight": 1.0
 }

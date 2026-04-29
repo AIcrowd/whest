@@ -321,20 +321,20 @@
     "category": "free",
     "cost_formula": "0",
     "cost_formula_latex": "$0$",
+    "flopscope_ref": "fnp.random.set_state",
     "module": "numpy.random",
     "name": "random.set_state",
     "notes": "Set internal state of generator.",
     "numpy_ref": "np.random.set_state",
-    "signature": "we.random.set_state(state)",
+    "signature": "fnp.random.set_state(state)",
     "status": "supported",
     "summary": "Set the internal state of the generator from a tuple.",
-    "weight": 0.0,
-    "whest_ref": "we.random.set_state"
+    "weight": 0.0
   },
   "schema_version": 1,
   "slug": "random-set_state",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.set_state.html",
-    "whest": null
+    "flopscope": null,
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.set_state.html"
   }
 }

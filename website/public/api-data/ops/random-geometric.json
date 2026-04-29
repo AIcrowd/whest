@@ -121,7 +121,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.geometric`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.geometric`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -196,7 +196,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.array(p).size"
+                        "text": "fnp.array(p).size"
                       },
                       {
                         "kind": "text",
@@ -246,7 +246,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.array(p).size"
+                    "text": "fnp.array(p).size"
                   },
                   {
                     "kind": "text",
@@ -338,7 +338,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "z = we.random.geometric(p=0.35, size=10000)"
+                "text": "z = fnp.random.geometric(p=0.35, size=10000)"
               }
             ],
             "type": "doctest_block"
@@ -375,20 +375,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.geometric",
     "module": "numpy.random",
     "name": "random.geometric",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.geometric",
-    "signature": "we.random.geometric(p, size=None)",
+    "signature": "fnp.random.geometric(p, size=None)",
     "status": "supported",
     "summary": "Draw samples from the geometric distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.geometric"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-geometric",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.geometric.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.geometric.html"
   }
 }

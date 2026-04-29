@@ -103,7 +103,7 @@ test('route wrapper uses a branded centered loading shell instead of plain text'
   assert.match(routeSource, /import \{ Loader2 \} from 'lucide-react';/);
   assert.match(routeSource, /function SymmetryAwareEinsumContractionsLoading\(/);
   assert.match(routeSource, /className="relative flex h-88 w-88 items-center justify-center"/);
-  assert.match(routeSource, /className="whest-wordmark[^"]*text-\[38px\][^"]*sm:text-\[48px\]/);
+  assert.match(routeSource, /className="flopscope-wordmark[^"]*text-\[38px\][^"]*sm:text-\[48px\]/);
   assert.match(routeSource, /Loader2[\s\S]*animate-spin/);
   assert.match(routeSource, /strokeWidth=\{1\.05\}/);
   assert.match(routeSource, /min-h-\[100svh\]/);

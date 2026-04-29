@@ -92,7 +92,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.dirichlet`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.dirichlet`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -500,7 +500,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.dirichlet((10, 5, 3), 20).transpose()"
+                "text": "s = fnp.random.dirichlet((10, 5, 3), 20).transpose()"
               }
             ],
             "type": "doctest_block"
@@ -544,20 +544,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.dirichlet",
     "module": "numpy.random",
     "name": "random.dirichlet",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.dirichlet",
-    "signature": "we.random.dirichlet(alpha, size=None)",
+    "signature": "fnp.random.dirichlet(alpha, size=None)",
     "status": "supported",
     "summary": "Draw samples from the Dirichlet distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.dirichlet"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-dirichlet",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.dirichlet.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.dirichlet.html"
   }
 }

@@ -14,9 +14,9 @@ test('injectSymmetryAwareEinsumContractionsLink replaces the old embedded docs i
     children: [
       {
         type: 'folder',
-        name: 'Understanding whest',
+        name: 'Understanding flopscope',
         children: [
-          { type: 'page', name: 'How whest Works', url: '/docs/understanding/how-whest-works' },
+          { type: 'page', name: 'How flopscope Works', url: '/docs/understanding/how-flopscope-works' },
           { type: 'page', name: 'Symmetry Explorer', url: '/docs/understanding/symmetry-explorer' },
         ],
       },

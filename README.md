@@ -1,31 +1,31 @@
 <div align="center">
-<img src="website/public/logo.png" alt="whest" height="80">
-<h1>whest</h1>
+<img src="website/public/logo.png" alt="flopscope" height="80">
+<h1>flopscope</h1>
 <p><strong>NumPy-compatible math primitives with analytical FLOP counting</strong></p>
 </div>
 
 <div align="center">
 
-[![CI](https://github.com/AIcrowd/whest/actions/workflows/ci.yml/badge.svg)](https://github.com/AIcrowd/whest/actions/workflows/ci.yml)
-[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://aicrowd.github.io/whest/)
+[![CI](https://github.com/AIcrowd/flopscope/actions/workflows/ci.yml/badge.svg)](https://github.com/AIcrowd/flopscope/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue.svg)](https://aicrowd.github.io/flopscope/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](https://github.com/AIcrowd/whest/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](https://github.com/AIcrowd/flopscope/actions/workflows/ci.yml)
 
 </div>
 
 *Built for the [ARC Whitebox Estimation Challenge](https://aicrowd.com) by [AIcrowd](https://aicrowd.com)*
 
-Dispatch integration with `AIcrowd/whest-docs` was verified on 2026-04-16.
+Dispatch integration with `AIcrowd/flopscope-docs` was verified on 2026-04-16.
 
 ---
 
-**whest** is a drop-in replacement for a subset of NumPy that counts floating-point operations as you compute. Algorithms submitted to the ARC Whitebox Estimation Challenge are scored by their analytical FLOP cost, not wall-clock time, so researchers can focus on **algorithmic innovation** rather than hardware tuning. Every arithmetic call deducts from a fixed budget; exceed it and execution stops immediately.
+**flopscope** is a drop-in replacement for a subset of NumPy that counts floating-point operations as you compute. Algorithms submitted to the ARC Whitebox Estimation Challenge are scored by their analytical FLOP cost, not wall-clock time, so researchers can focus on **algorithmic innovation** rather than hardware tuning. Every arithmetic call deducts from a fixed budget; exceed it and execution stops immediately.
 
-## Why whest?
+## Why flopscope?
 
 <table>
-<tr><th>NumPy</th><th>whest</th></tr>
+<tr><th>NumPy</th><th>flopscope</th></tr>
 <tr>
 <td>
 
@@ -55,7 +55,7 @@ for i, W in enumerate(weights):
 <td>
 
 ```python
-import whest as we
+import flopscope as we
 
 depth, width = 5, 256
 
@@ -82,7 +82,7 @@ we.budget_summary()  # 984,321 FLOPs
 
 ## Key Features
 
-- **NumPy-compatible API** -- `import whest as we` and write familiar NumPy code
+- **NumPy-compatible API** -- `import flopscope as we` and write familiar NumPy code
 - **Analytical FLOP counting** -- deterministic, hardware-independent cost tracking
 - **Budget enforcement** -- operations are checked before execution; exceeding the budget raises a clear error
 - **Symmetry-aware einsum** -- automatic FLOP savings for repeated operands and declared symmetry groups
@@ -108,15 +108,15 @@ Blocked operations (I/O, config, and system calls) raise a helpful `AttributeErr
 ### Installation
 
 ```bash
-pip install git+https://github.com/AIcrowd/whest.git
+pip install git+https://github.com/AIcrowd/flopscope.git
 # or
-uv add git+https://github.com/AIcrowd/whest.git
+uv add git+https://github.com/AIcrowd/flopscope.git
 ```
 
 ### Basic Usage
 
 ```python
-import whest as we
+import flopscope as we
 
 depth, width = 5, 256
 
@@ -142,11 +142,11 @@ we.budget_summary()           # session/global summary
 ```
 
 `wall_time_limit_s` starts when the context is entered and is checked before
-and after each counted NumPy call. If the limit is exceeded, whest raises
+and after each counted NumPy call. If the limit is exceeded, flopscope raises
 `TimeExhaustedError` with the operation name, elapsed time, and configured
 limit. Use `budget.summary()` for the current context and
 `we.budget_summary()` when you want the accumulated session/global view.
-whest FLOP Budget Summary
+flopscope FLOP Budget Summary
 =========================
   Total budget:     100,000,000
   Used:                 984,321  (1.0%)
@@ -173,7 +173,7 @@ print(f"SVD cost: {cost:,}")     # 655,360
 
 ### Symmetry Savings
 
-When you pass the same array object multiple times, whest automatically
+When you pass the same array object multiple times, flopscope automatically
 detects the symmetry and reduces the FLOP count:
 
 ```python
@@ -181,7 +181,7 @@ with we.BudgetContext(flop_budget=10**8) as budget:
     X = we.ones((100, 100))
 
     # Gram matrix: both operands are the same X.
-    # whest auto-detects this and induces S2{j,k} on the output,
+    # flopscope auto-detects this and induces S2{j,k} on the output,
     # giving ~1/2 the dense cost (since R[j,k] = R[k,j]).
     R = we.einsum("ij,ik->jk", X, X)
     print(f"Cost with equal-operand detection: {budget.flops_used:,}")
@@ -197,11 +197,11 @@ including triple products and block symmetries.
 1. **FLOPs are tracked automatically.** A global default budget activates on first use, or you can wrap code in an explicit `BudgetContext` for a custom limit. Free ops (tensor creation, reshaping) cost 0 FLOPs.
 2. **FLOP costs are analytical.** Costs are computed from tensor shapes, not measured from execution. A matmul of `(m, k) @ (k, n)` always costs `m * k * n` FLOPs regardless of hardware.
 3. **Budget is checked before execution.** If an operation would exceed the remaining budget, `BudgetExhaustedError` is raised and the operation does not run.
-4. **All tensors are plain `numpy.ndarray`.** Standard whest arrays are regular NumPy arrays with no hidden state. `SymmetricTensor` is a lightweight `ndarray` subclass that carries symmetry metadata for einsum savings — it works everywhere a normal array does.
+4. **All tensors are plain `numpy.ndarray`.** Standard flopscope arrays are regular NumPy arrays with no hidden state. `SymmetricTensor` is a lightweight `ndarray` subclass that carries symmetry metadata for einsum savings — it works everywhere a normal array does.
 
 ## Sharp Edges
 
-**Budget is always active.** A global default budget (1e15 FLOPs, configurable via `WHEST_DEFAULT_BUDGET` env var) activates automatically. Use an explicit `BudgetContext` to set a custom limit.
+**Budget is always active.** A global default budget (1e15 FLOPs, configurable via `FLOPSCOPE_DEFAULT_BUDGET` env var) activates automatically. Use an explicit `BudgetContext` to set a custom limit.
 
 **35 operations are blocked.** I/O, config, and system-level functions (`save`, `load`, `set_printoptions`, etc.) raise `AttributeError` by design. These have no meaningful FLOP cost and are not part of the competition API.
 
@@ -249,8 +249,8 @@ including triple products and block symmetries.
 ## Development
 
 ```bash
-git clone https://github.com/AIcrowd/whest.git
-cd whest
+git clone https://github.com/AIcrowd/flopscope.git
+cd flopscope
 make install
 make test                      # core test suite
 make docs-serve                # local docs at http://127.0.0.1:8000
@@ -262,11 +262,11 @@ For the monorepo layout, client/server workflows, and generated-doc rules, see
 ## Citation
 
 ```bibtex
-@misc{whest2026,
-  title  = {whest: NumPy-compatible math primitives with FLOP counting},
+@misc{flopscope2026,
+  title  = {flopscope: NumPy-compatible math primitives with FLOP counting},
   author = {AIcrowd},
   year   = {2026},
-  url    = {https://github.com/AIcrowd/whest},
+  url    = {https://github.com/AIcrowd/flopscope},
   note   = {Built for the ARC Whitebox Estimation Challenge}
 }
 ```

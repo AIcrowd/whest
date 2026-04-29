@@ -72,7 +72,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.bytes`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.bytes`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -194,7 +194,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.bytes(10)"
+                "text": "fnp.random.bytes(10)"
               },
               {
                 "kind": "output",
@@ -212,20 +212,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.bytes",
     "module": "numpy.random",
     "name": "random.bytes",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.bytes",
-    "signature": "we.random.bytes(length)",
+    "signature": "fnp.random.bytes(length)",
     "status": "supported",
     "summary": "Return random bytes.",
-    "weight": 1.0,
-    "whest_ref": "we.random.bytes"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "random-bytes",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.bytes.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L417"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L417",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.bytes.html"
   }
 }

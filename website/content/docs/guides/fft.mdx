@@ -31,7 +31,7 @@ Real-valued transforms (`rfft`, `irfft`, `rfftn`, `irfftn`) cost roughly half of
 ## Basic usage
 
 ```python
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=1_000_000) as budget:
     # Generate a signal (costs numel(output) = 1,024 FLOPs)
@@ -55,7 +55,7 @@ with we.BudgetContext(flop_budget=1_000_000) as budget:
 When your input is real-valued (which is common in signal processing), prefer `rfft` over `fft` — it costs half as much:
 
 ```python
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=1_000_000) as budget:
     signal = we.random.randn(1024)  # 1,024 FLOPs
@@ -81,7 +81,7 @@ The output of `rfft` has shape `(n//2 + 1,)` instead of `(n,)`, since the negati
 Use `fft2` for 2-D transforms (e.g., images) and `fftn` for arbitrary dimensions:
 
 ```python
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=10**8) as budget:
     # 2-D image (costs numel(output) = 65,536 FLOPs)
@@ -101,7 +101,7 @@ with we.BudgetContext(flop_budget=10**8) as budget:
 A common signal processing pattern — window the signal before FFT to reduce spectral leakage:
 
 ```python
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=1_000_000) as budget:
     signal = we.random.randn(1024)
@@ -121,7 +121,7 @@ with we.BudgetContext(flop_budget=1_000_000) as budget:
 ## Query costs before running
 
 ```python
-from whest.flops import fft_cost, rfft_cost
+from flopscope.flops import fft_cost, rfft_cost
 
 # Check cost of a large FFT before committing budget
 n = 2**20  # ~1 million points

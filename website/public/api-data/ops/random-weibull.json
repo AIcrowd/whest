@@ -129,7 +129,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.weibull`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.weibull`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -204,7 +204,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.array(a).size"
+                        "text": "fnp.array(a).size"
                       },
                       {
                         "kind": "text",
@@ -254,7 +254,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.array(a).size"
+                    "text": "fnp.array(a).size"
                   },
                   {
                     "kind": "text",
@@ -503,7 +503,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.weibull(a, 1000)"
+                "text": "s = fnp.random.weibull(a, 1000)"
               }
             ],
             "type": "doctest_block"
@@ -527,7 +527,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(1,100.)/50."
+                "text": "x = fnp.arange(1,100.)/50."
               },
               {
                 "kind": "input",
@@ -537,7 +537,7 @@
               {
                 "kind": "input",
                 "prompt": "...",
-                "text": "return (a / n) * (x / n)**(a - 1) * we.exp(-(x / n)**a)"
+                "text": "return (a / n) * (x / n)**(a - 1) * fnp.exp(-(x / n)**a)"
               }
             ],
             "type": "doctest_block"
@@ -547,12 +547,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "count, bins, ignored = plt.hist(we.random.weibull(5.,1000))"
+                "text": "count, bins, ignored = plt.hist(fnp.random.weibull(5.,1000))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "x = we.arange(1,100.)/50."
+                "text": "x = fnp.arange(1,100.)/50."
               },
               {
                 "kind": "input",
@@ -581,20 +581,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.weibull",
     "module": "numpy.random",
     "name": "random.weibull",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.weibull",
-    "signature": "we.random.weibull(a, size=None)",
+    "signature": "fnp.random.weibull(a, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Weibull distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.weibull"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-weibull",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.weibull.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.weibull.html"
   }
 }

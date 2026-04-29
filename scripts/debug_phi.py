@@ -4,9 +4,9 @@ from math import comb
 
 import numpy as np
 
-from whest._opt_einsum._contract import contract_path
-from whest._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
-from whest._opt_einsum._symmetry import unique_elements
+from flopscope._opt_einsum._contract import contract_path
+from flopscope._opt_einsum._subgraph_symmetry import SubgraphSymmetryOracle
+from flopscope._opt_einsum._symmetry import unique_elements
 
 n = 6
 X = np.ones((n, n, n))

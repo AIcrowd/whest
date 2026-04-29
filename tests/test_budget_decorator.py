@@ -2,7 +2,7 @@
 
 import pytest
 
-from whest._budget import BudgetContext, budget, get_active_budget
+from flopscope._budget import BudgetContext, budget, get_active_budget
 
 
 def test_budget_context_as_decorator():

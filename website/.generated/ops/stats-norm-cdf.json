@@ -9,46 +9,13 @@
           "inline": [
             {
               "kind": "text",
-              "text": "Cumulative distribution function at "
-            },
-            {
-              "kind": "emphasis",
-              "text": "x"
-            },
-            {
-              "kind": "text",
-              "text": "."
+              "text": "Cumulative distribution function of the given RV."
             }
           ],
           "type": "paragraph"
         }
       ],
       "title": "Summary"
-    },
-    {
-      "blocks": [
-        {
-          "inline": [
-            {
-              "kind": "text",
-              "text": "Equivalent to "
-            },
-            {
-              "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.cdf(x, loc, scale).html",
-              "href": "",
-              "kind": "link",
-              "target": "stats.norm.cdf(x, loc, scale)",
-              "text": "scipy.stats.norm.cdf(x, loc, scale)"
-            },
-            {
-              "kind": "text",
-              "text": "."
-            }
-          ],
-          "type": "paragraph"
-        }
-      ],
-      "title": "Extended Summary"
     },
     {
       "blocks": [
@@ -60,7 +27,7 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Quantiles."
+                      "text": "quantiles"
                     }
                   ],
                   "type": "paragraph"
@@ -70,7 +37,7 @@
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Quantiles."
+                  "text": "quantiles"
                 }
               ],
               "name": "x",
@@ -82,17 +49,39 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Mean of the distribution (default 0)."
+                      "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "float, optional",
+              "data_type": "array_like",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Mean of the distribution (default 0)."
+                  "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
+                }
+              ],
+              "name": "arg1, arg2, arg3,...",
+              "type": "field_list"
+            },
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "location parameter (default=0)"
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "array_like, optional",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "location parameter (default=0)"
                 }
               ],
               "name": "loc",
@@ -104,17 +93,17 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "Standard deviation (default 1)."
+                      "text": "scale parameter (default=1)"
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "float, optional",
+              "data_type": "array_like, optional",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "Standard deviation (default 1)."
+                  "text": "scale parameter (default=1)"
                 }
               ],
               "name": "scale",
@@ -137,36 +126,28 @@
                   "inline": [
                     {
                       "kind": "text",
-                      "text": "CDF evaluated at "
+                      "text": "Cumulative distribution function evaluated at "
                     },
                     {
-                      "kind": "emphasis",
+                      "kind": "code",
                       "text": "x"
-                    },
-                    {
-                      "kind": "text",
-                      "text": "."
                     }
                   ],
                   "type": "paragraph"
                 }
               ],
-              "data_type": "WhestArray",
+              "data_type": "ndarray",
               "inline": [
                 {
                   "kind": "text",
-                  "text": "CDF evaluated at "
+                  "text": "Cumulative distribution function evaluated at "
                 },
                 {
-                  "kind": "emphasis",
+                  "kind": "code",
                   "text": "x"
-                },
-                {
-                  "kind": "text",
-                  "text": "."
                 }
               ],
-              "name": "",
+              "name": "cdf",
               "type": "field_list"
             }
           ],
@@ -188,12 +169,15 @@
     "unsupported_directives": []
   },
   "example": null,
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.stats.norm.cdf",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_norm.py#L63",
   "href": "/docs/api/ops/stats-norm-cdf/",
-  "module": "whest.stats",
+  "module": "flopscope.stats",
   "name": "stats.norm.cdf",
   "next": {
     "href": "/docs/api/ops/stats-norm-pdf/",
-    "label": "we.stats.norm.pdf"
+    "label": "fnp.stats.norm.pdf"
   },
   "notes": "Normal CDF; cost = numel(input).",
   "notes_sections": [],
@@ -201,48 +185,53 @@
   "parameters": [
     {
       "body": [
-        "Quantiles."
+        "quantiles"
       ],
       "name": "x",
       "type": "array_like"
     },
     {
       "body": [
-        "Mean of the distribution (default 0)."
+        "The shape parameter(s) for the distribution (see docstring of the",
+        "instance object for more information)"
       ],
-      "name": "loc",
-      "type": "float, optional"
+      "name": "arg1, arg2, arg3,...",
+      "type": "array_like"
     },
     {
       "body": [
-        "Standard deviation (default 1)."
+        "location parameter (default=0)"
+      ],
+      "name": "loc",
+      "type": "array_like, optional"
+    },
+    {
+      "body": [
+        "scale parameter (default=1)"
       ],
       "name": "scale",
-      "type": "float, optional"
+      "type": "array_like, optional"
     }
   ],
   "previous": {
     "href": "/docs/api/ops/stats-lognorm-ppf/",
-    "label": "we.stats.lognorm.ppf"
+    "label": "fnp.stats.lognorm.ppf"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html",
   "returns": [
     {
       "body": [
-        "CDF evaluated at *x*."
+        "Cumulative distribution function evaluated at `x`"
       ],
-      "name": "",
-      "type": "WhestArray"
+      "name": "cdf",
+      "type": "ndarray"
     }
   ],
   "see_also": [],
-  "signature": "we.stats.norm.cdf(x, loc=0, scale=1)",
+  "signature": "fnp.stats.norm.cdf(x, loc=0, scale=1)",
   "slug": "stats-norm-cdf",
-  "summary": "Cumulative distribution function at *x*.",
-  "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.stats.norm.cdf",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_norm.py#L63"
+  "summary": "Cumulative distribution function of the given RV.",
+  "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2132",
+  "weight": 16.0
 }

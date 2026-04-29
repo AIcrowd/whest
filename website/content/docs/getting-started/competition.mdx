@@ -16,7 +16,7 @@ title: "Competition Guide"
 Every competition submission runs inside a FLOP budget. Use `BudgetContext` to declare how many FLOPs your code is allowed to spend:
 
 ```python
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=50_000_000, namespace="solver") as budget:
     A = we.ones((256, 256))
@@ -26,7 +26,7 @@ with we.BudgetContext(flop_budget=50_000_000, namespace="solver") as budget:
     result = we.sum(h)
 ```
 
-If your code exceeds the budget, whest raises `BudgetExhaustedError` *before* the offending operation executes. The error message includes the cost of the failed operation and the remaining budget.
+If your code exceeds the budget, flopscope raises `BudgetExhaustedError` *before* the offending operation executes. The error message includes the cost of the failed operation and the remaining budget.
 
 The `namespace` parameter sets the root namespace prefix for that budget context. Nested `we.namespace(...)` scopes extend it with dotted segments, but they do not create child budgets or split the FLOP limit into separate pools.
 
@@ -35,7 +35,7 @@ The `namespace` parameter sets the root namespace prefix for that budget context
 For cleaner code, use `@we.budget` to attach a budget directly to a function:
 
 ```python
-import whest as we
+import flopscope as we
 
 @we.budget(flop_budget=50_000_000, namespace="forward-pass")
 def forward(W, x):
@@ -59,14 +59,14 @@ with we.BudgetContext(flop_budget=10**9, wall_time_limit_s=60.0) as budget:
     ...
 ```
 
-If the wall-clock time is exceeded, whest raises `TimeExhaustedError`. The timer starts when the context is entered and is checked after each counted operation.
+If the wall-clock time is exceeded, flopscope raises `TimeExhaustedError`. The timer starts when the context is entered and is checked after each counted operation.
 
 What `wall_time_limit_s` does and does not do:
 
 - It is a `BudgetContext` setting, so you configure it in the same place you set `flop_budget`.
 - It measures total wall-clock time for the active context, not FLOPs.
 - It is checked cooperatively before and after counted NumPy calls, so overshoot is bounded by the duration of one NumPy call.
-- It is a clean diagnostic limit inside whest. Hard process/container kills still belong to the outer execution environment.
+- It is a clean diagnostic limit inside flopscope. Hard process/container kills still belong to the outer execution environment.
 
 ## Reading the budget summary
 
@@ -88,7 +88,7 @@ Use these forms for different questions:
 The block below shows `print(budget.summary(by_namespace=True))` for the `solver` context:
 
 ```text
-whest FLOP Budget Summary [solver]
+flopscope FLOP Budget Summary [solver]
 ==================================
   Total budget:              50,000,000
   Used:                          66,048  (0.1%)

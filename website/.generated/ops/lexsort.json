@@ -213,7 +213,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/argsort",
-              "label": "we.argsort",
+              "label": "fnp.argsort",
               "original_target": "argsort",
               "role": "",
               "target": "argsort",
@@ -245,7 +245,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/sort",
-              "label": "we.sort",
+              "label": "fnp.sort",
               "original_target": "sort",
               "role": "",
               "target": "sort",
@@ -273,7 +273,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
@@ -288,7 +288,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ind = we.lexsort((first_names, surnames))"
+              "text": "ind = fnp.lexsort((first_names, surnames))"
             },
             {
               "kind": "input",
@@ -356,7 +356,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ind = we.lexsort((b, a))  # Sort by `a`, then by `b`"
+              "text": "ind = fnp.lexsort((b, a))  # Sort by `a`, then by `b`"
             },
             {
               "kind": "input",
@@ -404,7 +404,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.argsort((b, a), kind='stable')"
+              "text": "fnp.argsort((b, a), kind='stable')"
             },
             {
               "kind": "output",
@@ -442,17 +442,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.array([(ai, bi) for ai, bi in zip(a, b)],"
+              "text": "x = fnp.array([(ai, bi) for ai, bi in zip(a, b)],"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "dtype = we.dtype([('x', int), ('y', int)]))"
+              "text": "dtype = fnp.dtype([('x', int), ('y', int)]))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.argsort(x)  # or we.argsort(x, order=('x', 'y'))"
+              "text": "fnp.argsort(x)  # or fnp.argsort(x, order=('x', 'y'))"
             },
             {
               "kind": "output",
@@ -483,17 +483,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "arr = we.asarray([b, a])"
+              "text": "arr = fnp.asarray([b, a])"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "ind2 = we.lexsort(arr)"
+              "text": "ind2 = fnp.lexsort(arr)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.testing.assert_equal(ind2, ind)"
+              "text": "fnp.testing.assert_equal(ind2, ind)"
             }
           ],
           "type": "doctest_block"
@@ -560,12 +560,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.testing.assert_equal(we.lexsort(arr, axis=0),"
+              "text": "fnp.testing.assert_equal(fnp.lexsort(arr, axis=0),"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "we.lexsort(arr, axis=-1))"
+              "text": "fnp.lexsort(arr, axis=-1))"
             }
           ],
           "type": "doctest_block"
@@ -625,7 +625,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.lexsort((x, y), axis=1)"
+              "text": "fnp.lexsort((x, y), axis=1)"
             },
             {
               "kind": "output",
@@ -672,7 +672,7 @@
             {
               "kind": "input",
               "prompt": "...",
-              "text": "print(we.lexsort((x[i], y[i])))"
+              "text": "print(fnp.lexsort((x[i], y[i])))"
             },
             {
               "kind": "output",
@@ -711,16 +711,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nsurnames =    ('Hertz',    'Galilei', 'Hertz')\n\nfirst_names = ('Heinrich', 'Galileo', 'Gustav')\n\nind = we.lexsort((first_names, surnames))\n\nind\n\n[surnames[i] + \", \" + first_names[i] for i in ind]\n\na = [1, 5, 1, 4, 3, 4, 4]  # First sequence\n\nb = [9, 4, 0, 4, 0, 2, 1]  # Second sequence\n\nind = we.lexsort((b, a))  # Sort by `a`, then by `b`\n\nind\n\n[(a[i], b[i]) for i in ind]\n\nwe.argsort((b, a), kind='stable')\n\nx = we.array([(ai, bi) for ai, bi in zip(a, b)],\n             dtype = we.dtype([('x', int), ('y', int)]))\n\nwe.argsort(x)  # or we.argsort(x, order=('x', 'y'))\n\narr = we.asarray([b, a])\n\nind2 = we.lexsort(arr)\n\nwe.testing.assert_equal(ind2, ind)\n\nwe.testing.assert_equal(we.lexsort(arr, axis=0),\n                        we.lexsort(arr, axis=-1))\n\nx = [[1, 2, 3, 4],\n     [4, 3, 2, 1],\n     [2, 1, 4, 3]]\n\ny = [[2, 2, 1, 1],\n     [1, 2, 1, 2],\n     [1, 1, 2, 1]]\n\nwe.lexsort((x, y), axis=1)\n\nfor i in range(3):\n    print(we.lexsort((x[i], y[i])))",
+    "code": "import flopscope as fnp\n\nsurnames =    ('Hertz',    'Galilei', 'Hertz')\n\nfirst_names = ('Heinrich', 'Galileo', 'Gustav')\n\nind = fnp.lexsort((first_names, surnames))\n\nind\n\n[surnames[i] + \", \" + first_names[i] for i in ind]\n\na = [1, 5, 1, 4, 3, 4, 4]  # First sequence\n\nb = [9, 4, 0, 4, 0, 2, 1]  # Second sequence\n\nind = fnp.lexsort((b, a))  # Sort by `a`, then by `b`\n\nind\n\n[(a[i], b[i]) for i in ind]\n\nfnp.argsort((b, a), kind='stable')\n\nx = fnp.array([(ai, bi) for ai, bi in zip(a, b)],\n             dtype = fnp.dtype([('x', int), ('y', int)]))\n\nfnp.argsort(x)  # or fnp.argsort(x, order=('x', 'y'))\n\narr = fnp.asarray([b, a])\n\nind2 = fnp.lexsort(arr)\n\nfnp.testing.assert_equal(ind2, ind)\n\nfnp.testing.assert_equal(fnp.lexsort(arr, axis=0),\n                        fnp.lexsort(arr, axis=-1))\n\nx = [[1, 2, 3, 4],\n     [4, 3, 2, 1],\n     [2, 1, 4, 3]]\n\ny = [[2, 2, 1, 1],\n     [1, 2, 1, 2],\n     [1, 1, 2, 1]]\n\nfnp.lexsort((x, y), axis=1)\n\nfor i in range(3):\n    print(fnp.lexsort((x[i], y[i])))",
     "output": "array([1, 2, 0])\n\n['Galilei, Galileo', 'Hertz, Gustav', 'Hertz, Heinrich']\n\narray([2, 0, 4, 6, 5, 3, 1])\n\n[(1, 0), (1, 9), (3, 0), (4, 1), (4, 2), (4, 4), (5, 4)]\n\narray([[2, 4, 6, 5, 1, 3, 0],\n       [0, 2, 4, 3, 5, 6, 1]])\n\narray([2, 0, 4, 6, 5, 3, 1])\n\narray([[2, 3, 0, 1],\n       [2, 0, 3, 1],\n       [1, 0, 3, 2]])\n\n[2 3 0 1]\n[2 0 3 1]\n[1 0 3 2]",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.lexsort",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L88",
   "href": "/docs/api/ops/lexsort/",
   "module": "numpy",
   "name": "lexsort",
   "next": {
     "href": "/docs/api/ops/linalg-cholesky/",
-    "label": "we.linalg.cholesky"
+    "label": "fnp.linalg.cholesky"
   },
   "notes": "Multi-key sort; cost = k*n*ceil(log2(n)).",
   "notes_sections": [],
@@ -748,7 +751,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/less_equal/",
-    "label": "we.less_equal"
+    "label": "fnp.less_equal"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html",
@@ -772,7 +775,7 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/argsort",
-      "label": "we.argsort",
+      "label": "fnp.argsort",
       "original_target": "argsort",
       "role": "",
       "target": "argsort",
@@ -804,19 +807,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/sort",
-      "label": "we.sort",
+      "label": "fnp.sort",
       "original_target": "sort",
       "role": "",
       "target": "sort",
       "unresolved": false
     }
   ],
-  "signature": "we.lexsort(keys, axis=-1)",
+  "signature": "fnp.lexsort(keys, axis=-1)",
   "slug": "lexsort",
   "summary": "Perform an indirect stable sort using a sequence of keys.",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.lexsort",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L88"
+  "weight": 1.0
 }

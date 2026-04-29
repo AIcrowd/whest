@@ -97,7 +97,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.noncentral_chisquare`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.noncentral_chisquare`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -202,7 +202,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(df, nonc).size"
+                      "text": "fnp.broadcast(df, nonc).size"
                     },
                     {
                       "kind": "text",
@@ -260,7 +260,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(df, nonc).size"
+                  "text": "fnp.broadcast(df, nonc).size"
                 },
                 {
                   "kind": "text",
@@ -404,7 +404,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "values = plt.hist(we.random.noncentral_chisquare(3, 20, 100000),"
+              "text": "values = plt.hist(fnp.random.noncentral_chisquare(3, 20, 100000),"
             },
             {
               "kind": "input",
@@ -438,22 +438,22 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "values = plt.hist(we.random.noncentral_chisquare(3, .0000001, 100000),"
+              "text": "values = plt.hist(fnp.random.noncentral_chisquare(3, .0000001, 100000),"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "bins=we.arange(0., 25, .1), density=True)"
+              "text": "bins=fnp.arange(0., 25, .1), density=True)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "values2 = plt.hist(we.random.chisquare(3, 100000),"
+              "text": "values2 = plt.hist(fnp.random.chisquare(3, 100000),"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "bins=we.arange(0., 25, .1), density=True)"
+              "text": "bins=fnp.arange(0., 25, .1), density=True)"
             },
             {
               "kind": "input",
@@ -487,7 +487,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "values = plt.hist(we.random.noncentral_chisquare(3, 20, 100000),"
+              "text": "values = plt.hist(fnp.random.noncentral_chisquare(3, 20, 100000),"
             },
             {
               "kind": "input",
@@ -522,16 +522,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import matplotlib.pyplot as plt\n\nvalues = plt.hist(we.random.noncentral_chisquare(3, 20, 100000),\n                  bins=200, density=True)\n\nplt.show()\n\nplt.figure()\n\nvalues = plt.hist(we.random.noncentral_chisquare(3, .0000001, 100000),\n                  bins=we.arange(0., 25, .1), density=True)\n\nvalues2 = plt.hist(we.random.chisquare(3, 100000),\n                   bins=we.arange(0., 25, .1), density=True)\n\nplt.plot(values[1][0:-1], values[0]-values2[0], 'ob')\n\nplt.show()\n\nplt.figure()\n\nvalues = plt.hist(we.random.noncentral_chisquare(3, 20, 100000),\n                  bins=200, density=True)\n\nplt.show()",
+    "code": "import matplotlib.pyplot as plt\n\nvalues = plt.hist(fnp.random.noncentral_chisquare(3, 20, 100000),\n                  bins=200, density=True)\n\nplt.show()\n\nplt.figure()\n\nvalues = plt.hist(fnp.random.noncentral_chisquare(3, .0000001, 100000),\n                  bins=fnp.arange(0., 25, .1), density=True)\n\nvalues2 = plt.hist(fnp.random.chisquare(3, 100000),\n                   bins=fnp.arange(0., 25, .1), density=True)\n\nplt.plot(values[1][0:-1], values[0]-values2[0], 'ob')\n\nplt.show()\n\nplt.figure()\n\nvalues = plt.hist(fnp.random.noncentral_chisquare(3, 20, 100000),\n                  bins=200, density=True)\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.noncentral_chisquare",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-noncentral_chisquare/",
   "module": "numpy.random",
   "name": "random.noncentral_chisquare",
   "next": {
     "href": "/docs/api/ops/random-noncentral_f/",
-    "label": "we.random.noncentral_f"
+    "label": "fnp.random.noncentral_f"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -560,7 +563,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``df`` and ``nonc`` are both scalars.",
-        "Otherwise, ``we.broadcast(df, nonc).size`` samples are drawn."
+        "Otherwise, ``fnp.broadcast(df, nonc).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -568,7 +571,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-negative_binomial/",
-    "label": "we.random.negative_binomial"
+    "label": "fnp.random.negative_binomial"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.noncentral_chisquare.html",
@@ -599,12 +602,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.noncentral_chisquare(df, nonc, size=None)",
+  "signature": "fnp.random.noncentral_chisquare(df, nonc, size=None)",
   "slug": "random-noncentral_chisquare",
   "summary": "Draw samples from a noncentral chi-square distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.noncentral_chisquare",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

@@ -5,11 +5,11 @@ from unittest.mock import patch
 import numpy
 import pytest
 
-from whest._budget import BudgetContext
-from whest._einsum import einsum, einsum_path
-from whest._perm_group import SymmetryGroup
-from whest._symmetric import SymmetricTensor, as_symmetric
-from whest.errors import BudgetExhaustedError
+from flopscope._budget import BudgetContext
+from flopscope._einsum import einsum, einsum_path
+from flopscope._perm_group import SymmetryGroup
+from flopscope._symmetric import SymmetricTensor, as_symmetric
+from flopscope.errors import BudgetExhaustedError
 
 
 class TestMultiOperandEinsum:
@@ -313,7 +313,7 @@ class TestOutputSymmetryWrapping:
 
 class TestPathInfoStepInfo:
     def test_step_info_has_symmetry_fields(self):
-        from whest._opt_einsum._contract import StepInfo
+        from flopscope._opt_einsum._contract import StepInfo
 
         A = numpy.ones((5, 5))
         B = numpy.ones((5, 5))
@@ -536,10 +536,10 @@ class TestSymmetricBlasClassification:
     def test_symmetric_matmul_gets_symm_label(self):
         """einsum('ij,jk->ik', X, X) with X declared symmetric should
         report blas_type='SYMM' on the single contraction step, not 'GEMM'."""
-        import whest as we
+        import flopscope as flops
 
         n = 10
-        X = we.as_symmetric(numpy.ones((n, n)), symmetry=(0, 1))
+        X = flops.as_symmetric(numpy.ones((n, n)), symmetry=(0, 1))
         _, info = einsum_path("ij,jk->ik", X, X)
         assert len(info.steps) == 1
         assert info.steps[0].blas_type == "SYMM", (

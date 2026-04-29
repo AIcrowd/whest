@@ -89,7 +89,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.rayleigh`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.rayleigh`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -164,7 +164,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.array(scale).size"
+                        "text": "fnp.array(scale).size"
                       },
                       {
                         "kind": "text",
@@ -214,7 +214,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.array(scale).size"
+                    "text": "fnp.array(scale).size"
                   },
                   {
                     "kind": "text",
@@ -355,7 +355,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "values = hist(we.random.rayleigh(3, 100000), bins=200, density=True)"
+                "text": "values = hist(fnp.random.rayleigh(3, 100000), bins=200, density=True)"
               }
             ],
             "type": "doctest_block"
@@ -379,12 +379,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "modevalue = we.sqrt(2 / we.pi) * meanvalue"
+                "text": "modevalue = fnp.sqrt(2 / fnp.pi) * meanvalue"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.rayleigh(modevalue, 1000000)"
+                "text": "s = fnp.random.rayleigh(modevalue, 1000000)"
               }
             ],
             "type": "doctest_block"
@@ -421,20 +421,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.rayleigh",
     "module": "numpy.random",
     "name": "random.rayleigh",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.rayleigh",
-    "signature": "we.random.rayleigh(scale=1.0, size=None)",
+    "signature": "fnp.random.rayleigh(scale=1.0, size=None)",
     "status": "supported",
     "summary": "Draw samples from a Rayleigh distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.rayleigh"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-rayleigh",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.rayleigh.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.rayleigh.html"
   }
 }

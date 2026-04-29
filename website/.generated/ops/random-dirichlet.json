@@ -92,7 +92,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.dirichlet`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.dirichlet`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -500,7 +500,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.dirichlet((10, 5, 3), 20).transpose()"
+              "text": "s = fnp.random.dirichlet((10, 5, 3), 20).transpose()"
             }
           ],
           "type": "doctest_block"
@@ -559,16 +559,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "s = we.random.dirichlet((10, 5, 3), 20).transpose()\n\nimport matplotlib.pyplot as plt\n\nplt.barh(range(20), s[0])\n\nplt.barh(range(20), s[1], left=s[0], color='g')\n\nplt.barh(range(20), s[2], left=s[0]+s[1], color='r')\n\nplt.title(\"Lengths of Strings\")",
+    "code": "s = fnp.random.dirichlet((10, 5, 3), 20).transpose()\n\nimport matplotlib.pyplot as plt\n\nplt.barh(range(20), s[0])\n\nplt.barh(range(20), s[1], left=s[0], color='g')\n\nplt.barh(range(20), s[2], left=s[0]+s[1], color='r')\n\nplt.title(\"Lengths of Strings\")",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.dirichlet",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-dirichlet/",
   "module": "numpy.random",
   "name": "random.dirichlet",
   "next": {
     "href": "/docs/api/ops/random-exponential/",
-    "label": "we.random.exponential"
+    "label": "fnp.random.exponential"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -600,7 +603,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-default_rng/",
-    "label": "we.random.default_rng"
+    "label": "fnp.random.default_rng"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.dirichlet.html",
@@ -631,12 +634,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.dirichlet(alpha, size=None)",
+  "signature": "fnp.random.dirichlet(alpha, size=None)",
   "slug": "random-dirichlet",
   "summary": "Draw samples from the Dirichlet distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.dirichlet",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

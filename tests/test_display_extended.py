@@ -8,8 +8,8 @@ from unittest.mock import patch
 
 import pytest
 
-from whest._budget import BudgetContext
-from whest._display import (
+from flopscope._budget import BudgetContext
+from flopscope._display import (
     _format_flops,
     _is_global_default_ns,
     _pct,
@@ -147,7 +147,7 @@ def test_budget_summary_plain_text_prints(capsys):
     with BudgetContext(flop_budget=1000, namespace="summary_test", quiet=True) as ctx:
         ctx.deduct("op1", flop_cost=100, subscripts=None, shapes=())
 
-    # Patch away rich so we get the plain text path
+    # Patch away rich so fnp get the plain text path
     with patch.dict(
         "sys.modules",
         {"rich": None, "rich.console": None, "rich.panel": None},
@@ -156,15 +156,15 @@ def test_budget_summary_plain_text_prints(capsys):
     # budget_summary prints and returns None in non-IPython
     assert result is None
     captured = capsys.readouterr()
-    assert "summary_test" in captured.out or "whest" in captured.out
+    assert "summary_test" in captured.out or "flopscope" in captured.out
     assert "By namespace:" not in captured.out
 
 
 def test_budget_summary_by_namespace_prints_section_only_when_requested(capsys):
-    import whest as we
+    import flopscope as flops
 
     with BudgetContext(flop_budget=1000, namespace="predict", quiet=True) as ctx:
-        with we.namespace("precompute"):
+        with flops.namespace("precompute"):
             with ctx.deduct("op1", flop_cost=100, subscripts=None, shapes=()):
                 pass
 

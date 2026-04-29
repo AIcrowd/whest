@@ -5,17 +5,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'whest',
+  title: 'flopscope',
   description:
     'A NumPy-compatible math library that counts every FLOP analytically, so compute budgets stop being guesswork.',
 };
 
 // =========================================================================
-// Whest Design System — Home page, paper-register edition.
+// Flopscope Design System — Home page, paper-register edition.
 // Pure white canvas, left-aligned editorial layout, Newsreader display
 // serif for headings + wordmark, Source Serif 4 for body prose, Inter for
 // UI chrome + kickers, JetBrains Mono for code. Code palette derives from
-// the same tokens as the Shiki `whest-paper` theme in lib/shiki-themes.ts.
+// the same tokens as the Shiki `flopscope-paper` theme in lib/shiki-themes.ts.
 // =========================================================================
 
 const features = [
@@ -39,7 +39,7 @@ const features = [
 const navCards = [
   {
     title: 'Get started',
-    desc: 'Install whest and create your first FLOP budget.',
+    desc: 'Install flopscope and create your first FLOP budget.',
     link: '/docs/getting-started/installation',
   },
   {
@@ -69,7 +69,7 @@ const navCards = [
   },
 ];
 
-const installCode = 'uv add git+https://github.com/AIcrowd/whest.git';
+const installCode = 'uv add git+https://github.com/AIcrowd/flopscope.git';
 
 const numpyCode = `import numpy as np
 
@@ -91,7 +91,7 @@ for i, W in enumerate(weights):
         h = np.maximum(h, 0)
 # Total FLOPs? No idea.`;
 
-const whestCode = `import whest as we
+const flopscopeCode = `import flopscope as we
 
 depth, width = 5, 256
 
@@ -111,8 +111,8 @@ for i, W in enumerate(weights):
         h = we.maximum(h, 0)
 we.budget_summary()  # 984,321 FLOPs`;
 
-// Whest-paper-tuned syntax palette. These are the same hex values the
-// Shiki `whestLight` theme emits (see lib/shiki-themes.ts) — using them
+// Flopscope-paper-tuned syntax palette. These are the same hex values the
+// Shiki `flopscopeLight` theme emits (see lib/shiki-themes.ts) — using them
 // directly here lets us keep the per-line typing animation while still
 // rendering with the design system's code colors.
 const TOKENS = {
@@ -132,7 +132,7 @@ type Token = {
 
 const installLine: Token[] = [
   { text: 'uv', className: TOKENS.func },
-  { text: ' add git+https://github.com/AIcrowd/whest.git', className: TOKENS.string },
+  { text: ' add git+https://github.com/AIcrowd/flopscope.git', className: TOKENS.string },
 ];
 
 const numpyLines: Token[][] = [
@@ -224,10 +224,10 @@ const numpyLines: Token[][] = [
   [{ text: '# Total FLOPs? No idea.', className: TOKENS.muted }],
 ];
 
-const whestLines: Token[][] = [
+const flopscopeLines: Token[][] = [
   [
     { text: 'import', className: TOKENS.keyword },
-    { text: ' whest ', className: TOKENS.base },
+    { text: ' flopscope ', className: TOKENS.base },
     { text: 'as', className: TOKENS.keyword },
     { text: ' we', className: TOKENS.base },
   ],
@@ -358,7 +358,7 @@ function TerminalLine({
 }
 
 // Base unstyled wordmark used in the big hero. Colors + fonts are supplied
-// by .whest-wordmark / .whest-wordmark__dot utilities in global.css.
+// by .flopscope-wordmark / .flopscope-wordmark__dot utilities in global.css.
 function HeroHeadline({ children, dot }: { children: string; dot?: string }) {
   return (
     <h1
@@ -402,7 +402,7 @@ export default function HomePage() {
             style={{ letterSpacing: '0.2em' }}
           >
             <span aria-hidden className="mr-2 inline-block h-px w-8 align-middle bg-gray-300 dark:bg-gray-600" />
-            WHEST · A FLOP-COUNTING NUMPY
+            FLOPSCOPE · A FLOP-COUNTING NUMPY
           </div>
 
           <HeroHeadline>Count every FLOP</HeroHeadline>
@@ -447,7 +447,7 @@ export default function HomePage() {
           <div className="row-start-1 flex items-center justify-center self-center lg:col-start-2 lg:row-start-auto lg:justify-self-center">
             <Image
               src={withBasePath('/logo.png')}
-              alt="whest"
+              alt="flopscope"
               width={280}
               height={150}
               priority
@@ -503,7 +503,7 @@ export default function HomePage() {
         ))}
       </section>
 
-      {/* 3. Diptych — NumPy vs whest */}
+      {/* 3. Diptych — NumPy vs flopscope */}
       <section className="mx-auto w-full max-w-[var(--content-max)] px-6 pb-20 md:px-8">
         <div className="max-w-[var(--prose-max)]">
           <div
@@ -548,8 +548,8 @@ export default function HomePage() {
             </HomeCodeTerminal>
           </div>
           <div className="text-left">
-            <HomeCodeTerminal copyText={whestCode} label="Whest" labelAccent>
-              {whestLines.map((tokens, index) => (
+            <HomeCodeTerminal copyText={flopscopeCode} label="Flopscope" labelAccent>
+              {flopscopeLines.map((tokens, index) => (
                 <TerminalLine key={index} tokens={tokens} animated delayMs={index * 140} />
               ))}
             </HomeCodeTerminal>
@@ -642,8 +642,8 @@ export default function HomePage() {
           lineHeight: 1.6,
         }}
       >
-        <span className="whest-wordmark not-italic text-[inherit]" aria-label="Whest.">
-          Whest<span className="whest-wordmark__dot">.</span>
+        <span className="flopscope-wordmark not-italic text-[inherit]" aria-label="Flopscope.">
+          Flopscope<span className="flopscope-wordmark__dot">.</span>
         </span>{' '}
         is built and maintained by{' '}
         <a

@@ -90,7 +90,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.wald`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.wald`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -198,7 +198,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(mean, scale).size"
+                      "text": "fnp.broadcast(mean, scale).size"
                     },
                     {
                       "kind": "text",
@@ -259,7 +259,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(mean, scale).size"
+                  "text": "fnp.broadcast(mean, scale).size"
                 },
                 {
                   "kind": "text",
@@ -405,7 +405,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "h = plt.hist(we.random.wald(3, 2, 100000), bins=200, density=True)"
+              "text": "h = plt.hist(fnp.random.wald(3, 2, 100000), bins=200, density=True)"
             },
             {
               "kind": "input",
@@ -443,16 +443,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import matplotlib.pyplot as plt\n\nh = plt.hist(we.random.wald(3, 2, 100000), bins=200, density=True)\n\nplt.show()",
+    "code": "import matplotlib.pyplot as plt\n\nh = plt.hist(fnp.random.wald(3, 2, 100000), bins=200, density=True)\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.wald",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-wald/",
   "module": "numpy.random",
   "name": "random.wald",
   "next": {
     "href": "/docs/api/ops/random-weibull/",
-    "label": "we.random.weibull"
+    "label": "fnp.random.weibull"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -481,7 +484,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``mean`` and ``scale`` are both scalars.",
-        "Otherwise, ``we.broadcast(mean, scale).size`` samples are drawn."
+        "Otherwise, ``fnp.broadcast(mean, scale).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -489,7 +492,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-vonmises/",
-    "label": "we.random.vonmises"
+    "label": "fnp.random.vonmises"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.wald.html",
@@ -520,12 +523,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.wald(mean, scale, size=None)",
+  "signature": "fnp.random.wald(mean, scale, size=None)",
   "slug": "random-wald",
   "summary": "Draw samples from a Wald, or inverse Gaussian, distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.wald",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

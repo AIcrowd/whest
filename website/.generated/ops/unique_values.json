@@ -38,7 +38,7 @@
         },
         {
           "language": null,
-          "text": "we.unique(x, equal_nan=False)",
+          "text": "fnp.unique(x, equal_nan=False)",
           "type": "literal_block"
         }
       ],
@@ -124,7 +124,7 @@
               ],
               "external_url": "",
               "href": "/docs/api/ops/unique",
-              "label": "we.unique",
+              "label": "fnp.unique",
               "original_target": "unique",
               "role": "",
               "target": "unique",
@@ -143,12 +143,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "import whest as we"
+              "text": "import flopscope as fnp"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.unique_values([1, 1, 2])"
+              "text": "fnp.unique_values([1, 1, 2])"
             },
             {
               "kind": "output",
@@ -172,16 +172,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import whest as we\n\nwe.unique_values([1, 1, 2])",
+    "code": "import flopscope as fnp\n\nfnp.unique_values([1, 1, 2])",
     "output": "array([1, 2])",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.unique_values",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L337",
   "href": "/docs/api/ops/unique_values/",
   "module": "numpy",
   "name": "unique_values",
   "next": {
     "href": "/docs/api/ops/unpackbits/",
-    "label": "we.unpackbits"
+    "label": "fnp.unpackbits"
   },
   "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
   "notes_sections": [],
@@ -197,7 +200,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/unique_inverse/",
-    "label": "we.unique_inverse"
+    "label": "fnp.unique_inverse"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.unique_values.html",
@@ -221,19 +224,16 @@
       ],
       "external_url": "",
       "href": "/docs/api/ops/unique",
-      "label": "we.unique",
+      "label": "fnp.unique",
       "original_target": "unique",
       "role": "",
       "target": "unique",
       "unresolved": false
     }
   ],
-  "signature": "we.unique_values(x, /)",
+  "signature": "fnp.unique_values(x, /)",
   "slug": "unique_values",
   "summary": "Returns the unique elements of an input array `x`.",
   "upstream_source_url": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L573",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.unique_values",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/_sorting_ops.py#L337"
+  "weight": 1.0
 }

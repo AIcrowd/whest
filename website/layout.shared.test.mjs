@@ -10,9 +10,9 @@ test('shared layout nav uses the wordmark, not a raster logo', async () => {
   const file = path.join(websiteRoot, 'lib', 'layout.shared.tsx');
   const source = await readFile(file, 'utf8');
 
-  assert.match(source, /whest-wordmark/);
+  assert.match(source, /flopscope-wordmark/);
   assert.doesNotMatch(source, /src="\/logo\.png"/);
-  assert.doesNotMatch(source, /src="\/whest\/logo\.png"/);
+  assert.doesNotMatch(source, /src="\/flopscope\/logo\.png"/);
 });
 
 test('root layout metadata wires the favicon through withBasePath', async () => {

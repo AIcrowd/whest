@@ -129,7 +129,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.weibull`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.weibull`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -204,7 +204,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(a).size"
+                      "text": "fnp.array(a).size"
                     },
                     {
                       "kind": "text",
@@ -254,7 +254,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(a).size"
+                  "text": "fnp.array(a).size"
                 },
                 {
                   "kind": "text",
@@ -503,7 +503,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.weibull(a, 1000)"
+              "text": "s = fnp.random.weibull(a, 1000)"
             }
           ],
           "type": "doctest_block"
@@ -527,7 +527,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(1,100.)/50."
+              "text": "x = fnp.arange(1,100.)/50."
             },
             {
               "kind": "input",
@@ -537,7 +537,7 @@
             {
               "kind": "input",
               "prompt": "...",
-              "text": "return (a / n) * (x / n)**(a - 1) * we.exp(-(x / n)**a)"
+              "text": "return (a / n) * (x / n)**(a - 1) * fnp.exp(-(x / n)**a)"
             }
           ],
           "type": "doctest_block"
@@ -547,12 +547,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "count, bins, ignored = plt.hist(we.random.weibull(5.,1000))"
+              "text": "count, bins, ignored = plt.hist(fnp.random.weibull(5.,1000))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.arange(1,100.)/50."
+              "text": "x = fnp.arange(1,100.)/50."
             },
             {
               "kind": "input",
@@ -600,16 +600,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "a = 5. # shape\n\ns = we.random.weibull(a, 1000)\n\nimport matplotlib.pyplot as plt\n\nx = we.arange(1,100.)/50.\n\ndef weib(x,n,a):\n    return (a / n) * (x / n)**(a - 1) * we.exp(-(x / n)**a)\n\ncount, bins, ignored = plt.hist(we.random.weibull(5.,1000))\n\nx = we.arange(1,100.)/50.\n\nscale = count.max()/weib(x, 1., 5.).max()\n\nplt.plot(x, weib(x, 1., 5.)*scale)\n\nplt.show()",
+    "code": "a = 5. # shape\n\ns = fnp.random.weibull(a, 1000)\n\nimport matplotlib.pyplot as plt\n\nx = fnp.arange(1,100.)/50.\n\ndef weib(x,n,a):\n    return (a / n) * (x / n)**(a - 1) * fnp.exp(-(x / n)**a)\n\ncount, bins, ignored = plt.hist(fnp.random.weibull(5.,1000))\n\nx = fnp.arange(1,100.)/50.\n\nscale = count.max()/weib(x, 1., 5.).max()\n\nplt.plot(x, weib(x, 1., 5.)*scale)\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.weibull",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-weibull/",
   "module": "numpy.random",
   "name": "random.weibull",
   "next": {
     "href": "/docs/api/ops/random-zipf/",
-    "label": "we.random.zipf"
+    "label": "fnp.random.zipf"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -634,7 +637,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``a`` is a scalar.  Otherwise,",
-        "``we.array(a).size`` samples are drawn."
+        "``fnp.array(a).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -642,7 +645,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-wald/",
-    "label": "we.random.wald"
+    "label": "fnp.random.wald"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.weibull.html",
@@ -717,12 +720,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.weibull(a, size=None)",
+  "signature": "fnp.random.weibull(a, size=None)",
   "slug": "random-weibull",
   "summary": "Draw samples from a Weibull distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.weibull",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

@@ -72,7 +72,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.bytes`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.bytes`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -194,7 +194,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "we.random.bytes(10)"
+              "text": "fnp.random.bytes(10)"
             },
             {
               "kind": "output",
@@ -218,16 +218,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "we.random.bytes(10)",
+    "code": "fnp.random.bytes(10)",
     "output": "b' eh\\x85\\x022SZ\\xbf\\xa4' #random",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.bytes",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L417",
   "href": "/docs/api/ops/random-bytes/",
   "module": "numpy.random",
   "name": "random.bytes",
   "next": {
     "href": "/docs/api/ops/random-chisquare/",
-    "label": "we.random.chisquare"
+    "label": "fnp.random.chisquare"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -243,7 +246,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-binomial/",
-    "label": "we.random.binomial"
+    "label": "fnp.random.binomial"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.bytes.html",
@@ -274,12 +277,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.bytes(length)",
+  "signature": "fnp.random.bytes(length)",
   "slug": "random-bytes",
   "summary": "Return random bytes.",
   "upstream_source_url": "",
-  "weight": 1.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.bytes",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L417"
+  "weight": 1.0
 }

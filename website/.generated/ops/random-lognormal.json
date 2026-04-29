@@ -81,7 +81,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.lognormal`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.lognormal`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -189,7 +189,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(mean, sigma).size"
+                      "text": "fnp.broadcast(mean, sigma).size"
                     },
                     {
                       "kind": "text",
@@ -250,7 +250,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(mean, sigma).size"
+                  "text": "fnp.broadcast(mean, sigma).size"
                 },
                 {
                   "kind": "text",
@@ -455,7 +455,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "s = we.random.lognormal(mu, sigma, 1000)"
+              "text": "s = fnp.random.lognormal(mu, sigma, 1000)"
             }
           ],
           "type": "doctest_block"
@@ -489,17 +489,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linspace(min(bins), max(bins), 10000)"
+              "text": "x = fnp.linspace(min(bins), max(bins), 10000)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "pdf = (we.exp(-(we.log(x) - mu)**2 / (2 * sigma**2))"
+              "text": "pdf = (fnp.exp(-(fnp.log(x) - mu)**2 / (2 * sigma**2))"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "/ (x * sigma * we.sqrt(2 * we.pi)))"
+              "text": "/ (x * sigma * fnp.sqrt(2 * fnp.pi)))"
             }
           ],
           "type": "doctest_block"
@@ -558,12 +558,12 @@
             {
               "kind": "input",
               "prompt": "...",
-              "text": "a = 10. + we.random.standard_normal(100)"
+              "text": "a = 10. + fnp.random.standard_normal(100)"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "b.append(we.prod(a))"
+              "text": "b.append(fnp.prod(a))"
             }
           ],
           "type": "doctest_block"
@@ -573,7 +573,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "b = we.array(b) / we.min(b) # scale values to be positive"
+              "text": "b = fnp.array(b) / fnp.min(b) # scale values to be positive"
             },
             {
               "kind": "input",
@@ -583,12 +583,12 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "sigma = we.std(we.log(b))"
+              "text": "sigma = fnp.std(fnp.log(b))"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "mu = we.mean(we.log(b))"
+              "text": "mu = fnp.mean(fnp.log(b))"
             }
           ],
           "type": "doctest_block"
@@ -598,17 +598,17 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "x = we.linspace(min(bins), max(bins), 10000)"
+              "text": "x = fnp.linspace(min(bins), max(bins), 10000)"
             },
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "pdf = (we.exp(-(we.log(x) - mu)**2 / (2 * sigma**2))"
+              "text": "pdf = (fnp.exp(-(fnp.log(x) - mu)**2 / (2 * sigma**2))"
             },
             {
               "kind": "input",
               "prompt": "...",
-              "text": "/ (x * sigma * we.sqrt(2 * we.pi)))"
+              "text": "/ (x * sigma * fnp.sqrt(2 * fnp.pi)))"
             }
           ],
           "type": "doctest_block"
@@ -652,16 +652,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "mu, sigma = 3., 1. # mean and standard deviation\n\ns = we.random.lognormal(mu, sigma, 1000)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, 100, density=True, align='mid')\n\nx = we.linspace(min(bins), max(bins), 10000)\n\npdf = (we.exp(-(we.log(x) - mu)**2 / (2 * sigma**2))\n       / (x * sigma * we.sqrt(2 * we.pi)))\n\nplt.plot(x, pdf, linewidth=2, color='r')\n\nplt.axis('tight')\n\nplt.show()\n\nb = []\n\nfor i in range(1000):\n   a = 10. + we.random.standard_normal(100)\n   b.append(we.prod(a))\n\nb = we.array(b) / we.min(b) # scale values to be positive\n\ncount, bins, ignored = plt.hist(b, 100, density=True, align='mid')\n\nsigma = we.std(we.log(b))\n\nmu = we.mean(we.log(b))\n\nx = we.linspace(min(bins), max(bins), 10000)\n\npdf = (we.exp(-(we.log(x) - mu)**2 / (2 * sigma**2))\n       / (x * sigma * we.sqrt(2 * we.pi)))\n\nplt.plot(x, pdf, color='r', linewidth=2)\n\nplt.show()",
+    "code": "mu, sigma = 3., 1. # mean and standard deviation\n\ns = fnp.random.lognormal(mu, sigma, 1000)\n\nimport matplotlib.pyplot as plt\n\ncount, bins, ignored = plt.hist(s, 100, density=True, align='mid')\n\nx = fnp.linspace(min(bins), max(bins), 10000)\n\npdf = (fnp.exp(-(fnp.log(x) - mu)**2 / (2 * sigma**2))\n       / (x * sigma * fnp.sqrt(2 * fnp.pi)))\n\nplt.plot(x, pdf, linewidth=2, color='r')\n\nplt.axis('tight')\n\nplt.show()\n\nb = []\n\nfor i in range(1000):\n   a = 10. + fnp.random.standard_normal(100)\n   b.append(fnp.prod(a))\n\nb = fnp.array(b) / fnp.min(b) # scale values to be positive\n\ncount, bins, ignored = plt.hist(b, 100, density=True, align='mid')\n\nsigma = fnp.std(fnp.log(b))\n\nmu = fnp.mean(fnp.log(b))\n\nx = fnp.linspace(min(bins), max(bins), 10000)\n\npdf = (fnp.exp(-(fnp.log(x) - mu)**2 / (2 * sigma**2))\n       / (x * sigma * fnp.sqrt(2 * fnp.pi)))\n\nplt.plot(x, pdf, color='r', linewidth=2)\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.lognormal",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-lognormal/",
   "module": "numpy.random",
   "name": "random.lognormal",
   "next": {
     "href": "/docs/api/ops/random-logseries/",
-    "label": "we.random.logseries"
+    "label": "fnp.random.logseries"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -691,7 +694,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``mean`` and ``sigma`` are both scalars.",
-        "Otherwise, ``we.broadcast(mean, sigma).size`` samples are drawn."
+        "Otherwise, ``fnp.broadcast(mean, sigma).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -699,7 +702,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-logistic/",
-    "label": "we.random.logistic"
+    "label": "fnp.random.logistic"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.lognormal.html",
@@ -746,12 +749,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.lognormal(mean=0.0, sigma=1.0, size=None)",
+  "signature": "fnp.random.lognormal(mean=0.0, sigma=1.0, size=None)",
   "slug": "random-lognormal",
   "summary": "Draw samples from a log-normal distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.lognormal",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

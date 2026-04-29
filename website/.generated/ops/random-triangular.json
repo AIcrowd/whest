@@ -89,7 +89,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.triangular`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.triangular`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -256,7 +256,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.broadcast(left, mode, right).size"
+                      "text": "fnp.broadcast(left, mode, right).size"
                     },
                     {
                       "kind": "text",
@@ -322,7 +322,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.broadcast(left, mode, right).size"
+                  "text": "fnp.broadcast(left, mode, right).size"
                 },
                 {
                   "kind": "text",
@@ -458,7 +458,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "h = plt.hist(we.random.triangular(-3, 0, 8, 100000), bins=200,"
+              "text": "h = plt.hist(fnp.random.triangular(-3, 0, 8, 100000), bins=200,"
             },
             {
               "kind": "input",
@@ -493,16 +493,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "import matplotlib.pyplot as plt\n\nh = plt.hist(we.random.triangular(-3, 0, 8, 100000), bins=200,\n             density=True)\n\nplt.show()",
+    "code": "import matplotlib.pyplot as plt\n\nh = plt.hist(fnp.random.triangular(-3, 0, 8, 100000), bins=200,\n             density=True)\n\nplt.show()",
     "output": "",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.triangular",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-triangular/",
   "module": "numpy.random",
   "name": "random.triangular",
   "next": {
     "href": "/docs/api/ops/random-uniform/",
-    "label": "we.random.uniform"
+    "label": "fnp.random.uniform"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [
@@ -539,7 +542,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``left``, ``mode``, and ``right``",
-        "are all scalars.  Otherwise, ``we.broadcast(left, mode, right).size``",
+        "are all scalars.  Otherwise, ``fnp.broadcast(left, mode, right).size``",
         "samples are drawn."
       ],
       "name": "size",
@@ -548,7 +551,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-standard_t/",
-    "label": "we.random.standard_t"
+    "label": "fnp.random.standard_t"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.triangular.html",
@@ -579,12 +582,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.triangular(left, mode, right, size=None)",
+  "signature": "fnp.random.triangular(left, mode, right, size=None)",
   "slug": "random-triangular",
   "summary": "Draw samples from the triangular distribution over the interval ``[left, right]``.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.triangular",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

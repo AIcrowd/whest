@@ -9,46 +9,13 @@
             "inline": [
               {
                 "kind": "text",
-                "text": "Probability density function at "
-              },
-              {
-                "kind": "emphasis",
-                "text": "x"
-              },
-              {
-                "kind": "text",
-                "text": "."
+                "text": "Probability density function at x of the given RV."
               }
             ],
             "type": "paragraph"
           }
         ],
         "title": "Summary"
-      },
-      {
-        "blocks": [
-          {
-            "inline": [
-              {
-                "kind": "text",
-                "text": "Equivalent to "
-              },
-              {
-                "external_url": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.pdf(x, s, loc, scale).html",
-                "href": "",
-                "kind": "link",
-                "target": "stats.lognorm.pdf(x, s, loc, scale)",
-                "text": "scipy.stats.lognorm.pdf(x, s, loc, scale)"
-              },
-              {
-                "kind": "text",
-                "text": "."
-              }
-            ],
-            "type": "paragraph"
-          }
-        ],
-        "title": "Extended Summary"
       },
       {
         "blocks": [
@@ -60,7 +27,7 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Quantiles."
+                        "text": "quantiles"
                       }
                     ],
                     "type": "paragraph"
@@ -70,7 +37,7 @@
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Quantiles."
+                    "text": "quantiles"
                   }
                 ],
                 "name": "x",
@@ -82,20 +49,20 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Shape parameter (std dev of the underlying normal)."
+                        "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
                       }
                     ],
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "float",
+                "data_type": "array_like",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Shape parameter (std dev of the underlying normal)."
+                    "text": "The shape parameter(s) for the distribution (see docstring of the\ninstance object for more information)"
                   }
                 ],
-                "name": "s",
+                "name": "arg1, arg2, arg3,...",
                 "type": "field_list"
               },
               {
@@ -104,17 +71,17 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Location parameter (default 0)."
+                        "text": "location parameter (default=0)"
                       }
                     ],
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "float, optional",
+                "data_type": "array_like, optional",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Location parameter (default 0)."
+                    "text": "location parameter (default=0)"
                   }
                 ],
                 "name": "loc",
@@ -126,17 +93,17 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "Scale parameter (default 1)."
+                        "text": "scale parameter (default=1)"
                       }
                     ],
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "float, optional",
+                "data_type": "array_like, optional",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "Scale parameter (default 1)."
+                    "text": "scale parameter (default=1)"
                   }
                 ],
                 "name": "scale",
@@ -159,36 +126,20 @@
                     "inline": [
                       {
                         "kind": "text",
-                        "text": "PDF evaluated at "
-                      },
-                      {
-                        "kind": "emphasis",
-                        "text": "x"
-                      },
-                      {
-                        "kind": "text",
-                        "text": "."
+                        "text": "Probability density function evaluated at x"
                       }
                     ],
                     "type": "paragraph"
                   }
                 ],
-                "data_type": "WhestArray",
+                "data_type": "ndarray",
                 "inline": [
                   {
                     "kind": "text",
-                    "text": "PDF evaluated at "
-                  },
-                  {
-                    "kind": "emphasis",
-                    "text": "x"
-                  },
-                  {
-                    "kind": "text",
-                    "text": "."
+                    "text": "Probability density function evaluated at x"
                   }
                 ],
-                "name": "",
+                "name": "pdf",
                 "type": "field_list"
               }
             ],
@@ -204,20 +155,20 @@
     "category": "counted_custom",
     "cost_formula": "15n",
     "cost_formula_latex": "$15n$",
-    "module": "whest.stats",
+    "flopscope_ref": "fnp.stats.lognorm.pdf",
+    "module": "flopscope.stats",
     "name": "stats.lognorm.pdf",
     "notes": "Log-normal PDF; cost = numel(input).",
     "numpy_ref": "np.stats.lognorm.pdf",
-    "signature": "we.stats.lognorm.pdf(x, s, loc=0, scale=1)",
+    "signature": "fnp.stats.lognorm.pdf(x, s, loc=0, scale=1)",
     "status": "supported",
-    "summary": "Probability density function at *x*.",
-    "weight": 16.0,
-    "whest_ref": "we.stats.lognorm.pdf"
+    "summary": "Probability density function at x of the given RV.",
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "stats-lognorm-pdf",
   "source": {
-    "numpy": "https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.lognorm.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/stats/_lognorm.py#L43"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/stats/_lognorm.py#L43",
+    "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/scipy/stats/_distn_infrastructure.py#L2051"
   }
 }

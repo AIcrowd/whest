@@ -1,6 +1,6 @@
-"""Tests for the whest numpy function registry."""
+"""Tests for the flopscope numpy function registry."""
 
-from whest._registry import REGISTRY, REGISTRY_META
+from flopscope._registry import REGISTRY, REGISTRY_META
 
 
 def test_registry_meta_has_numpy_version():

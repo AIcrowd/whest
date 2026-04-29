@@ -1,10 +1,10 @@
-import { whestDark, whestLight } from '@/lib/shiki-themes';
+import { flopscopeDark, flopscopeLight } from '@/lib/shiki-themes';
 
-const whestApiDark = {
-  ...whestDark,
-  name: 'whest-api-ink',
+const flopscopeApiDark = {
+  ...flopscopeDark,
+  name: 'flopscope-api-ink',
   colors: {
-    ...whestDark.colors,
+    ...flopscopeDark.colors,
     'editor.background': '#232628',
     'editor.selectionBackground': '#34393B',
     'editorLineNumber.foreground': '#7B8284',
@@ -13,7 +13,7 @@ const whestApiDark = {
 
 export const apiCodeThemes = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  light: whestLight as any,
+  light: flopscopeLight as any,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dark: whestApiDark as any,
+  dark: flopscopeApiDark as any,
 } as const;

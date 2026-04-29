@@ -89,7 +89,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the\n    `~we.random.Generator.permutation`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the\n    `~fnp.random.Generator.permutation`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -121,7 +121,7 @@
                         "href": "",
                         "kind": "link",
                         "target": "arange(x)",
-                        "text": "we.arange(x)"
+                        "text": "fnp.arange(x)"
                       },
                       {
                         "kind": "text",
@@ -158,7 +158,7 @@
                     "href": "",
                     "kind": "link",
                     "target": "arange(x)",
-                    "text": "we.arange(x)"
+                    "text": "fnp.arange(x)"
                   },
                   {
                     "kind": "text",
@@ -249,7 +249,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.permutation(10)"
+                "text": "fnp.random.permutation(10)"
               },
               {
                 "kind": "output",
@@ -263,7 +263,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.permutation([1, 4, 9, 12, 15])"
+                "text": "fnp.random.permutation([1, 4, 9, 12, 15])"
               },
               {
                 "kind": "output",
@@ -277,12 +277,12 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "arr = we.arange(9).reshape((3, 3))"
+                "text": "arr = fnp.arange(9).reshape((3, 3))"
               },
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "we.random.permutation(arr)"
+                "text": "fnp.random.permutation(arr)"
               },
               {
                 "kind": "output",
@@ -308,20 +308,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.permutation",
     "module": "numpy.random",
     "name": "random.permutation",
     "notes": "Shuffle; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.random.permutation",
-    "signature": "we.random.permutation(x)",
+    "signature": "fnp.random.permutation(x)",
     "status": "supported",
     "summary": "Randomly permute a sequence, or return a permuted range.",
-    "weight": 1.0,
-    "whest_ref": "we.random.permutation"
+    "weight": 1.0
   },
   "schema_version": 1,
   "slug": "random-permutation",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.permutation.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L208"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L208",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.permutation.html"
   }
 }

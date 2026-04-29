@@ -81,7 +81,7 @@
             ],
             "directive": "note",
             "options": [],
-            "raw_source": ".. note::\n    New code should use the `~we.random.Generator.binomial`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+            "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.binomial`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
             "supported": true,
             "type": "directive_block"
           }
@@ -186,7 +186,7 @@
                       },
                       {
                         "kind": "code",
-                        "text": "we.broadcast(n, p).size"
+                        "text": "fnp.broadcast(n, p).size"
                       },
                       {
                         "kind": "text",
@@ -244,7 +244,7 @@
                   },
                   {
                     "kind": "code",
-                    "text": "we.broadcast(n, p).size"
+                    "text": "fnp.broadcast(n, p).size"
                   },
                   {
                     "kind": "text",
@@ -449,7 +449,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "s = we.random.binomial(n, p, 1000)"
+                "text": "s = fnp.random.binomial(n, p, 1000)"
               },
               {
                 "kind": "output",
@@ -481,7 +481,7 @@
               {
                 "kind": "input",
                 "prompt": ">>>",
-                "text": "sum(we.random.binomial(9, 0.1, 20000) == 0)/20000."
+                "text": "sum(fnp.random.binomial(9, 0.1, 20000) == 0)/20000."
               },
               {
                 "kind": "output",
@@ -499,20 +499,20 @@
     "category": "counted_custom",
     "cost_formula": "per-operation",
     "cost_formula_latex": "varies",
+    "flopscope_ref": "fnp.random.binomial",
     "module": "numpy.random",
     "name": "random.binomial",
     "notes": "Sampling; cost = numel(output).",
     "numpy_ref": "np.random.binomial",
-    "signature": "we.random.binomial(n, p, size=None)",
+    "signature": "fnp.random.binomial(n, p, size=None)",
     "status": "supported",
     "summary": "Draw samples from a binomial distribution.",
-    "weight": 16.0,
-    "whest_ref": "we.random.binomial"
+    "weight": 16.0
   },
   "schema_version": 1,
   "slug": "random-binomial",
   "source": {
-    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.binomial.html",
-    "whest": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
+    "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.binomial.html"
   }
 }

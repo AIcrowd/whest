@@ -5,8 +5,8 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from whest._perm_group import SymmetryGroup
-from whest._symmetric import (
+from flopscope._perm_group import SymmetryGroup
+from flopscope._symmetric import (
     SymmetricTensor,
     as_symmetric,
     intersect_symmetry,
@@ -16,7 +16,7 @@ from whest._symmetric import (
     symmetrize,
     validate_symmetry_groups,
 )
-from whest.errors import SymmetryError
+from flopscope.errors import SymmetryError
 
 
 def _sg(*axes: int) -> SymmetryGroup:

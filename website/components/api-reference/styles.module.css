@@ -256,7 +256,7 @@
 }
 
 /* =========================================================================
-   Chips — drawn from the Whest Design System palette.
+   Chips — drawn from the Flopscope Design System palette.
    Areas + types pick from the four universal semantics + neutral.
    Weights ride the whestbench heatmap axis (gray-100 → coral).
    Font: Inter (app register); chips are UI chrome, never paper serif.

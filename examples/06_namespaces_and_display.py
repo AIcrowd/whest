@@ -5,12 +5,12 @@ Run: uv run python examples/06_namespaces_and_display.py
 
 import numpy as np
 
-import whest as we
+import flopscope as we
 
 # ---------------------------------------------------------------------------
 # 1. Operations without an explicit BudgetContext (global default)
 # ---------------------------------------------------------------------------
-# whest activates a global default context automatically when no explicit
+# flopscope activates a global default context automatically when no explicit
 # BudgetContext is in scope.  These FLOPs are recorded under namespace=None.
 
 x = we.array(np.random.randn(64).astype(np.float32))

@@ -153,7 +153,7 @@
           ],
           "directive": "note",
           "options": [],
-          "raw_source": ".. note::\n    New code should use the `~we.random.Generator.exponential`\n    method of a `~we.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
+          "raw_source": ".. note::\n    New code should use the `~fnp.random.Generator.exponential`\n    method of a `~fnp.random.Generator` instance instead;\n    please see the :ref:`random-quick-start`.",
           "supported": true,
           "type": "directive_block"
         }
@@ -244,7 +244,7 @@
                     },
                     {
                       "kind": "code",
-                      "text": "we.array(scale).size"
+                      "text": "fnp.array(scale).size"
                     },
                     {
                       "kind": "text",
@@ -294,7 +294,7 @@
                 },
                 {
                   "kind": "code",
-                  "text": "we.array(scale).size"
+                  "text": "fnp.array(scale).size"
                 },
                 {
                   "kind": "text",
@@ -411,7 +411,7 @@
             {
               "kind": "input",
               "prompt": ">>>",
-              "text": "time_between_calls = we.random.default_rng().exponential(scale=4, size=n)"
+              "text": "time_between_calls = fnp.random.default_rng().exponential(scale=4, size=n)"
             }
           ],
           "type": "doctest_block"
@@ -492,16 +492,19 @@
     "unsupported_directives": []
   },
   "example": {
-    "code": "n = 10000\n\ntime_between_calls = we.random.default_rng().exponential(scale=4, size=n)\n\nx = ((time_between_calls < 5).sum())/n\n\ny = ((time_between_calls < 4).sum())/n\n\nx-y",
+    "code": "n = 10000\n\ntime_between_calls = fnp.random.default_rng().exponential(scale=4, size=n)\n\nx = ((time_between_calls < 5).sum())/n\n\ny = ((time_between_calls < 4).sum())/n\n\nx-y",
     "output": "0.08 # may vary",
     "source": "derived"
   },
+  "flopscope_examples_html": "",
+  "flopscope_ref": "fnp.random.exponential",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L55",
   "href": "/docs/api/ops/random-exponential/",
   "module": "numpy.random",
   "name": "random.exponential",
   "next": {
     "href": "/docs/api/ops/random-f/",
-    "label": "we.random.f"
+    "label": "fnp.random.f"
   },
   "notes": "Sampling; cost = numel(output).",
   "notes_sections": [],
@@ -520,7 +523,7 @@
         "Output shape.  If the given shape is, e.g., ``(m, n, k)``, then",
         "``m * n * k`` samples are drawn.  If size is ``None`` (default),",
         "a single value is returned if ``scale`` is a scalar.  Otherwise,",
-        "``we.array(scale).size`` samples are drawn."
+        "``fnp.array(scale).size`` samples are drawn."
       ],
       "name": "size",
       "type": "int or tuple of ints, optional"
@@ -528,7 +531,7 @@
   ],
   "previous": {
     "href": "/docs/api/ops/random-dirichlet/",
-    "label": "we.random.dirichlet"
+    "label": "fnp.random.dirichlet"
   },
   "provenance_label": "Adapted from NumPy docs",
   "provenance_url": "https://numpy.org/doc/stable/reference/generated/numpy.random.exponential.html",
@@ -559,12 +562,9 @@
       "unresolved": false
     }
   ],
-  "signature": "we.random.exponential(scale=1.0, size=None)",
+  "signature": "fnp.random.exponential(scale=1.0, size=None)",
   "slug": "random-exponential",
   "summary": "Draw samples from an exponential distribution.",
   "upstream_source_url": "",
-  "weight": 16.0,
-  "whest_examples_html": "",
-  "whest_ref": "we.random.exponential",
-  "whest_source_url": "https://github.com/AIcrowd/whest/blob/main/src/whest/random/__init__.py#L55"
+  "weight": 16.0
 }

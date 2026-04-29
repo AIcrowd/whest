@@ -35,7 +35,7 @@ test('op pages use the dedicated numpy-style renderer stack', async () => {
   assert.match(pageSource, /OperationDocSignature/);
 });
 
-test('api runtime code blocks use shared whest themes and preserve shiki backgrounds', async () => {
+test('api runtime code blocks use shared flopscope themes and preserve shiki backgrounds', async () => {
   const bodySource = await readSource('components/api-reference/OperationDocBody.tsx');
   const exampleSource = await readSource('components/api-reference/OperationDocExample.tsx');
   const themeSource = await readSource('components/api-reference/runtime-shiki-themes.ts');
@@ -48,8 +48,8 @@ test('api runtime code blocks use shared whest themes and preserve shiki backgro
   assert.doesNotMatch(exampleSource, /github-light|github-dark/);
   assert.match(bodySource, /keepBackground/);
   assert.match(exampleSource, /keepBackground/);
-  assert.match(themeSource, /whestLight/);
-  assert.match(themeSource, /whestDark/);
+  assert.match(themeSource, /flopscopeLight/);
+  assert.match(themeSource, /flopscopeDark/);
   assert.match(themeSource, /editor\.background': '#232628'/);
 });
 

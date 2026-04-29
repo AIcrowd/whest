@@ -248,17 +248,17 @@ export default function StickyBar({ example, group, activeActId, hoveredLabels =
   return (
     <div className="sticky top-0 z-40 border-b border-border/70 bg-background/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-[1460px] flex-col gap-4 px-6 py-4 md:flex-row md:items-center md:justify-between md:px-8">
-        {/* Whest wordmark — the one in-product brand anchor. Matches the
-            `.brand` slot of design-system/Whest Einsum Explorer.html and
+        {/* Flopscope wordmark — the one in-product brand anchor. Matches the
+            `.brand` slot of design-system/Flopscope Einsum Explorer.html and
             the nav wordmark in lib/layout.shared.tsx. Reuses the global
-            `.whest-wordmark` utility (Newsreader 700 opsz32, coral dot);
+            `.flopscope-wordmark` utility (Newsreader 700 opsz32, coral dot);
             do not reimplement. */}
         <Link
           href="/"
-          aria-label="Whest."
-          className="whest-wordmark mr-4 shrink-0 text-[20px] no-underline"
+          aria-label="Flopscope."
+          className="flopscope-wordmark mr-4 shrink-0 text-[20px] no-underline"
         >
-          Whest<span className="whest-wordmark__dot">.</span>
+          Flopscope<span className="flopscope-wordmark__dot">.</span>
         </Link>
         <nav className="flex shrink-0 items-center gap-1 overflow-x-auto pb-1 md:pb-0">
           {EXPLORER_ACTS.map((act, idx) => {

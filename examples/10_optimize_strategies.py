@@ -9,7 +9,7 @@ Run: uv run python examples/10_optimize_strategies.py
 
 import time
 
-import whest as we
+import flopscope as we
 
 # ---------------------------------------------------------------------------
 # 1. Set up a 5-operand contraction (big enough for strategies to differ)

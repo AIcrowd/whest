@@ -5,15 +5,16 @@ import pickle
 import numpy as np
 import pytest
 
-import whest as we
-from whest._budget import BudgetContext
-from whest._ndarray import WhestArray
-from whest._symmetric import SymmetricTensor, as_symmetric, is_symmetric, symmetrize
-from whest.errors import SymmetryError
+import flopscope as flops
+import flopscope.numpy as fnp
+from flopscope._budget import BudgetContext
+from flopscope._ndarray import FlopscopeArray
+from flopscope._symmetric import SymmetricTensor, as_symmetric, is_symmetric, symmetrize
+from flopscope.errors import SymmetryError
 
 
 def _s2(*axes):
-    return we.SymmetryGroup.symmetric(axes=axes)
+    return flops.SymmetryGroup.symmetric(axes=axes)
 
 
 def test_as_symmetric_exposes_only_symmetry_object():
@@ -63,9 +64,9 @@ def test_swapaxes_remaps_symmetry():
 
 def test_plain_slices_drop_symmetry():
     tensor = as_symmetric(np.eye(4), symmetry=_s2(0, 1))
-    assert isinstance(tensor[1:, 1:], WhestArray)
+    assert isinstance(tensor[1:, 1:], FlopscopeArray)
     assert not isinstance(tensor[1:, 1:], SymmetricTensor)
-    assert isinstance(tensor[::-1, ::-1], WhestArray)
+    assert isinstance(tensor[::-1, ::-1], FlopscopeArray)
     assert not isinstance(tensor[::-1, ::-1], SymmetricTensor)
 
 
@@ -80,7 +81,7 @@ def test_as_symmetric_accepts_exact_group_and_young_group():
     data = (data + data.transpose(1, 0, 2, 3)) / 2
     data = (data + data.transpose(0, 1, 3, 2)) / 2
     tensor = as_symmetric(data, symmetry=((0, 1), (2, 3)))
-    assert tensor.symmetry == we.SymmetryGroup.young(blocks=((0, 1), (2, 3)))
+    assert tensor.symmetry == flops.SymmetryGroup.young(blocks=((0, 1), (2, 3)))
 
 
 def test_rejects_non_symmetric_data():
@@ -107,14 +108,14 @@ def test_legacy_pickle_payload_is_rejected():
 
 
 def test_public_exports_only_current_surface():
-    assert hasattr(we, "SymmetryGroup")
-    assert hasattr(we, "SymmetricTensor")
-    assert hasattr(we, "as_symmetric")
-    assert hasattr(we, "symmetrize")
-    assert not hasattr(we, "PermutationGroup")
-    assert not hasattr(we, "Permutation")
-    assert not hasattr(we, "Cycle")
-    assert not hasattr(we, "SymmetryInfo")
+    assert hasattr(fnp, "SymmetryGroup")
+    assert hasattr(fnp, "SymmetricTensor")
+    assert hasattr(fnp, "as_symmetric")
+    assert hasattr(fnp, "symmetrize")
+    assert not hasattr(fnp, "PermutationGroup")
+    assert not hasattr(fnp, "Permutation")
+    assert not hasattr(fnp, "Cycle")
+    assert not hasattr(fnp, "SymmetryInfo")
 
 
 def test_symmetrize_uses_symmetry_keyword():
@@ -127,25 +128,25 @@ def test_symmetrize_uses_symmetry_keyword():
 
 
 def test_random_symmetric_uses_group_object():
-    tensor = we.random.symmetric((4, 4), _s2(0, 1))
+    tensor = fnp.random.symmetric((4, 4), _s2(0, 1))
     assert isinstance(tensor, SymmetricTensor)
     assert tensor.symmetry == _s2(0, 1)
     assert tensor.is_symmetric()
 
 
 def test_flops_module_no_longer_exports_symmetry_info():
-    assert not hasattr(we.flops, "SymmetryInfo")
-    assert "SymmetryInfo" not in we.flops.__all__
+    assert not hasattr(fnp.flops, "SymmetryInfo")
+    assert "SymmetryInfo" not in fnp.flops.__all__
 
 
 def test_einsum_output_uses_symmetry_keyword():
     x = np.ones((5, 3))
     with BudgetContext(flop_budget=10**8, quiet=True) as budget:
-        cov = we.einsum("ki,kj->ij", x, x, symmetry=_s2(0, 1))
+        cov = fnp.einsum("ki,kj->ij", x, x, symmetry=_s2(0, 1))
         cost = budget.flops_used
 
     with BudgetContext(flop_budget=10**8, quiet=True) as budget:
-        dense = we.einsum("ki,kj->ij", x, np.ones((5, 3)), symmetry=_s2(0, 1))
+        dense = fnp.einsum("ki,kj->ij", x, np.ones((5, 3)), symmetry=_s2(0, 1))
         dense_cost = budget.flops_used
 
     assert isinstance(cov, SymmetricTensor)

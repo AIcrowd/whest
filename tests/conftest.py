@@ -2,9 +2,9 @@
 
 import pytest
 
-import whest._weights as weights_module
-from whest._budget import _reset_global_default, budget_reset
-from whest._weights import reset_weights
+import flopscope._weights as weights_module
+from flopscope._budget import _reset_global_default, budget_reset
+from flopscope._weights import reset_weights
 
 
 @pytest.fixture(autouse=True)

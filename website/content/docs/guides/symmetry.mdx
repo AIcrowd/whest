@@ -17,13 +17,13 @@ title: "Symmetry Savings"
 Many tensors contain repeated structure. A symmetric matrix has only
 `n * (n + 1) / 2` unique elements instead of `n^2`, and higher-order tensors
 with permutation symmetry can shrink the effective element count even more.
-When whest knows a tensor's symmetry, it charges FLOPs based on unique elements
+When flopscope knows a tensor's symmetry, it charges FLOPs based on unique elements
 instead of dense ones.
 
 | Operation | Dense cost | Symmetry-aware cost | Why it drops |
 |-----------|------------|---------------------|--------------|
 | `we.exp(s2_matrix)` | `n^2` | `n * (n + 1) / 2` | only unique matrix entries matter |
-| `we.einsum('ki,kj->ij', x, x, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))` | `m * n^2` | `m * n * (n + 1) / 2` | the repeated `x` operand lets whest detect symmetric output and reduce the cost |
+| `we.einsum('ki,kj->ij', x, x, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))` | `m * n^2` | `m * n * (n + 1) / 2` | the repeated `x` operand lets flopscope detect symmetric output and reduce the cost |
 | `we.einsum('i,j,k->ijk', v, v, v)` | `n^3` | symmetry-reduced | repeated operands induce output symmetry |
 
 By contrast, declaring `symmetry=` on an `einsum` output tags the result for downstream
@@ -32,7 +32,7 @@ operations; it does not reduce that `einsum`'s own cost by itself.
 ## Quick start
 
 ```python
-import whest as we
+import flopscope as we
 
 with we.BudgetContext(flop_budget=10**6) as budget:
     s2_matrix = we.as_symmetric(
@@ -44,11 +44,11 @@ with we.BudgetContext(flop_budget=10**6) as budget:
     sliced_row = s2_matrix[0]
 
     print(type(exp_s2_matrix).__name__)  # SymmetricTensor
-    print(type(sliced_row).__name__)     # WhestArray
+    print(type(sliced_row).__name__)     # FlopscopeArray
     print(budget.flops_used)
 ```
 
-`we.as_symmetric()` validates the data first. After that, whest propagates
+`we.as_symmetric()` validates the data first. After that, flopscope propagates
 symmetry metadata algebraically through many operations. Unary pointwise ops preserve symmetry-aware costs and keep the same exact group, including non-full groups such as `C_k` or `D_k`. Slicing, reductions, and binary pointwise ops can weaken it or remove it entirely.
 
 ## How to declare symmetry
@@ -59,7 +59,7 @@ Use `SymmetryGroup.symmetric` when the tensor is invariant under every permutati
 set of axes.
 
 ```python
-import whest as we
+import flopscope as we
 
 matrix_data = we.array([[2.0, 1.0], [1.0, 3.0]])
 s2_matrix = we.as_symmetric(matrix_data, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1)))
@@ -188,28 +188,28 @@ c3_tensor = we.random.symmetric((4, 4, 4), c3_group)
 d4_tensor = we.random.symmetric((4, 4, 4, 4), d4_group)
 ```
 
-The propagation examples below assume `import whest as we`; generated tensors
+The propagation examples below assume `import flopscope as we`; generated tensors
 above use ``we.random.symmetric(...)`` and the explicit transform helper is
 ``we.symmetrize(...)``.
 
 ## Symmetry propagation at a glance
 
-Symmetry propagation is conservative. Whest keeps symmetry metadata only when
+Symmetry propagation is conservative. Flopscope keeps symmetry metadata only when
 the operation's structure guarantees that the output still respects the
 surviving group.
 
 | Operation | Result type | Rule |
 |-----------|-------------|------|
 | `we.exp(s3_tensor)` | `SymmetricTensor` | unary pointwise ops preserve the exact declared group |
-| `we.add(s3_tensor, c3_tensor)` | `SymmetricTensor` or `WhestArray` | binary pointwise ops keep the intersection of both operands' groups |
+| `we.add(s3_tensor, c3_tensor)` | `SymmetricTensor` or `FlopscopeArray` | binary pointwise ops keep the intersection of both operands' groups |
 | `s2_matrix * 3` | `SymmetricTensor` | scalar binary ops preserve the tensor's groups |
-| `s2_matrix[0]` | `WhestArray` | integer indexing removes one axis; no nontrivial group survives |
+| `s2_matrix[0]` | `FlopscopeArray` | integer indexing removes one axis; no nontrivial group survives |
 | `s2_matrix[:3, :3]` | `SymmetricTensor` | equal-size slices can preserve symmetry |
-| `s2_matrix[:3, :2]` | `WhestArray` | unequal-size slices break symmetry between those axes |
-| `s2_matrix[we.array([0, 1])]` | `WhestArray` | advanced indexing drops symmetry conservatively |
+| `s2_matrix[:3, :2]` | `FlopscopeArray` | unequal-size slices break symmetry between those axes |
+| `s2_matrix[we.array([0, 1])]` | `FlopscopeArray` | advanced indexing drops symmetry conservatively |
 | `we.sum(s3_tensor, axis=0)` | `SymmetricTensor` | reductions keep the surviving setwise stabilizer subgroup |
 | `we.sum(d4_tensor, axis=(1, 3))` | `SymmetricTensor` | reductions can keep a proper subgroup like `C_2` |
-| `s2_matrix @ s2_matrix` | `WhestArray` | matrix products are not assumed symmetric in general |
+| `s2_matrix @ s2_matrix` | `FlopscopeArray` | matrix products are not assumed symmetric in general |
 
 `we.exp(c3_tensor)` keeps the original `C_3` subgroup exactly; the same applies
 to `D_k` and custom exact groups.
@@ -238,7 +238,7 @@ What happens here:
 - `different_size_slice` loses symmetry because the two axes no longer match
 - `expanded_s2_matrix` keeps the same `S_2` action, but the axes are renumbered
   from `(0, 1)` to `(1, 2)`
-- `advanced_index_slice` returns a dense `WhestArray`; whest does not attempt to
+- `advanced_index_slice` returns a dense `FlopscopeArray`; flopscope does not attempt to
   propagate symmetry through array/list indexing
 
 `Ellipsis` behaves like NumPy's normal expansion rules. It can change which
@@ -352,9 +352,9 @@ already carries the same analytically provable `S_2` symmetry on `(0, 1)`, so
 
 ## Warnings, conservative behavior, and re-tagging
 
-Whest propagates symmetry metadata conservatively. When the operation does not
+Flopscope propagates symmetry metadata conservatively. When the operation does not
 guarantee that the declared symmetry survives, the result falls back to a dense
-`WhestArray` with no `.symmetry` metadata.
+`FlopscopeArray` with no `.symmetry` metadata.
 
 ```python
 s2_matrix = we.as_symmetric(
@@ -365,7 +365,7 @@ s2_matrix = we.as_symmetric(
 row_slice = s2_matrix[0]
 ```
 
-`row_slice` is a plain dense `WhestArray`, not a `SymmetricTensor`. That is expected.
+`row_slice` is a plain dense `FlopscopeArray`, not a `SymmetricTensor`. That is expected.
 
 `SymmetryLossWarning` tells you that metadata was dropped or weakened during an
 operation. If you know more about the result than the conservative propagation
@@ -391,7 +391,7 @@ The propagation rules are easier to predict if you keep three ideas in mind:
 - **Binary pointwise ops** use intersection of both operands' groups after
   broadcast alignment
 
-After computing the surviving subgroup, whest restricts it to the axes still
+After computing the surviving subgroup, flopscope restricts it to the axes still
 present in the output and remaps those axes to the output tensor's numbering.
 
 That is why:
