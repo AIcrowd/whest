@@ -12,7 +12,7 @@ const section5 = {
       p('Therefore, Burnside over $G_{\\text{f}}$ answers a different question: it counts orbits of formal label renamings in the completed expression. It does not, in general, count the number of distinct summand computations or direct updates required during accumulation.'),
     ],
     mismatchLead: [
-      p('For the selected preset, the difference is visible numerically. A naive formal count using $G_{\\text{f}}$ gives $\\alpha_{\\text{formal, naive}}$. The output-orbit accumulation count used by the engine is the main $\\alpha$. The mismatch is not a bug; it is exactly the gap between formal equivalence and pointwise equality.'),
+      p('For the selected preset, the difference is visible numerically. A naive formal count using $G_{\\text{f}}$ would give $\\alpha_{\\text{formal, naive}}$. This is shown as a tempting shortcut; it is not an alternative cost measure. The accepted accumulation cost is the main $\\alpha$, and the gap is exactly the gap between formal equivalence and pointwise equality.'),
     ],
     coincidentLead: [
       p('For the selected preset, the formal count and the main count happen to agree at the current size. This numerical coincidence does not change the rule. The valid product-side group is $G_{\\text{pt}}$ and the valid output-side action is $H$, because only those identify equal pre-summation products and the stored representatives they update.'),

@@ -13,6 +13,7 @@ const DECK = 'Partition counting is the exact compressed counter behind the gene
 
 const BODY = [
   'A product orbit may contain many full assignments. When those assignments are projected to the output labels, they may reach one stored output representative or several. Enumerating every concrete assignment is correct but can be wasteful.',
+  'Counting product orbits alone is therefore not enough: a single product orbit can update multiple stored output representatives, so the accumulation count needs an extra reach factor on top of the orbit count.',
   'The partition-counting method groups assignments by equality pattern: which label positions carry the same value. With heterogeneous dimensions, this is typed — only labels from the same domain can be placed in the same equality block.',
   'For a fixed typed equality pattern, the block-labeling factor counts how many product orbits live above that pattern. The map set $A_{\\tilde{x}}$ records which input equality block supplies each output coordinate as we move through the product orbit. Quotienting $A_{\\tilde{x}}$ by $H$ gives the number of stored output representatives reached.',
   'This is not an approximation. When both are feasible, the typed partition count and corrected brute-force orbit enumeration must give the same $\\alpha$.',

@@ -175,8 +175,8 @@ const QUESTIONS = [
   },
   {
     id: 'q_crossVW',
-    short: 'Full Sym(L), one domain ?',
-    checks: 'Is $G$ the full symmetric group on the component\'s label set — every permutation of $L_c$? Equivalently $|G| = |L_c|!$, with all labels sharing one dimension $n_L$ and both $V_a$ and $W_a$ nonempty.',
+    short: 'Full Sym(L), same domain ?',
+    checks: 'Is $G$ the full symmetric group on the component\'s label set — every permutation of $L_c$? Equivalently $|G| = |L_c|!$, with every label in the component sharing the same domain (the same label size $n_L$) and both $V_a$ and $W_a$ nonempty.',
     why: 'When the test passes, both visible and summed assignments collapse into multisets and the closed-form multiset count fires: $\\alpha_a = \\binom{n_L + |V_a| - 1}{|V_a|} \\binom{n_L + |W_a| - 1}{|W_a|}$. When it does not, the engine prefers typed partition counting if its equality-pattern budget passes; otherwise it falls back to corrected brute-force enumeration when the tuple-enumeration budget passes.',
     intuition: 'Examples that fire the multiset closed form: *young-s3* ($\\texttt{abc→ab}$ with $T$ fully symmetric, $|G|=3!=6$), *young-s4-v2w2*, *young-s4-v3w1*. The visible side is also quotiented by $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$ — the multiset count is exactly $|Y/H|$ when $G$ is the full symmetric group.',
     onTrue: 'young',

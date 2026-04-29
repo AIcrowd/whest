@@ -25,7 +25,7 @@ const section3 = {
       p('The equality $R[0,1] = R[1,0]$ is therefore genuine on the computed output tensor itself.'),
     ],
     takeaway: [
-      p('$H$ is not a separate storage-only afterthought. It is the output-side quotient already present in $\\alpha = \\#\\{(O,Q) : \\pi_V(O) \\cap Q \\neq \\varnothing\\}$.'),
+      p('$H$ is not a separate post-processing step on the output tensor. It is the output-side quotient already present in $\\alpha = \\#\\{(O,Q) : \\pi_V(O) \\cap Q \\neq \\varnothing\\}$, applied at count-time.'),
     ],
   },
 } satisfies SectionCopy;

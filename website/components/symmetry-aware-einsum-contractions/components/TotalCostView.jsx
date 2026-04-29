@@ -28,7 +28,7 @@ const SECTION_FIVE_INTRO_PARAGRAPH =
   'The preceding sections have produced a detected pointwise group and a support-connected component decomposition of its label action. The final step is to combine the two quantities a direct symmetry-aware evaluator needs: representative products and accumulation updates from those product-orbit representatives into stored output representatives.';
 
 const SECTION_FIVE_INTRO_LEAD =
-  String.raw`For component $a$, let $M_a$ be the number of product orbits and let $\alpha_a$ be the number of accumulation updates from those product-orbit representatives into stored output representatives via H = \\mathrm{Stab}_{G_a}(V_a)|_{V_a}. Under the independent-component factorization, $M = \prod_a M_a$ and $\alpha = \prod_a \alpha_a$. With $k$ operand tensors, the direct scalar-event cost reported here is`;
+  String.raw`For component $a$, let $M_a$ be the number of product orbits and let $\alpha_a$ be the number of accumulation updates from those product-orbit representatives into stored output representatives via $H_a = \mathrm{Stab}_{G_a}(V_a)|_{V_a}$. Under the independent-component factorization, $M = \prod_a M_a$ and $\alpha = \prod_a \alpha_a$. With $k$ operand tensors, the direct scalar-event cost reported here is`;
 
 const SECTION_FIVE_INTRO_CLOSE =
   String.raw`$M_a$ is a size-aware Burnside orbit count when a closed form applies; $\alpha_a$ is selected by the shape and regime ladder. If a mixed component falls outside the analytic regimes and exceeds the brute-force budget, the count is reported unavailable instead of being guessed.`;
