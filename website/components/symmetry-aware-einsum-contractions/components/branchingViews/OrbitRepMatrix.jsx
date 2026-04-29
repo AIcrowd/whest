@@ -390,11 +390,16 @@ function OrbitRepMatrix({
 
         {/* Canvas — fixed size, no scroll wrapper. Chart-style axes: left
             border (Y-axis line) + bottom border (X-axis line) only. No top
-            or right border — the matrix reads as a plot, not a panel. */}
+            or right border — the matrix reads as a plot, not a panel.
+            box-sizing: content-box so the canvas fits inside the wrapper
+            at exact `canvasW × canvasH` with the borders sitting outside;
+            otherwise the canvas would overflow downward by 1 px and cover
+            the bottom-border axis line. */}
         <div
           style={{
             gridColumn: 2, gridRow: 1,
             position: 'relative',
+            boxSizing: 'content-box',
             width: layout.canvasW, height: layout.canvasH,
             background: COLOR.bg,
             borderLeft: `1px solid ${COLOR.border}`,

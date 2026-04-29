@@ -73,10 +73,20 @@ function WorkedExamplePanel({
 
   // Empty state.
   if (!focus) {
-    // Empty state: nothing visible. The panel reserves its column space but
-    // doesn't draw any chrome — no card, no border, no copy. The "Worked
-    // example" eyebrow appears the moment a cell is hovered/pinned.
-    return <div data-testid="worked-example-panel" className="bg-white p-4" />;
+    // Empty state: white-on-white, no card chrome. The "Worked example"
+    // eyebrow stays visible so the column reads as a real surface (not
+    // dead space); the body copy is a faint italic hint that disappears
+    // the moment the user hovers a cell.
+    return (
+      <div data-testid="worked-example-panel" className="bg-white p-4">
+        <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gray-900">
+          Worked example
+        </div>
+        <div className="mt-2 text-[12px] italic text-gray-400">
+          Hover any cell on the left to see its (O, Q) projection and contribution. Click to pin.
+        </div>
+      </div>
+    );
   }
 
   const row = orbitRows[focus.row];

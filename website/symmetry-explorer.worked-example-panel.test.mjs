@@ -37,10 +37,10 @@ test('ExpressionLevelModal imports from workedExample/ rather than redefining', 
 test('WorkedExamplePanel renders three states distinguishable in source', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/WorkedExamplePanel.jsx');
   assert.match(src, /data-testid="worked-example-panel"/);
-  // Empty state: white-on-white, no card, no copy. Just an empty placeholder
-  // that reserves the column space.
-  assert.match(src, /Empty state/);
-  // Hovered/pinned state shows the "Worked example" eyebrow.
+  // Empty state: white-on-white with a visible "Worked example" eyebrow +
+  // hint copy so the column reads as a real surface.
+  assert.match(src, /Hover any cell on the left/);
+  // Hovered/pinned state also shows the "Worked example" eyebrow.
   assert.match(src, /Worked example/);
   assert.match(src, /clear pin|× clear/i);
 });
