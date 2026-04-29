@@ -890,7 +890,9 @@ def test_perf_warm_inplace_add_scalar_on_symmetric_is_fast():
     import time
 
     arr = fnp.random.randn(4, 4, 4, 4)
-    A_sym = flops.symmetrize(arr, symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1, 2, 3)))
+    A_sym = flops.symmetrize(
+        arr, symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1, 2, 3))
+    )
     original_symmetry_ref = A_sym._symmetry
     # Warm-up: prime caches and dispatch tables.
     with flops.BudgetContext(flop_budget=int(1e12)):

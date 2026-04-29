@@ -382,7 +382,9 @@ def test_issue_58_reproducer():
     with flops.BudgetContext(flop_budget=int(1e20)) as bc:
         with flops.namespace("init"):
             A = fnp.random.randn(n, n, n)
-            A = flops.symmetrize(A, symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1, 2)))
+            A = flops.symmetrize(
+                A, symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1, 2))
+            )
         with flops.namespace("sum1"):
             S1 = A.sum(axis=0)
         with flops.namespace("sum2"):

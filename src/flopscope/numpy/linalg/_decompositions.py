@@ -155,7 +155,9 @@ def eig(a):
     ):
         result = _np.linalg.eig(_to_base_ndarray(a))
     if inputs_were_whest:
-        return EigResult(_asflopscope(result.eigenvalues), _asflopscope(result.eigenvectors))
+        return EigResult(
+            _asflopscope(result.eigenvalues), _asflopscope(result.eigenvectors)
+        )
     return result
 
 
@@ -196,7 +198,9 @@ def eigh(a, UPLO="L"):
     ):
         result = _np.linalg.eigh(_to_base_ndarray(a), UPLO=UPLO)
     if inputs_were_whest:
-        return EighResult(_asflopscope(result.eigenvalues), _asflopscope(result.eigenvectors))
+        return EighResult(
+            _asflopscope(result.eigenvalues), _asflopscope(result.eigenvectors)
+        )
     return result
 
 

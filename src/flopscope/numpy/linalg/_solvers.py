@@ -190,7 +190,9 @@ def lstsq(a, b, rcond=None):
     ):
         result = _np.linalg.lstsq(_to_base_ndarray(a), _to_base_ndarray(b), rcond=rcond)
     if b_was_whest:
-        return tuple(_asflopscope(r) if isinstance(r, _np.ndarray) else r for r in result)
+        return tuple(
+            _asflopscope(r) if isinstance(r, _np.ndarray) else r for r in result
+        )
     return tuple(result)
 
 
