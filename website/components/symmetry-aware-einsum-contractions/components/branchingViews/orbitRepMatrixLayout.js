@@ -83,6 +83,36 @@ export function layoutFor({ canvasWidth, canvasHeight, numRows, numCols }) {
 }
 
 /**
+ * Compute tick indices for an axis with `n` cells. Always include 0 and n-1
+ * (the first and last index), plus interior multiples of a sensible round
+ * stride. Limits total ticks to `maxTicks` (≈ 6 by default) to avoid clutter.
+ *
+ * Examples:
+ *   computeAxisTicks(9, 6)   → [0, 2, 4, 6, 8]            // small range, dense
+ *   computeAxisTicks(27, 6)  → [0, 5, 10, 15, 20, 26]
+ *   computeAxisTicks(165, 6) → [0, 33, 66, 99, 132, 164]  // round-stride spread
+ *
+ * @param {number} n total number of cells along the axis
+ * @param {number} maxTicks soft cap on the number of ticks returned
+ * @returns {number[]} sorted, unique tick indices in [0, n-1]
+ */
+export function computeAxisTicks(n, maxTicks = 6) {
+  const safeN = Math.max(0, Math.floor(n));
+  if (safeN === 0) return [];
+  if (safeN === 1) return [0];
+  const safeMax = Math.max(2, Math.floor(maxTicks));
+  if (safeN <= safeMax) {
+    return Array.from({ length: safeN }, (_, i) => i);
+  }
+  const stride = Math.max(1, Math.ceil((safeN - 1) / (safeMax - 1)));
+  const ticks = new Set();
+  ticks.add(0);
+  for (let i = stride; i < safeN - 1; i += stride) ticks.add(i);
+  ticks.add(safeN - 1);
+  return Array.from(ticks).sort((a, b) => a - b);
+}
+
+/**
  * Map canvas-relative pixel coords (origin at top-left of the canvas) to a
  * (row, col) cell index. Returns null if outside the rendered cell area.
  *

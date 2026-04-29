@@ -225,6 +225,13 @@ test('OrbitRepMatrix renders an sr-only mirror table for accessibility', () => {
   assert.match(src, /aria-label=\{[^}]*labelledTuple/);
 });
 
+test('OrbitRepMatrix renders Y/X axis tick gutters with computeAxisTicks', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /computeAxisTicks/);
+  assert.match(src, /data-testid="orbit-rep-matrix-y-ticks"/);
+  assert.match(src, /data-testid="orbit-rep-matrix-x-ticks"/);
+});
+
 test('OrbitRepMatrixModal renders modal shell with ESC + backdrop close', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrixModal.jsx');
   assert.match(src, /export default function OrbitRepMatrixModal/);

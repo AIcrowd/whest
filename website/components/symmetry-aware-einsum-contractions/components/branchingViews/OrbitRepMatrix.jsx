@@ -6,6 +6,7 @@ import {
   layoutFor,
   cellAtPoint,
   labelledTuple,
+  computeAxisTicks,
   SQUARE_FRAME,
   FIXED_CANVAS_HEIGHT,
 } from './orbitRepMatrixLayout.js';
@@ -335,78 +336,137 @@ function OrbitRepMatrix({
         )}
       </div>
 
-      {/* Canvas frame with permanent axis labels — tuple values appear in
-          the OrbitDetailCard (on hover or in the modal). Fixed-size
-          square canvas with rectangular cells when numRows ≠ numCols; no
-          internal scroll. */}
-      <div
-        className="grid"
-        style={{
-          gridTemplateColumns: '22px minmax(0, 1fr)',
-          gridTemplateRows: 'auto 22px',
-        }}
-      >
-        {/* Y axis label */}
-        <div
-          style={{
-            gridColumn: 1, gridRow: 1,
-            writingMode: 'vertical-rl',
-            transform: 'rotate(180deg)',
-            color: '#1F2526',
-          }}
-          className="flex items-center justify-center text-[10px] font-semibold uppercase tracking-[0.16em] font-sans"
-        >
-          Orbit <Latex math="O" />
-        </div>
-
-        {/* Canvas — fixed size, no scroll wrapper. Chart-style axes: left
-            border (Y-axis line) + bottom border (X-axis line) only. No top
-            or right border — the matrix reads as a plot, not a panel.
-            box-sizing: content-box so the canvas fits inside the wrapper
-            at exact `canvasW × canvasH` with the borders sitting outside;
-            otherwise the canvas would overflow downward by 1 px and cover
-            the bottom-border axis line. */}
-        <div
-          style={{
-            gridColumn: 2, gridRow: 1,
-            position: 'relative',
-            boxSizing: 'content-box',
-            width: layout.canvasW, height: layout.canvasH,
-            background: COLOR.bg,
-            borderLeft: `1px solid ${COLOR.border}`,
-            borderBottom: `1px solid ${COLOR.border}`,
-            cursor: 'default',
-          }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-        >
-          <canvas ref={canvasRef} />
-          {onExpand && (
-            <button
-              type="button"
-              data-action="open-modal"
-              onClick={(e) => { e.stopPropagation(); onExpand(); }}
-              className="absolute top-2 right-2 inline-flex items-center gap-1.5 rounded-md border bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors hover:bg-gray-50"
+      {/* Canvas frame with permanent axis labels + tick gutters.
+          Grid: 3 columns (axis-label | tick-gutter | canvas),
+                3 rows  (canvas | tick-row | axis-label-row).
+          Tuple values appear in the OrbitDetailCard (on hover or in the modal). */}
+      {(() => {
+        const yTicks = computeAxisTicks(orbitRows.length, 6);
+        const xTicks = computeAxisTicks(reps.length, 6);
+        return (
+          <div
+            className="grid"
+            style={{
+              gridTemplateColumns: '20px 28px minmax(0, 1fr)',
+              gridTemplateRows: 'auto 18px 18px',
+            }}
+          >
+            {/* Y axis label — col 1, row 1 */}
+            <div
               style={{
-                color: '#B23E3A',
-                borderColor: 'rgba(240,82,77,0.45)',
-                cursor: 'pointer',
+                gridColumn: 1, gridRow: 1,
+                writingMode: 'vertical-rl',
+                transform: 'rotate(180deg)',
+                color: '#1F2526',
               }}
-              aria-label="Expand matrix to full screen"
+              className="flex items-center justify-center text-[10px] font-semibold uppercase tracking-[0.16em] font-sans"
             >
-              expand <span aria-hidden="true">↗</span>
-            </button>
-          )}
-        </div>
+              Orbit <Latex math="O" />
+            </div>
 
-        {/* X axis label */}
-        <div
-          style={{ gridColumn: 2, gridRow: 2, color: '#1F2526' }}
-          className="text-center text-[10px] font-semibold uppercase tracking-[0.16em] font-sans"
-        >
-          Rep <Latex math="Q" />
-        </div>
-      </div>
+            {/* Y tick gutter — col 2, row 1 */}
+            <div
+              style={{ gridColumn: 2, gridRow: 1, position: 'relative' }}
+              aria-hidden="true"
+              data-testid="orbit-rep-matrix-y-ticks"
+            >
+              {yTicks.map((rowIdx) => {
+                const y = (rowIdx + 0.5) * layout.cellHeight;
+                return (
+                  <span
+                    key={rowIdx}
+                    className="font-mono"
+                    style={{
+                      position: 'absolute',
+                      right: 6,
+                      top: y,
+                      transform: 'translateY(-50%)',
+                      fontSize: 9,
+                      color: '#9AA0A0',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {rowIdx}
+                  </span>
+                );
+              })}
+            </div>
+
+            {/* Canvas — col 3, row 1. Fixed size, no scroll wrapper.
+                Chart-style axes: left border (Y-axis line) + bottom border
+                (X-axis line) only. box-sizing: content-box so the canvas
+                fits inside the wrapper at exact `canvasW × canvasH`. */}
+            <div
+              style={{
+                gridColumn: 3, gridRow: 1,
+                position: 'relative',
+                boxSizing: 'content-box',
+                width: layout.canvasW, height: layout.canvasH,
+                background: COLOR.bg,
+                borderLeft: `1px solid ${COLOR.border}`,
+                borderBottom: `1px solid ${COLOR.border}`,
+                cursor: 'default',
+              }}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+            >
+              <canvas ref={canvasRef} />
+              {onExpand && (
+                <button
+                  type="button"
+                  data-action="open-modal"
+                  onClick={(e) => { e.stopPropagation(); onExpand(); }}
+                  className="absolute top-2 right-2 inline-flex items-center gap-1.5 rounded-md border bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors hover:bg-gray-50"
+                  style={{
+                    color: '#B23E3A',
+                    borderColor: 'rgba(240,82,77,0.45)',
+                    cursor: 'pointer',
+                  }}
+                  aria-label="Expand matrix to full screen"
+                >
+                  expand <span aria-hidden="true">↗</span>
+                </button>
+              )}
+            </div>
+
+            {/* X tick gutter — col 3, row 2 */}
+            <div
+              style={{ gridColumn: 3, gridRow: 2, position: 'relative' }}
+              aria-hidden="true"
+              data-testid="orbit-rep-matrix-x-ticks"
+            >
+              {xTicks.map((colIdx) => {
+                const x = (colIdx + 0.5) * layout.cellWidth;
+                return (
+                  <span
+                    key={colIdx}
+                    className="font-mono"
+                    style={{
+                      position: 'absolute',
+                      top: 4,
+                      left: x,
+                      transform: 'translateX(-50%)',
+                      fontSize: 9,
+                      color: '#9AA0A0',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {colIdx}
+                  </span>
+                );
+              })}
+            </div>
+
+            {/* X axis label — col 3, row 3 */}
+            <div
+              style={{ gridColumn: 3, gridRow: 3, color: '#1F2526' }}
+              className="text-center text-[10px] font-semibold uppercase tracking-[0.16em] font-sans pt-1"
+            >
+              Rep <Latex math="Q" />
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Off-screen mirror table for screen-reader / keyboard a11y. */}
       <table className="sr-only" aria-label="The O → Q matrix">
