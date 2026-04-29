@@ -86,7 +86,7 @@ test('approved mathematically safer prose appears in the narrative data', () => 
   // (O, Q) pairs in X/G × Y/H where the projection meets Q.
   assert.match(section4, /stored output representative/i);
   assert.match(section4, /\\mathrm\{Stab\}_\{G_\{\\text\{pt\}\}\}\(V\)/);
-  assert.match(section4, /projection is not always a function/i);
+  // ¶3 ("projection is not always a function") was relocated to BranchingDemo.INTRO_PARAGRAPHS[0]
   assert.doesNotMatch(section4, /output bin/i);
 });
 
