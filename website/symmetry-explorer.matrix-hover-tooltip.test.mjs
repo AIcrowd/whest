@@ -23,7 +23,10 @@ test('MatrixHoverTooltip uses position:fixed and updates DOM via ref (no useStat
   assert.match(src, /textContent\s*=/);
   // useState is not used for the tooltip's body/position (perf-critical).
   // We allow useState for `visible` only because that toggles display.
-  assert.doesNotMatch(src, /useState[^;]*content|useState[^;]*position/);
+  const useStateCalls = src.match(/useState\b/g) ?? [];
+  // One in the import, one in the component body.
+  assert.equal(useStateCalls.length, 2, 'exactly one useState call expected (just `visible`)');
+  assert.match(src, /\[visible,\s*setVisible\]\s*=\s*useState\(/);
 });
 
 test('MatrixHoverTooltip renders empty by default and exposes update + hide via ref', () => {

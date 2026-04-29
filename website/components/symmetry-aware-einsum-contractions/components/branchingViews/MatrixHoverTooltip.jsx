@@ -12,6 +12,11 @@ import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 // API (via ref):
 //   tooltipRef.current.update({ contentLines, x, y }) — show + position
 //   tooltipRef.current.hide()                         — hide
+//
+// `contentLines` is a 3-element array: [titleLine, subtitleLine, accentLine].
+// Slots are NOT fungible — each has a fixed style (bold black / gray /
+// coral). Passing more than 3 lines truncates extras (with a dev-only
+// console.warn). Passing fewer leaves trailing slots empty.
 
 const STYLE = {
   base: {
@@ -47,6 +52,14 @@ function MatrixHoverTooltip(_props, ref) {
         const lineEl = lineRefs.current[i];
         if (lineEl) lineEl.textContent = line;
       });
+      if (typeof process !== 'undefined' && process.env?.NODE_ENV !== 'production') {
+        if (contentLines.length > lineRefs.current.length) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `MatrixHoverTooltip: ${contentLines.length} lines passed but only ${lineRefs.current.length} slots — extras truncated.`
+          );
+        }
+      }
       // Hide any leftover lines from a previous longer tooltip.
       for (let i = contentLines.length; i < lineRefs.current.length; i += 1) {
         const lineEl = lineRefs.current[i];
@@ -61,9 +74,8 @@ function MatrixHoverTooltip(_props, ref) {
     },
     hide() {
       const el = wrapperRef.current;
-      if (!el) return;
+      if (!el || !visible) return;  // already hidden — no-op
       el.style.opacity = '0';
-      // Defer the visibility flip via React so it batches with other state.
       setVisible(false);
     },
   }), [visible]);
