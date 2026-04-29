@@ -233,7 +233,15 @@ def _normalize_generator_literal(
 class SymmetryGroup:
     """A finite symmetry group defined by explicit generators."""
 
-    __slots__ = ("_generators", "_degree", "_axes", "_elements", "_order", "_labels")
+    __slots__ = (
+        "_generators",
+        "_degree",
+        "_axes",
+        "_elements",
+        "_order",
+        "_labels",
+        "_canonical_action_cache",
+    )
 
     def __init__(
         self,
@@ -259,6 +267,10 @@ class SymmetryGroup:
         self._elements: list[_Permutation] | None = None
         self._order: int | None = None
         self._labels: tuple[str, ...] | None = None
+        self._canonical_action_cache: tuple[
+            tuple[str, ...] | None,
+            tuple[tuple[Any, ...], tuple[tuple[Any, ...], ...]],
+        ] | None = None
 
     @classmethod
     def from_generators(
@@ -372,15 +384,22 @@ class SymmetryGroup:
     def _canonical_axis_action(
         self,
     ) -> tuple[tuple[Any, ...], tuple[tuple[Any, ...], ...]]:
+        cached = self._canonical_action_cache
+        if cached is not None and cached[0] is self._labels:
+            return cached[1]
         domain = self._semantic_domain()
         labelled_axes = tuple(sorted(domain, key=repr))
         actions = []
         for elem in self.elements():
             mapping = {domain[i]: domain[j] for i, j in enumerate(elem.array_form)}
             actions.append(tuple(mapping[axis] for axis in labelled_axes))
-        return labelled_axes, tuple(sorted(actions))
+        result = (labelled_axes, tuple(sorted(actions)))
+        self._canonical_action_cache = (self._labels, result)
+        return result
 
     def __eq__(self, other: object) -> bool:
+        if self is other:
+            return True
         if not isinstance(other, SymmetryGroup):
             return NotImplemented
         return self._canonical_axis_action() == other._canonical_axis_action()

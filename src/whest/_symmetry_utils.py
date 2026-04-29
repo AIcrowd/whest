@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import functools
 import math
 from collections import OrderedDict
 from collections.abc import Iterable, Mapping
@@ -105,6 +106,14 @@ def unique_elements_for_shape(
     """Return the number of unique tensor elements implied by symmetry."""
     if group is None:
         return math.prod(shape)
+    return _unique_elements_for_shape_cached(group, tuple(shape))
+
+
+@functools.lru_cache(maxsize=None)
+def _unique_elements_for_shape_cached(
+    group: SymmetryGroup,
+    shape: tuple[int, ...],
+) -> int:
     validate_symmetry_group(group, ndim=len(shape), shape=shape)
     axes = group.axes
     if axes is None:
