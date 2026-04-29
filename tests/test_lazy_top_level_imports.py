@@ -1,4 +1,4 @@
-"""Tests for top-level lazy loading of flopscope submodules."""
+"""Tests for lazy loading of flopscope submodules (JAX-style layout)."""
 
 from __future__ import annotations
 
@@ -10,39 +10,54 @@ import pytest
 
 from tests.numpy_compat import conftest as numpy_compat_conftest
 
-LAZY_SUBMODULES = ("fft", "flops", "linalg", "random", "stats", "testing")
+# Submodules the top-level ``flopscope`` package lazy-loads on demand.
+TOP_LEVEL_LAZY = ("numpy", "accounting", "stats")
+# Submodules the ``flopscope.numpy`` package lazy-loads on demand.
+NUMPY_LAZY = ("linalg", "fft", "random", "testing", "typing")
 
 
 def _fresh_flopscope():
-    for name in (
+    names = (
         "flopscope",
-        *(f"flopscope.{submodule}" for submodule in LAZY_SUBMODULES),
-    ):
+        *(f"flopscope.{s}" for s in TOP_LEVEL_LAZY),
+        *(f"flopscope.numpy.{s}" for s in NUMPY_LAZY),
+    )
+    for name in names:
         sys.modules.pop(name, None)
     return importlib.import_module("flopscope")
 
 
-def test_top_level_import_does_not_eagerly_load_random_or_testing():
-    fnp = _fresh_flopscope()
+def test_top_level_import_does_not_eagerly_load_numpy_submodule():
+    we = _fresh_flopscope()
 
+    assert "flopscope.numpy" not in sys.modules
+    assert "numpy" in dir(we)
+    assert "accounting" in dir(we)
+    assert "stats" in dir(we)
+
+
+def test_top_level_numpy_is_loaded_lazily_on_attribute_access():
+    we = _fresh_flopscope()
+
+    assert hasattr(we, "numpy") is True
+    assert "flopscope.numpy" in sys.modules
+    assert we.numpy.__name__ == "flopscope.numpy"
+
+
+def test_numpy_submodule_random_is_loaded_lazily():
+    _fresh_flopscope()
+    fnp = importlib.import_module("flopscope.numpy")
     assert "flopscope.numpy.random" not in sys.modules
-    assert "flopscope.numpy.testing" not in sys.modules
-    assert "random" in dir(fnp)
-    assert "testing" in dir(fnp)
-
-
-def test_top_level_random_is_loaded_lazily_on_attribute_access():
-    fnp = _fresh_flopscope()
-
-    assert hasattr(fnp, "random") is True
+    assert hasattr(fnp, "random")
     assert "flopscope.numpy.random" in sys.modules
     assert fnp.random.__name__ == "flopscope.numpy.random"
 
 
-def test_top_level_testing_is_loaded_lazily_on_attribute_access():
-    fnp = _fresh_flopscope()
-
-    assert hasattr(fnp, "testing") is True
+def test_numpy_submodule_testing_is_loaded_lazily():
+    _fresh_flopscope()
+    fnp = importlib.import_module("flopscope.numpy")
+    sys.modules.pop("flopscope.numpy.testing", None)
+    assert hasattr(fnp, "testing")
     assert "flopscope.numpy.testing" in sys.modules
     fnp.testing.assert_allclose(np.array([1.0]), np.array([1.0]))
 
@@ -50,7 +65,7 @@ def test_top_level_testing_is_loaded_lazily_on_attribute_access():
 def test_from_import_random_still_works():
     _fresh_flopscope()
 
-    from flopscope import random as merandom
+    from flopscope.numpy import random as merandom
 
     assert "flopscope.numpy.random" in sys.modules
     assert merandom.__name__ == "flopscope.numpy.random"
@@ -58,14 +73,15 @@ def test_from_import_random_still_works():
 
 
 def test_registry_attribute_errors_are_unchanged_for_unknown_names():
-    fnp = _fresh_flopscope()
+    we = _fresh_flopscope()
 
     with pytest.raises(AttributeError, match="does not provide"):
-        _ = fnp.totally_fake_function_xyz
+        _ = we.totally_fake_function_xyz
 
 
 def test_numpy_compat_rebind_imports_lazy_random_before_patching_numpy():
-    fnp = _fresh_flopscope()
+    _fresh_flopscope()
+    fnp = importlib.import_module("flopscope.numpy")
 
     fnp.__dict__.pop("random", None)
     sys.modules.pop("flopscope.numpy.random", None)
