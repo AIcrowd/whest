@@ -28,10 +28,9 @@ test('BranchingDemo uses the editorial subsection style (ExplorerSubsectionHeade
   assert.doesNotMatch(src, /rounded-xl border bg-white px-6 py-6 shadow-sm/);
 });
 
-test('BranchingDemo renders an orbit dropdown with reach hints, no prev/next buttons', () => {
+test('BranchingDemo no longer renders an orbit dropdown or prev/next (selection happens in the matrix)', () => {
   const src = read('components/symmetry-aware-einsum-contractions/components/BranchingDemo.jsx');
-  assert.match(src, /data-action="select-orbit"/);
-  assert.match(src, /reaches \{reach\}/);
+  assert.doesNotMatch(src, /data-action="select-orbit"/);
   assert.doesNotMatch(src, /data-action="prev-orbit"/);
   assert.doesNotMatch(src, /data-action="next-orbit"/);
 });
@@ -111,4 +110,25 @@ test('OrbitRepMatrix derivation: collects unique reps + builds the cell grid', a
   assert.match(src, /orbitRows\.forEach/);
   assert.match(src, /row\.outputs/);
   assert.match(src, /tupleKey\(out\.outTuple\)/);
+});
+
+test('OrbitRepMatrix renders a label-position legend over actual label names', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /rowLabels/);
+  assert.match(src, /colLabels/);
+  assert.match(src, /orbit reps over/);
+  assert.match(src, /stored reps over/);
+});
+
+test('OrbitRepMatrix renders a hover-cell detail panel with rich orbit-rep info', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  assert.match(src, /data-testid="orbit-rep-matrix-detail"/);
+  // Eyebrow + labelled-tuple + status copy.
+  assert.match(src, /Focus[\s\S]*?cell/);
+  assert.match(src, /orbit&nbsp;rep:/);
+  assert.match(src, /stored&nbsp;rep:/);
+  assert.match(src, /contributes 1 to α/);
+  assert.match(src, /does not contribute/);
+  // Branching annotation.
+  assert.match(src, /This orbit branches/);
 });

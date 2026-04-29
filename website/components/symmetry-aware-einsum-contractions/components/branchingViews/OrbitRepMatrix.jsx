@@ -80,6 +80,12 @@ export default function OrbitRepMatrix({
 
   const rotateColLabels = reps.length >= ROTATE_COL_THRESHOLD;
 
+  // Label-position legends: row tuples are over L (all component labels);
+  // column tuples are over V (visible-side, canonicalized under H). Read
+  // the keys off the first available tuple in each axis.
+  const rowLabels = orbitRows.length > 0 ? Object.keys(orbitRows[0].repTuple ?? {}) : [];
+  const colLabels = reps.length > 0 ? Object.keys(reps[0].tuple ?? {}) : [];
+
   // Theme tokens. Bound to the design-system palette.
   const headerBg = explorerThemeColor(themeId, 'surfaceInset');
   const headerText = explorerThemeColor(themeId, 'muted');
@@ -164,19 +170,42 @@ export default function OrbitRepMatrix({
         </ul>
       </details>
 
-      {/* α total readout. Sanity-checks against BranchingDemo's liveAlpha. */}
+      {/* Label-position legend — tells the reader which labels each axis
+          is over, so the compact tuple form (0,0,1) ties back to the
+          actual label names (i, j, k). Derived from the first orbit's
+          repTuple keys (rows = full label set L) and the first rep's
+          outTuple keys (columns = visible-side V). */}
       <div
-        className="mb-2 flex items-center gap-2 text-[11px]"
+        className="mb-2 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-[10px]"
         style={{ color: muted }}
       >
-        <span className="font-semibold uppercase tracking-[0.16em]">
-          {orbitRows.length} orbits × {reps.length} reps
+        <span className="font-semibold uppercase tracking-[0.16em]">Rows</span>
+        <span className="font-mono">
+          orbit reps over (
+          {rowLabels.map((l, i) => (
+            <span key={l}>
+              {i > 0 && ', '}
+              <span style={{ color: explorerThemeColor(themeId, 'body') }}>{l}</span>
+            </span>
+          ))}
+          )
+        </span>
+        <span className="font-semibold uppercase tracking-[0.16em]">Columns</span>
+        <span className="font-mono">
+          stored reps over (
+          {colLabels.map((l, i) => (
+            <span key={l}>
+              {i > 0 && ', '}
+              <span style={{ color: explorerThemeColor(themeId, 'body') }}>{l}</span>
+            </span>
+          ))}
+          )
         </span>
         <span className="ml-auto font-mono">
           α ={' '}
           <strong style={{ color: alphaAccent }}>{alphaTotal}</strong>
           <span className="ml-1 text-[10px]" style={{ color: muted }}>
-            (count of filled cells)
+            ({orbitRows.length} orbits · {reps.length} reps · count of filled cells)
           </span>
         </span>
       </div>
@@ -336,6 +365,78 @@ export default function OrbitRepMatrix({
             </tbody>
           </table>
         </PanZoomCanvas>
+      </div>
+
+      {/* Hover-cell detail panel — updates on cell hover. Sits below the
+          matrix so it doesn't need positioning logic and stays accessible.
+          Renders the labelled (k=v) tuple form for both axes plus the
+          contribution status. Editorial callout style per the design
+          system: gray-50 bg, eyebrow + body voice, no shadow. */}
+      <div
+        data-testid="orbit-rep-matrix-detail"
+        className="mt-3 rounded p-3 text-[12px]"
+        style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}
+      >
+        {hover?.kind === 'cell' ? (() => {
+          const i = hover.i;
+          const j = hover.j;
+          const row = orbitRows[i];
+          const rep = reps[j];
+          const filled = cells[i]?.[j];
+          const orbitSize = row?.orbitSize ?? '?';
+          const reachCount = (row?.outputs ?? []).length;
+          return (
+            <div className="space-y-1">
+              <div
+                className="text-[10px] font-semibold uppercase tracking-[0.16em]"
+                style={{ color: muted }}
+              >
+                Focus · cell ({i + 1}, {j + 1})
+              </div>
+              <div className="font-mono leading-6" style={{ color: body }}>
+                <span style={{ color: muted }}>orbit&nbsp;rep:</span>{' '}
+                <strong>{labelledTuple(row?.repTuple)}</strong>
+                <span className="ml-2" style={{ color: muted }}>
+                  ({orbitSize} input assignment{orbitSize === 1 ? '' : 's'} collapse to this orbit)
+                </span>
+              </div>
+              <div className="font-mono leading-6" style={{ color: body }}>
+                <span style={{ color: muted }}>stored&nbsp;rep:</span>{' '}
+                <strong>{labelledTuple(rep?.tuple)}</strong>
+                <span className="ml-2" style={{ color: muted }}>
+                  (canonicalized under H = Stab<sub>G</sub>(V)|<sub>V</sub>)
+                </span>
+              </div>
+              <div className="leading-6" style={{ color: filled ? heroMuted : muted }}>
+                {filled ? (
+                  <>
+                    <span className="font-semibold">contributes 1 to α</span> — this orbit&apos;s
+                    projection lands on this rep.
+                    {reachCount > 1 && (
+                      <span style={{ color: muted }}>
+                        {' '}This orbit branches: it reaches {reachCount} stored reps in total.
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <span className="font-semibold">does not contribute</span> — this orbit&apos;s
+                    projection avoids this rep.
+                  </>
+                )}
+              </div>
+            </div>
+          );
+        })() : (
+          <div style={{ color: muted }}>
+            <span
+              className="text-[10px] font-semibold uppercase tracking-[0.16em]"
+            >
+              Focus
+            </span>
+            <span className="ml-2 italic">hover any cell for orbit · rep details</span>
+          </div>
+        )}
       </div>
     </div>
   );
