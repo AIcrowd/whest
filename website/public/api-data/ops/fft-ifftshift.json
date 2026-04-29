@@ -228,7 +228,7 @@
   "schema_version": 1,
   "slug": "fft-ifftshift",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L41",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L42",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L77"
   }
 }

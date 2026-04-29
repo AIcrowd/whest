@@ -546,7 +546,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arctan",
+              "href": "/docs/api/numpy/arctan/",
               "kind": "link",
               "target": "arctan",
               "text": "atan"
@@ -707,7 +707,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.arctan",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L334",
   "href": "/docs/api/numpy/arctan/",
   "import_path": "flopscope.numpy.arctan",
   "is_operation_cost_leaf": true,

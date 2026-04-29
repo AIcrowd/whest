@@ -373,7 +373,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/floor_divide",
+              "href": "/docs/api/numpy/floor-divide/",
               "label": "flops.floor_divide",
               "original_target": "divmod",
               "role": "",
@@ -459,7 +459,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.modf",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L178",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L372",
   "href": "/docs/api/numpy/modf/",
   "legacy_href": "/docs/api/ops/modf/",
   "module": "numpy",
@@ -562,7 +562,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/floor_divide",
+      "href": "/docs/api/numpy/floor-divide/",
       "label": "flops.floor_divide",
       "original_target": "divmod",
       "role": "",

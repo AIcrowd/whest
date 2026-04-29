@@ -817,7 +817,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.eig",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L116",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L144",
   "href": "/docs/api/numpy/linalg/eig/",
   "import_path": "flopscope.numpy.linalg.eig",
   "is_operation_cost_leaf": true,

@@ -671,7 +671,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.geomspace",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L268",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L275",
   "href": "/docs/api/numpy/geomspace/",
   "legacy_href": "/docs/api/ops/geomspace/",
   "module": "numpy",

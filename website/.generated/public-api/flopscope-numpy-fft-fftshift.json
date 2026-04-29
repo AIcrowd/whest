@@ -280,7 +280,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.fftshift",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L33",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L34",
   "href": "/docs/api/numpy/fft/fftshift/",
   "import_path": "flopscope.numpy.fft.fftshift",
   "is_operation_cost_leaf": true,

@@ -531,7 +531,7 @@
             },
             {
               "external_url": "",
-              "href": "/docs/api/ops/arccos",
+              "href": "/docs/api/numpy/arccos/",
               "kind": "link",
               "target": "arccos",
               "text": "acos"
@@ -675,7 +675,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.arccos",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L334",
   "href": "/docs/api/numpy/arccos/",
   "legacy_href": "/docs/api/ops/arccos/",
   "module": "numpy",

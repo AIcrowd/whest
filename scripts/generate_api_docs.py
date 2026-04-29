@@ -1163,9 +1163,23 @@ def _resolve_reference_destination(
             return ref["href"], "", ref["canonical_name"]
 
     canonical = resolve_canonical_name(candidate, alias_map)
+    canonical_ref = internal_refs.get(canonical)
+    if canonical_ref:
+        # Found via the canonical name even though the original lookup_candidates
+        # didn't contain it (e.g. target was a short alias like "abs" that
+        # didn't appear in internal_refs because alias_map injection ran after).
+        return canonical_ref["href"], "", canonical_ref["canonical_name"]
     if canonical in supported_ops:
+        # Defensive fallback. If we reach here, the op is in supported_ops but
+        # not in internal_refs — meaning some construction path didn't include
+        # it. The canonical_api_href format is the right post-rebrand route;
+        # the previous /docs/api/ops/<slug> form was the pre-rebrand path
+        # and now produces broken links on deploy.
+        import_path = (
+            f"flopscope.numpy.{slug_for_operation(canonical).replace('-', '_')}"
+        )
         return (
-            f"/docs/api/ops/{slug_for_operation(canonical)}",
+            canonical_api_href(import_path),
             "",
             canonical,
         )
@@ -2935,6 +2949,19 @@ def _build_operation_internal_refs(
         }
         for alias in op_aliases:
             refs[alias] = entry
+
+    # Include short aliases from `alias_map` (e.g. "abs" -> "absolute",
+    # "acos" -> "arccos"). Without this, callers of
+    # `_resolve_reference_destination` that look up an alias-form target
+    # miss `internal_refs` entirely and fall through to the legacy
+    # `/docs/api/ops/<slug>` URL — producing broken deploy links on the
+    # generated numpy-op pages. The alias-injection mirrors what
+    # `build_public_api_symbol_records` does at its own internal_refs
+    # construction site.
+    for alias, target in alias_map.items():
+        if target in refs:
+            refs[str(alias)] = refs[target]
+
     return refs
 
 

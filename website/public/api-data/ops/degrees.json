@@ -290,7 +290,7 @@
                   }
                 ],
                 "external_url": "",
-                "href": "/docs/api/ops/degrees",
+                "href": "/docs/api/numpy/degrees/",
                 "label": "flops.degrees",
                 "original_target": "rad2deg",
                 "role": "",
@@ -393,7 +393,7 @@
   "schema_version": 1,
   "slug": "degrees",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L334",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

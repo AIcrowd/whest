@@ -306,7 +306,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.fftfreq",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L11",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L12",
   "href": "/docs/api/numpy/fft/fftfreq/",
   "import_path": "flopscope.numpy.fft.fftfreq",
   "is_operation_cost_leaf": true,

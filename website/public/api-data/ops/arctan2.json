@@ -510,7 +510,7 @@
               },
               {
                 "external_url": "",
-                "href": "/docs/api/ops/arctan2",
+                "href": "/docs/api/numpy/arctan2/",
                 "kind": "link",
                 "target": "arctan2",
                 "text": "atan2"
@@ -679,7 +679,7 @@
   "schema_version": 1,
   "slug": "arctan2",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L201",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L401",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

@@ -276,7 +276,7 @@
                 }
               ],
               "external_url": "",
-              "href": "/docs/api/ops/radians",
+              "href": "/docs/api/numpy/radians/",
               "label": "flops.radians",
               "original_target": "deg2rad",
               "role": "",
@@ -390,7 +390,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.radians",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L334",
   "href": "/docs/api/numpy/radians/",
   "legacy_href": "/docs/api/ops/radians/",
   "module": "numpy",
@@ -468,7 +468,7 @@
         }
       ],
       "external_url": "",
-      "href": "/docs/api/ops/radians",
+      "href": "/docs/api/numpy/radians/",
       "label": "flops.radians",
       "original_target": "deg2rad",
       "role": "",

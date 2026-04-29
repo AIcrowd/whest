@@ -317,7 +317,7 @@
     "related_guides": [],
     "signature": "flops.FlopscopeArray(shape, dtype=<class 'float'>, buffer=None, offset=0, strides=None, order=None)",
     "slug": "flopscope-array",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L31",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L97",
     "status_note": "",
     "summary": "A numpy ndarray subclass with FLOP-tracked operators.",
     "upstream_source_url": ""
@@ -1173,7 +1173,7 @@
     "related_guides": [],
     "signature": "fnp.base_repr(number, base=2, padding=0)",
     "slug": "base-repr",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L802",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L813",
     "status_note": "This symbol is exported from flopscope, but it is excluded from the operation registry and therefore does not appear in the operation cost index.",
     "summary": "Return a string representation of a number in the given base system.",
     "upstream_source_url": ""
@@ -1613,7 +1613,7 @@
     "related_guides": [],
     "signature": "fnp.binary_repr(num, width=None)",
     "slug": "binary-repr",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L815",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L826",
     "status_note": "This symbol is exported from flopscope, but it is excluded from the operation registry and therefore does not appear in the operation cost index.",
     "summary": "Return the binary representation of the input number as a string.",
     "upstream_source_url": ""
@@ -3188,7 +3188,7 @@
     "related_guides": [],
     "signature": "fnp.clear_einsum_cache()",
     "slug": "clear-einsum-cache",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L128",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L129",
     "status_note": "",
     "summary": "Clear the einsum path cache.",
     "upstream_source_url": ""
@@ -3684,7 +3684,7 @@
     "related_guides": [],
     "signature": "fnp.einsum_cache_info()",
     "slug": "einsum-cache-info",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L148",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L149",
     "status_note": "",
     "summary": "Return einsum path cache statistics.",
     "upstream_source_url": ""
@@ -4002,7 +4002,7 @@
     "module": "numpy",
     "name": "errstate",
     "related_guides": [],
-    "signature": "fnp.errstate(*, call=<numpy._core._ufunc_config._unspecified object at 0x107388d70>, all=None, divide=None, over=None, under=None, invalid=None)",
+    "signature": "fnp.errstate(*, call=<numpy._core._ufunc_config._unspecified object at 0x10693cd70>, all=None, divide=None, over=None, under=None, invalid=None)",
     "slug": "errstate",
     "source_url": "",
     "status_note": "",
@@ -4719,7 +4719,7 @@
     ],
     "signature": "flops.flops.cholesky_cost(n: 'int') -> 'int'",
     "slug": "flops-cholesky-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L18",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L19",
     "status_note": "",
     "summary": "Weighted FLOP cost of Cholesky decomposition.",
     "upstream_source_url": ""
@@ -5010,7 +5010,7 @@
     ],
     "signature": "flops.flops.cond_cost(m: 'int', n: 'int', p=None) -> 'int'",
     "slug": "flops-cond-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L328",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L362",
     "status_note": "",
     "summary": "Weighted FLOP cost of condition number.",
     "upstream_source_url": ""
@@ -5223,7 +5223,7 @@
     ],
     "signature": "flops.flops.det_cost(n: 'int', symmetric: 'bool' = False) -> 'int'",
     "slug": "flops-det-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L57",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L61",
     "status_note": "",
     "summary": "Weighted FLOP cost of determinant.",
     "upstream_source_url": ""
@@ -5380,7 +5380,7 @@
     ],
     "signature": "flops.flops.eig_cost(n: 'int') -> 'int'",
     "slug": "flops-eig-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L96",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L124",
     "status_note": "",
     "summary": "Weighted FLOP cost of eigendecomposition.",
     "upstream_source_url": ""
@@ -5537,7 +5537,7 @@
     ],
     "signature": "flops.flops.eigh_cost(n: 'int') -> 'int'",
     "slug": "flops-eigh-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L134",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L167",
     "status_note": "",
     "summary": "Weighted FLOP cost of symmetric eigendecomposition.",
     "upstream_source_url": ""
@@ -5690,7 +5690,7 @@
     ],
     "signature": "flops.flops.eigvals_cost(n: 'int') -> 'int'",
     "slug": "flops-eigvals-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L172",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L210",
     "status_note": "",
     "summary": "Weighted FLOP cost of computing eigenvalues.",
     "upstream_source_url": ""
@@ -5843,7 +5843,7 @@
     ],
     "signature": "flops.flops.eigvalsh_cost(n: 'int') -> 'int'",
     "slug": "flops-eigvalsh-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L210",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L251",
     "status_note": "",
     "summary": "Weighted FLOP cost of computing eigenvalues of a symmetric matrix.",
     "upstream_source_url": ""
@@ -6306,7 +6306,7 @@
     ],
     "signature": "flops.flops.fft_cost(n: 'int') -> 'int'",
     "slug": "flops-fft-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L18",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L19",
     "status_note": "",
     "summary": "Weighted FLOP cost of a 1-D complex FFT.",
     "upstream_source_url": ""
@@ -6471,7 +6471,7 @@
     ],
     "signature": "flops.flops.fftn_cost(shape: 'tuple[int, ...]') -> 'int'",
     "slug": "flops-fftn-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L64",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L65",
     "status_note": "",
     "summary": "Weighted FLOP cost of an N-D complex FFT.",
     "upstream_source_url": ""
@@ -6956,7 +6956,7 @@
     ],
     "signature": "flops.flops.hfft_cost(n_out: 'int') -> 'int'",
     "slug": "flops-hfft-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L120",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L121",
     "status_note": "",
     "summary": "Weighted FLOP cost of a Hermitian FFT.",
     "upstream_source_url": ""
@@ -7173,7 +7173,7 @@
     ],
     "signature": "flops.flops.inv_cost(n: 'int', symmetric: 'bool' = False) -> 'int'",
     "slug": "flops-inv-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L73",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L86",
     "status_note": "",
     "summary": "Weighted FLOP cost of matrix inverse.",
     "upstream_source_url": ""
@@ -7513,7 +7513,7 @@
     ],
     "signature": "flops.flops.lstsq_cost(m: 'int', n: 'int') -> 'int'",
     "slug": "flops-lstsq-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L130",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L146",
     "status_note": "",
     "summary": "Weighted FLOP cost of least-squares solution.",
     "upstream_source_url": ""
@@ -7765,7 +7765,7 @@
     ],
     "signature": "flops.flops.matrix_norm_cost(shape: 'tuple', ord=None) -> 'int'",
     "slug": "flops-matrix-norm-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L276",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L307",
     "status_note": "",
     "summary": "Weighted FLOP cost of matrix norm.",
     "upstream_source_url": ""
@@ -7940,7 +7940,7 @@
     ],
     "signature": "flops.flops.matrix_power_cost(n: 'int', k: 'int') -> 'int'",
     "slug": "flops-matrix-power-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L81",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L90",
     "status_note": "",
     "summary": "Weighted FLOP cost of matrix power A**k.",
     "upstream_source_url": ""
@@ -8115,7 +8115,7 @@
     ],
     "signature": "flops.flops.matrix_rank_cost(m: 'int', n: 'int') -> 'int'",
     "slug": "flops-matrix-rank-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L402",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L441",
     "status_note": "",
     "summary": "Weighted FLOP cost of matrix rank.",
     "upstream_source_url": ""
@@ -8276,7 +8276,7 @@
     ],
     "signature": "flops.flops.multi_dot_cost(shapes: 'list[tuple[int, ...]]') -> 'int'",
     "slug": "flops-multi-dot-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L23",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L24",
     "status_note": "",
     "summary": "Weighted FLOP cost of optimal matrix chain multiplication.",
     "upstream_source_url": ""
@@ -8545,7 +8545,7 @@
     ],
     "signature": "flops.flops.norm_cost(shape: 'tuple', ord=None) -> 'int'",
     "slug": "flops-norm-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L145",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L162",
     "status_note": "",
     "summary": "Weighted FLOP cost of matrix or vector norm.",
     "upstream_source_url": ""
@@ -8724,7 +8724,7 @@
     ],
     "signature": "flops.flops.pinv_cost(m: 'int', n: 'int') -> 'int'",
     "slug": "flops-pinv-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L172",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L204",
     "status_note": "",
     "summary": "Weighted FLOP cost of pseudoinverse.",
     "upstream_source_url": ""
@@ -10797,7 +10797,7 @@
     ],
     "signature": "flops.flops.qr_cost(m: 'int', n: 'int') -> 'int'",
     "slug": "flops-qr-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L56",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L60",
     "status_note": "",
     "summary": "Weighted FLOP cost of QR decomposition.",
     "upstream_source_url": ""
@@ -11242,7 +11242,7 @@
     ],
     "signature": "flops.flops.rfft_cost(n: 'int') -> 'int'",
     "slug": "flops-rfft-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L41",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L42",
     "status_note": "",
     "summary": "Weighted FLOP cost of a 1-D real FFT.",
     "upstream_source_url": ""
@@ -11399,7 +11399,7 @@
     ],
     "signature": "flops.flops.rfftn_cost(shape: 'tuple[int, ...]') -> 'int'",
     "slug": "flops-rfftn-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L93",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L94",
     "status_note": "",
     "summary": "Weighted FLOP cost of an N-D real FFT.",
     "upstream_source_url": ""
@@ -11756,7 +11756,7 @@
     ],
     "signature": "flops.flops.slogdet_cost(n: 'int', symmetric: 'bool' = False) -> 'int'",
     "slug": "flops-slogdet-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L100",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L107",
     "status_note": "",
     "summary": "Weighted FLOP cost of sign and log-determinant.",
     "upstream_source_url": ""
@@ -12033,7 +12033,7 @@
     ],
     "signature": "flops.flops.solve_cost(n: 'int', nrhs: 'int' = 1, symmetric: 'bool' = False) -> 'int'",
     "slug": "flops-solve-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L29",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L30",
     "status_note": "",
     "summary": "Weighted FLOP cost of solving a linear system Ax = b.",
     "upstream_source_url": ""
@@ -12492,7 +12492,7 @@
     ],
     "signature": "flops.flops.svdvals_cost(m: 'int', n: 'int', k: 'int | None' = None) -> 'int'",
     "slug": "flops-svdvals-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L248",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L292",
     "status_note": "",
     "summary": "Weighted FLOP cost of computing singular values.",
     "upstream_source_url": ""
@@ -12727,7 +12727,7 @@
     ],
     "signature": "flops.flops.tensorinv_cost(a_shape: 'tuple', ind: 'int' = 2) -> 'int'",
     "slug": "flops-tensorinv-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L267",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L307",
     "status_note": "",
     "summary": "Weighted FLOP cost of tensor inverse.",
     "upstream_source_url": ""
@@ -12962,7 +12962,7 @@
     ],
     "signature": "flops.flops.tensorsolve_cost(a_shape: 'tuple', ind: 'int | None' = None) -> 'int'",
     "slug": "flops-tensorsolve-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L219",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L254",
     "status_note": "",
     "summary": "Weighted FLOP cost of tensor solve.",
     "upstream_source_url": ""
@@ -13115,7 +13115,7 @@
     ],
     "signature": "flops.flops.trace_cost(n: 'int') -> 'int'",
     "slug": "flops-trace-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L15",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L16",
     "status_note": "",
     "summary": "Weighted FLOP cost of matrix trace.",
     "upstream_source_url": ""
@@ -13268,7 +13268,7 @@
     ],
     "signature": "flops.flops.unwrap_cost(shape: 'tuple[int, ...]') -> 'int'",
     "slug": "flops-unwrap-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_unwrap.py#L12",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_unwrap.py#L13",
     "status_note": "",
     "summary": "Weighted FLOP cost of phase unwrapping.",
     "upstream_source_url": ""
@@ -13481,7 +13481,7 @@
     ],
     "signature": "flops.flops.vector_norm_cost(shape: 'tuple', ord=None) -> 'int'",
     "slug": "flops-vector-norm-cost",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L223",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L249",
     "status_note": "",
     "summary": "Weighted FLOP cost of vector norm.",
     "upstream_source_url": ""
@@ -14003,7 +14003,7 @@
     "related_guides": [],
     "signature": "fnp.fromfile(*args, **kwargs)",
     "slug": "fromfile",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1141",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1192",
     "status_note": "This symbol is exported from flopscope, but it is excluded from the operation registry and therefore does not appear in the operation cost index.",
     "summary": "Construct an array from data in a text or binary file.",
     "upstream_source_url": ""
@@ -14418,7 +14418,7 @@
     "related_guides": [],
     "signature": "fnp.fromregex(file, regexp, dtype, encoding=None)",
     "slug": "fromregex",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1180",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1231",
     "status_note": "This symbol is exported from flopscope, but it is excluded from the operation registry and therefore does not appear in the operation cost index.",
     "summary": "Construct an array from a text file, using regular expression parsing.",
     "upstream_source_url": ""
@@ -14822,7 +14822,7 @@
     "related_guides": [],
     "signature": "fnp.fromstring(*args, **kwargs)",
     "slug": "fromstring",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1193",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1244",
     "status_note": "This symbol is exported from flopscope, but it is excluded from the operation registry and therefore does not appear in the operation cost index.",
     "summary": "A new 1-D array initialized from text data in a string.",
     "upstream_source_url": ""
@@ -16382,7 +16382,7 @@
     "related_guides": [],
     "signature": "fnp.isnat(*args, **kwargs)",
     "slug": "isnat",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L147",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L334",
     "status_note": "This symbol is exported from flopscope, but it is excluded from the operation registry and therefore does not appear in the operation cost index.",
     "summary": "Test element-wise for NaT (not a time) and return result as a boolean array.",
     "upstream_source_url": ""

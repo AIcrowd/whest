@@ -154,7 +154,7 @@
   ],
   "signature": "flops.flops.multi_dot_cost(shapes: 'list[tuple[int, ...]]') -> 'int'",
   "slug": "flops-multi-dot-cost",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L23",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L24",
   "status_note": "",
   "summary": "Weighted FLOP cost of optimal matrix chain multiplication.",
   "upstream_source_url": ""
