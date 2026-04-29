@@ -117,7 +117,7 @@ test('appendix uses an editorial spine with asymmetric support shelves', () => {
   assert.doesNotMatch(section6, /Storage-only saving/);
   assert.doesNotMatch(section6, /appendixSection6\.slots\.scopeLabel/);
   assert.doesNotMatch(section6, /appendixSection6\.slots\.tableNote/);
-  assert.doesNotMatch(section6, /-mx-6 -mb-10 mt-8 border-t border-stone-200\/70 bg-gray-50/);
+  assert.match(section6, /-mx-6 -mb-10 mt-8 border-t border-stone-200\/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10/);
   assert.doesNotMatch(section6, /bg-stone-50\/60/);
   assert.doesNotMatch(section6, /isModelBlock/);
   assert(section6.indexOf('appendixSection6.slots.intro') < section6.indexOf('appendixSection6.slots.footer'), 'intro should render before footer');

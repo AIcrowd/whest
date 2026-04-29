@@ -1786,15 +1786,6 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                       themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
                     })}
                   </p>
-                  <div className="mt-4">
-                    <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>Notes</div>
-                    <p className={`mt-2 ${APPENDIX_PROSE_CLASS}`}>
-                      {renderAppendixSingleBlock(appendixSection6.slots.footer, 1, {
-                        slotKey: 'appendix-section6-footer',
-                        themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
-                      })}
-                    </p>
-                  </div>
                 </>
               )}
               support={(() => {
@@ -1822,6 +1813,16 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                 );
               })()}
             />
+
+            <div className="-mx-6 -mb-10 mt-8 border-t border-stone-200/70 bg-gray-50 px-6 py-4 md:-mx-8 md:px-8 lg:-mx-10 lg:px-10">
+              <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>Notes</div>
+              <p className="mt-2 text-[12.5px] leading-6 text-stone-700">
+                {renderAppendixSingleBlock(appendixSection6.slots.footer, 1, {
+                  slotKey: 'appendix-section6-footer',
+                  themeOverride: APPENDIX_SECTION_SIX_THEME_OVERRIDE,
+                })}
+              </p>
+            </div>
           </AppendixSection>
         </div>
       </div>
