@@ -1,21 +1,19 @@
 import { MIXED_REGIMES } from './regimes/index.js';
 
 /**
- * Ordered list of mixed-shape regimes. Priority rationale:
+ * Mixed accumulation regimes all compute the same output-orbit alpha
+ *   alpha = #{(O, Q) ∈ X/G × Y/H : pi_V(O) ∩ Q ≠ ∅},  H = Stab_G(V)|_V.
  *
- *   1. singleton        — O(|G|) recognizer; closed form via weighted Burnside
- *                         (inclusion–exclusion on the free label's orbit).
- *   2. directProduct    — one pass over generators (checks V-only vs W-only
- *                         split); formula (Π_V n_ℓ) · |[n]^W / G_W|.
- *   3. bruteForceOrbit  — always correct; budget-capped at Π n_ℓ · |G| ≤ 1.5e6.
+ * Closed forms run first. If none apply, the engine prefers typed partition
+ * counting when its budget passes; otherwise it falls back to corrected
+ * brute-force enumeration when the tuple-enumeration budget passes. Both
+ * general counters are exact and must agree whenever both are feasible.
  *
- * Earlier entries are tried first. Overlapping recognizers must agree
- * numerically on their common domains (enforced by the property test).
- *
- * Earlier iterations exposed five extra analytic regimes between singleton
- * and bruteForceOrbit. They were removed to keep the classification surface
- * learnable; inputs that used to land there now fall through to
- * bruteForceOrbit, which is always correct within the budget cap.
+ * Order in MIXED_REGIMES:
+ *   1. singleton         — closed form for |V| = 1 (point-stabilizer Burnside).
+ *   2. young             — closed form for full Sym(L) with one shared dimension.
+ *   3. partitionCount    — typed equality-pattern enumeration (compressed).
+ *   4. bruteForceOrbit   — explicit fallback when partition counting refuses.
  */
 export function getMixedRegimes() {
   return [...MIXED_REGIMES];

@@ -105,7 +105,9 @@ export default function VSubSwConstruction({
   const COLOR_W = explorerThemeColor(explorerThemeId, 'summedSide');
   const SHORT_V_LATEX = themedMath('V', COLOR_V);
   const SHORT_DUMMY_FACTOR_LATEX = String.raw`\prod_d ${themedMath('S(W_d)', COLOR_W)}`;
-  const SHORT_G_OUT_EQUALS_RESTRICTION_LATEX = `${notationLatex('g_output')} = ${notationLatex('g_pointwise')}\\big|_{${SHORT_V_LATEX}}`;
+  // V4: visible math says H = Stab_{G_pt}(V)|_V (output representative action).
+  // Local constant name kept for back-compat; the rendered formula is the new H form.
+  const SHORT_G_OUT_EQUALS_RESTRICTION_LATEX = `${notationLatex('h_output')} = \\mathrm{Stab}_{${notationLatex('g_pointwise')}}(${SHORT_V_LATEX})\\big|_{${SHORT_V_LATEX}}`;
   const PRODUCT_ACCENT = explorerThemeColor(explorerThemeId, 'quantity');
   const [hoveredVIdx, setHoveredVIdx] = useState(null);
   const [hoveredWIdx, setHoveredWIdx] = useState(null);
@@ -204,7 +206,7 @@ export default function VSubSwConstruction({
           <div className={colHead} />
           <div>
             <div className={colHead}>
-              <Latex math={`${notationLatex('g_formal')} = ${notationLatex('g_output')} \\times ${SHORT_DUMMY_FACTOR_LATEX}`} />
+              <Latex math={`${notationLatex('g_formal')} = ${notationLatex('h_output')} \\times ${SHORT_DUMMY_FACTOR_LATEX}`} />
               <span className="ml-1 text-[10px] text-muted-foreground normal-case tracking-normal">
                 (label-renaming formal group)
               </span>

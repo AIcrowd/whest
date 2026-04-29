@@ -18,7 +18,7 @@ import { notationColor, notationTint } from '../lib/notationSystem.js';
 //
 //   STAGE 1 — Structural checks. Decisions here only need (V, W, generators).
 //             No group enumeration (dimino) required to REACH a leaf.
-//             Leaves: allVisible · allSummed · trivial · directProduct.
+//             Leaves: allVisible · allSummed · trivial.
 //
 //   STAGE 2 — Symmetry checks. We materialise G and run the remaining
 //             ladder: singleton vs bruteForceOrbit fallback.
@@ -175,21 +175,21 @@ const QUESTIONS = [
   },
   {
     id: 'q_crossVW',
-    short: 'Cross-V/W element ?',
-    checks: 'Does any element $g \\in G$ move at least one $V$-label to a $W$-label (or vice versa)? An element-level scan: for each $g$, does there exist $\\ell \\in V$ with $g(\\ell) \\in W$?',
-    why: 'The Young regime (the leaf reached via "yes" → "G = Sym(L_c)" → "yes") requires at least one cross element — its multinomial closed form assumes $G$ genuinely mixes $V$ and $W$. Without cross, the Young regime cannot fire and brute-force orbit is the only remaining option.',
-    intuition: 'Reaching this node with answer "no" happens when the factorization check above refused for a *numeric* reason, not because of cross. Examples: *four-A-grid*\'s $S_2\\{a,b\\} \\times S_2\\{i,j\\}$ has zero cross elements, but it already fired the direct-product regime at the factorization check and never reaches here. *bilinear-trace*\'s coupled $\\mathbb{Z}_2$ also has zero cross elements, but the factorization check refused on $|G| = 2 \\neq |G_V| \\cdot |G_W| = 4$ — that is a "no-cross but reach here" case, and it falls straight to brute-force orbit. Cross elements themselves arise from base-group generators — declared axis symmetries on an operand that span $V$ and $W$ — or from top-group transpositions in the wreath — identical-operand swaps that pair a $V$-label with a $W$-label.',
-    onTrue: 'q_fullSym',
-    onFalse: 'bruteForceOrbit',
+    short: 'Full Sym(L), one domain ?',
+    checks: 'Is $G$ the full symmetric group on the component\'s label set — every permutation of $L_c$? Equivalently $|G| = |L_c|!$, with all labels sharing one dimension $n_L$ and both $V_a$ and $W_a$ nonempty.',
+    why: 'When the test passes, both visible and summed assignments collapse into multisets and the closed-form multiset count fires: $\\alpha_a = \\binom{n_L + |V_a| - 1}{|V_a|} \\binom{n_L + |W_a| - 1}{|W_a|}$. When it does not, the engine prefers typed partition counting if its equality-pattern budget passes; otherwise it falls back to corrected brute-force enumeration when the tuple-enumeration budget passes.',
+    intuition: 'Examples that fire the multiset closed form: *young-s3* ($\\texttt{abc→ab}$ with $T$ fully symmetric, $|G|=3!=6$), *young-s4-v2w2*, *young-s4-v3w1*. The visible side is also quotiented by $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$ — the multiset count is exactly $|Y/H|$ when $G$ is the full symmetric group.',
+    onTrue: 'young',
+    onFalse: 'q_fullSym',
     stage: 2,
   },
   {
     id: 'q_fullSym',
-    short: 'G = Sym(L_c) ?',
-    checks: 'Is $G$ the full symmetric group on the component\'s label set — every permutation of $L_c$? The cardinality test $|G| = |L_c|!$ decides this.',
-    why: 'When $G = \\mathrm{Sym}(L)$, the pointwise $V$-stabilizer is exactly the Young subgroup $\\mathrm{Sym}(W)$. The orbit count collapses to a multinomial: $\\alpha = n_L^{|V|} \\cdot \\binom{n_L + |W| - 1}{|W|}$, with no orbit enumeration.',
-    intuition: 'Examples that fire the Young regime: *young-s3* ($\\texttt{abc→ab}$ with $T$ fully symmetric, $|G|=6=3!$), *young-s4-v2w2*, *young-s4-v3w1*. Example with cross elements but $G \\neq \\mathrm{Sym}$: *cross-c3-partial* ($C_3 \\subsetneq S_3$). It falls to brute-force orbit because the closed form requires the full symmetric group on the component\'s label set.',
-    onTrue: 'young',
+    short: 'Typed partitions feasible ?',
+    checks: 'Can typed equality patterns $\\tilde{x}$ on $L_c$ be enumerated within the interactive partition budget?',
+    why: 'Typed partition counting is an exact compressed counter. It groups assignments by same-domain equality patterns and counts which stored output representatives each pattern can reach. When the equality-pattern budget passes, this is the preferred general counter. Otherwise the engine falls back to corrected brute-force orbit enumeration if the tuple budget is still acceptable.',
+    intuition: 'Examples: *cross-c3-partial* ($C_3 \\subsetneq S_3$) lands here when the closed-form multiset test refuses; the typed partition counter handles it exactly. The corrected brute-force fallback canonicalizes projected outputs under $H$ before counting, so its result is the same $\\alpha$.',
+    onTrue: 'partitionCount',
     onFalse: 'bruteForceOrbit',
     stage: 2,
   },
@@ -666,28 +666,18 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
-  // Single bruteForceOrbit leaf serves BOTH "no" branches (q_crossVW-no and
-  // q_fullSym-no). Positioned at the bottom of the tree (centered under
-  // the spine, below q_fullSym) so:
-  //   - q_fullSym-no connects cleanly via a short vertical edge from its
-  //     bottom handle into BFO's top handle.
-  //   - q_crossVW-no exits the RIGHT side of the question, sweeps down and
-  //     around the spine, and connects into BFO's right handle.
-  const bruteY = Q_FULLSYM_Y + ROW_GAP;
-  nodes.push(leafNode('bruteForceOrbit', bruteY, true));
+  // q_crossVW yes → young leaf on the left (full-symmetric multiset closed form).
+  nodes.push(leafNode('young', Q_CROSSVW_Y));
   edges.push({
-    id: `${crossVWQ.id}-bruteForceOrbit`,
-    source: crossVWQ.id, sourceHandle: 'right',
-    target: 'bruteForceOrbit', targetHandle: 'right',
-    label: EDGE_NO.label,
-    // This edge's step path has a long vertical segment on the RIGHT side
-    // of the tree, so the midpoint sits on a vertical line — treat it as
-    // a vertical edge and shift the label horizontally.
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color, ...LABEL_OFFSET_VERTICAL },
-    style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
+    id: `${crossVWQ.id}-young`,
+    source: crossVWQ.id, sourceHandle: 'side',
+    target: 'young', targetHandle: 'right',
+    label: EDGE_YES.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_HORIZONTAL },
+    style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
-  // q_crossVW yes → q_fullSym question on the spine.
+  // q_crossVW no → q_fullSym (typed partitions feasible?) on the spine.
   const fullSymQ = QUESTIONS.find((q) => q.id === 'q_fullSym');
   nodes.push({
     id: fullSymQ.id,
@@ -700,24 +690,25 @@ function buildLadderLayout(activeLeafIds, spotlightLeafIds) {
     id: `${crossVWQ.id}-${fullSymQ.id}`,
     source: crossVWQ.id, sourceHandle: 'bottom',
     target: fullSymQ.id, targetHandle: 'top',
-    label: EDGE_YES.label,
-    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_VERTICAL },
-    style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
+    label: EDGE_NO.label,
+    labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_NO.color, ...LABEL_OFFSET_VERTICAL },
+    style: { stroke: EDGE_NO.color, strokeWidth: 1.5 },
   });
 
-  // q_fullSym yes → young leaf on the left.
-  nodes.push(leafNode('young', Q_FULLSYM_Y));
+  // q_fullSym yes → partitionCount leaf on the left (typed partition count).
+  nodes.push(leafNode('partitionCount', Q_FULLSYM_Y));
   edges.push({
-    id: `${fullSymQ.id}-young`,
+    id: `${fullSymQ.id}-partitionCount`,
     source: fullSymQ.id, sourceHandle: 'side',
-    target: 'young', targetHandle: 'right',
+    target: 'partitionCount', targetHandle: 'right',
     label: EDGE_YES.label,
     labelStyle: { fontSize: 11, fontWeight: 700, fill: EDGE_YES.color, ...LABEL_OFFSET_HORIZONTAL },
     style: { stroke: EDGE_YES.color, strokeWidth: 1.5 },
   });
 
-  // q_fullSym no → same single bruteForceOrbit leaf at the bottom. Short
-  // vertical edge from q_fullSym's bottom handle into BFO's top handle.
+  // q_fullSym no → bruteForceOrbit at the bottom (corrected explicit fallback).
+  const bruteY = Q_FULLSYM_Y + ROW_GAP;
+  nodes.push(leafNode('bruteForceOrbit', bruteY, true));
   edges.push({
     id: `${fullSymQ.id}-bruteForceOrbit`,
     source: fullSymQ.id, sourceHandle: 'bottom',
