@@ -284,3 +284,12 @@ test('OrbitRepMatrix renders an eased CSS overlay over the focused cell (not jus
   // Transition on opacity for the eased reveal.
   assert.match(src, /transition:\s*['"]opacity 120ms/);
 });
+
+test('OrbitRepMatrix axis labels use refined typography (lowercase, lighter weight, lighter color)', () => {
+  const src = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
+  // Tighter tracking + medium weight (not semibold/uppercase).
+  assert.match(src, /font-medium tracking-\[0\.04em\]/);
+  // Label text itself is lowercase ("orbit" not "Orbit", "rep" not "Rep").
+  assert.match(src, />\s*orbit\s*<Latex/);
+  assert.match(src, />\s*rep\s*<Latex/);
+});

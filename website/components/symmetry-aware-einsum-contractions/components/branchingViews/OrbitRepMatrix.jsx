@@ -364,11 +364,11 @@ function OrbitRepMatrix({
                 gridColumn: 1, gridRow: 1,
                 writingMode: 'vertical-rl',
                 transform: 'rotate(180deg)',
-                color: '#1F2526',
+                color: '#9AA0A0',
               }}
-              className="flex items-center justify-center text-[10px] font-semibold uppercase tracking-[0.16em] font-sans"
+              className="flex items-center justify-center text-[10px] font-medium tracking-[0.04em] font-sans"
             >
-              Orbit <Latex math="O" />
+              orbit <Latex math="O" />
             </div>
 
             {/* Y tick gutter — labels + 4px hairline tick marks. Marks sit flush
@@ -544,10 +544,10 @@ function OrbitRepMatrix({
 
             {/* X axis label — col 3, row 3 */}
             <div
-              style={{ gridColumn: 3, gridRow: 3, color: '#1F2526' }}
-              className="text-center text-[10px] font-semibold uppercase tracking-[0.16em] font-sans pt-1"
+              style={{ gridColumn: 3, gridRow: 3, color: '#9AA0A0' }}
+              className="text-center text-[10px] font-medium tracking-[0.04em] font-sans pt-1"
             >
-              Rep <Latex math="Q" />
+              rep <Latex math="Q" />
             </div>
           </div>
         );
