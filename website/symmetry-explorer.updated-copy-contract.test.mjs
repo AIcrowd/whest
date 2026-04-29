@@ -47,6 +47,10 @@ test('appendix copy uses domain-compatible formal dummy renaming', () => {
 
   assert.match(section2, /same-domain blocks/);
   assert.match(section4, /\\\\prod_d S\(W_d\)/);
-  assert.match(section5, /domain-compatible dummy-label factor/);
-  assert.doesNotMatch(section4, /G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times S\(W_\{\\mathrm\{summed\}\}\)/);
+  // V4 rephrased the rule paragraph; legacy "domain-compatible dummy-label
+  // factor" was tightened to "dummy-label factor" referencing the same product.
+  assert.match(section5, /dummy-label factor \$\\\\prod_d S\(W_d\)\$/);
+  // Section 4's G_f formula now uses H instead of the legacy G_out.
+  assert.doesNotMatch(section4, /G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times/);
+  assert.match(section4, /G_\{\\\\text\{f\}\} = H \\\\times \\\\prod_d S\(W_d\)/);
 });

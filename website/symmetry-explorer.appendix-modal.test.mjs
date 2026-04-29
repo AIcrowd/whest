@@ -45,7 +45,7 @@ test('appendix modal shell keeps the editorial rail and the new cost-vs-expressi
   assert.match(source, /<SectionReferenceLink href="#cost-savings" beforeNavigate=\{onClose\}>Section 5<\/SectionReferenceLink>/);
   assert.match(source, /on the main page computed a symmetry-aware accumulation count/);
   assert.match(source, /href="#cost-savings"/);
-  assert.match(source, /pointwise symmetry for accumulation, formal symmetry for the completed expression, and output symmetry for storage/);
+  assert.match(source, /product-side symmetry for representative products, output-side action for stored output representatives, and formal dummy symmetry after summation/);
   assert.match(source, /max-w-\[min\(100%,980px\)\]/);
   assert.doesNotMatch(source, /Act 5 computed a symmetry-aware accumulation count\./);
   assert.doesNotMatch(source, /This appendix has two parts\./);
@@ -208,7 +208,7 @@ test('sections 2 through 4 introduce same-domain dummy renaming, then G_out, the
   assert.match(source, /direct-s2-c3/);
   assert.match(source, /triple-outer/);
   assert.match(source, /n=\{4\}[\s\S]*appendixSection4\.slots\.constructionNote/);
-  assert.match(source, /n=\{4\}[\s\S]*<Latex math=\{String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`\} \/>/);
+  assert.match(source, /n=\{4\}[\s\S]*<Latex math=\{String\.raw`G_\{\\text\{f\}\} = H \\times \\prod_d S\(W_d\)`\} \/>/);
   assert.match(source, /n=\{4\}[\s\S]*<VSubSwConstruction/);
   assert.doesNotMatch(source, /n=\{4\}[\s\S]*We can now name the label-renaming formal group considered in this appendix\./);
   assert.doesNotMatch(source, /n=\{4\}[\s\S]*rounded-xl border border-gray-200 bg-gray-50 px-5 py-4 text-center/);
@@ -404,8 +404,8 @@ test('appendix roadmap cards are formula-first with white background and black b
   assert.doesNotMatch(roadmapBlock, /Output group/);
   assert.doesNotMatch(roadmapBlock, /Dummy group/);
   assert.doesNotMatch(roadmapBlock, /Formal group/);
-  assert.ok(roadmapBlock.includes('The restriction <Latex math={String.raw`G_{\\text{pt}}\\|_V`} /> to output labels.'));
-  assert.match(roadmapBlock, /This is the output-level symmetry inherited from pointwise equality; in this appendix it is used to discuss output equality and storage collapse\./);
+  assert.ok(roadmapBlock.includes('H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V'));
+  assert.match(roadmapBlock, /the main accumulation count: stored output representatives in/);
   assert.match(source, /same-domain dummy renamings of bound summation variables/);
-  assert.match(source, /<Latex math=\{String\.raw`G_\{\\text\{f\}\} = G_\{\\mathrm\{out\}\} \\times \\prod_d S\(W_d\)`\} \/>/);
+  assert.match(source, /<Latex math=\{String\.raw`G_\{\\text\{f\}\} = H \\times \\prod_d S\(W_d\)`\} \/>/);
 });

@@ -154,14 +154,18 @@ test('content registry does not wrap inline math in markdown code ticks', () => 
   }
 });
 
-test('appendix section 3 takeaway states that G_out is inherited from G_pt', () => {
+test('appendix section 3 takeaway introduces H = Stab_{G_pt}(V)|_V as the output action', () => {
   const source = read('appendix/section3.ts');
 
+  // Section 3 was renamed to 'Output representatives induced by the
+  // product-side group' (V4) and now defines H rather than describing
+  // G_out as a separate storage-only concept.
   assert.match(
     source,
-    /\$G_\{\\\\mathrm\{out\}\}\$ is the output-level symmetry inherited from \$G_\{\\\\text\{pt\}\}\$/,
+    /Output representatives induced by the product-side group/,
   );
-  assert.match(source, /collapsing storage to one representative per output orbit/);
+  assert.match(source, /\$H = \\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)\|_V\$/);
+  assert.match(source, /already present in \$\\\\alpha = \\\\#\\\\\{\(O,Q\)/);
   assert.doesNotMatch(source, /direct dense-output evaluator/);
   assert.doesNotMatch(source, /symmetry-aware accumulation model/);
 });
@@ -169,12 +173,13 @@ test('appendix section 3 takeaway states that G_out is inherited from G_pt', () 
 test('appendix section 6 explains the unified output-orbit accumulation count', () => {
   const source = read('appendix/section6.ts');
 
-  // The legacy Model-1/2/3 storage-comparison framing was replaced (Task 9)
-  // by a single section that derives H from G_pt and explains why the old
-  // standalone G_out / storage-only optimization is now subsumed.
-  assert.match(source, /How the unified accumulation count uses output symmetry/);
-  assert.match(source, /\\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)/);
-  assert.match(source, /stored output representatives/);
+  // V4 turned section 6 into the partition-counting theorem section. The
+  // older 'unified accumulation count' framing has been folded into the
+  // theorem's intro and the per-section explanations live in sections 3, 4, 5.
+  assert.match(source, /Partition-counting theorem for branching projections/);
+  assert.match(source, /typed equality pattern/);
+  assert.match(source, /\\\\mathrm\{Stab\}_G\(V\)/);
+  assert.match(source, /\\\\sum_\{\\\\tilde\{x\}/);
   assert.doesNotMatch(source, /Model 1/);
   assert.doesNotMatch(source, /Model 2/);
   assert.doesNotMatch(source, /Model 3/);

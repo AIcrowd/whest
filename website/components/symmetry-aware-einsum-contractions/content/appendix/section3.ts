@@ -4,12 +4,12 @@ const p = (text: string) => ({ kind: 'paragraph', text } as const);
 const l = (text: string) => ({ kind: 'label', text } as const);
 
 const section3 = {
-  title: 'The pointwise group also induces output symmetry',
-  deck: 'Some pointwise relabelings act visibly on the output tensor. This visible action certifies output equality and, in the current appendix discussion, is the part used for storage collapse.',
+  title: 'Output representatives induced by the product-side group',
+  deck: 'The output action used by the main cost is $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$.',
   slots: {
     definitionLead: [
-      p('Among the elements of $G_{\\text{pt}}$, some preserve the output-label set $V$. Restricting those elements to $V$ gives the output group'),
-      p('This group acts on output cells. If two output assignments lie in the same $G_{\\mathrm{out}}$-orbit, the corresponding entries of the computed output tensor are equal. Unlike dummy renaming, this symmetry is inherited from pointwise equality and therefore lives on the output tensor itself.'),
+      p('Among the elements of $G_{\\text{pt}}$, keep exactly those that preserve the output-label set $V$ as a set. Restrict each such element to the output labels, using local output coordinates. The resulting action is'),
+      p('This is the stored-output representative action used by the main accumulation count. If two output assignments lie in the same $H$-orbit, they share one stored output representative. Unlike dummy renaming, this action is inherited from pointwise product equality.'),
     ],
     workedExampleLabelPrefix: [
       l('Worked example —'),
@@ -25,7 +25,7 @@ const section3 = {
       p('The equality $R[0,1] = R[1,0]$ is therefore genuine on the computed output tensor itself.'),
     ],
     takeaway: [
-      p('$G_{\\mathrm{out}}$ is the output-level symmetry inherited from $G_{\\text{pt}}$. In this appendix, its immediate role is to certify equal completed output entries and the possibility of collapsing storage to one representative per output orbit.'),
+      p('$H$ is not a separate storage-only afterthought. It is the output-side quotient already present in $\\alpha = \\#\\{(O,Q) : \\pi_V(O) \\cap Q \\neq \\varnothing\\}$.'),
     ],
   },
 } satisfies SectionCopy;

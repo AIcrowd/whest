@@ -5,20 +5,20 @@ const l = (text: string) => ({ kind: 'label', text } as const);
 
 const section5 = {
   title: 'Why formal symmetry cannot replace pointwise symmetry in the cost',
-  deck: 'The tempting shortcut is to apply Burnside to $G_{\\text{f}}$. That shortcut is invalid for accumulation because formal orbits may contain unequal summands.',
+  deck: 'Burnside over $G_{\\text{f}}$ counts formal expression orbits, not product-orbit-to-output-representative updates.',
   slots: {
     intro: [
-      p('The main page’s $\\alpha$ counts accumulation updates from product-orbit representatives into stored output representatives — pairs $(O, Q) \\in X/G_{\\text{pt}} \\times Y/H$ where $\\pi_V(O) \\cap Q \\neq \\varnothing$ and $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$. Such a representative is valid only when every assignment in its orbit contributes the same indexed product. That condition holds for $G_{\\text{pt}}$ by construction. It need not hold for $G_{\\text{f}}$, because the domain-compatible dummy-label renamings act only after the terms have already been summed.'),
+      p('The main alpha counts accumulation updates from product-orbit representatives into stored output representatives — pairs $(O, Q) \\in X/G_{\\text{pt}} \\times Y/H$ where $\\pi_V(O) \\cap Q \\neq \\varnothing$ and $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$. Such a representative is valid only when every assignment in its orbit contributes the same indexed product. That condition holds for $G_{\\text{pt}}$ by construction. It need not hold for $G_{\\text{f}}$, because the domain-compatible dummy-label renamings act only after the terms have already been summed.'),
       p('Therefore, Burnside over $G_{\\text{f}}$ answers a different question: it counts orbits of formal label renamings in the completed expression. It does not, in general, count the number of distinct summand computations or direct updates required during accumulation.'),
     ],
     mismatchLead: [
-      p('For the selected preset, the difference is visible numerically. A naive formal count using $G_{\\text{f}}$ gives $\\alpha_{\\text{formal}}$. The pointwise accumulation count used by the engine is $\\alpha_{\\text{engine}}$. The mismatch is not a bug; it is exactly the gap between formal equivalence and pointwise equality.'),
+      p('For the selected preset, the difference is visible numerically. A naive formal count using $G_{\\text{f}}$ gives $\\alpha_{\\text{formal, naive}}$. The output-orbit accumulation count used by the engine is the main $\\alpha$. The mismatch is not a bug; it is exactly the gap between formal equivalence and pointwise equality.'),
     ],
     coincidentLead: [
-      p('For the selected preset, the formal count and the pointwise count happen to agree at the current size. This numerical coincidence does not change the rule. The valid accumulation group is still $G_{\\text{pt}}$, because only $G_{\\text{pt}}$ is guaranteed to identify equal summands.'),
+      p('For the selected preset, the formal count and the main count happen to agree at the current size. This numerical coincidence does not change the rule. The valid product-side group is $G_{\\text{pt}}$ and the valid output-side action is $H$, because only those identify equal pre-summation products and the stored representatives they update.'),
     ],
     noneLead: [
-      p('For the selected preset, the formal group does not produce a distinct accumulation count to compare. The conceptual distinction remains the same: $G_{\\text{f}}$ describes post-summation label-renaming symmetry, while $G_{\\text{pt}}$ is the group used for accumulation.'),
+      p('For the selected preset, the formal group does not produce a distinct accumulation count to compare. The conceptual distinction remains the same: $G_{\\text{f}}$ describes post-summation label-renaming symmetry, while $G_{\\text{pt}}$ and $H$ are the actions used by the main alpha.'),
     ],
     presetPickerLabel: [
       l('Presets with a visible mismatch:'),
@@ -81,7 +81,7 @@ const section5 = {
       p('Both assignments contribute to the same {{targetNoun}} ${{outputEntry}}$, but they remain different pointwise products and must be counted separately.'),
     ],
     rule: [
-      p('Use $G_{\\text{pt}}$ for direct multiplication and accumulation. Use $G_{\\text{f}} = G_{\\mathrm{out}} \\times \\prod_d S(W_d)$ to describe formal symmetry of the completed expression. Do not use the domain-compatible dummy-label factor $\\prod_d S(W_d)$ to remove pre-summation summand computations.'),
+      p('Use $G_{\\text{pt}}$ for product representatives. Use $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$ for stored output representatives. Use $G_{\\text{f}} = H \\times \\prod_d S(W_d)$ only to describe formal symmetry of the completed expression. Do not use the dummy-label factor $\\prod_d S(W_d)$ to remove pre-summation product or update events.'),
     ],
   },
 } satisfies SectionCopy;

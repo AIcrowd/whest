@@ -535,8 +535,10 @@ test('representative surfaces render long-form notation across narrative, price 
   assert.match(constructionSource, /is trivial for this einsum\./);
   assert.match(appendixSource, /Pointwise group/);
   assert.match(appendixSource, /anchorId="appendix-section-3"/);
-  assert.match(appendixSource, /The restriction <Latex math=\{String\.raw`G_\{\\text\{pt\}\}\\|_V`\} \/> to output labels/);
-  assert.match(appendixSource, /notationLatex\('g_output'\)/);
+  // V4 rewrote the output-action card to use H = Stab_{G_pt}(V)|_V (notation
+  // key h_output) instead of the legacy G_out alias.
+  assert.match(appendixSource, /H = \\\\mathrm\{Stab\}_\{G_\{\\\\text\{pt\}\}\}\(V\)\\|_V/);
+  assert.match(appendixSource, /notationLatex\('h_output'\)/);
   assert.match(appendixSource, /notationColoredLatex\('s_w_summed', 'S\(W\)'\)/);
   assert.match(appendixSource, /appendixSection6\.title/);
   assert.match(regimeSpecSource, /\$\$\{notationLatex\('v_free'\)\}\$/);

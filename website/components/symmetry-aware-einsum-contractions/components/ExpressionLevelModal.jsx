@@ -216,8 +216,11 @@ const APPENDIX_W_EQUALS_L_MINUS_V_LATEX = () => `${APPENDIX_SHORT_W_LATEX()} = $
 const APPENDIX_M_SIGMA_LATEX = `${notationLatex('m_incidence')}_{${notationLatex('sigma_row_move')}}`;
 const APPENDIX_PI_SIGMA_LATEX = `${notationLatex('pi_relabeling')}_{${notationLatex('sigma_row_move')}}`;
 const APPENDIX_PI_RESTRICT_V_LATEX = () => `${notationLatex('pi_relabeling')}|_{${APPENDIX_SHORT_V_LATEX()}}`;
+// V4: visible definition is the output representative action H = Stab_{G_pt}(V)|_V.
+// The constant name is kept (APPENDIX_G_OUT_DEFINITION_LATEX) so existing tests
+// that look it up continue to find the same hook; the rendered math defines H.
 const APPENDIX_G_OUT_DEFINITION_LATEX = () =>
-  `${notationLatex('g_output')} := \\{ ${APPENDIX_PI_RESTRICT_V_LATEX()} : ${notationLatex('pi_relabeling')} \\in ${notationLatex('g_pointwise')} \\text{ and } ${notationLatex('pi_relabeling')}(${APPENDIX_SHORT_V_LATEX()}) = ${APPENDIX_SHORT_V_LATEX()} \\}.`;
+  `${notationLatex('h_output')} = \\mathrm{Stab}_{${notationLatex('g_pointwise')}}(${APPENDIX_SHORT_V_LATEX()})|_{${APPENDIX_SHORT_V_LATEX()}} = \\{ ${APPENDIX_PI_RESTRICT_V_LATEX()} : ${notationLatex('pi_relabeling')} \\in ${notationLatex('g_pointwise')} \\text{ and } ${notationLatex('pi_relabeling')}(${APPENDIX_SHORT_V_LATEX()}) = ${APPENDIX_SHORT_V_LATEX()} \\}.`;
 const APPENDIX_REQUIRED_SLOT_ERRORS = {};
 
 function invariantAppendixSlot(blocks, slotKey) {
@@ -610,11 +613,11 @@ function AppendixRoadmap() {
           </div>
         </div>
         <div className="rounded-lg border border-black bg-white px-4 py-3">
-          <div className="font-mono text-[15px] font-semibold" style={{ color: notationColor('g_output') }}>
-            <Latex math={notationLatex('g_output')} />
+          <div className="font-mono text-[15px] font-semibold" style={{ color: notationColor('h_output') }}>
+            <Latex math={notationLatex('h_output')} />
           </div>
           <div className="mt-2 text-[12.5px] leading-6 text-gray-700">
-            The restriction <Latex math={String.raw`G_{\text{pt}}\|_V`} /> to output labels. This is the output-level symmetry inherited from pointwise equality; in this appendix it is used to discuss output equality and storage collapse.
+            The output representative action <Latex math={String.raw`H = \mathrm{Stab}_{G_{\text{pt}}}(V)|_V`} />. This is the output-side quotient already used by the main accumulation count: stored output representatives in <Latex math={notationLatex('output_orbit_space')} /> share one entry of the output tensor.
           </div>
         </div>
         <div className="rounded-lg border border-black bg-white px-4 py-3">
@@ -627,7 +630,7 @@ function AppendixRoadmap() {
         </div>
         <div className="rounded-lg border border-black bg-white px-4 py-3">
           <div className="font-mono text-[15px] font-semibold text-gray-900">
-            <Latex math={String.raw`G_{\text{f}} = G_{\mathrm{out}} \times \prod_d S(W_d)`} />
+            <Latex math={String.raw`G_{\text{f}} = H \times \prod_d S(W_d)`} />
           </div>
           <div className="mt-2 text-[12.5px] leading-6 text-gray-700">
             The label-renaming symmetry of the completed expression. This explains expression symmetry, but it is not the accumulation-cost group.
@@ -900,7 +903,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
               }}
             >
               <SectionReferenceLink href="#cost-savings" beforeNavigate={onClose}>Section 5</SectionReferenceLink>
-              <span>{' on the main page computed a symmetry-aware accumulation count. That count is deliberately based on pointwise equality of summands: two assignments may be identified only when they produce the same indexed product before summation. The completed einsum can have additional label-renaming symmetry after the summed labels have disappeared. This appendix separates those ideas: pointwise symmetry for accumulation, formal symmetry for the completed expression, and output symmetry for storage.'}</span>
+              <span>{' on the main page computed a symmetry-aware accumulation count. That count is deliberately based on pointwise equality of summands: two assignments may be identified only when they produce the same indexed product before summation. The completed einsum can have additional label-renaming symmetry after the summed labels have disappeared. This appendix separates those ideas: product-side symmetry for representative products, output-side action for stored output representatives, and formal dummy symmetry after summation.'}</span>
             </p>
           </div>
           <button
@@ -1137,7 +1140,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
             title={appendixSection3.title}
             deck={appendixSection3.deck}
           >
-            {/* Source-contract marker: G_out is defined via the restriction pi|_V of G_pt to output labels. */}
+            {/* Source-contract marker: H = Stab_{G_pt}(V)|_V is the restriction of G_pt to V-preserving elements. */}
             <AppendixSupportSplit
               articleClassName={APPENDIX_ARTICLE_LANE_CLASS}
               supportClassName="space-y-4 xl:pt-5"
@@ -1248,7 +1251,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     </p>
                   ))}
                   <div className="py-1 text-center">
-                    <Latex math={String.raw`G_{\text{f}} = G_{\mathrm{out}} \times \prod_d S(W_d)`} />
+                    <Latex math={String.raw`G_{\text{f}} = H \times \prod_d S(W_d)`} />
                   </div>
                   {renderAppendixSlot(appendixSection4.slots.intro.slice(1)).map((content, index) => (
                     <p key={`appendix-4-outro-${index}`} className={APPENDIX_PROSE_CLASS}>
@@ -1739,7 +1742,7 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
 
           <AppendixSection
             n={6}
-            label="Output symmetry and storage"
+            label="Partition-counting theorem"
             anchorId="appendix-section-6"
             title={appendixSection6.title}
             deckClassName="max-w-none"

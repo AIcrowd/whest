@@ -4,16 +4,16 @@ const p = (text: string) => ({ kind: 'paragraph', text } as const);
 const l = (text: string) => ({ kind: 'label', text } as const);
 
 const section2 = {
-  title: 'Summation creates a second kind of symmetry',
+  title: 'Dummy renamings after summation',
   deck: 'After the summed labels have been bound by summation, same-domain dummy variables may be renamed without changing the completed expression.',
   slots: {
     intro: [
       p('The pointwise group is not the only symmetry visible after the expression has been fully assembled. Labels in $W$ are bound summation variables. After the sum has been taken, renaming dummy variables within the same domain changes notation but not the value of the completed expression.'),
       p('When all summed labels share one domain, this dummy-renaming factor is $S(W)$. With heterogeneous label sizes, it is instead $\\prod_d S(W_d)$, where the $W_d$ are same-domain blocks of summed labels. A permutation that maps a size-2 label to a size-3 label is not a valid action on the assignment grid.'),
-      p('These dummy renamings are formal symmetries of the completed expression. They are not, in general, pointwise symmetries of the summands.'),
+      p('These dummy renamings are formal symmetries of the completed expression. They are not, in general, product-side symmetries, because they can relate summands that are unequal before the sum has been taken.'),
     ],
     takeaway: [
-      p('$\\prod_d S(W_d)$ is a post-summation symmetry. It preserves the completed sum, not necessarily the individual indexed products used to compute that sum.'),
+      p('$\\prod_d S(W_d)$ is post-summation symmetry. It preserves the completed sum, not necessarily the individual products or product-orbit-to-output-representative updates counted by $\\alpha$.'),
     ],
     runningExampleLabelPrefix: [
       l('Running example —'),

@@ -1,19 +1,20 @@
 import type { SectionCopy } from '../schema';
 
 const p = (text: string) => ({ kind: 'paragraph', text } as const);
-const c = (text: string) => ({ kind: 'caption', text } as const);
 
 const section6 = {
-  title: 'How the unified accumulation count uses output symmetry',
-  deck: 'Output symmetry is not a separate storage-time post-processing step. The output representative action $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$ is derived from the same detected pointwise group and shapes how product orbits update stored output representatives.',
+  title: 'Partition-counting theorem for branching projections',
+  deck: 'When projection branches, equality patterns give an exact count without enumerating every tuple.',
   slots: {
     intro: [
-      p('The detected pointwise group $G_{\\text{pt}}$ supplies two quotients to the direct evaluator. The first is the product-orbit quotient $X/G_{\\text{pt}}$, which fixes the count of representative products $M$. The second is the output representative action $H$, which fixes the count of stored output representatives $|Y/H|$.'),
-      p('There is no separate $G_{\\mathrm{out}}$ as a standalone storage-side concept. The output-side action is induced from $G_{\\text{pt}}$ by the rule $H = \\mathrm{Stab}_{G_{\\text{pt}}}(V)|_V$: keep every $g \\in G_{\\text{pt}}$ that maps the visible-label set $V$ into itself, then restrict that $g$ to $V$ using local coordinates. The accumulation count $\\alpha = \\#\\{(O, Q) \\in X/G_{\\text{pt}} \\times Y/H : \\pi_V(O) \\cap Q \\neq \\varnothing\\}$ is computed once with $H$ already in place.'),
-      p('When projection is functional — every $g \\in G_{\\text{pt}}$ preserves $V$ as a set — each product orbit reaches exactly one stored output representative, and $\\alpha = M$. When projection branches, the typed partition count or corrected brute force counts the pairs exactly. The dummy-label renamings of the formal group $G_{\\text{f}}$ do not enter; they describe symmetries of the completed expression after summation, not pre-summation pairings.'),
+      p('The main page\'s hard case is a mixed component where some detected symmetry moves visible labels into summed labels or summed labels into visible labels. Then projection from product orbits to stored output representatives is a relation, not a function.'),
+      p('Partition counting computes this relation exactly by grouping full assignments by typed equality pattern. A typed equality pattern records which same-domain label positions are equal. Blocks from different domains cannot merge.'),
+      p('For a component with product-side group $G$, visible labels $V$, output action $H = \\mathrm{Stab}_G(V)|_V$, and typed equality patterns $\\tilde{x}$, the accumulation count is'),
+      p('$\\alpha = \\sum_{\\tilde{x}\\in P_{\\mathrm{typed}}(L)/G} \\frac{\\prod_s (n_s)_{b_s(\\tilde{x})}}{|\\overline{G}_{\\tilde{x}}|}\\,|A_{\\tilde{x}}/H|.$'),
+      p('$P_{\\mathrm{typed}}(L)$ is the set of equality patterns that only merge same-domain labels. $b_s(\\tilde{x})$ is the number of blocks of domain class $s$. $(n_s)_{b_s}$ is the falling factorial, counting injective labelings for those blocks. $\\overline{G}_{\\tilde{x}}$ is the induced action of the stabilizer of $\\tilde{x}$ on its blocks — the image on blocks, not the raw stabilizer order. $A_{\\tilde{x}}$ is the set of maps from output positions to input equality blocks obtained by moving through the product orbit, and $|A_{\\tilde{x}}/H|$ counts the stored output representatives reached by any product orbit above that pattern.'),
     ],
     footer: [
-      p('Symmetry-aware storage in the older sense — independently quotienting the output by some external group — is subsumed by this construction. Any storage layout coarser than $Y/H$ would reduce the number of stored representatives, but the accumulation events are already counted relative to $Y/H$.'),
+      p('The formula computes the same $\\alpha$ as corrected brute-force orbit enumeration. In the current engine policy, the typed partition counter runs whenever its equality-pattern budget passes; otherwise the engine falls back to corrected brute force when the tuple-enumeration budget still passes.'),
       p('Algebraic restructuring such as factoring $R = v v^\\top$, contraction re-ordering, and memory-traffic optimization sit outside this model and require their own cost definitions.'),
     ],
   },
