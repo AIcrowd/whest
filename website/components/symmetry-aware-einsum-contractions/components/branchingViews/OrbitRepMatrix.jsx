@@ -37,6 +37,7 @@ export default function OrbitRepMatrix({
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const scrollRef = useRef(null);
+  const rafRef = useRef(null);
   const [hover, setHover] = useState(/* hover: { row, col } | null */ null);
   const [pin, setPin] = useState(/* pin: { row, col } | null */ null);
   const [containerWidth, setContainerWidth] = useState(SQUARE_FRAME);
@@ -71,7 +72,16 @@ export default function OrbitRepMatrix({
     if (onStateChange) onStateChange({ hover, pin });
   }, [hover, pin, onStateChange]);
 
-  // Imperative canvas draw.
+  // Cancel any in-flight rAF on unmount so we don't fire setHover after teardown.
+  useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  // Imperative canvas sizing — runs only when layout changes.
+  // Split out from drawing because setting canvas.width clears canvas state,
+  // which we want to avoid on every hover update.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || layout.cellSize === 0) return;
@@ -83,39 +93,59 @@ export default function OrbitRepMatrix({
     canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
     const ctx = canvas.getContext('2d');
+    // Reset transform then re-apply DPR scale.
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
+  }, [layout]);
 
-    // 1. Clear.
+  // Imperative canvas draw — runs on layout, data, and focus changes.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || layout.cellSize === 0) return;
+    const ctx = canvas.getContext('2d');
+    // Clear in logical coordinates (the DPR scale was already applied in the sizing effect).
     ctx.fillStyle = COLOR.bg;
-    ctx.fillRect(0, 0, w, h);
+    ctx.fillRect(0, 0, layout.contentWidth, layout.contentHeight);
 
-    // 2. Row + col wash for focused cell (pin or hover).
     const focus = pin || hover;
+    // Row + col wash for focused cell.
     if (focus) {
       ctx.fillStyle = COLOR.rowColWash;
-      ctx.fillRect(0, focus.row * layout.cellSize, w, layout.cellSize);
-      ctx.fillRect(focus.col * layout.cellSize, 0, layout.cellSize, h);
+      ctx.fillRect(0, focus.row * layout.cellSize, layout.contentWidth, layout.cellSize);
+      ctx.fillRect(focus.col * layout.cellSize, 0, layout.cellSize, layout.contentHeight);
     }
 
-    // 3. Cells: filled fills, then grid lines.
+    // Cells: filled fills only (no per-cell stroke — grid lines drawn separately).
     for (let r = 0; r < orbitRows.length; r += 1) {
       for (let c = 0; c < reps.length; c += 1) {
         const coeff = cells[r][c];
         const filled = coeff !== null;
+        if (!filled) continue;
         const x = c * layout.cellSize;
         const y = r * layout.cellSize;
         const isFocus = focus && focus.row === r && focus.col === c;
-        if (filled) {
-          ctx.fillStyle = isFocus ? COLOR.cellHovered : COLOR.cellFilled;
-          ctx.fillRect(x, y, layout.cellSize, layout.cellSize);
-        }
-        ctx.strokeStyle = COLOR.cellGrid;
-        ctx.lineWidth = 1;
-        ctx.strokeRect(x + 0.5, y + 0.5, layout.cellSize - 1, layout.cellSize - 1);
+        ctx.fillStyle = isFocus ? COLOR.cellHovered : COLOR.cellFilled;
+        ctx.fillRect(x, y, layout.cellSize, layout.cellSize);
       }
     }
 
-    // 4. Branching outlines for orbit's other reached cells in focused row.
+    // Grid lines — drawn once each so internal cells aren't double-stroked.
+    ctx.strokeStyle = COLOR.cellGrid;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let r = 0; r <= orbitRows.length; r += 1) {
+      const y = r * layout.cellSize + 0.5;
+      ctx.moveTo(0, y);
+      ctx.lineTo(layout.contentWidth, y);
+    }
+    for (let c = 0; c <= reps.length; c += 1) {
+      const x = c * layout.cellSize + 0.5;
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, layout.contentHeight);
+    }
+    ctx.stroke();
+
+    // Branching outlines for orbit's other reached cells in focused row.
     if (focus) {
       ctx.strokeStyle = COLOR.branchOutline;
       ctx.lineWidth = 1;
@@ -154,11 +184,26 @@ export default function OrbitRepMatrix({
     });
   }
   function handleMouseMove(e) {
-    const cell = pointToCell(pointerCoords(e));
-    setHover(cell);
-    if (onHover) onHover(cell);
+    // Capture the pointer position immediately (the SyntheticEvent is reused).
+    const pt = pointerCoords(e);
+    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      const cell = pointToCell(pt);
+      setHover((prev) => {
+        // Skip the setState if the cell hasn't changed — avoid useless re-renders.
+        if (prev === cell) return prev;
+        if (prev && cell && prev.row === cell.row && prev.col === cell.col) return prev;
+        return cell;
+      });
+      if (onHover) onHover(cell);
+    });
   }
   function handleMouseLeave() {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
     setHover(null);
     if (onHover) onHover(null);
   }
