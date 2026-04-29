@@ -15,7 +15,6 @@ import time
 import pytest
 
 import flopscope as flops
-import flopscope.numpy as fnp
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -407,7 +406,12 @@ class TestErrorPropagation:
 
     def test_no_budget_context_raises(self):
         with pytest.raises((flops.NoBudgetContextError, flops.FlopscopeServerError)):
-            fnp.array([1.0, 2.0, 3.0])
+            # Use the top-level alias `flops.array` rather than `fnp.array`:
+            # the client's ``flopscope.numpy`` JAX-style restructure is not
+            # yet complete (the tracked ``flopscope/numpy/__init__.py`` is
+            # absent), so `fnp.array` raises AttributeError before reaching
+            # the budget-context check this test exercises.
+            flops.array([1.0, 2.0, 3.0])
 
     def test_budget_context_isolates_errors(self):
         """Verify a new context works after a previous one exhausted budget."""
