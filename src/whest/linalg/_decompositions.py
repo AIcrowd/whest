@@ -178,9 +178,7 @@ def eigh(a, UPLO="L"):
     ):
         result = _np.linalg.eigh(_to_base_ndarray(a), UPLO=UPLO)
     if inputs_were_whest:
-        return EighResult(
-            _aswhest(result.eigenvalues), _aswhest(result.eigenvectors)
-        )
+        return EighResult(_aswhest(result.eigenvalues), _aswhest(result.eigenvectors))
     return result
 
 

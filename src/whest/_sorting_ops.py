@@ -397,7 +397,9 @@ def isin(element, test_elements, **kwargs):
     with budget.deduct(
         "isin", flop_cost=cost, subscripts=None, shapes=(el.shape, te.shape)
     ):
-        result = _np.isin(_to_base_ndarray(element), _to_base_ndarray(test_elements), **kwargs)
+        result = _np.isin(
+            _to_base_ndarray(element), _to_base_ndarray(test_elements), **kwargs
+        )
     return result
 
 

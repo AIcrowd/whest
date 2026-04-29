@@ -146,8 +146,12 @@ def slogdet(a):
         result = _np.linalg.slogdet(_to_base_ndarray(a))
     if inputs_were_whest:
         return SlogdetResult(
-            _aswhest(result.sign) if isinstance(result.sign, _np.ndarray) else result.sign,
-            _aswhest(result.logabsdet) if isinstance(result.logabsdet, _np.ndarray) else result.logabsdet,
+            _aswhest(result.sign)
+            if isinstance(result.sign, _np.ndarray)
+            else result.sign,
+            _aswhest(result.logabsdet)
+            if isinstance(result.logabsdet, _np.ndarray)
+            else result.logabsdet,
         )
     return result
 
@@ -344,9 +348,7 @@ def matrix_norm(x, ord="fro", keepdims=False):
     with budget.deduct(
         "linalg.matrix_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
-        result = _np.linalg.matrix_norm(
-            _to_base_ndarray(x), ord=ord, keepdims=keepdims
-        )
+        result = _np.linalg.matrix_norm(_to_base_ndarray(x), ord=ord, keepdims=keepdims)
     if isinstance(result, _np.ndarray) and inputs_were_whest:
         return _aswhest(result)
     return result

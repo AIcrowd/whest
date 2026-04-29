@@ -268,7 +268,9 @@ def tensorsolve(a, b, axes=None):
     with budget.deduct(
         "linalg.tensorsolve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.tensorsolve(_to_base_ndarray(a), _to_base_ndarray(b), axes=axes)
+        result = _np.linalg.tensorsolve(
+            _to_base_ndarray(a), _to_base_ndarray(b), axes=axes
+        )
     if inputs_were_whest:
         return _aswhest(result)
     return result

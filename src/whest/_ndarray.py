@@ -35,10 +35,16 @@ def _me():
 # *original* numpy callables.
 _PASSTHROUGH_NAMES = (
     # Zero-FLOP type/shape queries:
-    "ndim", "shape", "size",
+    "ndim",
+    "shape",
+    "size",
     # Zero-FLOP type-system queries (added by Task 4 for #62/#58 followup):
-    "result_type", "can_cast", "min_scalar_type", "promote_types",
-    "find_common_type", "mintypecode",
+    "result_type",
+    "can_cast",
+    "min_scalar_type",
+    "promote_types",
+    "find_common_type",
+    "mintypecode",
     # Test-harness assertion that should not count FLOPs:
     "array_equal",
 )
@@ -185,9 +191,7 @@ class WhestArray(_np.ndarray):
         # don't reach a function-form whest wrapper that doesn't accept
         # them.
         if np_target_name is not None:
-            kwargs = _filter_to_np_signature(
-                getattr(_np, np_target_name, None), kwargs
-            )
+            kwargs = _filter_to_np_signature(getattr(_np, np_target_name, None), kwargs)
 
         return whest_fn(*inputs, **kwargs)
 
@@ -228,32 +232,75 @@ class WhestArray(_np.ndarray):
 
         # ----- Reductions -----
         for name in (
-            "sum", "prod", "mean", "min", "max", "std", "var", "all", "any",
-            "cumsum", "cumprod", "argmin", "argmax", "ptp", "median",
-            "average", "percentile", "quantile",
+            "sum",
+            "prod",
+            "mean",
+            "min",
+            "max",
+            "std",
+            "var",
+            "all",
+            "any",
+            "cumsum",
+            "cumprod",
+            "argmin",
+            "argmax",
+            "ptp",
+            "median",
+            "average",
+            "percentile",
+            "quantile",
         ):
             _bind(name, name)
 
         # ----- Sorting / selection -----
         for name in (
-            "sort", "argsort", "lexsort", "partition", "argpartition",
-            "searchsorted", "digitize",
+            "sort",
+            "argsort",
+            "lexsort",
+            "partition",
+            "argpartition",
+            "searchsorted",
+            "digitize",
         ):
             _bind(name, name)
 
         # ----- Set / unique -----
         for name in (
-            "unique", "unique_all", "unique_counts", "unique_inverse",
-            "unique_values", "in1d", "isin", "intersect1d", "union1d",
-            "setdiff1d", "setxor1d",
+            "unique",
+            "unique_all",
+            "unique_counts",
+            "unique_inverse",
+            "unique_values",
+            "in1d",
+            "isin",
+            "intersect1d",
+            "union1d",
+            "setdiff1d",
+            "setxor1d",
         ):
             _bind(name, name)
 
         # ----- Free / structural (asarray excluded) -----
         for name in (
-            "where", "tile", "repeat", "flip", "roll", "pad", "triu", "tril",
-            "diagonal", "broadcast_to", "meshgrid", "copy",
-            "astype", "trace", "diff", "gradient", "clip", "round",
+            "where",
+            "tile",
+            "repeat",
+            "flip",
+            "roll",
+            "pad",
+            "triu",
+            "tril",
+            "diagonal",
+            "broadcast_to",
+            "meshgrid",
+            "copy",
+            "astype",
+            "trace",
+            "diff",
+            "gradient",
+            "clip",
+            "round",
         ):
             _bind(name, name)
 
@@ -265,11 +312,25 @@ class WhestArray(_np.ndarray):
         # symmetry; PASSTHROUGH would silently strip it via
         # ``_to_base_ndarray_tree`` before the raw NumPy call.
         for name in (
-            "transpose", "swapaxes", "moveaxis", "reshape", "ravel",
-            "expand_dims", "squeeze",
-            "concatenate", "stack", "vstack", "hstack", "column_stack",
-            "split", "hsplit", "vsplit", "dsplit",
-            "atleast_1d", "atleast_2d", "atleast_3d",
+            "transpose",
+            "swapaxes",
+            "moveaxis",
+            "reshape",
+            "ravel",
+            "expand_dims",
+            "squeeze",
+            "concatenate",
+            "stack",
+            "vstack",
+            "hstack",
+            "column_stack",
+            "split",
+            "hsplit",
+            "vsplit",
+            "dsplit",
+            "atleast_1d",
+            "atleast_2d",
+            "atleast_3d",
             "broadcast_to",
             "matrix_transpose",  # numpy 2.x ufunc-like
         ):
@@ -277,29 +338,57 @@ class WhestArray(_np.ndarray):
 
         # ----- Linear algebra -----
         for name in (
-            "dot", "matmul", "einsum", "tensordot", "inner", "outer", "cross",
+            "dot",
+            "matmul",
+            "einsum",
+            "tensordot",
+            "inner",
+            "outer",
+            "cross",
         ):
             _bind(name, name)
 
         # ----- Comparisons -----
         for name in (
-            "allclose", "isclose", "array_equiv",
+            "allclose",
+            "isclose",
+            "array_equiv",
             # NOTE: array_equal is in _PASSTHROUGH instead.
         ):
             _bind(name, name)
 
         # ----- Histograms / counts -----
         for name in (
-            "histogram", "histogram2d", "histogramdd", "histogram_bin_edges",
-            "bincount", "vander", "apply_over_axes", "piecewise",
+            "histogram",
+            "histogram2d",
+            "histogramdd",
+            "histogram_bin_edges",
+            "bincount",
+            "vander",
+            "apply_over_axes",
+            "piecewise",
         ):
             _bind(name, name)
 
         # ----- linalg submodule -----
         for name in (
-            "norm", "solve", "det", "inv", "pinv", "eig", "eigh", "eigvals",
-            "eigvalsh", "svd", "qr", "cholesky", "matrix_rank", "lstsq",
-            "multi_dot", "matrix_power", "slogdet",
+            "norm",
+            "solve",
+            "det",
+            "inv",
+            "pinv",
+            "eig",
+            "eigh",
+            "eigvals",
+            "eigvalsh",
+            "svd",
+            "qr",
+            "cholesky",
+            "matrix_rank",
+            "lstsq",
+            "multi_dot",
+            "matrix_power",
+            "slogdet",
         ):
             _bind(f"linalg.{name}", f"linalg.{name}")
 
@@ -329,9 +418,7 @@ class WhestArray(_np.ndarray):
         # PASSTHROUGH check first: zero-FLOP queries bypass dispatch.
         if func in self._get_passthrough():
             stripped_args = _to_base_ndarray_tree(args)
-            stripped_kwargs = {
-                k: _to_base_ndarray_tree(v) for k, v in kwargs.items()
-            }
+            stripped_kwargs = {k: _to_base_ndarray_tree(v) for k, v in kwargs.items()}
             return func(*stripped_args, **stripped_kwargs)
 
         dispatch = self._get_array_function_dispatch()
@@ -866,7 +953,8 @@ def _signature_kwargs_accepted(np_func):
         if p.kind == _inspect.Parameter.VAR_KEYWORD:
             return frozenset()  # sentinel: accepts everything
     return frozenset(
-        n for n, p in sig.parameters.items()
+        n
+        for n, p in sig.parameters.items()
         if p.kind != _inspect.Parameter.VAR_POSITIONAL
     )
 

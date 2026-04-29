@@ -14,7 +14,6 @@ import pytest
 
 import whest as we
 
-
 # ----- #58: ndarray method calls on WhestArray must track FLOPs -----
 
 REDUCTION_METHODS = [
@@ -101,6 +100,7 @@ def test_searchsorted_method_tracks():
 
 # ----- In-place sort / partition -----
 
+
 def test_inplace_sort_method_tracks_and_mutates():
     """``a.sort()`` mutates ``a`` in place and returns ``None``. The
     method override must charge FLOPs through ``me.sort``."""
@@ -149,6 +149,7 @@ def test_inplace_partition_on_symmetric_refuses():
 
 
 # ----- Adversarial axis / keepdims / dtype / out coverage -----
+
 
 def test_method_axis_none_tracks():
     a = we.random.randn(4, 5)
@@ -246,6 +247,7 @@ def test_method_positional_out_argmax_tracks_and_returns_out():
 
 # ----- Symmetry propagation through methods -----
 
+
 def test_method_propagates_symmetry_through_reduction():
     """Issue #58: A.sum(axis=0) on a SymmetricTensor must propagate symmetry."""
     n = 10
@@ -276,6 +278,7 @@ def test_no_double_counting_method_vs_function():
 
 
 # ----- #38: dunder operators on SymmetricTensor must track FLOPs -----
+
 
 def test_sym_mul_tracks_flops():
     """Issue #38: SymmetricTensor * SymmetricTensor must track FLOPs."""
@@ -311,6 +314,7 @@ def test_sym_add_tracks_flops():
 # in the new API (it requires a SymmetryGroup; "empty axes" is not a valid
 # input). We keep only the downgrade tests that are still expressible.
 
+
 def test_no_symmetry_downgrades_to_whest_array_via_diagonal():
     """Issue #62: ``we.diagonal`` of a 2-axis-symmetric matrix has no
     surviving symmetry → result is a WhestArray, not a SymmetricTensor."""
@@ -338,6 +342,7 @@ def test_no_symmetry_downgrades_via_full_reduction():
 
 
 # ----- Scalar __getitem__ on SymmetricTensor returns Python scalar -----
+
 
 def test_symmetric_getitem_scalar_returns_python_scalar():
     """``A[0, 0]`` on a 2D SymmetricTensor returns a single element. It

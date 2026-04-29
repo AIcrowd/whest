@@ -303,9 +303,7 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
     budget = require_budget()
     if not isinstance(arr, _np.ndarray):
         arr = _np.asarray(arr)
-    result = _np.apply_along_axis(
-        func1d, axis, _to_base_ndarray(arr), *args, **kwargs
-    )
+    result = _np.apply_along_axis(func1d, axis, _to_base_ndarray(arr), *args, **kwargs)
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct(
         "apply_along_axis", flop_cost=cost, subscripts=None, shapes=(arr.shape,)

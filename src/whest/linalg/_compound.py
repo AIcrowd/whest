@@ -71,9 +71,7 @@ def multi_dot(arrays, *, out=None):
     with budget.deduct(
         "linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes)
     ):
-        result = _np.linalg.multi_dot(
-            [_to_base_ndarray(a) for a in arrays], out=out
-        )
+        result = _np.linalg.multi_dot([_to_base_ndarray(a) for a in arrays], out=out)
     if isinstance(result, _np.ndarray) and inputs_were_whest:
         return _aswhest(result)
     return result

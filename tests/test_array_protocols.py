@@ -15,7 +15,6 @@ import pytest
 
 import whest as we
 
-
 # ----- __array_ufunc__: ufunc.__call__ -----
 
 UFUNC_CALL_CASES = [
@@ -48,6 +47,7 @@ def test_np_unary_ufunc_call_tracks_flops():
 
 
 # ----- __array_ufunc__: ufunc.reduce -----
+
 
 def test_np_add_reduce_tracks_flops():
     a = we.random.randn(8)
@@ -82,6 +82,7 @@ def test_np_add_reduce_2d_matches_axis0_semantics():
 
 # ----- __array_ufunc__: ufunc.accumulate -----
 
+
 def test_np_add_accumulate_tracks_flops():
     a = we.random.randn(8)
     with we.BudgetContext(flop_budget=int(1e9)) as b1:
@@ -104,6 +105,7 @@ def test_np_add_accumulate_2d_matches_axis0_semantics():
 
 
 # ----- Recursion guards (regression-only) -----
+
 
 def test_dunder_does_not_recurse_after_protocol_enabled():
     """WhestArray.__add__ → me.add → _np.add must NOT re-dispatch through
@@ -135,6 +137,7 @@ def test_np_sort_does_not_recurse():
 
 
 # ----- ufunc kwargs passthrough -----
+
 
 def test_np_add_out_unwraps_single_output_tuple():
     """NumPy passes out=(out_arr,) to __array_ufunc__; whest expects out=arr."""
@@ -228,6 +231,7 @@ def test_np_add_dtype_kwarg_tracks():
 
 # ----- Mixed operands: numpy on left, whest on right -----
 
+
 def test_mixed_numpy_left_operand_dispatches():
     """np.ndarray + WhestArray must still dispatch through whest tracking
     (NEP 13: NumPy defers to subclasses' __array_ufunc__)."""
@@ -247,6 +251,7 @@ def test_mixed_python_scalar_left_dispatches():
 
 
 # ----- In-place dunder identity preservation -----
+
 
 def test_inplace_add_preserves_identity():
     """a += b must mutate a, not rebind it. Currently broken on
@@ -290,6 +295,7 @@ def test_inplace_add_refuses_when_symmetry_would_be_destroyed():
 
 # ----- Unsupported ufunc methods fail loudly -----
 
+
 def test_np_add_outer_fails_loudly():
     """ufunc.outer is not yet implemented; must raise rather than silently
     bypass tracking."""
@@ -315,6 +321,7 @@ def test_np_add_at_fails_loudly():
 
 
 # ----- Multi-output ufuncs fail loudly -----
+
 
 def test_np_modf_fails_loudly():
     """``np.modf`` is a multi-output ufunc (nout=2). Until whest supports
@@ -350,6 +357,7 @@ def test_we_modf_rejects_out_kwarg():
 
 # ----- Recursion guard for raw whest functions -----
 
+
 def test_we_add_does_not_recurse_after_protocol_enabled():
     """``we.add(WhestArray, WhestArray)`` must not enter an infinite loop
     via ``_np.add`` → ``__array_ufunc__`` → ``we.add`` → ... after Task
@@ -367,6 +375,7 @@ def test_we_add_does_not_recurse_after_protocol_enabled():
 
 
 # ----- __array_function__: np.<func>(whest) -----
+
 
 def test_np_sort_tracks_flops():
     a = we.random.randn(8)
@@ -407,6 +416,7 @@ def test_np_sum_routes_to_whest():
 
 # ----- Structural ops on SymmetricTensor: type follows surviving symmetry -----
 
+
 def test_diagonal_of_3sym_downgrades_when_no_tensor_axis_symmetry_remains():
     """Diagonal of a (n,n,n) tensor with full S_3 symmetry along (0,1,2)
     collapses axes 0/1 (or any pair) into a single diagonal axis, which
@@ -436,8 +446,10 @@ def test_transpose_of_symmetric_preserves_type():
 
 # ----- Helper unit tests -----
 
+
 def test_to_base_ndarray_strips_whest_subclass():
-    from whest._ndarray import _to_base_ndarray, WhestArray
+    from whest._ndarray import WhestArray, _to_base_ndarray
+
     a = we.random.randn(4)
     base = _to_base_ndarray(a)
     assert type(base) is np.ndarray
@@ -448,12 +460,14 @@ def test_to_base_ndarray_strips_whest_subclass():
 
 def test_to_base_ndarray_preserves_python_scalar():
     from whest._ndarray import _to_base_ndarray
+
     assert _to_base_ndarray(2.0) == 2.0
     assert isinstance(_to_base_ndarray(2.0), float)
 
 
 def test_to_base_ndarray_tree_strips_in_tuple():
     from whest._ndarray import _to_base_ndarray_tree
+
     a = we.random.randn(4)
     b = we.random.randn(4)
     out = _to_base_ndarray_tree((a, b))
@@ -462,6 +476,7 @@ def test_to_base_ndarray_tree_strips_in_tuple():
 
 def test_to_base_ndarray_tree_strips_in_list():
     from whest._ndarray import _to_base_ndarray_tree
+
     a = we.random.randn(4)
     b = we.random.randn(4)
     out = _to_base_ndarray_tree([a, b])
@@ -470,12 +485,14 @@ def test_to_base_ndarray_tree_strips_in_list():
 
 def test_to_base_ndarray_tree_preserves_scalars():
     from whest._ndarray import _to_base_ndarray_tree
+
     out = _to_base_ndarray_tree((1.0, 2, "x"))
     assert out == (1.0, 2, "x")
 
 
 def test_to_base_ndarray_tree_recurses_into_nested():
     from whest._ndarray import _to_base_ndarray_tree
+
     a = we.random.randn(4)
     out = _to_base_ndarray_tree([(a, 1.0), [a]])
     assert type(out[0][0]) is np.ndarray
@@ -483,6 +500,7 @@ def test_to_base_ndarray_tree_recurses_into_nested():
 
 
 # ----- _PASSTHROUGH lock-in -----
+
 
 def test_np_type_query_passthrough_does_not_charge_flops():
     """``np.result_type``, ``np.can_cast``, ``np.min_scalar_type``, etc.
@@ -499,10 +517,12 @@ def test_np_type_query_passthrough_does_not_charge_flops():
 
 # ----- Cache-verification test (Stage 2 helper added in Step 2.2) -----
 
+
 def test_signature_kwargs_accepted_is_cached():
     """The signature lookup must be cached — it sits on the per-ufunc
     hot path. PR #51 memoized similar helpers; we do the same here."""
     from whest._ndarray import _signature_kwargs_accepted
+
     # Same callable should return the same frozenset object (cached).
     a = _signature_kwargs_accepted(np.add)
     b = _signature_kwargs_accepted(np.add)
@@ -528,18 +548,19 @@ def test_perf_warm_rank8_scalar_comparison_is_fast():
     order-of-magnitude regressions without flaking on machine variance.
     """
     import time
+
     a = we.full((2,) * 8, 1)  # rank-8, 256 elements, full S_8 symmetric group
     # Warm-up: prime the per-instance _canonical_axis_action cache and the
     # @functools.cache on unique_elements_for_shape.
     with we.BudgetContext(flop_budget=int(1e12)):
-        _ = (a == 1)
+        _ = a == 1
     # Measure the warm path.
     with we.BudgetContext(flop_budget=int(1e12)):
         t0 = time.perf_counter()
-        _ = (a == 1)
+        _ = a == 1
         elapsed = time.perf_counter() - t0
     assert elapsed < 0.1, (
-        f"warm rank-8 scalar comparison took {elapsed*1000:.1f}ms; "
+        f"warm rank-8 scalar comparison took {elapsed * 1000:.1f}ms; "
         f"PR #51 fixed this to ~0.04ms. Are we re-introducing O(|G|) "
         f"work in __eq__ / _canonical_axis_action / "
         f"unique_elements_for_shape, or making OWNDATA-preserving "
@@ -558,6 +579,7 @@ def test_perf_array_ufunc_dispatch_does_not_copy():
     redundant view-cast that triggers a finalize chain.
     """
     import time
+
     a = we.random.randn(1024)
     b = we.random.randn(1024)
     # Warm-up.
@@ -599,10 +621,9 @@ def test_perf_warm_inplace_add_scalar_on_symmetric_is_fast():
     along the dispatch chain.
     """
     import time
+
     arr = we.random.randn(4, 4, 4, 4)
-    A_sym = we.symmetrize(
-        arr, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1, 2, 3))
-    )
+    A_sym = we.symmetrize(arr, symmetry=we.SymmetryGroup.symmetric(axes=(0, 1, 2, 3)))
     original_symmetry_ref = A_sym._symmetry
     # Warm-up: prime caches and dispatch tables.
     with we.BudgetContext(flop_budget=int(1e12)):
@@ -618,12 +639,12 @@ def test_perf_warm_inplace_add_scalar_on_symmetric_is_fast():
         A_sym += 1.0
         elapsed = time.perf_counter() - t0
     assert elapsed < 0.05, (
-        f"warm A_sym += 1.0 took {elapsed*1000:.1f}ms; "
+        f"warm A_sym += 1.0 took {elapsed * 1000:.1f}ms; "
         f"PR #51 made this the scalar fast path. Are we missing the "
         f"identity short-circuit in _inplace_from_result, or wrapping "
         f"the scalar in an array in __iadd__ before dispatch?"
     )
     assert A_sym._symmetry is original_symmetry_ref, (
-        f"warm in-place add lost symmetry object identity; "
-        f"_inplace_from_result is constructing a fresh group somewhere"
+        "warm in-place add lost symmetry object identity; "
+        "_inplace_from_result is constructing a fresh group somewhere"
     )
