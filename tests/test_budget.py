@@ -579,3 +579,12 @@ def test_oprecord_has_flopscope_overhead_field():
         flop_cost=3, cumulative=3, flopscope_overhead=0.001,
     )
     assert rec2.flopscope_overhead == 0.001
+
+
+def test_budget_context_initializes_overhead_state():
+    import flopscope
+
+    b = flopscope.BudgetContext(flop_budget=int(1e9))
+    assert b._total_flopscope_overhead_time == 0.0
+    assert b._recorded_overhead_time == 0.0
+    assert b._current_op_timer is None

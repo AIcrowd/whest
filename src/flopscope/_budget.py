@@ -283,9 +283,12 @@ class BudgetContext:
         self._deadline: float | None = None
         self._wall_time_s: float | None = None
         self._total_tracked_time: float = 0.0
+        self._total_flopscope_overhead_time: float = 0.0
+        self._current_op_timer: _OpTimer | None = None
         self._recorded_flops_used = 0
         self._recorded_op_count = 0
         self._recorded_tracked_time = 0.0
+        self._recorded_overhead_time: float = 0.0
         self._budget_recorded = False
         _all_budget_contexts.add(self)
 
