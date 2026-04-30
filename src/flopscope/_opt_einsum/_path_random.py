@@ -176,6 +176,7 @@ class RandomOptimizer(paths.PathOptimizer):
         self._symmetry_oracle = symmetry_oracle
 
         # start a timer?
+        t0 = 0.0  # assigned below if max_time is set
         if self.max_time is not None:
             t0 = time.time()
 
@@ -312,9 +313,9 @@ def ssa_path_compute_cost(
 
     for i, j in ssa_path:
         k12, flops12, _sym12 = paths.calc_k12_flops(
-            inputs,
+            inputs,  # type: ignore[arg-type]
             output,
-            remaining,
+            remaining,  # type: ignore[arg-type]
             i,
             j,
             size_dict,
@@ -414,7 +415,7 @@ class RandomGreedy(RandomOptimizer):
 
         return functools.partial(
             thermal_chooser,
-            temperature=self.temperature,
+            temperature=self.temperature,  # type: ignore[arg-type]
             nbranch=self.nbranch,
             rel_temperature=self.rel_temperature,
         )

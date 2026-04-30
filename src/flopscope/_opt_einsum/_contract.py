@@ -689,8 +689,8 @@ class PathInfo:
             if verbose:
                 cumulative += step.flop_cost
                 detail_row = [""] * len(table.columns)
-                detail_row[2] = self._rich_verbose_detail_text(step, cumulative)
-                detail_row[-1] = self._rich_verbose_detail_text(
+                detail_row[2] = self._rich_verbose_detail_text(step, cumulative)  # type: ignore[call-overload, assignment]
+                detail_row[-1] = self._rich_verbose_detail_text(  # type: ignore[call-overload, assignment]
                     step, cumulative, step_index=i
                 )
                 table.add_row(*detail_row)
@@ -1052,7 +1052,7 @@ def contract_path(
                 output_set,
                 size_dict,
                 memory_arg,
-                symmetry_oracle=symmetry_oracle,
+                symmetry_oracle=symmetry_oracle,  # type: ignore[call-arg]
             )
         else:
             path_tuple = path_optimizer(input_sets, output_set, size_dict, memory_arg)
@@ -1103,6 +1103,8 @@ def contract_path(
         out_inds, input_sets, idx_removed, idx_contract = contract_tuple
 
         # Compute cost using oracle if available
+        subset_sym = None  # assigned below when symmetry_oracle is not None
+        _step_inner_applied = False  # assigned below when symmetry_oracle is not None
         if symmetry_oracle is not None:
             # Look up each input's symmetry from the oracle before merging.
             # This is used both for cost computation (via merged_subset →
@@ -1184,7 +1186,7 @@ def contract_path(
                 tmp_inputs,
                 "".join(out_inds),
                 idx_removed,
-                tmp_shapes,
+                tmp_shapes,  # type: ignore[arg-type]
                 input_groups=step_syms if symmetry_oracle is not None else None,
             )
         else:
@@ -1218,7 +1220,7 @@ def contract_path(
                 output_shape=shp_result,
                 input_groups=list(step_syms),
                 output_group=result_sym,
-                inner_group=(subset_sym.inner if symmetry_oracle is not None else None),
+                inner_group=(subset_sym.inner if symmetry_oracle is not None else None),  # type: ignore[union-attr]
                 dense_flop_cost=step_dense,
                 symmetry_savings=savings,
                 blas_type=do_blas,

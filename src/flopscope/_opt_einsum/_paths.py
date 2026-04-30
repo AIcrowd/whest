@@ -277,7 +277,7 @@ def optimal(
                     size12 = size_cache[k12]
                 except KeyError:
                     size12 = size_cache[k12] = compute_size_by_dict(k12, size_dict)
-                if size12 > memory_limit:
+                if size12 > memory_limit:  # type: ignore[operator]
                     new_flops = flops + _compute_oversize_flops(
                         inputs, remaining, output_set, size_dict
                     )
@@ -401,7 +401,7 @@ class BranchBound(PathOptimizer):
     def path(self) -> PathType:
         return ssa_to_linear(self.best["ssa_path"])
 
-    def __call__(
+    def __call__(  # type: ignore[override]
         self,
         inputs_: list[ArrayIndexType],
         output_: ArrayIndexType,
@@ -429,7 +429,7 @@ class BranchBound(PathOptimizer):
         """
         self._check_args_against_first_call(inputs_, output_, size_dict)
 
-        inputs: tuple[frozenset[str]] = tuple(map(frozenset, inputs_))
+        inputs: tuple[frozenset[str]] = tuple(map(frozenset, inputs_))  # type: ignore[assignment]
         output: frozenset[str] = frozenset(output_)
         num_operands = len(inputs_)
 
@@ -1071,7 +1071,7 @@ def _dp_compare_flops(
 
     dense_step = compute_size_by_dict(i1_union_i2, size_dict)
     if get_ratio is not None:
-        step_cost = int(dense_step * get_ratio(s, i))
+        step_cost = int(dense_step * get_ratio(s, i))  # type: ignore[arg-type]
     else:
         step_cost = dense_step
 
@@ -1109,7 +1109,7 @@ def _dp_compare_size(
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
     if get_ratio is not None:
-        mem = int(mem * get_ratio(s, i))
+        mem = int(mem * get_ratio(s, i))  # type: ignore[arg-type]
     cost = max(cost1, cost2, mem)
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1143,7 +1143,7 @@ def _dp_compare_write(
     i = _dp_calc_legs(g, all_tensors, s, inputs, i1_cut_i2_wo_output, i1_union_i2)
     mem = compute_size_by_dict(i, size_dict)
     if get_ratio is not None:
-        mem = int(mem * get_ratio(s, i))
+        mem = int(mem * get_ratio(s, i))  # type: ignore[arg-type]
     cost = cost1 + cost2 + mem
     if cost <= cost_cap:
         if s not in xn or cost < xn[s][1]:
@@ -1182,7 +1182,7 @@ def _dp_compare_combo(
     mem = compute_size_by_dict(i, size_dict)
     f = compute_size_by_dict(i1_union_i2, size_dict)
     if get_ratio is not None:
-        ratio = get_ratio(s, i)
+        ratio = get_ratio(s, i)  # type: ignore[arg-type]
         mem = int(mem * ratio)
         f = int(f * ratio)
     cost = cost1 + cost2 + combine((f, factor * mem))
@@ -1239,7 +1239,7 @@ def simple_tree_tuple(seq: Sequence[tuple[int, ...]]) -> tuple[Any, ...]:
     ```
 
     """
-    return functools.reduce(lambda x, y: (x, y), seq)
+    return functools.reduce(lambda x, y: (x, y), seq)  # type: ignore[arg-type]
 
 
 def _dp_parse_out_single_term_ops(
@@ -1316,7 +1316,7 @@ class DynamicProgramming(PathOptimizer):
         self.search_outer = search_outer
         self.cost_cap = cost_cap
 
-    def __call__(
+    def __call__(  # type: ignore[override]
         self,
         inputs_: list[ArrayIndexType],
         output_: ArrayIndexType,

@@ -1085,11 +1085,11 @@ def compress(
 ) -> FlopscopeArray:
     """Return selected slices along an axis. Cost: numel(output)."""
     budget = require_budget()
-    result = _np.compress(  # type: ignore[arg-type, call-overload]
-        _to_base_ndarray(condition),
+    result = _np.compress(
+        _to_base_ndarray(condition),  # type: ignore[arg-type]
         _to_base_ndarray(a),
         *args,
-        **kwargs,  # type: ignore[arg-type, call-overload]
+        **kwargs,
     )
     cost = (
         result.size
@@ -1820,8 +1820,8 @@ def select(
     cost = max((_np.asarray(c).size for c in choicelist), default=1)
     with budget.deduct("select", flop_cost=cost, subscripts=None, shapes=()):
         result = _np.select(
-            _to_base_ndarray_tree(condlist),
-            _to_base_ndarray_tree(choicelist),
+            _to_base_ndarray_tree(condlist),  # type: ignore[arg-type]
+            _to_base_ndarray_tree(choicelist),  # type: ignore[arg-type]
             default=default,
         )
     return result  # type: ignore[return-value]
@@ -1840,7 +1840,7 @@ attach_docstring(shape, _np.shape, "free", "0 FLOPs")
 
 def shares_memory(*args, **kwargs):
     """Determine if two arrays share memory. Wraps ``numpy.shares_memory``. Cost: 0 FLOPs."""
-    return _np.shares_memory(*[_to_base_ndarray(a) for a in args], **kwargs)
+    return _np.shares_memory(*[_to_base_ndarray(a) for a in args], **kwargs)  # type: ignore[arg-type]
 
 
 attach_docstring(shares_memory, _np.shares_memory, "free", "0 FLOPs")
@@ -1928,7 +1928,7 @@ def trim_zeros(filt: ArrayLike, trim: str = "fb", **kwargs: Any) -> FlopscopeArr
     """Trim leading and/or trailing zeros from 1-D array. Cost: num elements trimmed."""
     budget = require_budget()
     filt_arr = _np.asarray(filt)
-    result = _np.trim_zeros(_to_base_ndarray(filt), trim=trim, **kwargs)
+    result = _np.trim_zeros(_to_base_ndarray(filt), trim=trim, **kwargs)  # type: ignore[arg-type]
     result_arr = _np.asarray(result)
     cost = max(filt_arr.size - result_arr.size, 0)  # num trimmed
     with budget.deduct("trim_zeros", flop_cost=cost, subscripts=None, shapes=()):
@@ -1966,7 +1966,7 @@ attach_docstring(typename, _np.typename, "free", "0 FLOPs")
 def unpackbits(a: ArrayLike, *args: Any, **kwargs: Any) -> FlopscopeArray:
     """Unpack elements of uint8 array into binary-valued bit array. Cost: numel(output)."""
     budget = require_budget()
-    result = _np.unpackbits(_to_base_ndarray(a), *args, **kwargs)
+    result = _np.unpackbits(_to_base_ndarray(a), *args, **kwargs)  # type: ignore[arg-type]
     cost = (
         result.size
         if hasattr(result, "size")
@@ -1994,7 +1994,7 @@ attach_docstring(unravel_index, _np.unravel_index, "free", "0 FLOPs")
 
 if hasattr(_np, "unstack"):
 
-    def unstack(x: ArrayLike, *args: Any, **kwargs: Any) -> tuple[FlopscopeArray, ...]:
+    def unstack(x: ArrayLike, *args: Any, **kwargs: Any) -> tuple[FlopscopeArray, ...]:  # type: ignore[misc]
         """Split array into sequence of arrays along an axis. Cost: numel(input)."""
         budget = require_budget()
         x_arr = _np.asarray(x)

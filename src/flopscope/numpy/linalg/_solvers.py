@@ -301,8 +301,8 @@ def tensorsolve(a: ArrayLike, b: ArrayLike, axes: Any = None) -> FlopscopeArray:
     ):
         result = _np.linalg.tensorsolve(
             _to_base_ndarray(a),
-            _to_base_ndarray(b),
-            axes=axes,  # type: ignore[reportArgumentType]
+            _to_base_ndarray(b),  # type: ignore[arg-type]
+            axes=axes,
         )
     if inputs_were_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]

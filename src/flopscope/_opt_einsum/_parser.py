@@ -365,6 +365,7 @@ def parse_einsum_input(
         longest = 0
 
         # Do we have an output to account for?
+        output_sub = ""  # assigned below if "->" is present
         if "->" in subscripts:
             input_tmp, output_sub = subscripts.split("->")
             split_subscripts = input_tmp.split(",")

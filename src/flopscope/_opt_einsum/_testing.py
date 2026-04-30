@@ -121,7 +121,7 @@ def build_views(
         string, dimension_dict=dimension_dict, replace_ellipsis=replace_ellipsis
     ):
         if shape:
-            views.append(array_function(*shape))
+            views.append(array_function(*shape))  # type: ignore[misc]
         else:
             views.append(random.random())
     return tuple(views)
@@ -220,7 +220,7 @@ def rand_equation(
         for i, ix in enumerate(size_dict):
             # generate an outer index
             if i < n_out:
-                output.append(ix)
+                output.append(ix)  # type: ignore[attr-defined]
                 yield ix
             # generate a bond
             else:

@@ -445,7 +445,7 @@ def budget_summary(by_namespace: bool = False):
     """
     result = render_budget_summary(by_namespace=by_namespace)
     try:
-        _ = get_ipython  # noqa: F821
+        _ = get_ipython  # type: ignore[name-defined]  # noqa: F821
         return result
     except NameError:
         if isinstance(result, str):

@@ -124,7 +124,7 @@ _path_cache = _make_path_cache(4096)
 def _rebuild_einsum_cache():
     """Rebuild the path cache with the current configured maxsize."""
     global _path_cache
-    _path_cache = _make_path_cache(int(get_setting("einsum_path_cache_size")))
+    _path_cache = _make_path_cache(int(get_setting("einsum_path_cache_size")))  # type: ignore[arg-type]
 
 
 def clear_einsum_cache():
