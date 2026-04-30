@@ -7,8 +7,10 @@ import functools as _functools
 import inspect as _inspect
 import warnings as _warnings
 from math import prod as _math_prod
+from typing import Any
 
 import numpy as _np
+from numpy.typing import ArrayLike, DTypeLike
 
 from flopscope._config import get_setting as _get_setting
 from flopscope._docstrings import attach_docstring
@@ -22,7 +24,7 @@ from flopscope._flops import (
 from flopscope._flops import (
     analytical_reduction_cost as reduction_cost,
 )
-from flopscope._ndarray import _asflopscope, _to_base_ndarray, _to_base_ndarray_tree
+from flopscope._ndarray import FlopscopeArray, _asflopscope, _to_base_ndarray, _to_base_ndarray_tree
 from flopscope._perm_group import SymmetryGroup
 from flopscope._symmetric import (
     SymmetricTensor,
@@ -1325,7 +1327,7 @@ divmod = _counted_binary_multi(_np.divmod, "divmod")
 # ---------------------------------------------------------------------------
 
 
-def clip(a, *args, out=None, **kwargs):
+def clip(a: ArrayLike, *args: Any, out: FlopscopeArray | None = None, **kwargs: Any) -> FlopscopeArray:
     """Counted version of np.clip. Cost = numel(input) or unique_elements if symmetric."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -1357,7 +1359,7 @@ def clip(a, *args, out=None, **kwargs):
         )
     if a.dtype.kind in ("f", "c"):
         check_nan_inf(result, "clip")
-    return _wrap_result(result, out=out, symmetry=symmetry)
+    return _wrap_result(result, out=out, symmetry=symmetry)  # type: ignore[return-value]
 
 
 attach_docstring(clip, _np.clip, "counted_custom", "numel(input) FLOPs")
@@ -1472,7 +1474,7 @@ else:
 # ---------------------------------------------------------------------------
 
 
-def dot(a, b):
+def dot(a: ArrayLike, b: ArrayLike) -> FlopscopeArray:
     """Counted version of np.dot."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -1514,13 +1516,13 @@ def dot(a, b):
         # through __array_ufunc__ (matmul is a ufunc) / __array_function__.
         result = _np.dot(_to_base_ndarray(a), _to_base_ndarray(b))
     check_nan_inf(result, "dot")
-    return _asflopscope(result) if inputs_were_whest else result
+    return _asflopscope(result) if inputs_were_whest else result  # type: ignore[return-value]
 
 
 attach_docstring(dot, _np.dot, "counted_custom", "depends on operand dimensions")
 
 
-def matmul(a, b):
+def matmul(a: ArrayLike, b: ArrayLike) -> FlopscopeArray:
     """Counted version of np.matmul."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -1556,7 +1558,7 @@ def matmul(a, b):
         with _np.errstate(divide="ignore", over="ignore", invalid="ignore"):
             result = _np.matmul(_to_base_ndarray(a), _to_base_ndarray(b))
     check_nan_inf(result, "matmul")
-    return _asflopscope(result) if inputs_were_whest else result
+    return _asflopscope(result) if inputs_were_whest else result  # type: ignore[return-value]
 
 
 attach_docstring(matmul, _np.matmul, "counted_custom", "depends on operand dimensions")
@@ -1567,7 +1569,7 @@ attach_docstring(matmul, _np.matmul, "counted_custom", "depends on operand dimen
 # ---------------------------------------------------------------------------
 
 
-def inner(a, b):
+def inner(a: ArrayLike, b: ArrayLike) -> FlopscopeArray:
     """Counted version of np.inner."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -1583,13 +1585,13 @@ def inner(a, b):
         "inner", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
         result = _np.inner(_to_base_ndarray(a), _to_base_ndarray(b))
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.inner import time
 
 
 attach_docstring(inner, _np.inner, "counted_custom", "product of matching dims")
 
 
-def outer(a, b, out=None):
+def outer(a: ArrayLike, b: ArrayLike, out: FlopscopeArray | None = None) -> FlopscopeArray:
     """Counted version of np.outer."""
     budget = require_budget()
     a_orig = a
@@ -1613,8 +1615,8 @@ def outer(a, b, out=None):
     if target_symmetry is None:
         if out is not None:
             return out
-        return result
-    return _wrap_result(result, out=out, symmetry=target_symmetry)
+        return result  # type: ignore[return-value]  # wrapped at fnp.outer import time
+    return _wrap_result(result, out=out, symmetry=target_symmetry)  # type: ignore[return-value]
 
 
 attach_docstring(outer, _np.outer, "counted_custom", "m * n FLOPs")
@@ -1656,7 +1658,7 @@ def _surviving_symmetry_after_contraction(group, surviving_axes):
     return restrict_group_to_axes(group, axes=wanted)
 
 
-def tensordot(a, b, axes=2):
+def tensordot(a: ArrayLike, b: ArrayLike, axes: Any = 2) -> FlopscopeArray:
     """Counted version of ``np.tensordot``.
 
     The dense FLOP cost is ``a.size * b.size / contracted_size``. When
@@ -1725,14 +1727,14 @@ def tensordot(a, b, axes=2):
     ):
         result = _np.tensordot(_to_base_ndarray(a), _to_base_ndarray(b), axes=axes)
     if out_sym is not None:
-        return _wrap_result(result, symmetry=out_sym)
-    return result
+        return _wrap_result(result, symmetry=out_sym)  # type: ignore[return-value]
+    return result  # type: ignore[return-value]  # wrapped at fnp.tensordot import time
 
 
 attach_docstring(tensordot, _np.tensordot, "counted_custom", "product of all dims")
 
 
-def vdot(a, b):
+def vdot(a: ArrayLike, b: ArrayLike) -> FlopscopeArray:
     """Counted version of np.vdot."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -1744,13 +1746,13 @@ def vdot(a, b):
         "vdot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
         result = _np.vdot(_to_base_ndarray(a), _to_base_ndarray(b))
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.vdot import time
 
 
 attach_docstring(vdot, _np.vdot, "counted_custom", "size of input FLOPs")
 
 
-def kron(a, b):
+def kron(a: ArrayLike, b: ArrayLike) -> FlopscopeArray:
     """Counted version of np.kron."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -1763,13 +1765,13 @@ def kron(a, b):
         "kron", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
         result = _np.kron(_to_base_ndarray(a), _to_base_ndarray(b))
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.kron import time
 
 
 attach_docstring(kron, _np.kron, "counted_custom", "output size FLOPs")
 
 
-def cross(a, b, **kwargs):
+def cross(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:
     """Counted version of np.cross."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -1787,7 +1789,7 @@ def cross(a, b, **kwargs):
         shapes=(a.shape, b.shape),
     ):
         pass  # numpy call already done; timer records near-zero duration
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.cross import time
 
 
 attach_docstring(cross, _np.cross, "counted_custom", "output_size * 3 FLOPs")
