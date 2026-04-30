@@ -15,7 +15,7 @@
     "kind": "class",
     "label": "flops.FlopscopeArray",
     "module": "flopscope._ndarray",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L97"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L99"
   },
   "OpRecord": {
     "canonical_name": "OpRecord",
@@ -1590,7 +1590,7 @@
     "kind": "class",
     "label": "flops.FlopscopeArray",
     "module": "flopscope._ndarray",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L97"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L99"
   },
   "flops.OpRecord": {
     "canonical_name": "OpRecord",
@@ -7170,7 +7170,7 @@
     "kind": "class",
     "label": "flops.FlopscopeArray",
     "module": "flopscope._ndarray",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L97"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L99"
   },
   "flopscope.OpRecord": {
     "canonical_name": "OpRecord",
@@ -10446,7 +10446,7 @@
     "kind": "class",
     "label": "flops.FlopscopeArray",
     "module": "flopscope._ndarray",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L97"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L99"
   },
   "flopscope.numpy.OpRecord": {
     "canonical_name": "OpRecord",
@@ -12696,7 +12696,7 @@
     "kind": "class",
     "label": "flops.FlopscopeArray",
     "module": "flopscope._ndarray",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L97"
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L99"
   },
   "fnp.OpRecord": {
     "canonical_name": "OpRecord",

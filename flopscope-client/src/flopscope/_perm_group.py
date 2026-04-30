@@ -76,7 +76,7 @@ class _Permutation:
         elif array_form and isinstance(array_form[0], (list, tuple)):
             c = _Cycle()
             for cycle in array_form:
-                c = c(*cycle)
+                c = c(*cycle)  # type: ignore[call-arg]
             self._array_form = tuple(c.list(size))
         else:
             arr = list(array_form)
@@ -98,7 +98,7 @@ class _Permutation:
 
     @classmethod
     def identity(cls, size: int) -> _Permutation:
-        return cls(range(size))
+        return cls(list(range(size)))
 
     @classmethod
     def from_cycle(cls, size: int, cycle: list[int]) -> _Permutation:

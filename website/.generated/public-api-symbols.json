@@ -317,7 +317,7 @@
     "related_guides": [],
     "signature": "flops.FlopscopeArray(shape, dtype=<class 'float'>, buffer=None, offset=0, strides=None, order=None)",
     "slug": "flopscope-array",
-    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L97",
+    "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_ndarray.py#L99",
     "status_note": "",
     "summary": "A numpy ndarray subclass with FLOP-tracked operators.",
     "upstream_source_url": ""
@@ -4016,7 +4016,7 @@
     "module": "numpy",
     "name": "errstate",
     "related_guides": [],
-    "signature": "fnp.errstate(*, call=<numpy._core._ufunc_config._unspecified object at 0x10364cd70>, all=None, divide=None, over=None, under=None, invalid=None)",
+    "signature": "fnp.errstate(*, call=<numpy._core._ufunc_config._unspecified object at 0x103474d70>, all=None, divide=None, over=None, under=None, invalid=None)",
     "slug": "errstate",
     "source_url": "",
     "status_note": "",
