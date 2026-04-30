@@ -8,12 +8,15 @@ outside a :class:`~flopscope._budget.BudgetContext`.
 from __future__ import annotations
 
 import inspect as _inspect
+from collections.abc import Sequence
 from functools import lru_cache
+from typing import Any
 
 import numpy as _np
+from numpy.typing import ArrayLike, DTypeLike
 
 from flopscope._docstrings import attach_docstring
-from flopscope._ndarray import _to_base_ndarray, _to_base_ndarray_tree
+from flopscope._ndarray import FlopscopeArray, _to_base_ndarray, _to_base_ndarray_tree
 from flopscope._perm_group import SymmetryGroup
 from flopscope._symmetric import SymmetricTensor
 from flopscope._symmetry_utils import (
@@ -45,11 +48,11 @@ def _infer_constant_shape_symmetry(shape):
     return SymmetryGroup.young(blocks=blocks)
 
 
-def _wrap_constant_fill(result):
+def _wrap_constant_fill(result: _np.ndarray) -> FlopscopeArray:
     symmetry = _infer_constant_shape_symmetry(result.shape)
     if symmetry is None:
-        return result
-    return wrap_with_trusted_symmetry(result, symmetry)
+        return result  # type: ignore[return-value]
+    return wrap_with_trusted_symmetry(result, symmetry)  # type: ignore[return-value]
 
 
 def _compatible_symmetry_for_shape(symmetry, shape):
@@ -90,7 +93,11 @@ def _infer_structural_constructor_symmetry(*, kind, N=None, M=None, k=0, v_ndim=
 # ---------------------------------------------------------------------------
 
 
-def array(object, dtype=None, **kwargs):
+def array(
+    object: ArrayLike,
+    dtype: DTypeLike | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Create an array. Cost: numel(output)."""
     budget = require_budget()
     # Pre-compute cost from input to keep numpy call inside the timer
@@ -100,13 +107,17 @@ def array(object, dtype=None, **kwargs):
         "array", flop_cost=cost, subscripts=None, shapes=(_probe.shape,)
     ):
         result = _np.array(object, dtype=dtype, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(array, _np.array, "counted_custom", "numel(input) FLOPs")
 
 
-def zeros(shape, dtype=float, **kwargs):
+def zeros(
+    shape: int | Sequence[int],
+    dtype: DTypeLike = float,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return array of zeros. Wraps ``numpy.zeros``. Cost: 0 FLOPs."""
     return _wrap_constant_fill(_np.zeros(shape, dtype=dtype, **kwargs))
 
@@ -114,7 +125,11 @@ def zeros(shape, dtype=float, **kwargs):
 attach_docstring(zeros, _np.zeros, "free", "0 FLOPs")
 
 
-def ones(shape, dtype=float, **kwargs):
+def ones(
+    shape: int | Sequence[int],
+    dtype: DTypeLike = float,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return array of ones. Wraps ``numpy.ones``. Cost: 0 FLOPs."""
     return _wrap_constant_fill(_np.ones(shape, dtype=dtype, **kwargs))
 
@@ -122,7 +137,12 @@ def ones(shape, dtype=float, **kwargs):
 attach_docstring(ones, _np.ones, "free", "0 FLOPs")
 
 
-def full(shape, fill_value, dtype=None, **kwargs):
+def full(
+    shape: int | Sequence[int],
+    fill_value: ArrayLike,
+    dtype: DTypeLike | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return array filled with *fill_value*. Cost: numel(output)."""
     budget = require_budget()
     result = _np.full(shape, fill_value, dtype=dtype, **kwargs)
@@ -135,19 +155,25 @@ def full(shape, fill_value, dtype=None, **kwargs):
 attach_docstring(full, _np.full, "free", "0 FLOPs")
 
 
-def eye(N, M=None, k=0, dtype=float, **kwargs):
+def eye(
+    N: int,
+    M: int | None = None,
+    k: int = 0,
+    dtype: DTypeLike = float,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return identity matrix. Wraps ``numpy.eye``. Cost: 0 FLOPs."""
     result = _np.eye(N, M=M, k=k, dtype=dtype, **kwargs)
     symmetry = _infer_structural_constructor_symmetry(kind="eye", N=N, M=M, k=k)
     if symmetry is not None:
-        return wrap_with_trusted_symmetry(result, symmetry)
-    return result
+        return wrap_with_trusted_symmetry(result, symmetry)  # type: ignore[return-value]
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(eye, _np.eye, "free", "0 FLOPs")
 
 
-def diag(v, k=0):
+def diag(v: ArrayLike, k: int = 0) -> FlopscopeArray:
     """Extract diagonal or construct diagonal array.
 
     Cost: numel(output) when constructing (1D→2D), min(m,n) when extracting (2D→1D).
@@ -166,14 +192,14 @@ def diag(v, k=0):
         result = _np.diag(v, k=k)
     symmetry = _infer_structural_constructor_symmetry(kind="diag", k=k, v_ndim=v.ndim)
     if symmetry is not None:
-        return wrap_with_trusted_symmetry(result, symmetry)
-    return result
+        return wrap_with_trusted_symmetry(result, symmetry)  # type: ignore[return-value]
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(diag, _np.diag, "free", "0 FLOPs")
 
 
-def arange(*args, **kwargs):
+def arange(*args: Any, **kwargs: Any) -> FlopscopeArray:
     """Return evenly spaced values. Cost: numel(output)."""
     budget = require_budget()
     # cost depends on result; duration is post-hoc
@@ -188,19 +214,28 @@ def arange(*args, **kwargs):
 attach_docstring(arange, _np.arange, "counted_custom", "numel(output) FLOPs")
 
 
-def linspace(start, stop, num=50, **kwargs):
+def linspace(
+    start: ArrayLike,
+    stop: ArrayLike,
+    num: int = 50,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return evenly spaced numbers. Cost: numel(output)."""
     budget = require_budget()
     cost = max(int(num), 1)
     with budget.deduct("linspace", flop_cost=cost, subscripts=None, shapes=()):
-        result = _np.linspace(start, stop, num=num, **kwargs)
+        result = _np.linspace(start, stop, num=num, **kwargs)  # type: ignore[arg-type, call-overload]
     return result
 
 
 attach_docstring(linspace, _np.linspace, "counted_custom", "numel(output) FLOPs")
 
 
-def zeros_like(a, dtype=None, **kwargs):
+def zeros_like(
+    a: ArrayLike,
+    dtype: DTypeLike | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return array of zeros with same shape. Wraps ``numpy.zeros_like``. Cost: 0 FLOPs."""
     result = _np.zeros_like(_to_base_ndarray(a), dtype=dtype, **kwargs)
     symmetry = None
@@ -210,15 +245,19 @@ def zeros_like(a, dtype=None, **kwargs):
         symmetry = _infer_constant_shape_symmetry(result.shape)
     if symmetry is None:
         if isinstance(a, SymmetricTensor):
-            return _np.array(result, copy=False, subok=False)
-        return result
-    return wrap_with_trusted_symmetry(result, symmetry)
+            return _np.array(result, copy=False, subok=False)  # type: ignore[return-value]
+        return result  # type: ignore[return-value]
+    return wrap_with_trusted_symmetry(result, symmetry)  # type: ignore[return-value]
 
 
 attach_docstring(zeros_like, _np.zeros_like, "free", "0 FLOPs")
 
 
-def ones_like(a, dtype=None, **kwargs):
+def ones_like(
+    a: ArrayLike,
+    dtype: DTypeLike | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return array of ones with same shape. Wraps ``numpy.ones_like``. Cost: 0 FLOPs."""
     result = _np.ones_like(_to_base_ndarray(a), dtype=dtype, **kwargs)
     symmetry = None
@@ -228,15 +267,20 @@ def ones_like(a, dtype=None, **kwargs):
         symmetry = _infer_constant_shape_symmetry(result.shape)
     if symmetry is None:
         if isinstance(a, SymmetricTensor):
-            return _np.array(result, copy=False, subok=False)
-        return result
-    return wrap_with_trusted_symmetry(result, symmetry)
+            return _np.array(result, copy=False, subok=False)  # type: ignore[return-value]
+        return result  # type: ignore[return-value]
+    return wrap_with_trusted_symmetry(result, symmetry)  # type: ignore[return-value]
 
 
 attach_docstring(ones_like, _np.ones_like, "free", "0 FLOPs")
 
 
-def full_like(a, fill_value, dtype=None, **kwargs):
+def full_like(
+    a: ArrayLike,
+    fill_value: ArrayLike,
+    dtype: DTypeLike | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return full array with same shape. Cost: numel(output)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
@@ -250,37 +294,45 @@ def full_like(a, fill_value, dtype=None, **kwargs):
         symmetry = _infer_constant_shape_symmetry(result.shape)
     if symmetry is None:
         if isinstance(a, SymmetricTensor):
-            return _np.array(result, copy=False, subok=False)
-        return result
-    return wrap_with_trusted_symmetry(result, symmetry)
+            return _np.array(result, copy=False, subok=False)  # type: ignore[return-value]
+        return result  # type: ignore[return-value]
+    return wrap_with_trusted_symmetry(result, symmetry)  # type: ignore[return-value]
 
 
 attach_docstring(full_like, _np.full_like, "free", "0 FLOPs")
 
 
-def empty(shape, dtype=float, **kwargs):
+def empty(
+    shape: int | Sequence[int],
+    dtype: DTypeLike = float,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return uninitialized array. Wraps ``numpy.empty``. Cost: 0 FLOPs."""
-    return _np.empty(shape, dtype=dtype, **kwargs)
+    return _np.empty(shape, dtype=dtype, **kwargs)  # type: ignore[return-value]
 
 
 attach_docstring(empty, _np.empty, "free", "0 FLOPs")
 
 
-def empty_like(a, dtype=None, **kwargs):
+def empty_like(
+    a: ArrayLike,
+    dtype: DTypeLike | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return uninitialized array with same shape. Wraps ``numpy.empty_like``. Cost: 0 FLOPs."""
-    return _np.empty_like(_to_base_ndarray(a), dtype=dtype, **kwargs)
+    return _np.empty_like(_to_base_ndarray(a), dtype=dtype, **kwargs)  # type: ignore[return-value]
 
 
 attach_docstring(empty_like, _np.empty_like, "free", "0 FLOPs")
 
 
-def identity(n, dtype=float):
+def identity(n: int, dtype: DTypeLike = float) -> FlopscopeArray:
     """Return identity matrix. Wraps ``numpy.identity``. Cost: 0 FLOPs."""
     result = _np.identity(n, dtype=dtype)
     symmetry = _infer_structural_constructor_symmetry(kind="identity")
     if symmetry is not None:
-        return wrap_with_trusted_symmetry(result, symmetry)
-    return result
+        return wrap_with_trusted_symmetry(result, symmetry)  # type: ignore[return-value]
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(identity, _np.identity, "free", "0 FLOPs")
@@ -290,7 +342,7 @@ attach_docstring(identity, _np.identity, "free", "0 FLOPs")
 # ---------------------------------------------------------------------------
 
 
-def reshape(a, /, *args, **kwargs):
+def reshape(a: ArrayLike, /, *args: Any, **kwargs: Any) -> FlopscopeArray:
     """Reshape an array. Wraps ``numpy.reshape``. Cost: 0 FLOPs."""
     return _np.reshape(_np.asarray(a), *args, **kwargs)
 
@@ -298,108 +350,127 @@ def reshape(a, /, *args, **kwargs):
 attach_docstring(reshape, _np.reshape, "free", "0 FLOPs")
 
 
-def transpose(a, axes=None):
+def transpose(
+    a: ArrayLike,
+    axes: Sequence[int] | None = None,
+) -> FlopscopeArray:
     """Permute array dimensions. Wraps ``numpy.transpose``. Cost: 0 FLOPs."""
     if not isinstance(a, SymmetricTensor):
-        return _np.transpose(_to_base_ndarray(a), axes=axes)
+        return _np.transpose(_to_base_ndarray(a), axes=axes)  # type: ignore[return-value]
     result = _np.transpose(_np.asarray(a), axes=axes)
     if axes is None:
         order = tuple(reversed(range(a.ndim)))
     else:
         order = _normalize_axis_order(tuple(axes), a.ndim)
     mapping = {old: new for new, old in enumerate(order)}
-    return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))
+    return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))  # type: ignore[return-value]
 
 
 attach_docstring(transpose, _np.transpose, "free", "0 FLOPs")
 
 
-def swapaxes(a, axis1, axis2):
+def swapaxes(a: ArrayLike, axis1: int, axis2: int) -> FlopscopeArray:
     """Swap two axes. Wraps ``numpy.swapaxes``. Cost: 0 FLOPs."""
     if not isinstance(a, SymmetricTensor):
-        return _np.swapaxes(_to_base_ndarray(a), axis1, axis2)
+        return _np.swapaxes(_to_base_ndarray(a), axis1, axis2)  # type: ignore[return-value]
     result = _np.swapaxes(_np.asarray(a), axis1, axis2)
     order = list(range(a.ndim))
     axis1 %= a.ndim
     axis2 %= a.ndim
     order[axis1], order[axis2] = order[axis2], order[axis1]
     mapping = {old: new for new, old in enumerate(order)}
-    return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))
+    return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))  # type: ignore[return-value]
 
 
 attach_docstring(swapaxes, _np.swapaxes, "free", "0 FLOPs")
 
 
-def moveaxis(a, source, destination):
+def moveaxis(
+    a: ArrayLike,
+    source: int | Sequence[int],
+    destination: int | Sequence[int],
+) -> FlopscopeArray:
     """Move axes to new positions. Wraps ``numpy.moveaxis``. Cost: 0 FLOPs."""
     if not isinstance(a, SymmetricTensor):
-        return _np.moveaxis(_to_base_ndarray(a), source, destination)
+        return _np.moveaxis(_to_base_ndarray(a), source, destination)  # type: ignore[return-value]
     result = _np.moveaxis(_np.asarray(a), source, destination)
     if _np.ndim(source) == 0:
-        source_axes = (int(source),)
+        source_axes = (int(source),)  # type: ignore[arg-type, call-overload]
     else:
-        source_axes = tuple(source)
+        source_axes = tuple(source)  # type: ignore[arg-type, call-overload]
     if _np.ndim(destination) == 0:
-        destination_axes = (int(destination),)
+        destination_axes = (int(destination),)  # type: ignore[arg-type, call-overload]
     else:
-        destination_axes = tuple(destination)
+        destination_axes = tuple(destination)  # type: ignore[arg-type, call-overload]
     source_axes = _normalize_axis_order(source_axes, a.ndim)
     destination_axes = _normalize_axis_order(destination_axes, a.ndim)
     order = [axis for axis in range(a.ndim) if axis not in source_axes]
     for dest, src in sorted(zip(destination_axes, source_axes, strict=True)):
         order.insert(dest, src)
     mapping = {old: new for new, old in enumerate(order)}
-    return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))
+    return wrap_with_symmetry(result, remap_group_axes(a.symmetry, mapping))  # type: ignore[return-value]
 
 
 attach_docstring(moveaxis, _np.moveaxis, "free", "0 FLOPs")
 
 
-def concatenate(arrays, axis=0, **kwargs):
+def concatenate(
+    arrays: Sequence[ArrayLike],
+    axis: int | None = 0,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Join arrays along an axis. Cost: numel(output)."""
     budget = require_budget()
     cost = max(sum(_np.asarray(a).size for a in arrays), 1)
     with budget.deduct("concatenate", flop_cost=cost, subscripts=None, shapes=()):
-        result = _np.concatenate(_to_base_ndarray_tree(arrays), axis=axis, **kwargs)
-    return result
+        result = _np.concatenate(_to_base_ndarray_tree(arrays), axis=axis, **kwargs)  # type: ignore[arg-type, call-overload]
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(concatenate, _np.concatenate, "counted_custom", "numel(output) FLOPs")
 
 
-def stack(arrays, axis=0, **kwargs):
+def stack(
+    arrays: Sequence[ArrayLike],
+    axis: int = 0,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Stack arrays along a new axis. Cost: numel(output)."""
     budget = require_budget()
     cost = max(sum(_np.asarray(a).size for a in arrays), 1)
     with budget.deduct("stack", flop_cost=cost, subscripts=None, shapes=()):
-        result = _np.stack(_to_base_ndarray_tree(arrays), axis=axis, **kwargs)
+        result = _np.stack(_to_base_ndarray_tree(arrays), axis=axis, **kwargs)  # type: ignore[arg-type, call-overload]
     return result
 
 
 attach_docstring(stack, _np.stack, "free", "0 FLOPs")
 
 
-def vstack(tup):
+def vstack(tup: Sequence[ArrayLike]) -> FlopscopeArray:
     """Stack arrays vertically. Cost: numel(output)."""
     budget = require_budget()
     cost = max(sum(_np.asarray(a).size for a in tup), 1)
     with budget.deduct("vstack", flop_cost=cost, subscripts=None, shapes=()):
-        result = _np.vstack(_to_base_ndarray_tree(tup))
+        result = _np.vstack(_to_base_ndarray_tree(tup))  # type: ignore[arg-type, call-overload]
     return result
 
 
 attach_docstring(vstack, _np.vstack, "free", "0 FLOPs")
 
 
-def hstack(tup):
+def hstack(tup: Sequence[ArrayLike]) -> FlopscopeArray:
     """Stack arrays horizontally. Wraps ``numpy.hstack``. Cost: 0 FLOPs."""
-    return _np.hstack(_to_base_ndarray_tree(tup))
+    return _np.hstack(_to_base_ndarray_tree(tup))  # type: ignore[arg-type, call-overload]
 
 
 attach_docstring(hstack, _np.hstack, "free", "0 FLOPs")
 
 
-def split(ary, indices_or_sections, axis=0):
+def split(
+    ary: ArrayLike,
+    indices_or_sections: int | Sequence[int],
+    axis: int = 0,
+) -> list[FlopscopeArray]:
     """Split array. Cost: numel(input)."""
     budget = require_budget()
     ary_arr = _np.asarray(ary)
@@ -408,21 +479,27 @@ def split(ary, indices_or_sections, axis=0):
         "split", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)
     ):
         result = _np.split(_to_base_ndarray(ary), indices_or_sections, axis=axis)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(split, _np.split, "free", "0 FLOPs")
 
 
-def hsplit(ary, indices_or_sections):
+def hsplit(
+    ary: ArrayLike,
+    indices_or_sections: int | Sequence[int],
+) -> list[FlopscopeArray]:
     """Split array horizontally. Wraps ``numpy.hsplit``. Cost: 0 FLOPs."""
-    return _np.hsplit(_to_base_ndarray(ary), indices_or_sections)
+    return _np.hsplit(_to_base_ndarray(ary), indices_or_sections)  # type: ignore[return-value]
 
 
 attach_docstring(hsplit, _np.hsplit, "free", "0 FLOPs")
 
 
-def vsplit(ary, indices_or_sections):
+def vsplit(
+    ary: ArrayLike,
+    indices_or_sections: int | Sequence[int],
+) -> list[FlopscopeArray]:
     """Split array vertically. Cost: numel(input)."""
     budget = require_budget()
     ary_arr = _np.asarray(ary)
@@ -431,21 +508,27 @@ def vsplit(ary, indices_or_sections):
         "vsplit", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)
     ):
         result = _np.vsplit(_to_base_ndarray(ary), indices_or_sections)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(vsplit, _np.vsplit, "free", "0 FLOPs")
 
 
-def squeeze(a, axis=None):
+def squeeze(
+    a: ArrayLike,
+    axis: int | tuple[int, ...] | None = None,
+) -> FlopscopeArray:
     """Remove length-1 axes. Wraps ``numpy.squeeze``. Cost: 0 FLOPs."""
-    return _np.squeeze(_to_base_ndarray(a), axis=axis)
+    return _np.squeeze(_to_base_ndarray(a), axis=axis)  # type: ignore[return-value]
 
 
 attach_docstring(squeeze, _np.squeeze, "free", "0 FLOPs")
 
 
-def expand_dims(a, axis):
+def expand_dims(
+    a: ArrayLike,
+    axis: int | tuple[int, ...],
+) -> FlopscopeArray:
     """Insert a new axis. Wraps ``numpy.expand_dims``. Cost: 0 FLOPs."""
     a_arr = _np.asarray(a)
     result = _np.expand_dims(_np.asarray(a), axis=axis)
@@ -454,37 +537,41 @@ def expand_dims(a, axis):
         ndim=a_arr.ndim,
         axis=axis,
     )
-    return wrap_with_symmetry(result, symmetry) if symmetry is not None else result
+    return wrap_with_symmetry(result, symmetry) if symmetry is not None else result  # type: ignore[return-value]
 
 
 attach_docstring(expand_dims, _np.expand_dims, "free", "0 FLOPs")
 
 
-def ravel(a, **kwargs):
+def ravel(a: ArrayLike, **kwargs: Any) -> FlopscopeArray:
     """Flatten array. Cost: numel(output)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
     cost = max(a_arr.size, 1)
     with budget.deduct("ravel", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)):
         result = _np.ravel(a_arr, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(ravel, _np.ravel, "free", "0 FLOPs")
 
 
-def copy(a, **kwargs):
+def copy(a: ArrayLike, **kwargs: Any) -> FlopscopeArray:
     """Return copy of array. Wraps ``numpy.copy``. Cost: 0 FLOPs."""
     result = _np.copy(_np.asarray(a), **kwargs)
     if isinstance(a, SymmetricTensor):
-        return wrap_with_symmetry(result, a.symmetry)
-    return result
+        return wrap_with_symmetry(result, a.symmetry)  # type: ignore[return-value]
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(copy, _np.copy, "free", "0 FLOPs")
 
 
-def where(condition, x=None, y=None):
+def where(
+    condition: ArrayLike,
+    x: ArrayLike | None = None,
+    y: ArrayLike | None = None,
+) -> FlopscopeArray | tuple[FlopscopeArray, ...]:
     """Return elements chosen from *x* or *y*. Cost: numel(input)."""
     budget = require_budget()
     cond_arr = _np.asarray(condition)
@@ -497,31 +584,35 @@ def where(condition, x=None, y=None):
         else:
             result = _np.where(
                 _to_base_ndarray(condition),
-                _to_base_ndarray(x),
-                _to_base_ndarray(y),
+                _to_base_ndarray(x),  # type: ignore[arg-type, call-overload]
+                _to_base_ndarray(y),  # type: ignore[arg-type, call-overload]
             )
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(where, _np.where, "free", "0 FLOPs")
 
 
-def tile(A, reps):
+def tile(A: ArrayLike, reps: int | Sequence[int]) -> FlopscopeArray:
     """Construct array by repeating. Cost: numel(output)."""
     budget = require_budget()
     a_arr = _np.asarray(A)
-    reps_tup = (reps,) if _np.ndim(reps) == 0 else tuple(reps)
+    reps_tup = (reps,) if _np.ndim(reps) == 0 else tuple(reps)  # type: ignore[arg-type, call-overload]
     # Output size = input size * product of reps
     cost = max(a_arr.size * int(_np.prod(reps_tup)), 1)
     with budget.deduct("tile", flop_cost=cost, subscripts=None, shapes=()):
         result = _np.tile(_to_base_ndarray(A), reps)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(tile, _np.tile, "free", "0 FLOPs")
 
 
-def repeat(a, repeats, axis=None):
+def repeat(
+    a: ArrayLike,
+    repeats: int | ArrayLike,
+    axis: int | None = None,
+) -> FlopscopeArray:
     """Repeat elements. Cost: numel(output)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
@@ -532,35 +623,42 @@ def repeat(a, repeats, axis=None):
     else:
         cost = max(int(reps.sum()), 1)
     with budget.deduct("repeat", flop_cost=cost, subscripts=None, shapes=()):
-        result = _np.repeat(_to_base_ndarray(a), _to_base_ndarray(repeats), axis=axis)
+        result = _np.repeat(_to_base_ndarray(a), _to_base_ndarray(repeats), axis=axis)  # type: ignore[arg-type, call-overload]
     return result
 
 
 attach_docstring(repeat, _np.repeat, "free", "0 FLOPs")
 
 
-def flip(m, axis=None):
+def flip(
+    m: ArrayLike,
+    axis: int | tuple[int, ...] | None = None,
+) -> FlopscopeArray:
     """Reverse order of elements. Wraps ``numpy.flip``. Cost: 0 FLOPs."""
-    return _np.flip(_to_base_ndarray(m), axis=axis)
+    return _np.flip(_to_base_ndarray(m), axis=axis)  # type: ignore[return-value]
 
 
 attach_docstring(flip, _np.flip, "free", "0 FLOPs")
 
 
-def roll(a, shift, axis=None):
+def roll(
+    a: ArrayLike,
+    shift: int | Sequence[int],
+    axis: int | Sequence[int] | None = None,
+) -> FlopscopeArray:
     """Roll array elements. Cost: numel(output)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
     cost = max(a_arr.size, 1)
     with budget.deduct("roll", flop_cost=cost, subscripts=None, shapes=()):
         result = _np.roll(_to_base_ndarray(a), shift, axis=axis)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(roll, _np.roll, "free", "0 FLOPs")
 
 
-def pad(array, pad_width, **kwargs):
+def pad(array: ArrayLike, pad_width: Any, **kwargs: Any) -> FlopscopeArray:
     """Pad an array. Cost: numel(output)."""
     budget = require_budget()
     # cost depends on result; duration is post-hoc
@@ -569,29 +667,34 @@ def pad(array, pad_width, **kwargs):
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct("pad", flop_cost=cost, subscripts=None, shapes=()):
         pass
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(pad, _np.pad, "free", "0 FLOPs")
 
 
-def triu(m, k=0):
+def triu(m: ArrayLike, k: int = 0) -> FlopscopeArray:
     """Upper triangle. Wraps ``numpy.triu``. Cost: 0 FLOPs."""
-    return _np.triu(_to_base_ndarray(m), k=k)
+    return _np.triu(_to_base_ndarray(m), k=k)  # type: ignore[return-value]
 
 
 attach_docstring(triu, _np.triu, "free", "0 FLOPs")
 
 
-def tril(m, k=0):
+def tril(m: ArrayLike, k: int = 0) -> FlopscopeArray:
     """Lower triangle. Wraps ``numpy.tril``. Cost: 0 FLOPs."""
-    return _np.tril(_to_base_ndarray(m), k=k)
+    return _np.tril(_to_base_ndarray(m), k=k)  # type: ignore[return-value]
 
 
 attach_docstring(tril, _np.tril, "free", "0 FLOPs")
 
 
-def diagonal(a, offset=0, axis1=0, axis2=1):
+def diagonal(
+    a: ArrayLike,
+    offset: int = 0,
+    axis1: int = 0,
+    axis2: int = 1,
+) -> FlopscopeArray:
     """Return diagonal. Cost: numel(output)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
@@ -608,13 +711,16 @@ def diagonal(a, offset=0, axis1=0, axis2=1):
         result = _np.diagonal(
             _to_base_ndarray(a), offset=offset, axis1=axis1, axis2=axis2
         )
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(diagonal, _np.diagonal, "free", "0 FLOPs")
 
 
-def broadcast_to(array, shape):
+def broadcast_to(
+    array: ArrayLike,
+    shape: int | Sequence[int],
+) -> FlopscopeArray:
     """Broadcast array to shape. Cost: numel(output)."""
     output_shape = (shape,) if isinstance(shape, int) else tuple(shape)
     input_array = _np.asarray(array)
@@ -627,13 +733,13 @@ def broadcast_to(array, shape):
         input_shape=input_array.shape,
         output_shape=output_shape,
     )
-    return wrap_with_symmetry(result, symmetry)
+    return wrap_with_symmetry(result, symmetry)  # type: ignore[return-value]
 
 
 attach_docstring(broadcast_to, _np.broadcast_to, "free", "0 FLOPs")
 
 
-def meshgrid(*xi, **kwargs):
+def meshgrid(*xi: ArrayLike, **kwargs: Any) -> tuple[FlopscopeArray, ...]:
     """Return coordinate matrices. Cost: numel(output)."""
     budget = require_budget()
     # Each output grid has shape = product of all input lengths; there are len(xi) grids
@@ -642,7 +748,7 @@ def meshgrid(*xi, **kwargs):
     cost = max(grid_size * len(sizes), 1)
     with budget.deduct("meshgrid", flop_cost=cost, subscripts=None, shapes=()):
         result = _np.meshgrid(*[_to_base_ndarray(x) for x in xi], **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(meshgrid, _np.meshgrid, "free", "0 FLOPs")
@@ -652,12 +758,23 @@ attach_docstring(meshgrid, _np.meshgrid, "free", "0 FLOPs")
 # ---------------------------------------------------------------------------
 
 
-def astype(x, dtype, /, *, copy=True, device=None):
+def astype(
+    x: ArrayLike,
+    dtype: DTypeLike,
+    /,
+    *,
+    copy: bool = True,
+    device: Any = None,
+) -> FlopscopeArray:
     """Cast array to *dtype*. Wraps ``np.astype(x, dtype)``. Cost: 0 FLOPs."""
-    return _np.astype(_to_base_ndarray(x), dtype, copy=copy, device=device)
+    return _np.astype(_to_base_ndarray(x), dtype, copy=copy, device=device)  # type: ignore[arg-type, call-overload]
 
 
-def asarray(a, dtype=None, **kwargs):
+def asarray(
+    a: ArrayLike,
+    dtype: DTypeLike | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Convert to array. Cost: numel(output)."""
     budget = require_budget()
     # Pre-compute cost; asarray on an already-array is a no-op
@@ -667,13 +784,13 @@ def asarray(a, dtype=None, **kwargs):
         "asarray", flop_cost=cost, subscripts=None, shapes=(_probe.shape,)
     ):
         result = _np.asarray(a, dtype=dtype, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(asarray, _np.asarray, "free", "0 FLOPs")
 
 
-def isnan(x, **kwargs):
+def isnan(x: ArrayLike, **kwargs: Any) -> FlopscopeArray:
     """Test element-wise for NaN. Cost: numel(input)."""
     budget = require_budget()
     x_arr = _np.asarray(x)
@@ -682,13 +799,13 @@ def isnan(x, **kwargs):
         # Strip flopscope subclasses so the raw NumPy ufunc does not
         # re-dispatch through __array_ufunc__ and recurse.
         result = _np.isnan(_to_base_ndarray(x), **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(isnan, _np.isnan, "free", "0 FLOPs")
 
 
-def isfinite(x, **kwargs):
+def isfinite(x: ArrayLike, **kwargs: Any) -> FlopscopeArray:
     """Test element-wise for finiteness. Cost: numel(input)."""
     budget = require_budget()
     x_arr = _np.asarray(x)
@@ -697,20 +814,20 @@ def isfinite(x, **kwargs):
         "isfinite", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
     ):
         result = _np.isfinite(_to_base_ndarray(x), **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(isfinite, _np.isfinite, "free", "0 FLOPs")
 
 
-def isinf(x, **kwargs):
+def isinf(x: ArrayLike, **kwargs: Any) -> FlopscopeArray:
     """Test element-wise for Inf. Cost: numel(input)."""
     budget = require_budget()
     x_arr = _np.asarray(x)
     cost = x_arr.size
     with budget.deduct("isinf", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)):
         result = _np.isinf(_to_base_ndarray(x), **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(isinf, _np.isinf, "free", "0 FLOPs")
@@ -720,7 +837,12 @@ attach_docstring(isinf, _np.isinf, "free", "0 FLOPs")
 # ---------------------------------------------------------------------------
 
 
-def append(arr, values, axis=None, **kwargs):
+def append(
+    arr: ArrayLike,
+    values: ArrayLike,
+    axis: int | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Append values. Cost: numel(appended values)."""
     budget = require_budget()
     values_arr = _np.asarray(values)
@@ -729,13 +851,13 @@ def append(arr, values, axis=None, **kwargs):
         result = _np.append(
             _to_base_ndarray(arr), _to_base_ndarray(values), axis=axis, **kwargs
         )
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(append, _np.append, "free", "0 FLOPs")
 
 
-def argwhere(a, *args, **kwargs):
+def argwhere(a: ArrayLike, *args: Any, **kwargs: Any) -> FlopscopeArray:
     """Find indices of non-zero elements. Cost: numel(input)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
@@ -744,13 +866,13 @@ def argwhere(a, *args, **kwargs):
         "argwhere", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
     ):
         result = _np.argwhere(_to_base_ndarray(a), *args, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(argwhere, _np.argwhere, "free", "0 FLOPs")
 
 
-def array_split(ary, *args, **kwargs):
+def array_split(ary: ArrayLike, *args: Any, **kwargs: Any) -> list[FlopscopeArray]:
     """Split array into sub-arrays. Cost: numel(input)."""
     budget = require_budget()
     ary_arr = _np.asarray(ary)
@@ -759,13 +881,13 @@ def array_split(ary, *args, **kwargs):
         "array_split", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)
     ):
         result = _np.array_split(_to_base_ndarray(ary), *args, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(array_split, _np.array_split, "free", "0 FLOPs")
 
 
-def asarray_chkfinite(a, *args, **kwargs):
+def asarray_chkfinite(a: ArrayLike, *args: Any, **kwargs: Any) -> FlopscopeArray:
     """Convert to array checking for NaN/Inf. Cost: numel(output)."""
     budget = require_budget()
     result = _np.asarray_chkfinite(_to_base_ndarray(a), *args, **kwargs)
@@ -780,31 +902,31 @@ def asarray_chkfinite(a, *args, **kwargs):
         "asarray_chkfinite", flop_cost=cost, subscripts=None, shapes=(result.shape,)
     ):
         pass  # numpy call already executed above
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(asarray_chkfinite, _np.asarray_chkfinite, "free", "0 FLOPs")
 
 
-def atleast_1d(*args, **kwargs):
+def atleast_1d(*args: ArrayLike, **kwargs: Any) -> FlopscopeArray | list[FlopscopeArray]:
     """Convert to 1-D or higher. Wraps ``numpy.atleast_1d``. Cost: 0 FLOPs."""
-    return _np.atleast_1d(*[_to_base_ndarray(a) for a in args], **kwargs)
+    return _np.atleast_1d(*[_to_base_ndarray(a) for a in args], **kwargs)  # type: ignore[return-value]
 
 
 attach_docstring(atleast_1d, _np.atleast_1d, "free", "0 FLOPs")
 
 
-def atleast_2d(*args, **kwargs):
+def atleast_2d(*args: ArrayLike, **kwargs: Any) -> FlopscopeArray | list[FlopscopeArray]:
     """Convert to 2-D or higher. Wraps ``numpy.atleast_2d``. Cost: 0 FLOPs."""
-    return _np.atleast_2d(*[_to_base_ndarray(a) for a in args], **kwargs)
+    return _np.atleast_2d(*[_to_base_ndarray(a) for a in args], **kwargs)  # type: ignore[return-value]
 
 
 attach_docstring(atleast_2d, _np.atleast_2d, "free", "0 FLOPs")
 
 
-def atleast_3d(*args, **kwargs):
+def atleast_3d(*args: ArrayLike, **kwargs: Any) -> FlopscopeArray | list[FlopscopeArray]:
     """Convert to 3-D or higher. Wraps ``numpy.atleast_3d``. Cost: 0 FLOPs."""
-    return _np.atleast_3d(*[_to_base_ndarray(a) for a in args], **kwargs)
+    return _np.atleast_3d(*[_to_base_ndarray(a) for a in args], **kwargs)  # type: ignore[return-value]
 
 
 attach_docstring(atleast_3d, _np.atleast_3d, "free", "0 FLOPs")
@@ -869,7 +991,7 @@ def bmat(*args, **kwargs):
 attach_docstring(bmat, _np.bmat, "free", "0 FLOPs")
 
 
-def broadcast_arrays(*args, **kwargs):
+def broadcast_arrays(*args: ArrayLike, **kwargs: Any) -> tuple[FlopscopeArray, ...]:
     """Broadcast any number of arrays. Cost: numel(output)."""
     arrays = tuple(_np.asarray(arg) for arg in args)
     budget = require_budget()
@@ -878,7 +1000,7 @@ def broadcast_arrays(*args, **kwargs):
     with budget.deduct("broadcast_arrays", flop_cost=cost, subscripts=None, shapes=()):
         pass  # numpy call already executed above
     if not result:
-        return result
+        return result  # type: ignore[return-value]
     output_shape = result[0].shape
     wrapped = []
     for original, array, broadcasted in zip(args, arrays, result, strict=True):
@@ -953,11 +1075,16 @@ def common_type(*args, **kwargs):
 attach_docstring(common_type, _np.common_type, "free", "0 FLOPs")
 
 
-def compress(condition, a, *args, **kwargs):
+def compress(
+    condition: ArrayLike,
+    a: ArrayLike,
+    *args: Any,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return selected slices along an axis. Cost: numel(output)."""
     budget = require_budget()
-    result = _np.compress(
-        _to_base_ndarray(condition), _to_base_ndarray(a), *args, **kwargs
+    result = _np.compress(  # type: ignore[arg-type, call-overload]
+        _to_base_ndarray(condition), _to_base_ndarray(a), *args, **kwargs  # type: ignore[arg-type, call-overload]
     )
     cost = (
         result.size
@@ -984,7 +1111,7 @@ def concat(*args, **kwargs):
         stripped_args = (_to_base_ndarray_tree(args[0]), *args[1:])
     else:
         stripped_args = tuple(_to_base_ndarray(a) for a in args)
-    result = _np.concat(*stripped_args, **kwargs)
+    result = _np.concat(*stripped_args, **kwargs)  # type: ignore[arg-type, call-overload]
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct("concat", flop_cost=cost, subscripts=None, shapes=()):
         pass  # numpy call already executed above
@@ -1007,7 +1134,7 @@ def copyto(dst, src, casting="same_kind", where=True):
         result = _np.copyto(
             _to_base_ndarray(dst),
             _to_base_ndarray(src),
-            casting=casting,
+            casting=casting,  # type: ignore[arg-type, call-overload]
             where=_to_base_ndarray(where) if where is not True else where,
         )
     return result
@@ -1016,7 +1143,12 @@ def copyto(dst, src, casting="same_kind", where=True):
 attach_docstring(copyto, _np.copyto, "free", "0 FLOPs")
 
 
-def delete(arr, obj, axis=None, **kwargs):
+def delete(
+    arr: ArrayLike,
+    obj: Any,
+    axis: int | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return new array with sub-arrays deleted. Cost: num elements removed."""
     budget = require_budget()
     arr_np = _np.asarray(arr)
@@ -1024,7 +1156,7 @@ def delete(arr, obj, axis=None, **kwargs):
     cost = max(arr_np.size - result.size, 0)  # num deleted
     with budget.deduct("delete", flop_cost=cost, subscripts=None, shapes=()):
         pass  # numpy call already executed above
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(delete, _np.delete, "free", "0 FLOPs")
@@ -1046,7 +1178,7 @@ def diag_indices_from(*args, **kwargs):
 attach_docstring(diag_indices_from, _np.diag_indices_from, "free", "0 FLOPs")
 
 
-def diagflat(v, k=0):
+def diagflat(v: ArrayLike, k: int = 0) -> FlopscopeArray:
     """Create diagonal array from flattened input. Cost: numel(output)."""
     budget = require_budget()
     v_arr = _np.asarray(v)
@@ -1060,14 +1192,14 @@ def diagflat(v, k=0):
         kind="diagflat", k=k, v_ndim=v_arr.ndim
     )
     if symmetry is not None:
-        return wrap_with_trusted_symmetry(result, symmetry)
-    return result
+        return wrap_with_trusted_symmetry(result, symmetry)  # type: ignore[return-value]
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(diagflat, _np.diagflat, "free", "0 FLOPs")
 
 
-def dsplit(ary, *args, **kwargs):
+def dsplit(ary: ArrayLike, *args: Any, **kwargs: Any) -> list[FlopscopeArray]:
     """Split array along third axis. Cost: numel(input)."""
     budget = require_budget()
     ary_arr = _np.asarray(ary)
@@ -1076,7 +1208,7 @@ def dsplit(ary, *args, **kwargs):
         "dsplit", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)
     ):
         result = _np.dsplit(_to_base_ndarray(ary), *args, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(dsplit, _np.dsplit, "free", "0 FLOPs")
@@ -1096,7 +1228,12 @@ def dstack(*args, **kwargs):
 attach_docstring(dstack, _np.dstack, "free", "0 FLOPs")
 
 
-def extract(condition, arr, *args, **kwargs):
+def extract(
+    condition: ArrayLike,
+    arr: ArrayLike,
+    *args: Any,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Return elements satisfying condition. Cost: numel(input)."""
     budget = require_budget()
     arr_np = _np.asarray(arr)
@@ -1107,13 +1244,18 @@ def extract(condition, arr, *args, **kwargs):
         result = _np.extract(
             _to_base_ndarray(condition), _to_base_ndarray(arr), *args, **kwargs
         )
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(extract, _np.extract, "free", "0 FLOPs")
 
 
-def fill_diagonal(a, val, wrap=False, **kwargs):
+def fill_diagonal(
+    a: ArrayLike,
+    val: Any,
+    wrap: bool = False,
+    **kwargs: Any,
+) -> None:
     """Fill main diagonal of array in-place. Cost: min(m,n)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
@@ -1123,14 +1265,14 @@ def fill_diagonal(a, val, wrap=False, **kwargs):
     ):
         # ``np.fill_diagonal`` mutates ``a`` in-place; ``_to_base_ndarray``
         # is zero-copy so the mutation propagates to the user's array.
-        result = _np.fill_diagonal(_to_base_ndarray(a), val, wrap=wrap, **kwargs)
+        result = _np.fill_diagonal(_to_base_ndarray(a), val, wrap=wrap, **kwargs)  # type: ignore[arg-type, call-overload]
     return result
 
 
 attach_docstring(fill_diagonal, _np.fill_diagonal, "free", "0 FLOPs")
 
 
-def flatnonzero(a, *args, **kwargs):
+def flatnonzero(a: ArrayLike, *args: Any, **kwargs: Any) -> FlopscopeArray:
     """Return indices of non-zero elements in flattened array. Cost: numel(input)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
@@ -1139,7 +1281,7 @@ def flatnonzero(a, *args, **kwargs):
         "flatnonzero", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
     ):
         result = _np.flatnonzero(_to_base_ndarray(a), *args, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(flatnonzero, _np.flatnonzero, "free", "0 FLOPs")
@@ -1254,7 +1396,7 @@ def fromstring(*args, **kwargs):
 attach_docstring(fromstring, _np.fromstring, "free", "0 FLOPs")
 
 
-def indices(*args, **kwargs):
+def indices(*args: Any, **kwargs: Any) -> FlopscopeArray:
     """Return array representing indices of a grid. Cost: numel(output)."""
     budget = require_budget()
     result = _np.indices(*args, **kwargs)
@@ -1267,7 +1409,13 @@ def indices(*args, **kwargs):
 attach_docstring(indices, _np.indices, "free", "0 FLOPs")
 
 
-def insert(arr, obj, values, axis=None, **kwargs):
+def insert(
+    arr: ArrayLike,
+    obj: Any,
+    values: ArrayLike,
+    axis: int | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Insert values along axis before given indices. Cost: numel(inserted values)."""
     budget = require_budget()
     values_arr = _np.asarray(values)
@@ -1276,7 +1424,7 @@ def insert(arr, obj, values, axis=None, **kwargs):
         result = _np.insert(
             _to_base_ndarray(arr), obj, _to_base_ndarray(values), axis=axis, **kwargs
         )
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(insert, _np.insert, "free", "0 FLOPs")
@@ -1300,7 +1448,7 @@ attach_docstring(isfortran, _np.isfortran, "free", "0 FLOPs")
 
 def isin(*args, **kwargs):
     """Test element-wise membership in a set. Wraps ``numpy.isin``. Cost: 0 FLOPs."""
-    return _np.isin(*[_to_base_ndarray(a) for a in args], **kwargs)
+    return _np.isin(*[_to_base_ndarray(a) for a in args], **kwargs)  # type: ignore[arg-type, call-overload]
 
 
 attach_docstring(isin, _np.isin, "free", "0 FLOPs")
@@ -1330,11 +1478,11 @@ def iterable(*args, **kwargs):
 attach_docstring(iterable, _np.iterable, "free", "0 FLOPs")
 
 
-def ix_(*args, **kwargs):
+def ix_(*args: ArrayLike, **kwargs: Any) -> tuple[FlopscopeArray, ...]:
     """Construct open mesh from multiple sequences. Cost: numel(output)."""
     budget = require_budget()
     stripped_args = _to_base_ndarray_tree(args)
-    result = _np.ix_(*stripped_args, **kwargs)
+    result = _np.ix_(*stripped_args, **kwargs)  # type: ignore[arg-type, call-overload]
     cost = sum(a.size for a in result)
     with budget.deduct("ix_", flop_cost=cost, subscripts=None, shapes=()):
         pass  # numpy call already executed above
@@ -1369,7 +1517,7 @@ attach_docstring(matrix_transpose, _np.matrix_transpose, "free", "0 FLOPs")
 def may_share_memory(*args, **kwargs):
     """Determine if two arrays might share memory. Wraps ``numpy.may_share_memory``. Cost: 0 FLOPs."""
     stripped_args = tuple(_to_base_ndarray(a) for a in args)
-    return _np.may_share_memory(*stripped_args, **kwargs)
+    return _np.may_share_memory(*stripped_args, **kwargs)  # type: ignore[arg-type, call-overload]
 
 
 attach_docstring(may_share_memory, _np.may_share_memory, "free", "0 FLOPs")
@@ -1399,7 +1547,7 @@ def ndim(*args, **kwargs):
 attach_docstring(ndim, _np.ndim, "free", "0 FLOPs")
 
 
-def nonzero(a, *args, **kwargs):
+def nonzero(a: ArrayLike, *args: Any, **kwargs: Any) -> tuple[FlopscopeArray, ...]:
     """Return indices of non-zero elements. Cost: numel(input)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
@@ -1407,17 +1555,17 @@ def nonzero(a, *args, **kwargs):
     with budget.deduct(
         "nonzero", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
     ):
-        result = _np.nonzero(_to_base_ndarray(a), *args, **kwargs)
-    return result
+        result = _np.nonzero(_to_base_ndarray(a), *args, **kwargs)  # type: ignore[arg-type, call-overload]
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(nonzero, _np.nonzero, "free", "0 FLOPs")
 
 
-def packbits(a, *args, **kwargs):
+def packbits(a: ArrayLike, *args: Any, **kwargs: Any) -> FlopscopeArray:
     """Pack binary-valued array into bits. Cost: numel(output)."""
     budget = require_budget()
-    result = _np.packbits(_to_base_ndarray(a), *args, **kwargs)
+    result = _np.packbits(_to_base_ndarray(a), *args, **kwargs)  # type: ignore[arg-type, call-overload]
     cost = (
         result.size
         if hasattr(result, "size")
@@ -1429,7 +1577,7 @@ def packbits(a, *args, **kwargs):
         "packbits", flop_cost=cost, subscripts=None, shapes=(result.shape,)
     ):
         pass  # numpy call already executed above
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(packbits, _np.packbits, "free", "0 FLOPs")
@@ -1444,7 +1592,13 @@ def permute_dims(*args, **kwargs):
 attach_docstring(permute_dims, _np.permute_dims, "free", "0 FLOPs")
 
 
-def place(arr, mask, vals, *args, **kwargs):
+def place(
+    arr: ArrayLike,
+    mask: ArrayLike,
+    vals: ArrayLike,
+    *args: Any,
+    **kwargs: Any,
+) -> None:
     """Change elements of array based on conditional. Cost: numel(input)."""
     budget = require_budget()
     arr_np = _np.asarray(arr)
@@ -1455,7 +1609,7 @@ def place(arr, mask, vals, *args, **kwargs):
         # ``np.place`` mutates ``arr`` in-place; ``_to_base_ndarray`` is
         # zero-copy so the mutation propagates to the user's array.
         result = _np.place(
-            _to_base_ndarray(arr),
+            _to_base_ndarray(arr),  # type: ignore[arg-type, call-overload]
             _to_base_ndarray(mask),
             _to_base_ndarray(vals),
             *args,
@@ -1475,7 +1629,13 @@ def promote_types(*args, **kwargs):
 attach_docstring(promote_types, _np.promote_types, "free", "0 FLOPs")
 
 
-def put(a, ind, v, *args, **kwargs):
+def put(
+    a: ArrayLike,
+    ind: ArrayLike,
+    v: ArrayLike,
+    *args: Any,
+    **kwargs: Any,
+) -> None:
     """Replace elements at given flat indices. Cost: numel(input)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
@@ -1485,8 +1645,8 @@ def put(a, ind, v, *args, **kwargs):
         # zero-copy view, so the mutation propagates to the user's
         # original FlopscopeArray buffer.
         result = _np.put(
-            _to_base_ndarray(a),
-            _to_base_ndarray(ind),
+            _to_base_ndarray(a),  # type: ignore[arg-type, call-overload]
+            _to_base_ndarray(ind),  # type: ignore[arg-type, call-overload]
             _to_base_ndarray(v),
             *args,
             **kwargs,
@@ -1497,7 +1657,14 @@ def put(a, ind, v, *args, **kwargs):
 attach_docstring(put, _np.put, "free", "0 FLOPs")
 
 
-def put_along_axis(arr, indices, values, axis, *args, **kwargs):
+def put_along_axis(
+    arr: ArrayLike,
+    indices: ArrayLike,
+    values: ArrayLike,
+    axis: int | None,
+    *args: Any,
+    **kwargs: Any,
+) -> None:
     """Put values into destination array along axis. Cost: numel(input)."""
     budget = require_budget()
     arr_np = _np.asarray(arr)
@@ -1508,8 +1675,8 @@ def put_along_axis(arr, indices, values, axis, *args, **kwargs):
         # ``np.put_along_axis`` mutates ``arr`` in-place; ``_to_base_ndarray``
         # is zero-copy so the mutation propagates to the user's array.
         result = _np.put_along_axis(
-            _to_base_ndarray(arr),
-            _to_base_ndarray(indices),
+            _to_base_ndarray(arr),  # type: ignore[arg-type, call-overload]
+            _to_base_ndarray(indices),  # type: ignore[arg-type, call-overload]
             _to_base_ndarray(values),
             axis,
             *args,
@@ -1521,7 +1688,13 @@ def put_along_axis(arr, indices, values, axis, *args, **kwargs):
 attach_docstring(put_along_axis, _np.put_along_axis, "free", "0 FLOPs")
 
 
-def putmask(a, mask, values, *args, **kwargs):
+def putmask(
+    a: ArrayLike,
+    mask: ArrayLike,
+    values: ArrayLike,
+    *args: Any,
+    **kwargs: Any,
+) -> None:
     """Change elements of array based on condition. Cost: numel(input)."""
     budget = require_budget()
     a_arr = _np.asarray(a)
@@ -1530,8 +1703,8 @@ def putmask(a, mask, values, *args, **kwargs):
         "putmask", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
     ):
         result = _np.putmask(
-            _to_base_ndarray(a),
-            _to_base_ndarray(mask),
+            _to_base_ndarray(a),  # type: ignore[arg-type, call-overload]
+            _to_base_ndarray(mask),  # type: ignore[arg-type, call-overload]
             _to_base_ndarray(values),
             *args,
             **kwargs,
@@ -1618,7 +1791,11 @@ def row_stack(*args, **kwargs):
 attach_docstring(row_stack, _np.row_stack, "free", "0 FLOPs")
 
 
-def select(condlist, choicelist, default=0):
+def select(
+    condlist: Sequence[ArrayLike],
+    choicelist: Sequence[ArrayLike],
+    default: Any = 0,
+) -> FlopscopeArray:
     """Return array drawn from elements depending on conditions. Cost: numel(input)."""
     budget = require_budget()
     # Cost based on the size of the choice arrays
@@ -1629,7 +1806,7 @@ def select(condlist, choicelist, default=0):
             _to_base_ndarray_tree(choicelist),
             default=default,
         )
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(select, _np.select, "free", "0 FLOPs")
@@ -1711,7 +1888,7 @@ def tril_indices_from(*args, **kwargs):
 attach_docstring(tril_indices_from, _np.tril_indices_from, "free", "0 FLOPs")
 
 
-def trim_zeros(filt, trim="fb", **kwargs):
+def trim_zeros(filt: ArrayLike, trim: str = "fb", **kwargs: Any) -> FlopscopeArray:
     """Trim leading and/or trailing zeros from 1-D array. Cost: num elements trimmed."""
     budget = require_budget()
     filt_arr = _np.asarray(filt)
@@ -1750,7 +1927,7 @@ def typename(*args, **kwargs):
 attach_docstring(typename, _np.typename, "free", "0 FLOPs")
 
 
-def unpackbits(a, *args, **kwargs):
+def unpackbits(a: ArrayLike, *args: Any, **kwargs: Any) -> FlopscopeArray:
     """Unpack elements of uint8 array into binary-valued bit array. Cost: numel(output)."""
     budget = require_budget()
     result = _np.unpackbits(_to_base_ndarray(a), *args, **kwargs)
@@ -1765,7 +1942,7 @@ def unpackbits(a, *args, **kwargs):
         "unpackbits", flop_cost=cost, subscripts=None, shapes=(result.shape,)
     ):
         pass  # numpy call already executed above
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(unpackbits, _np.unpackbits, "free", "0 FLOPs")
@@ -1781,7 +1958,7 @@ attach_docstring(unravel_index, _np.unravel_index, "free", "0 FLOPs")
 
 if hasattr(_np, "unstack"):
 
-    def unstack(x, *args, **kwargs):
+    def unstack(x: ArrayLike, *args: Any, **kwargs: Any) -> tuple[FlopscopeArray, ...]:
         """Split array into sequence of arrays along an axis. Cost: numel(input)."""
         budget = require_budget()
         x_arr = _np.asarray(x)
@@ -1790,13 +1967,13 @@ if hasattr(_np, "unstack"):
             "unstack", flop_cost=cost, subscripts=None, shapes=(x_arr.shape,)
         ):
             result = _np.unstack(_to_base_ndarray(x), *args, **kwargs)
-        return result
+        return result  # type: ignore[return-value]
 
     attach_docstring(unstack, _np.unstack, "free", "0 FLOPs")
 
 else:
 
-    def unstack(*args, **kwargs):
+    def unstack(*args: Any, **kwargs: Any) -> tuple[FlopscopeArray, ...]:  # type: ignore[misc]
         raise UnsupportedFunctionError("unstack", min_version="2.1")
 
 
