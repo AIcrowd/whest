@@ -22,6 +22,7 @@ class OpRecord(NamedTuple):
     namespace: str | None = None
     timestamp: float | None = None  # seconds since context __enter__
     duration: float | None = None  # wall-clock seconds of the numpy call
+    flopscope_overhead: float | None = None  # per-op flopscope dispatch time (preamble + deduct body + bookkeeping + postamble)
 
 
 # ---------------------------------------------------------------------------

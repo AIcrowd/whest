@@ -563,3 +563,19 @@ def test_budget_context_summary_dict_by_namespace_uses_exact_op_namespace():
     assert data["by_namespace"]["predict..raw.precompute"]["flops_used"] == 25
     assert data["by_namespace"]["predict..raw.precompute"]["calls"] == 1
     assert "flop_budget" not in data["by_namespace"]["predict..raw.precompute"]
+
+
+def test_oprecord_has_flopscope_overhead_field():
+    import flopscope
+
+    rec = flopscope.OpRecord(
+        op_name="add", subscripts=None, shapes=((3,),),
+        flop_cost=3, cumulative=3,
+    )
+    assert rec.flopscope_overhead is None
+
+    rec2 = flopscope.OpRecord(
+        op_name="add", subscripts=None, shapes=((3,),),
+        flop_cost=3, cumulative=3, flopscope_overhead=0.001,
+    )
+    assert rec2.flopscope_overhead == 0.001
