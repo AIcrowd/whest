@@ -1394,7 +1394,7 @@ average = _counted_reduction(_np.average, "average")
 _count_nonzero_counted = _counted_reduction(_np.count_nonzero, "count_nonzero")
 
 
-def count_nonzero(a, axis=None, *, keepdims=False):
+def count_nonzero(a: ArrayLike, axis: int | tuple[int, ...] | None = None, *, keepdims: bool = False) -> FlopscopeArray | int:
     """Counted version of ``numpy.count_nonzero``. Cost: numel(input) FLOPs.
 
     When ``axis is None`` (and not ``keepdims``) the result is always
@@ -1453,7 +1453,7 @@ if hasattr(_np, "ptp"):
     ptp = _counted_reduction(_np.ptp, "ptp")
 else:
 
-    def ptp(a, axis=None, **kwargs):
+    def ptp(a: ArrayLike, axis: int | None = None, **kwargs: Any) -> FlopscopeArray:
         """Peak-to-peak range. Cost = numel(input) FLOPs."""
         budget = require_budget()
         if not isinstance(a, _np.ndarray):
@@ -1464,7 +1464,7 @@ else:
             result = _np.max(stripped, axis=axis, **kwargs) - _np.min(
                 stripped, axis=axis, **kwargs
             )
-        return result
+        return result  # type: ignore[return-value]  # wrapped at fnp.ptp import time
 
     attach_docstring(ptp, _np.max, "counted_reduction", "numel(input) FLOPs")
 
@@ -1874,7 +1874,7 @@ attach_docstring(ediff1d, _np.ediff1d, "counted_custom", "numel(output) FLOPs")
 ediff1d.__signature__ = _inspect.signature(_np.ediff1d)
 
 
-def convolve(a, v, mode="full"):
+def convolve(a: ArrayLike, v: ArrayLike, mode: str = "full") -> FlopscopeArray:
     """Counted version of np.convolve."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -1888,14 +1888,14 @@ def convolve(a, v, mode="full"):
         subscripts=None,
         shapes=(a.shape, v.shape),
     ):
-        result = _np.convolve(_to_base_ndarray(a), _to_base_ndarray(v), mode=mode)
-    return result
+        result = _np.convolve(_to_base_ndarray(a), _to_base_ndarray(v), mode=mode)  # type: ignore[arg-type]
+    return result  # type: ignore[return-value]  # wrapped at fnp.convolve import time
 
 
 attach_docstring(convolve, _np.convolve, "counted_custom", "n * m FLOPs")
 
 
-def correlate(a, v, mode="valid"):
+def correlate(a: ArrayLike, v: ArrayLike, mode: str = "valid") -> FlopscopeArray:
     """Counted version of np.correlate."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -1909,8 +1909,8 @@ def correlate(a, v, mode="valid"):
         subscripts=None,
         shapes=(a.shape, v.shape),
     ):
-        result = _np.correlate(_to_base_ndarray(a), _to_base_ndarray(v), mode=mode)
-    return result
+        result = _np.correlate(_to_base_ndarray(a), _to_base_ndarray(v), mode=mode)  # type: ignore[arg-type]
+    return result  # type: ignore[return-value]  # wrapped at fnp.correlate import time
 
 
 attach_docstring(correlate, _np.correlate, "counted_custom", "n * m FLOPs")
@@ -1935,7 +1935,7 @@ def _cov_cost(x, y=None):
     return _builtins.max(2 * f * f * s, 1)
 
 
-def corrcoef(x, y=None, **kwargs):
+def corrcoef(x: ArrayLike, y: ArrayLike | None = None, **kwargs: Any) -> FlopscopeArray:
     """Counted version of np.corrcoef. Cost: 2 * f^2 * s FLOPs."""
     budget = require_budget()
     if not isinstance(x, _np.ndarray):
@@ -1947,14 +1947,14 @@ def corrcoef(x, y=None, **kwargs):
             y=_to_base_ndarray(y) if y is not None else None,
             **kwargs,
         )
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.corrcoef import time
 
 
 attach_docstring(corrcoef, _np.corrcoef, "counted_custom", r"$2 f^2 s$ FLOPs")
 corrcoef.__signature__ = _inspect.signature(_np.corrcoef)
 
 
-def cov(m, y=None, **kwargs):
+def cov(m: ArrayLike, y: ArrayLike | None = None, **kwargs: Any) -> FlopscopeArray:
     """Counted version of np.cov. Cost: 2 * f^2 * s FLOPs."""
     budget = require_budget()
     if not isinstance(m, _np.ndarray):
@@ -1966,7 +1966,7 @@ def cov(m, y=None, **kwargs):
             y=_to_base_ndarray(y) if y is not None else None,
             **kwargs,
         )
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.cov import time
 
 
 attach_docstring(cov, _np.cov, "counted_custom", r"$2 f^2 s$ FLOPs")
