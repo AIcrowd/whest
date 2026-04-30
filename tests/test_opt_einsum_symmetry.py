@@ -520,7 +520,10 @@ class TestAllAlgorithmsOracleAware:
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             _, info_dense = contract_path(*args, shapes=True, optimize=algo)  # pyright: ignore[reportCallIssue, reportArgumentType]
             _, info_sym = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
-                *args, shapes=True, optimize=algo, symmetry_oracle=oracle  # pyright: ignore[reportArgumentType]
+                *args,
+                shapes=True,
+                optimize=algo,
+                symmetry_oracle=oracle,  # pyright: ignore[reportArgumentType]
             )
             assert info_sym.optimized_cost <= info_dense.optimized_cost, (
                 f"{algo}: sym={info_sym.optimized_cost} > dense={info_dense.optimized_cost}"
@@ -540,7 +543,10 @@ class TestExhaustiveSymmetryValidation:
         costs = {}
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             _, info = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
-                *args, shapes=True, optimize=algo, symmetry_oracle=oracle  # pyright: ignore[reportArgumentType]
+                *args,
+                shapes=True,
+                optimize=algo,
+                symmetry_oracle=oracle,  # pyright: ignore[reportArgumentType]
             )
             costs[algo] = info.optimized_cost
         # Optimal should find the best; all others should be >= optimal
@@ -557,7 +563,10 @@ class TestExhaustiveSymmetryValidation:
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             _, info_dense = contract_path(*args, shapes=True, optimize=algo)  # pyright: ignore[reportCallIssue, reportArgumentType]
             _, info_sym = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
-                *args, shapes=True, optimize=algo, symmetry_oracle=oracle  # pyright: ignore[reportArgumentType]
+                *args,
+                shapes=True,
+                optimize=algo,
+                symmetry_oracle=oracle,  # pyright: ignore[reportArgumentType]
             )
             assert info_sym.optimized_cost <= info_dense.optimized_cost, (
                 f"{algo}: sym={info_sym.optimized_cost} > dense={info_dense.optimized_cost}"
@@ -571,7 +580,10 @@ class TestExhaustiveSymmetryValidation:
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
             path_before, info_before = contract_path(*args, shapes=True, optimize=algo)  # pyright: ignore[reportCallIssue, reportArgumentType]
             path_after, info_after = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
-                *args, shapes=True, optimize=algo, symmetry_oracle=None  # pyright: ignore[reportArgumentType]
+                *args,
+                shapes=True,
+                optimize=algo,
+                symmetry_oracle=None,  # pyright: ignore[reportArgumentType]
             )
             assert list(path_before) == list(path_after), f"{algo} path changed"
 

@@ -418,7 +418,9 @@ class TestOldSymIsSubsetOfNewSym:
         # flopscope._einsum until Commit 2). Skip gracefully if it has
         # already been removed.
         try:
-            from flopscope._einsum import _detect_induced_output_symmetry  # pyright: ignore[reportAttributeAccessIssue]
+            from flopscope._einsum import (
+                _detect_induced_output_symmetry,  # pyright: ignore[reportAttributeAccessIssue]
+            )
         except ImportError:
             pytest.skip("old detector already removed")
 

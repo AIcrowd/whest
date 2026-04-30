@@ -193,7 +193,8 @@ def remap_group_axes(
         remapped_axes.append(axis_map[axis])
     _normalize_axis_tuple(remapped_axes, what="remapped axes")
     return SymmetryGroup.from_generators(
-        group.generator_literals, axes=tuple(remapped_axes)  # type: ignore[arg-type]
+        group.generator_literals,
+        axes=tuple(remapped_axes),  # type: ignore[arg-type]
     )
 
 
