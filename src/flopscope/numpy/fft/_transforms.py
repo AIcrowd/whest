@@ -8,11 +8,14 @@ Source: Cooley & Tukey (1965); Van Loan, "Computational Frameworks for the FFT" 
 from __future__ import annotations
 
 import math
+from collections.abc import Sequence
+from typing import Any
 
 import numpy as _np
+from numpy.typing import ArrayLike
 
 from flopscope._docstrings import attach_docstring
-from flopscope._ndarray import _to_base_ndarray
+from flopscope._ndarray import FlopscopeArray, _to_base_ndarray
 from flopscope._validation import require_budget
 
 
@@ -164,7 +167,13 @@ def _batch_count_nd(a: _np.ndarray, axes: tuple[int, ...] | None) -> int:
 
 
 # 1-D transforms
-def fft(a, n=None, axis=-1, norm=None, out=None):
+def fft(
+    a: ArrayLike,
+    n: int | None = None,
+    axis: int = -1,
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -176,10 +185,10 @@ def fft(a, n=None, axis=-1, norm=None, out=None):
             _to_base_ndarray(a),
             n=n,
             axis=axis,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -187,7 +196,13 @@ attach_docstring(
 )
 
 
-def ifft(a, n=None, axis=-1, norm=None, out=None):
+def ifft(
+    a: ArrayLike,
+    n: int | None = None,
+    axis: int = -1,
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -199,10 +214,10 @@ def ifft(a, n=None, axis=-1, norm=None, out=None):
             _to_base_ndarray(a),
             n=n,
             axis=axis,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -210,7 +225,13 @@ attach_docstring(
 )
 
 
-def rfft(a, n=None, axis=-1, norm=None, out=None):
+def rfft(
+    a: ArrayLike,
+    n: int | None = None,
+    axis: int = -1,
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -222,10 +243,10 @@ def rfft(a, n=None, axis=-1, norm=None, out=None):
             _to_base_ndarray(a),
             n=n,
             axis=axis,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -233,7 +254,13 @@ attach_docstring(
 )
 
 
-def irfft(a, n=None, axis=-1, norm=None, out=None):
+def irfft(
+    a: ArrayLike,
+    n: int | None = None,
+    axis: int = -1,
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -245,10 +272,10 @@ def irfft(a, n=None, axis=-1, norm=None, out=None):
             _to_base_ndarray(a),
             n=n,
             axis=axis,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -257,7 +284,13 @@ attach_docstring(
 
 
 # 2-D transforms
-def fft2(a, s=None, axes=(-2, -1), norm=None, out=None):
+def fft2(
+    a: ArrayLike,
+    s: Sequence[int] | None = None,
+    axes: Sequence[int] = (-2, -1),
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -267,16 +300,16 @@ def fft2(a, s=None, axes=(-2, -1), norm=None, out=None):
         s_for_cost = tuple(
             a.shape[axes[i]] if si is None else si for i, si in enumerate(s)
         )
-    cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)
+    cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.fft2", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
         result = _np.fft.fft2(
             _to_base_ndarray(a),
             s=s,
             axes=axes,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -287,7 +320,13 @@ attach_docstring(
 )
 
 
-def ifft2(a, s=None, axes=(-2, -1), norm=None, out=None):
+def ifft2(
+    a: ArrayLike,
+    s: Sequence[int] | None = None,
+    axes: Sequence[int] = (-2, -1),
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -297,16 +336,16 @@ def ifft2(a, s=None, axes=(-2, -1), norm=None, out=None):
         s_for_cost = tuple(
             a.shape[axes[i]] if si is None else si for i, si in enumerate(s)
         )
-    cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)
+    cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.ifft2", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
         result = _np.fft.ifft2(
             _to_base_ndarray(a),
             s=s,
             axes=axes,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -317,7 +356,13 @@ attach_docstring(
 )
 
 
-def rfft2(a, s=None, axes=(-2, -1), norm=None, out=None):
+def rfft2(
+    a: ArrayLike,
+    s: Sequence[int] | None = None,
+    axes: Sequence[int] = (-2, -1),
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -327,16 +372,16 @@ def rfft2(a, s=None, axes=(-2, -1), norm=None, out=None):
         s_for_cost = tuple(
             a.shape[axes[i]] if si is None else si for i, si in enumerate(s)
         )
-    cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)
+    cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.rfft2", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
         result = _np.fft.rfft2(
             _to_base_ndarray(a),
             s=s,
             axes=axes,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -347,7 +392,13 @@ attach_docstring(
 )
 
 
-def irfft2(a, s=None, axes=(-2, -1), norm=None, out=None):
+def irfft2(
+    a: ArrayLike,
+    s: Sequence[int] | None = None,
+    axes: Sequence[int] = (-2, -1),
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -360,7 +411,7 @@ def irfft2(a, s=None, axes=(-2, -1), norm=None, out=None):
             else si
             for i, si in enumerate(s)
         )
-    cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)
+    cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct(
         "fft.irfft2", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
@@ -368,10 +419,10 @@ def irfft2(a, s=None, axes=(-2, -1), norm=None, out=None):
             _to_base_ndarray(a),
             s=s,
             axes=axes,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -383,7 +434,13 @@ attach_docstring(
 
 
 # N-D transforms
-def fftn(a, s=None, axes=None, norm=None, out=None):
+def fftn(
+    a: ArrayLike,
+    s: Sequence[int] | None = None,
+    axes: Sequence[int] | None = None,
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -394,16 +451,16 @@ def fftn(a, s=None, axes=None, norm=None, out=None):
         s_for_cost = tuple(
             a.shape[eff_axes[i]] if si is None else si for i, si in enumerate(s)
         )
-    cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)
+    cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.fftn", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
         result = _np.fft.fftn(
             _to_base_ndarray(a),
             s=s,
             axes=axes,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -414,7 +471,13 @@ attach_docstring(
 )
 
 
-def ifftn(a, s=None, axes=None, norm=None, out=None):
+def ifftn(
+    a: ArrayLike,
+    s: Sequence[int] | None = None,
+    axes: Sequence[int] | None = None,
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -425,16 +488,16 @@ def ifftn(a, s=None, axes=None, norm=None, out=None):
         s_for_cost = tuple(
             a.shape[eff_axes[i]] if si is None else si for i, si in enumerate(s)
         )
-    cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)
+    cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.ifftn", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
         result = _np.fft.ifftn(
             _to_base_ndarray(a),
             s=s,
             axes=axes,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -445,7 +508,13 @@ attach_docstring(
 )
 
 
-def rfftn(a, s=None, axes=None, norm=None, out=None):
+def rfftn(
+    a: ArrayLike,
+    s: Sequence[int] | None = None,
+    axes: Sequence[int] | None = None,
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -456,16 +525,16 @@ def rfftn(a, s=None, axes=None, norm=None, out=None):
         s_for_cost = tuple(
             a.shape[eff_axes[i]] if si is None else si for i, si in enumerate(s)
         )
-    cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)
+    cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.rfftn", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
         result = _np.fft.rfftn(
             _to_base_ndarray(a),
             s=s,
             axes=axes,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -476,7 +545,13 @@ attach_docstring(
 )
 
 
-def irfftn(a, s=None, axes=None, norm=None, out=None):
+def irfftn(
+    a: ArrayLike,
+    s: Sequence[int] | None = None,
+    axes: Sequence[int] | None = None,
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -499,7 +574,7 @@ def irfftn(a, s=None, axes=None, norm=None, out=None):
             else si
             for i, si in enumerate(s)
         )
-    cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)
+    cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct(
         "fft.irfftn", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
@@ -507,10 +582,10 @@ def irfftn(a, s=None, axes=None, norm=None, out=None):
             _to_base_ndarray(a),
             s=s,
             axes=axes,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -522,7 +597,13 @@ attach_docstring(
 
 
 # Hermitian transforms
-def hfft(a, n=None, axis=-1, norm=None, out=None):
+def hfft(
+    a: ArrayLike,
+    n: int | None = None,
+    axis: int = -1,
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -534,10 +615,10 @@ def hfft(a, n=None, axis=-1, norm=None, out=None):
             _to_base_ndarray(a),
             n=n,
             axis=axis,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -548,7 +629,13 @@ attach_docstring(
 )
 
 
-def ihfft(a, n=None, axis=-1, norm=None, out=None):
+def ihfft(
+    a: ArrayLike,
+    n: int | None = None,
+    axis: int = -1,
+    norm: str | None = None,
+    out: ArrayLike | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
         a = _np.asarray(a)
@@ -560,10 +647,10 @@ def ihfft(a, n=None, axis=-1, norm=None, out=None):
             _to_base_ndarray(a),
             n=n,
             axis=axis,
-            norm=norm,
-            out=_to_base_ndarray(out) if out is not None else None,
+            norm=norm,  # type: ignore[reportArgumentType]
+            out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[reportArgumentType]
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
