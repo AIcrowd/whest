@@ -14,6 +14,7 @@ dev = [
     "pytest>=7.0",
     "pytest-cov",
     "psutil>=5.9",
+    "pyright>=1.1.408,<1.2.0",
     "rich>=13.0",
     "ruff>=0.4",
     "scipy>=1.10",
@@ -49,6 +50,11 @@ exclude_lines = [
     "pragma: no cover",
     "if TYPE_CHECKING:",
 ]
+
+[tool.pyright]
+pythonVersion = "3.10"
+typeCheckingMode = "standard"
+include = ["src", "tests"]
 
 [tool.ruff]
 line-length = 88
