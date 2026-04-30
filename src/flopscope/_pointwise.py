@@ -1005,7 +1005,7 @@ if hasattr(_np, "bitwise_count"):
     bitwise_count = _counted_unary(_np.bitwise_count, "bitwise_count")
 else:
 
-    def bitwise_count(*args, **kwargs):
+    def bitwise_count(*args: Any, **kwargs: Any) -> FlopscopeArray:
         raise UnsupportedFunctionError("bitwise_count", min_version="2.1")
 
 
@@ -1196,7 +1196,7 @@ true_divide = _counted_binary(_np.true_divide, "true_divide")
 
 if hasattr(_np, "vecdot"):
 
-    def vecdot(a, b, **kwargs):
+    def vecdot(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:
         """Counted version of np.vecdot.
 
         Vector dot product along last axis. Each output element is the dot
@@ -1230,17 +1230,17 @@ if hasattr(_np, "vecdot"):
                 out=out_stripped,
                 **kwargs,
             )
-        return out if out is not None else result
+        return out if out is not None else result  # type: ignore[return-value]
 
 else:
 
-    def vecdot(*args, **kwargs):
+    def vecdot(*args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
         raise UnsupportedFunctionError("vecdot", min_version="2.1")
 
 
 if hasattr(_np, "matvec"):
 
-    def matvec(a, b, **kwargs):
+    def matvec(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:
         """Counted version of np.matvec.
 
         Matrix-vector product. A is (..., m, n), v is (..., n), result is (..., m).
@@ -1270,17 +1270,17 @@ if hasattr(_np, "matvec"):
                 out=out_stripped,
                 **kwargs,
             )
-        return out if out is not None else result
+        return out if out is not None else result  # type: ignore[return-value]
 
 else:
 
-    def matvec(*args, **kwargs):
+    def matvec(*args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
         raise UnsupportedFunctionError("matvec", min_version="2.2")
 
 
 if hasattr(_np, "vecmat"):
 
-    def vecmat(a, b, **kwargs):
+    def vecmat(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:
         """Counted version of np.vecmat.
 
         Vector-matrix product. v is (..., n), A is (..., n, m), result is (..., m).
@@ -1310,11 +1310,11 @@ if hasattr(_np, "vecmat"):
                 out=out_stripped,
                 **kwargs,
             )
-        return out if out is not None else result
+        return out if out is not None else result  # type: ignore[return-value]
 
 else:
 
-    def vecmat(*args, **kwargs):
+    def vecmat(*args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
         raise UnsupportedFunctionError("vecmat", min_version="2.2")
 
 
@@ -1418,7 +1418,7 @@ if hasattr(_np, "cumulative_prod"):
     cumulative_prod = _counted_reduction(_np.cumulative_prod, "cumulative_prod")
 else:
 
-    def cumulative_prod(*args, **kwargs):
+    def cumulative_prod(*args: Any, **kwargs: Any) -> FlopscopeArray:
         raise UnsupportedFunctionError("cumulative_prod", min_version="2.1")
 
 
@@ -1426,7 +1426,7 @@ if hasattr(_np, "cumulative_sum"):
     cumulative_sum = _counted_reduction(_np.cumulative_sum, "cumulative_sum")
 else:
 
-    def cumulative_sum(*args, **kwargs):
+    def cumulative_sum(*args: Any, **kwargs: Any) -> FlopscopeArray:
         raise UnsupportedFunctionError("cumulative_sum", min_version="2.1")
 
 
