@@ -70,7 +70,7 @@ def allclose(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> bool:
 
 
 attach_docstring(allclose, _np.allclose, "counted_custom", "numel(a) FLOPs")
-allclose.__signature__ = _inspect.signature(_np.allclose)
+setattr(allclose, "__signature__", _inspect.signature(_np.allclose))
 
 
 def array_equal(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> bool:
@@ -87,7 +87,7 @@ def array_equal(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> bool:
 
 
 attach_docstring(array_equal, _np.array_equal, "counted_custom", "numel(a) FLOPs")
-array_equal.__signature__ = _inspect.signature(_np.array_equal)
+setattr(array_equal, "__signature__", _inspect.signature(_np.array_equal))
 
 
 def array_equiv(a: ArrayLike, b: ArrayLike) -> bool:
@@ -111,7 +111,7 @@ def array_equiv(a: ArrayLike, b: ArrayLike) -> bool:
 
 
 attach_docstring(array_equiv, _np.array_equiv, "counted_custom", "numel(a) FLOPs")
-array_equiv.__signature__ = _inspect.signature(_np.array_equiv)
+setattr(array_equiv, "__signature__", _inspect.signature(_np.array_equiv))
 
 
 # ---------------------------------------------------------------------------
@@ -145,7 +145,7 @@ attach_docstring(
     "counted_custom",
     "n * ceil(log2(bins)) FLOPs when bins is int; n FLOPs otherwise",
 )
-histogram.__signature__ = _inspect.signature(_np.histogram)
+setattr(histogram, "__signature__", _inspect.signature(_np.histogram))
 
 
 def histogram2d(
@@ -195,7 +195,7 @@ attach_docstring(
     "counted_custom",
     "n * (ceil(log2(bx)) + ceil(log2(by))) FLOPs when bins is int pair; n FLOPs otherwise",
 )
-histogram2d.__signature__ = _inspect.signature(_np.histogram2d)
+setattr(histogram2d, "__signature__", _inspect.signature(_np.histogram2d))
 
 
 def histogramdd(
@@ -242,7 +242,7 @@ attach_docstring(
     "counted_custom",
     "n * d * ceil(log2(bins)) FLOPs when bins is int; n FLOPs otherwise",
 )
-histogramdd.__signature__ = _inspect.signature(_np.histogramdd)
+setattr(histogramdd, "__signature__", _inspect.signature(_np.histogramdd))
 
 
 def histogram_bin_edges(
@@ -263,7 +263,7 @@ def histogram_bin_edges(
 attach_docstring(
     histogram_bin_edges, _np.histogram_bin_edges, "counted_custom", "numel(a) FLOPs"
 )
-histogram_bin_edges.__signature__ = _inspect.signature(_np.histogram_bin_edges)
+setattr(histogram_bin_edges, "__signature__", _inspect.signature(_np.histogram_bin_edges))
 
 
 def bincount(x: ArrayLike, **kwargs: Any) -> FlopscopeArray:
@@ -277,7 +277,7 @@ def bincount(x: ArrayLike, **kwargs: Any) -> FlopscopeArray:
 
 attach_docstring(bincount, _np.bincount, "counted_custom", "numel(x) FLOPs")
 try:
-    bincount.__signature__ = _inspect.signature(_np.bincount)
+    setattr(bincount, "__signature__", _inspect.signature(_np.bincount))
 except (ValueError, TypeError):
     pass
 
@@ -301,7 +301,7 @@ def logspace(
 
 
 attach_docstring(logspace, _np.logspace, "counted_custom", "num FLOPs")
-logspace.__signature__ = _inspect.signature(_np.logspace)
+setattr(logspace, "__signature__", _inspect.signature(_np.logspace))
 
 
 def geomspace(
@@ -318,7 +318,7 @@ def geomspace(
 
 
 attach_docstring(geomspace, _np.geomspace, "counted_custom", "num FLOPs")
-geomspace.__signature__ = _inspect.signature(_np.geomspace)
+setattr(geomspace, "__signature__", _inspect.signature(_np.geomspace))
 
 
 def vander(
@@ -338,7 +338,7 @@ def vander(
 
 
 attach_docstring(vander, _np.vander, "counted_custom", "len(x) * (N-1) FLOPs")
-vander.__signature__ = _inspect.signature(_np.vander)
+setattr(vander, "__signature__", _inspect.signature(_np.vander))
 
 # ---------------------------------------------------------------------------
 # Apply & piecewise (formerly blacklisted)

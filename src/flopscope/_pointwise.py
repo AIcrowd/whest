@@ -362,7 +362,7 @@ def _counted_unary(np_func, op_name: str):
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_unary", "numel(output) FLOPs")
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        setattr(wrapper, "__signature__", _inspect.signature(np_func))
     except (ValueError, TypeError):
         pass
     return wrapper
@@ -402,7 +402,7 @@ def _counted_unary_multi(np_func, op_name: str):
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_unary", "numel(input) FLOPs")
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        setattr(wrapper, "__signature__", _inspect.signature(np_func))
     except (ValueError, TypeError):
         pass
     return wrapper
@@ -477,7 +477,7 @@ def _counted_binary(np_func, op_name: str):
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_binary", "numel(output) FLOPs")
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        setattr(wrapper, "__signature__", _inspect.signature(np_func))
     except (ValueError, TypeError):
         pass
     return wrapper
@@ -561,7 +561,7 @@ def _counted_binary_multi(np_func, op_name: str):
     wrapper.__qualname__ = op_name
     attach_docstring(wrapper, np_func, "counted_binary", "numel(output) FLOPs")
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        setattr(wrapper, "__signature__", _inspect.signature(np_func))
     except (ValueError, TypeError):
         pass
     return wrapper
@@ -946,7 +946,7 @@ def _counted_reduction(
         cost_desc += " + numel(output)"
     attach_docstring(wrapper, np_func, "counted_reduction", cost_desc)
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        setattr(wrapper, "__signature__", _inspect.signature(np_func))
     except (ValueError, TypeError):
         pass
     return wrapper
@@ -979,7 +979,7 @@ absolute = _counted_unary(_np.absolute, "absolute")
 acos = _counted_unary(_np.acos, "acos")
 acosh = _counted_unary(_np.acosh, "acosh")
 angle = _counted_unary(_np.angle, "angle")
-angle.__signature__ = _inspect.signature(_np.angle)
+setattr(angle, "__signature__", _inspect.signature(_np.angle))
 arccos = _counted_unary(_np.arccos, "arccos")
 arccosh = _counted_unary(_np.arccosh, "arccosh")
 arcsin = _counted_unary(_np.arcsin, "arcsin")
@@ -1043,31 +1043,31 @@ exp2 = _counted_unary(_np.exp2, "exp2")
 expm1 = _counted_unary(_np.expm1, "expm1")
 fabs = _counted_unary(_np.fabs, "fabs")
 fix = _counted_unary(_np.fix, "fix")
-fix.__signature__ = _inspect.signature(_np.fix)
+setattr(fix, "__signature__", _inspect.signature(_np.fix))
 i0 = _counted_unary(_np.i0, "i0")
 imag = _counted_unary(_np.imag, "imag")
-imag.__signature__ = _inspect.signature(_np.imag)
+setattr(imag, "__signature__", _inspect.signature(_np.imag))
 invert = _counted_unary(_np.invert, "invert")
 iscomplex = _counted_unary(_np.iscomplex, "iscomplex")
 iscomplexobj = _counted_unary(_np.iscomplexobj, "iscomplexobj")
 isnat = _counted_unary(_np.isnat, "isnat")
 isneginf = _counted_unary(_np.isneginf, "isneginf")
-isneginf.__signature__ = _inspect.signature(_np.isneginf)
+setattr(isneginf, "__signature__", _inspect.signature(_np.isneginf))
 isposinf = _counted_unary(_np.isposinf, "isposinf")
-isposinf.__signature__ = _inspect.signature(_np.isposinf)
+setattr(isposinf, "__signature__", _inspect.signature(_np.isposinf))
 isreal = _counted_unary(_np.isreal, "isreal")
 isrealobj = _counted_unary(_np.isrealobj, "isrealobj")
 log1p = _counted_unary(_np.log1p, "log1p")
 logical_not = _counted_unary(_np.logical_not, "logical_not")
 nan_to_num = _counted_unary(_np.nan_to_num, "nan_to_num")
-nan_to_num.__signature__ = _inspect.signature(_np.nan_to_num)
+setattr(nan_to_num, "__signature__", _inspect.signature(_np.nan_to_num))
 positive = _counted_unary(_np.positive, "positive")
 rad2deg = _counted_unary(_np.rad2deg, "rad2deg")
 radians = _counted_unary(_np.radians, "radians")
 real = _counted_unary(_np.real, "real")
-real.__signature__ = _inspect.signature(_np.real)
+setattr(real, "__signature__", _inspect.signature(_np.real))
 real_if_close = _counted_unary(_np.real_if_close, "real_if_close")
-real_if_close.__signature__ = _inspect.signature(_np.real_if_close)
+setattr(real_if_close, "__signature__", _inspect.signature(_np.real_if_close))
 reciprocal = _counted_unary(_np.reciprocal, "reciprocal")
 rint = _counted_unary(_np.rint, "rint")
 
@@ -1161,7 +1161,7 @@ def isclose(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray | bool:
 
 
 attach_docstring(isclose, _np.isclose, "counted_unary", "numel(output) FLOPs")
-isclose.__signature__ = _inspect.signature(_np.isclose)
+setattr(isclose, "__signature__", _inspect.signature(_np.isclose))
 
 
 # ---------------------------------------------------------------------------
@@ -1389,7 +1389,7 @@ def clip(
 
 
 attach_docstring(clip, _np.clip, "counted_custom", "numel(input) FLOPs")
-clip.__signature__ = _inspect.signature(_np.clip)
+setattr(clip, "__signature__", _inspect.signature(_np.clip))
 
 
 # ---------------------------------------------------------------------------
@@ -1823,7 +1823,7 @@ def cross(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:
 
 
 attach_docstring(cross, _np.cross, "counted_custom", "output_size * 3 FLOPs")
-cross.__signature__ = _inspect.signature(_np.cross)
+setattr(cross, "__signature__", _inspect.signature(_np.cross))
 
 
 def diff(a: ArrayLike, n: int = 1, axis: int = -1, **kwargs: Any) -> FlopscopeArray:
@@ -1848,7 +1848,7 @@ def diff(a: ArrayLike, n: int = 1, axis: int = -1, **kwargs: Any) -> FlopscopeAr
 
 
 attach_docstring(diff, _np.diff, "counted_custom", "numel(output) FLOPs")
-diff.__signature__ = _inspect.signature(_np.diff)
+setattr(diff, "__signature__", _inspect.signature(_np.diff))
 
 
 def gradient(
@@ -1870,7 +1870,7 @@ def gradient(
 
 
 attach_docstring(gradient, _np.gradient, "counted_custom", "numel(input) FLOPs")
-gradient.__signature__ = _inspect.signature(_np.gradient)
+setattr(gradient, "__signature__", _inspect.signature(_np.gradient))
 
 
 def ediff1d(ary: ArrayLike, **kwargs: Any) -> FlopscopeArray:
@@ -1903,7 +1903,7 @@ def ediff1d(ary: ArrayLike, **kwargs: Any) -> FlopscopeArray:
 
 
 attach_docstring(ediff1d, _np.ediff1d, "counted_custom", "numel(output) FLOPs")
-ediff1d.__signature__ = _inspect.signature(_np.ediff1d)
+setattr(ediff1d, "__signature__", _inspect.signature(_np.ediff1d))
 
 
 def convolve(a: ArrayLike, v: ArrayLike, mode: str = "full") -> FlopscopeArray:
@@ -1983,7 +1983,7 @@ def corrcoef(x: ArrayLike, y: ArrayLike | None = None, **kwargs: Any) -> Flopsco
 
 
 attach_docstring(corrcoef, _np.corrcoef, "counted_custom", r"$2 f^2 s$ FLOPs")
-corrcoef.__signature__ = _inspect.signature(_np.corrcoef)
+setattr(corrcoef, "__signature__", _inspect.signature(_np.corrcoef))
 
 
 def cov(m: ArrayLike, y: ArrayLike | None = None, **kwargs: Any) -> FlopscopeArray:
@@ -2002,7 +2002,7 @@ def cov(m: ArrayLike, y: ArrayLike | None = None, **kwargs: Any) -> FlopscopeArr
 
 
 attach_docstring(cov, _np.cov, "counted_custom", r"$2 f^2 s$ FLOPs")
-cov.__signature__ = _inspect.signature(_np.cov)
+setattr(cov, "__signature__", _inspect.signature(_np.cov))
 
 
 def trapezoid(
@@ -2079,4 +2079,4 @@ def interp(x: ArrayLike, xp: ArrayLike, fp: ArrayLike, **kwargs: Any) -> Flopsco
 
 
 attach_docstring(interp, _np.interp, "counted_custom", "n * ceil(log2(xp)) FLOPs")
-interp.__signature__ = _inspect.signature(_np.interp)
+setattr(interp, "__signature__", _inspect.signature(_np.interp))
