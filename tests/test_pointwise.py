@@ -137,6 +137,14 @@ def test_counted_op_outside_context():
 
 
 def test_nan_warning():
-    with BudgetContext(flop_budget=10**6):
-        with pytest.warns(match="NaN"):
-            log(numpy.array([0.0]))
+    import flopscope as flops
+    from flopscope._config import get_setting
+
+    original = get_setting("check_nan_inf")
+    try:
+        flops.configure(check_nan_inf=True)
+        with BudgetContext(flop_budget=10**6):
+            with pytest.warns(match="NaN"):
+                log(numpy.array([0.0]))
+    finally:
+        flops.configure(check_nan_inf=original)

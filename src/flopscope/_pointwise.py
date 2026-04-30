@@ -47,7 +47,7 @@ from flopscope._symmetry_utils import (
     restrict_group_to_axes,
     unique_elements_for_shape,
 )
-from flopscope._validation import check_nan_inf, require_budget
+from flopscope._validation import maybe_check_nan_inf, require_budget
 from flopscope.errors import (
     CostFallbackWarning,
     SymmetryError,
@@ -355,7 +355,7 @@ def _counted_unary(np_func, op_name: str):
                 supports_out=supports_out,
                 **kwargs,
             )
-        check_nan_inf(result, op_name)
+        maybe_check_nan_inf(result, op_name)
         return _wrap_result(result, out=out, symmetry=symmetry)  # type: ignore[return-value]
 
     wrapper.__name__ = op_name
@@ -453,7 +453,7 @@ def _counted_binary(np_func, op_name: str):
                 supports_out=supports_out,
                 **kwargs,
             )
-        check_nan_inf(result, op_name)
+        maybe_check_nan_inf(result, op_name)
         if out_symmetry is not None:
             lost = []
             for group in aligned_inputs:
@@ -1008,7 +1008,7 @@ def around(
             out=None if isinstance(out, SymmetricTensor) else out,
             supports_out=True,
         )
-    check_nan_inf(result, "around")
+    maybe_check_nan_inf(result, "around")
     if (
         a_is_scalar
         and out is None
@@ -1092,7 +1092,7 @@ def round(
             out=None if isinstance(out, SymmetricTensor) else out,
             supports_out=True,
         )
-    check_nan_inf(result, "round")
+    maybe_check_nan_inf(result, "round")
     if (
         a_is_scalar
         and out is None
@@ -1385,7 +1385,7 @@ def clip(
             **kwargs,
         )
     if a.dtype.kind in ("f", "c"):
-        check_nan_inf(result, "clip")
+        maybe_check_nan_inf(result, "clip")
     return _wrap_result(result, out=out, symmetry=symmetry)  # type: ignore[return-value]
 
 
@@ -1544,7 +1544,7 @@ def dot(a: ArrayLike, b: ArrayLike) -> FlopscopeArray:
         # Strip flopscope subclasses so the raw NumPy call does not re-dispatch
         # through __array_ufunc__ (matmul is a ufunc) / __array_function__.
         result = _np.dot(_to_base_ndarray(a), _to_base_ndarray(b))
-    check_nan_inf(result, "dot")
+    maybe_check_nan_inf(result, "dot")
     return _asflopscope(result) if inputs_were_whest else result  # type: ignore[return-value]
 
 
@@ -1586,7 +1586,7 @@ def matmul(a: ArrayLike, b: ArrayLike) -> FlopscopeArray:
     ):
         with _np.errstate(divide="ignore", over="ignore", invalid="ignore"):
             result = _np.matmul(_to_base_ndarray(a), _to_base_ndarray(b))
-    check_nan_inf(result, "matmul")
+    maybe_check_nan_inf(result, "matmul")
     return _asflopscope(result) if inputs_were_whest else result  # type: ignore[return-value]
 
 

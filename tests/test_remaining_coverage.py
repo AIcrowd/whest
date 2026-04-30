@@ -285,6 +285,90 @@ class TestCheckNanInf:
         assert len(w) == 0
 
 
+class TestMaybeCheckNanInf:
+    """Cover the gated wrapper around check_nan_inf (issue #77)."""
+
+    def test_default_off_skips_check(self):
+        from flopscope._config import get_setting
+        from flopscope._validation import maybe_check_nan_inf
+
+        assert get_setting("check_nan_inf") is False
+        arr = numpy.array([1.0, float("nan"), 3.0])
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            maybe_check_nan_inf(arr, "test_op")
+        assert len(w) == 0
+
+    def test_when_on_runs_check(self):
+        import flopscope as flops
+        from flopscope._config import get_setting
+        from flopscope._validation import maybe_check_nan_inf
+        from flopscope.errors import FlopscopeWarning
+
+        original = get_setting("check_nan_inf")
+        try:
+            flops.configure(check_nan_inf=True)
+            arr = numpy.array([1.0, float("nan"), 3.0])
+            with warnings.catch_warnings(record=True) as w:
+                warnings.simplefilter("always")
+                maybe_check_nan_inf(arr, "test_op")
+            assert len(w) == 1
+            assert issubclass(w[0].category, FlopscopeWarning)
+            assert "1 NaN" in str(w[0].message)
+        finally:
+            flops.configure(check_nan_inf=original)
+
+    def test_non_array_skipped_when_on(self):
+        import flopscope as flops
+        from flopscope._config import get_setting
+        from flopscope._validation import maybe_check_nan_inf
+
+        original = get_setting("check_nan_inf")
+        try:
+            flops.configure(check_nan_inf=True)
+            with warnings.catch_warnings(record=True) as w:
+                warnings.simplefilter("always")
+                maybe_check_nan_inf(42, "test_op")
+            assert len(w) == 0
+        finally:
+            flops.configure(check_nan_inf=original)
+
+    def test_wrapper_op_silent_by_default(self):
+        """Production-scoring path: a wrapper op that produces Inf does not warn."""
+        import flopscope.numpy as fnp
+        from flopscope.errors import FlopscopeWarning
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            with BudgetContext(flop_budget=10_000), np.errstate(divide="ignore"):
+                fnp.divide(numpy.array([1.0]), numpy.array([0.0]))
+        assert not any(
+            issubclass(rec.category, FlopscopeWarning) and "Inf" in str(rec.message)
+            for rec in w
+        )
+
+    def test_wrapper_op_warns_when_enabled(self):
+        """Debug path: opting in surfaces the Inf-producing op."""
+        import flopscope as flops
+        import flopscope.numpy as fnp
+        from flopscope._config import get_setting
+        from flopscope.errors import FlopscopeWarning
+
+        original = get_setting("check_nan_inf")
+        try:
+            flops.configure(check_nan_inf=True)
+            with warnings.catch_warnings(record=True) as w:
+                warnings.simplefilter("always")
+                with BudgetContext(flop_budget=10_000), np.errstate(divide="ignore"):
+                    fnp.divide(numpy.array([1.0]), numpy.array([0.0]))
+            assert any(
+                issubclass(rec.category, FlopscopeWarning) and "Inf" in str(rec.message)
+                for rec in w
+            )
+        finally:
+            flops.configure(check_nan_inf=original)
+
+
 class TestCoerceArrays:
     """Cover line 39: coerce_arrays tuple conversion."""
 
@@ -666,6 +750,28 @@ class TestConfigureUnknownSetting:
 
         with pytest.raises(ValueError, match="Unknown setting"):
             configure(nonexistent_option=True)
+
+
+class TestCheckNanInfSetting:
+    """Cover the new check_nan_inf config flag (issue #77)."""
+
+    def test_default_false(self):
+        from flopscope._config import get_setting
+
+        assert get_setting("check_nan_inf") is False
+
+    def test_can_be_toggled(self):
+        import flopscope as flops
+        from flopscope._config import get_setting
+
+        original = get_setting("check_nan_inf")
+        try:
+            flops.configure(check_nan_inf=True)
+            assert get_setting("check_nan_inf") is True
+            flops.configure(check_nan_inf=False)
+            assert get_setting("check_nan_inf") is False
+        finally:
+            flops.configure(check_nan_inf=original)
 
 
 # ============================================================================

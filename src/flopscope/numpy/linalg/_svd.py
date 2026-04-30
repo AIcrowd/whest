@@ -8,7 +8,7 @@ from numpy.typing import ArrayLike
 
 from flopscope._flops import svd_cost
 from flopscope._ndarray import FlopscopeArray, _asflopscope, _to_base_ndarray
-from flopscope._validation import check_nan_inf, require_budget
+from flopscope._validation import maybe_check_nan_inf, require_budget
 
 
 def _batch_size(shape):
@@ -95,14 +95,14 @@ def svd(
                 S = S[..., :k]
                 U = U[..., :k]
                 Vt = Vt[..., :k, :]
-            check_nan_inf(S, "linalg.svd")
+            maybe_check_nan_inf(S, "linalg.svd")
         else:
             S = _np.linalg.svd(
                 _to_base_ndarray(a), compute_uv=False, hermitian=hermitian
             )
             if k is not None:
                 S = S[..., :k]
-            check_nan_inf(S, "linalg.svd")
+            maybe_check_nan_inf(S, "linalg.svd")
 
     if compute_uv:
         if inputs_were_whest:
