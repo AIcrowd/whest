@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import functools
+from typing import Any
 
 import numpy as _np
 
 from flopscope._config import get_setting
-from flopscope._ndarray import _to_base_ndarray
+from flopscope._ndarray import FlopscopeArray, _to_base_ndarray
 from flopscope._perm_group import SymmetryGroup
 from flopscope._pointwise import _prepare_symmetric_out, _validate_result_symmetry
 from flopscope._symmetric import SymmetricTensor
@@ -297,11 +298,11 @@ def _resolve_output_symmetry(
 def einsum(
     subscripts: str,
     *operands: _np.ndarray,
-    out=None,
-    optimize: str | bool | list = "auto",
-    symmetry=None,
-    **kwargs,
-) -> _np.ndarray:
+    out: Any = None,
+    optimize: str | bool | list[Any] = "auto",
+    symmetry: Any = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Evaluate Einstein summation with FLOP counting and optional path optimization.
 
     Wraps ``numpy.einsum`` with analytical FLOP cost computation and
@@ -401,10 +402,14 @@ def einsum(
         result = _asflopscope(_np.asarray(result))
 
     check_nan_inf(result, "einsum")
-    return result
+    return result  # type: ignore[return-value]
 
 
-def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"):
+def einsum_path(
+    subscripts: str,
+    *operands: _np.ndarray,
+    optimize: str | bool | list[Any] = "auto",
+) -> tuple[list[Any], Any]:
     """Compute the optimal contraction path without executing.
 
     Returns ``(path, PathInfo)`` with zero budget cost. The returned
