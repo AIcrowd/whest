@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import math
 from collections.abc import Sequence
-from typing import Any
 
 import numpy as _np
 from numpy.typing import ArrayLike

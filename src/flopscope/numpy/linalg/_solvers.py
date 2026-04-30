@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
 from typing import Any
 
 import numpy as _np
@@ -169,7 +168,9 @@ def lstsq_cost(m: int, n: int) -> int:
     return max(m * n * min(m, n), 1)
 
 
-def lstsq(a: ArrayLike, b: ArrayLike, rcond: float | None = None) -> tuple[FlopscopeArray, FlopscopeArray, int, FlopscopeArray]:
+def lstsq(
+    a: ArrayLike, b: ArrayLike, rcond: float | None = None
+) -> tuple[FlopscopeArray, FlopscopeArray, int, FlopscopeArray]:
     """Least-squares solution with FLOP counting.
 
     Returns a 4-tuple ``(solution, residuals, rank, singular_values)``.
@@ -227,7 +228,13 @@ def pinv_cost(m: int, n: int) -> int:
     return max(m * n * min(m, n), 1)
 
 
-def pinv(a: ArrayLike, rcond: float | None = None, hermitian: bool = False, *, rtol: float | None = None) -> FlopscopeArray:
+def pinv(
+    a: ArrayLike,
+    rcond: float | None = None,
+    hermitian: bool = False,
+    *,
+    rtol: float | None = None,
+) -> FlopscopeArray:
     """Pseudoinverse with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(a, FlopscopeArray)
@@ -293,7 +300,9 @@ def tensorsolve(a: ArrayLike, b: ArrayLike, axes: Any = None) -> FlopscopeArray:
         "linalg.tensorsolve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
         result = _np.linalg.tensorsolve(
-            _to_base_ndarray(a), _to_base_ndarray(b), axes=axes  # type: ignore[reportArgumentType]
+            _to_base_ndarray(a),
+            _to_base_ndarray(b),
+            axes=axes,  # type: ignore[reportArgumentType]
         )
     if inputs_were_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]

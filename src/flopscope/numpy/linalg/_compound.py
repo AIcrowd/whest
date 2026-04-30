@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import math
 from collections.abc import Sequence
-from typing import Any
 
 import numpy as _np
 from numpy.typing import ArrayLike
@@ -64,7 +63,9 @@ def multi_dot_cost(shapes: Sequence[Sequence[int]]) -> int:
     return max(int(cost_table[0][n - 1]), 1)
 
 
-def multi_dot(arrays: Sequence[ArrayLike], *, out: ArrayLike | None = None) -> FlopscopeArray:
+def multi_dot(
+    arrays: Sequence[ArrayLike], *, out: ArrayLike | None = None
+) -> FlopscopeArray:
     """Efficient multi-matrix dot product with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = any(isinstance(a, FlopscopeArray) for a in arrays)
@@ -76,7 +77,8 @@ def multi_dot(arrays: Sequence[ArrayLike], *, out: ArrayLike | None = None) -> F
         "linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes)
     ):
         result = _np.linalg.multi_dot(
-            [_to_base_ndarray(a) for a in arrays], out=out_stripped  # type: ignore[reportArgumentType]
+            [_to_base_ndarray(a) for a in arrays],
+            out=out_stripped,  # type: ignore[reportArgumentType]
         )
     if out is not None:
         return out  # type: ignore[reportReturnType]

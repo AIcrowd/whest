@@ -908,7 +908,9 @@ def asarray_chkfinite(a: ArrayLike, *args: Any, **kwargs: Any) -> FlopscopeArray
 attach_docstring(asarray_chkfinite, _np.asarray_chkfinite, "free", "0 FLOPs")
 
 
-def atleast_1d(*args: ArrayLike, **kwargs: Any) -> FlopscopeArray | list[FlopscopeArray]:
+def atleast_1d(
+    *args: ArrayLike, **kwargs: Any
+) -> FlopscopeArray | list[FlopscopeArray]:
     """Convert to 1-D or higher. Wraps ``numpy.atleast_1d``. Cost: 0 FLOPs."""
     return _np.atleast_1d(*[_to_base_ndarray(a) for a in args], **kwargs)  # type: ignore[return-value]
 
@@ -916,7 +918,9 @@ def atleast_1d(*args: ArrayLike, **kwargs: Any) -> FlopscopeArray | list[Flopsco
 attach_docstring(atleast_1d, _np.atleast_1d, "free", "0 FLOPs")
 
 
-def atleast_2d(*args: ArrayLike, **kwargs: Any) -> FlopscopeArray | list[FlopscopeArray]:
+def atleast_2d(
+    *args: ArrayLike, **kwargs: Any
+) -> FlopscopeArray | list[FlopscopeArray]:
     """Convert to 2-D or higher. Wraps ``numpy.atleast_2d``. Cost: 0 FLOPs."""
     return _np.atleast_2d(*[_to_base_ndarray(a) for a in args], **kwargs)  # type: ignore[return-value]
 
@@ -924,7 +928,9 @@ def atleast_2d(*args: ArrayLike, **kwargs: Any) -> FlopscopeArray | list[Flopsco
 attach_docstring(atleast_2d, _np.atleast_2d, "free", "0 FLOPs")
 
 
-def atleast_3d(*args: ArrayLike, **kwargs: Any) -> FlopscopeArray | list[FlopscopeArray]:
+def atleast_3d(
+    *args: ArrayLike, **kwargs: Any
+) -> FlopscopeArray | list[FlopscopeArray]:
     """Convert to 3-D or higher. Wraps ``numpy.atleast_3d``. Cost: 0 FLOPs."""
     return _np.atleast_3d(*[_to_base_ndarray(a) for a in args], **kwargs)  # type: ignore[return-value]
 
@@ -1080,7 +1086,10 @@ def compress(
     """Return selected slices along an axis. Cost: numel(output)."""
     budget = require_budget()
     result = _np.compress(  # type: ignore[arg-type, call-overload]
-        _to_base_ndarray(condition), _to_base_ndarray(a), *args, **kwargs  # type: ignore[arg-type, call-overload]
+        _to_base_ndarray(condition),
+        _to_base_ndarray(a),
+        *args,
+        **kwargs,  # type: ignore[arg-type, call-overload]
     )
     cost = (
         result.size

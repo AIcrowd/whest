@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
 from typing import Any
 
 import numpy as _np
@@ -206,7 +205,12 @@ def norm_cost(shape: tuple, ord=None) -> int:
         return numel
 
 
-def norm(x: ArrayLike, ord: Any = None, axis: int | tuple[int, ...] | None = None, keepdims: bool = False) -> FlopscopeArray:
+def norm(
+    x: ArrayLike,
+    ord: Any = None,
+    axis: int | tuple[int, ...] | None = None,
+    keepdims: bool = False,
+) -> FlopscopeArray:
     """Matrix or vector norm with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(x, FlopscopeArray)
@@ -278,7 +282,12 @@ def vector_norm_cost(shape: tuple, ord=None) -> int:
     return numel
 
 
-def vector_norm(x: ArrayLike, ord: Any = 2, axis: int | tuple[int, ...] | None = None, keepdims: bool = False) -> FlopscopeArray:
+def vector_norm(
+    x: ArrayLike,
+    ord: Any = 2,
+    axis: int | tuple[int, ...] | None = None,
+    keepdims: bool = False,
+) -> FlopscopeArray:
     """Vector norm with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(x, FlopscopeArray)
@@ -342,7 +351,9 @@ def matrix_norm_cost(shape: tuple, ord=None) -> int:
     return numel
 
 
-def matrix_norm(x: ArrayLike, ord: Any = "fro", keepdims: bool = False) -> FlopscopeArray:
+def matrix_norm(
+    x: ArrayLike, ord: Any = "fro", keepdims: bool = False
+) -> FlopscopeArray:
     """Matrix norm with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(x, FlopscopeArray)
@@ -464,7 +475,13 @@ def matrix_rank_cost(m: int, n: int) -> int:
     return max(m * n * min(m, n), 1)
 
 
-def matrix_rank(A: ArrayLike, tol: float | None = None, hermitian: bool = False, *, rtol: float | None = None) -> FlopscopeArray | int:
+def matrix_rank(
+    A: ArrayLike,
+    tol: float | None = None,
+    hermitian: bool = False,
+    *,
+    rtol: float | None = None,
+) -> FlopscopeArray | int:
     """Matrix rank with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(A, FlopscopeArray)

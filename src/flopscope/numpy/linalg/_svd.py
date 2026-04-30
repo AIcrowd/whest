@@ -2,9 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import Any
-
 import numpy as _np
 from numpy.linalg._linalg import SVDResult
 from numpy.typing import ArrayLike
@@ -29,7 +26,14 @@ def _has_zero_dim(shape):
     return len(shape) >= 2 and (shape[-2] == 0 or shape[-1] == 0)
 
 
-def svd(a: ArrayLike, full_matrices: bool = True, compute_uv: bool = True, hermitian: bool = False, *, k: int | None = None) -> tuple[FlopscopeArray, FlopscopeArray, FlopscopeArray] | FlopscopeArray:
+def svd(
+    a: ArrayLike,
+    full_matrices: bool = True,
+    compute_uv: bool = True,
+    hermitian: bool = False,
+    *,
+    k: int | None = None,
+) -> tuple[FlopscopeArray, FlopscopeArray, FlopscopeArray] | FlopscopeArray:
     """Singular value decomposition with FLOP counting.
 
     Matches ``numpy.linalg.svd`` signature with an optional *k* parameter

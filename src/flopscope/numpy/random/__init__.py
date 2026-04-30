@@ -117,6 +117,7 @@ def _counted_dims_sampler(
 # Free (configuration) functions
 # ---------------------------------------------------------------------------
 
+
 def default_rng(seed: Any = None) -> Generator:
     """Construct a numpy random Generator. Cost: 0 FLOPs."""
     return _npr.default_rng(seed)

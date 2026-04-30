@@ -7,9 +7,6 @@ source, and assumptions. Cost functions are pure (shape params) -> int.
 
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import Any
-
 import numpy as _np
 from numpy.linalg._linalg import EighResult, EigResult, QRResult
 from numpy.typing import ArrayLike
@@ -83,7 +80,9 @@ def qr_cost(m: int, n: int) -> int:
     return max(m * n * min(m, n), 1)
 
 
-def qr(a: ArrayLike, mode: str = "reduced") -> tuple[FlopscopeArray, FlopscopeArray] | FlopscopeArray:
+def qr(
+    a: ArrayLike, mode: str = "reduced"
+) -> tuple[FlopscopeArray, FlopscopeArray] | FlopscopeArray:
     """QR decomposition with FLOP counting.
 
     Returns vary by ``mode``:
