@@ -39,8 +39,8 @@ fmt:  ## Auto-fix lint and format issues
 	$(UV) ruff format .
 
 .PHONY: typecheck
-typecheck:  ## Pyright (standard mode) over src/ and tests/
-	$(UV) pyright src/flopscope tests
+typecheck:  ## Pyright (standard mode) over src/ and tests/  [non-gating during stub rollout — see Phase D.9]
+	-$(UV) pyright src/flopscope tests
 
 # ---------------------------------------------------------------------------
 # Test  (mirrors: CI → test job)

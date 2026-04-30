@@ -50,6 +50,8 @@ jobs:
 
       - name: Pyright
         run: uv run pyright src/flopscope tests
+        # Non-gating during the stub-rollout window. Flipped off in Phase D.9
+        # once `uv run pyright src/flopscope tests` reports zero errors.
         continue-on-error: true
 
   test:
