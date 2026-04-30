@@ -567,7 +567,9 @@ class FlopscopeArray(_np.ndarray):
         subok: bool = True,
         copy: bool = True,
     ) -> FlopscopeArray:
-        return _np.ndarray.astype(self, dtype, order=order, casting=casting, subok=subok, copy=copy)  # type: ignore[return-value]
+        return _np.ndarray.astype(
+            self, dtype, order=order, casting=casting, subok=subok, copy=copy
+        )  # type: ignore[return-value]
 
     # ----- Other ndarray methods -----
 
