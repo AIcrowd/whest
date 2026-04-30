@@ -340,6 +340,20 @@ class BudgetContext:
         return self._total_tracked_time
 
     @property
+    def flopscope_overhead_time(self) -> float:
+        """Wall-clock seconds spent inside flopscope's own dispatch code.
+
+        Includes wrapper preambles, BudgetContext.deduct() body, _OpTimer
+        bookkeeping, the flopscope-internal parts of the timed block (view-
+        casts, copyto, dispatch), wrapper postambles (including
+        maybe_check_nan_inf when opted in), and namespace push/pop.
+
+        Measured per op via the @_counted_wrapper decorator. Aggregated per
+        namespace via summary_dict(by_namespace=True).
+        """
+        return self._total_flopscope_overhead_time
+
+    @property
     def untracked_time(self) -> float | None:
         if self._wall_time_s is None:
             return None

@@ -588,3 +588,13 @@ def test_budget_context_initializes_overhead_state():
     assert b._total_flopscope_overhead_time == 0.0
     assert b._recorded_overhead_time == 0.0
     assert b._current_op_timer is None
+
+
+def test_budget_context_flopscope_overhead_time_property():
+    import flopscope
+
+    b = flopscope.BudgetContext(flop_budget=int(1e9))
+    assert b.flopscope_overhead_time == 0.0
+
+    b._total_flopscope_overhead_time = 1.5
+    assert b.flopscope_overhead_time == 1.5
