@@ -6,6 +6,7 @@ _SETTINGS: dict[str, object] = {
     "symmetry_warnings": True,
     "use_inner_symmetry": True,
     "einsum_path_cache_size": 4096,
+    "check_nan_inf": False,
 }
 
 
@@ -25,6 +26,13 @@ def configure(**kwargs: object) -> None:
         Maximum number of entries in the einsum path cache.
         Changing this rebuilds the cache (old entries are discarded).
         Default ``4096``.
+    check_nan_inf : bool
+        If ``True``, scan every counted op's output for NaN/Inf values and
+        emit a :class:`~flopscope.errors.FlopscopeWarning` if any are found.
+        The scan is two full O(n) sweeps over the result and is silently
+        attributed to ``untracked_time``, so it is off by default for
+        production scoring.  Opt in when debugging an estimator that
+        produces NaN/Inf to identify the introducing op.  Default ``False``.
 
     Returns
     -------
@@ -36,6 +44,7 @@ def configure(**kwargs: object) -> None:
     >>> import flopscope as flops
     >>> flops.configure(einsum_path_cache_size=8192)
     >>> flops.configure(symmetry_warnings=False)
+    >>> flops.configure(check_nan_inf=True)
     """
     for key, value in kwargs.items():
         if key not in _SETTINGS:

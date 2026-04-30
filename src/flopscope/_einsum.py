@@ -13,7 +13,7 @@ from flopscope._perm_group import SymmetryGroup
 from flopscope._pointwise import _prepare_symmetric_out, _validate_result_symmetry
 from flopscope._symmetric import SymmetricTensor
 from flopscope._symmetry_utils import normalize_symmetry_input, validate_symmetry_group
-from flopscope._validation import check_nan_inf, require_budget
+from flopscope._validation import maybe_check_nan_inf, require_budget
 
 
 def _symmetry_fingerprint(operands, input_parts):
@@ -396,7 +396,7 @@ def einsum(
     if out is not None:
         _validate_result_symmetry(result, target_symmetry)
         _np.copyto(_np.asarray(out), _np.asarray(result), casting="unsafe")
-        check_nan_inf(out, "einsum")
+        maybe_check_nan_inf(out, "einsum")
         return out
 
     if target_symmetry is not None:
@@ -405,7 +405,7 @@ def einsum(
     else:
         result = _asflopscope(_np.asarray(result))
 
-    check_nan_inf(result, "einsum")
+    maybe_check_nan_inf(result, "einsum")
     return result  # type: ignore[return-value]
 
 

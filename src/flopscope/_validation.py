@@ -66,3 +66,18 @@ def check_nan_inf(result: np.ndarray, op_name: str) -> None:
             FlopscopeWarning,
             stacklevel=3,
         )
+
+
+def maybe_check_nan_inf(result: object, op_name: str) -> None:
+    """Run :func:`check_nan_inf` only if the global ``check_nan_inf`` setting is on.
+
+    Production scoring runs with the setting off (default) and pays no
+    per-op O(n) scan cost.  Debug callers opt in via
+    ``flopscope.configure(check_nan_inf=True)``.
+    """
+    from flopscope._config import get_setting
+
+    if not get_setting("check_nan_inf"):
+        return
+    if isinstance(result, np.ndarray):
+        check_nan_inf(result, op_name)
