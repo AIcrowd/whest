@@ -7,15 +7,19 @@ FLOP costs are handled by the delegated top-level implementations.
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as _np
+from numpy.typing import ArrayLike
 
 import flopscope.numpy as _me
 from flopscope._docstrings import attach_docstring
+from flopscope._ndarray import FlopscopeArray
 
 
-def matmul(x1, x2, /):
+def matmul(x1: ArrayLike, x2: ArrayLike, /) -> FlopscopeArray:
     """Matrix multiply (linalg namespace). Delegates to flopscope.matmul."""
-    return _me.matmul(x1, x2)
+    return _me.matmul(x1, x2)  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -23,7 +27,7 @@ attach_docstring(
 )
 
 
-def cross(x1, x2, /, *, axis=-1):
+def cross(x1: ArrayLike, x2: ArrayLike, /, *, axis: int = -1) -> FlopscopeArray:
     """Cross product (linalg namespace). Uses np.linalg.cross for strict validation."""
     import builtins as _builtins
 
@@ -44,10 +48,10 @@ def cross(x1, x2, /, *, axis=-1):
         subscripts=None,
         shapes=(x1_arr.shape, x2_arr.shape),
     ):
-        result = _np.linalg.cross(_to_base_ndarray(x1), _to_base_ndarray(x2), axis=axis)
+        result = _np.linalg.cross(_to_base_ndarray(x1), _to_base_ndarray(x2), axis=axis)  # type: ignore[reportCallIssue]
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -55,9 +59,9 @@ attach_docstring(
 )
 
 
-def outer(x1, x2, /):
+def outer(x1: ArrayLike, x2: ArrayLike, /) -> FlopscopeArray:
     """Outer product (linalg namespace). Delegates to flopscope.outer."""
-    return _me.outer(x1, x2)
+    return _me.outer(x1, x2)  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -65,9 +69,9 @@ attach_docstring(
 )
 
 
-def tensordot(x1, x2, /, *, axes=2):
+def tensordot(x1: ArrayLike, x2: ArrayLike, /, *, axes: Any = 2) -> FlopscopeArray:
     """Tensor dot product (linalg namespace). Delegates to flopscope.tensordot."""
-    return _me.tensordot(x1, x2, axes=axes)
+    return _me.tensordot(x1, x2, axes=axes)  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -80,9 +84,11 @@ attach_docstring(
 
 if hasattr(_np.linalg, "vecdot"):
 
-    def vecdot(x1, x2, /, *, axis=-1):
+    def vecdot(  # type: ignore[reportRedeclaration]
+        x1: ArrayLike, x2: ArrayLike, /, *, axis: int = -1
+    ) -> FlopscopeArray:
         """Vector dot product (linalg namespace). Delegates to flopscope.vecdot."""
-        return _me.vecdot(x1, x2, axis=axis)
+        return _me.vecdot(x1, x2, axis=axis)  # type: ignore[reportReturnType]
 
     attach_docstring(
         vecdot,
@@ -94,21 +100,21 @@ if hasattr(_np.linalg, "vecdot"):
 else:
     from flopscope.errors import UnsupportedFunctionError
 
-    def vecdot(*args, **kwargs):
+    def vecdot(*args: Any, **kwargs: Any) -> FlopscopeArray:
         raise UnsupportedFunctionError("linalg.vecdot", min_version="2.1")
 
 
-def diagonal(x, /, *, offset=0):
+def diagonal(x: ArrayLike, /, *, offset: int = 0) -> FlopscopeArray:
     """Diagonal (linalg namespace). Delegates to flopscope.diagonal. Cost: 0 FLOPs."""
-    return _me.diagonal(x, offset=offset, axis1=-2, axis2=-1)
+    return _me.diagonal(x, offset=offset, axis1=-2, axis2=-1)  # type: ignore[reportReturnType]
 
 
 attach_docstring(diagonal, _np.linalg.diagonal, "linalg", "0 FLOPs (free)")
 
 
-def matrix_transpose(x, /):
+def matrix_transpose(x: ArrayLike, /) -> FlopscopeArray:
     """Transpose (linalg namespace). Delegates to flopscope.matrix_transpose. Cost: 0 FLOPs."""
-    return _me.matrix_transpose(x)
+    return _me.matrix_transpose(x)  # type: ignore[reportReturnType]
 
 
 attach_docstring(

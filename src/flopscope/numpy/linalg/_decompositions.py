@@ -7,8 +7,12 @@ source, and assumptions. Cost functions are pure (shape params) -> int.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+from typing import Any
+
 import numpy as _np
 from numpy.linalg._linalg import EighResult, EigResult, QRResult
+from numpy.typing import ArrayLike
 
 from flopscope._docstrings import attach_docstring
 from flopscope._ndarray import FlopscopeArray, _asflopscope, _to_base_ndarray
@@ -36,7 +40,7 @@ def cholesky_cost(n: int) -> int:
     return max(n**3, 1)
 
 
-def cholesky(a, /, *, upper=False):
+def cholesky(a: ArrayLike, /, *, upper: bool = False) -> FlopscopeArray:
     """Cholesky decomposition with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(a, FlopscopeArray)
@@ -50,8 +54,8 @@ def cholesky(a, /, *, upper=False):
     ):
         result = _np.linalg.cholesky(_to_base_ndarray(a), upper=upper)
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(cholesky, _np.linalg.cholesky, "linalg", r"$n^3$ FLOPs")
@@ -79,7 +83,7 @@ def qr_cost(m: int, n: int) -> int:
     return max(m * n * min(m, n), 1)
 
 
-def qr(a, mode="reduced"):
+def qr(a: ArrayLike, mode: str = "reduced") -> tuple[FlopscopeArray, FlopscopeArray] | FlopscopeArray:
     """QR decomposition with FLOP counting.
 
     Returns vary by ``mode``:
@@ -99,23 +103,23 @@ def qr(a, mode="reduced"):
     batch = _batch_size(a.shape)
     cost = qr_cost(m, n) * batch if not _has_zero_dim(a.shape) else 0
     with budget.deduct("linalg.qr", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.linalg.qr(_to_base_ndarray(a), mode=mode)
+        result = _np.linalg.qr(_to_base_ndarray(a), mode=mode)  # type: ignore[reportCallIssue]
     if mode in ("reduced", "complete"):
-        q, r = result
+        q, r = result  # type: ignore[reportGeneralTypeIssues]
         if inputs_were_whest:
-            return QRResult(_asflopscope(q), _asflopscope(r))
-        return QRResult(q, r)
+            return QRResult(_asflopscope(q), _asflopscope(r))  # type: ignore[reportReturnType]
+        return QRResult(q, r)  # type: ignore[reportReturnType]
     if mode == "raw":
         # ``raw`` returns a (h, tau) tuple of two ndarrays with different
         # shapes — preserve the tuple structure rather than collapsing to
         # a single array via ``_asflopscope``.
-        h, tau = result
+        h, tau = result  # type: ignore[reportGeneralTypeIssues]
         if inputs_were_whest:
-            return _asflopscope(h), _asflopscope(tau)
-        return h, tau
+            return _asflopscope(h), _asflopscope(tau)  # type: ignore[reportReturnType]
+        return h, tau  # type: ignore[reportReturnType]
     if inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportArgumentType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(qr, _np.linalg.qr, "linalg", r"$m \cdot n \cdot \min(m,n)$ FLOPs")
@@ -141,7 +145,7 @@ def eig_cost(n: int) -> int:
     return max(n**3, 1)
 
 
-def eig(a):
+def eig(a: ArrayLike) -> tuple[FlopscopeArray, FlopscopeArray]:
     """Eigendecomposition with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(a, FlopscopeArray)
@@ -155,10 +159,10 @@ def eig(a):
     ):
         result = _np.linalg.eig(_to_base_ndarray(a))
     if inputs_were_whest:
-        return EigResult(
+        return EigResult(  # type: ignore[reportReturnType]
             _asflopscope(result.eigenvalues), _asflopscope(result.eigenvectors)
         )
-    return result
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(eig, _np.linalg.eig, "linalg", r"$n^3$ FLOPs")
@@ -184,7 +188,7 @@ def eigh_cost(n: int) -> int:
     return max(n**3, 1)
 
 
-def eigh(a, UPLO="L"):
+def eigh(a: ArrayLike, UPLO: str = "L") -> tuple[FlopscopeArray, FlopscopeArray]:
     """Symmetric eigendecomposition with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(a, FlopscopeArray)
@@ -196,12 +200,12 @@ def eigh(a, UPLO="L"):
     with budget.deduct(
         "linalg.eigh", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.eigh(_to_base_ndarray(a), UPLO=UPLO)
+        result = _np.linalg.eigh(_to_base_ndarray(a), UPLO=UPLO)  # type: ignore[reportCallIssue]
     if inputs_were_whest:
-        return EighResult(
+        return EighResult(  # type: ignore[reportReturnType]
             _asflopscope(result.eigenvalues), _asflopscope(result.eigenvectors)
         )
-    return result
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(eigh, _np.linalg.eigh, "linalg", r"$n^3$ FLOPs")
@@ -227,7 +231,7 @@ def eigvals_cost(n: int) -> int:
     return max(n**3, 1)
 
 
-def eigvals(a):
+def eigvals(a: ArrayLike) -> FlopscopeArray:
     """Eigenvalues (nonsymmetric) with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(a, FlopscopeArray)
@@ -241,8 +245,8 @@ def eigvals(a):
     ):
         result = _np.linalg.eigvals(_to_base_ndarray(a))
     if inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(eigvals, _np.linalg.eigvals, "linalg", r"$n^3$ FLOPs")
@@ -268,7 +272,7 @@ def eigvalsh_cost(n: int) -> int:
     return max(n**3, 1)
 
 
-def eigvalsh(a, UPLO="L"):
+def eigvalsh(a: ArrayLike, UPLO: str = "L") -> FlopscopeArray:
     """Eigenvalues (symmetric) with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(a, FlopscopeArray)
@@ -280,10 +284,10 @@ def eigvalsh(a, UPLO="L"):
     with budget.deduct(
         "linalg.eigvalsh", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.eigvalsh(_to_base_ndarray(a), UPLO=UPLO)
+        result = _np.linalg.eigvalsh(_to_base_ndarray(a), UPLO=UPLO)  # type: ignore[reportCallIssue]
     if inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(eigvalsh, _np.linalg.eigvalsh, "linalg", r"$n^3$ FLOPs")
@@ -315,7 +319,7 @@ def svdvals_cost(m: int, n: int, k: int | None = None) -> int:
     return max(m * n * k, 1)
 
 
-def svdvals(x, /, *, k: int | None = None):
+def svdvals(x: ArrayLike, /, *, k: int | None = None) -> FlopscopeArray:
     """Singular values with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(x, FlopscopeArray)
@@ -335,8 +339,8 @@ def svdvals(x, /, *, k: int | None = None):
     if k < min(m, n):
         result = result[..., :k]
     if inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(svdvals, _np.linalg.svdvals, "linalg", r"$m \cdot n \cdot k$ FLOPs")

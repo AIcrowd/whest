@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Sequence
+from typing import Any
 
 import numpy as _np
+from numpy.typing import ArrayLike
 
 from flopscope._cost_model import FMA_COST
 from flopscope._docstrings import attach_docstring
@@ -21,7 +24,7 @@ def _popcount(n: int) -> int:
     return count
 
 
-def multi_dot_cost(shapes: list[tuple[int, ...]]) -> int:
+def multi_dot_cost(shapes: Sequence[Sequence[int]]) -> int:
     """FLOP cost of optimal matrix chain multiplication.
 
     Parameters
@@ -49,7 +52,7 @@ def multi_dot_cost(shapes: list[tuple[int, ...]]) -> int:
     for chain_len in range(2, n + 1):
         for i in range(n - chain_len + 1):
             j = i + chain_len - 1
-            cost_table[i][j] = float("inf")
+            cost_table[i][j] = float("inf")  # type: ignore[reportAssignmentType]
             for k in range(i, j):
                 cost = (
                     cost_table[i][k]
@@ -61,7 +64,7 @@ def multi_dot_cost(shapes: list[tuple[int, ...]]) -> int:
     return max(int(cost_table[0][n - 1]), 1)
 
 
-def multi_dot(arrays, *, out=None):
+def multi_dot(arrays: Sequence[ArrayLike], *, out: ArrayLike | None = None) -> FlopscopeArray:
     """Efficient multi-matrix dot product with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = any(isinstance(a, FlopscopeArray) for a in arrays)
@@ -73,13 +76,13 @@ def multi_dot(arrays, *, out=None):
         "linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes)
     ):
         result = _np.linalg.multi_dot(
-            [_to_base_ndarray(a) for a in arrays], out=out_stripped
+            [_to_base_ndarray(a) for a in arrays], out=out_stripped  # type: ignore[reportArgumentType]
         )
     if out is not None:
-        return out
+        return out  # type: ignore[reportReturnType]
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -115,7 +118,7 @@ def matrix_power_cost(n: int, k: int) -> int:
     return max(num_ops * n**3, 1)
 
 
-def matrix_power(a, n):
+def matrix_power(a: ArrayLike, n: int) -> FlopscopeArray:
     """Matrix power with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(a, FlopscopeArray)
@@ -129,8 +132,8 @@ def matrix_power(a, n):
     ):
         result = _np.linalg.matrix_power(_to_base_ndarray(a), n)
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(

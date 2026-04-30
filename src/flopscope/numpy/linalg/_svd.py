@@ -2,8 +2,12 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+from typing import Any
+
 import numpy as _np
 from numpy.linalg._linalg import SVDResult
+from numpy.typing import ArrayLike
 
 from flopscope._flops import svd_cost
 from flopscope._ndarray import FlopscopeArray, _asflopscope, _to_base_ndarray
@@ -25,7 +29,7 @@ def _has_zero_dim(shape):
     return len(shape) >= 2 and (shape[-2] == 0 or shape[-1] == 0)
 
 
-def svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None):
+def svd(a: ArrayLike, full_matrices: bool = True, compute_uv: bool = True, hermitian: bool = False, *, k: int | None = None) -> tuple[FlopscopeArray, FlopscopeArray, FlopscopeArray] | FlopscopeArray:
     """Singular value decomposition with FLOP counting.
 
     Matches ``numpy.linalg.svd`` signature with an optional *k* parameter
@@ -98,9 +102,9 @@ def svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None):
 
     if compute_uv:
         if inputs_were_whest:
-            return SVDResult(_asflopscope(U), _asflopscope(S), _asflopscope(Vt))
-        return SVDResult(U, S, Vt)
+            return SVDResult(_asflopscope(U), _asflopscope(S), _asflopscope(Vt))  # type: ignore[reportPossiblyUnbound]
+        return SVDResult(U, S, Vt)  # type: ignore[reportPossiblyUnbound]
     else:
         if inputs_were_whest:
-            return _asflopscope(S)
-        return S
+            return _asflopscope(S)  # type: ignore[reportReturnType]
+        return S  # type: ignore[reportReturnType]
