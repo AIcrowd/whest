@@ -3035,6 +3035,12 @@
     "kind": "symbol",
     "slug": "printoptions"
   },
+  "random/generator": {
+    "canonical_name": "random.Generator",
+    "href": "/docs/api/random/generator/",
+    "kind": "symbol",
+    "slug": "random-generator"
+  },
   "random/random-state": {
     "canonical_name": "random.RandomState",
     "href": "/docs/api/random/random-state/",

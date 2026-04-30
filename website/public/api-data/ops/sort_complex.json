@@ -132,7 +132,7 @@
     "name": "sort_complex",
     "notes": "Sort complex array. Cost: $n \\cdot \\lceil\\log_2 n\\rceil$.",
     "numpy_ref": "np.sort_complex",
-    "signature": "fnp.sort_complex(a)",
+    "signature": "fnp.sort_complex(a: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Sort a complex array using the real part first, then the imaginary part.",
     "weight": 1.0
@@ -140,7 +140,7 @@
   "schema_version": 1,
   "slug": "sort_complex",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1085",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1111",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1808"
   }
 }

@@ -71,7 +71,7 @@
     "name": "random.seed",
     "notes": "Seed random number generator.",
     "numpy_ref": "np.random.seed",
-    "signature": "fnp.random.seed(seed=None)",
+    "signature": "fnp.random.seed(seed: 'int | None' = None) -> 'None'",
     "status": "supported",
     "summary": "Reseed the singleton RandomState instance.",
     "weight": 0.0
@@ -79,7 +79,7 @@
   "schema_version": 1,
   "slug": "random-seed",
   "source": {
-    "flopscope": null,
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L126",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.seed.html"
   }
 }

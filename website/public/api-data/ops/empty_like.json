@@ -493,7 +493,7 @@
     "name": "empty_like",
     "notes": "Uninitialized array with same shape/type as input.",
     "numpy_ref": "np.empty_like",
-    "signature": "fnp.empty_like(a, dtype=None, **kwargs)",
+    "signature": "fnp.empty_like(a: 'ArrayLike', dtype: 'DTypeLike | None' = None, **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return a new array with the same shape and type as a given array.",
     "weight": 0.0
@@ -501,7 +501,7 @@
   "schema_version": 1,
   "slug": "empty_like",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L269",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L317",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.empty_like.html"
   }
 }

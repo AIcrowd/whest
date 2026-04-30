@@ -340,7 +340,7 @@
     "name": "linalg.matrix_norm",
     "notes": "Matrix norm. Cost depends on ord: 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     "numpy_ref": "np.linalg.matrix_norm",
-    "signature": "fnp.linalg.matrix_norm(x, ord='fro', keepdims=False)",
+    "signature": "fnp.linalg.matrix_norm(x: 'ArrayLike', ord: 'Any' = 'fro', keepdims: 'bool' = False) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Computes the matrix norm of a matrix (or a stack of matrices) ``x``.",
     "weight": 1.0
@@ -348,7 +348,7 @@
   "schema_version": 1,
   "slug": "linalg-matrix_norm",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L341",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L354",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3418"
   }
 }

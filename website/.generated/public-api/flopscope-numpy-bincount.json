@@ -541,7 +541,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.bincount",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L242",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L269",
   "href": "/docs/api/numpy/bincount/",
   "import_path": "flopscope.numpy.bincount",
   "is_operation_cost_leaf": true,
@@ -640,7 +640,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.bincount(x, **kwargs)",
+  "signature": "fnp.bincount(x: 'ArrayLike', **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "bincount",
   "summary": "Count number of occurrences of each value in array of non-negative ints.",
   "upstream_ref_label": "NumPy Ref",

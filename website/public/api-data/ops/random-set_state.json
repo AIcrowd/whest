@@ -326,7 +326,7 @@
     "name": "random.set_state",
     "notes": "Set internal state of generator.",
     "numpy_ref": "np.random.set_state",
-    "signature": "fnp.random.set_state(state)",
+    "signature": "fnp.random.set_state(state: 'dict[str, Any] | tuple[Any, ...]') -> 'None'",
     "status": "supported",
     "summary": "Set the internal state of the generator from a tuple.",
     "weight": 0.0
@@ -334,7 +334,7 @@
   "schema_version": 1,
   "slug": "random-set_state",
   "source": {
-    "flopscope": null,
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L136",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.set_state.html"
   }
 }

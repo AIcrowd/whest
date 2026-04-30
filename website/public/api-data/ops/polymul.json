@@ -371,7 +371,7 @@
     "name": "polymul",
     "notes": "Multiply polynomials. Cost: n1 * n2 FLOPs.",
     "numpy_ref": "np.polymul",
-    "signature": "fnp.polymul(a1, a2)",
+    "signature": "fnp.polymul(a1: 'ArrayLike', a2: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Find the product of two polynomials.",
     "weight": 1.0
@@ -379,7 +379,7 @@
   "schema_version": 1,
   "slug": "polymul",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L164",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L167",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L911"
   }
 }

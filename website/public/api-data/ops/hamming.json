@@ -277,7 +277,7 @@
     "name": "hamming",
     "notes": "Hamming window. Cost: n (one cosine per sample).",
     "numpy_ref": "np.hamming",
-    "signature": "fnp.hamming(M)",
+    "signature": "fnp.hamming(M: 'int') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return the Hamming window.",
     "weight": 16.0
@@ -285,7 +285,7 @@
   "schema_version": 1,
   "slug": "hamming",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L95",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L96",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3367"
   }
 }

@@ -392,7 +392,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.matrix_power",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L118",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L123",
   "href": "/docs/api/numpy/linalg/matrix-power/",
   "legacy_href": "/docs/api/ops/linalg-matrix_power/",
   "module": "numpy.linalg",
@@ -441,7 +441,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.linalg.matrix_power(a, n)",
+  "signature": "fnp.linalg.matrix_power(a: 'ArrayLike', n: 'int') -> 'FlopscopeArray'",
   "slug": "linalg-matrix_power",
   "summary": "Raise a square matrix to the (integer) power `n`.",
   "upstream_ref_label": "NumPy Ref",

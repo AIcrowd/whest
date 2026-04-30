@@ -457,7 +457,7 @@
     "name": "unpackbits",
     "notes": "Unpack elements of array into bits. Cost: numel(input).",
     "numpy_ref": "np.unpackbits",
-    "signature": "fnp.unpackbits(a, *args, **kwargs)",
+    "signature": "fnp.unpackbits(a: 'ArrayLike', *args: 'Any', **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Unpacks elements of a uint8 array into a binary-valued output array.",
     "weight": 1.0
@@ -465,7 +465,7 @@
   "schema_version": 1,
   "slug": "unpackbits",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1753",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1966",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.unpackbits.html"
   }
 }

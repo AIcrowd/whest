@@ -569,7 +569,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.poly",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L215",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L223",
   "href": "/docs/api/numpy/poly/",
   "import_path": "flopscope.numpy.poly",
   "is_operation_cost_leaf": true,
@@ -692,7 +692,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.poly(seq_of_zeros)",
+  "signature": "fnp.poly(seq_of_zeros: 'ArrayLike') -> 'FlopscopeArray'",
   "slug": "poly",
   "summary": "Find the coefficients of a polynomial with the given sequence of roots.",
   "upstream_ref_label": "NumPy Ref",

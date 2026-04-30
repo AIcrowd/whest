@@ -46,7 +46,7 @@ class _NonDescriptor:
         self.__name__ = getattr(fn, "__name__", "")
         self.__qualname__ = getattr(fn, "__qualname__", self.__name__)
         self.__doc__ = getattr(fn, "__doc__", None)
-        self.__module__ = getattr(fn, "__module__", None)
+        self.__module__ = getattr(fn, "__module__", None)  # pyright: ignore[reportAttributeAccessIssue]
         self.__signature__ = getattr(fn, "__signature__", None)
         self.__wrapped__ = fn
 
@@ -142,23 +142,23 @@ def _rebind_flopscope_np(frozen_np):
         if mod is None:
             mod = importlib.import_module(mod_name)
         if mod is not None and hasattr(mod, "_np"):
-            _REBOUND[mod_name] = mod._np
-            mod._np = frozen_np
+            _REBOUND[mod_name] = mod._np  # pyright: ignore[reportAttributeAccessIssue]
+            mod._np = frozen_np  # pyright: ignore[reportAttributeAccessIssue]
     # Also rebind _npr (numpy.random) in modules that use it
     for mod_name in _FLOPSCOPE_MODULES_WITH_NPR:
         mod = sys.modules.get(mod_name)
         if mod is None:
             mod = importlib.import_module(mod_name)
         if mod is not None and hasattr(mod, "_npr"):
-            _REBOUND[mod_name + "._npr"] = mod._npr
-            mod._npr = frozen_np.random
+            _REBOUND[mod_name + "._npr"] = mod._npr  # pyright: ignore[reportAttributeAccessIssue]
+            mod._npr = frozen_np.random  # pyright: ignore[reportAttributeAccessIssue]
     for mod_name in _FLOPSCOPE_MODULES_WITH_PLAIN_NP:
         mod = sys.modules.get(mod_name)
         if mod is None:
             mod = importlib.import_module(mod_name)
         if mod is not None and hasattr(mod, "np"):
-            _REBOUND[mod_name + ".np"] = mod.np
-            mod.np = frozen_np
+            _REBOUND[mod_name + ".np"] = mod.np  # pyright: ignore[reportAttributeAccessIssue]
+            mod.np = frozen_np  # pyright: ignore[reportAttributeAccessIssue]
 
 
 def _restore_flopscope_np():
@@ -168,16 +168,16 @@ def _restore_flopscope_np():
             mod_name = key[: -len("._npr")]
             mod = sys.modules.get(mod_name)
             if mod is not None:
-                mod._npr = original
+                mod._npr = original  # pyright: ignore[reportAttributeAccessIssue]
         elif key.endswith(".np"):
             mod_name = key[: -len(".np")]
             mod = sys.modules.get(mod_name)
             if mod is not None:
-                mod.np = original
+                mod.np = original  # pyright: ignore[reportAttributeAccessIssue]
         else:
             mod = sys.modules.get(key)
             if mod is not None:
-                mod._np = original
+                mod._np = original  # pyright: ignore[reportAttributeAccessIssue]
     _REBOUND.clear()
 
 

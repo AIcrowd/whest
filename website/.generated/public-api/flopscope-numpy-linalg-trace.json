@@ -377,7 +377,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.trace",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L36",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L39",
   "href": "/docs/api/numpy/linalg/trace/",
   "import_path": "flopscope.numpy.linalg.trace",
   "is_operation_cost_leaf": true,
@@ -468,7 +468,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.trace(x, /, *, offset=0, dtype=None)",
+  "signature": "fnp.linalg.trace(x: 'ArrayLike', /, *, offset: 'int' = 0, dtype: 'Any' = None) -> 'FlopscopeArray'",
   "slug": "linalg-trace",
   "summary": "Returns the sum along the specified diagonals of a matrix (or a stack of matrices) ``x``.",
   "upstream_ref_label": "NumPy Ref",

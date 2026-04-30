@@ -264,7 +264,7 @@
     "name": "diagflat",
     "notes": "Create diagonal array from flattened input. Cost: len(v).",
     "numpy_ref": "np.diagflat",
-    "signature": "fnp.diagflat(v, k=0)",
+    "signature": "fnp.diagflat(v: 'ArrayLike', k: 'int' = 0) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Create a two-dimensional array with the flattened input as a diagonal.",
     "weight": 1.0
@@ -272,7 +272,7 @@
   "schema_version": 1,
   "slug": "diagflat",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1049",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1185",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L318"
   }
 }

@@ -524,7 +524,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.vecdot",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1197",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1223",
   "href": "/docs/api/numpy/vecdot/",
   "legacy_href": "/docs/api/ops/vecdot/",
   "module": "numpy",
@@ -661,7 +661,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.vecdot(a, b, **kwargs)",
+  "signature": "fnp.vecdot(a: 'ArrayLike', b: 'ArrayLike', **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "vecdot",
   "summary": "Vector dot product of two arrays.",
   "upstream_ref_label": "NumPy Ref",

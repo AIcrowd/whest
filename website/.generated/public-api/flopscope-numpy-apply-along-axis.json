@@ -688,7 +688,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.apply_along_axis",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L307",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L348",
   "href": "/docs/api/numpy/apply-along-axis/",
   "import_path": "flopscope.numpy.apply_along_axis",
   "is_operation_cost_leaf": true,
@@ -788,7 +788,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.apply_along_axis(func1d, axis, arr, *args, **kwargs)",
+  "signature": "fnp.apply_along_axis(func1d: 'Any', axis: 'int', arr: 'ArrayLike', *args: 'Any', **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "apply_along_axis",
   "summary": "Apply a function to 1-D slices along the given axis.",
   "upstream_ref_label": "NumPy Ref",

@@ -413,7 +413,7 @@
     "name": "vdot",
     "notes": "Dot product with conjugation; cost = N (FMA=1).",
     "numpy_ref": "np.vdot",
-    "signature": "fnp.vdot(a, b)",
+    "signature": "fnp.vdot(a: 'ArrayLike', b: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return the dot product of two vectors.",
     "weight": 1.0
@@ -421,7 +421,7 @@
   "schema_version": 1,
   "slug": "vdot",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1735",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1767",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.vdot.html"
   }
 }

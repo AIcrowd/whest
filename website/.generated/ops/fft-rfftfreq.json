@@ -347,7 +347,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.rfftfreq",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L23",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L27",
   "href": "/docs/api/numpy/fft/rfftfreq/",
   "legacy_href": "/docs/api/ops/fft-rfftfreq/",
   "module": "numpy.fft",
@@ -402,7 +402,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.fft.rfftfreq(n, d=1.0, device=None)",
+  "signature": "fnp.fft.rfftfreq(n: 'int', d: 'float' = 1.0, device: 'Any' = None) -> 'FlopscopeArray'",
   "slug": "fft-rfftfreq",
   "summary": "Return the Discrete Fourier Transform sample frequencies (for usage with rfft, irfft).",
   "upstream_ref_label": "NumPy Ref",

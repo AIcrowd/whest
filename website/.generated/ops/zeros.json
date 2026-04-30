@@ -457,7 +457,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.zeros",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L109",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L116",
   "href": "/docs/api/numpy/zeros/",
   "legacy_href": "/docs/api/ops/zeros/",
   "module": "numpy",
@@ -590,7 +590,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.zeros(shape, dtype=<class 'float'>, **kwargs)",
+  "signature": "fnp.zeros(shape: 'int | Sequence[int]', dtype: 'DTypeLike' = <class 'float'>, **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "zeros",
   "summary": "Return a new array of given shape and type, filled with zeros.",
   "upstream_ref_label": "NumPy Ref",

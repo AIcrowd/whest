@@ -2,6 +2,7 @@
 #
 #   make ci          run the full pipeline (lint → test → docs)
 #   make lint        ruff check + format check
+#   make typecheck   pyright in standard mode
 #   make test        pytest with coverage
 #   make docs-build  generate API docs, verify, then build the site
 #   make docs-serve  live-preview the docs locally
@@ -15,7 +16,7 @@ UV    := uv run
 # Composite targets
 # ---------------------------------------------------------------------------
 .PHONY: ci
-ci: lint lint-commits test test-numpy-compat check-sync docs-build  ## Run the full CI pipeline locally
+ci: lint lint-commits typecheck test test-numpy-compat check-sync docs-build  ## Run the full CI pipeline locally
 
 # ---------------------------------------------------------------------------
 # Lint  (mirrors: CI → lint job)
@@ -36,6 +37,10 @@ lint-commits:  ## Conventional-commit check on PR commits (origin/main..HEAD)
 fmt:  ## Auto-fix lint and format issues
 	$(UV) ruff check --fix .
 	$(UV) ruff format .
+
+.PHONY: typecheck
+typecheck:  ## Pyright (standard mode) over src/ and tests/
+	$(UV) pyright src/flopscope tests
 
 # ---------------------------------------------------------------------------
 # Test  (mirrors: CI → test job)

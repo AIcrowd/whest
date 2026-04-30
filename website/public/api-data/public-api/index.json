@@ -1034,6 +1034,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.abs",
+      "href": "/docs/api/numpy/abs/",
+      "import_path": "flopscope.numpy.abs",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-abs",
+      "summary": "Calculate the absolute value element-wise."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.absolute",
       "href": "/docs/api/numpy/absolute/",
       "import_path": "flopscope.numpy.absolute",
@@ -1043,6 +1055,30 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-absolute",
       "summary": "Calculate the absolute value element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.acos",
+      "href": "/docs/api/numpy/acos/",
+      "import_path": "flopscope.numpy.acos",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-acos",
+      "summary": "Trigonometric inverse cosine, element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.acosh",
+      "href": "/docs/api/numpy/acosh/",
+      "import_path": "flopscope.numpy.acosh",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-acosh",
+      "summary": "Inverse hyperbolic cosine, element-wise."
     },
     {
       "callable": true,
@@ -1079,6 +1115,30 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-allclose",
       "summary": "Returns True if two arrays are element-wise equal within a tolerance."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.amax",
+      "href": "/docs/api/numpy/amax/",
+      "import_path": "flopscope.numpy.amax",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-amax",
+      "summary": "Return the maximum of an array or maximum along an axis."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.amin",
+      "href": "/docs/api/numpy/amin/",
+      "import_path": "flopscope.numpy.amin",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-amin",
+      "summary": "Return the minimum of an array or minimum along an axis."
     },
     {
       "callable": true,
@@ -1298,6 +1358,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.around",
+      "href": "/docs/api/numpy/around/",
+      "import_path": "flopscope.numpy.around",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-around",
+      "summary": "Round an array to the given number of decimals."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.array",
       "href": "/docs/api/numpy/array/",
       "import_path": "flopscope.numpy.array",
@@ -1370,6 +1442,30 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.asin",
+      "href": "/docs/api/numpy/asin/",
+      "import_path": "flopscope.numpy.asin",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-asin",
+      "summary": "Inverse sine, element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.asinh",
+      "href": "/docs/api/numpy/asinh/",
+      "import_path": "flopscope.numpy.asinh",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-asinh",
+      "summary": "Inverse hyperbolic sine element-wise."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.astype",
       "href": "/docs/api/numpy/astype/",
       "import_path": "flopscope.numpy.astype",
@@ -1379,6 +1475,42 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-astype",
       "summary": "Copies an array to a specified data type."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.atan",
+      "href": "/docs/api/numpy/atan/",
+      "import_path": "flopscope.numpy.atan",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-atan",
+      "summary": "Trigonometric inverse tangent, element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.atan2",
+      "href": "/docs/api/numpy/atan2/",
+      "import_path": "flopscope.numpy.atan2",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-atan2",
+      "summary": "Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.atanh",
+      "href": "/docs/api/numpy/atanh/",
+      "import_path": "flopscope.numpy.atanh",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-atanh",
+      "summary": "Inverse hyperbolic tangent element-wise."
     },
     {
       "callable": true,
@@ -1442,6 +1574,30 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.base_repr",
+      "href": "/docs/api/numpy/base-repr/",
+      "import_path": "flopscope.numpy.base_repr",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-base-repr",
+      "summary": "Return a string representation of a number in the given base system."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.binary_repr",
+      "href": "/docs/api/numpy/binary-repr/",
+      "import_path": "flopscope.numpy.binary_repr",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-binary-repr",
+      "summary": "Return the binary representation of the input number as a string."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.bincount",
       "href": "/docs/api/numpy/bincount/",
       "import_path": "flopscope.numpy.bincount",
@@ -1475,6 +1631,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-bitwise-count",
       "summary": "Computes the number of 1-bits in the absolute value of ``x``. Analogous to the builtin `int.bit_count` or ``popcount`` in C++."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.bitwise_invert",
+      "href": "/docs/api/numpy/bitwise-invert/",
+      "import_path": "flopscope.numpy.bitwise_invert",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-bitwise-invert",
+      "summary": "Compute bit-wise inversion, or bit-wise NOT, element-wise."
     },
     {
       "callable": true,
@@ -1574,6 +1742,30 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.bool_",
+      "href": "/docs/api/numpy/bool-/",
+      "import_path": "flopscope.numpy.bool_",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-bool-",
+      "summary": "Boolean type (True or False), stored as a byte."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.broadcast",
+      "href": "/docs/api/numpy/broadcast/",
+      "import_path": "flopscope.numpy.broadcast",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-broadcast",
+      "summary": "Produce an object that mimics broadcasting."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.broadcast_arrays",
       "href": "/docs/api/numpy/broadcast-arrays/",
       "import_path": "flopscope.numpy.broadcast_arrays",
@@ -1658,6 +1850,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.clear_einsum_cache",
+      "href": "/docs/api/numpy/clear-einsum-cache/",
+      "import_path": "flopscope.numpy.clear_einsum_cache",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._einsum",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-clear-einsum-cache",
+      "summary": "Clear the einsum path cache."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.clip",
       "href": "/docs/api/numpy/clip/",
       "import_path": "flopscope.numpy.clip",
@@ -1694,6 +1898,30 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.complex128",
+      "href": "/docs/api/numpy/complex128/",
+      "import_path": "flopscope.numpy.complex128",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-complex128",
+      "summary": "Complex number type composed of two double-precision floating-point numbers, compatible with Python :class:`complex`."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.complex64",
+      "href": "/docs/api/numpy/complex64/",
+      "import_path": "flopscope.numpy.complex64",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-complex64",
+      "summary": "Complex number type composed of two single-precision floating-point numbers."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.compress",
       "href": "/docs/api/numpy/compress/",
       "import_path": "flopscope.numpy.compress",
@@ -1703,6 +1931,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-compress",
       "summary": "Return selected slices of an array along given axis."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.concat",
+      "href": "/docs/api/numpy/concat/",
+      "import_path": "flopscope.numpy.concat",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-concat",
+      "summary": "Join a sequence of arrays along an existing axis."
     },
     {
       "callable": true,
@@ -1922,6 +2162,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.deg2rad",
+      "href": "/docs/api/numpy/deg2rad/",
+      "import_path": "flopscope.numpy.deg2rad",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-deg2rad",
+      "summary": "Convert angles from degrees to radians."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.degrees",
       "href": "/docs/api/numpy/degrees/",
       "import_path": "flopscope.numpy.degrees",
@@ -2042,6 +2294,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.divmod",
+      "href": "/docs/api/numpy/divmod/",
+      "import_path": "flopscope.numpy.divmod",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-divmod",
+      "summary": "Return element-wise quotient and remainder simultaneously."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.dot",
       "href": "/docs/api/numpy/dot/",
       "import_path": "flopscope.numpy.dot",
@@ -2078,6 +2342,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.dtype",
+      "href": "/docs/api/numpy/dtype/",
+      "import_path": "flopscope.numpy.dtype",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-dtype",
+      "summary": "Create a data type object."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.ediff1d",
       "href": "/docs/api/numpy/ediff1d/",
       "import_path": "flopscope.numpy.ediff1d",
@@ -2099,6 +2375,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-einsum",
       "summary": "Evaluates the Einstein summation convention on the operands."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.einsum_cache_info",
+      "href": "/docs/api/numpy/einsum-cache-info/",
+      "import_path": "flopscope.numpy.einsum_cache_info",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._einsum",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-einsum-cache-info",
+      "summary": "Return einsum path cache statistics."
     },
     {
       "callable": true,
@@ -2147,6 +2435,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-equal",
       "summary": "Return (x1 == x2) element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.errstate",
+      "href": "/docs/api/numpy/errstate/",
+      "import_path": "flopscope.numpy.errstate",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-errstate",
+      "summary": "Context manager for floating-point error handling."
     },
     {
       "callable": true,
@@ -2462,6 +2762,30 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.finfo",
+      "href": "/docs/api/numpy/finfo/",
+      "import_path": "flopscope.numpy.finfo",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-finfo",
+      "summary": "Machine limits for floating point types."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.fix",
+      "href": "/docs/api/numpy/fix/",
+      "import_path": "flopscope.numpy.fix",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-fix",
+      "summary": "Round to nearest integer towards zero."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.flatnonzero",
       "href": "/docs/api/numpy/flatnonzero/",
       "import_path": "flopscope.numpy.flatnonzero",
@@ -2510,6 +2834,42 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.float16",
+      "href": "/docs/api/numpy/float16/",
+      "import_path": "flopscope.numpy.float16",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-float16",
+      "summary": "Half-precision floating-point number type."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.float32",
+      "href": "/docs/api/numpy/float32/",
+      "import_path": "flopscope.numpy.float32",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-float32",
+      "summary": "Single-precision floating-point number type, compatible with C ``float``."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.float64",
+      "href": "/docs/api/numpy/float64/",
+      "import_path": "flopscope.numpy.float64",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-float64",
+      "summary": "Double-precision floating-point number type, compatible with Python :class:`float` and C ``double``."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.float_power",
       "href": "/docs/api/numpy/float-power/",
       "import_path": "flopscope.numpy.float_power",
@@ -2519,6 +2879,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-float-power",
       "summary": "First array elements raised to powers from second array, element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.floating",
+      "href": "/docs/api/numpy/floating/",
+      "import_path": "flopscope.numpy.floating",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-floating",
+      "summary": "Abstract base class of all floating-point scalar types."
     },
     {
       "callable": true,
@@ -2618,6 +2990,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.fromfile",
+      "href": "/docs/api/numpy/fromfile/",
+      "import_path": "flopscope.numpy.fromfile",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-fromfile",
+      "summary": "Construct an array from data in a text or binary file."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.fromfunction",
       "href": "/docs/api/numpy/fromfunction/",
       "import_path": "flopscope.numpy.fromfunction",
@@ -2639,6 +3023,30 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-fromiter",
       "summary": "Create a new 1-dimensional array from an iterable object."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.fromregex",
+      "href": "/docs/api/numpy/fromregex/",
+      "import_path": "flopscope.numpy.fromregex",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-fromregex",
+      "summary": "Construct an array from a text file, using regular expression parsing."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.fromstring",
+      "href": "/docs/api/numpy/fromstring/",
+      "import_path": "flopscope.numpy.fromstring",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-fromstring",
+      "summary": "A new 1-D array initialized from text data in a string."
     },
     {
       "callable": true,
@@ -2687,6 +3095,30 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-geomspace",
       "summary": "Return numbers spaced evenly on a log scale (a geometric progression)."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.get_printoptions",
+      "href": "/docs/api/numpy/get-printoptions/",
+      "import_path": "flopscope.numpy.get_printoptions",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-get-printoptions",
+      "summary": "Return the current print options."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.geterr",
+      "href": "/docs/api/numpy/geterr/",
+      "import_path": "flopscope.numpy.geterr",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-geterr",
+      "summary": "Get the current way of handling floating-point errors."
     },
     {
       "callable": true,
@@ -2870,6 +3302,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.iinfo",
+      "href": "/docs/api/numpy/iinfo/",
+      "import_path": "flopscope.numpy.iinfo",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-iinfo",
+      "summary": "Machine limits for integer types."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.imag",
       "href": "/docs/api/numpy/imag/",
       "import_path": "flopscope.numpy.imag",
@@ -2927,6 +3371,66 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-insert",
       "summary": "Insert values along the given axis before the given indices."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.int16",
+      "href": "/docs/api/numpy/int16/",
+      "import_path": "flopscope.numpy.int16",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-int16",
+      "summary": "Signed integer type, compatible with C ``short``."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.int32",
+      "href": "/docs/api/numpy/int32/",
+      "import_path": "flopscope.numpy.int32",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-int32",
+      "summary": "Signed integer type, compatible with C ``int``."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.int64",
+      "href": "/docs/api/numpy/int64/",
+      "import_path": "flopscope.numpy.int64",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-int64",
+      "summary": "Default signed integer type, 64bit on 64bit systems and 32bit on 32bit systems."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.int8",
+      "href": "/docs/api/numpy/int8/",
+      "import_path": "flopscope.numpy.int8",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-int8",
+      "summary": "Signed integer type, compatible with C ``char``."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.integer",
+      "href": "/docs/api/numpy/integer/",
+      "import_path": "flopscope.numpy.integer",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-integer",
+      "summary": "Abstract base class of all integer scalar types."
     },
     {
       "callable": true,
@@ -3071,6 +3575,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-isnan",
       "summary": "Test element-wise for NaN and return result as a boolean array."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.isnat",
+      "href": "/docs/api/numpy/isnat/",
+      "import_path": "flopscope.numpy.isnat",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-isnat",
+      "summary": "Test element-wise for NaT (not a time) and return result as a boolean array."
     },
     {
       "callable": true,
@@ -4178,6 +4694,30 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.ndarray",
+      "href": "/docs/api/numpy/ndarray/",
+      "import_path": "flopscope.numpy.ndarray",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "flopscope._ndarray",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-ndarray",
+      "summary": "A numpy ndarray subclass with FLOP-tracked operators."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.ndenumerate",
+      "href": "/docs/api/numpy/ndenumerate/",
+      "import_path": "flopscope.numpy.ndenumerate",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-ndenumerate",
+      "summary": "Multidimensional index iterator."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.ndim",
       "href": "/docs/api/numpy/ndim/",
       "import_path": "flopscope.numpy.ndim",
@@ -4187,6 +4727,30 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-ndim",
       "summary": "Return the number of dimensions of an array."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.ndindex",
+      "href": "/docs/api/numpy/ndindex/",
+      "import_path": "flopscope.numpy.ndindex",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-ndindex",
+      "summary": "An N-dimensional iterator object to index arrays."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.nditer",
+      "href": "/docs/api/numpy/nditer/",
+      "import_path": "flopscope.numpy.nditer",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-nditer",
+      "summary": "Efficient multi-dimensional iterator object to iterate over arrays. To get started using this object, see the :ref:`introductory guide to array iteration <arrays.nditer>`."
     },
     {
       "callable": true,
@@ -4235,6 +4799,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-not-equal",
       "summary": "Return (x1 != x2) element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.number",
+      "href": "/docs/api/numpy/number/",
+      "import_path": "flopscope.numpy.number",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-number",
+      "summary": "Abstract base class of all numeric scalar types."
     },
     {
       "callable": true,
@@ -4478,6 +5054,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.pow",
+      "href": "/docs/api/numpy/pow/",
+      "import_path": "flopscope.numpy.pow",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-pow",
+      "summary": "First array elements raised to powers from second array, element-wise."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.power",
       "href": "/docs/api/numpy/power/",
       "import_path": "flopscope.numpy.power",
@@ -4487,6 +5075,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-power",
       "summary": "First array elements raised to powers from second array, element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.printoptions",
+      "href": "/docs/api/numpy/printoptions/",
+      "import_path": "flopscope.numpy.printoptions",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-printoptions",
+      "summary": "Context manager for setting print options."
     },
     {
       "callable": true,
@@ -4574,6 +5174,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.rad2deg",
+      "href": "/docs/api/numpy/rad2deg/",
+      "import_path": "flopscope.numpy.rad2deg",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-rad2deg",
+      "summary": "Convert angles from radians to degrees."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.radians",
       "href": "/docs/api/numpy/radians/",
       "import_path": "flopscope.numpy.radians",
@@ -4583,6 +5195,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-radians",
       "summary": "Convert angles from degrees to radians."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.random.Generator",
+      "href": "/docs/api/numpy/random/generator/",
+      "import_path": "flopscope.numpy.random.Generator",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy.random._generator",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-random-generator",
+      "summary": "Container for the BitGenerators."
     },
     {
       "callable": true,
@@ -5438,6 +6062,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.round",
+      "href": "/docs/api/numpy/round/",
+      "import_path": "flopscope.numpy.round",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-round",
+      "summary": "Evenly round to the given number of decimals."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.row_stack",
       "href": "/docs/api/numpy/row-stack/",
       "import_path": "flopscope.numpy.row_stack",
@@ -5474,6 +6110,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.set_printoptions",
+      "href": "/docs/api/numpy/set-printoptions/",
+      "import_path": "flopscope.numpy.set_printoptions",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-set-printoptions",
+      "summary": "Set printing options."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.setdiff1d",
       "href": "/docs/api/numpy/setdiff1d/",
       "import_path": "flopscope.numpy.setdiff1d",
@@ -5483,6 +6131,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-setdiff1d",
       "summary": "Find the set difference of two arrays."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.seterr",
+      "href": "/docs/api/numpy/seterr/",
+      "import_path": "flopscope.numpy.seterr",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-seterr",
+      "summary": "Set how floating-point errors are handled."
     },
     {
       "callable": true,
@@ -5846,6 +6506,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.trapz",
+      "href": "/docs/api/numpy/trapz/",
+      "import_path": "flopscope.numpy.trapz",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-trapz",
+      "summary": "`trapz` is deprecated in NumPy 2.0."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.tri",
       "href": "/docs/api/numpy/tri/",
       "import_path": "flopscope.numpy.tri",
@@ -5975,6 +6647,54 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-typename",
       "summary": "Return a description for the given data type code."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.uint16",
+      "href": "/docs/api/numpy/uint16/",
+      "import_path": "flopscope.numpy.uint16",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-uint16",
+      "summary": "Unsigned integer type, compatible with C ``unsigned short``."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.uint32",
+      "href": "/docs/api/numpy/uint32/",
+      "import_path": "flopscope.numpy.uint32",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-uint32",
+      "summary": "Unsigned integer type, compatible with C ``unsigned int``."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.uint64",
+      "href": "/docs/api/numpy/uint64/",
+      "import_path": "flopscope.numpy.uint64",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-uint64",
+      "summary": "Unsigned signed integer type, 64bit on 64bit systems and 32bit on 32bit systems."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.uint8",
+      "href": "/docs/api/numpy/uint8/",
+      "import_path": "flopscope.numpy.uint8",
+      "is_operation_cost_leaf": false,
+      "kind": "class",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-uint8",
+      "summary": "Unsigned integer type, compatible with C ``unsigned char``."
     },
     {
       "callable": true,
@@ -6616,6 +7336,18 @@
   "operation_cost_index": [
     {
       "callable": true,
+      "display_name": "flopscope.numpy.abs",
+      "href": "/docs/api/numpy/abs/",
+      "import_path": "flopscope.numpy.abs",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-abs",
+      "summary": "Calculate the absolute value element-wise."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.absolute",
       "href": "/docs/api/numpy/absolute/",
       "import_path": "flopscope.numpy.absolute",
@@ -6625,6 +7357,30 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-absolute",
       "summary": "Calculate the absolute value element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.acos",
+      "href": "/docs/api/numpy/acos/",
+      "import_path": "flopscope.numpy.acos",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-acos",
+      "summary": "Trigonometric inverse cosine, element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.acosh",
+      "href": "/docs/api/numpy/acosh/",
+      "import_path": "flopscope.numpy.acosh",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-acosh",
+      "summary": "Inverse hyperbolic cosine, element-wise."
     },
     {
       "callable": true,
@@ -6661,6 +7417,30 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-allclose",
       "summary": "Returns True if two arrays are element-wise equal within a tolerance."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.amax",
+      "href": "/docs/api/numpy/amax/",
+      "import_path": "flopscope.numpy.amax",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-amax",
+      "summary": "Return the maximum of an array or maximum along an axis."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.amin",
+      "href": "/docs/api/numpy/amin/",
+      "import_path": "flopscope.numpy.amin",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-amin",
+      "summary": "Return the minimum of an array or minimum along an axis."
     },
     {
       "callable": true,
@@ -6880,6 +7660,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.around",
+      "href": "/docs/api/numpy/around/",
+      "import_path": "flopscope.numpy.around",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-around",
+      "summary": "Round an array to the given number of decimals."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.array",
       "href": "/docs/api/numpy/array/",
       "import_path": "flopscope.numpy.array",
@@ -6952,6 +7744,30 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.asin",
+      "href": "/docs/api/numpy/asin/",
+      "import_path": "flopscope.numpy.asin",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-asin",
+      "summary": "Inverse sine, element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.asinh",
+      "href": "/docs/api/numpy/asinh/",
+      "import_path": "flopscope.numpy.asinh",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-asinh",
+      "summary": "Inverse hyperbolic sine element-wise."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.astype",
       "href": "/docs/api/numpy/astype/",
       "import_path": "flopscope.numpy.astype",
@@ -6961,6 +7777,42 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-astype",
       "summary": "Copies an array to a specified data type."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.atan",
+      "href": "/docs/api/numpy/atan/",
+      "import_path": "flopscope.numpy.atan",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-atan",
+      "summary": "Trigonometric inverse tangent, element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.atan2",
+      "href": "/docs/api/numpy/atan2/",
+      "import_path": "flopscope.numpy.atan2",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-atan2",
+      "summary": "Element-wise arc tangent of ``x1/x2`` choosing the quadrant correctly."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.atanh",
+      "href": "/docs/api/numpy/atanh/",
+      "import_path": "flopscope.numpy.atanh",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-atanh",
+      "summary": "Inverse hyperbolic tangent element-wise."
     },
     {
       "callable": true,
@@ -7024,6 +7876,30 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.base_repr",
+      "href": "/docs/api/numpy/base-repr/",
+      "import_path": "flopscope.numpy.base_repr",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-base-repr",
+      "summary": "Return a string representation of a number in the given base system."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.binary_repr",
+      "href": "/docs/api/numpy/binary-repr/",
+      "import_path": "flopscope.numpy.binary_repr",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-binary-repr",
+      "summary": "Return the binary representation of the input number as a string."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.bincount",
       "href": "/docs/api/numpy/bincount/",
       "import_path": "flopscope.numpy.bincount",
@@ -7057,6 +7933,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-bitwise-count",
       "summary": "Computes the number of 1-bits in the absolute value of ``x``. Analogous to the builtin `int.bit_count` or ``popcount`` in C++."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.bitwise_invert",
+      "href": "/docs/api/numpy/bitwise-invert/",
+      "import_path": "flopscope.numpy.bitwise_invert",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-bitwise-invert",
+      "summary": "Compute bit-wise inversion, or bit-wise NOT, element-wise."
     },
     {
       "callable": true,
@@ -7240,6 +8128,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.clear_einsum_cache",
+      "href": "/docs/api/numpy/clear-einsum-cache/",
+      "import_path": "flopscope.numpy.clear_einsum_cache",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._einsum",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-clear-einsum-cache",
+      "summary": "Clear the einsum path cache."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.clip",
       "href": "/docs/api/numpy/clip/",
       "import_path": "flopscope.numpy.clip",
@@ -7285,6 +8185,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-compress",
       "summary": "Return selected slices of an array along given axis."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.concat",
+      "href": "/docs/api/numpy/concat/",
+      "import_path": "flopscope.numpy.concat",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-concat",
+      "summary": "Join a sequence of arrays along an existing axis."
     },
     {
       "callable": true,
@@ -7504,6 +8416,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.deg2rad",
+      "href": "/docs/api/numpy/deg2rad/",
+      "import_path": "flopscope.numpy.deg2rad",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-deg2rad",
+      "summary": "Convert angles from degrees to radians."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.degrees",
       "href": "/docs/api/numpy/degrees/",
       "import_path": "flopscope.numpy.degrees",
@@ -7624,6 +8548,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.divmod",
+      "href": "/docs/api/numpy/divmod/",
+      "import_path": "flopscope.numpy.divmod",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-divmod",
+      "summary": "Return element-wise quotient and remainder simultaneously."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.dot",
       "href": "/docs/api/numpy/dot/",
       "import_path": "flopscope.numpy.dot",
@@ -7681,6 +8617,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-einsum",
       "summary": "Evaluates the Einstein summation convention on the operands."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.einsum_cache_info",
+      "href": "/docs/api/numpy/einsum-cache-info/",
+      "import_path": "flopscope.numpy.einsum_cache_info",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._einsum",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-einsum-cache-info",
+      "summary": "Return einsum path cache statistics."
     },
     {
       "callable": true,
@@ -8044,6 +8992,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.fix",
+      "href": "/docs/api/numpy/fix/",
+      "import_path": "flopscope.numpy.fix",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-fix",
+      "summary": "Round to nearest integer towards zero."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.flatnonzero",
       "href": "/docs/api/numpy/flatnonzero/",
       "import_path": "flopscope.numpy.flatnonzero",
@@ -8200,6 +9160,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.fromfile",
+      "href": "/docs/api/numpy/fromfile/",
+      "import_path": "flopscope.numpy.fromfile",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-fromfile",
+      "summary": "Construct an array from data in a text or binary file."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.fromfunction",
       "href": "/docs/api/numpy/fromfunction/",
       "import_path": "flopscope.numpy.fromfunction",
@@ -8221,6 +9193,30 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-fromiter",
       "summary": "Create a new 1-dimensional array from an iterable object."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.fromregex",
+      "href": "/docs/api/numpy/fromregex/",
+      "import_path": "flopscope.numpy.fromregex",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-fromregex",
+      "summary": "Construct an array from a text file, using regular expression parsing."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.fromstring",
+      "href": "/docs/api/numpy/fromstring/",
+      "import_path": "flopscope.numpy.fromstring",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-fromstring",
+      "summary": "A new 1-D array initialized from text data in a string."
     },
     {
       "callable": true,
@@ -8269,6 +9265,30 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-geomspace",
       "summary": "Return numbers spaced evenly on a log scale (a geometric progression)."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.get_printoptions",
+      "href": "/docs/api/numpy/get-printoptions/",
+      "import_path": "flopscope.numpy.get_printoptions",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-get-printoptions",
+      "summary": "Return the current print options."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.geterr",
+      "href": "/docs/api/numpy/geterr/",
+      "import_path": "flopscope.numpy.geterr",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-geterr",
+      "summary": "Get the current way of handling floating-point errors."
     },
     {
       "callable": true,
@@ -8653,6 +9673,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-isnan",
       "summary": "Test element-wise for NaN and return result as a boolean array."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.isnat",
+      "href": "/docs/api/numpy/isnat/",
+      "import_path": "flopscope.numpy.isnat",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-isnat",
+      "summary": "Test element-wise for NaT (not a time) and return result as a boolean array."
     },
     {
       "callable": true,
@@ -10060,6 +11092,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.pow",
+      "href": "/docs/api/numpy/pow/",
+      "import_path": "flopscope.numpy.pow",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-pow",
+      "summary": "First array elements raised to powers from second array, element-wise."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.power",
       "href": "/docs/api/numpy/power/",
       "import_path": "flopscope.numpy.power",
@@ -10069,6 +11113,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-power",
       "summary": "First array elements raised to powers from second array, element-wise."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.printoptions",
+      "href": "/docs/api/numpy/printoptions/",
+      "import_path": "flopscope.numpy.printoptions",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-printoptions",
+      "summary": "Context manager for setting print options."
     },
     {
       "callable": true,
@@ -10153,6 +11209,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-quantile",
       "summary": "Compute the q-th quantile of the data along the specified axis."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.rad2deg",
+      "href": "/docs/api/numpy/rad2deg/",
+      "import_path": "flopscope.numpy.rad2deg",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-rad2deg",
+      "summary": "Convert angles from radians to degrees."
     },
     {
       "callable": true,
@@ -10996,6 +12064,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.round",
+      "href": "/docs/api/numpy/round/",
+      "import_path": "flopscope.numpy.round",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-round",
+      "summary": "Evenly round to the given number of decimals."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.row_stack",
       "href": "/docs/api/numpy/row-stack/",
       "import_path": "flopscope.numpy.row_stack",
@@ -11032,6 +12112,18 @@
     },
     {
       "callable": true,
+      "display_name": "flopscope.numpy.set_printoptions",
+      "href": "/docs/api/numpy/set-printoptions/",
+      "import_path": "flopscope.numpy.set_printoptions",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-set-printoptions",
+      "summary": "Set printing options."
+    },
+    {
+      "callable": true,
       "display_name": "flopscope.numpy.setdiff1d",
       "href": "/docs/api/numpy/setdiff1d/",
       "import_path": "flopscope.numpy.setdiff1d",
@@ -11041,6 +12133,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-setdiff1d",
       "summary": "Find the set difference of two arrays."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.seterr",
+      "href": "/docs/api/numpy/seterr/",
+      "import_path": "flopscope.numpy.seterr",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "numpy",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-seterr",
+      "summary": "Set how floating-point errors are handled."
     },
     {
       "callable": true,
@@ -11401,6 +12505,18 @@
       "namespace": "numpy",
       "slug": "flopscope-numpy-trapezoid",
       "summary": "Integrate along the given axis using the composite trapezoidal rule."
+    },
+    {
+      "callable": true,
+      "display_name": "flopscope.numpy.trapz",
+      "href": "/docs/api/numpy/trapz/",
+      "import_path": "flopscope.numpy.trapz",
+      "is_operation_cost_leaf": true,
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "namespace": "numpy",
+      "slug": "flopscope-numpy-trapz",
+      "summary": "`trapz` is deprecated in NumPy 2.0."
     },
     {
       "callable": true,
@@ -12064,5 +13180,5 @@
     }
   ],
   "schema_version": 1,
-  "total": 551
+  "total": 611
 }

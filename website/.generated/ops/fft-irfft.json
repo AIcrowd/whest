@@ -860,7 +860,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.irfft",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L236",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L256",
   "href": "/docs/api/numpy/fft/irfft/",
   "legacy_href": "/docs/api/ops/fft-irfft/",
   "module": "numpy.fft",
@@ -1046,7 +1046,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.irfft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.irfft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-irfft",
   "summary": "Computes the inverse of `rfft`.",
   "upstream_ref_label": "NumPy Ref",

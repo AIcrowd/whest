@@ -706,7 +706,7 @@
     "name": "linalg.qr",
     "notes": "QR decomposition. Cost: $m \\cdot n \\cdot \\min(m,n)$.",
     "numpy_ref": "np.linalg.qr",
-    "signature": "fnp.linalg.qr(a, mode='reduced')",
+    "signature": "fnp.linalg.qr(a: 'ArrayLike', mode: 'str' = 'reduced') -> 'tuple[FlopscopeArray, FlopscopeArray] | FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the qr factorization of a matrix.",
     "weight": 4.0
@@ -714,7 +714,7 @@
   "schema_version": 1,
   "slug": "linalg-qr",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L82",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L83",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L928"
   }
 }

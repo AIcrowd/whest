@@ -567,6 +567,15 @@
       "module": "flopscope._symmetric",
       "slug": "flopscope-symmetrize"
     },
+    "/docs/api/numpy/abs/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.abs",
+      "href": "/docs/api/numpy/abs/",
+      "import_path": "flopscope.numpy.abs",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-abs"
+    },
     "/docs/api/numpy/absolute/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.absolute",
@@ -575,6 +584,24 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-absolute"
+    },
+    "/docs/api/numpy/acos/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.acos",
+      "href": "/docs/api/numpy/acos/",
+      "import_path": "flopscope.numpy.acos",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-acos"
+    },
+    "/docs/api/numpy/acosh/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.acosh",
+      "href": "/docs/api/numpy/acosh/",
+      "import_path": "flopscope.numpy.acosh",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-acosh"
     },
     "/docs/api/numpy/add/": {
       "callable": true,
@@ -602,6 +629,24 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-allclose"
+    },
+    "/docs/api/numpy/amax/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.amax",
+      "href": "/docs/api/numpy/amax/",
+      "import_path": "flopscope.numpy.amax",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-amax"
+    },
+    "/docs/api/numpy/amin/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.amin",
+      "href": "/docs/api/numpy/amin/",
+      "import_path": "flopscope.numpy.amin",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-amin"
     },
     "/docs/api/numpy/angle/": {
       "callable": true,
@@ -765,6 +810,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-argwhere"
     },
+    "/docs/api/numpy/around/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.around",
+      "href": "/docs/api/numpy/around/",
+      "import_path": "flopscope.numpy.around",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-around"
+    },
     "/docs/api/numpy/array-equal/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.array_equal",
@@ -819,6 +873,24 @@
       "module": "numpy",
       "slug": "flopscope-numpy-asarray"
     },
+    "/docs/api/numpy/asin/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.asin",
+      "href": "/docs/api/numpy/asin/",
+      "import_path": "flopscope.numpy.asin",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-asin"
+    },
+    "/docs/api/numpy/asinh/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.asinh",
+      "href": "/docs/api/numpy/asinh/",
+      "import_path": "flopscope.numpy.asinh",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-asinh"
+    },
     "/docs/api/numpy/astype/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.astype",
@@ -827,6 +899,33 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-astype"
+    },
+    "/docs/api/numpy/atan/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.atan",
+      "href": "/docs/api/numpy/atan/",
+      "import_path": "flopscope.numpy.atan",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-atan"
+    },
+    "/docs/api/numpy/atan2/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.atan2",
+      "href": "/docs/api/numpy/atan2/",
+      "import_path": "flopscope.numpy.atan2",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-atan2"
+    },
+    "/docs/api/numpy/atanh/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.atanh",
+      "href": "/docs/api/numpy/atanh/",
+      "import_path": "flopscope.numpy.atanh",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-atanh"
     },
     "/docs/api/numpy/atleast-1d/": {
       "callable": true,
@@ -873,6 +972,24 @@
       "module": "flopscope._window",
       "slug": "flopscope-numpy-bartlett"
     },
+    "/docs/api/numpy/base-repr/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.base_repr",
+      "href": "/docs/api/numpy/base-repr/",
+      "import_path": "flopscope.numpy.base_repr",
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "slug": "flopscope-numpy-base-repr"
+    },
+    "/docs/api/numpy/binary-repr/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.binary_repr",
+      "href": "/docs/api/numpy/binary-repr/",
+      "import_path": "flopscope.numpy.binary_repr",
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "slug": "flopscope-numpy-binary-repr"
+    },
     "/docs/api/numpy/bincount/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.bincount",
@@ -899,6 +1016,15 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-bitwise-count"
+    },
+    "/docs/api/numpy/bitwise-invert/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.bitwise_invert",
+      "href": "/docs/api/numpy/bitwise-invert/",
+      "import_path": "flopscope.numpy.bitwise_invert",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-bitwise-invert"
     },
     "/docs/api/numpy/bitwise-left-shift/": {
       "callable": true,
@@ -972,6 +1098,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-bmat"
     },
+    "/docs/api/numpy/bool-/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.bool_",
+      "href": "/docs/api/numpy/bool-/",
+      "import_path": "flopscope.numpy.bool_",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-bool-"
+    },
     "/docs/api/numpy/broadcast-arrays/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.broadcast_arrays",
@@ -998,6 +1133,15 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-broadcast-to"
+    },
+    "/docs/api/numpy/broadcast/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.broadcast",
+      "href": "/docs/api/numpy/broadcast/",
+      "import_path": "flopscope.numpy.broadcast",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-broadcast"
     },
     "/docs/api/numpy/can-cast/": {
       "callable": true,
@@ -1035,6 +1179,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-choose"
     },
+    "/docs/api/numpy/clear-einsum-cache/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.clear_einsum_cache",
+      "href": "/docs/api/numpy/clear-einsum-cache/",
+      "import_path": "flopscope.numpy.clear_einsum_cache",
+      "kind": "function",
+      "module": "flopscope._einsum",
+      "slug": "flopscope-numpy-clear-einsum-cache"
+    },
     "/docs/api/numpy/clip/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.clip",
@@ -1062,6 +1215,24 @@
       "module": "numpy",
       "slug": "flopscope-numpy-common-type"
     },
+    "/docs/api/numpy/complex128/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.complex128",
+      "href": "/docs/api/numpy/complex128/",
+      "import_path": "flopscope.numpy.complex128",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-complex128"
+    },
+    "/docs/api/numpy/complex64/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.complex64",
+      "href": "/docs/api/numpy/complex64/",
+      "import_path": "flopscope.numpy.complex64",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-complex64"
+    },
     "/docs/api/numpy/compress/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.compress",
@@ -1070,6 +1241,15 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-compress"
+    },
+    "/docs/api/numpy/concat/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.concat",
+      "href": "/docs/api/numpy/concat/",
+      "import_path": "flopscope.numpy.concat",
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "slug": "flopscope-numpy-concat"
     },
     "/docs/api/numpy/concatenate/": {
       "callable": true,
@@ -1233,6 +1413,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-cumulative-sum"
     },
+    "/docs/api/numpy/deg2rad/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.deg2rad",
+      "href": "/docs/api/numpy/deg2rad/",
+      "import_path": "flopscope.numpy.deg2rad",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-deg2rad"
+    },
     "/docs/api/numpy/degrees/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.degrees",
@@ -1323,6 +1512,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-divide"
     },
+    "/docs/api/numpy/divmod/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.divmod",
+      "href": "/docs/api/numpy/divmod/",
+      "import_path": "flopscope.numpy.divmod",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-divmod"
+    },
     "/docs/api/numpy/dot/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.dot",
@@ -1350,6 +1548,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-dstack"
     },
+    "/docs/api/numpy/dtype/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.dtype",
+      "href": "/docs/api/numpy/dtype/",
+      "import_path": "flopscope.numpy.dtype",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-dtype"
+    },
     "/docs/api/numpy/ediff1d/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.ediff1d",
@@ -1358,6 +1565,15 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-ediff1d"
+    },
+    "/docs/api/numpy/einsum-cache-info/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.einsum_cache_info",
+      "href": "/docs/api/numpy/einsum-cache-info/",
+      "import_path": "flopscope.numpy.einsum_cache_info",
+      "kind": "function",
+      "module": "flopscope._einsum",
+      "slug": "flopscope-numpy-einsum-cache-info"
     },
     "/docs/api/numpy/einsum-path/": {
       "callable": true,
@@ -1403,6 +1619,15 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-equal"
+    },
+    "/docs/api/numpy/errstate/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.errstate",
+      "href": "/docs/api/numpy/errstate/",
+      "import_path": "flopscope.numpy.errstate",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-errstate"
     },
     "/docs/api/numpy/exp/": {
       "callable": true,
@@ -1638,6 +1863,24 @@
       "module": "numpy",
       "slug": "flopscope-numpy-fill-diagonal"
     },
+    "/docs/api/numpy/finfo/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.finfo",
+      "href": "/docs/api/numpy/finfo/",
+      "import_path": "flopscope.numpy.finfo",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-finfo"
+    },
+    "/docs/api/numpy/fix/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.fix",
+      "href": "/docs/api/numpy/fix/",
+      "import_path": "flopscope.numpy.fix",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-fix"
+    },
     "/docs/api/numpy/flatnonzero/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.flatnonzero",
@@ -1682,6 +1925,42 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-float-power"
+    },
+    "/docs/api/numpy/float16/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.float16",
+      "href": "/docs/api/numpy/float16/",
+      "import_path": "flopscope.numpy.float16",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-float16"
+    },
+    "/docs/api/numpy/float32/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.float32",
+      "href": "/docs/api/numpy/float32/",
+      "import_path": "flopscope.numpy.float32",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-float32"
+    },
+    "/docs/api/numpy/float64/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.float64",
+      "href": "/docs/api/numpy/float64/",
+      "import_path": "flopscope.numpy.float64",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-float64"
+    },
+    "/docs/api/numpy/floating/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.floating",
+      "href": "/docs/api/numpy/floating/",
+      "import_path": "flopscope.numpy.floating",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-floating"
     },
     "/docs/api/numpy/floor-divide/": {
       "callable": true,
@@ -1755,6 +2034,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-frombuffer"
     },
+    "/docs/api/numpy/fromfile/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.fromfile",
+      "href": "/docs/api/numpy/fromfile/",
+      "import_path": "flopscope.numpy.fromfile",
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "slug": "flopscope-numpy-fromfile"
+    },
     "/docs/api/numpy/fromfunction/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.fromfunction",
@@ -1772,6 +2060,24 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-fromiter"
+    },
+    "/docs/api/numpy/fromregex/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.fromregex",
+      "href": "/docs/api/numpy/fromregex/",
+      "import_path": "flopscope.numpy.fromregex",
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "slug": "flopscope-numpy-fromregex"
+    },
+    "/docs/api/numpy/fromstring/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.fromstring",
+      "href": "/docs/api/numpy/fromstring/",
+      "import_path": "flopscope.numpy.fromstring",
+      "kind": "function",
+      "module": "flopscope._free_ops",
+      "slug": "flopscope-numpy-fromstring"
     },
     "/docs/api/numpy/full-like/": {
       "callable": true,
@@ -1808,6 +2114,24 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-geomspace"
+    },
+    "/docs/api/numpy/get-printoptions/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.get_printoptions",
+      "href": "/docs/api/numpy/get-printoptions/",
+      "import_path": "flopscope.numpy.get_printoptions",
+      "kind": "function",
+      "module": "numpy",
+      "slug": "flopscope-numpy-get-printoptions"
+    },
+    "/docs/api/numpy/geterr/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.geterr",
+      "href": "/docs/api/numpy/geterr/",
+      "import_path": "flopscope.numpy.geterr",
+      "kind": "function",
+      "module": "numpy",
+      "slug": "flopscope-numpy-geterr"
     },
     "/docs/api/numpy/gradient/": {
       "callable": true,
@@ -1944,6 +2268,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-identity"
     },
+    "/docs/api/numpy/iinfo/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.iinfo",
+      "href": "/docs/api/numpy/iinfo/",
+      "import_path": "flopscope.numpy.iinfo",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-iinfo"
+    },
     "/docs/api/numpy/imag/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.imag",
@@ -1988,6 +2321,51 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-insert"
+    },
+    "/docs/api/numpy/int16/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.int16",
+      "href": "/docs/api/numpy/int16/",
+      "import_path": "flopscope.numpy.int16",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-int16"
+    },
+    "/docs/api/numpy/int32/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.int32",
+      "href": "/docs/api/numpy/int32/",
+      "import_path": "flopscope.numpy.int32",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-int32"
+    },
+    "/docs/api/numpy/int64/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.int64",
+      "href": "/docs/api/numpy/int64/",
+      "import_path": "flopscope.numpy.int64",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-int64"
+    },
+    "/docs/api/numpy/int8/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.int8",
+      "href": "/docs/api/numpy/int8/",
+      "import_path": "flopscope.numpy.int8",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-int8"
+    },
+    "/docs/api/numpy/integer/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.integer",
+      "href": "/docs/api/numpy/integer/",
+      "import_path": "flopscope.numpy.integer",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-integer"
     },
     "/docs/api/numpy/interp/": {
       "callable": true,
@@ -2096,6 +2474,15 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-isnan"
+    },
+    "/docs/api/numpy/isnat/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.isnat",
+      "href": "/docs/api/numpy/isnat/",
+      "import_path": "flopscope.numpy.isnat",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-isnat"
     },
     "/docs/api/numpy/isneginf/": {
       "callable": true,
@@ -2925,6 +3312,24 @@
       "module": "numpy",
       "slug": "flopscope-numpy-nanvar"
     },
+    "/docs/api/numpy/ndarray/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.ndarray",
+      "href": "/docs/api/numpy/ndarray/",
+      "import_path": "flopscope.numpy.ndarray",
+      "kind": "class",
+      "module": "flopscope._ndarray",
+      "slug": "flopscope-numpy-ndarray"
+    },
+    "/docs/api/numpy/ndenumerate/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.ndenumerate",
+      "href": "/docs/api/numpy/ndenumerate/",
+      "import_path": "flopscope.numpy.ndenumerate",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-ndenumerate"
+    },
     "/docs/api/numpy/ndim/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.ndim",
@@ -2933,6 +3338,24 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-ndim"
+    },
+    "/docs/api/numpy/ndindex/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.ndindex",
+      "href": "/docs/api/numpy/ndindex/",
+      "import_path": "flopscope.numpy.ndindex",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-ndindex"
+    },
+    "/docs/api/numpy/nditer/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.nditer",
+      "href": "/docs/api/numpy/nditer/",
+      "import_path": "flopscope.numpy.nditer",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-nditer"
     },
     "/docs/api/numpy/negative/": {
       "callable": true,
@@ -2969,6 +3392,15 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-not-equal"
+    },
+    "/docs/api/numpy/number/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.number",
+      "href": "/docs/api/numpy/number/",
+      "import_path": "flopscope.numpy.number",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-number"
     },
     "/docs/api/numpy/ones-like/": {
       "callable": true,
@@ -3150,6 +3582,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-positive"
     },
+    "/docs/api/numpy/pow/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.pow",
+      "href": "/docs/api/numpy/pow/",
+      "import_path": "flopscope.numpy.pow",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-pow"
+    },
     "/docs/api/numpy/power/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.power",
@@ -3158,6 +3599,15 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-power"
+    },
+    "/docs/api/numpy/printoptions/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.printoptions",
+      "href": "/docs/api/numpy/printoptions/",
+      "import_path": "flopscope.numpy.printoptions",
+      "kind": "function",
+      "module": "numpy",
+      "slug": "flopscope-numpy-printoptions"
     },
     "/docs/api/numpy/prod/": {
       "callable": true,
@@ -3221,6 +3671,15 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-quantile"
+    },
+    "/docs/api/numpy/rad2deg/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.rad2deg",
+      "href": "/docs/api/numpy/rad2deg/",
+      "import_path": "flopscope.numpy.rad2deg",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-rad2deg"
     },
     "/docs/api/numpy/radians/": {
       "callable": true,
@@ -3320,6 +3779,15 @@
       "kind": "function",
       "module": "numpy.random",
       "slug": "flopscope-numpy-random-gamma"
+    },
+    "/docs/api/numpy/random/generator/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.random.Generator",
+      "href": "/docs/api/numpy/random/generator/",
+      "import_path": "flopscope.numpy.random.Generator",
+      "kind": "class",
+      "module": "numpy.random._generator",
+      "slug": "flopscope-numpy-random-generator"
     },
     "/docs/api/numpy/random/geometric/": {
       "callable": true,
@@ -3870,6 +4338,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-rot90"
     },
+    "/docs/api/numpy/round/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.round",
+      "href": "/docs/api/numpy/round/",
+      "import_path": "flopscope.numpy.round",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-round"
+    },
     "/docs/api/numpy/row-stack/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.row_stack",
@@ -3897,6 +4374,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-select"
     },
+    "/docs/api/numpy/set-printoptions/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.set_printoptions",
+      "href": "/docs/api/numpy/set-printoptions/",
+      "import_path": "flopscope.numpy.set_printoptions",
+      "kind": "function",
+      "module": "numpy",
+      "slug": "flopscope-numpy-set-printoptions"
+    },
     "/docs/api/numpy/setdiff1d/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.setdiff1d",
@@ -3905,6 +4391,15 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-setdiff1d"
+    },
+    "/docs/api/numpy/seterr/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.seterr",
+      "href": "/docs/api/numpy/seterr/",
+      "import_path": "flopscope.numpy.seterr",
+      "kind": "function",
+      "module": "numpy",
+      "slug": "flopscope-numpy-seterr"
     },
     "/docs/api/numpy/setxor1d/": {
       "callable": true,
@@ -4176,6 +4671,15 @@
       "module": "numpy",
       "slug": "flopscope-numpy-trapezoid"
     },
+    "/docs/api/numpy/trapz/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.trapz",
+      "href": "/docs/api/numpy/trapz/",
+      "import_path": "flopscope.numpy.trapz",
+      "kind": "function",
+      "module": "flopscope._pointwise",
+      "slug": "flopscope-numpy-trapz"
+    },
     "/docs/api/numpy/tri/": {
       "callable": true,
       "canonical_name": "flopscope.numpy.tri",
@@ -4274,6 +4778,42 @@
       "kind": "function",
       "module": "numpy",
       "slug": "flopscope-numpy-typename"
+    },
+    "/docs/api/numpy/uint16/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.uint16",
+      "href": "/docs/api/numpy/uint16/",
+      "import_path": "flopscope.numpy.uint16",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-uint16"
+    },
+    "/docs/api/numpy/uint32/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.uint32",
+      "href": "/docs/api/numpy/uint32/",
+      "import_path": "flopscope.numpy.uint32",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-uint32"
+    },
+    "/docs/api/numpy/uint64/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.uint64",
+      "href": "/docs/api/numpy/uint64/",
+      "import_path": "flopscope.numpy.uint64",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-uint64"
+    },
+    "/docs/api/numpy/uint8/": {
+      "callable": true,
+      "canonical_name": "flopscope.numpy.uint8",
+      "href": "/docs/api/numpy/uint8/",
+      "import_path": "flopscope.numpy.uint8",
+      "kind": "class",
+      "module": "numpy",
+      "slug": "flopscope-numpy-uint8"
     },
     "/docs/api/numpy/union1d/": {
       "callable": true,

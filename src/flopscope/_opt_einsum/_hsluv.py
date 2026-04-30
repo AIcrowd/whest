@@ -181,7 +181,7 @@ def _luv_to_xyz(color: tuple[float, float, float]) -> tuple[float, float, float]
 
 
 def _xyz_to_rgb(color: tuple[float, float, float]) -> tuple[float, float, float]:
-    return tuple(_from_linear(_dot_product(row, color)) for row in _M)
+    return tuple(_from_linear(_dot_product(row, color)) for row in _M)  # type: ignore[return-value]
 
 
 def _hsluv_to_lch(color: tuple[float, float, float]) -> tuple[float, float, float]:
@@ -211,7 +211,7 @@ def hsluv_to_hex(color: tuple[float, float, float]) -> str:
 
 
 def _hex_to_rgb(color: str) -> tuple[int, int, int]:
-    return tuple(int(color[index : index + 2], 16) for index in (1, 3, 5))
+    return tuple(int(color[index : index + 2], 16) for index in (1, 3, 5))  # type: ignore[return-value]
 
 
 def rgb_distance_hex(left: str, right: str) -> float:

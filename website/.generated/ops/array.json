@@ -856,7 +856,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.array",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L93",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L96",
   "href": "/docs/api/numpy/array/",
   "legacy_href": "/docs/api/ops/array/",
   "module": "numpy",
@@ -1120,7 +1120,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.array(object, dtype=None, **kwargs)",
+  "signature": "fnp.array(object: 'ArrayLike', dtype: 'DTypeLike | None' = None, **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "array",
   "summary": "Create an array.",
   "upstream_ref_label": "NumPy Ref",

@@ -289,7 +289,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.repeat",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L524",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L611",
   "href": "/docs/api/numpy/repeat/",
   "import_path": "flopscope.numpy.repeat",
   "is_operation_cost_leaf": true,
@@ -389,7 +389,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.repeat(a, repeats, axis=None)",
+  "signature": "fnp.repeat(a: 'ArrayLike', repeats: 'int | ArrayLike', axis: 'int | None' = None) -> 'FlopscopeArray'",
   "slug": "repeat",
   "summary": "Repeat each element of an array after themselves",
   "upstream_ref_label": "NumPy Ref",

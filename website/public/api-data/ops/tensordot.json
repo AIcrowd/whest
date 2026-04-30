@@ -941,7 +941,7 @@
     "name": "tensordot",
     "notes": "Tensor dot product along specified axes.",
     "numpy_ref": "np.tensordot",
-    "signature": "fnp.tensordot(a, b, axes=2)",
+    "signature": "fnp.tensordot(a: 'ArrayLike', b: 'ArrayLike', axes: 'Any' = 2) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute tensor dot product along specified axes.",
     "weight": 1.0
@@ -949,7 +949,7 @@
   "schema_version": 1,
   "slug": "tensordot",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1659",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1691",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L968"
   }
 }

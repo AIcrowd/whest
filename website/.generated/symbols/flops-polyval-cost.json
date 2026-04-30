@@ -181,7 +181,7 @@
   ],
   "signature": "flops.flops.polyval_cost(deg: 'int', m: 'int') -> 'int'",
   "slug": "flops-polyval-cost",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L17",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L20",
   "status_note": "",
   "summary": "Cost for polyval: Horner's method = m * deg FLOPs (FMA=1 op).",
   "upstream_source_url": ""

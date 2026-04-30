@@ -42,8 +42,10 @@ from __future__ import annotations
 
 import functools as _functools
 import inspect as _inspect
+from typing import Any
 
 import numpy as _np
+from numpy.typing import DTypeLike
 
 
 def _me():
@@ -506,84 +508,96 @@ class FlopscopeArray(_np.ndarray):
     # evolving method signatures (dtype, out, where, casting, keepdims, axis
     # as positional or keyword).
 
-    def sum(self, *args, **kwargs):
+    def sum(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().sum(self, *args, **kwargs)
 
-    def mean(self, *args, **kwargs):
+    def mean(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().mean(self, *args, **kwargs)
 
-    def prod(self, *args, **kwargs):
+    def prod(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().prod(self, *args, **kwargs)
 
-    def min(self, *args, **kwargs):
+    def min(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().min(self, *args, **kwargs)
 
-    def max(self, *args, **kwargs):
+    def max(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().max(self, *args, **kwargs)
 
-    def std(self, *args, **kwargs):
+    def std(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().std(self, *args, **kwargs)
 
-    def var(self, *args, **kwargs):
+    def var(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().var(self, *args, **kwargs)
 
-    def all(self, *args, **kwargs):
+    def all(self, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().all(self, *args, **kwargs)
 
-    def any(self, *args, **kwargs):
+    def any(self, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().any(self, *args, **kwargs)
 
-    def cumsum(self, *args, **kwargs):
+    def cumsum(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().cumsum(self, *args, **kwargs)
 
-    def cumprod(self, *args, **kwargs):
+    def cumprod(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().cumprod(self, *args, **kwargs)
 
-    def argmin(self, *args, **kwargs):
+    def argmin(self, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().argmin(self, *args, **kwargs)
 
-    def argmax(self, *args, **kwargs):
+    def argmax(self, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().argmax(self, *args, **kwargs)
 
-    def ptp(self, *args, **kwargs):
+    def ptp(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().ptp(self, *args, **kwargs)
 
-    def trace(self, *args, **kwargs):
+    def trace(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().trace(self, *args, **kwargs)
 
-    def round(self, *args, **kwargs):
+    def round(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().round(self, *args, **kwargs)
 
-    def clip(self, *args, **kwargs):
+    def clip(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().clip(self, *args, **kwargs)
+
+    def astype(  # type: ignore[override]
+        self,
+        dtype: DTypeLike,
+        order: Any = "K",
+        casting: Any = "unsafe",
+        subok: bool = True,
+        copy: bool = True,
+    ) -> FlopscopeArray:
+        return _np.ndarray.astype(
+            self, dtype, order=order, casting=casting, subok=subok, copy=copy
+        )  # type: ignore[return-value]
 
     # ----- Other ndarray methods -----
 
-    def dot(self, *args, **kwargs):
+    def dot(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().dot(self, *args, **kwargs)
 
-    def conj(self):
+    def conj(self) -> FlopscopeArray:
         return _me().conjugate(self)
 
-    def conjugate(self):
+    def conjugate(self) -> FlopscopeArray:
         return _me().conjugate(self)
 
-    def argsort(self, *args, **kwargs):
+    def argsort(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().argsort(self, *args, **kwargs)
 
-    def argpartition(self, kth, *args, **kwargs):
+    def argpartition(self, kth: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().argpartition(self, kth, *args, **kwargs)
 
-    def take(self, indices, *args, **kwargs):
+    def take(self, indices: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().take(self, indices, *args, **kwargs)
 
-    def repeat(self, repeats, *args, **kwargs):
+    def repeat(self, repeats: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().repeat(self, repeats, *args, **kwargs)
 
-    def searchsorted(self, v, *args, **kwargs):
+    def searchsorted(self, v: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().searchsorted(self, v, *args, **kwargs)
 
-    def compress(self, condition, *args, **kwargs):
+    def compress(self, condition: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:
         # ndarray.compress(condition) -> np.compress(condition, arr)
         return _me().compress(condition, self, *args, **kwargs)
 
@@ -606,7 +620,7 @@ class FlopscopeArray(_np.ndarray):
                 f"an unsymmetric copy instead."
             )
 
-    def sort(self, *args, **kwargs):
+    def sort(self, *args: Any, **kwargs: Any) -> None:
         self._check_inplace_breaks_symmetry("sort")
         result = _me().sort(self, *args, **kwargs)
         # Strip both self and result before np.copyto: keeps the
@@ -615,7 +629,7 @@ class FlopscopeArray(_np.ndarray):
         # __array_function__ allowlist.
         _np.copyto(_to_base_ndarray(self), _to_base_ndarray(result))
 
-    def partition(self, kth, *args, **kwargs):
+    def partition(self, kth: Any, *args: Any, **kwargs: Any) -> None:
         self._check_inplace_breaks_symmetry("partition")
         result = _me().partition(self, kth, *args, **kwargs)
         _np.copyto(_to_base_ndarray(self), _to_base_ndarray(result))
@@ -652,83 +666,83 @@ class FlopscopeArray(_np.ndarray):
 
     # ----- Binary arithmetic -----
 
-    def __add__(self, other):
+    def __add__(self, other: Any) -> FlopscopeArray:
         return _me().add(self, other)
 
-    def __radd__(self, other):
+    def __radd__(self, other: Any) -> FlopscopeArray:
         return _me().add(other, self)
 
-    def __iadd__(self, other):
+    def __iadd__(self, other: Any) -> FlopscopeArray:
         result = _me().add(self, other)
         return self._inplace_from_result(result, "add")
 
-    def __sub__(self, other):
+    def __sub__(self, other: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().subtract(self, other)
 
-    def __rsub__(self, other):
+    def __rsub__(self, other: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().subtract(other, self)
 
-    def __isub__(self, other):
+    def __isub__(self, other: Any) -> FlopscopeArray:
         result = _me().subtract(self, other)
         return self._inplace_from_result(result, "subtract")
 
-    def __mul__(self, other):
+    def __mul__(self, other: Any) -> FlopscopeArray:
         return _me().multiply(self, other)
 
-    def __rmul__(self, other):
+    def __rmul__(self, other: Any) -> FlopscopeArray:
         return _me().multiply(other, self)
 
-    def __imul__(self, other):
+    def __imul__(self, other: Any) -> FlopscopeArray:
         result = _me().multiply(self, other)
         return self._inplace_from_result(result, "multiply")
 
-    def __truediv__(self, other):
+    def __truediv__(self, other: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().true_divide(self, other)
 
-    def __rtruediv__(self, other):
+    def __rtruediv__(self, other: Any) -> FlopscopeArray:
         return _me().true_divide(other, self)
 
-    def __itruediv__(self, other):
+    def __itruediv__(self, other: Any) -> FlopscopeArray:
         result = _me().true_divide(self, other)
         return self._inplace_from_result(result, "true_divide")
 
-    def __floordiv__(self, other):
+    def __floordiv__(self, other: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().floor_divide(self, other)
 
-    def __rfloordiv__(self, other):
+    def __rfloordiv__(self, other: Any) -> FlopscopeArray:
         return _me().floor_divide(other, self)
 
-    def __ifloordiv__(self, other):
+    def __ifloordiv__(self, other: Any) -> FlopscopeArray:
         result = _me().floor_divide(self, other)
         return self._inplace_from_result(result, "floor_divide")
 
-    def __mod__(self, other):
+    def __mod__(self, other: Any) -> FlopscopeArray:
         return _me().mod(self, other)
 
-    def __rmod__(self, other):
+    def __rmod__(self, other: Any) -> FlopscopeArray:
         return _me().mod(other, self)
 
-    def __imod__(self, other):
+    def __imod__(self, other: Any) -> FlopscopeArray:
         result = _me().mod(self, other)
         return self._inplace_from_result(result, "mod")
 
-    def __pow__(self, other):
+    def __pow__(self, other: Any) -> FlopscopeArray:
         return _me().power(self, other)
 
-    def __rpow__(self, other):
+    def __rpow__(self, other: Any) -> FlopscopeArray:
         return _me().power(other, self)
 
-    def __ipow__(self, other):
+    def __ipow__(self, other: Any) -> FlopscopeArray:
         result = _me().power(self, other)
         return self._inplace_from_result(result, "power")
 
-    def __matmul__(self, other):
+    def __matmul__(self, other: Any) -> FlopscopeArray:
         return _me().matmul(self, other)
 
-    def __rmatmul__(self, other):
+    def __rmatmul__(self, other: Any) -> FlopscopeArray:
         return _me().matmul(other, self)
 
-    def __imatmul__(self, other):
+    def __imatmul__(self, other: Any) -> FlopscopeArray:
         # __imatmul__ is special: matmul output shape may differ from
         # self.shape, in which case in-place mutation is impossible.
         # CPython's documented in-place fallback rebinds the name to the
@@ -742,91 +756,91 @@ class FlopscopeArray(_np.ndarray):
 
     # ----- Unary arithmetic -----
 
-    def __neg__(self):
+    def __neg__(self) -> FlopscopeArray:
         return _me().negative(self)
 
-    def __pos__(self):
+    def __pos__(self) -> FlopscopeArray:
         return _me().positive(self)
 
-    def __abs__(self):
+    def __abs__(self) -> FlopscopeArray:
         return _me().abs(self)
 
-    def __invert__(self):
+    def __invert__(self) -> FlopscopeArray:
         return _me().invert(self)
 
     # ----- Comparison -----
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> FlopscopeArray:
         return _me().equal(self, other)
 
-    def __ne__(self, other):
+    def __ne__(self, other: Any) -> FlopscopeArray:
         return _me().not_equal(self, other)
 
-    def __lt__(self, other):
+    def __lt__(self, other: Any) -> FlopscopeArray:
         return _me().less(self, other)
 
-    def __le__(self, other):
+    def __le__(self, other: Any) -> FlopscopeArray:
         return _me().less_equal(self, other)
 
-    def __gt__(self, other):
+    def __gt__(self, other: Any) -> FlopscopeArray:
         return _me().greater(self, other)
 
-    def __ge__(self, other):
+    def __ge__(self, other: Any) -> FlopscopeArray:
         return _me().greater_equal(self, other)
 
-    def __hash__(self):
+    def __hash__(self) -> int:  # type: ignore[override]
         # numpy ndarray is unhashable; preserve that.
         raise TypeError(f"unhashable type: '{type(self).__name__}'")
 
     # ----- Bitwise -----
 
-    def __and__(self, other):
+    def __and__(self, other: Any) -> FlopscopeArray:
         return _me().bitwise_and(self, other)
 
-    def __rand__(self, other):
+    def __rand__(self, other: Any) -> FlopscopeArray:
         return _me().bitwise_and(other, self)
 
-    def __iand__(self, other):
+    def __iand__(self, other: Any) -> FlopscopeArray:
         result = _me().bitwise_and(self, other)
         return self._inplace_from_result(result, "bitwise_and")
 
-    def __or__(self, other):
+    def __or__(self, other: Any) -> FlopscopeArray:
         return _me().bitwise_or(self, other)
 
-    def __ror__(self, other):
+    def __ror__(self, other: Any) -> FlopscopeArray:
         return _me().bitwise_or(other, self)
 
-    def __ior__(self, other):
+    def __ior__(self, other: Any) -> FlopscopeArray:
         result = _me().bitwise_or(self, other)
         return self._inplace_from_result(result, "bitwise_or")
 
-    def __xor__(self, other):
+    def __xor__(self, other: Any) -> FlopscopeArray:
         return _me().bitwise_xor(self, other)
 
-    def __rxor__(self, other):
+    def __rxor__(self, other: Any) -> FlopscopeArray:
         return _me().bitwise_xor(other, self)
 
-    def __ixor__(self, other):
+    def __ixor__(self, other: Any) -> FlopscopeArray:
         result = _me().bitwise_xor(self, other)
         return self._inplace_from_result(result, "bitwise_xor")
 
-    def __lshift__(self, other):
+    def __lshift__(self, other: Any) -> FlopscopeArray:
         return _me().left_shift(self, other)
 
-    def __rlshift__(self, other):
+    def __rlshift__(self, other: Any) -> FlopscopeArray:
         return _me().left_shift(other, self)
 
-    def __ilshift__(self, other):
+    def __ilshift__(self, other: Any) -> FlopscopeArray:
         result = _me().left_shift(self, other)
         return self._inplace_from_result(result, "left_shift")
 
-    def __rshift__(self, other):
+    def __rshift__(self, other: Any) -> FlopscopeArray:
         return _me().right_shift(self, other)
 
-    def __rrshift__(self, other):
+    def __rrshift__(self, other: Any) -> FlopscopeArray:
         return _me().right_shift(other, self)
 
-    def __irshift__(self, other):
+    def __irshift__(self, other: Any) -> FlopscopeArray:
         result = _me().right_shift(self, other)
         return self._inplace_from_result(result, "right_shift")
 

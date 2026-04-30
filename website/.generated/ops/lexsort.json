@@ -718,7 +718,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.lexsort",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L89",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L102",
   "href": "/docs/api/numpy/lexsort/",
   "legacy_href": "/docs/api/ops/lexsort/",
   "module": "numpy",
@@ -817,7 +817,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.lexsort(keys, axis=-1)",
+  "signature": "fnp.lexsort(keys: 'Sequence[ArrayLike]', axis: 'int' = -1) -> 'FlopscopeArray'",
   "slug": "lexsort",
   "summary": "Perform an indirect stable sort using a sequence of keys.",
   "upstream_ref_label": "NumPy Ref",

@@ -65,7 +65,7 @@ class TestOuterSymmetryPropagation:
         out = np.empty((v.size, v.size))
 
         with BudgetContext(flop_budget=10**8, quiet=True):
-            result = fnp.outer(v, v, out=out)
+            result = fnp.outer(v, v, out=out)  # pyright: ignore[reportArgumentType]
 
         assert result is out
         assert not isinstance(result, SymmetricTensor)
@@ -82,7 +82,7 @@ class TestOuterSymmetryPropagation:
             result = fnp.outer(v, v, out=out)
 
         assert result is out
-        assert result.symmetry == flops.SymmetryGroup.symmetric(axes=(0, 1))
+        assert result.symmetry == flops.SymmetryGroup.symmetric(axes=(0, 1))  # pyright: ignore[reportAttributeAccessIssue]
         np.testing.assert_allclose(np.asarray(out), np.outer(v, v))
 
     def test_outer_symmetric_out_with_wrong_symmetry_fails(self):

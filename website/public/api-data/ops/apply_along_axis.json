@@ -679,7 +679,7 @@
     "name": "apply_along_axis",
     "notes": "Apply function along axis. Cost: numel(output). Inner function costs tracked separately.",
     "numpy_ref": "np.apply_along_axis",
-    "signature": "fnp.apply_along_axis(func1d, axis, arr, *args, **kwargs)",
+    "signature": "fnp.apply_along_axis(func1d: 'Any', axis: 'int', arr: 'ArrayLike', *args: 'Any', **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Apply a function to 1-D slices along the given axis.",
     "weight": 4.0
@@ -687,7 +687,7 @@
   "schema_version": 1,
   "slug": "apply_along_axis",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L307",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L348",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L274"
   }
 }

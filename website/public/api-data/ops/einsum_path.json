@@ -544,7 +544,7 @@
     "name": "einsum_path",
     "notes": "Optimize einsum contraction path (no numeric output).",
     "numpy_ref": "np.einsum_path",
-    "signature": "fnp.einsum_path(subscripts: 'str', *operands, optimize: 'str | bool | list' = 'auto')",
+    "signature": "fnp.einsum_path(subscripts: 'str', *operands: '_np.ndarray', optimize: 'str | bool | list[Any]' = 'auto') -> 'tuple[list[Any], Any]'",
     "status": "supported",
     "summary": "Evaluates the lowest cost contraction order for an einsum expression by considering the creation of intermediate arrays.",
     "weight": 1.0
@@ -552,7 +552,7 @@
   "schema_version": 1,
   "slug": "einsum_path",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L407",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L412",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/einsumfunc.py#L742"
   }
 }

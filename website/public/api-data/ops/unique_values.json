@@ -171,7 +171,7 @@
     "name": "unique_values",
     "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.unique_values",
-    "signature": "fnp.unique_values(x, /)",
+    "signature": "fnp.unique_values(x: 'ArrayLike', /) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Returns the unique elements of an input array `x`.",
     "weight": 1.0
@@ -179,7 +179,7 @@
   "schema_version": 1,
   "slug": "unique_values",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L338",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L369",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L573"
   }
 }

@@ -368,7 +368,7 @@
     "name": "linalg.trace",
     "notes": "Matrix trace. Cost: n (sum of diagonal elements).",
     "numpy_ref": "np.linalg.trace",
-    "signature": "fnp.linalg.trace(x, /, *, offset=0, dtype=None)",
+    "signature": "fnp.linalg.trace(x: 'ArrayLike', /, *, offset: 'int' = 0, dtype: 'Any' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Returns the sum along the specified diagonals of a matrix (or a stack of matrices) ``x``.",
     "weight": 1.0
@@ -376,7 +376,7 @@
   "schema_version": 1,
   "slug": "linalg-trace",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L36",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L39",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3138"
   }
 }

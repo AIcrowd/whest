@@ -484,7 +484,7 @@
     "name": "convolve",
     "notes": "1-D discrete convolution.",
     "numpy_ref": "np.convolve",
-    "signature": "fnp.convolve(a, v, mode='full')",
+    "signature": "fnp.convolve(a: 'ArrayLike', v: 'ArrayLike', mode: 'str' = 'full') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Returns the discrete, linear convolution of two one-dimensional sequences.",
     "weight": 1.0
@@ -492,7 +492,7 @@
   "schema_version": 1,
   "slug": "convolve",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1875",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1909",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L772"
   }
 }

@@ -6,7 +6,7 @@ import functools
 import threading
 import time
 import weakref
-from typing import NamedTuple
+from typing import Literal, NamedTuple
 
 from flopscope.errors import BudgetExhaustedError
 
@@ -72,7 +72,7 @@ class _OpTimer:
         self._start = time.perf_counter()
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
+    def __exit__(self, exc_type, exc_val, exc_tb) -> Literal[False]:
         if self._start is not None:
             duration = time.perf_counter() - self._start
             log = self._budget._op_log
@@ -89,8 +89,8 @@ class _OpTimer:
 
                 raise TimeExhaustedError(
                     log[-1].op_name,
-                    elapsed_s=time.perf_counter() - self._budget._start_time,
-                    limit_s=self._budget._wall_time_limit_s,
+                    elapsed_s=time.perf_counter() - self._budget._start_time,  # type: ignore[operator]
+                    limit_s=self._budget._wall_time_limit_s,  # type: ignore[arg-type]
                 )
         return False
 
@@ -115,7 +115,7 @@ class _NamespaceScope:
         self._budget._push_namespace(self._segment)
         return self._budget
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> bool:
+    def __exit__(self, exc_type, exc_val, exc_tb) -> Literal[False]:
         self._budget._pop_namespace(self._segment)
         return False
 
@@ -375,8 +375,8 @@ class BudgetContext:
 
             raise TimeExhaustedError(
                 op_name,
-                elapsed_s=now - self._start_time,
-                limit_s=self._wall_time_limit_s,
+                elapsed_s=now - self._start_time,  # type: ignore[operator]
+                limit_s=self._wall_time_limit_s,  # type: ignore[arg-type]
             )
 
         return _OpTimer(self)

@@ -534,7 +534,7 @@
     "name": "where",
     "notes": "Select elements based on condition. Cost: numel(input).",
     "numpy_ref": "np.where",
-    "signature": "fnp.where(condition, x=None, y=None)",
+    "signature": "fnp.where(condition: 'ArrayLike', x: 'ArrayLike | None' = None, y: 'ArrayLike | None' = None) -> 'FlopscopeArray | tuple[FlopscopeArray, ...]'",
     "status": "supported",
     "summary": "Return elements chosen from `x` or `y` depending on `condition`.",
     "weight": 4.0
@@ -542,7 +542,7 @@
   "schema_version": 1,
   "slug": "where",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L487",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L570",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.where.html"
   }
 }

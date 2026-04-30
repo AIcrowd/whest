@@ -231,7 +231,7 @@
     "name": "unique_counts",
     "notes": "Sort-based unique; cost = n*ceil(log2(n)).",
     "numpy_ref": "np.unique_counts",
-    "signature": "fnp.unique_counts(x, /)",
+    "signature": "fnp.unique_counts(x: 'ArrayLike', /) -> 'Any'",
     "status": "supported",
     "summary": "Find the unique elements and counts of an input array `x`.",
     "weight": 1.0
@@ -239,7 +239,7 @@
   "schema_version": 1,
   "slug": "unique_counts",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L304",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L335",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L468"
   }
 }

@@ -899,7 +899,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.rfftn",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L448",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L510",
   "href": "/docs/api/numpy/fft/rfftn/",
   "import_path": "flopscope.numpy.fft.rfftn",
   "is_operation_cost_leaf": true,
@@ -1113,7 +1113,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.rfftn(a, s=None, axes=None, norm=None, out=None)",
+  "signature": "fnp.fft.rfftn(a: 'ArrayLike', s: 'Sequence[int] | None' = None, axes: 'Sequence[int] | None' = None, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-rfftn",
   "summary": "Compute the N-dimensional discrete Fourier Transform for real input.",
   "upstream_ref_label": "NumPy Ref",

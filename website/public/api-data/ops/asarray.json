@@ -745,7 +745,7 @@
     "name": "asarray",
     "notes": "Convert input to array. Cost: numel(input).",
     "numpy_ref": "np.asarray",
-    "signature": "fnp.asarray(a, dtype=None, **kwargs)",
+    "signature": "fnp.asarray(a: 'ArrayLike', dtype: 'DTypeLike | None' = None, **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Convert the input to an array.",
     "weight": 0.0
@@ -753,7 +753,7 @@
   "schema_version": 1,
   "slug": "asarray",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L660",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L773",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.asarray.html"
   }
 }

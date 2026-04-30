@@ -949,7 +949,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.tensordot",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1659",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1691",
   "href": "/docs/api/numpy/tensordot/",
   "legacy_href": "/docs/api/ops/tensordot/",
   "module": "numpy",
@@ -1027,7 +1027,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.tensordot(a, b, axes=2)",
+  "signature": "fnp.tensordot(a: 'ArrayLike', b: 'ArrayLike', axes: 'Any' = 2) -> 'FlopscopeArray'",
   "slug": "tensordot",
   "summary": "Compute tensor dot product along specified axes.",
   "upstream_ref_label": "NumPy Ref",

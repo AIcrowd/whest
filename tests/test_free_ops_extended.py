@@ -92,9 +92,9 @@ def test_expand_dims_remaps_partial_symmetry_front_middle_and_end():
     front = ops.expand_dims(a, axis=0)
     middle = ops.expand_dims(a, axis=1)
     end = ops.expand_dims(a, axis=-1)
-    assert front.symmetry == flops.SymmetryGroup.symmetric(axes=(1, 2))
-    assert middle.symmetry == flops.SymmetryGroup.symmetric(axes=(0, 2))
-    assert end.symmetry == flops.SymmetryGroup.symmetric(axes=(0, 1))
+    assert front.symmetry == flops.SymmetryGroup.symmetric(axes=(1, 2))  # pyright: ignore[reportAttributeAccessIssue]
+    assert middle.symmetry == flops.SymmetryGroup.symmetric(axes=(0, 2))  # pyright: ignore[reportAttributeAccessIssue]
+    assert end.symmetry == flops.SymmetryGroup.symmetric(axes=(0, 1))  # pyright: ignore[reportAttributeAccessIssue]
 
 
 def test_expand_dims_negative_axis_remaps_symmetry():
@@ -357,17 +357,17 @@ def test_asarray_chkfinite():
 
 def test_atleast_1d():
     r = ops.atleast_1d(5)
-    assert r.shape == (1,)
+    assert r.shape == (1,)  # pyright: ignore[reportAttributeAccessIssue]
 
 
 def test_atleast_2d():
     r = ops.atleast_2d(numpy.array([1, 2]))
-    assert r.ndim == 2
+    assert r.ndim == 2  # pyright: ignore[reportAttributeAccessIssue]
 
 
 def test_atleast_3d():
     r = ops.atleast_3d(numpy.array([1, 2]))
-    assert r.ndim == 3
+    assert r.ndim == 3  # pyright: ignore[reportAttributeAccessIssue]
 
 
 def test_base_repr():

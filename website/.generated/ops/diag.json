@@ -442,7 +442,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.diag",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L150",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L176",
   "href": "/docs/api/numpy/diag/",
   "legacy_href": "/docs/api/ops/diag/",
   "module": "numpy",
@@ -572,7 +572,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.diag(v, k=0)",
+  "signature": "fnp.diag(v: 'ArrayLike', k: 'int' = 0) -> 'FlopscopeArray'",
   "slug": "diag",
   "summary": "Extract a diagonal or construct a diagonal array.",
   "upstream_ref_label": "NumPy Ref",

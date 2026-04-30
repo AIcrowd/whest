@@ -911,7 +911,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.ifftn",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L417",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L473",
   "href": "/docs/api/numpy/fft/ifftn/",
   "legacy_href": "/docs/api/ops/fft-ifftn/",
   "module": "numpy.fft",
@@ -1127,7 +1127,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.ifftn(a, s=None, axes=None, norm=None, out=None)",
+  "signature": "fnp.fft.ifftn(a: 'ArrayLike', s: 'Sequence[int] | None' = None, axes: 'Sequence[int] | None' = None, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-ifftn",
   "summary": "Compute the N-dimensional inverse discrete Fourier Transform.",
   "upstream_ref_label": "NumPy Ref",

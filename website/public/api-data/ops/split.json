@@ -564,7 +564,7 @@
     "name": "split",
     "notes": "Split array into sub-arrays. Cost: numel(output).",
     "numpy_ref": "np.split",
-    "signature": "fnp.split(ary, indices_or_sections, axis=0)",
+    "signature": "fnp.split(ary: 'ArrayLike', indices_or_sections: 'int | Sequence[int]', axis: 'int' = 0) -> 'list[FlopscopeArray]'",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays as views into `ary`.",
     "weight": 0.0
@@ -572,7 +572,7 @@
   "schema_version": 1,
   "slug": "split",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L402",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L469",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L803"
   }
 }

@@ -297,7 +297,7 @@ def test_isclose():
     with BudgetContext(flop_budget=10**6) as budget:
         result = ops.isclose(a, b)
         assert budget.flops_used == 3
-    assert list(result) == [True, True, False]
+    assert list(result) == [True, True, False]  # pyright: ignore[reportArgumentType]
 
 
 # ---------------------------------------------------------------------------

@@ -327,7 +327,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.hanning",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L126",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L127",
   "href": "/docs/api/numpy/hanning/",
   "legacy_href": "/docs/api/ops/hanning/",
   "module": "flopscope._window",
@@ -417,7 +417,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.hanning(M)",
+  "signature": "fnp.hanning(M: 'int') -> 'FlopscopeArray'",
   "slug": "hanning",
   "summary": "Return the Hanning window.",
   "upstream_ref_label": "NumPy Ref",

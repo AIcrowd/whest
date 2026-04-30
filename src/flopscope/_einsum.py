@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import functools
+from typing import Any
 
 import numpy as _np
 
 from flopscope._config import get_setting
-from flopscope._ndarray import _to_base_ndarray
+from flopscope._ndarray import FlopscopeArray, _to_base_ndarray
 from flopscope._perm_group import SymmetryGroup
 from flopscope._pointwise import _prepare_symmetric_out, _validate_result_symmetry
 from flopscope._symmetric import SymmetricTensor
@@ -123,7 +124,7 @@ _path_cache = _make_path_cache(4096)
 def _rebuild_einsum_cache():
     """Rebuild the path cache with the current configured maxsize."""
     global _path_cache
-    _path_cache = _make_path_cache(int(get_setting("einsum_path_cache_size")))
+    _path_cache = _make_path_cache(int(get_setting("einsum_path_cache_size")))  # type: ignore[arg-type]
 
 
 def clear_einsum_cache():
@@ -142,6 +143,11 @@ def clear_einsum_cache():
     -----
     Discards all cached contraction paths. Subsequent ``einsum()`` and
     ``einsum_path()`` calls will recompute paths from scratch.
+
+    Examples
+    --------
+    >>> import flopscope.numpy as fnp
+    >>> fnp.clear_einsum_cache()
     """
     _path_cache.cache_clear()
 
@@ -159,13 +165,12 @@ def einsum_cache_info():
         The standard ``functools.lru_cache`` statistics tuple with ``hits``,
         ``misses``, ``maxsize``, and ``currsize`` fields.
 
-    Returns a named tuple with ``hits``, ``misses``, ``maxsize``, and
-    ``currsize`` fields (the standard ``functools.lru_cache`` statistics).
-
-    Example::
-
-        info = flops.einsum_cache_info()
-        print(f"Cache hit rate: {info.hits / max(info.hits + info.misses, 1):.0%}")
+    Examples
+    --------
+    >>> import flopscope.numpy as fnp
+    >>> info = fnp.einsum_cache_info()
+    >>> total = info.hits + info.misses
+    >>> rate = info.hits / max(total, 1)
     """
     return _path_cache.cache_info()
 
@@ -297,11 +302,11 @@ def _resolve_output_symmetry(
 def einsum(
     subscripts: str,
     *operands: _np.ndarray,
-    out=None,
-    optimize: str | bool | list = "auto",
-    symmetry=None,
-    **kwargs,
-) -> _np.ndarray:
+    out: Any = None,
+    optimize: str | bool | list[Any] = "auto",
+    symmetry: Any = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Evaluate Einstein summation with FLOP counting and optional path optimization.
 
     Wraps ``numpy.einsum`` with analytical FLOP cost computation and
@@ -401,10 +406,14 @@ def einsum(
         result = _asflopscope(_np.asarray(result))
 
     check_nan_inf(result, "einsum")
-    return result
+    return result  # type: ignore[return-value]
 
 
-def einsum_path(subscripts: str, *operands, optimize: str | bool | list = "auto"):
+def einsum_path(
+    subscripts: str,
+    *operands: _np.ndarray,
+    optimize: str | bool | list[Any] = "auto",
+) -> tuple[list[Any], Any]:
     """Compute the optimal contraction path without executing.
 
     Returns ``(path, PathInfo)`` with zero budget cost. The returned

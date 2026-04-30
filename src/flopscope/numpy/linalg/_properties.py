@@ -3,8 +3,11 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import numpy as _np
 from numpy.linalg._linalg import SlogdetResult
+from numpy.typing import ArrayLike
 
 from flopscope._docstrings import attach_docstring
 from flopscope._ndarray import FlopscopeArray, _asflopscope, _to_base_ndarray
@@ -33,7 +36,7 @@ def trace_cost(n: int) -> int:
     return max(n, 1)
 
 
-def trace(x, /, *, offset=0, dtype=None):
+def trace(x: ArrayLike, /, *, offset: int = 0, dtype: Any = None) -> FlopscopeArray:
     """Matrix trace with FLOP counting (numpy 2.0 linalg.trace signature)."""
     budget = require_budget()
     inputs_were_whest = isinstance(x, FlopscopeArray)
@@ -51,8 +54,8 @@ def trace(x, /, *, offset=0, dtype=None):
     ):
         result = _np.linalg.trace(_to_base_ndarray(x), offset=offset, dtype=dtype)
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(trace, _np.linalg.trace, "linalg", r"$n$ FLOPs")
@@ -80,7 +83,7 @@ def det_cost(n: int, symmetric: bool = False) -> int:
     return max(n**3, 1)
 
 
-def det(a):
+def det(a: ArrayLike) -> FlopscopeArray:
     """Determinant with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(a, FlopscopeArray)
@@ -97,8 +100,8 @@ def det(a):
     ):
         result = _np.linalg.det(_to_base_ndarray(a))
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(det, _np.linalg.det, "linalg", r"$n^3$ FLOPs")
@@ -126,7 +129,7 @@ def slogdet_cost(n: int, symmetric: bool = False) -> int:
     return max(n**3, 1)
 
 
-def slogdet(a):
+def slogdet(a: ArrayLike) -> SlogdetResult:
     """Sign and log-determinant with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(a, FlopscopeArray)
@@ -202,7 +205,12 @@ def norm_cost(shape: tuple, ord=None) -> int:
         return numel
 
 
-def norm(x, ord=None, axis=None, keepdims=False):
+def norm(
+    x: ArrayLike,
+    ord: Any = None,
+    axis: int | tuple[int, ...] | None = None,
+    keepdims: bool = False,
+) -> FlopscopeArray:
     """Matrix or vector norm with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(x, FlopscopeArray)
@@ -218,7 +226,7 @@ def norm(x, ord=None, axis=None, keepdims=False):
             ndim = x.ndim
             norm_axis = axis + ndim if axis < 0 else axis
             if norm_axis < 0 or norm_axis >= max(ndim, 1):
-                return _np.linalg.norm(
+                return _np.linalg.norm(  # type: ignore[reportReturnType]
                     _to_base_ndarray(x), ord=ord, axis=axis, keepdims=keepdims
                 )
             effective_shape = (x.shape[norm_axis],) if ndim > 0 else ()
@@ -227,7 +235,7 @@ def norm(x, ord=None, axis=None, keepdims=False):
         cost = norm_cost(effective_shape, ord=ord)
     except (IndexError, ValueError):
         # Let numpy raise the proper error with the right type/message
-        return _np.linalg.norm(
+        return _np.linalg.norm(  # type: ignore[reportReturnType]
             _to_base_ndarray(x), ord=ord, axis=axis, keepdims=keepdims
         )
     with budget.deduct(
@@ -237,8 +245,8 @@ def norm(x, ord=None, axis=None, keepdims=False):
             _to_base_ndarray(x), ord=ord, axis=axis, keepdims=keepdims
         )
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -274,7 +282,12 @@ def vector_norm_cost(shape: tuple, ord=None) -> int:
     return numel
 
 
-def vector_norm(x, ord=2, axis=None, keepdims=False):
+def vector_norm(
+    x: ArrayLike,
+    ord: Any = 2,
+    axis: int | tuple[int, ...] | None = None,
+    keepdims: bool = False,
+) -> FlopscopeArray:
     """Vector norm with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(x, FlopscopeArray)
@@ -295,8 +308,8 @@ def vector_norm(x, ord=2, axis=None, keepdims=False):
             _to_base_ndarray(x), ord=ord, axis=axis, keepdims=keepdims
         )
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -338,7 +351,9 @@ def matrix_norm_cost(shape: tuple, ord=None) -> int:
     return numel
 
 
-def matrix_norm(x, ord="fro", keepdims=False):
+def matrix_norm(
+    x: ArrayLike, ord: Any = "fro", keepdims: bool = False
+) -> FlopscopeArray:
     """Matrix norm with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(x, FlopscopeArray)
@@ -348,10 +363,10 @@ def matrix_norm(x, ord="fro", keepdims=False):
     with budget.deduct(
         "linalg.matrix_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
-        result = _np.linalg.matrix_norm(_to_base_ndarray(x), ord=ord, keepdims=keepdims)
+        result = _np.linalg.matrix_norm(_to_base_ndarray(x), ord=ord, keepdims=keepdims)  # type: ignore[reportCallIssue]
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -390,7 +405,7 @@ def cond_cost(m: int, n: int, p=None) -> int:
     return max(k**3 + m * n, 1)
 
 
-def cond(x, p=None):
+def cond(x: ArrayLike, p: Any = None) -> FlopscopeArray:
     """Condition number with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(x, FlopscopeArray)
@@ -426,8 +441,8 @@ def cond(x, p=None):
         else:
             result = _np.linalg.cond(_to_base_ndarray(x), p=p)
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(
@@ -460,7 +475,13 @@ def matrix_rank_cost(m: int, n: int) -> int:
     return max(m * n * min(m, n), 1)
 
 
-def matrix_rank(A, tol=None, hermitian=False, *, rtol=None):
+def matrix_rank(
+    A: ArrayLike,
+    tol: float | None = None,
+    hermitian: bool = False,
+    *,
+    rtol: float | None = None,
+) -> FlopscopeArray | int:
     """Matrix rank with FLOP counting."""
     budget = require_budget()
     inputs_were_whest = isinstance(A, FlopscopeArray)
@@ -476,16 +497,16 @@ def matrix_rank(A, tol=None, hermitian=False, *, rtol=None):
         cost = matrix_rank_cost(m, n) * batch if not _has_zero_dim(A.shape) else 0
     kwargs = {"hermitian": hermitian}
     if tol is not None:
-        kwargs["tol"] = tol
+        kwargs["tol"] = tol  # type: ignore[reportAssignmentType]
     if rtol is not None:
-        kwargs["rtol"] = rtol
+        kwargs["rtol"] = rtol  # type: ignore[reportAssignmentType]
     with budget.deduct(
         "linalg.matrix_rank", flop_cost=cost, subscripts=None, shapes=(A.shape,)
     ):
         result = _np.linalg.matrix_rank(_to_base_ndarray(A), **kwargs)
     if isinstance(result, _np.ndarray) and inputs_were_whest:
-        return _asflopscope(result)
-    return result
+        return _asflopscope(result)  # type: ignore[reportReturnType]
+    return result  # type: ignore[reportReturnType]
 
 
 attach_docstring(

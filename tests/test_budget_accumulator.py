@@ -155,6 +155,7 @@ def test_reused_decorator_context_resets_live_timing_state_between_calls():
     @budget_ctx
     def compute(post_sleep_s: float) -> None:
         ctx = get_active_budget()
+        assert ctx is not None
         assert ctx is budget_ctx
         seen_ctx_wall_times.append(ctx.wall_time_s)
 

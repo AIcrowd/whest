@@ -727,7 +727,7 @@
     "name": "piecewise",
     "notes": "Piecewise function. Cost: numel(input).",
     "numpy_ref": "np.piecewise",
-    "signature": "fnp.piecewise(x, condlist, funclist, *args, **kw)",
+    "signature": "fnp.piecewise(x: 'ArrayLike', condlist: 'Any', funclist: 'Any', *args: 'Any', **kw: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Evaluate a piecewise-defined function.",
     "weight": 4.0
@@ -735,7 +735,7 @@
   "schema_version": 1,
   "slug": "piecewise",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L351",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L402",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L658"
   }
 }

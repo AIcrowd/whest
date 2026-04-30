@@ -366,7 +366,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.polyadd",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L97",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L100",
   "href": "/docs/api/numpy/polyadd/",
   "legacy_href": "/docs/api/ops/polyadd/",
   "module": "flopscope._polynomial",
@@ -511,7 +511,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.polyadd(a1, a2)",
+  "signature": "fnp.polyadd(a1: 'ArrayLike', a2: 'ArrayLike') -> 'FlopscopeArray'",
   "slug": "polyadd",
   "summary": "Find the sum of two polynomials.",
   "upstream_ref_label": "NumPy Ref",

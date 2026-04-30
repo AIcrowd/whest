@@ -336,7 +336,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.packbits",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1417",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1583",
   "href": "/docs/api/numpy/packbits/",
   "legacy_href": "/docs/api/ops/packbits/",
   "module": "numpy",
@@ -413,7 +413,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.packbits(a, *args, **kwargs)",
+  "signature": "fnp.packbits(a: 'ArrayLike', *args: 'Any', **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "packbits",
   "summary": "Packs the elements of a binary-valued array into bits in a uint8 array.",
   "upstream_ref_label": "NumPy Ref",

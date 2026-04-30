@@ -339,7 +339,7 @@
     "name": "fft.rfftfreq",
     "notes": "Real FFT sample frequencies. No arithmetic; returns index array.",
     "numpy_ref": "np.fft.rfftfreq",
-    "signature": "fnp.fft.rfftfreq(n, d=1.0, device=None)",
+    "signature": "fnp.fft.rfftfreq(n: 'int', d: 'float' = 1.0, device: 'Any' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return the Discrete Fourier Transform sample frequencies (for usage with rfft, irfft).",
     "weight": 0.0
@@ -347,7 +347,7 @@
   "schema_version": 1,
   "slug": "fft-rfftfreq",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L23",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L27",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L180"
   }
 }

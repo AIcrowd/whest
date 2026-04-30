@@ -381,7 +381,7 @@
     "name": "linalg.tensorinv",
     "notes": "Tensor inverse. Cost: $n^3$ after reshape (delegates to inv).",
     "numpy_ref": "np.linalg.tensorinv",
-    "signature": "fnp.linalg.tensorinv(a, ind=2)",
+    "signature": "fnp.linalg.tensorinv(a: 'ArrayLike', ind: 'int' = 2) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the 'inverse' of an N-dimensional array.",
     "weight": 4.0
@@ -389,7 +389,7 @@
   "schema_version": 1,
   "slug": "linalg-tensorinv",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L332",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L345",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L419"
   }
 }

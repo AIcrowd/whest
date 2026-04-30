@@ -624,7 +624,7 @@
     "name": "linalg.inv",
     "notes": "Matrix inverse. Cost: $n^3$ (LU + solve).",
     "numpy_ref": "np.linalg.inv",
-    "signature": "fnp.linalg.inv(a)",
+    "signature": "fnp.linalg.inv(a: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the inverse of a matrix.",
     "weight": 4.0
@@ -632,7 +632,7 @@
   "schema_version": 1,
   "slug": "linalg-inv",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L111",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L114",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L496"
   }
 }

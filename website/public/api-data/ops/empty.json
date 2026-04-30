@@ -520,7 +520,7 @@
     "name": "empty",
     "notes": "Uninitialized array allocation.",
     "numpy_ref": "np.empty",
-    "signature": "fnp.empty(shape, dtype=<class 'float'>, **kwargs)",
+    "signature": "fnp.empty(shape: 'int | Sequence[int]', dtype: 'DTypeLike' = <class 'float'>, **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return a new array of given shape and type, without initializing entries.",
     "weight": 0.0
@@ -528,7 +528,7 @@
   "schema_version": 1,
   "slug": "empty",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L261",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L305",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.empty.html"
   }
 }

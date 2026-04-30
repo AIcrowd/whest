@@ -388,7 +388,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.place",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1447",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1613",
   "href": "/docs/api/numpy/place/",
   "import_path": "flopscope.numpy.place",
   "is_operation_cost_leaf": true,
@@ -492,7 +492,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.place(arr, mask, vals, *args, **kwargs)",
+  "signature": "fnp.place(arr: 'ArrayLike', mask: 'ArrayLike', vals: 'ArrayLike', *args: 'Any', **kwargs: 'Any') -> 'None'",
   "slug": "place",
   "summary": "Change elements of an array based on conditional and input values.",
   "upstream_ref_label": "NumPy Ref",

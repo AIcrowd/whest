@@ -16,8 +16,12 @@ _CLIENT_SRC = str(_ROOT / "flopscope-client" / "src")
 if _SERVER_SRC not in sys.path:
     sys.path.insert(0, _SERVER_SRC)
 
-from flopscope_server._request_handler import RequestHandler  # noqa: E402
-from flopscope_server._session import Session  # noqa: E402
+from flopscope_server._request_handler import (  # pyright: ignore[reportMissingImports]
+    RequestHandler,  # noqa: E402
+)
+from flopscope_server._session import (  # pyright: ignore[reportMissingImports]
+    Session,  # noqa: E402
+)
 
 
 def _load_client_module(rel_path: str, module_name: str):
@@ -26,9 +30,9 @@ def _load_client_module(rel_path: str, module_name: str):
 
     module_file = Path(_CLIENT_SRC) / rel_path
     spec = importlib.util.spec_from_file_location(module_name, module_file)
-    module = importlib.util.module_from_spec(spec)
+    module = importlib.util.module_from_spec(spec)  # pyright: ignore[reportArgumentType]
     sys.modules[module_name] = module
-    spec.loader.exec_module(module)
+    spec.loader.exec_module(module)  # pyright: ignore[reportOptionalMemberAccess]
     return module
 
 

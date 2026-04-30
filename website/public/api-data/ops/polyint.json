@@ -485,7 +485,7 @@
     "name": "polyint",
     "notes": "Integrate polynomial. Cost: n FLOPs.",
     "numpy_ref": "np.polyint",
-    "signature": "fnp.polyint(p, m=1, k=None)",
+    "signature": "fnp.polyint(p: 'ArrayLike', m: 'int' = 1, k: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return an antiderivative (indefinite integral) of a polynomial.",
     "weight": 1.0
@@ -493,7 +493,7 @@
   "schema_version": 1,
   "slug": "polyint",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L147",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L150",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L260"
   }
 }

@@ -449,7 +449,7 @@
     "name": "zeros",
     "notes": "Create zero-filled array.",
     "numpy_ref": "np.zeros",
-    "signature": "fnp.zeros(shape, dtype=<class 'float'>, **kwargs)",
+    "signature": "fnp.zeros(shape: 'int | Sequence[int]', dtype: 'DTypeLike' = <class 'float'>, **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return a new array of given shape and type, filled with zeros.",
     "weight": 0.0
@@ -457,7 +457,7 @@
   "schema_version": 1,
   "slug": "zeros",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L109",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L116",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.zeros.html"
   }
 }

@@ -333,7 +333,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.count_nonzero",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1395",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1423",
   "href": "/docs/api/numpy/count-nonzero/",
   "import_path": "flopscope.numpy.count_nonzero",
   "is_operation_cost_leaf": true,
@@ -420,7 +420,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.count_nonzero(a, axis=None, *, keepdims=False)",
+  "signature": "fnp.count_nonzero(a: 'ArrayLike', axis: 'int | tuple[int, ...] | None' = None, *, keepdims: 'bool' = False) -> 'FlopscopeArray | int'",
   "slug": "count_nonzero",
   "summary": "Counts the number of non-zero values in the array ``a``.",
   "upstream_ref_label": "NumPy Ref",

@@ -668,7 +668,7 @@
     "name": "fft.fft",
     "notes": "1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.fft",
-    "signature": "fnp.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "fnp.fft.fft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the one-dimensional discrete Fourier Transform.",
     "weight": 1.0
@@ -676,7 +676,7 @@
   "schema_version": 1,
   "slug": "fft-fft",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L167",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L169",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L113"
   }
 }

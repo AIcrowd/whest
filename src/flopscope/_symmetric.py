@@ -122,6 +122,7 @@ def symmetrize(
         array,
         symmetry=symmetry,
     )
+    assert group is not None  # required=True raises if symmetry is None
     validate_symmetry_group(group, ndim=array.ndim, shape=array.shape)
     group_axes = group.axes if group.axes is not None else tuple(range(group.degree))
     symmetrized = np.zeros_like(array, dtype=np.result_type(array, np.float64))
@@ -410,7 +411,7 @@ def propagate_symmetry_slice(
 
         final = remap_group_axes(
             restricted,
-            {axes[k]: old_to_new[axes[k]] for k in kept_tuple},
+            {axes[k]: old_to_new[axes[k]] for k in kept_tuple},  # type: ignore[arg-type]
         )
         if final is None:
             continue
@@ -579,7 +580,7 @@ class SymmetricTensor(FlopscopeArray):
     @property
     def symmetry(self) -> SymmetryGroup:
         """Exact symmetry group carried by this tensor."""
-        return self._symmetry
+        return self._symmetry  # type: ignore[return-value]
 
     def is_symmetric(
         self,
@@ -640,7 +641,7 @@ class SymmetricTensor(FlopscopeArray):
     # -- copy preserves metadata --
 
     def copy(self, order: str = "C") -> SymmetricTensor:  # type: ignore[override]
-        out = super().copy(order=order).view(type(self))
+        out = super().copy(order=order).view(type(self))  # type: ignore[arg-type]
         out._symmetry = self._symmetry
         return out
 
@@ -648,10 +649,10 @@ class SymmetricTensor(FlopscopeArray):
         return _asplainflopscope(np.reshape(np.asarray(self), *shape, **kwargs))
 
     def ravel(self, order: str = "C"):  # type: ignore[override]
-        return _asplainflopscope(np.ravel(np.asarray(self), order=order))
+        return _asplainflopscope(np.ravel(np.asarray(self), order=order))  # type: ignore[arg-type]
 
     def flatten(self, order: str = "C"):  # type: ignore[override]
-        return _asplainflopscope(np.asarray(self).flatten(order))
+        return _asplainflopscope(np.asarray(self).flatten(order))  # type: ignore[arg-type]
 
     def squeeze(self, axis=None):  # type: ignore[override]
         return _asplainflopscope(np.squeeze(np.asarray(self), axis=axis))
@@ -667,8 +668,8 @@ class SymmetricTensor(FlopscopeArray):
         return _asplainflopscope(
             np.asarray(self).astype(
                 dtype,
-                order=order,
-                casting=casting,
+                order=order,  # type: ignore[arg-type]
+                casting=casting,  # type: ignore[arg-type]
                 subok=False,
                 copy=copy,
             )
@@ -688,7 +689,7 @@ class SymmetricTensor(FlopscopeArray):
             remap_group_axes(self._symmetry, mapping),
         )
 
-    def swapaxes(self, axis1, axis2):  # type: ignore[override]
+    def swapaxes(self, axis1: int, axis2: int):  # type: ignore[override]
         order = list(range(self.ndim))
         axis1 %= self.ndim
         axis2 %= self.ndim
@@ -706,7 +707,7 @@ class SymmetricTensor(FlopscopeArray):
         return (
             pickled_state[0],
             pickled_state[1],
-            pickled_state[2] + (self._symmetry,),
+            pickled_state[2] + (self._symmetry,),  # type: ignore[operator]
         )
 
     def __setstate__(self, state):
@@ -759,6 +760,7 @@ def as_symmetric(
         data,
         symmetry=symmetry,
     )
+    assert group is not None  # required=True raises if symmetry is None
     array = np.asarray(data)
     validate_symmetry_groups(array, [group])
     return SymmetricTensor(array, symmetry=group)

@@ -533,7 +533,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.vecmat",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1281",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1307",
   "href": "/docs/api/numpy/vecmat/",
   "import_path": "flopscope.numpy.vecmat",
   "is_operation_cost_leaf": true,
@@ -665,7 +665,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.vecmat(a, b, **kwargs)",
+  "signature": "fnp.vecmat(a: 'ArrayLike', b: 'ArrayLike', **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "vecmat",
   "summary": "Vector-matrix dot product of two arrays.",
   "upstream_ref_label": "NumPy Ref",

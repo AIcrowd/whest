@@ -368,7 +368,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.tril",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L586",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L684",
   "href": "/docs/api/numpy/tril/",
   "legacy_href": "/docs/api/ops/tril/",
   "module": "numpy",
@@ -431,7 +431,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.tril(m, k=0)",
+  "signature": "fnp.tril(m: 'ArrayLike', k: 'int' = 0) -> 'FlopscopeArray'",
   "slug": "tril",
   "summary": "Lower triangle of an array.",
   "upstream_ref_label": "NumPy Ref",

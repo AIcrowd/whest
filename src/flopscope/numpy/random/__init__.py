@@ -15,11 +15,15 @@ from __future__ import annotations
 
 import builtins as _builtins
 import inspect as _inspect
+from collections.abc import Callable, Sequence
+from typing import Any
 
 import numpy as _np
 import numpy.random as _npr
+from numpy.random import Generator, RandomState, SeedSequence
 
 from flopscope._flops import _ceil_log2, sort_cost  # noqa: F401
+from flopscope._ndarray import FlopscopeArray
 from flopscope._perm_group import SymmetryGroup
 from flopscope._validation import require_budget
 
@@ -44,7 +48,10 @@ def _output_size(*dims, size=None):
 # ---------------------------------------------------------------------------
 
 
-def _counted_sampler(np_func, op_name):
+def _counted_sampler(
+    np_func: Callable[..., Any],
+    op_name: str,
+) -> Callable[..., Any]:
     """Factory for simple samplers: cost = numel(output).
 
     Passes all args/kwargs through transparently to numpy. Derives the
@@ -71,13 +78,16 @@ def _counted_sampler(np_func, op_name):
         f"Counted version of ``numpy.random.{op_name}``. Cost: numel(output) FLOPs."
     )
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        wrapper.__signature__ = _inspect.signature(np_func)  # pyright: ignore[reportFunctionMemberAccess]
     except (ValueError, TypeError):
         pass
     return wrapper
 
 
-def _counted_dims_sampler(np_func, op_name):
+def _counted_dims_sampler(
+    np_func: Callable[..., Any],
+    op_name: str,
+) -> Callable[..., Any]:
     """Factory for rand/randn that take *dims instead of size=."""
 
     def wrapper(*dims):
@@ -97,7 +107,7 @@ def _counted_dims_sampler(np_func, op_name):
         f"Counted version of ``numpy.random.{op_name}``. Cost: numel(output) FLOPs."
     )
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        wrapper.__signature__ = _inspect.signature(np_func)  # pyright: ignore[reportFunctionMemberAccess]
     except (ValueError, TypeError):
         pass
     return wrapper
@@ -107,18 +117,33 @@ def _counted_dims_sampler(np_func, op_name):
 # Free (configuration) functions
 # ---------------------------------------------------------------------------
 
-seed = _npr.seed
-get_state = _npr.get_state
-set_state = _npr.set_state
-default_rng = _npr.default_rng
-RandomState = _npr.RandomState
-SeedSequence = _npr.SeedSequence
+
+def default_rng(seed: Any = None) -> Generator:
+    """Construct a numpy random Generator. Cost: 0 FLOPs."""
+    return _npr.default_rng(seed)
+
+
+def seed(seed: int | None = None) -> None:
+    """Seed numpy's legacy global RNG. Cost: 0 FLOPs."""
+    _npr.seed(seed)
+
+
+def get_state(legacy: bool = True) -> dict[str, Any] | tuple[Any, ...]:
+    """Return numpy's global RNG state. Cost: 0 FLOPs."""
+    return _npr.get_state(legacy=legacy)
+
+
+def set_state(state: dict[str, Any] | tuple[Any, ...]) -> None:
+    """Set numpy's global RNG state. Cost: 0 FLOPs."""
+    _npr.set_state(state)
+
 
 __all__ = [
     "seed",
     "get_state",
     "set_state",
     "default_rng",
+    "Generator",
     "RandomState",
     "SeedSequence",
     "rand",
@@ -227,7 +252,10 @@ dirichlet = _counted_sampler(_npr.dirichlet, "random.dirichlet")
 randint = _counted_sampler(_npr.randint, "random.randint")
 
 
-def _counted_size_only_sampler(np_func, op_name):
+def _counted_size_only_sampler(
+    np_func: Callable[..., Any],
+    op_name: str,
+) -> Callable[..., Any]:
     """Factory for samplers where the only arg is ``size`` (positional or kw)."""
 
     def wrapper(size=None):
@@ -244,7 +272,7 @@ def _counted_size_only_sampler(np_func, op_name):
         f"Counted version of ``numpy.random.{op_name}``. Cost: numel(output) FLOPs."
     )
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        wrapper.__signature__ = _inspect.signature(np_func)  # pyright: ignore[reportFunctionMemberAccess]
     except (ValueError, TypeError):
         pass
     return wrapper
@@ -334,11 +362,11 @@ def choice(a, size=None, replace=True, p=None):
 
 
 def symmetric(
-    shape: int | tuple[int, ...] | list[int],
+    shape: int | Sequence[int],
     symmetry: SymmetryGroup,
-    distribution: str | callable = "randn",
-    **distribution_kwargs,
-):
+    distribution: str | Callable[..., Any] = "randn",
+    **distribution_kwargs: Any,
+) -> FlopscopeArray:
     """Sample random data and project it to a symmetry group.
 
     Parameters

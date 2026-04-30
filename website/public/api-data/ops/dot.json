@@ -802,7 +802,7 @@
     "name": "dot",
     "notes": "Dot product; cost = M*K*N (FMA=1).",
     "numpy_ref": "np.dot",
-    "signature": "fnp.dot(a, b)",
+    "signature": "fnp.dot(a: 'ArrayLike', b: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Dot product of two arrays. Specifically,",
     "weight": 1.0
@@ -810,7 +810,7 @@
   "schema_version": 1,
   "slug": "dot",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1475",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1505",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.dot.html"
   }
 }

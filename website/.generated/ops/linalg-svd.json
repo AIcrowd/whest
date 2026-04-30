@@ -1235,7 +1235,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.svd",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_svd.py#L28",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_svd.py#L29",
   "href": "/docs/api/numpy/linalg/svd/",
   "legacy_href": "/docs/api/ops/linalg-svd/",
   "module": "numpy.linalg",
@@ -1370,7 +1370,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
+  "signature": "fnp.linalg.svd(a: 'ArrayLike', full_matrices: 'bool' = True, compute_uv: 'bool' = True, hermitian: 'bool' = False, *, k: 'int | None' = None) -> 'tuple[FlopscopeArray, FlopscopeArray, FlopscopeArray] | FlopscopeArray'",
   "slug": "linalg-svd",
   "summary": "Singular Value Decomposition.",
   "upstream_ref_label": "NumPy Ref",

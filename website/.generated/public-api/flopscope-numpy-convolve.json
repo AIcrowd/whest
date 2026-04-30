@@ -503,7 +503,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.convolve",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1875",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1909",
   "href": "/docs/api/numpy/convolve/",
   "import_path": "flopscope.numpy.convolve",
   "is_operation_cost_leaf": true,
@@ -634,7 +634,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.convolve(a, v, mode='full')",
+  "signature": "fnp.convolve(a: 'ArrayLike', v: 'ArrayLike', mode: 'str' = 'full') -> 'FlopscopeArray'",
   "slug": "convolve",
   "summary": "Returns the discrete, linear convolution of two one-dimensional sequences.",
   "upstream_ref_label": "NumPy Ref",

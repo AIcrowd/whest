@@ -284,7 +284,7 @@
     "name": "blackman",
     "notes": "Blackman window. Cost: 3*n (three cosine terms per sample).",
     "numpy_ref": "np.blackman",
-    "signature": "fnp.blackman(M)",
+    "signature": "fnp.blackman(M: 'int') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return the Blackman window.",
     "weight": 16.0
@@ -292,7 +292,7 @@
   "schema_version": 1,
   "slug": "blackman",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L64",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L65",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3058"
   }
 }

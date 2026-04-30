@@ -273,7 +273,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.diagflat",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1049",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1185",
   "href": "/docs/api/numpy/diagflat/",
   "import_path": "flopscope.numpy.diagflat",
   "is_operation_cost_leaf": true,
@@ -382,7 +382,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.diagflat(v, k=0)",
+  "signature": "fnp.diagflat(v: 'ArrayLike', k: 'int' = 0) -> 'FlopscopeArray'",
   "slug": "diagflat",
   "summary": "Create a two-dimensional array with the flattened input as a diagonal.",
   "upstream_ref_label": "NumPy Ref",

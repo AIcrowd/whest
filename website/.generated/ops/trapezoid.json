@@ -737,7 +737,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.trapezoid",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1974",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L2008",
   "href": "/docs/api/numpy/trapezoid/",
   "legacy_href": "/docs/api/ops/trapezoid/",
   "module": "numpy",
@@ -826,7 +826,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.trapezoid(y, x=None, dx=1.0, axis=-1)",
+  "signature": "fnp.trapezoid(y: 'ArrayLike', x: 'ArrayLike | None' = None, dx: 'float' = 1.0, axis: 'int' = -1) -> 'FlopscopeArray'",
   "slug": "trapezoid",
   "summary": "Integrate along the given axis using the composite trapezoidal rule.",
   "upstream_ref_label": "NumPy Ref",

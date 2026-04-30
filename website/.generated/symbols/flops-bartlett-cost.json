@@ -146,7 +146,7 @@
   ],
   "signature": "flops.flops.bartlett_cost(n: 'int') -> 'int'",
   "slug": "flops-bartlett-cost",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L13",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L14",
   "status_note": "",
   "summary": "Weighted FLOP cost of Bartlett window generation.",
   "upstream_source_url": ""

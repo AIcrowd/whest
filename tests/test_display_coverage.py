@@ -561,7 +561,7 @@ class TestBudgetSummary:
 
         original = getattr(builtins, "get_ipython", None)
         try:
-            builtins.get_ipython = lambda: MagicMock()
+            builtins.get_ipython = lambda: MagicMock()  # pyright: ignore[reportAttributeAccessIssue]
             result = budget_summary()
             # Should return the renderable (Panel) without printing
             assert result is not None
@@ -570,7 +570,7 @@ class TestBudgetSummary:
                 if hasattr(builtins, "get_ipython"):
                     delattr(builtins, "get_ipython")
             else:
-                builtins.get_ipython = original
+                builtins.get_ipython = original  # pyright: ignore[reportAttributeAccessIssue]
 
     def test_console_with_rich_prints_via_console(self, capsys):
         """When Rich is installed and result is a Panel, uses Console().print()."""

@@ -897,7 +897,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.norm",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L205",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L208",
   "href": "/docs/api/numpy/linalg/norm/",
   "import_path": "flopscope.numpy.linalg.norm",
   "is_operation_cost_leaf": true,
@@ -1004,7 +1004,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.norm(x, ord=None, axis=None, keepdims=False)",
+  "signature": "fnp.linalg.norm(x: 'ArrayLike', ord: 'Any' = None, axis: 'int | tuple[int, ...] | None' = None, keepdims: 'bool' = False) -> 'FlopscopeArray'",
   "slug": "linalg-norm",
   "summary": "Matrix or vector norm.",
   "upstream_ref_label": "NumPy Ref",

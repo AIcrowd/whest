@@ -727,7 +727,7 @@
     "name": "fft.ifft",
     "notes": "Inverse 1-D complex FFT. Cost: 5*n*ceil(log2(n)) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.ifft",
-    "signature": "fnp.fft.ifft(a, n=None, axis=-1, norm=None, out=None)",
+    "signature": "fnp.fft.ifft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the one-dimensional inverse discrete Fourier Transform.",
     "weight": 1.0
@@ -735,7 +735,7 @@
   "schema_version": 1,
   "slug": "fft-ifft",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L190",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L198",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L213"
   }
 }

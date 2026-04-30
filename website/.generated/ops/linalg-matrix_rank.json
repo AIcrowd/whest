@@ -614,7 +614,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.matrix_rank",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L463",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L478",
   "href": "/docs/api/numpy/linalg/matrix-rank/",
   "legacy_href": "/docs/api/ops/linalg-matrix_rank/",
   "module": "numpy.linalg",
@@ -686,7 +686,7 @@
     }
   ],
   "see_also": [],
-  "signature": "fnp.linalg.matrix_rank(A, tol=None, hermitian=False, *, rtol=None)",
+  "signature": "fnp.linalg.matrix_rank(A: 'ArrayLike', tol: 'float | None' = None, hermitian: 'bool' = False, *, rtol: 'float | None' = None) -> 'FlopscopeArray | int'",
   "slug": "linalg-matrix_rank",
   "summary": "Return matrix rank of array using SVD method",
   "upstream_ref_label": "NumPy Ref",

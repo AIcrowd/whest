@@ -477,7 +477,7 @@
     "name": "outer",
     "notes": "Outer product of two vectors; cost = M*N.",
     "numpy_ref": "np.outer",
-    "signature": "fnp.outer(a, b, out=None)",
+    "signature": "fnp.outer(a: 'ArrayLike', b: 'ArrayLike', out: 'FlopscopeArray | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the outer product of two vectors.",
     "weight": 1.0
@@ -485,7 +485,7 @@
   "schema_version": 1,
   "slug": "outer",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1592",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1622",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L876"
   }
 }

@@ -3,10 +3,13 @@
 from __future__ import annotations
 
 import inspect as _inspect
+from typing import Any
 
 import numpy as _np
+from numpy.typing import ArrayLike
 
 from flopscope._docstrings import attach_docstring
+from flopscope._ndarray import FlopscopeArray
 from flopscope._validation import require_budget
 
 # ---------------------------------------------------------------------------
@@ -69,7 +72,7 @@ def roots_cost(n: int) -> int:
 # ---------------------------------------------------------------------------
 
 
-def polyval(p, x):
+def polyval(p: ArrayLike, x: ArrayLike) -> FlopscopeArray:
     """Evaluate a polynomial at given points. Wraps ``numpy.polyval``.
 
     ``x`` is converted via ``asanyarray`` so ndarray subclasses
@@ -86,7 +89,7 @@ def polyval(p, x):
         "polyval", flop_cost=cost, subscripts=None, shapes=(p.shape, x.shape)
     ):
         result = _np.polyval(p, x)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(
@@ -94,7 +97,7 @@ attach_docstring(
 )
 
 
-def polyadd(a1, a2):
+def polyadd(a1: ArrayLike, a2: ArrayLike) -> FlopscopeArray:
     """Add two polynomials. Wraps ``numpy.polyadd``."""
     budget = require_budget()
     a1 = _np.asarray(a1)
@@ -106,13 +109,13 @@ def polyadd(a1, a2):
         "polyadd", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
         result = _np.polyadd(a1, a2)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(polyadd, _np.polyadd, "counted_custom", "max(n1, n2) FLOPs")
 
 
-def polysub(a1, a2):
+def polysub(a1: ArrayLike, a2: ArrayLike) -> FlopscopeArray:
     """Subtract two polynomials. Wraps ``numpy.polysub``."""
     budget = require_budget()
     a1 = _np.asarray(a1)
@@ -124,13 +127,13 @@ def polysub(a1, a2):
         "polysub", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
         result = _np.polysub(a1, a2)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(polysub, _np.polysub, "counted_custom", "max(n1, n2) FLOPs")
 
 
-def polyder(p, m=1):
+def polyder(p: ArrayLike, m: int = 1) -> FlopscopeArray:
     """Differentiate a polynomial. Wraps ``numpy.polyder``."""
     budget = require_budget()
     p = _np.asarray(p)
@@ -138,13 +141,13 @@ def polyder(p, m=1):
     cost = polyder_cost(n)
     with budget.deduct("polyder", flop_cost=cost, subscripts=None, shapes=(p.shape,)):
         result = _np.polyder(p, m=m)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(polyder, _np.polyder, "counted_custom", "n FLOPs (n = len(coeffs))")
 
 
-def polyint(p, m=1, k=None):
+def polyint(p: ArrayLike, m: int = 1, k: ArrayLike | None = None) -> FlopscopeArray:
     """Integrate a polynomial. Wraps ``numpy.polyint``."""
     budget = require_budget()
     p = _np.asarray(p)
@@ -154,14 +157,14 @@ def polyint(p, m=1, k=None):
         if k is None:
             result = _np.polyint(p, m=m)
         else:
-            result = _np.polyint(p, m=m, k=k)
-    return result
+            result = _np.polyint(p, m=m, k=k)  # type: ignore[arg-type]
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(polyint, _np.polyint, "counted_custom", "n FLOPs (n = len(coeffs))")
 
 
-def polymul(a1, a2):
+def polymul(a1: ArrayLike, a2: ArrayLike) -> FlopscopeArray:
     """Multiply polynomials. Wraps ``numpy.polymul``."""
     budget = require_budget()
     a1 = _np.asarray(a1)
@@ -173,13 +176,13 @@ def polymul(a1, a2):
         "polymul", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
         result = _np.polymul(a1, a2)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(polymul, _np.polymul, "counted_custom", "n1 * n2 FLOPs")
 
 
-def polydiv(u, v):
+def polydiv(u: ArrayLike, v: ArrayLike) -> tuple[FlopscopeArray, FlopscopeArray]:
     """Divide one polynomial by another. Wraps ``numpy.polydiv``."""
     budget = require_budget()
     u = _np.atleast_1d(_np.asarray(u))
@@ -191,28 +194,33 @@ def polydiv(u, v):
         "polydiv", flop_cost=cost, subscripts=None, shapes=(u.shape, v.shape)
     ):
         result = _np.polydiv(u, v)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(polydiv, _np.polydiv, "counted_custom", "n1 * n2 FLOPs")
 
 
-def polyfit(x, y, deg, **kwargs):
+def polyfit(
+    x: ArrayLike,
+    y: ArrayLike,
+    deg: int,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Least-squares polynomial fit. Wraps ``numpy.polyfit``."""
     budget = require_budget()
     x = _np.asarray(x)
     m = len(x)
     cost = polyfit_cost(m, deg)
     with budget.deduct("polyfit", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
-        result = _np.polyfit(x, y, deg, **kwargs)
-    return result
+        result = _np.polyfit(x, y, deg, **kwargs)  # type: ignore[arg-type]
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(polyfit, _np.polyfit, "counted_custom", "2 * m * (deg+1)^2 FLOPs")
-polyfit.__signature__ = _inspect.signature(_np.polyfit)
+polyfit.__signature__ = _inspect.signature(_np.polyfit)  # type: ignore[attr-defined]
 
 
-def poly(seq_of_zeros):
+def poly(seq_of_zeros: ArrayLike) -> FlopscopeArray:
     """Return polynomial coefficients from roots. Wraps ``numpy.poly``."""
     budget = require_budget()
     seq = _np.asarray(seq_of_zeros)
@@ -224,13 +232,13 @@ def poly(seq_of_zeros):
     cost = poly_cost(n)
     with budget.deduct("poly", flop_cost=cost, subscripts=None, shapes=(seq.shape,)):
         result = _np.poly(seq_of_zeros)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(poly, _np.poly, "counted_custom", "n^2 FLOPs")
 
 
-def roots(p):
+def roots(p: ArrayLike) -> FlopscopeArray:
     """Return the roots of a polynomial with given coefficients. Wraps ``numpy.roots``."""
     budget = require_budget()
     p = _np.asarray(p)
@@ -238,7 +246,7 @@ def roots(p):
     cost = roots_cost(n)
     with budget.deduct("roots", flop_cost=cost, subscripts=None, shapes=(p.shape,)):
         result = _np.roots(p)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(

@@ -459,7 +459,7 @@
     "name": "apply_over_axes",
     "notes": "Apply function over multiple axes. Cost: numel(output).",
     "numpy_ref": "np.apply_over_axes",
-    "signature": "fnp.apply_over_axes(func, a, axes)",
+    "signature": "fnp.apply_over_axes(func: 'Any', a: 'ArrayLike', axes: 'int | Sequence[int]') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Apply a function repeatedly over multiple axes.",
     "weight": 1.0
@@ -467,7 +467,7 @@
   "schema_version": 1,
   "slug": "apply_over_axes",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L329",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L376",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L419"
   }
 }

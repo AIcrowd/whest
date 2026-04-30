@@ -229,7 +229,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.ifftshift",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L42",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L46",
   "href": "/docs/api/numpy/fft/ifftshift/",
   "import_path": "flopscope.numpy.fft.ifftshift",
   "is_operation_cost_leaf": true,
@@ -303,7 +303,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.ifftshift(x, axes=None)",
+  "signature": "fnp.fft.ifftshift(x: 'ArrayLike', axes: 'int | Sequence[int] | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-ifftshift",
   "summary": "The inverse of `fftshift`. Although identical for even-length `x`, the functions differ by one sample for odd-length `x`.",
   "upstream_ref_label": "NumPy Ref",

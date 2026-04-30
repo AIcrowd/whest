@@ -818,7 +818,7 @@
     "name": "linalg.lstsq",
     "notes": "Least squares. Cost: m*n*min(m,n) (LAPACK gelsd/SVD).",
     "numpy_ref": "np.linalg.lstsq",
-    "signature": "fnp.linalg.lstsq(a, b, rcond=None)",
+    "signature": "fnp.linalg.lstsq(a: 'ArrayLike', b: 'ArrayLike', rcond: 'float | None' = None) -> 'tuple[FlopscopeArray, FlopscopeArray, int, FlopscopeArray]'",
     "status": "supported",
     "summary": "Return the least-squares solution to a linear matrix equation.",
     "weight": 4.0
@@ -826,7 +826,7 @@
   "schema_version": 1,
   "slug": "linalg-lstsq",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L168",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L171",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2394"
   }
 }

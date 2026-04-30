@@ -396,7 +396,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.slogdet",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L129",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L132",
   "href": "/docs/api/numpy/linalg/slogdet/",
   "legacy_href": "/docs/api/ops/linalg-slogdet/",
   "module": "numpy.linalg",
@@ -478,7 +478,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.slogdet(a)",
+  "signature": "fnp.linalg.slogdet(a: 'ArrayLike') -> 'SlogdetResult'",
   "slug": "linalg-slogdet",
   "summary": "Compute the sign and (natural) logarithm of the determinant of an array.",
   "upstream_ref_label": "NumPy Ref",

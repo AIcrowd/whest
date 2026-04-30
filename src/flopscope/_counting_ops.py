@@ -8,12 +8,15 @@ from __future__ import annotations
 
 import builtins as _builtins
 import inspect as _inspect
+from collections.abc import Sequence
+from typing import Any
 
 import numpy as _np
+from numpy.typing import ArrayLike, DTypeLike
 
 from flopscope._docstrings import attach_docstring
 from flopscope._flops import _ceil_log2
-from flopscope._ndarray import _to_base_ndarray, _to_base_ndarray_tree
+from flopscope._ndarray import FlopscopeArray, _to_base_ndarray, _to_base_ndarray_tree
 from flopscope._validation import require_budget
 
 # ---------------------------------------------------------------------------
@@ -21,7 +24,14 @@ from flopscope._validation import require_budget
 # ---------------------------------------------------------------------------
 
 
-def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
+def trace(
+    a: ArrayLike,
+    offset: int = 0,
+    axis1: int = 0,
+    axis2: int = 1,
+    dtype: DTypeLike | None = None,
+    out: FlopscopeArray | None = None,
+) -> FlopscopeArray:
     budget = require_budget()
     a = _np.asarray(a)
     cost = _builtins.max(_builtins.min(a.shape[axis1], a.shape[axis2]), 1)
@@ -35,7 +45,7 @@ def trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None):
             dtype=dtype,
             out=out_stripped,
         )
-    return out if out is not None else result
+    return out if out is not None else result  # type: ignore[return-value]
 
 
 attach_docstring(
@@ -43,7 +53,7 @@ attach_docstring(
 )
 
 
-def allclose(a, b, **kwargs):
+def allclose(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> bool:
     budget = require_budget()
     a = _np.asarray(a)
     b = _np.asarray(b)
@@ -56,14 +66,14 @@ def allclose(a, b, **kwargs):
         "allclose", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
         result = _np.allclose(a, b, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(allclose, _np.allclose, "counted_custom", "numel(a) FLOPs")
-allclose.__signature__ = _inspect.signature(_np.allclose)
+allclose.__signature__ = _inspect.signature(_np.allclose)  # pyright: ignore[reportFunctionMemberAccess]
 
 
-def array_equal(a, b, **kwargs):
+def array_equal(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> bool:
     budget = require_budget()
     a = _np.asarray(a)
     b = _np.asarray(b)
@@ -73,14 +83,14 @@ def array_equal(a, b, **kwargs):
         "array_equal", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
         result = _np.array_equal(a, b, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(array_equal, _np.array_equal, "counted_custom", "numel(a) FLOPs")
-array_equal.__signature__ = _inspect.signature(_np.array_equal)
+array_equal.__signature__ = _inspect.signature(_np.array_equal)  # pyright: ignore[reportFunctionMemberAccess]
 
 
-def array_equiv(a, b):
+def array_equiv(a: ArrayLike, b: ArrayLike) -> bool:
     budget = require_budget()
     a = _np.asarray(a)
     b = _np.asarray(b)
@@ -97,11 +107,11 @@ def array_equiv(a, b):
         "array_equiv", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
         result = _np.array_equiv(a, b)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(array_equiv, _np.array_equiv, "counted_custom", "numel(a) FLOPs")
-array_equiv.__signature__ = _inspect.signature(_np.array_equiv)
+array_equiv.__signature__ = _inspect.signature(_np.array_equiv)  # pyright: ignore[reportFunctionMemberAccess]
 
 
 # ---------------------------------------------------------------------------
@@ -109,7 +119,11 @@ array_equiv.__signature__ = _inspect.signature(_np.array_equiv)
 # ---------------------------------------------------------------------------
 
 
-def histogram(a, bins=10, **kwargs):
+def histogram(
+    a: ArrayLike,
+    bins: int | Sequence[int] | str = 10,
+    **kwargs: Any,
+) -> tuple[FlopscopeArray, FlopscopeArray]:
     budget = require_budget()
     a = _np.asarray(a)
     n = a.size
@@ -122,7 +136,7 @@ def histogram(a, bins=10, **kwargs):
         cost = _builtins.max(n * _ceil_log2(_builtins.len(bins_arr)), 1)
     with budget.deduct("histogram", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
         result = _np.histogram(a, bins=bins, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(
@@ -131,10 +145,15 @@ attach_docstring(
     "counted_custom",
     "n * ceil(log2(bins)) FLOPs when bins is int; n FLOPs otherwise",
 )
-histogram.__signature__ = _inspect.signature(_np.histogram)
+histogram.__signature__ = _inspect.signature(_np.histogram)  # pyright: ignore[reportFunctionMemberAccess]
 
 
-def histogram2d(x, y, bins=10, **kwargs):
+def histogram2d(
+    x: ArrayLike,
+    y: ArrayLike,
+    bins: Any = 10,
+    **kwargs: Any,
+) -> tuple[FlopscopeArray, FlopscopeArray, FlopscopeArray]:
     budget = require_budget()
     x = _np.asarray(x)
     y = _np.asarray(y)
@@ -167,7 +186,7 @@ def histogram2d(x, y, bins=10, **kwargs):
         "histogram2d", flop_cost=cost, subscripts=None, shapes=(x.shape, y.shape)
     ):
         result = _np.histogram2d(x, y, bins=bins, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(
@@ -176,10 +195,14 @@ attach_docstring(
     "counted_custom",
     "n * (ceil(log2(bx)) + ceil(log2(by))) FLOPs when bins is int pair; n FLOPs otherwise",
 )
-histogram2d.__signature__ = _inspect.signature(_np.histogram2d)
+histogram2d.__signature__ = _inspect.signature(_np.histogram2d)  # pyright: ignore[reportFunctionMemberAccess]
 
 
-def histogramdd(sample, bins=10, **kwargs):
+def histogramdd(
+    sample: ArrayLike,
+    bins: Any = 10,
+    **kwargs: Any,
+) -> tuple[FlopscopeArray, list[FlopscopeArray]]:
     budget = require_budget()
     sample = _np.asarray(sample)
     # sample shape: (n, d) or (n,) for 1-d
@@ -210,7 +233,7 @@ def histogramdd(sample, bins=10, **kwargs):
         "histogramdd", flop_cost=cost, subscripts=None, shapes=(sample.shape,)
     ):
         result = _np.histogramdd(sample, bins=bins, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(
@@ -219,10 +242,14 @@ attach_docstring(
     "counted_custom",
     "n * d * ceil(log2(bins)) FLOPs when bins is int; n FLOPs otherwise",
 )
-histogramdd.__signature__ = _inspect.signature(_np.histogramdd)
+histogramdd.__signature__ = _inspect.signature(_np.histogramdd)  # pyright: ignore[reportFunctionMemberAccess]
 
 
-def histogram_bin_edges(a, bins=10, **kwargs):
+def histogram_bin_edges(
+    a: ArrayLike,
+    bins: int | Sequence[int] | str = 10,
+    **kwargs: Any,
+) -> FlopscopeArray:
     budget = require_budget()
     a = _np.asarray(a)
     cost = _builtins.max(a.size, 1)
@@ -230,27 +257,27 @@ def histogram_bin_edges(a, bins=10, **kwargs):
         "histogram_bin_edges", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
         result = _np.histogram_bin_edges(a, bins=bins, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(
     histogram_bin_edges, _np.histogram_bin_edges, "counted_custom", "numel(a) FLOPs"
 )
-histogram_bin_edges.__signature__ = _inspect.signature(_np.histogram_bin_edges)
+histogram_bin_edges.__signature__ = _inspect.signature(_np.histogram_bin_edges)  # pyright: ignore[reportFunctionMemberAccess]
 
 
-def bincount(x, **kwargs):
+def bincount(x: ArrayLike, **kwargs: Any) -> FlopscopeArray:
     budget = require_budget()
     x = _np.asarray(x)
     cost = _builtins.max(x.size, 1)
     with budget.deduct("bincount", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
         result = _np.bincount(x, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(bincount, _np.bincount, "counted_custom", "numel(x) FLOPs")
 try:
-    bincount.__signature__ = _inspect.signature(_np.bincount)
+    bincount.__signature__ = _inspect.signature(_np.bincount)  # pyright: ignore[reportFunctionMemberAccess]
 except (ValueError, TypeError):
     pass
 
@@ -260,31 +287,45 @@ except (ValueError, TypeError):
 # ---------------------------------------------------------------------------
 
 
-def logspace(start, stop, num=50, **kwargs):
+def logspace(
+    start: Any,
+    stop: Any,
+    num: int = 50,
+    **kwargs: Any,
+) -> FlopscopeArray:
     budget = require_budget()
     cost = _builtins.max(num, 1)
     with budget.deduct("logspace", flop_cost=cost, subscripts=None, shapes=((num,),)):
         result = _np.logspace(start, stop, num=num, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(logspace, _np.logspace, "counted_custom", "num FLOPs")
-logspace.__signature__ = _inspect.signature(_np.logspace)
+logspace.__signature__ = _inspect.signature(_np.logspace)  # pyright: ignore[reportFunctionMemberAccess]
 
 
-def geomspace(start, stop, num=50, **kwargs):
+def geomspace(
+    start: Any,
+    stop: Any,
+    num: int = 50,
+    **kwargs: Any,
+) -> FlopscopeArray:
     budget = require_budget()
     cost = _builtins.max(num, 1)
     with budget.deduct("geomspace", flop_cost=cost, subscripts=None, shapes=((num,),)):
         result = _np.geomspace(start, stop, num=num, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(geomspace, _np.geomspace, "counted_custom", "num FLOPs")
-geomspace.__signature__ = _inspect.signature(_np.geomspace)
+geomspace.__signature__ = _inspect.signature(_np.geomspace)  # pyright: ignore[reportFunctionMemberAccess]
 
 
-def vander(x, N=None, **kwargs):
+def vander(
+    x: ArrayLike,
+    N: int | None = None,
+    **kwargs: Any,
+) -> FlopscopeArray:
     budget = require_budget()
     x = _np.asarray(x)
     n = _builtins.len(x)
@@ -293,18 +334,24 @@ def vander(x, N=None, **kwargs):
     cost = _builtins.max(n * (N - 1), 1)
     with budget.deduct("vander", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
         result = _np.vander(x, N=N, **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(vander, _np.vander, "counted_custom", "len(x) * (N-1) FLOPs")
-vander.__signature__ = _inspect.signature(_np.vander)
+vander.__signature__ = _inspect.signature(_np.vander)  # pyright: ignore[reportFunctionMemberAccess]
 
 # ---------------------------------------------------------------------------
 # Apply & piecewise (formerly blacklisted)
 # ---------------------------------------------------------------------------
 
 
-def apply_along_axis(func1d, axis, arr, *args, **kwargs):
+def apply_along_axis(
+    func1d: Any,
+    axis: int,
+    arr: ArrayLike,
+    *args: Any,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Counted version of np.apply_along_axis. Cost: numel(output)."""
     budget = require_budget()
     if not isinstance(arr, _np.ndarray):
@@ -315,7 +362,7 @@ def apply_along_axis(func1d, axis, arr, *args, **kwargs):
         "apply_along_axis", flop_cost=cost, subscripts=None, shapes=(arr.shape,)
     ):
         pass
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(
@@ -326,7 +373,11 @@ attach_docstring(
 )
 
 
-def apply_over_axes(func, a, axes):
+def apply_over_axes(
+    func: Any,
+    a: ArrayLike,
+    axes: int | Sequence[int],
+) -> FlopscopeArray:
     """Counted version of np.apply_over_axes. Cost: numel(output)."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -337,7 +388,7 @@ def apply_over_axes(func, a, axes):
         "apply_over_axes", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
         pass
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(
@@ -348,7 +399,13 @@ attach_docstring(
 )
 
 
-def piecewise(x, condlist, funclist, *args, **kw):
+def piecewise(
+    x: ArrayLike,
+    condlist: Any,
+    funclist: Any,
+    *args: Any,
+    **kw: Any,
+) -> FlopscopeArray:
     """Counted version of np.piecewise. Cost: numel(input)."""
     budget = require_budget()
     if not isinstance(x, _np.ndarray):
@@ -359,7 +416,7 @@ def piecewise(x, condlist, funclist, *args, **kw):
     cost = x.size
     with budget.deduct("piecewise", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
         pass
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(

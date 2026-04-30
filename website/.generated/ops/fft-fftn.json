@@ -920,7 +920,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.fftn",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L386",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L436",
   "href": "/docs/api/numpy/fft/fftn/",
   "legacy_href": "/docs/api/ops/fft-fftn/",
   "module": "numpy.fft",
@@ -1152,7 +1152,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.fftn(a, s=None, axes=None, norm=None, out=None)",
+  "signature": "fnp.fft.fftn(a: 'ArrayLike', s: 'Sequence[int] | None' = None, axes: 'Sequence[int] | None' = None, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-fftn",
   "summary": "Compute the N-dimensional discrete Fourier Transform.",
   "upstream_ref_label": "NumPy Ref",

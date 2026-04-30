@@ -843,7 +843,7 @@
     "name": "array",
     "notes": "Create array from data. Cost: numel(input).",
     "numpy_ref": "np.array",
-    "signature": "fnp.array(object, dtype=None, **kwargs)",
+    "signature": "fnp.array(object: 'ArrayLike', dtype: 'DTypeLike | None' = None, **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Create an array.",
     "weight": 1.0
@@ -851,7 +851,7 @@
   "schema_version": 1,
   "slug": "array",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L93",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L96",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.array.html"
   }
 }

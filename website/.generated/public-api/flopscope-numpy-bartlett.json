@@ -330,7 +330,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.bartlett",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L33",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L34",
   "href": "/docs/api/numpy/bartlett/",
   "import_path": "flopscope.numpy.bartlett",
   "is_operation_cost_leaf": true,
@@ -432,7 +432,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.bartlett(M)",
+  "signature": "fnp.bartlett(M: 'int') -> 'FlopscopeArray'",
   "slug": "bartlett",
   "summary": "Return the Bartlett window.",
   "upstream_ref_label": "NumPy Ref",

@@ -376,7 +376,7 @@
     "name": "polyder",
     "notes": "Differentiate polynomial. Cost: n FLOPs.",
     "numpy_ref": "np.polyder",
-    "signature": "fnp.polyder(p, m=1)",
+    "signature": "fnp.polyder(p: 'ArrayLike', m: 'int' = 1) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return the derivative of the specified order of a polynomial.",
     "weight": 1.0
@@ -384,7 +384,7 @@
   "schema_version": 1,
   "slug": "polyder",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L133",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L136",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L367"
   }
 }

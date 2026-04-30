@@ -175,7 +175,7 @@
   },
   "example": null,
   "flopscope_ref": "flopscope.accounting.polyval_cost",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L17",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L20",
   "href": "/docs/api/accounting/polyval-cost/",
   "import_path": "flopscope.accounting.polyval_cost",
   "is_operation_cost_leaf": false,

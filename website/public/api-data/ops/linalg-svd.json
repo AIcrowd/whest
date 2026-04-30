@@ -1220,7 +1220,7 @@
     "name": "linalg.svd",
     "notes": "Singular value decomposition; cost ~ O(min(m,n)*m*n).",
     "numpy_ref": "np.linalg.svd",
-    "signature": "fnp.linalg.svd(a, full_matrices=True, compute_uv=True, hermitian=False, *, k=None)",
+    "signature": "fnp.linalg.svd(a: 'ArrayLike', full_matrices: 'bool' = True, compute_uv: 'bool' = True, hermitian: 'bool' = False, *, k: 'int | None' = None) -> 'tuple[FlopscopeArray, FlopscopeArray, FlopscopeArray] | FlopscopeArray'",
     "status": "supported",
     "summary": "Singular Value Decomposition.",
     "weight": 4.0
@@ -1228,7 +1228,7 @@
   "schema_version": 1,
   "slug": "linalg-svd",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_svd.py#L28",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_svd.py#L29",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L1639"
   }
 }

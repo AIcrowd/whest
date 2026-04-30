@@ -596,7 +596,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.inner",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1570",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1600",
   "href": "/docs/api/numpy/inner/",
   "import_path": "flopscope.numpy.inner",
   "is_operation_cost_leaf": true,
@@ -731,7 +731,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.inner(a, b)",
+  "signature": "fnp.inner(a: 'ArrayLike', b: 'ArrayLike') -> 'FlopscopeArray'",
   "slug": "inner",
   "summary": "Inner product of two arrays.",
   "upstream_ref_label": "NumPy Ref",

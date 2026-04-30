@@ -735,7 +735,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.ifft",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L190",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L198",
   "href": "/docs/api/numpy/fft/ifft/",
   "legacy_href": "/docs/api/ops/fft-ifft/",
   "module": "numpy.fft",
@@ -891,7 +891,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.ifft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.ifft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-ifft",
   "summary": "Compute the one-dimensional inverse discrete Fourier Transform.",
   "upstream_ref_label": "NumPy Ref",

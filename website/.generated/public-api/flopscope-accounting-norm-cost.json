@@ -256,7 +256,7 @@
   },
   "example": null,
   "flopscope_ref": "flopscope.accounting.norm_cost",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L162",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L165",
   "href": "/docs/api/accounting/norm-cost/",
   "import_path": "flopscope.accounting.norm_cost",
   "is_operation_cost_leaf": false,

@@ -405,7 +405,7 @@
     "name": "roll",
     "notes": "Roll array elements along axis. Cost: numel(output).",
     "numpy_ref": "np.roll",
-    "signature": "fnp.roll(a, shift, axis=None)",
+    "signature": "fnp.roll(a: 'ArrayLike', shift: 'int | Sequence[int]', axis: 'int | Sequence[int] | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Roll array elements along a given axis.",
     "weight": 1.0
@@ -413,7 +413,7 @@
   "schema_version": 1,
   "slug": "roll",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L550",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L644",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L1185"
   }
 }

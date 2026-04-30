@@ -200,7 +200,7 @@ class TestOutputSymmetryWrapping:
             data.transpose(2, 0, 1),
             data.transpose(2, 1, 0),
         )
-        tensor = as_symmetric(sum(perms) / len(perms), symmetry=(0, 1, 2))
+        tensor = as_symmetric(sum(perms) / len(perms), symmetry=(0, 1, 2))  # pyright: ignore[reportArgumentType]
         weight = rng.rand(n, n)
 
         with BudgetContext(flop_budget=10**8, quiet=True):
@@ -227,7 +227,7 @@ class TestOutputSymmetryWrapping:
             data.transpose(2, 0, 1),
             data.transpose(2, 1, 0),
         )
-        tensor = as_symmetric(sum(perms) / len(perms), symmetry=(0, 1, 2))
+        tensor = as_symmetric(sum(perms) / len(perms), symmetry=(0, 1, 2))  # pyright: ignore[reportArgumentType]
 
         with BudgetContext(flop_budget=10**8, quiet=True):
             result = einsum("ijk->ij", tensor)
@@ -294,7 +294,7 @@ class TestOutputSymmetryWrapping:
         expected = numpy.einsum("ij->ji", data)
         assert result is out
         numpy.testing.assert_allclose(out, expected, rtol=1e-10)
-        assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 1)))
+        assert result.is_symmetric(symmetry=SymmetryGroup.symmetric(axes=(0, 1)))  # pyright: ignore[reportAttributeAccessIssue]
 
     def test_str_output_index_sizes_separates_different(self):
         """Different-sized indices should be listed separately."""

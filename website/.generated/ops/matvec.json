@@ -543,7 +543,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.matvec",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1241",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1267",
   "href": "/docs/api/numpy/matvec/",
   "legacy_href": "/docs/api/ops/matvec/",
   "module": "numpy",
@@ -663,7 +663,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.matvec(a, b, **kwargs)",
+  "signature": "fnp.matvec(a: 'ArrayLike', b: 'ArrayLike', **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "matvec",
   "summary": "Matrix-vector dot product of two arrays.",
   "upstream_ref_label": "NumPy Ref",

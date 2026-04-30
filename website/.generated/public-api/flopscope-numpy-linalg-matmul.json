@@ -487,7 +487,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.matmul",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L16",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L20",
   "href": "/docs/api/numpy/linalg/matmul/",
   "import_path": "flopscope.numpy.linalg.matmul",
   "is_operation_cost_leaf": true,
@@ -557,7 +557,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.matmul(x1, x2, /)",
+  "signature": "fnp.linalg.matmul(x1: 'ArrayLike', x2: 'ArrayLike', /) -> 'FlopscopeArray'",
   "slug": "linalg-matmul",
   "summary": "Computes the matrix product.",
   "upstream_ref_label": "NumPy Ref",

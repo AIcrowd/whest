@@ -391,7 +391,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.cond",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L393",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L408",
   "href": "/docs/api/numpy/linalg/cond/",
   "import_path": "flopscope.numpy.linalg.cond",
   "is_operation_cost_leaf": true,
@@ -478,7 +478,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.cond(x, p=None)",
+  "signature": "fnp.linalg.cond(x: 'ArrayLike', p: 'Any' = None) -> 'FlopscopeArray'",
   "slug": "linalg-cond",
   "summary": "Compute the condition number of a matrix.",
   "upstream_ref_label": "NumPy Ref",

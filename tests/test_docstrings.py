@@ -12,7 +12,7 @@ def test_counted_unary_has_flopscope_cost():
 def test_counted_unary_has_numpy_docstring():
     doc = fnp.exp.__doc__
     # The NumPy docstring content should be present directly (not behind a separator)
-    assert "Calculate the exponential" in doc
+    assert "Calculate the exponential" in doc  # pyright: ignore[reportOperatorIssue]
 
 
 def test_counted_binary_has_flopscope_cost():

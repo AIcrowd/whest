@@ -541,7 +541,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.polyval",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L72",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L75",
   "href": "/docs/api/numpy/polyval/",
   "legacy_href": "/docs/api/ops/polyval/",
   "module": "flopscope._polynomial",
@@ -613,7 +613,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.polyval(p, x)",
+  "signature": "fnp.polyval(p: 'ArrayLike', x: 'ArrayLike') -> 'FlopscopeArray'",
   "slug": "polyval",
   "summary": "Evaluate a polynomial at specific values.",
   "upstream_ref_label": "NumPy Ref",

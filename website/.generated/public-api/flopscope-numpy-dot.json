@@ -811,7 +811,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.dot",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1475",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1505",
   "href": "/docs/api/numpy/dot/",
   "import_path": "flopscope.numpy.dot",
   "is_operation_cost_leaf": true,
@@ -980,7 +980,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.dot(a, b)",
+  "signature": "fnp.dot(a: 'ArrayLike', b: 'ArrayLike') -> 'FlopscopeArray'",
   "slug": "dot",
   "summary": "Dot product of two arrays. Specifically,",
   "upstream_ref_label": "NumPy Ref",

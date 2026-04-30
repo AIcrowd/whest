@@ -333,7 +333,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.hsplit",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L417",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L488",
   "href": "/docs/api/numpy/hsplit/",
   "legacy_href": "/docs/api/ops/hsplit/",
   "module": "numpy",
@@ -372,7 +372,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.hsplit(ary, indices_or_sections)",
+  "signature": "fnp.hsplit(ary: 'ArrayLike', indices_or_sections: 'int | Sequence[int]') -> 'list[FlopscopeArray]'",
   "slug": "hsplit",
   "summary": "Split an array into multiple sub-arrays horizontally (column-wise).",
   "upstream_ref_label": "NumPy Ref",

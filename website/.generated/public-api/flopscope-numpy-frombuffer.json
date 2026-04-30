@@ -356,7 +356,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.frombuffer",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1179",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1324",
   "href": "/docs/api/numpy/frombuffer/",
   "import_path": "flopscope.numpy.frombuffer",
   "is_operation_cost_leaf": true,
@@ -460,7 +460,7 @@
       "unresolved": true
     }
   ],
-  "signature": "fnp.frombuffer(*args, **kwargs)",
+  "signature": "fnp.frombuffer(buffer: 'Any', dtype: 'DTypeLike' = <class 'float'>, count: 'int' = -1, offset: 'int' = 0) -> 'FlopscopeArray'",
   "slug": "frombuffer",
   "summary": "Interpret a buffer as a 1-dimensional array.",
   "upstream_ref_label": "NumPy Ref",

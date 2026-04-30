@@ -542,7 +542,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.where",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L487",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L570",
   "href": "/docs/api/numpy/where/",
   "legacy_href": "/docs/api/ops/where/",
   "module": "numpy",
@@ -620,7 +620,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.where(condition, x=None, y=None)",
+  "signature": "fnp.where(condition: 'ArrayLike', x: 'ArrayLike | None' = None, y: 'ArrayLike | None' = None) -> 'FlopscopeArray | tuple[FlopscopeArray, ...]'",
   "slug": "where",
   "summary": "Return elements chosen from `x` or `y` depending on `condition`.",
   "upstream_ref_label": "NumPy Ref",

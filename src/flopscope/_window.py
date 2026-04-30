@@ -7,6 +7,7 @@ import numpy as _np
 
 from flopscope._cost_model import FMA_COST
 from flopscope._docstrings import attach_docstring
+from flopscope._ndarray import FlopscopeArray
 from flopscope._validation import require_budget
 
 
@@ -30,12 +31,12 @@ def bartlett_cost(n: int) -> int:
     return max(n, 1)
 
 
-def bartlett(M):
+def bartlett(M: int) -> FlopscopeArray:
     budget = require_budget()
     cost = bartlett_cost(M)
     with budget.deduct("bartlett", flop_cost=cost, subscripts=None, shapes=((M,),)):
         result = _np.bartlett(M)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(bartlett, _np.bartlett, "counted_custom", "n FLOPs")
@@ -61,12 +62,12 @@ def blackman_cost(n: int) -> int:
     return max(3 * n, 1)
 
 
-def blackman(M):
+def blackman(M: int) -> FlopscopeArray:
     budget = require_budget()
     cost = blackman_cost(M)
     with budget.deduct("blackman", flop_cost=cost, subscripts=None, shapes=((M,),)):
         result = _np.blackman(M)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(blackman, _np.blackman, "counted_custom", "3n FLOPs")
@@ -92,12 +93,12 @@ def hamming_cost(n: int) -> int:
     return max(FMA_COST * n, 1)
 
 
-def hamming(M):
+def hamming(M: int) -> FlopscopeArray:
     budget = require_budget()
     cost = hamming_cost(M)
     with budget.deduct("hamming", flop_cost=cost, subscripts=None, shapes=((M,),)):
         result = _np.hamming(M)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(hamming, _np.hamming, "counted_custom", "n FLOPs (FMA=1)")
@@ -123,12 +124,12 @@ def hanning_cost(n: int) -> int:
     return max(FMA_COST * n, 1)
 
 
-def hanning(M):
+def hanning(M: int) -> FlopscopeArray:
     budget = require_budget()
     cost = hanning_cost(M)
     with budget.deduct("hanning", flop_cost=cost, subscripts=None, shapes=((M,),)):
         result = _np.hanning(M)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(hanning, _np.hanning, "counted_custom", "n FLOPs (FMA=1)")
@@ -154,12 +155,12 @@ def kaiser_cost(n: int) -> int:
     return max(3 * n, 1)
 
 
-def kaiser(M, beta):
+def kaiser(M: int, beta: float) -> FlopscopeArray:
     budget = require_budget()
     cost = kaiser_cost(M)
     with budget.deduct("kaiser", flop_cost=cost, subscripts=None, shapes=((M,),)):
         result = _np.kaiser(M, beta)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(kaiser, _np.kaiser, "counted_custom", "3n FLOPs")

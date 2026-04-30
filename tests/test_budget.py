@@ -174,7 +174,7 @@ def test_budget_context_total_tracked_time():
             flopscope.numpy.ones((1000,)), flopscope.numpy.ones((1000,))
         )
     assert b.total_tracked_time >= 0
-    assert b.total_tracked_time <= b.wall_time_s
+    assert b.total_tracked_time <= b.wall_time_s  # pyright: ignore[reportOperatorIssue]
 
 
 def test_budget_context_untracked_time():
@@ -241,7 +241,7 @@ def test_oprecord_durations_populated():
     add_records = [r for r in b.op_log if r.op_name == "add"]
     assert len(add_records) >= 1
     assert all(r.duration is not None for r in add_records)
-    assert all(r.duration >= 0 for r in add_records)
+    assert all(r.duration >= 0 for r in add_records)  # pyright: ignore[reportOptionalOperand]
 
 
 def test_durations_populated_across_op_types():

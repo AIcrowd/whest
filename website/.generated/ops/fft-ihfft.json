@@ -496,7 +496,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.ihfft",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L551",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L631",
   "href": "/docs/api/numpy/fft/ihfft/",
   "legacy_href": "/docs/api/ops/fft-ihfft/",
   "module": "numpy.fft",
@@ -604,7 +604,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.ihfft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.ihfft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-ihfft",
   "summary": "Compute the inverse FFT of a signal that has Hermitian symmetry.",
   "upstream_ref_label": "NumPy Ref",
