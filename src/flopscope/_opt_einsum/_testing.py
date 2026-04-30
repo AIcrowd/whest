@@ -121,7 +121,7 @@ def build_views(
         string, dimension_dict=dimension_dict, replace_ellipsis=replace_ellipsis
     ):
         if shape:
-            views.append(array_function(*shape))  # type: ignore[misc]
+            views.append(array_function(*shape))  # pyright: ignore[reportOptionalCall]
         else:
             views.append(random.random())
     return tuple(views)

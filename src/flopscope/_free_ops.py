@@ -1994,7 +1994,7 @@ attach_docstring(unravel_index, _np.unravel_index, "free", "0 FLOPs")
 
 if hasattr(_np, "unstack"):
 
-    def unstack(x: ArrayLike, *args: Any, **kwargs: Any) -> tuple[FlopscopeArray, ...]:  # type: ignore[misc]
+    def unstack(x: ArrayLike, *args: Any, **kwargs: Any) -> tuple[FlopscopeArray, ...]:  # pyright: ignore[reportRedeclaration]
         """Split array into sequence of arrays along an axis. Cost: numel(input)."""
         budget = require_budget()
         x_arr = _np.asarray(x)
@@ -2009,7 +2009,7 @@ if hasattr(_np, "unstack"):
 
 else:
 
-    def unstack(*args: Any, **kwargs: Any) -> tuple[FlopscopeArray, ...]:  # type: ignore[misc]
+    def unstack(*args: Any, **kwargs: Any) -> tuple[FlopscopeArray, ...]:  # pyright: ignore[reportRedeclaration]
         raise UnsupportedFunctionError("unstack", min_version="2.1")
 
 

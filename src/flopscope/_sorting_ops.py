@@ -398,7 +398,7 @@ def _set_cost(ar1, ar2):
 
 if hasattr(_np, "in1d"):
 
-    def in1d(ar1: ArrayLike, ar2: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
+    def in1d(ar1: ArrayLike, ar2: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # pyright: ignore[reportRedeclaration]
         """Counted version of ``numpy.in1d``. Cost: (n+m)*ceil(log2(n+m)) FLOPs."""
         budget = require_budget()
         a1 = _np.asarray(ar1)

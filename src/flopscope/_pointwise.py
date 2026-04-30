@@ -1221,7 +1221,7 @@ true_divide = _counted_binary(_np.true_divide, "true_divide")
 
 if hasattr(_np, "vecdot"):
 
-    def vecdot(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
+    def vecdot(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # pyright: ignore[reportRedeclaration]
         """Counted version of np.vecdot.
 
         Vector dot product along last axis. Each output element is the dot
@@ -1259,13 +1259,13 @@ if hasattr(_np, "vecdot"):
 
 else:
 
-    def vecdot(*args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
+    def vecdot(*args: Any, **kwargs: Any) -> FlopscopeArray:  # pyright: ignore[reportRedeclaration]
         raise UnsupportedFunctionError("vecdot", min_version="2.1")
 
 
 if hasattr(_np, "matvec"):
 
-    def matvec(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
+    def matvec(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # pyright: ignore[reportRedeclaration]
         """Counted version of np.matvec.
 
         Matrix-vector product. A is (..., m, n), v is (..., n), result is (..., m).
@@ -1299,13 +1299,13 @@ if hasattr(_np, "matvec"):
 
 else:
 
-    def matvec(*args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
+    def matvec(*args: Any, **kwargs: Any) -> FlopscopeArray:  # pyright: ignore[reportRedeclaration]
         raise UnsupportedFunctionError("matvec", min_version="2.2")
 
 
 if hasattr(_np, "vecmat"):
 
-    def vecmat(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
+    def vecmat(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # pyright: ignore[reportRedeclaration]
         """Counted version of np.vecmat.
 
         Vector-matrix product. v is (..., n), A is (..., n, m), result is (..., m).
@@ -1339,7 +1339,7 @@ if hasattr(_np, "vecmat"):
 
 else:
 
-    def vecmat(*args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
+    def vecmat(*args: Any, **kwargs: Any) -> FlopscopeArray:  # pyright: ignore[reportRedeclaration]
         raise UnsupportedFunctionError("vecmat", min_version="2.2")
 
 
@@ -2030,7 +2030,7 @@ attach_docstring(trapezoid, _np.trapezoid, "counted_custom", "numel(input) FLOPs
 
 if hasattr(_np, "trapz"):
 
-    def trapz(  # type: ignore[misc]
+    def trapz(  # pyright: ignore[reportRedeclaration]
         y: ArrayLike, x: ArrayLike | None = None, dx: float = 1.0, axis: int = -1
     ) -> FlopscopeArray:
         """Counted version of np.trapz (deprecated alias for trapezoid)."""
