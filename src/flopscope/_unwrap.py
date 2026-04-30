@@ -4,9 +4,10 @@
 from __future__ import annotations
 
 import numpy as _np
+from numpy.typing import ArrayLike
 
 from flopscope._docstrings import attach_docstring
-from flopscope._ndarray import _to_base_ndarray
+from flopscope._ndarray import FlopscopeArray, _to_base_ndarray
 from flopscope._validation import require_budget
 
 
@@ -33,7 +34,13 @@ def unwrap_cost(shape: tuple[int, ...]) -> int:
     return max(numel, 1)
 
 
-def unwrap(p, discont=None, axis=-1, *, period=6.283185307179586):
+def unwrap(
+    p: ArrayLike,
+    discont: float | None = None,
+    axis: int = -1,
+    *,
+    period: float = 6.283185307179586,
+) -> FlopscopeArray:
     budget = require_budget()
     if not isinstance(p, _np.ndarray):
         p = _np.asarray(p)
@@ -43,7 +50,7 @@ def unwrap(p, discont=None, axis=-1, *, period=6.283185307179586):
         kwargs["discont"] = discont
     with budget.deduct("unwrap", flop_cost=cost, subscripts=None, shapes=(p.shape,)):
         result = _np.unwrap(_to_base_ndarray(p), **kwargs)
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(unwrap, _np.unwrap, "counted_custom", "numel(input) FLOPs")
