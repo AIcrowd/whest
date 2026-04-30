@@ -336,7 +336,7 @@
     "name": "linalg.multi_dot",
     "notes": "Chain matmul. Cost: sum of optimal chain matmul costs (CLRS \u00a715.2).",
     "numpy_ref": "np.linalg.multi_dot",
-    "signature": "fnp.linalg.multi_dot(arrays, *, out=None)",
+    "signature": "fnp.linalg.multi_dot(arrays: 'Sequence[ArrayLike]', *, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the dot product of two or more arrays in a single function call, while automatically selecting the fastest evaluation order.",
     "weight": 1.0
@@ -344,7 +344,7 @@
   "schema_version": 1,
   "slug": "linalg-multi_dot",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L64",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L66",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2841"
   }
 }

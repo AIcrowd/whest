@@ -409,7 +409,7 @@
     "name": "linalg.cross",
     "notes": "Delegates to `fnp.cross` which charges `numel(output)` FLOPs.",
     "numpy_ref": "np.linalg.cross",
-    "signature": "fnp.linalg.cross(x1, x2, /, *, axis=-1)",
+    "signature": "fnp.linalg.cross(x1: 'ArrayLike', x2: 'ArrayLike', /, *, axis: 'int' = -1) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Returns the cross product of 3-element vectors.",
     "weight": 1.0
@@ -417,7 +417,7 @@
   "schema_version": 1,
   "slug": "linalg-cross",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L26",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L30",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3223"
   }
 }

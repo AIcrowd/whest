@@ -532,7 +532,7 @@
     "name": "bincount",
     "notes": "Integer counting; cost = numel(x).",
     "numpy_ref": "np.bincount",
-    "signature": "fnp.bincount(x, **kwargs)",
+    "signature": "fnp.bincount(x: 'ArrayLike', **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Count number of occurrences of each value in array of non-negative ints.",
     "weight": 1.0
@@ -540,7 +540,7 @@
   "schema_version": 1,
   "slug": "bincount",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L242",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L269",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.bincount.html"
   }
 }

@@ -445,7 +445,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.transpose",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L301",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L353",
   "href": "/docs/api/numpy/transpose/",
   "import_path": "flopscope.numpy.transpose",
   "is_operation_cost_leaf": true,
@@ -558,7 +558,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.transpose(a, axes=None)",
+  "signature": "fnp.transpose(a: 'ArrayLike', axes: 'Sequence[int] | None' = None) -> 'FlopscopeArray'",
   "slug": "transpose",
   "summary": "Returns an array with axes transposed.",
   "upstream_ref_label": "NumPy Ref",

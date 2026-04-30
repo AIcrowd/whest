@@ -419,7 +419,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.vector_norm",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L277",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L285",
   "href": "/docs/api/numpy/linalg/vector-norm/",
   "import_path": "flopscope.numpy.linalg.vector_norm",
   "is_operation_cost_leaf": true,
@@ -506,7 +506,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.vector_norm(x, ord=2, axis=None, keepdims=False)",
+  "signature": "fnp.linalg.vector_norm(x: 'ArrayLike', ord: 'Any' = 2, axis: 'int | tuple[int, ...] | None' = None, keepdims: 'bool' = False) -> 'FlopscopeArray'",
   "slug": "linalg-vector_norm",
   "summary": "Computes the vector norm of a vector (or batch of vectors) ``x``.",
   "upstream_ref_label": "NumPy Ref",

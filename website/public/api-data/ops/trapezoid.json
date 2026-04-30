@@ -713,7 +713,7 @@
     "name": "trapezoid",
     "notes": "Integrate using the trapezoidal rule.",
     "numpy_ref": "np.trapezoid",
-    "signature": "fnp.trapezoid(y, x=None, dx=1.0, axis=-1)",
+    "signature": "fnp.trapezoid(y: 'ArrayLike', x: 'ArrayLike | None' = None, dx: 'float' = 1.0, axis: 'int' = -1) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Integrate along the given axis using the composite trapezoidal rule.",
     "weight": 1.0
@@ -721,7 +721,7 @@
   "schema_version": 1,
   "slug": "trapezoid",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1974",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L2008",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L4959"
   }
 }

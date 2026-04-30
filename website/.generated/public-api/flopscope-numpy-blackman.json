@@ -293,7 +293,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.blackman",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L64",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L65",
   "href": "/docs/api/numpy/blackman/",
   "import_path": "flopscope.numpy.blackman",
   "is_operation_cost_leaf": true,
@@ -394,7 +394,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.blackman(M)",
+  "signature": "fnp.blackman(M: 'int') -> 'FlopscopeArray'",
   "slug": "blackman",
   "summary": "Return the Blackman window.",
   "upstream_ref_label": "NumPy Ref",

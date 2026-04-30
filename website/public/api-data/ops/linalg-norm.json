@@ -874,7 +874,7 @@
     "name": "linalg.norm",
     "notes": "Norm. Cost depends on ord: numel for L1/inf, 2*numel for Frobenius, m*n*min(m,n) for ord=2.",
     "numpy_ref": "np.linalg.norm",
-    "signature": "fnp.linalg.norm(x, ord=None, axis=None, keepdims=False)",
+    "signature": "fnp.linalg.norm(x: 'ArrayLike', ord: 'Any' = None, axis: 'int | tuple[int, ...] | None' = None, keepdims: 'bool' = False) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Matrix or vector norm.",
     "weight": 1.0
@@ -882,7 +882,7 @@
   "schema_version": 1,
   "slug": "linalg-norm",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L205",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L208",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2575"
   }
 }

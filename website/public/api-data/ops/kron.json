@@ -329,7 +329,7 @@
     "name": "kron",
     "notes": "Kronecker product; cost proportional to output size.",
     "numpy_ref": "np.kron",
-    "signature": "fnp.kron(a, b)",
+    "signature": "fnp.kron(a: 'ArrayLike', b: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Kronecker product of two arrays.",
     "weight": 1.0
@@ -337,7 +337,7 @@
   "schema_version": 1,
   "slug": "kron",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1753",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1785",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1085"
   }
 }

@@ -681,7 +681,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.fft",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L167",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L169",
   "href": "/docs/api/numpy/fft/fft/",
   "legacy_href": "/docs/api/ops/fft-fft/",
   "module": "numpy.fft",
@@ -885,7 +885,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.fft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.fft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-fft",
   "summary": "Compute the one-dimensional discrete Fourier Transform.",
   "upstream_ref_label": "NumPy Ref",

@@ -661,7 +661,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.concatenate",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L358",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L417",
   "href": "/docs/api/numpy/concatenate/",
   "import_path": "flopscope.numpy.concatenate",
   "is_operation_cost_leaf": true,
@@ -944,7 +944,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.concatenate(arrays, axis=0, **kwargs)",
+  "signature": "fnp.concatenate(arrays: 'Sequence[ArrayLike]', axis: 'int | None' = 0, **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "concatenate",
   "summary": "Join a sequence of arrays along an existing axis.",
   "upstream_ref_label": "NumPy Ref",

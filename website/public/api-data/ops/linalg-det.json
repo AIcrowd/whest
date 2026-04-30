@@ -269,7 +269,7 @@
     "name": "linalg.det",
     "notes": "Determinant. Cost: $n^3$.",
     "numpy_ref": "np.linalg.det",
-    "signature": "fnp.linalg.det(a)",
+    "signature": "fnp.linalg.det(a: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the determinant of an array.",
     "weight": 4.0
@@ -277,7 +277,7 @@
   "schema_version": 1,
   "slug": "linalg-det",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L83",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L86",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2331"
   }
 }

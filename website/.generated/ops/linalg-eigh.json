@@ -726,7 +726,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.eigh",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L187",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L190",
   "href": "/docs/api/numpy/linalg/eigh/",
   "legacy_href": "/docs/api/ops/linalg-eigh/",
   "module": "numpy.linalg",
@@ -861,7 +861,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.eigh(a, UPLO='L')",
+  "signature": "fnp.linalg.eigh(a: 'ArrayLike', UPLO: 'str' = 'L') -> 'tuple[FlopscopeArray, FlopscopeArray]'",
   "slug": "linalg-eigh",
   "summary": "Return the eigenvalues and eigenvectors of a complex Hermitian (conjugate symmetric) or a real symmetric matrix.",
   "upstream_ref_label": "NumPy Ref",

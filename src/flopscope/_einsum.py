@@ -143,6 +143,11 @@ def clear_einsum_cache():
     -----
     Discards all cached contraction paths. Subsequent ``einsum()`` and
     ``einsum_path()`` calls will recompute paths from scratch.
+
+    Examples
+    --------
+    >>> import flopscope.numpy as fnp
+    >>> fnp.clear_einsum_cache()
     """
     _path_cache.cache_clear()
 
@@ -160,13 +165,12 @@ def einsum_cache_info():
         The standard ``functools.lru_cache`` statistics tuple with ``hits``,
         ``misses``, ``maxsize``, and ``currsize`` fields.
 
-    Returns a named tuple with ``hits``, ``misses``, ``maxsize``, and
-    ``currsize`` fields (the standard ``functools.lru_cache`` statistics).
-
-    Example::
-
-        info = flops.einsum_cache_info()
-        print(f"Cache hit rate: {info.hits / max(info.hits + info.misses, 1):.0%}")
+    Examples
+    --------
+    >>> import flopscope.numpy as fnp
+    >>> info = fnp.einsum_cache_info()
+    >>> total = info.hits + info.misses
+    >>> rate = info.hits / max(total, 1)
     """
     return _path_cache.cache_info()
 

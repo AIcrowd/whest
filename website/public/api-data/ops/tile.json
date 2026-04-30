@@ -433,7 +433,7 @@
     "name": "tile",
     "notes": "Repeat array by tiling. Cost: numel(output).",
     "numpy_ref": "np.tile",
-    "signature": "fnp.tile(A, reps)",
+    "signature": "fnp.tile(A: 'ArrayLike', reps: 'int | Sequence[int]') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Construct an array by repeating A the number of times given by reps.",
     "weight": 1.0
@@ -441,7 +441,7 @@
   "schema_version": 1,
   "slug": "tile",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L509",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L596",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L1204"
   }
 }

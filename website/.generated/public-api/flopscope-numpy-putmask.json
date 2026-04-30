@@ -406,7 +406,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.putmask",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1524",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1709",
   "href": "/docs/api/numpy/putmask/",
   "import_path": "flopscope.numpy.putmask",
   "is_operation_cost_leaf": true,
@@ -508,7 +508,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.putmask(a, mask, values, *args, **kwargs)",
+  "signature": "fnp.putmask(a: 'ArrayLike', mask: 'ArrayLike', values: 'ArrayLike', *args: 'Any', **kwargs: 'Any') -> 'None'",
   "slug": "putmask",
   "summary": "Changes elements of an array based on conditional and input values.",
   "upstream_ref_label": "NumPy Ref",

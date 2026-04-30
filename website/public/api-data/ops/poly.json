@@ -534,7 +534,7 @@
     "name": "poly",
     "notes": "Polynomial from roots. Cost: $n^2$ FLOPs.",
     "numpy_ref": "np.poly",
-    "signature": "fnp.poly(seq_of_zeros)",
+    "signature": "fnp.poly(seq_of_zeros: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Find the coefficients of a polynomial with the given sequence of roots.",
     "weight": 1.0
@@ -542,7 +542,7 @@
   "schema_version": 1,
   "slug": "poly",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L215",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L223",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L34"
   }
 }

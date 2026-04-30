@@ -324,7 +324,7 @@
     "name": "count_nonzero",
     "notes": "Count non-zero elements.",
     "numpy_ref": "np.count_nonzero",
-    "signature": "fnp.count_nonzero(a, axis=None, *, keepdims=False)",
+    "signature": "fnp.count_nonzero(a: 'ArrayLike', axis: 'int | tuple[int, ...] | None' = None, *, keepdims: 'bool' = False) -> 'FlopscopeArray | int'",
     "status": "supported",
     "summary": "Counts the number of non-zero values in the array ``a``.",
     "weight": 1.0
@@ -332,7 +332,7 @@
   "schema_version": 1,
   "slug": "count_nonzero",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1395",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1423",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/numeric.py#L450"
   }
 }

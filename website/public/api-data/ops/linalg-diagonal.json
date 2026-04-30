@@ -441,7 +441,7 @@
     "name": "linalg.diagonal",
     "notes": "View of diagonal \u2014 delegates to flopscope.diagonal. Cost: 0 FLOPs.",
     "numpy_ref": "np.linalg.diagonal",
-    "signature": "fnp.linalg.diagonal(x, /, *, offset=0)",
+    "signature": "fnp.linalg.diagonal(x: 'ArrayLike', /, *, offset: 'int' = 0) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Returns specified diagonals of a matrix (or a stack of matrices) ``x``.",
     "weight": 0.0
@@ -449,7 +449,7 @@
   "schema_version": 1,
   "slug": "linalg-diagonal",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L101",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L107",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3042"
   }
 }

@@ -160,7 +160,7 @@
     "name": "union1d",
     "notes": "Set union; cost = (n+m)*ceil(log2(n+m)).",
     "numpy_ref": "np.union1d",
-    "signature": "fnp.union1d(ar1, ar2)",
+    "signature": "fnp.union1d(ar1: 'ArrayLike', ar2: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Find the union of two arrays.",
     "weight": 1.0
@@ -168,7 +168,7 @@
   "schema_version": 1,
   "slug": "union1d",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L429",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L468",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_arraysetops_impl.py#L1140"
   }
 }

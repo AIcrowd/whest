@@ -864,7 +864,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.fft2",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L260",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L286",
   "href": "/docs/api/numpy/fft/fft2/",
   "legacy_href": "/docs/api/ops/fft-fft2/",
   "module": "numpy.fft",
@@ -1064,7 +1064,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.fft2(a, s=None, axes=(-2, -1), norm=None, out=None)",
+  "signature": "fnp.fft.fft2(a: 'ArrayLike', s: 'Sequence[int] | None' = None, axes: 'Sequence[int]' = (-2, -1), norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-fft2",
   "summary": "Compute the 2-dimensional discrete Fourier Transform.",
   "upstream_ref_label": "NumPy Ref",

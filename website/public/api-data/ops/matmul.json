@@ -893,7 +893,7 @@
     "name": "matmul",
     "notes": "Matrix multiplication; cost = M*K*N (FMA=1).",
     "numpy_ref": "np.matmul",
-    "signature": "fnp.matmul(a, b)",
+    "signature": "fnp.matmul(a: 'ArrayLike', b: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Matrix product of two arrays.",
     "weight": 1.0
@@ -901,7 +901,7 @@
   "schema_version": 1,
   "slug": "matmul",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1523",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1553",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

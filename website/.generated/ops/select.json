@@ -457,7 +457,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.select",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1621",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1812",
   "href": "/docs/api/numpy/select/",
   "legacy_href": "/docs/api/ops/select/",
   "module": "numpy",
@@ -586,7 +586,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.select(condlist, choicelist, default=0)",
+  "signature": "fnp.select(condlist: 'Sequence[ArrayLike]', choicelist: 'Sequence[ArrayLike]', default: 'Any' = 0) -> 'FlopscopeArray'",
   "slug": "select",
   "summary": "Return an array drawn from elements in choicelist, depending on conditions.",
   "upstream_ref_label": "NumPy Ref",

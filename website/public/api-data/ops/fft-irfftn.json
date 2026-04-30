@@ -983,7 +983,7 @@
     "name": "fft.irfftn",
     "notes": "Inverse N-D real FFT. Cost: 5*(N//2)*ceil(log2(N)), N=prod(s) (Cooley-Tukey radix-2; Van Loan 1992 \u00a71.4).",
     "numpy_ref": "np.fft.irfftn",
-    "signature": "fnp.fft.irfftn(a, s=None, axes=None, norm=None, out=None)",
+    "signature": "fnp.fft.irfftn(a: 'ArrayLike', s: 'Sequence[int] | None' = None, axes: 'Sequence[int] | None' = None, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Computes the inverse of `rfftn`.",
     "weight": 1.0
@@ -991,7 +991,7 @@
   "schema_version": 1,
   "slug": "fft-irfftn",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L479",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L547",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_pocketfft.py#L1467"
   }
 }

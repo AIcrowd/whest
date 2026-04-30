@@ -392,7 +392,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.polyder",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L133",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L136",
   "href": "/docs/api/numpy/polyder/",
   "import_path": "flopscope.numpy.polyder",
   "is_operation_cost_leaf": true,
@@ -483,7 +483,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.polyder(p, m=1)",
+  "signature": "fnp.polyder(p: 'ArrayLike', m: 'int' = 1) -> 'FlopscopeArray'",
   "slug": "polyder",
   "summary": "Return the derivative of the specified order of a polynomial.",
   "upstream_ref_label": "NumPy Ref",

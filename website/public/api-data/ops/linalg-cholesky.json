@@ -645,7 +645,7 @@
     "name": "linalg.cholesky",
     "notes": "Cholesky decomposition. Cost: $n^3$.",
     "numpy_ref": "np.linalg.cholesky",
-    "signature": "fnp.linalg.cholesky(a, /, *, upper=False)",
+    "signature": "fnp.linalg.cholesky(a: 'ArrayLike', /, *, upper: 'bool' = False) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Cholesky decomposition.",
     "weight": 4.0
@@ -653,7 +653,7 @@
   "schema_version": 1,
   "slug": "linalg-cholesky",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L39",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L40",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L740"
   }
 }

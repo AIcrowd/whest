@@ -936,7 +936,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.arange",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L176",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L202",
   "href": "/docs/api/numpy/arange/",
   "import_path": "flopscope.numpy.arange",
   "is_operation_cost_leaf": true,
@@ -1102,7 +1102,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.arange(*args, **kwargs)",
+  "signature": "fnp.arange(*args: 'Any', **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "arange",
   "summary": "Return evenly spaced values within a given interval.",
   "upstream_ref_label": "NumPy Ref",

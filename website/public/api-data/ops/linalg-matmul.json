@@ -478,7 +478,7 @@
     "name": "linalg.matmul",
     "notes": "Delegates to `fnp.matmul` which charges `m*k*n` FLOPs (FMA=1).",
     "numpy_ref": "np.linalg.matmul",
-    "signature": "fnp.linalg.matmul(x1, x2, /)",
+    "signature": "fnp.linalg.matmul(x1: 'ArrayLike', x2: 'ArrayLike', /) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Computes the matrix product.",
     "weight": 1.0
@@ -486,7 +486,7 @@
   "schema_version": 1,
   "slug": "linalg-matmul",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L16",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L20",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3302"
   }
 }

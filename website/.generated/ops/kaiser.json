@@ -392,7 +392,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.kaiser",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L157",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L158",
   "href": "/docs/api/numpy/kaiser/",
   "legacy_href": "/docs/api/ops/kaiser/",
   "module": "flopscope._window",
@@ -495,7 +495,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.kaiser(M, beta)",
+  "signature": "fnp.kaiser(M: 'int', beta: 'float') -> 'FlopscopeArray'",
   "slug": "kaiser",
   "summary": "Return the Kaiser window.",
   "upstream_ref_label": "NumPy Ref",

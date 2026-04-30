@@ -826,7 +826,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.lstsq",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L168",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L171",
   "href": "/docs/api/numpy/linalg/lstsq/",
   "legacy_href": "/docs/api/ops/linalg-lstsq/",
   "module": "numpy.linalg",
@@ -934,7 +934,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.lstsq(a, b, rcond=None)",
+  "signature": "fnp.linalg.lstsq(a: 'ArrayLike', b: 'ArrayLike', rcond: 'float | None' = None) -> 'tuple[FlopscopeArray, FlopscopeArray, int, FlopscopeArray]'",
   "slug": "linalg-lstsq",
   "summary": "Return the least-squares solution to a linear matrix equation.",
   "upstream_ref_label": "NumPy Ref",

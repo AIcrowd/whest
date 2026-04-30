@@ -332,7 +332,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.vecdot",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L83",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L87",
   "href": "/docs/api/numpy/linalg/vecdot/",
   "import_path": "flopscope.numpy.linalg.vecdot",
   "is_operation_cost_leaf": true,
@@ -408,7 +408,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.vecdot(x1, x2, /, *, axis=-1)",
+  "signature": "fnp.linalg.vecdot(x1: 'ArrayLike', x2: 'ArrayLike', /, *, axis: 'int' = -1) -> 'FlopscopeArray'",
   "slug": "linalg-vecdot",
   "summary": "Computes the vector dot product.",
   "upstream_ref_label": "NumPy Ref",

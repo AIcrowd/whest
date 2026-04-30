@@ -587,7 +587,7 @@
     "name": "inner",
     "notes": "Inner product; cost = N (FMA=1).",
     "numpy_ref": "np.inner",
-    "signature": "fnp.inner(a, b)",
+    "signature": "fnp.inner(a: 'ArrayLike', b: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Inner product of two arrays.",
     "weight": 1.0
@@ -595,7 +595,7 @@
   "schema_version": 1,
   "slug": "inner",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1570",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1600",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.inner.html"
   }
 }

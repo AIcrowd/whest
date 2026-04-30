@@ -302,7 +302,7 @@
     "name": "hanning",
     "notes": "Hanning window. Cost: n (one cosine per sample).",
     "numpy_ref": "np.hanning",
-    "signature": "fnp.hanning(M)",
+    "signature": "fnp.hanning(M: 'int') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return the Hanning window.",
     "weight": 16.0
@@ -310,7 +310,7 @@
   "schema_version": 1,
   "slug": "hanning",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L126",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_window.py#L127",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L3265"
   }
 }

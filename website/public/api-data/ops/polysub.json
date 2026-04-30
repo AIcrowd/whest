@@ -307,7 +307,7 @@
     "name": "polysub",
     "notes": "Difference (subtraction) of two polynomials. Cost: max(n1, n2) FLOPs.",
     "numpy_ref": "np.polysub",
-    "signature": "fnp.polysub(a1, a2)",
+    "signature": "fnp.polysub(a1: 'ArrayLike', a2: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Difference (subtraction) of two polynomials.",
     "weight": 1.0
@@ -315,7 +315,7 @@
   "schema_version": 1,
   "slug": "polysub",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L115",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L118",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L855"
   }
 }

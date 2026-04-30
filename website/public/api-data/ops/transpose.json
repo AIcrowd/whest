@@ -429,7 +429,7 @@
     "name": "transpose",
     "notes": "Permute array dimensions.",
     "numpy_ref": "np.transpose",
-    "signature": "fnp.transpose(a, axes=None)",
+    "signature": "fnp.transpose(a: 'ArrayLike', axes: 'Sequence[int] | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Returns an array with axes transposed.",
     "weight": 0.0
@@ -437,7 +437,7 @@
   "schema_version": 1,
   "slug": "transpose",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L301",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L353",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L630"
   }
 }

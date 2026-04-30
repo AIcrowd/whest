@@ -351,7 +351,7 @@
     "name": "polyadd",
     "notes": "Add two polynomials. Cost: max(n1, n2) FLOPs.",
     "numpy_ref": "np.polyadd",
-    "signature": "fnp.polyadd(a1, a2)",
+    "signature": "fnp.polyadd(a1: 'ArrayLike', a2: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Find the sum of two polynomials.",
     "weight": 1.0
@@ -359,7 +359,7 @@
   "schema_version": 1,
   "slug": "polyadd",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L97",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L100",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L786"
   }
 }

@@ -548,7 +548,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.unwrap",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_unwrap.py#L36",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_unwrap.py#L37",
   "href": "/docs/api/numpy/unwrap/",
   "import_path": "flopscope.numpy.unwrap",
   "is_operation_cost_leaf": true,
@@ -650,7 +650,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.unwrap(p, discont=None, axis=-1, *, period=6.283185307179586)",
+  "signature": "fnp.unwrap(p: 'ArrayLike', discont: 'float | None' = None, axis: 'int' = -1, *, period: 'float' = 6.283185307179586) -> 'FlopscopeArray'",
   "slug": "unwrap",
   "summary": "Unwrap by taking the complement of large deltas with respect to the period.",
   "upstream_ref_label": "NumPy Ref",

@@ -280,7 +280,7 @@
     "name": "swapaxes",
     "notes": "Interchange two axes of an array.",
     "numpy_ref": "np.swapaxes",
-    "signature": "fnp.swapaxes(a, axis1, axis2)",
+    "signature": "fnp.swapaxes(a: 'ArrayLike', axis1: 'int', axis2: 'int') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Interchange two axes of an array.",
     "weight": 0.0
@@ -288,7 +288,7 @@
   "schema_version": 1,
   "slug": "swapaxes",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L317",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L372",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/fromnumeric.py#L578"
   }
 }

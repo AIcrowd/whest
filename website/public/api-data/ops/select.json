@@ -449,7 +449,7 @@
     "name": "select",
     "notes": "Return array from list of choices based on conditions. Cost: numel(input).",
     "numpy_ref": "np.select",
-    "signature": "fnp.select(condlist, choicelist, default=0)",
+    "signature": "fnp.select(condlist: 'Sequence[ArrayLike]', choicelist: 'Sequence[ArrayLike]', default: 'Any' = 0) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return an array drawn from elements in choicelist, depending on conditions.",
     "weight": 4.0
@@ -457,7 +457,7 @@
   "schema_version": 1,
   "slug": "select",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1621",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1812",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L786"
   }
 }

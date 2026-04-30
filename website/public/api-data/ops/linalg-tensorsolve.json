@@ -415,7 +415,7 @@
     "name": "linalg.tensorsolve",
     "notes": "Tensor solve. Cost: $n^3$ after reshape (delegates to solve).",
     "numpy_ref": "np.linalg.tensorsolve",
-    "signature": "fnp.linalg.tensorsolve(a, b, axes=None)",
+    "signature": "fnp.linalg.tensorsolve(a: 'ArrayLike', b: 'ArrayLike', axes: 'Any' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Solve the tensor equation ``a x = b`` for x.",
     "weight": 4.0
@@ -423,7 +423,7 @@
   "schema_version": 1,
   "slug": "linalg-tensorsolve",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L281",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L292",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L237"
   }
 }

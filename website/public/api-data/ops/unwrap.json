@@ -539,7 +539,7 @@
     "name": "unwrap",
     "notes": "Phase unwrap. Cost: $\\text{numel}(\\text{input})$ (diff + conditional adjustment).",
     "numpy_ref": "np.unwrap",
-    "signature": "fnp.unwrap(p, discont=None, axis=-1, *, period=6.283185307179586)",
+    "signature": "fnp.unwrap(p: 'ArrayLike', discont: 'float | None' = None, axis: 'int' = -1, *, period: 'float' = 6.283185307179586) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Unwrap by taking the complement of large deltas with respect to the period.",
     "weight": 1.0
@@ -547,7 +547,7 @@
   "schema_version": 1,
   "slug": "unwrap",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_unwrap.py#L36",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_unwrap.py#L37",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L1707"
   }
 }

@@ -1,0 +1,404 @@
+{
+  "aliases": [
+    "fnp.random.Generator"
+  ],
+  "area": "numpy",
+  "body_sections": [
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "Container for the BitGenerators."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Summary"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "Generator"
+            },
+            {
+              "kind": "text",
+              "text": " exposes a number of methods for generating random\nnumbers drawn from a variety of probability distributions. In addition to\nthe distribution-specific arguments, each method takes a keyword argument\n"
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/numpy/size/",
+              "kind": "link",
+              "target": "size",
+              "text": "size"
+            },
+            {
+              "kind": "text",
+              "text": " that defaults to "
+            },
+            {
+              "kind": "code",
+              "text": "None"
+            },
+            {
+              "kind": "text",
+              "text": ". If "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/numpy/size/",
+              "kind": "link",
+              "target": "size",
+              "text": "size"
+            },
+            {
+              "kind": "text",
+              "text": " is "
+            },
+            {
+              "kind": "code",
+              "text": "None"
+            },
+            {
+              "kind": "text",
+              "text": ", then a single\nvalue is generated and returned. If "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/numpy/size/",
+              "kind": "link",
+              "target": "size",
+              "text": "size"
+            },
+            {
+              "kind": "text",
+              "text": " is an integer, then a 1-D\narray filled with generated values is returned. If "
+            },
+            {
+              "external_url": "",
+              "href": "/docs/api/numpy/size/",
+              "kind": "link",
+              "target": "size",
+              "text": "size"
+            },
+            {
+              "kind": "text",
+              "text": " is a tuple,\nthen an array with that shape is filled and returned."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The function "
+            },
+            {
+              "display_text": "flops.random.default_rng",
+              "explicit_title": false,
+              "external_url": "",
+              "href": "/docs/api/numpy/random/default-rng/",
+              "kind": "role_reference",
+              "original_target": "flops.random.default_rng",
+              "role": "func",
+              "suppress_link": false,
+              "target": "random.default_rng",
+              "unresolved": false
+            },
+            {
+              "kind": "text",
+              "text": " will instantiate\na "
+            },
+            {
+              "kind": "code",
+              "text": "Generator"
+            },
+            {
+              "kind": "text",
+              "text": " with numpy's default "
+            },
+            {
+              "kind": "code",
+              "text": "BitGenerator"
+            },
+            {
+              "kind": "text",
+              "text": "."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "strong",
+              "text": "No Compatibility Guarantee"
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "inline": [
+            {
+              "kind": "code",
+              "text": "Generator"
+            },
+            {
+              "kind": "text",
+              "text": " does not provide a version compatibility guarantee. In\nparticular, as better algorithms evolve the bit stream may change."
+            }
+          ],
+          "type": "paragraph"
+        }
+      ],
+      "title": "Extended Summary"
+    },
+    {
+      "blocks": [
+        {
+          "items": [
+            {
+              "body_blocks": [
+                {
+                  "inline": [
+                    {
+                      "kind": "text",
+                      "text": "BitGenerator to use as the core generator."
+                    }
+                  ],
+                  "type": "paragraph"
+                }
+              ],
+              "data_type": "BitGenerator",
+              "inline": [
+                {
+                  "kind": "text",
+                  "text": "BitGenerator to use as the core generator."
+                }
+              ],
+              "name": "bit_generator",
+              "type": "field_list"
+            }
+          ],
+          "title": "Parameters",
+          "type": "field_list"
+        }
+      ],
+      "title": "Parameters"
+    },
+    {
+      "blocks": [
+        {
+          "links": [
+            {
+              "description": "Recommended constructor for `Generator`.",
+              "description_inline": [
+                {
+                  "kind": "text",
+                  "text": "Recommended constructor for "
+                },
+                {
+                  "kind": "code",
+                  "text": "Generator"
+                },
+                {
+                  "kind": "text",
+                  "text": "."
+                }
+              ],
+              "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.default_rng.html",
+              "href": "",
+              "label": "default_rng",
+              "original_target": "default_rng",
+              "role": "",
+              "target": "default_rng",
+              "unresolved": false
+            }
+          ],
+          "type": "link_list"
+        }
+      ],
+      "title": "See also"
+    },
+    {
+      "blocks": [
+        {
+          "inline": [
+            {
+              "kind": "text",
+              "text": "The Python stdlib module "
+            },
+            {
+              "kind": "text",
+              "text": ":external+python:mod:`random`"
+            },
+            {
+              "kind": "text",
+              "text": " contains\npseudo-random number generator with a number of methods that are similar\nto the ones available in "
+            },
+            {
+              "kind": "code",
+              "text": "Generator"
+            },
+            {
+              "kind": "text",
+              "text": ".\nIt uses Mersenne Twister, and this bit generator can\nbe accessed using "
+            },
+            {
+              "kind": "code",
+              "text": "MT19937"
+            },
+            {
+              "kind": "text",
+              "text": ". "
+            },
+            {
+              "kind": "code",
+              "text": "Generator"
+            },
+            {
+              "kind": "text",
+              "text": ", besides being\nNumPy-aware, has the advantage that it provides a much larger number\nof probability distributions to choose from."
+            }
+          ],
+          "type": "paragraph"
+        },
+        {
+          "raw_kind": "system_message",
+          "raw_text": "<string>:1: (INFO/1) No role entry for \"external+python:mod\" in module \"docutils.parsers.rst.languages.en\".\nTrying \"external+python:mod\" as canonical role name.",
+          "type": "raw_block"
+        },
+        {
+          "raw_kind": "system_message",
+          "raw_text": "<string>:1: (ERROR/3) Unknown interpreted text role \"external+python:mod\".",
+          "type": "raw_block"
+        }
+      ],
+      "title": "Notes"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "from flops.random import Generator, PCG64"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "rng = Generator(PCG64())"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "rng.standard_normal()"
+            },
+            {
+              "kind": "output",
+              "text": "-0.203  # random"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
+    }
+  ],
+  "canonical_name": "flopscope.numpy.random.Generator",
+  "canonical_path": "/docs/api/numpy/random/generator/",
+  "cost_formula": "",
+  "cost_formula_latex": "",
+  "display_name": "flopscope.numpy.random.Generator",
+  "display_type": "",
+  "doc_coverage": {
+    "raw_blocks": [
+      {
+        "kind": "inline_node",
+        "node_type": "problematic",
+        "raw_text": ":external+python:mod:`random`"
+      },
+      {
+        "kind": "system_message",
+        "raw_text": "<string>:1: (INFO/1) No role entry for \"external+python:mod\" in module \"docutils.parsers.rst.languages.en\".\nTrying \"external+python:mod\" as canonical role name."
+      },
+      {
+        "kind": "system_message",
+        "raw_text": "<string>:1: (ERROR/3) Unknown interpreted text role \"external+python:mod\"."
+      }
+    ],
+    "unresolved_references": [],
+    "unsupported_directives": []
+  },
+  "example": {
+    "code": ">>> from numpy.random import Generator, PCG64\n>>> rng = Generator(PCG64())\n>>> rng.standard_normal()\n-0.203  # random",
+    "output": "",
+    "source": "derived"
+  },
+  "flopscope_ref": "flopscope.numpy.random.Generator",
+  "flopscope_source_url": "",
+  "href": "/docs/api/numpy/random/generator/",
+  "import_path": "flopscope.numpy.random.Generator",
+  "is_operation_cost_leaf": false,
+  "kind": "class",
+  "legacy_href": "/docs/api/numpy/random/generator/",
+  "module": "numpy.random._generator",
+  "name": "Generator",
+  "next": null,
+  "notes": "",
+  "notes_sections": [
+    "The Python stdlib module :external+python:mod:`random` contains pseudo-random number generator with a number of methods that are similar to the ones available in `Generator`. It uses Mersenne Twister, and this bit generator can be accessed using `MT19937`. `Generator`, besides being NumPy-aware, has the advantage that it provides a much larger number of probability distributions to choose from."
+  ],
+  "numpy_ref": "",
+  "operation": null,
+  "parameters": [
+    {
+      "body": [
+        "BitGenerator to use as the core generator."
+      ],
+      "name": "bit_generator",
+      "type": "BitGenerator"
+    }
+  ],
+  "previous": null,
+  "returns": [],
+  "schema_version": 1,
+  "see_also": [
+    {
+      "description": "Recommended constructor for `Generator`.",
+      "description_inline": [
+        {
+          "kind": "text",
+          "text": "Recommended constructor for "
+        },
+        {
+          "kind": "code",
+          "text": "Generator"
+        },
+        {
+          "kind": "text",
+          "text": "."
+        }
+      ],
+      "external_url": "https://numpy.org/doc/stable/reference/generated/numpy.default_rng.html",
+      "href": "",
+      "label": "default_rng",
+      "original_target": "default_rng",
+      "role": "",
+      "target": "default_rng",
+      "unresolved": false
+    }
+  ],
+  "signature": "flopscope.numpy.random.Generator",
+  "slug": "flopscope-numpy-random-generator",
+  "summary": "Container for the BitGenerators.",
+  "upstream_source_url": "",
+  "weight": 1.0
+}

@@ -517,7 +517,7 @@
     "name": "vecmat",
     "notes": "Vector-matrix product. Cost = output_size * contracted_axis.",
     "numpy_ref": "np.vecmat",
-    "signature": "fnp.vecmat(a, b, **kwargs)",
+    "signature": "fnp.vecmat(a: 'ArrayLike', b: 'ArrayLike', **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Vector-matrix dot product of two arrays.",
     "weight": 1.0
@@ -525,7 +525,7 @@
   "schema_version": 1,
   "slug": "vecmat",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1281",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1307",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

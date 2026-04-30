@@ -516,7 +516,7 @@
     "name": "polyval",
     "notes": "Evaluate polynomial at given points. Cost: $m \\cdot \\text{deg}$ (Horner's method, FMA=1).",
     "numpy_ref": "np.polyval",
-    "signature": "fnp.polyval(p, x)",
+    "signature": "fnp.polyval(p: 'ArrayLike', x: 'ArrayLike') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Evaluate a polynomial at specific values.",
     "weight": 1.0
@@ -524,7 +524,7 @@
   "schema_version": 1,
   "slug": "polyval",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L72",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L75",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L702"
   }
 }

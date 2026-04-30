@@ -297,7 +297,7 @@
     "name": "fft.fftfreq",
     "notes": "FFT sample frequencies. No arithmetic; returns index array.",
     "numpy_ref": "np.fft.fftfreq",
-    "signature": "fnp.fft.fftfreq(n, d=1.0, device=None)",
+    "signature": "fnp.fft.fftfreq(n: 'int', d: 'float' = 1.0, device: 'Any' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Return the Discrete Fourier Transform sample frequencies.",
     "weight": 0.0
@@ -305,7 +305,7 @@
   "schema_version": 1,
   "slug": "fft-fftfreq",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L12",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L16",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/fft/_helper.py#L125"
   }
 }

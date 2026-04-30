@@ -328,7 +328,7 @@
     "name": "packbits",
     "notes": "Pack elements of array into bits. Cost: numel(input).",
     "numpy_ref": "np.packbits",
-    "signature": "fnp.packbits(a, *args, **kwargs)",
+    "signature": "fnp.packbits(a: 'ArrayLike', *args: 'Any', **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Packs the elements of a binary-valued array into bits in a uint8 array.",
     "weight": 1.0
@@ -336,7 +336,7 @@
   "schema_version": 1,
   "slug": "packbits",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1417",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1583",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.packbits.html"
   }
 }

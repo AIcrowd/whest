@@ -441,7 +441,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.trace",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L24",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L27",
   "href": "/docs/api/numpy/trace/",
   "legacy_href": "/docs/api/ops/trace/",
   "module": "numpy",
@@ -550,7 +550,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.trace(a, offset=0, axis1=0, axis2=1, dtype=None, out=None)",
+  "signature": "fnp.trace(a: 'ArrayLike', offset: 'int' = 0, axis1: 'int' = 0, axis2: 'int' = 1, dtype: 'DTypeLike | None' = None, out: 'FlopscopeArray | None' = None) -> 'FlopscopeArray'",
   "slug": "trace",
   "summary": "Return the sum along diagonals of the array.",
   "upstream_ref_label": "NumPy Ref",

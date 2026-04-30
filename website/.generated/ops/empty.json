@@ -528,7 +528,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.empty",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L261",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L305",
   "href": "/docs/api/numpy/empty/",
   "legacy_href": "/docs/api/ops/empty/",
   "module": "numpy",
@@ -674,7 +674,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.empty(shape, dtype=<class 'float'>, **kwargs)",
+  "signature": "fnp.empty(shape: 'int | Sequence[int]', dtype: 'DTypeLike' = <class 'float'>, **kwargs: 'Any') -> 'FlopscopeArray'",
   "slug": "empty",
   "summary": "Return a new array of given shape and type, without initializing entries.",
   "upstream_ref_label": "NumPy Ref",

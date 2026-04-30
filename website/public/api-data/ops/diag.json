@@ -434,7 +434,7 @@
     "name": "diag",
     "notes": "Extract diagonal or construct diagonal array. Cost: len(diagonal).",
     "numpy_ref": "np.diag",
-    "signature": "fnp.diag(v, k=0)",
+    "signature": "fnp.diag(v: 'ArrayLike', k: 'int' = 0) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Extract a diagonal or construct a diagonal array.",
     "weight": 4.0
@@ -442,7 +442,7 @@
   "schema_version": 1,
   "slug": "diag",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L150",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L176",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L245"
   }
 }

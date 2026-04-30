@@ -496,7 +496,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.outer",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1592",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1622",
   "href": "/docs/api/numpy/outer/",
   "import_path": "flopscope.numpy.outer",
   "is_operation_cost_leaf": true,
@@ -665,7 +665,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.outer(a, b, out=None)",
+  "signature": "fnp.outer(a: 'ArrayLike', b: 'ArrayLike', out: 'FlopscopeArray | None' = None) -> 'FlopscopeArray'",
   "slug": "outer",
   "summary": "Compute the outer product of two vectors.",
   "upstream_ref_label": "NumPy Ref",

@@ -349,7 +349,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.matrix_norm",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L341",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_properties.py#L354",
   "href": "/docs/api/numpy/linalg/matrix-norm/",
   "import_path": "flopscope.numpy.linalg.matrix_norm",
   "is_operation_cost_leaf": true,
@@ -425,7 +425,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.matrix_norm(x, ord='fro', keepdims=False)",
+  "signature": "fnp.linalg.matrix_norm(x: 'ArrayLike', ord: 'Any' = 'fro', keepdims: 'bool' = False) -> 'FlopscopeArray'",
   "slug": "linalg-matrix_norm",
   "summary": "Computes the matrix norm of a matrix (or a stack of matrices) ``x``.",
   "upstream_ref_label": "NumPy Ref",

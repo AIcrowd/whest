@@ -424,7 +424,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.tensorsolve",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L281",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L292",
   "href": "/docs/api/numpy/linalg/tensorsolve/",
   "import_path": "flopscope.numpy.linalg.tensorsolve",
   "is_operation_cost_leaf": true,
@@ -525,7 +525,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.tensorsolve(a, b, axes=None)",
+  "signature": "fnp.linalg.tensorsolve(a: 'ArrayLike', b: 'ArrayLike', axes: 'Any' = None) -> 'FlopscopeArray'",
   "slug": "linalg-tensorsolve",
   "summary": "Solve the tensor equation ``a x = b`` for x.",
   "upstream_ref_label": "NumPy Ref",

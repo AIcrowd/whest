@@ -439,7 +439,7 @@
     "name": "flip",
     "notes": "Reverse order of elements along axis.",
     "numpy_ref": "np.flip",
-    "signature": "fnp.flip(m, axis=None)",
+    "signature": "fnp.flip(m: 'ArrayLike', axis: 'int | tuple[int, ...] | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Reverse the order of elements in an array along the given axis.",
     "weight": 0.0
@@ -447,7 +447,7 @@
   "schema_version": 1,
   "slug": "flip",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L542",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L633",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_function_base_impl.py#L248"
   }
 }

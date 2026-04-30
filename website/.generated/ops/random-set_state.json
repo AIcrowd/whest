@@ -340,7 +340,7 @@
   "example": null,
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.set_state",
-  "flopscope_source_url": "",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L136",
   "href": "/docs/api/numpy/random/set-state/",
   "legacy_href": "/docs/api/ops/random-set_state/",
   "module": "numpy.random",
@@ -402,7 +402,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.random.set_state(state)",
+  "signature": "fnp.random.set_state(state: 'dict[str, Any] | tuple[Any, ...]') -> 'None'",
   "slug": "random-set_state",
   "summary": "Set the internal state of the generator from a tuple.",
   "upstream_ref_label": "NumPy Ref",

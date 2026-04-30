@@ -384,7 +384,7 @@
     "name": "linalg.matrix_power",
     "notes": "Matrix power. Cost: $(\\lfloor\\log_2 k\\rfloor + \\text{popcount}(k) - 1) \\cdot n^3$ (exponentiation by squaring).",
     "numpy_ref": "np.linalg.matrix_power",
-    "signature": "fnp.linalg.matrix_power(a, n)",
+    "signature": "fnp.linalg.matrix_power(a: 'ArrayLike', n: 'int') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Raise a square matrix to the (integer) power `n`.",
     "weight": 1.0
@@ -392,7 +392,7 @@
   "schema_version": 1,
   "slug": "linalg-matrix_power",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L118",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L123",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L617"
   }
 }

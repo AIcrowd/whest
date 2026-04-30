@@ -240,7 +240,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.unique_counts",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L304",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L335",
   "href": "/docs/api/numpy/unique-counts/",
   "import_path": "flopscope.numpy.unique_counts",
   "is_operation_cost_leaf": true,
@@ -310,7 +310,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.unique_counts(x, /)",
+  "signature": "fnp.unique_counts(x: 'ArrayLike', /) -> 'Any'",
   "slug": "unique_counts",
   "summary": "Find the unique elements and counts of an input array `x`.",
   "upstream_ref_label": "NumPy Ref",

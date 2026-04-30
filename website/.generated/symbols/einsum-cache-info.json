@@ -144,42 +144,6 @@
               ],
               "name": "",
               "type": "field_list"
-            },
-            {
-              "body_blocks": [],
-              "data_type": "Returns a named tuple with ``hits``, ``misses``, ``maxsize``, and",
-              "inline": [],
-              "name": "",
-              "type": "field_list"
-            },
-            {
-              "body_blocks": [],
-              "data_type": "``currsize`` fields (the standard ``functools.lru_cache`` statistics).",
-              "inline": [],
-              "name": "",
-              "type": "field_list"
-            },
-            {
-              "body_blocks": [
-                {
-                  "inline": [
-                    {
-                      "kind": "text",
-                      "text": "info = flops.einsum_cache_info()\nprint(f\"Cache hit rate: {info.hits / max(info.hits + info.misses, 1):.0%}\")"
-                    }
-                  ],
-                  "type": "paragraph"
-                }
-              ],
-              "data_type": "Example::",
-              "inline": [
-                {
-                  "kind": "text",
-                  "text": "info = flops.einsum_cache_info()\nprint(f\"Cache hit rate: {info.hits / max(info.hits + info.misses, 1):.0%}\")"
-                }
-              ],
-              "name": "",
-              "type": "field_list"
             }
           ],
           "title": "Returns",
@@ -187,6 +151,36 @@
         }
       ],
       "title": "Returns"
+    },
+    {
+      "blocks": [
+        {
+          "lines": [
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "import flopscope.numpy as fnp"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "info = fnp.einsum_cache_info()"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "total = info.hits + info.misses"
+            },
+            {
+              "kind": "input",
+              "prompt": ">>>",
+              "text": "rate = info.hits / max(total, 1)"
+            }
+          ],
+          "type": "doctest_block"
+        }
+      ],
+      "title": "Examples"
     }
   ],
   "canonical_name": "einsum_cache_info",
@@ -201,7 +195,7 @@
   "related_guides": [],
   "signature": "fnp.einsum_cache_info()",
   "slug": "einsum-cache-info",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L149",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L155",
   "status_note": "",
   "summary": "Return einsum path cache statistics.",
   "upstream_source_url": ""

@@ -377,7 +377,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.random.random_sample",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L233",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L261",
   "href": "/docs/api/numpy/random/random-sample/",
   "legacy_href": "/docs/api/ops/random-random_sample/",
   "module": "numpy.random",

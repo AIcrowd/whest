@@ -347,7 +347,7 @@
     "name": "linalg.outer",
     "notes": "Delegates to `fnp.outer` which charges `m*n` FLOPs.",
     "numpy_ref": "np.linalg.outer",
-    "signature": "fnp.linalg.outer(x1, x2, /)",
+    "signature": "fnp.linalg.outer(x1: 'ArrayLike', x2: 'ArrayLike', /) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the outer product of two vectors.",
     "weight": 1.0
@@ -355,7 +355,7 @@
   "schema_version": 1,
   "slug": "linalg-outer",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L58",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L62",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L850"
   }
 }

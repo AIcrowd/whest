@@ -325,7 +325,7 @@
     "name": "hsplit",
     "notes": "Split array into columns.",
     "numpy_ref": "np.hsplit",
-    "signature": "fnp.hsplit(ary, indices_or_sections)",
+    "signature": "fnp.hsplit(ary: 'ArrayLike', indices_or_sections: 'int | Sequence[int]') -> 'list[FlopscopeArray]'",
     "status": "supported",
     "summary": "Split an array into multiple sub-arrays horizontally (column-wise).",
     "weight": 0.0
@@ -333,7 +333,7 @@
   "schema_version": 1,
   "slug": "hsplit",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L417",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L488",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_shape_base_impl.py#L886"
   }
 }

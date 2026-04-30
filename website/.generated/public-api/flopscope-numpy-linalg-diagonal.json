@@ -450,7 +450,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.diagonal",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L101",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L107",
   "href": "/docs/api/numpy/linalg/diagonal/",
   "import_path": "flopscope.numpy.linalg.diagonal",
   "is_operation_cost_leaf": true,
@@ -528,7 +528,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.diagonal(x, /, *, offset=0)",
+  "signature": "fnp.linalg.diagonal(x: 'ArrayLike', /, *, offset: 'int' = 0) -> 'FlopscopeArray'",
   "slug": "linalg-diagonal",
   "summary": "Returns specified diagonals of a matrix (or a stack of matrices) ``x``.",
   "upstream_ref_label": "NumPy Ref",

@@ -609,7 +609,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fill_diagonal",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1116",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1256",
   "href": "/docs/api/numpy/fill-diagonal/",
   "legacy_href": "/docs/api/ops/fill_diagonal/",
   "module": "numpy",
@@ -683,7 +683,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fill_diagonal(a, val, wrap=False, **kwargs)",
+  "signature": "fnp.fill_diagonal(a: 'ArrayLike', val: 'Any', wrap: 'bool' = False, **kwargs: 'Any') -> 'None'",
   "slug": "fill_diagonal",
   "summary": "Fill the main diagonal of the given array of any dimensionality.",
   "upstream_ref_label": "NumPy Ref",

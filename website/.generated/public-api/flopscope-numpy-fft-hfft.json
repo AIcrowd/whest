@@ -791,7 +791,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.hfft",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L525",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_transforms.py#L599",
   "href": "/docs/api/numpy/fft/hfft/",
   "import_path": "flopscope.numpy.fft.hfft",
   "is_operation_cost_leaf": true,
@@ -934,7 +934,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.hfft(a, n=None, axis=-1, norm=None, out=None)",
+  "signature": "fnp.fft.hfft(a: 'ArrayLike', n: 'int | None' = None, axis: 'int' = -1, norm: 'str | None' = None, out: 'ArrayLike | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-hfft",
   "summary": "Compute the FFT of a signal that has Hermitian symmetry, i.e., a real spectrum.",
   "upstream_ref_label": "NumPy Ref",

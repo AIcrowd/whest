@@ -667,7 +667,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.pinv",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L226",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L231",
   "href": "/docs/api/numpy/linalg/pinv/",
   "legacy_href": "/docs/api/ops/linalg-pinv/",
   "module": "numpy.linalg",
@@ -773,7 +773,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
+  "signature": "fnp.linalg.pinv(a: 'ArrayLike', rcond: 'float | None' = None, hermitian: 'bool' = False, *, rtol: 'float | None' = None) -> 'FlopscopeArray'",
   "slug": "linalg-pinv",
   "summary": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.",
   "upstream_ref_label": "NumPy Ref",

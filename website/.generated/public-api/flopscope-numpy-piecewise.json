@@ -736,7 +736,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.piecewise",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L351",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L402",
   "href": "/docs/api/numpy/piecewise/",
   "import_path": "flopscope.numpy.piecewise",
   "is_operation_cost_leaf": true,
@@ -873,7 +873,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.piecewise(x, condlist, funclist, *args, **kw)",
+  "signature": "fnp.piecewise(x: 'ArrayLike', condlist: 'Any', funclist: 'Any', *args: 'Any', **kw: 'Any') -> 'FlopscopeArray'",
   "slug": "piecewise",
   "summary": "Evaluate a piecewise-defined function.",
   "upstream_ref_label": "NumPy Ref",

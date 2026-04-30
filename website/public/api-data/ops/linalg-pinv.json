@@ -649,7 +649,7 @@
     "name": "linalg.pinv",
     "notes": "Pseudoinverse. Cost: m*n*min(m,n) (via SVD).",
     "numpy_ref": "np.linalg.pinv",
-    "signature": "fnp.linalg.pinv(a, rcond=None, hermitian=False, *, rtol=None)",
+    "signature": "fnp.linalg.pinv(a: 'ArrayLike', rcond: 'float | None' = None, hermitian: 'bool' = False, *, rtol: 'float | None' = None) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Compute the (Moore-Penrose) pseudo-inverse of a matrix.",
     "weight": 4.0
@@ -657,7 +657,7 @@
   "schema_version": 1,
   "slug": "linalg-pinv",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L226",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L231",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L2128"
   }
 }

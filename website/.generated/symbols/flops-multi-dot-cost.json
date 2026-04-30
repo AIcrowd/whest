@@ -36,7 +36,7 @@
                   "type": "paragraph"
                 }
               ],
-              "data_type": "list[tuple[int, ...]]",
+              "data_type": "Sequence[Sequence[int]]",
               "inline": [
                 {
                   "kind": "text",
@@ -152,9 +152,9 @@
       "title": "Budget Planning & Debugging"
     }
   ],
-  "signature": "flops.flops.multi_dot_cost(shapes: 'list[tuple[int, ...]]') -> 'int'",
+  "signature": "flops.flops.multi_dot_cost(shapes: 'Sequence[Sequence[int]]') -> 'int'",
   "slug": "flops-multi-dot-cost",
-  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L24",
+  "source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_compound.py#L26",
   "status_note": "",
   "summary": "Weighted FLOP cost of optimal matrix chain multiplication.",
   "upstream_source_url": ""

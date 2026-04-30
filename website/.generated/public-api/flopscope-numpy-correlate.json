@@ -489,7 +489,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.correlate",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1896",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1930",
   "href": "/docs/api/numpy/correlate/",
   "import_path": "flopscope.numpy.correlate",
   "is_operation_cost_leaf": true,
@@ -585,7 +585,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.correlate(a, v, mode='valid')",
+  "signature": "fnp.correlate(a: 'ArrayLike', v: 'ArrayLike', mode: 'str' = 'valid') -> 'FlopscopeArray'",
   "slug": "correlate",
   "summary": "Cross-correlation of two 1-dimensional sequences.",
   "upstream_ref_label": "NumPy Ref",

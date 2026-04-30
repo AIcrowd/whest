@@ -817,7 +817,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.eig",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L144",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L147",
   "href": "/docs/api/numpy/linalg/eig/",
   "import_path": "flopscope.numpy.linalg.eig",
   "is_operation_cost_leaf": true,
@@ -975,7 +975,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.eig(a)",
+  "signature": "fnp.linalg.eig(a: 'ArrayLike') -> 'tuple[FlopscopeArray, FlopscopeArray]'",
   "slug": "linalg-eig",
   "summary": "Compute the eigenvalues and right eigenvectors of a square array.",
   "upstream_ref_label": "NumPy Ref",

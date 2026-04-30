@@ -390,7 +390,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.tensorinv",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L332",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L345",
   "href": "/docs/api/numpy/linalg/tensorinv/",
   "import_path": "flopscope.numpy.linalg.tensorinv",
   "is_operation_cost_leaf": true,
@@ -472,7 +472,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.tensorinv(a, ind=2)",
+  "signature": "fnp.linalg.tensorinv(a: 'ArrayLike', ind: 'int' = 2) -> 'FlopscopeArray'",
   "slug": "linalg-tensorinv",
   "summary": "Compute the 'inverse' of an N-dimensional array.",
   "upstream_ref_label": "NumPy Ref",

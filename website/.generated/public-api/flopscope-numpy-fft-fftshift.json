@@ -280,7 +280,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.fft.fftshift",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L34",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/fft/_free.py#L38",
   "href": "/docs/api/numpy/fft/fftshift/",
   "import_path": "flopscope.numpy.fft.fftshift",
   "is_operation_cost_leaf": true,
@@ -362,7 +362,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.fft.fftshift(x, axes=None)",
+  "signature": "fnp.fft.fftshift(x: 'ArrayLike', axes: 'int | Sequence[int] | None' = None) -> 'FlopscopeArray'",
   "slug": "fft-fftshift",
   "summary": "Shift the zero-frequency component to the center of the spectrum.",
   "upstream_ref_label": "NumPy Ref",

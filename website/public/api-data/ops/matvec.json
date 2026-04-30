@@ -528,7 +528,7 @@
     "name": "matvec",
     "notes": "Matrix-vector product. Cost = output_size * contracted_axis.",
     "numpy_ref": "np.matvec",
-    "signature": "fnp.matvec(a, b, **kwargs)",
+    "signature": "fnp.matvec(a: 'ArrayLike', b: 'ArrayLike', **kwargs: 'Any') -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Matrix-vector dot product of two arrays.",
     "weight": 1.0
@@ -536,7 +536,7 @@
   "schema_version": 1,
   "slug": "matvec",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1241",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1267",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/_core/code_generators/ufunc_docstrings.py"
   }
 }

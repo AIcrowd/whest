@@ -774,7 +774,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.diagonal",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L594",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L692",
   "href": "/docs/api/numpy/diagonal/",
   "import_path": "flopscope.numpy.diagonal",
   "is_operation_cost_leaf": true,
@@ -904,7 +904,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.diagonal(a, offset=0, axis1=0, axis2=1)",
+  "signature": "fnp.diagonal(a: 'ArrayLike', offset: 'int' = 0, axis1: 'int' = 0, axis2: 'int' = 1) -> 'FlopscopeArray'",
   "slug": "diagonal",
   "summary": "Return specified diagonals.",
   "upstream_ref_label": "NumPy Ref",

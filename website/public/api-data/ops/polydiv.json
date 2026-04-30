@@ -425,7 +425,7 @@
     "name": "polydiv",
     "notes": "Divide one polynomial by another. Cost: n1 * n2 FLOPs.",
     "numpy_ref": "np.polydiv",
-    "signature": "fnp.polydiv(u, v)",
+    "signature": "fnp.polydiv(u: 'ArrayLike', v: 'ArrayLike') -> 'tuple[FlopscopeArray, FlopscopeArray]'",
     "status": "supported",
     "summary": "Returns the quotient and remainder of polynomial division.",
     "weight": 1.0
@@ -433,7 +433,7 @@
   "schema_version": 1,
   "slug": "polydiv",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L182",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L185",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_polynomial_impl.py#L979"
   }
 }

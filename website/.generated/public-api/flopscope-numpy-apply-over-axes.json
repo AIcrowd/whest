@@ -468,7 +468,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.apply_over_axes",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L329",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_counting_ops.py#L376",
   "href": "/docs/api/numpy/apply-over-axes/",
   "import_path": "flopscope.numpy.apply_over_axes",
   "is_operation_cost_leaf": true,
@@ -553,7 +553,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.apply_over_axes(func, a, axes)",
+  "signature": "fnp.apply_over_axes(func: 'Any', a: 'ArrayLike', axes: 'int | Sequence[int]') -> 'FlopscopeArray'",
   "slug": "apply_over_axes",
   "summary": "Apply a function repeatedly over multiple axes.",
   "upstream_ref_label": "NumPy Ref",

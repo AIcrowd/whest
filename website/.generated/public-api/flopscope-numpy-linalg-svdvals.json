@@ -253,7 +253,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.svdvals",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L318",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L321",
   "href": "/docs/api/numpy/linalg/svdvals/",
   "import_path": "flopscope.numpy.linalg.svdvals",
   "is_operation_cost_leaf": true,
@@ -323,7 +323,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.svdvals(x, /, *, k: 'int | None' = None)",
+  "signature": "fnp.linalg.svdvals(x: 'ArrayLike', /, *, k: 'int | None' = None) -> 'FlopscopeArray'",
   "slug": "linalg-svdvals",
   "summary": "Returns the singular values of a matrix (or a stack of matrices) ``x``. When x is a stack of matrices, the function will compute the singular values for each matrix in the stack.",
   "upstream_ref_label": "NumPy Ref",

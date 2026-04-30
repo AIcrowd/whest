@@ -322,7 +322,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.polysub",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L115",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L118",
   "href": "/docs/api/numpy/polysub/",
   "legacy_href": "/docs/api/ops/polysub/",
   "module": "flopscope._polynomial",
@@ -405,7 +405,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.polysub(a1, a2)",
+  "signature": "fnp.polysub(a1: 'ArrayLike', a2: 'ArrayLike') -> 'FlopscopeArray'",
   "slug": "polysub",
   "summary": "Difference (subtraction) of two polynomials.",
   "upstream_ref_label": "NumPy Ref",

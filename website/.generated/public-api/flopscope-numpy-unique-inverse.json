@@ -256,7 +256,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.unique_inverse",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L321",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L352",
   "href": "/docs/api/numpy/unique-inverse/",
   "import_path": "flopscope.numpy.unique_inverse",
   "is_operation_cost_leaf": true,
@@ -327,7 +327,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.unique_inverse(x, /)",
+  "signature": "fnp.unique_inverse(x: 'ArrayLike', /) -> 'Any'",
   "slug": "unique_inverse",
   "summary": "Find the unique elements of `x` and indices to reconstruct `x`.",
   "upstream_ref_label": "NumPy Ref",

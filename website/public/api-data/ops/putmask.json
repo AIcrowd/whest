@@ -397,7 +397,7 @@
     "name": "putmask",
     "notes": "Change elements of array based on condition and input values. Cost: numel(input).",
     "numpy_ref": "np.putmask",
-    "signature": "fnp.putmask(a, mask, values, *args, **kwargs)",
+    "signature": "fnp.putmask(a: 'ArrayLike', mask: 'ArrayLike', values: 'ArrayLike', *args: 'Any', **kwargs: 'Any') -> 'None'",
     "status": "supported",
     "summary": "Changes elements of an array based on conditional and input values.",
     "weight": 4.0
@@ -405,7 +405,7 @@
   "schema_version": 1,
   "slug": "putmask",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1524",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L1709",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.putmask.html"
   }
 }

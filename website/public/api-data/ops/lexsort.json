@@ -703,7 +703,7 @@
     "name": "lexsort",
     "notes": "Multi-key sort; cost = k*n*ceil(log2(n)).",
     "numpy_ref": "np.lexsort",
-    "signature": "fnp.lexsort(keys, axis=-1)",
+    "signature": "fnp.lexsort(keys: 'Sequence[ArrayLike]', axis: 'int' = -1) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Perform an indirect stable sort using a sequence of keys.",
     "weight": 1.0
@@ -711,7 +711,7 @@
   "schema_version": 1,
   "slug": "lexsort",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L89",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_sorting_ops.py#L102",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html"
   }
 }

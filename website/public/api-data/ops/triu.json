@@ -212,7 +212,7 @@
     "name": "triu",
     "notes": "Upper triangle of array.",
     "numpy_ref": "np.triu",
-    "signature": "fnp.triu(m, k=0)",
+    "signature": "fnp.triu(m: 'ArrayLike', k: 'int' = 0) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Upper triangle of an array.",
     "weight": 0.0
@@ -220,7 +220,7 @@
   "schema_version": 1,
   "slug": "triu",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L578",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L676",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/lib/_twodim_base_impl.py#L497"
   }
 }

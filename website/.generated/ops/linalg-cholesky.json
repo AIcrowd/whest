@@ -653,7 +653,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.cholesky",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L39",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_decompositions.py#L40",
   "href": "/docs/api/numpy/linalg/cholesky/",
   "legacy_href": "/docs/api/ops/linalg-cholesky/",
   "module": "numpy.linalg",
@@ -771,7 +771,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.cholesky(a, /, *, upper=False)",
+  "signature": "fnp.linalg.cholesky(a: 'ArrayLike', /, *, upper: 'bool' = False) -> 'FlopscopeArray'",
   "slug": "linalg-cholesky",
   "summary": "Cholesky decomposition.",
   "upstream_ref_label": "NumPy Ref",

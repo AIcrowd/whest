@@ -642,7 +642,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.linalg.inv",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L111",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_solvers.py#L114",
   "href": "/docs/api/numpy/linalg/inv/",
   "legacy_href": "/docs/api/ops/linalg-inv/",
   "module": "numpy.linalg",
@@ -732,7 +732,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.linalg.inv(a)",
+  "signature": "fnp.linalg.inv(a: 'ArrayLike') -> 'FlopscopeArray'",
   "slug": "linalg-inv",
   "summary": "Compute the inverse of a matrix.",
   "upstream_ref_label": "NumPy Ref",

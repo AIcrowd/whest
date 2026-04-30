@@ -442,7 +442,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.tile",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L509",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L596",
   "href": "/docs/api/numpy/tile/",
   "import_path": "flopscope.numpy.tile",
   "is_operation_cost_leaf": true,
@@ -532,7 +532,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.tile(A, reps)",
+  "signature": "fnp.tile(A: 'ArrayLike', reps: 'int | Sequence[int]') -> 'FlopscopeArray'",
   "slug": "tile",
   "summary": "Construct an array by repeating A the number of times given by reps.",
   "upstream_ref_label": "NumPy Ref",

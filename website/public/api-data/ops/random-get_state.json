@@ -275,7 +275,7 @@
     "name": "random.get_state",
     "notes": "Return tuple representing internal state of generator.",
     "numpy_ref": "np.random.get_state",
-    "signature": "fnp.random.get_state(legacy=True)",
+    "signature": "fnp.random.get_state(legacy: 'bool' = True) -> 'dict[str, Any] | tuple[Any, ...]'",
     "status": "supported",
     "summary": "Return a tuple representing the internal state of the generator.",
     "weight": 0.0
@@ -283,7 +283,7 @@
   "schema_version": 1,
   "slug": "random-get_state",
   "source": {
-    "flopscope": null,
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/random/__init__.py#L131",
     "numpy": "https://numpy.org/doc/stable/reference/generated/numpy.random.get_state.html"
   }
 }

@@ -212,7 +212,7 @@
     "name": "linalg.matrix_transpose",
     "notes": "Transpose view \u2014 delegates to flopscope.matrix_transpose. Cost: 0 FLOPs.",
     "numpy_ref": "np.linalg.matrix_transpose",
-    "signature": "fnp.linalg.matrix_transpose(x, /)",
+    "signature": "fnp.linalg.matrix_transpose(x: 'ArrayLike', /) -> 'FlopscopeArray'",
     "status": "supported",
     "summary": "Transposes a matrix (or a stack of matrices) ``x``.",
     "weight": 0.0
@@ -220,7 +220,7 @@
   "schema_version": 1,
   "slug": "linalg-matrix_transpose",
   "source": {
-    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L109",
+    "flopscope": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/numpy/linalg/_aliases.py#L115",
     "numpy": "https://github.com/numpy/numpy/blob/v2.2.6/numpy/linalg/_linalg.py#L3405"
   }
 }

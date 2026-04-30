@@ -572,7 +572,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.split",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L402",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_free_ops.py#L469",
   "href": "/docs/api/numpy/split/",
   "legacy_href": "/docs/api/ops/split/",
   "module": "numpy",
@@ -782,7 +782,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.split(ary, indices_or_sections, axis=0)",
+  "signature": "fnp.split(ary: 'ArrayLike', indices_or_sections: 'int | Sequence[int]', axis: 'int' = 0) -> 'list[FlopscopeArray]'",
   "slug": "split",
   "summary": "Split an array into multiple sub-arrays as views into `ary`.",
   "upstream_ref_label": "NumPy Ref",

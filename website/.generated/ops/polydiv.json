@@ -440,7 +440,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.polydiv",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L182",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_polynomial.py#L185",
   "href": "/docs/api/numpy/polydiv/",
   "legacy_href": "/docs/api/ops/polydiv/",
   "module": "flopscope._polynomial",
@@ -594,7 +594,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.polydiv(u, v)",
+  "signature": "fnp.polydiv(u: 'ArrayLike', v: 'ArrayLike') -> 'tuple[FlopscopeArray, FlopscopeArray]'",
   "slug": "polydiv",
   "summary": "Returns the quotient and remainder of polynomial division.",
   "upstream_ref_label": "NumPy Ref",

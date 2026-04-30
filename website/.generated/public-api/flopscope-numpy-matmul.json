@@ -909,7 +909,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.matmul",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1523",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_pointwise.py#L1553",
   "href": "/docs/api/numpy/matmul/",
   "import_path": "flopscope.numpy.matmul",
   "is_operation_cost_leaf": true,
@@ -1082,7 +1082,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.matmul(a, b)",
+  "signature": "fnp.matmul(a: 'ArrayLike', b: 'ArrayLike') -> 'FlopscopeArray'",
   "slug": "matmul",
   "summary": "Matrix product of two arrays.",
   "upstream_ref_label": "NumPy Ref",

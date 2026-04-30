@@ -553,7 +553,7 @@
   },
   "flopscope_examples_html": "",
   "flopscope_ref": "fnp.einsum_path",
-  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L407",
+  "flopscope_source_url": "https://github.com/AIcrowd/flopscope/blob/main/src/flopscope/_einsum.py#L412",
   "href": "/docs/api/numpy/einsum-path/",
   "import_path": "flopscope.numpy.einsum_path",
   "is_operation_cost_leaf": true,
@@ -668,7 +668,7 @@
       "unresolved": false
     }
   ],
-  "signature": "fnp.einsum_path(subscripts: 'str', *operands, optimize: 'str | bool | list' = 'auto')",
+  "signature": "fnp.einsum_path(subscripts: 'str', *operands: '_np.ndarray', optimize: 'str | bool | list[Any]' = 'auto') -> 'tuple[list[Any], Any]'",
   "slug": "einsum_path",
   "summary": "Evaluates the lowest cost contraction order for an einsum expression by considering the creation of intermediate arrays.",
   "upstream_ref_label": "NumPy Ref",
