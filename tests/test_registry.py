@@ -1,5 +1,6 @@
 """Tests for the flopscope numpy function registry."""
 
+# pyright: reportMissingImports=false
 from flopscope._registry import REGISTRY, REGISTRY_META
 
 

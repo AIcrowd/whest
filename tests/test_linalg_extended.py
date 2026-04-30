@@ -417,4 +417,4 @@ def test_matrix_rank_batched():
     """Batched matrix_rank works (ndim > 2 is supported)."""
     with BudgetContext(flop_budget=10**9):
         r = matrix_rank(numpy.ones((2, 3, 4)))
-    assert r.shape == (2,)  # batch dim preserved
+    assert r.shape == (2,)  # pyright: ignore[reportAttributeAccessIssue] # batch dim preserved

@@ -190,7 +190,7 @@ class TestHistogram:
         a = numpy.random.randn(100)
         edges = numpy.linspace(-3, 3, 11)
         with BudgetContext(flop_budget=10**6) as budget:
-            histogram(a, bins=edges)
+            histogram(a, bins=edges)  # pyright: ignore[reportArgumentType]
         assert budget.flops_used == 400
 
 

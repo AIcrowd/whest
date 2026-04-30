@@ -156,7 +156,7 @@ class TestNewFreeOps:
             assert budget.flops_used == 0
 
     def test_atleast_1d(self):
-        assert fnp.atleast_1d(1.0).shape == (1,)
+        assert fnp.atleast_1d(1.0).shape == (1,)  # pyright: ignore[reportAttributeAccessIssue]
 
     def test_shape(self):
         assert fnp.shape(numpy.eye(3)) == (3, 3)

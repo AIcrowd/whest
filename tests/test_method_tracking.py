@@ -260,8 +260,8 @@ def test_method_propagates_symmetry_through_reduction():
         S_method = A.sum(axis=0)
         S_func = fnp.sum(A, axis=0)
     # Compare via SymmetryGroup value-equality (post-PR-#51).
-    assert S_method.symmetry == S_func.symmetry
-    assert S_method.symmetry is not None  # surviving symmetry
+    assert S_method.symmetry == S_func.symmetry  # pyright: ignore[reportAttributeAccessIssue]
+    assert S_method.symmetry is not None  # pyright: ignore[reportAttributeAccessIssue] # surviving symmetry
 
 
 def test_no_double_counting_method_vs_function():
@@ -289,7 +289,7 @@ def test_sym_mul_tracks_flops():
         symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1)),
     )
     with flops.BudgetContext(flop_budget=int(1e9)) as b1:
-        A * A
+        A * A  # pyright: ignore[reportUnusedExpression]
     with flops.BudgetContext(flop_budget=int(1e9)) as b2:
         fnp.multiply(A, A)
     assert b1.flops_used == b2.flops_used > 0
@@ -302,7 +302,7 @@ def test_sym_add_tracks_flops():
         symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1)),
     )
     with flops.BudgetContext(flop_budget=int(1e9)) as b1:
-        A + A
+        A + A  # pyright: ignore[reportUnusedExpression]
     with flops.BudgetContext(flop_budget=int(1e9)) as b2:
         fnp.add(A, A)
     assert b1.flops_used == b2.flops_used > 0
@@ -397,8 +397,8 @@ def test_issue_58_reproducer():
     assert flops_sum1 == flops_sum2, (
         f"method/function FLOP mismatch: {flops_sum1} vs {flops_sum2}"
     )
-    assert S1.symmetry == S2.symmetry
-    assert S1.symmetry is not None  # surviving symmetry
+    assert S1.symmetry == S2.symmetry  # pyright: ignore[reportAttributeAccessIssue]
+    assert S1.symmetry is not None  # pyright: ignore[reportAttributeAccessIssue] # surviving symmetry
 
 
 def test_issue_38_reproducer():

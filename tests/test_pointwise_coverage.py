@@ -244,14 +244,14 @@ class TestBinarySymmetric:
             via_dunder = st * st
         assert functional_budget.flops_used == dunder_budget.flops_used
         assert isinstance(via_dunder, SymmetricTensor)
-        assert via_dunder.symmetry == functional.symmetry
+        assert via_dunder.symmetry == functional.symmetry  # pyright: ignore[reportAttributeAccessIssue]
         assert numpy.allclose(via_dunder, functional)
 
     def test_add_with_plain_out_preserves_output_identity(self):
         st = _make_symmetric_2d(4)
         out = numpy.empty_like(numpy.asarray(st))
         with BudgetContext(flop_budget=10**6):
-            result = add(st, 1.0, out=out)
+            result = add(st, 1.0, out=out)  # pyright: ignore[reportArgumentType]
         assert result is out
         assert numpy.allclose(result, numpy.asarray(st) + 1.0)
 
@@ -262,7 +262,7 @@ class TestBinarySymmetric:
             result = negative(st, out=out)
         assert result is out
         assert numpy.allclose(result, -numpy.asarray(st))
-        assert result.symmetry == st.symmetry
+        assert result.symmetry == st.symmetry  # pyright: ignore[reportAttributeAccessIssue]
 
     def test_clip_with_symmetric_out_preserves_output_identity(self):
         st = _make_symmetric_2d(4)
@@ -271,7 +271,7 @@ class TestBinarySymmetric:
             result = clip(st, 0.25, 0.75, out=out)
         assert result is out
         assert numpy.allclose(result, numpy.clip(numpy.asarray(st), 0.25, 0.75))
-        assert result.symmetry == st.symmetry
+        assert result.symmetry == st.symmetry  # pyright: ignore[reportAttributeAccessIssue]
 
     def test_add_with_incompatible_symmetric_out_raises_without_mutation(self):
         st = _make_symmetric_2d(4)
@@ -356,7 +356,7 @@ class TestReductionSymmetric:
             result = sum(st, axis=2, out=out)
         assert result is out
         assert numpy.allclose(result, numpy.sum(numpy.asarray(st), axis=2))
-        assert result.symmetry == PermutationGroup.symmetric(axes=(0, 1))
+        assert result.symmetry == PermutationGroup.symmetric(axes=(0, 1))  # pyright: ignore[reportAttributeAccessIssue]
 
     def test_sum_along_symmetric_axis_reduces_group(self):
         """Reducing one axis of a symmetric group partially breaks it."""
@@ -669,7 +669,7 @@ class TestMultiOutputOps:
         out_frac = numpy.zeros(3)
         out_int = numpy.zeros(3)
         with BudgetContext(flop_budget=10**6):
-            result = modf(x, out=(out_frac, out_int))
+            result = modf(x, out=(out_frac, out_int))  # pyright: ignore[reportArgumentType]
         assert result[0] is out_frac
         assert result[1] is out_int
         ref = numpy.modf(x)
@@ -681,7 +681,7 @@ class TestMultiOutputOps:
         out_mant = numpy.zeros(3)
         out_exp = numpy.zeros(3, dtype=numpy.int32)
         with BudgetContext(flop_budget=10**6):
-            result = frexp(x, out=(out_mant, out_exp))
+            result = frexp(x, out=(out_mant, out_exp))  # pyright: ignore[reportArgumentType]
         assert result[0] is out_mant
         assert result[1] is out_exp
         ref = numpy.frexp(x)
@@ -694,7 +694,7 @@ class TestMultiOutputOps:
         out_q = numpy.zeros(3)
         out_r = numpy.zeros(3)
         with BudgetContext(flop_budget=10**6):
-            result = divmod(x, y, out=(out_q, out_r))
+            result = divmod(x, y, out=(out_q, out_r))  # pyright: ignore[reportArgumentType]
         assert result[0] is out_q
         assert result[1] is out_r
         ref = numpy.divmod(x, y)
@@ -706,7 +706,7 @@ class TestMultiOutputOps:
         y = numpy.array([3.0, 4.0])
         out_q = numpy.zeros(2)
         with BudgetContext(flop_budget=10**6):
-            result = divmod(x, y, out=(out_q, None))
+            result = divmod(x, y, out=(out_q, None))  # pyright: ignore[reportArgumentType]
         assert result[0] is out_q
         # Second slot was allocated by numpy; should still be a usable array
         assert result[1] is not None
@@ -719,14 +719,14 @@ class TestMultiOutputOps:
         single = numpy.zeros(2)
         with BudgetContext(flop_budget=10**6):
             with pytest.raises(TypeError, match="length"):
-                modf(x, out=(single,))
+                modf(x, out=(single,))  # pyright: ignore[reportArgumentType]
 
     def test_modf_invalid_out_type_raises(self):
         x = numpy.array([1.5, 2.7])
         single = numpy.zeros(2)
         with BudgetContext(flop_budget=10**6):
             with pytest.raises(TypeError, match="tuple"):
-                modf(x, out=single)
+                modf(x, out=single)  # pyright: ignore[reportArgumentType]
 
 
 # ---------------------------------------------------------------------------
@@ -925,7 +925,7 @@ class TestCustomOps:
         # Output retains the direct-product symmetry on (0,1) and (3,4).
         assert isinstance(sym_result, SymmetricTensor)
         assert sym_result.symmetry is not None
-        assert set(sym_result.symmetry.axes) == {0, 1, 3, 4}
+        assert set(sym_result.symmetry.axes) == {0, 1, 3, 4}  # pyright: ignore[reportArgumentType]
 
     def test_tensordot_contraction_through_sym_axis_drops_symmetry(self):
         """If the contracted axes overlap with the input's symmetry
@@ -1003,13 +1003,13 @@ class TestAroundRoundOut:
         """around() with an out parameter should not return scalar even for scalar input."""
         out = numpy.zeros(1)
         with BudgetContext(flop_budget=10**6):
-            result = around(numpy.array([3.7]), decimals=0, out=out)
+            result = around(numpy.array([3.7]), decimals=0, out=out)  # pyright: ignore[reportArgumentType]
         assert isinstance(result, numpy.ndarray)
 
     def test_round_with_out_param(self):
         out = numpy.zeros(1)
         with BudgetContext(flop_budget=10**6):
-            result = round(numpy.array([2.3]), decimals=0, out=out)
+            result = round(numpy.array([2.3]), decimals=0, out=out)  # pyright: ignore[reportArgumentType]
         assert isinstance(result, numpy.ndarray)
 
 

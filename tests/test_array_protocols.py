@@ -324,7 +324,7 @@ def test_np_add_outer_preserves_direct_product_symmetry():
     assert result.shape == (2, 2, 2, 2)
     # Output symmetry has both S2 generators (one on (0,1), one on (2,3)).
     assert result.symmetry is not None
-    assert set(result.symmetry.axes) == {0, 1, 2, 3}
+    assert set(result.symmetry.axes) == {0, 1, 2, 3}  # pyright: ignore[reportArgumentType]
 
 
 def test_np_add_outer_symmetric_cost_lower_than_dense():
@@ -521,7 +521,7 @@ def test_np_divmod_with_partial_out_allocates_remaining():
         a = fnp.array([10.0, 20.0])
         b = fnp.array([3.0, 4.0])
         q = fnp.zeros(2)
-        result = np.divmod(a, b, out=(q, None))
+        result = np.divmod(a, b, out=(q, None))  # pyright: ignore[reportArgumentType]
     assert result[0] is q
     assert isinstance(result[1], FlopscopeArray)
     np.testing.assert_array_equal(np.asarray(q), [3.0, 5.0])
@@ -609,7 +609,7 @@ def test_we_modf_invalid_out_tuple_length_raises():
         a = fnp.array([1.5, 2.5, 3.0])
         single = fnp.zeros(3)
         with pytest.raises(TypeError, match="length"):
-            fnp.modf(a, out=(single,))
+            fnp.modf(a, out=(single,))  # pyright: ignore[reportArgumentType]
 
 
 def test_we_modf_invalid_out_type_raises():
@@ -619,7 +619,7 @@ def test_we_modf_invalid_out_type_raises():
         a = fnp.array([1.5, 2.5, 3.0])
         single = fnp.zeros(3)
         with pytest.raises(TypeError, match="tuple"):
-            fnp.modf(a, out=single)
+            fnp.modf(a, out=single)  # pyright: ignore[reportArgumentType]
 
 
 # ----- Recursion guard for raw flopscope functions -----
@@ -893,12 +893,12 @@ def test_perf_warm_inplace_add_scalar_on_symmetric_is_fast():
     A_sym = flops.symmetrize(
         arr, symmetry=flops.SymmetryGroup.symmetric(axes=(0, 1, 2, 3))
     )
-    original_symmetry_ref = A_sym._symmetry
+    original_symmetry_ref = A_sym._symmetry  # pyright: ignore[reportAttributeAccessIssue]
     # Warm-up: prime caches and dispatch tables.
     with flops.BudgetContext(flop_budget=int(1e12)):
         A_sym += 1.0
     # The above mutated A_sym; verify identity preserved through warm-up.
-    assert A_sym._symmetry is original_symmetry_ref, (
+    assert A_sym._symmetry is original_symmetry_ref, (  # pyright: ignore[reportAttributeAccessIssue]
         "warm-up in-place add lost symmetry object identity; "
         "_inplace_from_result is constructing a fresh group somewhere"
     )
@@ -913,7 +913,7 @@ def test_perf_warm_inplace_add_scalar_on_symmetric_is_fast():
         f"identity short-circuit in _inplace_from_result, or wrapping "
         f"the scalar in an array in __iadd__ before dispatch?"
     )
-    assert A_sym._symmetry is original_symmetry_ref, (
+    assert A_sym._symmetry is original_symmetry_ref, (  # pyright: ignore[reportAttributeAccessIssue]
         "warm in-place add lost symmetry object identity; "
         "_inplace_from_result is constructing a fresh group somewhere"
     )

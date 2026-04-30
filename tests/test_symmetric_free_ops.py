@@ -200,7 +200,7 @@ class TestFull:
         result = fnp.full((2, 2, 2, 2, 2, 2, 2, 2), 1.0)
         compared = result == 1.0
         assert isinstance(compared, SymmetricTensor)
-        assert compared.symmetry == result.symmetry
+        assert compared.symmetry == result.symmetry  # pyright: ignore[reportAttributeAccessIssue]
         assert np.all(compared)
 
 

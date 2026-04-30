@@ -179,7 +179,7 @@ def test_set_get_printoptions_roundtrip():
         current = fnp.get_printoptions()
         assert current["precision"] == 3
     finally:
-        fnp.set_printoptions(**{k: v for k, v in original.items() if k != "legacy"})
+        fnp.set_printoptions(**{k: v for k, v in original.items() if k != "legacy"})  # pyright: ignore[reportArgumentType]
 
 
 # ----- Functional: fnp.typing submodule -----

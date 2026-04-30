@@ -89,7 +89,7 @@ class TestBuildBipartite:
         g = _build_bipartite(
             operands=[T],
             subscript_parts=["ij"],
-            per_op_groups=per_op,
+            per_op_groups=per_op,  # pyright: ignore[reportArgumentType]
             output_chars="ij",
         )
         # Two U vertices — one per axis (no merging).
@@ -418,7 +418,7 @@ class TestOldSymIsSubsetOfNewSym:
         # flopscope._einsum until Commit 2). Skip gracefully if it has
         # already been removed.
         try:
-            from flopscope._einsum import _detect_induced_output_symmetry
+            from flopscope._einsum import _detect_induced_output_symmetry  # pyright: ignore[reportAttributeAccessIssue]
         except ImportError:
             pytest.skip("old detector already removed")
 
@@ -433,8 +433,8 @@ class TestOldSymIsSubsetOfNewSym:
 
         oracle = SubgraphSymmetryOracle(
             operands=operands,
-            subscript_parts=input_parts,
-            per_op_groups=[None] * len(operands),
+            subscript_parts=input_parts,  # pyright: ignore[reportArgumentType]
+            per_op_groups=[None] * len(operands),  # pyright: ignore[reportArgumentType]
             output_chars=output_chars,
         )
         result = oracle.sym(frozenset(range(len(operands))))

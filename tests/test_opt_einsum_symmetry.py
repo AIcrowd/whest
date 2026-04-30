@@ -30,7 +30,7 @@ def _make_oracle(subscripts, operands=None, *, per_op_groups=None):
     return SubgraphSymmetryOracle(
         operands=operands,
         subscript_parts=parts,
-        per_op_groups=per_op_groups,
+        per_op_groups=per_op_groups,  # pyright: ignore[reportArgumentType]
         output_chars=output_str,
     )
 
@@ -505,8 +505,8 @@ class TestAllAlgorithmsOracleAware:
 
         args = ("ij,jk,kl->il", (2, 3), (3, 4), (4, 5))
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
-            path_before, _ = contract_path(*args, shapes=True, optimize=algo)
-            path_after, _ = contract_path(*args, shapes=True, optimize=algo)
+            path_before, _ = contract_path(*args, shapes=True, optimize=algo)  # pyright: ignore[reportCallIssue, reportArgumentType]
+            path_after, _ = contract_path(*args, shapes=True, optimize=algo)  # pyright: ignore[reportCallIssue, reportArgumentType]
             assert list(path_before) == list(path_after), (
                 f"{algo} path non-deterministic"
             )
@@ -518,9 +518,9 @@ class TestAllAlgorithmsOracleAware:
         args = ("ijk,ai,bj->abk", (5,) * 3, (5, 5), (5, 5))
         oracle = self._make_s3_oracle()
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
-            _, info_dense = contract_path(*args, shapes=True, optimize=algo)
-            _, info_sym = contract_path(
-                *args, shapes=True, optimize=algo, symmetry_oracle=oracle
+            _, info_dense = contract_path(*args, shapes=True, optimize=algo)  # pyright: ignore[reportCallIssue, reportArgumentType]
+            _, info_sym = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
+                *args, shapes=True, optimize=algo, symmetry_oracle=oracle  # pyright: ignore[reportArgumentType]
             )
             assert info_sym.optimized_cost <= info_dense.optimized_cost, (
                 f"{algo}: sym={info_sym.optimized_cost} > dense={info_dense.optimized_cost}"
@@ -539,8 +539,8 @@ class TestExhaustiveSymmetryValidation:
         oracle = _make_oracle("ij,jk,ki->", per_op_groups=[sym, None, None])
         costs = {}
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
-            _, info = contract_path(
-                *args, shapes=True, optimize=algo, symmetry_oracle=oracle
+            _, info = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
+                *args, shapes=True, optimize=algo, symmetry_oracle=oracle  # pyright: ignore[reportArgumentType]
             )
             costs[algo] = info.optimized_cost
         # Optimal should find the best; all others should be >= optimal
@@ -555,9 +555,9 @@ class TestExhaustiveSymmetryValidation:
         sym = [_s_group("i", "j", "k")]
         oracle = _make_oracle("ijk,ai,bj->abk", per_op_groups=[sym, None, None])
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
-            _, info_dense = contract_path(*args, shapes=True, optimize=algo)
-            _, info_sym = contract_path(
-                *args, shapes=True, optimize=algo, symmetry_oracle=oracle
+            _, info_dense = contract_path(*args, shapes=True, optimize=algo)  # pyright: ignore[reportCallIssue, reportArgumentType]
+            _, info_sym = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
+                *args, shapes=True, optimize=algo, symmetry_oracle=oracle  # pyright: ignore[reportArgumentType]
             )
             assert info_sym.optimized_cost <= info_dense.optimized_cost, (
                 f"{algo}: sym={info_sym.optimized_cost} > dense={info_dense.optimized_cost}"
@@ -569,9 +569,9 @@ class TestExhaustiveSymmetryValidation:
 
         args = ("ij,jk,kl->il", (2, 3), (3, 4), (4, 5))
         for algo in ["optimal", "greedy", "branch-all", "dp"]:
-            path_before, info_before = contract_path(*args, shapes=True, optimize=algo)
-            path_after, info_after = contract_path(
-                *args, shapes=True, optimize=algo, symmetry_oracle=None
+            path_before, info_before = contract_path(*args, shapes=True, optimize=algo)  # pyright: ignore[reportCallIssue, reportArgumentType]
+            path_after, info_after = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
+                *args, shapes=True, optimize=algo, symmetry_oracle=None  # pyright: ignore[reportArgumentType]
             )
             assert list(path_before) == list(path_after), f"{algo} path changed"
 
@@ -776,12 +776,12 @@ class TestInnerSymmetryFlops:
         T = (T + T.transpose(1, 0, 2, 3)) / 2
         Tsym = flops.as_symmetric(T, symmetry=((0, 1),))
 
-        with flops.BudgetContext(flop_budget=1e15):
+        with flops.BudgetContext(flop_budget=int(1e15)):
             _, info_on = fnp.einsum_path("abij,abkl->ijkl", Tsym, Tsym)
 
         flops.configure(use_inner_symmetry=False)
         try:
-            with flops.BudgetContext(flop_budget=1e15):
+            with flops.BudgetContext(flop_budget=int(1e15)):
                 _, info_off = fnp.einsum_path("abij,abkl->ijkl", Tsym, Tsym)
         finally:
             flops.configure(use_inner_symmetry=True)

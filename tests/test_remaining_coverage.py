@@ -281,7 +281,7 @@ class TestCheckNanInf:
         # Non-ndarray input should be silently skipped
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
-            check_nan_inf(42, "test_op")
+            check_nan_inf(42, "test_op")  # pyright: ignore[reportArgumentType]
         assert len(w) == 0
 
 
@@ -601,7 +601,7 @@ class TestFlopscopeArrayBitwiseOps:
 
         with BudgetContext(flop_budget=10**9):
             arr = fnp.array([1, 2], dtype=numpy.int32)
-            result = numpy.int32(1).__lshift__(arr)
+            result = numpy.int32(1).__lshift__(arr)  # pyright: ignore[reportCallIssue, reportArgumentType]
             # numpy.int32(1) << arr doesn't trigger __rlshift__,
             # but fnp can still test __lshift__ and __ilshift__
             arr2 = fnp.array([1, 2], dtype=numpy.int32)
@@ -687,8 +687,8 @@ class TestAttachDocstringEmpty:
             __doc__ = ""
 
         attach_docstring(dummy, FakeNpFunc(), "test", "10 FLOPs")
-        assert "FLOP Cost" in dummy.__doc__
-        assert "fake_func" in dummy.__doc__
+        assert "FLOP Cost" in dummy.__doc__  # pyright: ignore[reportOperatorIssue]
+        assert "fake_func" in dummy.__doc__  # pyright: ignore[reportOperatorIssue]
 
     def test_none_docstring(self):
         from flopscope._docstrings import attach_docstring
@@ -701,7 +701,7 @@ class TestAttachDocstringEmpty:
             __doc__ = None
 
         attach_docstring(dummy, FakeNpFunc(), "test", "5 FLOPs")
-        assert "FLOP Cost" in dummy.__doc__
+        assert "FLOP Cost" in dummy.__doc__  # pyright: ignore[reportOperatorIssue]
 
 
 # ============================================================================
@@ -1378,7 +1378,7 @@ class TestContractPathMemoryLimit:
         from flopscope._opt_einsum._contract import _choose_memory_arg
 
         with pytest.raises(ValueError, match="memory_limit must be"):
-            _choose_memory_arg("invalid", [10, 20])
+            _choose_memory_arg("invalid", [10, 20])  # pyright: ignore[reportArgumentType]
 
     def test_memory_limit_negative(self):
         from flopscope._opt_einsum._contract import _choose_memory_arg
@@ -1460,37 +1460,37 @@ class TestBLASClassification:
     def test_outer_einsum(self):
         from flopscope._opt_einsum._blas import can_blas
 
-        result = can_blas(["ab", "cd"], "abcd", set())
+        result = can_blas(["ab", "cd"], "abcd", set())  # pyright: ignore[reportArgumentType]
         assert result == "OUTER/EINSUM"
 
     def test_dot(self):
         from flopscope._opt_einsum._blas import can_blas
 
-        result = can_blas(["ij", "ij"], "", set("ij"))
+        result = can_blas(["ij", "ij"], "", set("ij"))  # pyright: ignore[reportArgumentType]
         assert result == "DOT"
 
     def test_dot_einsum(self):
         from flopscope._opt_einsum._blas import can_blas
 
-        result = can_blas(["ij", "ji"], "", set("ij"))
+        result = can_blas(["ij", "ji"], "", set("ij"))  # pyright: ignore[reportArgumentType]
         assert result == "DOT/EINSUM"
 
     def test_gemm_transpose_both(self):
         from flopscope._opt_einsum._blas import can_blas
 
-        result = can_blas(["ji", "ik"], "jk", set("i"))
+        result = can_blas(["ji", "ik"], "jk", set("i"))  # pyright: ignore[reportArgumentType]
         assert result == "GEMM"
 
     def test_gemm_transpose_right(self):
         from flopscope._opt_einsum._blas import can_blas
 
-        result = can_blas(["ij", "kj"], "ik", set("j"))
+        result = can_blas(["ij", "kj"], "ik", set("j"))  # pyright: ignore[reportArgumentType]
         assert result == "GEMM"
 
     def test_gemm_transpose_left(self):
         from flopscope._opt_einsum._blas import can_blas
 
-        result = can_blas(["ji", "jk"], "ik", set("j"))
+        result = can_blas(["ji", "jk"], "ik", set("j"))  # pyright: ignore[reportArgumentType]
         assert result == "GEMM"
 
     def test_gemv_einsum(self):
@@ -1498,32 +1498,32 @@ class TestBLASClassification:
 
         # "j,ijk->ik": keep_left is empty, keep_right={i,k}
         # No GEMM pattern matches because removed index is not at edges
-        result = can_blas(["j", "ijk"], "ik", set("j"))
+        result = can_blas(["j", "ijk"], "ik", set("j"))  # pyright: ignore[reportArgumentType]
         assert result == "GEMV/EINSUM"
 
     def test_tdot(self):
         from flopscope._opt_einsum._blas import can_blas
 
         # Removed indices not at edges of either input -> TDOT
-        result = can_blas(["ikj", "jlk"], "il", set("jk"))
+        result = can_blas(["ikj", "jlk"], "il", set("jk"))  # pyright: ignore[reportArgumentType]
         assert result == "TDOT"
 
     def test_repeated_index_false(self):
         from flopscope._opt_einsum._blas import can_blas
 
-        result = can_blas(["ijj", "jk"], "ik", set("j"))
+        result = can_blas(["ijj", "jk"], "ik", set("j"))  # pyright: ignore[reportArgumentType]
         assert result is False
 
     def test_three_inputs_false(self):
         from flopscope._opt_einsum._blas import can_blas
 
-        result = can_blas(["ij", "jk", "kl"], "il", set("jk"))
+        result = can_blas(["ij", "jk", "kl"], "il", set("jk"))  # pyright: ignore[reportArgumentType]
         assert result is False
 
     def test_broadcast_dims_false(self):
         from flopscope._opt_einsum._blas import can_blas
 
-        result = can_blas(["ij", "jk"], "ik", set("j"), shapes=[(4, 1), (5, 6)])
+        result = can_blas(["ij", "jk"], "ik", set("j"), shapes=[(4, 1), (5, 6)])  # pyright: ignore[reportArgumentType]
         assert result is False
 
     def test_symm_classification(self):
@@ -1531,7 +1531,7 @@ class TestBLASClassification:
 
         # Create a symmetric group on indices i,j for left input
         sym = _make_sym_group(("i", "j"))
-        result = can_blas(["ij", "jk"], "ik", set("j"), input_groups=[sym, None])
+        result = can_blas(["ij", "jk"], "ik", set("j"), input_groups=[sym, None])  # pyright: ignore[reportArgumentType]
         assert result == "SYMM"
 
     def test_symv_classification(self):
@@ -1539,12 +1539,12 @@ class TestBLASClassification:
 
         sym = _make_sym_group(("j", "i", "k"))
         # "j,ijk->ik" is GEMV/EINSUM, with symmetric right input -> SYMV
-        result = can_blas(["j", "ijk"], "ik", set("j"), input_groups=[None, sym])
+        result = can_blas(["j", "ijk"], "ik", set("j"), input_groups=[None, sym])  # pyright: ignore[reportArgumentType]
         assert result == "SYMV"
 
     def test_sydt_classification(self):
         from flopscope._opt_einsum._blas import can_blas
 
         sym = _make_sym_group(("i", "j"))
-        result = can_blas(["ij", "ij"], "", set("ij"), input_groups=[sym, None])
+        result = can_blas(["ij", "ij"], "", set("ij"), input_groups=[sym, None])  # pyright: ignore[reportArgumentType]
         assert result == "SYDT"
