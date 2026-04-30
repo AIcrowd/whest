@@ -529,10 +529,10 @@ class FlopscopeArray(_np.ndarray):
     def var(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().var(self, *args, **kwargs)
 
-    def all(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
+    def all(self, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().all(self, *args, **kwargs)
 
-    def any(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
+    def any(self, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().any(self, *args, **kwargs)
 
     def cumsum(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
@@ -541,10 +541,10 @@ class FlopscopeArray(_np.ndarray):
     def cumprod(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().cumprod(self, *args, **kwargs)
 
-    def argmin(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
+    def argmin(self, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().argmin(self, *args, **kwargs)
 
-    def argmax(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
+    def argmax(self, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().argmax(self, *args, **kwargs)
 
     def ptp(self, *args: Any, **kwargs: Any) -> FlopscopeArray:
@@ -588,13 +588,13 @@ class FlopscopeArray(_np.ndarray):
     def argpartition(self, kth: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().argpartition(self, kth, *args, **kwargs)
 
-    def take(self, indices: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:
+    def take(self, indices: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().take(self, indices, *args, **kwargs)
 
     def repeat(self, repeats: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:
         return _me().repeat(self, repeats, *args, **kwargs)
 
-    def searchsorted(self, v: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:
+    def searchsorted(self, v: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().searchsorted(self, v, *args, **kwargs)
 
     def compress(self, condition: Any, *args: Any, **kwargs: Any) -> FlopscopeArray:
@@ -676,10 +676,10 @@ class FlopscopeArray(_np.ndarray):
         result = _me().add(self, other)
         return self._inplace_from_result(result, "add")
 
-    def __sub__(self, other: Any) -> FlopscopeArray:
+    def __sub__(self, other: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().subtract(self, other)
 
-    def __rsub__(self, other: Any) -> FlopscopeArray:
+    def __rsub__(self, other: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().subtract(other, self)
 
     def __isub__(self, other: Any) -> FlopscopeArray:
@@ -696,7 +696,7 @@ class FlopscopeArray(_np.ndarray):
         result = _me().multiply(self, other)
         return self._inplace_from_result(result, "multiply")
 
-    def __truediv__(self, other: Any) -> FlopscopeArray:
+    def __truediv__(self, other: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().true_divide(self, other)
 
     def __rtruediv__(self, other: Any) -> FlopscopeArray:
@@ -706,7 +706,7 @@ class FlopscopeArray(_np.ndarray):
         result = _me().true_divide(self, other)
         return self._inplace_from_result(result, "true_divide")
 
-    def __floordiv__(self, other: Any) -> FlopscopeArray:
+    def __floordiv__(self, other: Any) -> FlopscopeArray:  # type: ignore[override]
         return _me().floor_divide(self, other)
 
     def __rfloordiv__(self, other: Any) -> FlopscopeArray:
@@ -788,7 +788,7 @@ class FlopscopeArray(_np.ndarray):
     def __ge__(self, other: Any) -> FlopscopeArray:
         return _me().greater_equal(self, other)
 
-    def __hash__(self):
+    def __hash__(self) -> int:  # type: ignore[override]
         # numpy ndarray is unhashable; preserve that.
         raise TypeError(f"unhashable type: '{type(self).__name__}'")
 

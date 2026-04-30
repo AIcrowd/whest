@@ -224,7 +224,7 @@ def _call_with_optional_out(np_func, *args, out=None, supports_out=False, **kwar
     if supports_out:
         return np_func(*args, out=out_stripped, **kwargs)
     result = np_func(*args, **kwargs)
-    _np.copyto(out_stripped, _np.asarray(result), casting="unsafe")
+    _np.copyto(out_stripped, _np.asarray(result), casting="unsafe")  # type: ignore[arg-type]
     return out
 
 
@@ -598,7 +598,7 @@ def _counted_ufunc_outer(ufunc, a, b, *, out=None, **kwargs):
     # is irrelevant when the output is trivially small anyway.
     if _is_oversized_for_cost_model(a_sym) or _is_oversized_for_cost_model(b_sym):
         oversized_degree = (
-            a_sym.degree if _is_oversized_for_cost_model(a_sym) else b_sym.degree
+            a_sym.degree if _is_oversized_for_cost_model(a_sym) else b_sym.degree  # type: ignore[union-attr]
         )
         _warn_oversized_once(f"{ufunc.__name__}.outer", oversized_degree)
         out_sym = None
@@ -874,7 +874,8 @@ def _counted_reduction(
         out_for_np = None if isinstance(out, SymmetricTensor) else out
         if out_came_from_args:
             # Stripped out goes back into the same positional slot.
-            args_list[_out_args_idx] = out_for_np
+            # _out_args_idx is not None here (out_came_from_args requires it)
+            args_list[_out_args_idx] = out_for_np  # type: ignore[index]
             np_out_kwarg = None
             np_supports_out_for_call = False
         else:
@@ -1220,7 +1221,7 @@ true_divide = _counted_binary(_np.true_divide, "true_divide")
 
 if hasattr(_np, "vecdot"):
 
-    def vecdot(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:
+    def vecdot(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
         """Counted version of np.vecdot.
 
         Vector dot product along last axis. Each output element is the dot
@@ -1264,7 +1265,7 @@ else:
 
 if hasattr(_np, "matvec"):
 
-    def matvec(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:
+    def matvec(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
         """Counted version of np.matvec.
 
         Matrix-vector product. A is (..., m, n), v is (..., n), result is (..., m).
@@ -1304,7 +1305,7 @@ else:
 
 if hasattr(_np, "vecmat"):
 
-    def vecmat(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:
+    def vecmat(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray:  # type: ignore[misc]
         """Counted version of np.vecmat.
 
         Vector-matrix product. v is (..., n), A is (..., n, m), result is (..., m).
@@ -1726,7 +1727,7 @@ def tensordot(a: ArrayLike, b: ArrayLike, axes: Any = 2) -> FlopscopeArray:
     b_sym = _symmetry_of(b)
     if _is_oversized_for_cost_model(a_sym) or _is_oversized_for_cost_model(b_sym):
         oversized_degree = (
-            a_sym.degree if _is_oversized_for_cost_model(a_sym) else b_sym.degree
+            a_sym.degree if _is_oversized_for_cost_model(a_sym) else b_sym.degree  # type: ignore[union-attr]
         )
         _warn_oversized_once("tensordot", oversized_degree)
         out_sym = None
@@ -2029,7 +2030,7 @@ attach_docstring(trapezoid, _np.trapezoid, "counted_custom", "numel(input) FLOPs
 
 if hasattr(_np, "trapz"):
 
-    def trapz(
+    def trapz(  # type: ignore[misc]
         y: ArrayLike, x: ArrayLike | None = None, dx: float = 1.0, axis: int = -1
     ) -> FlopscopeArray:
         """Counted version of np.trapz (deprecated alias for trapezoid)."""

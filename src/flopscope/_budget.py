@@ -89,8 +89,8 @@ class _OpTimer:
 
                 raise TimeExhaustedError(
                     log[-1].op_name,
-                    elapsed_s=time.perf_counter() - self._budget._start_time,
-                    limit_s=self._budget._wall_time_limit_s,
+                    elapsed_s=time.perf_counter() - self._budget._start_time,  # type: ignore[operator]
+                    limit_s=self._budget._wall_time_limit_s,  # type: ignore[arg-type]
                 )
         return False
 
@@ -375,8 +375,8 @@ class BudgetContext:
 
             raise TimeExhaustedError(
                 op_name,
-                elapsed_s=now - self._start_time,
-                limit_s=self._wall_time_limit_s,
+                elapsed_s=now - self._start_time,  # type: ignore[operator]
+                limit_s=self._wall_time_limit_s,  # type: ignore[arg-type]
             )
 
         return _OpTimer(self)
