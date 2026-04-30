@@ -1054,14 +1054,10 @@ def choose(*args, **kwargs):
 attach_docstring(choose, _np.choose, "free", "0 FLOPs")
 
 
-def column_stack(*args, **kwargs):
+def column_stack(tup: Sequence[ArrayLike]) -> FlopscopeArray:
     """Stack 1-D arrays as columns. Wraps ``numpy.column_stack``. Cost: 0 FLOPs."""
     # First positional arg is sequence of arrays
-    if args and isinstance(args[0], (tuple, list)):
-        stripped_args = (_to_base_ndarray_tree(args[0]), *args[1:])
-    else:
-        stripped_args = tuple(_to_base_ndarray(a) for a in args)
-    return _np.column_stack(*stripped_args, **kwargs)
+    return _np.column_stack(_to_base_ndarray_tree(tup))  # type: ignore[return-value]
 
 
 attach_docstring(column_stack, _np.column_stack, "free", "0 FLOPs")
@@ -1103,19 +1099,18 @@ def compress(
 attach_docstring(compress, _np.compress, "free", "0 FLOPs")
 
 
-def concat(*args, **kwargs):
+def concat(
+    arrays: Sequence[ArrayLike],
+    axis: int | None = 0,
+    **kwargs: Any,
+) -> FlopscopeArray:
     """Join arrays along an axis. Cost: numel(output)."""
     budget = require_budget()
-    # First arg is sequence of arrays
-    if args and isinstance(args[0], (tuple, list)):
-        stripped_args = (_to_base_ndarray_tree(args[0]), *args[1:])
-    else:
-        stripped_args = tuple(_to_base_ndarray(a) for a in args)
-    result = _np.concat(*stripped_args, **kwargs)  # type: ignore[arg-type, call-overload]
+    result = _np.concat(_to_base_ndarray_tree(arrays), axis=axis, **kwargs)  # type: ignore[arg-type, call-overload]
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct("concat", flop_cost=cost, subscripts=None, shapes=()):
         pass  # numpy call already executed above
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(concat, _np.concat, "free", "0 FLOPs")
@@ -1214,15 +1209,14 @@ def dsplit(ary: ArrayLike, *args: Any, **kwargs: Any) -> list[FlopscopeArray]:
 attach_docstring(dsplit, _np.dsplit, "free", "0 FLOPs")
 
 
-def dstack(*args, **kwargs):
+def dstack(tup: Sequence[ArrayLike]) -> FlopscopeArray:
     """Stack arrays along third axis. Cost: numel(output)."""
     budget = require_budget()
-    stripped_args = _to_base_ndarray_tree(args)
-    result = _np.dstack(*stripped_args, **kwargs)
+    result = _np.dstack(_to_base_ndarray_tree(tup))  # type: ignore[arg-type]
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct("dstack", flop_cost=cost, subscripts=None, shapes=()):
         pass  # numpy call already executed above
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(dstack, _np.dstack, "free", "0 FLOPs")
@@ -1318,14 +1312,19 @@ def from_dlpack(*args, **kwargs):
 attach_docstring(from_dlpack, _np.from_dlpack, "free", "0 FLOPs")
 
 
-def frombuffer(*args, **kwargs):
+def frombuffer(
+    buffer: Any,
+    dtype: DTypeLike = float,
+    count: int = -1,
+    offset: int = 0,
+) -> FlopscopeArray:
     """Interpret buffer as 1-D array. Cost: numel(output)."""
     budget = require_budget()
-    result = _np.frombuffer(*args, **kwargs)
+    result = _np.frombuffer(buffer, dtype=dtype, count=count, offset=offset)
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct("frombuffer", flop_cost=cost, subscripts=None, shapes=()):
         pass  # numpy call already executed above
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(frombuffer, _np.frombuffer, "free", "0 FLOPs")
@@ -1446,9 +1445,19 @@ def isfortran(*args, **kwargs):
 attach_docstring(isfortran, _np.isfortran, "free", "0 FLOPs")
 
 
-def isin(*args, **kwargs):
+def isin(
+    element: ArrayLike,
+    test_elements: ArrayLike,
+    assume_unique: bool = False,
+    invert: bool = False,
+) -> FlopscopeArray:
     """Test element-wise membership in a set. Wraps ``numpy.isin``. Cost: 0 FLOPs."""
-    return _np.isin(*[_to_base_ndarray(a) for a in args], **kwargs)  # type: ignore[arg-type, call-overload]
+    return _np.isin(  # type: ignore[return-value]
+        _to_base_ndarray(element),
+        _to_base_ndarray(test_elements),
+        assume_unique=assume_unique,
+        invert=invert,
+    )
 
 
 attach_docstring(isin, _np.isin, "free", "0 FLOPs")
@@ -1836,29 +1845,47 @@ def size(*args, **kwargs):
 attach_docstring(size, _np.size, "free", "0 FLOPs")
 
 
-def take(*args, **kwargs):
+def take(
+    a: ArrayLike,
+    indices: ArrayLike,
+    axis: int | None = None,
+    out: FlopscopeArray | None = None,
+    mode: str = "raise",
+) -> FlopscopeArray:
     """Take elements from array along axis. Cost: numel(output)."""
     budget = require_budget()
-    stripped_args = _to_base_ndarray_tree(args)
-    result = _np.take(*stripped_args, **kwargs)
+    result = _np.take(
+        _to_base_ndarray(a),
+        _to_base_ndarray(indices),  # type: ignore[arg-type]
+        axis=axis,
+        out=_to_base_ndarray(out) if out is not None else None,  # type: ignore[arg-type]
+        mode=mode,  # type: ignore[arg-type]
+    )
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct("take", flop_cost=cost, subscripts=None, shapes=()):
         pass  # numpy call already executed above
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(take, _np.take, "free", "0 FLOPs")
 
 
-def take_along_axis(*args, **kwargs):
+def take_along_axis(
+    arr: ArrayLike,
+    indices: ArrayLike,
+    axis: int | None,
+) -> FlopscopeArray:
     """Take values from input array along axis using indices. Cost: numel(output)."""
     budget = require_budget()
-    stripped_args = _to_base_ndarray_tree(args)
-    result = _np.take_along_axis(*stripped_args, **kwargs)
+    result = _np.take_along_axis(
+        _to_base_ndarray(arr),  # type: ignore[arg-type]
+        _to_base_ndarray(indices),  # type: ignore[arg-type]
+        axis=axis,
+    )
     cost = result.size if hasattr(result, "size") else 1
     with budget.deduct("take_along_axis", flop_cost=cost, subscripts=None, shapes=()):
         pass  # numpy call already executed above
-    return result
+    return result  # type: ignore[return-value]
 
 
 attach_docstring(take_along_axis, _np.take_along_axis, "free", "0 FLOPs")
