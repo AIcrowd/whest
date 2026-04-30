@@ -216,15 +216,18 @@ def _summarize_by_namespace(op_log: list[OpRecord]) -> dict[str | None, dict]:
 
 
 def _timing_summary(
-    wall_time_s: float | None, tracked_time_s: float | None
-) -> tuple[float | None, float, float | None]:
+    wall_time_s: float | None,
+    tracked_time_s: float | None,
+    overhead_time_s: float | None,
+) -> tuple[float | None, float, float, float | None]:
     tracked = tracked_time_s or 0.0
+    overhead = overhead_time_s or 0.0
     if wall_time_s is None:
-        return None, tracked, None
-    untracked = wall_time_s - tracked
+        return None, tracked, overhead, None
+    untracked = wall_time_s - tracked - overhead
     if untracked < 0 and abs(untracked) < 1e-12:
         untracked = 0.0
-    return wall_time_s, tracked, max(untracked, 0.0)
+    return wall_time_s, tracked, overhead, max(untracked, 0.0)
 
 
 class BudgetContext:
@@ -404,9 +407,10 @@ class BudgetContext:
         wall_time = self._wall_time_s
         if wall_time is None and self._start_time is not None:
             wall_time = self.elapsed_s
-        wall_time, tracked_time, untracked_time = _timing_summary(
-            wall_time, self._total_tracked_time
+        wall_time, tracked_time, overhead_time, untracked_time = _timing_summary(
+            wall_time, self._total_tracked_time, self._total_flopscope_overhead_time
         )
+        del overhead_time  # exposed via summary_dict in Task 5
 
         result = {
             "flop_budget": self._flop_budget,
@@ -656,9 +660,10 @@ class BudgetAccumulator:
             if rec.total_tracked_time is not None:
                 total_tracked = (total_tracked or 0.0) + rec.total_tracked_time
 
-        wall_time, tracked_time, untracked_time = _timing_summary(
-            total_wall_time, total_tracked
+        wall_time, tracked_time, overhead_time, untracked_time = _timing_summary(
+            total_wall_time, total_tracked, None
         )
+        del overhead_time  # accumulator overhead wiring lands in Task 13
 
         result = {
             "flop_budget": total_budget,

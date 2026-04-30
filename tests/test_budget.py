@@ -598,3 +598,22 @@ def test_budget_context_flopscope_overhead_time_property():
 
     b._total_flopscope_overhead_time = 1.5
     assert b.flopscope_overhead_time == 1.5
+
+
+def test_timing_summary_subtracts_overhead():
+    from flopscope._budget import _timing_summary
+
+    wall, tracked, overhead, untracked = _timing_summary(10.0, 4.0, 3.0)
+    assert wall == 10.0
+    assert tracked == 4.0
+    assert overhead == 3.0
+    assert untracked == 3.0
+
+    wall, tracked, overhead, untracked = _timing_summary(None, 4.0, 3.0)
+    assert wall is None
+    assert tracked == 4.0
+    assert overhead == 3.0
+    assert untracked is None
+
+    wall, tracked, overhead, untracked = _timing_summary(10.0, 7.0, 3.0 + 1e-13)
+    assert untracked == 0.0
