@@ -90,7 +90,8 @@
 
   /* ═══════════════════════════════════════════════════════════
      TIER 3C — Docs / marketing extension  (surface-scoped)
-     Warm paper register. PUBLIC flopscope-docs site ONLY.
+     Warm paper register. Reserved for the Flopscope docs and
+     marketing surfaces (the /docs/* and /(home) routes).
      Do NOT import on technical explorer surfaces.
      ═══════════════════════════════════════════════════════════ */
   --docs-paper:      #FBF7F2;
