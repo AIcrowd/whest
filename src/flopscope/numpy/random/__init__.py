@@ -15,17 +15,17 @@ from __future__ import annotations
 
 import builtins as _builtins
 import inspect as _inspect
+from collections.abc import Callable, Sequence
+from typing import Any
 
 import numpy as _np
 import numpy.random as _npr
+from numpy.random import Generator, RandomState, SeedSequence
 
 from flopscope._flops import _ceil_log2, sort_cost  # noqa: F401
 from flopscope._ndarray import FlopscopeArray
 from flopscope._perm_group import SymmetryGroup
 from flopscope._validation import require_budget
-from collections.abc import Callable, Sequence
-from typing import Any
-from numpy.random import Generator, RandomState, SeedSequence
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -51,7 +51,7 @@ def _output_size(*dims, size=None):
 def _counted_sampler(
     np_func: Callable[..., Any],
     op_name: str,
-) -> Callable[..., FlopscopeArray]:
+) -> Callable[..., Any]:
     """Factory for simple samplers: cost = numel(output).
 
     Passes all args/kwargs through transparently to numpy. Derives the
@@ -87,7 +87,7 @@ def _counted_sampler(
 def _counted_dims_sampler(
     np_func: Callable[..., Any],
     op_name: str,
-) -> Callable[..., FlopscopeArray]:
+) -> Callable[..., Any]:
     """Factory for rand/randn that take *dims instead of size=."""
 
     def wrapper(*dims):
@@ -117,7 +117,7 @@ def _counted_dims_sampler(
 # Free (configuration) functions
 # ---------------------------------------------------------------------------
 
-def default_rng(seed: int | Generator | SeedSequence | None = None) -> Generator:
+def default_rng(seed: Any = None) -> Generator:
     """Construct a numpy random Generator. Cost: 0 FLOPs."""
     return _npr.default_rng(seed)
 
@@ -127,13 +127,13 @@ def seed(seed: int | None = None) -> None:
     _npr.seed(seed)
 
 
-def get_state() -> dict[str, Any]:
-    """Return numpy's legacy global RNG state. Cost: 0 FLOPs."""
-    return _npr.get_state()
+def get_state(legacy: bool = True) -> dict[str, Any] | tuple[Any, ...]:
+    """Return numpy's global RNG state. Cost: 0 FLOPs."""
+    return _npr.get_state(legacy=legacy)
 
 
-def set_state(state: dict[str, Any]) -> None:
-    """Set numpy's legacy global RNG state. Cost: 0 FLOPs."""
+def set_state(state: dict[str, Any] | tuple[Any, ...]) -> None:
+    """Set numpy's global RNG state. Cost: 0 FLOPs."""
     _npr.set_state(state)
 
 
@@ -254,7 +254,7 @@ randint = _counted_sampler(_npr.randint, "random.randint")
 def _counted_size_only_sampler(
     np_func: Callable[..., Any],
     op_name: str,
-) -> Callable[..., FlopscopeArray]:
+) -> Callable[..., Any]:
     """Factory for samplers where the only arg is ``size`` (positional or kw)."""
 
     def wrapper(size=None):
