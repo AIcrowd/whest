@@ -333,7 +333,7 @@ def _pointwise_symmetry(operands, output_shape):
 def _counted_unary(np_func, op_name: str):
     supports_out = _supports_out_argument(np_func)
 
-    def wrapper(x, out=None, **kwargs):
+    def wrapper(x: ArrayLike, out: FlopscopeArray | None = None, **kwargs: Any) -> FlopscopeArray:
         budget = require_budget()
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
@@ -349,7 +349,7 @@ def _counted_unary(np_func, op_name: str):
                 **kwargs,
             )
         check_nan_inf(result, op_name)
-        return _wrap_result(result, out=out, symmetry=symmetry)
+        return _wrap_result(result, out=out, symmetry=symmetry)  # type: ignore[return-value]
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -371,7 +371,7 @@ def _counted_unary_multi(np_func, op_name: str):
     """
     nout = getattr(np_func, "nout", 2)
 
-    def wrapper(x, out=None, **kwargs):
+    def wrapper(x: ArrayLike, out: tuple[FlopscopeArray, FlopscopeArray] | None = None, **kwargs: Any) -> tuple[FlopscopeArray, FlopscopeArray]:
         budget = require_budget()
         if not isinstance(x, _np.ndarray):
             x = _np.asarray(x)
@@ -385,7 +385,7 @@ def _counted_unary_multi(np_func, op_name: str):
                 nout=nout,
                 **kwargs,
             )
-        return _wrap_multi_result(result, out=out, symmetry=symmetry)
+        return _wrap_multi_result(result, out=out, symmetry=symmetry)  # type: ignore[return-value]
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -400,7 +400,7 @@ def _counted_unary_multi(np_func, op_name: str):
 def _counted_binary(np_func, op_name: str):
     supports_out = _supports_out_argument(np_func)
 
-    def wrapper(x, y, out=None, **kwargs):
+    def wrapper(x: ArrayLike, y: ArrayLike, out: FlopscopeArray | None = None, **kwargs: Any) -> FlopscopeArray:
         budget = require_budget()
         # Preserve original (possibly Python-scalar) values for the actual
         # numpy call so that NEP 50 weak-typing rules apply correctly. We
@@ -458,7 +458,7 @@ def _counted_binary(np_func, op_name: str):
                     list(dict.fromkeys(lost)),
                     f"{op_name} — no symmetry groups shared by both operands",
                 )
-        return _wrap_result(result, out=out, symmetry=out_symmetry)
+        return _wrap_result(result, out=out, symmetry=out_symmetry)  # type: ignore[return-value]
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -481,7 +481,7 @@ def _counted_binary_multi(np_func, op_name: str):
     """
     nout = getattr(np_func, "nout", 2)
 
-    def wrapper(x, y, out=None, **kwargs):
+    def wrapper(x: ArrayLike, y: ArrayLike, out: tuple[FlopscopeArray, FlopscopeArray] | None = None, **kwargs: Any) -> tuple[FlopscopeArray, FlopscopeArray]:
         budget = require_budget()
         # Preserve original (possibly Python-scalar) values for the actual
         # numpy call so that NEP 50 weak-typing rules apply correctly. We
@@ -537,7 +537,7 @@ def _counted_binary_multi(np_func, op_name: str):
                     list(dict.fromkeys(lost)),
                     f"{op_name} — no symmetry groups shared by both operands",
                 )
-        return _wrap_multi_result(result, out=out, symmetry=out_symmetry)
+        return _wrap_multi_result(result, out=out, symmetry=out_symmetry)  # type: ignore[return-value]
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -811,7 +811,7 @@ def _counted_reduction(
         else None
     )
 
-    def wrapper(a, axis=None, *args, **kwargs):
+    def wrapper(a: ArrayLike, axis: int | None = None, *args: Any, **kwargs: Any) -> FlopscopeArray:
         budget = require_budget()
         if not isinstance(a, _np.ndarray):
             a = _np.asarray(a)
@@ -886,7 +886,7 @@ def _counted_reduction(
 
         # Propagate symmetry through reduction.
         if out is not None:
-            return _wrap_result(result, out=out, symmetry=new_symmetry)
+            return _wrap_result(result, out=out, symmetry=new_symmetry)  # type: ignore[return-value]
 
         if symmetry is not None:
             if new_symmetry is not None:
@@ -913,7 +913,7 @@ def _counted_reduction(
                         [symmetry.axes],
                         f"{op_name} removed all symmetric dim groups",
                     )
-        return _wrap_result(result, symmetry=new_symmetry)
+        return _wrap_result(result, symmetry=new_symmetry)  # type: ignore[return-value]
 
     wrapper.__name__ = op_name
     wrapper.__qualname__ = op_name
@@ -968,7 +968,7 @@ arctan = _counted_unary(_np.arctan, "arctan")
 arctanh = _counted_unary(_np.arctanh, "arctanh")
 
 
-def around(a, decimals=0, out=None):
+def around(a: ArrayLike, decimals: int = 0, out: FlopscopeArray | None = None) -> FlopscopeArray | Any:
     """Counted version of np.around. Cost = numel(output) FLOPs."""
     budget = require_budget()
     a_is_scalar = not isinstance(a, _np.ndarray) and _np.ndim(a) == 0
@@ -1050,7 +1050,7 @@ reciprocal = _counted_unary(_np.reciprocal, "reciprocal")
 rint = _counted_unary(_np.rint, "rint")
 
 
-def round(a, decimals=0, out=None):
+def round(a: ArrayLike, decimals: int = 0, out: FlopscopeArray | None = None) -> FlopscopeArray | Any:
     """Counted version of np.round. Cost = numel(output) FLOPs."""
     budget = require_budget()
     a_is_scalar = not isinstance(a, _np.ndarray) and _np.ndim(a) == 0
@@ -1084,7 +1084,7 @@ sinc = _counted_unary(_np.sinc, "sinc")
 sinh = _counted_unary(_np.sinh, "sinh")
 
 
-def sort_complex(a):
+def sort_complex(a: ArrayLike) -> FlopscopeArray:
     """Counted version of np.sort_complex. Cost: n*ceil(log2(n))."""
     import math
 
@@ -1098,7 +1098,7 @@ def sort_complex(a):
         "sort_complex", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
         result = _np.sort_complex(_to_base_ndarray(a))
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.sort_complex import time
 
 
 spacing = _counted_unary(_np.spacing, "spacing")
@@ -1111,7 +1111,7 @@ frexp = _counted_unary_multi(_np.frexp, "frexp")
 
 
 # isclose is binary (takes 2 args) but classified as unary in registry
-def isclose(a, b, **kwargs):
+def isclose(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray | bool:
     """Counted version of np.isclose. Cost = numel(output) FLOPs."""
     budget = require_budget()
     a_is_scalar = not isinstance(a, _np.ndarray) and _np.ndim(a) == 0
@@ -1132,8 +1132,8 @@ def isclose(a, b, **kwargs):
     ):
         result = _np.isclose(_to_base_ndarray(a), _to_base_ndarray(b), **kwargs)
     if a_is_scalar and b_is_scalar and _np.ndim(result) == 0:
-        return result
-    return _wrap_result(result, symmetry=out_symmetry)
+        return bool(result)
+    return _wrap_result(result, symmetry=out_symmetry)  # type: ignore[return-value]
 
 
 attach_docstring(isclose, _np.isclose, "counted_unary", "numel(output) FLOPs")
@@ -1405,7 +1405,7 @@ def count_nonzero(a: ArrayLike, axis: int | tuple[int, ...] | None = None, *, ke
     documents. The coercion also normalizes the numpy 2.3+ change where
     the raw numpy return type became a numpy scalar.
     """
-    result = _count_nonzero_counted(a, axis=axis, keepdims=keepdims)
+    result = _count_nonzero_counted(a, axis=axis, keepdims=keepdims)  # type: ignore[arg-type]
     if axis is None and not keepdims:
         return int(result)
     return result
@@ -1796,7 +1796,7 @@ attach_docstring(cross, _np.cross, "counted_custom", "output_size * 3 FLOPs")
 cross.__signature__ = _inspect.signature(_np.cross)
 
 
-def diff(a, n=1, axis=-1, **kwargs):
+def diff(a: ArrayLike, n: int = 1, axis: int = -1, **kwargs: Any) -> FlopscopeArray:
     """Counted version of np.diff."""
     budget = require_budget()
     if not isinstance(a, _np.ndarray):
@@ -1814,14 +1814,14 @@ def diff(a, n=1, axis=-1, **kwargs):
         shapes=(a.shape,),
     ):
         result = _np.diff(_to_base_ndarray(a), n=n, axis=axis, **kwargs)
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.diff import time
 
 
 attach_docstring(diff, _np.diff, "counted_custom", "numel(output) FLOPs")
 diff.__signature__ = _inspect.signature(_np.diff)
 
 
-def gradient(f, *varargs, **kwargs):
+def gradient(f: ArrayLike, *varargs: ArrayLike, **kwargs: Any) -> FlopscopeArray | list[FlopscopeArray]:
     """Counted version of np.gradient."""
     budget = require_budget()
     if not isinstance(f, _np.ndarray):
@@ -1834,14 +1834,14 @@ def gradient(f, *varargs, **kwargs):
             *[_to_base_ndarray(v) for v in varargs],
             **kwargs,
         )
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.gradient import time
 
 
 attach_docstring(gradient, _np.gradient, "counted_custom", "numel(input) FLOPs")
 gradient.__signature__ = _inspect.signature(_np.gradient)
 
 
-def ediff1d(ary, **kwargs):
+def ediff1d(ary: ArrayLike, **kwargs: Any) -> FlopscopeArray:
     """Counted version of np.ediff1d."""
     budget = require_budget()
     if not isinstance(ary, _np.ndarray):
@@ -1867,7 +1867,7 @@ def ediff1d(ary, **kwargs):
             for k, v in kwargs.items()
         }
         result = _np.ediff1d(_to_base_ndarray(ary), **stripped_kwargs)
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.ediff1d import time
 
 
 attach_docstring(ediff1d, _np.ediff1d, "counted_custom", "numel(output) FLOPs")
@@ -1944,7 +1944,7 @@ def corrcoef(x: ArrayLike, y: ArrayLike | None = None, **kwargs: Any) -> Flopsco
     with budget.deduct("corrcoef", flop_cost=cost, subscripts=None, shapes=(x.shape,)):
         result = _np.corrcoef(
             _to_base_ndarray(x),
-            y=_to_base_ndarray(y) if y is not None else None,
+            y=_to_base_ndarray(y) if y is not None else None,  # type: ignore[arg-type]
             **kwargs,
         )
     return result  # type: ignore[return-value]  # wrapped at fnp.corrcoef import time
@@ -1963,7 +1963,7 @@ def cov(m: ArrayLike, y: ArrayLike | None = None, **kwargs: Any) -> FlopscopeArr
     with budget.deduct("cov", flop_cost=cost, subscripts=None, shapes=(m.shape,)):
         result = _np.cov(
             _to_base_ndarray(m),
-            y=_to_base_ndarray(y) if y is not None else None,
+            y=_to_base_ndarray(y) if y is not None else None,  # type: ignore[arg-type]
             **kwargs,
         )
     return result  # type: ignore[return-value]  # wrapped at fnp.cov import time
@@ -1973,7 +1973,7 @@ attach_docstring(cov, _np.cov, "counted_custom", r"$2 f^2 s$ FLOPs")
 cov.__signature__ = _inspect.signature(_np.cov)
 
 
-def trapezoid(y, x=None, dx=1.0, axis=-1):
+def trapezoid(y: ArrayLike, x: ArrayLike | None = None, dx: float = 1.0, axis: int = -1) -> FlopscopeArray:
     """Counted version of np.trapezoid."""
     budget = require_budget()
     if not isinstance(y, _np.ndarray):
@@ -1983,11 +1983,11 @@ def trapezoid(y, x=None, dx=1.0, axis=-1):
     ):
         result = _np.trapezoid(
             _to_base_ndarray(y),
-            x=_to_base_ndarray(x) if x is not None else None,
+            x=_to_base_ndarray(x) if x is not None else None,  # type: ignore[arg-type]
             dx=dx,
             axis=axis,
         )
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.trapezoid import time
 
 
 attach_docstring(trapezoid, _np.trapezoid, "counted_custom", "numel(input) FLOPs")
@@ -1995,7 +1995,7 @@ attach_docstring(trapezoid, _np.trapezoid, "counted_custom", "numel(input) FLOPs
 
 if hasattr(_np, "trapz"):
 
-    def trapz(y, x=None, dx=1.0, axis=-1):
+    def trapz(y: ArrayLike, x: ArrayLike | None = None, dx: float = 1.0, axis: int = -1) -> FlopscopeArray:
         """Counted version of np.trapz (deprecated alias for trapezoid)."""
         budget = require_budget()
         if not isinstance(y, _np.ndarray):
@@ -2009,7 +2009,7 @@ if hasattr(_np, "trapz"):
                 dx=dx,
                 axis=axis,
             )
-        return result
+        return result  # type: ignore[return-value]  # wrapped at fnp.trapz import time
 
     attach_docstring(trapz, _np.trapz, "counted_custom", "numel(input) FLOPs")
 
@@ -2021,7 +2021,7 @@ else:
         )
 
 
-def interp(x, xp, fp, **kwargs):
+def interp(x: ArrayLike, xp: ArrayLike, fp: ArrayLike, **kwargs: Any) -> FlopscopeArray:
     """Counted version of np.interp. Cost: n * ceil(log2(len(xp))) FLOPs."""
     budget = require_budget()
     if not isinstance(x, _np.ndarray):
@@ -2035,11 +2035,11 @@ def interp(x, xp, fp, **kwargs):
     ):
         result = _np.interp(
             _to_base_ndarray(x),
-            _to_base_ndarray(xp),
-            _to_base_ndarray(fp),
+            _to_base_ndarray(xp),  # type: ignore[arg-type]
+            _to_base_ndarray(fp),  # type: ignore[arg-type]
             **kwargs,
         )
-    return result
+    return result  # type: ignore[return-value]  # wrapped at fnp.interp import time
 
 
 attach_docstring(interp, _np.interp, "counted_custom", "n * ceil(log2(xp)) FLOPs")
