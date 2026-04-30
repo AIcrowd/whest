@@ -16,11 +16,11 @@ _CLIENT_SRC = str(_ROOT / "flopscope-client" / "src")
 if _SERVER_SRC not in sys.path:
     sys.path.insert(0, _SERVER_SRC)
 
-from flopscope_server._request_handler import (
-    RequestHandler,  # noqa: E402  # pyright: ignore[reportMissingImports]
+from flopscope_server._request_handler import (  # pyright: ignore[reportMissingImports]
+    RequestHandler,  # noqa: E402
 )
-from flopscope_server._session import (
-    Session,  # noqa: E402  # pyright: ignore[reportMissingImports]
+from flopscope_server._session import (  # pyright: ignore[reportMissingImports]
+    Session,  # noqa: E402
 )
 
 

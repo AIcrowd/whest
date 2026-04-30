@@ -522,7 +522,7 @@ class TestAllAlgorithmsOracleAware:
             _, info_sym = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
                 *args,
                 shapes=True,
-                optimize=algo,
+                optimize=algo,  # pyright: ignore[reportArgumentType]
                 symmetry_oracle=oracle,  # pyright: ignore[reportArgumentType]
             )
             assert info_sym.optimized_cost <= info_dense.optimized_cost, (
@@ -545,7 +545,7 @@ class TestExhaustiveSymmetryValidation:
             _, info = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
                 *args,
                 shapes=True,
-                optimize=algo,
+                optimize=algo,  # pyright: ignore[reportArgumentType]
                 symmetry_oracle=oracle,  # pyright: ignore[reportArgumentType]
             )
             costs[algo] = info.optimized_cost
@@ -565,7 +565,7 @@ class TestExhaustiveSymmetryValidation:
             _, info_sym = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
                 *args,
                 shapes=True,
-                optimize=algo,
+                optimize=algo,  # pyright: ignore[reportArgumentType]
                 symmetry_oracle=oracle,  # pyright: ignore[reportArgumentType]
             )
             assert info_sym.optimized_cost <= info_dense.optimized_cost, (
@@ -582,7 +582,7 @@ class TestExhaustiveSymmetryValidation:
             path_after, info_after = contract_path(  # pyright: ignore[reportCallIssue, reportArgumentType]
                 *args,
                 shapes=True,
-                optimize=algo,
+                optimize=algo,  # pyright: ignore[reportArgumentType]
                 symmetry_oracle=None,  # pyright: ignore[reportArgumentType]
             )
             assert list(path_before) == list(path_after), f"{algo} path changed"

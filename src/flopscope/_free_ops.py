@@ -2065,7 +2065,7 @@ def _set_sig(func_name, np_func):
     fn = globals().get(func_name)
     if fn is not None and callable(np_func):
         try:
-            fn.__signature__ = _inspect.signature(np_func)
+            fn.__signature__ = _inspect.signature(np_func)  # pyright: ignore[reportFunctionMemberAccess]
         except (ValueError, TypeError):
             pass
 

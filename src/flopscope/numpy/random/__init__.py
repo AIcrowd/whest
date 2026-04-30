@@ -78,7 +78,7 @@ def _counted_sampler(
         f"Counted version of ``numpy.random.{op_name}``. Cost: numel(output) FLOPs."
     )
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        wrapper.__signature__ = _inspect.signature(np_func)  # pyright: ignore[reportFunctionMemberAccess]
     except (ValueError, TypeError):
         pass
     return wrapper
@@ -107,7 +107,7 @@ def _counted_dims_sampler(
         f"Counted version of ``numpy.random.{op_name}``. Cost: numel(output) FLOPs."
     )
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        wrapper.__signature__ = _inspect.signature(np_func)  # pyright: ignore[reportFunctionMemberAccess]
     except (ValueError, TypeError):
         pass
     return wrapper
@@ -272,7 +272,7 @@ def _counted_size_only_sampler(
         f"Counted version of ``numpy.random.{op_name}``. Cost: numel(output) FLOPs."
     )
     try:
-        wrapper.__signature__ = _inspect.signature(np_func)
+        wrapper.__signature__ = _inspect.signature(np_func)  # pyright: ignore[reportFunctionMemberAccess]
     except (ValueError, TypeError):
         pass
     return wrapper
