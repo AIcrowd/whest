@@ -46,7 +46,7 @@ import { useKeyboardShortcuts } from './lib/useKeyboardShortcuts.js';
 import './styles.css';
 
 const CUSTOM_IDX = -1;
-const DEFAULT_EXAMPLE_ID = 'triple-outer';
+const DEFAULT_EXAMPLE_ID = 'cross-s2';
 const DEFAULT_EXAMPLE_IDX = Math.max(0, EXAMPLES.findIndex((example) => example.id === DEFAULT_EXAMPLE_ID));
 const DEFAULT_DIMENSION_N = 5;
 const APPENDIX_ROOT_HASH = '#appendix';

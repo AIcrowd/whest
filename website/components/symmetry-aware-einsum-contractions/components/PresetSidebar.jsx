@@ -6,6 +6,25 @@ import SymmetryBadge from './SymmetryBadge.jsx';
 
 const CUSTOM_IDX = -1;
 
+// V3.1 pedagogical lens preset IDs, in the order they appear in the sidebar.
+const LENS_PRESET_IDS = [
+  'cross-s2',          // opening branching microscope (default)
+  'triple-outer',      // all-visible sanity check
+  'triangle',          // certification microscope
+  'cross-c3-partial',  // partition-counting spotlight
+  'bilinear-trace',    // formal-symmetry boundary
+];
+
+function SidebarGroupHeading({ children }) {
+  return (
+    <div className="border-b border-gray-100 px-4 pb-1.5 pt-3">
+      <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-400">
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default function PresetSidebar({
   examples,
   selectedPresetIdx,
@@ -13,6 +32,48 @@ export default function PresetSidebar({
   onCustom,
 }) {
   const presetSummaries = useMemo(() => examples.map(getPresetSummary), [examples]);
+
+  const lensEntries = useMemo(
+    () => presetSummaries
+      .map((summary, idx) => ({ summary, idx }))
+      .filter(({ summary }) => LENS_PRESET_IDS.includes(summary.id))
+      .sort((a, b) => LENS_PRESET_IDS.indexOf(a.summary.id) - LENS_PRESET_IDS.indexOf(b.summary.id)),
+    [presetSummaries],
+  );
+
+  const referenceEntries = useMemo(
+    () => presetSummaries
+      .map((summary, idx) => ({ summary, idx }))
+      .filter(({ summary }) => !LENS_PRESET_IDS.includes(summary.id)),
+    [presetSummaries],
+  );
+
+  function renderPresetItem({ summary, idx }) {
+    return (
+      <ExplorerSidebarItem
+        key={summary.id}
+        as="button"
+        active={selectedPresetIdx === idx}
+        title={summary.name}
+        glyph={summary.glyph}
+        description={summary.description}
+        formula={summary.formula}
+        className={selectedPresetIdx === idx ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
+        onClick={() => onSelect(idx)}
+      >
+        {selectedPresetIdx === idx && (
+          <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
+        )}
+        {summary.caseIds?.map((caseId) => (
+          <CaseBadge key={caseId} regimeId={caseId} size="xs" variant="pill" />
+        ))}
+        <SymmetryBadge
+          value={summary.expectedGroup}
+          className="h-5 rounded-full border-gray-200 bg-white px-2 py-0 text-[10px] font-semibold text-gray-600"
+        />
+      </ExplorerSidebarItem>
+    );
+  }
 
   return (
     <aside
@@ -47,31 +108,20 @@ export default function PresetSidebar({
               Freeform
             </span>
           </ExplorerSidebarItem>
+        </div>
 
-          {presetSummaries.map((summary, idx) => (
-            <ExplorerSidebarItem
-              key={summary.id}
-              as="button"
-              active={selectedPresetIdx === idx}
-              title={summary.name}
-              glyph={summary.glyph}
-              description={summary.description}
-              formula={summary.formula}
-              className={selectedPresetIdx === idx ? 'bg-coral-light/50' : 'hover:bg-gray-50'}
-              onClick={() => onSelect(idx)}
-            >
-              {selectedPresetIdx === idx && (
-                <span className="absolute inset-y-3 left-[2px] w-1 rounded-[2px] bg-coral" />
-              )}
-              {summary.caseIds?.map((caseId) => (
-                <CaseBadge key={caseId} regimeId={caseId} size="xs" variant="pill" />
-              ))}
-              <SymmetryBadge
-                value={summary.expectedGroup}
-                className="h-5 rounded-full border-gray-200 bg-white px-2 py-0 text-[10px] font-semibold text-gray-600"
-              />
-            </ExplorerSidebarItem>
-          ))}
+        <div>
+          <SidebarGroupHeading>Pedagogical lenses</SidebarGroupHeading>
+          <div className="divide-y divide-gray-100">
+            {lensEntries.map(renderPresetItem)}
+          </div>
+        </div>
+
+        <div>
+          <SidebarGroupHeading>Reference presets</SidebarGroupHeading>
+          <div className="divide-y divide-gray-100">
+            {referenceEntries.map(renderPresetItem)}
+          </div>
         </div>
       </div>
     </aside>
