@@ -1208,6 +1208,10 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                     </p>
                   ))}
 
+                  <p className={`${APPENDIX_PROSE_CLASS} font-semibold italic text-gray-800`}>
+                    {renderAppendixSingleBlock(appendixSection5.slots.summaryCaption, 0)}
+                  </p>
+
                   <EditorialCallout bodyClassName="mt-2 font-serif text-[17px] leading-[1.75] text-gray-900">
                     <div>
                       {renderAppendixSingleBlock(appendixSection5.slots.rule, 0)}
@@ -1341,6 +1345,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                                   }
                                 />
                               </WorkedExampleEquationLedger>
+                              <p className={APPENDIX_PROSE_CLASS}>
+                                {renderAppendixSingleBlock(appendixSection5.slots.bilinearInequality, 0)}
+                              </p>
                               <WorkedExampleNote>
                                 {renderAppendixSingleBlock(appendixSection5.slots.bilinearNote, 0)}
                               </WorkedExampleNote>
@@ -1417,6 +1424,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                                   )}
                                 />
                               </WorkedExampleEquationLedger>
+                              <p className={APPENDIX_PROSE_CLASS}>
+                                {renderAppendixSingleBlock(appendixSection5.slots.directInequality, 0)}
+                              </p>
                               <WorkedExampleNote>
                                 {renderAppendixSingleBlock(appendixSection5.slots.directNote, 0)}
                               </WorkedExampleNote>
@@ -1507,6 +1517,9 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                                   )}
                                 />
                               </WorkedExampleEquationLedger>
+                              <p className={APPENDIX_PROSE_CLASS}>
+                                {renderAppendixSingleBlock(appendixSection5.slots.mixedInequality, 0)}
+                              </p>
                               <WorkedExampleNote>
                                 {renderAppendixSingleBlock(appendixSection5.slots.mixedNote, 0)}
                               </WorkedExampleNote>
