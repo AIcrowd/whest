@@ -15,6 +15,7 @@ import appendixSection3 from '../content/appendix/section3.ts';
 import appendixSection4 from '../content/appendix/section4.ts';
 import appendixSection5 from '../content/appendix/section5.ts';
 import appendixSection6 from '../content/appendix/section6.ts';
+import appendixSection7 from '../content/appendix/section7.ts';
 import { computeExpressionAlphaComparison } from '../engine/comparisonAlpha.js';
 import { EXAMPLES } from '../data/examples.js';
 import { formatGeneratorNotation, variableSymmetryLabel } from '../lib/symmetryLabel.js';
@@ -1635,6 +1636,60 @@ export default function ExpressionLevelModal({ isOpen, onClose, analysis, group,
                 </div>
               )}
             />
+          </AppendixSection>
+
+          {/* V3.1 Appendix B — Classification-tree cases. Mounted between
+              §5 (formal-vs-pointwise rule) and §6 (typed-partition theorem)
+              so DecisionLadder leaves, TotalCostView α-rows, and the
+              UnavailableDetailsPanel "Read Appendix B.9" link land on the
+              actual classification-cases content rather than on §2 (which
+              is V3.1 Appendix D, dummy renamings after summation). */}
+          <AppendixSection
+            n={7}
+            label="Appendix B"
+            anchorId="appendix-section-7"
+            title={appendixSection7.title}
+            deckClassName="max-w-none"
+            deck={
+              <InlineMathText>
+                {normalizeAppendixDisplayText(appendixSection7.deck)}
+              </InlineMathText>
+            }
+          >
+            <div className={APPENDIX_ARTICLE_LANE_CLASS}>
+              {renderAppendixSlot(appendixSection7.slots.intro).map((content, index) => (
+                <p key={`appendix-7-intro-${index}`} className={APPENDIX_PROSE_CLASS}>
+                  {content}
+                </p>
+              ))}
+              <ol className="mt-6 space-y-6 list-none pl-0">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((caseIdx) => {
+                  const labelSlot = appendixSection7.slots[`case${caseIdx}Label`];
+                  const bodySlot = appendixSection7.slots[`case${caseIdx}`];
+                  return (
+                    <li key={`appendix-7-case-${caseIdx}`} className="space-y-2">
+                      <div className={`font-sans ${APPENDIX_KICKER_CLASS}`}>
+                        {renderAppendixSingleBlock(labelSlot, 0, {
+                          slotKey: `appendix-section7-case${caseIdx}-label`,
+                        })}
+                      </div>
+                      {bodySlot.map((_, blockIdx) => (
+                        <p key={`appendix-7-case-${caseIdx}-${blockIdx}`} className={APPENDIX_PROSE_CLASS}>
+                          {renderAppendixSingleBlock(bodySlot, blockIdx, {
+                            slotKey: `appendix-section7-case${caseIdx}`,
+                          })}
+                        </p>
+                      ))}
+                    </li>
+                  );
+                })}
+              </ol>
+              <p className={`${APPENDIX_PROSE_CLASS} mt-6 italic text-gray-700`}>
+                {renderAppendixSingleBlock(appendixSection7.slots.closingNote, 0, {
+                  slotKey: 'appendix-section7-closingNote',
+                })}
+              </p>
+            </div>
           </AppendixSection>
 
           <AppendixSection

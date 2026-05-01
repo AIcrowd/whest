@@ -411,8 +411,11 @@ function tooltipFor(nodeId, liveReasonsByLeaf = null) {
       body: spec.description,
       latex: spec.latex,
       glossary: spec.glossary,
-      // V3.1 "Full statement" link to Appendix B.
-      appendixHref: '#appendix-section-2',
+      // V3.1 "Full statement" link to Appendix B (classification cases).
+      // Lives at #appendix-section-7 in the modal — see ExpressionLevelModal
+      // where AppendixSection n=7 is mounted between §5 and §6. The legacy
+      // #appendix-section-2 anchor was V3.1 Appendix D (dummy renamings).
+      appendixHref: '#appendix-section-7',
       color: presentation?.color ?? spec.color,
       liveReasons,
     };
@@ -976,12 +979,15 @@ export default function DecisionLadder({
   // Only leaf nodes navigate — question/source/enumerate/stageBand nodes do
   // not carry appendix anchors. We detect leaf nodes by checking whether
   // specFor returns a non-null value for the node's canonical id.
+  // The Appendix B section is mounted at #appendix-section-7 by
+  // ExpressionLevelModal (n=7). The previously used #appendix-section-2
+  // anchor was Appendix D (dummy renamings) — wrong content for B.
   const handleNodeClick = useCallback((_evt, node) => {
     // Use the canonical id stored in data.nodeId (node.id may carry a suffix
     // like "bruteForceOrbit__alt" for duplicate leaf instances).
     const canonicalId = node.data?.nodeId ?? node.id;
     if (specFor(canonicalId)) {
-      window.location.hash = '#appendix-section-2';
+      window.location.hash = '#appendix-section-7';
     }
   }, []);
 

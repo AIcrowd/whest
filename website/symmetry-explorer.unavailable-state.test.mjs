@@ -136,10 +136,16 @@ test('UnavailableDetailsPanel — Try n CTA button is rendered', () => {
   assert.match(src, /onClick=\{\(\)\s*=>\s*onLowerN\?\.\(suggestedN\)/);
 });
 
-test('UnavailableDetailsPanel — appendix link points to #appendix-section-6', () => {
+test('UnavailableDetailsPanel — appendix link points to #appendix-section-7 (Appendix B)', () => {
   const src = read(PANEL_PATH);
-  assert.match(src, /href="#appendix-section-6"/);
+  // V3.1: B.9 is the unavailable-case leaf of the classification tree
+  // (Appendix B), mounted at #appendix-section-7. The previously used
+  // #appendix-section-6 was the typed-partition theorem (Appendix C),
+  // which states the formula but not the budget/unavailable contract.
+  assert.match(src, /href="#appendix-section-7"/);
   assert.match(src, /Read Appendix B\.9/);
+  // Guard against regression to the prior C-pointing anchor.
+  assert.doesNotMatch(src, /href="#appendix-section-6"/);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

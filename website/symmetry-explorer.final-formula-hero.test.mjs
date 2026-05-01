@@ -8,7 +8,7 @@
  *  3. Hover-product-term has onMouseEnter / onMouseLeave handlers (source-grep).
  *  4. Hover-α-row — CaseBadge wraps formula for tooltip; hover handlers exist
  *     via CaseBadge passthrough.
- *  5. Click-α-row has a wrapping <a href="#appendix-section-2"> link.
+ *  5. Click-α-row has a wrapping <a href="#appendix-section-7"> link (Appendix B).
  *  6. Hex audit — no raw hex outside the LaTeX color-helper context.
  *  7. Accessibility — toggle buttons have aria-pressed; hover target has
  *     tabIndex and role="button".
@@ -70,13 +70,18 @@ test('C38: each alpha-row formula is wrapped in CaseBadge for hover tooltip', ()
   assert.match(src, /CaseBadge[\s\S]{0,200}regimeId=\{leaf\.id\}[\s\S]{0,200}Latex math=\{leaf\.formula\}/);
 });
 
-// ─── 5. Click-α-row: <a href="#appendix-section-2"> link ─────────────────────
-test('C38: each alpha-row has an anchor link pointing to #appendix-section-2', () => {
+// ─── 5. Click-α-row: <a href="#appendix-section-7"> link (Appendix B) ────────
+test('C38: each alpha-row has an anchor link pointing to #appendix-section-7', () => {
   const src = read(COMPONENT_PATH);
+  // V3.1: Appendix B (classification cases) lives at #appendix-section-7.
+  // The legacy #appendix-section-2 was Appendix D (dummy renamings) — wrong
+  // content for an alpha-shortcut "full derivation" target.
   assert.match(src, /href=\{appendixHref\}/);
-  assert.match(src, /appendixHref\s*=\s*['"]#appendix-section-2['"]/);
+  assert.match(src, /appendixHref\s*=\s*['"]#appendix-section-7['"]/);
   // aria-label on the link
   assert.match(src, /aria-label=\{`\$\{shortcutLabel\}.*Appendix B/);
+  // Guard against regression to the old D-pointing anchor.
+  assert.doesNotMatch(src, /appendixHref\s*=\s*['"]#appendix-section-2['"]/);
 });
 
 // ─── 6. Hex audit ────────────────────────────────────────────────────────────

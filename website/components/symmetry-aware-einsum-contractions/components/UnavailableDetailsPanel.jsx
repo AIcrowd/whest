@@ -267,7 +267,7 @@ export default function UnavailableDetailsPanel({
           </button>
         ) : null}
         <a
-          href="#appendix-section-6"
+          href="#appendix-section-7"
           aria-label="Read Appendix B.9 — typed partition counting theorem"
           className="rounded-md text-[11.5px] font-semibold underline decoration-dotted underline-offset-[3px] focus:outline-none focus-visible:ring-2"
           style={{ color: TOKEN.gray700 }}

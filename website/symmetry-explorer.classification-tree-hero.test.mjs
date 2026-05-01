@@ -5,7 +5,7 @@
 //   1. activeAlphaMethod prop accepted by DecisionLadder
 //   2. Node hover tooltip surfaces checks / why / intuition
 //   3. Leaf hover tooltip uses V3.1 4-line format (Applies when / Counts / Full statement)
-//   4. Click-leaf navigates to #appendix-section-2
+//   4. Click-leaf navigates to #appendix-section-7 (Appendix B)
 //   5. Alpha-method highlight — coral outline on the matching leaf
 //   6. Hex audit — no raw hex outside approved palette
 //   7. Accessibility — node + leaf both keyboard-focusable (cursor-help present)
@@ -90,12 +90,17 @@ test('DecisionLadder leaf tooltip renders "Full statement → Appendix B" link',
 
 // ── 4. Click-leaf → Appendix B anchor ────────────────────────────────────
 
-test('DecisionLadder click-leaf handler navigates to #appendix-section-2', () => {
-  // handleNodeClick must set window.location.hash to the appendix anchor.
-  assert.match(ladder, /#appendix-section-2/);
+test('DecisionLadder click-leaf handler navigates to #appendix-section-7', () => {
+  // handleNodeClick must set window.location.hash to the Appendix B anchor.
+  // V3.1: Appendix B (Classification-tree cases) is mounted at
+  // #appendix-section-7 by ExpressionLevelModal. The previously used
+  // #appendix-section-2 was Appendix D (dummy renamings) — wrong target.
+  assert.match(ladder, /window\.location\.hash\s*=\s*['"]#appendix-section-7['"]/);
   assert.match(ladder, /handleNodeClick/);
   // The handler checks specFor to confirm it's a leaf before navigating.
   assert.match(ladder, /specFor\(canonicalId\)/);
+  // Stale #appendix-section-2 must not still be the leaf-click target.
+  assert.doesNotMatch(ladder, /window\.location\.hash\s*=\s*['"]#appendix-section-2['"]/);
 });
 
 test('DecisionLadderGraph receives onNodeClick prop', () => {

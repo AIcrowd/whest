@@ -385,10 +385,12 @@ function HeroFormulaBlock({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
 }
 
 function FormulaRow({ leaf, themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
-  // Appendix B link target — alpha-shortcut details live in appendix section 2
-  // (accumulation counting methods). The appendix is opened via the hash
-  // #appendix-section-2 which the app's openAppendix listener recognises.
-  const appendixHref = '#appendix-section-2';
+  // Appendix B link target — alpha-shortcut details live in appendix
+  // section 7 (Classification-tree cases, B.1-B.9). The appendix is opened
+  // via the hash #appendix-section-7 which the app's openAppendix listener
+  // recognises. (The legacy #appendix-section-2 anchor was Appendix D —
+  // dummy renamings — and pointed readers at the wrong content.)
+  const appendixHref = '#appendix-section-7';
   const presentation = getRegimePresentation(leaf.id, null);
   const shortcutLabel = presentation?.label ?? leaf.id;
 
