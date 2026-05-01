@@ -6,6 +6,7 @@ import numpy as _np
 from numpy.linalg._linalg import SVDResult
 from numpy.typing import ArrayLike
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._flops import svd_cost
 from flopscope._ndarray import FlopscopeArray, _asflopscope, _to_base_ndarray
 from flopscope._validation import maybe_check_nan_inf, require_budget
@@ -26,6 +27,7 @@ def _has_zero_dim(shape):
     return len(shape) >= 2 and (shape[-2] == 0 or shape[-1] == 0)
 
 
+@_counted_wrapper
 def svd(
     a: ArrayLike,
     full_matrices: bool = True,
@@ -88,8 +90,8 @@ def svd(
         if compute_uv:
             # When k is specified, always use economy decomposition then slice.
             fm = full_matrices if k is None else False
-            U, S, Vt = _np.linalg.svd(
-                _to_base_ndarray(a), full_matrices=fm, hermitian=hermitian
+            U, S, Vt = _call_numpy(
+                _np.linalg.svd, _to_base_ndarray(a), full_matrices=fm, hermitian=hermitian
             )
             if k is not None:
                 S = S[..., :k]
@@ -97,8 +99,8 @@ def svd(
                 Vt = Vt[..., :k, :]
             maybe_check_nan_inf(S, "linalg.svd")
         else:
-            S = _np.linalg.svd(
-                _to_base_ndarray(a), compute_uv=False, hermitian=hermitian
+            S = _call_numpy(
+                _np.linalg.svd, _to_base_ndarray(a), compute_uv=False, hermitian=hermitian
             )
             if k is not None:
                 S = S[..., :k]

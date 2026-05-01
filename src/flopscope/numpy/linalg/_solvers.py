@@ -8,6 +8,7 @@ from typing import Any
 import numpy as _np
 from numpy.typing import ArrayLike
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._docstrings import attach_docstring
 from flopscope._ndarray import FlopscopeArray, _asflopscope, _to_base_ndarray
 from flopscope._symmetric import SymmetricTensor, as_symmetric
@@ -54,6 +55,7 @@ def solve_cost(n: int, nrhs: int = 1, symmetric: bool = False) -> int:
     return max(n**3, 1)
 
 
+@_counted_wrapper
 def solve(a: ArrayLike, b: ArrayLike) -> FlopscopeArray:
     """Solve linear system ``a @ x = b`` with FLOP counting.
 
@@ -77,7 +79,7 @@ def solve(a: ArrayLike, b: ArrayLike) -> FlopscopeArray:
     with budget.deduct(
         "linalg.solve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.solve(_to_base_ndarray(a), _to_base_ndarray(b))
+        result = _call_numpy(_np.linalg.solve, _to_base_ndarray(a), _to_base_ndarray(b))
     if b_was_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]
     return result  # type: ignore[reportReturnType]
@@ -111,6 +113,7 @@ def inv_cost(n: int, symmetric: bool = False) -> int:
     return max(n**3, 1)
 
 
+@_counted_wrapper
 def inv(a: ArrayLike) -> FlopscopeArray:
     """Matrix inverse with FLOP counting."""
     budget = require_budget()
@@ -127,7 +130,7 @@ def inv(a: ArrayLike) -> FlopscopeArray:
     with budget.deduct(
         "linalg.inv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.inv(_to_base_ndarray(a))
+        result = _call_numpy(_np.linalg.inv, _to_base_ndarray(a))
     if is_symmetric:
         try:
             result = as_symmetric(result, symmetry=input_symmetry)
@@ -168,6 +171,7 @@ def lstsq_cost(m: int, n: int) -> int:
     return max(m * n * min(m, n), 1)
 
 
+@_counted_wrapper
 def lstsq(
     a: ArrayLike, b: ArrayLike, rcond: float | None = None
 ) -> tuple[FlopscopeArray, FlopscopeArray, int, FlopscopeArray]:
@@ -193,7 +197,7 @@ def lstsq(
     with budget.deduct(
         "linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.lstsq(_to_base_ndarray(a), _to_base_ndarray(b), rcond=rcond)  # type: ignore[reportCallIssue]
+        result = _call_numpy(_np.linalg.lstsq, _to_base_ndarray(a), _to_base_ndarray(b), rcond=rcond)  # type: ignore[reportCallIssue]
     if b_was_whest:
         return tuple(  # type: ignore[reportReturnType]
             _asflopscope(r) if isinstance(r, _np.ndarray) else r for r in result
@@ -228,6 +232,7 @@ def pinv_cost(m: int, n: int) -> int:
     return max(m * n * min(m, n), 1)
 
 
+@_counted_wrapper
 def pinv(
     a: ArrayLike,
     rcond: float | None = None,
@@ -251,7 +256,7 @@ def pinv(
     with budget.deduct(
         "linalg.pinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.pinv(_to_base_ndarray(a), **kwargs)
+        result = _call_numpy(_np.linalg.pinv, _to_base_ndarray(a), **kwargs)
     if inputs_were_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]
     return result  # type: ignore[reportReturnType]
@@ -289,6 +294,7 @@ def tensorsolve_cost(a_shape: tuple, ind: int | None = None) -> int:
     return max(n**3, 1)
 
 
+@_counted_wrapper
 def tensorsolve(a: ArrayLike, b: ArrayLike, axes: Any = None) -> FlopscopeArray:
     """Tensor solve with FLOP counting."""
     budget = require_budget()
@@ -299,7 +305,8 @@ def tensorsolve(a: ArrayLike, b: ArrayLike, axes: Any = None) -> FlopscopeArray:
     with budget.deduct(
         "linalg.tensorsolve", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.tensorsolve(
+        result = _call_numpy(
+            _np.linalg.tensorsolve,
             _to_base_ndarray(a),
             _to_base_ndarray(b),  # type: ignore[arg-type]
             axes=axes,
@@ -342,6 +349,7 @@ def tensorinv_cost(a_shape: tuple, ind: int = 2) -> int:
     return max(n**3, 1)
 
 
+@_counted_wrapper
 def tensorinv(a: ArrayLike, ind: int = 2) -> FlopscopeArray:
     """Tensor inverse with FLOP counting."""
     budget = require_budget()
@@ -352,7 +360,7 @@ def tensorinv(a: ArrayLike, ind: int = 2) -> FlopscopeArray:
     with budget.deduct(
         "linalg.tensorinv", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.tensorinv(_to_base_ndarray(a), ind=ind)
+        result = _call_numpy(_np.linalg.tensorinv, _to_base_ndarray(a), ind=ind)
     if inputs_were_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]
     return result  # type: ignore[reportReturnType]

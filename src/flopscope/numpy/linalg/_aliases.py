@@ -13,6 +13,7 @@ import numpy as _np
 from numpy.typing import ArrayLike
 
 import flopscope.numpy as _me
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._docstrings import attach_docstring
 from flopscope._ndarray import FlopscopeArray
 
@@ -27,6 +28,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def cross(x1: ArrayLike, x2: ArrayLike, /, *, axis: int = -1) -> FlopscopeArray:
     """Cross product (linalg namespace). Uses np.linalg.cross for strict validation."""
     import builtins as _builtins
@@ -48,7 +50,7 @@ def cross(x1: ArrayLike, x2: ArrayLike, /, *, axis: int = -1) -> FlopscopeArray:
         subscripts=None,
         shapes=(x1_arr.shape, x2_arr.shape),
     ):
-        result = _np.linalg.cross(_to_base_ndarray(x1), _to_base_ndarray(x2), axis=axis)  # type: ignore[reportCallIssue]
+        result = _call_numpy(_np.linalg.cross, _to_base_ndarray(x1), _to_base_ndarray(x2), axis=axis)  # type: ignore[reportCallIssue]
     if isinstance(result, _np.ndarray) and inputs_were_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]
     return result  # type: ignore[reportReturnType]
