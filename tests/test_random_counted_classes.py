@@ -173,3 +173,71 @@ class TestCountedGeneratorOverrides:
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             revived.standard_normal(13)
         assert budget.flops_used == 13
+
+
+class TestCountedRandomState:
+    def test_randn_charges_flops(self):
+        from flopscope.numpy.random._counted_classes import _CountedRandomState
+
+        rs = _CountedRandomState(42)
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            rs.randn(10)
+        assert budget.flops_used == 10
+
+    def test_randn_returns_flopscope_array(self):
+        from flopscope._ndarray import FlopscopeArray
+        from flopscope.numpy.random._counted_classes import _CountedRandomState
+
+        rs = _CountedRandomState(42)
+        with BudgetContext(flop_budget=10**6, quiet=True):
+            result = rs.randn(10)
+        assert isinstance(result, FlopscopeArray)
+
+    def test_seed_is_free(self):
+        from flopscope.numpy.random._counted_classes import _CountedRandomState
+
+        rs = _CountedRandomState(42)
+        with BudgetContext(flop_budget=10, quiet=True) as budget:
+            rs.seed(99)
+        assert budget.flops_used == 0
+
+    def test_get_state_is_free(self):
+        from flopscope.numpy.random._counted_classes import _CountedRandomState
+
+        rs = _CountedRandomState(42)
+        with BudgetContext(flop_budget=10, quiet=True) as budget:
+            rs.get_state()
+        assert budget.flops_used == 0
+
+    def test_unknown_method_raises(self):
+        from flopscope.numpy.random._counted_classes import _CountedRandomState
+
+        rs = _CountedRandomState(42)
+        with BudgetContext(flop_budget=1000, quiet=True):
+            with pytest.raises(UnsupportedFunctionError, match="RandomState"):
+                rs.totally_fake_sampler()
+
+    def test_isinstance_numpy_random_state(self):
+        from flopscope.numpy.random._counted_classes import _CountedRandomState
+
+        rs = _CountedRandomState(42)
+        assert isinstance(rs, np.random.RandomState)
+
+    def test_choice_without_replacement_uses_sort_cost(self):
+        from flopscope._flops import _ceil_log2
+        from flopscope.numpy.random._counted_classes import _CountedRandomState
+
+        rs = _CountedRandomState(42)
+        n = 16
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            rs.choice(n, size=5, replace=False)
+        assert budget.flops_used == n * _ceil_log2(n)
+
+    def test_shuffle_charges_input_size(self):
+        from flopscope.numpy.random._counted_classes import _CountedRandomState
+
+        rs = _CountedRandomState(42)
+        a = np.arange(50)
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            rs.shuffle(a)
+        assert budget.flops_used == 50
