@@ -639,3 +639,28 @@ def test_summary_dict_includes_flopscope_overhead_time_s():
     assert "flopscope_overhead_time_s" in d
     assert d["flopscope_overhead_time_s"] is not None
     assert d["flopscope_overhead_time_s"] >= 0
+
+
+def test_call_numpy_returns_fn_result_and_records_duration():
+    import time as _time
+    import numpy as np
+    import flopscope
+    from flopscope._budget import _call_numpy
+
+    # Without an active timer, _call_numpy is a no-op timing-wise (just calls fn)
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        result = _call_numpy(np.add, np.ones((3,)), np.ones((3,)))
+        assert isinstance(result, np.ndarray)
+        assert result.tolist() == [2.0, 2.0, 2.0]
+
+        # With a fake "timer" object that has _np_duration, the duration is reported
+        class _FakeTimer:
+            def __init__(self):
+                self._np_duration = 0.0
+        fake = _FakeTimer()
+        b._current_op_timer = fake
+        try:
+            _call_numpy(_time.sleep, 0.01)
+        finally:
+            b._current_op_timer = None
+        assert fake._np_duration >= 0.01

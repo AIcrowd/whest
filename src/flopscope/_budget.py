@@ -96,6 +96,27 @@ class _OpTimer:
         return False
 
 
+def _call_numpy(fn, *args, **kwargs):
+    """Invoke a numpy callable, attributing only its wall time to tracked_time.
+
+    All numpy calls inside counted-op wrappers MUST go through this helper so
+    that view-casts, copyto, errstate setup, and other flopscope-internal work
+    surrounding the call are correctly bucketed as flopscope_overhead.
+
+    Reports the call's duration to the active _OpTimer (via
+    budget._current_op_timer). When no timer is active (e.g. helper called
+    from a non-counted code path), it is a transparent passthrough.
+    """
+    t0 = time.perf_counter()
+    try:
+        return fn(*args, **kwargs)
+    finally:
+        d = time.perf_counter() - t0
+        budget = get_active_budget()
+        if budget is not None and budget._current_op_timer is not None:
+            budget._current_op_timer._np_duration += d
+
+
 _thread_local = threading.local()
 _all_budget_contexts: weakref.WeakSet[BudgetContext] = weakref.WeakSet()
 
