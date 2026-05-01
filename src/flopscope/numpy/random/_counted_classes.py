@@ -14,6 +14,7 @@ from typing import Any, ClassVar
 
 import numpy as _np
 
+from flopscope._budget import _counted_wrapper
 from flopscope._ndarray import _asflopscope
 from flopscope._registry import REGISTRY
 from flopscope._validation import require_budget
@@ -21,6 +22,7 @@ from flopscope.errors import UnsupportedFunctionError
 from flopscope.numpy.random._cost_formulas import COST_FORMULAS
 
 
+@_counted_wrapper
 def _make_counted_method(
     op_name: str, formula_name: str, base_cls: type, plain_factory: Callable[..., Any]
 ) -> Callable[..., Any]:
@@ -38,6 +40,7 @@ def _make_counted_method(
     formula = COST_FORMULAS[formula_name]
 
     @functools.wraps(base_method)
+    @_counted_wrapper
     def wrapped(self, *args: Any, **kwargs: Any) -> Any:
         budget = require_budget()
         # Dispatch through a plain base-class instance to avoid the counted
