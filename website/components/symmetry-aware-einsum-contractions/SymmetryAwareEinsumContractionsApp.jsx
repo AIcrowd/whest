@@ -26,6 +26,7 @@ import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import { LabelInteractionGraph } from './components/ComponentView.jsx';
 import TypedPartitionDemo from './components/TypedPartitionDemo.jsx';
+import TwoQuotientSchematic from './components/TwoQuotientSchematic.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import {
@@ -593,6 +594,10 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     contentClassName="pt-5"
                   >
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[3].introParagraphs} />
+                    {/* §4 Two-quotient schematic — C16 */}
+                    <div className="mt-6">
+                      <TwoQuotientSchematic />
+                    </div>
                     <div className="mt-4">
                       <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[3].produces}</NarrativeCallout>
                     </div>
