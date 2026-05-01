@@ -29,6 +29,7 @@ import TypedPartitionDemo from './components/TypedPartitionDemo.jsx';
 import TwoQuotientSchematic from './components/TwoQuotientSchematic.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
 import NaiveAlphaCostMeter from './components/NaiveAlphaCostMeter.jsx';
+import TuplePatternMeter from './components/TuplePatternMeter.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import {
   getExplorerThemeCssVariables,
@@ -747,6 +748,14 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     contentClassName="pt-5"
                   >
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[7].introParagraphs} />
+                    <div className="mt-6">
+                      <TuplePatternMeter
+                        dimensionN={dimensionN}
+                        allLabels={group?.allLabels ?? []}
+                        groupSize={group?.fullElements?.length ?? 1}
+                        componentData={componentData}
+                      />
+                    </div>
                     <div className="mt-6">
                       <TypedPartitionDemo
                         componentData={componentData}
