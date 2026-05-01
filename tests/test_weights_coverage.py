@@ -167,7 +167,8 @@ def counted_ops() -> set[str]:
     return {
         name
         for name, entry in REGISTRY.items()
-        if entry["category"] not in (
+        if entry["category"]
+        not in (
             "free",
             "blacklisted",
             "free_random_method",

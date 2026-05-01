@@ -421,7 +421,7 @@ def audit_random_class(cls_name: str, cls: type, op_prefix: str) -> list[str]:
     from flopscope._registry import REGISTRY
 
     registry_methods = {
-        n[len(op_prefix):]
+        n[len(op_prefix) :]
         for n, e in REGISTRY.items()
         if n.startswith(op_prefix)
         and e.get("category") in {"counted_random_method", "free_random_method"}
@@ -430,10 +430,9 @@ def audit_random_class(cls_name: str, cls: type, op_prefix: str) -> list[str]:
 
     added = numpy_methods - registry_methods
     removed = registry_methods - numpy_methods
-    return (
-        [f"+ {cls_name}.{m}" for m in sorted(added)]
-        + [f"- {cls_name}.{m}" for m in sorted(removed)]
-    )
+    return [f"+ {cls_name}.{m}" for m in sorted(added)] + [
+        f"- {cls_name}.{m}" for m in sorted(removed)
+    ]
 
 
 # ---------------------------------------------------------------------------
@@ -616,10 +615,9 @@ def main() -> None:
         return
 
     # Issue #18: ensure Generator / RandomState method coverage stays in sync.
-    random_diffs = (
-        audit_random_class("Generator", np.random.Generator, "random.Generator.")
-        + audit_random_class("RandomState", np.random.RandomState, "random.RandomState.")
-    )
+    random_diffs = audit_random_class(
+        "Generator", np.random.Generator, "random.Generator."
+    ) + audit_random_class("RandomState", np.random.RandomState, "random.RandomState.")
     if random_diffs:
         print("\n=== random class method drift ===", file=sys.stderr)
         for line in random_diffs:

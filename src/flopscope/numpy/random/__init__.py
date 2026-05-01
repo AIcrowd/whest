@@ -579,14 +579,16 @@ def bytes(length):
 # Explicit allowlist of numpy.random types that pass through without counting:
 # these are bit-generator classes (no math; FLOP counting happens at the
 # sampler-method level on the resulting Generator) and the SeedSequence utility.
-_PASSTHROUGH_TYPES: frozenset[str] = frozenset({
-    "BitGenerator",
-    "MT19937",
-    "PCG64",
-    "PCG64DXSM",
-    "Philox",
-    "SFC64",
-})
+_PASSTHROUGH_TYPES: frozenset[str] = frozenset(
+    {
+        "BitGenerator",
+        "MT19937",
+        "PCG64",
+        "PCG64DXSM",
+        "Philox",
+        "SFC64",
+    }
+)
 
 
 def __getattr__(name):

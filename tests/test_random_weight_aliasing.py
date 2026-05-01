@@ -21,19 +21,22 @@ class TestRuntimeAliasing:
 
     def test_rename_random_to_random_sample(self):
         load_weights()
-        assert get_weight("random.Generator.random") == get_weight("random.random_sample")
+        assert get_weight("random.Generator.random") == get_weight(
+            "random.random_sample"
+        )
 
     def test_randomstate_methods_alias_directly(self):
         load_weights()
         assert get_weight("random.RandomState.randn") == get_weight("random.randn")
         assert get_weight("random.RandomState.normal") == get_weight("random.normal")
-        assert get_weight("random.RandomState.exponential") == get_weight("random.exponential")
+        assert get_weight("random.RandomState.exponential") == get_weight(
+            "random.exponential"
+        )
 
     def test_explicit_override_wins_over_alias(self, tmp_path):
         path = tmp_path / "weights.json"
         path.write_text(
-            '{"weights": {"random.normal": 16.0, '
-            '"random.Generator.normal": 99.0}}'
+            '{"weights": {"random.normal": 16.0, "random.Generator.normal": 99.0}}'
         )
         load_weights(str(path), use_packaged_default=False)
         # Explicit entry wins: 99.0, not aliased 16.0
@@ -68,10 +71,20 @@ class TestCoverage:
                 continue
             w = get_weight(name)
             # Distribution-class samplers (transcendental) should resolve to ~16
-            if any(
-                tok in name
-                for tok in ("normal", "exponential", "gamma", "beta", "lognormal", "weibull")
-            ) and "_normal_" not in name:
+            if (
+                any(
+                    tok in name
+                    for tok in (
+                        "normal",
+                        "exponential",
+                        "gamma",
+                        "beta",
+                        "lognormal",
+                        "weibull",
+                    )
+                )
+                and "_normal_" not in name
+            ):
                 if w == 1.0:
                     unresolved.append((name, w))
         assert not unresolved, (

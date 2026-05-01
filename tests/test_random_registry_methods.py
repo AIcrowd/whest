@@ -11,31 +11,64 @@ GENERATOR_FREE = {"bit_generator", "spawn"}
 
 # All other public attributes on Generator are counted samplers.
 GENERATOR_COUNTED = {
-    "beta", "binomial", "bytes", "chisquare", "choice", "dirichlet",
-    "exponential", "f", "gamma", "geometric", "gumbel", "hypergeometric",
-    "integers", "laplace", "logistic", "lognormal", "logseries",
-    "multinomial", "multivariate_hypergeometric", "multivariate_normal",
-    "negative_binomial", "noncentral_chisquare", "noncentral_f", "normal",
-    "pareto", "permutation", "permuted", "poisson", "power", "random",
-    "rayleigh", "shuffle", "standard_cauchy", "standard_exponential",
-    "standard_gamma", "standard_normal", "standard_t", "triangular",
-    "uniform", "vonmises", "wald", "weibull", "zipf",
+    "beta",
+    "binomial",
+    "bytes",
+    "chisquare",
+    "choice",
+    "dirichlet",
+    "exponential",
+    "f",
+    "gamma",
+    "geometric",
+    "gumbel",
+    "hypergeometric",
+    "integers",
+    "laplace",
+    "logistic",
+    "lognormal",
+    "logseries",
+    "multinomial",
+    "multivariate_hypergeometric",
+    "multivariate_normal",
+    "negative_binomial",
+    "noncentral_chisquare",
+    "noncentral_f",
+    "normal",
+    "pareto",
+    "permutation",
+    "permuted",
+    "poisson",
+    "power",
+    "random",
+    "rayleigh",
+    "shuffle",
+    "standard_cauchy",
+    "standard_exponential",
+    "standard_gamma",
+    "standard_normal",
+    "standard_t",
+    "triangular",
+    "uniform",
+    "vonmises",
+    "wald",
+    "weibull",
+    "zipf",
 }
 
 
 class TestGeneratorRegistryCoverage:
     def test_every_public_method_has_a_registry_entry(self):
-        public = {
-            n for n in dir(np.random.Generator)
-            if not n.startswith("_")
-        }
+        public = {n for n in dir(np.random.Generator) if not n.startswith("_")}
         registered = {
-            n[len("random.Generator."):]
+            n[len("random.Generator.") :]
             for n in REGISTRY
             if n.startswith("random.Generator.")
         }
         missing = public - registered
-        assert not missing, f"Generator methods missing from registry: {sorted(missing)}"
+        assert not missing, (
+            f"Generator methods missing from registry: {sorted(missing)}"
+        )
 
     def test_counted_entries_have_required_fields(self):
         for short in GENERATOR_COUNTED:
@@ -76,7 +109,9 @@ class TestSpecificCostFormulaAssignments:
     def test_permutation_uses_shape_axis(self):
         # Same Fisher-Yates internals as shuffle.
         assert REGISTRY["random.Generator.permutation"]["cost_formula"] == "shape[axis]"
-        assert REGISTRY["random.RandomState.permutation"]["cost_formula"] == "shape[axis]"
+        assert (
+            REGISTRY["random.RandomState.permutation"]["cost_formula"] == "shape[axis]"
+        )
 
     def test_permuted_uses_numel_input(self):
         # Genuinely numel: independent shuffle per slice along the axis.
@@ -89,7 +124,10 @@ class TestSpecificCostFormulaAssignments:
         assert REGISTRY["random.Generator.choice"]["cost_formula"] == "choice_cost"
 
     def test_standard_normal_uses_numel_output(self):
-        assert REGISTRY["random.Generator.standard_normal"]["cost_formula"] == "numel(output)"
+        assert (
+            REGISTRY["random.Generator.standard_normal"]["cost_formula"]
+            == "numel(output)"
+        )
 
 
 # Methods on numpy.random.RandomState that are NOT counted (free).
@@ -97,31 +135,67 @@ RANDOMSTATE_FREE = {"get_state", "seed", "set_state"}
 
 # All other public attributes on RandomState are counted samplers.
 RANDOMSTATE_COUNTED = {
-    "beta", "binomial", "bytes", "chisquare", "choice", "dirichlet",
-    "exponential", "f", "gamma", "geometric", "gumbel", "hypergeometric",
-    "laplace", "logistic", "lognormal", "logseries", "multinomial",
-    "multivariate_normal", "negative_binomial", "noncentral_chisquare",
-    "noncentral_f", "normal", "pareto", "permutation", "poisson", "power",
-    "rand", "randint", "randn", "random", "random_integers", "random_sample",
-    "rayleigh", "shuffle", "standard_cauchy", "standard_exponential",
-    "standard_gamma", "standard_normal", "standard_t", "tomaxint",
-    "triangular", "uniform", "vonmises", "wald", "weibull", "zipf",
+    "beta",
+    "binomial",
+    "bytes",
+    "chisquare",
+    "choice",
+    "dirichlet",
+    "exponential",
+    "f",
+    "gamma",
+    "geometric",
+    "gumbel",
+    "hypergeometric",
+    "laplace",
+    "logistic",
+    "lognormal",
+    "logseries",
+    "multinomial",
+    "multivariate_normal",
+    "negative_binomial",
+    "noncentral_chisquare",
+    "noncentral_f",
+    "normal",
+    "pareto",
+    "permutation",
+    "poisson",
+    "power",
+    "rand",
+    "randint",
+    "randn",
+    "random",
+    "random_integers",
+    "random_sample",
+    "rayleigh",
+    "shuffle",
+    "standard_cauchy",
+    "standard_exponential",
+    "standard_gamma",
+    "standard_normal",
+    "standard_t",
+    "tomaxint",
+    "triangular",
+    "uniform",
+    "vonmises",
+    "wald",
+    "weibull",
+    "zipf",
 }
 
 
 class TestRandomStateRegistryCoverage:
     def test_every_public_method_has_a_registry_entry(self):
-        public = {
-            n for n in dir(np.random.RandomState)
-            if not n.startswith("_")
-        }
+        public = {n for n in dir(np.random.RandomState) if not n.startswith("_")}
         registered = {
-            n[len("random.RandomState."):]
+            n[len("random.RandomState.") :]
             for n in REGISTRY
             if n.startswith("random.RandomState.")
         }
         missing = public - registered
-        assert not missing, f"RandomState methods missing from registry: {sorted(missing)}"
+        assert not missing, (
+            f"RandomState methods missing from registry: {sorted(missing)}"
+        )
 
     def test_counted_entries_have_required_fields(self):
         for short in RANDOMSTATE_COUNTED:

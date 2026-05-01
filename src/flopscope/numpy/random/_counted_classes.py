@@ -79,7 +79,7 @@ def _build_counted_class(
     for op_name, entry in REGISTRY.items():
         if not op_name.startswith(op_prefix):
             continue
-        short = op_name[len(op_prefix):]
+        short = op_name[len(op_prefix) :]
         category = entry.get("category")
         if category == "counted_random_method":
             counted.add(short)

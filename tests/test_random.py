@@ -162,6 +162,13 @@ class TestGetattrFallback:
 
     def test_bit_generator_classes_pass_through(self):
         # numpy bit-generator classes are pure machinery, no math; allowlisted.
-        for name in ("BitGenerator", "MT19937", "PCG64", "PCG64DXSM", "Philox", "SFC64"):
+        for name in (
+            "BitGenerator",
+            "MT19937",
+            "PCG64",
+            "PCG64DXSM",
+            "Philox",
+            "SFC64",
+        ):
             cls = getattr(merandom, name)
             assert cls is getattr(numpy.random, name), name

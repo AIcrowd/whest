@@ -151,7 +151,14 @@ class TestSpawn:
 
 class TestBitGeneratorPassthrough:
     def test_passthrough_classes_resolve(self):
-        for name in ("BitGenerator", "MT19937", "PCG64", "PCG64DXSM", "Philox", "SFC64"):
+        for name in (
+            "BitGenerator",
+            "MT19937",
+            "PCG64",
+            "PCG64DXSM",
+            "Philox",
+            "SFC64",
+        ):
             cls = getattr(merandom, name)
             assert cls is getattr(numpy.random, name)
 

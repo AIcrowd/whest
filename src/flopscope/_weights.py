@@ -80,8 +80,8 @@ def _load_packaged_weights() -> dict[str, float] | None:
 # Methods whose names changed between the legacy API and the modern Generator API.
 # Everything else uses simple prefix-stripping (no entry needed).
 _RANDOM_METHOD_RENAMES: dict[str, str] = {
-    "integers": "randint",        # Generator.integers → random.randint
-    "random": "random_sample",    # Generator.random   → random.random_sample
+    "integers": "randint",  # Generator.integers → random.randint
+    "random": "random_sample",  # Generator.random   → random.random_sample
 }
 
 
@@ -115,7 +115,7 @@ def get_weight(op_name: str) -> float:
     # 2. Method-level alias fallback for random.Generator.* / random.RandomState.*
     for prefix in ("random.Generator.", "random.RandomState."):
         if op_name.startswith(prefix):
-            short = op_name[len(prefix):]
+            short = op_name[len(prefix) :]
             legacy = _RANDOM_METHOD_RENAMES.get(short, short)
             legacy_op = f"random.{legacy}"
             if legacy_op in _ACTIVE_WEIGHTS:
