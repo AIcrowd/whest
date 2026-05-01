@@ -6,6 +6,7 @@
     "symmetry",
     "linalg",
     "fft",
+    "random",
     "budget-planning"
   ]
 }
