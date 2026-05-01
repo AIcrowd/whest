@@ -1,14 +1,34 @@
 """Counted wrappers for ``numpy.random``.
 
-Most samplers deduct ``numel(output)`` FLOPs from the active budget.
-Shuffle-like operations (``permutation``, ``shuffle``, ``choice`` without
-replacement) deduct ``n * ceil(log2(n))`` FLOPs.
+Policy (issue #18):
 
-Configuration helpers (``seed``, ``get_state``, ``set_state``,
-``default_rng``, ``RandomState``, ``SeedSequence``) are free.
+* **Module-level samplers** (``randn``, ``normal``, ``uniform``,
+  ``choice``, ``shuffle``, ``bytes``, ...): same semantics as numpy plus
+  FLOP accounting. Most deduct ``numel(output)`` FLOPs;
+  ``permutation``/``shuffle``/``choice(replace=False)`` deduct
+  ``n * ceil(log2(n))``; ``bytes(n)`` deducts ``n``. No deprecation —
+  flopscope mirrors numpy's runtime behavior.
 
-Any attribute not listed here is forwarded to ``numpy.random`` via
-``__getattr__`` without budget deduction.
+* **``default_rng(seed)``** returns a counted ``Generator`` subclass
+  (``_CountedGenerator``) whose sampler methods deduct FLOPs and return
+  ``FlopscopeArray``. The constructor itself costs 0 FLOPs.
+
+* **``RandomState(seed)``** is a counted subclass of
+  ``numpy.random.RandomState`` (``_CountedRandomState``) — same shape as
+  the modern Generator path, legacy method names. Constructor is 0 FLOPs.
+
+* **Configuration / state methods** (``seed``, ``get_state``,
+  ``set_state``, ``Generator.spawn``, ``Generator.bit_generator``)
+  are free.
+
+* **``__getattr__`` fallback**: bit-generator classes
+  (``BitGenerator``, ``MT19937``, ``PCG64``, ``PCG64DXSM``, ``Philox``,
+  ``SFC64``) pass through unchanged; everything else raises
+  ``AttributeError``. New numpy methods are invisible to user code until
+  they are explicitly added to the registry — ``scripts/numpy_audit.py
+  --ci`` flags this on every numpy version bump.
+
+* **``SeedSequence``** passes through unchanged (pure utility, no math).
 """
 
 from __future__ import annotations
