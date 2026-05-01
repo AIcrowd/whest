@@ -42,6 +42,12 @@ function OrbitRepMatrix({
   /** () => void — opens the matrix in a viewport-sized modal. The trigger
    *  button is rendered as a prominent overlay in the canvas's top-right. */
   onExpand = null,
+  /** Set<string>|null — page-wide label-hover bus. When a visible (V) label
+   *  is hovered, the Y-axis label ("orbit O") highlights with a coral underline
+   *  (rows are indexed by the visible representative). When a summed (W) label
+   *  is hovered, the X-axis label ("rep Q") highlights similarly (columns are
+   *  indexed by output representatives, which live in the Q space). */
+  hoveredLabels = null,
 }) {
   const canvasRef = useRef(null);
   const offscreenRef = useRef(null); // cached base layer (grid + filled cells)
@@ -307,7 +313,18 @@ function OrbitRepMatrix({
   // the OrbitDetailCard (rendered on hover or in the modal).
   const allLabels = orbitRows.length > 0 ? Object.keys(orbitRows[0].repTuple ?? {}) : [];
   const vLabelSet = new Set(componentInfo?.vLabels ?? []);
+  const wLabelSet = new Set(allLabels.filter((l) => !vLabelSet.has(l)));
   const dimensionN = componentInfo?.dimensionN ?? null;
+
+  // Determine which axis labels should highlight from the page-wide hover bus.
+  // Y-axis ("orbit O") rows are indexed by visible-label (V) representatives.
+  // X-axis ("rep Q") columns are indexed by output representatives.
+  // When any V label is hovered → Y-axis highlights; any W label → X-axis highlights.
+  const hasHoveredLabels = hoveredLabels instanceof Set && hoveredLabels.size > 0;
+  const yAxisHighlighted = hasHoveredLabels && allLabels.some((l) => vLabelSet.has(l) && hoveredLabels.has(l));
+  const xAxisHighlighted = hasHoveredLabels && allLabels.some((l) => wLabelSet.has(l) && hoveredLabels.has(l));
+  const axisHighlightClass = 'underline decoration-2 underline-offset-2';
+  const axisHighlightStyle = { color: '#F0524D' }; // design-system coral token
 
   return (
     <div
@@ -371,9 +388,11 @@ function OrbitRepMatrix({
                 gridColumn: 1, gridRow: 1,
                 writingMode: 'vertical-rl',
                 transform: 'rotate(180deg)',
-                color: '#9AA0A0',
+                color: yAxisHighlighted ? '#F0524D' : '#9AA0A0',
+                transition: 'color 120ms ease-out',
               }}
-              className="flex items-center justify-center text-[10px] font-medium tracking-[0.04em] font-sans"
+              className={`flex items-center justify-center text-[10px] font-medium tracking-[0.04em] font-sans${yAxisHighlighted ? ` ${axisHighlightClass}` : ''}`}
+              data-testid="orbit-rep-matrix-y-axis-label"
             >
               orbit <Latex math="O" />
             </div>
@@ -551,8 +570,13 @@ function OrbitRepMatrix({
 
             {/* X axis label — col 3, row 3 */}
             <div
-              style={{ gridColumn: 3, gridRow: 3, color: '#9AA0A0' }}
-              className="text-center text-[10px] font-medium tracking-[0.04em] font-sans pt-1"
+              style={{
+                gridColumn: 3, gridRow: 3,
+                color: xAxisHighlighted ? '#F0524D' : '#9AA0A0',
+                transition: 'color 120ms ease-out',
+              }}
+              className={`text-center text-[10px] font-medium tracking-[0.04em] font-sans pt-1${xAxisHighlighted ? ` ${axisHighlightClass}` : ''}`}
+              data-testid="orbit-rep-matrix-x-axis-label"
             >
               rep <Latex math="Q" />
             </div>

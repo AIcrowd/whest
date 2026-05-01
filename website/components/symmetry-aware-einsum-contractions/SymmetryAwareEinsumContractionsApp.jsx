@@ -420,7 +420,11 @@ export default function SymmetryAwareEinsumContractionsApp() {
         </header>
 
         <div className="mx-auto w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
-          <AlgorithmAtAGlance example={preambleExample} />
+          <AlgorithmAtAGlance
+            example={preambleExample}
+            hoveredLabels={hoveredLabelSet}
+            onHoveredLabelsChange={setStripHoveredLabels}
+          />
         </div>
 
         <div className="mx-auto mb-8 mt-[-0.25rem] w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
@@ -562,6 +566,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                         onSelectOrbit={setSelectedOrbitIdx}
                         onGraphHover={handleGraphHover}
                         spotlightLeafIds={spotlightLeafSet}
+                        hoveredLabels={hoveredLabelSet}
                         expressionInfo={normalizedExample ? {
                           subscripts: normalizedExample.subscripts ?? [],
                           output: normalizedExample.output ?? '',

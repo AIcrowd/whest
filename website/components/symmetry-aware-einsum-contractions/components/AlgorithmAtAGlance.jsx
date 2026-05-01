@@ -1,9 +1,11 @@
+import { cn } from '@/lib/utils';
 import ExplorerSectionCard, { AnchorLink } from './ExplorerSectionCard.jsx';
 import EditorialCallout from './EditorialCallout.jsx';
 import Latex from './Latex.jsx';
 import MentalFrameworkCode from './MentalFrameworkCode.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import SectionReferenceLink from './SectionReferenceLink.jsx';
+import { FormulaHighlighted } from './StickyBar.jsx';
 import { default as renderProseBlocks } from '../content/renderProseBlocks.jsx';
 import mainPreamble from '../content/main/preamble.js';
 import { getActiveExplorerThemeId, explorerThemeColor } from '../lib/explorerTheme.js';
@@ -53,7 +55,54 @@ function ColorLegend({ freeLabelColor, summedLabelColor }) {
 
 const JUSTIFIED_PROSE_STYLE = { textAlign: 'justify' };
 
-function EinsumIntroColumn({ example }) {
+// V3.1 §C04 tooltip strings (registries.md §4 Tooltips)
+const TOOLTIP_VISIBLE_LABEL = 'Visible/output label. It survives as an axis of the result.';
+const TOOLTIP_SUMMED_LABEL = 'Summed label. The evaluator loops over this label and accumulates it away.';
+const TOOLTIP_DECLARED_SYMMETRY = 'Declared operand symmetry. This creates candidate product symmetries, but they still need certification.';
+
+// Renders V/W label chips with hover interaction and V3.1 tooltips.
+// Each label is a span that fires onHoveredLabelsChange on enter/leave.
+// Highlighted when the label is in hoveredLabels.
+function LabelChipList({ labels, tooltip, hoveredLabels, onHoveredLabelsChange, colorStyle }) {
+  if (!labels || labels.length === 0) return <span className="font-mono text-stone-500">∅</span>;
+  const hasHover = hoveredLabels instanceof Set && hoveredLabels.size > 0;
+  return (
+    <>
+      {labels.split(', ').map((label, idx) => {
+        const ch = label.trim();
+        const isHit = hasHover && hoveredLabels.has(ch);
+        return (
+          <span key={idx} className="contents">
+            {idx > 0 && <span className="font-mono text-stone-400">, </span>}
+            <span
+              className={cn(
+                'cursor-default font-mono font-semibold',
+                isHit
+                  ? 'text-black underline decoration-primary decoration-2 underline-offset-2'
+                  : onHoveredLabelsChange
+                    ? 'hover:text-black hover:underline hover:decoration-primary hover:decoration-2 hover:underline-offset-2'
+                    : undefined,
+              )}
+              style={isHit ? undefined : colorStyle}
+              aria-label={tooltip}
+              title={tooltip}
+              onMouseEnter={onHoveredLabelsChange ? () => onHoveredLabelsChange(new Set([ch])) : undefined}
+              onMouseLeave={onHoveredLabelsChange ? () => onHoveredLabelsChange(null) : undefined}
+              onFocus={onHoveredLabelsChange ? () => onHoveredLabelsChange(new Set([ch])) : undefined}
+              onBlur={onHoveredLabelsChange ? () => onHoveredLabelsChange(null) : undefined}
+              tabIndex={onHoveredLabelsChange ? 0 : undefined}
+              role={onHoveredLabelsChange ? 'button' : undefined}
+            >
+              {ch}
+            </span>
+          </span>
+        );
+      })}
+    </>
+  );
+}
+
+function EinsumIntroColumn({ example, hoveredLabels, onHoveredLabelsChange }) {
   const explorerThemeId = getActiveExplorerThemeId();
   const freeLabelColor = explorerThemeColor(explorerThemeId, 'hero');
   const summedLabelColor = explorerThemeColor(explorerThemeId, 'summedSide');
@@ -88,9 +137,19 @@ function EinsumIntroColumn({ example }) {
       </p>
 
       <div className="mt-6 overflow-x-auto rounded-2xl border border-stone-200 bg-white px-5 py-6">
+        {/* Formula line — wired to the page-wide label-hover bus (C04 §C01 pattern).
+            aria-label uses view.exactEinsumText as the canonical plain-text form
+            (accessible to screen readers and tooltips). */}
         <div className="flex justify-center">
-          <code className="rounded-md px-2 py-1 font-mono text-[16px] font-semibold tracking-[0.01em] text-stone-800">
-            {view.exactEinsumText}
+          <code
+            className="rounded-md px-2 py-1 font-mono text-[16px] font-semibold tracking-[0.01em] text-stone-800"
+            aria-label={view.exactEinsumText}
+          >
+            <FormulaHighlighted
+              example={example}
+              hoveredLabels={hoveredLabels}
+              onHoveredLabelsChange={onHoveredLabelsChange}
+            />
           </code>
         </div>
         <div className="mt-2.5 flex justify-center text-[19px]">
@@ -104,7 +163,33 @@ function EinsumIntroColumn({ example }) {
             {view.operandCount} operand{view.operandCount === 1 ? '' : 's'}, {view.labelCount} label{view.labelCount === 1 ? '' : 's'}.
           </strong>{' '}
           <InlineMathText>
-            {`The summed labels $${coloredWSummedNotation} = \\{${view.wSummedSummary}\\}$ collapse under $\\sum$; the free labels $${coloredVFreeNotation} = \\{${view.vFreeSummary}\\}$ survive as the axes of $R$. Declared symmetries: ${view.declaredSymmetrySummary}. The dense direct grid has $${view.denseGridScalingLatex}$ assignments before symmetry is used.`}
+            {`The summed labels $${coloredWSummedNotation} = \\{`}
+          </InlineMathText>
+          <LabelChipList
+            labels={view.wSummedSummary}
+            tooltip={TOOLTIP_SUMMED_LABEL}
+            hoveredLabels={hoveredLabels}
+            onHoveredLabelsChange={onHoveredLabelsChange}
+            colorStyle={{ color: summedLabelColor }}
+          />
+          <InlineMathText>
+            {`\\}$ collapse under $\\sum$; the free labels $${coloredVFreeNotation} = \\{`}
+          </InlineMathText>
+          <LabelChipList
+            labels={view.vFreeSummary}
+            tooltip={TOOLTIP_VISIBLE_LABEL}
+            hoveredLabels={hoveredLabels}
+            onHoveredLabelsChange={onHoveredLabelsChange}
+            colorStyle={{ color: freeLabelColor }}
+          />
+          <InlineMathText>
+            {`\\}$ survive as the axes of $R$. Declared symmetries: `}
+          </InlineMathText>
+          <span aria-label={TOOLTIP_DECLARED_SYMMETRY} title={TOOLTIP_DECLARED_SYMMETRY}>
+            {view.declaredSymmetrySummary}
+          </span>
+          <InlineMathText>
+            {`. The dense direct grid has $${view.denseGridScalingLatex}$ assignments before symmetry is used.`}
           </InlineMathText>
         </p>
       </div>
@@ -181,7 +266,11 @@ function MentalFrameworkColumn({ example }) {
   );
 }
 
-export default function AlgorithmAtAGlance({ example }) {
+export default function AlgorithmAtAGlance({
+  example,
+  hoveredLabels = null,
+  onHoveredLabelsChange = null,
+}) {
   return (
     <section id="algorithm-at-a-glance" aria-labelledby="algorithm-at-a-glance-title" className="mb-10 scroll-mt-24">
       <ExplorerSectionCard
@@ -204,7 +293,11 @@ export default function AlgorithmAtAGlance({ example }) {
             the right the MentalFrameworkCode figure stretches so its Counting
             Convention band anchors to the bottom. */}
         <div className="editorial-two-col-divider-lg grid items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
-          <EinsumIntroColumn example={example} />
+          <EinsumIntroColumn
+            example={example}
+            hoveredLabels={hoveredLabels}
+            onHoveredLabelsChange={onHoveredLabelsChange}
+          />
           <MentalFrameworkColumn example={example} />
         </div>
 

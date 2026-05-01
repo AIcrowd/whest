@@ -18,6 +18,7 @@ export default function BranchingDemo({
   onHover = null,           // legacy; no longer wired
   expressionInfo = null,
   dimensionN = null,
+  hoveredLabels = null,
 }) {
   // Hover is the only React state on this surface besides `modalOpen`.
   // OrbitRepMatrix's own `hoverRef` still drives the canvas paint without React;
@@ -93,6 +94,7 @@ export default function BranchingDemo({
           onHoverChange={handleHoverChange}
           hover={hover}
           onExpand={handleOpenModal}
+          hoveredLabels={hoveredLabels}
         />
         {/* Hero α answer — the figure's takeaway. Big numeric + small-caps caption.
             Faint top-divider gives the answer breathing room from the canvas. */}

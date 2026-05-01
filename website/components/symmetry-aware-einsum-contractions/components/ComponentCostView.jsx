@@ -398,6 +398,7 @@ export default function ComponentCostView({
   onGraphHover,
   spotlightLeafIds,
   expressionInfo = null,
+  hoveredLabels = null,
 }) {
   if (!componentData || !costModel) return null;
 
@@ -421,6 +422,7 @@ export default function ComponentCostView({
           onSelectOrbit={onSelectOrbit}
           onHover={onGraphHover}
           expressionInfo={expressionInfo}
+          hoveredLabels={hoveredLabels}
         />
       </div>
 
