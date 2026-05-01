@@ -214,7 +214,7 @@ function ComponentSummaryTable({
                     </code>
                     <span
                       className="font-mono text-[11px] text-muted-foreground/60"
-                      title={`Dense tuple count = ${denseCell.toLocaleString()} (the full assignment space ${Array.isArray(comp.sizes) && comp.sizes.length > 0 ? `∏ n_ℓ over sizes ${comp.sizes.join(' × ')}` : `n^${labelCount}`} before any symmetry collapse).`}
+                      title={`Dense tuple count = ${denseCell.toLocaleString()}, the full assignment-space product of n_ell before any symmetry collapse.`}
                     >
                       / {denseCell.toLocaleString()}
                     </span>
@@ -235,7 +235,7 @@ function ComponentSummaryTable({
                     </code>
                     <span
                       className="font-mono text-[11px] text-muted-foreground/60"
-                      title={`Dense baseline: one update per full assignment before quotienting by the pointwise group (${denseCell.toLocaleString()} total assignments).`}
+                      title="Dense baseline: one update per full assignment before quotienting by the pointwise group."
                     >
                       / {denseCell.toLocaleString()}
                     </span>
@@ -293,7 +293,7 @@ function ComponentSummaryTable({
                         <span
                           className="font-semibold"
                           style={{ color: notationColor('m_component') }}
-                          title={`Mult savings: dense Mₐ would be ${denseCell.toLocaleString()}; symmetry gives ${M_a?.toLocaleString?.()}.`}
+                          title={`Mult savings: dense M_a would be ${denseCell.toLocaleString()}; symmetry gives ${M_a?.toLocaleString?.()}.`}
                         >
                           Mult {multSavingsPct}%
                         </span>
@@ -305,7 +305,7 @@ function ComponentSummaryTable({
                         <span
                           className="font-semibold"
                           style={{ color: notationColor('alpha_component') }}
-                          title={`Acc savings: dense αₐ would be ${denseCell.toLocaleString()}; symmetry gives ${actualAcc?.toLocaleString?.()}.`}
+                          title={`Acc savings: dense alpha_a would be ${denseCell.toLocaleString()}; symmetry gives ${actualAcc?.toLocaleString?.()}.`}
                         >
                           Acc {accSavingsPct}%
                         </span>

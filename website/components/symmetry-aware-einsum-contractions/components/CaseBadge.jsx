@@ -243,9 +243,12 @@ export default function CaseBadge({
           </div>
           {tooltip.whenText && (
             <div className="mb-2 text-[11px] uppercase tracking-wider text-stone-500">
-              When: <InlineMathText themeOverride={themeOverride}>{tooltip.whenText}</InlineMathText>
+              Applies when: <InlineMathText themeOverride={themeOverride}>{tooltip.whenText}</InlineMathText>
             </div>
           )}
+          <div className="mb-2 text-[11px] uppercase tracking-wider text-stone-500">
+            Counts: filled O → Q cells for this component
+          </div>
           <div className="max-w-full whitespace-normal break-words text-sm leading-6 text-stone-700">
             <InlineMathText themeOverride={themeOverride}>{tooltip.body}</InlineMathText>
           </div>

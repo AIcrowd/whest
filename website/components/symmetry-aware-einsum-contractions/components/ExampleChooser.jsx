@@ -613,7 +613,7 @@ export default function ExampleChooser({
                 chip reads as a utility control rather than a brand CTA. */}
             <label
               className="flex cursor-pointer items-center gap-2.5 rounded-full border border-gray-200 bg-white px-3.5 py-1.5 transition-colors hover:border-gray-300"
-              title="Per-label dimension — a demo knob for visualising the contraction at different scales. It does not change the einsum's structural cost (|L|, |G|); it only scales |X| = nᴸ, which is how the brute-force estimate |X|·|G| (counted in (tuple, g) pair-touches, cap 1,500,000) moves with it."
+              title="Per-label dimension. This changes assignment-grid sizes and count values, but not the structural classification path unless domain compatibility changes."
             >
               <span className="font-mono text-xs font-semibold uppercase tracking-[0.04em] text-gray-400">n</span>
               <input
