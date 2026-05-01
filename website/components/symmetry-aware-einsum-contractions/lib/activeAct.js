@@ -13,5 +13,7 @@ export function pickTopVisibleAct(entries, fallbackId) {
     .filter((entry) => entry.isIntersecting)
     .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
 
-  return visible[0]?.target?.id ?? fallbackId;
+  const entered = visible.filter((entry) => entry.boundingClientRect.top >= 0);
+
+  return (entered[0] ?? visible[0])?.target?.id ?? fallbackId;
 }

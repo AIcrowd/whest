@@ -254,7 +254,7 @@ function EinsumIntroColumn({ example, hoveredLabels, onHoveredLabelsChange }) {
   const coloredWSummedNotation = String.raw`\textcolor{${summedLabelColor}}{${notationLatex('w_summed')}}`;
 
   return (
-    <div id="einsum-contraction" className="flex h-full flex-col scroll-mt-24">
+    <div id="einsum-contraction" className="flex h-full flex-col scroll-mt-sticky">
       <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">
         <AnchorLink anchorId="einsum-contraction" labelText="Einsum contraction">
           Einsum contraction
@@ -301,9 +301,9 @@ function EinsumIntroColumn({ example, hoveredLabels, onHoveredLabelsChange }) {
           <strong className="font-semibold text-stone-900">
             {view.operandCount} operand{view.operandCount === 1 ? '' : 's'}, {view.labelCount} label{view.labelCount === 1 ? '' : 's'}.
           </strong>{' '}
-          <InlineMathText>
-            {`The summed labels $${coloredWSummedNotation} = \\{`}
-          </InlineMathText>
+          <span>The summed labels </span>
+          <Latex math={coloredWSummedNotation} />
+          <span> = {'{'}</span>
           <LabelChipList
             labels={view.wSummedSummary}
             tooltip={TOOLTIP_SUMMED_LABEL}
@@ -311,9 +311,11 @@ function EinsumIntroColumn({ example, hoveredLabels, onHoveredLabelsChange }) {
             onHoveredLabelsChange={onHoveredLabelsChange}
             colorStyle={{ color: summedLabelColor }}
           />
-          <InlineMathText>
-            {`\\}$ collapse under $\\sum$; the free labels $${coloredVFreeNotation} = \\{`}
-          </InlineMathText>
+          <span>{'}'} collapse under </span>
+          <Latex math={String.raw`\sum`} />
+          <span>; the free labels </span>
+          <Latex math={coloredVFreeNotation} />
+          <span> = {'{'}</span>
           <LabelChipList
             labels={view.vFreeSummary}
             tooltip={TOOLTIP_VISIBLE_LABEL}
@@ -321,15 +323,15 @@ function EinsumIntroColumn({ example, hoveredLabels, onHoveredLabelsChange }) {
             onHoveredLabelsChange={onHoveredLabelsChange}
             colorStyle={{ color: freeLabelColor }}
           />
-          <InlineMathText>
-            {`\\}$ survive as the axes of $R$. Declared symmetries: `}
-          </InlineMathText>
+          <span>{'}'} survive as the axes of </span>
+          <Latex math="R" />
+          <span>. Declared symmetries: </span>
           <span aria-label={TOOLTIP_DECLARED_SYMMETRY} title={TOOLTIP_DECLARED_SYMMETRY}>
             {view.declaredSymmetrySummary}
           </span>
-          <InlineMathText>
-            {`. The dense direct grid has $${view.denseGridScalingLatex}$ assignments before symmetry is used.`}
-          </InlineMathText>
+          <span>. The dense direct grid has </span>
+          <Latex math={view.denseGridScalingLatex} />
+          <span> assignments before symmetry is used.</span>
         </p>
       </div>
 
@@ -347,7 +349,7 @@ function EinsumIntroColumn({ example, hoveredLabels, onHoveredLabelsChange }) {
 
       <EditorialCallout
         id="where-symmetry-enters"
-        className="scroll-mt-24"
+        className="scroll-mt-sticky"
         label={(
           <AnchorLink
             anchorId="where-symmetry-enters"
@@ -381,7 +383,7 @@ function EinsumIntroColumn({ example, hoveredLabels, onHoveredLabelsChange }) {
 
 function MentalFrameworkColumn({ example }) {
   return (
-    <div id="mental-framework" className="flex h-full flex-col scroll-mt-24">
+    <div id="mental-framework" className="flex h-full flex-col scroll-mt-sticky">
       <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">
         <AnchorLink anchorId="mental-framework" labelText="The mental framework">
           The mental framework
@@ -417,7 +419,7 @@ export default function AlgorithmAtAGlance({
   onHoveredLabelsChange = null,
 }) {
   return (
-    <section id="algorithm-at-a-glance" aria-labelledby="algorithm-at-a-glance-title" className="mb-10 scroll-mt-24">
+    <section id="algorithm-at-a-glance" aria-labelledby="algorithm-at-a-glance-title" className="mb-10 scroll-mt-sticky">
       <ExplorerSectionCard
         eyebrow={
           <AnchorLink anchorId="algorithm-at-a-glance" labelText="Einsum at a Glance">

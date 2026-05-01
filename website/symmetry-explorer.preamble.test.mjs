@@ -59,9 +59,11 @@ test('Einsum column uses a parametric exact-einsum lead-in followed by a color-c
   assert.match(src, /operandCount/);
   assert.match(src, /labelCount/);
   assert.match(src, /The summed labels/);
-  assert.match(src, /survive as the axes of \$R\$/);
+  assert.match(src, /survive as the axes of/);
+  assert.match(src, /<Latex math="R" \/>/);
   assert.match(src, /Declared symmetries:/);
-  assert.match(src, /The dense direct grid has \$\$\{view\.denseGridScalingLatex\}\$ assignments before symmetry is used\./);
+  assert.match(src, /The dense direct grid has/);
+  assert.match(src, /<Latex math=\{view\.denseGridScalingLatex\} \/>/);
   assert.doesNotMatch(src, /DENSE_SCALING/);
   assert.doesNotMatch(src, /What this fixes/);
   assert.doesNotMatch(src, /CHAIN_FORMULA/);

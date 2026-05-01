@@ -22,7 +22,7 @@ test('TypedPartitionDemo uses the editorial subsection style (ExplorerSubsection
   const src = read('components/symmetry-aware-einsum-contractions/components/TypedPartitionDemo.jsx');
   assert.match(src, /import ExplorerSubsectionHeader/);
   assert.match(src, /<ExplorerSubsectionHeader anchorId="typed-partition-demo"/);
-  assert.match(src, /id="typed-partition-demo" className="bg-white p-4 scroll-mt-24"/);
+  assert.match(src, /id="typed-partition-demo" className="bg-white p-4 scroll-mt-sticky"/);
   assert.doesNotMatch(src, /rounded-xl border bg-white px-6 py-6 shadow-sm/);
 });
 

@@ -91,7 +91,7 @@ export default function BranchingDemo({
   if (!componentData || !costModel) return null;
 
   return (
-    <div id="orbit-rep-matrix" className="bg-white p-4 scroll-mt-24" ref={matrixRef}>
+    <div id="orbit-rep-matrix" className="bg-white p-4 scroll-mt-sticky" ref={matrixRef}>
       <ExplorerSubsectionHeader anchorId="orbit-rep-matrix" labelText="Branching">
         The O <Latex math="\to" /> Q matrix
       </ExplorerSubsectionHeader>

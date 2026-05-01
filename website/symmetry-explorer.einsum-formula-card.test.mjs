@@ -134,6 +134,30 @@ test('AlgorithmAtAGlance imports and uses FormulaHighlighted from StickyBar', ()
   );
 });
 
+test('AlgorithmAtAGlance renders colored role notation as complete Latex nodes around JSX label chips', () => {
+  const src = readComponent('AlgorithmAtAGlance.jsx');
+  assert.match(
+    src,
+    /<Latex\s+math=\{coloredWSummedNotation\}\s*\/>/,
+    'summed-label notation must render as its own complete Latex node',
+  );
+  assert.match(
+    src,
+    /<Latex\s+math=\{coloredVFreeNotation\}\s*\/>/,
+    'free-label notation must render as its own complete Latex node',
+  );
+  assert.doesNotMatch(
+    src,
+    /The summed labels \$\$\{coloredWSummedNotation\} = \\\\{/,
+    'inline math must not be opened before LabelChipList and closed in a later JSX node',
+  );
+  assert.doesNotMatch(
+    src,
+    /the free labels \$\$\{coloredVFreeNotation\} = \\\\{/,
+    'inline math must not be opened before LabelChipList and closed in a later JSX node',
+  );
+});
+
 // ─── 7. OrbitRepMatrix accepts hoveredLabels and derives axis highlights ──────
 
 test('OrbitRepMatrix accepts hoveredLabels prop and applies axis-label highlights', () => {

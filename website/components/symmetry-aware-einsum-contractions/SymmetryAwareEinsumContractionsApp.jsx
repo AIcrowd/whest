@@ -519,7 +519,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
               <div className="flex flex-col">
 
             {/* §1 Einsum at a Glance — id: einsum-glance, backward alias: setup */}
-            <section id={EXPLORER_ACTS[0].id} className="mb-12 scroll-mt-24">
+            <section id={EXPLORER_ACTS[0].id} className="mb-12 scroll-mt-sticky">
               {/* Backward-compat anchor alias */}
               <span id="setup" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
               <ExplorerSectionCard
@@ -554,7 +554,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
             {analysis && example && (
               <>
                 {/* §2 Product Symmetry — id: product-symmetry, backward alias: structure */}
-                <section id={EXPLORER_ACTS[1].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[1].id} className="mb-12 scroll-mt-sticky">
                   {/* Backward-compat anchor alias */}
                   <span id="structure" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
                   <ExplorerSectionCard
@@ -566,13 +566,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   >
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[1].introParagraphs} />
                     <div className="editorial-two-col-divider-md mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-                      <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                      <div id="bipartite-graph" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
                         <ExplorerSubsectionHeader anchorId="bipartite-graph" labelText="Bipartite Graph">
                           Bipartite Graph
                         </ExplorerSubsectionHeader>
                         <BipartiteGraph graph={graph} example={normalizedExample} variableColors={variableColors} />
                       </div>
-                      <div id="incidence-matrix" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                      <div id="incidence-matrix" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
                         <ExplorerSubsectionHeader anchorId="incidence-matrix" labelText="Incidence Matrix">
                           Incidence Matrix M
                         </ExplorerSubsectionHeader>
@@ -596,7 +596,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                 {/* §3 Projection — id: projection, backward alias: decompose */}
                 {/* Hero: O→Q incidence matrix via ComponentCostView (contains BranchingDemo) */}
-                <section id={EXPLORER_ACTS[2].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[2].id} className="mb-12 scroll-mt-sticky">
                   {/* Backward-compat anchor alias */}
                   <span id="decompose" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
                   <ExplorerSectionCard
@@ -683,7 +683,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 </section>
 
                 {/* §4 Rows and Columns — id: rows-cols, no backward alias */}
-                <section id={EXPLORER_ACTS[3].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[3].id} className="mb-12 scroll-mt-sticky">
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={4} anchorId={EXPLORER_ACTS[3].id} />}
                     title={EXPLORER_ACTS[3].heading}
@@ -703,7 +703,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 </section>
 
                 {/* §5 Component Factorization — id: component-factorization, no backward alias */}
-                <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[4].id} className="mb-12 scroll-mt-sticky">
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={5} anchorId={EXPLORER_ACTS[4].id} />}
                     title={EXPLORER_ACTS[4].heading}
@@ -720,7 +720,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
 
                 {/* §6 Certification — id: certification, backward alias: proof */}
                 {/* Sigma-loop / wreath structure / certification UI */}
-                <section id={EXPLORER_ACTS[5].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[5].id} className="mb-12 scroll-mt-sticky">
                   {/* Backward-compat anchor alias */}
                   <span id="proof" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
                   <ExplorerSectionCard
@@ -732,7 +732,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                   >
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[5].introParagraphs} />
                     {/* Wreath structure renders full-width — the enumeration target the σ-loop walks over. */}
-                    <div id="wreath-structure" className="mt-6 flex flex-col gap-2 scroll-mt-24">
+                    <div id="wreath-structure" className="mt-6 flex flex-col gap-2 scroll-mt-sticky">
                       <ExplorerSubsectionHeader anchorId="wreath-structure" labelText="Wreath structure">
                         Wreath structure
                       </ExplorerSubsectionHeader>
@@ -743,7 +743,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     </div>
                     {/* σ-Loop (enumerates the wreath) + Generator Construction (closes valid π's). */}
                     <div className="editorial-two-col-divider-lg mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                      <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                      <div id="sigma-loop" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
                         <ExplorerSubsectionHeader anchorId="sigma-loop" labelText="σ-Loop & π Detection">
                           <InlineMathText>
                             {`$${notationLatex('sigma_row_move')}$-Loop & $${notationLatex('pi_relabeling')}$ Detection`}
@@ -767,7 +767,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           }}
                         />
                       </div>
-                      <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-24">
+                      <div id="generator-construction" className="grid grid-rows-[auto_1fr] gap-2 scroll-mt-sticky">
                         <ExplorerSubsectionHeader anchorId="generator-construction" labelText="Generator Construction">
                           Generator Construction
                         </ExplorerSubsectionHeader>
@@ -825,7 +825,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 </section>
 
                 {/* §7 Counting Shortcuts — id: counting-shortcuts, no backward alias */}
-                <section id={EXPLORER_ACTS[6].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[6].id} className="mb-12 scroll-mt-sticky">
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={7} anchorId={EXPLORER_ACTS[6].id} />}
                     title={EXPLORER_ACTS[6].heading}
@@ -849,7 +849,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 </section>
 
                 {/* §8 Typed Partition Counting — id: typed-partition, backward alias: partition-counting */}
-                <section id={EXPLORER_ACTS[7].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[7].id} className="mb-12 scroll-mt-sticky">
                   {/* Backward-compat anchor alias */}
                   <span id="partition-counting" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
                   <ExplorerSectionCard
@@ -881,7 +881,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 </section>
 
                 {/* §9 Assemble the Cost — id: assemble-cost, backward alias: cost-savings */}
-                <section id={EXPLORER_ACTS[8].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[8].id} className="mb-12 scroll-mt-sticky">
                   {/* Backward-compat anchor alias */}
                   <span id="cost-savings" aria-hidden="true" style={{ position: 'absolute', height: 0 }} />
                   <ExplorerSectionCard
@@ -919,7 +919,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
                 </section>
 
                 {/* §10 Appendix Transition — id: appendix-transition, no backward alias */}
-                <section id={EXPLORER_ACTS[9].id} className="mb-12 scroll-mt-24">
+                <section id={EXPLORER_ACTS[9].id} className="mb-12 scroll-mt-sticky">
                   <ExplorerSectionCard
                     eyebrow={<SectionEyebrow n={10} anchorId={EXPLORER_ACTS[9].id} />}
                     title={EXPLORER_ACTS[9].heading}

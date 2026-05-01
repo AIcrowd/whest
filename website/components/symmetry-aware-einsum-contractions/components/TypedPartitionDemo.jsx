@@ -340,7 +340,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
   } = useShowMore(cumulativeRows, VISIBLE_LIMIT);
 
   return (
-    <div id="typed-partition-demo" className="bg-white p-4 scroll-mt-24">
+    <div id="typed-partition-demo" className="bg-white p-4 scroll-mt-sticky">
       <ExplorerSubsectionHeader anchorId="typed-partition-demo" labelText="Typed partition counter">
         {TITLE}
       </ExplorerSubsectionHeader>

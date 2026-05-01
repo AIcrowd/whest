@@ -492,7 +492,7 @@ export default function MultiplicationCostCard({
   }, []);
 
   return (
-    <div id="multiplication-cost" className="bg-white p-4 scroll-mt-24">
+    <div id="multiplication-cost" className="bg-white p-4 scroll-mt-sticky">
       <ExplorerSubsectionHeader anchorId="multiplication-cost" labelText="Multiplication Events (μ)">
         <InlineMathText>{`Multiplication Events ($${String.raw`\mu`}$)`}</InlineMathText>
       </ExplorerSubsectionHeader>

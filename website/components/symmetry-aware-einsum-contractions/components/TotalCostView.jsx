@@ -453,7 +453,7 @@ function AggregationExplainer({ themeOverride = SECTION_FIVE_THEME_OVERRIDE }) {
     <section
       id="how-components-combine"
       aria-labelledby="how-components-combine-sr"
-      className="scroll-mt-24"
+      className="scroll-mt-sticky"
     >
       <h3 id="how-components-combine-sr" className="sr-only">
         How components combine
@@ -500,7 +500,7 @@ function ComponentRecap({ components }) {
   if (!components?.length) return null;
 
   return (
-    <div id="component-recap" className="flex flex-wrap items-center gap-x-6 gap-y-2 scroll-mt-24">
+    <div id="component-recap" className="flex flex-wrap items-center gap-x-6 gap-y-2 scroll-mt-sticky">
       <span className="text-[11px] font-semibold uppercase tracking-[0.16em] text-coral">
         <AnchorLink anchorId="component-recap" labelText="Component recap">
           Component recap

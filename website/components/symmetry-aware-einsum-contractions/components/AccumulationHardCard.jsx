@@ -141,7 +141,7 @@ export default function AccumulationHardCard() {
   }, []);
 
   return (
-    <div id="accumulation-cost" className="bg-white p-4 scroll-mt-24">
+    <div id="accumulation-cost" className="bg-white p-4 scroll-mt-sticky">
       <ExplorerSubsectionHeader anchorId="accumulation-cost" labelText="Why Accumulation Cost (α) is Hard">
         <InlineMathText>{`Why Accumulation Cost ($${String.raw`\alpha`}$) is Hard`}</InlineMathText>
       </ExplorerSubsectionHeader>

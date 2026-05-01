@@ -130,6 +130,19 @@ test('pickTopVisibleAct prefers the top-most visible act and falls back safely',
   );
 });
 
+test('pickTopVisibleAct prefers the newly entered act over a long previous section still intersecting', () => {
+  assert.equal(
+    pickTopVisibleAct(
+      [
+        { isIntersecting: true, target: { id: 'assemble-cost' }, boundingClientRect: { top: -900 } },
+        { isIntersecting: true, target: { id: 'appendix-transition' }, boundingClientRect: { top: 120 } },
+      ],
+      'assemble-cost',
+    ),
+    'appendix-transition',
+  );
+});
+
 test('shell contract uses primitive-based chrome instead of legacy header classes', () => {
   const source = fs.readFileSync(
     new URL('./components/symmetry-aware-einsum-contractions/SymmetryAwareEinsumContractionsApp.jsx', import.meta.url),

@@ -17,6 +17,20 @@
    uses for the sidebar-active rule.
    ========================================================================= */
 
+.symmetry-aware-einsum-contractions-page-shell {
+  --einsum-sticky-anchor-offset: 11rem;
+}
+
+@media (min-width: 768px) {
+  .symmetry-aware-einsum-contractions-page-shell {
+    --einsum-sticky-anchor-offset: 8rem;
+  }
+}
+
+.symmetry-aware-einsum-contractions-page-shell .scroll-mt-sticky {
+  scroll-margin-top: var(--einsum-sticky-anchor-offset);
+}
+
 .dark .symmetry-aware-einsum-contractions-page-shell {
   /* Foundation neutrals, remapped for near-black dark ground */
   --white:     oklch(0.250 0.005 220);                    /* card bg   */

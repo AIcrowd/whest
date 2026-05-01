@@ -553,7 +553,7 @@ export default function ComponentCostView({
       </div>
 
       {/* ROW 3 — Classification tree (roadmap) */}
-      <div id="classification-tree" className="bg-white p-4 scroll-mt-24">
+      <div id="classification-tree" className="bg-white p-4 scroll-mt-sticky">
         <ExplorerSubsectionHeader anchorId="classification-tree" labelText="Classification Tree">
           Classification Tree
         </ExplorerSubsectionHeader>
