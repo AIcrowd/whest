@@ -28,6 +28,7 @@ import { LabelInteractionGraph } from './components/ComponentView.jsx';
 import TypedPartitionDemo from './components/TypedPartitionDemo.jsx';
 import TwoQuotientSchematic from './components/TwoQuotientSchematic.jsx';
 import TotalCostView from './components/TotalCostView.jsx';
+import NaiveAlphaCostMeter from './components/NaiveAlphaCostMeter.jsx';
 import { mergeObservedActEntries, pickTopVisibleAct } from './lib/activeAct.js';
 import {
   getExplorerThemeCssVariables,
@@ -714,6 +715,14 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     contentClassName="pt-5"
                   >
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[6].introParagraphs} />
+                    <div className="mt-6">
+                      <NaiveAlphaCostMeter
+                        dimensionN={dimensionN}
+                        allLabels={group?.allLabels ?? []}
+                        groupSize={group?.fullElements?.length ?? 1}
+                        hSize={group?.fullElements?.length ?? 1}
+                      />
+                    </div>
                     <div className="mt-4">
                       <NarrativeCallout label="What this produces" tone="accent">{EXPLORER_ACTS[6].produces}</NarrativeCallout>
                     </div>
