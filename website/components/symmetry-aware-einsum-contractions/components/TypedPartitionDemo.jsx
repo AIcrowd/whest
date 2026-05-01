@@ -418,7 +418,7 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
               Active state uses the .chip--coral recipe — coral-light fill,
               coral-tinted border, coral-hover text. */}
           {visibleChips.map((chip) => {
-            const isActive = chip.key === selectedPatternKey;
+            const isActive = chip.key === activeChip?.key;
             return (
               <button
                 type="button"
@@ -458,442 +458,495 @@ export default function TypedPartitionDemo({ componentData, costModel }) {
         </div>
       </div>
 
-      {/* Breakdown panel for the active chip. No inner card chrome; the
-          surfaceInset background alone separates it from the surrounding
-          prose. Two columns share an eyebrow + values pattern matching
-          the diptych in design-system/preview/components.html. */}
-      {activeChip && (
-        <div
-          data-testid="partition-breakdown-panel"
-          className="mt-3 rounded-md p-3"
-          style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}
-        >
-          <div className="grid gap-4 lg:grid-cols-2">
-            <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-                Block structure · {activeChip.key}
-              </div>
-              <div className="mt-1 font-mono text-[11px] leading-6" style={{ color: explorerThemeColor(themeId, 'body') }}>
-                blocks: {activeChip.blocks}<br/>
-                labelings ∏ₛ (nₛ)_{`{bₛ}`} = <strong>{activeChip.labelings}</strong><br/>
-                |Ḡ_x̃| = <strong>{activeChip.blockActionSize}</strong>
-              </div>
-            </div>
-            <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-                Projection reach
-              </div>
-              <div className="mt-1 font-mono text-[11px] leading-6" style={{ color: explorerThemeColor(themeId, 'body') }}>
-                |A_x̃| = <strong>{inducedMaps?.size ?? 0}</strong><br/>
-                |A_x̃/H| = <strong>{reachCount}</strong>
-              </div>
-            </div>
-          </div>
-          <div className="mt-2 border-t pt-2 font-mono text-[11px]" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
-            contribution = ({activeChip.labelings} / {activeChip.blockActionSize}) · {reachCount} = <strong style={{ color: notationColor('alpha_total') }}>{contribution}</strong>
-          </div>
-        </div>
-      )}
-
-      {/* V3.1 §34 Pattern Contribution Explainer.
-          Six labeled fields lay out exactly what α gets from this one
-          partition, in the spec's canonical order:
-            Pattern · Blocks · Concrete labelings · Induced block-symmetry
-            divisor · Output reach · Contribution.
-          Each labeled value is a hover surface (cursor-help, tabIndex=0,
-          aria-label) that sets formulaTermHover — so hovering the
-          "Concrete labelings" field highlights the falling-factorial term
-          in the formula card above. This is the C34 reverse arrow
-          (table → formula); C36 wires the forward arrow. */}
-      {activeChip && (
-        <div
-          data-testid="pattern-contribution-explainer"
-          className="mt-3 rounded-md p-3"
-          style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}
-        >
-          <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-            Selected pattern detail · idx {selectedPatternIdx >= 0 ? selectedPatternIdx : 0}
-          </div>
-          <dl className="mt-2 font-mono text-[11px] leading-6" style={{ color: explorerThemeColor(themeId, 'body') }}>
+      <div
+        data-testid="partition-workbench"
+        className="mt-3 grid gap-3 min-[1180px]:grid-cols-[minmax(0,1fr)_minmax(300px,0.72fr)]"
+      >
+        {activeChip && (
+          <div className="min-w-0 space-y-3">
+            {/* Breakdown + selected-pattern detail share one surface so the
+                reader can keep the current pattern, formula terms, and
+                contribution arithmetic in view together. */}
             <div
-              data-detail-field="pattern"
-              tabIndex={0}
-              aria-label="Pattern field — hover or focus to highlight the pattern term in the formula above"
-              className="cursor-help rounded px-1 transition-colors"
-              style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : 'transparent' }}
-              onMouseEnter={() => setFormulaTermHover('pattern')}
-              onMouseLeave={() => setFormulaTermHover(null)}
-              onFocus={() => setFormulaTermHover('pattern')}
-              onBlur={() => setFormulaTermHover(null)}
+              data-testid="partition-breakdown-panel"
+              className="rounded-lg border p-3"
+              style={{
+                background: explorerThemeColor(themeId, 'surfaceInset'),
+                borderColor: explorerThemeColor(themeId, 'border'),
+              }}
             >
-              <dt className="inline font-semibold">Pattern:</dt> <dd className="inline">{activeChip.key}</dd>
-            </div>
-            <div
-              data-detail-field="blocks"
-              tabIndex={0}
-              aria-label="Blocks field — hover or focus to highlight the pattern term in the formula above"
-              className="cursor-help rounded px-1 transition-colors"
-              style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : 'transparent' }}
-              onMouseEnter={() => setFormulaTermHover('pattern')}
-              onMouseLeave={() => setFormulaTermHover(null)}
-              onFocus={() => setFormulaTermHover('pattern')}
-              onBlur={() => setFormulaTermHover(null)}
-            >
-              <dt className="inline font-semibold">Blocks:</dt>{' '}
-              <dd className="inline">{describeBlocks(activeChip.partition, activeComponent?.labels ?? [])}</dd>
-            </div>
-            <div
-              data-detail-field="fallingFactorial"
-              tabIndex={0}
-              aria-label="Concrete labelings field — hover or focus to highlight the concrete labelings term in the formula above"
-              className="cursor-help rounded px-1 transition-colors"
-              style={{ background: formulaTermHover === 'fallingFactorial' ? FORMULA_HOVER_TINT : 'transparent' }}
-              onMouseEnter={() => setFormulaTermHover('fallingFactorial')}
-              onMouseLeave={() => setFormulaTermHover(null)}
-              onFocus={() => setFormulaTermHover('fallingFactorial')}
-              onBlur={() => setFormulaTermHover(null)}
-            >
-              <dt className="inline font-semibold">Concrete labelings:</dt>{' '}
-              <dd className="inline">∏ₛ (nₛ)_{`{bₛ}`} = <strong>{activeChip.labelings}</strong></dd>
-            </div>
-            <div
-              data-detail-field="divisor"
-              tabIndex={0}
-              aria-label="Induced block-symmetry divisor field — hover or focus to highlight the divisor term in the formula above"
-              className="cursor-help rounded px-1 transition-colors"
-              style={{ background: formulaTermHover === 'divisor' ? FORMULA_HOVER_TINT : 'transparent' }}
-              onMouseEnter={() => setFormulaTermHover('divisor')}
-              onMouseLeave={() => setFormulaTermHover(null)}
-              onFocus={() => setFormulaTermHover('divisor')}
-              onBlur={() => setFormulaTermHover(null)}
-            >
-              <dt className="inline font-semibold">Induced block-symmetry divisor:</dt>{' '}
-              <dd className="inline">|Ḡ_x̃| = <strong>{activeChip.blockActionSize}</strong></dd>
-            </div>
-            <div
-              data-detail-field="outputReach"
-              tabIndex={0}
-              aria-label="Output reach field — hover or focus to highlight the output reach term in the formula above"
-              className="cursor-help rounded px-1 transition-colors"
-              style={{ background: formulaTermHover === 'outputReach' ? FORMULA_HOVER_TINT : 'transparent' }}
-              onMouseEnter={() => setFormulaTermHover('outputReach')}
-              onMouseLeave={() => setFormulaTermHover(null)}
-              onFocus={() => setFormulaTermHover('outputReach')}
-              onBlur={() => setFormulaTermHover(null)}
-            >
-              <dt className="inline font-semibold">Output reach:</dt>{' '}
-              <dd className="inline">|A_x̃ / H_a| = <strong>{reachCount}</strong></dd>
-            </div>
-            <div
-              data-detail-field="contribution"
-              tabIndex={0}
-              aria-label="Contribution field — sum of labelings divided by divisor times reach"
-              className="cursor-help rounded px-1 transition-colors"
-            >
-              <dt className="inline font-semibold">Contribution:</dt>{' '}
-              <dd className="inline">{activeChip.labelings} / {activeChip.blockActionSize} · {reachCount} = <strong style={{ color: notationColor('alpha_total') }}>{contribution}</strong></dd>
-            </div>
-          </dl>
-          <div className="mt-2 border-t pt-2" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
-            <button
-              type="button"
-              data-action="toggle-brute-force"
-              aria-label={bruteForceOpen ? 'Hide the brute-force tuple comparison table' : 'Compare brute force — show tuple count for n = 2 through 6'}
-              aria-expanded={bruteForceOpen}
-              onClick={() => setBruteForceOpen((prev) => !prev)}
-              className="py-1 text-[11px] font-medium underline-offset-2 hover:underline"
-              style={{ color: explorerThemeColor(themeId, 'muted') }}
-            >
-              {bruteForceOpen ? 'hide brute-force compare' : 'compare brute force'}
-            </button>
-            {bruteForceOpen && (
-              <div data-testid="brute-force-compare" className="mt-2">
-                <div className="text-[10px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-                  Equivalent tuple enumeration · uniform n substitution. (n)_b is the count of tuples that exhibit this exact equality pattern; n^k is the raw enumeration cost over all positions.
+              <div className="grid gap-3 sm:grid-cols-3">
+                <div>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                    Block structure
+                  </div>
+                  <div className="mt-1 font-mono text-[11px] leading-5" style={{ color: explorerThemeColor(themeId, 'body') }}>
+                    pattern: <strong>{activeChip.key}</strong><br/>
+                    blocks: <strong>{activeChip.blocks}</strong><br/>
+                    labelings: <strong>{activeChip.labelings}</strong><br/>
+                    |Ḡ_x̃|: <strong>{activeChip.blockActionSize}</strong>
+                  </div>
                 </div>
-                <table className="mt-2 w-full font-mono text-[11px]" style={{ borderCollapse: 'collapse' }}>
-                  <thead>
-                    <tr style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}>
-                      <th className="p-1 text-left">n</th>
-                      <th className="p-1 text-right">tuples in pattern (n)_b</th>
-                      <th className="p-1 text-right">raw enum n^k</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {bruteForceRows.map((row) => (
-                      <tr key={`bf-n-${row.n}`} data-brute-force-row={row.n}>
-                        <td className="p-1">n = {row.n}</td>
-                        <td className="p-1 text-right">{row.tupleCount}</td>
-                        <td className="p-1 text-right">{row.rawCount}</td>
-                      </tr>
+                <div className="sm:border-l sm:pl-3" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                    Projection reach
+                  </div>
+                  <div className="mt-1 font-mono text-[11px] leading-5" style={{ color: explorerThemeColor(themeId, 'body') }}>
+                    |A_x̃|: <strong>{inducedMaps?.size ?? 0}</strong><br/>
+                    |A_x̃/H|: <strong>{reachCount}</strong>
+                  </div>
+                </div>
+                <div className="sm:border-l sm:pl-3" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                    Contribution
+                  </div>
+                  <div className="mt-1 font-mono text-[11px] leading-5" style={{ color: explorerThemeColor(themeId, 'body') }}>
+                    {activeChip.labelings} / {activeChip.blockActionSize}<br/>
+                    · {reachCount} = <strong style={{ color: notationColor('alpha_total') }}>{contribution}</strong>
+                  </div>
+                </div>
+              </div>
+
+              {/* V3.1 §34 Pattern Contribution Explainer.
+                  Six labeled fields lay out exactly what α gets from this one
+                  partition, in the spec's canonical order. This compact grid
+                  preserves the hover bus while avoiding a second full card. */}
+              <div
+                data-testid="pattern-contribution-explainer"
+                className="mt-3 border-t pt-3"
+                style={{ borderColor: explorerThemeColor(themeId, 'border') }}
+              >
+                <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                  Selected pattern detail · idx {selectedPatternIdx >= 0 ? selectedPatternIdx : 0}
+                </div>
+                <dl className="mt-2 grid gap-x-3 gap-y-1 font-mono text-[11px] leading-5 sm:grid-cols-2" style={{ color: explorerThemeColor(themeId, 'body') }}>
+                  <div
+                    data-detail-field="pattern"
+                    tabIndex={0}
+                    aria-label="Pattern field — hover or focus to highlight the pattern term in the formula above"
+                    className="cursor-help rounded px-1 py-0.5 transition-colors"
+                    style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : 'transparent' }}
+                    onMouseEnter={() => setFormulaTermHover('pattern')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('pattern')}
+                    onBlur={() => setFormulaTermHover(null)}
+                  >
+                    <dt className="inline font-semibold">Pattern:</dt> <dd className="inline">{activeChip.key}</dd>
+                  </div>
+                  <div
+                    data-detail-field="blocks"
+                    tabIndex={0}
+                    aria-label="Blocks field — hover or focus to highlight the pattern term in the formula above"
+                    className="cursor-help rounded px-1 py-0.5 transition-colors"
+                    style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : 'transparent' }}
+                    onMouseEnter={() => setFormulaTermHover('pattern')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('pattern')}
+                    onBlur={() => setFormulaTermHover(null)}
+                  >
+                    <dt className="inline font-semibold">Blocks:</dt>{' '}
+                    <dd className="inline">{describeBlocks(activeChip.partition, activeComponent?.labels ?? [])}</dd>
+                  </div>
+                  <div
+                    data-detail-field="fallingFactorial"
+                    tabIndex={0}
+                    aria-label="Concrete labelings field — hover or focus to highlight the concrete labelings term in the formula above"
+                    className="cursor-help rounded px-1 py-0.5 transition-colors"
+                    style={{ background: formulaTermHover === 'fallingFactorial' ? FORMULA_HOVER_TINT : 'transparent' }}
+                    onMouseEnter={() => setFormulaTermHover('fallingFactorial')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('fallingFactorial')}
+                    onBlur={() => setFormulaTermHover(null)}
+                  >
+                    <dt className="inline font-semibold">Concrete labelings:</dt>{' '}
+                    <dd className="inline">∏ₛ (nₛ)_{`{bₛ}`} = <strong>{activeChip.labelings}</strong></dd>
+                  </div>
+                  <div
+                    data-detail-field="divisor"
+                    tabIndex={0}
+                    aria-label="Induced block-symmetry divisor field — hover or focus to highlight the divisor term in the formula above"
+                    className="cursor-help rounded px-1 py-0.5 transition-colors"
+                    style={{ background: formulaTermHover === 'divisor' ? FORMULA_HOVER_TINT : 'transparent' }}
+                    onMouseEnter={() => setFormulaTermHover('divisor')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('divisor')}
+                    onBlur={() => setFormulaTermHover(null)}
+                  >
+                    <dt className="inline font-semibold">Induced block-symmetry divisor:</dt>{' '}
+                    <dd className="inline">|Ḡ_x̃| = <strong>{activeChip.blockActionSize}</strong></dd>
+                  </div>
+                  <div
+                    data-detail-field="outputReach"
+                    tabIndex={0}
+                    aria-label="Output reach field — hover or focus to highlight the output reach term in the formula above"
+                    className="cursor-help rounded px-1 py-0.5 transition-colors"
+                    style={{ background: formulaTermHover === 'outputReach' ? FORMULA_HOVER_TINT : 'transparent' }}
+                    onMouseEnter={() => setFormulaTermHover('outputReach')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('outputReach')}
+                    onBlur={() => setFormulaTermHover(null)}
+                  >
+                    <dt className="inline font-semibold">Output reach:</dt>{' '}
+                    <dd className="inline">|A_x̃ / H_a| = <strong>{reachCount}</strong></dd>
+                  </div>
+                  <div
+                    data-detail-field="contribution"
+                    tabIndex={0}
+                    aria-label="Contribution field — sum of labelings divided by divisor times reach"
+                    className="cursor-help rounded px-1 py-0.5 transition-colors"
+                  >
+                    <dt className="inline font-semibold">Contribution:</dt>{' '}
+                    <dd className="inline">{activeChip.labelings} / {activeChip.blockActionSize} · {reachCount} = <strong style={{ color: notationColor('alpha_total') }}>{contribution}</strong></dd>
+                  </div>
+                </dl>
+                <div className="mt-2 border-t pt-2" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
+                  <button
+                    type="button"
+                    data-action="toggle-brute-force"
+                    aria-label={bruteForceOpen ? 'Hide the brute-force tuple comparison table' : 'Compare brute force — show tuple count for n = 2 through 6'}
+                    aria-expanded={bruteForceOpen}
+                    onClick={() => setBruteForceOpen((prev) => !prev)}
+                    className="py-1 text-[11px] font-medium underline-offset-2 hover:underline"
+                    style={{ color: explorerThemeColor(themeId, 'muted') }}
+                  >
+                    {bruteForceOpen ? 'hide brute-force compare' : 'compare brute force'}
+                  </button>
+                  {bruteForceOpen && (
+                    <div data-testid="brute-force-compare" className="mt-2">
+                      <div className="text-[10px] leading-5" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                        Equivalent tuple enumeration · uniform n substitution. (n)_b is the count of tuples that exhibit this exact equality pattern; n^k is the raw enumeration cost over all positions.
+                      </div>
+                      <table className="mt-2 w-full font-mono text-[11px]" style={{ borderCollapse: 'collapse' }}>
+                        <thead>
+                          <tr style={{ background: explorerThemeColor(themeId, 'surface') }}>
+                            <th className="p-1 text-left">n</th>
+                            <th className="p-1 text-right">tuples in pattern (n)_b</th>
+                            <th className="p-1 text-right">raw enum n^k</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {bruteForceRows.map((row) => (
+                            <tr key={`bf-n-${row.n}`} data-brute-force-row={row.n}>
+                              <td className="p-1">n = {row.n}</td>
+                              <td className="p-1 text-right">{row.tupleCount}</td>
+                              <td className="p-1 text-right">{row.rawCount}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* V3.1 §35 Worked Pattern Mini-Ledger. The prose ledger is now
+                a compact companion to the detail grid: block choices and
+                tuple examples use chip-like inline rows so the total stays
+                visible beside the live sum table on desktop. */}
+            <div
+              data-testid="worked-pattern-mini-ledger"
+              className="rounded-lg border p-3"
+              style={{
+                background: explorerThemeColor(themeId, 'surfaceInset'),
+                borderColor: explorerThemeColor(themeId, 'border'),
+              }}
+            >
+              <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                Worked mini-ledger · {activeChip.key}
+              </div>
+              <div className="mt-2 grid gap-3 font-mono text-[11px] leading-5 md:grid-cols-[minmax(0,1fr)_minmax(190px,0.65fr)]" style={{ color: explorerThemeColor(themeId, 'body') }}>
+                <div className="min-w-0">
+                  <div>
+                    <span className="font-semibold">Pattern:</span> {activeChip.key}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Meaning:</span>{' '}
+                    {describeBlocks(activeChip.partition, activeLabels)} — same-block positions share a value; different blocks may differ.
+                  </div>
+                  <div className="mt-2">
+                    <span className="font-semibold">Concrete labelings:</span>
+                  </div>
+                  <ul className="mt-1 flex flex-wrap gap-1.5">
+                    {ledgerBlockChoices.map((entry, idx) => (
+                      <li
+                        key={`mini-ledger-block-${idx}`}
+                        data-mini-ledger-block={idx}
+                        className="rounded-full border px-2 py-0.5"
+                        style={{
+                          background: explorerThemeColor(themeId, 'surface'),
+                          borderColor: explorerThemeColor(themeId, 'border'),
+                        }}
+                      >
+                        {entry.blockLabel}: <strong>{entry.choices}</strong> choices
+                      </li>
                     ))}
-                  </tbody>
-                </table>
+                    <li
+                      className="rounded-full border px-2 py-0.5 font-semibold"
+                      style={{
+                        background: 'var(--coral-light)',
+                        borderColor: explorerThemeTint(themeId, 'hero', 0.25),
+                        color: explorerThemeColor(themeId, 'hero'),
+                      }}
+                    >
+                      total: {activeChip.labelings}
+                    </li>
+                  </ul>
+                </div>
+                <div className="min-w-0">
+                  <div>
+                    <span className="font-semibold">Member assignments:</span>
+                  </div>
+                  <ul className="mt-1 flex flex-wrap gap-1.5">
+                    {ledgerExamples.map((tuple, idx) => (
+                      <li
+                        key={`mini-ledger-example-${idx}`}
+                        data-mini-ledger-example={idx}
+                        className="rounded-full border px-2 py-0.5"
+                        style={{
+                          background: explorerThemeColor(themeId, 'surface'),
+                          borderColor: explorerThemeColor(themeId, 'border'),
+                        }}
+                      >
+                        ({tuple.join(',')})
+                      </li>
+                    ))}
+                    {activeChip.labelings > ledgerExamples.length && (
+                      <li
+                        className="rounded-full px-2 py-0.5"
+                        style={{ color: explorerThemeColor(themeId, 'muted') }}
+                      >
+                        +{activeChip.labelings - ledgerExamples.length} more
+                      </li>
+                    )}
+                  </ul>
+                  <div className="mt-2">
+                    <span className="font-semibold">Output reach:</span> <strong>{reachCount}</strong>
+                  </div>
+                  <div>
+                    <span className="font-semibold">Contribution shown for this pattern family:</span>{' '}
+                    <strong style={{ color: notationColor('alpha_total') }}>{contribution}</strong>
+                  </div>
+                </div>
               </div>
-            )}
+              {/* Required caveat. The coral rail follows the Flopscope active
+                  state recipe and keeps this note inside the single-accent
+                  design-system vocabulary. */}
+              <div
+                data-testid="worked-pattern-ledger-caveat"
+                role="note"
+                className="mt-2 border-l-4 px-3 py-2 text-[11px] leading-5"
+                style={{
+                  background: 'var(--coral-light)',
+                  borderColor: 'var(--coral)',
+                  color: explorerThemeColor(themeId, 'body'),
+                }}
+              >
+                This is one pattern-family contribution, not the full alpha; the full alpha also includes the all-distinct and all-equal pattern families.
+              </div>
+              <div className="mt-2 border-t pt-2" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
+                <button
+                  type="button"
+                  data-action="toggle-full-alpha-sum"
+                  aria-label={showFullAlphaSum ? 'Hide the full alpha sum across every pattern family' : 'Show full α sum — stack every pattern-family contribution into the cumulative alpha'}
+                  aria-expanded={showFullAlphaSum}
+                  onClick={() => setShowFullAlphaSum((prev) => !prev)}
+                  className="py-1 text-[11px] font-medium underline-offset-2 hover:underline"
+                  style={{ color: explorerThemeColor(themeId, 'muted') }}
+                >
+                  {showFullAlphaSum ? 'hide full α sum' : 'show full α sum'}
+                </button>
+                {showFullAlphaSum && (
+                  <div data-testid="worked-pattern-full-alpha-sum" className="mt-2 font-mono text-[11px] leading-5" style={{ color: explorerThemeColor(themeId, 'body') }}>
+                    <div className="text-[10px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                      Stacked α: every pattern family contributes one term.
+                    </div>
+                    <div className="mt-1">
+                      α_a ={' '}
+                      {cumulativeRows.map((row, idx) => (
+                        <span key={`full-alpha-term-${row.key}`} data-full-alpha-term={row.key}>
+                          {idx > 0 ? ' + ' : ''}
+                          <span title={`${row.key}: ${row.labelings}/${row.blockActionSize} · ${row.reach} = ${row.contribution}`}>
+                            {row.contribution}
+                            <span className="text-[10px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+                              {' '}({row.key})
+                            </span>
+                          </span>
+                        </span>
+                      ))}
+                      {' = '}
+                      <strong style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</strong>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* V3.1 §35 Worked Pattern Mini-Ledger.
-          A more verbose, prose-style sibling of the "Selected pattern
-          detail" card above. Walks the reader through the arithmetic in
-          plain English — choose a value for each block, multiply, list
-          the concrete tuples, divide by the orbit size, multiply by the
-          output reach. Below the ledger sits a required caveat (this is
-          one pattern-family contribution, not the full alpha) and a
-          "Show full α sum" toggle that expands the ledger into the
-          stacked sum across every pattern family. */}
-      {activeChip && (
         <div
-          data-testid="worked-pattern-mini-ledger"
-          className="mt-3 rounded-md p-3"
-          style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}
+          data-testid="partition-cumulative-table"
+          className="min-w-0 self-start rounded-lg border p-3 min-[1180px]:sticky top-32"
+          style={{
+            background: explorerThemeColor(themeId, 'surface'),
+            borderColor: explorerThemeColor(themeId, 'border'),
+          }}
         >
-          <div className="text-[10px] font-semibold uppercase tracking-[0.16em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-            Worked mini-ledger · {activeChip.key}
-          </div>
-          <div className="mt-2 font-mono text-[11px] leading-6" style={{ color: explorerThemeColor(themeId, 'body') }}>
-            <div>
-              <span className="font-semibold">Pattern:</span> {activeChip.key}
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+              Sum over patterns · live
             </div>
-            <div>
-              <span className="font-semibold">Meaning:</span>{' '}
-              {describeBlocks(activeChip.partition, activeLabels)} — positions in the same block share a value; positions in different blocks may take different values.
-            </div>
-            <div className="mt-2">
-              <span className="font-semibold">Concrete labelings:</span>
-            </div>
-            <ul className="mt-0.5 list-none space-y-0">
-              {ledgerBlockChoices.map((entry, idx) => (
-                <li key={`mini-ledger-block-${idx}`} data-mini-ledger-block={idx} className="pl-3">
-                  choose value for {entry.blockLabel} block: <strong>{entry.choices}</strong> choices
-                </li>
-              ))}
-              <li className="pl-3">
-                total: <strong>{activeChip.labelings}</strong>
-              </li>
-            </ul>
-            <div className="mt-2">
-              <span className="font-semibold">Member assignments:</span>
-            </div>
-            <ul className="mt-0.5 list-none space-y-0">
-              {ledgerExamples.map((tuple, idx) => (
-                <li key={`mini-ledger-example-${idx}`} data-mini-ledger-example={idx} className="pl-3">
-                  ({tuple.join(',')})
-                </li>
-              ))}
-              {activeChip.labelings > ledgerExamples.length && (
-                <li className="pl-3" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-                  … and {activeChip.labelings - ledgerExamples.length} more
-                </li>
-              )}
-            </ul>
-            <div className="mt-2">
-              <span className="font-semibold">Output reach:</span> <strong>{reachCount}</strong>
-            </div>
-            <div>
-              <span className="font-semibold">Contribution shown for this pattern family:</span>{' '}
-              <strong style={{ color: notationColor('alpha_total') }}>{contribution}</strong>
+            <div className="font-mono text-[11px] font-semibold" style={{ color: explorerThemeColor(themeId, 'body') }}>
+              α = <strong data-testid="partition-alpha-total" style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</strong>
             </div>
           </div>
-          {/* Required caveat. Visual emphasis via amber callout: a left
-              border + tinted surface so the line reads as a note, not as
-              part of the prose ledger above. */}
-          <div
-            data-testid="worked-pattern-ledger-caveat"
-            role="note"
-            className="mt-3 border-l-4 border-amber-300 bg-amber-50 px-3 py-2 text-[11px] text-amber-900"
-          >
-            This is one pattern-family contribution, not the full alpha. The full alpha also includes the all-distinct and all-equal pattern families.
+          {/* V3.1 §36 per-pattern table.
+              Each column carries a `data-pattern-column` matching the four
+              FORMULA hover targets (pattern, fallingFactorial, divisor,
+              outputReach). When `formulaTermHover` matches the column, the
+              cells tint coral-light so readers can locate the column the
+              hovered formula term contributes to.
+
+              V3.1 §34 reverse direction. The four <th> headers are themselves
+              keyboard-focusable hover surfaces — hovering or focusing a
+              column header sets formulaTermHover, which highlights the
+              matching term in the formula card above. C36 wires
+              formula → table; this is the reverse arrow (table → formula). */}
+          <div className="mt-2 overflow-x-auto">
+            <table className="w-full min-w-[280px] font-mono text-[11px]" style={{ borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}>
+                  <th
+                    className="p-1 text-left cursor-help"
+                    data-pattern-column="pattern"
+                    tabIndex={0}
+                    aria-label="Hover or focus to highlight the pattern term in the formula above"
+                    onMouseEnter={() => setFormulaTermHover('pattern')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('pattern')}
+                    onBlur={() => setFormulaTermHover(null)}
+                    style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : undefined }}
+                  >
+                    pattern x̃
+                  </th>
+                  <th
+                    className="p-1 text-right cursor-help"
+                    data-pattern-column="fallingFactorial"
+                    tabIndex={0}
+                    aria-label="Hover or focus to highlight the concrete labelings term in the formula above"
+                    onMouseEnter={() => setFormulaTermHover('fallingFactorial')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('fallingFactorial')}
+                    onBlur={() => setFormulaTermHover(null)}
+                    style={{ background: formulaTermHover === 'fallingFactorial' ? FORMULA_HOVER_TINT : undefined }}
+                  >
+                    labelings
+                  </th>
+                  <th
+                    className="p-1 text-right cursor-help"
+                    data-pattern-column="divisor"
+                    tabIndex={0}
+                    aria-label="Hover or focus to highlight the block-symmetry divisor term in the formula above"
+                    onMouseEnter={() => setFormulaTermHover('divisor')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('divisor')}
+                    onBlur={() => setFormulaTermHover(null)}
+                    style={{ background: formulaTermHover === 'divisor' ? FORMULA_HOVER_TINT : undefined }}
+                  >
+                    |Ḡ|
+                  </th>
+                  <th
+                    className="p-1 text-right cursor-help"
+                    data-pattern-column="outputReach"
+                    tabIndex={0}
+                    aria-label="Hover or focus to highlight the output reach term in the formula above"
+                    onMouseEnter={() => setFormulaTermHover('outputReach')}
+                    onMouseLeave={() => setFormulaTermHover(null)}
+                    onFocus={() => setFormulaTermHover('outputReach')}
+                    onBlur={() => setFormulaTermHover(null)}
+                    style={{ background: formulaTermHover === 'outputReach' ? FORMULA_HOVER_TINT : undefined }}
+                  >
+                    |A_x̃/H|
+                  </th>
+                  <th className="p-1 text-right">contrib.</th>
+                </tr>
+              </thead>
+              <tbody>
+                {visibleRows.map((row) => {
+                  const rowSelected = row.key === activeChip?.key;
+                  const rowBackground = rowSelected
+                    ? explorerThemeTint(themeId, 'hero', 0.06)
+                    : 'transparent';
+                  const tintFor = (column) =>
+                    formulaTermHover === column ? FORMULA_HOVER_TINT : rowBackground;
+                  return (
+                    <tr
+                      key={row.key}
+                      onMouseEnter={() => setSelectedPatternKey(row.key)}
+                    >
+                      <td
+                        className="p-1"
+                        data-pattern-column="pattern"
+                        style={{ background: tintFor('pattern') }}
+                      >
+                        {row.key}
+                      </td>
+                      <td
+                        className="p-1 text-right"
+                        data-pattern-column="fallingFactorial"
+                        style={{ background: tintFor('fallingFactorial') }}
+                      >
+                        {row.labelings}
+                      </td>
+                      <td
+                        className="p-1 text-right"
+                        data-pattern-column="divisor"
+                        style={{ background: tintFor('divisor') }}
+                      >
+                        {row.blockActionSize}
+                      </td>
+                      <td
+                        className="p-1 text-right"
+                        data-pattern-column="outputReach"
+                        style={{ background: tintFor('outputReach') }}
+                      >
+                        {row.reach}
+                      </td>
+                      <td
+                        className="p-1 text-right"
+                        style={{ background: rowBackground }}
+                      >
+                        {row.contribution}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+              <tfoot>
+                <tr style={{ borderTop: `1.5px solid ${explorerThemeColor(themeId, 'ink')}` }}>
+                  <td className="p-1 font-semibold" colSpan={4}>α =</td>
+                  <td className="p-1 text-right font-semibold" style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
-          <div className="mt-3 border-t pt-2" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
+          {hiddenRowCount > 0 && (
             <button
               type="button"
-              data-action="toggle-full-alpha-sum"
-              aria-label={showFullAlphaSum ? 'Hide the full alpha sum across every pattern family' : 'Show full α sum — stack every pattern-family contribution into the cumulative alpha'}
-              aria-expanded={showFullAlphaSum}
-              onClick={() => setShowFullAlphaSum((prev) => !prev)}
-              className="py-1 text-[11px] font-medium underline-offset-2 hover:underline"
+              data-action="toggle-all-rows"
+              onClick={toggleRows}
+              className="mt-2 text-[11px] font-medium underline-offset-2 hover:underline"
               style={{ color: explorerThemeColor(themeId, 'muted') }}
             >
-              {showFullAlphaSum ? 'hide full α sum' : 'show full α sum'}
+              {showAllRows ? 'show fewer rows' : `+${hiddenRowCount} more rows`}
             </button>
-            {showFullAlphaSum && (
-              <div data-testid="worked-pattern-full-alpha-sum" className="mt-2 font-mono text-[11px] leading-6" style={{ color: explorerThemeColor(themeId, 'body') }}>
-                <div className="text-[10px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-                  Stacked α: every pattern family contributes one term.
-                </div>
-                <div className="mt-1">
-                  α_a ={' '}
-                  {cumulativeRows.map((row, idx) => (
-                    <span key={`full-alpha-term-${row.key}`} data-full-alpha-term={row.key}>
-                      {idx > 0 ? ' + ' : ''}
-                      <span title={`${row.key}: ${row.labelings}/${row.blockActionSize} · ${row.reach} = ${row.contribution}`}>
-                        {row.contribution}
-                        <span className="text-[10px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-                          {' '}({row.key})
-                        </span>
-                      </span>
-                    </span>
-                  ))}
-                  {' = '}
-                  <strong style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</strong>
-                </div>
-              </div>
-            )}
-          </div>
+          )}
+          {caption && (
+            <p className="mt-2 text-[11px] leading-5" style={{ color: explorerThemeColor(themeId, 'muted') }}>
+              {caption}
+            </p>
+          )}
         </div>
-      )}
-
-      <div data-testid="partition-cumulative-table" className="mt-3 border-t pt-3" style={{ borderColor: explorerThemeColor(themeId, 'border') }}>
-        <div className="text-[10px] font-semibold uppercase tracking-[0.12em]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-          Sum over patterns · live
-        </div>
-        {/* V3.1 §36 per-pattern table.
-            Each column carries a `data-pattern-column` matching the four
-            FORMULA hover targets (pattern, fallingFactorial, divisor,
-            outputReach). When `formulaTermHover` matches the column, the
-            cells tint coral-light so readers can locate the column the
-            hovered formula term contributes to.
-
-            V3.1 §34 reverse direction. The four <th> headers are themselves
-            keyboard-focusable hover surfaces — hovering or focusing a
-            column header sets formulaTermHover, which highlights the
-            matching term in the formula card above. C36 wires
-            formula → table; this is the reverse arrow (table → formula). */}
-        <table className="mt-2 w-full font-mono text-[11px]" style={{ borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: explorerThemeColor(themeId, 'surfaceInset') }}>
-              <th
-                className="p-1 text-left cursor-help"
-                data-pattern-column="pattern"
-                tabIndex={0}
-                aria-label="Hover or focus to highlight the pattern term in the formula above"
-                onMouseEnter={() => setFormulaTermHover('pattern')}
-                onMouseLeave={() => setFormulaTermHover(null)}
-                onFocus={() => setFormulaTermHover('pattern')}
-                onBlur={() => setFormulaTermHover(null)}
-                style={{ background: formulaTermHover === 'pattern' ? FORMULA_HOVER_TINT : undefined }}
-              >
-                pattern x̃
-              </th>
-              <th
-                className="p-1 text-right cursor-help"
-                data-pattern-column="fallingFactorial"
-                tabIndex={0}
-                aria-label="Hover or focus to highlight the concrete labelings term in the formula above"
-                onMouseEnter={() => setFormulaTermHover('fallingFactorial')}
-                onMouseLeave={() => setFormulaTermHover(null)}
-                onFocus={() => setFormulaTermHover('fallingFactorial')}
-                onBlur={() => setFormulaTermHover(null)}
-                style={{ background: formulaTermHover === 'fallingFactorial' ? FORMULA_HOVER_TINT : undefined }}
-              >
-                labelings
-              </th>
-              <th
-                className="p-1 text-right cursor-help"
-                data-pattern-column="divisor"
-                tabIndex={0}
-                aria-label="Hover or focus to highlight the block-symmetry divisor term in the formula above"
-                onMouseEnter={() => setFormulaTermHover('divisor')}
-                onMouseLeave={() => setFormulaTermHover(null)}
-                onFocus={() => setFormulaTermHover('divisor')}
-                onBlur={() => setFormulaTermHover(null)}
-                style={{ background: formulaTermHover === 'divisor' ? FORMULA_HOVER_TINT : undefined }}
-              >
-                |Ḡ|
-              </th>
-              <th
-                className="p-1 text-right cursor-help"
-                data-pattern-column="outputReach"
-                tabIndex={0}
-                aria-label="Hover or focus to highlight the output reach term in the formula above"
-                onMouseEnter={() => setFormulaTermHover('outputReach')}
-                onMouseLeave={() => setFormulaTermHover(null)}
-                onFocus={() => setFormulaTermHover('outputReach')}
-                onBlur={() => setFormulaTermHover(null)}
-                style={{ background: formulaTermHover === 'outputReach' ? FORMULA_HOVER_TINT : undefined }}
-              >
-                |A_x̃/H|
-              </th>
-              <th className="p-1 text-right">contrib.</th>
-            </tr>
-          </thead>
-          <tbody>
-            {visibleRows.map((row) => {
-              const rowSelected = row.key === selectedPatternKey;
-              const rowBackground = rowSelected
-                ? explorerThemeTint(themeId, 'hero', 0.06)
-                : 'transparent';
-              const tintFor = (column) =>
-                formulaTermHover === column ? FORMULA_HOVER_TINT : rowBackground;
-              return (
-                <tr
-                  key={row.key}
-                  onMouseEnter={() => setSelectedPatternKey(row.key)}
-                >
-                  <td
-                    className="p-1"
-                    data-pattern-column="pattern"
-                    style={{ background: tintFor('pattern') }}
-                  >
-                    {row.key}
-                  </td>
-                  <td
-                    className="p-1 text-right"
-                    data-pattern-column="fallingFactorial"
-                    style={{ background: tintFor('fallingFactorial') }}
-                  >
-                    {row.labelings}
-                  </td>
-                  <td
-                    className="p-1 text-right"
-                    data-pattern-column="divisor"
-                    style={{ background: tintFor('divisor') }}
-                  >
-                    {row.blockActionSize}
-                  </td>
-                  <td
-                    className="p-1 text-right"
-                    data-pattern-column="outputReach"
-                    style={{ background: tintFor('outputReach') }}
-                  >
-                    {row.reach}
-                  </td>
-                  <td
-                    className="p-1 text-right"
-                    style={{ background: rowBackground }}
-                  >
-                    {row.contribution}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-          <tfoot>
-            <tr style={{ borderTop: `1.5px solid ${explorerThemeColor(themeId, 'ink')}` }}>
-              <td className="p-1 font-semibold" colSpan={4}>α =</td>
-              <td className="p-1 text-right font-semibold" data-testid="partition-alpha-total" style={{ color: notationColor('alpha_total') }}>{cumulativeAlpha}</td>
-            </tr>
-          </tfoot>
-        </table>
-        {hiddenRowCount > 0 && (
-          <button
-            type="button"
-            data-action="toggle-all-rows"
-            onClick={toggleRows}
-            className="mt-2 text-[11px] font-medium underline-offset-2 hover:underline"
-            style={{ color: explorerThemeColor(themeId, 'muted') }}
-          >
-            {showAllRows ? 'show fewer rows' : `+${hiddenRowCount} more rows`}
-          </button>
-        )}
-        {caption && (
-          <p className="mt-2 text-[11px]" style={{ color: explorerThemeColor(themeId, 'muted') }}>
-            {caption}
-          </p>
-        )}
       </div>
     </div>
   );

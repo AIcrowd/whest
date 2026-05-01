@@ -79,13 +79,12 @@ test('Mini-ledger emits the required V3.1 §35 caveat copy', () => {
 });
 
 // ─── 3. Caveat carries visual emphasis ───────────────────────────────────────
-test('Caveat surface carries amber callout styling (border-l-4 + bg-amber-50)', () => {
+test('Caveat surface carries the Flopscope coral callout recipe', () => {
   // The caveat must read as a visual note, not as part of the prose
-  // ledger above. We pin the design-system amber callout recipe
-  // (border-l-4 border-amber-300 bg-amber-50) and the caveat container's
-  // testid so reviewers can confirm the styling at a glance and any
-  // future swap from amber to a different palette has to update the
-  // test in lockstep.
+  // ledger above. Pin the single-accent design-system recipe: a left rail,
+  // coral-light fill, and coral rail token. That keeps the note visually
+  // tied to the active-state vocabulary instead of introducing a separate
+  // warning palette.
   assert.match(
     source,
     /data-testid="worked-pattern-ledger-caveat"/,
@@ -93,16 +92,21 @@ test('Caveat surface carries amber callout styling (border-l-4 + bg-amber-50)', 
   );
   assert.match(
     source,
-    /border-l-4 border-amber-300/,
-    'Caveat must use border-l-4 border-amber-300 (left-bar emphasis)',
+    /className="mt-2 border-l-4 px-3 py-2 text-\[11px\] leading-5"/,
+    'Caveat must use a compact border-l-4 left-rail callout surface',
   );
   assert.match(
     source,
-    /bg-amber-50/,
-    'Caveat must use bg-amber-50 surface tint (visual callout)',
+    /background: 'var\(--coral-light\)'/,
+    'Caveat must use var(--coral-light), not a raw tint or Tailwind amber class',
+  );
+  assert.match(
+    source,
+    /borderColor: 'var\(--coral\)'/,
+    'Caveat rail must use var(--coral), not a raw hex or unrelated palette',
   );
   // role="note" so AT users get the same "this is a sidebar callout"
-  // cue sighted users get from the amber bar.
+  // cue sighted users get from the coral rail.
   assert.match(
     source,
     /data-testid="worked-pattern-ledger-caveat"[\s\S]{0,200}role="note"/,
