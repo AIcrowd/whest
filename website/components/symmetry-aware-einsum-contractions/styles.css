@@ -265,11 +265,22 @@
 
 /* ─── Matrix ─────────────────────────── */
 
+.matrix-view {
+  /* Constrain to parent column so the absolute-positioned matrix inside
+     scrolls horizontally on narrow viewports instead of forcing the
+     view wider than its grid track and overflowing the section card. */
+  max-width: 100%;
+  min-width: 0;
+}
+
 .matrix-wrapper {
   overflow-x: auto;
   background: var(--white);
   padding: 16px;
   margin-bottom: 14px;
+  /* Same as .matrix-view — ensure the inner overflow-x:auto wrapper actually
+     clips against the parent column and exposes the scrollbar. */
+  max-width: 100%;
 }
 
 .matrix-table {
