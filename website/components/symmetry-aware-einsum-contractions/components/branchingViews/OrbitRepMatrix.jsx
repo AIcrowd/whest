@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import Latex from '../Latex.jsx';
 import {
   derivePreReps,
@@ -92,13 +92,26 @@ function OrbitRepMatrix({
   const cells = useMemo(() => deriveCells(orbitRows, reps), [orbitRows, reps]);
   const layout = useMemo(
     () => layoutFor({
-      canvasWidth: containerWidth,
+      // Subtract the Y-axis chrome (20-px label + 28-px tick gutter = 48 px)
+      // so the canvas + chrome fit in the wrapper on narrow viewports
+      // instead of overflowing the right edge by the chrome width.
+      canvasWidth: Math.max(0, containerWidth - 48),
       canvasHeight: FIXED_CANVAS_HEIGHT,
       numRows: orbitRows.length,
       numCols: reps.length,
     }),
     [containerWidth, orbitRows.length, reps.length],
   );
+
+  // Synchronously sync containerWidth to the wrapper's actual width after the
+  // first mount — pre-paint, so the canvas never flashes at the SQUARE_FRAME
+  // default size on viewports narrower than 360 px.
+  useLayoutEffect(() => {
+    if (!containerRef.current) return;
+    const w = Math.floor(containerRef.current.getBoundingClientRect().width);
+    if (w > 0 && w !== containerWidth) setContainerWidth(w);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orbitRows.length === 0]);
 
   // Observe container width — keep cell sizing responsive.
   // Dep `orbitRows.length === 0` is a boolean: re-runs only when the
