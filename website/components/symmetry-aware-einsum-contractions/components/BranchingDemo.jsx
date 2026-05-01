@@ -36,6 +36,24 @@ export default function BranchingDemo({
     0,
   );
 
+  // V3.1 §15 — α-counter overlay state.
+  //   cumulativeMode=false (Total): always show M = total rows, α = total filled cells.
+  //   cumulativeMode=true  (Cumulative): show "rows counted so far" / "filled cells
+  //     counted so far" — driven by the user's top-to-bottom scan. The hovered row
+  //     index acts as the cursor; rows 0..hoveredRow contribute to the running totals.
+  const [cumulativeMode, setCumulativeMode] = useState(false);
+  const hoveredRow = hover ? hover.row : -1;
+  const rowFillCount = (rowIdx) =>
+    rowIdx >= 0 && rowIdx < cells.length
+      ? cells[rowIdx].filter((c) => c !== null).length
+      : 0;
+  // In cumulative mode the visible counters are the running prefix totals as the
+  // user moves the cursor down the matrix; absent any hover, they read 0 / 0.
+  const cumulativeRows = hoveredRow >= 0 ? hoveredRow + 1 : 0;
+  const cumulativeAlpha = cells
+    .slice(0, cumulativeRows)
+    .reduce((acc, row) => acc + row.filter((c) => c !== null).length, 0);
+
   const liveComponentInfo = useMemo(() => {
     const c = componentData?.components?.[0];
     if (!c) return null;
@@ -96,6 +114,68 @@ export default function BranchingDemo({
           onExpand={handleOpenModal}
           hoveredLabels={hoveredLabels}
         />
+        {/* V3.1 §15 — α-counter overlay strip. Renders M (rows) and α (filled
+            cells) in either Total or Cumulative mode. Toggle is keyboard
+            focusable; hovering a row appends a "selected row contributes …
+            to alpha" hint. */}
+        <div
+          data-testid="branching-alpha-counter-strip"
+          className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 rounded-md border px-3 py-2 font-mono text-[12px]"
+          style={{ borderColor: '#ECEFEF', color: '#1F2526', background: '#F8F9F9' }}
+        >
+          {cumulativeMode ? (
+            <>
+              <span data-testid="branching-alpha-counter-m">
+                <span className="text-gray-400">rows counted so far </span>
+                <strong className="font-semibold">{cumulativeRows}</strong>
+                <span className="text-gray-400"> / {liveOrbitRows.length}</span>
+              </span>
+              <span data-testid="branching-alpha-counter-alpha">
+                <span className="text-gray-400">filled cells counted so far </span>
+                <strong className="font-semibold">{cumulativeAlpha}</strong>
+                <span className="text-gray-400"> / {liveAlpha}</span>
+              </span>
+            </>
+          ) : (
+            <>
+              <span data-testid="branching-alpha-counter-m">
+                <span className="text-gray-400">M = number of rows = </span>
+                <strong className="font-semibold">{liveOrbitRows.length}</strong>
+              </span>
+              <span data-testid="branching-alpha-counter-alpha">
+                <span className="text-gray-400">alpha = number of filled cells = </span>
+                <strong className="font-semibold">{liveAlpha}</strong>
+              </span>
+            </>
+          )}
+          {hoveredRow >= 0 && (
+            <span
+              data-testid="branching-alpha-counter-hover-hint"
+              className="text-gray-500"
+            >
+              <span className="text-gray-400">— </span>
+              selected row contributes <strong className="font-semibold text-gray-700">{rowFillCount(hoveredRow)}</strong> to alpha
+            </span>
+          )}
+          <button
+            type="button"
+            data-testid="branching-alpha-counter-toggle"
+            aria-label="Toggle cumulative versus total counter mode"
+            aria-pressed={cumulativeMode}
+            onClick={() => setCumulativeMode((v) => !v)}
+            className="ml-auto inline-flex items-center rounded border px-2 py-0.5 text-[11px] font-sans font-medium tracking-tight transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300"
+            style={{
+              borderColor: '#D9DCDC',
+              background: cumulativeMode ? '#FEF2F1' : '#FFFFFF',
+              color: cumulativeMode ? '#F0524D' : '#1F2526',
+              cursor: 'pointer',
+            }}
+          >
+            {cumulativeMode ? 'Cumulative' : 'Total'}
+            <span aria-hidden="true" className="mx-1 text-gray-400">↔</span>
+            <span aria-hidden="true" className="text-gray-400">{cumulativeMode ? 'Total' : 'Cumulative'}</span>
+          </button>
+        </div>
         {/* Hero α answer — the figure's takeaway. Big numeric + small-caps caption.
             Faint top-divider gives the answer breathing room from the canvas. */}
         <div
