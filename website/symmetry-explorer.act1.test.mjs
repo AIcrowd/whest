@@ -13,6 +13,7 @@ test('Act 1 uses a desktop preset rail and a mobile preset fallback', () => {
   assert.match(appSource, /selectedPresetIdx=\{selectedPresetIdx\}/);
   assert.match(appSource, /getPresetControlSelection\(exampleIdx, isDirty\)/);
   assert.match(appSource, /mx-auto mt-8 w-full max-w-\[1460px\] px-6 md:px-8 lg:px-10/);
+  assert.match(appSource, /className="flex flex-col items-stretch gap-6 lg:flex-row lg:items-start lg:gap-8"/);
   assert.match(appSource, /<PresetSidebar[\s\S]*<main className="min-w-0 flex-1">/);
   assert.match(sidebarSource, /aria-label="Preset examples"/);
   assert.match(sidebarSource, /ExplorerSidebarItem/);

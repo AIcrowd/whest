@@ -557,7 +557,7 @@ export default function SymmetryAwareEinsumContractionsApp() {
         </div>
 
         <div className="mx-auto mt-8 w-full max-w-[1460px] px-6 md:px-8 lg:px-10">
-          <div className="flex items-start gap-8">
+	          <div className="flex flex-col items-stretch gap-6 lg:flex-row lg:items-start lg:gap-8">
             <PresetSidebar
               examples={EXAMPLES}
               selectedPresetIdx={selectedPresetIdx}
