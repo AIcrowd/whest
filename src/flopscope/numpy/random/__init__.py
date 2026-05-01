@@ -554,11 +554,28 @@ def bytes(length):
 # Fallback __getattr__ for anything not explicitly listed
 # ---------------------------------------------------------------------------
 
+# Explicit allowlist of numpy.random types that pass through without counting:
+# these are bit-generator classes (no math; FLOP counting happens at the
+# sampler-method level on the resulting Generator) and the SeedSequence utility.
+_PASSTHROUGH_TYPES: frozenset[str] = frozenset({
+    "BitGenerator",
+    "MT19937",
+    "PCG64",
+    "PCG64DXSM",
+    "Philox",
+    "SFC64",
+})
+
 
 def __getattr__(name):
-    if hasattr(_npr, name):
+    if name in _PASSTHROUGH_TYPES:
         return getattr(_npr, name)
-    raise AttributeError(f"flopscope.numpy.random does not provide '{name}'")
+    raise AttributeError(
+        f"flopscope.numpy.random has no attribute '{name}'.\n"
+        f"For new code: rng = fnp.random.default_rng(seed); rng.<sampler>(...).\n"
+        f"If '{name}' should be supported, please file an issue at "
+        f"https://github.com/AIcrowd/flopscope/issues."
+    )
 
 
 import sys as _sys  # noqa: E402

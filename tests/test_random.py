@@ -142,3 +142,26 @@ class TestRandomStateCounted:
     def test_isinstance_numpy_random_state(self):
         rs = merandom.RandomState(42)
         assert isinstance(rs, numpy.random.RandomState)
+
+
+class TestGetattrFallback:
+    def test_unknown_attr_raises(self):
+        # Issue #18 regression: was silent forward to numpy.
+        import pytest
+
+        with pytest.raises(AttributeError, match="default_rng"):
+            merandom.completely_unknown_attribute
+
+    def test_random_integers_raises_via_fallback(self):
+        # numpy.random.random_integers is a deprecated alias not in our explicit list.
+        # Was silently forwarded; now must raise AttributeError.
+        import pytest
+
+        with pytest.raises(AttributeError):
+            merandom.random_integers
+
+    def test_bit_generator_classes_pass_through(self):
+        # numpy bit-generator classes are pure machinery, no math; allowlisted.
+        for name in ("BitGenerator", "MT19937", "PCG64", "PCG64DXSM", "Philox", "SFC64"):
+            cls = getattr(merandom, name)
+            assert cls is getattr(numpy.random, name), name
