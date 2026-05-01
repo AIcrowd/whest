@@ -202,7 +202,9 @@ The pattern works because `rng.uniform(...)` and `fnp.stats.norm.ppf(...)` are b
 
 ## Related
 
-- [`fnp.random.default_rng`](/docs/api/ops/random.default_rng/) — canonical entry point
-- [`fnp.random.RandomState`](/docs/api/ops/random.RandomState/) — legacy class
+- [`fnp.random.default_rng`](/docs/api/numpy/random/default-rng/) — canonical entry point (op page)
 - [Migrate from NumPy](/docs/guides/migrate-from-numpy/) — broader migration guide
 - [Issue #18](https://github.com/AIcrowd/flopscope/issues/18) — design rationale and history
+
+(`fnp.random.RandomState` is a class constructor, not a registered op — its
+sampler methods have individual op pages under `/docs/api/numpy/random/`.)
