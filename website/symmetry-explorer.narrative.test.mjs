@@ -15,19 +15,19 @@ test('EXPLORER_ACTS defines the six narrative acts in the updated story order', 
   assert.deepEqual(
     EXPLORER_ACTS.map(({ id, navTitle, heading }) => ({ id, navTitle, heading })),
     [
-      { id: 'setup', navTitle: 'Set Up', heading: 'Specify the Contraction' },
-      { id: 'structure', navTitle: 'See Structure', heading: 'Encode the Structural Candidates' },
+      { id: 'setup', navTitle: 'Set Up', heading: 'Einsum at a Glance' },
+      { id: 'structure', navTitle: 'See Structure', heading: 'Product Symmetry' },
       { id: 'proof', navTitle: 'Prove Symmetry', heading: 'Certify the Pointwise Symmetry Group' },
       { id: 'decompose', navTitle: 'Decompose Action', heading: 'Count Product Orbits and Output Projections' },
-      { id: 'partition-counting', navTitle: 'Partition Counting', heading: 'Partition Counting' },
+      { id: 'partition-counting', navTitle: 'Partition Counting', heading: 'Typed Partition Counting' },
       { id: 'cost-savings', navTitle: 'Cost Savings', heading: 'Assemble the Direct Cost Model' },
     ],
   );
 });
 
 test('Acts 1 through 5 ask algorithmic questions rather than product-tour questions', () => {
-  assert.match(EXPLORER_ACTS[0].question, /what exact indexed computation is being counted/i);
-  assert.match(EXPLORER_ACTS[1].question, /which relabelings are even possible/i);
+  assert.match(EXPLORER_ACTS[0].question, /what computation are we counting/i);
+  assert.match(EXPLORER_ACTS[1].question, /what can be multiplied once/i);
   assert.match(EXPLORER_ACTS[2].question, /preserve the summand itself/i);
   assert.match(EXPLORER_ACTS[3].question, /pointwise group become multiplication and accumulation cost/i);
   assert.match(EXPLORER_ACTS[4].question, /typed equality patterns/i);
