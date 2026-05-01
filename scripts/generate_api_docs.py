@@ -2557,6 +2557,17 @@ def resolve_live_objects(name: str, module: str) -> tuple[object, object | None]
         return getattr(fnp.fft, short_name), getattr(np.fft, short_name, None)
     if module == "numpy.random":
         short_name = name.removeprefix("random.")
+        if "." in short_name:
+            # Method-level entry: "Generator.beta" or "RandomState.randn".
+            # Class-level getattr bypasses the instance-only __getattribute__
+            # gate, so this returns the wrapped method directly.
+            cls_short, method_name = short_name.split(".", 1)
+            cls_fnp = getattr(fnp.random, cls_short)
+            cls_np = getattr(np.random, cls_short, None)
+            return (
+                getattr(cls_fnp, method_name),
+                getattr(cls_np, method_name, None) if cls_np is not None else None,
+            )
         return getattr(fnp.random, short_name), getattr(np.random, short_name, None)
     if module == "flopscope.stats":
         try:
