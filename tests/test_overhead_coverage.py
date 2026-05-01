@@ -71,6 +71,10 @@ _ALLOWED_CALLERS = {
     "_call_with_optional_out",
     "_call_with_optional_multi_out",
     "_execute_pairwise",
+    # Pure-Python context managers / non-compute helpers — allowed inside
+    # `with budget.deduct(...):` blocks because they don't represent the
+    # numpy compute being timed:
+    "errstate",  # numpy.errstate() — fp-error context manager
 }
 
 
