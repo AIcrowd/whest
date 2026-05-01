@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import CaseBadge from './CaseBadge.jsx';
+import CostSavingsSpread from './CostSavingsSpread.jsx';
 import { AnchorLink } from './ExplorerSectionCard.jsx';
 import GlossaryProse from './GlossaryProse.jsx';
 import InlineMathText from './InlineMathText.jsx';
@@ -859,6 +860,21 @@ export default function TotalCostView({
         total={totalCost}
         denseBaseline={denseTotalCost}
         componentUnavailable={null}
+      />
+
+      {/* §40 — C40 Cost Savings Spread. Sits between the prose entry point
+          (LiveResultSentence) and the formula breakdown so readers see a
+          big-picture "how much did symmetry buy us?" snapshot before
+          drilling down. Reuses the live μ/α/total/dense values plus the
+          first-component α regime as the active method badge. */}
+      <CostSavingsSpread
+        mu={mu}
+        alpha={alpha}
+        total={totalCost}
+        denseBaseline={denseTotalCost}
+        k={numTerms}
+        assignmentSpaceSize={denseTuples}
+        activeAlphaMethod={liveAlphaMethod}
       />
 
       <SectionFiveIntroBlock themeOverride={SECTION_FIVE_THEME_OVERRIDE} />
