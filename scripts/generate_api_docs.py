@@ -365,6 +365,8 @@ CATEGORY_LABELS = {
         r"$\text{numel}(\text{input})$",
     ),
     "counted_custom": ("Counted Custom Operations", "Per-operation formula"),
+    "counted_random_method": ("Counted Random Methods", "Per-method formula"),
+    "free_random_method": ("Free Random Methods", "0 FLOPs"),
     "blacklisted": ("Blacklisted Operations", "Not available"),
 }
 
@@ -374,6 +376,8 @@ CATEGORY_EMOJI = {
     "counted_binary": "\U0001f7e1",
     "counted_reduction": "\U0001f7e1",
     "counted_custom": "\U0001f7e0",  # orange circle
+    "counted_random_method": "\U0001f7e1",  # yellow circle, like other counted_*
+    "free_random_method": "\U0001f7e2",  # green circle, like free
     "blacklisted": "\U0001f534",  # red circle
 }
 
@@ -499,6 +503,8 @@ CATEGORY_COST_LATEX: dict[str, tuple[str, str]] = {
     "counted_binary": ("numel(output)", r"$\text{numel}(\text{output})$"),
     "counted_reduction": ("numel(input)", r"$\text{numel}(\text{input})$"),
     "counted_custom": ("per-operation", "varies"),
+    "counted_random_method": ("per-method formula", "varies — see cost_formula"),
+    "free_random_method": ("0", "$0$"),
     "blacklisted": ("N/A", "N/A"),
 }
 
@@ -802,12 +808,14 @@ def canonical_api_href(import_path: str) -> str:
 def display_type_for_category(category: str) -> str:
     """Return the UI display type for a registry category."""
     if category == "blacklisted":
-        return "blocked"
-    if category == "free":
+        return "blacklisted"
+    if category == "free" or category == "free_random_method":
         return "free"
-    if category.startswith("counted_") and category != "counted_custom":
+    if category == "counted_custom":
+        return "counted_custom"
+    if category.startswith("counted_"):
         return "counted"
-    return "custom"
+    return category
 
 
 def flopscope_ref(name: str, module: str) -> str:
@@ -898,8 +906,32 @@ PUBLIC_SYMBOL_GUIDES: dict[str, list[tuple[str, str]]] = {
 }
 
 
+COST_FORMULA_LABELS: dict[str, tuple[str, str]] = {
+    "numel(output)": ("numel(output)", r"$\text{numel}(\text{output})$"),
+    "numel(input)": ("numel(input)", r"$\text{numel}(\text{input})$"),
+    "shape[axis]": ("shape[axis]", r"$\text{shape}[\text{axis}]$"),
+    "length": ("length", r"$\text{length}$"),
+    "sort_cost(n)": ("sort_cost(n)", r"$n \cdot \lceil \log_2 n \rceil$"),
+    "choice_cost": (
+        "numel(output) if replace, else sort_cost(n)",
+        r"$\text{numel}(\text{output})$ if replace, else $n \cdot \lceil \log_2 n \rceil$",
+    ),
+}
+
+
 def cost_for_op(name: str, category: str) -> tuple[str, str]:
-    """Return (plain_text, latex) cost formula for an operation."""
+    """Return the cost-string + LaTeX-string pair for an op.
+
+    For method-level random ops, defer to the per-op ``cost_formula`` field
+    in the registry; for everything else, use the per-category fallback.
+    """
+    if category == "free_random_method":
+        return ("0", "$0$")
+    if category == "counted_random_method":
+        from flopscope._registry import REGISTRY
+
+        formula = REGISTRY.get(name, {}).get("cost_formula", "")
+        return COST_FORMULA_LABELS.get(formula, ("per-method", "varies"))
     if name in CUSTOM_COSTS:
         return CUSTOM_COSTS[name]
     return CATEGORY_COST_LATEX.get(category, ("unknown", "unknown"))
