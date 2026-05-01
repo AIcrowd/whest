@@ -83,13 +83,15 @@ def _format_budget_summary_text(
 
     wall_time = data.get("wall_time_s")
     tracked_time = data.get("tracked_time_s", 0.0)
+    overhead_time = data.get("flopscope_overhead_time_s", 0.0)
     untracked_time = data.get("untracked_time_s")
     if wall_time is not None and untracked_time is not None:
         lines += [
             "",
-            f"  Wall time:       {wall_time:.3f}s",
-            f"  Tracked time:    {tracked_time:.3f}s  ({_pct(tracked_time, wall_time)})",
-            f"  Untracked time:  {untracked_time:.3f}s  ({_pct(untracked_time, wall_time)})",
+            f"  Wall time:           {wall_time:.3f}s",
+            f"  Tracked time:        {tracked_time:.3f}s  ({_pct(tracked_time, wall_time)})",
+            f"  Flopscope overhead:  {overhead_time:.3f}s  ({_pct(overhead_time, wall_time)})",
+            f"  Untracked time:      {untracked_time:.3f}s  ({_pct(untracked_time, wall_time)})",
         ]
 
     op_durations = {
@@ -239,6 +241,7 @@ def _rich_totals_table(data: dict):
 
     wall_time = data.get("wall_time_s")
     tracked_time = data.get("tracked_time_s", 0.0)
+    overhead_time = data.get("flopscope_overhead_time_s", 0.0)
     untracked_time = data.get("untracked_time_s")
     if wall_time is not None and untracked_time is not None:
         table.add_section()
@@ -247,6 +250,13 @@ def _rich_totals_table(data: dict):
             "Tracked",
             Text(
                 f"{tracked_time:.3f}s  ({_pct(tracked_time, wall_time)})", style="dim"
+            ),
+        )
+        table.add_row(
+            "Flopscope overhead",
+            Text(
+                f"{overhead_time:.3f}s  ({_pct(overhead_time, wall_time)})",
+                style="dim",
             ),
         )
         table.add_row(

@@ -439,6 +439,16 @@ class BudgetContext:
 
     @property
     def untracked_time(self) -> float | None:
+        """Wall time minus tracked_time minus flopscope_overhead_time.
+
+        Genuinely 'neither' — user Python between ops, time.sleep, GC pauses,
+        un-instrumented numpy.
+
+        BREAKING (vs versions before issue #76): previously was
+        wall_time - tracked_time. The new value subtracts measured framework
+        overhead. To recover the prior 'all-unattributed' value, compute
+        flopscope_overhead_time + untracked_time.
+        """
         if self._wall_time_s is None:
             return None
         return self._wall_time_s - self._total_tracked_time
@@ -497,7 +507,18 @@ class BudgetContext:
                 )
 
     def summary_dict(self, by_namespace: bool = False) -> dict:
-        """Return structured summary data for this budget context."""
+        """Return structured summary data for this budget context.
+
+        Returns a dict with keys ``flop_budget``, ``flops_used``,
+        ``flops_remaining``, ``operations``, ``wall_time_s``,
+        ``tracked_time_s``, ``flopscope_overhead_time_s``,
+        ``untracked_time_s``, and optionally ``by_namespace`` with per-
+        namespace buckets that each include the same timing keys.
+
+        Decomposition: ``wall_time_s == tracked_time_s
+        + flopscope_overhead_time_s + untracked_time_s`` (within numerical
+        tolerance).
+        """
         wall_time = self._wall_time_s
         if wall_time is None and self._start_time is not None:
             wall_time = self.elapsed_s
@@ -821,8 +842,8 @@ def budget_summary_dict(by_namespace: bool = False) -> dict:
     dict
         Dictionary with keys ``"flop_budget"``, ``"flops_used"``,
         ``"flops_remaining"``, ``"operations"``, ``"wall_time_s"``,
-        ``"tracked_time_s"``, ``"untracked_time_s"``, and optionally
-        ``"by_namespace"`` with exact attribution buckets.
+        ``"tracked_time_s"``, ``"flopscope_overhead_time_s"``,
+        ``"untracked_time_s"``, and optionally ``"by_namespace"``.
 
     Examples
     --------
