@@ -6,6 +6,7 @@ from __future__ import annotations
 import numpy as _np
 from numpy.typing import ArrayLike
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._docstrings import attach_docstring
 from flopscope._ndarray import FlopscopeArray, _to_base_ndarray
 from flopscope._validation import require_budget
@@ -34,6 +35,7 @@ def unwrap_cost(shape: tuple[int, ...]) -> int:
     return max(numel, 1)
 
 
+@_counted_wrapper
 def unwrap(
     p: ArrayLike,
     discont: float | None = None,
@@ -49,7 +51,7 @@ def unwrap(
     if discont is not None:
         kwargs["discont"] = discont
     with budget.deduct("unwrap", flop_cost=cost, subscripts=None, shapes=(p.shape,)):
-        result = _np.unwrap(_to_base_ndarray(p), **kwargs)
+        result = _call_numpy(_np.unwrap, _to_base_ndarray(p), **kwargs)
     return result  # type: ignore[return-value]
 
 

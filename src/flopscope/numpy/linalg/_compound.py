@@ -8,6 +8,7 @@ from collections.abc import Sequence
 import numpy as _np
 from numpy.typing import ArrayLike
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._cost_model import FMA_COST
 from flopscope._docstrings import attach_docstring
 from flopscope._ndarray import FlopscopeArray, _asflopscope, _to_base_ndarray
@@ -63,6 +64,7 @@ def multi_dot_cost(shapes: Sequence[Sequence[int]]) -> int:
     return max(int(cost_table[0][n - 1]), 1)
 
 
+@_counted_wrapper
 def multi_dot(
     arrays: Sequence[ArrayLike], *, out: ArrayLike | None = None
 ) -> FlopscopeArray:
@@ -76,7 +78,8 @@ def multi_dot(
     with budget.deduct(
         "linalg.multi_dot", flop_cost=cost, subscripts=None, shapes=tuple(shapes)
     ):
-        result = _np.linalg.multi_dot(
+        result = _call_numpy(
+            _np.linalg.multi_dot,
             [_to_base_ndarray(a) for a in arrays],
             out=out_stripped,  # type: ignore[reportArgumentType]
         )
@@ -120,6 +123,7 @@ def matrix_power_cost(n: int, k: int) -> int:
     return max(num_ops * n**3, 1)
 
 
+@_counted_wrapper
 def matrix_power(a: ArrayLike, n: int) -> FlopscopeArray:
     """Matrix power with FLOP counting."""
     budget = require_budget()
@@ -132,7 +136,7 @@ def matrix_power(a: ArrayLike, n: int) -> FlopscopeArray:
     with budget.deduct(
         "linalg.matrix_power", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.linalg.matrix_power(_to_base_ndarray(a), n)
+        result = _call_numpy(_np.linalg.matrix_power, _to_base_ndarray(a), n)
     if isinstance(result, _np.ndarray) and inputs_were_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]
     return result  # type: ignore[reportReturnType]

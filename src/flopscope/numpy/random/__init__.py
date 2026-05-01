@@ -22,6 +22,7 @@ import numpy as _np
 import numpy.random as _npr
 from numpy.random import Generator, RandomState, SeedSequence
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._flops import _ceil_log2, sort_cost  # noqa: F401
 from flopscope._ndarray import FlopscopeArray
 from flopscope._perm_group import SymmetryGroup
@@ -48,6 +49,7 @@ def _output_size(*dims, size=None):
 # ---------------------------------------------------------------------------
 
 
+@_counted_wrapper
 def _counted_sampler(
     np_func: Callable[..., Any],
     op_name: str,
@@ -59,6 +61,7 @@ def _counted_sampler(
     as either a positional or keyword argument.
     """
 
+    @_counted_wrapper
     def wrapper(*args, **kwargs):
         budget = require_budget()
         result = np_func(*args, **kwargs)
@@ -84,12 +87,14 @@ def _counted_sampler(
     return wrapper
 
 
+@_counted_wrapper
 def _counted_dims_sampler(
     np_func: Callable[..., Any],
     op_name: str,
 ) -> Callable[..., Any]:
     """Factory for rand/randn that take *dims instead of size=."""
 
+    @_counted_wrapper
     def wrapper(*dims):
         budget = require_budget()
         n = int(_np.prod(dims)) if dims else 1
@@ -252,18 +257,20 @@ dirichlet = _counted_sampler(_npr.dirichlet, "random.dirichlet")
 randint = _counted_sampler(_npr.randint, "random.randint")
 
 
+@_counted_wrapper
 def _counted_size_only_sampler(
     np_func: Callable[..., Any],
     op_name: str,
 ) -> Callable[..., Any]:
     """Factory for samplers where the only arg is ``size`` (positional or kw)."""
 
+    @_counted_wrapper
     def wrapper(size=None):
         budget = require_budget()
         n = _output_size(size=size)
         cost = _builtins.max(n, 1)
         with budget.deduct(op_name, flop_cost=cost, subscripts=None, shapes=((n,),)):
-            result = np_func(size=size)
+            result = _call_numpy(np_func, size=size)
         return result
 
     wrapper.__name__ = op_name
@@ -289,6 +296,7 @@ sample = _counted_size_only_sampler(_npr.sample, "random.sample")
 # ---------------------------------------------------------------------------
 
 
+@_counted_wrapper
 def permutation(x):
     """Counted version of ``numpy.random.permutation``.
 
@@ -300,10 +308,11 @@ def permutation(x):
     with budget.deduct(
         "random.permutation", flop_cost=cost, subscripts=None, shapes=((n,),)
     ):
-        result = _npr.permutation(x)
+        result = _call_numpy(_npr.permutation, x)
     return result
 
 
+@_counted_wrapper
 def shuffle(x):
     """Counted version of ``numpy.random.shuffle``.
 
@@ -318,9 +327,10 @@ def shuffle(x):
     with budget.deduct(
         "random.shuffle", flop_cost=cost, subscripts=None, shapes=((n,),)
     ):
-        _npr.shuffle(x)
+        _call_numpy(_npr.shuffle, x)
 
 
+@_counted_wrapper
 def choice(a, size=None, replace=True, p=None):
     """Counted version of ``numpy.random.choice``.
 
@@ -339,13 +349,13 @@ def choice(a, size=None, replace=True, p=None):
         with budget.deduct(
             "random.choice", flop_cost=cost, subscripts=None, shapes=((out_size,),)
         ):
-            result = _npr.choice(a, size=size, replace=replace, p=p)
+            result = _call_numpy(_npr.choice, a, size=size, replace=replace, p=p)
     else:
         cost = sort_cost(n)
         with budget.deduct(
             "random.choice", flop_cost=cost, subscripts=None, shapes=((n,),)
         ):
-            result = _npr.choice(a, size=size, replace=replace, p=p)
+            result = _call_numpy(_npr.choice, a, size=size, replace=replace, p=p)
     # Preserve identity when picking a scalar from an object-dtype array:
     # numpy returns the exact object stored in the input, and user code
     # (e.g. `choice(object_array) is original_object`) relies on that.
@@ -361,6 +371,7 @@ def choice(a, size=None, replace=True, p=None):
     return result
 
 
+@_counted_wrapper
 def symmetric(
     shape: int | Sequence[int],
     symmetry: SymmetryGroup,
@@ -504,6 +515,7 @@ def symmetric(
         return symmetrize(sample, symmetry=symmetry)
 
 
+@_counted_wrapper
 def bytes(length):
     """Counted version of ``numpy.random.bytes``.
 
@@ -514,7 +526,7 @@ def bytes(length):
     with budget.deduct(
         "random.bytes", flop_cost=cost, subscripts=None, shapes=((length,),)
     ):
-        result = _npr.bytes(length)
+        result = _call_numpy(_npr.bytes, length)
     return result
 
 

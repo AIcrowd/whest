@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import numpy as _np
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._cost_model import FMA_COST
 from flopscope._docstrings import attach_docstring
 from flopscope._ndarray import FlopscopeArray
@@ -31,11 +32,12 @@ def bartlett_cost(n: int) -> int:
     return max(n, 1)
 
 
+@_counted_wrapper
 def bartlett(M: int) -> FlopscopeArray:
     budget = require_budget()
     cost = bartlett_cost(M)
     with budget.deduct("bartlett", flop_cost=cost, subscripts=None, shapes=((M,),)):
-        result = _np.bartlett(M)
+        result = _call_numpy(_np.bartlett, M)
     return result  # type: ignore[return-value]
 
 
@@ -62,11 +64,12 @@ def blackman_cost(n: int) -> int:
     return max(3 * n, 1)
 
 
+@_counted_wrapper
 def blackman(M: int) -> FlopscopeArray:
     budget = require_budget()
     cost = blackman_cost(M)
     with budget.deduct("blackman", flop_cost=cost, subscripts=None, shapes=((M,),)):
-        result = _np.blackman(M)
+        result = _call_numpy(_np.blackman, M)
     return result  # type: ignore[return-value]
 
 
@@ -93,11 +96,12 @@ def hamming_cost(n: int) -> int:
     return max(FMA_COST * n, 1)
 
 
+@_counted_wrapper
 def hamming(M: int) -> FlopscopeArray:
     budget = require_budget()
     cost = hamming_cost(M)
     with budget.deduct("hamming", flop_cost=cost, subscripts=None, shapes=((M,),)):
-        result = _np.hamming(M)
+        result = _call_numpy(_np.hamming, M)
     return result  # type: ignore[return-value]
 
 
@@ -124,11 +128,12 @@ def hanning_cost(n: int) -> int:
     return max(FMA_COST * n, 1)
 
 
+@_counted_wrapper
 def hanning(M: int) -> FlopscopeArray:
     budget = require_budget()
     cost = hanning_cost(M)
     with budget.deduct("hanning", flop_cost=cost, subscripts=None, shapes=((M,),)):
-        result = _np.hanning(M)
+        result = _call_numpy(_np.hanning, M)
     return result  # type: ignore[return-value]
 
 
@@ -155,11 +160,12 @@ def kaiser_cost(n: int) -> int:
     return max(3 * n, 1)
 
 
+@_counted_wrapper
 def kaiser(M: int, beta: float) -> FlopscopeArray:
     budget = require_budget()
     cost = kaiser_cost(M)
     with budget.deduct("kaiser", flop_cost=cost, subscripts=None, shapes=((M,),)):
-        result = _np.kaiser(M, beta)
+        result = _call_numpy(_np.kaiser, M, beta)
     return result  # type: ignore[return-value]
 
 

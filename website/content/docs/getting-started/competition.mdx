@@ -119,7 +119,7 @@ Key things to look for:
 - **Budget / Used / Remaining:** the top rows show the explicit competition budget, current spend, and remaining headroom
 - **By namespace:** `solver` is the root prefix, and nested scopes show up as dotted paths like `solver.precompute`. Use `budget.summary(by_namespace=True)` for the current context or `flops.budget_summary(by_namespace=True)` for the accumulated session/global view
 - **By operation:** this toy pass is dominated by the single `einsum`; `exp` and `sum` are tiny by comparison
-- **Wall / tracked / untracked time:** wall time is total elapsed time for the context, tracked time is time spent inside counted NumPy calls, and untracked time is everything else in the context (`wall_time - tracked_time`)
+- **Wall / tracked / flopscope overhead / untracked time:** wall time is total elapsed time for the context. Tracked time is time spent inside the inner NumPy calls being counted. Flopscope overhead is time spent in flopscope's own dispatch code (wrapper preambles, FLOP cost computation, view-casts, post-call wrapping, `maybe_check_nan_inf` when opted in). Untracked time is genuinely everything else (user Python between ops, sleeps, GC pauses). The decomposition is exact: `wall_time = tracked_time + flopscope_overhead_time + untracked_time`
 - **Flat default:** the default summary stays flat unless you opt into `by_namespace=True`
 
 For programmatic access, use `flops.budget_summary_dict()`:
