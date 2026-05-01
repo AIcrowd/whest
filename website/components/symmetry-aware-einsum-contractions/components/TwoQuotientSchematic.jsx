@@ -501,7 +501,7 @@ export default function TwoQuotientSchematic() {
         <text x={LEFT_X + BOX_W / 2} y={32}
           textAnchor="middle" fontSize={10} fontWeight={600}
           fontFamily="'Inter', sans-serif" fill={TOKEN.gray400}
-          letterSpacing="0.08em" textTransform="uppercase">
+          letterSpacing="0.08em">
           FULL SPACE
         </text>
         <text x={RIGHT_X + BOX_W / 2} y={32}
