@@ -731,3 +731,14 @@ def test_deduct_self_charges_body_to_overhead_and_oprecord():
         # And the OpRecord should reflect it
         assert b.op_log[-1].flopscope_overhead is not None
         assert b.op_log[-1].flopscope_overhead > 0
+
+
+def test_namespace_scope_charges_push_pop_to_overhead():
+    import flopscope
+
+    with flopscope.BudgetContext(flop_budget=int(1e9), quiet=True) as b:
+        baseline = b.flopscope_overhead_time
+        with flopscope.namespace("ns"):
+            pass
+        # Push + pop are tiny but non-zero
+        assert b.flopscope_overhead_time > baseline

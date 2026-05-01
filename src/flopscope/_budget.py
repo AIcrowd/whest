@@ -187,11 +187,15 @@ class _NamespaceScope:
         self._segment = segment
 
     def __enter__(self) -> BudgetContext:
+        t0 = time.perf_counter()
         self._budget._push_namespace(self._segment)
+        self._budget._total_flopscope_overhead_time += time.perf_counter() - t0
         return self._budget
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> Literal[False]:
+        t0 = time.perf_counter()
         self._budget._pop_namespace(self._segment)
+        self._budget._total_flopscope_overhead_time += time.perf_counter() - t0
         return False
 
 
