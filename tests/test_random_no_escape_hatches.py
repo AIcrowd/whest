@@ -159,3 +159,71 @@ class TestBitGeneratorPassthrough:
         with BudgetContext(flop_budget=10**6, quiet=True) as budget:
             rng.normal(0, 1, size=10)
         assert budget.flops_used == 10
+
+
+class TestCrossApiFlopParity:
+    """Same physical op charges the same FLOPs regardless of which API was called.
+
+    These tests load empirical weights (load_weights()) so the alias fallback
+    is exercised — without it, module-level would charge 16.0 × n and
+    method-level would charge 1.0 × n, asymmetric.
+    """
+
+    def test_randn_parity_module_vs_default_rng(self):
+        from flopscope._weights import load_weights
+
+        load_weights()
+        with BudgetContext(flop_budget=10**6, quiet=True) as b1:
+            merandom.randn(10)
+        with BudgetContext(flop_budget=10**6, quiet=True) as b2:
+            rng = merandom.default_rng(42)
+            rng.standard_normal(10)
+        assert b1.flops_used == b2.flops_used, (
+            f"FLOP asymmetry: randn={b1.flops_used}, "
+            f"default_rng().standard_normal={b2.flops_used}"
+        )
+
+    def test_normal_parity_all_three_apis(self):
+        from flopscope._weights import load_weights
+
+        load_weights()
+        with BudgetContext(flop_budget=10**6, quiet=True) as b1:
+            merandom.normal(0, 1, size=10)
+        with BudgetContext(flop_budget=10**6, quiet=True) as b2:
+            merandom.default_rng(42).normal(0, 1, size=10)
+        with BudgetContext(flop_budget=10**6, quiet=True) as b3:
+            merandom.RandomState(42).normal(0, 1, size=10)
+        assert b1.flops_used == b2.flops_used == b3.flops_used, (
+            f"normal asymmetry: module={b1.flops_used}, "
+            f"default_rng={b2.flops_used}, RandomState={b3.flops_used}"
+        )
+
+    def test_2d_shuffle_charges_shape_zero_across_apis(self):
+        from flopscope._weights import load_weights
+
+        load_weights()
+        a = numpy.arange(50).reshape(5, 10)
+        with BudgetContext(flop_budget=10**6, quiet=True) as b1:
+            merandom.shuffle(a.copy())
+        with BudgetContext(flop_budget=10**6, quiet=True) as b2:
+            merandom.default_rng(42).shuffle(a.copy())
+        with BudgetContext(flop_budget=10**6, quiet=True) as b3:
+            merandom.RandomState(42).shuffle(a.copy())
+        # All charge shape[0]=5 × weight 1.0 = 5
+        assert b1.flops_used == b2.flops_used == b3.flops_used == 5, (
+            f"shuffle 2D asymmetry: module={b1.flops_used}, "
+            f"default_rng={b2.flops_used}, RandomState={b3.flops_used}"
+        )
+
+    def test_uniform_parity_all_three_apis(self):
+        """Uniform sampler — common participant code path (whestbench/starterkit)."""
+        from flopscope._weights import load_weights
+
+        load_weights()
+        with BudgetContext(flop_budget=10**6, quiet=True) as b1:
+            merandom.uniform(0, 1, size=(8, 8))
+        with BudgetContext(flop_budget=10**6, quiet=True) as b2:
+            merandom.default_rng(42).uniform(0, 1, size=(8, 8))
+        with BudgetContext(flop_budget=10**6, quiet=True) as b3:
+            merandom.RandomState(42).uniform(0, 1, size=(8, 8))
+        assert b1.flops_used == b2.flops_used == b3.flops_used
