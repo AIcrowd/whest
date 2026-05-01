@@ -47,6 +47,7 @@ from flopscope._symmetry_utils import (
     restrict_group_to_axes,
     unique_elements_for_shape,
 )
+from flopscope._budget import _call_numpy
 from flopscope._validation import maybe_check_nan_inf, require_budget
 from flopscope.errors import (
     CostFallbackWarning,
@@ -220,10 +221,12 @@ def _call_with_optional_out(np_func, *args, out=None, supports_out=False, **kwar
             kwargs[k] = _to_base_ndarray_tree(v)
     out_stripped = _to_base_ndarray(out) if out is not None else None
     if out is None:
-        return np_func(*args, **kwargs)
+        return _call_numpy(np_func, *args, **kwargs)
     if supports_out:
-        return np_func(*args, out=out_stripped, **kwargs)
-    result = np_func(*args, **kwargs)
+        return _call_numpy(np_func, *args, out=out_stripped, **kwargs)
+    result = _call_numpy(np_func, *args, **kwargs)
+    # Fallback copy when np_func doesn't natively support out=. This is
+    # flopscope's overhead, NOT routed through _call_numpy.
     _np.copyto(out_stripped, _np.asarray(result), casting="unsafe")  # type: ignore[arg-type]
     return out
 
@@ -248,7 +251,7 @@ def _call_with_optional_multi_out(np_func, *args, out=None, nout, **kwargs):
         elif isinstance(v, (tuple, list)):
             kwargs[k] = _to_base_ndarray_tree(v)
     if out is None:
-        return np_func(*args, **kwargs)
+        return _call_numpy(np_func, *args, **kwargs)
     if not isinstance(out, tuple) or len(out) != nout:
         length_repr = len(out) if hasattr(out, "__len__") else "?"
         raise TypeError(
@@ -257,7 +260,7 @@ def _call_with_optional_multi_out(np_func, *args, out=None, nout, **kwargs):
             f"{type(out).__name__} of length {length_repr}"
         )
     stripped = tuple(_to_base_ndarray(o) if o is not None else None for o in out)
-    result = np_func(*args, out=stripped, **kwargs)
+    result = _call_numpy(np_func, *args, out=stripped, **kwargs)
     # Numpy returns a tuple of the stripped buffers (or fresh allocations
     # for None slots). Replace each non-None slot with the caller's
     # original to preserve object identity.

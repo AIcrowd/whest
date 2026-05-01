@@ -758,3 +758,30 @@ def test_per_namespace_summary_includes_flopscope_overhead():
     assert "flopscope_overhead_time_s" in d["by_namespace"]["ns"]
     assert d["by_namespace"][None]["flopscope_overhead_time_s"] >= 0
     assert d["by_namespace"]["ns"]["flopscope_overhead_time_s"] >= 0
+
+
+def test_factory_wrapper_tracked_time_is_numpy_only():
+    import time as _time
+    import numpy as np
+    import flopscope
+
+    plain_a = np.ones((10000,))
+    plain_b = np.ones((10000,))
+
+    # Pure numpy timing
+    t0 = _time.perf_counter()
+    for _ in range(1000):
+        np.add(plain_a, plain_b)
+    pure_numpy_wall = (_time.perf_counter() - t0) / 1000
+
+    # Flopscope timing
+    fnp_a = flopscope.numpy.asarray(plain_a)
+    fnp_b = flopscope.numpy.asarray(plain_b)
+    with flopscope.BudgetContext(flop_budget=int(1e15), quiet=True) as b:
+        for _ in range(1000):
+            flopscope.numpy.add(fnp_a, fnp_b)
+    flopscope_tracked = b.total_tracked_time / 1000
+
+    # Generous bounds for noisy timing
+    assert flopscope_tracked < pure_numpy_wall * 3.0
+    assert flopscope_tracked > pure_numpy_wall * 0.3
