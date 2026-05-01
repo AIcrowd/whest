@@ -13,6 +13,7 @@ from collections.abc import Sequence
 import numpy as _np
 from numpy.typing import ArrayLike
 
+from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._docstrings import attach_docstring
 from flopscope._ndarray import FlopscopeArray, _to_base_ndarray
 from flopscope._validation import require_budget
@@ -166,6 +167,7 @@ def _batch_count_nd(a: _np.ndarray, axes: tuple[int, ...] | None) -> int:
 
 
 # 1-D transforms
+@_counted_wrapper
 def fft(
     a: ArrayLike,
     n: int | None = None,
@@ -180,7 +182,7 @@ def fft(
         n = a.shape[axis]
     cost = _batch_count_1d(a, axis) * fft_cost(n)
     with budget.deduct("fft.fft", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.fft(
+        result = _call_numpy(_np.fft.fft,
             _to_base_ndarray(a),
             n=n,
             axis=axis,
@@ -195,6 +197,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def ifft(
     a: ArrayLike,
     n: int | None = None,
@@ -209,7 +212,7 @@ def ifft(
         n = a.shape[axis]
     cost = _batch_count_1d(a, axis) * fft_cost(n)
     with budget.deduct("fft.ifft", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.ifft(
+        result = _call_numpy(_np.fft.ifft,
             _to_base_ndarray(a),
             n=n,
             axis=axis,
@@ -224,6 +227,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def rfft(
     a: ArrayLike,
     n: int | None = None,
@@ -238,7 +242,7 @@ def rfft(
         n = a.shape[axis]
     cost = _batch_count_1d(a, axis) * rfft_cost(n)
     with budget.deduct("fft.rfft", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.rfft(
+        result = _call_numpy(_np.fft.rfft,
             _to_base_ndarray(a),
             n=n,
             axis=axis,
@@ -253,6 +257,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def irfft(
     a: ArrayLike,
     n: int | None = None,
@@ -267,7 +272,7 @@ def irfft(
         n = 2 * (a.shape[axis] - 1)
     cost = _batch_count_1d(a, axis) * rfft_cost(n)
     with budget.deduct("fft.irfft", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.irfft(
+        result = _call_numpy(_np.fft.irfft,
             _to_base_ndarray(a),
             n=n,
             axis=axis,
@@ -283,6 +288,7 @@ attach_docstring(
 
 
 # 2-D transforms
+@_counted_wrapper
 def fft2(
     a: ArrayLike,
     s: Sequence[int] | None = None,
@@ -301,7 +307,7 @@ def fft2(
         )
     cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.fft2", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.fft2(
+        result = _call_numpy(_np.fft.fft2,
             _to_base_ndarray(a),
             s=s,
             axes=axes,
@@ -319,6 +325,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def ifft2(
     a: ArrayLike,
     s: Sequence[int] | None = None,
@@ -337,7 +344,7 @@ def ifft2(
         )
     cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.ifft2", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.ifft2(
+        result = _call_numpy(_np.fft.ifft2,
             _to_base_ndarray(a),
             s=s,
             axes=axes,
@@ -355,6 +362,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def rfft2(
     a: ArrayLike,
     s: Sequence[int] | None = None,
@@ -373,7 +381,7 @@ def rfft2(
         )
     cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.rfft2", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.rfft2(
+        result = _call_numpy(_np.fft.rfft2,
             _to_base_ndarray(a),
             s=s,
             axes=axes,
@@ -391,6 +399,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def irfft2(
     a: ArrayLike,
     s: Sequence[int] | None = None,
@@ -414,7 +423,7 @@ def irfft2(
     with budget.deduct(
         "fft.irfft2", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.fft.irfft2(
+        result = _call_numpy(_np.fft.irfft2,
             _to_base_ndarray(a),
             s=s,
             axes=axes,
@@ -433,6 +442,7 @@ attach_docstring(
 
 
 # N-D transforms
+@_counted_wrapper
 def fftn(
     a: ArrayLike,
     s: Sequence[int] | None = None,
@@ -452,7 +462,7 @@ def fftn(
         )
     cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.fftn", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.fftn(
+        result = _call_numpy(_np.fft.fftn,
             _to_base_ndarray(a),
             s=s,
             axes=axes,
@@ -470,6 +480,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def ifftn(
     a: ArrayLike,
     s: Sequence[int] | None = None,
@@ -489,7 +500,7 @@ def ifftn(
         )
     cost = _batch_count_nd(a, axes) * fftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.ifftn", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.ifftn(
+        result = _call_numpy(_np.fft.ifftn,
             _to_base_ndarray(a),
             s=s,
             axes=axes,
@@ -507,6 +518,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def rfftn(
     a: ArrayLike,
     s: Sequence[int] | None = None,
@@ -526,7 +538,7 @@ def rfftn(
         )
     cost = _batch_count_nd(a, axes) * rfftn_cost(s_for_cost)  # type: ignore[reportArgumentType]
     with budget.deduct("fft.rfftn", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.rfftn(
+        result = _call_numpy(_np.fft.rfftn,
             _to_base_ndarray(a),
             s=s,
             axes=axes,
@@ -544,6 +556,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def irfftn(
     a: ArrayLike,
     s: Sequence[int] | None = None,
@@ -577,7 +590,7 @@ def irfftn(
     with budget.deduct(
         "fft.irfftn", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _np.fft.irfftn(
+        result = _call_numpy(_np.fft.irfftn,
             _to_base_ndarray(a),
             s=s,
             axes=axes,
@@ -596,6 +609,7 @@ attach_docstring(
 
 
 # Hermitian transforms
+@_counted_wrapper
 def hfft(
     a: ArrayLike,
     n: int | None = None,
@@ -610,7 +624,7 @@ def hfft(
         n = 2 * (a.shape[axis] - 1)
     cost = _batch_count_1d(a, axis) * hfft_cost(n)
     with budget.deduct("fft.hfft", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.hfft(
+        result = _call_numpy(_np.fft.hfft,
             _to_base_ndarray(a),
             n=n,
             axis=axis,
@@ -628,6 +642,7 @@ attach_docstring(
 )
 
 
+@_counted_wrapper
 def ihfft(
     a: ArrayLike,
     n: int | None = None,
@@ -642,7 +657,7 @@ def ihfft(
         n = a.shape[axis]
     cost = _batch_count_1d(a, axis) * hfft_cost(n)
     with budget.deduct("fft.ihfft", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _np.fft.ihfft(
+        result = _call_numpy(_np.fft.ihfft,
             _to_base_ndarray(a),
             n=n,
             axis=axis,
