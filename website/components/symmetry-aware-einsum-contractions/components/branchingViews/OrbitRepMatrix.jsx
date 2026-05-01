@@ -46,7 +46,10 @@ const COLOR = {
 
 function resolveCanvasToken(node, token, fallback) {
   if (typeof window === 'undefined') return fallback;
-  const scope = node instanceof Element ? node : document.documentElement;
+  const ElementCtor = node?.ownerDocument?.defaultView?.Element;
+  const scope = typeof ElementCtor === 'function' && node instanceof ElementCtor
+    ? node
+    : document.documentElement;
   return getComputedStyle(scope).getPropertyValue(token).trim() || fallback;
 }
 

@@ -67,6 +67,8 @@ test('visual pass 2 routes orbit-matrix grid and coral accents through tokens', 
 
   const orbitSrc = read('components/symmetry-aware-einsum-contractions/components/branchingViews/OrbitRepMatrix.jsx');
   assert.match(orbitSrc, /resolveCanvasToken/);
+  assert.match(orbitSrc, /ownerDocument\?\.defaultView\?\.Element/);
+  assert.doesNotMatch(orbitSrc, /node instanceof Element(?!Ctor)/);
   assert.match(orbitSrc, /'--grid-faint'/);
   assert.match(orbitSrc, /'--coral'/);
 
