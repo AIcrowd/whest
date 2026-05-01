@@ -24,6 +24,7 @@ import SigmaLoop from './components/SigmaLoop.jsx';
 import DiminoView from './components/DiminoView.jsx';
 import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
+import DenseAssignmentGrid from './components/DenseAssignmentGrid.jsx';
 import { LabelInteractionGraph } from './components/ComponentView.jsx';
 import TypedPartitionDemo from './components/TypedPartitionDemo.jsx';
 import TwoQuotientSchematic from './components/TwoQuotientSchematic.jsx';
@@ -566,6 +567,22 @@ export default function SymmetryAwareEinsumContractionsApp() {
                     contentClassName="pt-5"
                   >
                     <SectionIntroProse paragraphs={EXPLORER_ACTS[2].introParagraphs} />
+                    {/* §3 V3.1 §6 — C06 DenseAssignmentGrid (NEW)
+                        First concrete object readers see, before product orbits
+                        appear. Renders the full assignment space (no symmetry
+                        collapse yet) for the active preset; capped at n ≤ 4. */}
+                    <div className="mt-6">
+                      <DenseAssignmentGrid
+                        dimensionN={dimensionN}
+                        allLabels={group?.allLabels ?? []}
+                        subscripts={normalizedExample?.subscripts ?? []}
+                        operandNames={(normalizedExample?.expression?.operandNames ?? '')
+                          .split(',')
+                          .map((s) => s.trim())
+                          .filter(Boolean)}
+                        output={normalizedExample?.output ?? ''}
+                      />
+                    </div>
                     <div className="mt-6">
                       <ComponentCostView
                         componentData={componentData}
