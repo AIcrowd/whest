@@ -3,6 +3,7 @@ import { buildUVertexLabels } from '../engine/uVertexLabel.js';
 import IncidenceMatrix from './IncidenceMatrix.jsx';
 import InlineMathText from './InlineMathText.jsx';
 import Latex from './Latex.jsx';
+import CertificationCard from './CertificationCard.jsx';
 import { notationColor, notationLatex } from '../lib/notationSystem.js';
 
 const STAGE_LABELS = ['M', 'σ(M)', 'π(σ(M))'];
@@ -68,6 +69,14 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
   // its column-signature summary so the user can spot fingerprint
   // equivalence/mismatch without scanning the full grid.
   const [showFingerprintsOnly, setShowFingerprintsOnly] = useState(false);
+
+  // C21: hover bus for the CertificationCard. When the user hovers a labeled
+  // field on the witness card, we bridge the moved-row / moved-label sets
+  // into IncidenceMatrix's existing movedRows / movedCols highlight props
+  // so the M view glows the same rows/columns the witness moves.
+  const [certHoverRows, setCertHoverRows] = useState(null);
+  const [certHoverLabels, setCertHoverLabels] = useState(null);
+  const matrixContainerRef = useRef(null);
 
   const selected = selectedIdx !== null ? allPairs[selectedIdx] : null;
   const inlineValidPairs = validPairs.slice(0, VISIBLE_VALID_PAIR_LIMIT);
@@ -275,7 +284,11 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
               `mismatchedLabels` so domain-mismatch columns get red borders +
               × overlays. `compactMode` is driven by the toggle. */}
           {stages && (
-            <div className="anim-matrix-container">
+            <div className="anim-matrix-container" ref={matrixContainerRef}>
+              {/* C21: when the user hovers σ / π on the CertificationCard
+                  we splice the moved-row / moved-label sets into the M-view
+                  highlight props. The hover overlay only applies on stage 0
+                  (the original M) — stage 1 / 2 have their own moved sets. */}
               <IncidenceMatrix
                 matrix={stages[stage].matrix}
                 colLabels={stages[stage].colOrder}
@@ -285,8 +298,10 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                 variableColors={variableColors}
                 rowPerm={stages[stage].rowPerm}
                 colPerm={stages[stage].colPerm}
-                movedRows={stages[stage].movedRows}
-                movedCols={stages[stage].movedCols}
+                movedRows={stage === 0 && certHoverRows ? certHoverRows : stages[stage].movedRows}
+                movedCols={stage === 0 && certHoverLabels
+                  ? new Set(labels.map((lbl, i) => certHoverLabels.has(lbl) ? i : -1).filter((v) => v !== -1))
+                  : stages[stage].movedCols}
                 animate={true}
                 label={STAGE_LABELS[stage]}
                 rejected={stage === 2 && !selected.isValid}
@@ -306,6 +321,26 @@ function SigmaLoopInner({ allPairs, validPairs, rejectedPairs, graph, matrixData
                   Step → to see why <Latex math={String.raw`\pi`} inheritColor /> cannot recover M ({selected.reason})
                 </div>
               )}
+            </div>
+          )}
+
+          {/* C21: Certification card — compact 5-field witness summary for
+              accepted pairs. Sits above the π mapping detail; hovering σ / π
+              fields highlights the corresponding rows / columns in the
+              IncidenceMatrix above via certHoverRows / certHoverLabels. */}
+          {selected.isValid && selected.pi && (
+            <div className="cert-card-mount" style={{ marginTop: 12 }}>
+              <CertificationCard
+                pair={selected}
+                uLabels={uLabels}
+                onHoverSigma={setCertHoverRows}
+                onHoverPi={setCertHoverLabels}
+                onScrollToMatrix={() => {
+                  if (matrixContainerRef.current && typeof matrixContainerRef.current.scrollIntoView === 'function') {
+                    matrixContainerRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }
+                }}
+              />
             </div>
           )}
 
