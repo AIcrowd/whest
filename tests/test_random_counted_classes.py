@@ -23,7 +23,7 @@ class TestCountedGeneratorGate:
         bg = np.random.default_rng(42).bit_generator
         rng = _CountedGenerator(bg)
         with pytest.raises(UnsupportedFunctionError):
-            rng.nonexistent_attr
+            _ = rng.nonexistent_attr
 
     def test_dunder_passthrough(self):
         from flopscope.numpy.random._counted_classes import _CountedGenerator

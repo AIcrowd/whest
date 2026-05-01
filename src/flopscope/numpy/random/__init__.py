@@ -36,21 +36,22 @@ from __future__ import annotations
 import builtins as _builtins
 import inspect as _inspect
 from collections.abc import Callable, Sequence
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import numpy as _np
 import numpy.random as _npr
-from numpy.random import Generator as _NumpyGenerator
 from numpy.random import SeedSequence
 
 # Public exports below; concrete counted classes pulled in lazily to avoid
 # circular import with _counted_classes.py.
-
 from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._flops import _ceil_log2, sort_cost  # noqa: F401
 from flopscope._ndarray import FlopscopeArray
 from flopscope._perm_group import SymmetryGroup
 from flopscope._validation import require_budget
+
+if TYPE_CHECKING:
+    from flopscope.numpy.random._counted_classes import _CountedGenerator
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -147,7 +148,7 @@ def _counted_dims_sampler(
 # ---------------------------------------------------------------------------
 
 
-def default_rng(seed: Any = None) -> "_CountedGenerator":
+def default_rng(seed: Any = None) -> _CountedGenerator:
     """Construct a flopscope-counted Generator. Cost: 0 FLOPs.
 
     The returned Generator's sampler methods deduct FLOPs from the active
@@ -237,9 +238,10 @@ __all__ = [
 # ---------------------------------------------------------------------------
 from flopscope.numpy.random._counted_classes import (  # noqa: E402
     _CountedGenerator as Generator,
+)
+from flopscope.numpy.random._counted_classes import (  # noqa: E402
     _CountedRandomState as RandomState,
 )
-
 
 # ---------------------------------------------------------------------------
 # Dims-based samplers (rand, randn)

@@ -6,7 +6,6 @@ import numpy as np
 
 from flopscope._registry import REGISTRY
 
-
 # Methods on numpy.random.Generator that are NOT counted (free passthrough).
 GENERATOR_FREE = {"bit_generator", "spawn"}
 

@@ -96,12 +96,12 @@ def _build_counted_class(
     target_cls._FREE = frozenset(free)
 
 
-def _reconstruct_counted_generator(bit_generator: Any) -> "_CountedGenerator":
+def _reconstruct_counted_generator(bit_generator: Any) -> _CountedGenerator:
     """Pickle helper — reconstruct a _CountedGenerator from its bit_generator."""
     return _CountedGenerator(bit_generator)
 
 
-def _reconstruct_counted_random_state(state: tuple) -> "_CountedRandomState":
+def _reconstruct_counted_random_state(state: tuple) -> _CountedRandomState:
     """Pickle helper — reconstruct a _CountedRandomState from its full state tuple."""
     # Construct with default seed; the state we just received will overwrite.
     rs = _CountedRandomState(seed=None)
@@ -128,7 +128,9 @@ class _CountedGenerator(_np.random.Generator):
         )
 
     # Wrap spawned children so their methods stay counted.
-    def spawn(self, n_children: int) -> list["_CountedGenerator"]:
+    # Annotated as list[Generator] to match parent's invariant return type;
+    # runtime objects are _CountedGenerator (subclass of Generator).
+    def spawn(self, n_children: int) -> list[_np.random.Generator]:
         children = _np.random.Generator.spawn(self, n_children)
         return [_CountedGenerator(c.bit_generator) for c in children]
 

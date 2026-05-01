@@ -150,7 +150,7 @@ class TestGetattrFallback:
         import pytest
 
         with pytest.raises(AttributeError, match="default_rng"):
-            merandom.completely_unknown_attribute
+            _ = merandom.completely_unknown_attribute
 
     def test_random_integers_raises_via_fallback(self):
         # numpy.random.random_integers is a deprecated alias not in our explicit list.
@@ -158,7 +158,7 @@ class TestGetattrFallback:
         import pytest
 
         with pytest.raises(AttributeError):
-            merandom.random_integers
+            _ = merandom.random_integers
 
     def test_bit_generator_classes_pass_through(self):
         # numpy bit-generator classes are pure machinery, no math; allowlisted.

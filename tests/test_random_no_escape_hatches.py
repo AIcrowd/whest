@@ -53,12 +53,12 @@ class TestGetattrHatch:
     def test_unknown_attribute_raises(self):
         # Was: silent forward to numpy.random with no counting.
         with pytest.raises(AttributeError, match="default_rng"):
-            merandom.completely_made_up_attribute
+            _ = merandom.completely_made_up_attribute
 
     def test_random_integers_raises(self):
         # numpy.random.random_integers exists but is not in our explicit list.
         with pytest.raises(AttributeError):
-            merandom.random_integers
+            _ = merandom.random_integers
 
 
 class TestModuleLevelUnchanged:
@@ -114,6 +114,7 @@ class TestPickleRoundtrip:
 
     def test_copy_copy_default_rng_preserves_counted_class(self):
         import copy as _copy
+
         from flopscope.numpy.random._counted_classes import _CountedGenerator
 
         rng = merandom.default_rng(42)
@@ -125,6 +126,7 @@ class TestPickleRoundtrip:
 
     def test_copy_deepcopy_RandomState_preserves_counted_class(self):
         import copy as _copy
+
         from flopscope.numpy.random._counted_classes import _CountedRandomState
 
         rs = merandom.RandomState(42)

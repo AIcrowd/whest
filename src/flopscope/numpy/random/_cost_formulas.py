@@ -16,14 +16,16 @@ import numpy as _np
 from flopscope._flops import sort_cost as _sort_cost
 
 
-def _numel_output(args: tuple, kwargs: dict, result: Any) -> int:
+def _numel_output(args: tuple[Any, ...], kwargs: dict[str, Any], result: Any) -> int:
     if isinstance(result, _np.ndarray):
         return _builtins.max(int(result.size), 1)
     return 1
 
 
-def _numel_input(args: tuple, kwargs: dict, result: Any) -> int:
+def _numel_input(args: tuple[Any, ...], kwargs: dict[str, Any], result: Any) -> int:
     a = args[0] if args else kwargs.get("x")
+    if a is None:
+        return 1
     if isinstance(a, _np.ndarray):
         return _builtins.max(int(a.size), 1)
     if hasattr(a, "__len__"):
@@ -31,7 +33,7 @@ def _numel_input(args: tuple, kwargs: dict, result: Any) -> int:
     return 1
 
 
-def _length(args: tuple, kwargs: dict, result: Any) -> int:
+def _length(args: tuple[Any, ...], kwargs: dict[str, Any], result: Any) -> int:
     if args:
         n = int(args[0])
     elif "length" in kwargs:
@@ -41,12 +43,16 @@ def _length(args: tuple, kwargs: dict, result: Any) -> int:
     return _builtins.max(n, 1)
 
 
-def _sort_cost_formula(args: tuple, kwargs: dict, result: Any) -> int:
+def _sort_cost_formula(
+    args: tuple[Any, ...], kwargs: dict[str, Any], result: Any
+) -> int:
     a = args[0] if args else kwargs.get("a")
+    if a is None:
+        return _sort_cost(1)
     if isinstance(a, (int, _np.integer)):
         n = int(a)
-    elif hasattr(a, "shape"):
-        n = int(a.shape[0]) if getattr(a, "ndim", 1) > 0 else int(a)
+    elif isinstance(a, _np.ndarray):
+        n = int(a.shape[0]) if a.ndim > 0 else int(a)
     elif hasattr(a, "__len__"):
         n = len(a)
     else:
@@ -54,7 +60,7 @@ def _sort_cost_formula(args: tuple, kwargs: dict, result: Any) -> int:
     return _sort_cost(n)
 
 
-def _shape_axis(args: tuple, kwargs: dict, result: Any) -> int:
+def _shape_axis(args: tuple[Any, ...], kwargs: dict[str, Any], result: Any) -> int:
     """Cost = shape along the axis being permuted (defaults to axis=0).
 
     Used by shuffle/permutation: the algorithm is O(shape[axis]) RNG draws
@@ -63,6 +69,8 @@ def _shape_axis(args: tuple, kwargs: dict, result: Any) -> int:
     which numpy interprets as "flatten then operate" — cost = numel.
     """
     a = args[0] if args else kwargs.get("x")
+    if a is None:
+        return 1
     if isinstance(a, (int, _np.integer)):
         return _builtins.max(int(a), 1)
 
@@ -84,7 +92,7 @@ def _shape_axis(args: tuple, kwargs: dict, result: Any) -> int:
     return 1
 
 
-def _choice_cost(args: tuple, kwargs: dict, result: Any) -> int:
+def _choice_cost(args: tuple[Any, ...], kwargs: dict[str, Any], result: Any) -> int:
     # Generator.choice:    choice(a, size=None, replace=True, p=None, axis=0, shuffle=True)
     # RandomState.choice:  choice(a, size=None, replace=True, p=None)
     # `replace` is the 3rd positional or the `replace` kwarg.
@@ -97,7 +105,7 @@ def _choice_cost(args: tuple, kwargs: dict, result: Any) -> int:
     return _sort_cost_formula(args, kwargs, result)
 
 
-COST_FORMULAS: dict[str, Callable[[tuple, dict, Any], int]] = {
+COST_FORMULAS: dict[str, Callable[[tuple[Any, ...], dict[str, Any], Any], int]] = {
     "numel(output)": _numel_output,
     "numel(input)": _numel_input,
     "shape[axis]": _shape_axis,
