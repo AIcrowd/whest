@@ -76,6 +76,15 @@ def _load_packaged_weights() -> dict[str, float] | None:
         return None
 
 
+# Modern-Generator → legacy-module-level rename map (issue #18 follow-up).
+# Methods whose names changed between the legacy API and the modern Generator API.
+# Everything else uses simple prefix-stripping (no entry needed).
+_RANDOM_METHOD_RENAMES: dict[str, str] = {
+    "integers": "randint",        # Generator.integers → random.randint
+    "random": "random_sample",    # Generator.random   → random.random_sample
+}
+
+
 def get_weight(op_name: str) -> float:
     """Return the FLOP weight multiplier for an operation.
 
@@ -89,8 +98,32 @@ def get_weight(op_name: str) -> float:
     -------
     float
         Multiplicative weight. Defaults to 1.0 if not configured.
+
+    Notes
+    -----
+    For method-level random ops (``random.Generator.<m>`` and
+    ``random.RandomState.<m>``), if no explicit weight is set, falls
+    through to the legacy module-level weight via name-stripping plus
+    ``_RANDOM_METHOD_RENAMES`` for the few renamed methods. This keeps
+    same-physics ops at the same FLOP cost without requiring 94 explicit
+    JSON entries (issue #18 follow-up).
     """
-    return _ACTIVE_WEIGHTS.get(op_name, 1.0)
+    # 1. Explicit entry — primary path.
+    if op_name in _ACTIVE_WEIGHTS:
+        return _ACTIVE_WEIGHTS[op_name]
+
+    # 2. Method-level alias fallback for random.Generator.* / random.RandomState.*
+    for prefix in ("random.Generator.", "random.RandomState."):
+        if op_name.startswith(prefix):
+            short = op_name[len(prefix):]
+            legacy = _RANDOM_METHOD_RENAMES.get(short, short)
+            legacy_op = f"random.{legacy}"
+            if legacy_op in _ACTIVE_WEIGHTS:
+                return _ACTIVE_WEIGHTS[legacy_op]
+            break
+
+    # 3. Default fallback (unchanged).
+    return 1.0
 
 
 def load_weights(path: str | None = None, *, use_packaged_default: bool = True) -> None:
