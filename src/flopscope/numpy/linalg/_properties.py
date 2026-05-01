@@ -54,7 +54,9 @@ def trace(x: ArrayLike, /, *, offset: int = 0, dtype: Any = None) -> FlopscopeAr
     with budget.deduct(
         "linalg.trace", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
-        result = _call_numpy(_np.linalg.trace, _to_base_ndarray(x), offset=offset, dtype=dtype)
+        result = _call_numpy(
+            _np.linalg.trace, _to_base_ndarray(x), offset=offset, dtype=dtype
+        )
     if isinstance(result, _np.ndarray) and inputs_were_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]
     return result  # type: ignore[reportReturnType]
@@ -311,7 +313,11 @@ def vector_norm(
         "linalg.vector_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
         result = _call_numpy(
-            _np.linalg.vector_norm, _to_base_ndarray(x), ord=ord, axis=axis, keepdims=keepdims
+            _np.linalg.vector_norm,
+            _to_base_ndarray(x),
+            ord=ord,
+            axis=axis,
+            keepdims=keepdims,
         )
     if isinstance(result, _np.ndarray) and inputs_were_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]
@@ -370,7 +376,9 @@ def matrix_norm(
     with budget.deduct(
         "linalg.matrix_norm", flop_cost=cost, subscripts=None, shapes=(x.shape,)
     ):
-        result = _call_numpy(_np.linalg.matrix_norm, _to_base_ndarray(x), ord=ord, keepdims=keepdims)  # type: ignore[reportCallIssue]
+        result = _call_numpy(
+            _np.linalg.matrix_norm, _to_base_ndarray(x), ord=ord, keepdims=keepdims
+        )  # type: ignore[reportCallIssue]
     if isinstance(result, _np.ndarray) and inputs_were_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]
     return result  # type: ignore[reportReturnType]

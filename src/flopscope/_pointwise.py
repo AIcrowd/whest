@@ -1177,7 +1177,9 @@ def isclose(a: ArrayLike, b: ArrayLike, **kwargs: Any) -> FlopscopeArray | bool:
     with budget.deduct(
         "isclose", flop_cost=cost, subscripts=None, shapes=(a_arr.shape, b_arr.shape)
     ):
-        result = _call_numpy(_np.isclose, _to_base_ndarray(a), _to_base_ndarray(b), **kwargs)
+        result = _call_numpy(
+            _np.isclose, _to_base_ndarray(a), _to_base_ndarray(b), **kwargs
+        )
     if a_is_scalar and b_is_scalar and _np.ndim(result) == 0:
         return bool(result)
     return _wrap_result(result, symmetry=out_symmetry)  # type: ignore[return-value]
@@ -1792,7 +1794,9 @@ def tensordot(a: ArrayLike, b: ArrayLike, axes: Any = 2) -> FlopscopeArray:
     with budget.deduct(
         "tensordot", flop_cost=cost, subscripts=None, shapes=(a.shape, b.shape)
     ):
-        result = _call_numpy(_np.tensordot, _to_base_ndarray(a), _to_base_ndarray(b), axes=axes)
+        result = _call_numpy(
+            _np.tensordot, _to_base_ndarray(a), _to_base_ndarray(b), axes=axes
+        )
     if out_sym is not None:
         return _wrap_result(result, symmetry=out_sym)  # type: ignore[return-value]
     return result  # type: ignore[return-value]  # wrapped at fnp.tensordot import time
@@ -1965,7 +1969,9 @@ def convolve(a: ArrayLike, v: ArrayLike, mode: str = "full") -> FlopscopeArray:
         subscripts=None,
         shapes=(a.shape, v.shape),
     ):
-        result = _call_numpy(_np.convolve, _to_base_ndarray(a), _to_base_ndarray(v), mode=mode)  # type: ignore[arg-type]
+        result = _call_numpy(
+            _np.convolve, _to_base_ndarray(a), _to_base_ndarray(v), mode=mode
+        )  # type: ignore[arg-type]
     return result  # type: ignore[return-value]  # wrapped at fnp.convolve import time
 
 
@@ -1987,7 +1993,9 @@ def correlate(a: ArrayLike, v: ArrayLike, mode: str = "valid") -> FlopscopeArray
         subscripts=None,
         shapes=(a.shape, v.shape),
     ):
-        result = _call_numpy(_np.correlate, _to_base_ndarray(a), _to_base_ndarray(v), mode=mode)  # type: ignore[arg-type]
+        result = _call_numpy(
+            _np.correlate, _to_base_ndarray(a), _to_base_ndarray(v), mode=mode
+        )  # type: ignore[arg-type]
     return result  # type: ignore[return-value]  # wrapped at fnp.correlate import time
 
 

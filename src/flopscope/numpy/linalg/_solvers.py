@@ -197,7 +197,9 @@ def lstsq(
     with budget.deduct(
         "linalg.lstsq", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _call_numpy(_np.linalg.lstsq, _to_base_ndarray(a), _to_base_ndarray(b), rcond=rcond)  # type: ignore[reportCallIssue]
+        result = _call_numpy(
+            _np.linalg.lstsq, _to_base_ndarray(a), _to_base_ndarray(b), rcond=rcond
+        )  # type: ignore[reportCallIssue]
     if b_was_whest:
         return tuple(  # type: ignore[reportReturnType]
             _asflopscope(r) if isinstance(r, _np.ndarray) else r for r in result

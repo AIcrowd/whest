@@ -183,7 +183,9 @@ def _execute_pairwise(path_info, operands: list):
         # Pop operands in reverse sorted order (same as opt_einsum convention)
         inds = sorted(contract_inds, reverse=True)
         tensors = [ops.pop(i) for i in inds]
-        result = _call_numpy(_np.einsum, step.subscript, *[_to_base_ndarray(t) for t in tensors])
+        result = _call_numpy(
+            _np.einsum, step.subscript, *[_to_base_ndarray(t) for t in tensors]
+        )
         ops.append(result)
     return ops[0]
 
@@ -393,7 +395,8 @@ def einsum(
         else:
             result = _call_numpy(
                 _np.einsum,
-                canonical_subscripts, *[_to_base_ndarray(o) for o in operands]
+                canonical_subscripts,
+                *[_to_base_ndarray(o) for o in operands],
             )
 
     if out is not None:

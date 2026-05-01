@@ -580,14 +580,21 @@ def test_oprecord_has_flopscope_overhead_field():
     import flopscope
 
     rec = flopscope.OpRecord(
-        op_name="add", subscripts=None, shapes=((3,),),
-        flop_cost=3, cumulative=3,
+        op_name="add",
+        subscripts=None,
+        shapes=((3,),),
+        flop_cost=3,
+        cumulative=3,
     )
     assert rec.flopscope_overhead is None
 
     rec2 = flopscope.OpRecord(
-        op_name="add", subscripts=None, shapes=((3,),),
-        flop_cost=3, cumulative=3, flopscope_overhead=0.001,
+        op_name="add",
+        subscripts=None,
+        shapes=((3,),),
+        flop_cost=3,
+        cumulative=3,
+        flopscope_overhead=0.001,
     )
     assert rec2.flopscope_overhead == 0.001
 
@@ -661,6 +668,7 @@ def test_call_numpy_returns_fn_result_and_records_duration():
         class _FakeTimer:
             def __init__(self):
                 self._np_duration = 0.0
+
         fake = _FakeTimer()
         b._current_op_timer = fake
         try:
@@ -803,11 +811,7 @@ def test_decomposition_invariant_after_single_op():
             flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
         )
     d = b.summary_dict()
-    total = (
-        d["tracked_time_s"]
-        + d["flopscope_overhead_time_s"]
-        + d["untracked_time_s"]
-    )
+    total = d["tracked_time_s"] + d["flopscope_overhead_time_s"] + d["untracked_time_s"]
     assert d["wall_time_s"] == pytest.approx(total, abs=1e-6)
 
 
@@ -824,11 +828,7 @@ def test_decomposition_invariant_under_mixed_workload():
         _ = flopscope.numpy.sort(flopscope.numpy.ones((100,)))
         _time.sleep(0.005)  # genuinely untracked
     d = b.summary_dict()
-    total = (
-        d["tracked_time_s"]
-        + d["flopscope_overhead_time_s"]
-        + d["untracked_time_s"]
-    )
+    total = d["tracked_time_s"] + d["flopscope_overhead_time_s"] + d["untracked_time_s"]
     assert d["wall_time_s"] == pytest.approx(total, abs=1e-6)
     # The sleep should land in untracked, not overhead
     assert d["untracked_time_s"] >= 0.004
@@ -854,9 +854,7 @@ def test_per_op_overhead_sums_to_global_no_namespace():
             _ = flopscope.numpy.add(
                 flopscope.numpy.ones((10,)), flopscope.numpy.ones((10,))
             )
-    per_op_total = sum(
-        op.flopscope_overhead or 0.0 for op in b.op_log
-    )
+    per_op_total = sum(op.flopscope_overhead or 0.0 for op in b.op_log)
     # OpRecord.flopscope_overhead captures overhead attributed to each op that
     # created an OpRecord.  Zero-FLOP ops (e.g. ones) still add to the global
     # counter without creating an OpRecord, so per_op_total <= global overhead.
@@ -923,11 +921,7 @@ def test_nested_wrapper_no_double_count():
             flopscope.numpy.ones((4, 4)),
         )
     d = b.summary_dict()
-    total = (
-        d["tracked_time_s"]
-        + d["flopscope_overhead_time_s"]
-        + d["untracked_time_s"]
-    )
+    total = d["tracked_time_s"] + d["flopscope_overhead_time_s"] + d["untracked_time_s"]
     assert d["wall_time_s"] == pytest.approx(total, abs=1e-6)
 
 
@@ -978,6 +972,6 @@ def test_check_nan_inf_opt_in_attributes_to_overhead():
     per_call_delta = (overhead_on - overhead_off) / N_CALLS
     assert per_call_delta > 5e-6, (
         f"Expected per-call overhead to grow by >5µs with check_nan_inf=True; "
-        f"got {per_call_delta*1e6:.2f}µs "
+        f"got {per_call_delta * 1e6:.2f}µs "
         f"(overhead_on={overhead_on:.4f}s, overhead_off={overhead_off:.4f}s)"
     )

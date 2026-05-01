@@ -293,7 +293,9 @@ def full_like(
     a_arr = _np.asarray(a)
     cost = max(a_arr.size, 1)
     with budget.deduct("full_like", flop_cost=cost, subscripts=None, shapes=()):
-        result = _call_numpy(_np.full_like, _to_base_ndarray(a), fill_value, dtype=dtype, **kwargs)
+        result = _call_numpy(
+            _np.full_like, _to_base_ndarray(a), fill_value, dtype=dtype, **kwargs
+        )
     symmetry = None
     if isinstance(a, SymmetricTensor):
         symmetry = _compatible_symmetry_for_shape(a.symmetry, result.shape)
@@ -431,7 +433,9 @@ def concatenate(
     budget = require_budget()
     cost = max(sum(_np.asarray(a).size for a in arrays), 1)
     with budget.deduct("concatenate", flop_cost=cost, subscripts=None, shapes=()):
-        result = _call_numpy(_np.concatenate, _to_base_ndarray_tree(arrays), axis=axis, **kwargs)  # type: ignore[arg-type, call-overload]
+        result = _call_numpy(
+            _np.concatenate, _to_base_ndarray_tree(arrays), axis=axis, **kwargs
+        )  # type: ignore[arg-type, call-overload]
     return result  # type: ignore[return-value]
 
 
@@ -448,7 +452,9 @@ def stack(
     budget = require_budget()
     cost = max(sum(_np.asarray(a).size for a in arrays), 1)
     with budget.deduct("stack", flop_cost=cost, subscripts=None, shapes=()):
-        result = _call_numpy(_np.stack, _to_base_ndarray_tree(arrays), axis=axis, **kwargs)  # type: ignore[arg-type, call-overload]
+        result = _call_numpy(
+            _np.stack, _to_base_ndarray_tree(arrays), axis=axis, **kwargs
+        )  # type: ignore[arg-type, call-overload]
     return result
 
 
@@ -489,7 +495,9 @@ def split(
     with budget.deduct(
         "split", flop_cost=cost, subscripts=None, shapes=(ary_arr.shape,)
     ):
-        result = _call_numpy(_np.split, _to_base_ndarray(ary), indices_or_sections, axis=axis)
+        result = _call_numpy(
+            _np.split, _to_base_ndarray(ary), indices_or_sections, axis=axis
+        )
     return result  # type: ignore[return-value]
 
 
@@ -640,7 +648,9 @@ def repeat(
     else:
         cost = max(int(reps.sum()), 1)
     with budget.deduct("repeat", flop_cost=cost, subscripts=None, shapes=()):
-        result = _call_numpy(_np.repeat, _to_base_ndarray(a), _to_base_ndarray(repeats), axis=axis)  # type: ignore[arg-type, call-overload]
+        result = _call_numpy(
+            _np.repeat, _to_base_ndarray(a), _to_base_ndarray(repeats), axis=axis
+        )  # type: ignore[arg-type, call-overload]
     return result
 
 
@@ -729,8 +739,7 @@ def diagonal(
         "diagonal", flop_cost=cost, subscripts=None, shapes=(a_arr.shape,)
     ):
         result = _call_numpy(
-            _np.diagonal,
-            _to_base_ndarray(a), offset=offset, axis1=axis1, axis2=axis2
+            _np.diagonal, _to_base_ndarray(a), offset=offset, axis1=axis1, axis2=axis2
         )
     return result  # type: ignore[return-value]
 
@@ -878,7 +887,10 @@ def append(
     with budget.deduct("append", flop_cost=cost, subscripts=None, shapes=()):
         result = _call_numpy(
             _np.append,
-            _to_base_ndarray(arr), _to_base_ndarray(values), axis=axis, **kwargs
+            _to_base_ndarray(arr),
+            _to_base_ndarray(values),
+            axis=axis,
+            **kwargs,
         )
     return result  # type: ignore[return-value]
 
@@ -1293,7 +1305,10 @@ def extract(
     ):
         result = _call_numpy(
             _np.extract,
-            _to_base_ndarray(condition), _to_base_ndarray(arr), *args, **kwargs
+            _to_base_ndarray(condition),
+            _to_base_ndarray(arr),
+            *args,
+            **kwargs,
         )
     return result  # type: ignore[return-value]
 
@@ -1317,7 +1332,9 @@ def fill_diagonal(
     ):
         # ``np.fill_diagonal`` mutates ``a`` in-place; ``_to_base_ndarray``
         # is zero-copy so the mutation propagates to the user's array.
-        result = _call_numpy(_np.fill_diagonal, _to_base_ndarray(a), val, wrap=wrap, **kwargs)  # type: ignore[arg-type, call-overload]
+        result = _call_numpy(
+            _np.fill_diagonal, _to_base_ndarray(a), val, wrap=wrap, **kwargs
+        )  # type: ignore[arg-type, call-overload]
     return result
 
 
@@ -1490,7 +1507,11 @@ def insert(
     with budget.deduct("insert", flop_cost=cost, subscripts=None, shapes=()):
         result = _call_numpy(
             _np.insert,
-            _to_base_ndarray(arr), obj, _to_base_ndarray(values), axis=axis, **kwargs
+            _to_base_ndarray(arr),
+            obj,
+            _to_base_ndarray(values),
+            axis=axis,
+            **kwargs,
         )
     return result  # type: ignore[return-value]
 

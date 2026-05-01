@@ -153,7 +153,9 @@ def partition(
         num_slices = numel // n if n > 0 else 1
         cost = max(num_slices * n * kth_count, 1)
     with budget.deduct("partition", flop_cost=cost, subscripts=None, shapes=(a.shape,)):
-        result = _call_numpy(_np.partition, _to_base_ndarray(a), kth, axis=axis, **kwargs)
+        result = _call_numpy(
+            _np.partition, _to_base_ndarray(a), kth, axis=axis, **kwargs
+        )
     return result  # type: ignore[return-value]
 
 
@@ -190,7 +192,9 @@ def argpartition(
     with budget.deduct(
         "argpartition", flop_cost=cost, subscripts=None, shapes=(a.shape,)
     ):
-        result = _call_numpy(_np.argpartition, _to_base_ndarray(a), kth, axis=axis, **kwargs)
+        result = _call_numpy(
+            _np.argpartition, _to_base_ndarray(a), kth, axis=axis, **kwargs
+        )
     return result  # type: ignore[return-value]
 
 
@@ -231,7 +235,9 @@ def searchsorted(
         subscripts=None,
         shapes=(a.shape, v_arr.shape),
     ):
-        result = _call_numpy(_np.searchsorted, _to_base_ndarray(a), _to_base_ndarray(v), **kwargs)
+        result = _call_numpy(
+            _np.searchsorted, _to_base_ndarray(a), _to_base_ndarray(v), **kwargs
+        )
     return result  # type: ignore[return-value]
 
 
@@ -265,7 +271,9 @@ def digitize(
         subscripts=None,
         shapes=(x_arr.shape, bins_arr.shape),
     ):
-        result = _call_numpy(_np.digitize, _to_base_ndarray(x), _to_base_ndarray(bins), **kwargs)  # type: ignore[arg-type]
+        result = _call_numpy(
+            _np.digitize, _to_base_ndarray(x), _to_base_ndarray(bins), **kwargs
+        )  # type: ignore[arg-type]
     return result  # type: ignore[return-value]
 
 
@@ -421,7 +429,9 @@ if hasattr(_np, "in1d"):
         with budget.deduct(
             "in1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
         ):
-            result = _call_numpy(_np.in1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
+            result = _call_numpy(
+                _np.in1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs
+            )
         return result  # type: ignore[return-value]
 
     attach_docstring(in1d, _np.in1d, "counted_custom", "(n+m)*ceil(log2(n+m)) FLOPs")
@@ -448,7 +458,10 @@ def isin(
         "isin", flop_cost=cost, subscripts=None, shapes=(el.shape, te.shape)
     ):
         result = _call_numpy(
-            _np.isin, _to_base_ndarray(element), _to_base_ndarray(test_elements), **kwargs
+            _np.isin,
+            _to_base_ndarray(element),
+            _to_base_ndarray(test_elements),
+            **kwargs,
         )
     return result  # type: ignore[return-value]
 
@@ -471,7 +484,9 @@ def intersect1d(
     with budget.deduct(
         "intersect1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _call_numpy(_np.intersect1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
+        result = _call_numpy(
+            _np.intersect1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs
+        )
     return result  # type: ignore[return-value]
 
 
@@ -512,7 +527,9 @@ def setdiff1d(
     with budget.deduct(
         "setdiff1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _call_numpy(_np.setdiff1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
+        result = _call_numpy(
+            _np.setdiff1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs
+        )
     return result  # type: ignore[return-value]
 
 
@@ -536,7 +553,9 @@ def setxor1d(
     with budget.deduct(
         "setxor1d", flop_cost=cost, subscripts=None, shapes=(a1.shape, a2.shape)
     ):
-        result = _call_numpy(_np.setxor1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs)
+        result = _call_numpy(
+            _np.setxor1d, _to_base_ndarray(ar1), _to_base_ndarray(ar2), **kwargs
+        )
     return result  # type: ignore[return-value]
 
 

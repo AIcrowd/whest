@@ -10,6 +10,7 @@ Two tests:
 Both tests fail initially. They will pass after Tasks 17-31 of the
 flopscope_overhead migration plan land.
 """
+
 from __future__ import annotations
 
 import ast

@@ -22,7 +22,9 @@ class OpRecord(NamedTuple):
     namespace: str | None = None
     timestamp: float | None = None  # seconds since context __enter__
     duration: float | None = None  # wall-clock seconds of the numpy call
-    flopscope_overhead: float | None = None  # per-op flopscope dispatch time (preamble + deduct body + bookkeeping + postamble)
+    flopscope_overhead: float | None = (
+        None  # per-op flopscope dispatch time (preamble + deduct body + bookkeeping + postamble)
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -143,9 +145,11 @@ def _counted_wrapper(fn):
     Per-op attribution: wrapper-own overhead is distributed equally across
     ops created during this call (typically exactly 1 across this codebase).
     """
+
     @functools.wraps(fn)
     def wrapped(*args, **kwargs):
         from flopscope._validation import require_budget
+
         budget = require_budget()
         fs_t0 = time.perf_counter()
         tracked_baseline = budget._total_tracked_time
@@ -167,6 +171,7 @@ def _counted_wrapper(fn):
                     budget._op_log[idx] = op._replace(
                         flopscope_overhead=(op.flopscope_overhead or 0.0) + per_op
                     )
+
     return wrapped
 
 
@@ -466,7 +471,9 @@ class BudgetContext:
             adjusted_cost = int(flop_cost * self._flop_multiplier * weight)
             if adjusted_cost > self.flops_remaining:
                 raise BudgetExhaustedError(
-                    op_name, flop_cost=adjusted_cost, flops_remaining=self.flops_remaining
+                    op_name,
+                    flop_cost=adjusted_cost,
+                    flops_remaining=self.flops_remaining,
                 )
             self._flops_used += adjusted_cost
 
@@ -572,7 +579,9 @@ class BudgetContext:
         if tracked_delta < 0 and abs(tracked_delta) < 1e-12:
             tracked_delta = 0.0
 
-        overhead_delta = self._total_flopscope_overhead_time - self._recorded_overhead_time
+        overhead_delta = (
+            self._total_flopscope_overhead_time - self._recorded_overhead_time
+        )
         if overhead_delta < 0 and abs(overhead_delta) < 1e-12:
             overhead_delta = 0.0
 
@@ -784,7 +793,9 @@ class BudgetAccumulator:
             if rec.total_tracked_time is not None:
                 total_tracked = (total_tracked or 0.0) + rec.total_tracked_time
             if rec.total_flopscope_overhead_time is not None:
-                total_overhead = (total_overhead or 0.0) + rec.total_flopscope_overhead_time
+                total_overhead = (
+                    total_overhead or 0.0
+                ) + rec.total_flopscope_overhead_time
 
         wall_time, tracked_time, overhead_time, untracked_time = _timing_summary(
             total_wall_time, total_tracked, total_overhead

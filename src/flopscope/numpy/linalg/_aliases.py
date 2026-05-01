@@ -50,7 +50,9 @@ def cross(x1: ArrayLike, x2: ArrayLike, /, *, axis: int = -1) -> FlopscopeArray:
         subscripts=None,
         shapes=(x1_arr.shape, x2_arr.shape),
     ):
-        result = _call_numpy(_np.linalg.cross, _to_base_ndarray(x1), _to_base_ndarray(x2), axis=axis)  # type: ignore[reportCallIssue]
+        result = _call_numpy(
+            _np.linalg.cross, _to_base_ndarray(x1), _to_base_ndarray(x2), axis=axis
+        )  # type: ignore[reportCallIssue]
     if isinstance(result, _np.ndarray) and inputs_were_whest:
         return _asflopscope(result)  # type: ignore[reportReturnType]
     return result  # type: ignore[reportReturnType]

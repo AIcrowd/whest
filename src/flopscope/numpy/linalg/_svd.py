@@ -91,7 +91,10 @@ def svd(
             # When k is specified, always use economy decomposition then slice.
             fm = full_matrices if k is None else False
             U, S, Vt = _call_numpy(
-                _np.linalg.svd, _to_base_ndarray(a), full_matrices=fm, hermitian=hermitian
+                _np.linalg.svd,
+                _to_base_ndarray(a),
+                full_matrices=fm,
+                hermitian=hermitian,
             )
             if k is not None:
                 S = S[..., :k]
@@ -100,7 +103,10 @@ def svd(
             maybe_check_nan_inf(S, "linalg.svd")
         else:
             S = _call_numpy(
-                _np.linalg.svd, _to_base_ndarray(a), compute_uv=False, hermitian=hermitian
+                _np.linalg.svd,
+                _to_base_ndarray(a),
+                compute_uv=False,
+                hermitian=hermitian,
             )
             if k is not None:
                 S = S[..., :k]
