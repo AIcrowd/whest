@@ -25,6 +25,7 @@ import DiminoView from './components/DiminoView.jsx';
 import WreathStructureView from './components/WreathStructureView.jsx';
 import ComponentCostView from './components/ComponentCostView.jsx';
 import DenseAssignmentGrid from './components/DenseAssignmentGrid.jsx';
+import LoopMorphStepper from './components/LoopMorphStepper.jsx';
 import { LabelInteractionGraph } from './components/ComponentView.jsx';
 import TypedPartitionDemo from './components/TypedPartitionDemo.jsx';
 import TwoQuotientSchematic from './components/TwoQuotientSchematic.jsx';
@@ -582,6 +583,13 @@ export default function SymmetryAwareEinsumContractionsApp() {
                           .filter(Boolean)}
                         output={normalizedExample?.output ?? ''}
                       />
+                    </div>
+                    {/* §3 V3.1 §7 — C07 LoopMorphStepper (NEW)
+                        The "what we'll do with it" companion to the dense grid:
+                        side-by-side dense vs representative pseudocode with a
+                        5-step stepper morphing between them. */}
+                    <div className="mt-6">
+                      <LoopMorphStepper />
                     </div>
                     <div className="mt-6">
                       <ComponentCostView
