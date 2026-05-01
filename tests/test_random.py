@@ -116,3 +116,29 @@ class TestDefaultRng:
     def test_returned_rng_is_numpy_generator_subclass(self):
         rng = merandom.default_rng(42)
         assert isinstance(rng, numpy.random.Generator)
+
+
+class TestRandomStateCounted:
+    def test_constructor_is_free(self):
+        with BudgetContext(flop_budget=10, quiet=True) as budget:
+            merandom.RandomState(42)
+            assert budget.flops_used == 0
+
+    def test_randn_charges_flops(self):
+        # Issue #18 regression: was 0 FLOPs.
+        with BudgetContext(flop_budget=10**6, quiet=True) as budget:
+            rs = merandom.RandomState(42)
+            rs.randn(10)
+        assert budget.flops_used == 10
+
+    def test_randn_returns_flopscope_array(self):
+        from flopscope._ndarray import FlopscopeArray
+
+        with BudgetContext(flop_budget=10**6, quiet=True):
+            rs = merandom.RandomState(42)
+            result = rs.randn(10)
+        assert isinstance(result, FlopscopeArray)
+
+    def test_isinstance_numpy_random_state(self):
+        rs = merandom.RandomState(42)
+        assert isinstance(rs, numpy.random.RandomState)

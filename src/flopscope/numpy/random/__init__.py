@@ -20,7 +20,11 @@ from typing import Any
 
 import numpy as _np
 import numpy.random as _npr
-from numpy.random import Generator, RandomState, SeedSequence
+from numpy.random import Generator as _NumpyGenerator
+from numpy.random import SeedSequence
+
+# Public exports below; concrete counted classes pulled in lazily to avoid
+# circular import with _counted_classes.py.
 
 from flopscope._budget import _call_numpy, _counted_wrapper
 from flopscope._flops import _ceil_log2, sort_cost  # noqa: F401
@@ -206,6 +210,15 @@ __all__ = [
     "symmetric",
     "bytes",
 ]
+
+
+# ---------------------------------------------------------------------------
+# Counted class re-exports (issue #18)
+# ---------------------------------------------------------------------------
+from flopscope.numpy.random._counted_classes import (  # noqa: E402
+    _CountedGenerator as Generator,
+    _CountedRandomState as RandomState,
+)
 
 
 # ---------------------------------------------------------------------------
